@@ -10,6 +10,7 @@
 #include "WoodenSupports.h"
 
 #include "../../interface/Viewport.h"
+#include "../../ride/TrackData.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"
@@ -623,4 +624,32 @@ bool PathBoxSupportsPaintSetup(
     }
 
     return hasSupports;
+}
+
+bool DrawSupportForSequenceA(
+    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
+    int32_t height, ImageId imageTemplate)
+{
+    const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
+    const auto& desc = ted.sequenceWoodenSupports[sequence];
+
+    if (desc.subType == WoodenSupportSubType::Null)
+        return false;
+
+    return WoodenASupportsPaintSetupRotated(
+        session, supportType, desc.subType, direction, height, imageTemplate, desc.transitionType);
+}
+
+bool DrawSupportForSequenceB(
+    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
+    int32_t height, ImageId imageTemplate)
+{
+    const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
+    const auto& desc = ted.sequenceWoodenSupports[sequence];
+
+    if (desc.subType == WoodenSupportSubType::Null)
+        return false;
+
+    return WoodenBSupportsPaintSetupRotated(
+        session, supportType, desc.subType, direction, height, imageTemplate, desc.transitionType);
 }

@@ -14,6 +14,8 @@
 
 #include <cstdint>
 
+using track_type_t = uint16_t;
+
 enum class WoodenSupportType : uint8_t
 {
     Truss = 0,
@@ -75,3 +77,9 @@ bool WoodenBSupportsPaintSetupRotated(
 bool PathBoxSupportsPaintSetup(
     PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
     ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo);
+bool DrawSupportForSequenceA(
+    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
+    int32_t height, ImageId imageTemplate);
+bool DrawSupportForSequenceB(
+    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
+    int32_t height, ImageId imageTemplate);
