@@ -40,7 +40,7 @@ static constexpr uint8_t kDuckAnimationFlyToWater[] =
     8, 9, 10, 11, 12, 13
 };
 
-static constexpr uint8_t DuckAnimationSwim[] =
+static constexpr uint8_t kDuckAnimationSwim[] =
 {
     0
 };
@@ -64,7 +64,7 @@ static constexpr uint8_t DuckAnimationFlyAway[] =
 static constexpr const uint8_t * DuckAnimations[] =
 {
     kDuckAnimationFlyToWater,    // FLY_TO_WATER
-    DuckAnimationSwim,          // SWIM
+    kDuckAnimationSwim,          // SWIM
     DuckAnimationDrink,         // DRINK
     DuckAnimationDoubleDrink,   // DOUBLE_DRINK
     DuckAnimationFlyAway,       // FLY_AWAY
