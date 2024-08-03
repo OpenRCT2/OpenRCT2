@@ -8,7 +8,7 @@ Each script is a single physical javascript file within the `plugin` directory i
 - Mac: `/Users/YourName/Library/Application Support/OpenRCT2`
 - Linux: `$XDG_CONFIG_HOME/OpenRCT2` or in its absence `$HOME/.config/OpenRCT2`
 
-You can also find the user directory via the "Open custom content folder" option under the red toolbox button in the game's title screen.
+You can also find the user directory via the “Open custom content folder” option under the red toolbox button in the game's title screen.
 
 OpenRCT2 will load every single file with the extension `.js` in this directory recursively. So if you want to prevent a plug-in from being used, you must move it outside this directory, or rename it so the filename does not end with `.js`.
 
@@ -19,7 +19,7 @@ There are three types of scripts:
 * Remote
 * Intransient
 
-Local scripts can **not** alter the game state directly. This allows each player to enable any local script for their own game without other players in a multiplayer server also needing to also enable the same script. Local scripts can interact with the game by mimicing a player's actions through the built-in "game actions". These scripts tend to provide extra tools for productivity, or new windows containing information.
+Local scripts **cannot** alter the game state directly. This allows each player to enable any local script for their own game without other players in a multiplayer server also needing to also enable the same script. Local scripts **can** interact with the game by mimicking a player's actions through the built-in “game actions”. These scripts tend to provide extra tools for productivity, or new windows containing information.
 
 Remote scripts on the other hand can alter the game state in certain contexts, thus must be enabled for every player in a multiplayer game. Players **cannot** enable or disable remote scripts for multiplayer servers they join. Instead the server will upload any remote scripts that have been enabled on the server to each player. This allows servers to enable scripts without players needing to manually download or enable the same script on their end.
 
@@ -58,7 +58,8 @@ This will log a message to the terminal screen (`stdout`) when you open any park
 The hot reload feature can be enabled by editing your `config.ini` file and setting `enable_hot_reloading` to `true` under `[plugin]`. When this is enabled, the game will auto-reload the script in real-time whenever you save your JavaScript file. This allows rapid development of plug-ins as you can write code and quickly preview your changes, such as closing and opening a specific custom window on startup. A demonstration of this can be found on YouTube: [OpenRCT2 plugin hot-reload demo](https://www.youtube.com/watch?v=jmjWzEhmDjk)
 
 ## Breaking changes
-As of version 34 there are breaking Api changes.
+
+As of version 34 there are a few breaking API changes:
 
 - **Version 34:** `Entity.type` will now return `"guest"` or `"staff"` instead of `"peep"`.
 - **Version 63:** Accessing G2 sprites by id directly is now deprecated in favor of a future-proof implementation using `IconName` and/or `context.getIcon()`.
@@ -85,13 +86,13 @@ Yes, but the performance would be so dire that it would be a waste of their time
 
 > What are the limits?
 
-Scripts can consist of any behaviour and have a large memory pool available to them. The speed will vary depending on the hardware and system executing them. The scripts are interpreted, so do not expect anywhere close to the performance of native code. In most scenarios this should be satisfactory, but a random map generator, or genetic algorithm for building roller coasters might struggle. Like any language, there will be tricks to optimising JavaScript and the use of the OpenRCT2 APIs. [Duktape also provides some engine-specific performance tips](https://wiki.duktape.org/performance). 
+Scripts can consist of any behaviour and have a large memory pool available to them. The speed will vary depending on the hardware and system executing them. The scripts are interpreted, so do not expect anywhere close to the performance of native code. In most scenarios this should be satisfactory, but a random map generator, or genetic algorithm for building roller coasters might struggle. Like any language, there will be tricks to optimising JavaScript and the use of the OpenRCT2 APIs. [Duktape also provides some engine-specific performance tips](https://wiki.duktape.org/performance).
 
-The APIs for OpenRCT2 try to provide access to the game's data structures as much as possible but we can only add so many at a time. The best way to grow the plug-in system is to add APIs on-demand. So if you find an API is missing, please raise an issue for it on GitHub and also feel free to discuss it on our Discord and to submit a pull request afterwards.
+The APIs for OpenRCT2 try to provide access to the game’s data structures as much as possible but we can only add so many at a time. The best way to grow the plug-in system is to add APIs on-demand. So if you find an API is missing, please raise an issue for it on GitHub and also feel free to discuss it on our Discord and to submit a pull request afterwards.
 
-> What is ```targetApiVersion```
+> What is `targetApiVersion`
 
-In case there are breaking Api changes plugins can use this to keep the old API behavior. For example in version 34 ```Entity.type``` would no longer return "peep" for guests and staff, instead it would return either "guest" or "staff", so if your plugin expects "peep" you can specify the version 33 to keep the old behavior. See the list of breaking changes. If this is not specified it will default to version 33 and the plugin will log an error on startup, it is recommended to specify the current api version.
+In case there are breaking API changes, plugins can use this to keep the old API behaviour. For example in version 34 `Entity.type` would no longer return `peep` for guests and staff, instead it would return either `guest` or `staff`, so if your plugin expects `peep` you can specify the version 33 to keep the old behaviour. See the [list of breaking changes](#breaking-changes). If this is not specified it will default to version 33 and the plugin will log an error on startup, it is recommended to specify the current API version.
 
 > How do I debug my script?
 
@@ -115,7 +116,7 @@ context.subscribe('interval.day', function() {
 });
 ```
 
-Other hooks include receiving a chat message in multiplayer, or a ride's ratings have been recalculated.
+Other hooks include receiving a chat message in multiplayer, or recalculation of a ride’s ratings.
 
 > What are game actions?
 
@@ -131,7 +132,7 @@ Game actions are actions that players can invoke in games. Here is an example fl
 
 This sequence of actions ensures that every player execute the action exactly in the same way on the exact same game tick. It also allows the server to validate that the action is allowed and does not fail due to permission or another player executing a conflicting action just before it. This is why there is a noticeable delay when constructing in multiplayer games, as the client has to wait for the server to acknowledge the action and reply with the tick number to execute it on, since we do not yet have any rollback support.
 
-Besides built-in game actions, remote scripts can also register their own game actions ("custom game actions"). These custom actions allow custom game state mutations to be executed in sync for all players on the server. Beware that the plugin will also be responsible for proper permission checks, as custom game actions have no permission checks by default.
+Besides built-in game actions, remote scripts can also register their own game actions (“custom game actions”). These custom actions allow custom game state mutations to be executed in sync for all players on the server. Beware that the plugin will also be responsible for proper permission checks, as custom game actions have no permission checks by default.
 
 > Can I run code specifically for servers or clients?
 
