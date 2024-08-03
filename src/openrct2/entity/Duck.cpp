@@ -56,7 +56,7 @@ static constexpr uint8_t kDuckAnimationDoubleDrink[] =
     6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 0, 0, 0, 0, 0xFF
 };
 
-static constexpr uint8_t DuckAnimationFlyAway[] =
+static constexpr uint8_t kDuckAnimationFlyAway[] =
 {
     8, 9, 10, 11, 12, 13
 };
@@ -67,7 +67,7 @@ static constexpr const uint8_t * DuckAnimations[] =
     kDuckAnimationSwim,          // SWIM
     kDuckAnimationDrink,         // DRINK
     kDuckAnimationDoubleDrink,   // DOUBLE_DRINK
-    DuckAnimationFlyAway,       // FLY_AWAY
+    kDuckAnimationFlyAway,       // FLY_AWAY
 };
 // clang-format on
 
@@ -254,7 +254,7 @@ void Duck::UpdateFlyAway()
     if ((GetGameState().CurrentTicks & 3) == 0)
     {
         frame++;
-        if (frame >= std::size(DuckAnimationFlyAway))
+        if (frame >= std::size(kDuckAnimationFlyAway))
         {
             frame = 0;
         }
