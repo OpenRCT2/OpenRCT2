@@ -105,7 +105,7 @@ namespace OpenRCT2
         static constexpr uint16_t kReplayVersion = 10;
         static constexpr uint32_t kReplayMagic = 0x5243524F; // ORCR.
         static constexpr int kReplayCompressionLevel = 9;
-        static constexpr int NormalRecordingChecksumTicks = 1;
+        static constexpr int kNormalRecordingChecksumTicks = 1;
         static constexpr int SilentRecordingChecksumTicks = 40; // Same as network server
 
         enum class ReplayMode
@@ -522,7 +522,7 @@ namespace OpenRCT2
             {
                 default:
                 case RecordType::NORMAL:
-                    return NormalRecordingChecksumTicks;
+                    return kNormalRecordingChecksumTicks;
                 case RecordType::SILENT:
                     return SilentRecordingChecksumTicks;
             }
