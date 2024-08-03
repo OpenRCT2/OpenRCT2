@@ -33,6 +33,7 @@
 - Fix: [#22284] Unrated rides cause high amount of nausea.
 - Fix: [#22292] Progress bar widgets in guest and ride windows are not updating correctly.
 - Fix: [#22304] Graphs don’t draw lines on the left edge of the screen.
+- Fix: [#22308] OpenGL draws lines incorrectly in some cases.
 - Fix: [#22318] Water sparkles are missing if transparent water is enabled without RCT1 linked.
 - Fix: [#22333] Tile inspector closes other tool windows.
 - Fix: [#22339] Printing ui.tool.cursor in console crashes the game.
