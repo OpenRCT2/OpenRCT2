@@ -45,7 +45,7 @@ static constexpr uint8_t kDuckAnimationSwim[] =
     0
 };
 
-static constexpr uint8_t DuckAnimationDrink[] =
+static constexpr uint8_t kDuckAnimationDrink[] =
 {
     1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0xFF
 };
@@ -65,7 +65,7 @@ static constexpr const uint8_t * DuckAnimations[] =
 {
     kDuckAnimationFlyToWater,    // FLY_TO_WATER
     kDuckAnimationSwim,          // SWIM
-    DuckAnimationDrink,         // DRINK
+    kDuckAnimationDrink,         // DRINK
     DuckAnimationDoubleDrink,   // DOUBLE_DRINK
     DuckAnimationFlyAway,       // FLY_AWAY
 };
@@ -222,7 +222,7 @@ void Duck::UpdateSwim()
 void Duck::UpdateDrink()
 {
     frame++;
-    if (DuckAnimationDrink[frame] == 0xFF)
+    if (kDuckAnimationDrink[frame] == 0xFF)
     {
         state = DuckState::Swim;
         frame = 0;
