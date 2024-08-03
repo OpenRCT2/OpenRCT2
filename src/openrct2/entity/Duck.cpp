@@ -24,7 +24,7 @@
 
 using namespace OpenRCT2;
 
-constexpr int32_t DUCK_MAX_STATES = 5;
+constexpr int32_t kDuckMaxStates = 5;
 
 // clang-format off
 static constexpr CoordsXY DuckMoveOffset[] =
@@ -278,7 +278,7 @@ void Duck::UpdateFlyAway()
 uint32_t Duck::GetFrameImage(int32_t direction) const
 {
     uint32_t imageId = 0;
-    if (EnumValue(state) < DUCK_MAX_STATES)
+    if (EnumValue(state) < kDuckMaxStates)
     {
         // TODO: Check frame is in range
         uint8_t imageOffset = DuckAnimations[EnumValue(state)][frame];
