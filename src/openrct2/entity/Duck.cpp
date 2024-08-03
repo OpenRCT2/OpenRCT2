@@ -27,7 +27,7 @@ using namespace OpenRCT2;
 constexpr int32_t kDuckMaxStates = 5;
 
 // clang-format off
-static constexpr CoordsXY DuckMoveOffset[] =
+static constexpr CoordsXY kDuckMoveOffset[] =
 {
     { -1,  0 },
     {  0,  1 },
