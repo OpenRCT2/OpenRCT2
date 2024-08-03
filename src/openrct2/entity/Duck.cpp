@@ -40,7 +40,7 @@ static constexpr uint8_t kDuckAnimationFlyToWater[] =
     8, 9, 10, 11, 12, 13
 };
 
-static constexpr uint8_t kDuckAnimationSwim[] =
+static constexpr uint8_t kkDuckAnimationswim[] =
 {
     0
 };
@@ -61,10 +61,10 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
     8, 9, 10, 11, 12, 13
 };
 
-static constexpr const uint8_t * DuckAnimations[] =
+static constexpr const uint8_t * kDuckAnimations[] =
 {
     kDuckAnimationFlyToWater,    // FLY_TO_WATER
-    kDuckAnimationSwim,          // SWIM
+    kkDuckAnimationswim,         // SWIM
     kDuckAnimationDrink,         // DRINK
     kDuckAnimationDoubleDrink,   // DOUBLE_DRINK
     kDuckAnimationFlyAway,       // FLY_AWAY
@@ -103,7 +103,7 @@ void Duck::UpdateFlyToWater()
     Invalidate();
     int32_t manhattanDistance = abs(target_x - x) + abs(target_y - y);
     int32_t direction = Orientation >> 3;
-    auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
+    auto destination = CoordsXYZ{ CoordsXY{ x, y } + kDuckMoveOffset[direction], 0 };
     int32_t manhattanDistanceN = abs(target_x - destination.x) + abs(target_y - destination.y);
 
     auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ target_x, target_y });
@@ -204,7 +204,7 @@ void Duck::UpdateSwim()
                 }
 
                 int32_t direction = Orientation >> 3;
-                auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
+                auto destination = CoordsXYZ{ CoordsXY{ x, y } + kDuckMoveOffset[direction], 0 };
                 landZ = TileElementHeight(destination);
                 waterZ = TileElementWaterHeight(destination);
 
@@ -262,7 +262,7 @@ void Duck::UpdateFlyAway()
         Invalidate();
 
         int32_t direction = Orientation >> 3;
-        auto destination = CoordsXYZ{ x + (DuckMoveOffset[direction].x * 2), y + (DuckMoveOffset[direction].y * 2),
+        auto destination = CoordsXYZ{ x + (kDuckMoveOffset[direction].x * 2), y + (kDuckMoveOffset[direction].y * 2),
                                       std::min<int32_t>(z + 2, 496) };
         if (MapIsLocationValid(destination))
         {
@@ -281,7 +281,7 @@ uint32_t Duck::GetFrameImage(int32_t direction) const
     if (EnumValue(state) < kDuckMaxStates)
     {
         // TODO: Check frame is in range
-        uint8_t imageOffset = DuckAnimations[EnumValue(state)][frame];
+        uint8_t imageOffset = kDuckAnimations[EnumValue(state)][frame];
         imageId = SPR_DUCK + (imageOffset * 4) + (direction / 8);
     }
     return imageId;
