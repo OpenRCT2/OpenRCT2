@@ -35,7 +35,7 @@ static constexpr CoordsXY kDuckMoveOffset[] =
     {  0, -1 },
 };
 
-static constexpr uint8_t DuckAnimationFlyToWater[] =
+static constexpr uint8_t kDuckAnimationFlyToWater[] =
 {
     8, 9, 10, 11, 12, 13
 };
@@ -63,7 +63,7 @@ static constexpr uint8_t DuckAnimationFlyAway[] =
 
 static constexpr const uint8_t * DuckAnimations[] =
 {
-    DuckAnimationFlyToWater,    // FLY_TO_WATER
+    kDuckAnimationFlyToWater,    // FLY_TO_WATER
     DuckAnimationSwim,          // SWIM
     DuckAnimationDrink,         // DRINK
     DuckAnimationDoubleDrink,   // DOUBLE_DRINK
@@ -95,7 +95,7 @@ void Duck::UpdateFlyToWater()
         return;
 
     frame++;
-    if (frame >= std::size(DuckAnimationFlyToWater))
+    if (frame >= std::size(kDuckAnimationFlyToWater))
     {
         frame = 0;
     }
