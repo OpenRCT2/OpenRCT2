@@ -3715,10 +3715,14 @@ STR_6644    :Verbesserungen für die Touch-Bedienung
 STR_6645    :Vergrößert einige Bedienelemente, damit sie leichter angeklickt oder angetippt werden können.
 STR_6646    :Autor: {STRING}
 STR_6647    :Autoren: {STRING}
-STR_6648    :Erweiterungsschnittstelle laden…
+STR_6648    :Pluginengine laden…
 STR_6649    :Szenario laden…
 STR_6650    :Gespeichertes Spiel laden…
 STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Fehlermeldung
+STR_6653    :Alle Quellen angezeigt
+STR_6654    :{POP16}{UINT16} Quellen angezeigt
+STR_6655    :Nur ‘{POP16}{STRINGID}’
 
 #############
 # Scenarios #

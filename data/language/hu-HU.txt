@@ -3722,6 +3722,10 @@ STR_6648    :Bővítménymotor betöltése…
 STR_6649    :Pálya betöltése…
 STR_6650    :Mentett játék betöltése…
 STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Hibaablak
+STR_6653    :Minden forrás mutatása
+STR_6654    :{POP16}{UINT16} forrás mutatása
+STR_6655    :Csak „{POP16}{STRINGID}”
 
 #############
 # Scenarios #
