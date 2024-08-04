@@ -72,7 +72,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
     constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
     constexpr int32_t InitTabPosX = 3;
-    constexpr int32_t InitTabPosY = 17;
+    constexpr int32_t InitTabPosY = 3;
     constexpr int32_t TabWidth = 31;
     constexpr int32_t TabHeight = 28;
     constexpr int32_t ReservedTabCount = 2;
@@ -782,13 +782,14 @@ namespace OpenRCT2::Ui::Windows
                 const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
                 windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
+                auto tabTop = InitTabPosY + widgets[WIDX_SCENERY_TITLE].bottom;
                 if (GetSceneryTabInfoForMisc() != nullptr)
                 {
                     auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
                     miscTabWidget->left = windowWidth - 2 * TabWidth - 6;
                     miscTabWidget->right = windowWidth - TabWidth - 7;
-                    miscTabWidget->top = InitTabPosY;
-                    miscTabWidget->bottom = InitTabPosY + TabHeight;
+                    miscTabWidget->top = tabTop;
+                    miscTabWidget->bottom = tabTop + TabHeight;
                 }
 
                 if (_tabEntries.back().IsAll())
@@ -796,8 +797,8 @@ namespace OpenRCT2::Ui::Windows
                     auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 1];
                     allTabWidget->left = windowWidth - TabWidth - 6;
                     allTabWidget->right = windowWidth - 7;
-                    allTabWidget->top = InitTabPosY;
-                    allTabWidget->bottom = InitTabPosY + TabHeight;
+                    allTabWidget->top = tabTop;
+                    allTabWidget->bottom = tabTop + TabHeight;
                 }
             }
 
@@ -1376,7 +1377,7 @@ namespace OpenRCT2::Ui::Windows
             auto hasMisc = GetSceneryTabInfoForMisc() != nullptr;
             auto maxTabsInThisRow = MaxTabsPerRow - 1 - (hasMisc ? 1 : 0);
 
-            ScreenCoordsXY pos = { xInit, InitTabPosY };
+            ScreenCoordsXY pos = { xInit, InitTabPosY + 14 };
             for (const auto& tabInfo : _tabEntries)
             {
                 auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);

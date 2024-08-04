@@ -30,7 +30,8 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr int32_t kWindowWidth = 400;
-    static constexpr int32_t kWindowHeight = 90;
+    static constexpr int32_t kWindowBodyHeight = 76;
+    static constexpr int32_t kWindowHeight = kWindowBodyHeight + 14;
 
     // clang-format off
     static constexpr Widget kProgressWindowWidgets[] = {
@@ -88,7 +89,7 @@ namespace OpenRCT2::Ui::Windows
 
             frame_no = 0;
             min_width = kWindowWidth;
-            min_height = kWindowHeight;
+            min_height = kWindowBodyHeight + widgets[WIDX_TITLE].bottom;
             max_width = min_width;
             max_height = min_height;
 

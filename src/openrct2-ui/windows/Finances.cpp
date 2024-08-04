@@ -584,7 +584,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDrawSummary(DrawPixelInfo& dpi)
         {
-            auto screenCoords = windowPos + ScreenCoordsXY{ 8, 51 };
+            auto titleBarBottom = widgets[WIDX_TITLE].bottom;
+            auto screenCoords = windowPos + ScreenCoordsXY{ 8, titleBarBottom + 37 };
             auto& gameState = GetGameState();
 
             // Expenditure / Income heading
@@ -609,23 +610,26 @@ namespace OpenRCT2::Ui::Windows
 
             // Horizontal rule below expenditure / income table
             GfxFillRectInset(
-                dpi, { windowPos + ScreenCoordsXY{ 8, 272 }, windowPos + ScreenCoordsXY{ 8 + 513, 272 + 1 } }, colours[1],
-                INSET_RECT_FLAG_BORDER_INSET);
+                dpi,
+                { windowPos + ScreenCoordsXY{ 8, titleBarBottom + 258 },
+                  windowPos + ScreenCoordsXY{ 8 + 513, titleBarBottom + 258 + 1 } },
+                colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
             // Loan and interest rate
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_LOAN);
             if (!(gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST))
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gameState.BankLoanInterestRate);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 167, 279 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
+                DrawTextBasic(
+                    dpi, windowPos + ScreenCoordsXY{ 167, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
             }
 
             // Current cash
             auto ft = Formatter();
             ft.Add<money64>(gameState.Cash);
             StringId stringId = gameState.Cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 294 }, stringId, ft);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 280 }, stringId, ft);
 
             // Objective related financial information
             if (gameState.ScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
@@ -634,18 +638,18 @@ namespace OpenRCT2::Ui::Windows
                 ft = Formatter();
                 ft.Add<money64>(lastMonthProfit);
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL,
-                    ft);
+                    dpi, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 265 },
+                    STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, ft);
             }
             else
             {
                 // Park value and company value
                 ft = Formatter();
                 ft.Add<money64>(gameState.Park.Value);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 265 }, STR_PARK_VALUE_LABEL, ft);
                 ft = Formatter();
                 ft.Add<money64>(gameState.CompanyValue);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 294 }, STR_COMPANY_VALUE_LABEL, ft);
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 280 }, STR_COMPANY_VALUE_LABEL, ft);
             }
         }
 
