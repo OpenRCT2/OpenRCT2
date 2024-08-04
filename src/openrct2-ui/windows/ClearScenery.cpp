@@ -329,7 +329,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action);
-                        gCurrentToolId = Tool::Crosshair;
+                        gCurrentToolId = Tool::Bulldozer;
                     }
                     break;
             }
@@ -344,7 +344,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action);
-                        gCurrentToolId = Tool::Crosshair;
+                        gCurrentToolId = Tool::Bulldozer;
                     }
                     break;
             }
@@ -357,7 +357,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                     MapInvalidateSelectionRect();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                    gCurrentToolId = Tool::Crosshair;
+                    gCurrentToolId = Tool::Bulldozer;
                     break;
             }
         }
