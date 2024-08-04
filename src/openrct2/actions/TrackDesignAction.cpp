@@ -171,13 +171,9 @@ GameActions::Result TrackDesignAction::Execute() const
     }
 
     // Query first, this is required again to determine if scenery is available.
-    bool placeScenery = true;
+    uint32_t flags = GetFlags() & ~GAME_COMMAND_FLAG_APPLY;
 
-    uint32_t flags = 0;
-    if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        flags |= GAME_COMMAND_FLAG_GHOST;
-    if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
-        flags |= GAME_COMMAND_FLAG_REPLAY;
+    bool placeScenery = true;
 
     auto queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
     if (_trackDesignPlaceStateSceneryUnavailable)
@@ -225,8 +221,7 @@ GameActions::Result TrackDesignAction::Execute() const
         GameActions::ExecuteNested(&rideSetVehicleAction);
     }
 
-    SetOperatingSettingNested(
-        ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.operation.rideMode), GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.operation.rideMode), flags);
     auto rideSetVehicleAction2 = RideSetVehicleAction(
         ride->id, RideSetVehicleType::NumTrains, _td.trackAndVehicle.numberOfTrains);
     GameActions::ExecuteNested(&rideSetVehicleAction2);
@@ -235,14 +230,14 @@ GameActions::Result TrackDesignAction::Execute() const
         ride->id, RideSetVehicleType::NumCarsPerTrain, _td.trackAndVehicle.numberOfCarsPerTrain);
     GameActions::ExecuteNested(&rideSetVehicleAction3);
 
-    SetOperatingSettingNested(ride->id, RideSetSetting::Departure, _td.operation.departFlags, GAME_COMMAND_FLAG_APPLY);
-    SetOperatingSettingNested(ride->id, RideSetSetting::MinWaitingTime, _td.operation.minWaitingTime, GAME_COMMAND_FLAG_APPLY);
-    SetOperatingSettingNested(ride->id, RideSetSetting::MaxWaitingTime, _td.operation.maxWaitingTime, GAME_COMMAND_FLAG_APPLY);
-    SetOperatingSettingNested(ride->id, RideSetSetting::Operation, _td.operation.operationSetting, GAME_COMMAND_FLAG_APPLY);
-    SetOperatingSettingNested(ride->id, RideSetSetting::LiftHillSpeed, _td.operation.liftHillSpeed, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::Departure, _td.operation.departFlags, flags);
+    SetOperatingSettingNested(ride->id, RideSetSetting::MinWaitingTime, _td.operation.minWaitingTime, flags);
+    SetOperatingSettingNested(ride->id, RideSetSetting::MaxWaitingTime, _td.operation.maxWaitingTime, flags);
+    SetOperatingSettingNested(ride->id, RideSetSetting::Operation, _td.operation.operationSetting, flags);
+    SetOperatingSettingNested(ride->id, RideSetSetting::LiftHillSpeed, _td.operation.liftHillSpeed, flags);
 
     auto numCircuits = std::max<uint8_t>(1, _td.operation.numCircuits);
-    SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, numCircuits, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, numCircuits, flags);
     ride->SetToDefaultInspectionInterval();
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->vehicleColourSettings = _td.appearance.vehicleColourSettings;
