@@ -168,14 +168,15 @@ namespace OpenRCT2::Ui::Windows
     static_assert(std::size(_guestWindowPageWidgets) == WINDOW_GUEST_PAGE_COUNT);
     // clang-format on
 
+    // Minimum and maximum sizes, excluding the title bar.
     static constexpr std::array _guestWindowPageSizes = {
-        std::array{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_OVERVIEW
-        std::array{ ScreenSize{ 192, 180 }, ScreenSize{ 192, 180 } }, // WINDOW_GUEST_STATS
-        std::array{ ScreenSize{ 192, 180 }, ScreenSize{ 500, 400 } }, // WINDOW_GUEST_RIDES
-        std::array{ ScreenSize{ 210, 148 }, ScreenSize{ 210, 148 } }, // WINDOW_GUEST_FINANCE
-        std::array{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_THOUGHTS
-        std::array{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_INVENTORY
-        std::array{ ScreenSize{ 192, 171 }, ScreenSize{ 192, 171 } }, // WINDOW_GUEST_DEBUG
+        std::array{ ScreenSize{ 192, 145 }, ScreenSize{ 500, 436 } }, // WINDOW_GUEST_OVERVIEW
+        std::array{ ScreenSize{ 192, 166 }, ScreenSize{ 192, 166 } }, // WINDOW_GUEST_STATS
+        std::array{ ScreenSize{ 192, 166 }, ScreenSize{ 500, 386 } }, // WINDOW_GUEST_RIDES
+        std::array{ ScreenSize{ 210, 134 }, ScreenSize{ 210, 134 } }, // WINDOW_GUEST_FINANCE
+        std::array{ ScreenSize{ 192, 145 }, ScreenSize{ 500, 436 } }, // WINDOW_GUEST_THOUGHTS
+        std::array{ ScreenSize{ 192, 145 }, ScreenSize{ 500, 436 } }, // WINDOW_GUEST_INVENTORY
+        std::array{ ScreenSize{ 192, 157 }, ScreenSize{ 192, 157 } }, // WINDOW_GUEST_DEBUG
     };
     static_assert(_guestWindowPageSizes.size() == WINDOW_GUEST_PAGE_COUNT);
 
@@ -420,10 +421,11 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeCommon()
         {
             // Get page specific min and max size
-            int32_t minWidth = _guestWindowPageSizes[page][0].width;
-            int32_t minHeight = _guestWindowPageSizes[page][0].height;
-            int32_t maxWidth = _guestWindowPageSizes[page][1].width;
-            int32_t maxHeight = _guestWindowPageSizes[page][1].height;
+            auto titleBarHeight = widgets[WIDX_TITLE].height();
+            int32_t minWidth = _guestWindowPageSizes[page][0].width + titleBarHeight;
+            int32_t minHeight = _guestWindowPageSizes[page][0].height + titleBarHeight;
+            int32_t maxWidth = _guestWindowPageSizes[page][1].width + titleBarHeight;
+            int32_t maxHeight = _guestWindowPageSizes[page][1].height + titleBarHeight;
 
             // Ensure min size is large enough for all tabs to fit
             for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
@@ -601,8 +603,10 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewport != nullptr)
             {
-                auto reqViewportWidth = width - 30;
-                auto reqViewportHeight = height - 72;
+                auto widget = widgets[WIDX_VIEWPORT];
+                auto reqViewportWidth = widget.width() - 1;
+                auto reqViewportHeight = widget.height() - 1;
+                viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
                 if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
                 {
                     viewport->width = reqViewportWidth;
