@@ -43,8 +43,8 @@
     <LibsSha1 Condition="'$(Platform)'=='x64'">3816671560af3571ada728ffeceec0443471c03b</LibsSha1>
     <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v36/openrct2-libs-v36-x86-windows-static.zip</LibsUrl>
     <LibsSha1 Condition="'$(Platform)'=='Win32'">d2b8d98a9711cf319e3bd5330e77aef5395820f1</LibsSha1>
-    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.6/title-sequences.zip</TitleSequencesUrl>
-    <TitleSequencesSha1>80fefc6ebbabc42a6f4703412daa5c62f661420d</TitleSequencesSha1>
+    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.13/title-sequences.zip</TitleSequencesUrl>
+    <TitleSequencesSha1>be28b18a250176036e860fcf5cc85ab6c200fd54</TitleSequencesSha1>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.4.7/objects.zip</ObjectsUrl>
     <ObjectsSha1>322de669d4b277fceff0d3f123fbc54785dceb4d</ObjectsSha1>
     <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.5/opensound.zip</OpenSFXUrl>
