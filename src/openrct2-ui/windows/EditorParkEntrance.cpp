@@ -213,8 +213,8 @@ namespace OpenRCT2::Ui::Windows
             if (screenCoords.x <= 0 || screenCoords.y <= 0)
                 return OBJECT_ENTRY_INDEX_NULL;
 
-            size_t column = screenCoords.x / 116;
-            size_t row = screenCoords.y / 116;
+            size_t column = screenCoords.x / kImageSize;
+            size_t row = screenCoords.y / kImageSize;
             if (column >= 5)
                 return OBJECT_ENTRY_INDEX_NULL;
 
