@@ -169,6 +169,7 @@
     <ClCompile Include="windows\EditorInventionsList.cpp" />
     <ClCompile Include="windows\EditorObjectiveOptions.cpp" />
     <ClCompile Include="windows\EditorObjectSelection.cpp" />
+    <ClCompile Include="windows\EditorParkEntrance.cpp" />
     <ClCompile Include="windows\EditorScenarioOptions.cpp" />
     <ClCompile Include="windows\Error.cpp" />
     <ClCompile Include="windows\Finances.cpp" />
