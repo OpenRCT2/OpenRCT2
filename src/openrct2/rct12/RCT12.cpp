@@ -11,9 +11,9 @@
 
 #include "../core/String.hpp"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../object/ObjectList.h"
 #include "../rct1/Tables.h"
+#include "../rct12/CSStringConverter.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
@@ -574,7 +574,7 @@ std::string RCT12RemoveFormattingUTF8(std::string_view s)
     return result;
 }
 
-namespace RCT12FormatCode
+namespace OpenRCT2::RCT12FormatCode
 {
     constexpr codepoint_t Newline = 5;
     constexpr codepoint_t NewlineSmall = 6;
@@ -592,7 +592,7 @@ namespace RCT12FormatCode
     constexpr codepoint_t ColourLightPink = 153;
     constexpr codepoint_t ColourPearlAqua = 154;
     constexpr codepoint_t ColourPaleSilver = 155;
-} // namespace RCT12FormatCode
+} // namespace OpenRCT2::RCT12FormatCode
 
 static FormatToken GetFormatTokenFromRCT12Code(codepoint_t codepoint)
 {
@@ -943,7 +943,7 @@ void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement)
     }
 }
 
-namespace RCT12
+namespace OpenRCT2::RCT12
 {
     size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen)
     {
@@ -973,4 +973,4 @@ namespace RCT12
         }
         return len;
     }
-} // namespace RCT12
+} // namespace OpenRCT2::RCT12

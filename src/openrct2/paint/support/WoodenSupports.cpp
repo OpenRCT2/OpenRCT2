@@ -9,6 +9,7 @@
 
 #include "WoodenSupports.h"
 
+#include "../../interface/Viewport.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"
@@ -16,6 +17,10 @@
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
+
+#include <cassert>
+
+using namespace OpenRCT2;
 
 constexpr auto kNumWoodenSupportTypes = 2;
 constexpr auto kNumWoodenSupportSubTypes = 6;

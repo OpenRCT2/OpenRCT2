@@ -11,6 +11,7 @@
 
 #    include "CustomListView.h"
 
+#    include "../interface/Viewport.h"
 #    include "../interface/Widget.h"
 #    include "../interface/Window.h"
 
@@ -18,7 +19,6 @@
 #    include <openrct2/Context.h>
 #    include <openrct2/localisation/Formatter.h>
 #    include <openrct2/localisation/Formatting.h>
-#    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/util/Util.h>
 
 using namespace OpenRCT2::Scripting;
@@ -715,8 +715,9 @@ void CustomListView::PaintSeperator(
         DrawTextBasic(dpi, { centreX, pos.y }, STR_STRING, ft, { baseColour, TextAlignment::CENTRE });
 
         // Get string dimensions
-        FormatStringLegacy(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
-        int32_t categoryStringHalfWidth = (GfxGetStringWidth(gCommonStringFormatBuffer, FontStyle::Medium) / 2) + 4;
+        utf8 stringBuffer[512]{};
+        FormatStringLegacy(stringBuffer, sizeof(stringBuffer), STR_STRING, ft.Data());
+        int32_t categoryStringHalfWidth = (GfxGetStringWidth(stringBuffer, FontStyle::Medium) / 2) + 4;
         int32_t strLeft = centreX - categoryStringHalfWidth;
         int32_t strRight = centreX + categoryStringHalfWidth;
 

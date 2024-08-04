@@ -438,6 +438,170 @@ namespace OpenRCT2::Scripting
         return static_cast<uint8_t>(animationGroup.frame_offsets.size());
     }
 
+    ScHandyman::ScHandyman(EntityId Id)
+        : ScStaff(Id)
+    {
+    }
+
+    void ScHandyman::Register(duk_context* ctx)
+    {
+        dukglue_set_base_class<ScStaff, ScHandyman>(ctx);
+        dukglue_register_property(ctx, &ScHandyman::lawnsMown_get, nullptr, "lawnsMown");
+        dukglue_register_property(ctx, &ScHandyman::gardensWatered_get, nullptr, "gardensWatered");
+        dukglue_register_property(ctx, &ScHandyman::litterSwept_get, nullptr, "litterSwept");
+        dukglue_register_property(ctx, &ScHandyman::binsEmptied_get, nullptr, "binsEmptied");
+    }
+
+    Staff* ScHandyman::GetHandyman() const
+    {
+        return ::GetEntity<Staff>(_id);
+    }
+
+    DukValue ScHandyman::lawnsMown_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetHandyman();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            duk_push_uint(ctx, peep->StaffLawnsMown);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    DukValue ScHandyman::gardensWatered_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetHandyman();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            duk_push_uint(ctx, peep->StaffGardensWatered);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    DukValue ScHandyman::litterSwept_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetHandyman();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            duk_push_uint(ctx, peep->StaffLitterSwept);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    DukValue ScHandyman::binsEmptied_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetHandyman();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Handyman)
+        {
+            duk_push_uint(ctx, peep->StaffBinsEmptied);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    ScMechanic::ScMechanic(EntityId Id)
+        : ScStaff(Id)
+    {
+    }
+
+    void ScMechanic::Register(duk_context* ctx)
+    {
+        dukglue_set_base_class<ScStaff, ScMechanic>(ctx);
+        dukglue_register_property(ctx, &ScMechanic::ridesFixed_get, nullptr, "ridesFixed");
+        dukglue_register_property(ctx, &ScMechanic::ridesInspected_get, nullptr, "ridesInspected");
+    }
+
+    Staff* ScMechanic::GetMechanic() const
+    {
+        return ::GetEntity<Staff>(_id);
+    }
+
+    DukValue ScMechanic::ridesFixed_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetMechanic();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Mechanic)
+        {
+            duk_push_uint(ctx, peep->StaffRidesFixed);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    DukValue ScMechanic::ridesInspected_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetMechanic();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Mechanic)
+        {
+            duk_push_uint(ctx, peep->StaffRidesInspected);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    ScSecurity::ScSecurity(EntityId Id)
+        : ScStaff(Id)
+    {
+    }
+
+    void ScSecurity::Register(duk_context* ctx)
+    {
+        dukglue_set_base_class<ScStaff, ScSecurity>(ctx);
+        dukglue_register_property(ctx, &ScSecurity::vandalsStopped_get, nullptr, "vandalsStopped");
+    }
+
+    Staff* ScSecurity::GetSecurity() const
+    {
+        return ::GetEntity<Staff>(_id);
+    }
+
+    DukValue ScSecurity::vandalsStopped_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        auto peep = GetSecurity();
+        if (peep != nullptr && peep->AssignedStaffType == StaffType::Security)
+        {
+            duk_push_uint(ctx, peep->StaffVandalsStopped);
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
     ScPatrolArea::ScPatrolArea(EntityId id)
         : _staffId(id)
     {
@@ -475,9 +639,9 @@ namespace OpenRCT2::Scripting
             else
             {
                 auto mapRange = FromDuk<MapRange>(coordsOrRange);
-                for (int32_t y = mapRange.GetTop(); y <= mapRange.GetBottom(); y += COORDS_XY_STEP)
+                for (int32_t y = mapRange.GetTop(); y <= mapRange.GetBottom(); y += kCoordsXYStep)
                 {
-                    for (int32_t x = mapRange.GetLeft(); x <= mapRange.GetRight(); x += COORDS_XY_STEP)
+                    for (int32_t x = mapRange.GetLeft(); x <= mapRange.GetRight(); x += kCoordsXYStep)
                     {
                         CoordsXY coord(x, y);
                         staff->SetPatrolArea(coord, value);

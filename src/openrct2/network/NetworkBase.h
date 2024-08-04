@@ -11,6 +11,7 @@
 #include "NetworkUser.h"
 
 #include <fstream>
+#include <list>
 #include <memory>
 
 #ifndef DISABLE_NETWORK

@@ -10,6 +10,7 @@
 #include "FootpathAdditionRemoveAction.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
@@ -20,6 +21,8 @@
 #include "../world/Location.hpp"
 #include "../world/Park.h"
 #include "../world/Wall.h"
+
+using namespace OpenRCT2;
 
 FootpathAdditionRemoveAction::FootpathAdditionRemoveAction(const CoordsXYZ& loc)
     : _loc(loc)

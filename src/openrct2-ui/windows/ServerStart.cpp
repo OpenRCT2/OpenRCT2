@@ -17,7 +17,6 @@
 #    include <openrct2/ParkImporter.h>
 #    include <openrct2/config/Config.h>
 #    include <openrct2/interface/Chat.h>
-#    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/network/network.h>
 #    include <openrct2/util/Util.h>
 #    include <openrct2/windows/Intent.h>

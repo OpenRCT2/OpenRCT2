@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../drawing/Drawing.h"
 
 #include <functional>
@@ -44,7 +43,7 @@ struct Image
 
 using ImageReaderFunc = std::function<Image(std::istream&, IMAGE_FORMAT)>;
 
-namespace Imaging
+namespace OpenRCT2::Imaging
 {
     IMAGE_FORMAT GetImageFormatFromPath(std::string_view path);
     Image ReadFromFile(std::string_view path, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
@@ -52,4 +51,4 @@ namespace Imaging
     void WriteToFile(std::string_view path, const Image& image, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
 
     void SetReader(IMAGE_FORMAT format, ImageReaderFunc impl);
-} // namespace Imaging
+} // namespace OpenRCT2::Imaging

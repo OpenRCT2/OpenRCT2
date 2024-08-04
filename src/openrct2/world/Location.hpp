@@ -9,19 +9,20 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../util/Math.hpp"
 
-constexpr int16_t LOCATION_NULL = -32768;
+#include <cstdint>
 
-constexpr int32_t COORDS_XY_STEP = 32;
-constexpr int32_t COORDS_XY_HALF_TILE = (COORDS_XY_STEP / 2);
-constexpr int32_t COORDS_Z_STEP = 8;
-constexpr int32_t COORDS_Z_PER_TINY_Z = 16;
+constexpr int16_t kLocationNull = -32768;
+
+constexpr int32_t kCoordsXYStep = 32;
+constexpr int32_t kCoordsXYHalfTile = (kCoordsXYStep / 2);
+constexpr int32_t kCoordsZStep = 8;
+constexpr int32_t kCoordsZPerTinyZ = 16;
 
 constexpr auto kNumOrthogonalDirections = 4;
 
-constexpr int32_t COORDS_NULL = 0xFFFF8000;
+constexpr int32_t kCoordsNull = 0xFFFF8000;
 
 struct ScreenSize
 {
@@ -221,22 +222,22 @@ struct CoordsXY
 
     constexpr CoordsXY ToTileCentre() const
     {
-        return ToTileStart() + CoordsXY{ COORDS_XY_HALF_TILE, COORDS_XY_HALF_TILE };
+        return ToTileStart() + CoordsXY{ kCoordsXYHalfTile, kCoordsXYHalfTile };
     }
 
     constexpr CoordsXY ToTileStart() const
     {
-        return { Floor2(x, COORDS_XY_STEP), Floor2(y, COORDS_XY_STEP) };
+        return { Floor2(x, kCoordsXYStep), Floor2(y, kCoordsXYStep) };
     }
 
     constexpr bool IsNull() const
     {
-        return x == COORDS_NULL;
+        return x == kCoordsNull;
     };
 
     constexpr void SetNull()
     {
-        x = COORDS_NULL;
+        x = kCoordsNull;
         y = 0;
     }
 };
@@ -275,12 +276,12 @@ struct CoordsXYZ : public CoordsXY
 
     constexpr CoordsXYZ ToTileStart() const
     {
-        return { Floor2(x, COORDS_XY_STEP), Floor2(y, COORDS_XY_STEP), z };
+        return { Floor2(x, kCoordsXYStep), Floor2(y, kCoordsXYStep), z };
     }
 
     constexpr CoordsXYZ ToTileCentre() const
     {
-        return ToTileStart() + CoordsXYZ{ COORDS_XY_HALF_TILE, COORDS_XY_HALF_TILE, 0 };
+        return ToTileStart() + CoordsXYZ{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0 };
     }
 
     constexpr void SetNull()
@@ -331,8 +332,8 @@ struct TileCoordsXY
     }
 
     constexpr explicit TileCoordsXY(const CoordsXY& c)
-        : x(c.x / COORDS_XY_STEP)
-        , y(c.y / COORDS_XY_STEP)
+        : x(c.x / kCoordsXYStep)
+        , y(c.y / kCoordsXYStep)
     {
     }
 
@@ -364,7 +365,7 @@ struct TileCoordsXY
             return ret;
         }
 
-        return { x * COORDS_XY_STEP, y * COORDS_XY_STEP };
+        return { x * kCoordsXYStep, y * kCoordsXYStep };
     }
 
     constexpr TileCoordsXY Rotate(int32_t direction) const
@@ -406,12 +407,12 @@ struct TileCoordsXY
 
     constexpr bool IsNull() const
     {
-        return x == COORDS_NULL;
+        return x == kCoordsNull;
     };
 
     constexpr void SetNull()
     {
-        x = COORDS_NULL;
+        x = kCoordsNull;
         y = 0;
     }
 };
@@ -441,7 +442,7 @@ struct TileCoordsXYZ : public TileCoordsXY
 
     constexpr explicit TileCoordsXYZ(const CoordsXYZ& c)
         : TileCoordsXY(c)
-        , z(c.z / COORDS_Z_STEP)
+        , z(c.z / kCoordsZStep)
     {
     }
 
@@ -477,7 +478,7 @@ struct TileCoordsXYZ : public TileCoordsXY
             ret.SetNull();
             return ret;
         }
-        return { x * COORDS_XY_STEP, y * COORDS_XY_STEP, z * COORDS_Z_STEP };
+        return { x * kCoordsXYStep, y * kCoordsXYStep, z * kCoordsZStep };
     }
 
     constexpr void SetNull()
@@ -660,12 +661,12 @@ struct CoordsXYZD : public CoordsXYZ
 
     constexpr CoordsXYZD ToTileStart() const
     {
-        return { Floor2(x, COORDS_XY_STEP), Floor2(y, COORDS_XY_STEP), z, direction };
+        return { Floor2(x, kCoordsXYStep), Floor2(y, kCoordsXYStep), z, direction };
     }
 
     constexpr CoordsXYZD ToTileCentre() const
     {
-        return ToTileStart() + CoordsXYZD{ COORDS_XY_HALF_TILE, COORDS_XY_HALF_TILE, 0, 0 };
+        return ToTileStart() + CoordsXYZD{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0, 0 };
     }
 };
 
@@ -718,7 +719,7 @@ struct TileCoordsXYZD : public TileCoordsXYZ
             ret.SetNull();
             return ret;
         }
-        return { x * COORDS_XY_STEP, y * COORDS_XY_STEP, z * COORDS_Z_STEP, direction };
+        return { x * kCoordsXYStep, y * kCoordsXYStep, z * kCoordsZStep, direction };
     }
 
     constexpr void SetNull()

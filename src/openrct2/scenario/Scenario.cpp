@@ -28,8 +28,7 @@
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Date.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -95,7 +94,10 @@ void ScenarioReset(GameState_t& gameState)
     gameState.ScenarioRand.seed(s);
 
     ResearchResetCurrentItem();
-    ScenerySetDefaultPlacementConfiguration();
+
+    auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
+    ContextBroadcastIntent(&intent);
+
     News::InitQueue();
 
     gameState.Park.Rating = Park::CalculateParkRating();

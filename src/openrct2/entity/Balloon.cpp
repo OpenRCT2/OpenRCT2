@@ -141,7 +141,7 @@ bool Balloon::Collides() const
     do
     {
         // the balloon has height so we add some padding to prevent it clipping through things.
-        int32_t balloon_top = z + COORDS_Z_STEP * 2;
+        int32_t balloon_top = z + kCoordsZStep * 2;
         if (balloon_top == tileElement->GetBaseZ())
         {
             return true;

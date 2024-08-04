@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "common.h"
 #include "core/String.hpp"
 #include "interface/WindowClasses.h"
+#include "localisation/StringIdType.h"
 #include "world/Location.hpp"
 
 #include <memory>
@@ -123,61 +123,60 @@ namespace OpenRCT2
     {
         virtual ~IContext() = default;
 
-        [[nodiscard]] virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() abstract;
-        [[nodiscard]] virtual std::shared_ptr<Ui::IUiContext> GetUiContext() abstract;
-        [[nodiscard]] virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
-        virtual Localisation::LocalisationService& GetLocalisationService() abstract;
-        virtual IObjectManager& GetObjectManager() abstract;
-        virtual IObjectRepository& GetObjectRepository() abstract;
+        [[nodiscard]] virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() = 0;
+        [[nodiscard]] virtual std::shared_ptr<Ui::IUiContext> GetUiContext() = 0;
+        [[nodiscard]] virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() = 0;
+        virtual Localisation::LocalisationService& GetLocalisationService() = 0;
+        virtual IObjectManager& GetObjectManager() = 0;
+        virtual IObjectRepository& GetObjectRepository() = 0;
 #ifdef ENABLE_SCRIPTING
-        virtual Scripting::ScriptEngine& GetScriptEngine() abstract;
+        virtual Scripting::ScriptEngine& GetScriptEngine() = 0;
 #endif
-        virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
-        virtual IScenarioRepository* GetScenarioRepository() abstract;
-        virtual IReplayManager* GetReplayManager() abstract;
-        virtual AssetPackManager* GetAssetPackManager() abstract;
-        virtual IGameStateSnapshots* GetGameStateSnapshots() abstract;
-        virtual DrawingEngine GetDrawingEngineType() abstract;
-        virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
-        virtual Paint::Painter* GetPainter() abstract;
+        virtual ITrackDesignRepository* GetTrackDesignRepository() = 0;
+        virtual IScenarioRepository* GetScenarioRepository() = 0;
+        virtual IReplayManager* GetReplayManager() = 0;
+        virtual AssetPackManager* GetAssetPackManager() = 0;
+        virtual IGameStateSnapshots* GetGameStateSnapshots() = 0;
+        virtual DrawingEngine GetDrawingEngineType() = 0;
+        virtual Drawing::IDrawingEngine* GetDrawingEngine() = 0;
+        virtual Paint::Painter* GetPainter() = 0;
 #ifndef DISABLE_NETWORK
-        virtual NetworkBase& GetNetwork() abstract;
+        virtual NetworkBase& GetNetwork() = 0;
 #endif
 
-        virtual IScene* GetPreloaderScene() abstract;
-        virtual IScene* GetIntroScene() abstract;
-        virtual IScene* GetTitleScene() abstract;
-        virtual IScene* GetGameScene() abstract;
-        virtual IScene* GetEditorScene() abstract;
+        virtual IScene* GetPreloaderScene() = 0;
+        virtual IScene* GetIntroScene() = 0;
+        virtual IScene* GetTitleScene() = 0;
+        virtual IScene* GetGameScene() = 0;
+        virtual IScene* GetEditorScene() = 0;
 
-        virtual IScene* GetActiveScene() abstract;
-        virtual void SetActiveScene(IScene* screen) abstract;
+        virtual IScene* GetActiveScene() = 0;
+        virtual void SetActiveScene(IScene* screen) = 0;
 
-        virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
+        virtual int32_t RunOpenRCT2(int argc, const char** argv) = 0;
 
-        virtual bool Initialise() abstract;
-        virtual void InitialiseDrawingEngine() abstract;
-        virtual void DisposeDrawingEngine() abstract;
+        virtual bool Initialise() = 0;
+        virtual void InitialiseDrawingEngine() = 0;
+        virtual void DisposeDrawingEngine() = 0;
 
-        virtual void OpenProgress(StringId captionStringId) abstract;
-        virtual void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE) abstract;
-        virtual void CloseProgress() abstract;
+        virtual void OpenProgress(StringId captionStringId) = 0;
+        virtual void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE) = 0;
+        virtual void CloseProgress() = 0;
 
-        virtual bool LoadParkFromFile(
-            const u8string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) abstract;
+        virtual bool LoadParkFromFile(const u8string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) = 0;
         virtual bool LoadParkFromStream(
-            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false,
-            bool asScenario = false) abstract;
-        virtual void WriteLine(const std::string& s) abstract;
-        virtual void WriteErrorLine(const std::string& s) abstract;
-        virtual void Finish() abstract;
-        virtual void Quit() abstract;
+            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false, bool asScenario = false)
+            = 0;
+        virtual void WriteLine(const std::string& s) = 0;
+        virtual void WriteErrorLine(const std::string& s) = 0;
+        virtual void Finish() = 0;
+        virtual void Quit() = 0;
 
-        virtual bool HasNewVersionInfo() const abstract;
-        virtual const NewVersionInfo* GetNewVersionInfo() const abstract;
+        virtual bool HasNewVersionInfo() const = 0;
+        virtual const NewVersionInfo* GetNewVersionInfo() const = 0;
 
-        virtual void SetTimeScale(float newScale) abstract;
-        virtual float GetTimeScale() const abstract;
+        virtual void SetTimeScale(float newScale) = 0;
+        virtual float GetTimeScale() const = 0;
     };
 
     [[nodiscard]] std::unique_ptr<IContext> CreateContext();

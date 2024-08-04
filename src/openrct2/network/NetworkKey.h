@@ -11,8 +11,6 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "../common.h"
-
 #    include <memory>
 #    include <string>
 #    include <vector>
@@ -22,7 +20,7 @@ namespace OpenRCT2
     struct IStream;
 }
 
-namespace Crypt
+namespace OpenRCT2::Crypt
 {
     class RsaKey;
 }
@@ -45,7 +43,7 @@ public:
 
 private:
     NetworkKey(const NetworkKey&) = delete;
-    std::unique_ptr<Crypt::RsaKey> _key;
+    std::unique_ptr<OpenRCT2::Crypt::RsaKey> _key;
 };
 
 #endif // DISABLE_NETWORK

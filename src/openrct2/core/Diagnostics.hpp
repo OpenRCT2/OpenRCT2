@@ -12,7 +12,7 @@
 /**
  * Utility methods for asserting and logging.
  */
-namespace Debug
+namespace OpenRCT2::Debug
 {
     void Break();
 }

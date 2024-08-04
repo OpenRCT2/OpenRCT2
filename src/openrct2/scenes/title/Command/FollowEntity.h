@@ -11,7 +11,7 @@
 
 #include "../../../Identifiers.h"
 #include "../../../core/String.hpp"
-#include "../../../localisation/Localisation.h"
+#include "../../../localisation/Formatting.h"
 
 #include <cstdint>
 

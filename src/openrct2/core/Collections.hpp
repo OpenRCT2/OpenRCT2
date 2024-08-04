@@ -9,13 +9,12 @@
 
 #pragma once
 
-#include "../common.h"
 #include "Memory.hpp"
 #include "String.hpp"
 
 #include <initializer_list>
 
-namespace Collections
+namespace OpenRCT2::Collections
 {
     template<typename TCollection, typename TItem>
     static void AddRange(TCollection& collection, std::initializer_list<TItem> initializerList)
@@ -98,4 +97,4 @@ namespace Collections
     }
 
 #pragma endregion
-} // namespace Collections
+} // namespace OpenRCT2::Collections

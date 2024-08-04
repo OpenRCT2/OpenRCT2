@@ -26,8 +26,7 @@
 #include "entity/PatrolArea.h"
 #include "entity/Staff.h"
 #include "interface/Screenshot.h"
-#include "localisation/Date.h"
-#include "localisation/Localisation.h"
+#include "localisation/Localisation.Date.h"
 #include "management/NewsItem.h"
 #include "network/network.h"
 #include "platform/Platform.h"
@@ -84,10 +83,12 @@ namespace OpenRCT2
         GetGameState().NextGuestNumber = 1;
 
         ContextInit();
-        ScenerySetDefaultPlacementConfiguration();
 
-        auto intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-        ContextBroadcastIntent(&intent);
+        auto sceneryIntent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
+        ContextBroadcastIntent(&sceneryIntent);
+
+        auto clipboardIntent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
+        ContextBroadcastIntent(&clipboardIntent);
 
         LoadPalette();
 

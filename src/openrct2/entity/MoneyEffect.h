@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/Money.hpp"
+#include "../localisation/StringIdType.h"
 #include "EntityBase.h"
 
 class DataSerialiser;

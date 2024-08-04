@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "Location.hpp"
 #include "TileElement.h"
 
@@ -29,16 +28,16 @@ constexpr uint8_t kMinimumMapSizeTechnical = 5;
 constexpr uint16_t kMaximumMapSizeTechnical = 1001;
 constexpr int16_t kMinimumMapSizePractical = (kMinimumMapSizeTechnical - 2);
 constexpr int16_t kMaximumMapSizePractical = (kMaximumMapSizeTechnical - 2);
-constexpr const int32_t MAXIMUM_MAP_SIZE_BIG = COORDS_XY_STEP * kMaximumMapSizeTechnical;
-constexpr int32_t MAXIMUM_TILE_START_XY = MAXIMUM_MAP_SIZE_BIG - COORDS_XY_STEP;
-constexpr const int32_t LAND_HEIGHT_STEP = 2 * COORDS_Z_STEP;
-constexpr const int32_t WATER_HEIGHT_STEP = 2 * COORDS_Z_STEP;
-constexpr const int32_t kMinimumLandZ = kMinimumLandHeight * COORDS_Z_STEP;
+constexpr const int32_t MAXIMUM_MAP_SIZE_BIG = kCoordsXYStep * kMaximumMapSizeTechnical;
+constexpr int32_t MAXIMUM_TILE_START_XY = MAXIMUM_MAP_SIZE_BIG - kCoordsXYStep;
+constexpr const int32_t LAND_HEIGHT_STEP = 2 * kCoordsZStep;
+constexpr const int32_t WATER_HEIGHT_STEP = 2 * kCoordsZStep;
+constexpr const int32_t kMinimumLandZ = kMinimumLandHeight * kCoordsZStep;
 constexpr TileCoordsXY DEFAULT_MAP_SIZE = { 150, 150 };
 // How high construction has to be off the ground when the player owns construction rights, in tile coords.
 constexpr uint8_t ConstructionRightsClearanceSmall = 3;
 // Same as previous, but in big coords.
-constexpr const uint8_t ConstructionRightsClearanceBig = 3 * COORDS_Z_STEP;
+constexpr const uint8_t ConstructionRightsClearanceBig = 3 * kCoordsZStep;
 
 constexpr int16_t kMapMinimumXY = (-kMaximumMapSizeTechnical);
 
@@ -106,15 +105,6 @@ extern CoordsXYZ gMapSelectArrowPosition;
 extern uint8_t gMapSelectArrowDirection;
 
 extern std::vector<CoordsXY> gMapSelectionTiles;
-
-// Used in the land tool window to enable mountain tool / land smoothing
-extern bool gLandMountainMode;
-// Used in the land tool window to allow dragging and changing land styles
-extern bool gLandPaintMode;
-// Used in the clear scenery tool
-extern bool gClearSmallScenery;
-extern bool gClearLargeScenery;
-extern bool gClearFootpath;
 
 extern uint32_t gLandRemainingOwnershipSales;
 extern uint32_t gLandRemainingConstructionSales;
@@ -190,7 +180,7 @@ struct TileElementIterator
     TileElement* element;
 };
 #ifdef PLATFORM_32BIT
-assert_struct_size(TileElementIterator, 12);
+static_assert(sizeof(TileElementIterator) == 12);
 #endif
 
 void TileElementIteratorBegin(TileElementIterator* it);

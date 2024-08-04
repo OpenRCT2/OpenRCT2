@@ -18,7 +18,6 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
 #include "../../localisation/Formatting.h"
-#include "../../localisation/Localisation.h"
 #include "../../localisation/StringIds.h"
 #include "../../object/FootpathObject.h"
 #include "../../object/FootpathRailingsObject.h"
@@ -125,7 +124,7 @@ static void PathPaintQueueBanner(
     if (pathElement.IsSloped())
     {
         if (pathElement.GetSlopeDirection() == direction)
-            height += COORDS_Z_STEP * 2;
+            height += kCoordsZStep * 2;
     }
     direction += session.CurrentRotation;
     direction &= 3;
@@ -162,17 +161,18 @@ static void PathPaintQueueBanner(
         {
             ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
         }
+
+        utf8 bannerBuffer[512]{};
         if (Config::Get().general.UpperCaseBanners)
         {
-            FormatStringToUpper(
-                gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
+            FormatStringToUpper(bannerBuffer, sizeof(bannerBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
         }
         else
         {
-            FormatStringLegacy(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
+            FormatStringLegacy(bannerBuffer, sizeof(bannerBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
         }
 
-        uint16_t stringWidth = GfxGetStringWidth(gCommonStringFormatBuffer, FontStyle::Tiny);
+        uint16_t stringWidth = GfxGetStringWidth(bannerBuffer, FontStyle::Tiny);
         uint16_t scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
 
         PaintAddImageAsChild(

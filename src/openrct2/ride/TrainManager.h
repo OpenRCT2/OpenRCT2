@@ -15,7 +15,7 @@
 
 struct Vehicle;
 
-namespace TrainManager
+namespace OpenRCT2::TrainManager
 {
     // Iteration of heads of trains
     class View
@@ -77,4 +77,4 @@ namespace TrainManager
             return Iterator(std::cend(*vec), std::cend(*vec));
         }
     };
-} // namespace TrainManager
+} // namespace OpenRCT2::TrainManager

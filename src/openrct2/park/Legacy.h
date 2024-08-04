@@ -6,13 +6,15 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
 #pragma once
+
 #include "../object/Object.h"
 
 #include <optional>
 #include <string_view>
 
-namespace RCT2
+namespace OpenRCT2::RCT2
 {
     struct FootpathMapping;
 }
@@ -21,8 +23,8 @@ class ObjectList;
 
 std::string_view MapToNewObjectIdentifier(std::string_view s);
 std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
-const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc);
+const OpenRCT2::RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc);
 void UpdateFootpathsFromMapping(
     ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
     ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
-    const RCT2::FootpathMapping* footpathMapping);
+    const OpenRCT2::RCT2::FootpathMapping* footpathMapping);

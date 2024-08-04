@@ -11,7 +11,6 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include <openrct2/common.h>
 #    include <openrct2/scripting/Duktape.hpp>
 #    include <openrct2/world/Map.h>
 

@@ -118,6 +118,13 @@ declare global {
     }
 
     /**
+     * A track piece coordinate and type within the game.
+     */
+    interface CarTrackLocation extends CoordsXYZD {
+        trackType: number;
+    }
+
+    /**
      * A rectangular area specified using two coordinates.
      */
     interface MapRange {
@@ -496,20 +503,20 @@ declare global {
          */
         subscribe(hook: HookType, callback: Function): IDisposable;
 
-        subscribe(hook: "action.query", callback: (e: GameActionEventArgs) => void): IDisposable;
         subscribe(hook: "action.execute", callback: (e: GameActionEventArgs) => void): IDisposable;
-        subscribe(hook: "interval.tick", callback: () => void): IDisposable;
+        subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
+        subscribe(hook: "action.query", callback: (e: GameActionEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
-        subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
+        subscribe(hook: "interval.tick", callback: () => void): IDisposable;
+        subscribe(hook: "map.change", callback: () => void): IDisposable;
+        subscribe(hook: "map.save", callback: () => void): IDisposable;
         subscribe(hook: "network.authenticate", callback: (e: NetworkAuthenticateEventArgs) => void): IDisposable;
+        subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
-        subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
-        subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
-        subscribe(hook: "map.save", callback: () => void): IDisposable;
-        subscribe(hook: "map.change", callback: () => void): IDisposable;
 
         /**
          * Can only be used in intransient plugins.
@@ -620,10 +627,21 @@ declare global {
         "footpath_railings";
 
     type HookType =
-        "interval.tick" | "interval.day" |
-        "network.chat" | "network.action" | "network.join" | "network.leave" |
-        "ride.ratings.calculate" | "action.location" | "vehicle.crash" |
-        "map.change" | "map.changed" | "map.save";
+        "action.execute" |
+        "action.location" |
+        "action.query" |
+        "guest.generation" |
+        "interval.day" |
+        "interval.tick" |
+        "map.change" |
+        "map.changed" |
+        "map.save" |
+        "network.authenticate" |
+        "network.chat" |
+        "network.join" |
+        "network.leave" |
+        "ride.ratings.calculate" |
+        "vehicle.crash";
 
     type ExpenditureType =
         "ride_construction" |
@@ -2115,6 +2133,11 @@ declare global {
          * The min chain lift speed for this ride in miles per hour.
          */
         readonly minLiftHillSpeed: number;
+
+        /**
+         * The satisfaction rating of the ride from 0 to 100.
+         */
+        readonly satisfaction: number;
     }
 
     type RideClassification = "ride" | "stall" | "facility";
@@ -2542,7 +2565,7 @@ declare global {
         /**
          * The location and direction of where the car is on the track.
          */
-        trackLocation: CoordsXYZD;
+        trackLocation: CarTrackLocation;
 
         /**
          * The current g-forces of this car.
@@ -3269,7 +3292,7 @@ declare global {
     /**
      * Represents a staff member.
      */
-    interface Staff extends Peep {
+    interface BaseStaff extends Peep {
         /**
          * The type of staff member, e.g. handyman, mechanic.
          */
@@ -3327,6 +3350,68 @@ declare global {
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
+
+    type Staff = Handyman | Mechanic | Security | Entertainer;
+
+    /**
+     * Represents a handyman.
+     */
+    interface Handyman extends BaseStaff {
+        staffType: "handyman";
+
+        /**
+         * The number of lawns mown by the handyman.
+         */
+        readonly lawnsMown: number;
+
+        /**
+         * The number of gardens watered by the handyman.
+         */
+        readonly gardensWatered: number;
+
+        /**
+         * The number of litter swept by the handyman.
+         */
+        readonly litterSwept: number;
+
+        /**
+         * The number of bins emptied by the handyman.
+         */
+        readonly binsEmptied: number;
+    }
+
+    /**
+     * Represents a mechanic.
+     */
+    interface Mechanic extends BaseStaff {
+        staffType: "mechanic";
+
+        /**
+         * The number of rides fixed by the mechanic.
+         */
+        readonly ridesFixed: number;
+
+        /**
+         * The number of inspections performed by the mechanic.
+         */
+        readonly ridesInspected: number;
+    }
+
+    /**
+     * Represents a security guard.
+     */
+    interface Security extends BaseStaff {
+        staffType: "security";
+
+        /**
+         * The number of vandals stopped by the security guard.
+         */
+        readonly vandalsStopped: number;
+    }
+
+    interface Entertainer extends BaseStaff {
+        staffType: "entertainer";
+    }
 
     interface PatrolArea {
         /**
@@ -4265,7 +4350,7 @@ declare global {
     interface ToolEventArgs {
         readonly isDown: boolean;
         readonly screenCoords: ScreenCoordsXY;
-        readonly mapCoords?: CoordsXYZ;
+        readonly mapCoords?: CoordsXY;
         readonly tileElementIndex?: number;
         readonly entityId?: number;
     }
@@ -4497,6 +4582,7 @@ declare global {
         type: "textbox";
         text: string;
         maxLength: number;
+        focus(): void;
     }
 
     interface ViewportWidget extends WidgetBase {

@@ -14,7 +14,6 @@
 #    include "../../../Context.h"
 #    include "../../../Date.h"
 #    include "../../../GameState.h"
-#    include "../../../common.h"
 #    include "../../../core/String.hpp"
 #    include "../../../entity/Guest.h"
 #    include "../../../management/Finance.h"
@@ -385,7 +384,7 @@ namespace OpenRCT2::Scripting
                 text = message["text"].as_string();
                 if (type == News::ItemType::Blank)
                 {
-                    assoc = static_cast<uint32_t>(((COORDS_NULL & 0xFFFF) << 16) | (COORDS_NULL & 0xFFFF));
+                    assoc = static_cast<uint32_t>(((kCoordsNull & 0xFFFF) << 16) | (kCoordsNull & 0xFFFF));
                 }
 
                 auto dukSubject = message["subject"];

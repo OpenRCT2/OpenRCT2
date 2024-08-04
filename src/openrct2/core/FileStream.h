@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "FileSystem.hpp"
 #include "IStream.hpp"
 

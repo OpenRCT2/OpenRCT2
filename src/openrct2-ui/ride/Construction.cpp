@@ -9,6 +9,8 @@
 
 #include "Construction.h"
 
+#include "../interface/Viewport.h"
+
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideCreateAction.h>
 #include <openrct2/ride/Ride.h>
@@ -19,83 +21,218 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-/**
- *
- *  rct2: 0x006B4800
- */
-void RideConstructNew(RideSelection listItem)
+namespace OpenRCT2
 {
-    int32_t rideEntryIndex = RideGetEntryIndex(listItem.Type, listItem.EntryIndex);
-    int32_t colour1 = RideGetRandomColourPresetIndex(listItem.Type);
-    int32_t colour2 = RideGetUnusedPresetVehicleColour(rideEntryIndex);
-
-    auto gameAction = RideCreateAction(
-        listItem.Type, listItem.EntryIndex, colour1, colour2, OpenRCT2::GetGameState().LastEntranceStyle);
-
-    gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
-        if (result->Error != GameActions::Status::Ok)
-            return;
-        const auto rideIndex = result->GetData<RideId>();
-        auto ride = GetRide(rideIndex);
-        RideConstructionStart(*ride);
-    });
-
-    GameActions::Execute(&gameAction);
-}
-
-SpecialElementsDropdownState BuildSpecialElementsList(
-    const Ride& currentRide, uint8_t buildDirection, TrackPitch buildSlope, TrackRoll buildBank, RideConstructionState state)
-{
-    auto buildDirectionIsDiagonal = TrackPieceDirectionIsDiagonal(buildDirection);
-    SpecialElementsDropdownState list;
-
-    // if it's building neither forwards nor backwards, no list is available
-    if (state != RideConstructionState::Front && state != RideConstructionState::Place && state != RideConstructionState::Back)
-        return list;
-
-    for (track_type_t trackType : DropdownOrder)
+    /**
+     *
+     *  rct2: 0x006B4800
+     */
+    void RideConstructNew(RideSelection listItem)
     {
-        const auto& ted = GetTrackElementDescriptor(trackType);
-        if (!IsTrackEnabled(ted.Definition.Type))
-            continue;
-        bool entryIsDisabled;
+        int32_t rideEntryIndex = RideGetEntryIndex(listItem.Type, listItem.EntryIndex);
+        int32_t colour1 = RideGetRandomColourPresetIndex(listItem.Type);
+        int32_t colour2 = RideGetUnusedPresetVehicleColour(rideEntryIndex);
 
-        // If the current build orientation (slope, bank, diagonal) matches the track element's, show the piece as enabled
-        if (state == RideConstructionState::Back)
+        auto gameAction = RideCreateAction(
+            listItem.Type, listItem.EntryIndex, colour1, colour2, OpenRCT2::GetGameState().LastEntranceStyle);
+
+        gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+            if (result->Error != GameActions::Status::Ok)
+                return;
+            const auto rideIndex = result->GetData<RideId>();
+            auto ride = GetRide(rideIndex);
+            RideConstructionStart(*ride);
+        });
+
+        GameActions::Execute(&gameAction);
+    }
+
+    SpecialElementsDropdownState BuildSpecialElementsList(
+        const Ride& currentRide, uint8_t buildDirection, TrackPitch buildSlope, TrackRoll buildBank,
+        RideConstructionState state)
+    {
+        auto buildDirectionIsDiagonal = TrackPieceDirectionIsDiagonal(buildDirection);
+        SpecialElementsDropdownState list;
+
+        // if it's building neither forwards nor backwards, no list is available
+        if (state != RideConstructionState::Front && state != RideConstructionState::Place
+            && state != RideConstructionState::Back)
+            return list;
+
+        for (track_type_t trackType : DropdownOrder)
         {
-            entryIsDisabled = ted.Definition.PitchEnd != buildSlope || ted.Definition.RollEnd != buildBank
-                || TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_end) != buildDirectionIsDiagonal;
+            const auto& ted = GetTrackElementDescriptor(trackType);
+            if (!IsTrackEnabled(ted.Definition.Type))
+                continue;
+            bool entryIsDisabled;
+
+            // If the current build orientation (slope, bank, diagonal) matches the track element's, show the piece as enabled
+            if (state == RideConstructionState::Back)
+            {
+                entryIsDisabled = ted.Definition.PitchEnd != buildSlope || ted.Definition.RollEnd != buildBank
+                    || TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_end) != buildDirectionIsDiagonal;
+            }
+            else
+            {
+                entryIsDisabled = ted.Definition.PitchStart != buildSlope || ted.Definition.RollStart != buildBank
+                    || TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_begin) != buildDirectionIsDiagonal;
+            }
+
+            // Additional tower bases can only be built if the ride allows for it (elevator)
+            if (trackType == TrackElemType::TowerBase
+                && !currentRide.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES))
+                entryIsDisabled = true;
+
+            // Check if a previous element exists, to collate entries if possible
+            if (!list.Elements.empty()
+                && GetTrackElementDescriptor(list.Elements.back().TrackType).Description == ted.Description)
+            {
+                // If the current element is disabled, do not add current element.
+                if (entryIsDisabled)
+                    continue;
+                auto& lastElement = list.Elements.back();
+                // If the previous element is disabled and current element is enabled, replace the previous element
+                if (lastElement.Disabled && !entryIsDisabled)
+                {
+                    lastElement.TrackType = trackType;
+                    lastElement.Disabled = false;
+                    list.HasActiveElements = true;
+                    continue;
+                }
+                // If the previous element and current element are enabled, add both to the list
+            }
+            list.Elements.push_back({ trackType, entryIsDisabled });
+            list.HasActiveElements |= !entryIsDisabled;
+        }
+        return list;
+    }
+
+    /**
+     *
+     *  rct2: 0x006CCF70
+     */
+    CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords)
+    {
+        CoordsXYZD entranceExitCoords{};
+        gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
+        // determine if the mouse is hovering over a station - that's the station to add the entrance to
+        auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
+        if (info.SpriteType != ViewportInteractionItem::None)
+        {
+            if (info.Element->GetType() == TileElementType::Track)
+            {
+                const auto* trackElement = info.Element->AsTrack();
+                if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
+                {
+                    const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
+                    if (std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN)
+                    {
+                        if (trackElement->GetTrackType() == TrackElemType::Maze)
+                        {
+                            gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
+                        }
+                        else
+                        {
+                            gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
+                        }
+                    }
+                }
+            }
+        }
+
+        auto ride = GetRide(gRideEntranceExitPlaceRideIndex);
+        if (ride == nullptr)
+        {
+            entranceExitCoords.SetNull();
+            return entranceExitCoords;
+        }
+
+        auto stationBaseZ = ride->GetStation(gRideEntranceExitPlaceStationIndex).GetBaseZ();
+
+        auto coordsAtHeight = ScreenGetMapXYWithZ(screenCoords, stationBaseZ);
+        if (!coordsAtHeight.has_value())
+        {
+            entranceExitCoords.SetNull();
+            return entranceExitCoords;
+        }
+
+        entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, INVALID_DIRECTION };
+
+        if (ride->type == RIDE_TYPE_NULL)
+        {
+            entranceExitCoords.SetNull();
+            return entranceExitCoords;
+        }
+
+        auto stationStart = ride->GetStation(gRideEntranceExitPlaceStationIndex).Start;
+        if (stationStart.IsNull())
+        {
+            entranceExitCoords.SetNull();
+            return entranceExitCoords;
+        }
+
+        // find the quadrant the mouse is hovering over - that's the direction to start searching for a station TileElement
+        Direction startDirection = 0;
+        auto mapX = (coordsAtHeight->x & 0x1F) - 16;
+        auto mapY = (coordsAtHeight->y & 0x1F) - 16;
+        if (std::abs(mapX) < std::abs(mapY))
+        {
+            startDirection = mapY < 0 ? 3 : 1;
         }
         else
         {
-            entryIsDisabled = ted.Definition.PitchStart != buildSlope || ted.Definition.RollStart != buildBank
-                || TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_begin) != buildDirectionIsDiagonal;
+            startDirection = mapX < 0 ? 0 : 2;
         }
-
-        // Additional tower bases can only be built if the ride allows for it (elevator)
-        if (trackType == TrackElemType::TowerBase
-            && !currentRide.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES))
-            entryIsDisabled = true;
-
-        // Check if a previous element exists, to collate entries if possible
-        if (!list.Elements.empty() && GetTrackElementDescriptor(list.Elements.back().TrackType).Description == ted.Description)
+        // check all 4 directions, starting with the mouse's quadrant
+        for (uint8_t directionIncrement = 0; directionIncrement < 4; directionIncrement++)
         {
-            // If the current element is disabled, do not add current element.
-            if (entryIsDisabled)
-                continue;
-            auto& lastElement = list.Elements.back();
-            // If the previous element is disabled and current element is enabled, replace the previous element
-            if (lastElement.Disabled && !entryIsDisabled)
+            entranceExitCoords.direction = (startDirection + directionIncrement) & 3;
+            // search for TrackElement one tile over, shifted in the search direction
+            auto nextLocation = entranceExitCoords;
+            nextLocation += CoordsDirectionDelta[entranceExitCoords.direction];
+            if (MapIsLocationValid(nextLocation))
             {
-                lastElement.TrackType = trackType;
-                lastElement.Disabled = false;
-                list.HasActiveElements = true;
-                continue;
+                // iterate over every element in the tile until we find what we want
+                auto* tileElement = MapGetFirstElementAt(nextLocation);
+                if (tileElement == nullptr)
+                    continue;
+                do
+                {
+                    if (tileElement->GetType() != TileElementType::Track)
+                        continue;
+                    if (tileElement->GetBaseZ() != stationBaseZ)
+                        continue;
+                    auto* trackElement = tileElement->AsTrack();
+                    if (trackElement->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
+                        continue;
+                    if (trackElement->GetTrackType() == TrackElemType::Maze)
+                    {
+                        // if it's a maze, it can place the entrance and exit immediately
+                        entranceExitCoords.direction = DirectionReverse(entranceExitCoords.direction);
+                        gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
+                        return entranceExitCoords;
+                    }
+                    // if it's not a maze, the sequence properties for the TrackElement must be found to determine if an
+                    // entrance can be placed on that side
+
+                    gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
+
+                    // get the ride entrance's side relative to the TrackElement
+                    Direction direction = (DirectionReverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
+                    const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
+                    if (ted.SequenceProperties[trackElement->GetSequenceIndex()] & (1 << direction))
+                    {
+                        // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from
+                        // the station
+                        entranceExitCoords.direction = DirectionReverse(entranceExitCoords.direction);
+                        gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
+                        return entranceExitCoords;
+                    }
+                } while (!(tileElement++)->IsLastForTile());
             }
-            // If the previous element and current element are enabled, add both to the list
         }
-        list.Elements.push_back({ trackType, entryIsDisabled });
-        list.HasActiveElements |= !entryIsDisabled;
+        gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
+        return entranceExitCoords;
     }
-    return list;
-}
+
+} // namespace OpenRCT2

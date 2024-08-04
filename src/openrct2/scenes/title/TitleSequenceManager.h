@@ -8,42 +8,36 @@
  *****************************************************************************/
 
 #pragma once
-#include "../../common.h"
+
 #include "../../core/String.hpp"
 
 #include <limits>
 #include <string>
 
-struct TitleSequenceManagerItem
+namespace OpenRCT2::TitleSequenceManager
 {
-    std::string Name;
-    std::string Path;
-    size_t PredefinedIndex;
-    bool IsZip;
-};
+    struct Item
+    {
+        std::string Name;
+        std::string Path;
+        size_t PredefinedIndex;
+        bool IsZip;
+    };
 
-namespace TitleSequenceManager
-{
+    constexpr size_t kPredefinedIndexCustom = std::numeric_limits<size_t>::max();
+
     size_t GetCount();
-    const TitleSequenceManagerItem* GetItem(size_t i);
+    const Item* GetItem(size_t i);
     void DeleteItem(size_t i);
     size_t RenameItem(size_t i, const utf8* name);
     size_t DuplicateItem(size_t i, const utf8* name);
     size_t CreateItem(const utf8* name);
     void Scan();
-} // namespace TitleSequenceManager
 
-constexpr size_t PREDEFINED_INDEX_CUSTOM = std::numeric_limits<size_t>::max();
-
-size_t TitleSequenceManagerGetCount();
-const utf8* TitleSequenceManagerGetName(size_t index);
-const utf8* TitleSequenceManagerGetPath(size_t index);
-const utf8* TitleSequenceManagerGetConfigID(size_t index);
-size_t TitleSequenceManagerGetPredefinedIndex(size_t index);
-size_t TitleSequenceManagerGetIndexForConfigID(const utf8* configId);
-size_t TitleSequenceManagerGetIndexForName(const utf8* name);
-void TitleSequenceManagerScan();
-void TitleSequenceManagerDelete(size_t i);
-size_t TitleSequenceManagerRename(size_t i, const utf8* name);
-size_t TitleSequenceManagerDuplicate(size_t i, const utf8* name);
-size_t TitleSequenceManagerCreate(const utf8* name);
+    const utf8* GetName(size_t index);
+    const utf8* GetPath(size_t index);
+    const utf8* GetConfigID(size_t index);
+    size_t GetPredefinedIndex(size_t index);
+    size_t GetIndexForConfigID(const utf8* configId);
+    size_t GetIndexForName(const utf8* name);
+} // namespace OpenRCT2::TitleSequenceManager

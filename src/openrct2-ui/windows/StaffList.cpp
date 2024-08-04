@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/ViewportQuery.h"
+
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -27,7 +29,6 @@
 #include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/sprites.h>
@@ -227,6 +228,7 @@ static Widget _staffListWidgets[] = {
                     if (_selectedTab != newSelectedTab)
                     {
                         _selectedTab = static_cast<uint8_t>(newSelectedTab);
+                        RefreshList();
                         Invalidate();
                         scrolls[0].v_top = 0;
                         CancelTools();
@@ -668,7 +670,7 @@ static Widget _staffListWidgets[] = {
                     }
                 }
 
-                if (peep->x == LOCATION_NULL)
+                if (peep->x == kLocationNull)
                 {
                     continue;
                 }

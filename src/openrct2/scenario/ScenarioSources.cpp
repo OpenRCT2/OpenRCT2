@@ -9,6 +9,7 @@
 
 #include "ScenarioSources.h"
 
+#include "../Diagnostic.h"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
 #include "Scenario.h"
@@ -16,7 +17,7 @@
 
 #include <iterator>
 
-namespace ScenarioSources
+namespace OpenRCT2::ScenarioSources
 {
     struct ScenarioAlias
     {
@@ -452,4 +453,4 @@ namespace ScenarioSources
             }
         }
     }
-} // namespace ScenarioSources
+} // namespace OpenRCT2::ScenarioSources

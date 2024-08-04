@@ -376,7 +376,7 @@ private:
     };
 };
 
-namespace Zip
+namespace OpenRCT2::Zip
 {
     std::unique_ptr<IZipArchive> Open(std::string_view path, ZIP_ACCESS access)
     {
@@ -395,6 +395,6 @@ namespace Zip
         }
         return result;
     }
-} // namespace Zip
+} // namespace OpenRCT2::Zip
 
 #endif

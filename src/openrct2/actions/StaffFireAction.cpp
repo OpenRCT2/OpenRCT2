@@ -9,9 +9,12 @@
 
 #include "StaffFireAction.h"
 
+#include "../Diagnostic.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
+
+using namespace OpenRCT2;
 
 StaffFireAction::StaffFireAction(EntityId spriteId)
     : _spriteId(spriteId)

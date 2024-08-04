@@ -19,7 +19,6 @@
 
 #    include <memory>
 #    include <openrct2/Context.h>
-#    include <openrct2/common.h>
 #    include <openrct2/scripting/Duktape.hpp>
 #    include <openrct2/scripting/IconNames.hpp>
 #    include <openrct2/scripting/ScriptEngine.h>
@@ -208,7 +207,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
-                return widget->width();
+                return widget->width() + 1;
             }
             return 0;
         }
@@ -217,7 +216,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
-                auto delta = widget->left + value - widget->right;
+                auto delta = widget->left + value - (widget->right + 1);
 
                 Invalidate();
                 widget->right += delta;
@@ -247,7 +246,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
-                return widget->height();
+                return widget->height() + 1;
             }
             return 0;
         }
@@ -256,7 +255,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
-                auto delta = widget->top + value - widget->bottom;
+                auto delta = widget->top + value - (widget->bottom + 1);
 
                 Invalidate();
                 widget->bottom += delta;
@@ -301,7 +300,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsDisabled(*w, _widgetIndex);
+                return Ui::WidgetIsDisabled(*w, _widgetIndex);
             }
             return false;
         }
@@ -310,19 +309,19 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetDisabled(*w, _widgetIndex, value);
+                Ui::WidgetSetDisabled(*w, _widgetIndex, value);
 
                 auto widget = GetWidget();
                 if (widget != nullptr)
                 {
                     if (widget->type == WindowWidgetType::DropdownMenu)
                     {
-                        WidgetSetDisabled(*w, _widgetIndex + 1, value);
+                        Ui::WidgetSetDisabled(*w, _widgetIndex + 1, value);
                     }
                     else if (widget->type == WindowWidgetType::Spinner)
                     {
-                        WidgetSetDisabled(*w, _widgetIndex + 1, value);
-                        WidgetSetDisabled(*w, _widgetIndex + 2, value);
+                        Ui::WidgetSetDisabled(*w, _widgetIndex + 1, value);
+                        Ui::WidgetSetDisabled(*w, _widgetIndex + 2, value);
                     }
                 }
                 Invalidate(widget);
@@ -334,7 +333,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsVisible(*w, _widgetIndex);
+                return Ui::WidgetIsVisible(*w, _widgetIndex);
             }
             return false;
         }
@@ -343,19 +342,19 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetVisible(*w, _widgetIndex, value);
+                Ui::WidgetSetVisible(*w, _widgetIndex, value);
 
                 auto widget = GetWidget();
                 if (widget != nullptr)
                 {
                     if (widget->type == WindowWidgetType::DropdownMenu)
                     {
-                        WidgetSetVisible(*w, _widgetIndex + 1, value);
+                        Ui::WidgetSetVisible(*w, _widgetIndex + 1, value);
                     }
                     else if (widget->type == WindowWidgetType::Spinner)
                     {
-                        WidgetSetVisible(*w, _widgetIndex + 1, value);
-                        WidgetSetVisible(*w, _widgetIndex + 2, value);
+                        Ui::WidgetSetVisible(*w, _widgetIndex + 1, value);
+                        Ui::WidgetSetVisible(*w, _widgetIndex + 2, value);
                     }
                 }
                 Invalidate(widget);
@@ -487,7 +486,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsPressed(*w, _widgetIndex);
+                return Ui::WidgetIsPressed(*w, _widgetIndex);
             }
             return false;
         }
@@ -496,7 +495,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
+                Ui::WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
                 Invalidate();
             }
         }
@@ -549,7 +548,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return WidgetIsPressed(*w, _widgetIndex);
+                return Ui::WidgetIsPressed(*w, _widgetIndex);
             }
             return false;
         }
@@ -558,7 +557,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
+                Ui::WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
                 Invalidate();
             }
         }
@@ -941,6 +940,7 @@ namespace OpenRCT2::Scripting
             // Explicit template due to text being a base method
             dukglue_register_property<ScTextBoxWidget, std::string, std::string>(
                 ctx, &ScTextBoxWidget::text_get, &ScTextBoxWidget::text_set, "text");
+            dukglue_register_method(ctx, &ScTextBoxWidget::focus, "focus");
         }
 
     private:
@@ -960,6 +960,15 @@ namespace OpenRCT2::Scripting
             if (w != nullptr && IsCustomWindow())
             {
                 OpenRCT2::Ui::Windows::SetWidgetMaxLength(w, _widgetIndex, value);
+            }
+        }
+
+        void focus()
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                WindowStartTextbox(*w, _widgetIndex, GetWidget()->string, Ui::Windows::GetWidgetMaxLength(w, _widgetIndex));
             }
         }
     };

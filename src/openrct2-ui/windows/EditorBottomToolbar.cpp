@@ -19,7 +19,6 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -164,7 +163,7 @@ static Widget _editorBottomToolbarWidgets[] = {
         {
             WindowCloseAll();
             SetAllSceneryItemsInvented();
-            ScenerySetDefaultPlacementConfiguration();
+            WindowScenerySetDefaultPlacementConfiguration();
             GetGameState().EditorStep = EditorStep::LandscapeEditor;
             ContextOpenWindow(WindowClass::Map);
             GfxInvalidateScreen();

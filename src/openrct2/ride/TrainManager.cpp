@@ -13,7 +13,7 @@
 #include "../entity/EntityRegistry.h"
 #include "Vehicle.h"
 
-namespace TrainManager
+namespace OpenRCT2::TrainManager
 {
     View::Iterator& View::Iterator::operator++()
     {
@@ -34,4 +34,4 @@ namespace TrainManager
     {
         vec = &GetEntityList(EntityType::Vehicle);
     }
-} // namespace TrainManager
+} // namespace OpenRCT2::TrainManager

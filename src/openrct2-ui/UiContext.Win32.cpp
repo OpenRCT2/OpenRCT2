@@ -14,6 +14,7 @@
 #    ifndef WIN32_LEAN_AND_MEAN
 #        define WIN32_LEAN_AND_MEAN
 #    endif
+#    include <openrct2/Diagnostic.h>
 #    include <windows.h>
 #    include <shellapi.h>
 // clang-format on
@@ -24,7 +25,6 @@
 
 #    include <SDL.h>
 #    include <SDL_syswm.h>
-#    include <openrct2/common.h>
 #    include <openrct2/core/Path.hpp>
 #    include <openrct2/core/String.hpp>
 #    include <openrct2/ui/UiContext.h>

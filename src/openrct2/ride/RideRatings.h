@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/FixedPoint.hpp"
+#include "../core/Money.hpp"
 #include "../world/Location.hpp"
 #include "RideTypes.h"
 
@@ -34,7 +34,7 @@ struct RatingTuple
     bool isNull() const;
     void setNull();
 };
-assert_struct_size(RatingTuple, 6);
+static_assert(sizeof(RatingTuple) == 6);
 
 #pragma pack(pop)
 

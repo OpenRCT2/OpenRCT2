@@ -17,6 +17,8 @@
 #include <openrct2/network/NetworkKey.h>
 #include <string>
 
+using namespace OpenRCT2;
+
 class CryptTests : public testing::Test
 {
 public:

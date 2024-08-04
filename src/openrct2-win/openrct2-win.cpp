@@ -25,6 +25,8 @@
 #include <string>
 #include <vector>
 
+using namespace OpenRCT2;
+
 static std::vector<std::string> GetCommandLineArgs(int argc, wchar_t** argvW);
 
 /**

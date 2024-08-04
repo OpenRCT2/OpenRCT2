@@ -10,12 +10,13 @@
 #include "LargeScenery.h"
 
 #include "../Context.h"
-#include "../common.h"
 #include "../object/LargeSceneryObject.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectManager.h"
 #include "../world/Banner.h"
 #include "TileElement.h"
+
+#include <cassert>
 
 colour_t LargeSceneryElement::GetPrimaryColour() const
 {

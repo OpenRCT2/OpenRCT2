@@ -17,7 +17,6 @@
 #include "../interface/Window.h"
 #include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
-#include "../util/Util.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
@@ -25,6 +24,7 @@
 #include "Weather.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cstring>
 
 using namespace OpenRCT2;
@@ -139,6 +139,7 @@ void X8DrawingEngine::Resize(uint32_t width, uint32_t height)
 {
     uint32_t pitch = width;
     ConfigureBits(width, height, pitch);
+    _drawingContext->Clear(_bitsDPI, PALETTE_INDEX_10);
 }
 
 void X8DrawingEngine::SetPalette([[maybe_unused]] const GamePalette& palette)

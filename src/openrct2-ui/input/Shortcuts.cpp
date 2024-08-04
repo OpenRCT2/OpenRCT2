@@ -32,7 +32,6 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/platform/Platform.h>
@@ -156,7 +155,7 @@ static void ShortcutRemoveTopBottomToolbarToggle()
             WindowCloseByClass(WindowClass::TitleOptions);
             WindowCloseByClass(WindowClass::TitleMenu);
             WindowCloseByClass(WindowClass::TitleExit);
-            TitleSetHideVersionInfo(true);
+            WindowCloseByClass(WindowClass::TitleVersion);
         }
         else
         {
@@ -193,18 +192,13 @@ static void ShortcutAdjustLand()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-    {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        {
-            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
-            if (window != nullptr)
-            {
-                window->Invalidate();
-                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_LAND);
-            }
-        }
-    }
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        return;
+
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        return;
+
+    ToggleLandWindow();
 }
 
 static void ShortcutAdjustWater()
@@ -212,18 +206,13 @@ static void ShortcutAdjustWater()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-    {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        {
-            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
-            if (window != nullptr)
-            {
-                window->Invalidate();
-                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_WATER);
-            }
-        }
-    }
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        return;
+
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        return;
+
+    ToggleWaterWindow();
 }
 
 static void ShortcutBuildScenery()
@@ -231,18 +220,13 @@ static void ShortcutBuildScenery()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-    {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        {
-            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
-            if (window != nullptr)
-            {
-                window->Invalidate();
-                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_SCENERY);
-            }
-        }
-    }
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        return;
+
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        return;
+
+    ToggleSceneryWindow();
 }
 
 static void ShortcutBuildPaths()
@@ -250,13 +234,13 @@ static void ShortcutBuildPaths()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-    {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        {
-            ContextOpenWindow(WindowClass::Footpath);
-        }
-    }
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        return;
+
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        return;
+
+    ToggleFootpathWindow();
 }
 
 static void ShortcutBuildNewRide()
@@ -408,18 +392,13 @@ static void ShortcutClearScenery()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().EditorStep == EditorStep::LandscapeEditor)
-    {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        {
-            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
-            if (window != nullptr)
-            {
-                window->Invalidate();
-                window->OnMouseUp(WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY);
-            }
-        }
-    }
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
+        return;
+
+    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        return;
+
+    ToggleClearSceneryWindow();
 }
 
 static void ShortcutQuickSaveGame()
@@ -456,14 +435,7 @@ static void ShortcutOpenSceneryPicker()
 
     WindowBase* window_scenery = WindowFindByClass(WindowClass::Scenery);
     if (window_scenery == nullptr)
-    {
-        WindowBase* window_toolbar = WindowFindByClass(WindowClass::TopToolbar);
-        if (window_toolbar != nullptr)
-        {
-            window_toolbar->Invalidate();
-            window_toolbar->OnMouseUp(WC_TOP_TOOLBAR__WIDX_SCENERY);
-        }
-    }
+        ToggleSceneryWindow();
 
     window_scenery = WindowFindByClass(WindowClass::Scenery);
     if (window_scenery != nullptr && !WidgetIsDisabled(*window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
@@ -790,7 +762,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     });
     RegisterShortcut(ShortcutId::InterfaceDecreaseSpeed, STR_SHORTCUT_REDUCE_GAME_SPEED, "-", ShortcutReduceGameSpeed);
     RegisterShortcut(ShortcutId::InterfaceIncreaseSpeed, STR_SHORTCUT_INCREASE_GAME_SPEED, "=", ShortcutIncreaseGameSpeed);
-    RegisterShortcut(ShortcutId::InterfaceToggleToolbars, STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS, "T", ShortcutRemoveTopBottomToolbarToggle);
+    RegisterShortcut(ShortcutId::InterfaceToggleToolbars, STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS, ShortcutRemoveTopBottomToolbarToggle);
     RegisterShortcut(ShortcutId::InterfaceScreenshot, STR_SHORTCUT_SCREENSHOT, "CTRL+S", []() { gScreenshotCountdown = 2; });
     RegisterShortcut(ShortcutId::InterfaceGiantScreenshot, STR_SHORTCUT_GIANT_SCREENSHOT, "CTRL+SHIFT+S", ScreenshotGiant);
     RegisterShortcut(ShortcutId::InterfaceLoadGame, STR_LOAD_GAME, "CTRL+L", ShortcutLoadGame);

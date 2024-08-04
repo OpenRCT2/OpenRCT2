@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include <cstdint>
 
 /**
  * Class for enumerating and retrieving values for a set of command line arguments.
@@ -111,7 +111,7 @@ constexpr char NAC = '\0';
         name, "", nullptr, subcommandtable, nullptr                                                                            \
     }
 
-namespace CommandLine
+namespace OpenRCT2::CommandLine
 {
     extern const CommandLineCommand RootCommands[];
     extern const CommandLineCommand ScreenshotCommands[];
@@ -126,4 +126,4 @@ namespace CommandLine
 
     exitcode_t HandleCommandConvert(CommandLineArgEnumerator* enumerator);
     exitcode_t HandleCommandUri(CommandLineArgEnumerator* enumerator);
-} // namespace CommandLine
+} // namespace OpenRCT2::CommandLine

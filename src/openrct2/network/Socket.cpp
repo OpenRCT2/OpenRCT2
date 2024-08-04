@@ -9,6 +9,8 @@
 
 #ifndef DISABLE_NETWORK
 
+#    include "../Diagnostic.h"
+
 #    include <atomic>
 #    include <chrono>
 #    include <cmath>
@@ -54,7 +56,7 @@
     #include <sys/socket.h>
     #include <sys/time.h>
     #include <unistd.h>
-    #include "../common.h"
+
     using SOCKET = int32_t;
     #define SOCKET_ERROR -1
     #define INVALID_SOCKET -1
@@ -973,7 +975,7 @@ std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses()
     return baddresses;
 }
 
-namespace Convert
+namespace OpenRCT2::Convert
 {
     uint16_t HostToNetwork(uint16_t value)
     {
@@ -984,6 +986,6 @@ namespace Convert
     {
         return ntohs(value);
     }
-} // namespace Convert
+} // namespace OpenRCT2::Convert
 
 #endif

@@ -9,31 +9,21 @@
 
 #include "Util.h"
 
-#include "../common.h"
+#include "../Diagnostic.h"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
+#include "../core/UTF8.h"
 #include "../interface/Window.h"
-#include "../localisation/Language.h"
-#include "../localisation/Localisation.h"
 #include "../platform/Platform.h"
 #include "../scenes/title/TitleScene.h"
 #include "zlib.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cctype>
 #include <cmath>
 #include <ctime>
 #include <random>
-
-#ifdef _WIN32
-#    ifndef NOMINMAX
-#        define NOMINMAX
-#    endif
-#    ifndef WIN32_LEAN_AND_MEAN
-#        define WIN32_LEAN_AND_MEAN
-#    endif
-#    include <windows.h>
-#endif // _WIN32
 
 int32_t SquaredMetresToSquaredFeet(int32_t squaredMetres)
 {
@@ -60,166 +50,6 @@ int32_t MphToDmps(int32_t mph)
 {
     // 1 mph = 4.4704 decimeters/s
     return (mph * 73243) >> 14;
-}
-
-int32_t UtilBitScanForward(int32_t source)
-{
-#if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
-    DWORD i;
-    uint8_t success = _BitScanForward(&i, static_cast<uint32_t>(source));
-    return success != 0 ? i : -1;
-#elif defined(__GNUC__)
-    int32_t success = __builtin_ffs(source);
-    return success - 1;
-#else
-#    pragma message("Falling back to iterative bitscan forward, consider using intrinsics")
-    // This is a low-hanging optimisation boost, check if your compiler offers
-    // any intrinsic.
-    // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
-    for (int32_t i = 0; i < 32; i++)
-        if (source & (1u << i))
-            return i;
-
-    return -1;
-#endif
-}
-
-int32_t UtilBitScanForward(int64_t source)
-{
-#if defined(_MSC_VER) && (_MSC_VER >= 1400) && defined(_M_X64) // Visual Studio 2005
-    DWORD i;
-    uint8_t success = _BitScanForward64(&i, static_cast<uint64_t>(source));
-    return success != 0 ? i : -1;
-#elif defined(__GNUC__)
-    int32_t success = __builtin_ffsll(source);
-    return success - 1;
-#else
-#    pragma message("Falling back to iterative bitscan forward, consider using intrinsics")
-    // This is a low-hanging optimisation boost, check if your compiler offers
-    // any intrinsic.
-    // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
-    for (int32_t i = 0; i < 64; i++)
-        if (source & (1uLL << i))
-            return i;
-
-    return -1;
-#endif
-}
-
-#if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
-#    include <cpuid.h>
-#    define OpenRCT2_CPUID_GNUC_X86
-#elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
-#    include <intrin.h>
-#    include <nmmintrin.h>
-#    define OpenRCT2_CPUID_MSVC_X86
-#endif
-
-#ifdef OPENRCT2_X86
-static bool CPUIDX86(uint32_t* cpuid_outdata, int32_t eax)
-{
-#    if defined(OpenRCT2_CPUID_GNUC_X86)
-    int ret = __get_cpuid(eax, &cpuid_outdata[0], &cpuid_outdata[1], &cpuid_outdata[2], &cpuid_outdata[3]);
-    return ret == 1;
-#    elif defined(OpenRCT2_CPUID_MSVC_X86)
-    __cpuid(reinterpret_cast<int*>(cpuid_outdata), static_cast<int>(eax));
-    return true;
-#    else
-    return false;
-#    endif
-}
-#endif // OPENRCT2_X86
-
-bool SSE41Available()
-{
-#ifdef OPENRCT2_X86
-    // SSE4.1 support is declared as the 19th bit of ECX with CPUID(EAX = 1).
-    uint32_t regs[4] = { 0 };
-    if (CPUIDX86(regs, 1))
-    {
-        return (regs[2] & (1 << 19));
-    }
-#endif
-    return false;
-}
-
-bool AVX2Available()
-{
-#ifdef OPENRCT2_X86
-    // For GCC and similar use the builtin function, as cpuid changed its semantics in
-    // https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
-    // which causes it to ignore subleafs, but the new function is unavailable on
-    // Ubuntu 18.04's toolchains.
-#    if defined(OpenRCT2_CPUID_GNUC_X86) && (!defined(__FreeBSD__) || (__FreeBSD__ > 10))
-    return __builtin_cpu_supports("avx2");
-#    else
-    // AVX2 support is declared as the 5th bit of EBX with CPUID(EAX = 7, ECX = 0).
-    uint32_t regs[4] = { 0 };
-    if (CPUIDX86(regs, 7))
-    {
-        bool avxCPUSupport = (regs[1] & (1 << 5)) != 0;
-        if (avxCPUSupport)
-        {
-            // Need to check if OS also supports the register of xmm/ymm
-            // This check has to be conditional, otherwise INVALID_INSTRUCTION exception.
-            uint64_t xcrFeatureMask = _xgetbv(_XCR_XFEATURE_ENABLED_MASK);
-            avxCPUSupport = (xcrFeatureMask & 0x6) || false;
-        }
-        return avxCPUSupport;
-    }
-#    endif
-#endif
-    return false;
-}
-
-static bool BitCountPopcntAvailable()
-{
-#ifdef OPENRCT2_X86
-    // POPCNT support is declared as the 23rd bit of ECX with CPUID(EAX = 1).
-    uint32_t regs[4] = { 0 };
-    if (CPUIDX86(regs, 1))
-    {
-        return (regs[2] & (1 << 23));
-    }
-#endif
-    return false;
-}
-
-static int32_t BitCountPopcnt(uint32_t source)
-{
-// Use CPUID defines to figure out calling style
-#if defined(OpenRCT2_CPUID_GNUC_X86)
-    // use asm directly in order to actually emit the instruction : using
-    // __builtin_popcount results in an extra call to a library function.
-    int32_t rv;
-    asm volatile("popcnt %1,%0" : "=r"(rv) : "rm"(source) : "cc");
-    return rv;
-#elif defined(OpenRCT2_CPUID_MSVC_X86)
-    return _mm_popcnt_u32(source);
-#else
-    Guard::Fail("bitcount_popcnt() called, without support compiled in");
-    return INT_MAX;
-#endif
-}
-
-static int32_t BitCountLut(uint32_t source)
-{
-    // https://graphics.stanford.edu/~seander/bithacks.html
-    static constexpr uint8_t BitsSetTable256[256] = {
-#define B2(n) n, (n) + 1, (n) + 1, (n) + 2
-#define B4(n) B2(n), B2((n) + 1), B2((n) + 1), B2((n) + 2)
-#define B6(n) B4(n), B4((n) + 1), B4((n) + 1), B4((n) + 2)
-        B6(0), B6(1), B6(1), B6(2)
-    };
-    return BitsSetTable256[source & 0xff] + BitsSetTable256[(source >> 8) & 0xff] + BitsSetTable256[(source >> 16) & 0xff]
-        + BitsSetTable256[source >> 24];
-}
-
-static const auto BitCountFn = BitCountPopcntAvailable() ? BitCountPopcnt : BitCountLut;
-
-int32_t BitCount(uint32_t source)
-{
-    return BitCountFn(source);
 }
 
 /* Case insensitive logical compare */

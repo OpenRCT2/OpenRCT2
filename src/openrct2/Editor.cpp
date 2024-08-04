@@ -29,7 +29,6 @@
 #include "entity/Staff.h"
 #include "interface/Viewport.h"
 #include "interface/Window_internal.h"
-#include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
@@ -49,19 +48,18 @@
 #include "world/Scenery.h"
 
 #include <array>
+#include <cassert>
 #include <vector>
 
 using namespace OpenRCT2;
 
-namespace Editor
+namespace OpenRCT2::Editor
 {
     static std::array<std::vector<uint8_t>, EnumValue(ObjectType::Count)> _editorSelectedObjectFlags;
 
     static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
     static void SetAllLandOwned();
     static void FinaliseMainView();
-    static bool ReadS4OrS6(const char* path);
-    static bool ReadPark(const char* path);
     static void ClearMapForEditing(bool fromSave);
 
     static void ObjectListLoad()
@@ -215,8 +213,8 @@ namespace Editor
     static void SetAllLandOwned()
     {
         auto& gameState = GetGameState();
-        MapRange range = { 2 * COORDS_XY_STEP, 2 * COORDS_XY_STEP, (gameState.MapSize.x - 3) * COORDS_XY_STEP,
-                           (gameState.MapSize.y - 3) * COORDS_XY_STEP };
+        MapRange range = { 2 * kCoordsXYStep, 2 * kCoordsXYStep, (gameState.MapSize.x - 3) * kCoordsXYStep,
+                           (gameState.MapSize.y - 3) * kCoordsXYStep };
         auto landSetRightsAction = LandSetRightsAction(range, LandSetRightSetting::SetForSale);
         landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
         GameActions::Execute(&landSetRightsAction);
@@ -224,31 +222,6 @@ namespace Editor
         auto landBuyRightsAction = LandBuyRightsAction(range, LandBuyRightSetting::BuyLand);
         landBuyRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
         GameActions::Execute(&landBuyRightsAction);
-    }
-
-    /**
-     *
-     *  rct2: 0x006758C0
-     */
-    bool LoadLandscape(const utf8* path)
-    {
-        // #4996: Make sure the object selection window closes here to prevent unload objects
-        //        after we have loaded a new park.
-        WindowCloseAll();
-
-        auto extension = GetFileExtensionType(path);
-        switch (extension)
-        {
-            case FileExtension::SC6:
-            case FileExtension::SV6:
-            case FileExtension::SC4:
-            case FileExtension::SV4:
-                return ReadS4OrS6(path);
-            case FileExtension::PARK:
-                return ReadPark(path);
-            default:
-                return false;
-        }
     }
 
     static void AfterLoadCleanup(bool loadedFromSave)
@@ -267,49 +240,20 @@ namespace Editor
         FinaliseMainView();
     }
 
-    /**
-     *
-     *  rct2: 0x006758FE
-     */
-    static bool ReadS4OrS6(const char* path)
+    bool LoadLandscape(const utf8* path)
     {
-        auto extensionS = Path::GetExtension(path);
-        const char* extension = extensionS.c_str();
-        auto loadedFromSave = false;
-        const auto loadSuccess = GetContext()->LoadParkFromFile(path);
-        if (!loadSuccess)
+        // #4996: Make sure the object selection window closes here to prevent unload objects
+        //        after we have loaded a new park.
+        WindowCloseAll();
+
+        if (!GetContext()->LoadParkFromFile(path))
             return false;
 
-        if (String::IEquals(extension, ".sv4") || String::IEquals(extension, ".sv6") || String::IEquals(extension, ".sv7") == 0)
-        {
-            loadedFromSave = true;
-        }
+        auto extension = Path::GetExtension(path);
+        bool loadedFromSave = !ParkImporter::ExtensionIsScenario(extension);
 
         AfterLoadCleanup(loadedFromSave);
         return true;
-    }
-
-    static bool ReadPark(const char* path)
-    {
-        try
-        {
-            auto context = GetContext();
-            auto& objManager = context->GetObjectManager();
-            auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
-            auto loadResult = importer->Load(path);
-            objManager.LoadObjects(loadResult.RequiredObjects);
-
-            // TODO: Have a separate GameState and exchange once loaded.
-            auto& gameState = GetGameState();
-            importer->Import(gameState);
-
-            AfterLoadCleanup(true);
-            return true;
-        }
-        catch (const std::exception&)
-        {
-            return false;
-        }
     }
 
     static void ClearMapForEditing(bool fromSave)
@@ -440,14 +384,13 @@ namespace Editor
         windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
 
         ResetAllSpriteQuadrantPlacements();
-        ScenerySetDefaultPlacementConfiguration();
 
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
 
         gWindowUpdateTicks = 0;
         LoadPalette();
-
-        windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
     }
 
     /**
@@ -586,7 +529,7 @@ namespace Editor
             list[index] |= flags;
         }
     }
-} // namespace Editor
+} // namespace OpenRCT2::Editor
 
 void EditorOpenWindowsForCurrentStep()
 {

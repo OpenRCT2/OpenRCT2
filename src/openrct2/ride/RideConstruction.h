@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../common.h"
 #include "../world/Location.hpp"
 #include "Station.h"
 #include "Track.h"
@@ -26,23 +25,26 @@ struct RideTypeDescriptor;
 struct TrackDrawerDescriptor;
 struct TrackDrawerEntry;
 
-enum class RideConstructionState : uint8_t
+namespace OpenRCT2
 {
-    State0,
-    Front,
-    Back,
-    Selected,
-    Place,
-    EntranceExit,
-    MazeBuild,
-    MazeMove,
-    MazeFill
-};
+    enum class RideConstructionState : uint8_t
+    {
+        State0,
+        Front,
+        Back,
+        Selected,
+        Place,
+        EntranceExit,
+        MazeBuild,
+        MazeMove,
+        MazeFill
+    };
+}
 
 extern money64 _currentTrackPrice;
 
 extern uint32_t _currentTrackCurve;
-extern RideConstructionState _rideConstructionState;
+extern OpenRCT2::RideConstructionState _rideConstructionState;
 extern RideId _currentRideIndex;
 
 extern CoordsXYZ _currentTrackBegin;
@@ -70,7 +72,7 @@ extern CoordsXYZD _unkF440C5;
 extern uint8_t gRideEntranceExitPlaceType;
 extern RideId gRideEntranceExitPlaceRideIndex;
 extern StationIndex gRideEntranceExitPlaceStationIndex;
-extern RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
+extern OpenRCT2::RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
 extern uint8_t gRideEntranceExitPlaceDirection;
 
 void RideEntranceExitPlaceProvisionalGhost();
@@ -88,8 +90,6 @@ void RideSelectNextSection();
 void RideSelectPreviousSection();
 
 bool RideModify(const CoordsXYE& input);
-
-CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords);
 
 bool RideSelectBackwardsFromFront();
 bool RideSelectForwardsFromBack();

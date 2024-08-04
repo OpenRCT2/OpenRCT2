@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../common.h"
 #include "../../drawing/Drawing.h"
 #include "../Scene.h"
 
@@ -27,8 +26,6 @@ namespace OpenRCT2
         bool PreviewSequence(size_t value);
         void StopPreviewingSequence();
         bool IsPreviewingSequence();
-        bool ShouldHideVersionInfo();
-        void SetHideVersionInfo(bool value);
 
         void Load() override;
         void Tick() override;
@@ -40,7 +37,6 @@ namespace OpenRCT2
         ITitleSequencePlayer* _sequencePlayer = nullptr;
         size_t _loadedTitleSequenceId = SIZE_MAX;
         size_t _currentSequence = SIZE_MAX;
-        bool _hideVersionInfo = false;
         bool _previewingSequence = false;
 
         void TitleInitialise();
@@ -54,11 +50,8 @@ extern bool gPreviewingTitleSequenceInGame;
 void TitleCreateWindows();
 void* TitleGetSequencePlayer();
 void TitleSequenceChangePreset(size_t preset);
-bool TitleShouldHideVersionInfo();
-void TitleSetHideVersionInfo(bool value);
 size_t TitleGetConfigSequence();
 size_t TitleGetCurrentSequence();
 bool TitlePreviewSequence(size_t value);
 void TitleStopPreviewingSequence();
 bool TitleIsPreviewingSequence();
-void DrawOpenRCT2(DrawPixelInfo& dpi, const ScreenCoordsXY& screenCoords);

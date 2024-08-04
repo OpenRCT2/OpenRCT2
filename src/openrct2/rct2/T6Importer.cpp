@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Diagnostic.h"
 #include "../TrackImporter.h"
 #include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
@@ -23,7 +24,9 @@
 
 #include <mutex>
 
-namespace RCT2
+using namespace OpenRCT2;
+
+namespace OpenRCT2::RCT2
 {
     static std::mutex _objectLookupMutex;
 
@@ -220,7 +223,7 @@ namespace RCT2
             }
         }
     };
-} // namespace RCT2
+} // namespace OpenRCT2::RCT2
 
 std::unique_ptr<ITrackImporter> TrackImporter::CreateTD6()
 {

@@ -43,7 +43,6 @@
 #include "../interface/Colour.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
@@ -483,7 +482,7 @@ static int32_t ConsoleCommandStaff(InteractiveConsole& console, const arguments_
                 {
                     char costume_name[128] = { 0 };
                     StringId costume = StaffCostumeNames[i];
-                    OpenRCT2::FormatStringLegacy(costume_name, 128, STR_DROPDOWN_MENU_LABEL, &costume);
+                    OpenRCT2::FormatStringLegacy(costume_name, 128, STR_STRINGID, &costume);
                     // That's a terrible hack here. Costume names include inline sprites
                     // that don't work well with the console, so manually skip past them.
                     console.WriteFormatLine("        costume %i: %s", i, costume_name + 7);
@@ -1274,10 +1273,12 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
             ResearchResetCurrentItem();
             gSilentResearch = false;
         }
-        ScenerySetDefaultPlacementConfiguration();
 
-        auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-        ContextBroadcastIntent(&intent);
+        auto sceneryIntent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
+        ContextBroadcastIntent(&sceneryIntent);
+
+        auto ridesIntent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
+        ContextBroadcastIntent(&ridesIntent);
 
         gWindowUpdateTicks = 0;
         GfxInvalidateScreen();
@@ -1934,9 +1935,9 @@ static int32_t ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_
         console.WriteLineError("Need arguments: <x> <y> <z> <colour>");
         return 1;
     }
-    int32_t x = COORDS_XY_STEP * atof(argv[0].c_str());
-    int32_t y = COORDS_XY_STEP * atof(argv[1].c_str());
-    int32_t z = COORDS_Z_STEP * atof(argv[2].c_str());
+    int32_t x = kCoordsXYStep * atof(argv[0].c_str());
+    int32_t y = kCoordsXYStep * atof(argv[1].c_str());
+    int32_t z = kCoordsZStep * atof(argv[2].c_str());
     int32_t col = 28;
     if (argv.size() > 3)
         col = atoi(argv[3].c_str());

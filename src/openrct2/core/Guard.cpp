@@ -8,11 +8,11 @@
  *****************************************************************************/
 
 #ifdef _WIN32
+#    include <cassert>
 #    include <windows.h>
 #endif
 
 #include "../Version.h"
-#include "../common.h"
 #include "Console.hpp"
 #include "Diagnostics.hpp"
 #include "Guard.hpp"
@@ -24,7 +24,7 @@
 #include <cstdlib>
 #include <string>
 
-namespace Guard
+namespace OpenRCT2::Guard
 {
     constexpr const utf8* ASSERTION_MESSAGE = "An assertion failed, please report this to the OpenRCT2 developers.";
 
@@ -152,4 +152,4 @@ namespace Guard
 #    endif
     }
 #endif
-} // namespace Guard
+} // namespace OpenRCT2::Guard

@@ -12,6 +12,8 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 
+using namespace OpenRCT2;
+
 void FootpathRailingsObject::Load()
 {
     GetStringTable().Sort();

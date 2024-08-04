@@ -17,6 +17,8 @@
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
 
+using namespace OpenRCT2;
+
 constexpr auto kMetalSupportSkip = 9 * 4 * 2;
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
@@ -778,11 +780,11 @@ bool PathPoleSupportsPaintSetup(
 
     if (isSloped)
     {
-        int16_t si = baseHeight + COORDS_Z_STEP;
+        int16_t si = baseHeight + kCoordsZStep;
 
         while (true)
         {
-            int16_t z = baseHeight + (2 * COORDS_Z_STEP);
+            int16_t z = baseHeight + (2 * kCoordsZStep);
             if (z > si)
             {
                 z = si;

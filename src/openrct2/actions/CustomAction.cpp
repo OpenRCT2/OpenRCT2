@@ -13,6 +13,8 @@
 #    include "../Context.h"
 #    include "../scripting/ScriptEngine.h"
 
+using namespace OpenRCT2;
+
 CustomAction::CustomAction(const std::string& id, const std::string& json, const std::string& pluginName)
     : _id(id)
     , _json(json)

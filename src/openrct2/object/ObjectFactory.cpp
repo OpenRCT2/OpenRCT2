@@ -10,6 +10,7 @@
 #include "ObjectFactory.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../audio/audio.h"
@@ -47,11 +48,13 @@
 #include <memory>
 #include <unordered_map>
 
+using namespace OpenRCT2;
+
 struct IFileDataRetriever
 {
     virtual ~IFileDataRetriever() = default;
-    virtual std::vector<uint8_t> GetData(std::string_view path) const abstract;
-    virtual ObjectAsset GetAsset(std::string_view path) const abstract;
+    virtual std::vector<uint8_t> GetData(std::string_view path) const = 0;
+    virtual ObjectAsset GetAsset(std::string_view path) const = 0;
 };
 
 class FileSystemDataRetriever : public IFileDataRetriever
@@ -210,7 +213,7 @@ public:
     }
 };
 
-namespace ObjectFactory
+namespace OpenRCT2::ObjectFactory
 {
     /**
      * @param jRoot Must be JSON node of type object
@@ -590,4 +593,4 @@ namespace ObjectFactory
         }
         return result;
     }
-} // namespace ObjectFactory
+} // namespace OpenRCT2::ObjectFactory

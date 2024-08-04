@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include "../../common.h"
 #include "../Scene.h"
+
+#include <cstdint>
 
 struct DrawPixelInfo;
 

@@ -13,7 +13,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/SmallSceneryEntry.h"
@@ -138,7 +137,7 @@ GameActions::Result LandSetHeightAction::Query() const
         }
 
         auto clearResult = MapCanConstructWithClearAt(
-            { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &MapSetLandHeightClearFunc, { 0b1111, 0 }, 0,
+            { _coords, _height * kCoordsZStep, zCorner * kCoordsZStep }, &MapSetLandHeightClearFunc, { 0b1111, 0 }, 0,
             CreateCrossingMode::none);
         if (clearResult.Error != GameActions::Status::Ok)
         {
@@ -311,7 +310,7 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
                     zCorner += 2;
                 }
             }
-            if (zCorner > (waterHeight / COORDS_Z_STEP) - 2)
+            if (zCorner > (waterHeight / kCoordsZStep) - 2)
             {
                 return ++surfaceElement;
             }
@@ -337,7 +336,7 @@ void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
     surfaceElement->BaseHeight = _height;
     surfaceElement->ClearanceHeight = _height;
     surfaceElement->AsSurface()->SetSlope(_style);
-    int32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() / COORDS_Z_STEP;
+    int32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() / kCoordsZStep;
     if (waterHeight != 0 && waterHeight <= _height)
     {
         surfaceElement->AsSurface()->SetWaterHeight(0);

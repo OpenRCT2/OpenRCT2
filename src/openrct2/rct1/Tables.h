@@ -9,13 +9,12 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../entity/Peep.h"
 #include "RCT1.h"
 
 #include <vector>
 
-namespace RCT1
+namespace OpenRCT2::RCT1
 {
     struct VehicleColourSchemeCopyDescriptor
     {
@@ -56,4 +55,4 @@ namespace RCT1
     const std::vector<const char*> GetSceneryObjects(uint8_t sceneryType);
 
     bool VehicleTypeIsReversed(const VehicleType vehicleType);
-} // namespace RCT1
+} // namespace OpenRCT2::RCT1

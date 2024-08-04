@@ -11,17 +11,20 @@
 #    include "DiscordService.h"
 
 #    include "../Context.h"
+#    include "../Diagnostic.h"
 #    include "../GameState.h"
 #    include "../OpenRCT2.h"
 #    include "../core/Console.hpp"
 #    include "../core/String.hpp"
+#    include "../core/UTF8.h"
 #    include "../localisation/Formatting.h"
-#    include "../localisation/Localisation.h"
 #    include "../world/Park.h"
 #    include "network.h"
 
 #    include <chrono>
 #    include <discord_rpc.h>
+
+using namespace OpenRCT2;
 
 namespace
 {

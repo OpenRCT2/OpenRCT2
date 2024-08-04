@@ -12,7 +12,6 @@
 #include "WaterObject.h"
 
 #include "../OpenRCT2.h"
-#include "../common.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../localisation/Formatter.h"
@@ -23,6 +22,8 @@
 #include <array>
 #include <cstring>
 #include <memory>
+
+using namespace OpenRCT2;
 
 void WaterObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {

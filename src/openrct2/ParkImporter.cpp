@@ -17,7 +17,7 @@
 
 #include <memory>
 
-namespace ParkImporter
+namespace OpenRCT2::ParkImporter
 {
     std::unique_ptr<IParkImporter> Create(const std::string& hintPath)
     {
@@ -53,4 +53,4 @@ namespace ParkImporter
     {
         return String::IEquals(extension, ".sc4") || String::IEquals(extension, ".sc6") || String::IEquals(extension, ".sea");
     }
-} // namespace ParkImporter
+} // namespace OpenRCT2::ParkImporter

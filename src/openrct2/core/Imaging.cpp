@@ -11,6 +11,7 @@
 
 #include "Imaging.h"
 
+#include "../Diagnostic.h"
 #include "../Version.h"
 #include "../drawing/Drawing.h"
 #include "FileSystem.hpp"
@@ -25,7 +26,7 @@
 #include <stdexcept>
 #include <unordered_map>
 
-namespace Imaging
+namespace OpenRCT2::Imaging
 {
     constexpr auto EXCEPTION_IMAGE_FORMAT_UNKNOWN = "Unknown image format.";
 
@@ -341,4 +342,4 @@ namespace Imaging
                 throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
         }
     }
-} // namespace Imaging
+} // namespace OpenRCT2::Imaging

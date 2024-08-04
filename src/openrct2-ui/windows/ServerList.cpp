@@ -9,17 +9,18 @@
 
 #ifndef DISABLE_NETWORK
 
+#    include <cassert>
 #    include <chrono>
 #    include <openrct2-ui/interface/Dropdown.h>
 #    include <openrct2-ui/interface/Widget.h>
 #    include <openrct2-ui/windows/Window.h>
 #    include <openrct2/Context.h>
+#    include <openrct2/Diagnostic.h>
 #    include <openrct2/config/Config.h>
 #    include <openrct2/core/Json.hpp>
 #    include <openrct2/drawing/Text.h>
 #    include <openrct2/interface/Colour.h>
 #    include <openrct2/localisation/Formatter.h>
-#    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/network/ServerList.h>
 #    include <openrct2/network/network.h>
 #    include <openrct2/platform/Platform.h>

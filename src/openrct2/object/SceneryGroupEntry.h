@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../localisation/StringIdType.h"
 #include "../world/ScenerySelection.h"
 #include "ObjectTypes.h"
 

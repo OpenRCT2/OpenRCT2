@@ -12,7 +12,6 @@
 #    include "ScTile.hpp"
 
 #    include "../../../Context.h"
-#    include "../../../common.h"
 #    include "../../../core/Guard.hpp"
 #    include "../../../entity/EntityRegistry.h"
 #    include "../../../object/LargeSceneryEntry.h"
@@ -37,12 +36,12 @@ namespace OpenRCT2::Scripting
 
     int32_t ScTile::x_get() const
     {
-        return _coords.x / COORDS_XY_STEP;
+        return _coords.x / kCoordsXYStep;
     }
 
     int32_t ScTile::y_get() const
     {
-        return _coords.y / COORDS_XY_STEP;
+        return _coords.y / kCoordsXYStep;
     }
 
     uint32_t ScTile::numElements_get() const

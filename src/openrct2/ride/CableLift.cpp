@@ -19,6 +19,8 @@
 #include "Vehicle.h"
 #include "VehicleData.h"
 
+using namespace OpenRCT2;
+
 Vehicle* CableLiftSegmentCreate(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
 {
@@ -63,7 +65,7 @@ Vehicle* CableLiftSegmentCreate(
     current->TrackSubposition = VehicleTrackSubposition::Default;
     current->Orientation = direction << 3;
 
-    z = z * COORDS_Z_STEP;
+    z = z * kCoordsZStep;
     current->TrackLocation = { x, y, z };
     z += ride.GetRideTypeDescriptor().Heights.VehicleZOffset;
 

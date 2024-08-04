@@ -9,9 +9,9 @@
 
 #include "TileElement.h"
 
+#include "../Diagnostic.h"
 #include "../core/Guard.hpp"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../ride/Track.h"
@@ -19,6 +19,8 @@
 #include "Location.hpp"
 #include "Scenery.h"
 #include "tile_element/Slope.h"
+
+using namespace OpenRCT2;
 
 bool TileElementIsUnderground(TileElement* tileElement)
 {

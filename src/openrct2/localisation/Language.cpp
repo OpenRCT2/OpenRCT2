@@ -16,10 +16,11 @@
 #include "../object/ObjectManager.h"
 #include "../platform/Platform.h"
 #include "LanguagePack.h"
-#include "Localisation.h"
 #include "LocalisationService.h"
 
 #include <stack>
+
+using namespace OpenRCT2;
 
 // clang-format off
 const LanguageDescriptor LanguagesDescriptors[LANGUAGE_COUNT] =

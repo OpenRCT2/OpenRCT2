@@ -7,8 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../common.h"
-#include "Date.h"
+#include "Localisation.Date.h"
+
 #include "StringIds.h"
 
 const StringId DateDayNames[] = {

@@ -10,6 +10,7 @@
 #include "Object.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"
@@ -24,6 +25,7 @@
 #include "ObjectRepository.h"
 
 #include <algorithm>
+#include <cassert>
 #include <cstring>
 #include <stdexcept>
 

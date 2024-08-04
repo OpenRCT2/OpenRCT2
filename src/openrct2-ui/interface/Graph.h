@@ -13,10 +13,10 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/world/Location.hpp>
 
-namespace Graph
+namespace OpenRCT2::Graph
 {
     void Draw(DrawPixelInfo& dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos);
     void Draw(
         DrawPixelInfo& dpi, const money64* history, const int32_t count, const ScreenCoordsXY& coords, const int32_t modifier,
         const int32_t offset);
-} // namespace Graph
+} // namespace OpenRCT2::Graph

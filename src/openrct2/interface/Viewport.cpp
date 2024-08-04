@@ -10,6 +10,7 @@
 #include "Viewport.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../Input.h"
@@ -47,11 +48,11 @@
 
 using namespace OpenRCT2;
 
-enum : uint32_t
+enum : uint8_t
 {
     IMAGE_TYPE_DEFAULT = 0,
-    IMAGE_TYPE_REMAP = (1 << 29),
-    IMAGE_TYPE_TRANSPARENT = (1 << 30),
+    IMAGE_TYPE_REMAP = (1 << 1),
+    IMAGE_TYPE_TRANSPARENT = (1 << 2),
 };
 
 uint8_t gShowGridLinesRefCount;
@@ -64,7 +65,6 @@ Viewport* g_music_tracking_viewport;
 static std::unique_ptr<JobPool> _paintJobs;
 static std::vector<PaintSession*> _paintColumns;
 
-static uint32_t _currentImageType;
 InteractionInfo::InteractionInfo(const PaintStruct* ps)
     : Loc(ps->MapPos)
     , Element(ps->Element)
@@ -799,7 +799,7 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep)
 
     bool overallFocus = true;
     if (peep.State == PeepState::OnRide || peep.State == PeepState::EnteringRide
-        || (peep.State == PeepState::LeavingRide && peep.x == LOCATION_NULL))
+        || (peep.State == PeepState::LeavingRide && peep.x == kLocationNull))
     {
         auto ride = GetRide(peep.CurrentRide);
         if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
@@ -818,7 +818,7 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep)
         }
     }
 
-    if (peep.x == LOCATION_NULL && overallFocus)
+    if (peep.x == kLocationNull && overallFocus)
     {
         auto ride = GetRide(peep.CurrentRide);
         if (ride != nullptr)
@@ -827,7 +827,7 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep)
             CoordsXYZ coordFocus;
             coordFocus.x = xy.x;
             coordFocus.y = xy.y;
-            coordFocus.z = TileElementHeight(xy) + (4 * COORDS_Z_STEP);
+            coordFocus.z = TileElementHeight(xy) + (4 * kCoordsZStep);
             focus = Focus(coordFocus);
             window->viewport_target_sprite = EntityId::GetNull();
         }
@@ -927,6 +927,9 @@ void ViewportRotateAll(int32_t direction)
  */
 void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect)
 {
+    if (viewport->flags & VIEWPORT_FLAG_RENDERING_INHIBITED)
+        return;
+
     auto [topLeft, bottomRight] = screenRect;
 
     if (bottomRight.x <= viewport->pos.x)
@@ -1018,6 +1021,9 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const Sc
     PROFILED_FUNCTION();
 
     const uint32_t viewFlags = viewport->flags;
+    if (viewFlags & VIEWPORT_FLAG_RENDERING_INHIBITED)
+        return;
+
     uint32_t width = screenRect.GetWidth();
     uint32_t height = screenRect.GetHeight();
     const uint32_t bitmask = viewport->zoom >= ZoomLevel{ 0 } ? 0xFFFFFFFF & (viewport->zoom.ApplyTo(0xFFFFFFFF)) : 0xFFFFFFFF;
@@ -1572,9 +1578,10 @@ static bool PSSpriteTypeIsInFilter(PaintStruct* ps, uint16_t filter)
 /**
  * rct2: 0x00679236, 0x00679662, 0x00679B0D, 0x00679FF1
  */
-static bool IsPixelPresentBMP(uint32_t imageType, const G1Element* g1, const uint8_t* index, const PaletteMap& paletteMap)
+static bool IsPixelPresentBMP(
+    const uint32_t imageType, const G1Element* g1, const int32_t x, const int32_t y, const PaletteMap& paletteMap)
 {
-    PROFILED_FUNCTION();
+    uint8_t* index = g1->offset + (y * g1->width) + x;
 
     // Needs investigation as it has no consideration for pure BMP maps.
     if (!(g1->flags & G1_FLAG_HAS_TRANSPARENCY))
@@ -1598,102 +1605,32 @@ static bool IsPixelPresentBMP(uint32_t imageType, const G1Element* g1, const uin
 /**
  * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
  */
-static bool IsPixelPresentRLE(const uint8_t* esi, int32_t x_start_point, int32_t y_start_point, int32_t round)
+static bool IsPixelPresentRLE(const void* data, const int32_t x, const int32_t y)
 {
-    PROFILED_FUNCTION();
+    const uint16_t* data16 = static_cast<const uint16_t*>(data);
+    uint16_t startOffset = data16[y];
+    const uint8_t* data8 = static_cast<const uint8_t*>(data) + startOffset;
 
-    uint32_t start_offset = esi[y_start_point * 2] | (esi[y_start_point * 2 + 1] << 8);
-    const uint8_t* ebx = esi + start_offset;
-
-    uint8_t last_data_line = 0;
-    while (!last_data_line)
+    bool lastDataLine = false;
+    while (!lastDataLine)
     {
-        int32_t no_pixels = *ebx++;
-        uint8_t gap_size = *ebx++;
+        int32_t numPixels = *data8++;
+        uint8_t pixelRunStart = *data8++;
+        lastDataLine = numPixels & 0x80;
+        numPixels &= 0x7F;
+        data8 += numPixels;
 
-        last_data_line = no_pixels & 0x80;
-
-        no_pixels &= 0x7F;
-
-        ebx += no_pixels;
-
-        if (round > 1)
-        {
-            if (gap_size % 2)
-            {
-                gap_size++;
-                no_pixels--;
-                if (no_pixels == 0)
-                {
-                    continue;
-                }
-            }
-        }
-
-        if (round == 4)
-        {
-            if (gap_size % 4)
-            {
-                gap_size += 2;
-                no_pixels -= 2;
-                if (no_pixels <= 0)
-                {
-                    continue;
-                }
-            }
-        }
-
-        int32_t x_start = gap_size - x_start_point;
-        if (x_start <= 0)
-        {
-            no_pixels += x_start;
-            if (no_pixels <= 0)
-            {
-                continue;
-            }
-
-            x_start = 0;
-        }
-        else
-        {
-            // Do nothing?
-        }
-
-        x_start += no_pixels;
-        x_start--;
-        if (x_start > 0)
-        {
-            no_pixels -= x_start;
-            if (no_pixels <= 0)
-            {
-                continue;
-            }
-        }
-
-        if (round > 1)
-        {
-            // This matches the original implementation, but allows empty lines to cause false positives on zoom 0
-            if (Ceil2(no_pixels, round) == 0)
-                continue;
-        }
-
-        return true;
+        if (pixelRunStart <= x && x < pixelRunStart + numPixels)
+            return true;
     }
-
     return false;
 }
 
 /**
  * rct2: 0x00679074
- *
- * @param dpi (edi)
- * @param imageId (ebx)
- * @param x (cx)
- * @param y (dx)
- * @return value originally stored in 0x00141F569
  */
 static bool IsSpriteInteractedWithPaletteSet(
-    DrawPixelInfo& dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+    DrawPixelInfo& dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap, const uint8_t imageType)
 {
     PROFILED_FUNCTION();
 
@@ -1703,6 +1640,10 @@ static bool IsSpriteInteractedWithPaletteSet(
         return false;
     }
 
+    ZoomLevel zoomLevel = dpi.zoom_level;
+    ScreenCoordsXY interactionPoint{ dpi.x, dpi.y };
+    ScreenCoordsXY origin = coords;
+
     if (dpi.zoom_level > ZoomLevel{ 0 })
     {
         if (g1->flags & G1_FLAG_NO_ZOOM_DRAW)
@@ -1710,124 +1651,39 @@ static bool IsSpriteInteractedWithPaletteSet(
             return false;
         }
 
-        if (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE)
+        while (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE && zoomLevel > ZoomLevel{ 0 })
         {
-            // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
-            DrawPixelInfo zoomed_dpi = {
-                .bits = dpi.bits,
-                .x = dpi.x >> 1,
-                .y = dpi.y >> 1,
-                .width = dpi.width,
-                .height = dpi.height,
-                .pitch = dpi.pitch,
-                .zoom_level = dpi.zoom_level - 1,
-            };
-
-            auto zoomImageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset);
-            return IsSpriteInteractedWithPaletteSet(zoomed_dpi, zoomImageId, { coords.x / 2, coords.y / 2 }, paletteMap);
-        }
-    }
-
-    int32_t round = std::max(1, dpi.zoom_level.ApplyTo(1));
-
-    auto origin = coords;
-    if (g1->flags & G1_FLAG_RLE_COMPRESSION)
-    {
-        origin.y -= (round - 1);
-    }
-
-    origin.y += g1->y_offset;
-    int32_t yStartPoint = 0;
-    int32_t height = g1->height;
-    if (dpi.zoom_level != ZoomLevel{ 0 })
-    {
-        if (height % 2)
-        {
-            height--;
-            yStartPoint++;
-        }
-
-        if (dpi.zoom_level == ZoomLevel{ 2 })
-        {
-            if (height % 4)
+            imageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset);
+            g1 = GfxGetG1Element(imageId);
+            if (g1 == nullptr || g1->flags & G1_FLAG_NO_ZOOM_DRAW)
             {
-                height -= 2;
-                yStartPoint += 2;
+                return false;
             }
-        }
-
-        if (height == 0)
-        {
-            return false;
-        }
-    }
-
-    origin.y = Floor2(origin.y, round);
-    int32_t yEndPoint = height;
-    origin.y -= dpi.y;
-    if (origin.y < 0)
-    {
-        yEndPoint += origin.y;
-        if (yEndPoint <= 0)
-        {
-            return false;
-        }
-
-        yStartPoint -= origin.y;
-        origin.y = 0;
-    }
-
-    origin.y += yEndPoint;
-    origin.y--;
-    if (origin.y > 0)
-    {
-        yEndPoint -= origin.y;
-        if (yEndPoint <= 0)
-        {
-            return false;
+            zoomLevel = zoomLevel - 1;
+            interactionPoint.x >>= 1;
+            interactionPoint.y >>= 1;
+            origin.x >>= 1;
+            origin.y >>= 1;
         }
     }
-
-    int32_t xStartPoint = 0;
-    int32_t xEndPoint = g1->width;
 
     origin.x += g1->x_offset;
-    origin.x = Floor2(origin.x, round);
-    origin.x -= dpi.x;
-    if (origin.x < 0)
-    {
-        xEndPoint += origin.x;
-        if (xEndPoint <= 0)
-        {
-            return false;
-        }
+    origin.y += g1->y_offset;
+    interactionPoint -= origin;
 
-        xStartPoint -= origin.x;
-        origin.x = 0;
-    }
-
-    origin.x += xEndPoint;
-    origin.x--;
-    if (origin.x > 0)
+    if (interactionPoint.x < 0 || interactionPoint.y < 0 || interactionPoint.x >= g1->width || interactionPoint.y >= g1->height)
     {
-        xEndPoint -= origin.x;
-        if (xEndPoint <= 0)
-        {
-            return false;
-        }
+        return false;
     }
 
     if (g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
-        return IsPixelPresentRLE(g1->offset, xStartPoint, yStartPoint, round);
+        return IsPixelPresentRLE(g1->offset, interactionPoint.x, interactionPoint.y);
     }
-
-    uint8_t* offset = g1->offset + (yStartPoint * g1->width) + xStartPoint;
-    uint32_t imageType = _currentImageType;
 
     if (!(g1->flags & G1_FLAG_1))
     {
-        return IsPixelPresentBMP(imageType, g1, offset, paletteMap);
+        return IsPixelPresentBMP(imageType, g1, interactionPoint.x, interactionPoint.y, paletteMap);
     }
 
     Guard::Assert(false, "Invalid image type encountered.");
@@ -1844,9 +1700,10 @@ static bool IsSpriteInteractedWith(DrawPixelInfo& dpi, ImageId imageId, const Sc
     PROFILED_FUNCTION();
 
     auto paletteMap = PaletteMap::GetDefault();
+    uint8_t imageType;
     if (imageId.HasPrimary() || imageId.IsRemap())
     {
-        _currentImageType = IMAGE_TYPE_REMAP;
+        imageType = IMAGE_TYPE_REMAP;
         uint8_t paletteIndex;
         if (imageId.HasSecondary())
         {
@@ -1863,9 +1720,9 @@ static bool IsSpriteInteractedWith(DrawPixelInfo& dpi, ImageId imageId, const Sc
     }
     else
     {
-        _currentImageType = IMAGE_TYPE_DEFAULT;
+        imageType = IMAGE_TYPE_DEFAULT;
     }
-    return IsSpriteInteractedWithPaletteSet(dpi, imageId, coords, paletteMap);
+    return IsSpriteInteractedWithPaletteSet(dpi, imageId, coords, paletteMap, imageType);
 }
 
 /**

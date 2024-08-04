@@ -18,17 +18,14 @@
 #include "../actions/RideSetStatusAction.h"
 #include "../actions/RideSetVehicleAction.h"
 #include "../actions/TrackRemoveAction.h"
-#include "../common.h"
 #include "../core/FixedVector.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Window_internal.h"
-#include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
+#include "../localisation/Localisation.Date.h"
 #include "../network/network.h"
-#include "../paint/VirtualFloor.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
@@ -50,6 +47,9 @@
 #include "TrainManager.h"
 #include "Vehicle.h"
 
+#include <cassert>
+
+using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
 money64 _currentTrackPrice;
@@ -259,8 +259,8 @@ void Ride::RemovePeeps()
         {
             auto direction = DirectionReverse(location.direction);
             exitPosition = location;
-            exitPosition.x += (DirectionOffsets[direction].x * 20) + COORDS_XY_HALF_TILE;
-            exitPosition.y += (DirectionOffsets[direction].y * 20) + COORDS_XY_HALF_TILE;
+            exitPosition.x += (DirectionOffsets[direction].x * 20) + kCoordsXYHalfTile;
+            exitPosition.y += (DirectionOffsets[direction].y * 20) + kCoordsXYHalfTile;
             exitPosition.z += 2;
 
             // Reverse direction
@@ -287,7 +287,7 @@ void Ride::RemovePeeps()
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
-                    newLoc.z += COORDS_Z_STEP;
+                    newLoc.z += kCoordsZStep;
                 newLoc.z++;
                 peep->MoveTo(newLoc);
             }
@@ -317,7 +317,7 @@ void Ride::RemovePeeps()
             {
                 CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
                 if (peep->GetNextIsSloped())
-                    newLoc.z += COORDS_Z_STEP;
+                    newLoc.z += kCoordsZStep;
                 newLoc.z++;
                 peep->MoveTo(newLoc);
             }
@@ -461,6 +461,12 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         }
     }
     return retCoordsXYZ;
+}
+
+static void WindowRideConstructionUpdateActiveElements()
+{
+    auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
+    ContextBroadcastIntent(&intent);
 }
 
 void RideRestoreProvisionalTrackPiece()
@@ -776,9 +782,6 @@ void RideSelectNextSection()
             return;
         }
 
-        // Invalidate previous track piece (we may not be changing height!)
-        VirtualFloorInvalidate();
-
         CoordsXYE inputElement, outputElement;
         inputElement.x = newCoords->x;
         inputElement.y = newCoords->y;
@@ -788,12 +791,6 @@ void RideSelectNextSection()
             newCoords->x = outputElement.x;
             newCoords->y = outputElement.y;
             tileElement = outputElement.element;
-            if (!SceneryToolIsActive())
-            {
-                // Set next element's height.
-                VirtualFloorSetHeight(tileElement->GetBaseZ());
-            }
-
             _currentTrackBegin = *newCoords;
             _currentTrackPieceDirection = tileElement->GetDirection();
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
@@ -843,9 +840,6 @@ void RideSelectPreviousSection()
             return;
         }
 
-        // Invalidate previous track piece (we may not be changing height!)
-        VirtualFloorInvalidate();
-
         TrackBeginEnd trackBeginEnd;
         if (TrackBlockGetPrevious({ *newCoords, tileElement }, &trackBeginEnd))
         {
@@ -855,11 +849,6 @@ void RideSelectPreviousSection()
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            if (!SceneryToolIsActive())
-            {
-                // Set previous element's height.
-                VirtualFloorSetHeight(trackBeginEnd.begin_element->GetBaseZ());
-            }
             WindowRideConstructionUpdateActiveElements();
         }
         else
@@ -1214,134 +1203,6 @@ money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t
     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting)
                                                : GameActions::QueryNested(&rideSetSetting);
     return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
-}
-
-/**
- *
- *  rct2: 0x006CCF70
- */
-CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords)
-{
-    CoordsXYZD entranceExitCoords{};
-    gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
-    // determine if the mouse is hovering over a station - that's the station to add the entrance to
-    auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
-    if (info.SpriteType != ViewportInteractionItem::None)
-    {
-        if (info.Element->GetType() == TileElementType::Track)
-        {
-            const auto* trackElement = info.Element->AsTrack();
-            if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
-            {
-                const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-                if (std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN)
-                {
-                    if (trackElement->GetTrackType() == TrackElemType::Maze)
-                    {
-                        gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-                    }
-                    else
-                    {
-                        gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
-                    }
-                }
-            }
-        }
-    }
-
-    auto ride = GetRide(gRideEntranceExitPlaceRideIndex);
-    if (ride == nullptr)
-    {
-        entranceExitCoords.SetNull();
-        return entranceExitCoords;
-    }
-
-    auto stationBaseZ = ride->GetStation(gRideEntranceExitPlaceStationIndex).GetBaseZ();
-
-    auto coordsAtHeight = ScreenGetMapXYWithZ(screenCoords, stationBaseZ);
-    if (!coordsAtHeight.has_value())
-    {
-        entranceExitCoords.SetNull();
-        return entranceExitCoords;
-    }
-
-    entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, INVALID_DIRECTION };
-
-    if (ride->type == RIDE_TYPE_NULL)
-    {
-        entranceExitCoords.SetNull();
-        return entranceExitCoords;
-    }
-
-    auto stationStart = ride->GetStation(gRideEntranceExitPlaceStationIndex).Start;
-    if (stationStart.IsNull())
-    {
-        entranceExitCoords.SetNull();
-        return entranceExitCoords;
-    }
-
-    // find the quadrant the mouse is hovering over - that's the direction to start searching for a station TileElement
-    Direction startDirection = 0;
-    auto mapX = (coordsAtHeight->x & 0x1F) - 16;
-    auto mapY = (coordsAtHeight->y & 0x1F) - 16;
-    if (std::abs(mapX) < std::abs(mapY))
-    {
-        startDirection = mapY < 0 ? 3 : 1;
-    }
-    else
-    {
-        startDirection = mapX < 0 ? 0 : 2;
-    }
-    // check all 4 directions, starting with the mouse's quadrant
-    for (uint8_t directionIncrement = 0; directionIncrement < 4; directionIncrement++)
-    {
-        entranceExitCoords.direction = (startDirection + directionIncrement) & 3;
-        // search for TrackElement one tile over, shifted in the search direction
-        auto nextLocation = entranceExitCoords;
-        nextLocation += CoordsDirectionDelta[entranceExitCoords.direction];
-        if (MapIsLocationValid(nextLocation))
-        {
-            // iterate over every element in the tile until we find what we want
-            auto* tileElement = MapGetFirstElementAt(nextLocation);
-            if (tileElement == nullptr)
-                continue;
-            do
-            {
-                if (tileElement->GetType() != TileElementType::Track)
-                    continue;
-                if (tileElement->GetBaseZ() != stationBaseZ)
-                    continue;
-                auto* trackElement = tileElement->AsTrack();
-                if (trackElement->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
-                    continue;
-                if (trackElement->GetTrackType() == TrackElemType::Maze)
-                {
-                    // if it's a maze, it can place the entrance and exit immediately
-                    entranceExitCoords.direction = DirectionReverse(entranceExitCoords.direction);
-                    gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
-                    return entranceExitCoords;
-                }
-                // if it's not a maze, the sequence properties for the TrackElement must be found to determine if an
-                // entrance can be placed on that side
-
-                gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
-
-                // get the ride entrance's side relative to the TrackElement
-                Direction direction = (DirectionReverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
-                const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-                if (ted.SequenceProperties[trackElement->GetSequenceIndex()] & (1 << direction))
-                {
-                    // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from
-                    // the station
-                    entranceExitCoords.direction = DirectionReverse(entranceExitCoords.direction);
-                    gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
-                    return entranceExitCoords;
-                }
-            } while (!(tileElement++)->IsLastForTile());
-        }
-    }
-    gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
-    return entranceExitCoords;
 }
 
 /**

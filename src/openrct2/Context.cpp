@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #ifdef __EMSCRIPTEN__
+#    include <cassert>
 #    include <emscripten.h>
 #endif // __EMSCRIPTEN__
 
@@ -47,9 +48,8 @@
 #include "interface/InteractiveConsole.h"
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
-#include "localisation/Date.h"
 #include "localisation/Formatter.h"
-#include "localisation/Localisation.h"
+#include "localisation/Localisation.Date.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
 #include "network/NetworkBase.h"
@@ -78,6 +78,7 @@
 #include "util/Util.h"
 #include "world/Park.h"
 
+#include <chrono>
 #include <cmath>
 #include <exception>
 #include <future>
@@ -96,6 +97,13 @@ using OpenRCT2::Audio::IAudioContext;
 
 namespace OpenRCT2
 {
+    namespace
+    {
+        using namespace std::chrono_literals;
+
+        static constexpr auto kForcedUpdateInterval = 25ms;
+    } // namespace
+
     class Context final : public IContext
     {
     private:
@@ -151,6 +159,10 @@ namespace OpenRCT2
         NewVersionInfo _newVersionInfo;
         bool _hasNewVersionInfo = false;
 
+        // We keep track of this to perform certain operations differently.
+        std::thread::id _mainThreadId{};
+        Timer _forcedUpdateTimer;
+
     public:
         // Singleton of Context.
         // Remove this when GetContext() is no longer called so that
@@ -183,6 +195,7 @@ namespace OpenRCT2
             Guard::Assert(Instance == nullptr);
 
             Instance = this;
+            _mainThreadId = std::this_thread::get_id();
         }
 
         ~Context() override
@@ -195,6 +208,7 @@ namespace OpenRCT2
 #endif
 
             GameActions::ClearQueue();
+            _replayManager->StopRecording(true);
 #ifndef DISABLE_NETWORK
             _network.Close();
 #endif
@@ -523,17 +537,13 @@ namespace OpenRCT2
 
                 // TODO: preload the title scene in another (parallel) job.
                 preloaderScene->AddJob([this]() { InitialiseRepositories(); });
+                preloaderScene->AddJob([this]() { InitialiseScriptEngine(); });
             }
             else
             {
                 InitialiseRepositories();
+                InitialiseScriptEngine();
             }
-
-#ifdef ENABLE_SCRIPTING
-            _scriptEngine.Initialise();
-#endif
-
-            _uiContext->Initialise();
 
             return true;
         }
@@ -572,6 +582,17 @@ namespace OpenRCT2
             TitleSequenceManager::Scan();
 
             OpenProgress(STR_LOADING_GENERIC);
+        }
+
+        void InitialiseScriptEngine()
+        {
+#ifdef ENABLE_SCRIPTING
+            OpenProgress(STR_LOADING_PLUGIN_ENGINE);
+            _scriptEngine.Initialise();
+            _uiContext->InitialiseScriptExtensions();
+
+            OpenProgress(STR_LOADING_GENERIC);
+#endif
         }
 
     public:
@@ -650,11 +671,26 @@ namespace OpenRCT2
 
         void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE) override
         {
+            if (_forcedUpdateTimer.GetElapsedTime() < kForcedUpdateInterval)
+                return;
+
+            _forcedUpdateTimer.Restart();
+
             auto intent = Intent(INTENT_ACTION_PROGRESS_SET);
             intent.PutExtra(INTENT_EXTRA_PROGRESS_OFFSET, currentProgress);
             intent.PutExtra(INTENT_EXTRA_PROGRESS_TOTAL, totalCount);
             intent.PutExtra(INTENT_EXTRA_STRING_ID, format);
             ContextOpenIntent(&intent);
+
+            // When we call this from the main thread we can pump messages and redraw.
+            const auto isMainThread = _mainThreadId == std::this_thread::get_id();
+
+            if (!gOpenRCT2Headless && isMainThread)
+            {
+                _uiContext->ProcessMessages();
+                WindowInvalidateByClass(WindowClass::ProgressWindow);
+                Draw();
+            }
         }
 
         void CloseProgress() override
@@ -747,18 +783,30 @@ namespace OpenRCT2
                     parkImporter = ParkImporter::CreateS6(*_objectRepository);
                 }
 
+                // Inhibit viewport rendering while we're loading
+                WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
+
+                OpenProgress(asScenario ? STR_LOADING_SCENARIO : STR_LOADING_SAVED_GAME);
+                SetProgress(0, 100, STR_STRING_M_PERCENT);
+
                 auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+                SetProgress(10, 100, STR_STRING_M_PERCENT);
 
                 // From this point onwards the currently loaded park will be corrupted if loading fails
                 // so reload the title screen if that happens.
                 loadTitleScreenFirstOnFail = true;
 
                 GameUnloadScripts();
-                _objectManager->LoadObjects(result.RequiredObjects);
+                _objectManager->LoadObjects(result.RequiredObjects, true);
+                SetProgress(90, 100, STR_STRING_M_PERCENT);
 
                 // TODO: Have a separate GameState and exchange once loaded.
                 auto& gameState = ::GetGameState();
                 parkImporter->Import(gameState);
+                SetProgress(100, 100, STR_STRING_M_PERCENT);
+
+                // Reset viewport rendering inhibition
+                WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
 
                 gScenarioSavePath = path;
                 gCurrentLoadedPath = path;
@@ -833,6 +881,7 @@ namespace OpenRCT2
                     windowManager->ShowError(STR_PARK_USES_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter());
                 }
 
+                CloseProgress();
                 return true;
             }
             catch (const ObjectLoadException& e)
@@ -908,6 +957,8 @@ namespace OpenRCT2
                 Console::Error::WriteLine(e.what());
             }
 
+            CloseProgress();
+            WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
             return false;
         }
 
@@ -1349,7 +1400,10 @@ namespace OpenRCT2
 
             ChatUpdate();
 #ifdef ENABLE_SCRIPTING
-            _scriptEngine.Tick();
+            if (GetActiveScene() != GetPreloaderScene())
+            {
+                _scriptEngine.Tick();
+            }
 #endif
             _stdInOutConsole.ProcessEvalQueue();
             _uiContext->Tick();

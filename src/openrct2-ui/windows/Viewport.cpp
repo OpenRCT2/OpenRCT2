@@ -14,8 +14,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
+#include <openrct2/world/Map.h>
 
 namespace OpenRCT2::Ui::Windows
 {

@@ -19,10 +19,8 @@
 #include "../actions/LargeSceneryRemoveAction.h"
 #include "../actions/SmallSceneryRemoveAction.h"
 #include "../actions/WallRemoveAction.h"
-#include "../common.h"
 #include "../core/String.hpp"
 #include "../entity/Fountain.h"
-#include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../object/BannerSceneryEntry.h"
 #include "../object/LargeSceneryEntry.h"
@@ -58,8 +56,6 @@ int16_t gSceneryShiftPressZOffset;
 
 int16_t gSceneryCtrlPressed;
 int16_t gSceneryCtrlPressZ;
-
-money64 gClearSceneryCost;
 
 using namespace OpenRCT2;
 

@@ -3670,7 +3670,7 @@ STR_6599    :Geisterelement konnte nicht gefunden werden
 STR_6600    :Ballon konnte nicht gefunden werden
 STR_6601    :Mitarbeiter konnte nicht gefunden werden
 STR_6602    :Fahrgeschäft/Attraktion konnte nicht gefunden werden
-STR_6603    :Attraktionseingang konnte nicht gefunden werden
+STR_6603    :Attraktionsobjekteintrag konnte nicht gefunden werden
 STR_6604    :Spieler konnte nicht gefunden werden
 STR_6605    :Eingangselement konnte nicht gefunden werden
 STR_6606    :Oberflächenelement konnte nicht gefunden werden
@@ -3713,6 +3713,16 @@ STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 STR_6644    :Verbesserungen für die Touch-Bedienung
 STR_6645    :Vergrößert einige Bedienelemente, damit sie leichter angeklickt oder angetippt werden können.
+STR_6646    :Autor: {STRING}
+STR_6647    :Autoren: {STRING}
+STR_6648    :Pluginengine laden…
+STR_6649    :Szenario laden…
+STR_6650    :Gespeichertes Spiel laden…
+STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Fehlermeldung
+STR_6653    :Alle Quellen angezeigt
+STR_6654    :{POP16}{UINT16} Quellen angezeigt
+STR_6655    :Nur ‘{POP16}{STRINGID}’
 
 #############
 # Scenarios #

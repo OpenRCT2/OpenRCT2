@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/ViewportQuery.h"
+
 #include <openrct2-ui/input/ShortcutIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -22,7 +24,6 @@
 #include <openrct2/actions/FootpathRemoveAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
@@ -1146,7 +1147,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 return nullptr;
             }
 
-            z = std::min(255 * COORDS_Z_STEP, gFootpathConstructFromPosition.z);
+            z = std::min(255 * kCoordsZStep, gFootpathConstructFromPosition.z);
             zLow = z - PATH_HEIGHT_STEP;
 
             tileElement = MapGetFirstElementAt(gFootpathConstructFromPosition);
@@ -1520,6 +1521,23 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             {
                 footpathWindow->KeyboardShortcutBuildCurrent();
             }
+        }
+    }
+
+    /**
+     *
+     *  rct2: 0x0066CCE7
+     */
+    void ToggleFootpathWindow()
+    {
+        if (WindowFindByClass(WindowClass::Footpath) == nullptr)
+        {
+            ContextOpenWindow(WindowClass::Footpath);
+        }
+        else
+        {
+            ToolCancel();
+            WindowCloseByClass(WindowClass::Footpath);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

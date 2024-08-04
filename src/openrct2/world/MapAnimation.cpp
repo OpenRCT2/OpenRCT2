@@ -10,6 +10,7 @@
 #include "MapAnimation.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../entity/EntityList.h"

@@ -10,6 +10,7 @@
 #include "SetLocation.h"
 
 #include "../../../OpenRCT2.h"
+#include "../../../interface/Viewport.h"
 #include "../../../interface/Window.h"
 #include "../../../interface/Window_internal.h"
 #include "../../../world/Map.h"

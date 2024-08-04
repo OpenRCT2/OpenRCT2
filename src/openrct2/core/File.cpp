@@ -13,6 +13,7 @@
 #    include <sys/stat.h>
 #endif
 
+#include "../Diagnostic.h"
 #include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "File.h"
@@ -21,7 +22,7 @@
 
 #include <fstream>
 
-namespace File
+namespace OpenRCT2::File
 {
     bool Exists(u8string_view path)
     {
@@ -137,4 +138,4 @@ namespace File
     {
         return Platform::GetFileSize(path);
     }
-} // namespace File
+} // namespace OpenRCT2::File

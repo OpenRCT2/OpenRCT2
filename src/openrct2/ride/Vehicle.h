@@ -11,7 +11,6 @@
 
 #include "../Identifiers.h"
 #include "../audio/audio.h"
-#include "../common.h"
 #include "../entity/EntityBase.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
@@ -391,7 +390,7 @@ struct TrainReference
     Vehicle* tail;
 };
 
-namespace MiniGolfFlag
+namespace OpenRCT2::MiniGolfFlag
 {
     constexpr uint8_t Flag0 = (1 << 0);
     constexpr uint8_t Flag1 = (1 << 1);
@@ -399,7 +398,7 @@ namespace MiniGolfFlag
     constexpr uint8_t Flag3 = (1 << 3);
     constexpr uint8_t Flag4 = (1 << 4);
     constexpr uint8_t Flag5 = (1 << 5); // transitioning between hole
-} // namespace MiniGolfFlag
+} // namespace OpenRCT2::MiniGolfFlag
 
 enum class MiniGolfState : int16_t
 {
@@ -431,7 +430,7 @@ enum BoatHireSubState : uint8_t
     EnteringReturnPosition,
 };
 
-namespace VehicleFlags
+namespace OpenRCT2::VehicleFlags
 {
     constexpr uint32_t OnLiftHill = (1 << 0);
     constexpr uint32_t CollisionDisabled = (1 << 1);
@@ -454,7 +453,7 @@ namespace VehicleFlags
                                                   // an individual car on a train
     constexpr uint32_t Crashed = (1 << 15);       // Car displays as smoke plume
     constexpr uint32_t CarIsReversed = (1 << 16); // Car is displayed running backwards
-} // namespace VehicleFlags
+} // namespace OpenRCT2::VehicleFlags
 
 enum
 {

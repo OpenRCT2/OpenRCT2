@@ -13,10 +13,11 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
-#include "../localisation/Language.h"
-#include "../localisation/LanguagePack.h"
 #include "../localisation/LocalisationService.h"
+#include "../rct12/CSStringConverter.h"
 #include "Object.h"
+
+using namespace OpenRCT2;
 
 static constexpr uint8_t RCT2ToOpenRCT2LanguageId[] = {
     LANGUAGE_ENGLISH_UK,

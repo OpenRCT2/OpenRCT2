@@ -10,6 +10,7 @@
 #include "FootpathAdditionPlaceAction.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
@@ -23,6 +24,8 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Wall.h"
+
+using namespace OpenRCT2;
 
 FootpathAdditionPlaceAction::FootpathAdditionPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType)
     : _loc(loc)

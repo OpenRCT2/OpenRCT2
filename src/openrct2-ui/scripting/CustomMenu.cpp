@@ -11,6 +11,8 @@
 
 #    include "CustomMenu.h"
 
+#    include "../interface/Viewport.h"
+
 #    include <openrct2-ui/input/ShortcutManager.h>
 #    include <openrct2/Input.h>
 #    include <openrct2/world/Map.h>
@@ -86,9 +88,9 @@ namespace OpenRCT2::Scripting
         {
             auto str = CursorNames[value];
             duk_push_lstring(ctx, str.data(), str.size());
-            DukValue::take_from_stack(ctx);
+            return DukValue::take_from_stack(ctx);
         }
-        return {};
+        return ToDuk(ctx, undefined);
     }
 
     template<> CursorID FromDuk(const DukValue& s)

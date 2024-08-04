@@ -11,7 +11,6 @@
 
 #include "../Limits.h"
 #include "../actions/GameActionResult.h"
-#include "../common.h"
 #include "../object/Object.h"
 #include "../ride/RideColour.h"
 #include "../world/Map.h"
@@ -22,6 +21,7 @@
 
 struct Ride;
 struct ResultWithMessage;
+enum class ViewportInteractionItem : uint8_t;
 
 constexpr uint32_t kTrackPreviewImageSize = 370 * 217;
 
@@ -236,7 +236,7 @@ extern RideId gTrackDesignSaveRideIndex;
 
 void TrackDesignMirror(TrackDesign& td);
 
-GameActions::Result TrackDesignPlace(
+OpenRCT2::GameActions::Result TrackDesignPlace(
     const TrackDesign& td, uint32_t flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
 void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
 void TrackDesignPreviewDrawOutlines(TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);

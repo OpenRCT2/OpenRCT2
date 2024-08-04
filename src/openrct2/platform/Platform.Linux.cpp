@@ -9,6 +9,8 @@
 
 #if defined(__unix__) && !defined(__ANDROID__) && !defined(__APPLE__)
 
+#    include "../Diagnostic.h"
+
 #    include <cstring>
 #    include <fnmatch.h>
 #    include <limits.h>
@@ -35,7 +37,7 @@
 #    include "../localisation/Language.h"
 #    include "Platform.h"
 
-namespace Platform
+namespace OpenRCT2::Platform
 {
     std::string GetFolderPath(SPECIAL_FOLDER folder)
     {
@@ -389,6 +391,6 @@ namespace Platform
         return path;
     }
 #    endif // NO_TTF
-} // namespace Platform
+} // namespace OpenRCT2::Platform
 
 #endif

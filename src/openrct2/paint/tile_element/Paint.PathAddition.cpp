@@ -11,9 +11,12 @@
 
 #include "../../core/Numerics.hpp"
 #include "../../drawing/LightFX.h"
+#include "../../interface/Viewport.h"
 #include "../../object/PathAdditionEntry.h"
 #include "../../profiling/Profiling.h"
 #include "Paint.TileElement.h"
+
+using namespace OpenRCT2;
 
 static ImageIndex GetEdgeImageOffset(edge_t edge)
 {

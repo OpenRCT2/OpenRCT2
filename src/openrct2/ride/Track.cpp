@@ -10,12 +10,12 @@
 #include "Track.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../platform/Platform.h"
@@ -35,6 +35,8 @@
 #include "Station.h"
 #include "TrackData.h"
 #include "TrackDesign.h"
+
+#include <cassert>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
@@ -136,7 +138,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
             auto& station = ride->GetStation(stationIndex);
             station.Start.x = loc.x;
             station.Start.y = loc.y;
-            station.Height = loc.z / COORDS_Z_STEP;
+            station.Height = loc.z / kCoordsZStep;
             station.Depart = 1;
             station.Length = 0;
             ride->num_stations++;
@@ -227,7 +229,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
                     {
                         auto& station = ride->GetStation(stationIndex);
                         station.Start = loc;
-                        station.Height = loc.z / COORDS_Z_STEP;
+                        station.Height = loc.z / kCoordsZStep;
                         station.Depart = 1;
                         station.Length = stationLength;
                         ride->num_stations++;
@@ -362,7 +364,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
                     {
                         auto& station = ride->GetStation(stationIndex);
                         station.Start = currentLoc;
-                        station.Height = currentLoc.z / COORDS_Z_STEP;
+                        station.Height = currentLoc.z / kCoordsZStep;
                         station.Depart = 1;
                         station.Length = stationLength != 0 ? stationLength : ByteF441D1;
                         ride->num_stations++;

@@ -10,6 +10,7 @@
 #include "Guest.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -26,7 +27,6 @@
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
@@ -37,6 +37,7 @@
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"
 #include "../peep/PeepAnimationData.h"
+#include "../peep/PeepThoughts.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
@@ -61,6 +62,7 @@
 #include "Peep.h"
 #include "Staff.h"
 
+#include <cassert>
 #include <functional>
 #include <iterator>
 
@@ -453,7 +455,7 @@ template<> bool EntityBase::Is<Guest>() const
 
 static bool IsValidLocation(const CoordsXYZ& coords)
 {
-    if (coords.x != LOCATION_NULL)
+    if (coords.x != kLocationNull)
     {
         if (MapIsLocationValid(coords))
         {
@@ -917,7 +919,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
         }
     }
 
-    if (PeepFlags & PEEP_FLAGS_EXPLODE && x != LOCATION_NULL)
+    if (PeepFlags & PEEP_FLAGS_EXPLODE && x != kLocationNull)
     {
         if (State == PeepState::Walking || State == PeepState::Sitting)
         {
@@ -966,7 +968,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
         if (SurroundingsThoughtTimeout >= 18)
         {
             SurroundingsThoughtTimeout = 0;
-            if (x != LOCATION_NULL)
+            if (x != kLocationNull)
             {
                 PeepThoughtType thought_type = PeepAssessSurroundings(x & 0xFFE0, y & 0xFFE0, z);
 
@@ -1313,7 +1315,7 @@ void Guest::UpdateSitting()
 
         if (HasFoodOrDrink())
         {
-            if ((ScenarioRand() & 0xFFFFU) > 1310U)
+            if ((ScenarioRand() & 0xFFFFu) > 1310u)
             {
                 TryGetUpFromSitting();
                 return;
@@ -1326,7 +1328,7 @@ void Guest::UpdateSitting()
         }
 
         const auto rand = ScenarioRand();
-        if ((rand & 0xFFFFU) > 131U)
+        if ((rand & 0xFFFFu) > 131u)
         {
             TryGetUpFromSitting();
             return;
@@ -1338,12 +1340,12 @@ void Guest::UpdateSitting()
         }
 
         Action = PeepActionType::SittingLookAroundLeft;
-        if (rand & 0x80000000U)
+        if (rand & 0x80000000u)
         {
             Action = PeepActionType::SittingLookAroundRight;
         }
 
-        if (rand & 0x40000000U)
+        if (rand & 0x40000000u)
         {
             Action = PeepActionType::SittingCheckWatch;
         }
@@ -1358,12 +1360,12 @@ void Guest::UpdateSitting()
  * To simplify check of 0x36BA3E0 and 0x11FF78
  * returns false on no food.
  */
-int64_t Guest::GetFoodOrDrinkFlags() const
+uint64_t Guest::GetFoodOrDrinkFlags() const
 {
     return GetItemFlags() & (ShopItemsGetAllFoods() | ShopItemsGetAllDrinks());
 }
 
-int64_t Guest::GetEmptyContainerFlags() const
+uint64_t Guest::GetEmptyContainerFlags() const
 {
     return GetItemFlags() & ShopItemsGetAllContainers();
 }
@@ -1826,7 +1828,7 @@ void Guest::PickRideToGoOn()
         return;
     if (HasFoodOrDrink())
         return;
-    if (x == LOCATION_NULL)
+    if (x == kLocationNull)
         return;
 
     auto ride = FindBestRideToGoOn();
@@ -1895,9 +1897,9 @@ OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> Guest::FindRidesToGoOn()
         constexpr auto radius = 10 * 32;
         int32_t cx = Floor2(x, 32);
         int32_t cy = Floor2(y, 32);
-        for (int32_t tileX = cx - radius; tileX <= cx + radius; tileX += COORDS_XY_STEP)
+        for (int32_t tileX = cx - radius; tileX <= cx + radius; tileX += kCoordsXYStep)
         {
-            for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += COORDS_XY_STEP)
+            for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += kCoordsXYStep)
             {
                 auto location = CoordsXY{ tileX, tileY };
                 if (!MapIsLocationValid(location))
@@ -2143,7 +2145,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
             // there's a 90% chance that the peep will ignore it.
             if (!RideHasRatings(ride) && ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES))
             {
-                if ((ScenarioRand() & 0xFFFF) > 0x1999U)
+                if ((ScenarioRand() & 0xFFFF) > 0x1999u)
                 {
                     ChoseNotToGoOnRide(ride, peepAtRide, false);
                     return false;
@@ -2933,9 +2935,9 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
     int16_t final_x = std::min(centre_x + 160, MAXIMUM_MAP_SIZE_BIG);
     int16_t final_y = std::min(centre_y + 160, MAXIMUM_MAP_SIZE_BIG);
 
-    for (int16_t x = initial_x; x < final_x; x += COORDS_XY_STEP)
+    for (int16_t x = initial_x; x < final_x; x += kCoordsXYStep)
     {
-        for (int16_t y = initial_y; y < final_y; y += COORDS_XY_STEP)
+        for (int16_t y = initial_y; y < final_y; y += kCoordsXYStep)
         {
             for (auto* tileElement : TileElementsView(CoordsXY{ x, y }))
             {
@@ -3140,7 +3142,7 @@ template<typename T> static void PeepHeadForNearestRide(Guest* peep, bool consid
     }
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return;
-    if (peep->x == LOCATION_NULL)
+    if (peep->x == kLocationNull)
         return;
     if (!peep->GuestHeadingToRideId.IsNull())
     {
@@ -3169,9 +3171,9 @@ template<typename T> static void PeepHeadForNearestRide(Guest* peep, bool consid
         constexpr auto searchRadius = 10 * 32;
         int32_t cx = Floor2(peep->x, 32);
         int32_t cy = Floor2(peep->y, 32);
-        for (auto x = cx - searchRadius; x <= cx + searchRadius; x += COORDS_XY_STEP)
+        for (auto x = cx - searchRadius; x <= cx + searchRadius; x += kCoordsXYStep)
         {
-            for (auto y = cy - searchRadius; y <= cy + searchRadius; y += COORDS_XY_STEP)
+            for (auto y = cy - searchRadius; y <= cy + searchRadius; y += kCoordsXYStep)
             {
                 auto location = CoordsXY{ x, y };
                 if (!MapIsLocationValid(location))
@@ -3645,7 +3647,7 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
     const auto& rtd = ride.GetRideTypeDescriptor();
     CoordsXY waypoint = rtd.GetGuestWaypointLocation(*vehicle, ride, CurrentRideStation);
 
-    const auto waypointIndex = Var37 / 4U;
+    const auto waypointIndex = Var37 / 4u;
     if (waypointIndex < carEntry->peep_loading_waypoints.size())
     {
         Guard::Assert(carEntry->peep_loading_waypoints.size() >= static_cast<size_t>(waypointIndex));
@@ -4083,7 +4085,7 @@ void Guest::UpdateRideEnterVehicle()
                     ride->cur_num_customers++;
 
                     vehicle->ApplyMass(seatedGuest->Mass);
-                    seatedGuest->MoveTo({ LOCATION_NULL, 0, 0 });
+                    seatedGuest->MoveTo({ kLocationNull, 0, 0 });
                     seatedGuest->SetState(PeepState::OnRide);
                     seatedGuest->GuestTimeOnRide = 0;
                     seatedGuest->RideSubState = PeepRideSubState::OnRide;
@@ -4097,7 +4099,7 @@ void Guest::UpdateRideEnterVehicle()
             vehicle->ApplyMass(Mass);
             vehicle->Invalidate();
 
-            MoveTo({ LOCATION_NULL, 0, 0 });
+            MoveTo({ kLocationNull, 0, 0 });
 
             SetState(PeepState::OnRide);
 
@@ -4315,7 +4317,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     CoordsXYZ exitWaypointLoc = waypointLoc;
 
-    const auto waypointIndex = Var37 / 4U;
+    const auto waypointIndex = Var37 / 4u;
     if (waypointIndex < carEntry->peep_loading_waypoints.size())
     {
         exitWaypointLoc.x += carEntry->peep_loading_waypoints[waypointIndex][2].x;
@@ -4492,7 +4494,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     }
 
     const auto& vehicle_type = rideEntry->Cars[vehicle->vehicle_type];
-    const auto waypointIndex = Var37 / 4U;
+    const auto waypointIndex = Var37 / 4u;
     if (waypointIndex < vehicle_type.peep_loading_waypoints.size())
     {
         Guard::Assert(waypoint < 3);
@@ -4657,7 +4659,7 @@ void Guest::UpdateRideApproachSpiralSlide()
         SubState = 15;
         SetDestination({ 0, 0 });
         Var37 = (Var37 / 4) & 0xC;
-        MoveTo({ LOCATION_NULL, y, z });
+        MoveTo({ kLocationNull, y, z });
         return;
     }
 
@@ -6246,7 +6248,7 @@ static void PeepUpdateWalkingBreakScenery(Guest* peep)
         if (inner_peep->AssignedStaffType != StaffType::Security)
             continue;
 
-        if (inner_peep->x == LOCATION_NULL)
+        if (inner_peep->x == kLocationNull)
             continue;
 
         int32_t x_diff = abs(inner_peep->x - peep->x);
@@ -6337,7 +6339,7 @@ bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElem
         *rideSeatToView = 1;
         if (ride->status != RideStatus::Open)
         {
-            if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * COORDS_Z_STEP))
+            if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * kCoordsZStep))
             {
                 *rideSeatToView |= (1 << 1);
             }
@@ -6350,7 +6352,7 @@ bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElem
         *rideSeatToView = 0;
         if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * COORDS_Z_STEP))
+            if (tileElement->GetClearanceZ() > peep->NextLoc.z + (8 * kCoordsZStep))
             {
                 *rideSeatToView = 0x02;
             }
@@ -6400,9 +6402,9 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
-        if (peep->NextLoc.z + (4 * COORDS_Z_STEP) <= tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (4 * kCoordsZStep) <= tileElement->GetBaseZ())
             continue;
-        if (peep->NextLoc.z + (1 * COORDS_Z_STEP) >= tileElement->GetClearanceZ())
+        if (peep->NextLoc.z + (1 * kCoordsZStep) >= tileElement->GetClearanceZ())
             continue;
 
         return false;
@@ -6440,9 +6442,9 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
         if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
         // TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
-        if (peep->NextLoc.z + (4 * COORDS_Z_STEP) >= tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (4 * kCoordsZStep) >= tileElement->GetBaseZ())
             continue;
-        if (peep->NextLoc.z + (1 * COORDS_Z_STEP) >= tileElement->GetClearanceZ())
+        if (peep->NextLoc.z + (1 * kCoordsZStep) >= tileElement->GetClearanceZ())
             continue;
 
         return false;
@@ -6460,9 +6462,9 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
                 continue;
         }
 
-        if (tileElement->GetClearanceZ() + (1 * COORDS_Z_STEP) < peep->NextLoc.z)
+        if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < peep->NextLoc.z)
             continue;
-        if (peep->NextLoc.z + (6 * COORDS_Z_STEP) < tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (6 * kCoordsZStep) < tileElement->GetBaseZ())
             continue;
 
         if (tileElement->GetType() == TileElementType::Track)
@@ -6482,7 +6484,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
             }
 
             *rideSeatToView = 0;
-            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + (8 * COORDS_Z_STEP))
+            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + (8 * kCoordsZStep))
             {
                 *rideSeatToView = 0x02;
             }
@@ -6504,9 +6506,9 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetClearanceZ() + (1 * COORDS_Z_STEP) < peep->NextLoc.z)
+        if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < peep->NextLoc.z)
             continue;
-        if (peep->NextLoc.z + (6 * COORDS_Z_STEP) < tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (6 * kCoordsZStep) < tileElement->GetBaseZ())
             continue;
         if (tileElement->GetType() == TileElementType::Surface)
             continue;
@@ -6558,7 +6560,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
-        if (peep->NextLoc.z + (6 * COORDS_Z_STEP) <= tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (6 * kCoordsZStep) <= tileElement->GetBaseZ())
             continue;
         if (peep->NextLoc.z >= tileElement->GetClearanceZ())
             continue;
@@ -6577,9 +6579,9 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetClearanceZ() + (1 * COORDS_Z_STEP) < peep->NextLoc.z)
+        if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < peep->NextLoc.z)
             continue;
-        if (peep->NextLoc.z + (8 * COORDS_Z_STEP) < tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (8 * kCoordsZStep) < tileElement->GetBaseZ())
             continue;
 
         if (tileElement->GetType() == TileElementType::Track)
@@ -6599,7 +6601,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
             }
 
             *rideSeatToView = 0;
-            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + (8 * COORDS_Z_STEP))
+            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + (8 * kCoordsZStep))
             {
                 *rideSeatToView = 0x02;
             }
@@ -6621,9 +6623,9 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetClearanceZ() + (1 * COORDS_Z_STEP) < peep->NextLoc.z)
+        if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < peep->NextLoc.z)
             continue;
-        if (peep->NextLoc.z + (8 * COORDS_Z_STEP) < tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (8 * kCoordsZStep) < tileElement->GetBaseZ())
             continue;
         if (tileElement->GetType() == TileElementType::Surface)
             continue;
@@ -6674,7 +6676,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
         auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
-        if (peep->NextLoc.z + (8 * COORDS_Z_STEP) <= tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (8 * kCoordsZStep) <= tileElement->GetBaseZ())
             continue;
         if (peep->NextLoc.z >= tileElement->GetClearanceZ())
             continue;
@@ -6693,9 +6695,9 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetClearanceZ() + (1 * COORDS_Z_STEP) < peep->NextLoc.z)
+        if (tileElement->GetClearanceZ() + (1 * kCoordsZStep) < peep->NextLoc.z)
             continue;
-        if (peep->NextLoc.z + (10 * COORDS_Z_STEP) < tileElement->GetBaseZ())
+        if (peep->NextLoc.z + (10 * kCoordsZStep) < tileElement->GetBaseZ())
             continue;
 
         if (tileElement->GetType() == TileElementType::Track)
@@ -6715,7 +6717,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
             }
 
             *rideSeatToView = 0;
-            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + (8 * COORDS_Z_STEP))
+            if (tileElement->GetClearanceZ() >= peep->NextLoc.z + (8 * kCoordsZStep))
             {
                 *rideSeatToView = 0x02;
             }
@@ -6817,7 +6819,7 @@ void Guest::UpdateSpriteType()
     if (SpriteType == PeepSpriteType::Balloon && (ScenarioRand() & 0xFFFF) <= 327)
     {
         bool isBalloonPopped = false;
-        if (x != LOCATION_NULL)
+        if (x != kLocationNull)
         {
             if ((ScenarioRand() & 0xFFFF) <= 13107)
             {
@@ -6831,7 +6833,7 @@ void Guest::UpdateSpriteType()
     }
 
     const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
-    if (isPrecipitating && (HasItem(ShopItem::Umbrella)) && x != LOCATION_NULL)
+    if (isPrecipitating && (HasItem(ShopItem::Umbrella)) && x != kLocationNull)
     {
         CoordsXY loc = { x, y };
         if (MapIsLocationValid(loc.ToTileStart()))
@@ -6916,7 +6918,7 @@ bool Guest::HeadingForRideOrParkExit() const
  */
 void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft)
 {
-    ft.Add<StringId>(PeepThoughts[EnumValue(thought->type)]);
+    ft.Add<StringId>(kPeepThoughtIds[EnumValue(thought->type)]);
 
     PeepThoughtToActionFlag flags = PeepThoughtToActionMap[EnumValue(thought->type)].flags;
     if (flags & PEEP_THOUGHT_ACTION_FLAG_RIDE)

@@ -10,6 +10,7 @@
 #include "ReplayManager.h"
 
 #include "Context.h"
+#include "Diagnostic.h"
 #include "Game.h"
 #include "GameState.h"
 #include "GameStateSnapshots.h"
@@ -28,6 +29,7 @@
 #include "core/Path.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
+#include "interface/Window.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -183,7 +185,10 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
                 // If the network is disabled we will only get a dummy hash which will cause
                 // false positives during replay.
-                CheckState();
+                if (!gSilentReplays)
+                {
+                    CheckState();
+                }
 #endif
                 ReplayCommands();
 
@@ -869,7 +874,7 @@ namespace OpenRCT2
                 }
 
                 // Focus camera on event.
-                if (isPositionValid && !result.Position.IsNull())
+                if (!gSilentReplays && isPositionValid && !result.Position.IsNull())
                 {
                     auto* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)

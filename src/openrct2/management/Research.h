@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../localisation/StringIdType.h"
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectTypes.h"
 #include "../ride/RideTypes.h"
@@ -25,7 +25,7 @@ namespace OpenRCT2
     struct GameState_t;
 }
 
-namespace Research
+namespace OpenRCT2::Research
 {
     enum class EntryType : uint8_t
     {
@@ -61,7 +61,7 @@ struct ResearchItem
         {
             ObjectEntryIndex entryIndex;
             uint8_t baseRideType;
-            Research::EntryType type; // 0: scenery entry, 1: ride entry
+            OpenRCT2::Research::EntryType type; // 0: scenery entry, 1: ride entry
         };
     };
     uint8_t flags;
@@ -83,7 +83,7 @@ struct ResearchItem
     {
     }
     ResearchItem(
-        Research::EntryType _type, ObjectEntryIndex _entryIndex, uint8_t _baseRideType, ResearchCategory _category,
+        OpenRCT2::Research::EntryType _type, ObjectEntryIndex _entryIndex, uint8_t _baseRideType, ResearchCategory _category,
         uint8_t _flags)
         : entryIndex(_entryIndex)
         , baseRideType(_baseRideType)
@@ -116,6 +116,8 @@ enum
 };
 
 extern bool gSilentResearch;
+
+extern const StringId kResearchFundingLevelNames[4];
 
 void ResearchResetItems(OpenRCT2::GameState_t& gameState);
 void ResearchUpdateUncompletedTypes();

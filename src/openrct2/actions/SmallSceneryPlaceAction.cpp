@@ -10,12 +10,11 @@
 #include "SmallSceneryPlaceAction.h"
 
 #include "../Cheats.h"
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../common.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/ObjectEntryManager.h"
@@ -233,7 +232,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
 
     int32_t zLow = targetHeight;
-    int32_t zHigh = zLow + Ceil2(sceneryEntry->height, COORDS_Z_STEP);
+    int32_t zHigh = zLow + Ceil2(sceneryEntry->height, kCoordsZStep);
     uint8_t collisionQuadrants = 0b1111;
     auto quadRotation{ 0 };
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))

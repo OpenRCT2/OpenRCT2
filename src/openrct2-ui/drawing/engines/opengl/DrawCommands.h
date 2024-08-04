@@ -13,7 +13,6 @@
 #include "OpenGLAPI.h"
 #include "TextureCache.h"
 
-#include <openrct2/common.h>
 #include <vector>
 namespace OpenRCT2::Ui
 {
@@ -94,7 +93,6 @@ namespace OpenRCT2::Ui
 
     struct DrawLineCommand
     {
-        ivec4 clip;
         ivec4 bounds;
         GLuint colour;
         GLint depth;

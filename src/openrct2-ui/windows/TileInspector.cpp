@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../UiStringIds.h"
+#include "../interface/Viewport.h"
 
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -16,10 +17,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/TileModifyAction.h>
-#include <openrct2/common.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
@@ -723,7 +722,8 @@ static uint64_t PageDisabledWidgets[] = {
 
         void OnClose() override
         {
-            ToolCancel();
+            if (gCurrentToolWidget.window_classification == WindowClass::TileInspector)
+                ToolCancel();
             TileElement* const elem = OpenRCT2::TileInspector::GetSelectedElement();
             if (elem != nullptr)
             {
@@ -1619,7 +1619,7 @@ static uint64_t PageDisabledWidgets[] = {
 
                 auto checkboxFormatter = Formatter();
                 checkboxFormatter.Add<StringId>(STR_STRING);
-                checkboxFormatter.Add<char*>(CheckBoxMarkString);
+                checkboxFormatter.Add<char*>(kCheckMarkString);
 
                 // Draw checkbox and check if visible
                 GfxFillRectInset(dpi, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], INSET_RECT_F_E0);
@@ -1627,7 +1627,7 @@ static uint64_t PageDisabledWidgets[] = {
                 {
                     auto eyeFormatter = Formatter();
                     eyeFormatter.Add<StringId>(STR_STRING);
-                    eyeFormatter.Add<char*>(EyeString);
+                    eyeFormatter.Add<char*>(kEyeString);
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 2, 1 }, stringFormat, eyeFormatter);
                 }
 
@@ -2024,7 +2024,7 @@ static uint64_t PageDisabledWidgets[] = {
         void BannerToggleBlock(int32_t elementIndex, int32_t edgeIndex)
         {
             Guard::Assert(edgeIndex >= 0 && edgeIndex < 4, "edgeIndex out of range");
-            // Make edgeIndex abstract
+            // Make edgeIndex  = 0
             edgeIndex = (edgeIndex - GetCurrentRotation()) & 3;
             auto modifyTile = TileModifyAction(_toolMap, TileModifyType::BannerToggleBlockingEdge, elementIndex, edgeIndex);
             GameActions::Execute(&modifyTile);

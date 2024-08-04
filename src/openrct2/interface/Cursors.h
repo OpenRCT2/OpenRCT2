@@ -9,8 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
-
+#include <cstdint>
 #include <string>
 
 enum class CursorID : uint8_t
@@ -47,7 +46,7 @@ enum class CursorID : uint8_t
     Undefined = 0xFF
 };
 
-namespace Cursor
+namespace OpenRCT2::Cursor
 {
     CursorID FromString(const std::string& s, CursorID defaultValue);
 }

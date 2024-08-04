@@ -9,7 +9,6 @@
 
 #include "IniReader.hpp"
 
-#include "../common.h"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.h"
@@ -19,6 +18,8 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+using namespace OpenRCT2;
 
 /**
  * Simple tuple (start, length) representing a text span in a buffer.

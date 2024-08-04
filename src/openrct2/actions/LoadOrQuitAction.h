@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../interface/Window.h"
 #include "GameAction.h"
 
 enum class LoadOrQuitModes : uint8_t
@@ -32,6 +33,6 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result Query() const override;
-    GameActions::Result Execute() const override;
+    OpenRCT2::GameActions::Result Query() const override;
+    OpenRCT2::GameActions::Result Execute() const override;
 };

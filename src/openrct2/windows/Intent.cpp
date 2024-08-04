@@ -13,6 +13,8 @@
 
 #include <utility>
 
+using namespace OpenRCT2;
+
 Intent::Intent(WindowClass windowClass)
     : _Class(windowClass)
 {

@@ -3,6 +3,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 
+#include <cassert>
 #include <numeric>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -106,7 +107,7 @@ namespace OpenRCT2::Audio
         if (vehicle.sound1_id == SoundId::Null && vehicle.sound2_id == SoundId::Null)
             return false;
 
-        if (vehicle.x == LOCATION_NULL)
+        if (vehicle.x == kLocationNull)
             return false;
 
         if (g_music_tracking_viewport == nullptr)
@@ -212,7 +213,7 @@ namespace OpenRCT2::Audio
         param.id = vehicle.Id.ToUnderlying();
         param.volume = 0;
 
-        if (vehicle.x != LOCATION_NULL)
+        if (vehicle.x != kLocationNull)
         {
             auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ vehicle.x, vehicle.y });
 

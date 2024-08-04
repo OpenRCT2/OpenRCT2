@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../common.h"
 #include "../core/File.h"
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
@@ -17,6 +16,8 @@
 #include <cstring>
 #include <memory>
 #include <string_view>
+
+using namespace OpenRCT2;
 
 constexpr int32_t MASK_SIZE = 0x1000;
 

@@ -9,11 +9,14 @@
 
 #include "PeepPickupAction.h"
 
+#include "../Diagnostic.h"
 #include "../Input.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
 #include "../network/network.h"
 #include "../util/Util.h"
+
+using namespace OpenRCT2;
 
 PeepPickupAction::PeepPickupAction(PeepPickupType type, EntityId entityId, const CoordsXYZ& loc, NetworkPlayerId_t owner)
     : _type(type)

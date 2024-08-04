@@ -13,6 +13,8 @@
 #include "../network/network.h"
 #include "CommandLine.hpp"
 
+using namespace OpenRCT2;
+
 static exitcode_t HandleUri(const std::string& uri);
 
 #ifndef DISABLE_NETWORK

@@ -9,6 +9,7 @@
 
 #include "PlatformEnvironment.h"
 
+#include "Diagnostic.h"
 #include "OpenRCT2.h"
 #include "config/Config.h"
 #include "core/File.h"

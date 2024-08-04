@@ -59,6 +59,7 @@
 #    include "bindings/world/ScTile.hpp"
 #    include "bindings/world/ScTileElement.hpp"
 
+#    include <cassert>
 #    include <iostream>
 #    include <memory>
 #    include <stdexcept>
@@ -449,6 +450,9 @@ void ScriptEngine::Initialise()
     ScScenarioObjective::Register(ctx);
     ScPatrolArea::Register(ctx);
     ScStaff::Register(ctx);
+    ScHandyman::Register(ctx);
+    ScMechanic::Register(ctx);
+    ScSecurity::Register(ctx);
     ScPlugin::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
@@ -913,6 +917,11 @@ bool ScriptEngine::ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin)
 
 void ScriptEngine::Tick()
 {
+    if (!_initialised)
+    {
+        return;
+    }
+
     PROFILED_FUNCTION();
 
     CheckAndStartPlugins();
@@ -1628,7 +1637,7 @@ IntervalHandle ScriptEngine::AllocateHandle()
     const auto nextHandle = _nextIntervalHandle;
 
     // In case of overflow start from 1 again
-    _nextIntervalHandle = std::max(_nextIntervalHandle + 1U, 1U);
+    _nextIntervalHandle = std::max(_nextIntervalHandle + 1u, 1u);
 
     return nextHandle;
 }

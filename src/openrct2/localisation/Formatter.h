@@ -10,10 +10,10 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../common.h"
 #include "../core/Guard.hpp"
 #include "../core/Money.hpp"
 #include "../core/String.hpp"
+#include "StringIdType.h"
 
 #include <array>
 #include <cstring>
@@ -62,7 +62,7 @@ public:
     void Increment(size_t count)
     {
         auto finalCount = NumBytes() + count;
-        Guard::Assert(finalCount < Buffer.size(), "Increment is greater than buffer size!");
+        OpenRCT2::Guard::Assert(finalCount < Buffer.size(), "Increment is greater than buffer size!");
         if (finalCount < Buffer.size())
         {
             CurrentBuf += count;

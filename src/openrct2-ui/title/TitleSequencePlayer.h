@@ -10,7 +10,6 @@
 #pragma once
 
 #include <memory>
-#include <openrct2/common.h>
 
 struct ITitleSequencePlayer;
 struct IScenarioRepository;

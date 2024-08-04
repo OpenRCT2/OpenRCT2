@@ -31,10 +31,10 @@ enum class TunnelType : uint8_t
     InvertedSquare = 9,
     PathAndMiniGolf = 10,
     Path11 = 11,
-    _12 = 12,
-    _13 = 13,
-    _14 = 14,
-    _15 = 15,
+    StandardFlatTo25Deg = 12,
+    InvertedFlatTo25Deg = 13,
+    SquareFlatTo25Deg = 14,
+    InvertedSquareFlatTo25Deg = 15,
 
     // Ghost train doors
     Doors0 = 16,

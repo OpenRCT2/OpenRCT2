@@ -9,7 +9,10 @@
 
 #include "ClimateSetAction.h"
 
+#include "../Diagnostic.h"
 #include "../GameState.h"
+
+using namespace OpenRCT2;
 
 ClimateSetAction::ClimateSetAction(ClimateType climate)
     : _climate(climate)

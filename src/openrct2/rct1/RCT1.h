@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Diagnostic.h"
 #include "../core/FixedPoint.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
@@ -17,7 +18,7 @@
 
 enum class VehicleColourSettings : uint8_t;
 
-namespace RCT1
+namespace OpenRCT2::RCT1
 {
     constexpr uint8_t RCT1ResearchFlagsSeparator = 0xFF;
 
@@ -231,7 +232,7 @@ namespace RCT1
         uint16_t z;
         uint8_t direction;
     };
-    assert_struct_size(Entrance, 7);
+    static_assert(sizeof(Entrance) == 7);
 
     /**
      * RCT1 ride structure
@@ -387,7 +388,7 @@ namespace RCT1
         uint8_t EntranceStyle;                          // 0x179
         uint8_t Unk17A[230];                            // 0x17A
     };
-    assert_struct_size(Ride, 0x260);
+    static_assert(sizeof(Ride) == 0x260);
 
     struct UnkEntity : RCT12EntityBase
     {
@@ -684,7 +685,7 @@ namespace RCT1
             return ItemStandardFlags;
         }
     };
-    assert_struct_size(Peep, 0x100);
+    static_assert(sizeof(Peep) == 0x100);
 
     union Entity
     {
@@ -701,7 +702,7 @@ namespace RCT1
         RCT12EntityCrashSplash CrashSplash;
         RCT12EntitySteamParticle SteamParticle;
     };
-    assert_struct_size(Entity, 0x100);
+    static_assert(sizeof(Entity) == 0x100);
 
     struct ResearchItem
     {
@@ -711,7 +712,7 @@ namespace RCT1
         uint8_t Flags;
         uint8_t Category;
     };
-    assert_struct_size(ResearchItem, 5);
+    static_assert(sizeof(ResearchItem) == 5);
 
     /**
      * RCT1,AA,LL scenario / saved game structure.
@@ -888,7 +889,7 @@ namespace RCT1
         uint8_t Unk1F8358[432];
         uint32_t ExpansionPackChecksum;
     };
-    assert_struct_size(S4, 0x1F850C);
+    static_assert(sizeof(S4) == 0x1F850C);
 
     /**
      * Track design structure. Only for base RCT1
@@ -936,7 +937,7 @@ namespace RCT1
         money16 UpkeepCost;        // 0x36
     };
 
-    assert_struct_size(TD4, 0x38);
+    static_assert(sizeof(TD4) == 0x38);
 
     /**
      * Track design structure for Added Attractions / Loopy Landscapes
@@ -952,7 +953,7 @@ namespace RCT1
         uint8_t Pad45[0x7F]; // 0x45
     };
 
-    assert_struct_size(TD4AA, 0xC4);
+    static_assert(sizeof(TD4AA) == 0xC4);
 #pragma pack(pop)
 
     enum
@@ -1292,4 +1293,4 @@ namespace RCT1
     };
 
     track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType);
-} // namespace RCT1
+} // namespace OpenRCT2::RCT1

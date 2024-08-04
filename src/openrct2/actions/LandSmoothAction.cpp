@@ -10,13 +10,13 @@
 #include "LandSmoothAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandLowerAction.h"
 #include "../actions/LandRaiseAction.h"
 #include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
 #include "../interface/Window.h"
-#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
@@ -28,6 +28,8 @@
 #include "../world/tile_element/Slope.h"
 
 #include <algorithm>
+
+using namespace OpenRCT2;
 
 LandSmoothAction::LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering)
     : _coords(coords)
@@ -400,7 +402,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
 
             // Smooth the edges
             int32_t z1, z2;
-            for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+            for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
             {
                 auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetLeft(), y });
                 if (surfaceElement != nullptr)
@@ -419,7 +421,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
                 }
             }
 
-            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
             {
                 auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, validRange.GetTop() });
                 if (surfaceElement != nullptr)

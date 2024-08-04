@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+#include "../interface/Viewport.h"
 
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -20,8 +21,7 @@
 #include <openrct2/actions/ParkSetDateAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/entity/Staff.h>
-#include <openrct2/localisation/Date.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>

@@ -10,6 +10,8 @@
 #include <gtest/gtest.h>
 #include <openrct2/platform/Platform.h>
 
+using namespace OpenRCT2;
+
 TEST(platform, sanitise_filename)
 {
     ASSERT_EQ("normal-filename.png", Platform::SanitiseFilename("normal-filename.png"));

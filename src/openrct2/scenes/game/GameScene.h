@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../common.h"
 #include "../Scene.h"
 
 namespace OpenRCT2

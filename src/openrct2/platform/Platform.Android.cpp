@@ -11,6 +11,7 @@
 
 #    include "Platform.h"
 
+#    include "../Diagnostic.h"
 #    include "../core/Guard.hpp"
 #    include "../localisation/Language.h"
 
@@ -31,7 +32,7 @@ jmethodID AndroidClassLoader::_findClassMethod;
 // available until after JNI_OnLoad is called.
 static std::shared_ptr<AndroidClassLoader> acl;
 
-namespace Platform
+namespace OpenRCT2::Platform
 {
     std::string GetFolderPath(SPECIAL_FOLDER folder)
     {
@@ -191,7 +192,7 @@ namespace Platform
             AndroidClassLoader::_classLoader, AndroidClassLoader::_findClassMethod,
             env->NewStringUTF(std::string(name).c_str())));
     }
-} // namespace Platform
+} // namespace OpenRCT2::Platform
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved)
 {

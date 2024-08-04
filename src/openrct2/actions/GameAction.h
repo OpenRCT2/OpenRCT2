@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Game.h"
-#include "../common.h"
 #include "../core/DataSerialiser.h"
 #include "../core/Identifier.hpp"
 #include "../localisation/StringIds.h"
@@ -21,7 +20,7 @@
 #include <memory>
 #include <utility>
 
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     namespace Flags
     {
@@ -31,7 +30,7 @@ namespace GameActions
         constexpr uint16_t IgnoreForReplays = 1 << 3;
     } // namespace Flags
 
-} // namespace GameActions
+} // namespace OpenRCT2::GameActions
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
 #    pragma GCC diagnostic push
@@ -113,7 +112,7 @@ class GameAction
 {
 public:
     using Ptr = std::unique_ptr<GameAction>;
-    using Callback_t = std::function<void(const class GameAction*, const GameActions::Result*)>;
+    using Callback_t = std::function<void(const class GameAction*, const OpenRCT2::GameActions::Result*)>;
 
 private:
     GameCommand const _type;
@@ -153,7 +152,7 @@ public:
     }
 
     /**
-     * Gets the GameActions::Flags flags that are enabled for this game action.
+     * Gets the OpenRCT2::GameActions::Flags flags that are enabled for this game action.
      */
     virtual uint16_t GetActionFlags() const
     {
@@ -162,12 +161,12 @@ public:
 
         if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_NO_SPEND) != 0)
         {
-            flags |= GameActions::Flags::ClientOnly;
+            flags |= OpenRCT2::GameActions::Flags::ClientOnly;
         }
 
         if (GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)
         {
-            flags |= GameActions::Flags::AllowWhilePaused;
+            flags |= OpenRCT2::GameActions::Flags::AllowWhilePaused;
         }
 
         return flags;
@@ -234,12 +233,12 @@ public:
     /**
      * Query the result of the game action without changing the game state.
      */
-    virtual GameActions::Result Query() const abstract;
+    virtual OpenRCT2::GameActions::Result Query() const = 0;
 
     /**
      * Apply the game action and change the game state.
      */
-    virtual GameActions::Result Execute() const abstract;
+    virtual OpenRCT2::GameActions::Result Execute() const = 0;
 
     bool LocationValid(const CoordsXY& coords) const;
 };
@@ -263,7 +262,7 @@ public:
     }
 };
 
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     using GameActionFactory = GameAction* (*)();
 
@@ -287,11 +286,11 @@ namespace GameActions
     GameAction::Ptr Clone(const GameAction* action);
 
     // This should be used if a round trip is to be expected.
-    GameActions::Result Query(const GameAction* action);
-    GameActions::Result Execute(const GameAction* action);
+    OpenRCT2::GameActions::Result Query(const GameAction* action);
+    OpenRCT2::GameActions::Result Execute(const GameAction* action);
 
     // This should be used from within game actions.
-    GameActions::Result QueryNested(const GameAction* action);
-    GameActions::Result ExecuteNested(const GameAction* action);
+    OpenRCT2::GameActions::Result QueryNested(const GameAction* action);
+    OpenRCT2::GameActions::Result ExecuteNested(const GameAction* action);
 
-} // namespace GameActions
+} // namespace OpenRCT2::GameActions

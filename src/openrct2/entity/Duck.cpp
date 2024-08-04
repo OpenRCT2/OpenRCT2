@@ -12,7 +12,6 @@
 #include "../GameState.h"
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
-#include "../localisation/Date.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"

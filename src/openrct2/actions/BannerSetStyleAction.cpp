@@ -10,11 +10,14 @@
 #include "BannerSetStyleAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../management/Finance.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "GameAction.h"
+
+using namespace OpenRCT2;
 
 BannerSetStyleAction::BannerSetStyleAction(BannerSetStyleType type, BannerIndex bannerIndex, uint8_t parameter)
     : _type(type)

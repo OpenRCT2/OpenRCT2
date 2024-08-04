@@ -7,6 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/ViewportInteraction.h"
+#include "../interface/ViewportQuery.h"
+
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -61,11 +64,11 @@ namespace OpenRCT2::Ui::Windows
     }
     static int32_t getTechnicalMapSizeBig()
     {
-        return getTechnicalMapSize() * COORDS_XY_STEP;
+        return getTechnicalMapSize() * kCoordsXYStep;
     }
     static int32_t getMaxTileStartXY()
     {
-        return getTechnicalMapSizeBig() - COORDS_XY_STEP;
+        return getTechnicalMapSizeBig() - kCoordsXYStep;
     }
     static int32_t getMiniMapWidth()
     {
@@ -1136,27 +1139,27 @@ static Widget window_map_widgets[] = {
             switch (GetCurrentRotation())
             {
                 case 0:
-                    x = _currentLine * COORDS_XY_STEP;
+                    x = _currentLine * kCoordsXYStep;
                     y = 0;
                     dx = 0;
-                    dy = COORDS_XY_STEP;
+                    dy = kCoordsXYStep;
                     break;
                 case 1:
                     x = getMaxTileStartXY();
-                    y = _currentLine * COORDS_XY_STEP;
-                    dx = -COORDS_XY_STEP;
+                    y = _currentLine * kCoordsXYStep;
+                    dx = -kCoordsXYStep;
                     dy = 0;
                     break;
                 case 2:
-                    x = getTechnicalMapSizeBig() - ((_currentLine + 1) * COORDS_XY_STEP);
+                    x = getTechnicalMapSizeBig() - ((_currentLine + 1) * kCoordsXYStep);
                     y = getMaxTileStartXY();
                     dx = 0;
-                    dy = -COORDS_XY_STEP;
+                    dy = -kCoordsXYStep;
                     break;
                 case 3:
                     x = 0;
-                    y = getTechnicalMapSizeBig() - ((_currentLine + 1) * COORDS_XY_STEP);
-                    dx = COORDS_XY_STEP;
+                    y = getTechnicalMapSizeBig() - ((_currentLine + 1) * kCoordsXYStep);
+                    dx = kCoordsXYStep;
                     dy = 0;
                     break;
             }
@@ -1309,7 +1312,7 @@ static Widget window_map_widgets[] = {
 
         void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
         {
-            if (peep->x == LOCATION_NULL)
+            if (peep->x == kLocationNull)
                 return;
 
             MapCoordsXY c = TransformToMapCoords({ peep->x, peep->y });
@@ -1359,7 +1362,7 @@ static Widget window_map_widgets[] = {
             {
                 for (Vehicle* vehicle = train; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                 {
-                    if (vehicle->x == LOCATION_NULL)
+                    if (vehicle->x == kLocationNull)
                         continue;
 
                     auto mapCoord = TransformToMapCoords({ vehicle->x, vehicle->y });

@@ -9,9 +9,11 @@
 
 #include "Font.h"
 
-#include "../localisation/FormatCodes.h"
-#include "../localisation/Language.h"
+#include "../Diagnostic.h"
+#include "../core/UTF8.h"
+#include "../core/UnicodeChar.h"
 #include "../localisation/LocalisationService.h"
+#include "../rct12/CSChar.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "Drawing.h"
@@ -20,6 +22,8 @@
 #include <iterator>
 #include <limits>
 #include <unordered_map>
+
+using namespace OpenRCT2;
 
 static constexpr int32_t SpriteFontLineHeight[FontStyleCount] = {
     10,
@@ -33,6 +37,8 @@ static uint8_t _additionalSpriteFontCharacterWidth[FontStyleCount][SPR_G2_GLYPH_
 #ifndef NO_TTF
 TTFFontSetDescriptor* gCurrentTTFFontSet;
 #endif // NO_TTF
+
+constexpr uint8_t CS_SPRITE_FONT_OFFSET = 32;
 
 static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::ae_uc, SPR_G2_AE_UPPER - SPR_CHAR_START },

@@ -64,7 +64,7 @@ void ColoursInitMaps()
     }
 }
 
-namespace Colour
+namespace OpenRCT2::Colour
 {
     static const EnumMap<colour_t> LookupTable{
         { "black", COLOUR_BLACK },
@@ -140,7 +140,7 @@ namespace Colour
         return "black";
     }
 
-} // namespace Colour
+} // namespace OpenRCT2::Colour
 
 #ifndef NO_TTF
 static BlendColourMapType BlendColourMap = { 0 };

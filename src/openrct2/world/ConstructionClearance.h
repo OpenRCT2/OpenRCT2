@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../actions/GameActionResult.h"
-#include "../common.h"
 #include "Map.h"
 
 #include <cstdint>
@@ -40,10 +39,10 @@ struct ConstructClearResult
     uint8_t GroundFlags{ 0 };
 };
 
-[[nodiscard]] GameActions::Result MapCanConstructWithClearAt(
+[[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
     CreateCrossingMode crossingMode = CreateCrossingMode::none, bool isTree = false);
 
-[[nodiscard]] GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
+[[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 
-void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& res);
+void MapGetObstructionErrorText(TileElement* tileElement, OpenRCT2::GameActions::Result& res);

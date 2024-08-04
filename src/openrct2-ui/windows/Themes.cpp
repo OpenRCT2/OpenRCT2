@@ -17,7 +17,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
 
@@ -213,6 +213,7 @@ static WindowClass window_themes_tab_6_classes[] = {
 };
 
 static WindowClass window_themes_tab_7_classes[] = {
+    WindowClass::Error,
     WindowClass::SavePrompt,
     WindowClass::DemolishRidePrompt,
     WindowClass::FirePrompt,
@@ -221,7 +222,6 @@ static WindowClass window_themes_tab_7_classes[] = {
     WindowClass::ProgressWindow,
     WindowClass::NetworkStatus,
 };
-    // clang-format on
 
     static WindowClass* window_themes_tab_classes[] = {
         nullptr,
@@ -233,6 +233,7 @@ static WindowClass window_themes_tab_7_classes[] = {
         window_themes_tab_6_classes,
         window_themes_tab_7_classes,
     };
+    // clang-format on
 
 #pragma endregion
 
@@ -805,8 +806,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                         if (colour.hasFlag(ColourFlag::translucent))
                         {
                             DrawText(
-                                dpi, topLeft, { colours[1].colour, FontStyle::Medium, TextDarkness::Dark },
-                                static_cast<const char*>(CheckBoxMarkString));
+                                dpi, topLeft, { colours[1].colour, FontStyle::Medium, TextDarkness::Dark }, kCheckMarkString);
                         }
                     }
                 }

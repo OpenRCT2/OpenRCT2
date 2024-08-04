@@ -7,12 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Diagnostic.h"
+
 #include <cctype>
 #include <cwctype>
 #include <iomanip>
 #include <sstream>
 #include <stdexcept>
 #include <vector>
+
 #ifndef _WIN32
 #    if !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(__OpenBSD__)
 #        include <alloca.h>
@@ -20,26 +23,22 @@
 #    include <unicode/ucnv.h>
 #    include <unicode/unistr.h>
 #    include <unicode/utypes.h>
-#endif
-
-#ifdef _WIN32
+#else
 #    include <windows.h>
 #endif
 
-#include "../common.h"
-#include "../localisation/ConversionTables.h"
-#include "../localisation/Language.h"
 #include "../util/Util.h"
 #include "Memory.hpp"
 #include "String.hpp"
 #include "StringBuilder.h"
+#include "UTF8.h"
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #    include <strings.h>
 #    define _stricmp(x, y) strcasecmp((x), (y))
 #endif
 
-namespace String
+namespace OpenRCT2::String
 {
     std::string ToStd(const utf8* str)
     {
@@ -394,7 +393,7 @@ namespace String
     {
         if (delimiter.empty())
         {
-            throw std::invalid_argument(nameof(delimiter) " can not be empty.");
+            throw std::invalid_argument("delimiter can not be empty.");
         }
 
         std::vector<std::string> results;
@@ -726,7 +725,7 @@ namespace String
 
         return escaped.str();
     }
-} // namespace String
+} // namespace OpenRCT2::String
 
 char32_t CodepointView::iterator::GetNextCodepoint(const char* ch, const char** next)
 {

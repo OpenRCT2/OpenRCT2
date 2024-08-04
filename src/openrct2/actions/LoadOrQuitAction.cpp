@@ -12,6 +12,8 @@
 #include "../Context.h"
 #include "../OpenRCT2.h"
 
+using namespace OpenRCT2;
+
 LoadOrQuitAction::LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode)
     : _mode(mode)
     , _savePromptMode(savePromptMode)

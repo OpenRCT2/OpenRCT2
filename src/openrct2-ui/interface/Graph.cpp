@@ -12,12 +12,12 @@
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2/Context.h>
 #include <openrct2/Date.h>
-#include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Localisation.Date.h>
 
 using namespace OpenRCT2;
 
-namespace Graph
+namespace OpenRCT2::Graph
 {
     static void DrawMonths(DrawPixelInfo& dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
@@ -105,7 +105,7 @@ namespace Graph
         DrawLineA(dpi, history, count, screenPos);
         DrawLineB(dpi, history, count, screenPos);
     }
-} // namespace Graph
+} // namespace OpenRCT2::Graph
 
 struct FinancialTooltipInfo
 {
@@ -153,7 +153,7 @@ static const FinancialTooltipInfo FinanceTooltipInfoFromMoney(
     return { coords, history[historyIndex] };
 }
 
-namespace Graph
+namespace OpenRCT2::Graph
 {
     static void DrawMonths(DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
@@ -186,7 +186,8 @@ namespace Graph
         DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
-        auto lastCoords = ScreenCoordsXY{ -1, -1 };
+        ScreenCoordsXY lastCoords;
+        bool lastCoordsValid = false;
         auto coords = origCoords;
         for (int32_t i = count - 1; i >= 0; i--)
         {
@@ -194,7 +195,7 @@ namespace Graph
             {
                 coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
-                if (lastCoords.x != -1)
+                if (lastCoordsValid)
                 {
                     auto leftTop1 = lastCoords + ScreenCoordsXY{ 1, 1 };
                     auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
@@ -207,6 +208,7 @@ namespace Graph
                     GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
 
                 lastCoords = coords;
+                lastCoordsValid = true;
             }
             coords.x += 6;
         }
@@ -216,7 +218,8 @@ namespace Graph
         DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
-        auto lastCoords = ScreenCoordsXY{ -1, -1 };
+        ScreenCoordsXY lastCoords;
+        bool lastCoordsValid = false;
         auto coords = origCoords;
         for (int32_t i = count - 1; i >= 0; i--)
         {
@@ -224,7 +227,7 @@ namespace Graph
             {
                 coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
-                if (lastCoords.x != -1)
+                if (lastCoordsValid)
                 {
                     auto leftTop = lastCoords;
                     auto rightBottom = coords;
@@ -234,6 +237,7 @@ namespace Graph
                     GfxFillRect(dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
 
                 lastCoords = coords;
+                lastCoordsValid = true;
             }
             coords.x += 6;
         }
@@ -284,4 +288,4 @@ namespace Graph
         DrawLineB(dpi, history, count, screenCoords, modifier, offset);
         DrawHoveredValue(dpi, history, count, screenCoords, modifier, offset);
     }
-} // namespace Graph
+} // namespace OpenRCT2::Graph

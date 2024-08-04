@@ -28,3 +28,5 @@ uint32_t gCurrentDrawCount = 0;
 uint8_t gScreenFlags;
 uint32_t gScreenAge;
 PromptMode gSavePromptMode;
+
+bool gSilentReplays = false;

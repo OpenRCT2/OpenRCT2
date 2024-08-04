@@ -13,13 +13,17 @@
 
 #    include "../core/String.hpp"
 #    include "../localisation/Formatting.h"
-#    include "../localisation/Localisation.h"
 #    include "../platform/Platform.h"
 #    include "Socket.h"
 #    include "network.h"
 
-constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
-constexpr size_t NetworkBufferSize = 1024 * 64; // 64 KiB, maximum packet size.
+using namespace OpenRCT2;
+
+static constexpr size_t kNetworkDisconnectReasonBufSize = 256;
+static constexpr size_t kNetworkBufferSize = 1024 * 64; // 64 KiB, maximum packet size.
+#    ifndef DEBUG
+static constexpr size_t kNetworkNoDataTimeout = 20; // Seconds.
+#    endif
 
 NetworkConnection::NetworkConnection() noexcept
 {
@@ -67,11 +71,11 @@ NetworkReadPacket NetworkConnection::ReadPacket()
         // NOTE: BytesTransfered includes the header length, this will not underflow.
         const size_t missingLength = header.Size - (InboundPacket.BytesTransferred - sizeof(header));
 
-        uint8_t buffer[NetworkBufferSize];
+        uint8_t buffer[kNetworkBufferSize];
 
         if (missingLength > 0)
         {
-            NetworkReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, NetworkBufferSize), &bytesRead);
+            NetworkReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, kNetworkBufferSize), &bytesRead);
             if (status != NetworkReadPacket::Success)
             {
                 return status;
@@ -178,7 +182,8 @@ void NetworkConnection::ResetLastPacketTime() noexcept
 bool NetworkConnection::ReceivedPacketRecently() const noexcept
 {
 #    ifndef DEBUG
-    if (Platform::GetTicks() > _lastPacketTime + 7000)
+    constexpr auto kTimeoutMs = kNetworkNoDataTimeout * 1000;
+    if (Platform::GetTicks() > _lastPacketTime + kTimeoutMs)
     {
         return false;
     }
@@ -198,8 +203,8 @@ void NetworkConnection::SetLastDisconnectReason(std::string_view src)
 
 void NetworkConnection::SetLastDisconnectReason(const StringId string_id, void* args)
 {
-    char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
-    OpenRCT2::FormatStringLegacy(buffer, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, string_id, args);
+    char buffer[kNetworkDisconnectReasonBufSize];
+    OpenRCT2::FormatStringLegacy(buffer, kNetworkDisconnectReasonBufSize, string_id, args);
     SetLastDisconnectReason(buffer);
 }
 

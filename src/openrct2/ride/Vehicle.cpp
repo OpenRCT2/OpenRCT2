@@ -10,6 +10,7 @@
 #include "Vehicle.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
@@ -27,10 +28,10 @@
 #include "../entity/Yaw.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../math/Trigonometry.hpp"
 #include "../object/SmallSceneryEntry.h"
+#include "../paint/vehicle/Vehicle.MiniGolf.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../rct12/RCT12.h"
@@ -57,6 +58,7 @@
 #include "VehicleData.h"
 #include "VehicleSubpositionData.h"
 
+#include <cassert>
 #include <iterator>
 
 using namespace OpenRCT2;
@@ -387,14 +389,14 @@ static constexpr Unk9A36C4Struct Unk9A36C4[] = {
 /** rct2: 0x009A37C4 */
 static constexpr CoordsXY SurroundingTiles[] = {
     { 0, 0 },
-    { 0, +COORDS_XY_STEP },
-    { +COORDS_XY_STEP, 0 },
-    { 0, -COORDS_XY_STEP },
-    { 0, -COORDS_XY_STEP },
-    { -COORDS_XY_STEP, 0 },
-    { -COORDS_XY_STEP, 0 },
-    { 0, +COORDS_XY_STEP },
-    { 0, +COORDS_XY_STEP },
+    { 0, +kCoordsXYStep },
+    { +kCoordsXYStep, 0 },
+    { 0, -kCoordsXYStep },
+    { 0, -kCoordsXYStep },
+    { -kCoordsXYStep, 0 },
+    { -kCoordsXYStep, 0 },
+    { 0, +kCoordsXYStep },
+    { 0, +kCoordsXYStep },
 };
 
 /** rct2: 0x009A37E4 */
@@ -1017,7 +1019,7 @@ void Vehicle::UpdateMeasurements()
             {
                 curRide->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
 
-                int16_t curZ = z / COORDS_Z_STEP - curRide->start_drop_height;
+                int16_t curZ = z / kCoordsZStep - curRide->start_drop_height;
                 if (curZ < 0)
                 {
                     curZ = abs(curZ);
@@ -1038,7 +1040,7 @@ void Vehicle::UpdateMeasurements()
                 drops++;
             curRide->setNumDrops(drops);
 
-            curRide->start_drop_height = z / COORDS_Z_STEP;
+            curRide->start_drop_height = z / kCoordsZStep;
             testingFlags &= ~RIDE_TESTING_DROP_UP;
         }
 
@@ -1048,7 +1050,7 @@ void Vehicle::UpdateMeasurements()
             {
                 curRide->testing_flags &= ~RIDE_TESTING_DROP_UP;
 
-                int16_t curZ = z / COORDS_Z_STEP - curRide->start_drop_height;
+                int16_t curZ = z / kCoordsZStep - curRide->start_drop_height;
                 if (curZ < 0)
                 {
                     curZ = abs(curZ);
@@ -1069,7 +1071,7 @@ void Vehicle::UpdateMeasurements()
                 drops++;
             curRide->setNumDrops(drops);
 
-            curRide->start_drop_height = z / COORDS_Z_STEP;
+            curRide->start_drop_height = z / kCoordsZStep;
         }
 
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
@@ -1086,7 +1088,7 @@ void Vehicle::UpdateMeasurements()
     if (currentStation.Entrance.IsNull())
         return;
 
-    if (x == LOCATION_NULL)
+    if (x == kLocationNull)
     {
         curRide->testing_flags &= ~RIDE_TESTING_SHELTERED;
         return;
@@ -1978,7 +1980,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
         return false;
     }
 
-    TileElement* tileElement = GetStationPlatform({ coords, coords.z + 2 * COORDS_Z_STEP });
+    TileElement* tileElement = GetStationPlatform({ coords, coords.z + 2 * kCoordsZStep });
     if (tileElement == nullptr)
     {
         /* No station platform element found,
@@ -3798,14 +3800,14 @@ void Vehicle::UpdateMotionBoatHire()
 
                     if (!(curRide->boat_hire_return_direction & 1))
                     {
-                        uint16_t tilePart = loc2.y % COORDS_XY_STEP;
-                        if (tilePart == COORDS_XY_HALF_TILE)
+                        uint16_t tilePart = loc2.y % kCoordsXYStep;
+                        if (tilePart == kCoordsXYHalfTile)
                         {
                             TryReconnectBoatToTrack(loc2, flooredLocation);
                             break;
                         }
                         loc2 = _vehicleCurPosition;
-                        if (tilePart <= COORDS_XY_HALF_TILE)
+                        if (tilePart <= kCoordsXYHalfTile)
                         {
                             loc2.y += 1;
                         }
@@ -3817,14 +3819,14 @@ void Vehicle::UpdateMotionBoatHire()
                     else
                     {
                         // Loc6DA9A2:
-                        uint16_t tilePart = loc2.x % COORDS_XY_STEP;
-                        if (tilePart == COORDS_XY_HALF_TILE)
+                        uint16_t tilePart = loc2.x % kCoordsXYStep;
+                        if (tilePart == kCoordsXYHalfTile)
                         {
                             TryReconnectBoatToTrack(loc2, flooredLocation);
                             break;
                         }
                         loc2 = _vehicleCurPosition;
-                        if (tilePart <= COORDS_XY_HALF_TILE)
+                        if (tilePart <= kCoordsXYHalfTile)
                         {
                             loc2.x += 1;
                         }
@@ -3987,8 +3989,8 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
         }
         else
         {
-            if (location.z > (tileElement->GetBaseZ() - (2 * COORDS_Z_STEP))
-                && location.z < tileElement->GetClearanceZ() + (2 * COORDS_Z_STEP))
+            if (location.z > (tileElement->GetBaseZ() - (2 * kCoordsZStep))
+                && location.z < tileElement->GetClearanceZ() + (2 * kCoordsZStep))
             {
                 return false;
             }
@@ -7903,7 +7905,7 @@ Loc6DC462:
     for (;;)
     {
         moveInfo = GetMoveInfo();
-        if (moveInfo->x != LOCATION_NULL)
+        if (moveInfo->x != kLocationNull)
         {
             break;
         }

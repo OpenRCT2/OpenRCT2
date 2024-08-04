@@ -9,6 +9,7 @@
 
 #include "TrackRemoveAction.h"
 
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"

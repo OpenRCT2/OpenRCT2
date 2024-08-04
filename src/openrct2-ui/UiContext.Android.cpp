@@ -14,7 +14,7 @@
 #    include <SDL.h>
 #    include <dlfcn.h>
 #    include <jni.h>
-#    include <openrct2/common.h>
+#    include <openrct2/Diagnostic.h>
 #    include <openrct2/core/String.hpp>
 #    include <openrct2/platform/Platform.h>
 #    include <openrct2/ui/UiContext.h>

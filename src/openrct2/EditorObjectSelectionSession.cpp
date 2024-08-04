@@ -10,13 +10,13 @@
 #include "EditorObjectSelectionSession.h"
 
 #include "Context.h"
+#include "Diagnostic.h"
 #include "Editor.h"
 #include "Game.h"
 #include "GameState.h"
 #include "OpenRCT2.h"
 #include "drawing/Drawing.h"
 #include "localisation/Formatter.h"
-#include "localisation/Localisation.h"
 #include "management/Research.h"
 #include "object/DefaultObjects.h"
 #include "object/FootpathEntry.h"
@@ -33,6 +33,8 @@
 
 #include <iterator>
 #include <vector>
+
+using namespace OpenRCT2;
 
 std::optional<StringId> _gSceneryGroupPartialSelectError;
 std::vector<uint8_t> _objectSelectionFlags;
@@ -499,7 +501,10 @@ void FinishObjectSelection()
     else
     {
         SetAllSceneryItemsInvented();
-        ScenerySetDefaultPlacementConfiguration();
+
+        auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
+        ContextBroadcastIntent(&intent);
+
         gameState.EditorStep = EditorStep::LandscapeEditor;
         GfxInvalidateScreen();
     }

@@ -9,14 +9,13 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/String.hpp"
 
 #include <string>
 #include <string_view>
 #include <vector>
 
-namespace File
+namespace OpenRCT2::File
 {
     bool Exists(u8string_view path);
     bool Copy(u8string_view srcPath, u8string_view dstPath, bool overwrite);
@@ -28,4 +27,4 @@ namespace File
     void WriteAllBytes(u8string_view path, const void* buffer, size_t length);
     uint64_t GetLastModified(u8string_view path);
     uint64_t GetSize(u8string_view path);
-} // namespace File
+} // namespace OpenRCT2::File

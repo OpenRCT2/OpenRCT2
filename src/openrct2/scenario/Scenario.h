@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../common.h"
 #include "../core/Random.hpp"
 #include "../entity/EntityList.h"
 #include "../management/Finance.h"
@@ -23,7 +22,7 @@
 
 struct ResultWithMessage;
 
-using random_engine_t = Random::RCT2::Engine;
+using random_engine_t = OpenRCT2::Random::RCT2::Engine;
 
 namespace OpenRCT2
 {

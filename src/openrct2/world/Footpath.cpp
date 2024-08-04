@@ -9,6 +9,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../Identifiers.h"
@@ -19,8 +20,8 @@
 #include "../core/Guard.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
+#include "../interface/Viewport.h"
 #include "../interface/Window_internal.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/FootpathObject.h"
@@ -45,9 +46,12 @@
 #include "Surface.h"
 #include "TileElement.h"
 
+#include <bit>
 #include <iterator>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
+
 void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement* tileElement);
 
 FootpathSelection gFootpathSelection;
@@ -71,7 +75,7 @@ const std::array<CoordsXY, kNumOrthogonalDirections> BinUseOffsets = {
 
 // These are the offsets for bench positions on footpaths, 2 for each edge
 // rct2: 0x00981F2C, 0x00981F2E
-const std::array<CoordsXY, kNumOrthogonalDirections* 2> BenchUseOffsets = {
+const std::array<CoordsXY, 2 * kNumOrthogonalDirections> BenchUseOffsets = {
     CoordsXY{ 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
 };
 
@@ -226,165 +230,6 @@ void FootpathProvisionalUpdate()
         MapInvalidateTileFull(gFootpathConstructFromPosition);
     }
     FootpathProvisionalRemove();
-}
-
-/**
- * Determines the location of the footpath at which we point with the cursor. If no footpath is underneath the cursor,
- * then return the location of the ground tile. Besides the location it also computes the direction of the yellow arrow
- * when we are going to build a footpath bridge/tunnel.
- *  rct2: 0x00689726
- *  In:
- *      screenX: eax
- *      screenY: ebx
- *  Out:
- *      x: ax
- *      y: bx
- *      direction: ecx
- *      tileElement: edx
- */
-CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
-{
-    WindowBase* window = WindowFindFromPoint(screenCoords);
-    if (window == nullptr || window->viewport == nullptr)
-    {
-        CoordsXY position{};
-        position.SetNull();
-        return position;
-    }
-    auto viewport = window->viewport;
-    auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Footpath));
-    if (info.SpriteType != ViewportInteractionItem::Footpath
-        || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
-    {
-        info = GetMapCoordinatesFromPosWindow(
-            window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
-        if (info.SpriteType == ViewportInteractionItem::None)
-        {
-            auto position = info.Loc;
-            position.SetNull();
-            return position;
-        }
-    }
-
-    auto minPosition = info.Loc;
-    auto maxPosition = info.Loc + CoordsXY{ 31, 31 };
-    auto myTileElement = info.Element;
-    auto position = info.Loc.ToTileCentre();
-    auto z = 0;
-    if (info.SpriteType == ViewportInteractionItem::Footpath)
-    {
-        z = myTileElement->GetBaseZ();
-        if (myTileElement->AsPath()->IsSloped())
-        {
-            z += 8;
-        }
-    }
-
-    auto start_vp_pos = viewport->ScreenToViewportCoord(screenCoords);
-
-    for (int32_t i = 0; i < 5; i++)
-    {
-        if (info.SpriteType != ViewportInteractionItem::Footpath)
-        {
-            z = TileElementHeight(position);
-        }
-        position = ViewportPosToMapPos(start_vp_pos, z, viewport->rotation);
-        position.x = std::clamp(position.x, minPosition.x, maxPosition.x);
-        position.y = std::clamp(position.y, minPosition.y, maxPosition.y);
-    }
-
-    // Determine to which edge the cursor is closest
-    uint32_t myDirection;
-    int32_t mod_x = position.x & 0x1F, mod_y = position.y & 0x1F;
-    if (mod_x < mod_y)
-    {
-        if (mod_x + mod_y < 32)
-        {
-            myDirection = 0;
-        }
-        else
-        {
-            myDirection = 1;
-        }
-    }
-    else
-    {
-        if (mod_x + mod_y < 32)
-        {
-            myDirection = 3;
-        }
-        else
-        {
-            myDirection = 2;
-        }
-    }
-
-    position = position.ToTileStart();
-
-    if (direction != nullptr)
-        *direction = myDirection;
-    if (tileElement != nullptr)
-        *tileElement = myTileElement;
-
-    return position;
-}
-
-/**
- *
- *  rct2: 0x0068A0C9
- * screenX: eax
- * screenY: ebx
- * x: ax
- * y: bx
- * direction: cl
- * tileElement: edx
- */
-CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
-{
-    // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
-    WindowBase* window = WindowFindFromPoint(screenCoords);
-    if (window == nullptr || window->viewport == nullptr)
-    {
-        CoordsXY ret{};
-        ret.SetNull();
-        return ret;
-    }
-    auto viewport = window->viewport;
-    auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
-    *tileElement = info.Element;
-    if (info.SpriteType == ViewportInteractionItem::Ride
-        && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
-        && (*tileElement)->GetType() == TileElementType::Entrance)
-    {
-        int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
-        if (directions & 0x0F)
-        {
-            int32_t bx = UtilBitScanForward(directions);
-            bx += (*tileElement)->AsEntrance()->GetDirection();
-            bx &= 3;
-            if (direction != nullptr)
-                *direction = bx;
-            return info.Loc;
-        }
-    }
-
-    info = GetMapCoordinatesFromPosWindow(
-        window, screenCoords,
-        EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath, ViewportInteractionItem::Ride));
-    if (info.SpriteType == ViewportInteractionItem::Ride && (*tileElement)->GetType() == TileElementType::Entrance)
-    {
-        int32_t directions = (*tileElement)->AsEntrance()->GetDirections();
-        if (directions & 0x0F)
-        {
-            int32_t bx = (*tileElement)->GetDirectionWithOffset(UtilBitScanForward(directions));
-            if (direction != nullptr)
-                *direction = bx;
-            return info.Loc;
-        }
-    }
-
-    // We point at something else
-    return FootpathGetCoordinatesFromPos(screenCoords, direction, tileElement);
 }
 
 /**
@@ -1134,8 +979,8 @@ void FootpathChainRideQueue(
         {
             // Fix #2051: Stop queue paths that are already connected to two other tiles
             //            from connecting to the tile we are coming from.
-            int32_t edges = tileElement->AsPath()->GetEdges();
-            int32_t numEdges = BitCount(edges);
+            uint32_t edges = tileElement->AsPath()->GetEdges();
+            uint32_t numEdges = std::popcount(edges);
             if (numEdges >= 2)
             {
                 int32_t requiredEdgeMask = 1 << DirectionReverse(direction);
@@ -1282,7 +1127,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
     GameActions::Execute(&landSetRightsAction);
 }
 
-static bool GetNextDirection(int32_t edges, int32_t* direction)
+static bool GetNextDirection(uint32_t edges, int32_t* direction)
 {
     int32_t index = UtilBitScanForward(edges);
     if (index == -1)
@@ -2331,7 +2176,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
             bool isQueue = tileElement->GetType() == TileElementType::Path ? tileElement->AsPath()->IsQueue() : false;
             int32_t z0 = z1 - 2;
             FootpathRemoveEdgesTowards(
-                { footpathPos + CoordsDirectionDelta[direction], z0 * COORDS_Z_STEP, z1 * COORDS_Z_STEP }, direction, isQueue);
+                { footpathPos + CoordsDirectionDelta[direction], z0 * kCoordsZStep, z1 * kCoordsZStep }, direction, isQueue);
         }
         else
         {

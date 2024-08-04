@@ -9,6 +9,7 @@
 
 #include "RideEntranceExitPlaceAction.h"
 
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
 #include "../management/Finance.h"

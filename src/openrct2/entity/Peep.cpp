@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../Input.h"
@@ -25,10 +26,10 @@
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
+#include "../interface/Viewport.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
@@ -37,6 +38,7 @@
 #include "../peep/GuestPathfinding.h"
 #include "../peep/PeepAnimationData.h"
 #include "../peep/PeepSpriteIds.h"
+#include "../peep/RealNames.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -58,6 +60,7 @@
 #include "PatrolArea.h"
 #include "Staff.h"
 
+#include <cassert>
 #include <iterator>
 #include <limits>
 #include <map>
@@ -199,7 +202,7 @@ void PeepUpdateAll()
 
     const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
 
-    constexpr auto kTicks128Mask = 128U - 1U;
+    constexpr auto kTicks128Mask = 128u - 1u;
     const auto currentTicksMasked = currentTicks & kTicks128Mask;
 
     uint32_t index = 0;
@@ -601,7 +604,7 @@ void Peep::Pickup()
     {
         guest->RemoveFromRide();
     }
-    MoveTo({ LOCATION_NULL, y, z });
+    MoveTo({ kLocationNull, y, z });
     SetState(PeepState::Picked);
     SubState = 0;
 }
@@ -613,7 +616,7 @@ void Peep::PickupAbort(int32_t old_x)
 
     MoveTo({ old_x, y, z + 8 });
 
-    if (x != LOCATION_NULL)
+    if (x != kLocationNull)
     {
         SetState(PeepState::Falling);
         Action = PeepActionType::Walking;
@@ -1306,7 +1309,7 @@ void PeepUpdateCrowdNoise()
 
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->x == LOCATION_NULL)
+        if (peep->x == kLocationNull)
             continue;
         if (viewport->viewPos.x > peep->SpriteData.SpriteRect.GetRight())
             continue;
@@ -2568,7 +2571,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
  */
 int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
 {
-    if (tile_x == LOCATION_NULL)
+    if (tile_x == kLocationNull)
         return 0;
 
     if (GetNextIsSurface())
@@ -2728,7 +2731,7 @@ static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height)
     {
         peep->RemoveItem(ShopItem::Balloon);
 
-        if (peep->SpriteType == PeepSpriteType::Balloon && peep->x != LOCATION_NULL)
+        if (peep->SpriteType == PeepSpriteType::Balloon && peep->x != kLocationNull)
         {
             Balloon::Create({ peep->x, peep->y, spawn_height }, peep->BalloonColour, false);
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;

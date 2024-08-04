@@ -10,6 +10,7 @@
 #include "CommandLineSprite.h"
 
 #include "Context.h"
+#include "Diagnostic.h"
 #include "OpenRCT2.h"
 #include "core/FileStream.h"
 #include "core/Imaging.h"
@@ -31,6 +32,7 @@
 #include <iomanip>
 #include <sstream>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
 static int32_t CommandLineForSpriteCombine(const char** argv, int32_t argc);

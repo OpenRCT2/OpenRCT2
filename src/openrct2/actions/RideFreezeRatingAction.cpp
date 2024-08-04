@@ -9,6 +9,11 @@
 
 #include "RideFreezeRatingAction.h"
 
+#include "../Diagnostic.h"
+#include "../interface/Window.h"
+
+using namespace OpenRCT2;
+
 RideFreezeRatingAction::RideFreezeRatingAction(RideId rideIndex, RideRatingType type, ride_rating value)
     : _rideIndex(rideIndex)
     , _type(type)

@@ -10,8 +10,14 @@
 #pragma once
 
 #include <cstdint>
+#include <openrct2/localisation/StringIdType.h>
 
 class Formatter;
 struct Objective;
 
-void formatObjective(Formatter& ft, Objective objective);
+namespace OpenRCT2::Ui
+{
+    void formatObjective(Formatter& ft, Objective objective);
+
+    extern const StringId kObjectiveNames[12];
+} // namespace OpenRCT2::Ui

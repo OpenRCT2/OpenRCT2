@@ -9,9 +9,10 @@
 
 #include "StringReader.h"
 
-#include "../localisation/Localisation.h"
 #include "../util/Util.h"
 #include "String.hpp"
+
+using namespace OpenRCT2;
 
 UTF8StringReader::UTF8StringReader(const utf8* text)
 {

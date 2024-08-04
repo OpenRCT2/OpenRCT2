@@ -11,6 +11,7 @@
 
 #include "Cheats.h"
 #include "Context.h"
+#include "Diagnostic.h"
 #include "Editor.h"
 #include "FileClassifier.h"
 #include "GameState.h"
@@ -37,7 +38,6 @@
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"
-#include "localisation/Localisation.h"
 #include "management/Finance.h"
 #include "management/Marketing.h"
 #include "management/Research.h"
@@ -47,6 +47,7 @@
 #include "object/ObjectList.h"
 #include "object/WaterEntry.h"
 #include "platform/Platform.h"
+#include "rct12/CSStringConverter.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
 #include "ride/Station.h"
@@ -368,10 +369,6 @@ void GameLoadInit()
     }
     ResetEntitySpatialIndices();
     ResetAllSpriteQuadrantPlacements();
-    ScenerySetDefaultPlacementConfiguration();
-
-    auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-    ContextBroadcastIntent(&intent);
 
     gWindowUpdateTicks = 0;
     gCurrentRealTimeTicks = 0;
@@ -380,8 +377,9 @@ void GameLoadInit()
 
     if (!gOpenRCT2Headless)
     {
-        intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-        ContextBroadcastIntent(&intent);
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG));
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
     }
 
     gGameSpeed = 1;
@@ -615,7 +613,6 @@ static void GameLoadOrQuitNoSavePromptCallback(int32_t result, const utf8* path)
         GameNotifyMapChange();
         GameUnloadScripts();
         WindowCloseByClass(WindowClass::EditorObjectSelection);
-        GetContext()->LoadParkFromFile(path);
         GameLoadScripts();
         GameNotifyMapChanged();
         gIsAutosaveLoaded = gIsAutosave;

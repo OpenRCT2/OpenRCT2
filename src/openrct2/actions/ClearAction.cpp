@@ -22,6 +22,8 @@
 #include "SmallSceneryRemoveAction.h"
 #include "WallRemoveAction.h"
 
+using namespace OpenRCT2;
+
 ClearAction::ClearAction(MapRange range, ClearableItems itemsToClear)
     : _range(range)
     , _itemsToClear(itemsToClear)
@@ -80,9 +82,9 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
     money64 totalCost = 0;
 
     auto validRange = ClampRangeWithinMap(_range);
-    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)
     {
-        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
         {
             if (LocationValid({ x, y }) && MapCanClearAt({ x, y }))
             {

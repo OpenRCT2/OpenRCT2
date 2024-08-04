@@ -3717,6 +3717,16 @@ STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 STR_6644    :Touch enhancements
 STR_6645    :Makes some UI elements bigger so they are easier to click or tap.
+STR_6646    :Author: {STRING}
+STR_6647    :Authors: {STRING}
+STR_6648    :Loading plugin engine…
+STR_6649    :Loading scenario…
+STR_6650    :Loading saved game…
+STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Error Window
+STR_6653    :All sources shown
+STR_6654    :Showing {POP16}{UINT16} sources
+STR_6655    :Only ‘{POP16}{STRINGID}’
 
 #############
 # Scenarios #

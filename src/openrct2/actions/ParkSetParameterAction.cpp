@@ -9,6 +9,7 @@
 
 #include "ParkSetParameterAction.h"
 
+#include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../interface/Window.h"
 #include "../ride/ShopItem.h"

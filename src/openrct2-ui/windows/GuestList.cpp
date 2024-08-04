@@ -19,8 +19,8 @@
 #include <openrct2/entity/Guest.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/peep/PeepThoughts.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -233,7 +233,7 @@ static Widget window_guest_list_widgets[] = {
                 }
                 case GuestListFilterType::GuestsThinkingX:
                 {
-                    ft.Add<StringId>(PeepThoughts[index & 0xFF]);
+                    ft.Add<StringId>(kPeepThoughtIds[index & 0xFF]);
 
                     _selectedFilter = GuestFilterType::GuestsThinking;
                     _highlightedIndex = {};

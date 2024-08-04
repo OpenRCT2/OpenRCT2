@@ -9,10 +9,9 @@
 
 #pragma once
 
-#include "../common.h"
 #include "Map.h"
 
-namespace GameActions
+namespace OpenRCT2::GameActions
 {
     class Result;
 }

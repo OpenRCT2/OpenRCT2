@@ -19,7 +19,7 @@
 
 #include <cstdint>
 
-namespace RCT2
+namespace OpenRCT2::RCT2
 {
     ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const RideObjectEntry& rideEntry)
     {
@@ -268,4 +268,4 @@ namespace RCT2
     {
         return (Flags & 0xFC) >> 2;
     }
-} // namespace RCT2
+} // namespace OpenRCT2::RCT2

@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../Context.h"
-#include "../common.h"
+#include "../Diagnostic.h"
 #include "Console.hpp"
 #include "DataSerialiser.h"
 #include "File.h"
@@ -129,12 +129,12 @@ protected:
     /**
      * Loads the given file and creates the item representing the data to store in the index.
      */
-    virtual std::optional<TItem> Create(int32_t language, const std::string& path) const abstract;
+    virtual std::optional<TItem> Create(int32_t language, const std::string& path) const = 0;
 
     /**
      * Serialises/DeSerialises an index item to/from the given stream.
      */
-    virtual void Serialise(DataSerialiser& ds, const TItem& item) const abstract;
+    virtual void Serialise(DataSerialiser& ds, const TItem& item) const = 0;
 
 private:
     ScanResult Scan() const
@@ -143,11 +143,11 @@ private:
         std::vector<std::string> files;
         for (const auto& directory : SearchPaths)
         {
-            auto absoluteDirectory = Path::GetAbsolute(directory);
+            auto absoluteDirectory = OpenRCT2::Path::GetAbsolute(directory);
             LOG_VERBOSE("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), absoluteDirectory.c_str());
 
-            auto pattern = Path::Combine(absoluteDirectory, _pattern);
-            auto scanner = Path::ScanDirectory(pattern, true);
+            auto pattern = OpenRCT2::Path::Combine(absoluteDirectory, _pattern);
+            auto scanner = OpenRCT2::Path::ScanDirectory(pattern, true);
             while (scanner->Next())
             {
                 const auto& fileInfo = scanner->GetFileInfo();
@@ -157,7 +157,7 @@ private:
                 stats.TotalFileSize += fileInfo.Size;
                 stats.FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo.LastModified >> 32)
                     ^ static_cast<uint32_t>(fileInfo.LastModified & 0xFFFFFFFF);
-                stats.FileDateModifiedChecksum = Numerics::ror32(stats.FileDateModifiedChecksum, 5);
+                stats.FileDateModifiedChecksum = OpenRCT2::Numerics::ror32(stats.FileDateModifiedChecksum, 5);
                 stats.PathChecksum += GetPathChecksum(path);
 
                 files.push_back(std::move(path));
@@ -166,34 +166,10 @@ private:
         return ScanResult(stats, std::move(files));
     }
 
-    void BuildRange(
-        int32_t language, const ScanResult& scanResult, size_t rangeStart, size_t rangeEnd, std::vector<TItem>& items,
-        std::atomic<size_t>& processed, std::mutex& printLock) const
-    {
-        items.reserve(rangeEnd - rangeStart);
-        for (size_t i = rangeStart; i < rangeEnd; i++)
-        {
-            const auto& filePath = scanResult.Files.at(i);
-
-            if (_log_levels[EnumValue(DiagnosticLevel::Verbose)])
-            {
-                std::lock_guard<std::mutex> lock(printLock);
-                LOG_VERBOSE("FileIndex:Indexing '%s'", filePath.c_str());
-            }
-
-            if (auto item = Create(language, filePath); item.has_value())
-            {
-                items.push_back(std::move(item.value()));
-            }
-
-            ++processed;
-        }
-    }
-
     std::vector<TItem> Build(int32_t language, const ScanResult& scanResult) const
     {
         std::vector<TItem> allItems;
-        Console::WriteLine("Building %s (%zu items)", _name.c_str(), scanResult.Files.size());
+        OpenRCT2::Console::WriteLine("Building %s (%zu items)", _name.c_str(), scanResult.Files.size());
 
         auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -201,49 +177,34 @@ private:
         if (totalCount > 0)
         {
             JobPool jobPool;
-            std::mutex printLock; // For verbose prints.
-
-            std::list<std::vector<TItem>> containers;
-
-            size_t stepSize = 100; // Handpicked, seems to work well with 4/8 cores.
-
+            std::mutex mtx;
             std::atomic<size_t> processed{ 0 };
 
-            auto reportProgress = [&]() {
-                const size_t completed = processed;
-                Console::WriteFormat("File %5zu of %zu, done %3d%%\r", completed, totalCount, completed * 100 / totalCount);
-                OpenRCT2::GetContext()->SetProgress(static_cast<uint32_t>(completed), static_cast<uint32_t>(totalCount));
-            };
-
-            for (size_t rangeStart = 0; rangeStart < totalCount; rangeStart += stepSize)
+            for (size_t i = 0; i < totalCount; i++)
             {
-                if (rangeStart + stepSize > totalCount)
-                {
-                    stepSize = totalCount - rangeStart;
-                }
+                jobPool.AddTask([&, index = i]() {
+                    const auto& filePath = scanResult.Files.at(index);
 
-                auto& items = containers.emplace_back();
+                    if (auto item = Create(language, filePath); item.has_value())
+                    {
+                        std::lock_guard lock(mtx);
+                        allItems.push_back(std::move(item.value()));
+                    }
 
-                jobPool.AddTask([&, rangeStart, stepSize]() {
-                    BuildRange(language, scanResult, rangeStart, rangeStart + stepSize, items, processed, printLock);
+                    processed++;
                 });
-
-                reportProgress();
             }
 
-            jobPool.Join(reportProgress);
-
-            for (const auto& itr : containers)
-            {
-                allItems.insert(allItems.end(), itr.begin(), itr.end());
-            }
+            jobPool.Join([&]() {
+                OpenRCT2::GetContext()->SetProgress(static_cast<uint32_t>(processed.load()), static_cast<uint32_t>(totalCount));
+            });
         }
 
         WriteIndexFile(language, scanResult.Stats, allItems);
 
         auto endTime = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration<float>(endTime - startTime);
-        Console::WriteLine("Finished building %s in %.2f seconds.", _name.c_str(), duration.count());
+        OpenRCT2::Console::WriteLine("Finished building %s in %.2f seconds.", _name.c_str(), duration.count());
 
         return allItems;
     }
@@ -252,7 +213,7 @@ private:
     {
         bool loadedItems = false;
         std::vector<TItem> items;
-        if (File::Exists(_indexPath))
+        if (OpenRCT2::File::Exists(_indexPath))
         {
             try
             {
@@ -280,13 +241,13 @@ private:
                 }
                 else
                 {
-                    Console::WriteLine("%s out of date", _name.c_str());
+                    OpenRCT2::Console::WriteLine("%s out of date", _name.c_str());
                 }
             }
             catch (const std::exception& e)
             {
-                Console::Error::WriteLine("Unable to load index: '%s'.", _indexPath.c_str());
-                Console::Error::WriteLine("%s", e.what());
+                OpenRCT2::Console::Error::WriteLine("Unable to load index: '%s'.", _indexPath.c_str());
+                OpenRCT2::Console::Error::WriteLine("%s", e.what());
             }
         }
         return std::make_tuple(loadedItems, std::move(items));
@@ -297,7 +258,7 @@ private:
         try
         {
             LOG_VERBOSE("FileIndex:Writing index: '%s'", _indexPath.c_str());
-            Path::CreateDirectory(Path::GetDirectory(_indexPath));
+            OpenRCT2::Path::CreateDirectory(OpenRCT2::Path::GetDirectory(_indexPath));
             auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_WRITE);
 
             // Write header
@@ -319,8 +280,8 @@ private:
         }
         catch (const std::exception& e)
         {
-            Console::Error::WriteLine("Unable to save index: '%s'.", _indexPath.c_str());
-            Console::Error::WriteLine("%s", e.what());
+            OpenRCT2::Console::Error::WriteLine("Unable to save index: '%s'.", _indexPath.c_str());
+            OpenRCT2::Console::Error::WriteLine("%s", e.what());
         }
     }
 

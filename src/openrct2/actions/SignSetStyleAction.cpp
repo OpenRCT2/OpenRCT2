@@ -10,6 +10,7 @@
 #include "SignSetStyleAction.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../localisation/StringIds.h"
@@ -17,6 +18,8 @@
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "../world/Scenery.h"
+
+using namespace OpenRCT2;
 
 SignSetStyleAction::SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColour, uint8_t textColour, bool isLarge)
     : _bannerIndex(bannerIndex)

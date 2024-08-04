@@ -9,6 +9,7 @@
 
 #include "Image.h"
 
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
@@ -17,6 +18,8 @@
 
 #include <algorithm>
 #include <list>
+
+using namespace OpenRCT2;
 
 constexpr uint32_t BASE_IMAGE_ID = SPR_IMAGE_LIST_BEGIN;
 constexpr uint32_t MAX_IMAGES = SPR_IMAGE_LIST_END - BASE_IMAGE_ID;
