@@ -7,13 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../Entrance.h"
-
 #include "../../Context.h"
 #include "../../object/EntranceObject.h"
 #include "../../object/FootpathObject.h"
 #include "../../object/FootpathSurfaceObject.h"
 #include "../../object/ObjectManager.h"
+#include "../Entrance.h"
 #include "../TileElement.h"
 
 // rct2: 0x0097B974
