@@ -74,9 +74,11 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr StringId WINDOW_TITLE = STR_STAFF;
     static constexpr int32_t WW = 320;
-    static constexpr int32_t WH = 270;
+    static constexpr int32_t _windowBodyMinHeight = 256;
+    static constexpr int32_t _windowBodyMaxHeight = 436;
+    static constexpr int32_t WH = _windowBodyMinHeight + 14;
     constexpr int32_t MAX_WW = 500;
-    constexpr int32_t MAX_WH = 450;
+    constexpr int32_t MAX_WH = _windowBodyMaxHeight + 14;
 
     // clang-format off
     static constexpr Widget _staffListWidgets[] = {
@@ -300,7 +302,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ width - 155, 32 }, STR_COST_PER_MONTH, ft);
+                auto y = widgets[WIDX_STAFF_LIST_TITLE].bottom + 18;
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ width - 155, y }, STR_COST_PER_MONTH, ft);
             }
 
             if (GetSelectedStaffType() != StaffType::Entertainer)

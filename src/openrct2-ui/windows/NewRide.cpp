@@ -43,6 +43,7 @@ using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WindowTitle = kStringIdNone;
+    static constexpr int32_t WindowBodyHeight = 368;
     static constexpr int32_t WindowHeight = 382;
     static constexpr int32_t WindowWidth = 601;
     static constexpr int32_t RideListItemsMax = 384;
@@ -837,7 +838,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::Empty;
 
                 newWidth = WindowWidth;
-                newHeight = WindowHeight;
+                newHeight = WindowBodyHeight + widgets[WIDX_TITLE].bottom;
             }
             else
             {
@@ -851,7 +852,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::FlatBtn;
 
                 newWidth = 300;
-                newHeight = 196;
+                newHeight = 182 + widgets[WIDX_TITLE].bottom;
             }
 
             // Handle new window size

@@ -201,6 +201,11 @@ namespace OpenRCT2::Ui::Windows
         ScreenRect _ratingGraphBounds;
         ScreenRect _guestGraphBounds;
 
+        int32_t GetGraphPageWindowHeight()
+        {
+            return 169 + widgets[WIDX_TITLE].height();
+        }
+
     public:
         void OnOpen() override
         {
@@ -678,7 +683,8 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeRating()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
+            auto pageHeight = GetGraphPageWindowHeight();
+            WindowSetResize(*this, 268, pageHeight, 2000, 2000);
         }
 
         void OnUpdateRating()
@@ -746,7 +752,8 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeGuests()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
+            auto pageHeight = GetGraphPageWindowHeight();
+            WindowSetResize(*this, 268, pageHeight, 2000, 2000);
         }
 
         void OnUpdateGuests()
@@ -1132,7 +1139,8 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Awards page
         void OnResizeAwards()
         {
-            WindowSetResize(*this, 230, 182, 230, 182);
+            auto pageHeight = GetGraphPageWindowHeight();
+            WindowSetResize(*this, 230, pageHeight, 230, pageHeight);
         }
 
         void OnUpdateAwards()

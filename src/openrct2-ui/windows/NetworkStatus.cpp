@@ -42,7 +42,7 @@ namespace OpenRCT2::Ui::Windows
 
             frame_no = 0;
             min_width = 320;
-            min_height = 90;
+            min_height = 76 + widgets[WIDX_TITLE].bottom;
             max_width = min_width;
             max_height = min_height;
 

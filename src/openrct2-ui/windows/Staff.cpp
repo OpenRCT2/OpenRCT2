@@ -45,6 +45,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId WINDOW_TITLE = STR_STRINGID;
 
     static constexpr int32_t WW = 190;
+    static constexpr int32_t _windowBodyHeight = 166;
     static constexpr int32_t WH = 180;
 
     enum WindowStaffPage
@@ -600,8 +601,8 @@ namespace OpenRCT2::Ui::Windows
         {
             min_width = WW;
             max_width = 500;
-            min_height = WH;
-            max_height = 450;
+            min_height = _windowBodyHeight + widgets[WIDX_TITLE].height();
+            max_height = 436 + widgets[WIDX_TITLE].height();
 
             if (width < min_width)
             {
@@ -626,8 +627,10 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewport != nullptr)
             {
-                int32_t newWidth = width - 30;
-                int32_t newHeight = height - 62;
+                auto widget = widgets[WIDX_VIEWPORT];
+                auto newWidth = widget.width() - 1;
+                auto newHeight = widget.height() - 1;
+                viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
 
                 // Update the viewport size
                 if (viewport->width != newWidth || viewport->height != newHeight)
@@ -923,10 +926,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OptionsResize()
         {
+            auto titleBarHeight = widgets[WIDX_TITLE].height();
             min_width = 190;
             max_width = 190;
-            min_height = 126;
-            max_height = 126;
+            min_height = 112 + titleBarHeight;
+            max_height = 112 + titleBarHeight;
 
             if (width < min_width)
             {
@@ -1026,10 +1030,12 @@ namespace OpenRCT2::Ui::Windows
 
         void StatsResize()
         {
+            auto titleBarHeight = widgets[WIDX_TITLE].height();
             min_width = 190;
             max_width = 190;
-            min_height = 126;
-            max_height = 126;
+            min_height = 112 + titleBarHeight;
+            max_height = 112 + titleBarHeight;
+            ;
 
             if (width < min_width)
             {
