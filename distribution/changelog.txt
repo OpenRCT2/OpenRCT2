@@ -1,5 +1,6 @@
 0.4.14 (in development)
 ------------------------------------------------------------------------
+- Feature: [#15750] Allow using different types of park entrance in one park.
 - Change: [#21659] Increase the Hybrid Roller Coaster’s maximum lift speed to 17 km/h (11 mph).
 
 0.4.13 (2024-08-04)
@@ -107,7 +108,6 @@
 0.4.11 (2024-05-05)
 ------------------------------------------------------------------------
 - Feature: [#11512] Coloured usernames by group on multiplayer servers.
-- Feature: [#15750] Allow using different types of park entrance in one park.
 - Feature: [#21734] Park admittance price can now be set via text input.
 - Feature: [#21957] [Plugin] Expose whether the game is paused to the plugin API.
 - Improved: [#21728] “Fix all rides” cheat now also works if a mechanic is already fixing the ride.
