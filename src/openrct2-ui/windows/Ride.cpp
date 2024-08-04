@@ -6977,7 +6977,7 @@ static_assert(std::size(RatingNames) == 6);
                     auto trackElement = tileElement->AsTrack();
                     auto trackType = trackElement->GetTrackType();
                     const auto& ted = GetTrackElementDescriptor(trackType);
-                    if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                    if (ted.sequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                     {
                         auto stationIndex = trackElement->GetStationIndex();
                         return WindowRideOpenStation(*ride, stationIndex);

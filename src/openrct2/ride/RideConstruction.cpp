@@ -408,17 +408,17 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     assert(block0 != nullptr);
 
     retCoordsXYZ.z += block0->z;
-    for (int32_t i = 0; ted.Block[i].index != 0xFF; ++i)
+    for (int32_t i = 0; ted.block[i].index != 0xFF; ++i)
     {
         CoordsXY cur = { retCoordsXYZ };
-        offsets = { ted.Block[i].x, ted.Block[i].y };
+        offsets = { ted.block[i].x, ted.block[i].y };
         cur += offsets.Rotate(mapDirection);
-        int32_t cur_z = start_z + ted.Block[i].z;
+        int32_t cur_z = start_z + ted.block[i].z;
 
         MapInvalidateTileFull(cur);
 
         trackElement = MapGetTrackElementAtOfTypeSeq(
-            { cur, cur_z, static_cast<Direction>(location.direction) }, type, ted.Block[i].index);
+            { cur, cur_z, static_cast<Direction>(location.direction) }, type, ted.block[i].index);
         if (trackElement == nullptr)
         {
             return std::nullopt;
@@ -679,9 +679,9 @@ void RideConstructionSetDefaultNextPiece()
             }
 
             ted = &GetTrackElementDescriptor(trackType);
-            curve = ted->CurveChain.next;
-            auto bank = ted->Definition.RollEnd;
-            auto slope = ted->Definition.PitchEnd;
+            curve = ted->curveChain.next;
+            auto bank = ted->definition.RollEnd;
+            auto slope = ted->definition.PitchEnd;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -728,9 +728,9 @@ void RideConstructionSetDefaultNextPiece()
             }
 
             ted = &GetTrackElementDescriptor(trackType);
-            curve = ted->CurveChain.previous;
-            auto bank = ted->Definition.RollStart;
-            auto slope = ted->Definition.PitchStart;
+            curve = ted->curveChain.previous;
+            auto bank = ted->definition.RollStart;
+            auto slope = ted->definition.PitchStart;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -1253,7 +1253,7 @@ void Ride::ValidateStations()
 
                     ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
                     // keep searching for a station piece (coaster station, tower ride base, shops, and flat ride base)
-                    if (!(std::get<0>(ted->SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (!(std::get<0>(ted->sequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1285,7 +1285,7 @@ void Ride::ValidateStations()
             }
             // update all the blocks with StationIndex
             ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-            const PreviewTrack* trackBlock = ted->Block;
+            const PreviewTrack* trackBlock = ted->block;
             while ((++trackBlock)->index != 0xFF)
             {
                 CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };
@@ -1303,7 +1303,7 @@ void Ride::ValidateStations()
                         continue;
 
                     ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (!(std::get<0>(ted->SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (!(std::get<0>(ted->sequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1410,7 +1410,7 @@ void Ride::ValidateStations()
 
                     // if the ride entrance is not on a valid side, remove it
                     ted = &GetTrackElementDescriptor(trackType);
-                    if (!(ted->SequenceProperties[trackSequence] & (1 << direction)))
+                    if (!(ted->sequenceProperties[trackSequence] & (1 << direction)))
                     {
                         continue;
                     }

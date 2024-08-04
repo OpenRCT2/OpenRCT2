@@ -22,7 +22,7 @@ namespace OpenRCT2
     money64 MazeCalculateCost(money64 constructionCost, const Ride& ride, const CoordsXYZ& loc)
     {
         const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-        money64 price = (ride.GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16;
+        money64 price = (ride.GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.priceModifier) >> 16;
 
         auto surfaceElement = MapGetSurfaceElementAt(loc);
         auto heightDifference = (loc.z - surfaceElement->GetBaseZ()) / kCoordsZPerTinyZ;
