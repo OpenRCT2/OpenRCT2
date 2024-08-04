@@ -1,5 +1,6 @@
 0.4.14 (in development)
 ------------------------------------------------------------------------
+- Change: [#21659] Increase the Hybrid Roller Coaster’s maximum lift speed to 17 km/h (11 mph).
 
 0.4.13 (2024-08-04)
 ------------------------------------------------------------------------
@@ -144,7 +145,6 @@
 - Improved: [objects#309] Updated names for dodgems and flying saucers vehicles.
 - Improved: [objects#313] buildMenuPriority for dodgems and flying saucers vehicles.
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
-- Change: [#21545] Reorder Wacky Worlds scenarios and adjust their difficulty classification.
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#6725] Z fighting issue with cars using animated doors.
 - Fix: [#18413] Crash when mouse over a hacked train.
