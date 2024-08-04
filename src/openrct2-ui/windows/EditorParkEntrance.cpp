@@ -74,7 +74,7 @@ namespace OpenRCT2::Ui::Windows
         void InitParkEntranceItems()
         {
             _entranceTypes.clear();
-            for (ObjectEntryIndex objectIndex = 0; objectIndex < OBJECT_ENTRY_INDEX_NULL; objectIndex++)
+            for (ObjectEntryIndex objectIndex = 0; objectIndex < MAX_PARK_ENTRANCE_OBJECTS; objectIndex++)
             {
                 auto& objManager = GetContext()->GetObjectManager();
                 auto* object = static_cast<EntranceObject*>(objManager.GetLoadedObject(ObjectType::ParkEntrance, objectIndex));
