@@ -9,6 +9,8 @@
 
 #include "CursorRepository.h"
 
+#include "CursorData.h"
+
 #include <cmath>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
@@ -94,11 +96,11 @@ SDL_Cursor* CursorRepository::Create(const CursorData* cursorInfo, uint8_t scale
 {
     const auto integer_scale = static_cast<int>(round(scale));
 
-    auto data = ScaleDataArray(cursorInfo->Data, CURSOR_BIT_WIDTH, CURSOR_HEIGHT, static_cast<size_t>(integer_scale));
-    auto mask = ScaleDataArray(cursorInfo->Mask, CURSOR_BIT_WIDTH, CURSOR_HEIGHT, static_cast<size_t>(integer_scale));
+    auto data = ScaleDataArray(cursorInfo->Data, kCursorBitWidth, kCursorHeight, static_cast<size_t>(integer_scale));
+    auto mask = ScaleDataArray(cursorInfo->Mask, kCursorBitWidth, kCursorHeight, static_cast<size_t>(integer_scale));
 
     auto* cursor = SDL_CreateCursor(
-        data.data(), mask.data(), BASE_CURSOR_WIDTH * integer_scale, BASE_CURSOR_HEIGHT * integer_scale,
+        data.data(), mask.data(), kBaseCursorWidth * integer_scale, kBaseCursorHeight * integer_scale,
         cursorInfo->HotSpot.X * integer_scale, cursorInfo->HotSpot.Y * integer_scale);
 
     return cursor;
@@ -126,7 +128,7 @@ void CursorRepository::GenerateScaledCursorSetHolder(uint8_t scale)
                 case CursorID::HandPoint:
                     return SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
                 default:
-                    return this->Create(GetCursorData(cursorId), scale);
+                    return this->Create(getCursorData(cursorId), scale);
             }
         };
         _scaledCursors.emplace(scale, cursorGenerator);

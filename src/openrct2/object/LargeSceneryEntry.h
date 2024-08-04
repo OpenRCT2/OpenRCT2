@@ -10,10 +10,13 @@
 #pragma once
 
 #include "../core/Money.hpp"
-#include "../interface/Cursors.h"
 #include "../localisation/StringIdType.h"
 #include "../world/Location.hpp"
 #include "ObjectTypes.h"
+
+#include <string_view>
+
+enum class CursorID : uint8_t;
 
 struct LargeSceneryText;
 

@@ -19,6 +19,8 @@ struct SDL_Cursor;
 
 namespace OpenRCT2::Ui
 {
+    struct CursorData;
+
     class CursorRepository
     {
     private:
@@ -50,8 +52,8 @@ namespace OpenRCT2::Ui
             }
         };
 
-        constexpr static int32_t BASE_CURSOR_WIDTH = 32;
-        constexpr static int32_t BASE_CURSOR_HEIGHT = 32;
+        constexpr static int32_t kBaseCursorWidth = 32;
+        constexpr static int32_t kBaseCursorHeight = 32;
 
         CursorID _currentCursor = CursorID::Undefined;
         uint8_t _currentCursorScale = 1;
@@ -68,6 +70,5 @@ namespace OpenRCT2::Ui
     private:
         SDL_Cursor* Create(const CursorData* cursorInfo, uint8_t scale);
         void GenerateScaledCursorSetHolder(uint8_t scale);
-        static const CursorData* GetCursorData(CursorID cursorId);
     };
 } // namespace OpenRCT2::Ui
