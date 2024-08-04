@@ -358,6 +358,7 @@ static Widget _waterWidgets[] = {
             // Move to tool bottom left
             mapTile.x -= tool_length / 2;
             mapTile.y -= tool_length / 2;
+            mapTile = mapTile.ToTileStart();
 
             if (gMapSelectPositionA.x != mapTile.x)
             {
