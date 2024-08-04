@@ -149,6 +149,7 @@ static WindowClass window_themes_tab_1_classes[] = {
 
 static WindowClass window_themes_tab_2_classes[] = {
     WindowClass::ParkInformation,
+    WindowClass::EditorParkEntrance,
     WindowClass::Finances,
     WindowClass::NewCampaign,
     WindowClass::Research,

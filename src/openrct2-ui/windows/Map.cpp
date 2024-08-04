@@ -7,11 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/ViewportInteraction.h"
-#include "../interface/ViewportQuery.h"
-
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/ViewportInteraction.h>
+#include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Cheats.h>
@@ -22,21 +21,17 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/LandSetRightsAction.h>
 #include <openrct2/actions/MapChangeSizeAction.h>
-#include <openrct2/actions/ParkEntrancePlaceAction.h>
 #include <openrct2/actions/PeepSpawnPlaceAction.h>
 #include <openrct2/actions/SurfaceSetStyleAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
-#include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Language.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
-#include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
@@ -126,11 +121,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX,
         WIDX_LAND_SALE_CHECKBOX,
         WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX,
-        WIDX_ROTATE_90,
         WIDX_MAP_GENERATOR
     };
-
-    validate_global_widx(WC_MAP, WIDX_ROTATE_90);
 
     // clang-format off
 static Widget window_map_widgets[] = {
@@ -152,7 +144,6 @@ static Widget window_map_widgets[] = {
     MakeWidget        ({ 58, 197}, {184,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
     MakeWidget        ({ 58, 197}, {184,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
     MakeWidget        ({ 58, 197}, {174,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
-    MakeWidget        ({218,  45}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW),                STR_ROTATE_OBJECTS_90                          ),
     MakeWidget        ({110, 189}, {131,  14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_MAPGEN_WINDOW_TITLE,         STR_MAP_GENERATOR_TIP                          ),
     kWidgetsEnd,
 };
@@ -334,20 +325,13 @@ static Widget window_map_widgets[] = {
                     Invalidate();
                     break;
                 case WIDX_BUILD_PARK_ENTRANCE:
-                    Invalidate();
-                    if (ToolSet(*this, widgetIndex, Tool::UpArrow))
-                        break;
-
-                    gParkEntranceGhostExists = false;
-                    InputSetFlag(INPUT_FLAG_6, true);
-
-                    ShowGridlines();
-                    ShowLandRights();
-                    ShowConstructionRights();
+                {
+                    if (!WindowFindByClass(WindowClass::EditorParkEntrance))
+                        ContextOpenWindow(WindowClass::EditorParkEntrance);
+                    else
+                        WindowCloseByClass(WindowClass::EditorParkEntrance);
                     break;
-                case WIDX_ROTATE_90:
-                    gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
-                    break;
+                }
                 case WIDX_PEOPLE_STARTING_POSITION:
                     if (ToolSet(*this, widgetIndex, Tool::UpArrow))
                         break;
@@ -475,9 +459,6 @@ static Widget window_map_widgets[] = {
                 case WIDX_SET_LAND_RIGHTS:
                     SetLandRightsToolUpdate(screenCoords);
                     break;
-                case WIDX_BUILD_PARK_ENTRANCE:
-                    PlaceParkEntranceToolUpdate(screenCoords);
-                    break;
                 case WIDX_PEOPLE_STARTING_POSITION:
                     SetPeepSpawnToolUpdate(screenCoords);
                     break;
@@ -488,9 +469,6 @@ static Widget window_map_widgets[] = {
         {
             switch (widgetIndex)
             {
-                case WIDX_BUILD_PARK_ENTRANCE:
-                    PlaceParkEntranceToolDown(screenCoords);
-                    break;
                 case WIDX_PEOPLE_STARTING_POSITION:
                     SetPeepSpawnToolDown(screenCoords);
                     break;
@@ -518,13 +496,6 @@ static Widget window_map_widgets[] = {
             switch (widgetIndex)
             {
                 case WIDX_SET_LAND_RIGHTS:
-                    Invalidate();
-                    HideGridlines();
-                    HideLandRights();
-                    HideConstructionRights();
-                    break;
-                case WIDX_BUILD_PARK_ENTRANCE:
-                    ParkEntranceRemoveGhost();
                     Invalidate();
                     HideGridlines();
                     HideLandRights();
@@ -567,99 +538,6 @@ static Widget window_map_widgets[] = {
             gMapSelectPositionB.x = mapCoords.x + size;
             gMapSelectPositionB.y = mapCoords.y + size;
             MapInvalidateSelectionRect();
-        }
-
-        CoordsXYZD PlaceParkEntranceGetMapPosition(const ScreenCoordsXY& screenCoords)
-        {
-            CoordsXYZD parkEntranceMapPosition{ 0, 0, 0, INVALID_DIRECTION };
-            const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
-            parkEntranceMapPosition = { mapCoords.x, mapCoords.y, 0, INVALID_DIRECTION };
-            if (parkEntranceMapPosition.IsNull())
-                return parkEntranceMapPosition;
-
-            auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
-            if (surfaceElement == nullptr)
-            {
-                parkEntranceMapPosition.SetNull();
-                return parkEntranceMapPosition;
-            }
-
-            parkEntranceMapPosition.z = surfaceElement->GetWaterHeight();
-            if (parkEntranceMapPosition.z == 0)
-            {
-                parkEntranceMapPosition.z = surfaceElement->GetBaseZ();
-                if ((surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask) != 0)
-                {
-                    parkEntranceMapPosition.z += 16;
-                    if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
-                    {
-                        parkEntranceMapPosition.z += 16;
-                    }
-                }
-            }
-            parkEntranceMapPosition.direction = (gWindowSceneryRotation - GetCurrentRotation()) & 3;
-            return parkEntranceMapPosition;
-        }
-
-        void PlaceParkEntranceToolUpdate(const ScreenCoordsXY& screenCoords)
-        {
-            MapInvalidateSelectionRect();
-            MapInvalidateMapSelectionTiles();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-            CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
-            if (parkEntrancePosition.IsNull())
-            {
-                ParkEntranceRemoveGhost();
-                return;
-            }
-
-            int32_t sideDirection = (parkEntrancePosition.direction + 1) & 3;
-            gMapSelectionTiles.clear();
-            gMapSelectionTiles.push_back({ parkEntrancePosition.x, parkEntrancePosition.y });
-            gMapSelectionTiles.push_back({ parkEntrancePosition.x + CoordsDirectionDelta[sideDirection].x,
-                                           parkEntrancePosition.y + CoordsDirectionDelta[sideDirection].y });
-            gMapSelectionTiles.push_back({ parkEntrancePosition.x - CoordsDirectionDelta[sideDirection].x,
-                                           parkEntrancePosition.y - CoordsDirectionDelta[sideDirection].y });
-
-            gMapSelectArrowPosition = parkEntrancePosition;
-            gMapSelectArrowDirection = parkEntrancePosition.direction;
-
-            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT | MAP_SELECT_FLAG_ENABLE_ARROW;
-            MapInvalidateMapSelectionTiles();
-            if (gParkEntranceGhostExists && parkEntrancePosition == gParkEntranceGhostPosition)
-            {
-                return;
-            }
-
-            ParkEntranceRemoveGhost();
-
-            auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId);
-            gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
-
-            auto result = GameActions::Execute(&gameAction);
-            if (result.Error == GameActions::Status::Ok)
-            {
-                gParkEntranceGhostPosition = parkEntrancePosition;
-                gParkEntranceGhostExists = true;
-            }
-        }
-
-        void PlaceParkEntranceToolDown(const ScreenCoordsXY& screenCoords)
-        {
-            ParkEntranceRemoveGhost();
-
-            CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
-            if (!parkEntrancePosition.IsNull())
-            {
-                auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId);
-                auto result = GameActions::Execute(&gameAction);
-                if (result.Error == GameActions::Status::Ok)
-                {
-                    Audio::Play3D(Audio::SoundId::PlaceItem, result.Position);
-                }
-            }
         }
 
         void SetPeepSpawnToolUpdate(const ScreenCoordsXY& screenCoords)
@@ -881,6 +759,9 @@ static Widget window_map_widgets[] = {
             if (_activeTool & (1 << 0))
                 pressed_widgets |= (1uLL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
 
+            if (WindowFindByClass(WindowClass::EditorParkEntrance))
+                pressed_widgets |= (1uLL << WIDX_BUILD_PARK_ENTRANCE);
+
             // Set disabled widgets
             auto& gameState = GetGameState();
             SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gameState.MapSize.x != gameState.MapSize.y);
@@ -908,8 +789,6 @@ static Widget window_map_widgets[] = {
             widgets[WIDX_SET_LAND_RIGHTS].bottom = height - 70 + 23;
             widgets[WIDX_BUILD_PARK_ENTRANCE].top = height - 46;
             widgets[WIDX_BUILD_PARK_ENTRANCE].bottom = height - 46 + 23;
-            widgets[WIDX_ROTATE_90].top = height - 46;
-            widgets[WIDX_ROTATE_90].bottom = height - 46 + 23;
             widgets[WIDX_PEOPLE_STARTING_POSITION].top = height - 46;
             widgets[WIDX_PEOPLE_STARTING_POSITION].bottom = height - 46 + 23;
 
@@ -941,13 +820,6 @@ static Widget window_map_widgets[] = {
 
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
             {
-                // scenario editor: build park entrance selected, show rotate button
-                if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map
-                    && gCurrentToolWidget.widget_index == WIDX_BUILD_PARK_ENTRANCE)
-                {
-                    widgets[WIDX_ROTATE_90].type = WindowWidgetType::FlatBtn;
-                }
-
                 // Always show set land rights button
                 widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 

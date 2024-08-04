@@ -144,6 +144,8 @@ public:
                 return TransparencyOpen();
             case WindowClass::AssetPacks:
                 return AssetPacksOpen();
+            case WindowClass::EditorParkEntrance:
+                return EditorParkEntranceOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
