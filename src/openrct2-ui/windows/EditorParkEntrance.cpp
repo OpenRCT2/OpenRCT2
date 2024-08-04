@@ -338,7 +338,7 @@ namespace OpenRCT2::Ui::Windows
             HideConstructionRights();
         }
 
-        void ContentScrollMouseOver(const ScreenCoordsXY& screenCoords)
+        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto highlighted = ScrollGetEntranceListItemAt(screenCoords);
             if (highlighted != OBJECT_ENTRY_INDEX_NULL)
