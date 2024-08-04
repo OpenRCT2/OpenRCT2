@@ -241,7 +241,7 @@ namespace OpenRCT2::Ui::Windows
             InitParkEntranceItems();
             pressed_widgets |= 1LL << WIDX_TAB;
 
-            ToolSet(*this, WIDX_LIST, Tool::UpArrow);
+            ToolSet(*this, WIDX_LIST, Tool::EntranceDown);
             InputSetFlag(INPUT_FLAG_6, true);
         }
 
