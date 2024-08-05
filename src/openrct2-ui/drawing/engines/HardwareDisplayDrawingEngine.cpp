@@ -76,7 +76,15 @@ public:
         if (_useVsync != vsync)
         {
             _useVsync = vsync;
+#if SDL_VERSION_ATLEAST(2, 0, 18)
             SDL_RenderSetVSync(_sdlRenderer, vsync ? 1 : 0);
+#else
+            SDL_DestroyRenderer(_sdlRenderer);
+            _screenTexture = nullptr;
+            _scaledScreenTexture = nullptr;
+            Initialise();
+            Resize(_uiContext->GetWidth(), _uiContext->GetHeight());
+#endif
         }
     }
 
