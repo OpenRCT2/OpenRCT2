@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -15,18 +16,24 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/LandBuyRightsAction.h>
+#include <openrct2/actions/LandSetRightsAction.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Surface.h>
 
 namespace OpenRCT2::Ui::Windows
 {
+    static constexpr ScreenCoordsXY kInGameSize = { 94, 94 };
+    static constexpr ScreenCoordsXY kEditorSize = { 280, 104 };
+
     static constexpr StringId WINDOW_TITLE = STR_LAND_RIGHTS;
-    static constexpr int32_t WH = 94;
-    static constexpr int32_t WW = 98;
+    static constexpr int32_t WW = kInGameSize.x;
+    static constexpr int32_t WH = kInGameSize.y;
 
     // clang-format off
 enum WindowLandRightsWidgetIdx {
@@ -36,29 +43,51 @@ enum WindowLandRightsWidgetIdx {
     WIDX_PREVIEW,
     WIDX_DECREMENT,
     WIDX_INCREMENT,
+
+    // In-game widgets
     WIDX_BUY_LAND_RIGHTS,
-    WIDX_BUY_CONSTRUCTION_RIGHTS
+    WIDX_BUY_CONSTRUCTION_RIGHTS,
+
+    // Editor/sandbox widgets
+    WIDX_UNOWNED_LAND_CHECKBOX,
+    WIDX_LAND_SALE_CHECKBOX,
+    WIDX_LAND_OWNED_CHECKBOX,
+    WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX,
+    WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX,
 };
 
 static Widget window_land_rights_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0)                                           ), // preview box
-    MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_RIGHTS_TIP), // decrement size
-    MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_RIGHTS_TIP ), // increment size
-    MakeRemapWidget({22, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Tertiary, SPR_BUY_LAND_RIGHTS,         STR_BUY_LAND_RIGHTS_TIP           ), // land rights
-    MakeRemapWidget({52, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Tertiary, SPR_BUY_CONSTRUCTION_RIGHTS, STR_BUY_CONSTRUCTION_RIGHTS_TIP   ), // construction rights
+    MakeWidget     ({ 27, 17}, { 44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary, ImageId(SPR_LAND_TOOL_SIZE_0)                                                   ), // preview box
+    MakeRemapWidget({ 28, 18}, { 16, 16}, WindowWidgetType::TrnBtn, WindowColour::Primary, SPR_LAND_TOOL_DECREASE,          STR_ADJUST_SMALLER_LAND_RIGHTS_TIP             ), // decrement size
+    MakeRemapWidget({ 54, 32}, { 16, 16}, WindowWidgetType::TrnBtn, WindowColour::Primary, SPR_LAND_TOOL_INCREASE,          STR_ADJUST_LARGER_LAND_RIGHTS_TIP              ), // increment size
+    MakeRemapWidget({ 22, 53}, { 24, 24}, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_BUY_LAND_RIGHTS,             STR_BUY_LAND_RIGHTS_TIP                        ), // land rights
+    MakeRemapWidget({ 52, 53}, { 24, 24}, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_BUY_CONSTRUCTION_RIGHTS,     STR_BUY_CONSTRUCTION_RIGHTS_TIP                ), // construction rights
+    MakeWidget     ({100, 22}, {100, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_NOT_OWNED,              STR_SET_LAND_TO_BE_NOT_OWNED_TIP               ),
+    MakeWidget     ({100, 38}, {100, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
+    MakeWidget     ({100, 54}, {100, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
+    MakeWidget     ({100, 70}, {100, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
+    MakeWidget     ({100, 86}, {100, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
     kWidgetsEnd,
 };
     // clang-format on
 
     enum class LandRightsMode : uint8_t
     {
+        // In-game
         BuyLand,
         BuyConstructionRights,
+
+        // Sandbox/editor mode
+        SetLandUnowned,
+        SetLandForSale,
+        SetLandOwned,
+        SetConstructionRightsForSale,
+        SetConstructionRightsOwned,
     };
 
-    static const bool kLandRightsVisibleByMode[] = { true, false };
-    static const bool kConstructionRightsVisibleByMode[] = { false, true };
+    static const bool kLandRightsVisibleByMode[] = { true, false, true, true, true, false, false };
+    static const bool kConstructionRightsVisibleByMode[] = { false, true, true, false, false, true, true };
 
     class LandRightsWindow final : public Window
     {
@@ -99,10 +128,17 @@ static Widget window_land_rights_widgets[] = {
             gLandToolSize = kLandToolMinimumSize;
             ShowGridlines();
 
-            if (gLandRemainingOwnershipSales > 0)
-                SwitchToMode(LandRightsMode::BuyLand);
+            if (!GetGameState().Cheats.SandboxMode)
+            {
+                if (gLandRemainingOwnershipSales > 0)
+                    SwitchToMode(LandRightsMode::BuyLand);
+                else
+                    SwitchToMode(LandRightsMode::BuyConstructionRights);
+            }
             else
-                SwitchToMode(LandRightsMode::BuyConstructionRights);
+            {
+                SwitchToMode(LandRightsMode::SetLandUnowned);
+            }
         }
 
         void OnClose() override
@@ -124,6 +160,8 @@ static Widget window_land_rights_widgets[] = {
                 case WIDX_PREVIEW:
                     InputSize();
                     break;
+
+                // In-game mode widgets
                 case WIDX_BUY_LAND_RIGHTS:
                     if (_landRightsMode != LandRightsMode::BuyLand)
                         SwitchToMode(LandRightsMode::BuyLand);
@@ -131,6 +169,32 @@ static Widget window_land_rights_widgets[] = {
                 case WIDX_BUY_CONSTRUCTION_RIGHTS:
                     if (_landRightsMode != LandRightsMode::BuyConstructionRights)
                         SwitchToMode(LandRightsMode::BuyConstructionRights);
+                    break;
+
+                // Sandbox/editor mode widgets
+                case WIDX_UNOWNED_LAND_CHECKBOX:
+                    if (_landRightsMode != LandRightsMode::SetLandUnowned)
+                        SwitchToMode(LandRightsMode::SetLandUnowned);
+                    break;
+
+                case WIDX_LAND_SALE_CHECKBOX:
+                    if (_landRightsMode != LandRightsMode::SetLandForSale)
+                        SwitchToMode(LandRightsMode::SetLandForSale);
+                    break;
+
+                case WIDX_LAND_OWNED_CHECKBOX:
+                    if (_landRightsMode != LandRightsMode::SetLandOwned)
+                        SwitchToMode(LandRightsMode::SetLandOwned);
+                    break;
+
+                case WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX:
+                    if (_landRightsMode != LandRightsMode::SetConstructionRightsForSale)
+                        SwitchToMode(LandRightsMode::SetConstructionRightsForSale);
+                    break;
+
+                case WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX:
+                    if (_landRightsMode != LandRightsMode::SetConstructionRightsOwned)
+                        SwitchToMode(LandRightsMode::SetConstructionRightsOwned);
                     break;
             }
         }
@@ -184,9 +248,8 @@ static Widget window_land_rights_widgets[] = {
                 Close();
         }
 
-        void OnPrepareDraw() override
+        void PrepareDrawInGame()
         {
-            SetWidgetPressed(WIDX_PREVIEW, true);
             if (_landRightsMode == LandRightsMode::BuyLand)
             {
                 SetWidgetPressed(WIDX_BUY_LAND_RIGHTS, true);
@@ -197,8 +260,6 @@ static Widget window_land_rights_widgets[] = {
                 SetWidgetPressed(WIDX_BUY_LAND_RIGHTS, false);
                 SetWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
             }
-
-            window_land_rights_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
 
             if (gLandRemainingOwnershipSales == 0)
             {
@@ -221,6 +282,90 @@ static Widget window_land_rights_widgets[] = {
                 SetWidgetDisabled(WIDX_BUY_CONSTRUCTION_RIGHTS, false);
                 window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_BUY_CONSTRUCTION_RIGHTS_TIP;
             }
+
+            // Position land size tool
+            widgets[WIDX_PREVIEW].top = 17;
+            widgets[WIDX_PREVIEW].bottom = widgets[WIDX_PREVIEW].top + 32;
+            widgets[WIDX_DECREMENT].top = 18;
+            widgets[WIDX_DECREMENT].bottom = widgets[WIDX_DECREMENT].top + 16;
+            widgets[WIDX_INCREMENT].top = 32;
+            widgets[WIDX_INCREMENT].bottom = widgets[WIDX_INCREMENT].top + 16;
+
+            // Show in-game mode widgets
+            widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::ImgBtn;
+            widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].type = WindowWidgetType::ImgBtn;
+
+            // Hide editor/sandbox mode widgets
+            widgets[WIDX_UNOWNED_LAND_CHECKBOX].type = WindowWidgetType::Empty;
+            widgets[WIDX_LAND_OWNED_CHECKBOX].type = WindowWidgetType::Empty;
+            widgets[WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX].type = WindowWidgetType::Empty;
+            widgets[WIDX_LAND_SALE_CHECKBOX].type = WindowWidgetType::Empty;
+            widgets[WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX].type = WindowWidgetType::Empty;
+        }
+
+        void PrepareDrawSandbox()
+        {
+            // Position land size tool
+            widgets[WIDX_PREVIEW].top = 17 + 24;
+            widgets[WIDX_PREVIEW].bottom = widgets[WIDX_PREVIEW].top + 32;
+            widgets[WIDX_DECREMENT].top = 18 + 24;
+            widgets[WIDX_DECREMENT].bottom = widgets[WIDX_DECREMENT].top + 16;
+            widgets[WIDX_INCREMENT].top = 32 + 24;
+            widgets[WIDX_INCREMENT].bottom = widgets[WIDX_INCREMENT].top + 16;
+
+            // Hide in-game mode widgets
+            widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::Empty;
+            widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].type = WindowWidgetType::Empty;
+
+            // Show editor/sandbox mode widgets
+            widgets[WIDX_UNOWNED_LAND_CHECKBOX].type = WindowWidgetType::Checkbox;
+            widgets[WIDX_LAND_OWNED_CHECKBOX].type = WindowWidgetType::Checkbox;
+            widgets[WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX].type = WindowWidgetType::Checkbox;
+            widgets[WIDX_LAND_SALE_CHECKBOX].type = WindowWidgetType::Checkbox;
+            widgets[WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX].type = WindowWidgetType::Checkbox;
+        }
+
+        ScreenCoordsXY GetModeDimensions() const
+        {
+            if ((gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.SandboxMode)
+                return kEditorSize;
+            else
+                return kInGameSize;
+        }
+
+        void OnPrepareDraw() override
+        {
+            SetWidgetPressed(WIDX_PREVIEW, true);
+            window_land_rights_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
+
+            if (width != GetModeDimensions().x)
+                OnResize();
+
+            if ((gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.SandboxMode)
+            {
+                PrepareDrawSandbox();
+                ColourSchemeUpdateByClass(this, WindowClass::Map);
+            }
+            else
+            {
+                PrepareDrawInGame();
+                ColourSchemeUpdateByClass(this, WindowClass::LandRights);
+            }
+        }
+
+        void OnResize() override
+        {
+            Invalidate();
+
+            auto dimensions = GetModeDimensions();
+            width = dimensions.x;
+            height = dimensions.y;
+
+            if (windowPos.x + width > ContextGetWidth())
+                windowPos.x = ContextGetWidth() - width;
+
+            ResizeFrame();
+            Invalidate();
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -244,10 +389,47 @@ static Widget window_land_rights_widgets[] = {
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_landRightsCost);
+
+                auto offset = widgets[WIDX_BUY_LAND_RIGHTS].type != WindowWidgetType::Empty ? 32 : 8;
+
                 screenCoords = { window_land_rights_widgets[WIDX_PREVIEW].midX() + windowPos.x,
-                                 window_land_rights_widgets[WIDX_PREVIEW].bottom + windowPos.y + 32 };
+                                 window_land_rights_widgets[WIDX_PREVIEW].bottom + windowPos.y + offset };
                 DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
+        }
+
+        LandBuyRightsAction GetLandBuyAction()
+        {
+            auto mode = (_landRightsMode == LandRightsMode::BuyLand) ? LandBuyRightSetting::BuyLand
+                                                                     : LandBuyRightSetting::BuyConstructionRights;
+
+            return LandBuyRightsAction(
+                { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, mode);
+        }
+
+        uint8_t GetDesiredOwnership()
+        {
+            switch (_landRightsMode)
+            {
+                case LandRightsMode::SetLandForSale:
+                    return OWNERSHIP_AVAILABLE;
+                case LandRightsMode::SetLandOwned:
+                    return OWNERSHIP_OWNED;
+                case LandRightsMode::SetConstructionRightsForSale:
+                    return OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
+                case LandRightsMode::SetConstructionRightsOwned:
+                    return OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+                case LandRightsMode::SetLandUnowned:
+                default:
+                    return OWNERSHIP_UNOWNED;
+            }
+        }
+
+        LandSetRightsAction GetLandSetAction()
+        {
+            return LandSetRightsAction(
+                { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                LandSetRightSetting::SetOwnershipWithChecks, GetDesiredOwnership());
         }
 
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -324,25 +506,27 @@ static Widget window_land_rights_widgets[] = {
             if (!state_changed)
                 return;
 
-            auto landBuyRightsAction = LandBuyRightsAction(
-                { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                (_landRightsMode == LandRightsMode::BuyLand) ? LandBuyRightSetting::BuyLand
-                                                             : LandBuyRightSetting::BuyConstructionRights);
-            auto res = GameActions::Query(&landBuyRightsAction);
-
-            _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+            if ((gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.SandboxMode)
+            {
+                auto landSetRightsAction = GetLandSetAction();
+                auto res = GameActions::Query(&landSetRightsAction);
+                _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+            }
+            else
+            {
+                auto landBuyRightsAction = GetLandBuyAction();
+                auto res = GameActions::Query(&landBuyRightsAction);
+                _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+            }
         }
 
         void OnToolAbort(WidgetIndex widgetIndex) override
         {
-            if (_landRightsMode == LandRightsMode::BuyLand)
-            {
+            if (kLandRightsVisibleByMode[EnumValue(_landRightsMode)])
                 HideLandRights();
-            }
-            else
-            {
+
+            if (kConstructionRightsVisibleByMode[EnumValue(_landRightsMode)])
                 HideConstructionRights();
-            }
         }
 
         void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -350,22 +534,21 @@ static Widget window_land_rights_widgets[] = {
             if (screenCoords.x == kLocationNull)
                 return;
 
-            auto modeSetting = _landRightsMode == LandRightsMode::BuyLand ? LandBuyRightSetting::BuyLand
-                                                                          : LandBuyRightSetting::BuyConstructionRights;
-
-            auto landBuyRightsAction = LandBuyRightsAction(
-                { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, modeSetting);
-            GameActions::Execute(&landBuyRightsAction);
+            if ((gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.SandboxMode)
+            {
+                auto landSetRightsAction = GetLandSetAction();
+                GameActions::Execute(&landSetRightsAction);
+            }
+            else
+            {
+                auto landBuyRightsAction = GetLandBuyAction();
+                GameActions::Execute(&landBuyRightsAction);
+            }
         }
 
         void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             OnToolDown(widgetIndex, screenCoords);
-        }
-
-        void OnResize() override
-        {
-            ResizeFrame();
         }
 
     private:

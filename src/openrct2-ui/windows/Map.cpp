@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/ViewportQuery.h>
@@ -19,7 +18,6 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/LandSetRightsAction.h>
 #include <openrct2/actions/MapChangeSizeAction.h>
 #include <openrct2/actions/PeepSpawnPlaceAction.h>
 #include <openrct2/actions/SurfaceSetStyleAction.h>
@@ -115,13 +113,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SET_LAND_RIGHTS,
         WIDX_BUILD_PARK_ENTRANCE,
         WIDX_PEOPLE_STARTING_POSITION,
-        WIDX_LAND_TOOL,
-        WIDX_LAND_TOOL_SMALLER,
-        WIDX_LAND_TOOL_LARGER,
-        WIDX_LAND_OWNED_CHECKBOX,
-        WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX,
-        WIDX_LAND_SALE_CHECKBOX,
-        WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX,
         WIDX_MAP_GENERATOR
     };
 
@@ -138,13 +129,6 @@ static Widget window_map_widgets[] = {
     MakeWidget        ({  4,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS),             STR_SELECT_PARK_OWNED_LAND_TIP                 ),
     MakeWidget        ({  4,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PARK_ENTRANCE),               STR_BUILD_PARK_ENTRANCE_TIP                    ),
     MakeWidget        ({ 28,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, 0xFFFFFFFF,                      STR_SET_STARTING_POSITIONS_TIP                 ),
-    MakeWidget        ({  4,  17}, { 44,  32}, WindowWidgetType::ImgBtn,    WindowColour::Secondary, ImageId(SPR_LAND_TOOL_SIZE_0)                                                            ),
-    MakeRemapWidget   ({  5,  18}, { 16,  16}, WindowWidgetType::TrnBtn,    WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,          STR_ADJUST_SMALLER_LAND_TIP                    ),
-    MakeRemapWidget   ({ 31,  32}, { 16,  16}, WindowWidgetType::TrnBtn,    WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,          STR_ADJUST_LARGER_LAND_TIP                     ),
-    MakeWidget        ({ 58, 197}, {184,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
-    MakeWidget        ({ 58, 197}, {184,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
-    MakeWidget        ({ 58, 197}, {184,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
-    MakeWidget        ({ 58, 197}, {174,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
     MakeWidget        ({110, 189}, {131,  14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_MAPGEN_WINDOW_TITLE,         STR_MAP_GENERATOR_TIP                          ),
     kWidgetsEnd,
 };
@@ -216,7 +200,6 @@ static Widget window_map_widgets[] = {
     class MapWindow final : public Window
     {
         uint8_t _rotation;
-        uint8_t _activeTool;
         uint32_t _currentLine;
         uint16_t _landRightsToolSize;
         int32_t _firstColumnWidth;
@@ -237,8 +220,7 @@ static Widget window_map_widgets[] = {
             widgets = window_map_widgets;
 
             hold_down_widgets = (1uLL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
-                | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN)
-                | (1uLL << WIDX_LAND_TOOL_LARGER) | (1uLL << WIDX_LAND_TOOL_SMALLER);
+                | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN);
 
             flags |= WF_RESIZABLE;
             min_width = WW;
@@ -283,48 +265,13 @@ static Widget window_map_widgets[] = {
                     Close();
                     break;
                 case WIDX_SET_LAND_RIGHTS:
-                    Invalidate();
-                    if (ToolSet(*this, widgetIndex, Tool::UpArrow))
-                        break;
-                    _activeTool = 2;
-                    // Prevent mountain tool size.
-                    _landRightsToolSize = std::max<uint16_t>(kLandToolMinimumSize, _landRightsToolSize);
-                    ShowGridlines();
-                    ShowLandRights();
-                    ShowConstructionRights();
+                {
+                    if (!WindowFindByClass(WindowClass::LandRights))
+                        ContextOpenWindow(WindowClass::LandRights);
+                    else
+                        WindowCloseByClass(WindowClass::LandRights);
                     break;
-                case WIDX_LAND_OWNED_CHECKBOX:
-                    _activeTool ^= 2;
-
-                    if (_activeTool & 2)
-                        _activeTool &= 0xF2;
-
-                    Invalidate();
-                    break;
-                case WIDX_LAND_SALE_CHECKBOX:
-                    _activeTool ^= 8;
-
-                    if (_activeTool & 8)
-                        _activeTool &= 0xF8;
-
-                    Invalidate();
-                    break;
-                case WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX:
-                    _activeTool ^= 1;
-
-                    if (_activeTool & 1)
-                        _activeTool &= 0xF1;
-
-                    Invalidate();
-                    break;
-                case WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX:
-                    _activeTool ^= 4;
-
-                    if (_activeTool & 4)
-                        _activeTool &= 0xF4;
-
-                    Invalidate();
-                    break;
+                }
                 case WIDX_BUILD_PARK_ENTRANCE:
                 {
                     if (!WindowFindByClass(WindowClass::EditorParkEntrance))
@@ -340,9 +287,6 @@ static Widget window_map_widgets[] = {
                     ShowGridlines();
                     ShowLandRights();
                     ShowConstructionRights();
-                    break;
-                case WIDX_LAND_TOOL:
-                    InputLandSize();
                     break;
                 case WIDX_MAP_SIZE_SPINNER_Y:
                 case WIDX_MAP_SIZE_SPINNER_X:
@@ -388,18 +332,6 @@ static Widget window_map_widgets[] = {
                 case WIDX_MAP_SIZE_SPINNER_X_DOWN:
                     _resizeDirection = ResizeDirection::X;
                     DecreaseMapSize();
-                    break;
-                case WIDX_LAND_TOOL_SMALLER:
-                    // Decrement land rights tool size
-                    _landRightsToolSize = std::max<uint16_t>(kLandToolMinimumSize, _landRightsToolSize - 1);
-
-                    Invalidate();
-                    break;
-                case WIDX_LAND_TOOL_LARGER:
-                    // Increment land rights tool size
-                    _landRightsToolSize = std::min<uint16_t>(kLandToolMaximumSize, _landRightsToolSize + 1);
-
-                    Invalidate();
                     break;
             }
         }
@@ -457,9 +389,6 @@ static Widget window_map_widgets[] = {
         {
             switch (widgetIndex)
             {
-                case WIDX_SET_LAND_RIGHTS:
-                    SetLandRightsToolUpdate(screenCoords);
-                    break;
                 case WIDX_PEOPLE_STARTING_POSITION:
                     SetPeepSpawnToolUpdate(screenCoords);
                     break;
@@ -476,32 +405,10 @@ static Widget window_map_widgets[] = {
             }
         }
 
-        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
-        {
-            switch (widgetIndex)
-            {
-                case WIDX_SET_LAND_RIGHTS:
-                    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
-                    {
-                        auto landSetRightsAction = LandSetRightsAction(
-                            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                            LandSetRightSetting::SetOwnershipWithChecks, _activeTool << 4);
-                        GameActions::Execute(&landSetRightsAction);
-                    }
-                    break;
-            }
-        }
-
         void OnToolAbort(WidgetIndex widgetIndex) override
         {
             switch (widgetIndex)
             {
-                case WIDX_SET_LAND_RIGHTS:
-                    Invalidate();
-                    HideGridlines();
-                    HideLandRights();
-                    HideConstructionRights();
-                    break;
                 case WIDX_PEOPLE_STARTING_POSITION:
                     Invalidate();
                     HideGridlines();
@@ -509,36 +416,6 @@ static Widget window_map_widgets[] = {
                     HideConstructionRights();
                     break;
             }
-        }
-
-        void SetLandRightsToolUpdate(const ScreenCoordsXY& screenCoords)
-        {
-            MapInvalidateSelectionRect();
-            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-
-            auto info = GetMapCoordinatesFromPos(
-                screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
-            if (info.SpriteType == ViewportInteractionItem::None)
-                return;
-
-            auto mapCoords = info.Loc;
-
-            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-            gMapSelectType = MAP_SELECT_TYPE_FULL_LAND_RIGHTS;
-
-            int32_t landRightsToolSize = _landRightsToolSize;
-            if (landRightsToolSize == 0)
-                landRightsToolSize = 1;
-
-            int32_t size = (landRightsToolSize * 32) - 32;
-            int32_t radius = (landRightsToolSize * 16) - 16;
-            mapCoords.x -= radius;
-            mapCoords.y -= radius;
-            mapCoords = mapCoords.ToTileStart();
-            gMapSelectPositionA = mapCoords;
-            gMapSelectPositionB.x = mapCoords.x + size;
-            gMapSelectPositionB.y = mapCoords.y + size;
-            MapInvalidateSelectionRect();
         }
 
         void SetPeepSpawnToolUpdate(const ScreenCoordsXY& screenCoords)
@@ -597,19 +474,6 @@ static Widget window_map_widgets[] = {
 
             switch (widgetIndex)
             {
-                case WIDX_LAND_TOOL:
-                {
-                    char* end;
-                    std::string textStr = std::string(text);
-                    int32_t size = strtol(textStr.c_str(), &end, 10);
-                    if (*end == '\0')
-                    {
-                        size = std::clamp<uint16_t>(size, kLandToolMinimumSize, kLandToolMaximumSize);
-                        _landRightsToolSize = size;
-                        Invalidate();
-                    }
-                    break;
-                }
                 case WIDX_MAP_SIZE_SPINNER_Y:
                 case WIDX_MAP_SIZE_SPINNER_X:
                 {
@@ -663,47 +527,6 @@ static Widget window_map_widgets[] = {
             {
                 WindowScrollToLocation(*mainWindow, { mapCoords, mapZ });
             }
-
-            if (isToolActive(WindowClass::Land))
-            {
-                // Set land terrain
-                int32_t landToolSize = std::max<int32_t>(1, gLandToolSize);
-                int32_t size = (landToolSize * 32) - 32;
-                int32_t radius = (landToolSize * 16) - 16;
-
-                mapCoords = (mapCoords - CoordsXY{ radius, radius }).ToTileStart();
-                MapInvalidateSelectionRect();
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
-                gMapSelectPositionA = mapCoords;
-                gMapSelectPositionB = mapCoords + CoordsXY{ size, size };
-                MapInvalidateSelectionRect();
-
-                auto surfaceSetStyleAction = SurfaceSetStyleAction(
-                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                    gLandToolTerrainSurface, gLandToolTerrainEdge);
-                GameActions::Execute(&surfaceSetStyleAction);
-            }
-            else if (isToolActive(*this, WIDX_SET_LAND_RIGHTS))
-            {
-                // Set land rights
-                int32_t landRightsToolSize = std::max<int32_t>(1, _landRightsToolSize);
-                int32_t size = (landRightsToolSize * 32) - 32;
-                int32_t radius = (landRightsToolSize * 16) - 16;
-                mapCoords = (mapCoords - CoordsXY{ radius, radius }).ToTileStart();
-
-                MapInvalidateSelectionRect();
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-                gMapSelectType = MAP_SELECT_TYPE_FULL_LAND_RIGHTS;
-                gMapSelectPositionA = mapCoords;
-                gMapSelectPositionB = mapCoords + CoordsXY{ size, size };
-                MapInvalidateSelectionRect();
-
-                auto landSetRightsAction = LandSetRightsAction(
-                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                    LandSetRightSetting::SetOwnershipWithChecks, _activeTool << 4);
-                GameActions::Execute(&landSetRightsAction);
-            }
         }
 
         void OnScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -746,22 +569,12 @@ static Widget window_map_widgets[] = {
             pressed_widgets = 0;
             SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
             pressed_widgets |= (1uLL << (WIDX_PEOPLE_TAB + selected_tab));
-            pressed_widgets |= (1uLL << WIDX_LAND_TOOL);
-
-            if (_activeTool & (1 << 3))
-                pressed_widgets |= (1uLL << WIDX_LAND_SALE_CHECKBOX);
-
-            if (_activeTool & (1 << 2))
-                pressed_widgets |= (1uLL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
-
-            if (_activeTool & (1 << 1))
-                pressed_widgets |= (1uLL << WIDX_LAND_OWNED_CHECKBOX);
-
-            if (_activeTool & (1 << 0))
-                pressed_widgets |= (1uLL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
 
             if (WindowFindByClass(WindowClass::EditorParkEntrance))
                 pressed_widgets |= (1uLL << WIDX_BUILD_PARK_ENTRANCE);
+
+            if (WindowFindByClass(WindowClass::LandRights))
+                pressed_widgets |= (1uLL << WIDX_SET_LAND_RIGHTS);
 
             // Set disabled widgets
             auto& gameState = GetGameState();
@@ -793,25 +606,8 @@ static Widget window_map_widgets[] = {
             widgets[WIDX_PEOPLE_STARTING_POSITION].top = height - 46;
             widgets[WIDX_PEOPLE_STARTING_POSITION].bottom = height - 46 + 23;
 
-            widgets[WIDX_LAND_TOOL].top = height - 42;
-            widgets[WIDX_LAND_TOOL].bottom = height - 42 + 30;
-            widgets[WIDX_LAND_TOOL_SMALLER].top = height - 41;
-            widgets[WIDX_LAND_TOOL_SMALLER].bottom = height - 41 + 15;
-            widgets[WIDX_LAND_TOOL_LARGER].top = height - 27;
-            widgets[WIDX_LAND_TOOL_LARGER].bottom = height - 27 + 15;
-
             widgets[WIDX_MAP_GENERATOR].top = height - 69;
             widgets[WIDX_MAP_GENERATOR].bottom = height - 69 + 13;
-
-            // Land tool mode (4 checkboxes)
-            int checkboxY = height - 55;
-            for (int32_t i = WIDX_LAND_OWNED_CHECKBOX; i <= WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX; i++)
-            {
-                widgets[i].top = checkboxY;
-                checkboxY += 11;
-                widgets[i].bottom = checkboxY;
-                checkboxY += 2;
-            }
 
             // Disable all scenario editor related widgets
             for (int32_t i = WIDX_MAP_SIZE_SPINNER_Y; i <= WIDX_MAP_GENERATOR; i++)
@@ -823,24 +619,7 @@ static Widget window_map_widgets[] = {
             {
                 // Always show set land rights button
                 widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
-
-                if (isToolActive(WindowClass::Map, WIDX_SET_LAND_RIGHTS))
-                {
-                    // Show land tool buttons + modes
-                    widgets[WIDX_LAND_TOOL].type = WindowWidgetType::ImgBtn;
-                    widgets[WIDX_LAND_TOOL_SMALLER].type = WindowWidgetType::TrnBtn;
-                    widgets[WIDX_LAND_TOOL_LARGER].type = WindowWidgetType::TrnBtn;
-
-                    for (int32_t i = WIDX_LAND_OWNED_CHECKBOX; i <= WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX; i++)
-                        widgets[i].type = WindowWidgetType::Checkbox;
-
-                    widgets[WIDX_LAND_TOOL].image = ImageId(LandTool::SizeToSpriteIndex(_landRightsToolSize));
-                }
-                else
-                {
-                    // Show the default scenario editor buttons
-                    ShowDefaultScenarioEditorButtons();
-                }
+                ShowDefaultScenarioEditorButtons();
             }
             if (_recalculateScrollbars)
             {
@@ -854,23 +633,10 @@ static Widget window_map_widgets[] = {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            auto screenCoords = windowPos
-                + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
-
-            // Draw land tool size
-            if (isToolActive(*this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > kLandToolMaximumSizeWithSprite)
-            {
-                auto ft = Formatter();
-                ft.Add<uint16_t>(_landRightsToolSize);
-                DrawTextBasic(
-                    dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
-            }
-            screenCoords.y = windowPos.y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
-
             // People starting position (scenario editor only)
             if (widgets[WIDX_PEOPLE_STARTING_POSITION].type != WindowWidgetType::Empty)
             {
-                screenCoords = windowPos
+                auto screenCoords = windowPos
                     + ScreenCoordsXY{ widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
                                       widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
                 GfxDrawSprite(dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
@@ -881,7 +647,7 @@ static Widget window_map_widgets[] = {
                 // Render the map legend
                 if (selected_tab == PAGE_RIDES)
                 {
-                    screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP].bottom + 2 };
+                    auto screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP].bottom + 2 };
 
                     static_assert(std::size(RideKeyColours) == std::size(MapLabels));
 
@@ -1321,14 +1087,6 @@ static Widget window_map_widgets[] = {
             auto ft = Formatter::Common();
             ft.Add<uint16_t>(gameState.MapSize.y - 2);
             ft.Add<uint16_t>(gameState.MapSize.x - 2);
-        }
-
-        void InputLandSize()
-        {
-            Formatter ft;
-            ft.Add<uint16_t>(kLandToolMinimumSize);
-            ft.Add<uint16_t>(kLandToolMaximumSize);
-            TextInputOpen(WIDX_LAND_TOOL, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
         }
 
         void InputMapSize(WidgetIndex callingWidget)
