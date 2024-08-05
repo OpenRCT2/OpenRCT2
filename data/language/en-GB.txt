@@ -3727,6 +3727,8 @@ STR_6652    :Error Window
 STR_6653    :All sources shown
 STR_6654    :Showing {POP16}{UINT16} sources
 STR_6655    :Only ‘{POP16}{STRINGID}’
+STR_6656    :Land Not Owned
+STR_6657    :Set land to be not owned by the park, nor available for purchase
 
 #############
 # Scenarios #
