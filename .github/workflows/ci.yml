@@ -310,9 +310,9 @@ jobs:
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
           - platform: x86_64
             distro: Debian
-            release: bullseye
-            image: openrct2/openrct2-build:14-bullseye
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
+            release: bookworm
+            image: openrct2/openrct2-build:15-bookworm
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off -DCMAKE_BUILD_TYPE=Debug # overwrite the default build type to avoid GCC 12 bugs
           - platform: i686
             distro: Ubuntu
             release: jammy
