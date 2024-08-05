@@ -6,6 +6,7 @@
 - Feature: [#22414] Finance graphs can be resized.
 - Change: [#21659] Increase the Hybrid Roller Coaster’s maximum lift speed to 17 km/h (11 mph).
 - Change: [#22466] The Clear Scenery tool now uses a bulldozer cursor instead of a generic crosshair.
+- Change: [#22490] In sandbox mode, changing land or construction rights now acts as buying or selling.
 - Change: [#22491] Scrollbars are now hidden if the scrollable widget is not actually overflowing.
 - Fix: [#21908] Errors showing up when placing/moving track design previews.
 - Fix: [#22307] Hover tooltips in financial charts are not invalidated properly.
