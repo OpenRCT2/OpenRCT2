@@ -859,10 +859,10 @@ static Widget _windowFinancesResearchWidgets[] =
             money64 maxVal = 0;
             for (int32_t i = 0; i < kGraphNumPoints; i++)
             {
-                auto val = series[i];
+                auto val = std::abs(series[i]);
                 if (val == kMoney64Undefined)
                     continue;
-                while (std::abs(val) > maxVal)
+                if (val > maxVal)
                     maxVal = val;
             }
             // This algorithm increments the leading digit of the max and sets all other digits to zero.
