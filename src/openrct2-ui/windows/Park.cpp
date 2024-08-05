@@ -210,8 +210,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
         void OnClose() override
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && classification == gCurrentToolWidget.window_classification
-                && number == gCurrentToolWidget.window_number)
+            if (isToolActive(classification, number))
             {
                 ToolCancel();
             }
@@ -1201,9 +1200,8 @@ static constexpr WindowParkAward _parkAwards[] = {
 #pragma region Common
         void SetPage(int32_t newPage)
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-                if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                    ToolCancel();
+            if (isToolActive(classification, number))
+                ToolCancel();
 
             // Set listen only to viewport
             bool listen = false;

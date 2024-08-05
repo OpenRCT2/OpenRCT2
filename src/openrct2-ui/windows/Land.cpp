@@ -34,7 +34,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 98;
 
     // clang-format off
-enum WindowLandWidgetIdx {
+enum WindowLandWidgetIdx : WidgetIndex
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -100,7 +101,7 @@ static Widget window_land_widgets[] = {
         void OnClose() override
         {
             // If the tool wasn't changed, turn tool off
-            if (LandToolIsActive())
+            if (isToolActive(WindowClass::Land, WIDX_BACKGROUND))
                 ToolCancel();
         }
 
@@ -224,7 +225,7 @@ static Widget window_land_widgets[] = {
 
         void OnUpdate() override
         {
-            if (!LandToolIsActive())
+            if (!isToolActive(WindowClass::Land, WIDX_BACKGROUND))
                 Close();
         }
 
@@ -869,27 +870,11 @@ static Widget window_land_widgets[] = {
 
     /**
      *
-     *  rct2: 0x0066D104
-     */
-    bool LandToolIsActive()
-    {
-        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-            return false;
-        if (gCurrentToolWidget.window_classification != WindowClass::Land)
-            return false;
-        if (gCurrentToolWidget.widget_index != WIDX_BACKGROUND)
-            return false;
-        return true;
-    }
-
-    /**
-     *
      *  rct2: 0x0066CD54
      */
     void ToggleLandWindow()
     {
-        if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Land
-            && gCurrentToolWidget.widget_index == WIDX_BACKGROUND)
+        if (isToolActive(WindowClass::Land, WIDX_BACKGROUND))
         {
             ToolCancel();
         }

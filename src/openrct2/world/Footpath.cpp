@@ -165,7 +165,7 @@ money64 FootpathProvisionalSet(
     // Invalidate previous footpath piece.
     VirtualFloorInvalidate();
 
-    if (!SceneryToolIsActive())
+    if (!isToolActive(WindowClass::Scenery))
     {
         if (res.Error != GameActions::Status::Ok)
         {

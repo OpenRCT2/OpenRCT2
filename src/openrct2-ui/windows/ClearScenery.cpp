@@ -87,7 +87,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnClose() override
         {
-            if (ClearSceneryToolIsActive())
+            if (isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
                 ToolCancel();
         }
 
@@ -164,7 +164,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             // Close window if another tool is open
-            if (!ClearSceneryToolIsActive())
+            if (!isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
                 Close();
         }
 
@@ -381,27 +381,11 @@ namespace OpenRCT2::Ui::Windows
 
     /**
      *
-     *  rct2: 0x0066D125
-     */
-    bool ClearSceneryToolIsActive()
-    {
-        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-            return false;
-        if (gCurrentToolWidget.window_classification != WindowClass::ClearScenery)
-            return false;
-        if (gCurrentToolWidget.widget_index != WIDX_BACKGROUND)
-            return false;
-        return true;
-    }
-
-    /**
-     *
      *  rct2: 0x0066CD0C
      */
     void ToggleClearSceneryWindow()
     {
-        if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WindowClass::ClearScenery
-             && gCurrentToolWidget.widget_index == WIDX_BACKGROUND))
+        if (isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
         {
             ToolCancel();
         }

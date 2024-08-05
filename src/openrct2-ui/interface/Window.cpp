@@ -497,7 +497,7 @@ static void WindowInvalidatePressedImageButton(const WindowBase& w)
         if (widget->type != WindowWidgetType::ImgBtn)
             continue;
 
-        if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
+        if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
             GfxSetDirtyBlocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height } });
     }
 }

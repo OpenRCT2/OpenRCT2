@@ -632,13 +632,8 @@ static Widget _staffListWidgets[] = {
 
         void CancelTools()
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-            {
-                if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                {
-                    ToolCancel();
-                }
-            }
+            if (isToolActive(classification, number))
+                ToolCancel();
         }
 
         Peep* GetClosestStaffMemberTo(const ScreenCoordsXY& screenCoords)

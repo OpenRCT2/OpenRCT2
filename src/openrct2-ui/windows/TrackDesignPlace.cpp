@@ -138,9 +138,8 @@ static Widget _trackPlaceWidgets[] = {
 
         void OnUpdate() override
         {
-            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                if (gCurrentToolWidget.window_classification != WindowClass::TrackDesignPlace)
-                    Close();
+            if (!isToolActive(WindowClass::TrackDesignPlace))
+                Close();
         }
 
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override

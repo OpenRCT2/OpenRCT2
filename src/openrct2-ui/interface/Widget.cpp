@@ -199,8 +199,7 @@ namespace OpenRCT2::Ui
                          w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
         // Check if the button is pressed down
-        uint8_t press = WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET
-                                                                                              : 0;
+        uint8_t press = WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         auto colour = w.colours[widget.colour];
 
@@ -288,7 +287,7 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Check if the button is pressed down
-        if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
+        if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
         {
             if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
             {
@@ -321,8 +320,7 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Border
-        uint8_t press = WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET
-                                                                                              : 0;
+        uint8_t press = WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
         GfxFillRectInset(dpi, rect, colour, press);
 
         // Button caption
@@ -597,7 +595,7 @@ namespace OpenRCT2::Ui
         uint8_t press = 0;
         if (w.flags & WF_10)
             press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
-        if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
+        if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
             press |= INSET_RECT_FLAG_BORDER_INSET;
 
         auto colour = w.colours[widget.colour];
@@ -826,7 +824,7 @@ namespace OpenRCT2::Ui
 
         if (widget.type == WindowWidgetType::ColourBtn || widget.type == WindowWidgetType::TrnBtn
             || widget.type == WindowWidgetType::Tab)
-            if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
+            if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
                 image = image.WithIndexOffset(1);
 
         const auto colour = w.colours[widget.colour].colour;
@@ -915,20 +913,6 @@ namespace OpenRCT2::Ui
             return false;
         if (gHoverWidget.widget_index != widgetIndex)
             return false;
-        return true;
-    }
-
-    bool WidgetIsActiveTool(const WindowBase& w, WidgetIndex widgetIndex)
-    {
-        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-            return false;
-        if (gCurrentToolWidget.window_classification != w.classification)
-            return false;
-        if (gCurrentToolWidget.window_number != w.number)
-            return false;
-        if (gCurrentToolWidget.widget_index != widgetIndex)
-            return false;
-
         return true;
     }
 

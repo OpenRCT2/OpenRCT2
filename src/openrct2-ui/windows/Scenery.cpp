@@ -65,7 +65,7 @@ namespace OpenRCT2::Ui::Windows
 
     constexpr uint8_t SceneryContentScrollIndex = 0;
 
-    enum WindowSceneryListWidgetIdx
+    enum WindowSceneryListWidgetIdx : WidgetIndex
     {
         WIDX_SCENERY_BACKGROUND,
         WIDX_SCENERY_TITLE,
@@ -241,7 +241,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             if (gWindowSceneryScatterEnabled)
                 WindowCloseByClass(WindowClass::SceneryScatter);
 
-            if (SceneryToolIsActive())
+            if (isToolActive(WindowClass::Scenery))
                 ToolCancel();
         }
 
@@ -486,7 +486,7 @@ static Widget WindowSceneryBaseWidgets[] = {
 
             Invalidate();
 
-            if (!SceneryToolIsActive())
+            if (!isToolActive(WindowClass::Scenery))
             {
                 Close();
                 return;
@@ -3266,8 +3266,7 @@ static Widget WindowSceneryBaseWidgets[] = {
 
     void ToggleSceneryWindow()
     {
-        if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Scenery
-            && gCurrentToolWidget.widget_index == WIDX_SCENERY_BACKGROUND)
+        if (isToolActive(WindowClass::Scenery, WIDX_SCENERY_BACKGROUND))
         {
             ToolCancel();
         }

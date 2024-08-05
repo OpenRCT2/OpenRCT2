@@ -267,11 +267,7 @@ static Widget PatrolAreaWidgets[] = {
 
         bool PatrolAreaToolIsActive()
         {
-            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                return false;
-            if (gCurrentToolWidget.window_classification != WindowClass::PatrolArea)
-                return false;
-            return true;
+            return isToolActive(WindowClass::PatrolArea);
         }
 
         bool IsStaffWindowOpen()

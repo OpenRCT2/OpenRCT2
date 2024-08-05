@@ -27,7 +27,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 76;
 
     // clang-format off
-enum WindowWaterWidgetIdx {
+enum WindowWaterWidgetIdx : WidgetIndex
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -65,7 +66,7 @@ static Widget _waterWidgets[] = {
         void OnClose() override
         {
             // If the tool wasn't changed, turn tool off
-            if (WaterToolIsActive())
+            if (isToolActive(WindowClass::Water, WIDX_BACKGROUND))
             {
                 ToolCancel();
             }
@@ -108,7 +109,7 @@ static Widget _waterWidgets[] = {
         void OnUpdate() override
         {
             // Close window if another tool is open
-            if (!WaterToolIsActive())
+            if (!isToolActive(WindowClass::Water, WIDX_BACKGROUND))
             {
                 Close();
             }
@@ -426,26 +427,11 @@ static Widget _waterWidgets[] = {
 
     /**
      *
-     *  rct2: 0x0066D125
-     */
-    bool WaterToolIsActive()
-    {
-        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-            return false;
-        if (gCurrentToolWidget.window_classification != WindowClass::Water)
-            return false;
-        if (gCurrentToolWidget.widget_index != WIDX_BACKGROUND)
-            return false;
-        return true;
-    }
-
-    /**
-     *
      *  rct2: 0x0066CD9C
      */
     void ToggleWaterWindow()
     {
-        if (WaterToolIsActive())
+        if (isToolActive(WindowClass::Water, WIDX_BACKGROUND))
         {
             ToolCancel();
         }

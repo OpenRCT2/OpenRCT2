@@ -515,7 +515,8 @@ static uint64_t PageDisabledWidgets[] = {
                     InvalidateWidget(WIDX_LIST);
                 _highlightedIndex = -1;
             }
-            if (gCurrentToolWidget.window_classification != WindowClass::TileInspector)
+
+            if (!isToolActive(WindowClass::TileInspector))
                 Close();
         }
 
@@ -722,8 +723,9 @@ static uint64_t PageDisabledWidgets[] = {
 
         void OnClose() override
         {
-            if (gCurrentToolWidget.window_classification == WindowClass::TileInspector)
+            if (isToolActive(WindowClass::TileInspector))
                 ToolCancel();
+
             TileElement* const elem = OpenRCT2::TileInspector::GetSelectedElement();
             if (elem != nullptr)
             {

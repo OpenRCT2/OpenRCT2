@@ -912,8 +912,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
     }
 
     RideConstructionInvalidateCurrentTrack();
-    if (_rideConstructionState != RideConstructionState::EntranceExit || !(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-        || gCurrentToolWidget.window_classification != WindowClass::RideConstruction)
+    if (_rideConstructionState != RideConstructionState::EntranceExit || isToolActive(WindowClass::RideConstruction))
     {
         // Replace entrance / exit
         ToolSet(
@@ -940,10 +939,14 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
             { tileElement.x, tileElement.y }, rideIndex, stationIndex, entranceType == ENTRANCE_TYPE_RIDE_EXIT);
 
         rideEntranceExitRemove.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
-            gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
-                                                                                          : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
             gRideEntranceExitPlaceType = entranceType;
             WindowInvalidateByClass(WindowClass::RideConstruction);
+
+            auto newToolWidgetIndex = (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
+                                                                                    : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+
+            ToolCancel();
+            ToolSet(*constructionWindow, newToolWidgetIndex, Tool::Crosshair);
         });
 
         GameActions::Execute(&rideEntranceExitRemove);

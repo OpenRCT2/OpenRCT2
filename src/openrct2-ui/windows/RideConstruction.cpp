@@ -259,7 +259,7 @@ static Widget _rideConstructionWidgets[] = {
             // In order to cancel the yellow arrow correctly the
             // selection tool should be cancelled. Don't do a tool cancel if
             // another window has already taken control of tool.
-            if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
+            if (isToolActive(classification, number))
                 ToolCancel();
 
             HideGridlines();
@@ -935,7 +935,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if (_rideConstructionState == RideConstructionState::Place)
             {
-                if (!WidgetIsActiveTool(*this, WIDX_CONSTRUCT))
+                if (!isToolActive(*this, WIDX_CONSTRUCT))
                 {
                     Close();
                     return;
@@ -944,7 +944,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if (_rideConstructionState == RideConstructionState::EntranceExit)
             {
-                if (!WidgetIsActiveTool(*this, WIDX_ENTRANCE) && !WidgetIsActiveTool(*this, WIDX_EXIT))
+                if (!isToolActive(*this, WIDX_ENTRANCE) && !isToolActive(*this, WIDX_EXIT))
                 {
                     _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
                     WindowRideConstructionUpdateActiveElements();
@@ -956,8 +956,7 @@ static Widget _rideConstructionWidgets[] = {
                 case RideConstructionState::Front:
                 case RideConstructionState::Back:
                 case RideConstructionState::Selected:
-                    if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-                        && gCurrentToolWidget.window_classification == WindowClass::RideConstruction)
+                    if (isToolActive(WindowClass::RideConstruction))
                     {
                         ToolCancel();
                     }
@@ -1025,13 +1024,13 @@ static Widget _rideConstructionWidgets[] = {
                 case WIDX_NEXT_SECTION:
                     VirtualFloorInvalidate();
                     RideSelectNextSection();
-                    if (!SceneryToolIsActive())
+                    if (!isToolActive(WindowClass::Scenery))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_PREVIOUS_SECTION:
                     VirtualFloorInvalidate();
                     RideSelectPreviousSection();
-                    if (!SceneryToolIsActive())
+                    if (!isToolActive(WindowClass::Scenery))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_LEFT_CURVE:
@@ -2201,7 +2200,7 @@ static Widget _rideConstructionWidgets[] = {
         {
             // If the scenery tool is active, we do not display our tiles as it
             // will conflict with larger scenery objects selecting tiles
-            if (SceneryToolIsActive())
+            if (isToolActive(WindowClass::Scenery))
             {
                 return;
             }
@@ -2567,7 +2566,7 @@ static Widget _rideConstructionWidgets[] = {
                 entranceOrExitCoords, DirectionReverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
                 gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-            rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            rideEntranceExitPlaceAction.SetCallback([=, this](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
 
@@ -2586,9 +2585,13 @@ static Widget _rideConstructionWidgets[] = {
                 {
                     gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
                     WindowInvalidateByClass(WindowClass::RideConstruction);
-                    gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
+
+                    auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
                         ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                         : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+
+                    ToolCancel();
+                    ToolSet(*this, newToolWidgetIndex, Tool::Crosshair);
                 }
             });
             auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
@@ -3140,7 +3143,7 @@ static Widget _rideConstructionWidgets[] = {
                         // Invalidate previous track piece (we may not be changing height!)
                         VirtualFloorInvalidate();
 
-                        if (!SceneryToolIsActive())
+                        if (!isToolActive(WindowClass::Scenery))
                         {
                             // Set height to where the next track piece would begin
                             VirtualFloorSetHeight(_currentTrackBegin.z);

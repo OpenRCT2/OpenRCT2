@@ -200,9 +200,6 @@ namespace OpenRCT2::Ui::Windows
     void WindowRideConstructionUpdateEnabledTrackPieces();
 
     WindowBase* TopToolbarOpen();
-    bool LandToolIsActive();
-    bool ClearSceneryToolIsActive();
-    bool WaterToolIsActive();
 
     WindowBase* SceneryOpen();
     void WindowScenerySetSelectedItem(

@@ -371,20 +371,3 @@ bool WindowRideConstructionUpdateState(
 
     return false;
 }
-
-/**
- *
- *  rct2: 0x0066DB3D
- */
-bool SceneryToolIsActive()
-{
-    auto toolWindowClassification = gCurrentToolWidget.window_classification;
-    WidgetIndex toolWidgetIndex = gCurrentToolWidget.widget_index;
-    if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-    {
-        if (toolWindowClassification == WindowClass::Scenery && toolWidgetIndex == WC_SCENERY__WIDX_SCENERY_BACKGROUND)
-            return true;
-    }
-
-    return false;
-}

@@ -473,6 +473,16 @@ enum class Tool
     Bulldozer = 27,
 };
 
+struct WidgetRef
+{
+    WindowClass window_classification;
+    rct_windownumber window_number;
+    WidgetIndex widget_index;
+};
+
+extern Tool gCurrentToolId;
+extern WidgetRef gCurrentToolWidget;
+
 using modal_callback = void (*)(int32_t result);
 using close_callback = void (*)();
 
@@ -545,6 +555,11 @@ void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor);
 void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
 void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
+bool isToolActive(WindowClass cls);
+bool isToolActive(WindowClass cls, rct_windownumber number);
+bool isToolActive(WindowClass cls, WidgetIndex widgetIndex);
+bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber number);
+bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex);
 bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool);
 void ToolCancel();
 
@@ -561,8 +576,6 @@ void WindowResizeGuiScenarioEditor(int32_t width, int32_t height);
 void TextinputCancel();
 
 bool WindowIsVisible(WindowBase& w);
-
-bool SceneryToolIsActive();
 
 Viewport* WindowGetPreviousViewport(Viewport* current);
 void WindowResetVisibilities();

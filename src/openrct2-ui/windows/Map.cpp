@@ -95,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
         PAGE_RIDES
     };
 
-    enum WindowMapWidgetIdx
+    enum WindowMapWidgetIdx : WidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -267,8 +267,8 @@ static Widget window_map_widgets[] = {
         {
             _mapImageData.clear();
             _mapImageData.shrink_to_fit();
-            if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == classification
-                && gCurrentToolWidget.window_number == number)
+
+            if (isToolActive(classification, number))
             {
                 ToolCancel();
             }
@@ -663,7 +663,7 @@ static Widget window_map_widgets[] = {
                 WindowScrollToLocation(*mainWindow, { mapCoords, mapZ });
             }
 
-            if (LandToolIsActive())
+            if (isToolActive(WindowClass::Land))
             {
                 // Set land terrain
                 int32_t landToolSize = std::max<int32_t>(1, gLandToolSize);
@@ -683,7 +683,7 @@ static Widget window_map_widgets[] = {
                     gLandToolTerrainSurface, gLandToolTerrainEdge);
                 GameActions::Execute(&surfaceSetStyleAction);
             }
-            else if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS))
+            else if (isToolActive(*this, WIDX_SET_LAND_RIGHTS))
             {
                 // Set land rights
                 int32_t landRightsToolSize = std::max<int32_t>(1, _landRightsToolSize);
@@ -823,29 +823,21 @@ static Widget window_map_widgets[] = {
                 // Always show set land rights button
                 widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
-                // If any tool is active
-                if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map)
+                if (isToolActive(WindowClass::Map, WIDX_SET_LAND_RIGHTS))
                 {
-                    // if not in set land rights mode: show the default scenario editor buttons
-                    if (gCurrentToolWidget.widget_index != WIDX_SET_LAND_RIGHTS)
-                    {
-                        ShowDefaultScenarioEditorButtons();
-                    }
-                    else
-                    { // if in set land rights mode: show land tool buttons + modes
-                        widgets[WIDX_LAND_TOOL].type = WindowWidgetType::ImgBtn;
-                        widgets[WIDX_LAND_TOOL_SMALLER].type = WindowWidgetType::TrnBtn;
-                        widgets[WIDX_LAND_TOOL_LARGER].type = WindowWidgetType::TrnBtn;
+                    // Show land tool buttons + modes
+                    widgets[WIDX_LAND_TOOL].type = WindowWidgetType::ImgBtn;
+                    widgets[WIDX_LAND_TOOL_SMALLER].type = WindowWidgetType::TrnBtn;
+                    widgets[WIDX_LAND_TOOL_LARGER].type = WindowWidgetType::TrnBtn;
 
-                        for (int32_t i = WIDX_LAND_OWNED_CHECKBOX; i <= WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX; i++)
-                            widgets[i].type = WindowWidgetType::Checkbox;
+                    for (int32_t i = WIDX_LAND_OWNED_CHECKBOX; i <= WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX; i++)
+                        widgets[i].type = WindowWidgetType::Checkbox;
 
-                        widgets[WIDX_LAND_TOOL].image = ImageId(LandTool::SizeToSpriteIndex(_landRightsToolSize));
-                    }
+                    widgets[WIDX_LAND_TOOL].image = ImageId(LandTool::SizeToSpriteIndex(_landRightsToolSize));
                 }
                 else
                 {
-                    // if no tool is active: show the default scenario editor buttons
+                    // Show the default scenario editor buttons
                     ShowDefaultScenarioEditorButtons();
                 }
             }
@@ -865,7 +857,7 @@ static Widget window_map_widgets[] = {
                 + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
 
             // Draw land tool size
-            if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > kLandToolMaximumSizeWithSprite)
+            if (isToolActive(*this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > kLandToolMaximumSizeWithSprite)
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(_landRightsToolSize);
@@ -906,7 +898,7 @@ static Widget window_map_widgets[] = {
                     }
                 }
             }
-            else if (!WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS))
+            else if (!isToolActive(*this, WIDX_SET_LAND_RIGHTS))
             {
                 DrawTextBasic(
                     dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER_Y].top + 1 }, STR_MAP_SIZE, {},
