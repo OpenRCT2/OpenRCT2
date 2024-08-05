@@ -862,7 +862,7 @@ namespace OpenRCT2::RCT2
 
         // Ignored in scenario
         uint8_t ParkRatingHistory[kParkRatingHistorySize];
-        uint8_t GuestsInParkHistory[32];
+        uint8_t GuestsInParkHistory[kGuestsInParkHistorySize];
 
         // SC6[10]
         uint8_t ActiveResearchTypes;

@@ -47,13 +47,13 @@ namespace OpenRCT2
         money64 ConstructionRightsPrice;
         money64 CurrentExpenditure;
         money64 CurrentProfit;
-        uint32_t GuestsInParkHistory[32];
+        uint32_t GuestsInParkHistory[kGuestsInParkHistorySize];
         ClimateType Climate;
         ClimateState ClimateCurrent;
         ClimateState ClimateNext;
         uint16_t ClimateUpdateTimer;
         money64 Cash;
-        money64 CashHistory[kFinanceGraphSize];
+        money64 CashHistory[kFinanceHistorySize];
         money64 InitialCash;
         money64 GuestInitialCash;
         uint8_t GuestInitialHappiness;
@@ -69,7 +69,7 @@ namespace OpenRCT2
         money64 TotalIncomeFromAdmissions;
         money64 TotalRideValueForMoney;
         uint16_t WeeklyProfitAverageDivisor;
-        money64 WeeklyProfitHistory[kFinanceGraphSize];
+        money64 WeeklyProfitHistory[kFinanceHistorySize];
         Objective ScenarioObjective;
         uint16_t ScenarioParkRatingWarningDays;
         money64 ScenarioCompletedCompanyValue;

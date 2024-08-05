@@ -586,8 +586,10 @@ namespace OpenRCT2::Park
         gameState.NumGuestsInParkLastWeek = gameState.NumGuestsInPark;
 
         // Update park rating, guests in park and current cash history
-        HistoryPushRecord<uint8_t, 32>(gameState.Park.RatingHistory, gameState.Park.Rating / 4);
-        HistoryPushRecord<uint32_t, 32>(gameState.GuestsInParkHistory, gameState.NumGuestsInPark);
+        constexpr auto ratingHistorySize = std::extent_v<decltype(ParkData::RatingHistory)>;
+        HistoryPushRecord<uint8_t, ratingHistorySize>(gameState.Park.RatingHistory, gameState.Park.Rating / 4);
+        constexpr auto numGuestsHistorySize = std::extent_v<decltype(GameState_t::GuestsInParkHistory)>;
+        HistoryPushRecord<uint32_t, numGuestsHistorySize>(gameState.GuestsInParkHistory, gameState.NumGuestsInPark);
 
         constexpr auto cashHistorySize = std::extent_v<decltype(GameState_t::CashHistory)>;
         HistoryPushRecord<money64, cashHistorySize>(gameState.CashHistory, FinanceGetCurrentCash() - gameState.BankLoan);

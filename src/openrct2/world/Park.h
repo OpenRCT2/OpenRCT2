@@ -17,6 +17,7 @@ constexpr auto MAX_ENTRANCE_FEE = 999.00_GBP;
 constexpr uint8_t ParkRatingHistoryUndefined = std::numeric_limits<uint8_t>::max();
 constexpr uint32_t GuestsInParkHistoryUndefined = std::numeric_limits<uint32_t>::max();
 constexpr uint8_t kParkRatingHistorySize = 32;
+constexpr uint8_t kGuestsInParkHistorySize = 32;
 constexpr uint8_t ParkNameMaxLength = 128;
 constexpr uint8_t ScenarioNameMaxLength = 128;
 constexpr uint16_t ScenarioDetailsNameMaxLength = 256;
@@ -65,7 +66,7 @@ namespace OpenRCT2
             std::vector<CoordsXYZD> Entrances;
             uint32_t Size;
             money64 Value;
-            money64 ValueHistory[kFinanceGraphSize];
+            money64 ValueHistory[kFinanceHistorySize];
 
             bool IsOpen() const;
         };
