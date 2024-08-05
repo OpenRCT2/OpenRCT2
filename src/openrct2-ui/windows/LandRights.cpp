@@ -51,11 +51,43 @@ static Widget window_land_rights_widgets[] = {
 };
     // clang-format on
 
-    constexpr uint8_t LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS = 0;
-    constexpr uint8_t LAND_RIGHTS_MODE_BUY_LAND = 1;
+    enum class LandRightsMode : uint8_t
+    {
+        BuyLand,
+        BuyConstructionRights,
+    };
+
+    static const bool kLandRightsVisibleByMode[] = { true, false };
+    static const bool kConstructionRightsVisibleByMode[] = { false, true };
 
     class LandRightsWindow final : public Window
     {
+    private:
+        LandRightsMode _landRightsMode;
+        money64 _landRightsCost;
+
+        void SwitchToMode(LandRightsMode mode)
+        {
+            auto widgetIndex = WIDX_BUY_LAND_RIGHTS + EnumValue(mode);
+            pressed_widgets = (1uLL << widgetIndex);
+            _landRightsMode = mode;
+
+            ToolSet(*this, widgetIndex, Tool::UpArrow);
+            InputSetFlag(INPUT_FLAG_6, true);
+
+            if (kLandRightsVisibleByMode[EnumValue(mode)])
+                ShowLandRights();
+            else
+                HideLandRights();
+
+            if (kConstructionRightsVisibleByMode[EnumValue(mode)])
+                ShowConstructionRights();
+            else
+                HideConstructionRights();
+
+            Invalidate();
+        }
+
     public:
         void OnOpen() override
         {
@@ -63,32 +95,21 @@ static Widget window_land_rights_widgets[] = {
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
-            _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
-            pressed_widgets = (1uLL << WIDX_BUY_LAND_RIGHTS);
 
-            gLandToolSize = 1;
-
+            gLandToolSize = kLandToolMinimumSize;
             ShowGridlines();
-            ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
-            InputSetFlag(INPUT_FLAG_6, true);
 
-            ShowLandRights();
-
-            if (gLandRemainingConstructionSales == 0)
-            {
-                ShowConstructionRights();
-            }
+            if (gLandRemainingOwnershipSales > 0)
+                SwitchToMode(LandRightsMode::BuyLand);
+            else
+                SwitchToMode(LandRightsMode::BuyConstructionRights);
         }
 
         void OnClose() override
         {
             HideGridlines();
-            if (gLandRemainingConstructionSales == 0)
-            {
-                HideConstructionRights();
-            }
+            HideConstructionRights();
 
-            // If the tool wasn't changed, turn tool off
             if (isToolActive(WindowClass::LandRights))
                 ToolCancel();
         }
@@ -104,22 +125,12 @@ static Widget window_land_rights_widgets[] = {
                     InputSize();
                     break;
                 case WIDX_BUY_LAND_RIGHTS:
-                    if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
-                    {
-                        ToolSet(*this, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
-                        _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
-                        ShowLandRights();
-                        Invalidate();
-                    }
+                    if (_landRightsMode != LandRightsMode::BuyLand)
+                        SwitchToMode(LandRightsMode::BuyLand);
                     break;
                 case WIDX_BUY_CONSTRUCTION_RIGHTS:
-                    if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
-                    {
-                        ToolSet(*this, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
-                        _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
-                        ShowConstructionRights();
-                        Invalidate();
-                    }
+                    if (_landRightsMode != LandRightsMode::BuyConstructionRights)
+                        SwitchToMode(LandRightsMode::BuyConstructionRights);
                     break;
             }
         }
@@ -176,12 +187,12 @@ static Widget window_land_rights_widgets[] = {
         void OnPrepareDraw() override
         {
             SetWidgetPressed(WIDX_PREVIEW, true);
-            if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
+            if (_landRightsMode == LandRightsMode::BuyLand)
             {
                 SetWidgetPressed(WIDX_BUY_LAND_RIGHTS, true);
                 SetWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, false);
             }
-            else if (_landRightsMode == LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
+            else if (_landRightsMode == LandRightsMode::BuyConstructionRights)
             {
                 SetWidgetPressed(WIDX_BUY_LAND_RIGHTS, false);
                 SetWidgetPressed(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
@@ -315,8 +326,8 @@ static Widget window_land_rights_widgets[] = {
 
             auto landBuyRightsAction = LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) ? LandBuyRightSetting::BuyLand
-                                                               : LandBuyRightSetting::BuyConstructionRights);
+                (_landRightsMode == LandRightsMode::BuyLand) ? LandBuyRightSetting::BuyLand
+                                                             : LandBuyRightSetting::BuyConstructionRights);
             auto res = GameActions::Query(&landBuyRightsAction);
 
             _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
@@ -324,7 +335,7 @@ static Widget window_land_rights_widgets[] = {
 
         void OnToolAbort(WidgetIndex widgetIndex) override
         {
-            if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
+            if (_landRightsMode == LandRightsMode::BuyLand)
             {
                 HideLandRights();
             }
@@ -339,8 +350,8 @@ static Widget window_land_rights_widgets[] = {
             if (screenCoords.x == kLocationNull)
                 return;
 
-            auto modeSetting = _landRightsMode == LAND_RIGHTS_MODE_BUY_LAND ? LandBuyRightSetting::BuyLand
-                                                                            : LandBuyRightSetting::BuyConstructionRights;
+            auto modeSetting = _landRightsMode == LandRightsMode::BuyLand ? LandBuyRightSetting::BuyLand
+                                                                          : LandBuyRightSetting::BuyConstructionRights;
 
             auto landBuyRightsAction = LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, modeSetting);
@@ -358,9 +369,6 @@ static Widget window_land_rights_widgets[] = {
         }
 
     private:
-        uint8_t _landRightsMode;
-        money64 _landRightsCost;
-
         void InputSize()
         {
             Formatter ft;
