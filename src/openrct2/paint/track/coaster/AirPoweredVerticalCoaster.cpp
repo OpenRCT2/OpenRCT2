@@ -16,6 +16,7 @@
 #include "../../../world/Map.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
+#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -186,8 +187,8 @@ static void AirPoweredVerticalRCTrackFlat(
     auto imageId = session.TrackColours.WithIndex(imageIds[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::Flat>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
@@ -213,8 +214,8 @@ static void AirPoweredVerticalRCTrackStation(
         session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 1 } });
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::EndStation>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement);
 
@@ -350,8 +351,8 @@ static void AirPoweredVerticalRCTrackFlatToLeftBank(
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::FlatToLeftBank>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
@@ -380,8 +381,8 @@ static void AirPoweredVerticalRCTrackFlatToRightBank(
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::FlatToRightBank>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
@@ -543,8 +544,8 @@ static void AirPoweredVerticalRCTrackLeftBank(
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::LeftBank>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
@@ -573,8 +574,8 @@ static void AirPoweredVerticalRCTrackBrakes(
     auto imageId = session.TrackColours.WithIndex(imageIds[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::Brakes>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
@@ -987,8 +988,8 @@ static void AirPoweredVerticalRCTrackBooster(
         PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::Booster>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -1007,8 +1008,8 @@ static void AirPoweredVerticalRCTrackOnridePhoto(
     auto imageId = session.TrackColours.WithIndex(imageIds[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::OnRidePhoto>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
