@@ -28,7 +28,7 @@ static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_2 = 18081;
 static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 = 18082;
 static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 = 18083;
 
-static constexpr uint32_t _GigaCoasterBrakeImages[NumOrthogonalDirections][2][2] = {
+static constexpr uint32_t _LatticeTriangleBrakeImages[NumOrthogonalDirections][2][2] = {
     { { GIGA_COASTER_BRAKE_SW_NE_OPEN_1, GIGA_COASTER_BRAKE_SW_NE_OPEN_2 },
       { GIGA_COASTER_BRAKE_SW_NE_CLOSED_1, GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 } },
     { { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_OPEN_2 },
@@ -43,7 +43,7 @@ static constexpr uint32_t _GigaCoasterBrakeImages[NumOrthogonalDirections][2][2]
  * second level: background, foreground
  * third level: direction
  */
-static constexpr uint32_t GigaDiagBrakeImages[2][2][NumOrthogonalDirections] = {
+static constexpr uint32_t LatticeTriangleBrakeImages[2][2][NumOrthogonalDirections] = {
     {
         // Open
         {
@@ -81,7 +81,7 @@ static constexpr uint32_t GigaDiagBrakeImages[2][2][NumOrthogonalDirections] = {
 };
 
 /** rct2: 0x008AD674 */
-static void InMaTriangleTrackFlat(
+static void LatticeTriangleTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -168,7 +168,7 @@ static void InMaTriangleTrackFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void InMaTriangleTrackStation(
+static void LatticeTriangleTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -202,7 +202,7 @@ static void InMaTriangleTrackStation(
         {
             bool isClosed = trackElement.IsBrakeClosed();
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(_GigaCoasterBrakeImages[direction][isClosed][0]),
+                session, direction, session.TrackColours.WithIndex(_LatticeTriangleBrakeImages[direction][isClosed][0]),
                 { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
         else
@@ -224,7 +224,7 @@ static void InMaTriangleTrackStation(
 }
 
 /** rct2: 0x008AD684 */
-static void InMaTriangleTrack25DegUp(
+static void LatticeTriangleTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -335,7 +335,7 @@ static void InMaTriangleTrack25DegUp(
 }
 
 /** rct2: 0x008AD694 */
-static void InMaTriangleTrack60DegUp(
+static void LatticeTriangleTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -415,7 +415,7 @@ static void InMaTriangleTrack60DegUp(
 }
 
 /** rct2: 0x008AD6A4 */
-static void InMaTriangleTrackFlatTo25DegUp(
+static void LatticeTriangleTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -526,7 +526,7 @@ static void InMaTriangleTrackFlatTo25DegUp(
 }
 
 /** rct2: 0x008AD6B4 */
-static void InMaTriangleTrack25DegUpTo60DegUp(
+static void LatticeTriangleTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -618,7 +618,7 @@ static void InMaTriangleTrack25DegUpTo60DegUp(
 }
 
 /** rct2: 0x008AD6C4 */
-static void InMaTriangleTrack60DegUpTo25DegUp(
+static void LatticeTriangleTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -710,7 +710,7 @@ static void InMaTriangleTrack60DegUpTo25DegUp(
 }
 
 /** rct2: 0x008AD6D4 */
-static void InMaTriangleTrack25DegUpToFlat(
+static void LatticeTriangleTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -821,55 +821,55 @@ static void InMaTriangleTrack25DegUpToFlat(
 }
 
 /** rct2: 0x008AD6E4 */
-static void InMaTriangleTrack25DegDown(
+static void LatticeTriangleTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD6F4 */
-static void InMaTriangleTrack60DegDown(
+static void LatticeTriangleTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD704 */
-static void InMaTriangleTrackFlatTo25DegDown(
+static void LatticeTriangleTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD714 */
-static void InMaTriangleTrack25DegDownTo60DegDown(
+static void LatticeTriangleTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD724 */
-static void InMaTriangleTrack60DegDownTo25DegDown(
+static void LatticeTriangleTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD734 */
-static void InMaTriangleTrack25DegDownToFlat(
+static void LatticeTriangleTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD744 */
-static void InMaTriangleTrackLeftQuarterTurn5(
+static void LatticeTriangleTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1046,16 +1046,16 @@ static void InMaTriangleTrackLeftQuarterTurn5(
 }
 
 /** rct2: 0x008AD754 */
-static void InMaTriangleTrackRightQuarterTurn5(
+static void LatticeTriangleTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    InMaTriangleTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD764 */
-static void InMaTriangleTrackFlatToLeftBank(
+static void LatticeTriangleTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1100,7 +1100,7 @@ static void InMaTriangleTrackFlatToLeftBank(
 }
 
 /** rct2: 0x008AD774 */
-static void InMaTriangleTrackFlatToRightBank(
+static void LatticeTriangleTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1145,7 +1145,7 @@ static void InMaTriangleTrackFlatToRightBank(
 }
 
 /** rct2: 0x008AD784 */
-static void InMaTriangleTrackLeftBankToFlat(
+static void LatticeTriangleTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1190,7 +1190,7 @@ static void InMaTriangleTrackLeftBankToFlat(
 }
 
 /** rct2: 0x008AD794 */
-static void InMaTriangleTrackRightBankToFlat(
+static void LatticeTriangleTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1235,7 +1235,7 @@ static void InMaTriangleTrackRightBankToFlat(
 }
 
 /** rct2: 0x008AD7A4 */
-static void InMaTriangleTrackBankedLeftQuarterTurn5(
+static void LatticeTriangleTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1418,16 +1418,16 @@ static void InMaTriangleTrackBankedLeftQuarterTurn5(
 }
 
 /** rct2: 0x008AD7B4 */
-static void InMaTriangleTrackBankedRightQuarterTurn5(
+static void LatticeTriangleTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    InMaTriangleTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD7C4 */
-static void InMaTriangleTrackLeftBankTo25DegUp(
+static void LatticeTriangleTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1479,7 +1479,7 @@ static void InMaTriangleTrackLeftBankTo25DegUp(
 }
 
 /** rct2: 0x008AD7D4 */
-static void InMaTriangleTrackRightBankTo25DegUp(
+static void LatticeTriangleTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1531,7 +1531,7 @@ static void InMaTriangleTrackRightBankTo25DegUp(
 }
 
 /** rct2: 0x008AD7E4 */
-static void InMaTriangleTrack25DegUpToLeftBank(
+static void LatticeTriangleTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1583,7 +1583,7 @@ static void InMaTriangleTrack25DegUpToLeftBank(
 }
 
 /** rct2: 0x008AD7F4 */
-static void InMaTriangleTrack25DegUpToRightBank(
+static void LatticeTriangleTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1635,39 +1635,39 @@ static void InMaTriangleTrack25DegUpToRightBank(
 }
 
 /** rct2: 0x008AD804 */
-static void InMaTriangleTrackLeftBankTo25DegDown(
+static void LatticeTriangleTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD814 */
-static void InMaTriangleTrackRightBankTo25DegDown(
+static void LatticeTriangleTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD824 */
-static void InMaTriangleTrack25DegDownToLeftBank(
+static void LatticeTriangleTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD834 */
-static void InMaTriangleTrack25DegDownToRightBank(
+static void LatticeTriangleTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD844 */
-static void InMaTriangleTrackLeftBank(
+static void LatticeTriangleTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1706,15 +1706,15 @@ static void InMaTriangleTrackLeftBank(
 }
 
 /** rct2: 0x008AD854 */
-static void InMaTriangleTrackRightBank(
+static void LatticeTriangleTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD864 */
-static void InMaTriangleTrackLeftQuarterTurn525DegUp(
+static void LatticeTriangleTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1886,7 +1886,7 @@ static void InMaTriangleTrackLeftQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008AD874 */
-static void InMaTriangleTrackRightQuarterTurn525DegUp(
+static void LatticeTriangleTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2058,25 +2058,25 @@ static void InMaTriangleTrackRightQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008AD884 */
-static void InMaTriangleTrackLeftQuarterTurn525DegDown(
+static void LatticeTriangleTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    InMaTriangleTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD894 */
-static void InMaTriangleTrackRightQuarterTurn525DegDown(
+static void LatticeTriangleTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    InMaTriangleTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD8A4 */
-static void InMaTriangleTrackSBendLeft(
+static void LatticeTriangleTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2223,7 +2223,7 @@ static void InMaTriangleTrackSBendLeft(
 }
 
 /** rct2: 0x008AD8B4 */
-static void InMaTriangleTrackSBendRight(
+static void LatticeTriangleTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2372,7 +2372,7 @@ static void InMaTriangleTrackSBendRight(
 }
 
 /** rct2: 0x008AD8F4 */
-static void InMaTriangleTrackLeftQuarterTurn3(
+static void LatticeTriangleTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2486,16 +2486,16 @@ static void InMaTriangleTrackLeftQuarterTurn3(
 }
 
 /** rct2: 0x008AD904 */
-static void InMaTriangleTrackRightQuarterTurn3(
+static void LatticeTriangleTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    InMaTriangleTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD914 */
-static void InMaTriangleTrackLeftQuarterTurn3Bank(
+static void LatticeTriangleTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2615,16 +2615,16 @@ static void InMaTriangleTrackLeftQuarterTurn3Bank(
 }
 
 /** rct2: 0x008AD924 */
-static void InMaTriangleTrackRightQuarterTurn3Bank(
+static void LatticeTriangleTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    InMaTriangleTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD934 */
-static void InMaTriangleTrackLeftQuarterTurn325DegUp(
+static void LatticeTriangleTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2705,7 +2705,7 @@ static void InMaTriangleTrackLeftQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008AD944 */
-static void InMaTriangleTrackRightQuarterTurn325DegUp(
+static void LatticeTriangleTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2792,25 +2792,25 @@ static void InMaTriangleTrackRightQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008AD954 */
-static void InMaTriangleTrackLeftQuarterTurn325DegDown(
+static void LatticeTriangleTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    InMaTriangleTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD964 */
-static void InMaTriangleTrackRightQuarterTurn325DegDown(
+static void LatticeTriangleTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    InMaTriangleTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD974 */
-static void InMaTriangleTrackLeftHalfBankedHelixUpSmall(
+static void LatticeTriangleTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3044,7 +3044,7 @@ static void InMaTriangleTrackLeftHalfBankedHelixUpSmall(
 }
 
 /** rct2: 0x008AD984 */
-static void InMaTriangleTrackRightHalfBankedHelixUpSmall(
+static void LatticeTriangleTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3278,7 +3278,7 @@ static void InMaTriangleTrackRightHalfBankedHelixUpSmall(
 }
 
 /** rct2: 0x008AD994 */
-static void InMaTriangleTrackLeftHalfBankedHelixDownSmall(
+static void LatticeTriangleTrackLeftHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3288,11 +3288,11 @@ static void InMaTriangleTrackLeftHalfBankedHelixDownSmall(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    InMaTriangleTrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD9A4 */
-static void InMaTriangleTrackRightHalfBankedHelixDownSmall(
+static void LatticeTriangleTrackRightHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3302,11 +3302,11 @@ static void InMaTriangleTrackRightHalfBankedHelixDownSmall(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    InMaTriangleTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD9B4 */
-static void InMaTriangleTrackLeftHalfBankedHelixUpLarge(
+static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3666,7 +3666,7 @@ static void InMaTriangleTrackLeftHalfBankedHelixUpLarge(
 }
 
 /** rct2: 0x008AD9C4 */
-static void InMaTriangleTrackRightHalfBankedHelixUpLarge(
+static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4038,7 +4038,7 @@ static void InMaTriangleTrackRightHalfBankedHelixUpLarge(
 }
 
 /** rct2: 0x008AD9D4 */
-static void InMaTriangleTrackLeftHalfBankedHelixDownLarge(
+static void LatticeTriangleTrackLeftHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4048,11 +4048,11 @@ static void InMaTriangleTrackLeftHalfBankedHelixDownLarge(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    InMaTriangleTrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD9E4 */
-static void InMaTriangleTrackRightHalfBankedHelixDownLarge(
+static void LatticeTriangleTrackRightHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4062,11 +4062,11 @@ static void InMaTriangleTrackRightHalfBankedHelixDownLarge(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    InMaTriangleTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA14 */
-static void InMaTriangleTrackLeftQuarterTurn160DegUp(
+static void LatticeTriangleTrackLeftQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4111,7 +4111,7 @@ static void InMaTriangleTrackLeftQuarterTurn160DegUp(
 }
 
 /** rct2: 0x008AD9F4 */
-static void InMaTriangleTrackRightQuarterTurn160DegUp(
+static void LatticeTriangleTrackRightQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4156,23 +4156,23 @@ static void InMaTriangleTrackRightQuarterTurn160DegUp(
 }
 
 /** rct2: 0x008ADA04 */
-static void InMaTriangleTrackLeftQuarterTurn160DegDown(
+static void LatticeTriangleTrackLeftQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA24 */
-static void InMaTriangleTrackRightQuarterTurn160DegDown(
+static void LatticeTriangleTrackRightQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA34 */
-static void InMaTriangleTrackBrakes(
+static void LatticeTriangleTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4209,7 +4209,7 @@ static void InMaTriangleTrackBrakes(
 }
 
 /** rct2: 0x008ADC84 */
-static void InMaTriangleTrack25DegUpLeftBanked(
+static void LatticeTriangleTrack25DegUpLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4255,7 +4255,7 @@ static void InMaTriangleTrack25DegUpLeftBanked(
 }
 
 /** rct2: 0x008ADC94 */
-static void InMaTriangleTrack25DegUpRightBanked(
+static void LatticeTriangleTrack25DegUpRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4301,7 +4301,7 @@ static void InMaTriangleTrack25DegUpRightBanked(
 }
 
 /** rct2: 0x008ADA44 */
-static void InMaTriangleTrackOnRidePhoto(
+static void LatticeTriangleTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4337,23 +4337,23 @@ static void InMaTriangleTrackOnRidePhoto(
 }
 
 /** rct2: 0x008ADCA4 */
-static void InMaTriangleTrack25DegDownLeftBanked(
+static void LatticeTriangleTrack25DegDownLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack25DegUpRightBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpRightBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADCB4 */
-static void InMaTriangleTrack25DegDownRightBanked(
+static void LatticeTriangleTrack25DegDownRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADED4 */
-static void InMaTriangleTrackFlatTo60DegUpLongBase(
+static void LatticeTriangleTrackFlatTo60DegUpLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4644,7 +4644,7 @@ static void InMaTriangleTrackFlatTo60DegUpLongBase(
 }
 
 /** rct2: 0x008ADEE4 */
-static void InMaTriangleTrack60DegUpToFlatLongBase(
+static void LatticeTriangleTrack60DegUpToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4799,23 +4799,23 @@ static void InMaTriangleTrack60DegUpToFlatLongBase(
 }
 
 /** rct2: 0x008ADEF4 */
-static void InMaTriangleTrack60DegDownToFlatLongBase(
+static void LatticeTriangleTrack60DegDownToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackFlatTo60DegUpLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackFlatTo60DegUpLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADF04 */
-static void InMaTriangleTrackFlatTo60DegDownLongBase(
+static void LatticeTriangleTrackFlatTo60DegDownLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack60DegUpToFlatLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack60DegUpToFlatLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADF14 */
-static void InMaTriangleTrackCableLiftHill(
+static void LatticeTriangleTrackCableLiftHill(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4995,7 +4995,7 @@ static void InMaTriangleTrackCableLiftHill(
 }
 
 /** rct2: 0x008ADA64 */
-static void InMaTriangleTrackLeftEighthToDiag(
+static void LatticeTriangleTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5141,7 +5141,7 @@ static void InMaTriangleTrackLeftEighthToDiag(
 }
 
 /** rct2: 0x008ADA74 */
-static void InMaTriangleTrackRightEighthToDiag(
+static void LatticeTriangleTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5287,25 +5287,25 @@ static void InMaTriangleTrackRightEighthToDiag(
 }
 
 /** rct2: 0x008ADA84 */
-static void InMaTriangleTrackLeftEighthToOrthogonal(
+static void LatticeTriangleTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    InMaTriangleTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA94 */
-static void InMaTriangleTrackRightEighthToOrthogonal(
+static void LatticeTriangleTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    InMaTriangleTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADAA4 */
-static void InMaTriangleTrackLeftEighthBankToDiag(
+static void LatticeTriangleTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5451,7 +5451,7 @@ static void InMaTriangleTrackLeftEighthBankToDiag(
 }
 
 /** rct2: 0x008ADAB4 */
-static void InMaTriangleTrackRightEighthBankToDiag(
+static void LatticeTriangleTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5597,25 +5597,25 @@ static void InMaTriangleTrackRightEighthBankToDiag(
 }
 
 /** rct2: 0x008ADAC4 */
-static void InMaTriangleTrackLeftEighthBankToOrthogonal(
+static void LatticeTriangleTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    InMaTriangleTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADAD4 */
-static void InMaTriangleTrackRightEighthBankToOrthogonal(
+static void LatticeTriangleTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    InMaTriangleTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA54 */
-static void InMaTriangleTrackDiagFlat(
+static void LatticeTriangleTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5765,7 +5765,7 @@ static void InMaTriangleTrackDiagFlat(
 }
 
 /** rct2: 0x008ADB04 */
-static void InMaTriangleTrackDiag25DegUp(
+static void LatticeTriangleTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5915,7 +5915,7 @@ static void InMaTriangleTrackDiag25DegUp(
 }
 
 /** rct2: 0x008ADB64 */
-static void InMaTriangleTrackDiag60DegUp(
+static void LatticeTriangleTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5991,7 +5991,7 @@ static void InMaTriangleTrackDiag60DegUp(
 }
 
 /** rct2: 0x008ADAE4 */
-static void InMaTriangleTrackDiagFlatTo25DegUp(
+static void LatticeTriangleTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6141,7 +6141,7 @@ static void InMaTriangleTrackDiagFlatTo25DegUp(
 }
 
 /** rct2: 0x008ADB44 */
-static void InMaTriangleTrackDiag25DegUpTo60DegUp(
+static void LatticeTriangleTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6217,7 +6217,7 @@ static void InMaTriangleTrackDiag25DegUpTo60DegUp(
 }
 
 /** rct2: 0x008ADB54 */
-static void InMaTriangleTrackDiag60DegUpTo25DegUp(
+static void LatticeTriangleTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6293,7 +6293,7 @@ static void InMaTriangleTrackDiag60DegUpTo25DegUp(
 }
 
 /** rct2: 0x008ADAF4 */
-static void InMaTriangleTrackDiag25DegUpToFlat(
+static void LatticeTriangleTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6443,7 +6443,7 @@ static void InMaTriangleTrackDiag25DegUpToFlat(
 }
 
 /** rct2: 0x008ADB34 */
-static void InMaTriangleTrackDiag25DegDown(
+static void LatticeTriangleTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6593,7 +6593,7 @@ static void InMaTriangleTrackDiag25DegDown(
 }
 
 /** rct2: 0x008ADB94 */
-static void InMaTriangleTrackDiag60DegDown(
+static void LatticeTriangleTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6669,7 +6669,7 @@ static void InMaTriangleTrackDiag60DegDown(
 }
 
 /** rct2: 0x008ADB14 */
-static void InMaTriangleTrackDiagFlatTo25DegDown(
+static void LatticeTriangleTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6817,7 +6817,7 @@ static void InMaTriangleTrackDiagFlatTo25DegDown(
 }
 
 /** rct2: 0x008ADB74 */
-static void InMaTriangleTrackDiag25DegDownTo60DegDown(
+static void LatticeTriangleTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6893,7 +6893,7 @@ static void InMaTriangleTrackDiag25DegDownTo60DegDown(
 }
 
 /** rct2: 0x008ADB84 */
-static void InMaTriangleTrackDiag60DegDownTo25DegDown(
+static void LatticeTriangleTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6969,7 +6969,7 @@ static void InMaTriangleTrackDiag60DegDownTo25DegDown(
 }
 
 /** rct2: 0x008ADB24 */
-static void InMaTriangleTrackDiag25DegDownToFlat(
+static void LatticeTriangleTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7119,7 +7119,7 @@ static void InMaTriangleTrackDiag25DegDownToFlat(
 }
 
 /** rct2: 0x008ADBC4 */
-static void InMaTriangleTrackDiagFlatToLeftBank(
+static void LatticeTriangleTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7198,7 +7198,7 @@ static void InMaTriangleTrackDiagFlatToLeftBank(
 }
 
 /** rct2: 0x008ADBD4 */
-static void InMaTriangleTrackDiagFlatToRightBank(
+static void LatticeTriangleTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7277,7 +7277,7 @@ static void InMaTriangleTrackDiagFlatToRightBank(
 }
 
 /** rct2: 0x008ADBE4 */
-static void InMaTriangleTrackDiagLeftBankToFlat(
+static void LatticeTriangleTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7356,7 +7356,7 @@ static void InMaTriangleTrackDiagLeftBankToFlat(
 }
 
 /** rct2: 0x008ADBF4 */
-static void InMaTriangleTrackDiagRightBankToFlat(
+static void LatticeTriangleTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7435,7 +7435,7 @@ static void InMaTriangleTrackDiagRightBankToFlat(
 }
 
 /** rct2: 0x008ADC24 */
-static void InMaTriangleTrackDiagLeftBankTo25DegUp(
+static void LatticeTriangleTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7514,7 +7514,7 @@ static void InMaTriangleTrackDiagLeftBankTo25DegUp(
 }
 
 /** rct2: 0x008ADC34 */
-static void InMaTriangleTrackDiagRightBankTo25DegUp(
+static void LatticeTriangleTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7593,7 +7593,7 @@ static void InMaTriangleTrackDiagRightBankTo25DegUp(
 }
 
 /** rct2: 0x008ADC04 */
-static void InMaTriangleTrackDiag25DegUpToLeftBank(
+static void LatticeTriangleTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7672,7 +7672,7 @@ static void InMaTriangleTrackDiag25DegUpToLeftBank(
 }
 
 /** rct2: 0x008ADC14 */
-static void InMaTriangleTrackDiag25DegUpToRightBank(
+static void LatticeTriangleTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7751,7 +7751,7 @@ static void InMaTriangleTrackDiag25DegUpToRightBank(
 }
 
 /** rct2: 0x008ADC44 */
-static void InMaTriangleTrackDiagLeftBankTo25DegDown(
+static void LatticeTriangleTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7828,7 +7828,7 @@ static void InMaTriangleTrackDiagLeftBankTo25DegDown(
 }
 
 /** rct2: 0x008ADC54 */
-static void InMaTriangleTrackDiagRightBankTo25DegDown(
+static void LatticeTriangleTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7905,7 +7905,7 @@ static void InMaTriangleTrackDiagRightBankTo25DegDown(
 }
 
 /** rct2: 0x008ADC64 */
-static void InMaTriangleTrackDiag25DegDownToLeftBank(
+static void LatticeTriangleTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7984,7 +7984,7 @@ static void InMaTriangleTrackDiag25DegDownToLeftBank(
 }
 
 /** rct2: 0x008ADC74 */
-static void InMaTriangleTrackDiag25DegDownToRightBank(
+static void LatticeTriangleTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8063,7 +8063,7 @@ static void InMaTriangleTrackDiag25DegDownToRightBank(
 }
 
 /** rct2: 0x008ADBA4 */
-static void InMaTriangleTrackDiagLeftBank(
+static void LatticeTriangleTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8139,7 +8139,7 @@ static void InMaTriangleTrackDiagLeftBank(
 }
 
 /** rct2: 0x008ADBB4 */
-static void InMaTriangleTrackDiagRightBank(
+static void LatticeTriangleTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8215,16 +8215,16 @@ static void InMaTriangleTrackDiagRightBank(
 }
 
 /** rct2: 0x008ADEC4 */
-static void InMaTriangleTrackBlockBrakes(
+static void LatticeTriangleTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_GigaCoasterBrakeImages[direction][isClosed][0]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(_LatticeTriangleBrakeImages[direction][isClosed][0]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 3 } });
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_GigaCoasterBrakeImages[direction][isClosed][1]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(_LatticeTriangleBrakeImages[direction][isClosed][1]), { 0, 0, height },
         { { 0, 27, height + 5 }, { 32, 1, 11 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -8239,7 +8239,7 @@ static void InMaTriangleTrackBlockBrakes(
 }
 
 /** rct2: 0x008ADCC4 */
-static void InMaTriangleTrackLeftBankedQuarterTurn325DegUp(
+static void LatticeTriangleTrackLeftBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8323,7 +8323,7 @@ static void InMaTriangleTrackLeftBankedQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008ADCD4 */
-static void InMaTriangleTrackRightBankedQuarterTurn325DegUp(
+static void LatticeTriangleTrackRightBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8413,25 +8413,25 @@ static void InMaTriangleTrackRightBankedQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008ADCE4 */
-static void InMaTriangleTrackLeftBankedQuarterTurn325DegDown(
+static void LatticeTriangleTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    InMaTriangleTrackRightBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADCF4 */
-static void InMaTriangleTrackRightBankedQuarterTurn325DegDown(
+static void LatticeTriangleTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    InMaTriangleTrackLeftBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD04 */
-static void InMaTriangleTrackLeftBankedQuarterTurn525DegUp(
+static void LatticeTriangleTrackLeftBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8606,7 +8606,7 @@ static void InMaTriangleTrackLeftBankedQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008ADD14 */
-static void InMaTriangleTrackRightBankedQuarterTurn525DegUp(
+static void LatticeTriangleTrackRightBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8781,25 +8781,25 @@ static void InMaTriangleTrackRightBankedQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008ADD24 */
-static void InMaTriangleTrackLeftBankedQuarterTurn525DegDown(
+static void LatticeTriangleTrackLeftBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    InMaTriangleTrackRightBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD34 */
-static void InMaTriangleTrackRightBankedQuarterTurn525DegDown(
+static void LatticeTriangleTrackRightBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    InMaTriangleTrackLeftBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD44 */
-static void InMaTriangleTrack25DegUpToLeftBanked25DegUp(
+static void LatticeTriangleTrack25DegUpToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8848,7 +8848,7 @@ static void InMaTriangleTrack25DegUpToLeftBanked25DegUp(
 }
 
 /** rct2: 0x008ADD54 */
-static void InMaTriangleTrack25DegUpToRightBanked25DegUp(
+static void LatticeTriangleTrack25DegUpToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8897,7 +8897,7 @@ static void InMaTriangleTrack25DegUpToRightBanked25DegUp(
 }
 
 /** rct2: 0x008ADD64 */
-static void InMaTriangleTrackLeftBanked25DegUpTo25DegUp(
+static void LatticeTriangleTrackLeftBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8946,7 +8946,7 @@ static void InMaTriangleTrackLeftBanked25DegUpTo25DegUp(
 }
 
 /** rct2: 0x008ADD74 */
-static void InMaTriangleTrackRightBanked25DegUpTo25DegUp(
+static void LatticeTriangleTrackRightBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8995,39 +8995,39 @@ static void InMaTriangleTrackRightBanked25DegUpTo25DegUp(
 }
 
 /** rct2: 0x008ADD84 */
-static void InMaTriangleTrack25DegDownToLeftBanked25DegDown(
+static void LatticeTriangleTrack25DegDownToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD94 */
-static void InMaTriangleTrack25DegDownToRightBanked25DegDown(
+static void LatticeTriangleTrack25DegDownToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDA4 */
-static void InMaTriangleTrackLeftBanked25DegDownTo25DegDown(
+static void LatticeTriangleTrackLeftBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack25DegUpToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDB4 */
-static void InMaTriangleTrackRightBanked25DegDownTo25DegDown(
+static void LatticeTriangleTrackRightBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack25DegUpToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDC4 */
-static void InMaTriangleTrackLeftBankedFlatToLeftBanked25DegUp(
+static void LatticeTriangleTrackLeftBankedFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9073,7 +9073,7 @@ static void InMaTriangleTrackLeftBankedFlatToLeftBanked25DegUp(
 }
 
 /** rct2: 0x008ADDD4 */
-static void InMaTriangleTrackRightBankedFlatToRightBanked25DegUp(
+static void LatticeTriangleTrackRightBankedFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9119,7 +9119,7 @@ static void InMaTriangleTrackRightBankedFlatToRightBanked25DegUp(
 }
 
 /** rct2: 0x008ADE04 */
-static void InMaTriangleTrackLeftBanked25DegUpToLeftBankedFlat(
+static void LatticeTriangleTrackLeftBanked25DegUpToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9165,7 +9165,7 @@ static void InMaTriangleTrackLeftBanked25DegUpToLeftBankedFlat(
 }
 
 /** rct2: 0x008ADE14 */
-static void InMaTriangleTrackRightBanked25DegUpToRightBankedFlat(
+static void LatticeTriangleTrackRightBanked25DegUpToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9211,41 +9211,41 @@ static void InMaTriangleTrackRightBanked25DegUpToRightBankedFlat(
 }
 
 /** rct2: 0x008ADE24 */
-static void InMaTriangleTrackLeftBankedFlatToLeftBanked25DegDown(
+static void LatticeTriangleTrackLeftBankedFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightBanked25DegUpToRightBankedFlat(
+    LatticeTriangleTrackRightBanked25DegUpToRightBankedFlat(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADE34 */
-static void InMaTriangleTrackRightBankedFlatToRightBanked25DegDown(
+static void LatticeTriangleTrackRightBankedFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftBanked25DegUpToLeftBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBanked25DegUpToLeftBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDE4 */
-static void InMaTriangleTrackLeftBanked25DegDownToLeftBankedFlat(
+static void LatticeTriangleTrackLeftBanked25DegDownToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightBankedFlatToRightBanked25DegUp(
+    LatticeTriangleTrackRightBankedFlatToRightBanked25DegUp(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDF4 */
-static void InMaTriangleTrackRightBanked25DegDownToRightBankedFlat(
+static void LatticeTriangleTrackRightBanked25DegDownToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftBankedFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBankedFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADE44 */
-static void InMaTriangleTrackFlatToLeftBanked25DegUp(
+static void LatticeTriangleTrackFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9294,7 +9294,7 @@ static void InMaTriangleTrackFlatToLeftBanked25DegUp(
 }
 
 /** rct2: 0x008ADE54 */
-static void InMaTriangleTrackFlatToRightBanked25DegUp(
+static void LatticeTriangleTrackFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9343,7 +9343,7 @@ static void InMaTriangleTrackFlatToRightBanked25DegUp(
 }
 
 /** rct2: 0x008ADE64 */
-static void InMaTriangleTrackLeftBanked25DegUpToFlat(
+static void LatticeTriangleTrackLeftBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9392,7 +9392,7 @@ static void InMaTriangleTrackLeftBanked25DegUpToFlat(
 }
 
 /** rct2: 0x008ADE74 */
-static void InMaTriangleTrackRightBanked25DegUpToFlat(
+static void LatticeTriangleTrackRightBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9441,38 +9441,38 @@ static void InMaTriangleTrackRightBanked25DegUpToFlat(
 }
 
 /** rct2: 0x008ADE84 */
-static void InMaTriangleTrackFlatToLeftBanked25DegDown(
+static void LatticeTriangleTrackFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADE94 */
-static void InMaTriangleTrackFlatToRightBanked25DegDown(
+static void LatticeTriangleTrackFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADEA4 */
-static void InMaTriangleTrackLeftBanked25DegDownToFlat(
+static void LatticeTriangleTrackLeftBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADEB4 */
-static void InMaTriangleTrackRightBanked25DegDownToFlat(
+static void LatticeTriangleTrackRightBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackBooster(
+static void LatticeTriangleTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9502,7 +9502,7 @@ static void InMaTriangleTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void InMaTriangleTrackPoweredLift(
+static void LatticeTriangleTrackPoweredLift(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9528,7 +9528,7 @@ static void InMaTriangleTrackPoweredLift(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-static void InMaTriangleTrack90DegUp(
+static void LatticeTriangleTrack90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9568,14 +9568,14 @@ static void InMaTriangleTrack90DegUp(
     }
 }
 
-static void InMaTriangleTrack90DegDown(
+static void LatticeTriangleTrack90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrack60DegUpTo90DegUp(
+static void LatticeTriangleTrack60DegUpTo90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9624,14 +9624,14 @@ static void InMaTriangleTrack60DegUpTo90DegUp(
     }
 }
 
-static void InMaTriangleTrack90DegDownTo60DegDown(
+static void LatticeTriangleTrack90DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack60DegUpTo90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack60DegUpTo90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrack90DegUpTo60DegUp(
+static void LatticeTriangleTrack90DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9672,7 +9672,7 @@ static void InMaTriangleTrack90DegUpTo60DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);
 }
 
-static void InMaTriangleTrack60DegDownTo90DegDown(
+static void LatticeTriangleTrack60DegDownTo90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9715,7 +9715,7 @@ static void InMaTriangleTrack60DegDownTo90DegDown(
     }
 }
 
-static void InMaTriangleTrackLeftQuarterTurn190DegUp(
+static void LatticeTriangleTrackLeftQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9761,7 +9761,7 @@ static void InMaTriangleTrackLeftQuarterTurn190DegUp(
     }
 }
 
-static void InMaTriangleTrackRightQuarterTurn190DegUp(
+static void LatticeTriangleTrackRightQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9807,21 +9807,21 @@ static void InMaTriangleTrackRightQuarterTurn190DegUp(
     }
 }
 
-static void InMaTriangleTrackLeftQuarterTurn190DegDown(
+static void LatticeTriangleTrackLeftQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightQuarterTurn190DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightQuarterTurn190DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackRightQuarterTurn190DegDown(
+static void LatticeTriangleTrackRightQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftQuarterTurn190DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn190DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackLeftBarrelRollUpToDown(
+static void LatticeTriangleTrackLeftBarrelRollUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9977,7 +9977,7 @@ static void InMaTriangleTrackLeftBarrelRollUpToDown(
     }
 }
 
-static void InMaTriangleTrackRightBarrelRollUpToDown(
+static void LatticeTriangleTrackRightBarrelRollUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10133,21 +10133,21 @@ static void InMaTriangleTrackRightBarrelRollUpToDown(
     }
 }
 
-static void InMaTriangleTrackLeftBarrelRollDownToUp(
+static void LatticeTriangleTrackLeftBarrelRollDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftBarrelRollUpToDown(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBarrelRollUpToDown(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackRightBarrelRollDownToUp(
+static void LatticeTriangleTrackRightBarrelRollDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightBarrelRollUpToDown(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightBarrelRollUpToDown(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackHalfLoopUp(
+static void LatticeTriangleTrackHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10287,14 +10287,14 @@ static void InMaTriangleTrackHalfLoopUp(
     }
 }
 
-static void InMaTriangleTrackHalfLoopDown(
+static void LatticeTriangleTrackHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackHalfLoopUp(session, ride, 3 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrackHalfLoopUp(session, ride, 3 - trackSequence, direction, height, trackElement);
 }
 
-static void InMaTriangleTrackLeftVerticalLoop(
+static void LatticeTriangleTrackLeftVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10590,7 +10590,7 @@ static void InMaTriangleTrackLeftVerticalLoop(
     }
 }
 
-static void InMaTriangleTrackRightVerticalLoop(
+static void LatticeTriangleTrackRightVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10848,7 +10848,7 @@ static void InMaTriangleTrackRightVerticalLoop(
     TrackPaintUtilRightVerticalLoopSegments(session, direction, trackSequence);
 }
 
-static void InMaTriangleTrackLeftCorkscrewUp(
+static void LatticeTriangleTrackLeftCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10967,7 +10967,7 @@ static void InMaTriangleTrackLeftCorkscrewUp(
     }
 }
 
-static void InMaTriangleTrackRightCorkscrewUp(
+static void LatticeTriangleTrackRightCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11086,20 +11086,20 @@ static void InMaTriangleTrackRightCorkscrewUp(
     }
 }
 
-static void InMaTriangleTrackLeftCorkscrewDown(
+static void LatticeTriangleTrackLeftCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightCorkscrewUp(session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightCorkscrewUp(session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
 }
-static void InMaTriangleTrackRightCorkscrewDown(
+static void LatticeTriangleTrackRightCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftCorkscrewUp(session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftCorkscrewUp(session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackLeftLargeCorkscrewUp(
+static void LatticeTriangleTrackLeftLargeCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11299,7 +11299,7 @@ static void InMaTriangleTrackLeftLargeCorkscrewUp(
     }
 }
 
-static void InMaTriangleTrackRightLargeCorkscrewUp(
+static void LatticeTriangleTrackRightLargeCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11498,21 +11498,21 @@ static void InMaTriangleTrackRightLargeCorkscrewUp(
     }
 }
 
-static void InMaTriangleTrackLeftLargeCorkscrewDown(
+static void LatticeTriangleTrackLeftLargeCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightLargeCorkscrewUp(session, ride, 5 - trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightLargeCorkscrewUp(session, ride, 5 - trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackRightLargeCorkscrewDown(
+static void LatticeTriangleTrackRightLargeCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftLargeCorkscrewUp(session, ride, 5 - trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftLargeCorkscrewUp(session, ride, 5 - trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackLeftMediumHalfLoopUp(
+static void LatticeTriangleTrackLeftMediumHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11690,7 +11690,7 @@ static void InMaTriangleTrackLeftMediumHalfLoopUp(
     }
 }
 
-static void InMaTriangleTrackRightMediumHalfLoopUp(
+static void LatticeTriangleTrackRightMediumHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -11868,21 +11868,21 @@ static void InMaTriangleTrackRightMediumHalfLoopUp(
     }
 }
 
-static void InMaTriangleTrackLeftMediumHalfLoopDown(
+static void LatticeTriangleTrackLeftMediumHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightMediumHalfLoopUp(session, ride, 4 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrackRightMediumHalfLoopUp(session, ride, 4 - trackSequence, direction, height, trackElement);
 }
 
-static void InMaTriangleTrackRightMediumHalfLoopDown(
+static void LatticeTriangleTrackRightMediumHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftMediumHalfLoopUp(session, ride, 4 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrackLeftMediumHalfLoopUp(session, ride, 4 - trackSequence, direction, height, trackElement);
 }
 
-static void InMaTriangleTrackLeftZeroGRollUp(
+static void LatticeTriangleTrackLeftZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12015,7 +12015,7 @@ static void InMaTriangleTrackLeftZeroGRollUp(
     }
 }
 
-static void InMaTriangleTrackRightZeroGRollUp(
+static void LatticeTriangleTrackRightZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12147,21 +12147,21 @@ static void InMaTriangleTrackRightZeroGRollUp(
     }
 }
 
-static void InMaTriangleTrackLeftZeroGRollDown(
+static void LatticeTriangleTrackLeftZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftZeroGRollUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftZeroGRollUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackRightZeroGRollDown(
+static void LatticeTriangleTrackRightZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightZeroGRollUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightZeroGRollUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackLeftLargeZeroGRollUp(
+static void LatticeTriangleTrackLeftLargeZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12325,7 +12325,7 @@ static void InMaTriangleTrackLeftLargeZeroGRollUp(
     }
 }
 
-static void InMaTriangleTrackRightLargeZeroGRollUp(
+static void LatticeTriangleTrackRightLargeZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12490,21 +12490,21 @@ static void InMaTriangleTrackRightLargeZeroGRollUp(
     }
 }
 
-static void InMaTriangleTrackLeftLargeZeroGRollDown(
+static void LatticeTriangleTrackLeftLargeZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftLargeZeroGRollUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftLargeZeroGRollUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackRightLargeZeroGRollDown(
+static void LatticeTriangleTrackRightLargeZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightLargeZeroGRollUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightLargeZeroGRollUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrack90DegToInvertedFlatQuarterLoopUp(
+static void LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12601,14 +12601,14 @@ static void InMaTriangleTrack90DegToInvertedFlatQuarterLoopUp(
     }
 }
 
-static void InMaTriangleTrackInvertedFlatTo90DegQuarterLoopDown(
+static void LatticeTriangleTrackInvertedFlatTo90DegQuarterLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack90DegToInvertedFlatQuarterLoopUp(session, ride, 2 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp(session, ride, 2 - trackSequence, direction, height, trackElement);
 }
 
-static void InMaTriangleTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
+static void LatticeTriangleTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12699,7 +12699,7 @@ static void InMaTriangleTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
     }
 }
 
-static void InMaTriangleTrackRightBankToRightQuarterTurn3Tile25DegUp(
+static void LatticeTriangleTrackRightBankToRightQuarterTurn3Tile25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12790,7 +12790,7 @@ static void InMaTriangleTrackRightBankToRightQuarterTurn3Tile25DegUp(
     }
 }
 
-static void InMaTriangleTrackLeftQuarterTurn3Tile25DegDownToLeftBank(
+static void LatticeTriangleTrackLeftQuarterTurn3Tile25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12881,7 +12881,7 @@ static void InMaTriangleTrackLeftQuarterTurn3Tile25DegDownToLeftBank(
     }
 }
 
-static void InMaTriangleTrackRightQuarterTurn3Tile25DegDownToRightBank(
+static void LatticeTriangleTrackRightQuarterTurn3Tile25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12972,7 +12972,7 @@ static void InMaTriangleTrackRightQuarterTurn3Tile25DegDownToRightBank(
     }
 }
 
-static void InMaTriangleTrackLeftLargeHalfLoopUp(
+static void LatticeTriangleTrackLeftLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13215,7 +13215,7 @@ static void InMaTriangleTrackLeftLargeHalfLoopUp(
     }
 }
 
-static void InMaTriangleTrackRightLargeHalfLoopUp(
+static void LatticeTriangleTrackRightLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13458,21 +13458,21 @@ static void InMaTriangleTrackRightLargeHalfLoopUp(
     }
 }
 
-static void InMaTriangleTrackLeftLargeHalfLoopDown(
+static void LatticeTriangleTrackLeftLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-static void InMaTriangleTrackRightLargeHalfLoopDown(
+static void LatticeTriangleTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackLeftLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrackLeftLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-static void InMaTriangleTrackFlatTo60DegUp(
+static void LatticeTriangleTrackFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13519,7 +13519,7 @@ static void InMaTriangleTrackFlatTo60DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
-static void InMaTriangleTrack60DegUpToFlat(
+static void LatticeTriangleTrack60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13566,21 +13566,21 @@ static void InMaTriangleTrack60DegUpToFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
 }
 
-static void InMaTriangleTrackFlatTo60DegDown(
+static void LatticeTriangleTrackFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrack60DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack60DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrack60DegDownToFlat(
+static void LatticeTriangleTrack60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackFlatTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackFlatTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagFlatTo60DegUp(
+static void LatticeTriangleTrackDiagFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13655,7 +13655,7 @@ static void InMaTriangleTrackDiagFlatTo60DegUp(
     }
 }
 
-static void InMaTriangleTrackDiag60DegUpToFlat(
+static void LatticeTriangleTrackDiag60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13730,7 +13730,7 @@ static void InMaTriangleTrackDiag60DegUpToFlat(
     }
 }
 
-static void InMaTriangleTrackDiagFlatTo60DegDown(
+static void LatticeTriangleTrackDiagFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13805,7 +13805,7 @@ static void InMaTriangleTrackDiagFlatTo60DegDown(
     }
 }
 
-static void InMaTriangleTrackDiag60DegDownToFlat(
+static void LatticeTriangleTrackDiag60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13880,7 +13880,7 @@ static void InMaTriangleTrackDiag60DegDownToFlat(
     }
 }
 
-static void InMaTriangleTrackLeftEighthToDiagUp25(
+static void LatticeTriangleTrackLeftEighthToDiagUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14025,7 +14025,7 @@ static void InMaTriangleTrackLeftEighthToDiagUp25(
     }
 }
 
-static void InMaTriangleTrackRightEighthToDiagUp25(
+static void LatticeTriangleTrackRightEighthToDiagUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14170,7 +14170,7 @@ static void InMaTriangleTrackRightEighthToDiagUp25(
     }
 }
 
-static void InMaTriangleTrackLeftEighthToOrthogonalUp25(
+static void LatticeTriangleTrackLeftEighthToOrthogonalUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14317,7 +14317,7 @@ static void InMaTriangleTrackLeftEighthToOrthogonalUp25(
     }
 }
 
-static void InMaTriangleTrackRightEighthToOrthogonalUp25(
+static void LatticeTriangleTrackRightEighthToOrthogonalUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14462,41 +14462,41 @@ static void InMaTriangleTrackRightEighthToOrthogonalUp25(
     }
 }
 
-static void InMaTriangleTrackLeftEighthToDiagDown25(
+static void LatticeTriangleTrackLeftEighthToDiagDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t map[5] = { 4, 3, 1, 2, 0 };
     trackSequence = map[trackSequence];
-    InMaTriangleTrackRightEighthToOrthogonalUp25(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthToOrthogonalUp25(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackRightEighthToDiagDown25(
+static void LatticeTriangleTrackRightEighthToDiagDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t map[5] = { 4, 3, 1, 2, 0 };
     trackSequence = map[trackSequence];
-    InMaTriangleTrackLeftEighthToOrthogonalUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthToOrthogonalUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackLeftEighthToOrthogonalDown25(
+static void LatticeTriangleTrackLeftEighthToOrthogonalDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    InMaTriangleTrackRightEighthToDiagUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthToDiagUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackRightEighthToOrthogonalDown25(
+static void LatticeTriangleTrackRightEighthToOrthogonalDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    InMaTriangleTrackLeftEighthToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagUp25ToLeftBankedUp25(
+static void LatticeTriangleTrackDiagUp25ToLeftBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14574,7 +14574,7 @@ static void InMaTriangleTrackDiagUp25ToLeftBankedUp25(
     }
 }
 
-static void InMaTriangleTrackDiagUp25ToRightBankedUp25(
+static void LatticeTriangleTrackDiagUp25ToRightBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14652,7 +14652,7 @@ static void InMaTriangleTrackDiagUp25ToRightBankedUp25(
     }
 }
 
-static void InMaTriangleTrackDiagLeftBankedUp25ToUp25(
+static void LatticeTriangleTrackDiagLeftBankedUp25ToUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14730,7 +14730,7 @@ static void InMaTriangleTrackDiagLeftBankedUp25ToUp25(
     }
 }
 
-static void InMaTriangleTrackDiagRightBankedUp25ToUp25(
+static void LatticeTriangleTrackDiagRightBankedUp25ToUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14808,35 +14808,35 @@ static void InMaTriangleTrackDiagRightBankedUp25ToUp25(
     }
 }
 
-static void InMaTriangleTrackDiagDown25ToLeftBankedDown25(
+static void LatticeTriangleTrackDiagDown25ToLeftBankedDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagRightBankedUp25ToUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagRightBankedUp25ToUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagDown25ToRightBankedDown25(
+static void LatticeTriangleTrackDiagDown25ToRightBankedDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagLeftBankedUp25ToUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagLeftBankedUp25ToUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagLeftBankedDown25ToDown25(
+static void LatticeTriangleTrackDiagLeftBankedDown25ToDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagUp25ToRightBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagUp25ToRightBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagRightBankedDown25ToDown25(
+static void LatticeTriangleTrackDiagRightBankedDown25ToDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagUp25ToLeftBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagUp25ToLeftBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagLeftBankedFlatToLeftBankedUp25(
+static void LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14911,7 +14911,7 @@ static void InMaTriangleTrackDiagLeftBankedFlatToLeftBankedUp25(
     }
 }
 
-static void InMaTriangleTrackDiagRightBankedFlatToRightBankedUp25(
+static void LatticeTriangleTrackDiagRightBankedFlatToRightBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -14986,7 +14986,7 @@ static void InMaTriangleTrackDiagRightBankedFlatToRightBankedUp25(
     }
 }
 
-static void InMaTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat(
+static void LatticeTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15061,7 +15061,7 @@ static void InMaTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat(
     }
 }
 
-static void InMaTriangleTrackDiagRightBankedUp25ToRightBankedFlat(
+static void LatticeTriangleTrackDiagRightBankedUp25ToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15136,39 +15136,39 @@ static void InMaTriangleTrackDiagRightBankedUp25ToRightBankedFlat(
     }
 }
 
-static void InMaTriangleTrackDiagLeftBankedFlatToLeftBankedDown25(
+static void LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagRightBankedUp25ToRightBankedFlat(
+    LatticeTriangleTrackDiagRightBankedUp25ToRightBankedFlat(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagRightBankedFlatToRightBankedDown25(
+static void LatticeTriangleTrackDiagRightBankedFlatToRightBankedDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat(
+    LatticeTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagLeftBankedDown25ToLeftBankedFlat(
+static void LatticeTriangleTrackDiagLeftBankedDown25ToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagRightBankedFlatToRightBankedUp25(
+    LatticeTriangleTrackDiagRightBankedFlatToRightBankedUp25(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagRightBankedDown25ToRightBankedFlat(
+static void LatticeTriangleTrackDiagRightBankedDown25ToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagLeftBankedFlatToLeftBankedUp25(
+    LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedUp25(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagUp25LeftBanked(
+static void LatticeTriangleTrackDiagUp25LeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15243,7 +15243,7 @@ static void InMaTriangleTrackDiagUp25LeftBanked(
     }
 }
 
-static void InMaTriangleTrackDiagUp25RightBanked(
+static void LatticeTriangleTrackDiagUp25RightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15318,21 +15318,21 @@ static void InMaTriangleTrackDiagUp25RightBanked(
     }
 }
 
-static void InMaTriangleTrackDiagDown25LeftBanked(
+static void LatticeTriangleTrackDiagDown25LeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagUp25RightBanked(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagUp25RightBanked(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagDown25RightBanked(
+static void LatticeTriangleTrackDiagDown25RightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagUp25LeftBanked(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagUp25LeftBanked(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagFlatToLeftBankedUp25(
+static void LatticeTriangleTrackDiagFlatToLeftBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15410,7 +15410,7 @@ static void InMaTriangleTrackDiagFlatToLeftBankedUp25(
     }
 }
 
-static void InMaTriangleTrackDiagFlatToRightBankedUp25(
+static void LatticeTriangleTrackDiagFlatToRightBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15488,7 +15488,7 @@ static void InMaTriangleTrackDiagFlatToRightBankedUp25(
     }
 }
 
-static void InMaTriangleTrackDiagLeftBankedUp25ToFlat(
+static void LatticeTriangleTrackDiagLeftBankedUp25ToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15566,7 +15566,7 @@ static void InMaTriangleTrackDiagLeftBankedUp25ToFlat(
     }
 }
 
-static void InMaTriangleTrackDiagRightBankedUp25ToFlat(
+static void LatticeTriangleTrackDiagRightBankedUp25ToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15644,35 +15644,35 @@ static void InMaTriangleTrackDiagRightBankedUp25ToFlat(
     }
 }
 
-static void InMaTriangleTrackDiagFlatToLeftBankedDown25(
+static void LatticeTriangleTrackDiagFlatToLeftBankedDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagRightBankedUp25ToFlat(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagRightBankedUp25ToFlat(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagFlatToRightBankedDown25(
+static void LatticeTriangleTrackDiagFlatToRightBankedDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagLeftBankedUp25ToFlat(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagLeftBankedUp25ToFlat(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagLeftBankedDown25ToFlat(
+static void LatticeTriangleTrackDiagLeftBankedDown25ToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagFlatToRightBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagFlatToRightBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackDiagRightBankedDown25ToFlat(
+static void LatticeTriangleTrackDiagRightBankedDown25ToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    InMaTriangleTrackDiagFlatToLeftBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagFlatToLeftBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackLeftEighthBankToDiagUp25(
+static void LatticeTriangleTrackLeftEighthBankToDiagUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15823,7 +15823,7 @@ static void InMaTriangleTrackLeftEighthBankToDiagUp25(
     }
 }
 
-static void InMaTriangleTrackRightEighthBankToDiagUp25(
+static void LatticeTriangleTrackRightEighthBankToDiagUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -15974,7 +15974,7 @@ static void InMaTriangleTrackRightEighthBankToDiagUp25(
     }
 }
 
-static void InMaTriangleTrackLeftEighthBankToOrthogonalUp25(
+static void LatticeTriangleTrackLeftEighthBankToOrthogonalUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -16125,7 +16125,7 @@ static void InMaTriangleTrackLeftEighthBankToOrthogonalUp25(
     }
 }
 
-static void InMaTriangleTrackRightEighthBankToOrthogonalUp25(
+static void LatticeTriangleTrackRightEighthBankToOrthogonalUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -16276,38 +16276,38 @@ static void InMaTriangleTrackRightEighthBankToOrthogonalUp25(
     }
 }
 
-static void InMaTriangleTrackLeftEighthBankToDiagDown25(
+static void LatticeTriangleTrackLeftEighthBankToDiagDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t map[5] = { 4, 3, 1, 2, 0 };
     trackSequence = map[trackSequence];
-    InMaTriangleTrackRightEighthBankToOrthogonalUp25(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthBankToOrthogonalUp25(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackRightEighthBankToDiagDown25(
+static void LatticeTriangleTrackRightEighthBankToDiagDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t map[5] = { 4, 3, 1, 2, 0 };
     trackSequence = map[trackSequence];
-    InMaTriangleTrackLeftEighthBankToOrthogonalUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthBankToOrthogonalUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackLeftEighthBankToOrthogonalDown25(
+static void LatticeTriangleTrackLeftEighthBankToOrthogonalDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    InMaTriangleTrackRightEighthBankToDiagUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthBankToDiagUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void InMaTriangleTrackRightEighthBankToOrthogonalDown25(
+static void LatticeTriangleTrackRightEighthBankToOrthogonalDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    InMaTriangleTrackLeftEighthBankToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthBankToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 static constexpr CoordsXYZ diagBrakeBoundsOffsets[4] = {
@@ -16317,17 +16317,17 @@ static constexpr CoordsXYZ diagBrakeBoundsOffsets[4] = {
     { 0, 0, 24 },
 };
 
-static void InMaTriangleTrackDiagBrakes(
+static void LatticeTriangleTrackDiagBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     TrackPaintUtilDiagTilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours,
-        GigaDiagBrakeImages[trackElement.IsBrakeClosed()][0], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+        LatticeTriangleBrakeImages[trackElement.IsBrakeClosed()][0], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     TrackPaintUtilDiagTilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours,
-        GigaDiagBrakeImages[trackElement.IsBrakeClosed()][1], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        LatticeTriangleBrakeImages[trackElement.IsBrakeClosed()][1], defaultDiagTileOffsets, defaultDiagBoundLengths,
         diagBrakeBoundsOffsets);
 
     if (trackSequence == 3)
@@ -16340,495 +16340,495 @@ static void InMaTriangleTrackDiagBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionInMaTriangle(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangle(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return InMaTriangleTrackFlat;
+            return LatticeTriangleTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return InMaTriangleTrackStation;
+            return LatticeTriangleTrackStation;
         case TrackElemType::Up25:
-            return InMaTriangleTrack25DegUp;
+            return LatticeTriangleTrack25DegUp;
         case TrackElemType::Up60:
-            return InMaTriangleTrack60DegUp;
+            return LatticeTriangleTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return InMaTriangleTrackFlatTo25DegUp;
+            return LatticeTriangleTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return InMaTriangleTrack25DegUpTo60DegUp;
+            return LatticeTriangleTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return InMaTriangleTrack60DegUpTo25DegUp;
+            return LatticeTriangleTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return InMaTriangleTrack25DegUpToFlat;
+            return LatticeTriangleTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return InMaTriangleTrack25DegDown;
+            return LatticeTriangleTrack25DegDown;
         case TrackElemType::Down60:
-            return InMaTriangleTrack60DegDown;
+            return LatticeTriangleTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return InMaTriangleTrackFlatTo25DegDown;
+            return LatticeTriangleTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return InMaTriangleTrack25DegDownTo60DegDown;
+            return LatticeTriangleTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return InMaTriangleTrack60DegDownTo25DegDown;
+            return LatticeTriangleTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return InMaTriangleTrack25DegDownToFlat;
+            return LatticeTriangleTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return InMaTriangleTrackLeftQuarterTurn5;
+            return LatticeTriangleTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return InMaTriangleTrackRightQuarterTurn5;
+            return LatticeTriangleTrackRightQuarterTurn5;
         case TrackElemType::FlatToLeftBank:
-            return InMaTriangleTrackFlatToLeftBank;
+            return LatticeTriangleTrackFlatToLeftBank;
         case TrackElemType::FlatToRightBank:
-            return InMaTriangleTrackFlatToRightBank;
+            return LatticeTriangleTrackFlatToRightBank;
         case TrackElemType::LeftBankToFlat:
-            return InMaTriangleTrackLeftBankToFlat;
+            return LatticeTriangleTrackLeftBankToFlat;
         case TrackElemType::RightBankToFlat:
-            return InMaTriangleTrackRightBankToFlat;
+            return LatticeTriangleTrackRightBankToFlat;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            return InMaTriangleTrackBankedLeftQuarterTurn5;
+            return LatticeTriangleTrackBankedLeftQuarterTurn5;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
-            return InMaTriangleTrackBankedRightQuarterTurn5;
+            return LatticeTriangleTrackBankedRightQuarterTurn5;
         case TrackElemType::LeftBankToUp25:
-            return InMaTriangleTrackLeftBankTo25DegUp;
+            return LatticeTriangleTrackLeftBankTo25DegUp;
         case TrackElemType::RightBankToUp25:
-            return InMaTriangleTrackRightBankTo25DegUp;
+            return LatticeTriangleTrackRightBankTo25DegUp;
         case TrackElemType::Up25ToLeftBank:
-            return InMaTriangleTrack25DegUpToLeftBank;
+            return LatticeTriangleTrack25DegUpToLeftBank;
         case TrackElemType::Up25ToRightBank:
-            return InMaTriangleTrack25DegUpToRightBank;
+            return LatticeTriangleTrack25DegUpToRightBank;
         case TrackElemType::LeftBankToDown25:
-            return InMaTriangleTrackLeftBankTo25DegDown;
+            return LatticeTriangleTrackLeftBankTo25DegDown;
         case TrackElemType::RightBankToDown25:
-            return InMaTriangleTrackRightBankTo25DegDown;
+            return LatticeTriangleTrackRightBankTo25DegDown;
         case TrackElemType::Down25ToLeftBank:
-            return InMaTriangleTrack25DegDownToLeftBank;
+            return LatticeTriangleTrack25DegDownToLeftBank;
         case TrackElemType::Down25ToRightBank:
-            return InMaTriangleTrack25DegDownToRightBank;
+            return LatticeTriangleTrack25DegDownToRightBank;
         case TrackElemType::LeftBank:
-            return InMaTriangleTrackLeftBank;
+            return LatticeTriangleTrackLeftBank;
         case TrackElemType::RightBank:
-            return InMaTriangleTrackRightBank;
+            return LatticeTriangleTrackRightBank;
         case TrackElemType::LeftQuarterTurn5TilesUp25:
-            return InMaTriangleTrackLeftQuarterTurn525DegUp;
+            return LatticeTriangleTrackLeftQuarterTurn525DegUp;
         case TrackElemType::RightQuarterTurn5TilesUp25:
-            return InMaTriangleTrackRightQuarterTurn525DegUp;
+            return LatticeTriangleTrackRightQuarterTurn525DegUp;
         case TrackElemType::LeftQuarterTurn5TilesDown25:
-            return InMaTriangleTrackLeftQuarterTurn525DegDown;
+            return LatticeTriangleTrackLeftQuarterTurn525DegDown;
         case TrackElemType::RightQuarterTurn5TilesDown25:
-            return InMaTriangleTrackRightQuarterTurn525DegDown;
+            return LatticeTriangleTrackRightQuarterTurn525DegDown;
         case TrackElemType::SBendLeft:
-            return InMaTriangleTrackSBendLeft;
+            return LatticeTriangleTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return InMaTriangleTrackSBendRight;
+            return LatticeTriangleTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return InMaTriangleTrackLeftQuarterTurn3;
+            return LatticeTriangleTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return InMaTriangleTrackRightQuarterTurn3;
+            return LatticeTriangleTrackRightQuarterTurn3;
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
-            return InMaTriangleTrackLeftQuarterTurn3Bank;
+            return LatticeTriangleTrackLeftQuarterTurn3Bank;
         case TrackElemType::RightBankedQuarterTurn3Tiles:
-            return InMaTriangleTrackRightQuarterTurn3Bank;
+            return LatticeTriangleTrackRightQuarterTurn3Bank;
         case TrackElemType::LeftQuarterTurn3TilesUp25:
-            return InMaTriangleTrackLeftQuarterTurn325DegUp;
+            return LatticeTriangleTrackLeftQuarterTurn325DegUp;
         case TrackElemType::RightQuarterTurn3TilesUp25:
-            return InMaTriangleTrackRightQuarterTurn325DegUp;
+            return LatticeTriangleTrackRightQuarterTurn325DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-            return InMaTriangleTrackLeftQuarterTurn325DegDown;
+            return LatticeTriangleTrackLeftQuarterTurn325DegDown;
         case TrackElemType::RightQuarterTurn3TilesDown25:
-            return InMaTriangleTrackRightQuarterTurn325DegDown;
+            return LatticeTriangleTrackRightQuarterTurn325DegDown;
         case TrackElemType::LeftHalfBankedHelixUpSmall:
-            return InMaTriangleTrackLeftHalfBankedHelixUpSmall;
+            return LatticeTriangleTrackLeftHalfBankedHelixUpSmall;
         case TrackElemType::RightHalfBankedHelixUpSmall:
-            return InMaTriangleTrackRightHalfBankedHelixUpSmall;
+            return LatticeTriangleTrackRightHalfBankedHelixUpSmall;
         case TrackElemType::LeftHalfBankedHelixDownSmall:
-            return InMaTriangleTrackLeftHalfBankedHelixDownSmall;
+            return LatticeTriangleTrackLeftHalfBankedHelixDownSmall;
         case TrackElemType::RightHalfBankedHelixDownSmall:
-            return InMaTriangleTrackRightHalfBankedHelixDownSmall;
+            return LatticeTriangleTrackRightHalfBankedHelixDownSmall;
         case TrackElemType::LeftHalfBankedHelixUpLarge:
-            return InMaTriangleTrackLeftHalfBankedHelixUpLarge;
+            return LatticeTriangleTrackLeftHalfBankedHelixUpLarge;
         case TrackElemType::RightHalfBankedHelixUpLarge:
-            return InMaTriangleTrackRightHalfBankedHelixUpLarge;
+            return LatticeTriangleTrackRightHalfBankedHelixUpLarge;
         case TrackElemType::LeftHalfBankedHelixDownLarge:
-            return InMaTriangleTrackLeftHalfBankedHelixDownLarge;
+            return LatticeTriangleTrackLeftHalfBankedHelixDownLarge;
         case TrackElemType::RightHalfBankedHelixDownLarge:
-            return InMaTriangleTrackRightHalfBankedHelixDownLarge;
+            return LatticeTriangleTrackRightHalfBankedHelixDownLarge;
         case TrackElemType::LeftQuarterTurn1TileUp60:
-            return InMaTriangleTrackLeftQuarterTurn160DegUp;
+            return LatticeTriangleTrackLeftQuarterTurn160DegUp;
         case TrackElemType::RightQuarterTurn1TileUp60:
-            return InMaTriangleTrackRightQuarterTurn160DegUp;
+            return LatticeTriangleTrackRightQuarterTurn160DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown60:
-            return InMaTriangleTrackLeftQuarterTurn160DegDown;
+            return LatticeTriangleTrackLeftQuarterTurn160DegDown;
         case TrackElemType::RightQuarterTurn1TileDown60:
-            return InMaTriangleTrackRightQuarterTurn160DegDown;
+            return LatticeTriangleTrackRightQuarterTurn160DegDown;
         case TrackElemType::Brakes:
-            return InMaTriangleTrackBrakes;
+            return LatticeTriangleTrackBrakes;
         case TrackElemType::Up25LeftBanked:
-            return InMaTriangleTrack25DegUpLeftBanked;
+            return LatticeTriangleTrack25DegUpLeftBanked;
         case TrackElemType::Up25RightBanked:
-            return InMaTriangleTrack25DegUpRightBanked;
+            return LatticeTriangleTrack25DegUpRightBanked;
         case TrackElemType::OnRidePhoto:
-            return InMaTriangleTrackOnRidePhoto;
+            return LatticeTriangleTrackOnRidePhoto;
         case TrackElemType::Down25LeftBanked:
-            return InMaTriangleTrack25DegDownLeftBanked;
+            return LatticeTriangleTrack25DegDownLeftBanked;
         case TrackElemType::Down25RightBanked:
-            return InMaTriangleTrack25DegDownRightBanked;
+            return LatticeTriangleTrack25DegDownRightBanked;
         case TrackElemType::FlatToUp60LongBase:
-            return InMaTriangleTrackFlatTo60DegUpLongBase;
+            return LatticeTriangleTrackFlatTo60DegUpLongBase;
         case TrackElemType::Up60ToFlatLongBase:
-            return InMaTriangleTrack60DegUpToFlatLongBase;
+            return LatticeTriangleTrack60DegUpToFlatLongBase;
         case TrackElemType::Down60ToFlatLongBase:
-            return InMaTriangleTrack60DegDownToFlatLongBase;
+            return LatticeTriangleTrack60DegDownToFlatLongBase;
         case TrackElemType::FlatToDown60LongBase:
-            return InMaTriangleTrackFlatTo60DegDownLongBase;
+            return LatticeTriangleTrackFlatTo60DegDownLongBase;
         case TrackElemType::CableLiftHill:
-            return InMaTriangleTrackCableLiftHill;
+            return LatticeTriangleTrackCableLiftHill;
         case TrackElemType::LeftEighthToDiag:
-            return InMaTriangleTrackLeftEighthToDiag;
+            return LatticeTriangleTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return InMaTriangleTrackRightEighthToDiag;
+            return LatticeTriangleTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return InMaTriangleTrackLeftEighthToOrthogonal;
+            return LatticeTriangleTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return InMaTriangleTrackRightEighthToOrthogonal;
+            return LatticeTriangleTrackRightEighthToOrthogonal;
         case TrackElemType::LeftEighthBankToDiag:
-            return InMaTriangleTrackLeftEighthBankToDiag;
+            return LatticeTriangleTrackLeftEighthBankToDiag;
         case TrackElemType::RightEighthBankToDiag:
-            return InMaTriangleTrackRightEighthBankToDiag;
+            return LatticeTriangleTrackRightEighthBankToDiag;
         case TrackElemType::LeftEighthBankToOrthogonal:
-            return InMaTriangleTrackLeftEighthBankToOrthogonal;
+            return LatticeTriangleTrackLeftEighthBankToOrthogonal;
         case TrackElemType::RightEighthBankToOrthogonal:
-            return InMaTriangleTrackRightEighthBankToOrthogonal;
+            return LatticeTriangleTrackRightEighthBankToOrthogonal;
         case TrackElemType::DiagFlat:
-            return InMaTriangleTrackDiagFlat;
+            return LatticeTriangleTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return InMaTriangleTrackDiag25DegUp;
+            return LatticeTriangleTrackDiag25DegUp;
         case TrackElemType::DiagUp60:
-            return InMaTriangleTrackDiag60DegUp;
+            return LatticeTriangleTrackDiag60DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return InMaTriangleTrackDiagFlatTo25DegUp;
+            return LatticeTriangleTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToUp60:
-            return InMaTriangleTrackDiag25DegUpTo60DegUp;
+            return LatticeTriangleTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagUp60ToUp25:
-            return InMaTriangleTrackDiag60DegUpTo25DegUp;
+            return LatticeTriangleTrackDiag60DegUpTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return InMaTriangleTrackDiag25DegUpToFlat;
+            return LatticeTriangleTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return InMaTriangleTrackDiag25DegDown;
+            return LatticeTriangleTrackDiag25DegDown;
         case TrackElemType::DiagDown60:
-            return InMaTriangleTrackDiag60DegDown;
+            return LatticeTriangleTrackDiag60DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return InMaTriangleTrackDiagFlatTo25DegDown;
+            return LatticeTriangleTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToDown60:
-            return InMaTriangleTrackDiag25DegDownTo60DegDown;
+            return LatticeTriangleTrackDiag25DegDownTo60DegDown;
         case TrackElemType::DiagDown60ToDown25:
-            return InMaTriangleTrackDiag60DegDownTo25DegDown;
+            return LatticeTriangleTrackDiag60DegDownTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return InMaTriangleTrackDiag25DegDownToFlat;
+            return LatticeTriangleTrackDiag25DegDownToFlat;
         case TrackElemType::DiagFlatToLeftBank:
-            return InMaTriangleTrackDiagFlatToLeftBank;
+            return LatticeTriangleTrackDiagFlatToLeftBank;
         case TrackElemType::DiagFlatToRightBank:
-            return InMaTriangleTrackDiagFlatToRightBank;
+            return LatticeTriangleTrackDiagFlatToRightBank;
         case TrackElemType::DiagLeftBankToFlat:
-            return InMaTriangleTrackDiagLeftBankToFlat;
+            return LatticeTriangleTrackDiagLeftBankToFlat;
         case TrackElemType::DiagRightBankToFlat:
-            return InMaTriangleTrackDiagRightBankToFlat;
+            return LatticeTriangleTrackDiagRightBankToFlat;
         case TrackElemType::DiagLeftBankToUp25:
-            return InMaTriangleTrackDiagLeftBankTo25DegUp;
+            return LatticeTriangleTrackDiagLeftBankTo25DegUp;
         case TrackElemType::DiagRightBankToUp25:
-            return InMaTriangleTrackDiagRightBankTo25DegUp;
+            return LatticeTriangleTrackDiagRightBankTo25DegUp;
         case TrackElemType::DiagUp25ToLeftBank:
-            return InMaTriangleTrackDiag25DegUpToLeftBank;
+            return LatticeTriangleTrackDiag25DegUpToLeftBank;
         case TrackElemType::DiagUp25ToRightBank:
-            return InMaTriangleTrackDiag25DegUpToRightBank;
+            return LatticeTriangleTrackDiag25DegUpToRightBank;
         case TrackElemType::DiagLeftBankToDown25:
-            return InMaTriangleTrackDiagLeftBankTo25DegDown;
+            return LatticeTriangleTrackDiagLeftBankTo25DegDown;
         case TrackElemType::DiagRightBankToDown25:
-            return InMaTriangleTrackDiagRightBankTo25DegDown;
+            return LatticeTriangleTrackDiagRightBankTo25DegDown;
         case TrackElemType::DiagDown25ToLeftBank:
-            return InMaTriangleTrackDiag25DegDownToLeftBank;
+            return LatticeTriangleTrackDiag25DegDownToLeftBank;
         case TrackElemType::DiagDown25ToRightBank:
-            return InMaTriangleTrackDiag25DegDownToRightBank;
+            return LatticeTriangleTrackDiag25DegDownToRightBank;
         case TrackElemType::DiagLeftBank:
-            return InMaTriangleTrackDiagLeftBank;
+            return LatticeTriangleTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
-            return InMaTriangleTrackDiagRightBank;
+            return LatticeTriangleTrackDiagRightBank;
         case TrackElemType::BlockBrakes:
-            return InMaTriangleTrackBlockBrakes;
+            return LatticeTriangleTrackBlockBrakes;
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:
-            return InMaTriangleTrackLeftBankedQuarterTurn325DegUp;
+            return LatticeTriangleTrackLeftBankedQuarterTurn325DegUp;
         case TrackElemType::RightBankedQuarterTurn3TileUp25:
-            return InMaTriangleTrackRightBankedQuarterTurn325DegUp;
+            return LatticeTriangleTrackRightBankedQuarterTurn325DegUp;
         case TrackElemType::LeftBankedQuarterTurn3TileDown25:
-            return InMaTriangleTrackLeftBankedQuarterTurn325DegDown;
+            return LatticeTriangleTrackLeftBankedQuarterTurn325DegDown;
         case TrackElemType::RightBankedQuarterTurn3TileDown25:
-            return InMaTriangleTrackRightBankedQuarterTurn325DegDown;
+            return LatticeTriangleTrackRightBankedQuarterTurn325DegDown;
         case TrackElemType::LeftBankedQuarterTurn5TileUp25:
-            return InMaTriangleTrackLeftBankedQuarterTurn525DegUp;
+            return LatticeTriangleTrackLeftBankedQuarterTurn525DegUp;
         case TrackElemType::RightBankedQuarterTurn5TileUp25:
-            return InMaTriangleTrackRightBankedQuarterTurn525DegUp;
+            return LatticeTriangleTrackRightBankedQuarterTurn525DegUp;
         case TrackElemType::LeftBankedQuarterTurn5TileDown25:
-            return InMaTriangleTrackLeftBankedQuarterTurn525DegDown;
+            return LatticeTriangleTrackLeftBankedQuarterTurn525DegDown;
         case TrackElemType::RightBankedQuarterTurn5TileDown25:
-            return InMaTriangleTrackRightBankedQuarterTurn525DegDown;
+            return LatticeTriangleTrackRightBankedQuarterTurn525DegDown;
         case TrackElemType::Up25ToLeftBankedUp25:
-            return InMaTriangleTrack25DegUpToLeftBanked25DegUp;
+            return LatticeTriangleTrack25DegUpToLeftBanked25DegUp;
         case TrackElemType::Up25ToRightBankedUp25:
-            return InMaTriangleTrack25DegUpToRightBanked25DegUp;
+            return LatticeTriangleTrack25DegUpToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToUp25:
-            return InMaTriangleTrackLeftBanked25DegUpTo25DegUp;
+            return LatticeTriangleTrackLeftBanked25DegUpTo25DegUp;
         case TrackElemType::RightBankedUp25ToUp25:
-            return InMaTriangleTrackRightBanked25DegUpTo25DegUp;
+            return LatticeTriangleTrackRightBanked25DegUpTo25DegUp;
         case TrackElemType::Down25ToLeftBankedDown25:
-            return InMaTriangleTrack25DegDownToLeftBanked25DegDown;
+            return LatticeTriangleTrack25DegDownToLeftBanked25DegDown;
         case TrackElemType::Down25ToRightBankedDown25:
-            return InMaTriangleTrack25DegDownToRightBanked25DegDown;
+            return LatticeTriangleTrack25DegDownToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToDown25:
-            return InMaTriangleTrackLeftBanked25DegDownTo25DegDown;
+            return LatticeTriangleTrackLeftBanked25DegDownTo25DegDown;
         case TrackElemType::RightBankedDown25ToDown25:
-            return InMaTriangleTrackRightBanked25DegDownTo25DegDown;
+            return LatticeTriangleTrackRightBanked25DegDownTo25DegDown;
         case TrackElemType::LeftBankedFlatToLeftBankedUp25:
-            return InMaTriangleTrackLeftBankedFlatToLeftBanked25DegUp;
+            return LatticeTriangleTrackLeftBankedFlatToLeftBanked25DegUp;
         case TrackElemType::RightBankedFlatToRightBankedUp25:
-            return InMaTriangleTrackRightBankedFlatToRightBanked25DegUp;
+            return LatticeTriangleTrackRightBankedFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
-            return InMaTriangleTrackLeftBanked25DegUpToLeftBankedFlat;
+            return LatticeTriangleTrackLeftBanked25DegUpToLeftBankedFlat;
         case TrackElemType::RightBankedUp25ToRightBankedFlat:
-            return InMaTriangleTrackRightBanked25DegUpToRightBankedFlat;
+            return LatticeTriangleTrackRightBanked25DegUpToRightBankedFlat;
         case TrackElemType::LeftBankedFlatToLeftBankedDown25:
-            return InMaTriangleTrackLeftBankedFlatToLeftBanked25DegDown;
+            return LatticeTriangleTrackLeftBankedFlatToLeftBanked25DegDown;
         case TrackElemType::RightBankedFlatToRightBankedDown25:
-            return InMaTriangleTrackRightBankedFlatToRightBanked25DegDown;
+            return LatticeTriangleTrackRightBankedFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
-            return InMaTriangleTrackLeftBanked25DegDownToLeftBankedFlat;
+            return LatticeTriangleTrackLeftBanked25DegDownToLeftBankedFlat;
         case TrackElemType::RightBankedDown25ToRightBankedFlat:
-            return InMaTriangleTrackRightBanked25DegDownToRightBankedFlat;
+            return LatticeTriangleTrackRightBanked25DegDownToRightBankedFlat;
         case TrackElemType::FlatToLeftBankedUp25:
-            return InMaTriangleTrackFlatToLeftBanked25DegUp;
+            return LatticeTriangleTrackFlatToLeftBanked25DegUp;
         case TrackElemType::FlatToRightBankedUp25:
-            return InMaTriangleTrackFlatToRightBanked25DegUp;
+            return LatticeTriangleTrackFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToFlat:
-            return InMaTriangleTrackLeftBanked25DegUpToFlat;
+            return LatticeTriangleTrackLeftBanked25DegUpToFlat;
         case TrackElemType::RightBankedUp25ToFlat:
-            return InMaTriangleTrackRightBanked25DegUpToFlat;
+            return LatticeTriangleTrackRightBanked25DegUpToFlat;
         case TrackElemType::FlatToLeftBankedDown25:
-            return InMaTriangleTrackFlatToLeftBanked25DegDown;
+            return LatticeTriangleTrackFlatToLeftBanked25DegDown;
         case TrackElemType::FlatToRightBankedDown25:
-            return InMaTriangleTrackFlatToRightBanked25DegDown;
+            return LatticeTriangleTrackFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToFlat:
-            return InMaTriangleTrackLeftBanked25DegDownToFlat;
+            return LatticeTriangleTrackLeftBanked25DegDownToFlat;
         case TrackElemType::RightBankedDown25ToFlat:
-            return InMaTriangleTrackRightBanked25DegDownToFlat;
+            return LatticeTriangleTrackRightBanked25DegDownToFlat;
         case TrackElemType::Booster:
-            return InMaTriangleTrackBooster;
+            return LatticeTriangleTrackBooster;
         case TrackElemType::PoweredLift:
-            return InMaTriangleTrackPoweredLift;
+            return LatticeTriangleTrackPoweredLift;
 
         case TrackElemType::Up90:
-            return InMaTriangleTrack90DegUp;
+            return LatticeTriangleTrack90DegUp;
         case TrackElemType::Down90:
-            return InMaTriangleTrack90DegDown;
+            return LatticeTriangleTrack90DegDown;
         case TrackElemType::Up60ToUp90:
-            return InMaTriangleTrack60DegUpTo90DegUp;
+            return LatticeTriangleTrack60DegUpTo90DegUp;
         case TrackElemType::Down90ToDown60:
-            return InMaTriangleTrack90DegDownTo60DegDown;
+            return LatticeTriangleTrack90DegDownTo60DegDown;
         case TrackElemType::Up90ToUp60:
-            return InMaTriangleTrack90DegUpTo60DegUp;
+            return LatticeTriangleTrack90DegUpTo60DegUp;
         case TrackElemType::Down60ToDown90:
-            return InMaTriangleTrack60DegDownTo90DegDown;
+            return LatticeTriangleTrack60DegDownTo90DegDown;
         case TrackElemType::LeftQuarterTurn1TileUp90:
-            return InMaTriangleTrackLeftQuarterTurn190DegUp;
+            return LatticeTriangleTrackLeftQuarterTurn190DegUp;
         case TrackElemType::RightQuarterTurn1TileUp90:
-            return InMaTriangleTrackRightQuarterTurn190DegUp;
+            return LatticeTriangleTrackRightQuarterTurn190DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown90:
-            return InMaTriangleTrackLeftQuarterTurn190DegDown;
+            return LatticeTriangleTrackLeftQuarterTurn190DegDown;
         case TrackElemType::RightQuarterTurn1TileDown90:
-            return InMaTriangleTrackRightQuarterTurn190DegDown;
+            return LatticeTriangleTrackRightQuarterTurn190DegDown;
         case TrackElemType::LeftBarrelRollUpToDown:
-            return InMaTriangleTrackLeftBarrelRollUpToDown;
+            return LatticeTriangleTrackLeftBarrelRollUpToDown;
         case TrackElemType::RightBarrelRollUpToDown:
-            return InMaTriangleTrackRightBarrelRollUpToDown;
+            return LatticeTriangleTrackRightBarrelRollUpToDown;
         case TrackElemType::LeftBarrelRollDownToUp:
-            return InMaTriangleTrackLeftBarrelRollDownToUp;
+            return LatticeTriangleTrackLeftBarrelRollDownToUp;
         case TrackElemType::RightBarrelRollDownToUp:
-            return InMaTriangleTrackRightBarrelRollDownToUp;
+            return LatticeTriangleTrackRightBarrelRollDownToUp;
         case TrackElemType::HalfLoopUp:
-            return InMaTriangleTrackHalfLoopUp;
+            return LatticeTriangleTrackHalfLoopUp;
         case TrackElemType::HalfLoopDown:
-            return InMaTriangleTrackHalfLoopDown;
+            return LatticeTriangleTrackHalfLoopDown;
         case TrackElemType::LeftVerticalLoop:
-            return InMaTriangleTrackLeftVerticalLoop;
+            return LatticeTriangleTrackLeftVerticalLoop;
         case TrackElemType::RightVerticalLoop:
-            return InMaTriangleTrackRightVerticalLoop;
+            return LatticeTriangleTrackRightVerticalLoop;
         case TrackElemType::LeftCorkscrewUp:
-            return InMaTriangleTrackLeftCorkscrewUp;
+            return LatticeTriangleTrackLeftCorkscrewUp;
         case TrackElemType::RightCorkscrewUp:
-            return InMaTriangleTrackRightCorkscrewUp;
+            return LatticeTriangleTrackRightCorkscrewUp;
         case TrackElemType::LeftCorkscrewDown:
-            return InMaTriangleTrackLeftCorkscrewDown;
+            return LatticeTriangleTrackLeftCorkscrewDown;
         case TrackElemType::RightCorkscrewDown:
-            return InMaTriangleTrackRightCorkscrewDown;
+            return LatticeTriangleTrackRightCorkscrewDown;
 
         case TrackElemType::LeftLargeCorkscrewUp:
-            return InMaTriangleTrackLeftLargeCorkscrewUp;
+            return LatticeTriangleTrackLeftLargeCorkscrewUp;
         case TrackElemType::RightLargeCorkscrewUp:
-            return InMaTriangleTrackRightLargeCorkscrewUp;
+            return LatticeTriangleTrackRightLargeCorkscrewUp;
         case TrackElemType::LeftLargeCorkscrewDown:
-            return InMaTriangleTrackLeftLargeCorkscrewDown;
+            return LatticeTriangleTrackLeftLargeCorkscrewDown;
         case TrackElemType::RightLargeCorkscrewDown:
-            return InMaTriangleTrackRightLargeCorkscrewDown;
+            return LatticeTriangleTrackRightLargeCorkscrewDown;
         case TrackElemType::LeftZeroGRollUp:
-            return InMaTriangleTrackLeftZeroGRollUp;
+            return LatticeTriangleTrackLeftZeroGRollUp;
         case TrackElemType::RightZeroGRollUp:
-            return InMaTriangleTrackRightZeroGRollUp;
+            return LatticeTriangleTrackRightZeroGRollUp;
         case TrackElemType::LeftZeroGRollDown:
-            return InMaTriangleTrackLeftZeroGRollDown;
+            return LatticeTriangleTrackLeftZeroGRollDown;
         case TrackElemType::RightZeroGRollDown:
-            return InMaTriangleTrackRightZeroGRollDown;
+            return LatticeTriangleTrackRightZeroGRollDown;
         case TrackElemType::LeftLargeZeroGRollUp:
-            return InMaTriangleTrackLeftLargeZeroGRollUp;
+            return LatticeTriangleTrackLeftLargeZeroGRollUp;
         case TrackElemType::RightLargeZeroGRollUp:
-            return InMaTriangleTrackRightLargeZeroGRollUp;
+            return LatticeTriangleTrackRightLargeZeroGRollUp;
         case TrackElemType::LeftLargeZeroGRollDown:
-            return InMaTriangleTrackLeftLargeZeroGRollDown;
+            return LatticeTriangleTrackLeftLargeZeroGRollDown;
         case TrackElemType::RightLargeZeroGRollDown:
-            return InMaTriangleTrackRightLargeZeroGRollDown;
+            return LatticeTriangleTrackRightLargeZeroGRollDown;
         case TrackElemType::Up90ToInvertedFlatQuarterLoop:
-            return InMaTriangleTrack90DegToInvertedFlatQuarterLoopUp;
+            return LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp;
         case TrackElemType::InvertedFlatToDown90QuarterLoop:
-            return InMaTriangleTrackInvertedFlatTo90DegQuarterLoopDown;
+            return LatticeTriangleTrackInvertedFlatTo90DegQuarterLoopDown;
         case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
-            return InMaTriangleTrackLeftBankToLeftQuarterTurn3Tile25DegUp;
+            return LatticeTriangleTrackLeftBankToLeftQuarterTurn3Tile25DegUp;
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
-            return InMaTriangleTrackRightBankToRightQuarterTurn3Tile25DegUp;
+            return LatticeTriangleTrackRightBankToRightQuarterTurn3Tile25DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
-            return InMaTriangleTrackLeftQuarterTurn3Tile25DegDownToLeftBank;
+            return LatticeTriangleTrackLeftQuarterTurn3Tile25DegDownToLeftBank;
         case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
-            return InMaTriangleTrackRightQuarterTurn3Tile25DegDownToRightBank;
+            return LatticeTriangleTrackRightQuarterTurn3Tile25DegDownToRightBank;
         case TrackElemType::LeftMediumHalfLoopUp:
-            return InMaTriangleTrackLeftMediumHalfLoopUp;
+            return LatticeTriangleTrackLeftMediumHalfLoopUp;
         case TrackElemType::RightMediumHalfLoopUp:
-            return InMaTriangleTrackRightMediumHalfLoopUp;
+            return LatticeTriangleTrackRightMediumHalfLoopUp;
         case TrackElemType::LeftMediumHalfLoopDown:
-            return InMaTriangleTrackLeftMediumHalfLoopDown;
+            return LatticeTriangleTrackLeftMediumHalfLoopDown;
         case TrackElemType::RightMediumHalfLoopDown:
-            return InMaTriangleTrackRightMediumHalfLoopDown;
+            return LatticeTriangleTrackRightMediumHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopUp:
-            return InMaTriangleTrackLeftLargeHalfLoopUp;
+            return LatticeTriangleTrackLeftLargeHalfLoopUp;
         case TrackElemType::RightLargeHalfLoopUp:
-            return InMaTriangleTrackRightLargeHalfLoopUp;
+            return LatticeTriangleTrackRightLargeHalfLoopUp;
         case TrackElemType::RightLargeHalfLoopDown:
-            return InMaTriangleTrackRightLargeHalfLoopDown;
+            return LatticeTriangleTrackRightLargeHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopDown:
-            return InMaTriangleTrackLeftLargeHalfLoopDown;
+            return LatticeTriangleTrackLeftLargeHalfLoopDown;
         case TrackElemType::FlatToUp60:
-            return InMaTriangleTrackFlatTo60DegUp;
+            return LatticeTriangleTrackFlatTo60DegUp;
         case TrackElemType::Up60ToFlat:
-            return InMaTriangleTrack60DegUpToFlat;
+            return LatticeTriangleTrack60DegUpToFlat;
         case TrackElemType::FlatToDown60:
-            return InMaTriangleTrackFlatTo60DegDown;
+            return LatticeTriangleTrackFlatTo60DegDown;
         case TrackElemType::Down60ToFlat:
-            return InMaTriangleTrack60DegDownToFlat;
+            return LatticeTriangleTrack60DegDownToFlat;
         case TrackElemType::DiagFlatToUp60:
-            return InMaTriangleTrackDiagFlatTo60DegUp;
+            return LatticeTriangleTrackDiagFlatTo60DegUp;
         case TrackElemType::DiagUp60ToFlat:
-            return InMaTriangleTrackDiag60DegUpToFlat;
+            return LatticeTriangleTrackDiag60DegUpToFlat;
         case TrackElemType::DiagFlatToDown60:
-            return InMaTriangleTrackDiagFlatTo60DegDown;
+            return LatticeTriangleTrackDiagFlatTo60DegDown;
         case TrackElemType::DiagDown60ToFlat:
-            return InMaTriangleTrackDiag60DegDownToFlat;
+            return LatticeTriangleTrackDiag60DegDownToFlat;
         case TrackElemType::LeftEighthToDiagUp25:
-            return InMaTriangleTrackLeftEighthToDiagUp25;
+            return LatticeTriangleTrackLeftEighthToDiagUp25;
         case TrackElemType::RightEighthToDiagUp25:
-            return InMaTriangleTrackRightEighthToDiagUp25;
+            return LatticeTriangleTrackRightEighthToDiagUp25;
         case TrackElemType::LeftEighthToDiagDown25:
-            return InMaTriangleTrackLeftEighthToDiagDown25;
+            return LatticeTriangleTrackLeftEighthToDiagDown25;
         case TrackElemType::RightEighthToDiagDown25:
-            return InMaTriangleTrackRightEighthToDiagDown25;
+            return LatticeTriangleTrackRightEighthToDiagDown25;
         case TrackElemType::LeftEighthToOrthogonalUp25:
-            return InMaTriangleTrackLeftEighthToOrthogonalUp25;
+            return LatticeTriangleTrackLeftEighthToOrthogonalUp25;
         case TrackElemType::RightEighthToOrthogonalUp25:
-            return InMaTriangleTrackRightEighthToOrthogonalUp25;
+            return LatticeTriangleTrackRightEighthToOrthogonalUp25;
         case TrackElemType::LeftEighthToOrthogonalDown25:
-            return InMaTriangleTrackLeftEighthToOrthogonalDown25;
+            return LatticeTriangleTrackLeftEighthToOrthogonalDown25;
         case TrackElemType::RightEighthToOrthogonalDown25:
-            return InMaTriangleTrackRightEighthToOrthogonalDown25;
+            return LatticeTriangleTrackRightEighthToOrthogonalDown25;
         case TrackElemType::DiagUp25ToLeftBankedUp25:
-            return InMaTriangleTrackDiagUp25ToLeftBankedUp25;
+            return LatticeTriangleTrackDiagUp25ToLeftBankedUp25;
         case TrackElemType::DiagUp25ToRightBankedUp25:
-            return InMaTriangleTrackDiagUp25ToRightBankedUp25;
+            return LatticeTriangleTrackDiagUp25ToRightBankedUp25;
         case TrackElemType::DiagLeftBankedUp25ToUp25:
-            return InMaTriangleTrackDiagLeftBankedUp25ToUp25;
+            return LatticeTriangleTrackDiagLeftBankedUp25ToUp25;
         case TrackElemType::DiagRightBankedUp25ToUp25:
-            return InMaTriangleTrackDiagRightBankedUp25ToUp25;
+            return LatticeTriangleTrackDiagRightBankedUp25ToUp25;
         case TrackElemType::DiagDown25ToLeftBankedDown25:
-            return InMaTriangleTrackDiagDown25ToLeftBankedDown25;
+            return LatticeTriangleTrackDiagDown25ToLeftBankedDown25;
         case TrackElemType::DiagDown25ToRightBankedDown25:
-            return InMaTriangleTrackDiagDown25ToRightBankedDown25;
+            return LatticeTriangleTrackDiagDown25ToRightBankedDown25;
         case TrackElemType::DiagLeftBankedDown25ToDown25:
-            return InMaTriangleTrackDiagLeftBankedDown25ToDown25;
+            return LatticeTriangleTrackDiagLeftBankedDown25ToDown25;
         case TrackElemType::DiagRightBankedDown25ToDown25:
-            return InMaTriangleTrackDiagRightBankedDown25ToDown25;
+            return LatticeTriangleTrackDiagRightBankedDown25ToDown25;
         case TrackElemType::DiagLeftBankedFlatToLeftBankedUp25:
-            return InMaTriangleTrackDiagLeftBankedFlatToLeftBankedUp25;
+            return LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedUp25;
         case TrackElemType::DiagRightBankedFlatToRightBankedUp25:
-            return InMaTriangleTrackDiagRightBankedFlatToRightBankedUp25;
+            return LatticeTriangleTrackDiagRightBankedFlatToRightBankedUp25;
         case TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat:
-            return InMaTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat;
+            return LatticeTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat;
         case TrackElemType::DiagRightBankedUp25ToRightBankedFlat:
-            return InMaTriangleTrackDiagRightBankedUp25ToRightBankedFlat;
+            return LatticeTriangleTrackDiagRightBankedUp25ToRightBankedFlat;
         case TrackElemType::DiagLeftBankedFlatToLeftBankedDown25:
-            return InMaTriangleTrackDiagLeftBankedFlatToLeftBankedDown25;
+            return LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedDown25;
         case TrackElemType::DiagRightBankedFlatToRightBankedDown25:
-            return InMaTriangleTrackDiagRightBankedFlatToRightBankedDown25;
+            return LatticeTriangleTrackDiagRightBankedFlatToRightBankedDown25;
         case TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat:
-            return InMaTriangleTrackDiagLeftBankedDown25ToLeftBankedFlat;
+            return LatticeTriangleTrackDiagLeftBankedDown25ToLeftBankedFlat;
         case TrackElemType::DiagRightBankedDown25ToRightBankedFlat:
-            return InMaTriangleTrackDiagRightBankedDown25ToRightBankedFlat;
+            return LatticeTriangleTrackDiagRightBankedDown25ToRightBankedFlat;
         case TrackElemType::DiagUp25LeftBanked:
-            return InMaTriangleTrackDiagUp25LeftBanked;
+            return LatticeTriangleTrackDiagUp25LeftBanked;
         case TrackElemType::DiagUp25RightBanked:
-            return InMaTriangleTrackDiagUp25RightBanked;
+            return LatticeTriangleTrackDiagUp25RightBanked;
         case TrackElemType::DiagDown25LeftBanked:
-            return InMaTriangleTrackDiagDown25LeftBanked;
+            return LatticeTriangleTrackDiagDown25LeftBanked;
         case TrackElemType::DiagDown25RightBanked:
-            return InMaTriangleTrackDiagDown25RightBanked;
+            return LatticeTriangleTrackDiagDown25RightBanked;
         case TrackElemType::DiagFlatToLeftBankedUp25:
-            return InMaTriangleTrackDiagFlatToLeftBankedUp25;
+            return LatticeTriangleTrackDiagFlatToLeftBankedUp25;
         case TrackElemType::DiagFlatToRightBankedUp25:
-            return InMaTriangleTrackDiagFlatToRightBankedUp25;
+            return LatticeTriangleTrackDiagFlatToRightBankedUp25;
         case TrackElemType::DiagLeftBankedUp25ToFlat:
-            return InMaTriangleTrackDiagLeftBankedUp25ToFlat;
+            return LatticeTriangleTrackDiagLeftBankedUp25ToFlat;
         case TrackElemType::DiagRightBankedUp25ToFlat:
-            return InMaTriangleTrackDiagRightBankedUp25ToFlat;
+            return LatticeTriangleTrackDiagRightBankedUp25ToFlat;
         case TrackElemType::DiagFlatToLeftBankedDown25:
-            return InMaTriangleTrackDiagFlatToLeftBankedDown25;
+            return LatticeTriangleTrackDiagFlatToLeftBankedDown25;
         case TrackElemType::DiagFlatToRightBankedDown25:
-            return InMaTriangleTrackDiagFlatToRightBankedDown25;
+            return LatticeTriangleTrackDiagFlatToRightBankedDown25;
         case TrackElemType::DiagLeftBankedDown25ToFlat:
-            return InMaTriangleTrackDiagLeftBankedDown25ToFlat;
+            return LatticeTriangleTrackDiagLeftBankedDown25ToFlat;
         case TrackElemType::DiagRightBankedDown25ToFlat:
-            return InMaTriangleTrackDiagRightBankedDown25ToFlat;
+            return LatticeTriangleTrackDiagRightBankedDown25ToFlat;
         case TrackElemType::LeftEighthBankToDiagUp25:
-            return InMaTriangleTrackLeftEighthBankToDiagUp25;
+            return LatticeTriangleTrackLeftEighthBankToDiagUp25;
         case TrackElemType::RightEighthBankToDiagUp25:
-            return InMaTriangleTrackRightEighthBankToDiagUp25;
+            return LatticeTriangleTrackRightEighthBankToDiagUp25;
         case TrackElemType::LeftEighthBankToDiagDown25:
-            return InMaTriangleTrackLeftEighthBankToDiagDown25;
+            return LatticeTriangleTrackLeftEighthBankToDiagDown25;
         case TrackElemType::RightEighthBankToDiagDown25:
-            return InMaTriangleTrackRightEighthBankToDiagDown25;
+            return LatticeTriangleTrackRightEighthBankToDiagDown25;
         case TrackElemType::LeftEighthBankToOrthogonalUp25:
-            return InMaTriangleTrackLeftEighthBankToOrthogonalUp25;
+            return LatticeTriangleTrackLeftEighthBankToOrthogonalUp25;
         case TrackElemType::RightEighthBankToOrthogonalUp25:
-            return InMaTriangleTrackRightEighthBankToOrthogonalUp25;
+            return LatticeTriangleTrackRightEighthBankToOrthogonalUp25;
         case TrackElemType::LeftEighthBankToOrthogonalDown25:
-            return InMaTriangleTrackLeftEighthBankToOrthogonalDown25;
+            return LatticeTriangleTrackLeftEighthBankToOrthogonalDown25;
         case TrackElemType::RightEighthBankToOrthogonalDown25:
-            return InMaTriangleTrackRightEighthBankToOrthogonalDown25;
+            return LatticeTriangleTrackRightEighthBankToOrthogonalDown25;
         case TrackElemType::DiagBlockBrakes:
         case TrackElemType::DiagBrakes:
-            return InMaTriangleTrackDiagBrakes;
+            return LatticeTriangleTrackDiagBrakes;
     }
     return nullptr;
 }

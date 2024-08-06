@@ -902,8 +902,8 @@
     <ClCompile Include="ride\coaster\CompactInvertedCoaster.cpp" />
     <ClCompile Include="ride\coaster\CorkscrewRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\FlyingRollerCoaster.cpp" />
-    <ClCompile Include="ride\coaster\InMaTriangleTrack.cpp" />
-    <ClCompile Include="ride\coaster\InMaTriangleTrackAlt.cpp" />
+    <ClCompile Include="ride\coaster\LatticeTriangleTrack.cpp" />
+    <ClCompile Include="ride\coaster\LatticeTriangleTrackAlt.cpp" />
     <ClCompile Include="ride\coaster\HeartlineTwisterCoaster.cpp" />
     <ClCompile Include="ride\coaster\HybridCoaster.cpp" />
     <ClCompile Include="ride\coaster\InvertedHairpinCoaster.cpp" />

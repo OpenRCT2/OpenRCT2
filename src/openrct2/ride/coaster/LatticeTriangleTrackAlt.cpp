@@ -18,21 +18,21 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr uint32_t _InMaTriangleAltBrakeImages[NumOrthogonalDirections][2] = {
+static constexpr uint32_t _LatticeTriangleAltBrakeImages[NumOrthogonalDirections][2] = {
     { SPR_G2_GIGA_RC_BRAKE_ALT_OPEN_NE_SW, SPR_G2_GIGA_RC_BRAKE_ALT_CLOSED_NE_SW },
     { SPR_G2_GIGA_RC_BRAKE_ALT_OPEN_NW_SE, SPR_G2_GIGA_RC_BRAKE_ALT_CLOSED_NW_SE },
     { SPR_G2_GIGA_RC_BRAKE_ALT_OPEN_SW_NE, SPR_G2_GIGA_RC_BRAKE_ALT_CLOSED_SW_NE },
     { SPR_G2_GIGA_RC_BRAKE_ALT_OPEN_SE_NW, SPR_G2_GIGA_RC_BRAKE_ALT_CLOSED_SE_NW },
 };
 
-static constexpr uint32_t _InMaTriangleAltBlockBrakeImages[NumOrthogonalDirections][2] = {
+static constexpr uint32_t _LatticeTriangleAltBlockBrakeImages[NumOrthogonalDirections][2] = {
     { SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_OPEN_NE_SW, SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_CLOSED_NE_SW },
     { SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_OPEN_NW_SE, SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_CLOSED_NW_SE },
     { SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_OPEN_SW_NE, SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_CLOSED_SW_NE },
     { SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_OPEN_SE_NW, SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_CLOSED_SE_NW },
 };
 
-static void InMaTriangleTrackAltStation(
+static void LatticeTriangleTrackAltStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -66,7 +66,7 @@ static void InMaTriangleTrackAltStation(
         {
             bool isClosed = trackElement.IsBrakeClosed();
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(_InMaTriangleAltBlockBrakeImages[direction][isClosed]),
+                session, direction, session.TrackColours.WithIndex(_LatticeTriangleAltBlockBrakeImages[direction][isClosed]),
                 { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
         else
@@ -87,13 +87,13 @@ static void InMaTriangleTrackAltStation(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void InMaTriangleTrackAltBrakes(
+static void LatticeTriangleTrackAltBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_InMaTriangleAltBrakeImages[direction][isClosed]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(_LatticeTriangleAltBrakeImages[direction][isClosed]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -107,13 +107,13 @@ static void InMaTriangleTrackAltBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void InMaTriangleTrackAltBlockBrakes(
+static void LatticeTriangleTrackAltBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_InMaTriangleAltBlockBrakeImages[direction][isClosed]),
+        session, direction, session.TrackColours.WithIndex(_LatticeTriangleAltBlockBrakeImages[direction][isClosed]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -127,7 +127,7 @@ static void InMaTriangleTrackAltBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void InMaTriangleTrackAltBooster(
+static void LatticeTriangleTrackAltBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -165,7 +165,7 @@ static void InMaTriangleTrackAltBooster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void InMaTriangleTrackAltPoweredLift(
+static void LatticeTriangleTrackAltPoweredLift(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -191,22 +191,22 @@ static void InMaTriangleTrackAltPoweredLift(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionInMaTriangleAlt(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleAlt(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return InMaTriangleTrackAltStation;
+            return LatticeTriangleTrackAltStation;
         case TrackElemType::Brakes:
-            return InMaTriangleTrackAltBrakes;
+            return LatticeTriangleTrackAltBrakes;
         case TrackElemType::BlockBrakes:
-            return InMaTriangleTrackAltBlockBrakes;
+            return LatticeTriangleTrackAltBlockBrakes;
         case TrackElemType::Booster:
-            return InMaTriangleTrackAltBooster;
+            return LatticeTriangleTrackAltBooster;
         case TrackElemType::PoweredLift:
-            return InMaTriangleTrackAltPoweredLift;
+            return LatticeTriangleTrackAltPoweredLift;
     }
-    return GetTrackPaintFunctionInMaTriangle(trackType);
+    return GetTrackPaintFunctionLatticeTriangle(trackType);
 }
