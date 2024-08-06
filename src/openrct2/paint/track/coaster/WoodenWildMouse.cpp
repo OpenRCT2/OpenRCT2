@@ -15,7 +15,7 @@
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
+#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Paint.TileElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
@@ -141,8 +141,8 @@ static void WoodenWildMouseTrackFlat(
 
     auto imageId = session.TrackColours.WithIndex(imageIds[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::Flat>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
     PaintUtilSetSegmentSupportHeight(
         session,
@@ -173,8 +173,8 @@ static void WoodenWildMouseTrackStation(
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 6, height },
         { { 0, 0, height }, { 32, 20, 1 } });
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::EndStation>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -205,9 +205,8 @@ static void WoodenWildMouseTrack25DegUp(
     auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 1 } });
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up25Deg);
+    DrawSupportForSequenceA<TrackElemType::Up25>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -254,9 +253,8 @@ static void WoodenWildMouseTrack60DegUp(
             session, direction, imageId, { 0, 6, height }, { { 28, 4, height - 16 }, { 2, 24, 93 } });
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up60Deg);
+    DrawSupportForSequenceA<TrackElemType::Up60>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -295,9 +293,8 @@ static void WoodenWildMouseTrackFlatTo25DegUp(
     auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 1 } });
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::FlatToUp25Deg);
+    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -348,9 +345,8 @@ static void WoodenWildMouseTrack25DegUpTo60DegUp(
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 4, height }, { 32, 2, 43 } });
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up25DegToUp60Deg);
+    DrawSupportForSequenceA<TrackElemType::Up25ToUp60>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -400,9 +396,8 @@ static void WoodenWildMouseTrack60DegTo25DegUp(
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 4, height }, { 32, 2, 43 } });
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up60DegToUp25Deg);
+    DrawSupportForSequenceA<TrackElemType::Up60ToUp25>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -441,9 +436,8 @@ static void WoodenWildMouseTrack25DegUpToFlat(
     auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 1 } });
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up25DegToFlat);
+    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -536,14 +530,8 @@ static void WoodenWildMouseTrackRightQuarterTurn3(
     TrackPaintUtilRightQuarterTurn3TilesPaint4(session, height, direction, trackSequence, session.TrackColours, imageIds);
     TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::StandardFlat);
 
-    switch (trackSequence)
-    {
-        case 0:
-        case 3:
-            WoodenASupportsPaintSetupRotated(
-                session, kSupportType, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
-            break;
-    }
+    DrawSupportForSequenceA<TrackElemType::RightQuarterTurn3Tiles>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     int32_t blockedSegments = 0;
     switch (trackSequence)
@@ -598,8 +586,8 @@ static void WoodenWildMouseTrackLeftQuarterTurn1(
             PaintAddImageAsParent(session, imageId, { 6, 6, height }, { 24, 24, 1 });
             break;
     }
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::Corner3, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn1Tile>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
         session, direction, height, 0, TunnelType::StandardFlat, 0, TunnelType::StandardFlat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -649,9 +637,8 @@ static void WoodenWildMouseTrackFlatTo60DegUp(
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 4, height }, { 32, 2, 43 } });
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::FlatToUp60Deg);
+    DrawSupportForSequenceA<TrackElemType::FlatToUp60>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -701,9 +688,8 @@ static void WoodenWildMouseTrack60DegUpToFlat(
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 4, height }, { 32, 2, 43 } });
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up60DegToFlat);
+    DrawSupportForSequenceA<TrackElemType::Up60ToFlat>(
+        session, kSupportType, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
