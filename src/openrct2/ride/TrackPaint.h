@@ -584,7 +584,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedMonorail(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionGigaRC(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionRotoDrop(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingSaucers(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(int32_t trackType);
