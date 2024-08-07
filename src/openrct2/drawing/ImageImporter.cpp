@@ -38,7 +38,7 @@ namespace OpenRCT2::Drawing
         {
             throw std::invalid_argument("Image is not paletted, it has bit depth of " + std::to_string(image.Depth));
         }
-        const bool isRLE = meta.importFlags & ImportFlags::RLE;
+        const bool isRLE = HasFlag(meta.importFlags, ImportFlags::RLE);
 
         auto pixels = GetPixels(image, meta);
         auto buffer = isRLE ? EncodeRLE(pixels.data(), meta.srcSize) : EncodeRaw(pixels.data(), meta.srcSize);
@@ -50,7 +50,7 @@ namespace OpenRCT2::Drawing
         outElement.x_offset = meta.offset.x;
         outElement.y_offset = meta.offset.y;
         outElement.zoomed_offset = meta.zoomedOffset;
-        if (meta.importFlags & ImportFlags::NoDrawOnZoom)
+        if (HasFlag(meta.importFlags, ImportFlags::NoDrawOnZoom))
             outElement.flags |= G1_FLAG_NO_ZOOM_DRAW;
 
         ImageImporter::ImportResult result;
@@ -391,25 +391,22 @@ namespace OpenRCT2::Drawing
         auto yOffset = Json::GetNumber<int16_t>(input["y"]);
         auto keepPalette = Json::GetString(input["palette"]) == "keep";
         auto palette = keepPalette ? Palette::KeepIndices : Palette::OpenRCT2;
-        auto flags = EnumValue(ImportFlags::None);
+        uint8_t flags = 0;
 
         auto raw = Json::GetString(input["format"]) == "raw";
         if (!raw)
-            flags |= EnumValue(ImportFlags::RLE);
+            flags |= EnumToFlag(ImportFlags::RLE);
 
-        flags |= Json::GetFlags<uint8_t>(
-            input,
-            {
-                { "noDrawOnZoom", ImportFlags::NoDrawOnZoom },
-            });
+        if (Json::GetBoolean("noDrawOnZoom"))
+            flags |= EnumToFlag(ImportFlags::NoDrawOnZoom);
+
         auto srcX = Json::GetNumber<int16_t>(input["srcX"]);
         auto srcY = Json::GetNumber<int16_t>(input["srcY"]);
         auto srcWidth = Json::GetNumber<int16_t>(input["srcWidth"]);
         auto srcHeight = Json::GetNumber<int16_t>(input["srcHeight"]);
         auto zoomedOffset = Json::GetNumber<int32_t>(input["zoom"]);
 
-        return ImageImportMeta{ { xOffset, yOffset }, palette,        static_cast<ImportFlags>(flags),
-                                ImportMode::Default,  { srcX, srcY }, { srcWidth, srcHeight },
-                                zoomedOffset };
+        return ImageImportMeta{ { xOffset, yOffset },    palette,     flags, ImportMode::Default, { srcX, srcY },
+                                { srcWidth, srcHeight }, zoomedOffset };
     };
 } // namespace OpenRCT2::Drawing

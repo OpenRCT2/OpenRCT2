@@ -11,6 +11,7 @@
 
 #include "../core/Imaging.h"
 #include "../core/JsonFwd.hpp"
+#include "../util/Util.h"
 #include "Drawing.h"
 
 #include <string_view>
@@ -27,11 +28,10 @@ namespace OpenRCT2::Drawing
         Dithering,
     };
 
-    enum ImportFlags : uint8_t
+    enum class ImportFlags : uint8_t
     {
-        None = 0,
-        RLE = 1 << 1,
-        NoDrawOnZoom = 1 << 2,
+        RLE,
+        NoDrawOnZoom,
     };
 
     enum class Palette : uint8_t
@@ -44,7 +44,7 @@ namespace OpenRCT2::Drawing
     {
         ScreenCoordsXY offset{};
         Palette palette = Palette::OpenRCT2;
-        ImportFlags importFlags = ImportFlags::RLE;
+        uint8_t importFlags = EnumToFlag(ImportFlags::RLE);
         ImportMode importMode = ImportMode::Default;
         ScreenCoordsXY srcOffset{};
         ScreenSize srcSize{};
