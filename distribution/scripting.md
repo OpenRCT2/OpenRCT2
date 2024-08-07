@@ -192,7 +192,7 @@ Debugging has not yet been implemented, but is planned. In the meantime, you can
 
 If you are making a plugin that only uses built-in game actions to mutate the game, or is not mutating the game at all (like dashboards or info-windows), then it's best to go with a **local plugin**. You will get multiplayer support out-of-the-box without any extra work.
 
-If you are making a plugin that mutates the game more directly via any of the various APIs, then it is possible to make it a **remote plugin** to prevent it from loading when a player joins a server as a client. If the plugin happens to be installed on the server, it will be distributed to all joining clients though. Therefor it is **highly recommended** to always wrap any direct game state mutations in a [custom game action](#game-actions).
+If you are making a plugin that mutates the game more directly via any of the various APIs, then it is possible to make it a **remote plugin** to prevent it from loading when a player joins a server as a client. If the plugin happens to be installed on the server, it will be distributed to all joining clients though. Therefor it is **highly recommended** to always wrap any direct game state mutations in a [custom game action](#game-actions). If your plugin alters game state incorrectly in a multiplayer session, **it will lead to desyncs!**
 
 Use **transient plugins** only if you need the plugin to remain loaded across multiple park/scenario sessions or in the title screen, when using `context.sharedStorage` or `context.getParkStorage` for data persistency is not sufficient enough.
 
