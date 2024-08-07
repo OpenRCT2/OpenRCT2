@@ -41,6 +41,14 @@ registerPlugin({
 
 This will log a message to the terminal screen (`stdout`) when you open any park. If you are on Windows, make sure to run `openrct2.com` instead of `openrct2.exe` so you can interact with the `stdin` / `stdout` console. The console is a JavaScript interpreter (REPL), this means you can write and test expressions similar to the console found in web browsers when you press `F12`. When you make changes to your script, you must exit your current game and open it again for the script to reload... unless you use the hot reload feature.
 
+### Hot reload
+
+The hot reload feature can be enabled by editing your `config.ini` file and setting `enable_hot_reloading` to `true` under `[plugin]`. When this is enabled, the game will auto-reload the script in real-time whenever you save your JavaScript file. This allows rapid development of plugins as you can write code and quickly preview your changes, such as closing and opening a specific custom window on startup. A demonstration of this can be found on YouTube: [OpenRCT2 plugin hot-reload demo](https://www.youtube.com/watch?v=jmjWzEhmDjk)
+
+### Plugin licence
+
+The authors must also define a licence for the plugin, making it clear to the community whether that plugin can be altered, copied, etc. A good reference material is listed on [ChooseALlicense](https://choosealicense.com/appendix/), try to pick one of them and use its corresponding identifier, as listed on [SPDX](https://spdx.org/licenses/).
+
 ### Script types
 
 There are three types of scripts that can influence how the game loads the script:
@@ -59,7 +67,7 @@ Intransient plugins load when the game starts and stays active until the game is
 
 In multiplayer local and remote plugins are different in when they are loaded and how they can alter the game state.
 
-**Local plugins** will load on any client in multiplayer, which will allow each player to bring any local script for their own game without other players in a multiplayer server also needing to also enable the same script.
+**Local plugins** will load on any client in multiplayer, which will allow each player to bring any plugin they have installed with them into the multiplayer server without other players in the server needing to have the same plugin installed.
 
 Local plugins **cannot** alter the game state directly, but they **can** interact with the game by mimicking a player's actions through the built-in “game actions”. Local plugins may also use custom actions, but clients that do not have the plugin will not execute the registered callbacks, which may lead to a desync.
 
@@ -72,32 +80,39 @@ Remote plugins **can** interact with the game by mimicking a player's actions th
 #### Example usage
 
 - Local plugins tend to provide extra tools for productivity with the built-in game actions, or new windows containing information about aspects of the game or the park.
-- Remote plugins can be tools that have to mutate game state more directly, or multiplayer server functionality like welcome messages, anti-spam, or kick/ban tools.
+- Remote plugins can be tools that have to mutate game state more directly using either built-in or custom game actions, or multiplayer server functionality like welcome messages, anti-spam, or kick/ban tools.
 - Intransient plugins could provide functionality across different screens such as the title screen, and can be used for plugins like the title sequence editor or global dashboards.
-
-### Plugin licence
-
-The authors must also define a licence for the plugin, making it clear to the community whether that plugin can be altered, copied, etc. A good reference material is listed on [ChooseALlicense](https://choosealicense.com/appendix/), try to pick one of them and use its corresponding identifier, as listed on [SPDX](https://spdx.org/licenses/).
-
-### Hot reload
-
-The hot reload feature can be enabled by editing your `config.ini` file and setting `enable_hot_reloading` to `true` under `[plugin]`. When this is enabled, the game will auto-reload the script in real-time whenever you save your JavaScript file. This allows rapid development of plugins as you can write code and quickly preview your changes, such as closing and opening a specific custom window on startup. A demonstration of this can be found on YouTube: [OpenRCT2 plugin hot-reload demo](https://www.youtube.com/watch?v=jmjWzEhmDjk)
 
 ## Game actions
 
-Game actions are actions that players can invoke in games. Here is an example flow of a game action such as opening the park:
+Game actions are actions that players can invoke in games. For every action a player can perform in the game that alters the park or scenario in some way, there is a built-in game action.
 
-1. Player executes action (open park) via UI.
-2. Game action (open park), query method is called.
-3. If query succeeds, send action to server, else show error message.
-4. Server receives action and query method is called on server.
-5. If query or permission fails, send error message back to player, else:
-6. Send action to all player to execute action at tick ###.
-7. All players execute action at tick ###.
+Here is an example flow of a game action such as placing a small scenery item (like a tree):
 
-This sequence of actions ensures that every player execute the action exactly in the same way on the exact same game tick. It also allows the server to validate that the action is allowed and does not fail due to permission or another player executing a conflicting action just before it. This is why there is a noticeable delay when constructing in multiplayer games, as the client has to wait for the server to acknowledge the action and reply with the tick number to execute it on, since we do not yet have any rollback support.
+1. Player attempts to perform action (places tree) via the game's interface.
+2. The query method of the game action “place small scenery” is called and may check:
+   - Can the player afford to place the item?
+   - Is the placement tile owned by the park?
+   - Is the placement location blocked by another tile element?
+3. If the query fails, show an error message.
+4. If the query succeeds and the game is singleplayer: the execute function for “place small scenery” is called.
+5. A tree is placed at the location specified by the game action.
 
-Besides built-in game actions, remote scripts can also register their own game actions (“custom game actions”). These custom actions allow custom game state mutations to be executed in sync for all players on the server. Beware that the plugin will also be responsible for proper permission checks, as custom game actions have no permission checks by default.
+In multiplayer, there are some additional steps after step 3:
+
+4. If the query succeeds and the game is multiplayer: game action is send to the server.
+5. Server checks if the player has permissions to perform the game action.
+6. Server calls the query method again.
+7. If the permission check or the query fails, the server sends an error message back to the client.
+8. If the perission check and query succeed: send action to all players to execute action at a specified tick.
+9. All player clients receive the game action and execute it at the specified tick.
+10. A tree is placed at the specified location on all clients that are connected to the server.
+
+This sequence of steps ensures that every player client executes the game action exactly in the same way on the exact same game tick (synchronized execution). Furthermore, it allows the server to validate that the action is allowed and does not fail due to permission or another player executing a conflicting action just before it. This is why there is a noticeable delay when constructing in multiplayer games, as the client has to wait for the server to acknowledge the action and reply with the tick number to execute it on.
+
+Plugins can also use game actions to alter the game in the same way players can. Game actions are the **recommended approach** to mutating game state, as it automatically ensures multiplayer-safety and various sanity checks for money, clearance checks, and others.
+
+Besides built-in game actions, remote scripts can also register their own game actions (“custom game actions”) with query and execute functions written in JavaScript. These custom actions allow custom game state mutations to be executed in sync for all players on the server. Beware that the plugin will also be responsible for proper permission checks, as custom game actions have no permission checks by default.
 
 ## Breaking changes
 
@@ -173,11 +188,21 @@ Debugging has not yet been implemented, but is planned. In the meantime, you can
 
 ---
 
+> Which plugin type should I pick if I only care about singleplayer?
+
+If you are making a plugin that only uses built-in game actions to mutate the game, or is not mutating the game at all (like dashboards or info-windows), then it's best to go with a **local plugin**. You will get multiplayer support out-of-the-box without any extra work.
+
+If you are making a plugin that mutates the game more directly via any of the various APIs, then it is possible to make it a **remote plugin** to prevent it from loading when a player joins a server as a client. If the plugin happens to be installed on the server, it will be distributed to all joining clients though. Therefor it is **highly recommended** to always wrap any direct game state mutations in a [custom game action](#game-actions).
+
+Use **transient plugins** only if you need the plugin to remain loaded across multiple park/scenario sessions or in the title screen, when using `context.sharedStorage` or `context.getParkStorage` for data persistency is not sufficient enough.
+
+---
+
 > What does the error “Game state is not mutable in this context” mean?
 
-This means you are attempting to modify the game state (e.g. change the park, map or guests etc.) in a context where you should not be doing so. This might be because your script  is defined as `local` or `intransient` and altering game state in a multiplayer session. Or your script is defined as `remote` and altering game state outside of a safe function callback in a multiplayer session.
+This means you are attempting to modify the game state (e.g. change the park, map or guests etc.) in a context where you should not be doing so. This might be because your script is defined as `local` or `intransient` and altering game state in a multiplayer session. Or your script is defined as `remote` and altering game state outside of a safe function callback in a multiplayer session.
 
-In multiplayer, any changes to the game state must be synchronised across all players to ensure that the same changes happen on the same tick for every player. This prevents the game going out of sync. To do this you must only change game state in a compatible hook such as `interval.day` or in the execute method of a custom game action. Game actions allow players to make specific changes to the game providing they have the correct permissions and the server allows it.
+In multiplayer, any changes to the game state must be synchronised across all players to ensure that the same changes happen on the same tick for every player. This prevents the game going out of sync. To do this you must only change game state in a compatible hook such as `interval.day` or in the execute method of a custom game action. [Game actions](#game-actions) allow players to make specific changes to the game providing they have the correct permissions and the server allows it.
 
 Whilst OpenRCT2 tries to prevent desynchronisation from happening, it still requires careful coding to ensure the behaviour is deterministic across all clients. Any attempt to use local specific or non-deterministic data to change the game state will cause a desync. This can be as easy as using `ui.windows`, a variable that can be different for every player.
 
