@@ -286,8 +286,6 @@ enum SCROLL_FLAGS
     VSCROLLBAR_DOWN_PRESSED = (1 << 7),
 };
 
-#define SCROLLBAR_SIZE 16
-
 enum
 {
     SCROLL_PART_NONE = -1,
