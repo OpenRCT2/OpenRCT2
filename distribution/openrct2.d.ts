@@ -2565,6 +2565,8 @@ declare global {
 
         /**
          * Current vehicle spin rotation.
+         * Values are 0-255. The game actually only considers the higher
+         * 5 bits when rendering.
          */
         spin: number;
 
