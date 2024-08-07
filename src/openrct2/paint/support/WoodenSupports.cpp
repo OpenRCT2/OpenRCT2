@@ -235,12 +235,7 @@ static constexpr SlopedSupportsDescriptor SupportsDescriptors[] = {
 };
 
 /* 0x0098D8D4 */
-static constexpr SlopedSupportsDescriptor Byte98D8D4[] = {
-    {{{0, 0, 0}, {1, 1, 4}}, false},
-    {{{0, 0, 0}, {1, 1, 4}}, false},
-    {{{0, 0, 0}, {1, 1, 4}}, false},
-    {{{0, 0, 0}, {1, 1, 4}}, false},
-};
+static constexpr SlopedSupportsDescriptor kSlopedPathSupportsDescriptor = {{{0, 0, 0}, {1, 1, 4}}, false};
 
 /* 0x0097B3C4 */
 static constexpr uint16_t word_97B3C4[] = {
@@ -763,8 +758,7 @@ bool PathBoxSupportsPaintSetup(
     {
         ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + slopeRotation;
 
-        const SlopedSupportsDescriptor& supportsDesc = Byte98D8D4[slopeRotation];
-        PaintSlopeTransitions(supportsDesc, imageIndex, session, imageTemplate, baseHeight);
+        PaintSlopeTransitions(kSlopedPathSupportsDescriptor, imageIndex, session, imageTemplate, baseHeight);
         hasSupports = true;
     }
 
