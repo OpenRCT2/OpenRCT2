@@ -1,6 +1,7 @@
 0.4.14 (in development)
 ------------------------------------------------------------------------
 - Feature: [#15750] Allow using different types of park entrance in one park.
+- Feature: [#22392] [Plugin] Expose ride vehicle’s spin to the plugin API.
 - Feature: [#22414] Finance graphs can be resized.
 - Change: [#21659] Increase the Hybrid Roller Coaster’s maximum lift speed to 17 km/h (11 mph).
 - Change: [#22466] The Clear Scenery tool now uses a bulldozer cursor instead of a generic crosshair.
