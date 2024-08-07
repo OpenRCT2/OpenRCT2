@@ -141,13 +141,13 @@ static constexpr const ImagesByTransitionTypeArray::const_pointer WoodenCurveSup
     }, 
 };
 
-struct UnkSupportsDescriptor {
+struct SlopedSupportsDescriptor {
     BoundBoxXYZ BoundingBox;
     bool AsOrphan;
 };
 
 /* 0x0097B23C */
-static constexpr UnkSupportsDescriptor SupportsDescriptors[] = {
+static constexpr SlopedSupportsDescriptor SupportsDescriptors[] = {
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to gentle
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
@@ -235,7 +235,7 @@ static constexpr UnkSupportsDescriptor SupportsDescriptors[] = {
 };
 
 /* 0x0098D8D4 */
-static constexpr UnkSupportsDescriptor Byte98D8D4[] = {
+static constexpr SlopedSupportsDescriptor Byte98D8D4[] = {
     {{{0, 0, 0}, {1, 1, 4}}, false},
     {{{0, 0, 0}, {1, 1, 4}}, false},
     {{{0, 0, 0}, {1, 1, 4}}, false},
@@ -355,7 +355,7 @@ static void PaintRepeatedWoodenSupports(
  * Draw special pieces, e.g. curved supports.
  */
 static void PaintSlopeTransitions(
-    const UnkSupportsDescriptor& supportsDesc, ImageIndex imageIndex, PaintSession& session, const ImageId& imageTemplate,
+    const SlopedSupportsDescriptor& supportsDesc, ImageIndex imageIndex, PaintSession& session, const ImageId& imageTemplate,
     uint16_t baseHeight)
 {
     auto imageId = imageTemplate.WithIndex(imageIndex);
@@ -382,7 +382,7 @@ static bool WoodenABPaintSlopeTransitions(
     WoodenSupportTransitionType transitionType, Direction direction, const ImageId& imageTemplate, uint16_t baseHeight)
 {
     const uint16_t supportsDescriptorIndex = (EnumValue(transitionType) * kNumOrthogonalDirections) + direction;
-    const UnkSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
+    const SlopedSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
     const auto* imageIds = WoodenCurveSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
 
     if (imageIds == nullptr || imageIds[EnumValue(transitionType)][direction] == 0)
@@ -763,7 +763,7 @@ bool PathBoxSupportsPaintSetup(
     {
         ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + slopeRotation;
 
-        const UnkSupportsDescriptor& supportsDesc = Byte98D8D4[slopeRotation];
+        const SlopedSupportsDescriptor& supportsDesc = Byte98D8D4[slopeRotation];
         PaintSlopeTransitions(supportsDesc, imageIndex, session, imageTemplate, baseHeight);
         hasSupports = true;
     }
