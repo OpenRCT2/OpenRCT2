@@ -127,6 +127,12 @@ template<typename TEnum> constexpr auto EnumValue(TEnum enumerator) noexcept
     return static_cast<std::underlying_type_t<TEnum>>(enumerator);
 }
 
+template<typename T> constexpr bool HasFlag(uint64_t holder, T v)
+{
+    static_assert(std::is_enum_v<T>);
+    return (holder & EnumToFlag(v)) != 0;
+}
+
 constexpr uint8_t HiByte(uint16_t value)
 {
     return static_cast<uint8_t>(value >> 8);
