@@ -82,7 +82,7 @@ namespace OpenRCT2::Ui::Windows
 
     static int32_t getMapOffset(int16_t width)
     {
-        return (width - getMiniMapWidth() - kReservedHSpace - SCROLLBAR_SIZE) / 2;
+        return (width - getMiniMapWidth() - kReservedHSpace - kScrollBarWidth) / 2;
     }
 
     // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
@@ -649,7 +649,7 @@ static Widget window_map_widgets[] = {
             auto mapOffset = getMapOffset(width);
             if (mapOffset > 0)
             {
-                adjCoords -= ScreenCoordsXY(mapOffset, mapOffset - SCROLLBAR_SIZE / 2);
+                adjCoords -= ScreenCoordsXY(mapOffset, mapOffset - kScrollBarWidth);
             }
 
             CoordsXY c = ScreenToMap(adjCoords);
@@ -718,7 +718,7 @@ static Widget window_map_widgets[] = {
             auto screenOffset = ScreenCoordsXY(0, 0);
             auto mapOffset = getMapOffset(width);
             if (mapOffset > 0)
-                screenOffset += ScreenCoordsXY(mapOffset, mapOffset - SCROLLBAR_SIZE / 2);
+                screenOffset += ScreenCoordsXY(mapOffset, mapOffset - kScrollBarWidth);
 
             G1Element g1temp = {};
             g1temp.offset = _mapImageData.data();
@@ -1408,7 +1408,7 @@ static Widget window_map_widgets[] = {
             width = initSize + kReservedHSpace;
             height = initSize + kReservedTopSpace + GetReservedBottomSpace();
 
-            auto scrollbarSize = getTechnicalMapSize() > 254 ? SCROLLBAR_SIZE : 2;
+            auto scrollbarSize = getTechnicalMapSize() > 254 ? kScrollBarWidth : 2;
             width += scrollbarSize;
             height += scrollbarSize;
 
@@ -1423,7 +1423,7 @@ static Widget window_map_widgets[] = {
             max_height = std::clamp(
                 getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), WH, ContextGetHeight() - 68);
 
-            auto scrollbarSize = getMiniMapWidth() + kReservedHSpace > ContextGetWidth() ? SCROLLBAR_SIZE : 2;
+            auto scrollbarSize = getMiniMapWidth() + kReservedHSpace > ContextGetWidth() ? kScrollBarWidth : 2;
             max_width += scrollbarSize;
             max_height += scrollbarSize;
         }
