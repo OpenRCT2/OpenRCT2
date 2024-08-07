@@ -630,7 +630,15 @@ bool TrackTypeIsStation(track_type_t trackType)
 
 bool TrackTypeIsBrakes(track_type_t trackType)
 {
-    return (trackType == TrackElemType::Brakes) || (trackType == TrackElemType::DiagBrakes);
+    switch (trackType)
+    {
+        case TrackElemType::Brakes:
+        case TrackElemType::DiagBrakes:
+        case TrackElemType::Down25Brakes:
+            return true;
+        default:
+            return false;
+    }
 }
 
 bool TrackTypeIsBlockBrakes(track_type_t trackType)
