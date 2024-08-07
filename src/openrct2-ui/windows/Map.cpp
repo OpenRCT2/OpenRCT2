@@ -1405,8 +1405,12 @@ static Widget window_map_widgets[] = {
         {
             // The initial mini map size should be able to show a reasonably sized map
             auto initSize = std::clamp(getTechnicalMapSize(), 100, 254) * 2;
-            width = initSize + kReservedHSpace + SCROLLBAR_SIZE;
-            height = initSize + kReservedTopSpace + GetReservedBottomSpace() + SCROLLBAR_SIZE;
+            width = initSize + kReservedHSpace;
+            height = initSize + kReservedTopSpace + GetReservedBottomSpace();
+
+            auto scrollbarSize = getTechnicalMapSize() > 254 ? SCROLLBAR_SIZE : 2;
+            width += scrollbarSize;
+            height += scrollbarSize;
 
             auto maxWindowHeight = ContextGetHeight() - 68;
             width = std::min<int16_t>(width, ContextGetWidth());
@@ -1415,9 +1419,13 @@ static Widget window_map_widgets[] = {
 
         void ResetMaxWindowDimensions()
         {
-            max_width = std::clamp(getMiniMapWidth() + kReservedHSpace + SCROLLBAR_SIZE, WW, ContextGetWidth());
+            max_width = std::clamp(getMiniMapWidth() + kReservedHSpace, WW, ContextGetWidth());
             max_height = std::clamp(
-                getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace() + SCROLLBAR_SIZE, WH, ContextGetHeight() - 68);
+                getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), WH, ContextGetHeight() - 68);
+
+            auto scrollbarSize = getMiniMapWidth() + kReservedHSpace > ContextGetWidth() ? SCROLLBAR_SIZE : 2;
+            max_width += scrollbarSize;
+            max_height += scrollbarSize;
         }
 
         void ResizeMiniMap()
