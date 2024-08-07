@@ -11,6 +11,7 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
+#include "../../../sprites.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
@@ -228,11 +229,18 @@ enum
     SPR_SPLASH_BOATS_S_BEND_TOP_NW_NE_NW_SEQ_0 = 20995,
 };
 
-static constexpr uint32_t SplashBoats25DegUpImageId[4] = {
+static constexpr uint32_t SplashBoats25DegUpImageIdChained[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_SE_NW,
+};
+
+static constexpr uint32_t SplashBoats25DegUpImageId[4] = {
+    SPR_SPLASH_BOATS_25_DEG_DOWN_NE_SW,
+    SPR_SPLASH_BOATS_25_DEG_DOWN_SE_NW,
+    SPR_SPLASH_BOATS_25_DEG_DOWN_SW_NE,
+    SPR_SPLASH_BOATS_25_DEG_DOWN_NW_SE,
 };
 
 static constexpr uint32_t SplashBoats25DegUpFrontImageId[4] = {
@@ -256,11 +264,18 @@ static constexpr uint32_t SplashBoats60DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_60_DEG_UP_FRONT_SE_NW,
 };
 
-static constexpr uint32_t SplashBoatsFlatTo25DegUpImageId[4] = {
+static constexpr uint32_t SplashBoatsFlatTo25DegUpImageIdChained[4] = {
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_SE_NW,
+};
+
+static constexpr uint32_t SplashBoatsFlatTo25DegUpImageId[4] = {
+    SPR_G2_SPLASH_WATER_FLAT_25_REVERSED_1,
+    SPR_G2_SPLASH_WATER_FLAT_25_REVERSED_2,
+    SPR_G2_SPLASH_WATER_FLAT_25_REVERSED_3,
+    SPR_G2_SPLASH_WATER_FLAT_25_REVERSED_4,
 };
 
 static constexpr uint32_t SplashBoatsFlatTo25DegUpFrontImageId[4] = {
@@ -270,11 +285,18 @@ static constexpr uint32_t SplashBoatsFlatTo25DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_SE_NW,
 };
 
-static constexpr uint32_t SplashBoats25DegUpToFlatImageId[4] = {
+static constexpr uint32_t SplashBoats25DegUpToFlatImageIdChained[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_SE_NW,
+};
+
+static constexpr uint32_t SplashBoats25DegUpToFlatImageId[4] = {
+    SPR_G2_SPLASH_WATER_FLAT_25_REVERSED_5,
+    SPR_G2_SPLASH_WATER_FLAT_25_REVERSED_6,
+    SPR_G2_SPLASH_WATER_FLAT_25_REVERSED_7,
+    SPR_G2_SPLASH_WATER_FLAT_25_REVERSED_8,
 };
 
 static constexpr uint32_t SplashBoats25DegUpToFlatFrontImageId[4] = {
@@ -482,10 +504,17 @@ static void PaintSplashBoatsTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpImageId[direction]);
+    if (trackElement.HasChain())
+    {
+        auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpImageIdChained[direction]);
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    }
+    else
+    {
+        auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpImageId[direction]);
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    }
     auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegUpFrontImageId[direction]);
-
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
 
     WoodenASupportsPaintSetupRotated(
@@ -535,10 +564,18 @@ static void PaintSplashBoatsTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegUpImageId[direction]);
+    if (trackElement.HasChain())
+    {
+        auto imageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegUpImageIdChained[direction]);
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    }
+    else
+    {
+        auto imageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegUpImageId[direction]);
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    }
     auto frontImageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegUpFrontImageId[direction]);
 
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
 
     WoodenASupportsPaintSetupRotated(
@@ -561,10 +598,17 @@ static void PaintSplashBoatsTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpToFlatImageId[direction]);
+    if (trackElement.HasChain())
+    {
+        auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpToFlatImageIdChained[direction]);
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    }
+    else
+    {
+        auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpToFlatImageId[direction]);
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+    }
     auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegUpToFlatFrontImageId[direction]);
-
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
 
     WoodenASupportsPaintSetupRotated(

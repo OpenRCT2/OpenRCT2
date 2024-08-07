@@ -8999,6 +8999,150 @@
         "palette": "keep"
     },
     {
+        "path": "track/flume/water_up_reverse_flow_1.png",
+        "x": -27,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/flume/water_up_reverse_flow_2.png",
+        "x": -23,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/flume/water_up_reverse_flow_3.png",
+        "x": -27,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/flume/water_up_reverse_flow_4.png",
+        "x": -24,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/flume/water_up_reverse_flow_5.png",
+        "x": -28,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/flume/water_up_reverse_flow_6.png",
+        "x": -20,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/flume/water_up_reverse_flow_7.png",
+        "x": -26,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/flume/water_up_reverse_flow_8.png",
+        "x": -23,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/splash/water_up_reverse_flow_1.png",
+        "x": -32,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/splash/water_up_reverse_flow_2.png",
+        "x": -32,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/splash/water_up_reverse_flow_3.png",
+        "x": -32,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/splash/water_up_reverse_flow_4.png",
+        "x": -32,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/splash/water_up_reverse_flow_5.png",
+        "x": -32,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/splash/water_up_reverse_flow_6.png",
+        "x": -32,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/splash/water_up_reverse_flow_7.png",
+        "x": -32,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/splash/water_up_reverse_flow_8.png",
+        "x": -32,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_1.png",
+        "x": -32,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_2.png",
+        "x": -29,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_3.png",
+        "x": -32,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_4.png",
+        "x": -26,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_5.png",
+        "x": -32,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_6.png",
+        "x": -19,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_7.png",
+        "x": -32,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_8.png",
+        "x": -27,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
         "path": "support/flat_to_steep_1_1.png",
         "x": -32,
         "y": -5

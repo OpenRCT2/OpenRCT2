@@ -39,6 +39,9 @@ namespace OpenRCT2::RCT2
         OpenRCT2::MemoryStream _stream;
         std::string _name;
 
+        bool _hadAChainLiftBefore = false;
+        bool _isConvertedWaterRide = false;
+
     public:
         TD6Importer()
         {
@@ -131,6 +134,10 @@ namespace OpenRCT2::RCT2
             td->operation.operationSetting = std::min(
                 td->operation.operationSetting, GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).OperatingSettings.MaxValue);
 
+            // This needs to be done before importing the track elements, as we need to check the ride type when
+            // importing the track elements.
+            UpdateRideType(td);
+
             const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
@@ -162,6 +169,20 @@ namespace OpenRCT2::RCT2
 
                     trackElement.type = trackType;
                     ConvertFromTD46Flags(trackElement, t6TrackElement.Flags);
+
+                    if (trackElement.flags & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT)
+                    {
+                        _hadAChainLiftBefore = true;
+                    }
+                    if (RideTypeHasConvertibleRollers(td->trackAndVehicle.rtdIndex))
+                    {
+                        _isConvertedWaterRide = true;
+                        if (TrackTypeMustBeMadeChained(td->trackAndVehicle.rtdIndex, trackElement.type))
+                        {
+                            trackElement.flags |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+                        }
+                    }
+
                     td->trackElements.push_back(trackElement);
                 }
 
@@ -197,9 +218,16 @@ namespace OpenRCT2::RCT2
                 td->sceneryElements.push_back(std::move(sceneryElement));
             }
 
-            td->gameStateData.name = _name;
+            /*
+             * If a water ride already had a chain lift, it was hacked, and thus we shouldn’t touch the lift speed,
+             * or the behaviour of imported saves would change.
+             */
+            if (_isConvertedWaterRide && !_hadAChainLiftBefore)
+            {
+                td->operation.liftHillSpeed = 0;
+            }
 
-            UpdateRideType(td);
+            td->gameStateData.name = _name;
 
             return td;
         }

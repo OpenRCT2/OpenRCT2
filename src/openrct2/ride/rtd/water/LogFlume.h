@@ -21,7 +21,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionLogFlume,
-        .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_ON_RIDE_PHOTO, TRACK_LOG_FLUME_REVERSER, TRACK_SLOPE_STEEP_DOWN},
+        .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_ON_RIDE_PHOTO, TRACK_LOG_FLUME_REVERSER, TRACK_SLOPE_STEEP_DOWN, TRACK_LIFT_HILL},
         .ExtraTrackPieces = {},
     }),
     .InvertedTrackPaintFunctions = {},
@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
                      RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG_HAS_AIR_TIME | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER |
-                     RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT,
+                     RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT,
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
     .Naming = { STR_RIDE_NAME_LOG_FLUME, STR_RIDE_DESCRIPTION_LOG_FLUME },
@@ -39,7 +39,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
     .Heights = { 10, 24, 7, 9, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftFlume, 5, 5 },
+    .LiftData = { OpenRCT2::Audio::SoundId::LiftFlume, 0, 5 },
     .RatingsMultipliers = { 80, 34, 6 },
     .UpkeepCosts = { 80, 20, 0, 9, 0, 10 },
     .BuildCosts = { 22.50_GBP, 2.50_GBP, 40, },

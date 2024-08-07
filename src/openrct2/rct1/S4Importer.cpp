@@ -130,6 +130,9 @@ namespace OpenRCT2::RCT1
         // Scenario repository - used for determining scenario name
         IScenarioRepository* _scenarioRepository = GetScenarioRepository();
 
+        OpenRCT2::BitSet<Limits::kMaxRidesInPark> _hadAChainLiftBefore{};
+        OpenRCT2::BitSet<Limits::kMaxRidesInPark> _isConvertedWaterRide{};
+
     public:
         ParkLoadResult Load(const u8string& path) override
         {
@@ -194,6 +197,7 @@ namespace OpenRCT2::RCT1
             FixLandOwnership();
             FixUrbanPark();
             FixNextGuestNumber(gameState);
+            SetConvertedWaterRideSpeed();
             CountBlockSections();
             SetDefaultNames();
             DetermineRideEntranceAndExitLocations();
@@ -1664,7 +1668,7 @@ namespace OpenRCT2::RCT1
                 {
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
-                    const auto* ride = GetRide(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
+                    auto* ride = GetRide(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
                     auto rct1RideType = _s4.Rides[src2->GetRideIndex()].Type;
 
@@ -1687,6 +1691,10 @@ namespace OpenRCT2::RCT1
                     else
                     {
                         dst2->SetSeatRotation(DEFAULT_SEAT_ROTATION);
+                    }
+                    if (src2->HasChain())
+                    {
+                        _hadAChainLiftBefore[src2->GetRideIndex()] = true;
                     }
                     // Skipping IsHighlighted()
 
@@ -1711,6 +1719,14 @@ namespace OpenRCT2::RCT1
                     if (TrackTypeMustBeMadeInvisible(rideType, trackType))
                     {
                         dst->SetInvisible(true);
+                    }
+                    if (RideTypeHasConvertibleRollers(rideType))
+                    {
+                        _isConvertedWaterRide[src2->GetRideIndex()] = true;
+                        if (TrackTypeMustBeMadeChained(rideType, trackType))
+                        {
+                            dst2->SetHasChain(true);
+                        }
                     }
 
                     return 1;
@@ -2664,6 +2680,23 @@ namespace OpenRCT2::RCT1
             }
 
             gameState.NextGuestNumber = nextGuestNumber + 1;
+        }
+
+        /*
+         * If a water ride already had a chain lift, it was hacked, and thus we shouldn’t touch the lift speed,
+         * or the behaviour of imported saves would change.
+         */
+        void SetConvertedWaterRideSpeed()
+        {
+            for (uint16_t rideIndex = 0; rideIndex < _isConvertedWaterRide.capacity(); rideIndex++)
+            {
+                if (_isConvertedWaterRide[rideIndex] && !_hadAChainLiftBefore[rideIndex])
+                {
+                    auto* ride = GetRide(RideId::FromUnderlying(rideIndex));
+                    if (ride != nullptr)
+                        ride->lift_hill_speed = 0;
+                }
+            }
         }
 
         /**

@@ -65,8 +65,6 @@
 #include <string_view>
 #include <vector>
 
-constexpr uint32_t BlockBrakeImprovementsVersion = 27;
-
 using namespace OpenRCT2;
 
 namespace OpenRCT2
@@ -109,6 +107,9 @@ namespace OpenRCT2
         ObjectEntryIndex _pathToSurfaceMap[MAX_PATH_OBJECTS];
         ObjectEntryIndex _pathToQueueSurfaceMap[MAX_PATH_OBJECTS];
         ObjectEntryIndex _pathToRailingsMap[MAX_PATH_OBJECTS];
+
+        OpenRCT2::BitSet<Limits::kMaxRidesInPark> _hadAChainLiftBefore{};
+        OpenRCT2::BitSet<Limits::kMaxRidesInPark> _isConvertedWaterRide{};
 
         void ThrowIfIncompatibleVersion()
         {
@@ -1058,7 +1059,8 @@ namespace OpenRCT2
 
             auto found = os.ReadWriteChunk(
                 ParkFileChunkType::TILES,
-                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os, &gameState](OrcaStream::ChunkStream& cs) {
+                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os, &gameState,
+                 this](OrcaStream::ChunkStream& cs) {
                     cs.ReadWrite(gameState.MapSize.x);
                     cs.ReadWrite(gameState.MapSize.y);
 
@@ -1102,6 +1104,24 @@ namespace OpenRCT2
                                             trackElement->GetRideType(), trackType, os.GetHeader().TargetVersion))
                                     {
                                         it.element->SetInvisible(true);
+                                    }
+                                    if (os.GetHeader().TargetVersion < WaterRidesWithLiftsVersion)
+                                    {
+                                        if (trackElement->HasChain())
+                                        {
+                                            auto rideIndex = trackElement->GetRideIndex().ToUnderlying();
+                                            _hadAChainLiftBefore[rideIndex] = true;
+                                        }
+
+                                        if (RideTypeHasConvertibleRollers(trackElement->GetRideType()))
+                                        {
+                                            auto rideIndex = trackElement->GetRideIndex().ToUnderlying();
+                                            _isConvertedWaterRide[rideIndex] = true;
+                                            if (TrackTypeMustBeMadeChained(trackElement->GetRideType(), trackType))
+                                            {
+                                                trackElement->SetHasChain(true);
+                                            }
+                                        }
                                     }
                                     if (os.GetHeader().TargetVersion < BlockBrakeImprovementsVersion)
                                     {
@@ -1280,7 +1300,7 @@ namespace OpenRCT2
                         }
                     }
                 }
-                cs.ReadWriteVector(rideIds, [&cs, &version](RideId& rideId) {
+                cs.ReadWriteVector(rideIds, [&cs, &version, this](RideId& rideId) {
                     // Ride ID
                     cs.ReadWrite(rideId);
 
@@ -1387,7 +1407,20 @@ namespace OpenRCT2
 
                     // Operation
                     cs.ReadWrite(ride.operation_option);
-                    cs.ReadWrite(ride.lift_hill_speed);
+                    /*
+                     * If a water ride already had a chain lift, it was hacked, and thus we shouldn’t touch the lift speed,
+                     * or the behaviour of imported saves would change.
+                     */
+                    if (version < WaterRidesWithLiftsVersion && _isConvertedWaterRide[ride.id.ToUnderlying()]
+                        && !_hadAChainLiftBefore[ride.id.ToUnderlying()])
+                    {
+                        cs.Ignore<uint8_t>();
+                        ride.lift_hill_speed = 0;
+                    }
+                    else
+                    {
+                        cs.ReadWrite(ride.lift_hill_speed);
+                    }
                     cs.ReadWrite(ride.num_circuits);
 
                     // Special
