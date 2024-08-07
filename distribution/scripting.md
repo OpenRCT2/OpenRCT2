@@ -67,7 +67,7 @@ Intransient plugins load when the game starts and stays active until the game is
 
 In multiplayer local and remote plugins are different in when they are loaded and how they can alter the game state.
 
-**Local plugins** will load on any client in multiplayer, which will allow each player to bring any plugin they have installed with them into the multiplayer server without other players in the server needing to have the same plugin installed.
+**Local plugins** will load on any client in multiplayer that has the plugin installed, which will allow each player to bring any plugin they have with them into the multiplayer server without other players in the server needing to have the same plugin installed.
 
 Local plugins **cannot** alter the game state directly, but they **can** interact with the game by mimicking a player's actions through the built-in “game actions”. Local plugins may also use custom actions, but clients that do not have the plugin will not execute the registered callbacks, which may lead to a desync.
 
@@ -110,7 +110,7 @@ In multiplayer, there are some additional steps after step 3:
 
 This sequence of steps ensures that every player client executes the game action exactly in the same way on the exact same game tick (synchronized execution). Furthermore, it allows the server to validate that the action is allowed and does not fail due to permission or another player executing a conflicting action just before it. This is why there is a noticeable delay when constructing in multiplayer games, as the client has to wait for the server to acknowledge the action and reply with the tick number to execute it on.
 
-Plugins can also use game actions to alter the game in the same way players can. Game actions are the **recommended approach** to mutating game state, as it automatically ensures multiplayer-safety and various sanity checks for money, clearance checks, and others.
+Plugins can also use game actions to alter the game in the same way players can. Game actions are the **recommended approach** for mutating game state, as it automatically ensures multiplayer-safety and various sanity checks for money, clearance checks, and others.
 
 Besides built-in game actions, remote scripts can also register their own game actions (“custom game actions”) with query and execute functions written in JavaScript. These custom actions allow custom game state mutations to be executed in sync for all players on the server. Beware that the plugin will also be responsible for proper permission checks, as custom game actions have no permission checks by default.
 
