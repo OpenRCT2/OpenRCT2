@@ -273,7 +273,8 @@ namespace OpenRCT2::Scripting
         //      Only ensuring it was not in the same generated method fixed it.
         __declspec(noinline)
 #    endif
-            std::shared_ptr<ScDisposable> CreateSubscription(HOOK_TYPE hookType, const DukValue& callback)
+        std::shared_ptr<ScDisposable>
+            CreateSubscription(HOOK_TYPE hookType, const DukValue& callback)
         {
             auto owner = _execInfo.GetCurrentPlugin();
             auto cookie = _hookEngine.Subscribe(hookType, owner, callback);

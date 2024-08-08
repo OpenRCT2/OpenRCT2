@@ -89,27 +89,12 @@ enum
 
 constexpr char NAC = '\0';
 
-#define ExampleTableEnd                                                                                                        \
-    {                                                                                                                          \
-        nullptr, nullptr                                                                                                       \
-    }
-#define OptionTableEnd                                                                                                         \
-    {                                                                                                                          \
-        UINT8_MAX, nullptr, NAC, nullptr, nullptr                                                                              \
-    }
-#define CommandTableEnd                                                                                                        \
-    {                                                                                                                          \
-        nullptr, nullptr, nullptr, nullptr, nullptr                                                                            \
-    }
+#define ExampleTableEnd { nullptr, nullptr }
+#define OptionTableEnd { UINT8_MAX, nullptr, NAC, nullptr, nullptr }
+#define CommandTableEnd { nullptr, nullptr, nullptr, nullptr, nullptr }
 
-#define DefineCommand(name, params, options, func)                                                                             \
-    {                                                                                                                          \
-        name, params, options, nullptr, func                                                                                   \
-    }
-#define DefineSubCommand(name, subcommandtable)                                                                                \
-    {                                                                                                                          \
-        name, "", nullptr, subcommandtable, nullptr                                                                            \
-    }
+#define DefineCommand(name, params, options, func) { name, params, options, nullptr, func }
+#define DefineSubCommand(name, subcommandtable) { name, "", nullptr, subcommandtable, nullptr }
 
 namespace OpenRCT2::CommandLine
 {
