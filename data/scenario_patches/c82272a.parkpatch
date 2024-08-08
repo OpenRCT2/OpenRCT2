@@ -1,0 +1,14 @@
+{
+    "scenario_name": "Six Flags Magic Mountain",
+    "sha256": "c82272a1e966e54863b3b90ba4c90e37ed8ef8b99253d284bb7cc56f9590d97a",
+    "land_ownership": {
+        "available": {
+            "cannot_downgrade": true,
+            "coordinates": [
+                [ 112, 33 ], [ 112, 34 ],
+                [ 113, 117 ], [ 114, 117 ], [ 115, 117 ], [ 116, 117 ], [ 117, 117 ],
+                [ 114, 118 ], [ 115, 118 ], [ 116, 118 ], [ 117, 118 ]
+            ]
+        }
+    }
+}

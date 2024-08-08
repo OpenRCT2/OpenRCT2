@@ -149,6 +149,24 @@ namespace OpenRCT2::String
     }
 
     /**
+     * Returns string representation of a hexadecimal input, such as SHA256 hash
+     */
+    template<typename T> std::string StringFromHex(T input)
+    {
+        std::string result;
+        result.reserve(input.size() * 2);
+        for (auto b : input)
+        {
+            static_assert(sizeof(b) == 1);
+
+            char buf[3];
+            snprintf(buf, 3, "%02x", static_cast<int32_t>(b));
+            result.append(buf);
+        }
+        return result;
+    }
+
+    /**
      * Returns codepoint size or no value if not valid
      */
     constexpr std::optional<int> UTF8GetCodePointSize(std::string_view v)
