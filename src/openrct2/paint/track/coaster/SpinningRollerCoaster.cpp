@@ -20061,4 +20061,4 @@ namespace SpinningRC
         return nullptr;
     }
 
-} // namespace SpinningRC
+} // namespace spinning_rc
