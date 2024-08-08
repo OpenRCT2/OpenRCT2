@@ -233,6 +233,7 @@
     <ClInclude Include="Date.h" />
     <ClInclude Include="Diagnostic.h" />
     <ClInclude Include="drawing\Drawing.h" />
+    <ClInclude Include="drawing\DrawingLock.hpp" />
     <ClInclude Include="drawing\Font.h" />
     <ClInclude Include="drawing\IDrawingContext.h" />
     <ClInclude Include="drawing\IDrawingEngine.h" />
@@ -453,6 +454,7 @@
     <ClInclude Include="ride\rtd\coaster\ReverserRollerCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\SideFrictionRollerCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\SingleRailRollerCoaster.h" />
+    <ClInclude Include="ride\rtd\coaster\SpinningRollerCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\SpinningWildMouse.h" />
     <ClInclude Include="ride\rtd\coaster\SpiralRollerCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\StandUpRollerCoaster.h" />
@@ -917,6 +919,7 @@
     <ClCompile Include="paint\track\coaster\ReverserRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\SideFrictionRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\SingleRailRollerCoaster.cpp" />
+    <ClCompile Include="paint\track\coaster\SpinningRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\StandUpRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\Steeplechase.cpp" />
     <ClCompile Include="paint\track\coaster\SuspendedSwingingCoaster.cpp" />
