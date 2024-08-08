@@ -14,6 +14,7 @@
 - Feature: [#19596] Allow for playing back a replay without camera movement or alert box.
 - Feature: [#20831] The ride selection window now shows object authors if debugging tools are active.
 - Feature: [#20832] The ride music tab now shows a track listing for the current music style.
+- Feature: [#21521] [Plugin] Add hook 'park.guest.softcap.calculate' called before calculating the soft guest cap.
 - Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
 - Feature: [#22184] [Plugin] Expose staff statistics to the plugin API.
 - Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
