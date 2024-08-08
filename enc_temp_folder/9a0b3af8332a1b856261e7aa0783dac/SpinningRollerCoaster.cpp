@@ -655,7 +655,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -4197,7 +4197,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -4250,7 +4250,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -7786,7 +7786,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -7833,7 +7833,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -8123,7 +8123,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -8173,7 +8173,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
