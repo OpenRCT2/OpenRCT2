@@ -3727,6 +3727,7 @@ STR_6652    :Error Window
 STR_6653    :All sources shown
 STR_6654    :Showing {POP16}{UINT16} sources
 STR_6655    :Only ‘{POP16}{STRINGID}’
+STR_6656    :Remove all fences from the park
 
 #############
 # Scenarios #
