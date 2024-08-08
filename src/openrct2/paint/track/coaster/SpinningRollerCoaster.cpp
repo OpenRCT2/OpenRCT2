@@ -15,17 +15,19 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../drawing/Drawing.h"
-#include "../../interface/Viewport.h"
-#include "../../paint/Paint.h"
-#include "../../paint/support/MetalSupports.h"
-#include "../../paint/tile_element/Segment.h"
-#include "../../paint/track/Segment.h"
-#include "../../sprites.h"
-#include "../../world/Map.h"
-#include "../RideData.h"
-#include "../TrackData.h"
-#include "../TrackPaint.h"
+#include "../../../drawing/Drawing.h"
+#include "../../../interface/Viewport.h"
+#include "../../../ride/RideData.h"
+#include "../../../ride/TrackData.h"
+#include "../../../ride/TrackPaint.h"
+#include "../../../sprites.h"
+#include "../../../world/Map.h"
+#include "../../Paint.h"
+#include "../../support/MetalSupports.h"
+#include "../../tile_element/Paint.TileElement.h"
+#include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
+#include "../../track/Support.h"
 using namespace OpenRCT2;
 
 static constexpr MetalSupportType kSupportType = MetalSupportType::Tubes;
@@ -653,7 +655,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -4195,7 +4197,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -4248,7 +4250,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -7784,7 +7786,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -7831,7 +7833,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -8121,7 +8123,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
@@ -8171,7 +8173,7 @@ namespace SpinningRC
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::_14);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType:: SquareFlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(
             session,
