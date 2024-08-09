@@ -13,6 +13,8 @@
 #include <cstdint>
 #include <limits>
 
+#include "ImageIndexType.h"
+
 using colour_t = uint8_t;
 enum class FilterPaletteID : int32_t;
 
