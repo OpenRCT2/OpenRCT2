@@ -15,7 +15,7 @@
 
 using colour_t = uint8_t;
 enum class FilterPaletteID : int32_t;
-typedef uint32_t ImageIndex;
+//typedef uint32_t ImageIndex; temporary comment out
 
 static constexpr ImageIndex ImageIndexUndefined = std::numeric_limits<ImageIndex>::max();
 
