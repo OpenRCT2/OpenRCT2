@@ -601,7 +601,7 @@ const std::vector<MapAnimation>& GetMapAnimations()
     return _mapAnimations;
 }
 
-static void ClearMapAnimations()
+void ClearMapAnimations()
 {
     _mapAnimations.clear();
 }

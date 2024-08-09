@@ -461,8 +461,7 @@ void MapInit(const TileCoordsXY& size)
     gameState.GrassSceneryTileLoopPosition = 0;
     gameState.WidePathTileLoopPosition = {};
     gameState.MapSize = size;
-    MapRemoveOutOfRangeElements();
-    MapAnimationAutoCreate();
+    ClearMapAnimations();
 
     auto intent = Intent(INTENT_ACTION_MAP);
     ContextBroadcastIntent(&intent);

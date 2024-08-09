@@ -44,6 +44,7 @@ enum
 void MapAnimationCreate(int32_t type, const CoordsXYZ& loc);
 void MapAnimationInvalidateAll();
 const std::vector<MapAnimation>& GetMapAnimations();
+void ClearMapAnimations();
 void MapAnimationAutoCreate();
 void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el);
 void ShiftAllMapAnimations(CoordsXY amount);
