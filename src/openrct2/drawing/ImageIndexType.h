@@ -13,4 +13,4 @@
  
  typedef uint32_t ImageIndex;
  
- constexpr ImageIndex SPR_NONE = -1 //0x7FFFF
+ constexpr ImageIndex kSpriteIdNull = -1 //0x7FFFF
