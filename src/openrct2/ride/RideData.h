@@ -266,7 +266,7 @@ struct UpkeepCostsDescriptor
     money64 CostPerStation;
 };
 
-using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
+using RideTrackGroup = OpenRCT2::BitSet<EnumValue(TrackGroup::count)>;
 using UpdateRideApproachVehicleWaypointsFunction = void (*)(Guest&, const CoordsXY&, int16_t&);
 using RideMusicUpdateFunction = void (*)(Ride&);
 using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride&, CoordsXYZD&);
@@ -295,7 +295,7 @@ struct TrackDrawerEntry
     RideTrackGroup ExtraTrackPieces{};
 
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
-    bool SupportsTrackPiece(const uint64_t trackPiece) const;
+    bool SupportsTrackGroup(const TrackGroup trackGroup) const;
 };
 
 struct TrackDrawerDescriptor
@@ -319,7 +319,7 @@ struct TrackDrawerDescriptor
     }
 
     bool HasCoveredPieces() const;
-    bool SupportsTrackPiece(const uint64_t trackPiece) const;
+    bool SupportsTrackGroup(const TrackGroup trackGroup) const;
 };
 
 struct RideTypeDescriptor
@@ -393,7 +393,7 @@ struct RideTypeDescriptor
 
     bool HasFlag(uint64_t flag) const;
     /** @deprecated */
-    bool SupportsTrackPiece(const uint64_t trackPiece) const;
+    bool SupportsTrackGroup(const TrackGroup trackGroup) const;
     ResearchCategory GetResearchCategory() const;
     bool SupportsRideMode(RideMode rideMode) const;
 };
@@ -617,7 +617,7 @@ constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
     return rideType < std::size(RideTypeDescriptors);
 }
 
-bool IsTrackEnabled(int32_t trackFlagIndex);
+bool IsTrackEnabled(TrackGroup trackGroup);
 void UpdateEnabledRidePieces(TrackDrawerDescriptor trackDrawerDescriptor);
 void UpdateDisabledRidePieces(const RideTrackGroup& res);
 

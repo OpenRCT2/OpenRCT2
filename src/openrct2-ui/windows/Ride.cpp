@@ -2406,7 +2406,7 @@ static_assert(std::size(RatingNames) == 6);
                     || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat
                     || trackType == TrackElemType::DiagBlockBrakes)
                 {
-                    if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
+                    if (ride->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::blockBrakes) && vehicle->velocity == 0)
                     {
                         ft.Add<StringId>(STR_STOPPED_BY_BLOCK_BRAKES);
                         return STR_BLACK_STRING;
@@ -3410,8 +3410,8 @@ static_assert(std::size(RatingNames) == 6);
             // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
             const auto& rtd = ride->GetRideTypeDescriptor();
             bool hasAlternativeType = rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE);
-            if (rtd.TrackPaintFunctions.Regular.SupportsTrackPiece(TRACK_LIFT_HILL)
-                || (hasAlternativeType && rtd.InvertedTrackPaintFunctions.SupportsTrackPiece(TRACK_LIFT_HILL)))
+            if (rtd.TrackPaintFunctions.Regular.SupportsTrackGroup(TrackGroup::liftHill)
+                || (hasAlternativeType && rtd.InvertedTrackPaintFunctions.SupportsTrackGroup(TrackGroup::liftHill)))
             {
                 widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_LIFT_HILL_SPEED].type = WindowWidgetType::Spinner;

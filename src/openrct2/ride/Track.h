@@ -49,9 +49,106 @@ enum class TrackPitch : uint8_t
     ReverseFreefall = 10
 };
 
+// Vehicle sprite groups required by track groups are defined in ride_entry_get_supported_track_pieces
+enum TrackGroup : uint8_t
+{
+    flat = 0,
+    straight,
+    stationEnd,
+    liftHill,
+    liftHillSteep,
+    liftHillCurve,
+    flatRollBanking,
+    verticalLoop,
+    slope,
+    slopeSteepDown,
+    slopeLong,
+    slopeCurve,
+    slopeCurveSteep,
+    sBend,
+    curveVerySmall,
+    curveSmall,
+    curve,
+    curveLarge,
+    twist,
+    halfLoop,
+    corkscrew,
+    tower,
+    helixUpBankedHalf,
+    helixDownBankedHalf,
+    helixUpBankedQuarter,
+    helixDownBankedQuarter,
+    helixUpUnbankedQuarter,
+    helixDownUnbankedQuarter,
+    brakes,
+    onridePhoto,
+    waterSplash,
+    slopeVertical,
+    barrelRoll,
+    poweredLift,
+    halfLoopLarge,
+    slopeCurveBanked,
+    logFlumeReverser,
+    heartlineRoll,
+    reverser,
+    reverseFreefall,
+    slopeToFlat,
+    blockBrakes,
+    slopeRollBanking,
+    slopeSteepLong,
+    curveVertical,
+    liftHillCable,
+    liftHillCurved,
+    quarterLoop,
+    spinningTunnel,
+    booster,
+    inlineTwistUninverted,
+    inlineTwistInverted,
+    quarterLoopUninvertedUp,
+    quarterLoopUninvertedDown,
+    quarterLoopInvertedUp,
+    quarterLoopInvertedDown,
+    rapids,
+    flyingHalfLoopUninvertedUp,
+    flyingHalfLoopInvertedDown,
+
+    flatRideBase,
+
+    waterfall,
+    whirlpool,
+    brakeForDrop,
+    corkscrewUninverted,
+    corkscrewInverted,
+    heartlineTransfer,
+    miniGolfHole,
+    rotationControlToggle,
+    slopeSteepUp,
+
+    corkscrewLarge,
+    halfLoopMedium,
+    zeroGRoll,
+    zeroGRollLarge,
+
+    flyingLargeHalfLoopUninvertedUp,
+    flyingLargeHalfLoopInvertedDown,
+    flyingLargeHalfLoopUninvertedDown,
+    flyingLargeHalfLoopInvertedUp,
+
+    flyingHalfLoopUninvertedDown,
+    flyingHalfLoopInvertedUp,
+
+    slopeCurveLarge,
+    slopeCurveLargeBanked,
+
+    diagBrakes,
+    diagBlockBrakes,
+
+    count,
+};
+
 struct TrackDefinition
 {
-    track_type_t Type;
+    TrackGroup Type;
     TrackPitch PitchEnd;
     TrackPitch PitchStart;
     TrackRoll RollEnd;
@@ -127,105 +224,6 @@ enum
 constexpr int8_t kMaxStationPlatformLength = 32;
 constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * kCoordsZStep;
 constexpr uint8_t const DEFAULT_SEAT_ROTATION = 4;
-
-// Vehicle sprite groups required by track groups are defined in ride_entry_get_supported_track_pieces
-enum
-{
-    TRACK_NONE = 0,
-
-    TRACK_FLAT = 0,
-    TRACK_STRAIGHT,
-    TRACK_STATION_END,
-    TRACK_LIFT_HILL,
-    TRACK_LIFT_HILL_STEEP,
-    TRACK_LIFT_HILL_CURVE,
-    TRACK_FLAT_ROLL_BANKING,
-    TRACK_VERTICAL_LOOP,
-    TRACK_SLOPE,
-    TRACK_SLOPE_STEEP_DOWN,
-    TRACK_SLOPE_LONG,
-    TRACK_SLOPE_CURVE,
-    TRACK_SLOPE_CURVE_STEEP,
-    TRACK_S_BEND,
-    TRACK_CURVE_VERY_SMALL,
-    TRACK_CURVE_SMALL,
-    TRACK_CURVE,
-    TRACK_CURVE_LARGE,
-    TRACK_TWIST,
-    TRACK_HALF_LOOP,
-    TRACK_CORKSCREW,
-    TRACK_TOWER_BASE,
-    TRACK_HELIX_UP_BANKED_HALF,
-    TRACK_HELIX_DOWN_BANKED_HALF,
-    TRACK_HELIX_UP_BANKED_QUARTER,
-    TRACK_HELIX_DOWN_BANKED_QUARTER,
-    TRACK_HELIX_UP_UNBANKED_QUARTER,
-    TRACK_HELIX_DOWN_UNBANKED_QUARTER,
-    TRACK_BRAKES,
-    TRACK_ON_RIDE_PHOTO,
-    TRACK_WATER_SPLASH,
-    TRACK_SLOPE_VERTICAL,
-    TRACK_BARREL_ROLL,
-    TRACK_POWERED_LIFT,
-    TRACK_HALF_LOOP_LARGE,
-    TRACK_SLOPE_CURVE_BANKED,
-    TRACK_LOG_FLUME_REVERSER,
-    TRACK_HEARTLINE_ROLL,
-    TRACK_REVERSER,
-    TRACK_REVERSE_FREEFALL,
-    TRACK_SLOPE_TO_FLAT,
-    TRACK_BLOCK_BRAKES,
-    TRACK_SLOPE_ROLL_BANKING,
-    TRACK_SLOPE_STEEP_LONG,
-    TRACK_CURVE_VERTICAL,
-    TRACK_LIFT_HILL_CABLE,
-    TRACK_LIFT_HILL_CURVED,
-    TRACK_QUARTER_LOOP,
-    TRACK_SPINNING_TUNNEL,
-    TRACK_BOOSTER,
-    TRACK_INLINE_TWIST_UNINVERTED,
-    TRACK_INLINE_TWIST_INVERTED,
-    TRACK_QUARTER_LOOP_UNINVERTED_UP,
-    TRACK_QUARTER_LOOP_UNINVERTED_DOWN,
-    TRACK_QUARTER_LOOP_INVERTED_UP,
-    TRACK_QUARTER_LOOP_INVERTED_DOWN,
-    TRACK_RAPIDS,
-    TRACK_FLYING_HALF_LOOP_UNINVERTED_UP,
-    TRACK_FLYING_HALF_LOOP_INVERTED_DOWN,
-
-    TRACK_FLAT_RIDE_BASE,
-
-    TRACK_WATERFALL,
-    TRACK_WHIRLPOOL,
-    TRACK_BRAKE_FOR_DROP,
-    TRACK_CORKSCREW_UNINVERTED,
-    TRACK_CORKSCREW_INVERTED,
-    TRACK_HEARTLINE_TRANSFER,
-    TRACK_MINI_GOLF_HOLE,
-    TRACK_ROTATION_CONTROL_TOGGLE,
-    TRACK_SLOPE_STEEP_UP,
-
-    TRACK_CORKSCREW_LARGE,
-    TRACK_HALF_LOOP_MEDIUM,
-    TRACK_ZERO_G_ROLL,
-    TRACK_ZERO_G_ROLL_LARGE,
-
-    TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_UP,
-    TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_DOWN,
-    TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_DOWN,
-    TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_UP,
-
-    TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN,
-    TRACK_FLYING_HALF_LOOP_INVERTED_UP,
-
-    TRACK_SLOPE_CURVE_LARGE,
-    TRACK_SLOPE_CURVE_LARGE_BANKED,
-
-    TRACK_DIAG_BRAKES,
-    TRACK_DIAG_BLOCK_BRAKES,
-
-    TRACK_GROUP_COUNT,
-};
 
 enum class TrackCurve : uint8_t
 {
