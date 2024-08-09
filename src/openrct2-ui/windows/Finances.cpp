@@ -16,6 +16,7 @@
 #include <openrct2/actions/ParkSetLoanAction.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/ride/RideData.h>
@@ -326,46 +327,40 @@ static Widget _windowFinancesResearchWidgets[] =
             for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
                 SetWidgetPressed(WIDX_TAB_1 + i, false);
             SetWidgetPressed(WIDX_TAB_1 + page, true);
+
+            Widget* graphPageWidget;
+            bool centredGraph;
             switch (page)
             {
                 case WINDOW_FINANCES_PAGE_SUMMARY:
                     OnPrepareDrawSummary();
-                    break;
+                    return;
                 case WINDOW_FINANCES_PAGE_MARKETING:
                     OnPrepareDrawMarketing();
-                    break;
+                    return;
                 case WINDOW_FINANCES_PAGE_RESEARCH:
                     WindowResearchFundingPrepareDraw(this, WIDX_RESEARCH_FUNDING);
-                    break;
+                    return;
+                default:
+                    return;
+
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
+                    graphPageWidget = &_windowFinancesParkValueWidgets[WIDX_PAGE_BACKGROUND];
+                    centredGraph = false;
+                    _graphProps.series = GetGameState().Park.ValueHistory;
+                    break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
+                    graphPageWidget = &_windowFinancesProfitWidgets[WIDX_PAGE_BACKGROUND];
+                    centredGraph = true;
+                    _graphProps.series = GetGameState().WeeklyProfitHistory;
+                    break;
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
-                {
-                    // recalculate size for graph pages only.
-                    Widget* pageWidget;
-                    switch (page)
-                    {
-                        case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
-                            pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
-                            break;
-                        case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                            pageWidget = &_windowFinancesParkValueWidgets[WIDX_PAGE_BACKGROUND];
-                            break;
-                        case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
-                            pageWidget = &_windowFinancesProfitWidgets[WIDX_PAGE_BACKGROUND];
-                            break;
-                        default:
-                            return;
-                    }
-                    _graphBounds = { windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 },
-                                     windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 } };
-                    _graphProps.RecalculateLayout(
-                        { _graphBounds.Point1 + kGraphTopLeftPadding, _graphBounds.Point2 - kGraphBottomRightPadding },
-                        kGraphNumYLabels, kGraphNumPoints);
-                    _graphProps.lineCol = colours[2];
-                }
-                break;
+                    graphPageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
+                    centredGraph = true;
+                    _graphProps.series = GetGameState().CashHistory;
+                    break;
             }
+            OnPrepareDrawGraph(graphPageWidget, centredGraph);
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -381,24 +376,21 @@ static Widget _windowFinancesResearchWidgets[] =
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                 {
                     auto& gameState = GetGameState();
-                    auto cashLessLoan = gameState.Cash - gameState.BankLoan;
-                    auto fmt = cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
-                                                 : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE;
-                    OnDrawGraph(dpi, cashLessLoan, gameState.CashHistory, fmt, true);
+                    const auto cashLessLoan = gameState.Cash - gameState.BankLoan;
+                    const auto fmt = cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
+                                                       : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE;
+                    OnDrawGraph(dpi, cashLessLoan, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                {
-                    auto& gameState = GetGameState();
-                    OnDrawGraph(dpi, gameState.Park.Value, gameState.Park.ValueHistory, STR_FINANCES_PARK_VALUE, false);
+                    OnDrawGraph(dpi, GetGameState().Park.Value, STR_FINANCES_PARK_VALUE);
                     break;
-                }
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                 {
                     auto& gameState = GetGameState();
-                    auto fmt = gameState.CurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
-                                                            : STR_FINANCES_WEEKLY_PROFIT_LOSS;
-                    OnDrawGraph(dpi, gameState.CurrentProfit, gameState.WeeklyProfitHistory, fmt, true);
+                    const auto fmt = gameState.CurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
+                                                                  : STR_FINANCES_WEEKLY_PROFIT_LOSS;
+                    OnDrawGraph(dpi, gameState.CurrentProfit, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_MARKETING:
@@ -797,6 +789,65 @@ static Widget _windowFinancesResearchWidgets[] =
 
 #pragma endregion
 
+#pragma region Graph Events
+
+        void OnDrawGraph(DrawPixelInfo& dpi, const money64 currentValue, const StringId fmt) const
+        {
+            Formatter ft;
+            ft.Add<money64>(currentValue);
+            DrawTextBasic(dpi, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
+
+            // Graph
+            GfxFillRectInset(dpi, _graphBounds, colours[1], INSET_RECT_F_30);
+            // hide resize widget on graph area
+            constexpr ScreenCoordsXY offset{ 1, 1 };
+            constexpr ScreenCoordsXY bigOffset{ 5, 5 };
+            GfxFillRectInset(
+                dpi, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1],
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+
+            Graph::DrawFinanceGraph(dpi, _graphProps);
+        }
+
+        void OnPrepareDrawGraph(const Widget* graphPageWidget, const bool centredGraph)
+        {
+            // Calculate Y axis max and min.
+            money64 maxVal = 0;
+            const auto series = _graphProps.series;
+            for (int32_t i = 0; i < kGraphNumPoints; i++)
+            {
+                auto val = std::abs(series[i]);
+                if (val == kMoney64Undefined)
+                    continue;
+                if (val > maxVal)
+                    maxVal = val;
+            }
+            // This algorithm increments the leading digit of the max and sets all other digits to zero.
+            // e.g. 681 => 700.
+            money64 oom = 10;
+            while (maxVal / oom >= 10)
+                oom *= 10;
+            const money64 max = std::max(10.00_GBP, ((maxVal + oom - 1) / oom) * oom);
+
+            _graphProps.min = centredGraph ? -max : 0.00_GBP;
+            _graphProps.max = max;
+
+            // dynamic padding for long axis lables:
+            char buffer[64]{};
+            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{CURRENCY2DP} -", centredGraph ? -max : max);
+            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + 1;
+            const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
+
+            _graphBounds = { windowPos + ScreenCoordsXY{ graphPageWidget->left + 4, graphPageWidget->top + 15 },
+                             windowPos + ScreenCoordsXY{ graphPageWidget->right - 4, graphPageWidget->bottom - 4 } };
+            _graphProps.RecalculateLayout(
+                { _graphBounds.Point1 + dynamicPadding, _graphBounds.Point2 - kGraphBottomRightPadding }, kGraphNumYLabels,
+                kGraphNumPoints);
+            _graphProps.lineCol = colours[2];
+        }
+
+#pragma endregion
+
         void InitialiseScrollPosition(WidgetIndex widgetIndex, int32_t scrollId)
         {
             const auto& widget = this->widgets[widgetIndex];
@@ -836,47 +887,6 @@ static Widget _windowFinancesResearchWidgets[] =
         void OnResize() override
         {
             ResizeFrameWithPage();
-        }
-
-        void OnDrawGraph(
-            DrawPixelInfo& dpi, const money64 currentValue, money64 (&series)[kFinanceHistorySize], const StringId fmt,
-            const bool centred)
-        {
-            Formatter ft;
-            ft.Add<money64>(currentValue);
-            DrawTextBasic(dpi, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
-
-            // Graph
-            GfxFillRectInset(dpi, _graphBounds, colours[1], INSET_RECT_F_30);
-            // hide resize widget on graph area
-            constexpr ScreenCoordsXY offset{ 1, 1 };
-            constexpr ScreenCoordsXY bigOffset{ 5, 5 };
-            GfxFillRectInset(
-                dpi, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1],
-                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
-
-            // Calculate Y axis max and min.
-            money64 maxVal = 0;
-            for (int32_t i = 0; i < kGraphNumPoints; i++)
-            {
-                auto val = std::abs(series[i]);
-                if (val == kMoney64Undefined)
-                    continue;
-                if (val > maxVal)
-                    maxVal = val;
-            }
-            // This algorithm increments the leading digit of the max and sets all other digits to zero.
-            // e.g. 681 => 700.
-            money64 oom = 10;
-            while (maxVal / oom >= 10)
-                oom *= 10;
-            const money64 max = ((maxVal + oom - 1) / oom) * oom;
-
-            _graphProps.min = centred ? -max : 0.00_GBP;
-            _graphProps.max = max;
-            _graphProps.series = series;
-
-            Graph::DrawFinanceGraph(dpi, _graphProps);
         }
     };
 

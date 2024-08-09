@@ -75,8 +75,8 @@ namespace OpenRCT2::Graph
         DrawPixelInfo& dpi, const T value, const int32_t hoverIdx, const ScreenRect& bounds, const int32_t xStep,
         const T minValue, const T maxValue, const_utf8string text, ColourWithFlags textCol)
     {
-        const int32_t screenRange = bounds.GetHeight();
-        const int32_t valueRange = maxValue - minValue;
+        const T screenRange = bounds.GetHeight();
+        const T valueRange = maxValue - minValue;
 
         const int32_t yPosition = bounds.GetBottom() - ((value - minValue) * screenRange) / valueRange;
         ScreenCoordsXY coords = { bounds.GetRight() - hoverIdx * xStep, yPosition };
@@ -103,8 +103,8 @@ namespace OpenRCT2::Graph
         DrawPixelInfo& dpi, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep,
         const T minValue, const T maxValue)
     {
-        const int32_t screenRange = bounds.GetHeight();
-        const int32_t valueRange = maxValue - minValue;
+        const T screenRange = bounds.GetHeight();
+        const T valueRange = maxValue - minValue;
 
         ScreenCoordsXY lastCoords;
         bool lastCoordsValid = false;
