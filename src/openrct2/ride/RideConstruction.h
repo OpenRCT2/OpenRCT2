@@ -98,3 +98,5 @@ void RideConstructionStart(Ride& ride);
 
 TrackDrawerDescriptor getCurrentTrackDrawerDescriptor(const RideTypeDescriptor& rtd);
 TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd);
+track_type_t GetTrackTypeFromCurve(
+    TrackCurve curve, bool startsDiagonal, TrackPitch startSlope, TrackPitch endSlope, TrackRoll startBank, TrackRoll endBank);

@@ -237,6 +237,7 @@ enum class TrackCurve : uint8_t
     RightSmall = 4,
     RightVerySmall = 6
 };
+constexpr const uint8_t kHighestCurveValue = 8;
 
 enum
 {

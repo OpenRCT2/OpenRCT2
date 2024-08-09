@@ -99,7 +99,7 @@ money64 PlaceProvisionalTrackPiece(
     return res.Cost;
 }
 
-static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_track_element()
+static std::tuple<bool, track_type_t> WindowRideConstructionUpdateStateGetTrackElement()
 {
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
     ContextBroadcastIntent(&intent);
@@ -132,32 +132,19 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
         }
     }
 
-    if (curve <= 8)
+    if (curve <= kHighestCurveValue)
     {
-        for (uint32_t i = 0; i < std::size(gTrackDescriptors); i++)
-        {
-            const TrackDescriptor* trackDescriptor = &gTrackDescriptors[i];
-
-            if (EnumValue(trackDescriptor->trackCurve) != curve)
-                continue;
-            if (trackDescriptor->startsDiagonally != startsDiagonal)
-                continue;
-            if (trackDescriptor->slopeStart != startSlope)
-                continue;
-            if (trackDescriptor->slopeEnd != endSlope)
-                continue;
-            if (trackDescriptor->rollStart != startBank)
-                continue;
-            if (trackDescriptor->rollEnd != endBank)
-                continue;
-
-            return std::make_tuple(true, trackDescriptor->trackElement);
-        }
-
-        return std::make_tuple(false, 0);
+        auto trackPiece = GetTrackTypeFromCurve(
+            static_cast<TrackCurve>(curve), startsDiagonal, startSlope, endSlope, startBank, endBank);
+        if (trackPiece != TrackElemType::None)
+            return std::make_tuple(true, trackPiece);
+        else
+            return std::make_tuple(false, 0);
     }
 
-    switch (curve & 0xFFFF)
+    auto asTrackType = static_cast<track_type_t>(curve & ~RideConstructionSpecialPieceSelected);
+
+    switch (asTrackType)
     {
         case TrackElemType::EndStation:
         case TrackElemType::SBendLeft:
@@ -172,7 +159,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
                 return std::make_tuple(false, 0);
             }
 
-            return std::make_tuple(true, static_cast<track_type_t>(curve & 0xFFFF));
+            return std::make_tuple(true, asTrackType);
 
         case TrackElemType::LeftVerticalLoop:
         case TrackElemType::RightVerticalLoop:
@@ -196,10 +183,10 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
                 }
             }
 
-            return std::make_tuple(true, static_cast<track_type_t>(curve & 0xFFFF));
+            return std::make_tuple(true, asTrackType);
 
         default:
-            return std::make_tuple(true, static_cast<track_type_t>(curve & 0xFFFF));
+            return std::make_tuple(true, asTrackType);
     }
 }
 
@@ -224,7 +211,7 @@ bool WindowRideConstructionUpdateState(
     uint8_t trackDirection;
     uint16_t x, y, liftHillAndInvertedState, properties;
 
-    auto updated_element = window_ride_construction_update_state_get_track_element();
+    auto updated_element = WindowRideConstructionUpdateStateGetTrackElement();
     if (!std::get<0>(updated_element))
     {
         return true;

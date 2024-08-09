@@ -1546,3 +1546,29 @@ TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd)
     const bool isCovered = _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
     return getTrackDrawerEntry(rtd, isInverted, isCovered);
 }
+
+track_type_t GetTrackTypeFromCurve(
+    TrackCurve curve, bool startsDiagonal, TrackPitch startSlope, TrackPitch endSlope, TrackRoll startBank, TrackRoll endBank)
+{
+    for (uint32_t i = 0; i < std::size(gTrackDescriptors); i++)
+    {
+        const TrackDescriptor* trackDescriptor = &gTrackDescriptors[i];
+
+        if (trackDescriptor->trackCurve != curve)
+            continue;
+        if (trackDescriptor->startsDiagonally != startsDiagonal)
+            continue;
+        if (trackDescriptor->slopeStart != startSlope)
+            continue;
+        if (trackDescriptor->slopeEnd != endSlope)
+            continue;
+        if (trackDescriptor->rollStart != startBank)
+            continue;
+        if (trackDescriptor->rollEnd != endBank)
+            continue;
+
+        return trackDescriptor->trackElement;
+    }
+
+    return TrackElemType::None;
+}
