@@ -630,7 +630,7 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
 void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
 void UpdatePaletteEffects();
 
-void RefreshVideo(bool recreateWindow);
+void RefreshVideo();
 void ToggleWindowedMode();
 
 #include "NewDrawing.h"
