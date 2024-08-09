@@ -6,11 +6,11 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
- 
+
 #pragma once
- 
+
 #include <cstdint>
- 
+
 using ImageIndex = uint32_t;
 
-constexpr ImageIndex kSpriteIdNull = -1; //0x7FFFF
+constexpr ImageIndex kSpriteIdNull = -1; // 0x7FFFF
