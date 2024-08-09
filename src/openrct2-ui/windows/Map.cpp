@@ -82,7 +82,7 @@ namespace OpenRCT2::Ui::Windows
 
     static int32_t getMapOffset(int16_t width)
     {
-        return (width - getMiniMapWidth() - kReservedHSpace - SCROLLBAR_SIZE) / 2;
+        return (width - getMiniMapWidth() - kReservedHSpace - kScrollBarWidth) / 2;
     }
 
     // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
@@ -649,7 +649,7 @@ static Widget window_map_widgets[] = {
             auto mapOffset = getMapOffset(width);
             if (mapOffset > 0)
             {
-                adjCoords -= ScreenCoordsXY(mapOffset, mapOffset - SCROLLBAR_SIZE / 2);
+                adjCoords -= ScreenCoordsXY(mapOffset, mapOffset - kScrollBarWidth);
             }
 
             CoordsXY c = ScreenToMap(adjCoords);
@@ -718,7 +718,7 @@ static Widget window_map_widgets[] = {
             auto screenOffset = ScreenCoordsXY(0, 0);
             auto mapOffset = getMapOffset(width);
             if (mapOffset > 0)
-                screenOffset += ScreenCoordsXY(mapOffset, mapOffset - SCROLLBAR_SIZE / 2);
+                screenOffset += ScreenCoordsXY(mapOffset, mapOffset - kScrollBarWidth);
 
             G1Element g1temp = {};
             g1temp.offset = _mapImageData.data();
@@ -1405,8 +1405,12 @@ static Widget window_map_widgets[] = {
         {
             // The initial mini map size should be able to show a reasonably sized map
             auto initSize = std::clamp(getTechnicalMapSize(), 100, 254) * 2;
-            width = initSize + kReservedHSpace + SCROLLBAR_SIZE;
-            height = initSize + kReservedTopSpace + GetReservedBottomSpace() + SCROLLBAR_SIZE;
+            width = initSize + kReservedHSpace;
+            height = initSize + kReservedTopSpace + GetReservedBottomSpace();
+
+            auto scrollbarSize = getTechnicalMapSize() > 254 ? kScrollBarWidth : 2;
+            width += scrollbarSize;
+            height += scrollbarSize;
 
             auto maxWindowHeight = ContextGetHeight() - 68;
             width = std::min<int16_t>(width, ContextGetWidth());
@@ -1415,9 +1419,13 @@ static Widget window_map_widgets[] = {
 
         void ResetMaxWindowDimensions()
         {
-            max_width = std::clamp(getMiniMapWidth() + kReservedHSpace + SCROLLBAR_SIZE, WW, ContextGetWidth());
+            max_width = std::clamp(getMiniMapWidth() + kReservedHSpace, WW, ContextGetWidth());
             max_height = std::clamp(
-                getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace() + SCROLLBAR_SIZE, WH, ContextGetHeight() - 68);
+                getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), WH, ContextGetHeight() - 68);
+
+            auto scrollbarSize = getMiniMapWidth() + kReservedHSpace > ContextGetWidth() ? kScrollBarWidth : 2;
+            max_width += scrollbarSize;
+            max_height += scrollbarSize;
         }
 
         void ResizeMiniMap()

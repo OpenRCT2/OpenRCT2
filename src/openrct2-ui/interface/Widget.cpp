@@ -682,23 +682,31 @@ namespace OpenRCT2::Ui
         bottomRight.x--;
         bottomRight.y--;
 
+        auto scrollSize = w.OnScrollGetSize(widgetIndex);
+        bool hScrollNeeded = scrollSize.width > widget.width() && (scroll.flags & HSCROLLBAR_VISIBLE);
+        bool vScrollNeeded = scrollSize.height > widget.height() && (scroll.flags & VSCROLLBAR_VISIBLE);
+
         // Horizontal scrollbar
-        if (scroll.flags & HSCROLLBAR_VISIBLE)
+        if (hScrollNeeded)
+        {
             WidgetHScrollbarDraw(
                 dpi, scroll, topLeft.x, bottomRight.y - kScrollBarWidth,
                 ((scroll.flags & VSCROLLBAR_VISIBLE) ? bottomRight.x - (kScrollBarWidth + 1) : bottomRight.x), bottomRight.y,
                 colour);
+        }
 
         // Vertical scrollbar
-        if (scroll.flags & VSCROLLBAR_VISIBLE)
+        if (vScrollNeeded)
+        {
             WidgetVScrollbarDraw(
                 dpi, scroll, bottomRight.x - kScrollBarWidth, topLeft.y, bottomRight.x,
                 ((scroll.flags & HSCROLLBAR_VISIBLE) ? bottomRight.y - (kScrollBarWidth + 1) : bottomRight.y), colour);
+        }
 
         // Contents
-        if (scroll.flags & HSCROLLBAR_VISIBLE)
+        if (hScrollNeeded)
             bottomRight.y -= (kScrollBarWidth + 1);
-        if (scroll.flags & VSCROLLBAR_VISIBLE)
+        if (vScrollNeeded)
             bottomRight.x -= (kScrollBarWidth + 1);
 
         bottomRight.y++;
