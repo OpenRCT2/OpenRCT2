@@ -15,8 +15,6 @@
 
 enum
 {
-    //SPR_NONE = -1, // 0x7FFFF temporary comment out
-
     // Used for on-demand drawing of dynamic memory
     SPR_TEMP = 0x7FFFE,
 
