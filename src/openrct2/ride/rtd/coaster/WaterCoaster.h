@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../drawing/LightFX.h"
+#include "../../../ride/RideStringIds.h"
 #include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
@@ -25,11 +26,15 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
             .Drawer = GetTrackPaintFunctionWaterRC,
             .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::onridePhoto, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
             .ExtraTrackPieces = {TrackGroup::slopeLong},
+            .icon = SPR_RIDE_CONSTRUCTION_RC_TRACK,
+            .tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP,
         },
         {
             .Drawer = GetTrackPaintFunctionSplashBoats,
             .EnabledTrackPieces = {OpenRCT2::TrackElemType::Flat, OpenRCT2::TrackElemType::LeftQuarterTurn5Tiles, OpenRCT2::TrackElemType::RightQuarterTurn5Tiles, OpenRCT2::TrackElemType::SBendLeft, OpenRCT2::TrackElemType::SBendRight},
             .ExtraTrackPieces = {},
+            .icon = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL,
+            .tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP,
         }
     ),
     .InvertedTrackPaintFunctions = {},
