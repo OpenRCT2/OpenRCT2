@@ -559,8 +559,8 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
             {
                 // Set footpath and queue type button images
-                auto pathImage = static_cast<uint32_t>(kSpriteIdNull);
-                auto queueImage = static_cast<uint32_t>(kSpriteIdNull);
+                auto pathImage = kSpriteIdNull;
+                auto queueImage = kSpriteIdNull;
                 auto pathEntry = GetPathSurfaceEntry(gFootpathSelection.NormalSurface);
                 if (pathEntry != nullptr)
                 {
@@ -577,7 +577,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 WindowFootpathDrawDropdownButton(dpi, WIDX_QUEUELINE_TYPE, queueImage);
 
                 // Set railing
-                auto railingsImage = static_cast<uint32_t>(kSpriteIdNull);
+                auto railingsImage = kSpriteIdNull;
                 auto railingsEntry = GetPathRailingsEntry(gFootpathSelection.Railings);
                 if (railingsEntry != nullptr)
                 {
@@ -590,8 +590,8 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
 
                 // Set footpath and queue type button images
-                auto pathImage = static_cast<uint32_t>(kSpriteIdNull);
-                auto queueImage = static_cast<uint32_t>(kSpriteIdNull);
+                auto pathImage = kSpriteIdNull;
+                auto queueImage = kSpriteIdNull;
                 auto pathObj = static_cast<FootpathObject*>(
                     objManager.GetLoadedObject(ObjectType::Paths, gFootpathSelection.LegacyPath));
                 if (pathObj != nullptr)

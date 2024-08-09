@@ -13,7 +13,7 @@
 #include "drawing/ScrollingText.h"
 #include "rct1/Limits.h"
 
-enum
+enum : ImageIndex
 {
     // Used for on-demand drawing of dynamic memory
     SPR_TEMP = 0x7FFFE,

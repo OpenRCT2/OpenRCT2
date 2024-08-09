@@ -10,7 +10,8 @@
 #pragma once
 
 #include <cstdint>
+#include <limits>
 
 using ImageIndex = uint32_t;
 
-constexpr ImageIndex kSpriteIdNull = -1; // 0x7FFFF
+constexpr ImageIndex kSpriteIdNull = std::numeric_limits<ImageIndex>::max();
