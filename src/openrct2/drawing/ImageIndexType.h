@@ -7,10 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
  
- #pragma once
+#pragma once
  
- #include <cstdint>
+#include <cstdint>
  
- typedef uint32_t ImageIndex;
- 
- constexpr ImageIndex kSpriteIdNull = -1; //0x7FFFF
+using ImageIndex = uint32_t;
+
+constexpr ImageIndex kSpriteIdNull = -1; //0x7FFFF
