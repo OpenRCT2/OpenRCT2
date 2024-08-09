@@ -88,7 +88,7 @@ static Widget window_land_rights_widgets[] = {
             }
 
             // If the tool wasn't changed, turn tool off
-            if (LandRightsToolIsActive())
+            if (isToolActive(WindowClass::LandRights))
                 ToolCancel();
         }
 
@@ -168,7 +168,7 @@ static Widget window_land_rights_widgets[] = {
         {
             frame_no++;
             // Close window if another tool is open
-            if (!LandRightsToolIsActive())
+            if (!isToolActive(WindowClass::LandRights))
                 Close();
         }
 
@@ -250,7 +250,7 @@ static Widget window_land_rights_widgets[] = {
                 if (_landRightsCost != kMoney64Undefined)
                 {
                     _landRightsCost = kMoney64Undefined;
-                    WindowInvalidateByClass(WindowClass::ClearScenery);
+                    WindowInvalidateByClass(WindowClass::LandRights);
                 }
                 return;
             }
@@ -396,15 +396,6 @@ static Widget window_land_rights_widgets[] = {
             ft.Add<uint16_t>(kLandToolMinimumSize);
             ft.Add<uint16_t>(kLandToolMaximumSize);
             WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
-        }
-
-        bool LandRightsToolIsActive()
-        {
-            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                return false;
-            if (gCurrentToolWidget.window_classification != WindowClass::LandRights)
-                return false;
-            return true;
         }
     };
 

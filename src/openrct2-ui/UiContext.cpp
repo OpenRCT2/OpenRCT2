@@ -554,7 +554,7 @@ public:
                         if (abs(gesturePixels) > tolerance)
                         {
                             _gestureRadius = 0;
-                            MainWindowZoom(gesturePixels > 0, true);
+                            Windows::MainWindowZoom(gesturePixels > 0, true);
                         }
                     }
                     break;
@@ -802,7 +802,7 @@ private:
         if ((flags & SDL_WINDOW_MINIMIZED) == 0)
         {
             WindowResizeGui(_width, _height);
-            WindowRelocateWindows(_width, _height);
+            Windows::WindowRelocateWindows(_width, _height);
         }
 
         GfxInvalidateScreen();

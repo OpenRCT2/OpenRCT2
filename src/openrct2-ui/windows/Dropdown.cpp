@@ -536,6 +536,7 @@ static constexpr colour_t kColoursDropdownOrder[] = {
 } // namespace OpenRCT2::Ui::Windows
 
 using namespace OpenRCT2::Ui::Windows;
+using namespace OpenRCT2;
 
 bool Dropdown::IsChecked(int32_t index)
 {

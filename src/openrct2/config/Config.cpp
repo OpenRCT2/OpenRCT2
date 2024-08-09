@@ -40,9 +40,9 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
 #ifdef __APPLE__
-static constexpr bool WindowButtonsOnTheLeftDefault = true;
+static constexpr bool kWindowButtonsOnTheLeftDefault = true;
 #else
-static constexpr bool WindowButtonsOnTheLeftDefault = false;
+static constexpr bool kWindowButtonsOnTheLeftDefault = false;
 #endif
 #ifdef __ANDROID__
 static constexpr bool kEnlargedUiDefault = true;
@@ -189,7 +189,7 @@ namespace OpenRCT2::Config
             model->WindowWidth = reader->GetInt32("window_width", -1);
             model->DefaultDisplay = reader->GetInt32("default_display", 0);
             model->DrawingEngine = reader->GetEnum<DrawingEngine>(
-                "drawing_engine", DrawingEngine::Software, Enum_DrawingEngine);
+                "drawing_engine", DrawingEngine::SoftwareWithHardwareDisplay, Enum_DrawingEngine);
             model->UncapFPS = reader->GetBoolean("uncap_fps", false);
             model->UseVSync = reader->GetBoolean("use_vsync", true);
             model->VirtualFloorStyle = reader->GetEnum<VirtualFloorStyles>(
@@ -358,7 +358,7 @@ namespace OpenRCT2::Config
             model->ObjectSelectionFilterFlags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
             model->ScenarioselectLastTab = reader->GetInt32("scenarioselect_last_tab", 0);
             model->ListRideVehiclesSeparately = reader->GetBoolean("list_ride_vehicles_separately", false);
-            model->WindowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", WindowButtonsOnTheLeftDefault);
+            model->WindowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", kWindowButtonsOnTheLeftDefault);
             model->EnlargedUi = reader->GetBoolean("enlarged_ui", kEnlargedUiDefault);
             model->TouchEnhancements = reader->GetBoolean("touch_enhancements", kEnlargedUiDefault);
         }

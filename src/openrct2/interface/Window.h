@@ -342,12 +342,6 @@ enum WindowDetail
     static_assert(widx == wc##__##widx, "Global WIDX of " #widx " doesn't match actual value.")
 
 constexpr int32_t WC_MAIN_WINDOW__0 = 0;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_PAUSE = 0;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_LAND = 8;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_WATER = 9;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_SCENERY = 10;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_PATH = 11;
-constexpr int32_t WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY = 17;
 constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT = 25;
 constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE = 30;
 constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_EXIT = 31;
@@ -355,6 +349,7 @@ constexpr int32_t WC_RIDE_CONSTRUCTION__WIDX_ROTATE = 32;
 constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_DIRECTION_GROUPBOX = WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT;
 constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_ENTRANCE = WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE;
 constexpr int32_t WC_MAZE_CONSTRUCTION__WIDX_MAZE_EXIT = WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+constexpr int32_t WC_SCENERY__WIDX_SCENERY_BACKGROUND = 0;
 constexpr int32_t WC_SCENERY__WIDX_SCENERY_TAB_1 = 15;
 constexpr int32_t WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON = 5;
 constexpr int32_t WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON = 10;
@@ -363,7 +358,7 @@ constexpr int32_t WC_PEEP__WIDX_ACTION_LBL = 13;
 constexpr int32_t WC_PEEP__WIDX_PICKUP = 14;
 constexpr int32_t WC_TRACK_DESIGN_LIST__WIDX_ROTATE = 8;
 constexpr int32_t WC_TRACK_DESIGN_PLACE__WIDX_ROTATE = 3;
-constexpr int32_t WC_MAP__WIDX_ROTATE_90 = 24;
+constexpr int32_t WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON = 6;
 constexpr int32_t WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 = 22;
 constexpr int32_t WC_STAFF__WIDX_PICKUP = 9;
 constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE = 13;
@@ -475,7 +470,18 @@ enum class Tool
     WalkDown = 22,
     PaintDown = 23,
     EntranceDown = 24,
+    Bulldozer = 27,
 };
+
+struct WidgetRef
+{
+    WindowClass window_classification;
+    rct_windownumber window_number;
+    WidgetIndex widget_index;
+};
+
+extern Tool gCurrentToolId;
+extern WidgetRef gCurrentToolWidget;
 
 using modal_callback = void (*)(int32_t result);
 using close_callback = void (*)();
@@ -509,41 +515,6 @@ WindowBase* WindowBringToFrontByClass(WindowClass cls);
 WindowBase* WindowBringToFrontByClassWithFlags(WindowClass cls, uint16_t flags);
 WindowBase* WindowBringToFrontByNumber(WindowClass cls, rct_windownumber number);
 
-WindowBase* WindowCreate(
-    std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
-template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowCreate(
-    WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0, TArgs&&... args)
-{
-    return static_cast<T*>(WindowCreate(std::make_unique<T>(std::forward<TArgs>(args)...), cls, pos, width, height, flags));
-}
-template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags, TArgs&&... args)
-{
-    return static_cast<T*>(
-        WindowCreate(std::make_unique<T>(std::forward<TArgs>(args)...), cls, {}, width, height, flags | WF_AUTO_POSITION));
-}
-template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowFocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
-{
-    auto* w = WindowBringToFrontByClass(cls);
-    if (w == nullptr)
-    {
-        w = WindowCreate<T>(cls, pos, width, height, flags);
-    }
-    return static_cast<T*>(w);
-}
-template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
-T* WindowFocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0)
-{
-    auto* w = WindowBringToFrontByClass(cls);
-    if (w == nullptr)
-    {
-        w = WindowCreate<T>(cls, width, height, flags);
-    }
-    return static_cast<T*>(w);
-}
-
 void WindowClose(WindowBase& window);
 void WindowFlushDead();
 void WindowCloseByClass(WindowClass cls);
@@ -566,8 +537,7 @@ void WindowInvalidateAll();
 void WidgetInvalidate(WindowBase& w, WidgetIndex widgetIndex);
 void WidgetInvalidateByClass(WindowClass cls, WidgetIndex widgetIndex);
 void WidgetInvalidateByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex);
-void WindowInitScrollWidgets(WindowBase& w);
-void WindowUpdateScrollWidgets(WindowBase& w);
+
 int32_t WindowGetScrollDataIndex(const WindowBase& w, WidgetIndex widget_index);
 
 void WindowPushOthersRight(WindowBase& w);
@@ -581,20 +551,15 @@ void WindowViewportGetMapCoordsByCursor(
 void WindowViewportCentreTileAroundCursor(WindowBase& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y);
 void WindowCheckAllValidZoom();
 void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor);
-void WindowZoomIn(WindowBase& w, bool atCursor);
-void WindowZoomOut(WindowBase& w, bool atCursor);
-void MainWindowZoom(bool zoomIn, bool atCursor);
 
 void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
 void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi);
-void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w);
 
-void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
-void WindowMovePosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
-void WindowResize(WindowBase& w, int32_t dw, int32_t dh);
-void WindowSetResize(WindowBase& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
-
+bool isToolActive(WindowClass cls);
+bool isToolActive(WindowClass cls, rct_windownumber number);
+bool isToolActive(WindowClass cls, WidgetIndex widgetIndex);
+bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber number);
+bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex);
 bool ToolSet(const WindowBase& w, WidgetIndex widgetIndex, Tool tool);
 void ToolCancel();
 
@@ -605,19 +570,12 @@ void WindowUpdateViewportRideMusic();
 Viewport* WindowGetViewport(WindowBase* window);
 
 // Open window functions
-void WindowRelocateWindows(int32_t width, int32_t height);
 void WindowResizeGui(int32_t width, int32_t height);
 void WindowResizeGuiScenarioEditor(int32_t width, int32_t height);
 
-void InvalidateAllWindowsAfterInput();
 void TextinputCancel();
 
-void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
-int32_t WindowCanResize(const WindowBase& w);
-
 bool WindowIsVisible(WindowBase& w);
-
-bool SceneryToolIsActive();
 
 Viewport* WindowGetPreviousViewport(Viewport* current);
 void WindowResetVisibilities();

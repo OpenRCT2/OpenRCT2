@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../UiStringIds.h"
+#include "../interface/ViewportInteraction.h"
 
 #include <cassert>
 #include <cmath>
@@ -36,6 +37,7 @@
 #include <optional>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 using namespace OpenRCT2::Ui::Windows;
 
 struct RCTMouseData

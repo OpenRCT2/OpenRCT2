@@ -9,6 +9,7 @@
 
 #include "WoodenSupports.h"
 
+#include "../../interface/Viewport.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"

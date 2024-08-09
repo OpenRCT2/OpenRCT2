@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/ViewportQuery.h"
+
 #include <openrct2-ui/input/ShortcutIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -54,7 +56,7 @@ static constexpr int32_t WW_WINDOW = 106;
 
 #pragma region Widgets
 
-enum WindowFootpathWidgetIdx
+enum WindowFootpathWidgetIdx : WidgetIndex
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -207,33 +209,13 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             // Check tool
             if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_LAND)
             {
-                if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                {
+                if (!isToolActive(WindowClass::Footpath, WIDX_CONSTRUCT_ON_LAND))
                     Close();
-                }
-                else if (gCurrentToolWidget.window_classification != WindowClass::Footpath)
-                {
-                    Close();
-                }
-                else if (gCurrentToolWidget.widget_index != WIDX_CONSTRUCT_ON_LAND)
-                {
-                    Close();
-                }
             }
             else if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL)
             {
-                if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                {
+                if (!isToolActive(WindowClass::Footpath, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL))
                     Close();
-                }
-                else if (gCurrentToolWidget.window_classification != WindowClass::Footpath)
-                {
-                    Close();
-                }
-                else if (gCurrentToolWidget.widget_index != WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
-                {
-                    Close();
-                }
             }
         }
 
@@ -1519,6 +1501,23 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             {
                 footpathWindow->KeyboardShortcutBuildCurrent();
             }
+        }
+    }
+
+    /**
+     *
+     *  rct2: 0x0066CCE7
+     */
+    void ToggleFootpathWindow()
+    {
+        if (WindowFindByClass(WindowClass::Footpath) == nullptr)
+        {
+            ContextOpenWindow(WindowClass::Footpath);
+        }
+        else
+        {
+            ToolCancel();
+            WindowCloseByClass(WindowClass::Footpath);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

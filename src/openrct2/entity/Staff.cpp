@@ -662,7 +662,7 @@ Direction Staff::MechanicDirectionPathRand(uint8_t pathDirections) const
  */
 Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pathElement)
 {
-    uint8_t pathDirections = pathElement->GetEdges();
+    uint32_t pathDirections = pathElement->GetEdges();
     pathDirections &= validDirections;
 
     if (pathDirections == 0)
@@ -780,7 +780,7 @@ bool Staff::DoMechanicPathFinding()
  */
 Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement) const
 {
-    uint8_t pathDirections = pathElement->GetEdges();
+    uint32_t pathDirections = pathElement->GetEdges();
     if (State != PeepState::Answering && State != PeepState::HeadingToInspection)
     {
         pathDirections &= validDirections;
@@ -791,15 +791,15 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
         return DirectionSurface(ScenarioRand() & 3);
     }
 
-    pathDirections &= ~(1 << DirectionReverse(PeepDirection));
+    pathDirections &= ~(1u << DirectionReverse(PeepDirection));
     if (pathDirections == 0)
     {
-        pathDirections |= (1 << DirectionReverse(PeepDirection));
+        pathDirections |= (1u << DirectionReverse(PeepDirection));
     }
 
     Direction direction = UtilBitScanForward(pathDirections);
     // If this is the only direction they can go, then go
-    if (pathDirections == (1 << direction))
+    if (pathDirections == (1u << direction))
     {
         return direction;
     }
@@ -807,7 +807,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
     direction = ScenarioRand() & 3;
     for (uint8_t i = 0; i < kNumOrthogonalDirections; ++i, direction = DirectionNext(direction))
     {
-        if (pathDirections & (1 << direction))
+        if (pathDirections & (1u << direction))
             return direction;
     }
 

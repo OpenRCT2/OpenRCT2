@@ -1048,9 +1048,8 @@ static_assert(std::size(RatingNames) == 6);
 
         void SetPage(int32_t newPage)
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-                if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                    ToolCancel();
+            if (isToolActive(classification, number))
+                ToolCancel();
 
             if (newPage == WINDOW_RIDE_PAGE_VEHICLE)
             {
@@ -3965,12 +3964,18 @@ static_assert(std::size(RatingNames) == 6);
 
         void MaintenanceOnDraw(DrawPixelInfo& dpi)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
-
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
+
+            uint16_t reliability = ride->reliability_percentage;
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], std::max<uint8_t>(10, reliability));
+
+            uint16_t downTime = ride->downtime;
+            WidgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);
+
+            DrawWidgets(dpi);
+            DrawTabImages(dpi);
 
             // Locate mechanic button image
             Widget* widget = &widgets[WIDX_LOCATE_MECHANIC];
@@ -3987,18 +3992,14 @@ static_assert(std::size(RatingNames) == 6);
             widget = &widgets[WIDX_PAGE_BACKGROUND];
             screenCoords = windowPos + ScreenCoordsXY{ widget->left + 4, widget->top + 4 };
 
-            uint16_t reliability = ride->reliability_percentage;
             auto ft = Formatter();
             ft.Add<uint16_t>(reliability);
             DrawTextBasic(dpi, screenCoords, STR_RELIABILITY_LABEL_1757, ft);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], std::max<uint8_t>(10, reliability));
             screenCoords.y += 11;
 
-            uint16_t downTime = ride->downtime;
             ft = Formatter();
             ft.Add<uint16_t>(downTime);
             DrawTextBasic(dpi, screenCoords, STR_DOWN_TIME_LABEL_1889, ft);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);
             screenCoords.y += 26;
 
             // Last inspection
@@ -4132,16 +4133,8 @@ static_assert(std::size(RatingNames) == 6);
 
         void ColourClose()
         {
-            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                return;
-
-            if (gCurrentToolWidget.window_classification != classification)
-                return;
-
-            if (gCurrentToolWidget.window_number != number)
-                return;
-
-            ToolCancel();
+            if (isToolActive(classification, number))
+                ToolCancel();
         }
 
         void ColourOnMouseUp(WidgetIndex widgetIndex)
@@ -6897,12 +6890,9 @@ static_assert(std::size(RatingNames) == 6);
             w->SetViewIndex(0);
         }
 
-        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
+        if (isToolActive(w->classification, w->number))
         {
-            if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
-            {
-                ToolCancel();
-            }
+            ToolCancel();
         }
 
         if (w->page != WINDOW_RIDE_PAGE_MAIN)
@@ -6932,8 +6922,7 @@ static_assert(std::size(RatingNames) == 6);
             w = WindowRideOpen(ride);
         }
 
-        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
-            && gCurrentToolWidget.window_number == w->number)
+        if (isToolActive(w->classification, w->number))
         {
             ToolCancel();
         }
@@ -6975,7 +6964,7 @@ static_assert(std::size(RatingNames) == 6);
                     auto trackElement = tileElement->AsTrack();
                     auto trackType = trackElement->GetTrackType();
                     const auto& ted = GetTrackElementDescriptor(trackType);
-                    if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                    if (ted.sequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                     {
                         auto stationIndex = trackElement->GetStationIndex();
                         return WindowRideOpenStation(*ride, stationIndex);
@@ -7022,8 +7011,7 @@ static_assert(std::size(RatingNames) == 6);
         {
             w->Invalidate();
 
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
-                && gCurrentToolWidget.window_number == w->number)
+            if (isToolActive(w->classification, w->number))
             {
                 ToolCancel();
             }

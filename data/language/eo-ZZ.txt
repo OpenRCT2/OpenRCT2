@@ -135,7 +135,7 @@ STR_0547    :Budo, kie gastoj povas atingi mapojn de la parko, kaj aĉeti ombrel
 STR_0548    :Necesejo-konstruaĵo
 STR_0549    :Turniĝanta granda rado kun subĉielaj seĝoj
 STR_0550    :Rajdantoj rigardas filmon en la moviĝadosimulilo, kiun hidraŭlika brako tordas kaj movas
-STR_0551    :Kinejo, kiu montras 3D-ajn filmojn en geodezika globoforma konstruaĵo
+STR_0551    :Kinejo, kiu prezentas 3D-ajn filmojn en geodezika globoforma konstruaĵo
 STR_0552    :Pasaĝeroj rajdas en gondolo pendita de grandaj turniĝantaj brakoj, kiuj turniĝas antaŭen kaj malantaŭen renversite
 STR_0553    :Samcentraj pivotantaj ringoj permesas, ke la rajdantoj turniĝas libere ĉiudirekte
 STR_0554    :Linearaj induktaj motoroj plirapidigas la ĉaron el la stacio laŭ longa ebena trako. Poste, la ĉaro supreniras vertikalan pintaĵon, kaj tiam falas libere por reveni al la stacio.
@@ -502,7 +502,7 @@ STR_1109    :Svingiĝas
 STR_1110    :Turniĝas
 STR_1111    :Turniĝas
 STR_1112    :Funkcias
-STR_1113    :Montras filmon
+STR_1113    :Prezentas filmon
 STR_1114    :Turniĝas
 STR_1115    :Funkcias
 STR_1116    :Funkcias
@@ -3722,6 +3722,10 @@ STR_6648    :Ŝargas kromprograman motoron…
 STR_6649    :Ŝargas scenaron…
 STR_6650    :Ŝargas konservitan ludon…
 STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Erarfenestro
+STR_6653    :Ĉiuj fontoj montritaj
+STR_6654    :Montras {POP16}{UINT16} fontojn
+STR_6655    :Nur ‘{POP16}{STRINGID}’
 
 #############
 # Scenarios #

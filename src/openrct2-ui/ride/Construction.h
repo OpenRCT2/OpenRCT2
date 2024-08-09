@@ -165,4 +165,5 @@ namespace OpenRCT2
         RideConstructionState state);
 
     void RideConstructNew(RideSelection listItem);
+    CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords);
 } // namespace OpenRCT2

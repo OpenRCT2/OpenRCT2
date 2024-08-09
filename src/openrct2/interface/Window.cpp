@@ -50,6 +50,9 @@ WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindow
 uint32_t gWindowUpdateTicks;
 colour_t gCurrentWindowColours[3];
 
+Tool gCurrentToolId;
+WidgetRef gCurrentToolWidget;
+
 // converted from uint16_t values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to centre to, if a window is obscuring a location, the next is tried
 // clang-format off
@@ -576,63 +579,6 @@ void WidgetInvalidateByNumber(WindowClass cls, rct_windownumber number, WidgetIn
     });
 }
 
-/**
- *
- *  rct2: 0x006EAE4E
- *
- * @param w The window (esi).
- */
-void WindowUpdateScrollWidgets(WindowBase& w)
-{
-    int32_t scrollIndex, width, height, scrollPositionChanged;
-    WidgetIndex widgetIndex;
-    Widget* widget;
-
-    widgetIndex = 0;
-    scrollIndex = 0;
-    for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
-    {
-        if (widget->type != WindowWidgetType::Scroll)
-            continue;
-
-        auto& scroll = w.scrolls[scrollIndex];
-        ScreenSize scrollSize = w.OnScrollGetSize(scrollIndex);
-        width = scrollSize.width;
-        height = scrollSize.height;
-
-        if (height == 0)
-        {
-            scroll.v_top = 0;
-        }
-        else if (width == 0)
-        {
-            scroll.h_left = 0;
-        }
-        width++;
-        height++;
-
-        scrollPositionChanged = 0;
-        if ((widget->content & SCROLL_HORIZONTAL) && width != scroll.h_right)
-        {
-            scrollPositionChanged = 1;
-            scroll.h_right = width;
-        }
-
-        if ((widget->content & SCROLL_VERTICAL) && height != scroll.v_bottom)
-        {
-            scrollPositionChanged = 1;
-            scroll.v_bottom = height;
-        }
-
-        if (scrollPositionChanged)
-        {
-            WidgetScrollUpdateThumbs(w, widgetIndex);
-            w.Invalidate();
-        }
-        scrollIndex++;
-    }
-}
-
 int32_t WindowGetScrollDataIndex(const WindowBase& w, WidgetIndex widget_index)
 {
     int32_t i, result;
@@ -1018,45 +964,6 @@ void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor)
 }
 
 /**
- *
- *  rct2: 0x006887A6
- */
-void WindowZoomIn(WindowBase& w, bool atCursor)
-{
-    WindowZoomSet(w, w.viewport->zoom - 1, atCursor);
-}
-
-/**
- *
- *  rct2: 0x006887E0
- */
-void WindowZoomOut(WindowBase& w, bool atCursor)
-{
-    WindowZoomSet(w, w.viewport->zoom + 1, atCursor);
-}
-
-void MainWindowZoom(bool zoomIn, bool atCursor)
-{
-    auto* mainWindow = WindowGetMain();
-    if (mainWindow == nullptr)
-        return;
-
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor)
-        return;
-
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
-        return;
-
-    if (zoomIn)
-        WindowZoomIn(*mainWindow, atCursor);
-    else
-        WindowZoomOut(*mainWindow, atCursor);
-}
-
-/**
  * Splits a drawing of a window into regions that can be seen and are not hidden
  * by other opaque overlapping windows.
  */
@@ -1199,88 +1106,29 @@ static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, in
     w.OnDraw(copy);
 }
 
-/**
- *
- *  rct2: 0x00685BE1
- *
- * @param dpi (edi)
- * @param w (esi)
- */
-void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w)
+bool isToolActive(WindowClass cls)
 {
-    ViewportRender(dpi, w.viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
+    return InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == cls;
 }
 
-void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords)
+bool isToolActive(WindowClass cls, rct_windownumber number)
 {
-    WindowMovePosition(w, screenCoords - w.windowPos);
+    return isToolActive(cls) && gCurrentToolWidget.window_number == number;
 }
 
-void WindowMovePosition(WindowBase& w, const ScreenCoordsXY& deltaCoords)
+bool isToolActive(WindowClass cls, WidgetIndex widgetIndex)
 {
-    if (deltaCoords.x == 0 && deltaCoords.y == 0)
-        return;
-
-    // Invalidate old region
-    w.Invalidate();
-
-    // Translate window and viewport
-    w.windowPos += deltaCoords;
-    if (w.viewport != nullptr)
-    {
-        w.viewport->pos += deltaCoords;
-    }
-
-    // Invalidate new region
-    w.Invalidate();
+    return isToolActive(cls) && gCurrentToolWidget.widget_index == widgetIndex;
 }
 
-void WindowResize(WindowBase& w, int32_t dw, int32_t dh)
+bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber number)
 {
-    if (dw == 0 && dh == 0)
-        return;
-
-    // Invalidate old region
-    w.Invalidate();
-
-    // Clamp new size to minimum and maximum
-    w.width = std::clamp<int32_t>(w.width + dw, w.min_width, w.max_width);
-    w.height = std::clamp<int32_t>(w.height + dh, w.min_height, w.max_height);
-
-    w.OnResize();
-    w.OnPrepareDraw();
-
-    // Update scroll widgets
-    for (auto& scroll : w.scrolls)
-    {
-        scroll.h_right = WINDOW_SCROLL_UNDEFINED;
-        scroll.v_bottom = WINDOW_SCROLL_UNDEFINED;
-    }
-    WindowUpdateScrollWidgets(w);
-
-    // Invalidate new region
-    w.Invalidate();
+    return isToolActive(cls, widgetIndex) && gCurrentToolWidget.window_number == number;
 }
 
-void WindowSetResize(WindowBase& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight)
+bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex)
 {
-    w.min_width = minWidth;
-    w.min_height = minHeight;
-    w.max_width = maxWidth;
-    w.max_height = maxHeight;
-
-    // Clamp width and height to minimum and maximum
-    int32_t width = std::clamp<int32_t>(w.width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
-    int32_t height = std::clamp<int32_t>(w.height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
-
-    // Resize window if size has changed
-    if (w.width != width || w.height != height)
-    {
-        w.Invalidate();
-        w.width = width;
-        w.height = height;
-        w.Invalidate();
-    }
+    return isToolActive(w.classification, widgetIndex, w.number);
 }
 
 /**
@@ -1343,47 +1191,6 @@ void ToolCancel()
                 w->OnToolAbort(gCurrentToolWidget.widget_index);
         }
     }
-}
-
-/**
- *
- *  rct2: 0x006ED710
- * Called after a window resize to move windows if they
- * are going to be out of sight.
- */
-void WindowRelocateWindows(int32_t width, int32_t height)
-{
-    int32_t new_location = 8;
-    WindowVisitEach([width, height, &new_location](WindowBase* w) {
-        // Work out if the window requires moving
-        if (w->windowPos.x + 10 < width)
-        {
-            if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
-            {
-                if (w->windowPos.y - 22 < height)
-                {
-                    return;
-                }
-            }
-            if (w->windowPos.y + 10 < height)
-            {
-                return;
-            }
-        }
-
-        // Calculate the new locations
-        auto newWinPos = w->windowPos;
-        w->windowPos = { new_location, new_location + kTopToolbarHeight + 1 };
-
-        // Move the next new location so windows are not directly on top
-        new_location += 8;
-
-        // Adjust the viewport if required.
-        if (w->viewport != nullptr)
-        {
-            w->viewport->pos -= newWinPos - w->windowPos;
-        }
-    });
 }
 
 /**
@@ -1513,157 +1320,6 @@ void WindowUpdateViewportRideMusic()
             Audio::gVolumeAdjustZoom = 60;
         break;
     }
-}
-
-static void window_snap_left(WindowBase& w, int32_t proximity)
-{
-    const auto* mainWindow = WindowGetMain();
-    auto wBottom = w.windowPos.y + w.height;
-    auto wLeftProximity = w.windowPos.x - (proximity * 2);
-    auto wRightProximity = w.windowPos.x + (proximity * 2);
-    auto rightMost = INT32_MIN;
-
-    WindowVisitEach([&](WindowBase* w2) {
-        if (w2 == &w || w2 == mainWindow)
-            return;
-
-        auto right = w2->windowPos.x + w2->width;
-
-        if (wBottom < w2->windowPos.y || w.windowPos.y > w2->windowPos.y + w2->height)
-            return;
-
-        if (right < wLeftProximity || right > wRightProximity)
-            return;
-
-        rightMost = std::max(rightMost, right);
-    });
-
-    if (0 >= wLeftProximity && 0 <= wRightProximity)
-        rightMost = std::max(rightMost, 0);
-
-    if (rightMost != INT32_MIN)
-        w.windowPos.x = rightMost;
-}
-
-static void window_snap_top(WindowBase& w, int32_t proximity)
-{
-    const auto* mainWindow = WindowGetMain();
-    auto wRight = w.windowPos.x + w.width;
-    auto wTopProximity = w.windowPos.y - (proximity * 2);
-    auto wBottomProximity = w.windowPos.y + (proximity * 2);
-    auto bottomMost = INT32_MIN;
-
-    WindowVisitEach([&](WindowBase* w2) {
-        if (w2 == &w || w2 == mainWindow)
-            return;
-
-        auto bottom = w2->windowPos.y + w2->height;
-
-        if (wRight < w2->windowPos.x || w.windowPos.x > w2->windowPos.x + w2->width)
-            return;
-
-        if (bottom < wTopProximity || bottom > wBottomProximity)
-            return;
-
-        bottomMost = std::max(bottomMost, bottom);
-    });
-
-    if (0 >= wTopProximity && 0 <= wBottomProximity)
-        bottomMost = std::max(bottomMost, 0);
-
-    if (bottomMost != INT32_MIN)
-        w.windowPos.y = bottomMost;
-}
-
-static void window_snap_right(WindowBase& w, int32_t proximity)
-{
-    const auto* mainWindow = WindowGetMain();
-    auto wRight = w.windowPos.x + w.width;
-    auto wBottom = w.windowPos.y + w.height;
-    auto wLeftProximity = wRight - (proximity * 2);
-    auto wRightProximity = wRight + (proximity * 2);
-    auto leftMost = INT32_MAX;
-
-    WindowVisitEach([&](WindowBase* w2) {
-        if (w2 == &w || w2 == mainWindow)
-            return;
-
-        if (wBottom < w2->windowPos.y || w.windowPos.y > w2->windowPos.y + w2->height)
-            return;
-
-        if (w2->windowPos.x < wLeftProximity || w2->windowPos.x > wRightProximity)
-            return;
-
-        leftMost = std::min<int32_t>(leftMost, w2->windowPos.x);
-    });
-
-    auto screenWidth = ContextGetWidth();
-    if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
-        leftMost = std::min(leftMost, screenWidth);
-
-    if (leftMost != INT32_MAX)
-        w.windowPos.x = leftMost - w.width;
-}
-
-static void window_snap_bottom(WindowBase& w, int32_t proximity)
-{
-    const auto* mainWindow = WindowGetMain();
-    auto wRight = w.windowPos.x + w.width;
-    auto wBottom = w.windowPos.y + w.height;
-    auto wTopProximity = wBottom - (proximity * 2);
-    auto wBottomProximity = wBottom + (proximity * 2);
-    auto topMost = INT32_MAX;
-
-    WindowVisitEach([&](WindowBase* w2) {
-        if (w2 == &w || w2 == mainWindow)
-            return;
-
-        if (wRight < w2->windowPos.x || w.windowPos.x > w2->windowPos.x + w2->width)
-            return;
-
-        if (w2->windowPos.y < wTopProximity || w2->windowPos.y > wBottomProximity)
-            return;
-
-        topMost = std::min<int32_t>(topMost, w2->windowPos.y);
-    });
-
-    auto screenHeight = ContextGetHeight();
-    if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
-        topMost = std::min(topMost, screenHeight);
-
-    if (topMost != INT32_MAX)
-        w.windowPos.y = topMost - w.height;
-}
-
-void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
-{
-    auto originalPos = w.windowPos;
-    int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : kTopToolbarHeight + 2;
-
-    newWindowCoords.y = std::clamp(newWindowCoords.y, minY, ContextGetHeight() - 34);
-
-    if (snapProximity > 0)
-    {
-        w.windowPos = newWindowCoords;
-
-        window_snap_right(w, snapProximity);
-        window_snap_bottom(w, snapProximity);
-        window_snap_left(w, snapProximity);
-        window_snap_top(w, snapProximity);
-
-        if (w.windowPos == originalPos)
-            return;
-
-        newWindowCoords = w.windowPos;
-        w.windowPos = originalPos;
-    }
-
-    WindowSetPosition(w, newWindowCoords);
-}
-
-int32_t WindowCanResize(const WindowBase& w)
-{
-    return (w.flags & WF_RESIZABLE) && (w.min_width != w.max_width || w.min_height != w.max_height);
 }
 
 /**
@@ -1801,135 +1457,4 @@ Viewport* WindowGetViewport(WindowBase* w)
     }
 
     return w->viewport;
-}
-
-/**
- *
- *  rct2: 0x006EAF26
- */
-void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index)
-{
-    const auto& widget = w.widgets[widget_index];
-    auto& scroll = w.scrolls[WindowGetScrollDataIndex(w, widget_index)];
-
-    if (scroll.flags & HSCROLLBAR_VISIBLE)
-    {
-        int32_t view_size = widget.width() - 21;
-        if (scroll.flags & VSCROLLBAR_VISIBLE)
-            view_size -= 11;
-        int32_t x = scroll.h_left * view_size;
-        if (scroll.h_right != 0)
-            x /= scroll.h_right;
-        scroll.h_thumb_left = x + 11;
-
-        x = widget.width() - 2;
-        if (scroll.flags & VSCROLLBAR_VISIBLE)
-            x -= 11;
-        x += scroll.h_left;
-        if (scroll.h_right != 0)
-            x = (x * view_size) / scroll.h_right;
-        x += 11;
-        view_size += 10;
-        scroll.h_thumb_right = std::min(x, view_size);
-
-        if (scroll.h_thumb_right - scroll.h_thumb_left < 20)
-        {
-            double barPosition = (scroll.h_thumb_right * 1.0) / view_size;
-
-            scroll.h_thumb_left = static_cast<int32_t>(std::lround(scroll.h_thumb_left - (20 * barPosition)));
-            scroll.h_thumb_right = static_cast<int32_t>(std::lround(scroll.h_thumb_right + (20 * (1 - barPosition))));
-        }
-    }
-
-    if (scroll.flags & VSCROLLBAR_VISIBLE)
-    {
-        int32_t view_size = widget.height() - 21;
-        if (scroll.flags & HSCROLLBAR_VISIBLE)
-            view_size -= 11;
-        int32_t y = scroll.v_top * view_size;
-        if (scroll.v_bottom != 0)
-            y /= scroll.v_bottom;
-        scroll.v_thumb_top = y + 11;
-
-        y = widget.height() - 2;
-        if (scroll.flags & HSCROLLBAR_VISIBLE)
-            y -= 11;
-        y += scroll.v_top;
-        if (scroll.v_bottom != 0)
-            y = (y * view_size) / scroll.v_bottom;
-        y += 11;
-        view_size += 10;
-        scroll.v_thumb_bottom = std::min(y, view_size);
-
-        if (scroll.v_thumb_bottom - scroll.v_thumb_top < 20)
-        {
-            double barPosition = (scroll.v_thumb_bottom * 1.0) / view_size;
-
-            scroll.v_thumb_top = static_cast<int32_t>(std::lround(scroll.v_thumb_top - (20 * barPosition)));
-            scroll.v_thumb_bottom = static_cast<int32_t>(std::lround(scroll.v_thumb_bottom + (20 * (1 - barPosition))));
-        }
-    }
-}
-
-void WindowBase::ResizeFrame()
-{
-    // Frame
-    widgets[0].right = width - 1;
-    widgets[0].bottom = height - 1;
-    // Title
-    widgets[1].right = width - 2;
-    // Close button
-    if (Config::Get().interface.WindowButtonsOnTheLeft)
-    {
-        widgets[2].left = 2;
-        widgets[2].right = 2 + kCloseButtonWidth;
-    }
-    else
-    {
-        widgets[2].left = width - 3 - kCloseButtonWidth;
-        widgets[2].right = width - 3;
-    }
-}
-
-void WindowBase::ResizeFrameWithPage()
-{
-    ResizeFrame();
-    // Page background
-    widgets[3].right = width - 1;
-    widgets[3].bottom = height - 1;
-}
-
-void WindowBase::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
-{
-    auto right = origin.x + size.width - 1;
-    auto bottom = origin.y + size.height - 1;
-    widgets[widgetIndex].left = origin.x;
-    widgets[widgetIndex].top = origin.y;
-    widgets[widgetIndex].right = right;
-    widgets[widgetIndex].bottom = bottom;
-
-    widgets[widgetIndex + 1].left = right - size.height; // subtract height to maintain aspect ratio
-    widgets[widgetIndex + 1].top = origin.y + 1;
-    widgets[widgetIndex + 1].right = right - 1;
-    widgets[widgetIndex + 1].bottom = bottom - 1;
-
-    widgets[widgetIndex + 2].left = right - size.height * 2;
-    widgets[widgetIndex + 2].top = origin.y + 1;
-    widgets[widgetIndex + 2].right = right - size.height - 1;
-    widgets[widgetIndex + 2].bottom = bottom - 1;
-}
-
-void WindowBase::ResizeDropdown(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
-{
-    auto right = origin.x + size.width - 1;
-    auto bottom = origin.y + size.height - 1;
-    widgets[widgetIndex].left = origin.x;
-    widgets[widgetIndex].top = origin.y;
-    widgets[widgetIndex].right = right;
-    widgets[widgetIndex].bottom = bottom;
-
-    widgets[widgetIndex + 1].left = right - size.height + 1; // subtract height to maintain aspect ratio
-    widgets[widgetIndex + 1].top = origin.y + 1;
-    widgets[widgetIndex + 1].right = right - 1;
-    widgets[widgetIndex + 1].bottom = bottom - 1;
 }

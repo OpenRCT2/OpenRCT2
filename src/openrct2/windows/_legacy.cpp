@@ -18,7 +18,6 @@
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../network/network.h"
-#include "../paint/VirtualFloor.h"
 #include "../ride/RideConstruction.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
@@ -67,15 +66,6 @@ money64 PlaceProvisionalTrackPiece(
         if (_currentTrackPitchEnd != TrackPitch::None)
             ViewportSetVisibility(ViewportVisibility::TrackHeights);
 
-        // Invalidate previous track piece (we may not be changing height!)
-        VirtualFloorInvalidate();
-
-        if (!SceneryToolIsActive())
-        {
-            // Set new virtual floor height.
-            VirtualFloorSetHeight(trackPos.z);
-        }
-
         return result.Cost;
     }
 
@@ -88,17 +78,12 @@ money64 PlaceProvisionalTrackPiece(
     if (res.Error != GameActions::Status::Ok)
         return kMoney64Undefined;
 
-    int16_t z_begin, z_end;
+    int16_t z_begin{};
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const TrackCoordinates& coords = ted.Coordinates;
+    const TrackCoordinates& coords = ted.coordinates;
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         z_begin = coords.z_begin;
-        z_end = coords.z_end;
-    }
-    else
-    {
-        z_end = z_begin = coords.z_begin;
     }
 
     _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin, static_cast<Direction>(trackDirection) };
@@ -110,15 +95,6 @@ money64 PlaceProvisionalTrackPiece(
     ViewportSetVisibility(visiblity);
     if (_currentTrackPitchEnd != TrackPitch::None)
         ViewportSetVisibility(ViewportVisibility::TrackHeights);
-
-    // Invalidate previous track piece (we may not be changing height!)
-    VirtualFloorInvalidate();
-
-    if (!SceneryToolIsActive())
-    {
-        // Set height to where the next track piece would begin
-        VirtualFloorSetHeight(trackPos.z - z_begin + z_end);
-    }
 
     return res.Cost;
 }
@@ -162,20 +138,20 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
         {
             const TrackDescriptor* trackDescriptor = &gTrackDescriptors[i];
 
-            if (EnumValue(trackDescriptor->track_curve) != curve)
+            if (EnumValue(trackDescriptor->trackCurve) != curve)
                 continue;
-            if (trackDescriptor->starts_diagonal != startsDiagonal)
+            if (trackDescriptor->startsDiagonally != startsDiagonal)
                 continue;
-            if (trackDescriptor->slope_start != startSlope)
+            if (trackDescriptor->slopeStart != startSlope)
                 continue;
-            if (trackDescriptor->slope_end != endSlope)
+            if (trackDescriptor->slopeEnd != endSlope)
                 continue;
-            if (trackDescriptor->RollStart != startBank)
+            if (trackDescriptor->rollStart != startBank)
                 continue;
-            if (trackDescriptor->RollEnd != endBank)
+            if (trackDescriptor->rollEnd != endBank)
                 continue;
 
-            return std::make_tuple(true, trackDescriptor->track_element);
+            return std::make_tuple(true, trackDescriptor->trackElement);
         }
 
         return std::make_tuple(false, 0);
@@ -305,7 +281,7 @@ bool WindowRideConstructionUpdateState(
     {
         auto availablePieces = trackDrawerDecriptor.Covered.EnabledTrackPieces;
         const auto& ted = GetTrackElementDescriptor(trackType);
-        auto alternativeType = ted.AlternativeType;
+        auto alternativeType = ted.alternativeType;
         // this method limits the track element types that can be used
         if (alternativeType != TrackElemType::None && (availablePieces.get(trackType)))
         {
@@ -316,7 +292,7 @@ bool WindowRideConstructionUpdateState(
     }
 
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const TrackCoordinates& trackCoordinates = ted.Coordinates;
+    const TrackCoordinates& trackCoordinates = ted.coordinates;
 
     x = _currentTrackBegin.x;
     y = _currentTrackBegin.y;
@@ -349,13 +325,13 @@ bool WindowRideConstructionUpdateState(
     bool turnOffLiftHill = false;
     if (!IsTrackEnabled(TRACK_LIFT_HILL_CURVE))
     {
-        if (ted.Flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
+        if (ted.flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
         {
             turnOffLiftHill = true;
         }
     }
 
-    if (!(ted.Flags & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL))
+    if (!(ted.flags & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL))
     {
         turnOffLiftHill = true;
     }
@@ -394,41 +370,4 @@ bool WindowRideConstructionUpdateState(
         *_properties = properties;
 
     return false;
-}
-
-/**
- *
- *  rct2: 0x006C84CE
- */
-void WindowRideConstructionUpdateActiveElements()
-{
-    auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
-    ContextBroadcastIntent(&intent);
-}
-
-/**
- *
- *  rct2: 0x0066DB3D
- */
-bool SceneryToolIsActive()
-{
-    auto toolWindowClassification = gCurrentToolWidget.window_classification;
-    WidgetIndex toolWidgetIndex = gCurrentToolWidget.widget_index;
-    if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-        if (toolWindowClassification == WindowClass::TopToolbar && toolWidgetIndex == WC_TOP_TOOLBAR__WIDX_SCENERY)
-            return true;
-
-    return false;
-}
-
-void SceneryInit()
-{
-    auto intent = Intent(INTENT_ACTION_INIT_SCENERY);
-    ContextBroadcastIntent(&intent);
-}
-
-void ScenerySetDefaultPlacementConfiguration()
-{
-    auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
-    ContextBroadcastIntent(&intent);
 }

@@ -9,6 +9,7 @@
 
 #include "Research.h"
 
+#include "../Context.h"
 #include "../Date.h"
 #include "../Diagnostic.h"
 #include "../Game.h"
@@ -34,6 +35,7 @@
 #include "../ride/TrackData.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
+#include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "Finance.h"
@@ -296,7 +298,9 @@ void ResearchFinishItem(const ResearchItem& researchItem)
             }
 
             ResearchInvalidateRelatedWindows();
-            SceneryInit();
+
+            auto intent = Intent(INTENT_ACTION_INIT_SCENERY);
+            ContextBroadcastIntent(&intent);
         }
     }
 }

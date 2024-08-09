@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/ViewportQuery.h"
+
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -630,13 +632,8 @@ static Widget _staffListWidgets[] = {
 
         void CancelTools()
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-            {
-                if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                {
-                    ToolCancel();
-                }
-            }
+            if (isToolActive(classification, number))
+                ToolCancel();
         }
 
         Peep* GetClosestStaffMemberTo(const ScreenCoordsXY& screenCoords)

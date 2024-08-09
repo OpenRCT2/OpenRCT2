@@ -11,6 +11,7 @@
 
 #include "../core/Imaging.h"
 #include "../core/Json.hpp"
+#include "../util/Util.h"
 
 #include <cstring>
 #include <stdexcept>
@@ -37,7 +38,7 @@ namespace OpenRCT2::Drawing
         {
             throw std::invalid_argument("Image is not paletted, it has bit depth of " + std::to_string(image.Depth));
         }
-        const bool isRLE = meta.importFlags & ImportFlags::RLE;
+        const bool isRLE = HasFlag(meta.importFlags, ImportFlags::RLE);
 
         auto pixels = GetPixels(image, meta);
         auto buffer = isRLE ? EncodeRLE(pixels.data(), meta.srcSize) : EncodeRaw(pixels.data(), meta.srcSize);
@@ -49,6 +50,8 @@ namespace OpenRCT2::Drawing
         outElement.x_offset = meta.offset.x;
         outElement.y_offset = meta.offset.y;
         outElement.zoomed_offset = meta.zoomedOffset;
+        if (HasFlag(meta.importFlags, ImportFlags::NoDrawOnZoom))
+            outElement.flags |= G1_FLAG_NO_ZOOM_DRAW;
 
         ImageImporter::ImportResult result;
         result.Element = outElement;
@@ -388,9 +391,14 @@ namespace OpenRCT2::Drawing
         auto yOffset = Json::GetNumber<int16_t>(input["y"]);
         auto keepPalette = Json::GetString(input["palette"]) == "keep";
         auto palette = keepPalette ? Palette::KeepIndices : Palette::OpenRCT2;
+        uint8_t flags = 0;
 
         auto raw = Json::GetString(input["format"]) == "raw";
-        auto flags = raw ? ImportFlags::None : ImportFlags::RLE;
+        if (!raw)
+            flags |= EnumToFlag(ImportFlags::RLE);
+
+        if (Json::GetBoolean("noDrawOnZoom"))
+            flags |= EnumToFlag(ImportFlags::NoDrawOnZoom);
 
         auto srcX = Json::GetNumber<int16_t>(input["srcX"]);
         auto srcY = Json::GetNumber<int16_t>(input["srcY"]);

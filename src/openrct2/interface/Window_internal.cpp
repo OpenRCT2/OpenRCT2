@@ -11,18 +11,6 @@ void WindowBase::SetLocation(const CoordsXYZ& coords)
     flags &= ~WF_SCROLLING_TO_LOCATION;
 }
 
-void WindowBase::ScrollToViewport()
-{
-    if (viewport == nullptr || !focus.has_value())
-        return;
-
-    CoordsXYZ newCoords = focus.value().GetPos();
-
-    auto mainWindow = WindowGetMain();
-    if (mainWindow != nullptr)
-        WindowScrollToLocation(*mainWindow, newCoords);
-}
-
 void WindowBase::Invalidate()
 {
     GfxSetDirtyBlocks({ windowPos, windowPos + ScreenCoordsXY{ width, height } });

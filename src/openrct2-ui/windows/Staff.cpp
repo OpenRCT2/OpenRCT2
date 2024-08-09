@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../interface/Theme.h"
+#include "../interface/ViewportQuery.h"
 
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -883,8 +884,7 @@ static Widget _staffOptionsWidgets[] = {
                 return;
             }
 
-            auto staffOrders = staff->StaffOrders;
-
+            uint32_t staffOrders = staff->StaffOrders;
             for (auto index = UtilBitScanForward(staffOrders); index != -1; index = UtilBitScanForward(staffOrders))
             {
                 staffOrders &= ~(1 << index);
@@ -1077,11 +1077,8 @@ static Widget _staffOptionsWidgets[] = {
 
         void CancelTools()
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-            {
-                if (number == gCurrentToolWidget.window_number && classification == gCurrentToolWidget.window_classification)
-                    ToolCancel();
-            }
+            if (isToolActive(classification, number))
+                ToolCancel();
         }
 
         void SetPage(int32_t pageNum)

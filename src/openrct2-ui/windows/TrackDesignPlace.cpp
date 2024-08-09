@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+#include "../interface/ViewportInteraction.h"
 
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -137,9 +138,8 @@ static Widget _trackPlaceWidgets[] = {
 
         void OnUpdate() override
         {
-            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                if (gCurrentToolWidget.window_classification != WindowClass::TrackDesignPlace)
-                    Close();
+            if (!isToolActive(WindowClass::TrackDesignPlace))
+                Close();
         }
 
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -477,7 +477,7 @@ static Widget _trackPlaceWidgets[] = {
             {
                 // Follow a single track piece shape
                 const auto& ted = GetTrackElementDescriptor(trackElement.type);
-                const PreviewTrack* trackBlock = ted.Block;
+                const PreviewTrack* trackBlock = ted.block;
                 while (trackBlock->index != 255)
                 {
                     auto rotatedAndOffsetTrackBlock = curTrackStart
@@ -500,7 +500,7 @@ static Widget _trackPlaceWidgets[] = {
                             auto bits = trackBlock->var_08.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                             // Station track is a lighter colour
-                            uint8_t colour = (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                            uint8_t colour = (ted.sequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                                 ? _PaletteIndexColourStation
                                 : _PaletteIndexColourTrack;
 
@@ -523,7 +523,7 @@ static Widget _trackPlaceWidgets[] = {
                 // Change rotation and next position based on track curvature
                 curTrackRotation &= 3;
 
-                const TrackCoordinates* track_coordinate = &ted.Coordinates;
+                const TrackCoordinates* track_coordinate = &ted.coordinates;
 
                 curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(curTrackRotation);
                 curTrackRotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;

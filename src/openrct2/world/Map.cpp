@@ -96,12 +96,6 @@ uint8_t gMapSelectArrowDirection;
 
 std::vector<CoordsXY> gMapSelectionTiles;
 
-bool gLandMountainMode;
-bool gLandPaintMode;
-bool gClearSmallScenery;
-bool gClearLargeScenery;
-bool gClearFootpath;
-
 uint32_t gLandRemainingOwnershipSales;
 uint32_t gLandRemainingConstructionSales;
 

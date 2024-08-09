@@ -66,13 +66,6 @@ enum PLACE_OBJECT_MODIFIER
     PLACE_OBJECT_MODIFIER_COPY_Z = (1 << 1),
 };
 
-struct WidgetRef
-{
-    WindowClass window_classification;
-    rct_windownumber window_number;
-    WidgetIndex widget_index;
-};
-
 extern uint8_t gInputPlaceObjectModifier;
 
 extern ScreenCoordsXY gInputDragLast;
@@ -83,9 +76,6 @@ extern WidgetRef gPressedWidget;
 extern uint32_t gTooltipCloseTimeout;
 extern WidgetRef gTooltipWidget;
 extern ScreenCoordsXY gTooltipCursor;
-
-extern Tool gCurrentToolId;
-extern WidgetRef gCurrentToolWidget;
 
 // TODO: Move to openrct2-ui and make static again
 extern InputState _inputState;

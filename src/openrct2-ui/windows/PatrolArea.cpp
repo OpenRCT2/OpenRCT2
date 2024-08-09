@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/ViewportQuery.h"
+
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -265,11 +267,7 @@ static Widget PatrolAreaWidgets[] = {
 
         bool PatrolAreaToolIsActive()
         {
-            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                return false;
-            if (gCurrentToolWidget.window_classification != WindowClass::PatrolArea)
-                return false;
-            return true;
+            return isToolActive(WindowClass::PatrolArea);
         }
 
         bool IsStaffWindowOpen()

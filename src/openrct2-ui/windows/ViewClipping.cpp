@@ -129,8 +129,8 @@ static Widget _viewClippingWidgets[] = {
                 case WIDX_CLIP_CLEAR:
                     if (IsActive())
                     {
-                        _toolActive = false;
                         ToolCancel();
+                        _toolActive = false;
                     }
                     gClipSelectionA = { 0, 0 };
                     gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
@@ -394,11 +394,7 @@ static Widget _viewClippingWidgets[] = {
 
         bool IsActive()
         {
-            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                return false;
-            if (gCurrentToolWidget.window_classification != WindowClass::ViewClipping)
-                return false;
-            return _toolActive;
+            return isToolActive(WindowClass::ViewClipping);
         }
     };
 

@@ -24,10 +24,10 @@
 
 using namespace OpenRCT2;
 
-constexpr int32_t DUCK_MAX_STATES = 5;
+constexpr int32_t kDuckMaxStates = 5;
 
 // clang-format off
-static constexpr CoordsXY DuckMoveOffset[] =
+static constexpr CoordsXY kDuckMoveOffset[] =
 {
     { -1,  0 },
     {  0,  1 },
@@ -35,39 +35,39 @@ static constexpr CoordsXY DuckMoveOffset[] =
     {  0, -1 },
 };
 
-static constexpr uint8_t DuckAnimationFlyToWater[] =
+static constexpr uint8_t kDuckAnimationFlyToWater[] =
 {
     8, 9, 10, 11, 12, 13
 };
 
-static constexpr uint8_t DuckAnimationSwim[] =
+static constexpr uint8_t kkDuckAnimationswim[] =
 {
     0
 };
 
-static constexpr uint8_t DuckAnimationDrink[] =
+static constexpr uint8_t kDuckAnimationDrink[] =
 {
     1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0xFF
 };
 
-static constexpr uint8_t DuckAnimationDoubleDrink[] =
+static constexpr uint8_t kDuckAnimationDoubleDrink[] =
 {
     4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6,
     6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 0, 0, 0, 0, 0xFF
 };
 
-static constexpr uint8_t DuckAnimationFlyAway[] =
+static constexpr uint8_t kDuckAnimationFlyAway[] =
 {
     8, 9, 10, 11, 12, 13
 };
 
-static constexpr const uint8_t * DuckAnimations[] =
+static constexpr const uint8_t * kDuckAnimations[] =
 {
-    DuckAnimationFlyToWater,    // FLY_TO_WATER
-    DuckAnimationSwim,          // SWIM
-    DuckAnimationDrink,         // DRINK
-    DuckAnimationDoubleDrink,   // DOUBLE_DRINK
-    DuckAnimationFlyAway,       // FLY_AWAY
+    kDuckAnimationFlyToWater,    // FLY_TO_WATER
+    kkDuckAnimationswim,         // SWIM
+    kDuckAnimationDrink,         // DRINK
+    kDuckAnimationDoubleDrink,   // DOUBLE_DRINK
+    kDuckAnimationFlyAway,       // FLY_AWAY
 };
 // clang-format on
 
@@ -95,7 +95,7 @@ void Duck::UpdateFlyToWater()
         return;
 
     frame++;
-    if (frame >= std::size(DuckAnimationFlyToWater))
+    if (frame >= std::size(kDuckAnimationFlyToWater))
     {
         frame = 0;
     }
@@ -103,7 +103,7 @@ void Duck::UpdateFlyToWater()
     Invalidate();
     int32_t manhattanDistance = abs(target_x - x) + abs(target_y - y);
     int32_t direction = Orientation >> 3;
-    auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
+    auto destination = CoordsXYZ{ CoordsXY{ x, y } + kDuckMoveOffset[direction], 0 };
     int32_t manhattanDistanceN = abs(target_x - destination.x) + abs(target_y - destination.y);
 
     auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ target_x, target_y });
@@ -204,7 +204,7 @@ void Duck::UpdateSwim()
                 }
 
                 int32_t direction = Orientation >> 3;
-                auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
+                auto destination = CoordsXYZ{ CoordsXY{ x, y } + kDuckMoveOffset[direction], 0 };
                 landZ = TileElementHeight(destination);
                 waterZ = TileElementWaterHeight(destination);
 
@@ -222,7 +222,7 @@ void Duck::UpdateSwim()
 void Duck::UpdateDrink()
 {
     frame++;
-    if (DuckAnimationDrink[frame] == 0xFF)
+    if (kDuckAnimationDrink[frame] == 0xFF)
     {
         state = DuckState::Swim;
         frame = 0;
@@ -237,7 +237,7 @@ void Duck::UpdateDrink()
 void Duck::UpdateDoubleDrink()
 {
     frame++;
-    if (DuckAnimationDoubleDrink[frame] == 0xFF)
+    if (kDuckAnimationDoubleDrink[frame] == 0xFF)
     {
         state = DuckState::Swim;
         frame = 0;
@@ -254,7 +254,7 @@ void Duck::UpdateFlyAway()
     if ((GetGameState().CurrentTicks & 3) == 0)
     {
         frame++;
-        if (frame >= std::size(DuckAnimationFlyAway))
+        if (frame >= std::size(kDuckAnimationFlyAway))
         {
             frame = 0;
         }
@@ -262,7 +262,7 @@ void Duck::UpdateFlyAway()
         Invalidate();
 
         int32_t direction = Orientation >> 3;
-        auto destination = CoordsXYZ{ x + (DuckMoveOffset[direction].x * 2), y + (DuckMoveOffset[direction].y * 2),
+        auto destination = CoordsXYZ{ x + (kDuckMoveOffset[direction].x * 2), y + (kDuckMoveOffset[direction].y * 2),
                                       std::min<int32_t>(z + 2, 496) };
         if (MapIsLocationValid(destination))
         {
@@ -278,10 +278,10 @@ void Duck::UpdateFlyAway()
 uint32_t Duck::GetFrameImage(int32_t direction) const
 {
     uint32_t imageId = 0;
-    if (EnumValue(state) < DUCK_MAX_STATES)
+    if (EnumValue(state) < kDuckMaxStates)
     {
         // TODO: Check frame is in range
-        uint8_t imageOffset = DuckAnimations[EnumValue(state)][frame];
+        uint8_t imageOffset = kDuckAnimations[EnumValue(state)][frame];
         imageId = SPR_DUCK + (imageOffset * 4) + (direction / 8);
     }
     return imageId;

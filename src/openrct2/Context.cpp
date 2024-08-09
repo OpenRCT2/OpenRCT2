@@ -78,6 +78,7 @@
 #include "util/Util.h"
 #include "world/Park.h"
 
+#include <chrono>
 #include <cmath>
 #include <exception>
 #include <future>
@@ -96,6 +97,13 @@ using OpenRCT2::Audio::IAudioContext;
 
 namespace OpenRCT2
 {
+    namespace
+    {
+        using namespace std::chrono_literals;
+
+        static constexpr auto kForcedUpdateInterval = 25ms;
+    } // namespace
+
     class Context final : public IContext
     {
     private:
@@ -151,6 +159,10 @@ namespace OpenRCT2
         NewVersionInfo _newVersionInfo;
         bool _hasNewVersionInfo = false;
 
+        // We keep track of this to perform certain operations differently.
+        std::thread::id _mainThreadId{};
+        Timer _forcedUpdateTimer;
+
     public:
         // Singleton of Context.
         // Remove this when GetContext() is no longer called so that
@@ -183,6 +195,7 @@ namespace OpenRCT2
             Guard::Assert(Instance == nullptr);
 
             Instance = this;
+            _mainThreadId = std::this_thread::get_id();
         }
 
         ~Context() override
@@ -656,19 +669,23 @@ namespace OpenRCT2
             ContextOpenIntent(&intent);
         }
 
-        void SetProgress(
-            uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE, bool forceDraw = false) override
+        void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE) override
         {
+            if (_forcedUpdateTimer.GetElapsedTime() < kForcedUpdateInterval)
+                return;
+
+            _forcedUpdateTimer.Restart();
+
             auto intent = Intent(INTENT_ACTION_PROGRESS_SET);
             intent.PutExtra(INTENT_EXTRA_PROGRESS_OFFSET, currentProgress);
             intent.PutExtra(INTENT_EXTRA_PROGRESS_TOTAL, totalCount);
             intent.PutExtra(INTENT_EXTRA_STRING_ID, format);
             ContextOpenIntent(&intent);
 
-            // Ideally, we'd force a redraw at all times at this point. OpenGL has to be directed
-            // from the main thread, though, so this cannot be invoked when off main thread.
-            // It's fine (and indeed useful!) for synchronous calls, so we keep it as an option.
-            if (!gOpenRCT2Headless && forceDraw)
+            // When we call this from the main thread we can pump messages and redraw.
+            const auto isMainThread = _mainThreadId == std::this_thread::get_id();
+
+            if (!gOpenRCT2Headless && isMainThread)
             {
                 _uiContext->ProcessMessages();
                 WindowInvalidateByClass(WindowClass::ProgressWindow);
@@ -770,10 +787,10 @@ namespace OpenRCT2
                 WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
 
                 OpenProgress(asScenario ? STR_LOADING_SCENARIO : STR_LOADING_SAVED_GAME);
-                SetProgress(0, 100, STR_STRING_M_PERCENT, true);
+                SetProgress(0, 100, STR_STRING_M_PERCENT);
 
                 auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
-                SetProgress(10, 100, STR_STRING_M_PERCENT, true);
+                SetProgress(10, 100, STR_STRING_M_PERCENT);
 
                 // From this point onwards the currently loaded park will be corrupted if loading fails
                 // so reload the title screen if that happens.
@@ -781,12 +798,12 @@ namespace OpenRCT2
 
                 GameUnloadScripts();
                 _objectManager->LoadObjects(result.RequiredObjects, true);
-                SetProgress(90, 100, STR_STRING_M_PERCENT, true);
+                SetProgress(90, 100, STR_STRING_M_PERCENT);
 
                 // TODO: Have a separate GameState and exchange once loaded.
                 auto& gameState = ::GetGameState();
                 parkImporter->Import(gameState);
-                SetProgress(100, 100, STR_STRING_M_PERCENT, true);
+                SetProgress(100, 100, STR_STRING_M_PERCENT);
 
                 // Reset viewport rendering inhibition
                 WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);

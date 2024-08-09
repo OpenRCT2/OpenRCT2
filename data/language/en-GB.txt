@@ -3723,6 +3723,10 @@ STR_6648    :Loading plugin engine…
 STR_6649    :Loading scenario…
 STR_6650    :Loading saved game…
 STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Error Window
+STR_6653    :All sources shown
+STR_6654    :Showing {POP16}{UINT16} sources
+STR_6655    :Only ‘{POP16}{STRINGID}’
 
 #############
 # Scenarios #

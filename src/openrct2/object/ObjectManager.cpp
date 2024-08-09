@@ -16,6 +16,7 @@
 #include "../core/Console.hpp"
 #include "../core/JobPool.h"
 #include "../core/Memory.hpp"
+#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
@@ -566,7 +567,7 @@ private:
         constexpr auto kObjectLoadProgressRange = kObjectLoadMaxProgress - kObjectLoadMinProgress;
 
         const auto currentProgress = kObjectLoadMinProgress + (numLoaded * kObjectLoadProgressRange / numRequired);
-        OpenRCT2::GetContext()->SetProgress(static_cast<uint32_t>(currentProgress), 100, STR_STRING_M_PERCENT, true);
+        OpenRCT2::GetContext()->SetProgress(static_cast<uint32_t>(currentProgress), 100, STR_STRING_M_PERCENT);
     }
 
     void LoadObjects(std::vector<ObjectToLoad>& requiredObjects, bool reportProgress)

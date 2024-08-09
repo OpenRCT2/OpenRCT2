@@ -62,5 +62,3 @@ enum
     SCROLL_VERTICAL = (1 << 1),
     SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
 };
-
-void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index);

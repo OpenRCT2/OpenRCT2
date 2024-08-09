@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/ViewportInteraction.h"
 #include "../ride/Construction.h"
 
 #include <limits>
@@ -32,6 +33,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
@@ -182,6 +184,7 @@ static Widget _rideConstructionWidgets[] = {
     };
 
     static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type);
+    static void WindowRideConstructionUpdateActiveElements();
 
     /* move to ride.c */
     static void CloseRideWindowForConstruction(RideId rideId)
@@ -256,7 +259,7 @@ static Widget _rideConstructionWidgets[] = {
             // In order to cancel the yellow arrow correctly the
             // selection tool should be cancelled. Don't do a tool cancel if
             // another window has already taken control of tool.
-            if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
+            if (isToolActive(classification, number))
                 ToolCancel();
 
             HideGridlines();
@@ -932,7 +935,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if (_rideConstructionState == RideConstructionState::Place)
             {
-                if (!WidgetIsActiveTool(*this, WIDX_CONSTRUCT))
+                if (!isToolActive(*this, WIDX_CONSTRUCT))
                 {
                     Close();
                     return;
@@ -941,7 +944,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if (_rideConstructionState == RideConstructionState::EntranceExit)
             {
-                if (!WidgetIsActiveTool(*this, WIDX_ENTRANCE) && !WidgetIsActiveTool(*this, WIDX_EXIT))
+                if (!isToolActive(*this, WIDX_ENTRANCE) && !isToolActive(*this, WIDX_EXIT))
                 {
                     _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
                     WindowRideConstructionUpdateActiveElements();
@@ -953,8 +956,7 @@ static Widget _rideConstructionWidgets[] = {
                 case RideConstructionState::Front:
                 case RideConstructionState::Back:
                 case RideConstructionState::Selected:
-                    if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-                        && gCurrentToolWidget.window_classification == WindowClass::RideConstruction)
+                    if (isToolActive(WindowClass::RideConstruction))
                     {
                         ToolCancel();
                     }
@@ -1020,10 +1022,16 @@ static Widget _rideConstructionWidgets[] = {
                     MouseUpDemolish();
                     break;
                 case WIDX_NEXT_SECTION:
+                    VirtualFloorInvalidate();
                     RideSelectNextSection();
+                    if (!isToolActive(WindowClass::Scenery))
+                        VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_PREVIOUS_SECTION:
+                    VirtualFloorInvalidate();
                     RideSelectPreviousSection();
+                    if (!isToolActive(WindowClass::Scenery))
+                        VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_LEFT_CURVE:
                     RideConstructionInvalidateCurrentTrack();
@@ -1505,7 +1513,7 @@ static Widget _rideConstructionWidgets[] = {
             {
                 const auto& rtd = currentRide->GetRideTypeDescriptor();
                 const auto& ted = GetTrackElementDescriptor(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
-                stringId = ted.Description;
+                stringId = ted.description;
                 if (stringId == STR_RAPIDS && rtd.Category != RIDE_CATEGORY_WATER)
                 {
                     stringId = STR_LOG_BUMPS;
@@ -2192,7 +2200,7 @@ static Widget _rideConstructionWidgets[] = {
         {
             // If the scenery tool is active, we do not display our tiles as it
             // will conflict with larger scenery objects selecting tiles
-            if (SceneryToolIsActive())
+            if (isToolActive(WindowClass::Scenery))
             {
                 return;
             }
@@ -2200,7 +2208,7 @@ static Widget _rideConstructionWidgets[] = {
             const PreviewTrack* trackBlock;
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            trackBlock = ted.Block;
+            trackBlock = ted.block;
             trackDirection &= 3;
             gMapSelectionTiles.clear();
             while (trackBlock->index != 255)
@@ -2363,7 +2371,7 @@ static Widget _rideConstructionWidgets[] = {
                 }
 
                 const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                const PreviewTrack* trackBlock = ted.Block;
+                const PreviewTrack* trackBlock = ted.block;
                 newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
                 _gotoStartPlacementMode = true;
             }
@@ -2506,7 +2514,7 @@ static Widget _rideConstructionWidgets[] = {
                 track_type_t trackPiece = _specialElementDropdownState.Elements[i].TrackType;
 
                 const auto& ted = GetTrackElementDescriptor(trackPiece);
-                StringId trackPieceStringId = ted.Description;
+                StringId trackPieceStringId = ted.description;
                 if (trackPieceStringId == STR_RAPIDS)
                 {
                     auto currentRide = GetRide(_currentRideIndex);
@@ -2558,7 +2566,7 @@ static Widget _rideConstructionWidgets[] = {
                 entranceOrExitCoords, DirectionReverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
                 gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-            rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            rideEntranceExitPlaceAction.SetCallback([=, this](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
 
@@ -2577,9 +2585,13 @@ static Widget _rideConstructionWidgets[] = {
                 {
                     gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
                     WindowInvalidateByClass(WindowClass::RideConstruction);
-                    gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
+
+                    auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
                         ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                         : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+
+                    ToolCancel();
+                    ToolSet(*this, newToolWidgetIndex, Tool::Crosshair);
                 }
             });
             auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
@@ -2596,7 +2608,7 @@ static Widget _rideConstructionWidgets[] = {
             }
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto* trackBlock = ted.Block;
+            const auto* trackBlock = ted.block;
             while ((trackBlock + 1)->index != 0xFF)
                 trackBlock++;
 
@@ -2613,7 +2625,7 @@ static Widget _rideConstructionWidgets[] = {
             mapCoords.y = 4112 + (rotatedMapCoords.y / 2);
             mapCoords.z = 1024 + mapCoords.z;
 
-            auto previewZOffset = ted.Definition.PreviewZOffset;
+            auto previewZOffset = ted.definition.PreviewZOffset;
             mapCoords.z -= previewZOffset;
 
             const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);
@@ -2659,7 +2671,7 @@ static Widget _rideConstructionWidgets[] = {
             tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto* trackBlock = ted.Block;
+            const auto* trackBlock = ted.block;
             const auto* rideEntry = currentRide->GetRideEntry();
             auto clearanceHeight = (rideEntry != nullptr) ? rideEntry->Clearance
                                                           : currentRide->GetRideTypeDescriptor().Heights.ClearanceHeight;
@@ -3127,6 +3139,15 @@ static Widget _rideConstructionWidgets[] = {
                         _currentTrackPrice = PlaceProvisionalTrackPiece(
                             rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
                         WindowRideConstructionUpdateActiveElements();
+
+                        // Invalidate previous track piece (we may not be changing height!)
+                        VirtualFloorInvalidate();
+
+                        if (!isToolActive(WindowClass::Scenery))
+                        {
+                            // Set height to where the next track piece would begin
+                            VirtualFloorSetHeight(_currentTrackBegin.z);
+                        }
                     }
                 }
                 // update flashing arrow
@@ -3292,7 +3313,7 @@ static Widget _rideConstructionWidgets[] = {
         }
         // Loc6CC91B:
         const auto& ted = GetTrackElementDescriptor(trackType);
-        trackBlock = ted.Block;
+        trackBlock = ted.block;
         int32_t bx = 0;
         do
         {
@@ -3528,7 +3549,7 @@ static Widget _rideConstructionWidgets[] = {
         if (_trackPlaceZ == 0)
         {
             const auto& ted = GetTrackElementDescriptor(_currentTrackPieceType);
-            const PreviewTrack* trackBlock = ted.Block;
+            const PreviewTrack* trackBlock = ted.block;
             int32_t bx = 0;
             do
             {
@@ -4628,5 +4649,11 @@ static Widget _rideConstructionWidgets[] = {
             }
             WindowRideConstructionUpdateActiveElements();
         }
+    }
+
+    static void WindowRideConstructionUpdateActiveElements()
+    {
+        auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
+        ContextBroadcastIntent(&intent);
     }
 } // namespace OpenRCT2::Ui::Windows

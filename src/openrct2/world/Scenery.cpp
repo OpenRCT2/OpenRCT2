@@ -57,8 +57,6 @@ int16_t gSceneryShiftPressZOffset;
 int16_t gSceneryCtrlPressed;
 int16_t gSceneryCtrlPressZ;
 
-money64 gClearSceneryCost;
-
 using namespace OpenRCT2;
 
 // rct2: 0x009A3E74

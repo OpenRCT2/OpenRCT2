@@ -369,10 +369,6 @@ void GameLoadInit()
     }
     ResetEntitySpatialIndices();
     ResetAllSpriteQuadrantPlacements();
-    ScenerySetDefaultPlacementConfiguration();
-
-    auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
-    ContextBroadcastIntent(&intent);
 
     gWindowUpdateTicks = 0;
     gCurrentRealTimeTicks = 0;
@@ -381,8 +377,9 @@ void GameLoadInit()
 
     if (!gOpenRCT2Headless)
     {
-        intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
-        ContextBroadcastIntent(&intent);
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG));
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
     }
 
     gGameSpeed = 1;

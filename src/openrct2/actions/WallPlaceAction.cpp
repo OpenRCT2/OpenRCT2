@@ -448,20 +448,20 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
     int32_t z;
     if (sequence == 0)
     {
-        if (std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
+        if (std::get<0>(ted.sequenceProperties) & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
         {
             return false;
         }
 
-        if (ted.Definition.RollStart == TrackRoll::None)
+        if (ted.definition.RollStart == TrackRoll::None)
         {
-            if (!(ted.Coordinates.rotation_begin & 4))
+            if (!(ted.coordinates.rotation_begin & 4))
             {
                 direction = DirectionReverse(trackElement->GetDirection());
                 if (direction == _edge)
                 {
                     const PreviewTrack* trackBlock = ted.GetBlockForSequence(sequence);
-                    z = ted.Coordinates.z_begin;
+                    z = ted.coordinates.z_begin;
                     z = trackElement->BaseHeight + ((z - trackBlock->z) * 8);
                     if (z == z0)
                     {
@@ -472,31 +472,31 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         }
     }
 
-    const PreviewTrack* trackBlock = &ted.Block[sequence + 1];
+    const PreviewTrack* trackBlock = &ted.block[sequence + 1];
     if (trackBlock->index != 0xFF)
     {
         return false;
     }
 
-    if (ted.Definition.RollEnd != TrackRoll::None)
+    if (ted.definition.RollEnd != TrackRoll::None)
     {
         return false;
     }
 
-    direction = ted.Coordinates.rotation_end;
+    direction = ted.coordinates.rotation_end;
     if (direction & 4)
     {
         return false;
     }
 
-    direction = (trackElement->GetDirection() + ted.Coordinates.rotation_end) & kTileElementDirectionMask;
+    direction = (trackElement->GetDirection() + ted.coordinates.rotation_end) & kTileElementDirectionMask;
     if (direction != _edge)
     {
         return false;
     }
 
     trackBlock = ted.GetBlockForSequence(sequence);
-    z = ted.Coordinates.z_end;
+    z = ted.coordinates.z_end;
     z = trackElement->BaseHeight + ((z - trackBlock->z) * 8);
     return z == z0;
 }
@@ -605,7 +605,7 @@ bool WallPlaceAction::TrackIsAllowedWallEdges(
     if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_NO_WALLS))
     {
         const auto& ted = GetTrackElementDescriptor(trackType);
-        if (ted.SequenceElementAllowedWallEdges[trackSequence] & (1 << direction))
+        if (ted.sequenceElementAllowedWallEdges[trackSequence] & (1 << direction))
         {
             return true;
         }

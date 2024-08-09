@@ -3721,6 +3721,16 @@ STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 STR_6644    :Millores tàctils
 STR_6645    :Fa que alguns elements de la interfície gràfica siguin més grans perquè sigui més fàcil interactuar-hi.
+STR_6646    :Autor(a): {STRING}
+STR_6647    :Autors/es: {STRING}
+STR_6648    :Es carrega el motor del complement…
+STR_6649    :Es carrega l’escenari…
+STR_6650    :Es carrega la partida desada…
+STR_6651    :{STRING} ({COMMA32} %)
+STR_6652    :Finestra d’error
+STR_6653    :Es mostren tots els recursos
+STR_6654    :Es mostren {POP16}{UINT16} recursos
+STR_6655    :Només es mostra «{POP16}{STRINGID}»
 
 #############
 # Scenarios #

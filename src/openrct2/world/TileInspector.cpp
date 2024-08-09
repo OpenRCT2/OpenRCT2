@@ -739,7 +739,7 @@ namespace OpenRCT2::TileInspector
             originY = static_cast<int16_t>(coords.y);
             originZ -= trackBlock->z;
 
-            trackBlock = ted.Block;
+            trackBlock = ted.block;
             for (; trackBlock->index != 255; trackBlock++)
             {
                 CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };
@@ -820,7 +820,7 @@ namespace OpenRCT2::TileInspector
             originY = static_cast<int16_t>(coords.y);
             originZ -= trackBlock->z;
 
-            trackBlock = ted.Block;
+            trackBlock = ted.block;
             for (; trackBlock->index != 255; trackBlock++)
             {
                 CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };

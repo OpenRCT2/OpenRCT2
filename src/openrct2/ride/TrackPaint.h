@@ -399,8 +399,6 @@ constexpr bool kDiagSpriteMap[kNumOrthogonalDirections][4] = {
 
 extern const uint8_t mapLeftEighthTurnToOrthogonal[5];
 
-extern const size_t MiniGolfPeepAnimationLengths[];
-
 ImageId GetStationColourScheme(PaintSession& session, const TrackElement& trackElement);
 ImageId GetShopSupportColourScheme(PaintSession& session, const TrackElement& trackElement);
 

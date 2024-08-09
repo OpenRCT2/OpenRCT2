@@ -149,6 +149,7 @@ static WindowClass window_themes_tab_1_classes[] = {
 
 static WindowClass window_themes_tab_2_classes[] = {
     WindowClass::ParkInformation,
+    WindowClass::EditorParkEntrance,
     WindowClass::Finances,
     WindowClass::NewCampaign,
     WindowClass::Research,
@@ -213,6 +214,7 @@ static WindowClass window_themes_tab_6_classes[] = {
 };
 
 static WindowClass window_themes_tab_7_classes[] = {
+    WindowClass::Error,
     WindowClass::SavePrompt,
     WindowClass::DemolishRidePrompt,
     WindowClass::FirePrompt,
@@ -221,7 +223,6 @@ static WindowClass window_themes_tab_7_classes[] = {
     WindowClass::ProgressWindow,
     WindowClass::NetworkStatus,
 };
-    // clang-format on
 
     static WindowClass* window_themes_tab_classes[] = {
         nullptr,
@@ -233,6 +234,7 @@ static WindowClass window_themes_tab_7_classes[] = {
         window_themes_tab_6_classes,
         window_themes_tab_7_classes,
     };
+    // clang-format on
 
 #pragma endregion
 

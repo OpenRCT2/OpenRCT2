@@ -1,4 +1,15 @@
-0.4.13 (in development)
+0.4.14 (in development)
+------------------------------------------------------------------------
+- Feature: [#15750] Allow using different types of park entrance in one park.
+- Feature: [#22392] [Plugin] Expose ride vehicle’s spin to the plugin API.
+- Feature: [#22414] Finance graphs can be resized.
+- Change: [#21659] Increase the Hybrid Roller Coaster’s maximum lift speed to 17 km/h (11 mph).
+- Change: [#22466] The Clear Scenery tool now uses a bulldozer cursor instead of a generic crosshair.
+- Fix: [#21908] Errors showing up when placing/moving track design previews.
+- Fix: [#22307] Hover tooltips in financial charts are not invalidated properly.
+- Fix: [#22395, #22396] Misaligned tick marks in financial and guest count graphs (original bug).
+
+0.4.13 (2024-08-04)
 ------------------------------------------------------------------------
 - Feature: [#19596] Allow for playing back a replay without camera movement or alert box.
 - Feature: [#20831] The ride selection window now shows object authors if debugging tools are active.
@@ -9,23 +20,37 @@
 - Feature: [#22272] [Plugin] Expose ride vehicle’s current track type via car trackLocation.
 - Feature: [#22301] Loading save games or scenarios now indicates loading progress.
 - Feature: [OpenMusic#54] Added Progressive ride music style (feat. Approaching Nirvana).
-- Improved: [#22361] Add additional colour preset for the Observation Tower.
+- Improved: [#22352] The object selection window now groups relevant object tabs together.
+- Improved: [#22357] Error messages are now themeable and easier to read.
+- Improved: [#22361, objects#342, objects#343] Add additional colour presets to the Observation Tower, Twist, and Ferris Wheel.
+- Improved: [#22433] Increase the network timeout from 7 to 20 seconds, should help slow clients getting disconnected.
+- Improved: [#22437] File indexing now properly uses all CPU power, improving object and scenario indexing.
+- Improved: [#22449] Reduced the time it takes to load and index objects, scenarios and tracks.
+- Change: [#12292] The ‘Toggle visibility of toolbars’ shortcut is no longer assigned by default.
 - Change: [#21494] Display pixel density is now taken into account for the initial window scale setting.
 - Change: [#22230] The plugin/script engine is now initialised off the main thread.
 - Change: [#22251] Hide author info in the scenery window unless debug tools are active.
+- Change: [#22283] Let heavy snow and blizzard increase chance of brakes failure.
 - Change: [#22309] The scenario editor now supports loading landscapes from .sea save files.
+- Fix: [#17390] Glitchy animations for the ride type tabs in the object selection window.
 - Fix: [#19210] The load/save window executes the loading code twice, resulting in a slowdown.
+- Fix: [#21175] Terraform tool hotkeys don't work when toolbars are hidden.
 - Fix: [#22056] Potential crash upon exiting the game.
+- Fix: [#22101] Wrong tunnel shapes on Log Flume and Giga, Hybrid, Single-Rail and Alpine Coasters.
 - Fix: [#22208] Cursor may fail to register hits in some cases (original bug).
 - Fix: [#22209] Water tool selection may disappear near edge of map.
 - Fix: [#22222] Staff list may remain invalid when changing tabs.
 - Fix: [#22265] Button for switching covered tracks on slides doesn’t stay pressed.
 - Fix: [#22284] Unrated rides cause high amount of nausea.
+- Fix: [#22292] Progress bar widgets in guest and ride windows are not updating correctly.
 - Fix: [#22304] Graphs don’t draw lines on the left edge of the screen.
+- Fix: [#22308] OpenGL draws lines incorrectly in some cases.
 - Fix: [#22318] Water sparkles are missing if transparent water is enabled without RCT1 linked.
 - Fix: [#22333] Tile inspector closes other tool windows.
 - Fix: [#22339] Printing ui.tool.cursor in console crashes the game.
 - Fix: [#22348] Progress bar screen doesn’t handle window resizing.
+- Fix: [#22389] Alpine coaster has wrong tunnel entrance type.
+- Fix: [#22435] [Plugin] Off-by-one pixel issue in active widget width and height setters.
 
 0.4.12 (2024-07-07)
 ------------------------------------------------------------------------
@@ -127,7 +152,6 @@
 - Improved: [objects#309] Updated names for dodgems and flying saucers vehicles.
 - Improved: [objects#313] buildMenuPriority for dodgems and flying saucers vehicles.
 - Change: [#21529] Classify “Southern Sands”, “Tiny Towers”, “Nevermore Park”, “Pacifica” as expert scenarios.
-- Change: [#21545] Reorder Wacky Worlds scenarios and adjust their difficulty classification.
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#6725] Z fighting issue with cars using animated doors.
 - Fix: [#18413] Crash when mouse over a hacked train.

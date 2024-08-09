@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../ride/Construction.h"
+
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -34,7 +36,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 166;
 
     // clang-format off
-enum {
+enum : WidgetIndex
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -218,14 +221,14 @@ static Widget window_maze_construction_widgets[] = {
             switch (_rideConstructionState)
             {
                 case RideConstructionState::Place:
-                    if (!WidgetIsActiveTool(*this, WIDX_MAZE_DIRECTION_GROUPBOX))
+                    if (!isToolActive(*this, WIDX_MAZE_DIRECTION_GROUPBOX))
                     {
                         Close();
                         return;
                     }
                     break;
                 case RideConstructionState::EntranceExit:
-                    if (!WidgetIsActiveTool(*this, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(*this, WIDX_MAZE_EXIT))
+                    if (!isToolActive(*this, WIDX_MAZE_ENTRANCE) && !isToolActive(*this, WIDX_MAZE_EXIT))
                     {
                         _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
                         WindowMazeConstructionUpdatePressedWidgets();
@@ -240,8 +243,7 @@ static Widget window_maze_construction_widgets[] = {
                 case RideConstructionState::Front:
                 case RideConstructionState::Back:
                 case RideConstructionState::Selected:
-                    if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-                        && gCurrentToolWidget.window_classification == WindowClass::RideConstruction)
+                    if (isToolActive(WindowClass::RideConstruction))
                     {
                         ToolCancel();
                     }
@@ -356,7 +358,7 @@ static Widget window_maze_construction_widgets[] = {
                 entranceOrExitCoords, DirectionReverse(entranceOrExitCoords.direction), rideIndex,
                 gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-            rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            rideEntranceExitPlaceAction.SetCallback([=, this](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
 
@@ -373,9 +375,12 @@ static Widget window_maze_construction_widgets[] = {
                 {
                     gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
                     WindowInvalidateByClass(WindowClass::RideConstruction);
-                    gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
-                        ? WIDX_MAZE_ENTRANCE
-                        : WIDX_MAZE_EXIT;
+
+                    auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WIDX_MAZE_ENTRANCE
+                                                                                                          : WIDX_MAZE_EXIT;
+
+                    ToolCancel();
+                    ToolSet(*this, newToolWidgetIndex, Tool::Crosshair);
 
                     WindowMazeConstructionUpdatePressedWidgets();
                 }
@@ -454,7 +459,7 @@ static Widget window_maze_construction_widgets[] = {
         switch (_rideConstructionState)
         {
             case RideConstructionState::EntranceExit:
-                if (gCurrentToolWidget.widget_index == WIDX_MAZE_ENTRANCE)
+                if (isToolActive(WindowClass::RideConstruction, WIDX_MAZE_ENTRANCE))
                 {
                     pressedWidgets |= EnumToFlag(WIDX_MAZE_ENTRANCE);
                 }

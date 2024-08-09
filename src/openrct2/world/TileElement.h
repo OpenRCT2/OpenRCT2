@@ -553,15 +553,16 @@ struct EntranceElement : TileElementBase
     static constexpr TileElementType ElementType = TileElementType::Entrance;
 
 private:
-    uint8_t entranceType;      // 5
-    uint8_t SequenceIndex;     // 6. Only uses the lower nibble.
-    StationIndex stationIndex; // 7
-    ObjectEntryIndex PathType; // 8
-    RideId rideIndex;          // A
-    uint8_t flags2;            // C
+    uint8_t entranceType;        // 5
+    uint8_t SequenceIndex;       // 6. Only uses the lower nibble.
+    StationIndex stationIndex;   // 7
+    ObjectEntryIndex PathType;   // 8
+    RideId rideIndex;            // A
+    uint8_t flags2;              // C
+    ObjectEntryIndex entryIndex; // D
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t Pad0D[3];
+    uint8_t Pad0F[1];
 #pragma clang diagnostic pop
 
 public:
@@ -590,6 +591,9 @@ public:
     const PathSurfaceDescriptor* GetPathSurfaceDescriptor() const;
 
     int32_t GetDirections() const;
+
+    ObjectEntryIndex getEntryIndex() const;
+    void setEntryIndex(ObjectEntryIndex newIndex);
 };
 static_assert(sizeof(EntranceElement) == 16);
 

@@ -19,13 +19,59 @@
 #include <type_traits>
 #include <vector>
 
+#ifdef _MSC_VER
+#    include <intrin.h>
+#endif
+
 int32_t SquaredMetresToSquaredFeet(int32_t squaredMetres);
 int32_t MetresToFeet(int32_t metres);
 int32_t MphToKmph(int32_t mph);
 int32_t MphToDmps(int32_t mph);
 
-int32_t UtilBitScanForward(int32_t source);
-int32_t UtilBitScanForward(int64_t source);
+inline int32_t UtilBitScanForward(uint32_t source)
+{
+#if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
+    unsigned long i;
+    uint8_t success = _BitScanForward(&i, source);
+    return success != 0 ? i : -1;
+#elif defined(__GNUC__)
+    int32_t success = __builtin_ffs(source);
+    return success - 1;
+#else
+#    pragma message("Falling back to iterative bitscan forward, consider using intrinsics")
+    // This is a low-hanging optimisation boost, check if your compiler offers
+    // any intrinsic.
+    // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
+    for (int32_t i = 0; i < 32; i++)
+        if (source & (1u << i))
+            return i;
+
+    return -1;
+#endif
+}
+
+inline int32_t UtilBitScanForward(uint64_t source)
+{
+#if defined(_MSC_VER) && (_MSC_VER >= 1400) && defined(_M_X64) // Visual Studio 2005
+    unsigned long i;
+    uint8_t success = _BitScanForward64(&i, source);
+    return success != 0 ? i : -1;
+#elif defined(__GNUC__)
+    int32_t success = __builtin_ffsll(source);
+    return success - 1;
+#else
+#    pragma message("Falling back to iterative bitscan forward, consider using intrinsics")
+    // This is a low-hanging optimisation boost, check if your compiler offers
+    // any intrinsic.
+    // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
+    for (int32_t i = 0; i < 64; i++)
+        if (source & (1uLL << i))
+            return i;
+
+    return -1;
+#endif
+}
+
 int32_t StrLogicalCmp(char const* a, char const* b);
 char* SafeStrCpy(char* destination, const char* source, size_t num);
 char* SafeStrCat(char* destination, const char* source, size_t size);
@@ -79,6 +125,12 @@ template<typename... T> [[nodiscard]] constexpr uint64_t EnumsToFlags(T... types
 template<typename TEnum> constexpr auto EnumValue(TEnum enumerator) noexcept
 {
     return static_cast<std::underlying_type_t<TEnum>>(enumerator);
+}
+
+template<typename T> constexpr bool HasFlag(uint64_t holder, T v)
+{
+    static_assert(std::is_enum_v<T>);
+    return (holder & EnumToFlag(v)) != 0;
 }
 
 constexpr uint8_t HiByte(uint16_t value)

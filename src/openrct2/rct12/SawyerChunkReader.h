@@ -13,7 +13,9 @@
 #include "../util/SawyerCoding.h"
 #include "SawyerChunk.h"
 
+#include <cstdint>
 #include <memory>
+#include <vector>
 
 class SawyerChunkException : public IOException
 {
@@ -85,9 +87,9 @@ public:
     }
 
 private:
-    static size_t DecodeChunk(void* dst, size_t dstCapacity, const void* src, const SawyerCodingChunkHeader& header);
-    static size_t DecodeChunkRLERepeat(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
-    static size_t DecodeChunkRLE(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
-    static size_t DecodeChunkRepeat(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
-    static size_t DecodeChunkRotate(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
+    static std::vector<uint8_t> DecodeChunk(const void* src, const SawyerCodingChunkHeader& header);
+    static std::vector<uint8_t> DecodeChunkRLERepeat(const void* src, size_t srcLength);
+    static std::vector<uint8_t> DecodeChunkRLE(const void* src, size_t srcLength);
+    static std::vector<uint8_t> DecodeChunkRepeat(const void* src, size_t srcLength);
+    static std::vector<uint8_t> DecodeChunkRotate(const void* src, size_t srcLength);
 };

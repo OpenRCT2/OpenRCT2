@@ -24,6 +24,7 @@
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/rct2/T6Exporter.h>
+#include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/ui/WindowManager.h>
@@ -143,6 +144,8 @@ public:
                 return TransparencyOpen();
             case WindowClass::AssetPacks:
                 return AssetPacksOpen();
+            case WindowClass::EditorParkEntrance:
+                return EditorParkEntranceOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -319,18 +322,7 @@ public:
                 // Check if window is already open
                 auto* window = WindowBringToFrontByClass(WindowClass::Scenery);
                 if (window == nullptr)
-                {
-                    auto* tlbrWindow = WindowFindByClass(WindowClass::TopToolbar);
-                    if (tlbrWindow != nullptr)
-                    {
-                        tlbrWindow->Invalidate();
-                        if (!ToolSet(*tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
-                        {
-                            InputSetFlag(INPUT_FLAG_6, true);
-                            window = SceneryOpen();
-                        }
-                    }
-                }
+                    ToggleSceneryWindow();
 
                 // Switch to new scenery tab
                 WindowScenerySetSelectedTab(intent->GetUIntExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX));

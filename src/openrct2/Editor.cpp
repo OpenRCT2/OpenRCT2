@@ -384,14 +384,13 @@ namespace OpenRCT2::Editor
         windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
 
         ResetAllSpriteQuadrantPlacements();
-        ScenerySetDefaultPlacementConfiguration();
 
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
 
         gWindowUpdateTicks = 0;
         LoadPalette();
-
-        windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
     }
 
     /**

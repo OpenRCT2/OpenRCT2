@@ -178,8 +178,6 @@ namespace OpenRCT2::RCT1
         {
             Initialise(gameState);
 
-            CreateAvailableObjectMappings();
-
             ImportRides();
             ImportRideMeasurements();
             ImportEntities();

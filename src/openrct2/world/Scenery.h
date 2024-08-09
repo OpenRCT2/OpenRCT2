@@ -66,11 +66,7 @@ extern int16_t gSceneryCtrlPressZ;
 
 extern const CoordsXY SceneryQuadrantOffsets[];
 
-extern money64 gClearSceneryCost;
-
-void SceneryInit();
 void SceneryUpdateTile(const CoordsXY& sceneryPos);
-void ScenerySetDefaultPlacementConfiguration();
 void SceneryRemoveGhostToolPlacement();
 
 struct WallSceneryEntry;

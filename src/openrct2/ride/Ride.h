@@ -13,6 +13,7 @@
 #include "../actions/ResultWithMessage.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
+#include "../localisation/Formatter.h"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
@@ -1046,7 +1047,6 @@ bool TrackBlockGetPreviousFromZero(
 
 void RideGetStartOfTrack(CoordsXYE* output);
 
-void WindowRideConstructionUpdateActiveElements();
 money64 RideEntranceExitPlaceGhost(
     const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
 

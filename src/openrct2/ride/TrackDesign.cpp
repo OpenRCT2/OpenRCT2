@@ -203,8 +203,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     z = newCoords->z;
 
     const auto& ted = GetTrackElementDescriptor(trackElement.element->AsTrack()->GetTrackType());
-    const TrackCoordinates* trackCoordinates = &ted.Coordinates;
-    const auto* trackBlock = ted.Block;
+    const TrackCoordinates* trackCoordinates = &ted.coordinates;
+    const auto* trackBlock = ted.block;
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
     // start.
@@ -866,7 +866,7 @@ static void TrackDesignMirrorRide(TrackDesign& td)
     for (auto& track : td.trackElements)
     {
         const auto& ted = GetTrackElementDescriptor(track.type);
-        track.type = ted.MirrorElement;
+        track.type = ted.mirrorElement;
     }
 }
 
@@ -885,7 +885,7 @@ static void TrackDesignMirrorMaze(TrackDesign& td)
     {
         maze.location.y = -maze.location.y;
 
-        auto mazeEntry = maze.mazeEntry;
+        uint32_t mazeEntry = maze.mazeEntry;
         uint16_t newEntry = 0;
         for (uint8_t position = UtilBitScanForward(mazeEntry); position != 0xFF; position = UtilBitScanForward(mazeEntry))
         {
@@ -1565,7 +1565,7 @@ static GameActions::Result TrackDesignPlaceRide(
         switch (tds.placeOperation)
         {
             case TrackPlaceOperation::drawOutlines:
-                for (const PreviewTrack* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
+                for (const PreviewTrack* trackBlock = ted.block; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     TrackDesignUpdatePreviewBounds(tds, { tile, newCoords.z });
@@ -1574,8 +1574,8 @@ static GameActions::Result TrackDesignPlaceRide(
                 break;
             case TrackPlaceOperation::removeGhost:
             {
-                const TrackCoordinates* trackCoordinates = &ted.Coordinates;
-                const PreviewTrack* trackBlock = ted.Block;
+                const TrackCoordinates* trackCoordinates = &ted.coordinates;
+                const PreviewTrack* trackBlock = ted.block;
                 int32_t tempZ = newCoords.z - trackCoordinates->z_begin + trackBlock->z;
                 auto trackRemoveAction = TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
@@ -1590,7 +1590,7 @@ static GameActions::Result TrackDesignPlaceRide(
             case TrackPlaceOperation::placeGhost:
             case TrackPlaceOperation::placeTrackPreview:
             {
-                const TrackCoordinates* trackCoordinates = &ted.Coordinates;
+                const TrackCoordinates* trackCoordinates = &ted.coordinates;
 
                 // di
                 int16_t tempZ = newCoords.z - trackCoordinates->z_begin;
@@ -1643,8 +1643,8 @@ static GameActions::Result TrackDesignPlaceRide(
             }
             case TrackPlaceOperation::getPlaceZ:
             {
-                int32_t tempZ = newCoords.z - ted.Coordinates.z_begin;
-                for (const PreviewTrack* trackBlock = ted.Block; trackBlock->index != 0xFF; trackBlock++)
+                int32_t tempZ = newCoords.z - ted.coordinates.z_begin;
+                for (const PreviewTrack* trackBlock = ted.block; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     if (!MapIsLocationValid(tile))
@@ -1685,7 +1685,7 @@ static GameActions::Result TrackDesignPlaceRide(
             }
         }
 
-        const TrackCoordinates& track_coordinates = ted.Coordinates;
+        const TrackCoordinates& track_coordinates = ted.coordinates;
         auto offsetAndRotatedTrack = CoordsXY{ newCoords }
             + CoordsXY{ track_coordinates.x, track_coordinates.y }.Rotate(rotation);
 
