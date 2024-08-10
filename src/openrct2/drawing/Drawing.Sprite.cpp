@@ -175,7 +175,7 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
         // the change. This reverts the offsets to their RCT2 values.
         for (const auto& animation : sprite_peep_pickup_starts)
         {
-            for (int i = 0; i < SPR_PEEP_PICKUP_COUNT; ++i)
+            for (auto i = 0u; i < SPR_PEEP_PICKUP_COUNT; ++i)
             {
                 elements[animation.start + i].x_offset -= animation.x_offset;
                 elements[animation.start + i].y_offset -= animation.y_offset;
