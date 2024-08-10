@@ -2,7 +2,7 @@
     "scenario_name": "White Water Park (.sea)",
     "sha256": "ed85becf8aeed8cbde47583cfe86c6fa621f1b8f0a3734acfb960277939e7699",
     "land_ownership": {
-        "construction_rights_owned": {
+        "owned": {
             "coordinates": [
                 [ 42, 85 ], [ 89, 42 ]
             ]
