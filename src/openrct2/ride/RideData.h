@@ -21,9 +21,9 @@
 
 #include "../audio/audio.h"
 #include "../core/BitSet.hpp"
+#include "../drawing/ImageIndexType.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
-#include "../sprites.h"
 #include "../util/Util.h"
 #include "Ride.h"
 #include "RideAudio.h"
