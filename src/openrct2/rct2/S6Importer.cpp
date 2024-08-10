@@ -506,7 +506,7 @@ namespace OpenRCT2::RCT2
 
             gameState.Park.Name = GetUserString(_s6.ParkName);
 
-            RCT12::FetchAndApplyScenarioPatch(_s6Path, _isScenario);
+            OpenRCT2::RCT12::FetchAndApplyScenarioPatch(_s6Path, _isScenario);
 
             ResearchDetermineFirstOfType();
             UpdateConsolidatedPatrolAreas();

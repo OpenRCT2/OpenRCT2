@@ -11,10 +11,10 @@
 
 #include "../core/String.hpp"
 
-namespace RCT12
+namespace OpenRCT2::RCT12
 {
     void FetchAndApplyScenarioPatch(u8string_view scenarioPath, bool isScenario);
     void ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenarioSHA, bool isScenario);
     /*SetDryRun should be used only for testing*/
     void SetDryRun(bool enable);
-} // namespace RCT12
+} // namespace OpenRCT2::RCT12

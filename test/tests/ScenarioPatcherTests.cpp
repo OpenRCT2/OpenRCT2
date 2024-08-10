@@ -34,15 +34,15 @@ TEST(FetchAndApplyScenarioPatch, expected_json_format)
     auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DIRBASE::OPENRCT2, OpenRCT2::DIRID::SCENARIO_PATCHES);
 
     std::error_code ec;
-    RCT12::SetDryRun(true);
-    Guard::SetAssertBehaviour(ASSERT_BEHAVIOUR::ABORT);
+    OpenRCT2::RCT12::SetDryRun(true);
+    OpenRCT2::Guard::SetAssertBehaviour(ASSERT_BEHAVIOUR::ABORT);
     static const u8string dummySHA;
     for (const fs::directory_entry& entry : fs::directory_iterator(scenarioPatches, ec))
     {
         auto path = entry.path().u8string();
-        if (String::EndsWith(path, ".parkpatch"))
+        if (OpenRCT2::String::EndsWith(path, ".parkpatch"))
         {
-            RCT12::ApplyScenarioPatch(path, dummySHA, true);
+            OpenRCT2::RCT12::ApplyScenarioPatch(path, dummySHA, true);
         }
     }
     SUCCEED();
