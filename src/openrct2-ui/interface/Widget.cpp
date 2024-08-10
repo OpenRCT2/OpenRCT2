@@ -682,9 +682,8 @@ namespace OpenRCT2::Ui
         bottomRight.x--;
         bottomRight.y--;
 
-        auto scrollSize = w.OnScrollGetSize(widgetIndex);
-        bool hScrollNeeded = scrollSize.width > widget.width() && (scroll.flags & HSCROLLBAR_VISIBLE);
-        bool vScrollNeeded = scrollSize.height > widget.height() && (scroll.flags & VSCROLLBAR_VISIBLE);
+        bool hScrollNeeded = scroll.h_right > widget.width() && (scroll.flags & HSCROLLBAR_VISIBLE);
+        bool vScrollNeeded = scroll.v_bottom > widget.height() && (scroll.flags & VSCROLLBAR_VISIBLE);
 
         // Horizontal scrollbar
         if (hScrollNeeded)
