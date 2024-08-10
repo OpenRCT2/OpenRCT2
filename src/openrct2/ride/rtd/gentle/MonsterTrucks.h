@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../drawing/LightFX.h"
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
