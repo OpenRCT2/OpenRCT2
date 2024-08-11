@@ -26,7 +26,6 @@
 #include "../platform/Platform.h"
 #include "../ride/RideAudio.h"
 #include "../scenario/Scenario.h"
-#include "../sprites.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Map.h"

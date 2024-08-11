@@ -822,7 +822,7 @@ namespace OpenRCT2::Ui
         const auto& widget = w.widgets[widgetIndex];
 
         // Get the image
-        if (static_cast<int32_t>(widget.image.ToUInt32()) == SPR_NONE)
+        if (widget.image.ToUInt32() == kSpriteIdNull)
             return;
         auto image = widget.image;
 

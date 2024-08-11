@@ -49,6 +49,7 @@
 #include "../scenario/Scenario.h"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
+#include "../sprites.h"
 #include "../util/Math.hpp"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"

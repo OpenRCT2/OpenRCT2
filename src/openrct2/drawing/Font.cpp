@@ -286,7 +286,7 @@ void FontSpriteInitialiseCharacters()
     for (const auto& fontStyle : FontStyles)
     {
         int32_t glyphOffset = EnumValue(fontStyle) * SPR_G2_GLYPH_COUNT;
-        for (int32_t glyphIndex = 0; glyphIndex < SPR_G2_GLYPH_COUNT; glyphIndex++)
+        for (auto glyphIndex = 0u; glyphIndex < SPR_G2_GLYPH_COUNT; glyphIndex++)
         {
             const G1Element* g1 = GfxGetG1Element(glyphIndex + SPR_G2_CHAR_BEGIN + glyphOffset);
             int32_t width = 0;

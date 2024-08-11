@@ -1444,7 +1444,7 @@ ImageId ScrollingTextSetup(
 
     _drawSCrollNextIndex++;
     ft.Rewind();
-    int32_t scrollIndex = ScrollingTextGetMatchingOrOldest(stringId, ft, scroll, scrollingMode, colour);
+    uint32_t scrollIndex = ScrollingTextGetMatchingOrOldest(stringId, ft, scroll, scrollingMode, colour);
     if (scrollIndex >= SPR_SCROLLING_TEXT_START)
         return ImageId(scrollIndex);
 

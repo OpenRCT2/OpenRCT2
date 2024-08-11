@@ -10,7 +10,6 @@
 #pragma once
 
 #include <openrct2-ui/interface/Window.h>
-#include <openrct2/sprites.h>
 
 constexpr uint16_t kLandToolMinimumSize = 1;
 constexpr uint16_t kLandToolMaximumSize = 64;

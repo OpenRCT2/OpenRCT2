@@ -21,9 +21,9 @@
 
 #include "../audio/audio.h"
 #include "../core/BitSet.hpp"
+#include "../drawing/ImageIndexType.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
-#include "../sprites.h"
 #include "../util/Util.h"
 #include "Ride.h"
 #include "RideAudio.h"
@@ -580,7 +580,7 @@ constexpr RideTypeDescriptor DummyRTD =
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 0,
     .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
-    .ColourPreview = { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) },
+    .ColourPreview = { kSpriteIdNull, kSpriteIdNull },
     .ColourKey = RideColourKey::Ride,
     .Name = "invalid",
 	.RatingsData =
