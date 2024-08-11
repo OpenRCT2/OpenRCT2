@@ -341,7 +341,7 @@ static size_t GetMaxObjectsForSceneryType(const uint8_t sceneryType)
         case SCENERY_TYPE_WALL:
             return MAX_WALL_SCENERY_OBJECTS;
         case SCENERY_TYPE_LARGE:
-            return MAX_LARGE_SCENERY_OBJECTS;
+            return kMaxLargeSceneryObjects;
         case SCENERY_TYPE_BANNER:
             return MAX_BANNER_OBJECTS;
         default:

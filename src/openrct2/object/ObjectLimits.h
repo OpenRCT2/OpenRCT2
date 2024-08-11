@@ -15,7 +15,7 @@
 // Subtract 1 to reserve the NULL entry identifier.
 constexpr uint16_t kMaxRideObjects = 2047;
 constexpr uint16_t kMaxSmallSceneryObjects = 2047;
-constexpr uint16_t MAX_LARGE_SCENERY_OBJECTS = 2047;
+constexpr uint16_t kMaxLargeSceneryObjects = 2047;
 constexpr uint16_t MAX_WALL_SCENERY_OBJECTS = 2047;
 constexpr uint16_t MAX_BANNER_OBJECTS = 255;
 constexpr uint16_t MAX_PATH_OBJECTS = 255;

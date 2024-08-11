@@ -87,7 +87,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         LOG_ERROR("Invalid tertiary colour %u", _tertiaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_INVALID_COLOUR);
     }
-    else if (_sceneryType >= MAX_LARGE_SCENERY_OBJECTS)
+    else if (_sceneryType >= kMaxLargeSceneryObjects)
     {
         LOG_ERROR("Invalid sceneryType %u", _sceneryType);
         return GameActions::Result(
