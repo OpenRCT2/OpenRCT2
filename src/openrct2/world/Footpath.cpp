@@ -2187,7 +2187,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
 static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
 {
     bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode);
-    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
     {
         auto pathEntry = GetPathSurfaceEntry(i);
         if (pathEntry != nullptr)

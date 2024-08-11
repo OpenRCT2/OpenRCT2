@@ -642,7 +642,7 @@ struct TrackSceneryEntry
 
 static ObjectEntryIndex TrackDesignGetDefaultSurfaceIndex(bool isQueue)
 {
-    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
     {
         auto footpathSurfaceObj = GetPathSurfaceEntry(i);
         if (footpathSurfaceObj != nullptr)

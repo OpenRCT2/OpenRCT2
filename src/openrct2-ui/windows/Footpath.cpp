@@ -626,7 +626,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
 
             _dropdownEntries.clear();
             std::optional<size_t> defaultIndex;
-            for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
+            for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
             {
                 const auto* pathType = static_cast<FootpathSurfaceObject*>(
                     objManager.GetLoadedObject(ObjectType::FootpathSurface, i));

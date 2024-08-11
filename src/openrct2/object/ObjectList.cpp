@@ -38,7 +38,7 @@ static constexpr std::array<int32_t, EnumValue(ObjectType::Count)> kObjectEntryG
     kMaxTerrainEdgeObjects,
     kMaxStationObjects,
     kMaxMusicObjects,
-    MAX_FOOTPATH_SURFACE_OBJECTS,
+    kMaxFootpathSurfaceObjects,
     MAX_FOOTPATH_RAILINGS_OBJECTS,
     MAX_AUDIO_OBJECTS,
 };

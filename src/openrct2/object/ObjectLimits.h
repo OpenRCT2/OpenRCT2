@@ -28,7 +28,7 @@ constexpr uint16_t kMaxTerrainSurfaceObjects = 255;
 constexpr uint16_t kMaxTerrainEdgeObjects = 255;
 constexpr uint16_t kMaxStationObjects = 255;
 constexpr uint16_t kMaxMusicObjects = 255;
-constexpr uint16_t MAX_FOOTPATH_SURFACE_OBJECTS = 255;
+constexpr uint16_t kMaxFootpathSurfaceObjects = 255;
 constexpr uint16_t MAX_FOOTPATH_RAILINGS_OBJECTS = 255;
 constexpr uint16_t MAX_AUDIO_OBJECTS = 255;
 
