@@ -335,7 +335,7 @@ static size_t GetMaxObjectsForSceneryType(const uint8_t sceneryType)
     switch (sceneryType)
     {
         case SCENERY_TYPE_SMALL:
-            return MAX_SMALL_SCENERY_OBJECTS;
+            return kMaxSmallSceneryObjects;
         case SCENERY_TYPE_PATH_ITEM:
             return MAX_PATH_ADDITION_OBJECTS;
         case SCENERY_TYPE_WALL:
