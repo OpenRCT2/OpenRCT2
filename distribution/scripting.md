@@ -171,6 +171,7 @@ registerPlugin({
     version: '1.2', // Your plugin version
     authors: ['Your Name'],
     type: 'remote',
+    licence: 'MIT', // Specify your licence here (MIT is just a recommendation). You can use the `SPDX` identifier, or point to a file that contains the licence text.
     minApiVersion: 7, // OpenRCT2 plugin API v7 or higher is required to run your plugin
     main: main
 });
