@@ -63,11 +63,11 @@ static Widget window_land_rights_widgets[] = {
     MakeRemapWidget({ 54, 32}, { 16, 16}, WindowWidgetType::TrnBtn, WindowColour::Primary, SPR_LAND_TOOL_INCREASE,          STR_ADJUST_LARGER_LAND_RIGHTS_TIP              ), // increment size
     MakeRemapWidget({ 22, 53}, { 24, 24}, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_BUY_LAND_RIGHTS,             STR_BUY_LAND_RIGHTS_TIP                        ), // land rights
     MakeRemapWidget({ 52, 53}, { 24, 24}, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_BUY_CONSTRUCTION_RIGHTS,     STR_BUY_CONSTRUCTION_RIGHTS_TIP                ), // construction rights
-    MakeWidget     ({100, 22}, {100, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_NOT_OWNED,              STR_SET_LAND_TO_BE_NOT_OWNED_TIP               ),
-    MakeWidget     ({100, 38}, {100, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
-    MakeWidget     ({100, 54}, {100, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
-    MakeWidget     ({100, 70}, {100, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
-    MakeWidget     ({100, 86}, {100, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
+    MakeWidget     ({100, 22}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_NOT_OWNED,              STR_SET_LAND_TO_BE_NOT_OWNED_TIP               ),
+    MakeWidget     ({100, 38}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
+    MakeWidget     ({100, 54}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
+    MakeWidget     ({100, 70}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
+    MakeWidget     ({100, 86}, {170, 12}, WindowWidgetType::Empty,  WindowColour::Primary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
     kWidgetsEnd,
 };
     // clang-format on
