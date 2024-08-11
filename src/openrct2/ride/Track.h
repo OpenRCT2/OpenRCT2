@@ -148,22 +148,22 @@ enum TrackGroup : uint8_t
 
 struct TrackDefinition
 {
-    TrackGroup Type;
-    TrackPitch PitchEnd;
-    TrackPitch PitchStart;
-    TrackRoll RollEnd;
-    TrackRoll RollStart;
-    int8_t PreviewZOffset;
+    TrackGroup group;
+    TrackPitch pitchEnd;
+    TrackPitch pitchStart;
+    TrackRoll rollEnd;
+    TrackRoll rollStart;
+    int8_t previewZOffset;
 };
 
 struct PitchAndRoll
 {
-    TrackPitch Pitch;
-    TrackRoll Roll;
+    TrackPitch pitch;
+    TrackRoll roll;
 };
 constexpr bool operator==(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 {
-    return vb1.Pitch == vb2.Pitch && vb1.Roll == vb2.Roll;
+    return vb1.pitch == vb2.pitch && vb1.roll == vb2.roll;
 }
 constexpr bool operator!=(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 {
@@ -177,20 +177,20 @@ struct PreviewTrack
     int16_t x;     // 0x01
     int16_t y;     // 0x03
     int16_t z;     // 0x05
-    uint8_t ClearanceZ;
-    QuarterTile var_08;
+    uint8_t clearanceZ;
+    QuarterTile quarterTile;
     uint8_t flags;
 };
 
 /* size 0x0A */
 struct TrackCoordinates
 {
-    int8_t rotation_begin; // 0x00
-    int8_t rotation_end;   // 0x01
-    int16_t z_begin;       // 0x02
-    int16_t z_end;         // 0x04
-    int16_t x;             // 0x06
-    int16_t y;             // 0x08
+    int8_t rotationBegin; // 0x00
+    int8_t rotationEnd;   // 0x01
+    int16_t zBegin;       // 0x02
+    int16_t zEnd;         // 0x04
+    int16_t x;            // 0x06
+    int16_t y;            // 0x08
 };
 
 enum

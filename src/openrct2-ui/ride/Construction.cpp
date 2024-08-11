@@ -62,20 +62,20 @@ namespace OpenRCT2
         for (track_type_t trackType : DropdownOrder)
         {
             const auto& ted = GetTrackElementDescriptor(trackType);
-            if (!IsTrackEnabled(ted.definition.Type))
+            if (!IsTrackEnabled(ted.definition.group))
                 continue;
             bool entryIsDisabled;
 
             // If the current build orientation (slope, bank, diagonal) matches the track element's, show the piece as enabled
             if (state == RideConstructionState::Back)
             {
-                entryIsDisabled = ted.definition.PitchEnd != buildSlope || ted.definition.RollEnd != buildBank
-                    || TrackPieceDirectionIsDiagonal(ted.coordinates.rotation_end) != buildDirectionIsDiagonal;
+                entryIsDisabled = ted.definition.pitchEnd != buildSlope || ted.definition.rollEnd != buildBank
+                    || TrackPieceDirectionIsDiagonal(ted.coordinates.rotationEnd) != buildDirectionIsDiagonal;
             }
             else
             {
-                entryIsDisabled = ted.definition.PitchStart != buildSlope || ted.definition.RollStart != buildBank
-                    || TrackPieceDirectionIsDiagonal(ted.coordinates.rotation_begin) != buildDirectionIsDiagonal;
+                entryIsDisabled = ted.definition.pitchStart != buildSlope || ted.definition.rollStart != buildBank
+                    || TrackPieceDirectionIsDiagonal(ted.coordinates.rotationBegin) != buildDirectionIsDiagonal;
             }
 
             // Additional tower bases can only be built if the ride allows for it (elevator)

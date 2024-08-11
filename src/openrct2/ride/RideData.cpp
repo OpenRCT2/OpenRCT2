@@ -433,11 +433,6 @@ bool TrackDrawerDescriptor::HasCoveredPieces() const
     return Covered.EnabledTrackPieces.count() > 0;
 }
 
-bool TrackDrawerDescriptor::SupportsTrackGroup(const TrackGroup trackGroup) const
-{
-    return Regular.SupportsTrackGroup(trackGroup);
-}
-
 TrackDrawerDescriptor getTrackDrawerDescriptor(const RideTypeDescriptor& rtd, bool isInverted)
 {
     return isInverted ? rtd.InvertedTrackPaintFunctions : rtd.TrackPaintFunctions;

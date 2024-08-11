@@ -568,13 +568,13 @@ bool TrackBlockGetNextFromZero(
             continue;
 
         const auto& nextTrackCoordinate = ted.coordinates;
-        uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotation_begin)
-            | (nextTrackCoordinate.rotation_begin & TRACK_BLOCK_2);
+        uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationBegin)
+            | (nextTrackCoordinate.rotationBegin & TRACK_BLOCK_2);
 
         if (nextRotation != direction_start)
             continue;
 
-        int16_t nextZ = nextTrackCoordinate.z_begin - nextTrackBlock->z + tileElement->GetBaseZ();
+        int16_t nextZ = nextTrackCoordinate.zBegin - nextTrackBlock->z + tileElement->GetBaseZ();
         if (nextZ != trackPos.z)
             continue;
 
@@ -632,10 +632,10 @@ bool TrackBlockGetNext(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t*
     coords += trackBlockOffset.Rotate(DirectionReverse(rotation));
 
     OriginZ -= trackBlock->z;
-    OriginZ += trackCoordinate.z_end;
+    OriginZ += trackCoordinate.zEnd;
 
-    uint8_t directionStart = ((trackCoordinate.rotation_end + rotation) & kTileElementDirectionMask)
-        | (trackCoordinate.rotation_end & TRACK_BLOCK_2);
+    uint8_t directionStart = ((trackCoordinate.rotationEnd + rotation) & kTileElementDirectionMask)
+        | (trackCoordinate.rotationEnd & TRACK_BLOCK_2);
 
     return TrackBlockGetNextFromZero({ coords, OriginZ }, *ride, directionStart, output, z, direction, false);
 }
@@ -688,18 +688,18 @@ bool TrackBlockGetPreviousFromZero(
         if ((nextTrackBlock + 1)->index != 255)
             continue;
 
-        uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotation_end)
-            | (nextTrackCoordinate.rotation_end & TRACK_BLOCK_2);
+        uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationEnd)
+            | (nextTrackCoordinate.rotationEnd & TRACK_BLOCK_2);
 
         if (nextRotation != directionStart)
             continue;
 
-        int16_t nextZ = nextTrackCoordinate.z_end - nextTrackBlock->z + tileElement->GetBaseZ();
+        int16_t nextZ = nextTrackCoordinate.zEnd - nextTrackBlock->z + tileElement->GetBaseZ();
         if (nextZ != trackPos.z)
             continue;
 
-        nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotation_begin)
-            | (nextTrackCoordinate.rotation_begin & TRACK_BLOCK_2);
+        nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotationBegin)
+            | (nextTrackCoordinate.rotationBegin & TRACK_BLOCK_2);
         outTrackBeginEnd->begin_element = tileElement;
         outTrackBeginEnd->begin_x = trackPos.x;
         outTrackBeginEnd->begin_y = trackPos.y;
@@ -771,10 +771,10 @@ bool TrackBlockGetPrevious(const CoordsXYE& trackPos, TrackBeginEnd* outTrackBeg
     coords += offsets.Rotate(DirectionReverse(rotation));
 
     z -= trackBlock->z;
-    z += trackCoordinate.z_begin;
+    z += trackCoordinate.zBegin;
 
-    rotation = ((trackCoordinate.rotation_begin + rotation) & kTileElementDirectionMask)
-        | (trackCoordinate.rotation_begin & TRACK_BLOCK_2);
+    rotation = ((trackCoordinate.rotationBegin + rotation) & kTileElementDirectionMask)
+        | (trackCoordinate.rotationBegin & TRACK_BLOCK_2);
 
     return TrackBlockGetPreviousFromZero({ coords, z }, *ride, rotation, outTrackBeginEnd);
 }
@@ -3015,7 +3015,7 @@ static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement
 
     trackType = returnPos.element->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    int32_t elementReturnDirection = ted.coordinates.rotation_begin;
+    int32_t elementReturnDirection = ted.coordinates.rotationBegin;
     ride.boat_hire_return_direction = returnPos.element->GetDirectionWithOffset(elementReturnDirection);
     ride.boat_hire_return_position = TileCoordsXY{ returnPos };
 }

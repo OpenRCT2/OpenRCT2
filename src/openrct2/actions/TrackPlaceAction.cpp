@@ -234,7 +234,7 @@ GameActions::Result TrackPlaceAction::Query() const
     {
         auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
         auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
-        auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
+        auto quarterTile = trackBlock->quarterTile.Rotate(_origin.direction);
 
         if (mapLoc.z < 16)
         {
@@ -244,7 +244,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
         int32_t baseZ = Floor2(mapLoc.z, kCoordsZStep);
 
-        int32_t clearanceZ = trackBlock->ClearanceZ;
+        int32_t clearanceZ = trackBlock->clearanceZ;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;
@@ -462,10 +462,10 @@ GameActions::Result TrackPlaceAction::Execute() const
         auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
         auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
-        auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
+        auto quarterTile = trackBlock->quarterTile.Rotate(_origin.direction);
 
         int32_t baseZ = Floor2(mapLoc.z, kCoordsZStep);
-        int32_t clearanceZ = trackBlock->ClearanceZ;
+        int32_t clearanceZ = trackBlock->clearanceZ;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;

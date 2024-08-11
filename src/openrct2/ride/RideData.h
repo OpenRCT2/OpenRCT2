@@ -322,7 +322,6 @@ struct TrackDrawerDescriptor
     }
 
     bool HasCoveredPieces() const;
-    bool SupportsTrackGroup(const TrackGroup trackGroup) const;
 };
 
 struct RideTypeDescriptor

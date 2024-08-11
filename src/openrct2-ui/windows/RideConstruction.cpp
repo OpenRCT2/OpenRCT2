@@ -1695,7 +1695,7 @@ static Widget _rideConstructionWidgets[] = {
             widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
             widgets[WIDX_SLOPE_UP_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP);
             widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP;
-            if (trackDrawerDescriptor.SupportsTrackGroup(TrackGroup::reverseFreefall))
+            if (trackDrawerDescriptor.Regular.SupportsTrackGroup(TrackGroup::reverseFreefall))
             {
                 widgets[WIDX_LEVEL].type = WindowWidgetType::FlatBtn;
                 widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
@@ -2618,7 +2618,7 @@ static Widget _rideConstructionWidgets[] = {
             mapCoords.y = 4112 + (rotatedMapCoords.y / 2);
             mapCoords.z = 1024 + mapCoords.z;
 
-            auto previewZOffset = ted.definition.PreviewZOffset;
+            auto previewZOffset = ted.definition.previewZOffset;
             mapCoords.z -= previewZOffset;
 
             const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);
@@ -2671,12 +2671,12 @@ static Widget _rideConstructionWidgets[] = {
 
             while (trackBlock->index != 255)
             {
-                auto quarterTile = trackBlock->var_08.Rotate(trackDirection);
+                auto quarterTile = trackBlock->quarterTile.Rotate(trackDirection);
                 CoordsXY offsets = { trackBlock->x, trackBlock->y };
                 CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
                 int32_t baseZ = originZ + trackBlock->z;
-                int32_t clearanceZ = trackBlock->ClearanceZ + clearanceHeight + baseZ + (4 * kCoordsZStep);
+                int32_t clearanceZ = trackBlock->clearanceZ + clearanceHeight + baseZ + (4 * kCoordsZStep);
 
                 auto centreTileCoords = TileCoordsXY{ coords };
                 auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];

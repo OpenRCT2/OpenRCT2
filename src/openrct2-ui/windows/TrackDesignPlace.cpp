@@ -497,7 +497,7 @@ static Widget _trackPlaceWidgets[] = {
                         {
                             uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
 
-                            auto bits = trackBlock->var_08.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
+                            auto bits = trackBlock->quarterTile.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                             // Station track is a lighter colour
                             uint8_t colour = (ted.sequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
@@ -526,9 +526,9 @@ static Widget _trackPlaceWidgets[] = {
                 const TrackCoordinates* track_coordinate = &ted.coordinates;
 
                 curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(curTrackRotation);
-                curTrackRotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
+                curTrackRotation += track_coordinate->rotationEnd - track_coordinate->rotationBegin;
                 curTrackRotation &= 3;
-                if (track_coordinate->rotation_end & 4)
+                if (track_coordinate->rotationEnd & 4)
                 {
                     curTrackRotation |= 4;
                 }

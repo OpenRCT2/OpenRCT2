@@ -78,15 +78,15 @@ money64 PlaceProvisionalTrackPiece(
     if (res.Error != GameActions::Status::Ok)
         return kMoney64Undefined;
 
-    int16_t z_begin{};
+    int16_t zBegin{};
     const auto& ted = GetTrackElementDescriptor(trackType);
     const TrackCoordinates& coords = ted.coordinates;
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
-        z_begin = coords.z_begin;
+        zBegin = coords.zBegin;
     }
 
-    _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin, static_cast<Direction>(trackDirection) };
+    _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + zBegin, static_cast<Direction>(trackDirection) };
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
 
     const auto resultData = res.GetData<TrackPlaceActionResult>();
@@ -286,13 +286,13 @@ bool WindowRideConstructionUpdateState(
     auto z = _currentTrackBegin.z;
     if (_rideConstructionState == RideConstructionState::Back)
     {
-        z -= trackCoordinates.z_end;
+        z -= trackCoordinates.zEnd;
         trackDirection = _currentTrackPieceDirection ^ 0x02;
-        trackDirection -= trackCoordinates.rotation_end;
-        trackDirection += trackCoordinates.rotation_begin;
+        trackDirection -= trackCoordinates.rotationEnd;
+        trackDirection += trackCoordinates.rotationBegin;
         trackDirection &= 0x03;
 
-        if (trackCoordinates.rotation_begin & (1 << 2))
+        if (trackCoordinates.rotationBegin & (1 << 2))
         {
             trackDirection |= 0x04;
         }
@@ -305,7 +305,7 @@ bool WindowRideConstructionUpdateState(
     }
     else
     {
-        z -= trackCoordinates.z_begin;
+        z -= trackCoordinates.zBegin;
         trackDirection = _currentTrackPieceDirection;
     }
 

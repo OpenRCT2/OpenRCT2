@@ -210,7 +210,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     // start.
     TileElement* initialMap = trackElement.element;
 
-    CoordsXYZ startPos = { trackElement.x, trackElement.y, z + trackCoordinates->z_begin - trackBlock->z };
+    CoordsXYZ startPos = { trackElement.x, trackElement.y, z + trackCoordinates->zBegin - trackBlock->z };
     tds.origin = startPos;
 
     do
@@ -1576,7 +1576,7 @@ static GameActions::Result TrackDesignPlaceRide(
             {
                 const TrackCoordinates* trackCoordinates = &ted.coordinates;
                 const PreviewTrack* trackBlock = ted.block;
-                int32_t tempZ = newCoords.z - trackCoordinates->z_begin + trackBlock->z;
+                int32_t tempZ = newCoords.z - trackCoordinates->zBegin + trackBlock->z;
                 auto trackRemoveAction = TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
@@ -1593,7 +1593,7 @@ static GameActions::Result TrackDesignPlaceRide(
                 const TrackCoordinates* trackCoordinates = &ted.coordinates;
 
                 // di
-                int16_t tempZ = newCoords.z - trackCoordinates->z_begin;
+                int16_t tempZ = newCoords.z - trackCoordinates->zBegin;
 
                 int32_t liftHillAndAlternativeState = 0;
                 if (track.HasFlag(TrackDesignTrackElementFlag::hasChain))
@@ -1643,7 +1643,7 @@ static GameActions::Result TrackDesignPlaceRide(
             }
             case TrackPlaceOperation::getPlaceZ:
             {
-                int32_t tempZ = newCoords.z - ted.coordinates.z_begin;
+                int32_t tempZ = newCoords.z - ted.coordinates.zBegin;
                 for (const PreviewTrack* trackBlock = ted.block; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
@@ -1689,9 +1689,9 @@ static GameActions::Result TrackDesignPlaceRide(
         auto offsetAndRotatedTrack = CoordsXY{ newCoords }
             + CoordsXY{ track_coordinates.x, track_coordinates.y }.Rotate(rotation);
 
-        newCoords = { offsetAndRotatedTrack, newCoords.z - track_coordinates.z_begin + track_coordinates.z_end };
-        rotation = (rotation + track_coordinates.rotation_end - track_coordinates.rotation_begin) & 3;
-        if (track_coordinates.rotation_end & (1 << 2))
+        newCoords = { offsetAndRotatedTrack, newCoords.z - track_coordinates.zBegin + track_coordinates.zEnd };
+        rotation = (rotation + track_coordinates.rotationEnd - track_coordinates.rotationBegin) & 3;
+        if (track_coordinates.rotationEnd & (1 << 2))
         {
             rotation |= (1 << 2);
         }
