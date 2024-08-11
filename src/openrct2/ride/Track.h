@@ -148,12 +148,12 @@ enum TrackGroup : uint8_t
 
 struct TrackDefinition
 {
-    TrackGroup Type;
-    TrackPitch PitchEnd;
-    TrackPitch PitchStart;
-    TrackRoll RollEnd;
-    TrackRoll RollStart;
-    int8_t PreviewZOffset;
+    TrackGroup group;
+    TrackPitch pitchEnd;
+    TrackPitch pitchStart;
+    TrackRoll rollEnd;
+    TrackRoll rollStart;
+    int8_t previewZOffset;
 };
 
 struct PitchAndRoll

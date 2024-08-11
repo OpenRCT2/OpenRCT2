@@ -2618,7 +2618,7 @@ static Widget _rideConstructionWidgets[] = {
             mapCoords.y = 4112 + (rotatedMapCoords.y / 2);
             mapCoords.z = 1024 + mapCoords.z;
 
-            auto previewZOffset = ted.definition.PreviewZOffset;
+            auto previewZOffset = ted.definition.previewZOffset;
             mapCoords.z -= previewZOffset;
 
             const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);
