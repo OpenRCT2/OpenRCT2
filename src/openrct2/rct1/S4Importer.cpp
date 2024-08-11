@@ -124,7 +124,7 @@ namespace OpenRCT2::RCT1
         ObjectEntryIndex _footpathRailingsTypeToEntryMap[4]{};
 
         // Research
-        BitSet<MAX_RIDE_OBJECTS> _researchRideEntryUsed{};
+        BitSet<kMaxRideObjects> _researchRideEntryUsed{};
         BitSet<EnumValue(RideType::Count)> _researchRideTypeUsed{};
 
         // Scenario repository - used for determining scenario name

@@ -658,7 +658,7 @@ ObjectiveStatus Objective::CheckParkValueBy() const
 ObjectiveStatus Objective::Check10RollerCoasters() const
 {
     auto rcs = 0;
-    BitSet<MAX_RIDE_OBJECTS> type_already_counted;
+    BitSet<kMaxRideObjects> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
         if (ride.status == RideStatus::Open && ride.ratings.excitement >= RIDE_RATING(6, 00)
@@ -759,7 +759,7 @@ ObjectiveStatus Objective::CheckMonthlyRideIncome() const
  */
 ObjectiveStatus Objective::Check10RollerCoastersLength() const
 {
-    BitSet<MAX_RIDE_OBJECTS> type_already_counted;
+    BitSet<kMaxRideObjects> type_already_counted;
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
