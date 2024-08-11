@@ -11,6 +11,7 @@
 
 #include "../../../paint/support/MetalSupports.h"
 #include "../../../paint/track/coaster/BolligerMabillardTrack.hpp"
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../paint/track/coaster/CorkscrewRollerCoaster.hpp"
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
