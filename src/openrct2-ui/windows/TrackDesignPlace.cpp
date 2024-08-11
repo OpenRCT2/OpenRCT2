@@ -526,9 +526,9 @@ static Widget _trackPlaceWidgets[] = {
                 const TrackCoordinates* track_coordinate = &ted.coordinates;
 
                 curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(curTrackRotation);
-                curTrackRotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
+                curTrackRotation += track_coordinate->rotationEnd - track_coordinate->rotationBegin;
                 curTrackRotation &= 3;
-                if (track_coordinate->rotation_end & 4)
+                if (track_coordinate->rotationEnd & 4)
                 {
                     curTrackRotation |= 4;
                 }

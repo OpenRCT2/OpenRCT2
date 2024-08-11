@@ -185,12 +185,12 @@ struct PreviewTrack
 /* size 0x0A */
 struct TrackCoordinates
 {
-    int8_t rotation_begin; // 0x00
-    int8_t rotation_end;   // 0x01
-    int16_t z_begin;       // 0x02
-    int16_t z_end;         // 0x04
-    int16_t x;             // 0x06
-    int16_t y;             // 0x08
+    int8_t rotationBegin; // 0x00
+    int8_t rotationEnd;   // 0x01
+    int16_t zBegin;       // 0x02
+    int16_t zEnd;         // 0x04
+    int16_t x;            // 0x06
+    int16_t y;            // 0x08
 };
 
 enum

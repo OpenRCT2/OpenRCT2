@@ -70,12 +70,12 @@ namespace OpenRCT2
             if (state == RideConstructionState::Back)
             {
                 entryIsDisabled = ted.definition.pitchEnd != buildSlope || ted.definition.rollEnd != buildBank
-                    || TrackPieceDirectionIsDiagonal(ted.coordinates.rotation_end) != buildDirectionIsDiagonal;
+                    || TrackPieceDirectionIsDiagonal(ted.coordinates.rotationEnd) != buildDirectionIsDiagonal;
             }
             else
             {
                 entryIsDisabled = ted.definition.pitchStart != buildSlope || ted.definition.rollStart != buildBank
-                    || TrackPieceDirectionIsDiagonal(ted.coordinates.rotation_begin) != buildDirectionIsDiagonal;
+                    || TrackPieceDirectionIsDiagonal(ted.coordinates.rotationBegin) != buildDirectionIsDiagonal;
             }
 
             // Additional tower bases can only be built if the ride allows for it (elevator)

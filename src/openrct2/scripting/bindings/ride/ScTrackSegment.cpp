@@ -84,13 +84,13 @@ std::string ScTrackSegment::description_get() const
 int32_t ScTrackSegment::beginZ_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.coordinates.z_begin;
+    return ted.coordinates.zBegin;
 }
 
 int32_t ScTrackSegment::beginDirection_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.coordinates.rotation_begin;
+    return ted.coordinates.rotationBegin;
 }
 
 int32_t ScTrackSegment::beginSlope_get() const
@@ -120,13 +120,13 @@ int32_t ScTrackSegment::endY_get() const
 int32_t ScTrackSegment::endZ_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.coordinates.z_end;
+    return ted.coordinates.zEnd;
 }
 
 int32_t ScTrackSegment::endDirection_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.coordinates.rotation_end;
+    return ted.coordinates.rotationEnd;
 }
 
 int32_t ScTrackSegment::endSlope_get() const

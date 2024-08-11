@@ -6306,8 +6306,8 @@ void Vehicle::UpdateSceneryDoor() const
         trackBlock++;
     }
     const TrackCoordinates* trackCoordinates = &ted.coordinates;
-    auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->z_end }.ToTileStart();
-    int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_end) & 3;
+    auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->zEnd }.ToTileStart();
+    int32_t direction = (GetTrackDirection() + trackCoordinates->rotationEnd) & 3;
 
     AnimateSceneryDoor<false>({ wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train.IsNull());
 }
@@ -6400,8 +6400,8 @@ void Vehicle::UpdateSceneryDoorBackwards() const
     const auto& ted = GetTrackElementDescriptor(trackType);
     const PreviewTrack* trackBlock = ted.block;
     const TrackCoordinates* trackCoordinates = &ted.coordinates;
-    auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
-    int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_begin) & 3;
+    auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->zBegin };
+    int32_t direction = (GetTrackDirection() + trackCoordinates->rotationBegin) & 3;
     direction = DirectionReverse(direction);
 
     AnimateSceneryDoor<true>({ wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train.IsNull());

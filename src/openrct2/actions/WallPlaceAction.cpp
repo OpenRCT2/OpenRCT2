@@ -455,13 +455,13 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
 
         if (ted.definition.rollStart == TrackRoll::None)
         {
-            if (!(ted.coordinates.rotation_begin & 4))
+            if (!(ted.coordinates.rotationBegin & 4))
             {
                 direction = DirectionReverse(trackElement->GetDirection());
                 if (direction == _edge)
                 {
                     const PreviewTrack* trackBlock = ted.GetBlockForSequence(sequence);
-                    z = ted.coordinates.z_begin;
+                    z = ted.coordinates.zBegin;
                     z = trackElement->BaseHeight + ((z - trackBlock->z) * 8);
                     if (z == z0)
                     {
@@ -483,20 +483,20 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    direction = ted.coordinates.rotation_end;
+    direction = ted.coordinates.rotationEnd;
     if (direction & 4)
     {
         return false;
     }
 
-    direction = (trackElement->GetDirection() + ted.coordinates.rotation_end) & kTileElementDirectionMask;
+    direction = (trackElement->GetDirection() + ted.coordinates.rotationEnd) & kTileElementDirectionMask;
     if (direction != _edge)
     {
         return false;
     }
 
     trackBlock = ted.GetBlockForSequence(sequence);
-    z = ted.coordinates.z_end;
+    z = ted.coordinates.zEnd;
     z = trackElement->BaseHeight + ((z - trackBlock->z) * 8);
     return z == z0;
 }
