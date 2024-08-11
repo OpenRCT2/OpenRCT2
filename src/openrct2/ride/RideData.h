@@ -294,6 +294,9 @@ struct TrackDrawerEntry
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
     RideTrackGroup ExtraTrackPieces{};
 
+    ImageIndex icon = kSpriteIdNull;
+    StringId tooltip = STR_NONE;
+
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
     bool SupportsTrackGroup(const TrackGroup trackGroup) const;
 };

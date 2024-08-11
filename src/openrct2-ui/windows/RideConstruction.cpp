@@ -1900,20 +1900,10 @@ static Widget _rideConstructionWidgets[] = {
                     widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
                     widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
 
-                    if (rtd.Category == RIDE_CATEGORY_WATER)
-                    {
-                        widgets[WIDX_U_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK);
-                        widgets[WIDX_O_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK);
-                        widgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP;
-                        widgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP;
-                    }
-                    else
-                    {
-                        widgets[WIDX_U_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_RC_TRACK);
-                        widgets[WIDX_O_TRACK].image = ImageId(SPR_RIDE_CONSTRUCTION_WATER_CHANNEL);
-                        widgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP;
-                        widgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP;
-                    }
+                    widgets[WIDX_U_TRACK].image = ImageId(trackDrawerDescriptor.Regular.icon);
+                    widgets[WIDX_O_TRACK].image = ImageId(trackDrawerDescriptor.Covered.icon);
+                    widgets[WIDX_U_TRACK].tooltip = trackDrawerDescriptor.Regular.tooltip;
+                    widgets[WIDX_O_TRACK].tooltip = trackDrawerDescriptor.Covered.tooltip;
 
                     // TODO: Read these from the TrackDrawerEntry
                     if (currentRide->type == RIDE_TYPE_WATER_COASTER)
