@@ -27,7 +27,7 @@ static constexpr std::array<int32_t, EnumValue(ObjectType::Count)> kObjectEntryG
     kMaxSmallSceneryObjects, // small scenery
     kMaxLargeSceneryObjects, // large scenery
     kMaxWallSceneryObjects,  // walls
-    MAX_BANNER_OBJECTS,        // banners
+    kMaxBannerObjects,        // banners
     MAX_PATH_OBJECTS,          // paths
     MAX_PATH_ADDITION_OBJECTS, // path additions
     MAX_SCENERY_GROUP_OBJECTS, // scenery sets

@@ -1015,7 +1015,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
 
             // banners
-            for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_BANNER_OBJECTS; sceneryId++)
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxBannerObjects; sceneryId++)
             {
                 const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)

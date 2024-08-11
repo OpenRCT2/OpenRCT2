@@ -343,7 +343,7 @@ static size_t GetMaxObjectsForSceneryType(const uint8_t sceneryType)
         case SCENERY_TYPE_LARGE:
             return kMaxLargeSceneryObjects;
         case SCENERY_TYPE_BANNER:
-            return MAX_BANNER_OBJECTS;
+            return kMaxBannerObjects;
         default:
             return 0;
     }
