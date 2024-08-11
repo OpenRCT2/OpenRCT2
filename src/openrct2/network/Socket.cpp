@@ -73,7 +73,7 @@
 
 #    include "Socket.h"
 
-constexpr auto CONNECT_TIMEOUT = std::chrono::milliseconds(3000);
+constexpr auto kConnectTimeout = std::chrono::milliseconds(3000);
 
 // RAII WSA initialisation needed for Windows
 #    ifdef _WIN32
@@ -492,7 +492,7 @@ public:
                         return;
                     }
                 }
-            } while ((std::chrono::system_clock::now() - connectStartTime) < CONNECT_TIMEOUT);
+            } while ((std::chrono::system_clock::now() - connectStartTime) < kConnectTimeout);
 
             // Connection request timed out
             throw SocketException("Connection timed out.");
