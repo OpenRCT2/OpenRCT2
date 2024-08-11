@@ -40,7 +40,7 @@ static constexpr std::array<int32_t, EnumValue(ObjectType::Count)> kObjectEntryG
     kMaxMusicObjects,
     kMaxFootpathSurfaceObjects,
     kMaxFootpathRailingsObjects,
-    MAX_AUDIO_OBJECTS,
+    kMaxAudioObjects,
 };
 static_assert(std::size(kObjectEntryGroupCounts) == EnumValue(ObjectType::Count));
 

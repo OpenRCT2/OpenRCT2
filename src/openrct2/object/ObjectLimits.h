@@ -30,6 +30,6 @@ constexpr uint16_t kMaxStationObjects = 255;
 constexpr uint16_t kMaxMusicObjects = 255;
 constexpr uint16_t kMaxFootpathSurfaceObjects = 255;
 constexpr uint16_t kMaxFootpathRailingsObjects = 255;
-constexpr uint16_t MAX_AUDIO_OBJECTS = 255;
+constexpr uint16_t kMaxAudioObjects = 255;
 
 constexpr uint8_t DAT_NAME_LENGTH = 8;
