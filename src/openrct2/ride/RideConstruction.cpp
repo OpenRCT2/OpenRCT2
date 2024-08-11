@@ -54,7 +54,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 money64 _currentTrackPrice;
 
-uint32_t _currentTrackCurve;
+TypeOrCurve _currentlySelectedTrack{};
 RideConstructionState _rideConstructionState;
 RideId _currentRideIndex;
 
@@ -610,7 +610,7 @@ static void ride_construction_reset_current_piece()
 
     if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || ride->num_stations == 0)
     {
-        _currentTrackCurve = rtd.StartTrackPiece | RideConstructionSpecialPieceSelected;
+        _currentlySelectedTrack = rtd.StartTrackPiece;
         _currentTrackPitchEnd = TrackPitch::None;
         _currentTrackRollEnd = TrackRoll::None;
         _currentTrackLiftHill = 0;
@@ -624,7 +624,7 @@ static void ride_construction_reset_current_piece()
     }
     else
     {
-        _currentTrackCurve = TrackElemType::None;
+        _currentlySelectedTrack = TrackElemType::None;
         _rideConstructionState = RideConstructionState::State0;
     }
 }
@@ -642,7 +642,7 @@ void RideConstructionSetDefaultNextPiece()
 
     const auto& rtd = ride->GetRideTypeDescriptor();
 
-    int32_t z, direction, trackType, curve;
+    int32_t z, direction, trackType;
     TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
@@ -679,12 +679,11 @@ void RideConstructionSetDefaultNextPiece()
             }
 
             ted = &GetTrackElementDescriptor(trackType);
-            curve = ted->curveChain.next;
             auto bank = ted->definition.rollEnd;
             auto slope = ted->definition.pitchEnd;
 
             // Set track curve
-            _currentTrackCurve = curve;
+            _currentlySelectedTrack = ted->curveChain.next;
 
             // Set track banking
             if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
@@ -728,12 +727,11 @@ void RideConstructionSetDefaultNextPiece()
             }
 
             ted = &GetTrackElementDescriptor(trackType);
-            curve = ted->curveChain.previous;
             auto bank = ted->definition.rollStart;
             auto slope = ted->definition.pitchStart;
 
             // Set track curve
-            _currentTrackCurve = curve;
+            _currentlySelectedTrack = ted->curveChain.previous;
 
             // Set track banking
             if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
@@ -1114,7 +1112,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::Crosshair);
     InputSetFlag(INPUT_FLAG_6, true);
 
-    _currentTrackCurve = ride.GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
+    _currentlySelectedTrack = ride.GetRideTypeDescriptor().StartTrackPiece;
     _currentTrackPitchEnd = TrackPitch::None;
     _currentTrackRollEnd = TrackRoll::None;
     _currentTrackLiftHill = 0;

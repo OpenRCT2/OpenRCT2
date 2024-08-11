@@ -43,7 +43,7 @@ namespace OpenRCT2
 
 extern money64 _currentTrackPrice;
 
-extern uint32_t _currentTrackCurve;
+extern TypeOrCurve _currentlySelectedTrack;
 extern OpenRCT2::RideConstructionState _rideConstructionState;
 extern RideId _currentRideIndex;
 

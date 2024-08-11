@@ -194,23 +194,34 @@ std::vector<DukValue> ScTrackSegment::getSubpositions(uint8_t trackSubposition, 
     return result;
 }
 
+static DukValue _trackCurveToString(duk_context* ctx, TrackCurve curve)
+{
+    static constexpr u8string_view map[] = {
+        "straight",        // TrackCurve::None
+        "left",            // TrackCurve::Left
+        "right",           // TrackCurve::Right
+        "left_small",      // TrackCurve::LeftSmall
+        "right_small"      // TrackCurve::RightSmall
+        "left_very_small"  // TrackCurve::LeftVerySmall
+        "right_very_small" // TrackCurve::RightVerySmall
+        "left_large"       // TrackCurve::LeftLarge
+        "right_large"      // TrackCurve::RightLarge
+    };
+
+    u8string text = u8string(map[EnumValue(curve)]);
+    return ToDuk<std::string>(ctx, text);
+}
+
 DukValue ScTrackSegment::nextCurveElement_get() const
 {
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
     const auto& ted = GetTrackElementDescriptor(_type);
 
-    int32_t curve = ted.curveChain.next;
-    if (curve & RideConstructionSpecialPieceSelected)
-        return ToDuk<int32_t>(ctx, curve & (~RideConstructionSpecialPieceSelected));
-    switch (curve)
-    {
-        case 1:
-            return ToDuk<std::string>(ctx, "left");
-        case 2:
-            return ToDuk<std::string>(ctx, "right");
-        default:
-            return ToDuk<std::string>(ctx, "straight");
-    }
+    auto nextInChain = ted.curveChain.next;
+    if (nextInChain.isTrackType)
+        return ToDuk<int32_t>(ctx, nextInChain.trackType);
+
+    return _trackCurveToString(ctx, nextInChain.curve);
 }
 
 DukValue ScTrackSegment::previousCurveElement_get() const
@@ -218,18 +229,11 @@ DukValue ScTrackSegment::previousCurveElement_get() const
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
     const auto& ted = GetTrackElementDescriptor(_type);
 
-    int32_t curve = ted.curveChain.previous;
-    if (curve & RideConstructionSpecialPieceSelected)
-        return ToDuk<int32_t>(ctx, curve & (~RideConstructionSpecialPieceSelected));
-    switch (curve)
-    {
-        case 1:
-            return ToDuk<std::string>(ctx, "left");
-        case 2:
-            return ToDuk<std::string>(ctx, "right");
-        default:
-            return ToDuk<std::string>(ctx, "straight");
-    }
+    auto previousInChain = ted.curveChain.previous;
+    if (previousInChain.isTrackType)
+        return ToDuk<int32_t>(ctx, previousInChain.trackType);
+
+    return _trackCurveToString(ctx, previousInChain.curve);
 }
 
 DukValue ScTrackSegment::getMirrorElement() const
