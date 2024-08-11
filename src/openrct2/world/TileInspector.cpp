@@ -9,18 +9,13 @@
 
 #include "TileInspector.h"
 
-#include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../actions/GameAction.h"
-#include "../core/Guard.hpp"
 #include "../interface/Window.h"
-#include "../interface/Window_internal.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
-#include "../windows/Intent.h"
 #include "../windows/TileInspectorGlobals.h"
 #include "../world/MapAnimation.h"
 #include "Banner.h"
@@ -39,6 +34,7 @@ int32_t windowTileInspectorElementCount = 0;
 int32_t windowTileInspectorSelectedIndex = -1;
 
 using namespace OpenRCT2::TrackMetaData;
+
 namespace OpenRCT2::TileInspector
 {
     static GameActions::Result SwapTileElements(const CoordsXY& loc, int16_t first, int16_t second)
