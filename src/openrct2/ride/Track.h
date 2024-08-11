@@ -158,12 +158,12 @@ struct TrackDefinition
 
 struct PitchAndRoll
 {
-    TrackPitch Pitch;
-    TrackRoll Roll;
+    TrackPitch pitch;
+    TrackRoll roll;
 };
 constexpr bool operator==(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 {
-    return vb1.Pitch == vb2.Pitch && vb1.Roll == vb2.Roll;
+    return vb1.pitch == vb2.pitch && vb1.roll == vb2.roll;
 }
 constexpr bool operator!=(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 {
