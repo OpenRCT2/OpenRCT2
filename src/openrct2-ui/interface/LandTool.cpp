@@ -113,7 +113,7 @@ void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryI
 
     auto defaultIndex = 0;
     auto itemIndex = 0;
-    for (size_t i = 0; i < MAX_TERRAIN_EDGE_OBJECTS; i++)
+    for (size_t i = 0; i < kMaxTerrainEdgeObjects; i++)
     {
         const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, i));
         // If fallback images are loaded, the RCT1 styles will just look like copies of already existing styles, so hide them.
@@ -142,7 +142,7 @@ ObjectEntryIndex LandTool::GetEdgeStyleFromDropdownIndex(size_t index)
 {
     auto& objManager = GetContext()->GetObjectManager();
     auto itemIndex = 0U;
-    for (size_t i = 0; i < MAX_TERRAIN_EDGE_OBJECTS; i++)
+    for (size_t i = 0; i < kMaxTerrainEdgeObjects; i++)
     {
         const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, i));
         // If fallback images are loaded, the RCT1 styles will just look like copies of already existing styles, so hide them.
