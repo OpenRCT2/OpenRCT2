@@ -290,7 +290,7 @@ static Widget window_guest_list_widgets[] = {
                     _trackingOnly = !_trackingOnly;
                     SetWidgetPressed(WIDX_TRACKING, _trackingOnly);
                     Invalidate();
-                    scrolls[0].v_top = 0;
+                    scrolls[0].contentOffsetY = 0;
                     RefreshList();
                     break;
                 case WIDX_FILTER_BY_NAME:
@@ -340,7 +340,7 @@ static Widget window_guest_list_widgets[] = {
                     _tabAnimationIndex = 0;
                     _selectedFilter = {};
                     Invalidate();
-                    scrolls[0].v_top = 0;
+                    scrolls[0].contentOffsetY = 0;
                     RefreshList();
                     break;
                 }
@@ -528,9 +528,9 @@ static Widget window_guest_list_widgets[] = {
             }
 
             auto i = std::max(0, y - widgets[WIDX_GUEST_LIST].bottom + widgets[WIDX_GUEST_LIST].top + 21);
-            if (i < scrolls[0].v_top)
+            if (i < scrolls[0].contentOffsetY)
             {
-                scrolls[0].v_top = i;
+                scrolls[0].contentOffsetY = i;
                 Invalidate();
             }
 
@@ -583,7 +583,7 @@ static Widget window_guest_list_widgets[] = {
                         widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
                         Invalidate();
                         widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
-                        scrolls[0].v_top = 0;
+                        scrolls[0].contentOffsetY = 0;
                         RefreshList();
                     }
                     break;

@@ -406,7 +406,7 @@ namespace OpenRCT2::Ui::Windows
                     VisibleListRefresh();
 
                     selected_list_item = -1;
-                    scrolls[0].v_top = 0;
+                    scrolls[0].contentOffsetY = 0;
                     frame_no = 0;
                     Invalidate();
                     break;
@@ -431,7 +431,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FILTER_CLEAR_BUTTON:
                     std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
                     FilterUpdateCounts();
-                    scrolls->v_top = 0;
+                    scrolls->contentOffsetY = 0;
                     VisibleListRefresh();
                     Invalidate();
                     break;
@@ -566,7 +566,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
 
                     FilterUpdateCounts();
-                    scrolls->v_top = 0;
+                    scrolls->contentOffsetY = 0;
 
                     VisibleListRefresh();
                     Invalidate();
@@ -829,7 +829,7 @@ namespace OpenRCT2::Ui::Windows
 
             FilterUpdateCounts();
 
-            scrolls->v_top = 0;
+            scrolls->contentOffsetY = 0;
 
             VisibleListRefresh();
             Invalidate();
@@ -1147,7 +1147,7 @@ namespace OpenRCT2::Ui::Windows
             _selectedSubTab = 0;
             _filter_flags |= FILTER_RIDES_ALL;
             selected_list_item = -1;
-            scrolls[0].v_top = 0;
+            scrolls[0].contentOffsetY = 0;
             frame_no = 0;
 
             if (_page == EnumValue(ObjectType::Ride))

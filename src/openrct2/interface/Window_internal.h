@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Colour.h"
+#include "ScrollArea.h"
 #include "Window.h"
 
 #include <list>
@@ -50,7 +51,7 @@ struct WindowBase
         RideId rideId;
     };
     uint16_t flags{};
-    ScrollBar scrolls[3];
+    OpenRCT2::ScrollArea scrolls[3];
     uint16_t no_list_items{};     // 0 for no items
     int16_t selected_list_item{}; // -1 for none selected
     std::optional<Focus> focus;

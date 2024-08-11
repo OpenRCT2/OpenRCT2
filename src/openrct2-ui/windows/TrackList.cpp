@@ -369,7 +369,7 @@ static Widget _trackListWidgets[] = {
 
             FilterList();
 
-            scrolls->v_top = 0;
+            scrolls->contentOffsetY = 0;
 
             Invalidate();
         }

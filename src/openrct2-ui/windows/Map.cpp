@@ -722,8 +722,8 @@ static Widget window_map_widgets[] = {
             cx = std::max(cx - ax, 0);
             dx = std::max(dx - bx, 0);
 
-            bp = scrolls[0].h_right - bp;
-            di = scrolls[0].v_bottom - di;
+            bp = scrolls[0].contentWidth - bp;
+            di = scrolls[0].contentHeight - di;
 
             if (bp < 0 && (bp - cx) < 0)
                 cx = 0;
@@ -731,8 +731,8 @@ static Widget window_map_widgets[] = {
             if (di < 0 && (di - dx) < 0)
                 dx = 0;
 
-            scrolls[0].h_left = cx;
-            scrolls[0].v_top = dx;
+            scrolls[0].contentOffsetX = cx;
+            scrolls[0].contentOffsetY = dx;
             WidgetScrollUpdateThumbs(*this, WIDX_MAP);
         }
 

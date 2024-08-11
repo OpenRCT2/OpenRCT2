@@ -296,7 +296,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 case WIDX_FILTER_CLEAR_BUTTON:
                     _tabEntries[_activeTabIndex].Filter.clear();
                     ContentUpdateScroll();
-                    scrolls->v_top = 0;
+                    scrolls->contentOffsetY = 0;
                     Invalidate();
                     break;
                 case WIDX_RESTRICT_SCENERY:
@@ -549,7 +549,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             _tabEntries[_activeTabIndex].Filter.assign(text);
             ContentUpdateScroll();
 
-            scrolls->v_top = 0;
+            scrolls->contentOffsetY = 0;
             Invalidate();
         }
 
@@ -1098,9 +1098,9 @@ static Widget WindowSceneryBaseWidgets[] = {
             const int32_t listHeight = height - 14 - widgets[WIDX_SCENERY_LIST].top - 1;
 
             const auto sceneryItem = ContentCountRowsWithSelectedItem(tabIndex);
-            scrolls[SceneryContentScrollIndex].v_bottom = ContentRowsHeight(sceneryItem.allRows) + 1;
+            scrolls[SceneryContentScrollIndex].contentHeight = ContentRowsHeight(sceneryItem.allRows) + 1;
 
-            const int32_t maxTop = std::max(0, scrolls[SceneryContentScrollIndex].v_bottom - listHeight);
+            const int32_t maxTop = std::max(0, scrolls[SceneryContentScrollIndex].contentHeight - listHeight);
             auto rowSelected = CountRows(sceneryItem.selected_item);
             if (sceneryItem.scenerySelection.IsUndefined())
             {
@@ -1127,8 +1127,9 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
             }
 
-            scrolls[SceneryContentScrollIndex].v_top = ContentRowsHeight(rowSelected);
-            scrolls[SceneryContentScrollIndex].v_top = std::min<int32_t>(maxTop, scrolls[SceneryContentScrollIndex].v_top);
+            scrolls[SceneryContentScrollIndex].contentOffsetY = ContentRowsHeight(rowSelected);
+            scrolls[SceneryContentScrollIndex].contentOffsetY = std::min<int32_t>(
+                maxTop, scrolls[SceneryContentScrollIndex].contentOffsetY);
 
             WidgetScrollUpdateThumbs(*this, WIDX_SCENERY_LIST);
         }

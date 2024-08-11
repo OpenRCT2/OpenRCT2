@@ -138,7 +138,7 @@ namespace OpenRCT2::Ui::Windows
         void MouseOver(const ScreenCoordsXY& pos, bool isMouseDown);
         void MouseDown(const ScreenCoordsXY& pos);
         void MouseUp(const ScreenCoordsXY& pos);
-        void Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* scroll) const;
+        void Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollArea* scroll) const;
 
     private:
         void PaintHeading(

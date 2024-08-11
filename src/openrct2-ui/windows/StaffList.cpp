@@ -230,7 +230,7 @@ static Widget _staffListWidgets[] = {
                         _selectedTab = static_cast<uint8_t>(newSelectedTab);
                         RefreshList();
                         Invalidate();
-                        scrolls[0].v_top = 0;
+                        scrolls[0].contentOffsetY = 0;
                         CancelTools();
                     }
                     break;
@@ -329,9 +329,9 @@ static Widget _staffListWidgets[] = {
             auto i = scrollHeight - widgets[WIDX_STAFF_LIST_LIST].bottom + widgets[WIDX_STAFF_LIST_LIST].top + 21;
             if (i < 0)
                 i = 0;
-            if (i < scrolls[0].v_top)
+            if (i < scrolls[0].contentOffsetY)
             {
-                scrolls[0].v_top = i;
+                scrolls[0].contentOffsetY = i;
                 Invalidate();
             }
 

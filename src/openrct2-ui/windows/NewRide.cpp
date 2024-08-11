@@ -340,7 +340,7 @@ static Widget window_new_ride_widgets[] = {
 
             if (_currentTab < RESEARCH_TAB)
             {
-                _windowNewRideTabScroll[_currentTab] = scrolls[0].v_top;
+                _windowNewRideTabScroll[_currentTab] = scrolls[0].contentOffsetY;
 
                 // Remove highlight when mouse leaves rides list
                 if (!WidgetIsHighlighted(*this, WIDX_RIDE_LIST))
@@ -374,7 +374,7 @@ static Widget window_new_ride_widgets[] = {
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
                     _filter.clear();
-                    scrolls->v_top = 0;
+                    scrolls->contentOffsetY = 0;
                     Invalidate();
                     break;
             }
@@ -523,7 +523,7 @@ static Widget window_new_ride_widgets[] = {
 
             _filter.assign(text);
 
-            scrolls->v_top = 0;
+            scrolls->contentOffsetY = 0;
             Invalidate();
         }
 
@@ -913,7 +913,7 @@ static Widget window_new_ride_widgets[] = {
             // Ensure the current tab scroll is within range
             currentTabScroll = std::min<uint16_t>(currentTabScroll, std::max(0, scrollSize.height - listWidgetHeight));
 
-            scrolls[0].v_top = currentTabScroll;
+            scrolls[0].contentOffsetY = currentTabScroll;
             WidgetScrollUpdateThumbs(*this, WIDX_RIDE_LIST);
         }
 

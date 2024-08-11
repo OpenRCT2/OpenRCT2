@@ -65,7 +65,7 @@ static Widget window_news_widgets[] = {
 
             Widget* widget = &widgets[WIDX_SCROLL];
             ScreenSize scrollSize = OnScrollGetSize(0);
-            scrolls[0].v_top = std::max(0, scrollSize.height - (widget->height() - 1));
+            scrolls[0].contentOffsetY = std::max(0, scrollSize.height - (widget->height() - 1));
             WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
         }
 

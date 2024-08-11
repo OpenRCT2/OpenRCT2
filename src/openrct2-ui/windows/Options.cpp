@@ -2146,10 +2146,10 @@ static Widget *window_options_page_widgets[] = {
             GfxInvalidateScreen();
         }
 
-        uint8_t GetScrollPercentage(const Widget& widget, const ScrollBar& scroll)
+        uint8_t GetScrollPercentage(const Widget& widget, const ScrollArea& scroll)
         {
             uint8_t w = widget.width() - 1;
-            return static_cast<float>(scroll.h_left) / (scroll.h_right - w) * 100;
+            return static_cast<float>(scroll.contentOffsetX) / (scroll.contentWidth - w) * 100;
         }
 
         void InitializeScrollPosition(WidgetIndex widgetIndex, int32_t scrollId, uint8_t volume)
@@ -2157,8 +2157,8 @@ static Widget *window_options_page_widgets[] = {
             const auto& widget = widgets[widgetIndex];
             auto& scroll = scrolls[scrollId];
 
-            int32_t widgetSize = scroll.h_right - (widget.width() - 1);
-            scroll.h_left = ceil(volume / 100.0f * widgetSize);
+            int32_t widgetSize = scroll.contentWidth - (widget.width() - 1);
+            scroll.contentOffsetX = ceil(volume / 100.0f * widgetSize);
 
             WidgetScrollUpdateThumbs(*this, widgetIndex);
         }

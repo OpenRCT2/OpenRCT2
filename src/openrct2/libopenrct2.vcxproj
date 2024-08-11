@@ -276,6 +276,7 @@
     <ClInclude Include="interface\Fonts.h" />
     <ClInclude Include="interface\InteractiveConsole.h" />
     <ClInclude Include="interface\Screenshot.h" />
+    <ClInclude Include="interface\ScrollArea.h" />
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
