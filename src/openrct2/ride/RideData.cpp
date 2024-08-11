@@ -359,9 +359,9 @@ bool RideTypeDescriptor::HasFlag(uint64_t flag) const
     return Flags & flag;
 }
 
-bool RideTypeDescriptor::SupportsTrackPiece(const uint64_t trackPiece) const
+bool RideTypeDescriptor::SupportsTrackGroup(const TrackGroup trackGroup) const
 {
-    return TrackPaintFunctions.Regular.SupportsTrackPiece(trackPiece);
+    return TrackPaintFunctions.Regular.SupportsTrackGroup(trackGroup);
 }
 
 ResearchCategory RideTypeDescriptor::GetResearchCategory() const
@@ -395,9 +395,9 @@ bool RideTypeDescriptor::SupportsRideMode(RideMode rideMode) const
 static RideTrackGroup _enabledRidePieces = {};
 static RideTrackGroup _disabledRidePieces = {};
 
-bool IsTrackEnabled(int32_t trackFlagIndex)
+bool IsTrackEnabled(TrackGroup trackGroup)
 {
-    return _enabledRidePieces.get(trackFlagIndex);
+    return _enabledRidePieces.get(EnumValue(trackGroup));
 }
 
 void UpdateEnabledRidePieces(TrackDrawerDescriptor trackDrawerDescriptor)
@@ -422,10 +422,10 @@ void TrackDrawerEntry::GetAvailableTrackPieces(RideTrackGroup& res) const
         res |= ExtraTrackPieces;
 }
 
-bool TrackDrawerEntry::SupportsTrackPiece(const uint64_t trackPiece) const
+bool TrackDrawerEntry::SupportsTrackGroup(const TrackGroup trackGroup) const
 {
-    return EnabledTrackPieces.get(trackPiece)
-        || (GetGameState().Cheats.EnableAllDrawableTrackPieces && ExtraTrackPieces.get(trackPiece));
+    return EnabledTrackPieces.get(EnumValue(trackGroup))
+        || (GetGameState().Cheats.EnableAllDrawableTrackPieces && ExtraTrackPieces.get(EnumValue(trackGroup)));
 }
 
 bool TrackDrawerDescriptor::HasCoveredPieces() const
@@ -433,9 +433,9 @@ bool TrackDrawerDescriptor::HasCoveredPieces() const
     return Covered.EnabledTrackPieces.count() > 0;
 }
 
-bool TrackDrawerDescriptor::SupportsTrackPiece(const uint64_t trackPiece) const
+bool TrackDrawerDescriptor::SupportsTrackGroup(const TrackGroup trackGroup) const
 {
-    return Regular.SupportsTrackPiece(trackPiece);
+    return Regular.SupportsTrackGroup(trackGroup);
 }
 
 TrackDrawerDescriptor getTrackDrawerDescriptor(const RideTypeDescriptor& rtd, bool isInverted)

@@ -247,7 +247,7 @@ bool WindowRideConstructionUpdateState(
     if (ride == nullptr)
         return true;
 
-    if (IsTrackEnabled(TRACK_SLOPE_STEEP_LONG))
+    if (IsTrackEnabled(TrackGroup::slopeSteepLong))
     {
         switch (trackType)
         {
@@ -323,7 +323,7 @@ bool WindowRideConstructionUpdateState(
     }
 
     bool turnOffLiftHill = false;
-    if (!IsTrackEnabled(TRACK_LIFT_HILL_CURVE))
+    if (!IsTrackEnabled(TrackGroup::liftHillCurve))
     {
         if (ted.flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
         {

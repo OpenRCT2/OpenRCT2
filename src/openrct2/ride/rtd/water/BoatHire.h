@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionBoatHire,
-        .EnabledTrackPieces = {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_CURVE_VERY_SMALL},
+        .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::curveVerySmall},
         .ExtraTrackPieces = {},
     }),
     .InvertedTrackPaintFunctions = {},

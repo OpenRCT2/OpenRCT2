@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::TowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionObservationTower,
-        .EnabledTrackPieces = {TRACK_TOWER_BASE},
+        .EnabledTrackPieces = {TrackGroup::tower},
         .ExtraTrackPieces = {},
     }),
     .InvertedTrackPaintFunctions = {},
