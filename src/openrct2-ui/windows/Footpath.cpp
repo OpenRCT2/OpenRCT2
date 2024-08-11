@@ -706,7 +706,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
 
             _dropdownEntries.clear();
             std::optional<size_t> defaultIndex;
-            for (int32_t i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
+            for (int32_t i = 0; i < kMaxFootpathRailingsObjects; i++)
             {
                 const auto* railingsEntry = GetPathRailingsEntry(i);
                 if (railingsEntry == nullptr)

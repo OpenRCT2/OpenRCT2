@@ -2225,7 +2225,7 @@ static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
 
 static ObjectEntryIndex FootpathGetDefaultRailings()
 {
-    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxFootpathRailingsObjects; i++)
     {
         const auto* railingEntry = GetPathRailingsEntry(i);
         if (railingEntry != nullptr)
