@@ -117,14 +117,14 @@ static std::tuple<bool, track_type_t> WindowRideConstructionUpdateStateGetTrackE
         endBank = _previousTrackRollEnd;
     }
 
-    auto curve = _currentTrackCurve;
-    if (curve == TrackElemType::None)
+    auto selectedTrack = _currentlySelectedTrack;
+    if (selectedTrack == TrackElemType::None)
     {
         return std::make_tuple(false, 0);
     }
 
     bool startsDiagonal = (_currentTrackPieceDirection & (1 << 2)) != 0;
-    if (curve == EnumValue(TrackCurve::LeftLarge) || curve == EnumValue(TrackCurve::RightLarge))
+    if (selectedTrack == TrackCurve::LeftLarge || selectedTrack == TrackCurve::RightLarge)
     {
         if (_rideConstructionState == RideConstructionState::Back)
         {
@@ -132,18 +132,16 @@ static std::tuple<bool, track_type_t> WindowRideConstructionUpdateStateGetTrackE
         }
     }
 
-    if (curve <= kHighestCurveValue)
+    if (!selectedTrack.isTrackType)
     {
-        auto trackPiece = GetTrackTypeFromCurve(
-            static_cast<TrackCurve>(curve), startsDiagonal, startSlope, endSlope, startBank, endBank);
+        auto trackPiece = GetTrackTypeFromCurve(selectedTrack.curve, startsDiagonal, startSlope, endSlope, startBank, endBank);
         if (trackPiece != TrackElemType::None)
             return std::make_tuple(true, trackPiece);
         else
             return std::make_tuple(false, 0);
     }
 
-    auto asTrackType = static_cast<track_type_t>(curve & ~RideConstructionSpecialPieceSelected);
-
+    auto asTrackType = selectedTrack.trackType;
     switch (asTrackType)
     {
         case TrackElemType::EndStation:

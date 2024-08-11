@@ -22,8 +22,8 @@ namespace OpenRCT2::TrackMetaData
 
     struct TrackCurveChain
     {
-        int32_t next;
-        int32_t previous;
+        TypeOrCurve next;
+        TypeOrCurve previous;
     };
 
     struct TrackDescriptor

@@ -15,8 +15,6 @@
 
 #include <optional>
 
-constexpr uint32_t RideConstructionSpecialPieceSelected = 0x10000;
-
 constexpr uint8_t kRCT2DefaultBlockBrakeSpeed = 2;
 constexpr int32_t kBlockBrakeBaseSpeed = 0x20364;
 constexpr int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
@@ -662,6 +660,58 @@ struct TrackCircuitIterator
     TileElement* first;
     bool firstIteration;
     bool looped;
+};
+
+struct TypeOrCurve
+{
+    bool isTrackType = true; // true if a track_type_t is selected, false if a TrackCurve is selected;
+    union
+    {
+        track_type_t trackType = OpenRCT2::TrackElemType::None;
+        TrackCurve curve;
+    };
+
+    constexpr TypeOrCurve() noexcept
+    {
+        isTrackType = false;
+        curve = TrackCurve::None;
+    }
+
+    constexpr bool operator==(track_type_t rhs)
+    {
+        return isTrackType && (trackType == rhs);
+    }
+
+    constexpr bool operator==(TrackCurve rhs)
+    {
+        return !isTrackType && (curve == rhs);
+    }
+
+    constexpr TypeOrCurve(track_type_t _type) noexcept
+    {
+        isTrackType = true;
+        trackType = _type;
+    }
+
+    constexpr TypeOrCurve& operator=(track_type_t rhs) noexcept
+    {
+        isTrackType = true;
+        trackType = rhs;
+        return *this;
+    }
+
+    constexpr TypeOrCurve(TrackCurve _curve) noexcept
+    {
+        isTrackType = false;
+        curve = _curve;
+    }
+
+    constexpr TypeOrCurve& operator=(TrackCurve rhs) noexcept
+    {
+        isTrackType = false;
+        curve = rhs;
+        return *this;
+    }
 };
 
 PitchAndRoll TrackPitchAndRollStart(track_type_t trackType);

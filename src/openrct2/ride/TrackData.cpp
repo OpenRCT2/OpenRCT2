@@ -4054,345 +4054,345 @@ namespace OpenRCT2::TrackMetaData
     
     // rct2: 0x00998C95
     static constexpr TrackCurveChain gTrackCurveChain[] = {
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
-        { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
-        { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { EnumValue(TrackCurve::LeftVerySmall), EnumValue(TrackCurve::LeftVerySmall) },
-        { EnumValue(TrackCurve::RightVerySmall), EnumValue(TrackCurve::RightVerySmall) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftTwistUpToDown, EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightTwistUpToDown, EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftTwistDownToUp },
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightTwistDownToUp },
-        { RideConstructionSpecialPieceSelected | TrackElemType::HalfLoopDown, EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::HalfLoopUp },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightCorkscrewDown, EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftCorkscrewDown, EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightCorkscrewUp },
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftCorkscrewUp },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::TowerSection, EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::TowerSection, EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixUpSmall, RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixUpSmall },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixUpSmall, RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixUpSmall },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixDownSmall, RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixDownSmall },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixDownSmall, RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixDownSmall },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixUpLarge, RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixUpLarge },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixUpLarge, RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixUpLarge },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixDownLarge, RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixDownLarge },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixDownLarge, RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixDownLarge },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::Brakes, RideConstructionSpecialPieceSelected | TrackElemType::Brakes },
-        { RideConstructionSpecialPieceSelected | TrackElemType::Booster, RideConstructionSpecialPieceSelected | TrackElemType::Booster },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterBankedHelixLargeUp, RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterBankedHelixLargeUp },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterBankedHelixLargeUp, RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterBankedHelixLargeUp },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterBankedHelixLargeDown, RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterBankedHelixLargeDown },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterBankedHelixLargeDown, RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterBankedHelixLargeDown },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterHelixLargeUp, RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterHelixLargeUp },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterHelixLargeUp, RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterHelixLargeUp },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterHelixLargeDown, RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterHelixLargeDown },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterHelixLargeDown, RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterHelixLargeDown },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::Waterfall, RideConstructionSpecialPieceSelected | TrackElemType::Waterfall },
-        { RideConstructionSpecialPieceSelected | TrackElemType::Rapids, RideConstructionSpecialPieceSelected | TrackElemType::Rapids },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::ReverseFreefallVertical, EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::ReverseFreefallVertical, RideConstructionSpecialPieceSelected | TrackElemType::ReverseFreefallVertical },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) },
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) },
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) },
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::LeftLarge) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::RightLarge) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::LeftLarge) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::RightLarge) },
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::LeftLarge) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::RightLarge) },
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftBarrelRollDownToUp, EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightBarrelRollDownToUp, EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftBarrelRollUpToDown },
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightBarrelRollUpToDown },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::PoweredLift, RideConstructionSpecialPieceSelected | TrackElemType::PoweredLift },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightLargeHalfLoopDown, EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeHalfLoopDown, EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightLargeHalfLoopUp },
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeHalfLoopUp },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::InvertedFlatToDown90QuarterLoop, EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::Up90ToInvertedFlatQuarterLoop },
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftCurvedLiftHill, RideConstructionSpecialPieceSelected | TrackElemType::LeftCurvedLiftHill },
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightCurvedLiftHill, RideConstructionSpecialPieceSelected | TrackElemType::RightCurvedLiftHill },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { RideConstructionSpecialPieceSelected | TrackElemType::AirThrustVerticalDown, RideConstructionSpecialPieceSelected | TrackElemType::ReverseFreefallVertical },
-        { RideConstructionSpecialPieceSelected | TrackElemType::AirThrustVerticalDown, RideConstructionSpecialPieceSelected | TrackElemType::AirThrustVerticalDown },
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::AirThrustVerticalDown },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
-        { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
-        { 65535, 65535 },                       // TrackElemType::FlatTrack1x4A
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) }, // TrackElemType::FlatTrack2x2
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) }, // TrackElemType::FlatTrack4x4
-        { 65535, 65535 },                       // TrackElemType::FlatTrack2x4
-        { 65535, 65535 },                       // TrackElemType::FlatTrack1x5
-        { 65535, 65535 },                       // TrackElemType::FlatTrack1x1A
-        { 65535, 65535 },                       // TrackElemType::FlatTrack1x4B
-        { 65535, 65535 },                       // TrackElemType::FlatTrack1x1B
-        { 65535, 65535 },                       // TrackElemType::FlatTrack1x4C
-        { 65535, 65535 },                       // TrackElemType::FlatTrack3x3
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightLargeCorkscrewDown, EnumValue(TrackCurve::None) }, // TrackElemType::LeftLargeCorkscrewUp
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeCorkscrewDown, EnumValue(TrackCurve::None) },  // TrackElemType::RightLargeCorkscrewUp
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightLargeCorkscrewUp },   // TrackElemType::LeftLargeCorkscrewDown
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeCorkscrewUp },    // TrackElemType::RightCorkscrewDown
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightMediumHalfLoopDown, EnumValue(TrackCurve::None) }, // TrackElemType::LeftMediumHalfLoopUp
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftMediumHalfLoopDown, EnumValue(TrackCurve::None) },  // TrackElemType::RightMediumHalfLoopUp
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightMediumHalfLoopUp },   // TrackElemType::LeftMediumHalfLoopDown
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftMediumHalfLoopUp },    // TrackElemType::RightMediumHalfLoopDown
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftZeroGRollDown, EnumValue(TrackCurve::None) },       // TrackElemType::LeftZeroGRollUp
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightZeroGRollDown, EnumValue(TrackCurve::None) },      // TrackElemType::RightZeroGRollUp
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftZeroGRollUp },         // TrackElemType::LeftZeroGRollDown
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightZeroGRollUp },        // TrackElemType::RightZeroGRollDown
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeZeroGRollDown, EnumValue(TrackCurve::None) },  // TrackElemType::LeftLargeZeroGRollUp
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightLargeZeroGRollDown, EnumValue(TrackCurve::None) }, // TrackElemType::RightLargeZeroGRollUp
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeZeroGRollUp },    // TrackElemType::LeftLargeZeroGRollDown
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightLargeZeroGRollUp },   // TrackElemType::RightLargeZeroGRollDown
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopInvertedDown, EnumValue(TrackCurve::None) },   // LeftFlyerLargeHalfLoopUninvertedUp
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopInvertedDown, EnumValue(TrackCurve::None) },    // RightFlyerLargeHalfLoopUninvertedUp
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopUninvertedUp },   // LeftFlyerLargeHalfLoopInvertedDown
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp },    // RightFlyerLargeHalfLoopInvertedDown
-        { RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopUninvertedDown, EnumValue(TrackCurve::None) },  // LeftFlyerLargeHalfLoopInvertedUp
-        { RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown, EnumValue(TrackCurve::None) },  // RightFlyerLargeHalfLoopInvertedUp
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopInvertedUp },     // LeftFlyerLargeHalfLoopUninvertedDown
-        { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopInvertedUp },      // RightFlyerLargeHalfLoopUninvertedDown
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) }, // FlyerHalfLoopInvertedUp
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) }, // FlyerHalfLoopUninvertedUp
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthToDiagUp25         
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthToDiagUp25        
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthToDiagDown25       
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthToDiagDown25      
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthToOrthogonalUp25   
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthToOrthogonalUp25  
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthToOrthogonalDown25 
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthToOrthogonalDown25
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagUp25ToLeftBankedUp25
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagUp25ToRightBankedUp25
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagLeftBankedUp25ToUp25
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagRightBankedUp25ToUp25
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagDown25ToLeftBankedDown25
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagDown25ToRightBankedDown25
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagLeftBankedDown25ToDown25
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagRightBankedDown25ToDown25
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagRightBankedFlatToRightBankedUp25
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagRightBankedFlatToRightBankedDown25
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagFlatToLeftBankedUp25
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagFlatToRightBankedUp25
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagLeftBankedUp25ToFlat
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagRightBankedUp25ToFlat
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagFlatToLeftBankedDown25
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagFlatToRightBankedDown25
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagLeftBankedDown25ToFlat
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagRightBankedDown25ToFlat
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagUp25LeftBanked
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagUp25RightBanked 
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagDown25LeftBanked
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagDown25RightBanked
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthBankToDiagUp25
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthBankToDiagUp25
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthBankToDiagDown25
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthBankToDiagDown25
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthBankToOrthogonalUp25
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthBankToOrthogonalUp25 
-        { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthBankToOrthogonalDown25
-        { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthBankToOrthogonalDown25     
-        { RideConstructionSpecialPieceSelected | TrackElemType::DiagBrakes, RideConstructionSpecialPieceSelected | TrackElemType::DiagBrakes }, // TrackElemType::DiagBrakes
-        { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) }, // TrackElemType::DiagBlockBrakes
+        { TrackCurve::None, TrackCurve::None },
+        { TrackElemType::EndStation, TrackElemType::EndStation },
+        { TrackElemType::EndStation, TrackElemType::EndStation },
+        { TrackElemType::EndStation, TrackElemType::EndStation },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::None },
+        { TrackCurve::Right, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::Left },
+        { TrackCurve::None, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::None, TrackCurve::Left },
+        { TrackCurve::None, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::None },
+        { TrackCurve::Right, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::Left },
+        { TrackCurve::None, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::None },
+        { TrackCurve::Right, TrackCurve::None },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackCurve::LeftVerySmall, TrackCurve::LeftVerySmall },
+        { TrackCurve::RightVerySmall, TrackCurve::RightVerySmall },
+        { TrackElemType::LeftTwistUpToDown, TrackCurve::None },
+        { TrackElemType::RightTwistUpToDown, TrackCurve::None },
+        { TrackCurve::None, TrackElemType::LeftTwistDownToUp },
+        { TrackCurve::None, TrackElemType::RightTwistDownToUp },
+        { TrackElemType::HalfLoopDown, TrackCurve::None },
+        { TrackCurve::None, TrackElemType::HalfLoopUp },
+        { TrackElemType::RightCorkscrewDown, TrackCurve::None },
+        { TrackElemType::LeftCorkscrewDown, TrackCurve::None },
+        { TrackCurve::None, TrackElemType::RightCorkscrewUp },
+        { TrackCurve::None, TrackElemType::LeftCorkscrewUp },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackElemType::TowerSection, TrackCurve::None },
+        { TrackElemType::TowerSection, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackElemType::LeftHalfBankedHelixUpSmall, TrackElemType::LeftHalfBankedHelixUpSmall },
+        { TrackElemType::RightHalfBankedHelixUpSmall, TrackElemType::RightHalfBankedHelixUpSmall },
+        { TrackElemType::LeftHalfBankedHelixDownSmall, TrackElemType::LeftHalfBankedHelixDownSmall },
+        { TrackElemType::RightHalfBankedHelixDownSmall, TrackElemType::RightHalfBankedHelixDownSmall },
+        { TrackElemType::LeftHalfBankedHelixUpLarge, TrackElemType::LeftHalfBankedHelixUpLarge },
+        { TrackElemType::RightHalfBankedHelixUpLarge, TrackElemType::RightHalfBankedHelixUpLarge },
+        { TrackElemType::LeftHalfBankedHelixDownLarge, TrackElemType::LeftHalfBankedHelixDownLarge },
+        { TrackElemType::RightHalfBankedHelixDownLarge, TrackElemType::RightHalfBankedHelixDownLarge },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackElemType::Brakes, TrackElemType::Brakes },
+        { TrackElemType::Booster, TrackElemType::Booster },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackElemType::LeftQuarterBankedHelixLargeUp, TrackElemType::LeftQuarterBankedHelixLargeUp },
+        { TrackElemType::RightQuarterBankedHelixLargeUp, TrackElemType::RightQuarterBankedHelixLargeUp },
+        { TrackElemType::LeftQuarterBankedHelixLargeDown, TrackElemType::LeftQuarterBankedHelixLargeDown },
+        { TrackElemType::RightQuarterBankedHelixLargeDown, TrackElemType::RightQuarterBankedHelixLargeDown },
+        { TrackElemType::LeftQuarterHelixLargeUp, TrackElemType::LeftQuarterHelixLargeUp },
+        { TrackElemType::RightQuarterHelixLargeUp, TrackElemType::RightQuarterHelixLargeUp },
+        { TrackElemType::LeftQuarterHelixLargeDown, TrackElemType::LeftQuarterHelixLargeDown },
+        { TrackElemType::RightQuarterHelixLargeDown, TrackElemType::RightQuarterHelixLargeDown },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackElemType::Waterfall, TrackElemType::Waterfall },
+        { TrackElemType::Rapids, TrackElemType::Rapids },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackElemType::ReverseFreefallVertical, TrackCurve::None },
+        { TrackElemType::ReverseFreefallVertical, TrackElemType::ReverseFreefallVertical },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },
+        { TrackCurve::RightLarge, TrackCurve::RightLarge },
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },
+        { TrackCurve::RightLarge, TrackCurve::RightLarge },
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },
+        { TrackCurve::RightLarge, TrackCurve::RightLarge },
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },
+        { TrackCurve::RightLarge, TrackCurve::RightLarge },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::LeftLarge, TrackCurve::None },
+        { TrackCurve::RightLarge, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::LeftLarge },
+        { TrackCurve::None, TrackCurve::RightLarge },
+        { TrackCurve::None, TrackCurve::LeftLarge },
+        { TrackCurve::None, TrackCurve::RightLarge },
+        { TrackCurve::LeftLarge, TrackCurve::None },
+        { TrackCurve::RightLarge, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::LeftLarge },
+        { TrackCurve::None, TrackCurve::RightLarge },
+        { TrackCurve::LeftLarge, TrackCurve::None },
+        { TrackCurve::RightLarge, TrackCurve::None },
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },
+        { TrackCurve::RightLarge, TrackCurve::RightLarge },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackElemType::LeftBarrelRollDownToUp, TrackCurve::None },
+        { TrackElemType::RightBarrelRollDownToUp, TrackCurve::None },
+        { TrackCurve::None, TrackElemType::LeftBarrelRollUpToDown },
+        { TrackCurve::None, TrackElemType::RightBarrelRollUpToDown },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackElemType::PoweredLift, TrackElemType::PoweredLift },
+        { TrackElemType::RightLargeHalfLoopDown, TrackCurve::None },
+        { TrackElemType::LeftLargeHalfLoopDown, TrackCurve::None },
+        { TrackCurve::None, TrackElemType::RightLargeHalfLoopUp },
+        { TrackCurve::None, TrackElemType::LeftLargeHalfLoopUp },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackElemType::InvertedFlatToDown90QuarterLoop, TrackCurve::None },
+        { TrackCurve::None, TrackElemType::Up90ToInvertedFlatQuarterLoop },
+        { TrackElemType::LeftCurvedLiftHill, TrackElemType::LeftCurvedLiftHill },
+        { TrackElemType::RightCurvedLiftHill, TrackElemType::RightCurvedLiftHill },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackElemType::AirThrustVerticalDown, TrackElemType::ReverseFreefallVertical },
+        { TrackElemType::AirThrustVerticalDown, TrackElemType::AirThrustVerticalDown },
+        { TrackCurve::None, TrackElemType::AirThrustVerticalDown },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::None },
+        { TrackCurve::Right, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::Left },
+        { TrackCurve::None, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::None },
+        { TrackCurve::Right, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::Left },
+        { TrackCurve::None, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::Left },
+        { TrackCurve::Right, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::None },
+        { TrackCurve::Right, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::Left },
+        { TrackCurve::None, TrackCurve::Right },
+        { TrackCurve::Left, TrackCurve::None },
+        { TrackCurve::Right, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::Left },
+        { TrackCurve::None, TrackCurve::Right },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackCurve::LeftSmall, TrackCurve::LeftSmall },
+        { TrackCurve::RightSmall, TrackCurve::RightSmall },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackCurve::None, TrackCurve::None },
+        { TrackElemType::None, TrackElemType::None },                       // TrackElemType::FlatTrack1x4A
+        { TrackCurve::None, TrackCurve::None }, // TrackElemType::FlatTrack2x2
+        { TrackCurve::None, TrackCurve::None }, // TrackElemType::FlatTrack4x4
+        { TrackElemType::None, TrackElemType::None },                       // TrackElemType::FlatTrack2x4
+        { TrackElemType::None, TrackElemType::None },                       // TrackElemType::FlatTrack1x5
+        { TrackElemType::None, TrackElemType::None },                       // TrackElemType::FlatTrack1x1A
+        { TrackElemType::None, TrackElemType::None },                       // TrackElemType::FlatTrack1x4B
+        { TrackElemType::None, TrackElemType::None },                       // TrackElemType::FlatTrack1x1B
+        { TrackElemType::None, TrackElemType::None },                       // TrackElemType::FlatTrack1x4C
+        { TrackElemType::None, TrackElemType::None },                       // TrackElemType::FlatTrack3x3
+        { TrackElemType::RightLargeCorkscrewDown, TrackCurve::None }, // TrackElemType::LeftLargeCorkscrewUp
+        { TrackElemType::LeftLargeCorkscrewDown, TrackCurve::None },  // TrackElemType::RightLargeCorkscrewUp
+        { TrackCurve::None, TrackElemType::RightLargeCorkscrewUp },   // TrackElemType::LeftLargeCorkscrewDown
+        { TrackCurve::None, TrackElemType::LeftLargeCorkscrewUp },    // TrackElemType::RightCorkscrewDown
+        { TrackElemType::RightMediumHalfLoopDown, TrackCurve::None }, // TrackElemType::LeftMediumHalfLoopUp
+        { TrackElemType::LeftMediumHalfLoopDown, TrackCurve::None },  // TrackElemType::RightMediumHalfLoopUp
+        { TrackCurve::None, TrackElemType::RightMediumHalfLoopUp },   // TrackElemType::LeftMediumHalfLoopDown
+        { TrackCurve::None, TrackElemType::LeftMediumHalfLoopUp },    // TrackElemType::RightMediumHalfLoopDown
+        { TrackElemType::LeftZeroGRollDown, TrackCurve::None },       // TrackElemType::LeftZeroGRollUp
+        { TrackElemType::RightZeroGRollDown, TrackCurve::None },      // TrackElemType::RightZeroGRollUp
+        { TrackCurve::None, TrackElemType::LeftZeroGRollUp },         // TrackElemType::LeftZeroGRollDown
+        { TrackCurve::None, TrackElemType::RightZeroGRollUp },        // TrackElemType::RightZeroGRollDown
+        { TrackElemType::LeftLargeZeroGRollDown, TrackCurve::None },  // TrackElemType::LeftLargeZeroGRollUp
+        { TrackElemType::RightLargeZeroGRollDown, TrackCurve::None }, // TrackElemType::RightLargeZeroGRollUp
+        { TrackCurve::None, TrackElemType::LeftLargeZeroGRollUp },    // TrackElemType::LeftLargeZeroGRollDown
+        { TrackCurve::None, TrackElemType::RightLargeZeroGRollUp },   // TrackElemType::RightLargeZeroGRollDown
+        { TrackElemType::RightFlyerLargeHalfLoopInvertedDown, TrackCurve::None },   // LeftFlyerLargeHalfLoopUninvertedUp
+        { TrackElemType::LeftFlyerLargeHalfLoopInvertedDown, TrackCurve::None },    // RightFlyerLargeHalfLoopUninvertedUp
+        { TrackCurve::None, TrackElemType::RightFlyerLargeHalfLoopUninvertedUp },   // LeftFlyerLargeHalfLoopInvertedDown
+        { TrackCurve::None, TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp },    // RightFlyerLargeHalfLoopInvertedDown
+        { TrackElemType::RightFlyerLargeHalfLoopUninvertedDown, TrackCurve::None },  // LeftFlyerLargeHalfLoopInvertedUp
+        { TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown, TrackCurve::None },  // RightFlyerLargeHalfLoopInvertedUp
+        { TrackCurve::None, TrackElemType::RightFlyerLargeHalfLoopInvertedUp },     // LeftFlyerLargeHalfLoopUninvertedDown
+        { TrackCurve::None, TrackElemType::LeftFlyerLargeHalfLoopInvertedUp },      // RightFlyerLargeHalfLoopUninvertedDown
+        { TrackCurve::None, TrackCurve::None }, // FlyerHalfLoopInvertedUp
+        { TrackCurve::None, TrackCurve::None }, // FlyerHalfLoopUninvertedUp
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToDiagUp25         
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthToDiagUp25        
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToDiagDown25       
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthToDiagDown25      
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToOrthogonalUp25   
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthToOrthogonalUp25  
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthToOrthogonalDown25 
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthToOrthogonalDown25
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagUp25ToLeftBankedUp25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagUp25ToRightBankedUp25
+        { TrackCurve::None, TrackCurve::None },               // TrackElemType::DiagLeftBankedUp25ToUp25
+        { TrackCurve::None, TrackCurve::None },               // TrackElemType::DiagRightBankedUp25ToUp25
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagDown25ToLeftBankedDown25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagDown25ToRightBankedDown25
+        { TrackCurve::None, TrackCurve::None },               // TrackElemType::DiagLeftBankedDown25ToDown25
+        { TrackCurve::None, TrackCurve::None },               // TrackElemType::DiagRightBankedDown25ToDown25
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagRightBankedFlatToRightBankedUp25
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagRightBankedFlatToRightBankedDown25
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagFlatToLeftBankedUp25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagFlatToRightBankedUp25
+        { TrackCurve::None, TrackCurve::None },               // TrackElemType::DiagLeftBankedUp25ToFlat
+        { TrackCurve::None, TrackCurve::None },               // TrackElemType::DiagRightBankedUp25ToFlat
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagFlatToLeftBankedDown25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagFlatToRightBankedDown25
+        { TrackCurve::None, TrackCurve::None },               // TrackElemType::DiagLeftBankedDown25ToFlat
+        { TrackCurve::None, TrackCurve::None },               // TrackElemType::DiagRightBankedDown25ToFlat
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagUp25LeftBanked
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagUp25RightBanked 
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::DiagDown25LeftBanked
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::DiagDown25RightBanked
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthBankToDiagUp25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthBankToDiagUp25
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthBankToDiagDown25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthBankToDiagDown25
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthBankToOrthogonalUp25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthBankToOrthogonalUp25 
+        { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthBankToOrthogonalDown25
+        { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthBankToOrthogonalDown25     
+        { TrackElemType::DiagBrakes, TrackElemType::DiagBrakes }, // TrackElemType::DiagBrakes
+        { TrackCurve::None, TrackCurve::None }, // TrackElemType::DiagBlockBrakes
     };
     static_assert(std::size(gTrackCurveChain) == TrackElemType::Count);
     
