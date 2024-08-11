@@ -2251,7 +2251,7 @@ static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
 
 static ObjectEntryIndex FootpathGetDefaultLegacyPath()
 {
-    for (ObjectEntryIndex i = 0; i < MAX_PATH_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxPathObjects; i++)
     {
         if (FootpathIsLegacyPathEntryOkay(i))
         {

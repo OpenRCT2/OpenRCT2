@@ -665,7 +665,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 numPathTypes++;
             }
 
-            for (ObjectEntryIndex i = 0; i < MAX_PATH_OBJECTS; i++)
+            for (ObjectEntryIndex i = 0; i < kMaxPathObjects; i++)
             {
                 auto* pathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, i));
                 if (pathObj == nullptr)
