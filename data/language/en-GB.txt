@@ -3730,6 +3730,8 @@ STR_6655    :Only ‘{POP16}{STRINGID}’
 STR_6656    :Remove all fences from the park
 STR_6657    :Land Not Owned
 STR_6658    :Set land to be not owned by the park, nor available for purchase
+STR_6659    :Guests ignore prices
+STR_6660    :Guests will ignore the price of rides and stalls.
 
 #############
 # Scenarios #

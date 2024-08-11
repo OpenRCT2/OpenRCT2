@@ -407,6 +407,7 @@ namespace OpenRCT2
         STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE = 5563,
         STR_WARNING_IN_CAPS = 5562,
         STR_YEAR = 6196,
+        STR_CHEAT_IGNORE_PRICE_TIP = 6660,
 
         // Window: Cheats -- weather
         STR_SUNNY = 5719,
