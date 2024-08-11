@@ -60,7 +60,7 @@ static int32_t _pickup_peep_old_x = kLocationNull;
 
 // General chunk size is 63 KiB, this can not be any larger because the packet size is encoded
 // with uint16_t and needs some spare room for other data in the packet.
-static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
+static constexpr uint32_t kChunkSize = 1024 * 63;
 
 // If data is sent fast enough it would halt the entire server, process only a maximum amount.
 // This limit is per connection, the current value was determined by tests with fuzzing.
@@ -1381,7 +1381,7 @@ void NetworkBase::ServerSendScripts(NetworkConnection& connection)
     uint32_t dataOffset = 0;
     while (dataOffset < pluginData.GetLength())
     {
-        const uint32_t chunkSize = std::min<uint32_t>(pluginData.GetLength() - dataOffset, CHUNK_SIZE);
+        const uint32_t chunkSize = std::min<uint32_t>(pluginData.GetLength() - dataOffset, kChunkSize);
 
         NetworkPacket packet(NetworkCommand::ScriptsData);
         packet << chunkSize;
@@ -1475,7 +1475,7 @@ void NetworkBase::ServerSendMap(NetworkConnection* connection)
         }
         return;
     }
-    size_t chunksize = CHUNK_SIZE;
+    size_t chunksize = kChunkSize;
     for (size_t i = 0; i < header.size(); i += chunksize)
     {
         size_t datasize = std::min(chunksize, header.size() - i);
@@ -2274,7 +2274,7 @@ void NetworkBase::ServerHandleRequestGamestate(NetworkConnection& connection, Ne
         uint32_t length = static_cast<uint32_t>(snapshotMemory.GetLength());
         while (bytesSent < length)
         {
-            uint32_t dataSize = CHUNK_SIZE;
+            uint32_t dataSize = kChunkSize;
             if (bytesSent + dataSize > snapshotMemory.GetLength())
             {
                 dataSize = snapshotMemory.GetLength() - bytesSent;
