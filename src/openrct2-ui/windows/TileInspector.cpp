@@ -1831,7 +1831,7 @@ static uint64_t PageDisabledWidgets[] = {
         void LoadTile(TileElement* elementToSelect)
         {
             windowTileInspectorSelectedIndex = -1;
-            scrolls[0].v_top = 0;
+            scrolls[0].contentOffsetY = 0;
 
             TileElement* element = MapGetFirstElementAt(_toolMap);
             int16_t numItems = 0;

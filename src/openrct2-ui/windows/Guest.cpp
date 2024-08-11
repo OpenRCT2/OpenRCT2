@@ -1253,9 +1253,9 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             if (visableHeight < 0)
                 visableHeight = 0;
 
-            if (visableHeight < scrolls[0].v_top)
+            if (visableHeight < scrolls[0].contentOffsetY)
             {
-                scrolls[0].v_top = visableHeight;
+                scrolls[0].contentOffsetY = visableHeight;
                 Invalidate();
             }
             return newSize;

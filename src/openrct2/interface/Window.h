@@ -185,20 +185,18 @@ struct Viewport
  * Scroll structure
  * size: 0x12
  */
-struct ScrollBar
+struct ScrollArea
 {
     uint16_t flags{};
-    int32_t h_left{};
-    int32_t h_right{};
-    int32_t h_thumb_left{};
-    int32_t h_thumb_right{};
-    int32_t v_top{};
-    int32_t v_bottom{};
-    int32_t v_thumb_top{};
-    int32_t v_thumb_bottom{};
+    int32_t contentOffsetX{};
+    int32_t contentWidth{};
+    int32_t hThumbLeft{};
+    int32_t hThumbRight{};
+    int32_t contentOffsetY{};
+    int32_t contentHeight{};
+    int32_t vThumbTop{};
+    int32_t vThumbBottom{};
 };
-
-constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<int32_t>::max();
 
 struct Focus
 {

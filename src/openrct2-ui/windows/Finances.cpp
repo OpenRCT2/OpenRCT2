@@ -420,7 +420,7 @@ static Widget _windowFinancesResearchWidgets[] =
             auto screenCoords = ScreenCoordsXY{ 0, kTableCellHeight + 2 };
 
             Widget self = widgets[WIDX_SUMMARY_SCROLL];
-            int32_t row_width = std::max<uint16_t>(scrolls[0].h_right, self.width());
+            int32_t row_width = std::max<uint16_t>(scrolls[0].contentWidth, self.width());
 
             // Expenditure / Income row labels
             for (int32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
@@ -851,7 +851,7 @@ static Widget _windowFinancesResearchWidgets[] =
         void InitialiseScrollPosition(WidgetIndex widgetIndex, int32_t scrollId)
         {
             const auto& widget = this->widgets[widgetIndex];
-            scrolls[scrollId].h_left = std::max(0, scrolls[scrollId].h_right - (widget.width() - 2));
+            scrolls[scrollId].contentOffsetX = std::max(0, scrolls[scrollId].contentWidth - (widget.width() - 2));
 
             WidgetScrollUpdateThumbs(*this, widgetIndex);
         }

@@ -5793,7 +5793,7 @@ static_assert(std::size(RatingNames) == 6);
             WidgetInvalidate(*this, WIDX_GRAPH);
 
             widget = &widgets[WIDX_GRAPH];
-            x = scrolls[0].h_left;
+            x = scrolls[0].contentOffsetX;
             if (_autoScrollGraph)
             {
                 auto ride = GetRide(rideId);
@@ -5805,7 +5805,7 @@ static_assert(std::size(RatingNames) == 6);
                 }
             }
 
-            scrolls[0].h_left = std::clamp(x, 0, scrolls[0].h_right - (widget->width() - 2));
+            scrolls[0].contentOffsetX = std::clamp(x, 0, scrolls[0].contentWidth - (widget->width() - 2));
             WidgetScrollUpdateThumbs(*this, WIDX_GRAPH);
         }
 
@@ -5996,7 +5996,7 @@ static_assert(std::size(RatingNames) == 6);
                 auto ft = Formatter();
                 ft.Add<int16_t>(scaled_yUnit);
 
-                DrawTextBasic(dpi, { scrolls[0].h_left + 1, y - 4 }, stringID, ft, { FontStyle::Small });
+                DrawTextBasic(dpi, { scrolls[0].contentOffsetX + 1, y - 4 }, stringID, ft, { FontStyle::Small });
             }
 
             // Time marks
