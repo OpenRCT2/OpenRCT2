@@ -485,7 +485,7 @@ void ResearchPopulateListRandom()
     }
 
     // Scenery
-    for (uint32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    for (uint32_t i = 0; i < kMaxSceneryGroupObjects; i++)
     {
         const auto* sceneryGroupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sceneryGroupEntry == nullptr)
@@ -665,7 +665,7 @@ void SceneryGroupSetInvented(int32_t sgIndex)
 
 void SetAllSceneryGroupsNotInvented()
 {
-    for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; ++i)
+    for (int32_t i = 0; i < kMaxSceneryGroupObjects; ++i)
     {
         const auto* scenery_set = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (scenery_set == nullptr)
@@ -889,7 +889,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
         }
     }
 
-    for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxSceneryGroupObjects; i++)
     {
         const auto* groupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (groupEntry != nullptr)

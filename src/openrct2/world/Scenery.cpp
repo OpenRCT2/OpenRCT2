@@ -434,7 +434,7 @@ static MiscScenery GetAllMiscScenery()
     MiscScenery ret;
     std::vector<ScenerySelection> referencedBySceneryGroups;
     std::vector<ObjectEntryIndex> sceneryGroupIds;
-    for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxSceneryGroupObjects; i++)
     {
         const auto* sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sgEntry != nullptr)

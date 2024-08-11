@@ -1008,7 +1008,7 @@ GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
 uint32_t StaffGetAvailableEntertainerCostumes()
 {
     uint32_t entertainerCostumes = 0;
-    for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    for (int32_t i = 0; i < kMaxSceneryGroupObjects; i++)
     {
         if (SceneryGroupIsInvented(i))
         {
