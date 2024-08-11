@@ -682,9 +682,8 @@ namespace OpenRCT2::Ui
         bottomRight.x--;
         bottomRight.y--;
 
-        auto scrollSize = w.OnScrollGetSize(widgetIndex);
-        bool hScrollNeeded = scrollSize.width > widget.width() && (scroll.flags & HSCROLLBAR_VISIBLE);
-        bool vScrollNeeded = scrollSize.height > widget.height() && (scroll.flags & VSCROLLBAR_VISIBLE);
+        bool hScrollNeeded = scroll.h_right > widget.width() && (scroll.flags & HSCROLLBAR_VISIBLE);
+        bool vScrollNeeded = scroll.v_bottom > widget.height() && (scroll.flags & VSCROLLBAR_VISIBLE);
 
         // Horizontal scrollbar
         if (hScrollNeeded)
@@ -948,7 +947,8 @@ namespace OpenRCT2::Ui
         }
 
         const auto& scroll = w.scrolls[*scroll_id];
-        if ((scroll.flags & HSCROLLBAR_VISIBLE) && screenCoords.y >= (w.windowPos.y + widget->bottom - (kScrollBarWidth + 1)))
+        if ((scroll.flags & HSCROLLBAR_VISIBLE) && scroll.h_right > widget->width()
+            && screenCoords.y >= (w.windowPos.y + widget->bottom - (kScrollBarWidth + 1)))
         {
             // horizontal scrollbar
             int32_t rightOffset = 0;
@@ -985,7 +985,8 @@ namespace OpenRCT2::Ui
             }
         }
         else if (
-            (scroll.flags & VSCROLLBAR_VISIBLE) && (screenCoords.x >= w.windowPos.x + widget->right - (kScrollBarWidth + 1)))
+            (scroll.flags & VSCROLLBAR_VISIBLE) && scroll.v_bottom > widget->height()
+            && (screenCoords.x >= w.windowPos.x + widget->right - (kScrollBarWidth + 1)))
         {
             // vertical scrollbar
             int32_t bottomOffset = 0;
