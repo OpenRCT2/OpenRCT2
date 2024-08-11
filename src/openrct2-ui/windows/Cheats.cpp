@@ -126,8 +126,9 @@ enum WindowCheatsWidgetIdx
     WIDX_REMOVE_ALL_GUESTS,
 
     WIDX_GENERAL_GROUP = WIDX_TAB_CONTENT,
-    WIDX_OPEN_CLOSE_PARK,
+    WIDX_REMOVE_PARK_FENCES,
     WIDX_CREATE_DUCKS,
+    WIDX_OPEN_CLOSE_PARK,
     WIDX_OWN_ALL_LAND,
     WIDX_REMOVE_DUCKS,
     WIDX_OBJECTIVE_GROUP,
@@ -259,35 +260,36 @@ static Widget window_cheats_guests_widgets[] =
 static Widget window_cheats_misc_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    MakeWidget        ({  5,  48}, {238,  60},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
-    MakeWidget        ({ 11,  62}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_OPEN_PARK,             STR_CHEAT_OPEN_PARK_TIP            ), // open / close park
+    MakeWidget        ({  5,  48}, {238,  81},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
+    MakeWidget        ({127,  62}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_REMOVE_PARK_FENCES,    STR_CHEAT_REMOVE_PARK_FENCES_TIP   ), // Remove park fences
     MakeWidget        ({ 11,  83}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP               ), // Create ducks
-    MakeWidget        ({127,  62}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_OWN_ALL_LAND,          STR_CHEAT_OWN_ALL_LAND_TIP         ), // Own all land
+    MakeWidget        ({ 11, 104}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_OPEN_PARK,             STR_CHEAT_OPEN_PARK_TIP            ), // open / close park
+    MakeWidget        ({ 11,  62}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_OWN_ALL_LAND,          STR_CHEAT_OWN_ALL_LAND_TIP         ), // Own all land
     MakeWidget        ({127,  83}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP               ), // Remove ducks
 
-    MakeWidget        ({  5, 112}, {238,  75},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_OBJECTIVE_GROUP                                           ), // Objective group
-    MakeWidget        ({ 11, 127}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
-    MakeWidget        ({ 11, 144}, {281,  12},   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
-    MakeSpinnerWidgets({156, 142}, { 81,  14},   WindowWidgetType::Spinner,  WindowColour::Secondary                                                                      ), // park rating (3 widgets)
-    MakeWidget        ({ 11, 162}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
-    MakeWidget        ({127, 162}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
+    MakeWidget        ({  5, 131}, {238,  75},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_OBJECTIVE_GROUP                                           ), // Objective group
+    MakeWidget        ({ 11, 146}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
+    MakeWidget        ({ 11, 163}, {281,  12},   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
+    MakeSpinnerWidgets({156, 161}, { 81,  14},   WindowWidgetType::Spinner,  WindowColour::Secondary                                                                      ), // park rating (3 widgets)
+    MakeWidget        ({ 11, 181}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
+    MakeWidget        ({127, 181}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
 
-    MakeWidget        ({  5, 190}, {238,  50},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_WEATHER_GROUP                                             ), // Weather group
-    MakeWidget        ({126, 204}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                        STR_CHANGE_WEATHER_TOOLTIP         ), // Force weather
-    MakeWidget        ({225, 205}, { 11,  12},   WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,              STR_CHANGE_WEATHER_TOOLTIP         ), // Force weather
-    MakeWidget        ({ 11, 222}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP       ), // Freeze weather
+    MakeWidget        ({  5, 207}, {238,  50},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_WEATHER_GROUP                                             ), // Weather group
+    MakeWidget        ({126, 221}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                        STR_CHANGE_WEATHER_TOOLTIP         ), // Force weather
+    MakeWidget        ({225, 222}, { 11,  12},   WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,              STR_CHANGE_WEATHER_TOOLTIP         ), // Force weather
+    MakeWidget        ({ 11, 239}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP       ), // Freeze weather
 
-    MakeWidget        ({  5, 244}, {238,  99},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_MAINTENANCE_GROUP                                         ), // Maintenance group
-    MakeWidget        ({ 11, 259}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
-    MakeWidget        ({127, 259}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_FIX_VANDALISM                                             ), // Fix vandalism
-    MakeWidget        ({ 11, 280}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
-    MakeWidget        ({127, 280}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
-    MakeWidget        ({ 11, 301}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
-    MakeWidget        ({ 11, 322}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
+    MakeWidget        ({  5, 257}, {238,  99},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_MAINTENANCE_GROUP                                         ), // Maintenance group
+    MakeWidget        ({ 11, 271}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
+    MakeWidget        ({127, 271}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_FIX_VANDALISM                                             ), // Fix vandalism
+    MakeWidget        ({ 11, 292}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
+    MakeWidget        ({127, 292}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
+    MakeWidget        ({ 11, 313}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
+    MakeWidget        ({ 11, 334}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
 
-    MakeWidget        ({  5, 347}, {238,  35},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
-    MakeWidget        ({126, 361}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Staff speed
-    MakeWidget        ({225, 362}, { 11,  12},   WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
+    MakeWidget        ({  5, 357}, {238,  35},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
+    MakeWidget        ({126, 371}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Staff speed
+    MakeWidget        ({225, 372}, { 11,  12},   WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
 
     MakeWidget        ({  5, 392}, {238,  56},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                        ), // Construction group
     MakeWidget        ({ 11, 407}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,   STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP  ), // Allow regular footpaths as queue path
@@ -910,6 +912,9 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_OWN_ALL_LAND:
                     CheatsSet(CheatType::OwnAllLand);
+                    break;
+                case WIDX_REMOVE_PARK_FENCES:
+                    CheatsSet(CheatType::RemoveParkFences);
                     break;
                 case WIDX_NEVERENDING_MARKETING:
                     CheatsSet(CheatType::NeverEndingMarketing, !gameState.Cheats.NeverendingMarketing);
