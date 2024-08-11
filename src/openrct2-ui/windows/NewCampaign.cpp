@@ -143,12 +143,17 @@ static Widget window_new_campaign_widgets[] = {
             {
                 if (curRide.status == RideStatus::Open)
                 {
-                    if (!curRide.GetRideTypeDescriptor().HasFlag(
-                            RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS
-                            | RIDE_TYPE_FLAG_IS_TOILET))
-                    {
-                        RideList.push_back(curRide.id);
-                    }
+                    const auto& rtd = curRide.GetRideTypeDescriptor();
+                    if (rtd.HasFlag(RtdFlag::isShopOrFacility))
+                        continue;
+                    if (rtd.HasFlag(RtdFlag::sellsFood))
+                        continue;
+                    if (rtd.HasFlag(RtdFlag::sellsDrinks))
+                        continue;
+                    if (rtd.HasFlag(RtdFlag::isToilet))
+                        continue;
+
+                    RideList.push_back(curRide.id);
                 }
             }
 

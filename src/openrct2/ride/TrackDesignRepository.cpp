@@ -151,7 +151,7 @@ public:
             {
                 const ObjectRepositoryItem* ori = repo.FindObjectLegacy(item.ObjectEntry.c_str());
 
-                if (ori == nullptr || !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (ori == nullptr || !GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
                     entryIsNotSeparate = true;
             }
 
@@ -185,7 +185,7 @@ public:
             {
                 const ObjectRepositoryItem* ori = repo.FindObjectLegacy(item.ObjectEntry.c_str());
 
-                if (ori == nullptr || !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (ori == nullptr || !GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
                     entryIsNotSeparate = true;
             }
 

@@ -24,10 +24,10 @@ constexpr RideTypeDescriptor ShopRTD =
         .ExtraTrackPieces = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
-                     RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-                     RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-                     RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY,
+    .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasSinglePieceStation,
+                     RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noVehicles,
+                     RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide,
+                     RtdFlag::listVehiclesSeparately),
     .RideModes = EnumsToFlags(RideMode::ShopStall),
     .DefaultMode = RideMode::ShopStall,
     .Naming = { STR_RIDE_NAME_SHOP, STR_RIDE_DESCRIPTION_SHOP },

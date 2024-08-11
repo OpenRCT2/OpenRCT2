@@ -368,7 +368,7 @@ static Widget window_maze_construction_widgets[] = {
                 if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
                 {
                     ToolCancel();
-                    if (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+                    if (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                         WindowCloseByClass(WindowClass::RideConstruction);
                 }
                 else

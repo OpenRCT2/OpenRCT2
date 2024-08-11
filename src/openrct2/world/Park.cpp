@@ -136,9 +136,9 @@ namespace OpenRCT2::Park
             {
                 if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
                     continue;
-                if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+                if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     continue;
-                if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+                if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasDataLogging))
                     continue;
                 if (ride.GetStation().SegmentLength < (600 << 16))
                     continue;

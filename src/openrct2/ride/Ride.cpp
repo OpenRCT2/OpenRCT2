@@ -295,11 +295,11 @@ size_t Ride::GetNumPrices() const
 {
     size_t result = 0;
     const auto& rtd = GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID))
+    if (rtd.HasFlag(RtdFlag::isCashMachine) || rtd.HasFlag(RtdFlag::isFirstAid))
     {
         result = 0;
     }
-    else if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
+    else if (rtd.HasFlag(RtdFlag::isToilet))
     {
         result = 1;
     }
@@ -793,7 +793,7 @@ bool Ride::FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const
         return false;
 
     const auto& rtd = GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RtdFlag::isMaze))
         return false;
 
     WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
@@ -846,7 +846,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
     }
     else if (status == RideStatus::Closed)
     {
-        if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+        if (!GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         {
             if (num_riders != 0)
             {
@@ -885,7 +885,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
             ft.Add<StringId>(STR_NONE);
         }
     }
-    else if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+    else if (!GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
     {
         ft.Add<StringId>(num_riders == 1 ? STR_PERSON_ON_RIDE : STR_PEOPLE_ON_RIDE);
         ft.Add<uint16_t>(num_riders);
@@ -914,7 +914,7 @@ int32_t Ride::GetTotalTime() const
 
 bool Ride::CanHaveMultipleCircuits() const
 {
-    if (!(GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)))
+    if (!(GetRideTypeDescriptor().HasFlag(RtdFlag::allowMultipleCircuits)))
         return false;
 
     // Only allow circuit or launch modes
@@ -941,9 +941,9 @@ bool Ride::SupportsStatus(RideStatus s) const
         case RideStatus::Open:
             return true;
         case RideStatus::Simulating:
-            return (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_TEST_MODE) && rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK));
+            return (!rtd.HasFlag(RtdFlag::noTestMode) && rtd.HasFlag(RtdFlag::hasTrack));
         case RideStatus::Testing:
-            return !rtd.HasFlag(RIDE_TYPE_FLAG_NO_TEST_MODE);
+            return !rtd.HasFlag(RtdFlag::noTestMode);
         case RideStatus::Count: // Meaningless but necessary to satisfy -Wswitch
             return false;
     }
@@ -1106,7 +1106,7 @@ void Ride::Update()
 
     // Update stations
     const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (!rtd.HasFlag(RtdFlag::isMaze))
         for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             RideUpdateStation(*this, StationIndex::FromUnderlying(i));
 
@@ -1999,7 +1999,7 @@ static void RideMusicUpdate(Ride& ride)
 {
     const auto& rtd = ride.GetRideTypeDescriptor();
 
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+    if (!rtd.HasFlag(RtdFlag::hasMusicByDefault) && !rtd.HasFlag(RtdFlag::allowMusic))
         return;
     rtd.MusicUpdateFunction(ride);
 }
@@ -2166,7 +2166,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
     const auto& rtd = GetRideTypeDescriptor();
 
     // Check if ride type supports data logging
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+    if (!rtd.HasFlag(RtdFlag::hasDataLogging))
     {
         return { nullptr, { STR_DATA_LOGGING_NOT_AVAILABLE_FOR_THIS_TYPE_OF_RIDE, {} } };
     }
@@ -2175,7 +2175,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
     if (measurement == nullptr)
     {
         measurement = std::make_unique<RideMeasurement>();
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+        if (rtd.HasFlag(RtdFlag::hasGForces))
         {
             measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
         }
@@ -2297,7 +2297,7 @@ void RideCheckAllReachable()
         if (ride.status != RideStatus::Open || ride.connected_message_throttle != 0)
             continue;
 
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
             RideShopConnected(ride);
         else
             RideEntranceExitConnected(ride);
@@ -2607,7 +2607,7 @@ static ResultWithMessage RideModeCheckValidStationNumbers(const Ride& ride)
     }
 
     const auto& rtd = ride.GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ONE_STATION) && numStations > 1)
+    if (rtd.HasFlag(RtdFlag::hasOneStation) && numStations > 1)
         return { false, STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE };
 
     return { true };
@@ -2624,10 +2624,10 @@ static StationIndexWithMessage RideModeCheckStationPresent(const Ride& ride)
     if (stationIndex.IsNull())
     {
         const auto& rtd = ride.GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+        if (!rtd.HasFlag(RtdFlag::hasTrack))
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+        if (rtd.HasFlag(RtdFlag::isMaze))
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
         return { StationIndex::GetNull(), STR_REQUIRES_A_STATION_PLATFORM };
@@ -2646,7 +2646,7 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
     if (ride == nullptr)
         return { false };
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         return { true };
 
     uint8_t entrance = 0;
@@ -2790,7 +2790,7 @@ static bool RideCheckTrackContainsInversions(const CoordsXYE& input, CoordsXYE* 
     if (ride != nullptr)
     {
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+        if (rtd.HasFlag(RtdFlag::isMaze))
             return true;
     }
 
@@ -2851,7 +2851,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
         return false;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RtdFlag::isMaze))
         return true;
 
     WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
@@ -3184,7 +3184,7 @@ static void RideSetStartFinishPoints(RideId rideIndex, const CoordsXYE& startEle
         return;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RtdFlag::isMaze))
         RideSetMazeEntranceExitPoints(*ride);
     else if (ride->type == RIDE_TYPE_BOAT_HIRE)
         RideSetBoatHireReturnPoint(*ride, startElement);
@@ -3381,7 +3381,7 @@ static Vehicle* VehicleCreateCar(
         }
         else
         {
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
+            if (rtd.HasFlag(RtdFlag::vehicleIsIntegral))
             {
                 if (rtd.StartTrackPiece != TrackElemType::FlatTrack1x4B)
                 {
@@ -3650,7 +3650,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
     }
 
     //
-    if (type != RIDE_TYPE_SPACE_RINGS && !GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
+    if (type != RIDE_TYPE_SPACE_RINGS && !GetRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
     {
         if (IsBlockSectioned())
         {
@@ -3967,7 +3967,7 @@ void Ride::ConstructMissingEntranceOrExit() const
     }
 
     const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (!rtd.HasFlag(RtdFlag::isMaze))
     {
         auto location = incompleteStation->GetStart();
         WindowScrollToLocation(*w, location);
@@ -4371,7 +4371,7 @@ void Ride::SetNameToDefault()
 RideNaming GetRideNaming(const ride_type_t rideType, const RideObjectEntry& rideEntry)
 {
     const auto& rtd = GetRideTypeDescriptor(rideType);
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+    if (!rtd.HasFlag(RtdFlag::listVehiclesSeparately))
     {
         return rtd.Naming;
     }
@@ -4702,7 +4702,7 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
  */
 void RideUpdateVehicleColours(const Ride& ride)
 {
-    if (ride.type == RIDE_TYPE_SPACE_RINGS || ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
+    if (ride.type == RIDE_TYPE_SPACE_RINGS || ride.GetRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
     {
         GfxInvalidateScreen();
     }
@@ -5132,7 +5132,7 @@ void Ride::UpdateMaxVehicles()
                 } while (totalLength <= stationLength);
 
                 if ((mode != RideMode::StationToStation && mode != RideMode::ContinuousCircuit)
-                    || !(rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS)))
+                    || !(rtd.HasFlag(RtdFlag::allowMoreVehiclesThanStationFits)))
                 {
                     maxNumTrains = std::min(maxNumTrains, int32_t(OpenRCT2::Limits::kMaxTrainsPerRide));
                 }
@@ -5520,7 +5520,7 @@ int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType)
                     continue;
                 }
 
-                if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (!GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
                 {
                     subType = rideEntryIndex;
                     break;
@@ -5730,7 +5730,7 @@ void Ride::FormatNameTo(Formatter& ft) const
     {
         const auto& rtd = GetRideTypeDescriptor();
         auto rideTypeName = rtd.Naming.Name;
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
         {
             auto rideEntry = GetRideEntry();
             if (rideEntry != nullptr)
@@ -5890,7 +5890,7 @@ ResultWithMessage Ride::ChangeStatusGetStartElement(StationIndex stationIndex, C
     {
         // Maze is strange, station start is 0... investigation required
         const auto& rtd = GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+        if (!rtd.HasFlag(RtdFlag::isMaze))
             return { false };
     }
 
@@ -5976,7 +5976,7 @@ ResultWithMessage Ride::ChangeStatusCreateVehicles(bool isApplying, const Coords
         RideSetStartFinishPoints(id, trackElement);
 
     const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+    if (!rtd.HasFlag(RtdFlag::noVehicles) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
         const auto createVehicleResult = CreateVehicles(trackElement, isApplying);
         if (!createVehicleResult.Successful)
@@ -5985,7 +5985,7 @@ ResultWithMessage Ride::ChangeStatusCreateVehicles(bool isApplying, const Coords
         }
     }
 
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL) && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
+    if (rtd.HasFlag(RtdFlag::allowCableLiftHill) && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
         && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
     {
         const auto createCableLiftResult = RideCreateCableLift(id, isApplying);

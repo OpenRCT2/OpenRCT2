@@ -232,7 +232,7 @@ static Widget _rideConstructionWidgets[] = {
             _currentTrackLiftHill = 0;
             _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
-            if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED))
+            if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
                 _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
             _previousTrackRollEnd = TrackRoll::None;
@@ -404,7 +404,7 @@ static Widget _rideConstructionWidgets[] = {
                     disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
                 }
             }
-            if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
+            if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                 && !GetGameState().Cheats.EnableAllDrawableTrackPieces)
             {
                 // Disable lift hill toggle and banking if current track piece is uphill
@@ -820,7 +820,7 @@ static Widget _rideConstructionWidgets[] = {
                     if (_currentlySelectedTrack == TrackCurve::LeftSmall || _currentlySelectedTrack == TrackCurve::RightSmall)
                     {
                         if (_currentTrackPitchEnd == TrackPitch::None && _previousTrackRollEnd != TrackRoll::None
-                            && (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
+                            && (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                                 || GetGameState().Cheats.EnableAllDrawableTrackPieces))
                         {
                             disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
@@ -1601,7 +1601,7 @@ static Widget _rideConstructionWidgets[] = {
 
             hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_DEMOLISH) | (1u << WIDX_NEXT_SECTION)
                 | (1u << WIDX_PREVIOUS_SECTION);
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) || !currentRide->HasStation())
+            if (rtd.HasFlag(RtdFlag::isShopOrFacility) || !currentRide->HasStation())
             {
                 widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
                 widgets[WIDX_ENTRANCE].type = WindowWidgetType::Empty;
@@ -1718,7 +1718,7 @@ static Widget _rideConstructionWidgets[] = {
                 widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
             }
 
-            if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
+            if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                 && (_currentTrackPitchEnd == TrackPitch::Up25 || _currentTrackPitchEnd == TrackPitch::Up60)
                 && !GetGameState().Cheats.EnableAllDrawableTrackPieces)
             {
@@ -1727,7 +1727,7 @@ static Widget _rideConstructionWidgets[] = {
 
             if ((IsTrackEnabled(TrackGroup::liftHill) && !_currentlySelectedTrack.isTrackType)
                 || (GetGameState().Cheats.EnableChainLiftOnAllTrack
-                    && currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK)))
+                    && currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack)))
             {
                 widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::FlatBtn;
             }
@@ -1873,7 +1873,7 @@ static Widget _rideConstructionWidgets[] = {
                 || _currentlySelectedTrack == TrackElemType::BlockBrakes || _selectedTrackType > TrackElemType::HighestAlias
                 || _currentlySelectedTrack.trackType > TrackElemType::HighestAlias;
 
-            bool rideHasSeatRotation = rtd.HasFlag(RIDE_TYPE_FLAG_HAS_SEAT_ROTATION);
+            bool rideHasSeatRotation = rtd.HasFlag(RtdFlag::hasSeatRotation);
 
             if (!trackHasSpeedSetting)
             {
@@ -1992,7 +1992,7 @@ static Widget _rideConstructionWidgets[] = {
             widgets[WIDX_CONSTRUCT].type = WindowWidgetType::Empty;
             widgets[WIDX_DEMOLISH].type = WindowWidgetType::FlatBtn;
             widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
+            if (rtd.HasFlag(RtdFlag::cannotHaveGaps))
             {
                 widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
                 widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
@@ -2375,7 +2375,7 @@ static Widget _rideConstructionWidgets[] = {
                     {
                         // When flat rides are deleted, the window should be reset so the currentRide can be placed again.
                         const auto& rtd = currentRide->GetRideTypeDescriptor();
-                        if (rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+                        if (rtd.HasFlag(RtdFlag::isFlatRide) && !rtd.HasFlag(RtdFlag::isShopOrFacility))
                         {
                             RideInitialiseConstructionWindow(*currentRide);
                         }
@@ -2559,7 +2559,7 @@ static Widget _rideConstructionWidgets[] = {
                 if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
                 {
                     ToolCancel();
-                    if (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+                    if (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     {
                         WindowCloseByClass(WindowClass::RideConstruction);
                     }
@@ -2717,7 +2717,7 @@ static Widget _rideConstructionWidgets[] = {
     {
         RideTrackGroup disabledPieces{};
         const auto& rtd = GetRideTypeDescriptor(rideType);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+        if (rtd.HasFlag(RtdFlag::hasTrack))
         {
             // Set all pieces as “disabled”. When looping over the ride entries,
             // pieces will be re-enabled as soon as a single entry supports it.
@@ -3030,7 +3030,7 @@ static Widget _rideConstructionWidgets[] = {
     {
         WindowRideConstructionUpdateEnabledTrackPieces();
         if (auto currentRide = GetRide(_currentRideIndex);
-            !currentRide || currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            !currentRide || currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::isMaze))
         {
             return;
         }
@@ -3261,7 +3261,7 @@ static Widget _rideConstructionWidgets[] = {
         }
 
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+        if (!rtd.HasFlag(RtdFlag::isMaze))
         {
             auto window = static_cast<RideConstructionWindow*>(WindowFindByClass(WindowClass::RideConstruction));
             if (!window)
@@ -3319,7 +3319,7 @@ static Widget _rideConstructionWidgets[] = {
         // search for appropriate z value for ghost, up to max ride height
         int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
 
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+        if (rtd.HasFlag(RtdFlag::isMaze))
         {
             for (int zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
             {
@@ -3364,7 +3364,7 @@ static Widget _rideConstructionWidgets[] = {
         }
 
         if (_autoRotatingShop && _rideConstructionState == RideConstructionState::Place
-            && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+            && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         {
             PathElement* pathsByDir[kNumOrthogonalDirections];
 
@@ -3557,7 +3557,7 @@ static Widget _rideConstructionWidgets[] = {
         int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
 
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+        if (rtd.HasFlag(RtdFlag::isMaze))
         {
             for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
             {

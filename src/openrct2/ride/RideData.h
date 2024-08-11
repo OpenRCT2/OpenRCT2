@@ -324,6 +324,130 @@ struct TrackDrawerDescriptor
     bool HasCoveredPieces() const;
 };
 
+enum class RtdFlag : uint8_t
+{
+    hasTrackColourMain = 0,
+    hasTrackColourAdditional = 1,
+    hasTrackColourSupports = 2,
+
+    // Set by flat rides, tower rides and shops/stalls.
+    hasSinglePieceStation = 3,
+
+    hasLeaveWhenAnotherVehicleArrivesAtStation = 4,
+    canSynchroniseWithAdjacentStations = 5,
+
+    // Used only by boat Hire and submarine ride
+    trackMustBeOnWater = 6,
+
+    hasGForces = 7,
+
+    // Used by rides that can't have gaps, like those with a vertical tower,
+    // such as the observation tower.
+    cannotHaveGaps = 8,
+
+    hasDataLogging = 9,
+    hasDrops = 10,
+
+    noTestMode = 11,
+    // Set on rides with two varieties, like the u and o shapes of the dinghy slide
+    // and the dry and submerged track of the water coaster.
+
+    hasCoveredPieces = 12,
+
+    // Used only by maze, spiral slide and shops
+    noVehicles = 13,
+
+    hasLoadOptions = 14,
+    hasLsmBehaviourOnFlat = 15,
+
+    // Set by flat rides where the vehicle is integral to the structure, like
+    // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
+    vehicleIsIntegral = 16,
+
+    isShopOrFacility = 17,
+
+    // If set, wall scenery can not share a tile with the ride's track
+    noWallsAroundTrack = 18,
+
+    isFlatRide = 19,
+
+    // Whether or not guests will go on the ride again if they liked it
+    // (this is usually applied to everything apart from transport rides).
+    guestsWillRideAgain = 20,
+
+    // Used by Toilets and First Aid to mark that guest should go
+    // inside the building (rather than 'buying' at the counter)
+    guestsShouldGoInsideFacility = 21,
+
+    // Guests are "IN" (ride) rather than "ON" (ride)
+    describeAsInside = 22,
+
+    sellsFood = 23,
+    sellsDrinks = 24,
+    isToilet = 25,
+
+    // Whether or not vehicle colours can be set
+    hasVehicleColours = 26,
+
+    checkForStalling = 27,
+    hasTrack = 28,
+
+    // Only set by lift
+    allowExtraTowerBases = 29,
+
+    // Only set by reverser coaster
+    layeredVehiclePreview = 30,
+
+    supportsMultipleColourSchemes = 31,
+    allowDoorsOnTrack = 32,
+    hasMusicByDefault = 33,
+    allowMusic = 34,
+
+    // Used by the Flying RC, Lay-down RC, Multi-dimension RC
+    hasInvertedVariant = 35,
+
+    checkGForces = 36,
+    hasEntranceAndExit = 37,
+    allowMoreVehiclesThanStationFits = 38,
+    hasAirTime = 39,
+    singleSession = 40,
+    allowMultipleCircuits = 41,
+    allowCableLiftHill = 42,
+    showInTrackDesigner = 43,
+    isTransportRide = 44,
+    interestingToLookAt = 45,
+    slightlyInterestingToLookAt = 46,
+
+    // This is only set on the Flying RC and its alternative type.
+    startConstructionInverted = 47,
+
+    listVehiclesSeparately = 48,
+    supportsLevelCrossings = 49,
+    isSuspended = 50,
+    hasLandscapeDoors = 51,
+    upInclineRequiresLift = 52,
+    guestsCanUseUmbrella = 53,
+    isCashMachine = 54,
+    hasOneStation = 55,
+    hasSeatRotation = 56,
+    isFirstAid = 57,
+    isMaze = 58,
+    isSpiralSlide = 59,
+    allowReversedTrains = 60,
+};
+
+// Set on ride types that have a main colour, additional colour and support colour.
+constexpr uint64_t kRtdFlagsHasThreeColours = EnumsToFlags(
+    RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::hasTrackColourSupports);
+// Set on _all_ roller coaster ride types, including the _ALT types used for constructing upside down.
+constexpr uint64_t kRtdFlagsCommonCoaster = EnumsToFlags(
+    RtdFlag::hasGForces, RtdFlag::hasDataLogging, RtdFlag::hasDrops, RtdFlag::hasLoadOptions, RtdFlag::guestsWillRideAgain,
+    RtdFlag::hasVehicleColours, RtdFlag::checkForStalling, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
+    RtdFlag::allowMusic, RtdFlag::interestingToLookAt, RtdFlag::canSynchroniseWithAdjacentStations);
+// Set on all roller coaster ride types, excluding the _ALT types used for constructing upside down.
+constexpr uint64_t kRtdFlagsCommonCoasterNonAlt = EnumsToFlags(
+    RtdFlag::showInTrackDesigner, RtdFlag::hasAirTime, RtdFlag::hasEntranceAndExit);
+
 struct RideTypeDescriptor
 {
     uint8_t Category{};
@@ -393,7 +517,7 @@ struct RideTypeDescriptor
 
     UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsDefault;
 
-    bool HasFlag(uint64_t flag) const;
+    bool HasFlag(RtdFlag flag) const;
     /** @deprecated */
     bool SupportsTrackGroup(const TrackGroup trackGroup) const;
     ResearchCategory GetResearchCategory() const;
@@ -408,94 +532,6 @@ enum
     RIDE_TYPE_ALTERNATIVE_TRACK_PIECES = 1, // Dinghy slide and Water Coaster
     RIDE_TYPE_ALTERNATIVE_TRACK_TYPE = 2,   // Flying RC, Lay-down RC, Multi-dimension RC
 };
-
-enum ride_type_flags : uint64_t
-{
-    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = (1uLL << 0),
-    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = (1uLL << 1),
-    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS = (1uLL << 2),
-    RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION = (1uLL << 3), // Set by flat rides, tower rides and shops/stalls.
-    RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION = (1uLL << 4),
-    RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = (1uLL << 5),
-    RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER = (1uLL << 6), // used only by boat Hire and submarine ride
-    RIDE_TYPE_FLAG_HAS_G_FORCES = (1uLL << 7),
-    RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS = (1uLL << 8), // used by rides that can't have gaps, like those with a vertical tower, such
-                                                   // as the observation tower
-    RIDE_TYPE_FLAG_HAS_DATA_LOGGING = (1uLL << 9),
-    RIDE_TYPE_FLAG_HAS_DROPS = (1uLL << 10),
-    RIDE_TYPE_FLAG_NO_TEST_MODE = (1uLL << 11),
-    RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES = (1uLL << 12), // set on rides with two varieties,
-                                                                     // like the u and o shapes of the dinghy slide
-                                                                     // and the dry and submerged track of the water
-                                                                     // coaster
-    RIDE_TYPE_FLAG_NO_VEHICLES = (1uLL << 13),                       // used only by maze, spiral slide and shops
-    RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = (1uLL << 14),
-    RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT = (1uLL << 15),
-    RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL = (1uLL << 16), // Set by flat rides where the vehicle is integral to the structure, like
-    // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
-    RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY = (1uLL << 17),
-    RIDE_TYPE_FLAG_TRACK_NO_WALLS = (1uLL << 18), // if set, wall scenery can not share a tile with the ride's track
-    RIDE_TYPE_FLAG_FLAT_RIDE = (1uLL << 19),
-    RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN = (1uLL << 20), // whether or not guests will go on the ride again if they liked it
-                                                        // (this is
-    // usually applied to everything apart from transport rides)
-    RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY = (1uLL << 21), // used by toilets and first aid to mark that peep should go
-                                                                  // inside the building (rather than 'buying' at the counter)
-    RIDE_TYPE_FLAG_IN_RIDE = (1uLL << 22),                        // peeps are "IN" (ride) rather than "ON" (ride)
-    RIDE_TYPE_FLAG_SELLS_FOOD = (1uLL << 23),
-    RIDE_TYPE_FLAG_SELLS_DRINKS = (1uLL << 24),
-    RIDE_TYPE_FLAG_IS_TOILET = (1uLL << 25),
-    RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS = (1uLL << 26), // whether or not vehicle colours can be set
-    RIDE_TYPE_FLAG_CHECK_FOR_STALLING = (1uLL << 27),
-    RIDE_TYPE_FLAG_HAS_TRACK = (1uLL << 28),
-    RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES = (1uLL << 29), // Only set by lift
-    RIDE_TYPE_FLAG_LAYERED_VEHICLE_PREVIEW = (1uLL << 30), // Only set by reverser coaster
-    RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = (1uLL << 31),
-
-    RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK = (1uLL << 32),
-    RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT = (1uLL << 33),
-    RIDE_TYPE_FLAG_ALLOW_MUSIC = (1uLL << 34),
-    RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE = (1uLL << 35), // Used by the Flying RC, Lay-down RC, Multi-dimension RC
-    RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES = (1uLL << 36),
-    RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT = (1uLL << 37),
-    RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS = (1uLL << 38),
-    RIDE_TYPE_FLAG_HAS_AIR_TIME = (1uLL << 39),
-    RIDE_TYPE_FLAG_SINGLE_SESSION = (1uLL << 40),
-    RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS = (1uLL << 41),
-    RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL = (1uLL << 42),
-    RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER = (1uLL << 43),
-    RIDE_TYPE_FLAG_TRANSPORT_RIDE = (1uLL << 44),
-    RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT = (1uLL << 45),
-    RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT = (1uLL << 46),
-    RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED = (1uLL << 47), // This is only set on the Flying RC and its alternative type.
-
-    RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY = (1uLL << 48),
-    RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS = (1uLL << 49),
-    RIDE_TYPE_FLAG_IS_SUSPENDED = (1uLL << 50),
-    RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS = (1uLL << 51),
-    RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT = (1uLL << 52),
-    RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA = (1uLL << 53),
-    RIDE_TYPE_FLAG_IS_CASH_MACHINE = (1uLL << 54),
-    RIDE_TYPE_FLAG_HAS_ONE_STATION = (1uLL << 55),
-    RIDE_TYPE_FLAG_HAS_SEAT_ROTATION = (1uLL << 56),
-    RIDE_TYPE_FLAG_IS_FIRST_AID = (1uLL << 57),
-    RIDE_TYPE_FLAG_IS_MAZE = (1uLL << 58),
-    RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE = (1uLL << 59),
-    RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS = (1uLL << 60),
-};
-
-// Set on ride types that have a main colour, additional colour and support colour.
-constexpr uint64_t RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS = RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN
-    | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS;
-// Set on _all_ roller coaster ride types, including the _ALT types used for constructing upside down.
-constexpr uint64_t RIDE_TYPE_FLAGS_COMMON_COASTER = RIDE_TYPE_FLAG_HAS_G_FORCES | RIDE_TYPE_FLAG_HAS_DATA_LOGGING
-    | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN
-    | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK
-    | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT
-    | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS;
-// Set on all roller coaster ride types, excluding the _ALT types used for constructing upside down.
-constexpr uint64_t RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT = RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_HAS_AIR_TIME
-    | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT;
 
 // clang-format off
 constexpr RideComponentName RideComponentNames[] =
