@@ -46,7 +46,7 @@ enum class MasterServerStatus
 };
 
 #    ifndef DISABLE_HTTP
-constexpr int32_t MASTER_SERVER_REGISTER_TIME = 120 * 1000; // 2 minutes
+constexpr int32_t kMasterServerRegisterTime = 120 * 1000; // 2 minutes
 constexpr int32_t MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000; // 1 minute
 #    endif
 
@@ -147,7 +147,7 @@ private:
         switch (_status)
         {
             case ADVERTISE_STATUS::UNREGISTERED:
-                if (_lastAdvertiseTime == 0 || Platform::GetTicks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
+                if (_lastAdvertiseTime == 0 || Platform::GetTicks() > _lastAdvertiseTime + kMasterServerRegisterTime)
                 {
                     if (_lastAdvertiseTime == 0)
                     {
