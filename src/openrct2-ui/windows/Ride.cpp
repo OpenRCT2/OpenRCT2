@@ -2025,7 +2025,7 @@ static_assert(std::size(RatingNames) == 6);
 
             auto& objManager = GetContext()->GetObjectManager();
 
-            for (ObjectEntryIndex i = 0; i < MAX_STATION_OBJECTS; i++)
+            for (ObjectEntryIndex i = 0; i < kMaxStationObjects; i++)
             {
                 auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, i));
                 if (stationObj != nullptr)
