@@ -18503,6 +18503,33 @@ namespace OpenRCT2::SingleRailRC
         TrackLeftEighthBankToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
     }
 
+    static void Track25DegDownBrakes(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        direction = (direction + 2) & 3;
+
+        PaintAddImageAsParentRotated(
+            session, direction, session.TrackColours.WithIndex(SPR_G2_SINGLE_RAIL_GENTLE_BRAKE + direction), { 0, 0, height },
+            { { 0, 6, height + 3 }, { 32, 20, 2 } });
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        {
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        }
+
+        if (direction == 0 || direction == 3)
+        {
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
+        }
+        else
+        {
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
+        }
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 56);
+    }
+
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType)
     {
         switch (trackType)
@@ -18984,6 +19011,8 @@ namespace OpenRCT2::SingleRailRC
                 return TrackLeftEighthBankToOrthogonalDown25;
             case TrackElemType::RightEighthBankToOrthogonalDown25:
                 return TrackRightEighthBankToOrthogonalDown25;
+            case TrackElemType::Down25Brakes:
+                return Track25DegDownBrakes;
         }
         return nullptr;
     }
