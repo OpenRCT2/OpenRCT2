@@ -23,23 +23,19 @@
 
 // 0x0098DA00
 static constexpr std::array<int32_t, EnumValue(ObjectType::Count)> kObjectEntryGroupCounts = {
-    kMaxRideObjects,          // rides
+    kMaxRideObjects,         // rides
     kMaxSmallSceneryObjects, // small scenery
     kMaxLargeSceneryObjects, // large scenery
     kMaxWallSceneryObjects,  // walls
-    kMaxBannerObjects,        // banners
-    kMaxPathObjects,          // paths
+    kMaxBannerObjects,       // banners
+    kMaxPathObjects,         // paths
     kMaxPathAdditionObjects, // path additions
     kMaxSceneryGroupObjects, // scenery sets
     kMaxParkEntranceObjects, // park entrance
-    kMaxWaterObjects,         // water
+    kMaxWaterObjects,        // water
     kMaxScenarioTextObjects, // scenario text
-    kMaxTerrainSurfaceObjects,
-    kMaxTerrainEdgeObjects,
-    kMaxStationObjects,
-    kMaxMusicObjects,
-    kMaxFootpathSurfaceObjects,
-    kMaxFootpathRailingsObjects,
+    kMaxTerrainSurfaceObjects, kMaxTerrainEdgeObjects,     kMaxStationObjects,
+    kMaxMusicObjects,          kMaxFootpathSurfaceObjects, kMaxFootpathRailingsObjects,
     kMaxAudioObjects,
 };
 static_assert(std::size(kObjectEntryGroupCounts) == EnumValue(ObjectType::Count));
@@ -220,7 +216,7 @@ void ObjectGetTypeEntryIndex(size_t index, ObjectType* outObjectType, ObjectEntr
 
 void ObjectEntryGetNameFixed(utf8* buffer, size_t bufferSize, const RCTObjectEntry* entry)
 {
-    bufferSize = std::min(static_cast<size_t>(DAT_NAME_LENGTH) + 1, bufferSize);
+    bufferSize = std::min(static_cast<size_t>(kDatNameLength) + 1, bufferSize);
     std::memcpy(buffer, entry->name, bufferSize - 1);
     buffer[bufferSize - 1] = 0;
 }

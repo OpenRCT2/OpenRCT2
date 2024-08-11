@@ -33,8 +33,7 @@ using namespace OpenRCT2;
 static constexpr uint8_t DatEntryPrefixLength = 5;
 static constexpr uint8_t DatEntryFlagsLength = 8;
 static constexpr uint8_t DatEntrySeparatorLength = 1;
-static constexpr uint8_t DatEntryLength = DatEntryPrefixLength + DatEntryFlagsLength + DatEntrySeparatorLength
-    + DAT_NAME_LENGTH;
+static constexpr uint8_t DatEntryLength = DatEntryPrefixLength + DatEntryFlagsLength + DatEntrySeparatorLength + kDatNameLength;
 static constexpr uint8_t DatEntryFlagsStart = DatEntryPrefixLength;
 static constexpr uint8_t DatEntryNameStart = DatEntryPrefixLength + DatEntryFlagsLength + DatEntrySeparatorLength;
 
@@ -221,7 +220,7 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
             {
                 RCTObjectEntry entry = {};
                 entry.flags = std::stoul(entryName.substr(DatEntryFlagsStart, DatEntryFlagsLength), nullptr, 16);
-                std::memcpy(entry.name, entryName.c_str() + DatEntryNameStart, DAT_NAME_LENGTH);
+                std::memcpy(entry.name, entryName.c_str() + DatEntryNameStart, kDatNameLength);
                 entry.checksum = 0;
                 entries.emplace_back(entry);
             }
