@@ -64,7 +64,7 @@ static constexpr uint32_t kChunkSize = 1024 * 63;
 
 // If data is sent fast enough it would halt the entire server, process only a maximum amount.
 // This limit is per connection, the current value was determined by tests with fuzzing.
-static constexpr uint32_t MaxPacketsPerUpdate = 100;
+static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
 #    include "../Cheats.h"
 #    include "../ParkImporter.h"
@@ -1764,7 +1764,7 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
                 // could not read anything from socket
                 break;
         }
-    } while (packetStatus == NetworkReadPacket::Success && countProcessed < MaxPacketsPerUpdate);
+    } while (packetStatus == NetworkReadPacket::Success && countProcessed < kMaxPacketsPerUpdate);
 
     if (!connection.ReceivedPacketRecently())
     {
