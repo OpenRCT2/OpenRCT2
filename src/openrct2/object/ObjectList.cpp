@@ -32,7 +32,7 @@ static constexpr std::array<int32_t, EnumValue(ObjectType::Count)> kObjectEntryG
     kMaxPathAdditionObjects, // path additions
     kMaxSceneryGroupObjects, // scenery sets
     kMaxParkEntranceObjects, // park entrance
-    MAX_WATER_OBJECTS,         // water
+    kMaxWaterObjects,         // water
     MAX_SCENARIO_TEXT_OBJECTS, // scenario text
     MAX_TERRAIN_SURFACE_OBJECTS,
     MAX_TERRAIN_EDGE_OBJECTS,
