@@ -497,7 +497,7 @@ static Widget _trackPlaceWidgets[] = {
                         {
                             uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
 
-                            auto bits = trackBlock->var_08.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
+                            auto bits = trackBlock->quarterTile.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                             // Station track is a lighter colour
                             uint8_t colour = (ted.sequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)

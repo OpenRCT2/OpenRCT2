@@ -2671,12 +2671,12 @@ static Widget _rideConstructionWidgets[] = {
 
             while (trackBlock->index != 255)
             {
-                auto quarterTile = trackBlock->var_08.Rotate(trackDirection);
+                auto quarterTile = trackBlock->quarterTile.Rotate(trackDirection);
                 CoordsXY offsets = { trackBlock->x, trackBlock->y };
                 CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
                 int32_t baseZ = originZ + trackBlock->z;
-                int32_t clearanceZ = trackBlock->ClearanceZ + clearanceHeight + baseZ + (4 * kCoordsZStep);
+                int32_t clearanceZ = trackBlock->clearanceZ + clearanceHeight + baseZ + (4 * kCoordsZStep);
 
                 auto centreTileCoords = TileCoordsXY{ coords };
                 auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];

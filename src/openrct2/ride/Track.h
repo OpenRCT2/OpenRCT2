@@ -177,8 +177,8 @@ struct PreviewTrack
     int16_t x;     // 0x01
     int16_t y;     // 0x03
     int16_t z;     // 0x05
-    uint8_t ClearanceZ;
-    QuarterTile var_08;
+    uint8_t clearanceZ;
+    QuarterTile quarterTile;
     uint8_t flags;
 };
 
