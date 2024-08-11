@@ -1695,7 +1695,7 @@ static Widget _rideConstructionWidgets[] = {
             widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
             widgets[WIDX_SLOPE_UP_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP);
             widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP;
-            if (trackDrawerDescriptor.SupportsTrackGroup(TrackGroup::reverseFreefall))
+            if (trackDrawerDescriptor.Regular.SupportsTrackGroup(TrackGroup::reverseFreefall))
             {
                 widgets[WIDX_LEVEL].type = WindowWidgetType::FlatBtn;
                 widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;

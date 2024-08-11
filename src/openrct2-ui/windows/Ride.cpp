@@ -3411,7 +3411,7 @@ static_assert(std::size(RatingNames) == 6);
             const auto& rtd = ride->GetRideTypeDescriptor();
             bool hasAlternativeType = rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE);
             if (rtd.TrackPaintFunctions.Regular.SupportsTrackGroup(TrackGroup::liftHill)
-                || (hasAlternativeType && rtd.InvertedTrackPaintFunctions.SupportsTrackGroup(TrackGroup::liftHill)))
+                || (hasAlternativeType && rtd.InvertedTrackPaintFunctions.Regular.SupportsTrackGroup(TrackGroup::liftHill)))
             {
                 widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_LIFT_HILL_SPEED].type = WindowWidgetType::Spinner;
