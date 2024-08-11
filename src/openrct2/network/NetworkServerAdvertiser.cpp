@@ -47,7 +47,7 @@ enum class MasterServerStatus
 
 #    ifndef DISABLE_HTTP
 constexpr int32_t kMasterServerRegisterTime = 120 * 1000; // 2 minutes
-constexpr int32_t MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000; // 1 minute
+constexpr int32_t kMasterServerHeartbeatTime = 60 * 1000; // 1 minute
 #    endif
 
 class NetworkServerAdvertiser final : public INetworkServerAdvertiser
@@ -157,7 +157,7 @@ private:
                 }
                 break;
             case ADVERTISE_STATUS::REGISTERED:
-                if (Platform::GetTicks() > _lastHeartbeatTime + MASTER_SERVER_HEARTBEAT_TIME)
+                if (Platform::GetTicks() > _lastHeartbeatTime + kMasterServerHeartbeatTime)
                 {
                     SendHeartbeat();
                 }
