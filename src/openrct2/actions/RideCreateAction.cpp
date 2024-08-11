@@ -88,7 +88,7 @@ GameActions::Result RideCreateAction::Query() const
     }
 
     int32_t rideEntryIndex = RideGetEntryIndex(_rideType, _subType);
-    if (rideEntryIndex >= MAX_RIDE_OBJECTS)
+    if (rideEntryIndex >= kMaxRideObjects)
     {
         LOG_ERROR("Ride entry not found for rideType %d, subType %d", _rideType, _subType);
         return GameActions::Result(

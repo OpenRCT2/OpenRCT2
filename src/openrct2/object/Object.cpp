@@ -173,11 +173,11 @@ ObjectEntryDescriptor Object::GetScgPathXHeader() const
     return ObjectEntryDescriptor("rct2.scenery_group.scgpathx");
 }
 
-RCTObjectEntry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32_t flags, uint32_t checksum)
+RCTObjectEntry Object::CreateHeader(const char name[kDatNameLength + 1], uint32_t flags, uint32_t checksum)
 {
     RCTObjectEntry header = {};
     header.flags = flags;
-    std::copy_n(name, DAT_NAME_LENGTH, header.name);
+    std::copy_n(name, kDatNameLength, header.name);
     header.checksum = checksum;
     return header;
 }

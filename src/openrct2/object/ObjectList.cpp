@@ -23,24 +23,20 @@
 
 // 0x0098DA00
 static constexpr std::array<int32_t, EnumValue(ObjectType::Count)> kObjectEntryGroupCounts = {
-    MAX_RIDE_OBJECTS,          // rides
-    MAX_SMALL_SCENERY_OBJECTS, // small scenery
-    MAX_LARGE_SCENERY_OBJECTS, // large scenery
-    MAX_WALL_SCENERY_OBJECTS,  // walls
-    MAX_BANNER_OBJECTS,        // banners
-    MAX_PATH_OBJECTS,          // paths
-    MAX_PATH_ADDITION_OBJECTS, // path additions
-    MAX_SCENERY_GROUP_OBJECTS, // scenery sets
-    MAX_PARK_ENTRANCE_OBJECTS, // park entrance
-    MAX_WATER_OBJECTS,         // water
-    MAX_SCENARIO_TEXT_OBJECTS, // scenario text
-    MAX_TERRAIN_SURFACE_OBJECTS,
-    MAX_TERRAIN_EDGE_OBJECTS,
-    MAX_STATION_OBJECTS,
-    MAX_MUSIC_OBJECTS,
-    MAX_FOOTPATH_SURFACE_OBJECTS,
-    MAX_FOOTPATH_RAILINGS_OBJECTS,
-    MAX_AUDIO_OBJECTS,
+    kMaxRideObjects,         // rides
+    kMaxSmallSceneryObjects, // small scenery
+    kMaxLargeSceneryObjects, // large scenery
+    kMaxWallSceneryObjects,  // walls
+    kMaxBannerObjects,       // banners
+    kMaxPathObjects,         // paths
+    kMaxPathAdditionObjects, // path additions
+    kMaxSceneryGroupObjects, // scenery sets
+    kMaxParkEntranceObjects, // park entrance
+    kMaxWaterObjects,        // water
+    kMaxScenarioTextObjects, // scenario text
+    kMaxTerrainSurfaceObjects, kMaxTerrainEdgeObjects,     kMaxStationObjects,
+    kMaxMusicObjects,          kMaxFootpathSurfaceObjects, kMaxFootpathRailingsObjects,
+    kMaxAudioObjects,
 };
 static_assert(std::size(kObjectEntryGroupCounts) == EnumValue(ObjectType::Count));
 
@@ -220,7 +216,7 @@ void ObjectGetTypeEntryIndex(size_t index, ObjectType* outObjectType, ObjectEntr
 
 void ObjectEntryGetNameFixed(utf8* buffer, size_t bufferSize, const RCTObjectEntry* entry)
 {
-    bufferSize = std::min(static_cast<size_t>(DAT_NAME_LENGTH) + 1, bufferSize);
+    bufferSize = std::min(static_cast<size_t>(kDatNameLength) + 1, bufferSize);
     std::memcpy(buffer, entry->name, bufferSize - 1);
     buffer[bufferSize - 1] = 0;
 }

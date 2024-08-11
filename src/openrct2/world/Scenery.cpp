@@ -335,15 +335,15 @@ static size_t GetMaxObjectsForSceneryType(const uint8_t sceneryType)
     switch (sceneryType)
     {
         case SCENERY_TYPE_SMALL:
-            return MAX_SMALL_SCENERY_OBJECTS;
+            return kMaxSmallSceneryObjects;
         case SCENERY_TYPE_PATH_ITEM:
-            return MAX_PATH_ADDITION_OBJECTS;
+            return kMaxPathAdditionObjects;
         case SCENERY_TYPE_WALL:
-            return MAX_WALL_SCENERY_OBJECTS;
+            return kMaxWallSceneryObjects;
         case SCENERY_TYPE_LARGE:
-            return MAX_LARGE_SCENERY_OBJECTS;
+            return kMaxLargeSceneryObjects;
         case SCENERY_TYPE_BANNER:
-            return MAX_BANNER_OBJECTS;
+            return kMaxBannerObjects;
         default:
             return 0;
     }
@@ -434,7 +434,7 @@ static MiscScenery GetAllMiscScenery()
     MiscScenery ret;
     std::vector<ScenerySelection> referencedBySceneryGroups;
     std::vector<ObjectEntryIndex> sceneryGroupIds;
-    for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxSceneryGroupObjects; i++)
     {
         const auto* sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sgEntry != nullptr)

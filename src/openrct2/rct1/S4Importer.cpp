@@ -124,7 +124,7 @@ namespace OpenRCT2::RCT1
         ObjectEntryIndex _footpathRailingsTypeToEntryMap[4]{};
 
         // Research
-        BitSet<MAX_RIDE_OBJECTS> _researchRideEntryUsed{};
+        BitSet<kMaxRideObjects> _researchRideEntryUsed{};
         BitSet<EnumValue(RideType::Count)> _researchRideTypeUsed{};
 
         // Scenario repository - used for determining scenario name
@@ -741,9 +741,9 @@ namespace OpenRCT2::RCT1
             else
             {
                 auto entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
-                if (_sceneryGroupEntries.GetCount() >= MAX_SCENERY_GROUP_OBJECTS)
+                if (_sceneryGroupEntries.GetCount() >= kMaxSceneryGroupObjects)
                 {
-                    Console::WriteLine("Warning: More than %d (max scenery groups) in RCT1 park.", MAX_SCENERY_GROUP_OBJECTS);
+                    Console::WriteLine("Warning: More than %d (max scenery groups) in RCT1 park.", kMaxSceneryGroupObjects);
                     std::string entryNameString = std::string(entryName);
                     Console::WriteLine("         [%s] scenery group not added.", entryNameString.c_str());
                 }

@@ -28,7 +28,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
-constexpr size_t DEFAULT_BYTES_PER_TICK = 1378;
+constexpr size_t kDefaultBytesPerTick = 1378;
 
 void MusicObject::Load()
 {
@@ -62,13 +62,13 @@ void MusicObject::Load()
             }
             else
             {
-                track.BytesPerTick = DEFAULT_BYTES_PER_TICK;
+                track.BytesPerTick = kDefaultBytesPerTick;
                 track.Size = track.Asset.GetSize();
             }
         }
         else
         {
-            track.BytesPerTick = DEFAULT_BYTES_PER_TICK;
+            track.BytesPerTick = kDefaultBytesPerTick;
             track.Size = track.Asset.GetSize();
         }
     }

@@ -763,8 +763,8 @@ private:
 
     void ReportObjectLoadProblem(const RCTObjectEntry* entry)
     {
-        utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
-        std::copy_n(entry->name, DAT_NAME_LENGTH, objName);
+        utf8 objName[kDatNameLength + 1] = { 0 };
+        std::copy_n(entry->name, kDatNameLength, objName);
         Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
 };

@@ -985,7 +985,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             _tabEntries.emplace_back(SceneryWindow::SceneryTabInfo{ SCENERY_TAB_TYPE_ALL });
 
             // small scenery
-            for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxSmallSceneryObjects; sceneryId++)
             {
                 const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
@@ -995,7 +995,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
 
             // large scenery
-            for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_LARGE_SCENERY_OBJECTS; sceneryId++)
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxLargeSceneryObjects; sceneryId++)
             {
                 const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
@@ -1005,7 +1005,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
 
             // walls
-            for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_WALL_SCENERY_OBJECTS; sceneryId++)
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxWallSceneryObjects; sceneryId++)
             {
                 const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
@@ -1015,7 +1015,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
 
             // banners
-            for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_BANNER_OBJECTS; sceneryId++)
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxBannerObjects; sceneryId++)
             {
                 const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
@@ -1024,7 +1024,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
             }
 
-            for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS; sceneryId++)
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxPathAdditionObjects; sceneryId++)
             {
                 const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
