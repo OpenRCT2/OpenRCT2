@@ -714,7 +714,6 @@ static Widget *window_options_page_widgets[] = {
                     break;
                 case WIDX_MINIMIZE_FOCUS_LOSS:
                     Config::Get().general.MinimizeFullscreenFocusLoss ^= 1;
-                    RefreshVideo(false);
                     Config::Save();
                     Invalidate();
                     break;
@@ -853,12 +852,10 @@ static Widget *window_options_page_widgets[] = {
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
                     if (dropdownIndex != EnumValue(Config::Get().general.DrawingEngine))
                     {
-                        DrawingEngine srcEngine = drawing_engine_get_type();
                         DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
 
                         Config::Get().general.DrawingEngine = dstEngine;
-                        bool recreate_window = DrawingEngineRequiresNewWindow(srcEngine, dstEngine);
-                        RefreshVideo(recreate_window);
+                        RefreshVideo();
                         Config::Save();
                         Invalidate();
                     }

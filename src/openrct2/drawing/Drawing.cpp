@@ -1124,19 +1124,9 @@ void UpdatePaletteEffects()
     }
 }
 
-void RefreshVideo(bool recreateWindow)
+void RefreshVideo()
 {
-    if (recreateWindow)
-    {
-        ContextRecreateWindow();
-    }
-    else
-    {
-        DrawingEngineDispose();
-        DrawingEngineInit();
-        DrawingEngineResize();
-    }
-
+    ContextRecreateWindow();
     DrawingEngineSetPalette(gPalette);
     GfxInvalidateScreen();
 }
