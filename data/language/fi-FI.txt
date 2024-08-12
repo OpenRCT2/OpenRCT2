@@ -3718,6 +3718,27 @@ STR_6636    :Tarkistetaan valikkotaustoja…
 STR_6637    :Ladataan valikkotaustaa…
 STR_6638    :Suurennettu käyttöliittymä
 STR_6639    :Kohentaa käyttöliittymän sopivuutta kosketusnäytöille
+STR_6640    :Muokkaa resurssipaketteja…
+STR_6641    :Lataus-/edistymisikkuna
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Kosketuskäytön tehostus
+STR_6645    :Suurentaa tiettyjä käyttöliittymän elementtejä, jotta niitä on helpompi napauttaa sormella.
+STR_6646    :Tekijä: {STRING}
+STR_6647    :Tekijät: {STRING}
+STR_6648    :Ladataan laajennusmoottoria…
+STR_6649    :Ladataan skenaariota…
+STR_6650    :Ladataan tallennusta…
+STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Virheikkuna
+STR_6653    :Kaikki lähteet
+STR_6654    :Vain {POP16}{UINT16} lähdettä
+STR_6655    :Vain ‘{POP16}{STRINGID}’
+STR_6656    :Poista kaikki aidat puistosta
+STR_6657    :Maa ei omistettu
+STR_6658    :Määritä, että ruutu ei ole puiston omistuksessa eikä ostettavissa
+STR_6659    :Kävijät eivät huomioi hintoja
+STR_6660    :Kävijät jättävät laitteiden ja kojujen hinnat huomioimatta.
 
 #############
 # Scenarios #
