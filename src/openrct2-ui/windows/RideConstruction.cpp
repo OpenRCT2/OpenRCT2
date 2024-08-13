@@ -2924,7 +2924,7 @@ static Widget _rideConstructionWidgets[] = {
 
         if (!_trackPlaceCtrlState)
         {
-            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
+            if (InputIsModifierKeyPressed(ModifierKey::ctrl))
             {
                 auto info = GetMapCoordinatesFromPos(screenCoords, 0xFCCA);
                 if (info.SpriteType != ViewportInteractionItem::None)
@@ -2936,7 +2936,7 @@ static Widget _rideConstructionWidgets[] = {
         }
         else
         {
-            if (!(gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z))
+            if (!(InputIsModifierKeyPressed(ModifierKey::ctrl)))
             {
                 _trackPlaceCtrlState = false;
             }
@@ -2944,7 +2944,7 @@ static Widget _rideConstructionWidgets[] = {
 
         if (!_trackPlaceShiftState)
         {
-            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+            if (InputIsModifierKeyPressed(ModifierKey::shift))
             {
                 _trackPlaceShiftState = true;
                 _trackPlaceShiftStart = screenCoords;
@@ -2953,7 +2953,7 @@ static Widget _rideConstructionWidgets[] = {
         }
         else
         {
-            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+            if (InputIsModifierKeyPressed(ModifierKey::shift))
             {
                 uint16_t maxHeight = ZoomLevel::max().ApplyTo(
                     std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);

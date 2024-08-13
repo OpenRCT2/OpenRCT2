@@ -126,7 +126,7 @@ void InputManager::HandleViewScrolling()
         if (InputGetState() != InputState::Normal)
             return;
 
-        if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z))
+        if (InputIsModifierKeyPressed(ModifierKey::shift) || InputIsModifierKeyPressed(ModifierKey::ctrl))
             return;
 
         GameHandleEdgeScroll();
@@ -135,30 +135,30 @@ void InputManager::HandleViewScrolling()
 
 void InputManager::HandleModifiers()
 {
+    InputResetModifierKeyState();
     auto modifiers = SDL_GetModState();
-    gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
     if (modifiers & KMOD_SHIFT)
     {
-        gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_SHIFT_Z;
+        InputSetModifierKeyPressed(ModifierKey::shift);
     }
     if (modifiers & KMOD_CTRL)
     {
-        gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_COPY_Z;
+        InputSetModifierKeyPressed(ModifierKey::ctrl);
     }
     if (modifiers & KMOD_ALT)
     {
-        gInputPlaceObjectModifier |= 4;
+        InputSetModifierKeyPressed(ModifierKey::alt);
     }
 #ifdef __MACOSX__
     if (modifiers & KMOD_GUI)
     {
-        gInputPlaceObjectModifier |= 8;
+        InputSetModifierKeyPressed(ModifierKey::cmd);
     }
 #endif
 
     if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
-        if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
+        if (InputIsModifierKeyPressed(ModifierKey::ctrl) || InputIsModifierKeyPressed(ModifierKey::shift))
             VirtualFloorEnable();
         else
             VirtualFloorDisable();

@@ -526,7 +526,7 @@ static Widget _staffListWidgets[] = {
         void HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
         {
             bool autoPosition = Config::Get().general.AutoStaffPlacement;
-            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+            if (InputIsModifierKeyPressed(ModifierKey::shift))
             {
                 autoPosition = autoPosition ^ 1;
             }

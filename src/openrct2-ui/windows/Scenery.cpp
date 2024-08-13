@@ -2361,7 +2361,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             {
                 if (!gSceneryCtrlPressed)
                 {
-                    if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z))
+                    if (InputIsModifierKeyPressed(ModifierKey::ctrl))
                     {
                         // CTRL pressed
                         constexpr auto flag = EnumsToFlags(
@@ -2379,7 +2379,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
                 else
                 {
-                    if (!(InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z)))
+                    if (!(InputIsModifierKeyPressed(ModifierKey::ctrl)))
                     {
                         // CTRL not pressed
                         gSceneryCtrlPressed = false;
@@ -2388,7 +2388,7 @@ static Widget WindowSceneryBaseWidgets[] = {
 
                 if (!gSceneryShiftPressed)
                 {
-                    if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_SHIFT_Z))
+                    if (InputIsModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressed = true;
@@ -2399,7 +2399,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
                 else
                 {
-                    if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_SHIFT_Z))
+                    if (InputIsModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressZOffset = (gSceneryShiftPressY - screenPos.y + 4);

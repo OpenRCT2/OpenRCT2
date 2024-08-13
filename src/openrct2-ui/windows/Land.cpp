@@ -601,7 +601,7 @@ static Widget window_land_widgets[] = {
          */
         void ToolUpdateLand(const ScreenCoordsXY& screenPos)
         {
-            const bool mapCtrlPressed = InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z);
+            const bool mapCtrlPressed = InputIsModifierKeyPressed(ModifierKey::ctrl);
 
             MapInvalidateSelectionRect();
 

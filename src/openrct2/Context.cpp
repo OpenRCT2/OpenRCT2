@@ -525,7 +525,7 @@ namespace OpenRCT2
                 LightFXInit();
             }
 
-            InputResetPlaceObjModifier();
+            InputResetModifierKeyState();
             ViewportInitAll();
 
             ContextInit();

@@ -1290,13 +1290,13 @@ void InputStateWidgetPressed(
         if (w->widgets[widgetIndex].type == WindowWidgetType::CloseBox && cursor_w_class == w->classification
             && cursor_w_number == w->number && widgetIndex == cursor_widgetIndex)
         {
-            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+            if (InputIsModifierKeyPressed(ModifierKey::shift))
             {
                 gLastCloseModifier.window.number = w->number;
                 gLastCloseModifier.window.classification = w->classification;
                 gLastCloseModifier.modifier = CloseWindowModifier::Shift;
             }
-            else if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
+            else if (InputIsModifierKeyPressed(ModifierKey::ctrl))
             {
                 gLastCloseModifier.window.number = w->number;
                 gLastCloseModifier.window.classification = w->classification;
@@ -1643,11 +1643,6 @@ void GameHandleEdgeScroll()
         scrollY = 1;
 
     InputScrollViewport(ScreenCoordsXY(scrollX, scrollY));
-}
-
-bool InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER modifier)
-{
-    return gInputPlaceObjectModifier & modifier;
 }
 
 void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
