@@ -69,6 +69,11 @@ namespace OpenRCT2::Ui::Windows
         return getPracticalMapSize() * 2;
     }
 
+    static bool isEditorOrSandbox()
+    {
+        return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode;
+    }
+
     static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
     static constexpr int32_t WH = 259;
     static constexpr int32_t WW = 245;
@@ -82,10 +87,7 @@ namespace OpenRCT2::Ui::Windows
 
     static uint16_t GetReservedRightSpace()
     {
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
-            return kEditorReservedHSpace;
-        else
-            return kReservedHSpace;
+        return isEditorOrSandbox() ? kEditorReservedHSpace : kReservedHSpace;
     }
 
     static int32_t getMapOffset(int16_t width)
@@ -213,8 +215,11 @@ namespace OpenRCT2::Ui::Windows
         uint16_t _landRightsToolSize;
         int32_t _firstColumnWidth;
         std::vector<uint8_t> _mapImageData;
-        bool _mapWidthAndHeightLinked{ true };
+
+        bool _mapWidthAndHeightLinked = true;
         bool _recalculateScrollbars = false;
+        bool _adjustedForSandboxMode = false;
+
         enum class ResizeDirection
         {
             Both,
@@ -374,6 +379,12 @@ namespace OpenRCT2::Ui::Windows
                 SetMapPixels();
 
             Invalidate();
+
+            if (_adjustedForSandboxMode != isEditorOrSandbox())
+            {
+                SetInitialWindowDimensions();
+                ResetMaxWindowDimensions();
+            }
 
             // Update tab animations
             list_information_type++;
@@ -626,7 +637,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[i].type = WindowWidgetType::Empty;
             }
 
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
+            if (isEditorOrSandbox())
             {
                 ShowDefaultScenarioEditorButtons();
             }
@@ -642,7 +653,7 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+            if (!isEditorOrSandbox())
             {
                 // Render the map legend
                 if (selected_tab == PAGE_RIDES)
@@ -1154,7 +1165,7 @@ namespace OpenRCT2::Ui::Windows
 
         uint16_t GetReservedBottomSpace()
         {
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
+            if (isEditorOrSandbox())
                 return kEditorReservedVSpace;
             else if (selected_tab == PAGE_RIDES)
                 return kRidesTabReservedVSpace;
@@ -1176,6 +1187,8 @@ namespace OpenRCT2::Ui::Windows
             auto maxWindowHeight = ContextGetHeight() - 68;
             width = std::min<int16_t>(width, ContextGetWidth());
             height = std::min<int16_t>(height, maxWindowHeight);
+
+            _adjustedForSandboxMode = isEditorOrSandbox();
         }
 
         void ResetMaxWindowDimensions()
