@@ -96,9 +96,8 @@ static Widget window_map_tooltip_widgets[] = {
         StringId stringId;
         std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
 
-        if (_cursorHoldDuration < 25 || stringId == STR_NONE
-            || InputIsModifierKeyPressed(ModifierKey::ctrl) || InputIsModifierKeyPressed(ModifierKey::shift)
-            || WindowFindByClass(WindowClass::Error) != nullptr)
+        if (_cursorHoldDuration < 25 || stringId == STR_NONE || InputIsModifierKeyPressed(ModifierKey::ctrl)
+            || InputIsModifierKeyPressed(ModifierKey::shift) || WindowFindByClass(WindowClass::Error) != nullptr)
         {
             WindowCloseByClass(WindowClass::MapTooltip);
         }
