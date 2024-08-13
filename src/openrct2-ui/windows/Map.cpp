@@ -120,8 +120,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAP_SIZE_SPINNER_X_UP,
         WIDX_MAP_SIZE_SPINNER_X_DOWN,
         WIDX_SET_LAND_RIGHTS,
-        WIDX_BUILD_PARK_ENTRANCE,
         WIDX_PEOPLE_STARTING_POSITION,
+        WIDX_BUILD_PARK_ENTRANCE,
         WIDX_MAP_GENERATOR
     };
 
@@ -136,9 +136,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({153, 230}, { 20,  12}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),   STR_MAINTAIN_SQUARE_MAP_TOOLTIP ),
         MakeSpinnerWidgets({174, 229}, { 50,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_POP16_COMMA16                                             ), // NB: 3 widgets
         MakeWidget        ({  4,  46}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS), STR_SELECT_PARK_OWNED_LAND_TIP  ),
-        MakeWidget        ({  4,  70}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
-        MakeWidget        ({ 28,  94}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, 0xFFFFFFFF,                   STR_SET_STARTING_POSITIONS_TIP  ),
-        MakeWidget        ({110, 118}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_MAP),             STR_MAP_GENERATOR_TIP           ),
+        MakeWidget        ({  4,  70}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_PEEP_SPAWN),   STR_SET_STARTING_POSITIONS_TIP  ),
+        MakeWidget        ({ 28,  94}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
+        MakeWidget        ({110, 118}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_MAP_GEN_BTN),  STR_MAP_GENERATOR_TIP           ),
         kWidgetsEnd,
     };
     // clang-format on
@@ -641,15 +641,6 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
-
-            // People starting position (scenario editor only)
-            if (widgets[WIDX_PEOPLE_STARTING_POSITION].type != WindowWidgetType::Empty)
-            {
-                auto screenCoords = windowPos
-                    + ScreenCoordsXY{ widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
-                                      widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
-                GfxDrawSprite(dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
-            }
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
             {
