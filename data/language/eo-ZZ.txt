@@ -3726,6 +3726,11 @@ STR_6652    :Erarfenestro
 STR_6653    :Ĉiuj fontoj montritaj
 STR_6654    :Montras {POP16}{UINT16} fontojn
 STR_6655    :Nur ‘{POP16}{STRINGID}’
+STR_6656    :Forigi ĉiujn barilojn de la parko
+STR_6657    :Bieno Ne Posedata
+STR_6658    :Agordi bienon ne posedatan de la parko, nek aĉeteblan
+STR_6659    :Gastoj ignoras prezojn
+STR_6660    :Gastoj ignoros la prezojn de atrakcioj kaj budoj.
 
 #############
 # Scenarios #

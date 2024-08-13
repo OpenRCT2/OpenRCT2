@@ -3719,9 +3719,27 @@ STR_6636    :Vérification des séquences titre…
 STR_6637    :Chargement de la séquence titre…
 STR_6638    :Interface agrandie
 STR_6639    :Adapte l’interface à un usage tactile
-
+STR_6640    :Modifier le pack de ressources…
+STR_6641    :Fenêtre de chargement/progression
 STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} Kio)
+STR_6644    :Améliorations pour le tactile
+STR_6645    :Augmente la taille de certains éléments d’interface pour qu’ils soient plus faciles à cliquer ou taper
+STR_6646    :Auteur/autrice : {STRING}
+STR_6647    :Auteurs/autrices : {STRING}
+STR_6648    :Chargement du moteur de greffons…
+STR_6649    :Chargement du scénario…
+STR_6650    :Chargement de la partie sauvegardée…
+STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Fenêtre d’erreur
+STR_6653    :Toutes les sources
+STR_6654    :{POP16}{UINT16} sources
+STR_6655    :Juste {POP16}{STRINGID}
+STR_6656    :Retirer toutes les barrières du parc
+STR_6657    :Terrain libre
+STR_6658    :Définir ce terrain comme n’appartenant pas au parc ni disponible à l’achat
+STR_6659    :Les visiteurs ignorent les prix
+STR_6660    :Les visiteurs ignoreront le prix des attractions et des boutiques
 
 #############
 # Scenarios #
