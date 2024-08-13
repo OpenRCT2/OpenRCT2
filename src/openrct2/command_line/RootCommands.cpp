@@ -242,14 +242,18 @@ exitcode_t HandleNoCommand(CommandLineArgEnumerator* enumerator)
         return result;
     }
 
+    // Does it look like a park URI was provided?
     const char* parkUri;
     if (enumerator->TryPopString(&parkUri) && parkUri[0] != '-')
     {
         String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
         gOpenRCT2StartupAction = StartupAction::Open;
+        return EXITCODE_CONTINUE;
     }
 
-    return EXITCODE_CONTINUE;
+    // If not, just print the help.
+    CommandLine::PrintHelp(_all);
+    return EXITCODE_OK;
 }
 
 exitcode_t HandleCommandEdit(CommandLineArgEnumerator* enumerator)
