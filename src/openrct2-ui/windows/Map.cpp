@@ -524,7 +524,16 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            return ScreenSize(getMiniMapWidth(), getMiniMapWidth());
+            auto size = ScreenSize(getMiniMapWidth(), getMiniMapWidth());
+
+            // Adjust for hidden scrollbars if needed
+            auto& mapArea = widgets[WIDX_MAP];
+            if (size.width >= mapArea.width())
+                size.width -= kScrollBarWidth;
+            if (size.height >= mapArea.height())
+                size.height -= kScrollBarWidth;
+
+            return size;
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
