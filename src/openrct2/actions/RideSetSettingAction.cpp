@@ -305,7 +305,7 @@ StringId RideSetSettingAction::GetOperationErrorMessage(const Ride& ride) const
         case RideMode::BackwardRotation:
             return STR_CANT_CHANGE_NUMBER_OF_ROTATIONS;
         default:
-            if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+            if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
             {
                 return STR_CANT_CHANGE_THIS;
             }

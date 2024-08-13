@@ -107,7 +107,7 @@ static Widget _inventionListDragWidgets[] = {
         int16_t columnSplitOffset = width / 2;
 
         if (researchItem.type == Research::EntryType::Ride
-            && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RtdFlag::listVehiclesSeparately))
         {
             const StringId rideTypeName = GetRideNaming(
                                               researchItem.baseRideType, *GetRideEntryByIndex(researchItem.entryIndex))
@@ -419,7 +419,7 @@ static Widget _inventionListDragWidgets[] = {
             auto ft = Formatter();
 
             if (researchItem->type == Research::EntryType::Ride
-                && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RtdFlag::listVehiclesSeparately))
             {
                 drawString = STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
                 StringId rideTypeName = GetRideNaming(

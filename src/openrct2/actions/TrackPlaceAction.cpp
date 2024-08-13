@@ -121,7 +121,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
     auto resultData = TrackPlaceActionResult{};
 
-    uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
+    const auto& rtd = ride->GetRideTypeDescriptor();
 
     if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
     {
@@ -139,7 +139,7 @@ GameActions::Result TrackPlaceAction::Query() const
         }
     }
 
-    if (!(rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE))
+    if (!rtd.HasFlag(RtdFlag::isFlatRide))
     {
         if (_trackType == TrackElemType::OnRidePhoto)
         {
@@ -160,8 +160,7 @@ GameActions::Result TrackPlaceAction::Query() const
             }
         }
         // Backwards steep lift hills are allowed, even on roller coasters that do not support forwards steep lift hills.
-        if ((_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED)
-            && !ride->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::liftHillSteep)
+        if ((_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED) && !rtd.SupportsTrackGroup(TrackGroup::liftHillSteep)
             && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
         {
             const auto& ted = GetTrackElementDescriptor(_trackType);
@@ -262,8 +261,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
         }
 
-        auto crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
-                             && _trackType == TrackElemType::Flat)
+        auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::Flat)
             ? CreateCrossingMode::trackOverPath
             : CreateCrossingMode::none;
         auto canBuild = MapCanConstructWithClearAt(
@@ -315,7 +313,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !_trackDesignDrawingPreview)
+        if (rtd.HasFlag(RtdFlag::trackMustBeOnWater) && !_trackDesignDrawingPreview)
         {
             auto surfaceElement = MapGetSurfaceElementAt(mapLoc);
             if (surfaceElement == nullptr)
@@ -381,14 +379,13 @@ GameActions::Result TrackPlaceAction::Query() const
             {
                 uint16_t maxHeight;
 
-                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
-                    && rideEntry->max_height != 0)
+                if (rtd.HasFlag(RtdFlag::listVehiclesSeparately) && rideEntry->max_height != 0)
                 {
                     maxHeight = rideEntry->max_height;
                 }
                 else
                 {
-                    maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
+                    maxHeight = rtd.Heights.MaxHeight;
                 }
 
                 ride_height /= kCoordsZPerTinyZ;
@@ -407,10 +404,10 @@ GameActions::Result TrackPlaceAction::Query() const
             supportHeight = (10 * kCoordsZStep);
         }
 
-        supportCosts += ((supportHeight / (2 * kCoordsZStep)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice);
+        supportCosts += ((supportHeight / (2 * kCoordsZStep)) * rtd.BuildCosts.SupportPrice);
     }
 
-    money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    money64 price = rtd.BuildCosts.TrackPrice;
     price *= ted.priceModifier;
 
     price >>= 16;
@@ -446,7 +443,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
     auto resultData = TrackPlaceActionResult{};
 
-    uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
+    const auto& rtd = ride->GetRideTypeDescriptor();
 
     const auto& ted = GetTrackElementDescriptor(_trackType);
     const auto& wallEdges = ted.sequenceElementAllowedWallEdges;
@@ -478,8 +475,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         clearanceZ = Floor2(clearanceZ, kCoordsZStep) + baseZ;
         const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
-        auto crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
-                             && _trackType == TrackElemType::Flat)
+        auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::Flat)
             ? CreateCrossingMode::trackOverPath
             : CreateCrossingMode::none;
         auto canBuild = MapCanConstructWithClearAt(
@@ -504,7 +500,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !GetGameState().Cheats.DisableClearanceChecks)
         {
             FootpathRemoveLitter(mapLoc);
-            if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS)
+            if (rtd.HasFlag(RtdFlag::noWallsAroundTrack))
             {
                 WallRemoveAt(mapLocWithClearance);
             }
@@ -553,7 +549,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             supportHeight = (10 * kCoordsZStep);
         }
 
-        supportCosts += (supportHeight / (2 * kCoordsZStep)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
+        supportCosts += (supportHeight / (2 * kCoordsZStep)) * rtd.BuildCosts.SupportPrice;
 
         int32_t entranceDirections = 0;
         if (!ride->overall_view.IsNull())
@@ -611,7 +607,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             trackElement->SetBrakeBoosterSpeed(_brakeSpeed);
         }
 
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+        if (rtd.HasFlag(RtdFlag::hasLandscapeDoors))
         {
             trackElement->SetDoorAState(LANDSCAPE_DOOR_CLOSED);
             trackElement->SetDoorBState(LANDSCAPE_DOOR_CLOSED);
@@ -665,7 +661,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         auto* tileElement = trackElement->as<TileElement>();
 
-        if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
+        if (rtd.HasFlag(RtdFlag::trackMustBeOnWater))
         {
             auto* waterSurfaceElement = MapGetSurfaceElementAt(mapLoc);
             if (waterSurfaceElement != nullptr)
@@ -705,7 +701,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                 RideMode newMode = RideMode::ContinuousCircuitBlockSectioned;
                 if (ride->mode == RideMode::PoweredLaunch)
                 {
-                    if (ride->GetRideTypeDescriptor().SupportsRideMode(RideMode::PoweredLaunchBlockSectioned)
+                    if (rtd.SupportsRideMode(RideMode::PoweredLaunchBlockSectioned)
                         || GetGameState().Cheats.ShowAllOperatingModes)
                         newMode = RideMode::PoweredLaunchBlockSectioned;
                     else
@@ -733,7 +729,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         }
     }
 
-    money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    money64 price = rtd.BuildCosts.TrackPrice;
     price *= ted.priceModifier;
 
     price >>= 16;

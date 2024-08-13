@@ -239,7 +239,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         if (element->HasChain())
             track.SetFlag(TrackDesignTrackElementFlag::hasChain);
 
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE) && element->IsInverted())
+        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasInvertedVariant) && element->IsInverted())
         {
             track.SetFlag(TrackDesignTrackElementFlag::isInverted);
         }
@@ -903,7 +903,7 @@ static void TrackDesignMirrorMaze(TrackDesign& td)
 void TrackDesignMirror(TrackDesign& td)
 {
     const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RtdFlag::isMaze))
     {
         TrackDesignMirrorMaze(td);
     }
@@ -1763,7 +1763,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
 
     GameActions::Result trackPlaceRes;
     const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RtdFlag::isMaze))
     {
         trackPlaceRes = TrackDesignPlaceMaze(tds, td, coords, ride);
     }
@@ -1903,7 +1903,7 @@ static bool TrackDesignPlacePreview(
 
     // Flat rides need their vehicle colours loaded for display
     // in the preview window
-    if (!GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasTrack))
     {
         for (size_t i = 0; i < std::size(ride->vehicle_colours); i++)
         {
@@ -2084,7 +2084,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
 
     // Special case for flat rides - Z-axis info is irrelevant
     // and must be zeroed out lest the preview be off-centre
-    if (!GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasTrack))
     {
         centre.z = 0;
         size_z = 0;

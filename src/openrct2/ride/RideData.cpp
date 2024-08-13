@@ -354,9 +354,9 @@ constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER    */ ClassicStandUpRollerCoasterRTD,
 };
 
-bool RideTypeDescriptor::HasFlag(uint64_t flag) const
+bool RideTypeDescriptor::HasFlag(RtdFlag flag) const
 {
-    return Flags & flag;
+    return ::HasFlag(Flags, flag);
 }
 
 bool RideTypeDescriptor::SupportsTrackGroup(const TrackGroup trackGroup) const

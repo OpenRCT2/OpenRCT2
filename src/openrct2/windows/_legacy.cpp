@@ -50,7 +50,7 @@ money64 PlaceProvisionalTrackPiece(
 
     RideConstructionRemoveGhosts();
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RtdFlag::isMaze))
     {
         int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
         auto gameAction = MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
@@ -81,7 +81,7 @@ money64 PlaceProvisionalTrackPiece(
     int16_t zBegin{};
     const auto& ted = GetTrackElementDescriptor(trackType);
     const TrackCoordinates& coords = ted.coordinates;
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
     {
         zBegin = coords.zBegin;
     }

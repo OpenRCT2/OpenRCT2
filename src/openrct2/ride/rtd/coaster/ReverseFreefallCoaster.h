@@ -25,7 +25,8 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
         .ExtraTrackPieces = {},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS | RIDE_TYPE_FLAG_LSM_BEHAVIOUR_ON_FLAT,
+    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt
+        | EnumsToFlags(RtdFlag::allowReversedTrains, RtdFlag::hasLsmBehaviourOnFlat),
     .RideModes = EnumsToFlags(RideMode::LimPoweredLaunch),
     .DefaultMode = RideMode::LimPoweredLaunch,
     .OperatingSettings = { 7, 30 },

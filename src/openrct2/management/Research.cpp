@@ -248,7 +248,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
 
             // If a vehicle is the first to be invented for its ride type, show the ride type/group name.
             // Independently listed vehicles (like all flat rides and shops) should always be announced as such.
-            if (GetRideTypeDescriptor(base_ride_type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+            if (GetRideTypeDescriptor(base_ride_type).HasFlag(RtdFlag::listVehiclesSeparately)
                 || researchItem.flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
             {
                 RideNaming naming = GetRideNaming(base_ride_type, *rideEntry);
@@ -1042,7 +1042,7 @@ static void ResearchUpdateFirstOfType(ResearchItem* researchItem)
 
     researchItem->flags &= ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
     const auto& rtd = GetRideTypeDescriptor(rideType);
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+    if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
     {
         researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
         return;
@@ -1076,7 +1076,7 @@ void ResearchDetermineFirstOfType()
             continue;
 
         const auto& rtd = GetRideTypeDescriptor(rideType);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
             continue;
 
         // The last research item will also be present in gameState.ResearchItemsInvented.

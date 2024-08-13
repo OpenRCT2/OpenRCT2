@@ -366,7 +366,7 @@ static Widget _trackPlaceWidgets[] = {
                 }
 
                 const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-                if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                if (rtd.HasFlag(RtdFlag::isMaze))
                 {
                     DrawMiniPreviewMaze(td, pass, origin, min, max);
                 }

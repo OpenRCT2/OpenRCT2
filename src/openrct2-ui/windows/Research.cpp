@@ -399,7 +399,7 @@ static Widget *window_research_page_widgets[] = {
             else if (gameState.ResearchNextItem->type == Research::EntryType::Ride)
             {
                 const auto& rtd = GetRideTypeDescriptor(gameState.ResearchNextItem->baseRideType);
-                if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
                 {
                     ft.Add<StringId>(gameState.ResearchNextItem->GetName());
                 }
@@ -459,7 +459,7 @@ static Widget *window_research_page_widgets[] = {
             {
                 lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
                 const auto& rtd = GetRideTypeDescriptor(gameState.ResearchLastItem->baseRideType);
-                if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
                 {
                     ft.Add<StringId>(gameState.ResearchLastItem->GetName());
                 }

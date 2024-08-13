@@ -185,7 +185,7 @@ static Widget _trackListWidgets[] = {
             std::string entryName;
             if (item.Type < 0x80)
             {
-                if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (GetRideTypeDescriptor(item.Type).HasFlag(RtdFlag::listVehiclesSeparately))
                 {
                     entryName = GetRideEntryName(item.EntryIndex);
                 }
@@ -558,10 +558,10 @@ static Widget _trackListWidgets[] = {
             screenPos.y += kListRowHeight + 4;
 
             // Information for tracked rides.
-            if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+            if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasTrack))
             {
                 const auto& rtd = GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex);
-                if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                if (!rtd.HasFlag(RtdFlag::isMaze))
                 {
                     if (_loadedTrackDesign->trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
                     {
@@ -594,7 +594,7 @@ static Widget _trackListWidgets[] = {
                     screenPos.y += kListRowHeight;
                 }
 
-                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasGForces))
                 {
                     // Maximum positive vertical Gs
                     ft = Formatter();
@@ -624,7 +624,7 @@ static Widget _trackListWidgets[] = {
                     }
                 }
 
-                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
+                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasDrops))
                 {
                     // Drops
                     ft = Formatter();
