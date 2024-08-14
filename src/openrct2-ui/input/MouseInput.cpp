@@ -10,13 +10,15 @@
 #include "MouseInput.h"
 
 #include "../UiStringIds.h"
-#include "../interface/ViewportInteraction.h"
 
 #include <cassert>
 #include <cmath>
 #include <iterator>
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Window.h>
@@ -1290,13 +1292,14 @@ void InputStateWidgetPressed(
         if (w->widgets[widgetIndex].type == WindowWidgetType::CloseBox && cursor_w_class == w->classification
             && cursor_w_number == w->number && widgetIndex == cursor_widgetIndex)
         {
-            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+            auto& im = GetInputManager();
+            if (im.IsModifierKeyPressed(ModifierKey::shift))
             {
                 gLastCloseModifier.window.number = w->number;
                 gLastCloseModifier.window.classification = w->classification;
                 gLastCloseModifier.modifier = CloseWindowModifier::Shift;
             }
-            else if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
+            else if (im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
                 gLastCloseModifier.window.number = w->number;
                 gLastCloseModifier.window.classification = w->classification;
@@ -1643,11 +1646,6 @@ void GameHandleEdgeScroll()
         scrollY = 1;
 
     InputScrollViewport(ScreenCoordsXY(scrollX, scrollY));
-}
-
-bool InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER modifier)
-{
-    return gInputPlaceObjectModifier & modifier;
 }
 
 void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)

@@ -50,15 +50,6 @@ enum class InputState
     ScrollRight
 };
 
-enum PLACE_OBJECT_MODIFIER
-{
-    PLACE_OBJECT_MODIFIER_NONE = 0,
-    PLACE_OBJECT_MODIFIER_SHIFT_Z = (1 << 0),
-    PLACE_OBJECT_MODIFIER_COPY_Z = (1 << 1),
-};
-
-extern uint8_t gInputPlaceObjectModifier;
-
 extern WidgetRef gHoverWidget;
 extern WidgetRef gPressedWidget;
 
@@ -78,11 +69,7 @@ void InputSetFlag(INPUT_FLAGS flag, bool on);
 bool InputTestFlag(INPUT_FLAGS flag);
 void InputResetFlags();
 
-bool InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER modifier);
-
 void InputSetState(InputState state);
 InputState InputGetState();
 
 void ResetTooltipNotShown();
-
-void InputResetPlaceObjModifier();

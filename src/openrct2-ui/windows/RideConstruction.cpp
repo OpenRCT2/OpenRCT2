@@ -7,13 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/ViewportInteraction.h"
-#include "../ride/Construction.h"
-
 #include <limits>
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/ride/Construction.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
@@ -2921,10 +2922,11 @@ static Widget _rideConstructionWidgets[] = {
     static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoordsXY screenCoords)
     {
         CoordsXY mapCoords;
+        auto& im = GetInputManager();
 
         if (!_trackPlaceCtrlState)
         {
-            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
+            if (im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
                 auto info = GetMapCoordinatesFromPos(screenCoords, 0xFCCA);
                 if (info.SpriteType != ViewportInteractionItem::None)
@@ -2936,7 +2938,7 @@ static Widget _rideConstructionWidgets[] = {
         }
         else
         {
-            if (!(gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z))
+            if (!(im.IsModifierKeyPressed(ModifierKey::ctrl)))
             {
                 _trackPlaceCtrlState = false;
             }
@@ -2944,7 +2946,7 @@ static Widget _rideConstructionWidgets[] = {
 
         if (!_trackPlaceShiftState)
         {
-            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+            if (im.IsModifierKeyPressed(ModifierKey::shift))
             {
                 _trackPlaceShiftState = true;
                 _trackPlaceShiftStart = screenCoords;
@@ -2953,7 +2955,7 @@ static Widget _rideConstructionWidgets[] = {
         }
         else
         {
-            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+            if (im.IsModifierKeyPressed(ModifierKey::shift))
             {
                 uint16_t maxHeight = ZoomLevel::max().ApplyTo(
                     std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);

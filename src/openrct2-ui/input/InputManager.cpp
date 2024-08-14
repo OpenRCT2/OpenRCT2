@@ -27,6 +27,11 @@
 
 using namespace OpenRCT2::Ui;
 
+InputManager::InputManager()
+{
+    _modifierKeyState = EnumValue(ModifierKey::none);
+}
+
 void InputManager::QueueInputEvent(const SDL_Event& e)
 {
     switch (e.type)
@@ -126,7 +131,7 @@ void InputManager::HandleViewScrolling()
         if (InputGetState() != InputState::Normal)
             return;
 
-        if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z))
+        if (IsModifierKeyPressed(ModifierKey::shift) || IsModifierKeyPressed(ModifierKey::ctrl))
             return;
 
         GameHandleEdgeScroll();
@@ -135,34 +140,40 @@ void InputManager::HandleViewScrolling()
 
 void InputManager::HandleModifiers()
 {
+    _modifierKeyState = EnumValue(ModifierKey::none);
+
     auto modifiers = SDL_GetModState();
-    gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
     if (modifiers & KMOD_SHIFT)
     {
-        gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_SHIFT_Z;
+        _modifierKeyState |= EnumValue(ModifierKey::shift);
     }
     if (modifiers & KMOD_CTRL)
     {
-        gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_COPY_Z;
+        _modifierKeyState |= EnumValue(ModifierKey::ctrl);
     }
     if (modifiers & KMOD_ALT)
     {
-        gInputPlaceObjectModifier |= 4;
+        _modifierKeyState |= EnumValue(ModifierKey::alt);
     }
 #ifdef __MACOSX__
     if (modifiers & KMOD_GUI)
     {
-        gInputPlaceObjectModifier |= 8;
+        _modifierKeyState |= EnumValue(ModifierKey::cmd);
     }
 #endif
 
     if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
-        if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
+        if (IsModifierKeyPressed(ModifierKey::ctrl) || IsModifierKeyPressed(ModifierKey::shift))
             VirtualFloorEnable();
         else
             VirtualFloorDisable();
     }
+}
+
+bool InputManager::IsModifierKeyPressed(ModifierKey modifier) const
+{
+    return _modifierKeyState & EnumValue(modifier);
 }
 
 void InputManager::ProcessEvents()
