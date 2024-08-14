@@ -88,7 +88,6 @@ void TitleHandleKeyboardInput();
 void GameHandleInput();
 void GameHandleKeyboardInput();
 void GameHandleEdgeScroll();
-int32_t GetNextKey();
 
 void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords);
 

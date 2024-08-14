@@ -1106,8 +1106,6 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, W
     }
 }
 
-#pragma endregion
-
 /**
  *
  *  rct2: 0x006ED833
@@ -1558,29 +1556,6 @@ static void InputUpdateTooltip(WindowBase* w, WidgetIndex widgetIndex, const Scr
             WindowCloseByClass(WindowClass::Tooltip);
         }
     }
-}
-
-#pragma endregion
-
-#pragma region Keyboard input
-
-/**
- *
- *  rct2: 0x00406CD2
- */
-int32_t GetNextKey()
-{
-    uint8_t* keysPressed = const_cast<uint8_t*>(ContextGetKeysPressed());
-    for (int32_t i = 0; i < 221; i++)
-    {
-        if (keysPressed[i])
-        {
-            keysPressed[i] = 0;
-            return i;
-        }
-    }
-
-    return 0;
 }
 
 #pragma endregion
