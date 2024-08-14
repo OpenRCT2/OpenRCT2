@@ -772,66 +772,65 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             {
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
                 FootpathProvisionalUpdate();
+                return;
             }
-            else
+
+            // Check for change
+            if ((gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
+                && gProvisionalFootpath.Position == CoordsXYZ{ info.Loc, info.Element->GetBaseZ() })
             {
-                // Check for change
-                if ((gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
-                    && gProvisionalFootpath.Position == CoordsXYZ{ info.Loc, info.Element->GetBaseZ() })
-                {
-                    return;
-                }
-
-                // Set map selection
-                gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-                gMapSelectType = MAP_SELECT_TYPE_FULL;
-                gMapSelectPositionA = info.Loc;
-                gMapSelectPositionB = info.Loc;
-
-                FootpathProvisionalUpdate();
-
-                // Set provisional path
-                int32_t slope = 0;
-                switch (info.SpriteType)
-                {
-                    case ViewportInteractionItem::Terrain:
-                    {
-                        auto surfaceElement = info.Element->AsSurface();
-                        if (surfaceElement != nullptr)
-                        {
-                            slope = DefaultPathSlope[surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask];
-                        }
-                        break;
-                    }
-                    case ViewportInteractionItem::Footpath:
-                    {
-                        auto pathElement = info.Element->AsPath();
-                        if (pathElement != nullptr)
-                        {
-                            slope = pathElement->GetSlopeDirection();
-                            if (pathElement->IsSloped())
-                            {
-                                slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
-                            }
-                        }
-                        break;
-                    }
-                    default:
-                        break;
-                }
-                auto z = info.Element->GetBaseZ();
-                if (slope & RAISE_FOOTPATH_FLAG)
-                {
-                    slope &= ~RAISE_FOOTPATH_FLAG;
-                    z += kPathHeightStep;
-                }
-
-                auto pathType = gFootpathSelection.GetSelectedSurface();
-                auto constructFlags = FootpathCreateConstructFlags(pathType);
-                _windowFootpathCost = FootpathProvisionalSet(
-                    pathType, gFootpathSelection.Railings, { info.Loc, z }, slope, constructFlags);
-                WindowInvalidateByClass(WindowClass::Footpath);
+                return;
             }
+
+            // Set map selection
+            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+            gMapSelectType = MAP_SELECT_TYPE_FULL;
+            gMapSelectPositionA = info.Loc;
+            gMapSelectPositionB = info.Loc;
+
+            FootpathProvisionalUpdate();
+
+            // Set provisional path
+            int32_t slope = 0;
+            switch (info.SpriteType)
+            {
+                case ViewportInteractionItem::Terrain:
+                {
+                    auto surfaceElement = info.Element->AsSurface();
+                    if (surfaceElement != nullptr)
+                    {
+                        slope = DefaultPathSlope[surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask];
+                    }
+                    break;
+                }
+                case ViewportInteractionItem::Footpath:
+                {
+                    auto pathElement = info.Element->AsPath();
+                    if (pathElement != nullptr)
+                    {
+                        slope = pathElement->GetSlopeDirection();
+                        if (pathElement->IsSloped())
+                        {
+                            slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+                        }
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+            auto z = info.Element->GetBaseZ();
+            if (slope & RAISE_FOOTPATH_FLAG)
+            {
+                slope &= ~RAISE_FOOTPATH_FLAG;
+                z += kPathHeightStep;
+            }
+
+            auto pathType = gFootpathSelection.GetSelectedSurface();
+            auto constructFlags = FootpathCreateConstructFlags(pathType);
+            _windowFootpathCost = FootpathProvisionalSet(
+                pathType, gFootpathSelection.Railings, { info.Loc, z }, slope, constructFlags);
+            WindowInvalidateByClass(WindowClass::Footpath);
         }
 
         /**
