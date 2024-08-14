@@ -27,6 +27,11 @@
 
 using namespace OpenRCT2::Ui;
 
+InputManager::InputManager()
+{
+    InputResetModifierKeyState();
+}
+
 void InputManager::QueueInputEvent(const SDL_Event& e)
 {
     switch (e.type)

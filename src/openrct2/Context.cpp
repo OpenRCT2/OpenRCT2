@@ -19,7 +19,6 @@
 #include "Game.h"
 #include "GameState.h"
 #include "GameStateSnapshots.h"
-#include "Input.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
@@ -525,7 +524,6 @@ namespace OpenRCT2
                 LightFXInit();
             }
 
-            InputResetModifierKeyState();
             ViewportInitAll();
 
             ContextInit();

@@ -70,6 +70,8 @@ namespace OpenRCT2::Ui
         bool HasTextInputFocus() const;
 
     public:
+        InputManager();
+
         void QueueInputEvent(const SDL_Event& e);
         void QueueInputEvent(InputEvent&& e);
         void Process();
