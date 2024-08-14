@@ -147,7 +147,4 @@ namespace OpenRCT2::Ui
 
         static std::string_view GetLegacyShortcutId(size_t index);
     };
-
-    InputManager& GetInputManager();
-    ShortcutManager& GetShortcutManager();
 } // namespace OpenRCT2::Ui
