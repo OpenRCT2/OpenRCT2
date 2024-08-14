@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <iterator>
+#include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Editor.h>

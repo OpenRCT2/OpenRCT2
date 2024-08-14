@@ -36,15 +36,6 @@ enum INPUT_FLAGS
     INPUT_FLAG_VIEWPORT_SCROLLING = (1 << 7)
 };
 
-enum class MouseState : uint32_t
-{
-    Released,
-    LeftPress,
-    LeftRelease,
-    RightPress,
-    RightRelease
-};
-
 enum class InputState
 {
     Reset,
@@ -68,8 +59,6 @@ enum PLACE_OBJECT_MODIFIER
 
 extern uint8_t gInputPlaceObjectModifier;
 
-extern ScreenCoordsXY gInputDragLast;
-
 extern WidgetRef gHoverWidget;
 extern WidgetRef gPressedWidget;
 
@@ -82,14 +71,8 @@ extern InputState _inputState;
 extern uint8_t _inputFlags;
 extern uint32_t _tooltipNotShownTimeout;
 
-void InputWindowPositionBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-
 void TitleHandleKeyboardInput();
-void GameHandleInput();
 void GameHandleKeyboardInput();
-void GameHandleEdgeScroll();
-
-void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords);
 
 void InputSetFlag(INPUT_FLAGS flag, bool on);
 bool InputTestFlag(INPUT_FLAGS flag);
@@ -103,5 +86,3 @@ InputState InputGetState();
 void ResetTooltipNotShown();
 
 void InputResetPlaceObjModifier();
-
-void InputScrollViewport(const ScreenCoordsXY& screenCoords);

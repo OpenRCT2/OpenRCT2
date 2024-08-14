@@ -13,6 +13,7 @@
 
 #include <SDL.h>
 #include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/interface/InGameConsole.h>
 #include <openrct2-ui/windows/Window.h>

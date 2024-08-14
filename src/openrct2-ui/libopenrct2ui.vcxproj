@@ -64,6 +64,7 @@
     <ClInclude Include="drawing\engines\opengl\TextureCache.h" />
     <ClInclude Include="drawing\engines\opengl\TransparencyDepth.h" />
     <ClInclude Include="input\InputManager.h" />
+    <ClInclude Include="input\MouseInput.h" />
     <ClInclude Include="input\ShortcutIds.h" />
     <ClInclude Include="input\ShortcutManager.h" />
     <ClInclude Include="interface\Dropdown.h" />
