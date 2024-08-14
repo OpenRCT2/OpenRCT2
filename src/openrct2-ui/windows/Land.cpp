@@ -9,6 +9,7 @@
 
 #include "../interface/Viewport.h"
 
+#include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>

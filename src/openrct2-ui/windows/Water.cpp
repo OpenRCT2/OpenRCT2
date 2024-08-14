@@ -6,9 +6,10 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#include "../interface/Viewport.h"
 
+#include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
