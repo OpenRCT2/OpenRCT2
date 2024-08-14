@@ -50,15 +50,6 @@ enum class InputState
     ScrollRight
 };
 
-enum class ModifierKey : uint8_t
-{
-    none = 0,
-    shift = 1 << 0,
-    ctrl = 1 << 1,
-    alt = 1 << 2,
-    cmd = 1 << 3,
-};
-
 extern WidgetRef gHoverWidget;
 extern WidgetRef gPressedWidget;
 
@@ -77,10 +68,6 @@ void GameHandleKeyboardInput();
 void InputSetFlag(INPUT_FLAGS flag, bool on);
 bool InputTestFlag(INPUT_FLAGS flag);
 void InputResetFlags();
-
-void InputResetModifierKeyState();
-bool InputIsModifierKeyPressed(ModifierKey modifier);
-void InputSetModifierKeyPressed(ModifierKey modifier);
 
 void InputSetState(InputState state);
 InputState InputGetState();

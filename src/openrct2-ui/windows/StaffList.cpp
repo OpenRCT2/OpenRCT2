@@ -7,11 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/ViewportQuery.h"
-
 #include <limits>
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -526,7 +527,7 @@ static Widget _staffListWidgets[] = {
         void HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
         {
             bool autoPosition = Config::Get().general.AutoStaffPlacement;
-            if (InputIsModifierKeyPressed(ModifierKey::shift))
+            if (GetInputManager().IsModifierKeyPressed(ModifierKey::shift))
             {
                 autoPosition = autoPosition ^ 1;
             }

@@ -6,11 +6,13 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#include "../interface/ViewportInteraction.h"
 
 #include <deque>
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -2359,9 +2361,10 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
             else
             {
+                auto& im = GetInputManager();
                 if (!gSceneryCtrlPressed)
                 {
-                    if (InputIsModifierKeyPressed(ModifierKey::ctrl))
+                    if (im.IsModifierKeyPressed(ModifierKey::ctrl))
                     {
                         // CTRL pressed
                         constexpr auto flag = EnumsToFlags(
@@ -2379,7 +2382,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
                 else
                 {
-                    if (!(InputIsModifierKeyPressed(ModifierKey::ctrl)))
+                    if (!(im.IsModifierKeyPressed(ModifierKey::ctrl)))
                     {
                         // CTRL not pressed
                         gSceneryCtrlPressed = false;
@@ -2388,7 +2391,7 @@ static Widget WindowSceneryBaseWidgets[] = {
 
                 if (!gSceneryShiftPressed)
                 {
-                    if (InputIsModifierKeyPressed(ModifierKey::shift))
+                    if (im.IsModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressed = true;
@@ -2399,7 +2402,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
                 else
                 {
-                    if (InputIsModifierKeyPressed(ModifierKey::shift))
+                    if (im.IsModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressZOffset = (gSceneryShiftPressY - screenPos.y + 4);

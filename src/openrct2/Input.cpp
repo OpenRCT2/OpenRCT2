@@ -15,8 +15,6 @@
 InputState _inputState;
 uint8_t _inputFlags;
 
-static uint8_t gInputModifierKey;
-
 WidgetRef gHoverWidget;
 WidgetRef gPressedWidget;
 
@@ -75,19 +73,4 @@ InputState InputGetState()
 void ResetTooltipNotShown()
 {
     _tooltipNotShownTimeout = gCurrentRealTimeTicks + 50;
-}
-
-bool InputIsModifierKeyPressed(ModifierKey modifier)
-{
-    return gInputModifierKey & EnumValue(modifier);
-}
-
-void InputSetModifierKeyPressed(ModifierKey modifier)
-{
-    gInputModifierKey |= EnumValue(modifier);
-}
-
-void InputResetModifierKeyState()
-{
-    gInputModifierKey = EnumValue(ModifierKey::none);
 }

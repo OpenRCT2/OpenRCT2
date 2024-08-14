@@ -7,11 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../UiStringIds.h"
-#include "../interface/Viewport.h"
-
 #include <iterator>
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/UiStringIds.h>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
@@ -958,7 +959,7 @@ static uint64_t PageDisabledWidgets[] = {
             CoordsXY mapCoords;
             TileElement* clickedElement = nullptr;
             bool mouseOnViewport = false;
-            if (InputIsModifierKeyPressed(ModifierKey::ctrl))
+            if (GetInputManager().IsModifierKeyPressed(ModifierKey::ctrl))
             {
                 auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionFlags);
                 clickedElement = info.Element;
@@ -1772,7 +1773,7 @@ static uint64_t PageDisabledWidgets[] = {
 
         void UpdateSelectedTile(const ScreenCoordsXY& screenCoords)
         {
-            const bool ctrlIsHeldDown = InputIsModifierKeyPressed(ModifierKey::ctrl);
+            const bool ctrlIsHeldDown = GetInputManager().IsModifierKeyPressed(ModifierKey::ctrl);
             // Mouse hasn't moved
             if (screenCoords.x == _toolMouseX && screenCoords.y == _toolMouseY && _toolCtrlDown == ctrlIsHeldDown)
                 return;

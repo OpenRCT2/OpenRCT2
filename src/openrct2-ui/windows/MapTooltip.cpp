@@ -7,8 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/Theme.h"
-
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -96,8 +97,9 @@ static Widget window_map_tooltip_widgets[] = {
         StringId stringId;
         std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
 
-        if (_cursorHoldDuration < 25 || stringId == STR_NONE || InputIsModifierKeyPressed(ModifierKey::ctrl)
-            || InputIsModifierKeyPressed(ModifierKey::shift) || WindowFindByClass(WindowClass::Error) != nullptr)
+        auto& im = GetInputManager();
+        if (_cursorHoldDuration < 25 || stringId == STR_NONE || im.IsModifierKeyPressed(ModifierKey::ctrl)
+            || im.IsModifierKeyPressed(ModifierKey::shift) || WindowFindByClass(WindowClass::Error) != nullptr)
         {
             WindowCloseByClass(WindowClass::MapTooltip);
         }

@@ -29,7 +29,7 @@ using namespace OpenRCT2::Ui;
 
 InputManager::InputManager()
 {
-    InputResetModifierKeyState();
+    _modifierKeyState = EnumValue(ModifierKey::none);
 }
 
 void InputManager::QueueInputEvent(const SDL_Event& e)
@@ -131,7 +131,7 @@ void InputManager::HandleViewScrolling()
         if (InputGetState() != InputState::Normal)
             return;
 
-        if (InputIsModifierKeyPressed(ModifierKey::shift) || InputIsModifierKeyPressed(ModifierKey::ctrl))
+        if (IsModifierKeyPressed(ModifierKey::shift) || IsModifierKeyPressed(ModifierKey::ctrl))
             return;
 
         GameHandleEdgeScroll();
@@ -140,34 +140,40 @@ void InputManager::HandleViewScrolling()
 
 void InputManager::HandleModifiers()
 {
-    InputResetModifierKeyState();
+    _modifierKeyState = EnumValue(ModifierKey::none);
+
     auto modifiers = SDL_GetModState();
     if (modifiers & KMOD_SHIFT)
     {
-        InputSetModifierKeyPressed(ModifierKey::shift);
+        _modifierKeyState |= EnumValue(ModifierKey::shift);
     }
     if (modifiers & KMOD_CTRL)
     {
-        InputSetModifierKeyPressed(ModifierKey::ctrl);
+        _modifierKeyState |= EnumValue(ModifierKey::ctrl);
     }
     if (modifiers & KMOD_ALT)
     {
-        InputSetModifierKeyPressed(ModifierKey::alt);
+        _modifierKeyState |= EnumValue(ModifierKey::alt);
     }
 #ifdef __MACOSX__
     if (modifiers & KMOD_GUI)
     {
-        InputSetModifierKeyPressed(ModifierKey::cmd);
+        _modifierKeyState |= EnumValue(ModifierKey::cmd);
     }
 #endif
 
     if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
     {
-        if (InputIsModifierKeyPressed(ModifierKey::ctrl) || InputIsModifierKeyPressed(ModifierKey::shift))
+        if (IsModifierKeyPressed(ModifierKey::ctrl) || IsModifierKeyPressed(ModifierKey::shift))
             VirtualFloorEnable();
         else
             VirtualFloorDisable();
     }
+}
+
+bool InputManager::IsModifierKeyPressed(ModifierKey modifier) const
+{
+    return _modifierKeyState & EnumValue(modifier);
 }
 
 void InputManager::ProcessEvents()
