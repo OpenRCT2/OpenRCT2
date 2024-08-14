@@ -7,11 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/ViewportQuery.h"
-
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/input/ShortcutIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/ViewportInteraction.h>
+#include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Cheats.h>
@@ -162,6 +164,15 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
         uint8_t _lastUpdatedCameraRotation = UINT8_MAX;
         bool _footpathErrorOccured = false;
 
+        bool _footpathPlaceCtrlState;
+        int32_t _footpathPlaceCtrlZ;
+
+        bool _footpathPlaceShiftState;
+        ScreenCoordsXY _footpathPlaceShiftStart;
+        int32_t _footpathPlaceShiftZ;
+
+        int32_t _footpathPlaceZ;
+
     public:
 #pragma region Window Override Events
 
@@ -179,6 +190,9 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             InputSetFlag(INPUT_FLAG_6, true);
             _footpathErrorOccured = false;
             WindowFootpathSetEnabledAndPressedWidgets();
+
+            _footpathPlaceCtrlState = false;
+            _footpathPlaceShiftState = false;
 
             hold_down_widgets = (1u << WIDX_CONSTRUCT) | (1u << WIDX_REMOVE);
         }
@@ -756,6 +770,104 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             WindowFootpathSetEnabledAndPressedWidgets();
         }
 
+        // TODO: clean up
+        std::optional<CoordsXY> FootpathGetPlacePositionFromScreenPosition(ScreenCoordsXY screenCoords)
+        {
+            CoordsXY mapCoords;
+            auto& im = GetInputManager();
+
+            if (!_footpathPlaceCtrlState)
+            {
+                if (im.IsModifierKeyPressed(ModifierKey::ctrl))
+                {
+                    auto info = GetMapCoordinatesFromPos(screenCoords, 0xFCCA);
+                    if (info.SpriteType != ViewportInteractionItem::None)
+                    {
+                        _footpathPlaceCtrlZ = info.Element->GetBaseZ();
+                        _footpathPlaceCtrlState = true;
+                    }
+                }
+            }
+            else if (!im.IsModifierKeyPressed(ModifierKey::ctrl))
+            {
+                _footpathPlaceCtrlState = false;
+            }
+
+            if (!_footpathPlaceShiftState && im.IsModifierKeyPressed(ModifierKey::shift))
+            {
+                _footpathPlaceShiftState = true;
+                _footpathPlaceShiftStart = screenCoords;
+                _footpathPlaceShiftZ = 0;
+            }
+            else if (im.IsModifierKeyPressed(ModifierKey::shift))
+            {
+                uint16_t maxHeight = ZoomLevel::max().ApplyTo(
+                    std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
+
+                _footpathPlaceShiftZ = _footpathPlaceShiftStart.y - screenCoords.y + 4;
+                // Scale delta by zoom to match mouse position.
+                auto* mainWnd = WindowGetMain();
+                if (mainWnd != nullptr && mainWnd->viewport != nullptr)
+                {
+                    _footpathPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_footpathPlaceShiftZ);
+                }
+                _footpathPlaceShiftZ = Floor2(_footpathPlaceShiftZ, 8);
+
+                // Clamp to maximum possible value of BaseHeight can offer.
+                _footpathPlaceShiftZ = std::min<int16_t>(_footpathPlaceShiftZ, maxHeight);
+
+                screenCoords = _footpathPlaceShiftStart;
+            }
+            else if (_footpathPlaceShiftState)
+            {
+                _footpathPlaceShiftState = false;
+            }
+
+            if (!_footpathPlaceCtrlState)
+            {
+                mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
+                if (mapCoords.IsNull())
+                    return std::nullopt;
+
+                _footpathPlaceZ = 0;
+                if (_footpathPlaceShiftState)
+                {
+                    auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
+                    if (surfaceElement == nullptr)
+                        return std::nullopt;
+
+                    auto mapZ = Floor2(surfaceElement->GetBaseZ(), 16);
+                    mapZ += _footpathPlaceShiftZ;
+                    mapZ = std::max<int16_t>(mapZ, 16);
+                    _footpathPlaceZ = mapZ;
+                }
+            }
+            else
+            {
+                auto mapZ = _footpathPlaceCtrlZ;
+                auto mapXYCoords = ScreenGetMapXYWithZ(screenCoords, mapZ);
+                if (mapXYCoords.has_value())
+                {
+                    mapCoords = mapXYCoords.value();
+                }
+                else
+                {
+                    return std::nullopt;
+                }
+
+                if (_footpathPlaceShiftState != 0)
+                {
+                    mapZ += _footpathPlaceShiftZ;
+                }
+                _footpathPlaceZ = std::max<int32_t>(mapZ, 16);
+            }
+
+            if (mapCoords.x == kLocationNull)
+                return std::nullopt;
+
+            return mapCoords.ToTileStart();
+        }
+
         /**
          *
          *  rct2: 0x006A81FB
@@ -768,6 +880,13 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             auto info = GetMapCoordinatesFromPos(
                 screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
 
+            // TODO: integrate code path below
+            auto mapPos = FootpathGetPlacePositionFromScreenPosition(screenCoords);
+            if (!mapPos)
+                return;
+
+            // !!!
+
             if (info.SpriteType == ViewportInteractionItem::None || info.Element == nullptr)
             {
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -776,8 +895,8 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             }
 
             // Check for change
-            if ((gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
-                && gProvisionalFootpath.Position == CoordsXYZ{ info.Loc, info.Element->GetBaseZ() })
+            auto provisionalPos = CoordsXYZ(*mapPos, _footpathPlaceZ);
+            if ((gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1) && gProvisionalFootpath.Position == provisionalPos)
             {
                 return;
             }
@@ -785,8 +904,8 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             // Set map selection
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
-            gMapSelectPositionA = info.Loc;
-            gMapSelectPositionB = info.Loc;
+            gMapSelectPositionA = *mapPos;
+            gMapSelectPositionB = *mapPos;
 
             FootpathProvisionalUpdate();
 
@@ -819,17 +938,22 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 default:
                     break;
             }
-            auto z = info.Element->GetBaseZ();
-            if (slope & RAISE_FOOTPATH_FLAG)
+
+            auto baseZ = _footpathPlaceZ;
+            if (baseZ == 0)
             {
-                slope &= ~RAISE_FOOTPATH_FLAG;
-                z += kPathHeightStep;
+                baseZ = info.Element->GetBaseZ();
+                if (slope & RAISE_FOOTPATH_FLAG)
+                {
+                    slope &= ~RAISE_FOOTPATH_FLAG;
+                    baseZ += kPathHeightStep;
+                }
             }
 
             auto pathType = gFootpathSelection.GetSelectedSurface();
             auto constructFlags = FootpathCreateConstructFlags(pathType);
             _windowFootpathCost = FootpathProvisionalSet(
-                pathType, gFootpathSelection.Railings, { info.Loc, z }, slope, constructFlags);
+                pathType, gFootpathSelection.Railings, { *mapPos, baseZ }, slope, constructFlags);
             WindowInvalidateByClass(WindowClass::Footpath);
         }
 
@@ -893,12 +1017,12 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             const auto info = GetMapCoordinatesFromPos(
                 screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
 
-            if (info.SpriteType == ViewportInteractionItem::None)
-            {
+            // TODO: integrate code path below
+            auto mapPos = FootpathGetPlacePositionFromScreenPosition(screenCoords);
+            if (!mapPos)
                 return;
-            }
 
-            // Set path
+            // Get path slope
             auto slope = 0;
             switch (info.SpriteType)
             {
@@ -915,11 +1039,16 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 default:
                     break;
             }
-            auto z = info.Element->GetBaseZ();
-            if (slope & RAISE_FOOTPATH_FLAG)
+
+            auto baseZ = _footpathPlaceZ;
+            if (baseZ == 0)
             {
-                slope &= ~RAISE_FOOTPATH_FLAG;
-                z += kPathHeightStep;
+                baseZ = info.Element->GetBaseZ();
+                if (slope & RAISE_FOOTPATH_FLAG)
+                {
+                    slope &= ~RAISE_FOOTPATH_FLAG;
+                    baseZ += kPathHeightStep;
+                }
             }
 
             // Try and place path
@@ -927,7 +1056,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             PathConstructFlags constructFlags = FootpathCreateConstructFlags(selectedType);
 
             auto footpathPlaceAction = FootpathPlaceAction(
-                { info.Loc, z }, slope, selectedType, gFootpathSelection.Railings, INVALID_DIRECTION, constructFlags);
+                { *mapPos, baseZ }, slope, selectedType, gFootpathSelection.Railings, INVALID_DIRECTION, constructFlags);
             footpathPlaceAction.SetCallback([this](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
