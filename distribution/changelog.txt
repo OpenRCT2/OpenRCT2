@@ -14,6 +14,7 @@
 - Fix: [#22307] Hover tooltips in financial charts are not invalidated properly.
 - Fix: [#22316] Potential crash when switching the drawing engine while the game is running.
 - Fix: [#22395, #22396] Misaligned tick marks in financial and guest count graphs (original bug).
+- Fix: [#22457] Potential crash opening the scenario select window.
 
 0.4.13 (2024-08-04)
 ------------------------------------------------------------------------
