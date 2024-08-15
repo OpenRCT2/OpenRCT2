@@ -214,11 +214,11 @@ static Widget _trackListWidgets[] = {
 
         void OnOpen() override
         {
-            LoadDesignsList(_window_track_list_item);
-
             String::Set(_filterString, sizeof(_filterString), "");
             _trackListWidgets[WIDX_FILTER_STRING].string = _filterString;
             widgets = _trackListWidgets;
+
+            LoadDesignsList(_window_track_list_item);
 
             if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
             {
