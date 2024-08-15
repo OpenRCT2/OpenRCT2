@@ -1801,7 +1801,6 @@ STR_2450    :{YELLOW}你針對樂園的推廣計劃現已結束
 STR_2451    :{YELLOW}你針對{STRINGID}的推廣計劃現已結束
 STR_2452    :{WINDOW_COLOUR_2}現金 (減去貸款): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}現金 (減去貸款): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :顯示財政報表
 STR_2458    :以圖表顯示過往到現在的凈現金
 STR_2459    :以圖表顯示過往到現在的樂園價格
@@ -3434,7 +3433,6 @@ STR_6356    :如果樂園中有水域存在, 則會生成鴨子
 STR_6357    :移除所有於地圖上的鴨子
 STR_6358    :第{UINT16}頁
 STR_6359    :{POP16}{POP16}第{UINT16}頁
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :啟用遊樂設施的燈光效果 (實驗性質)
 STR_6362    :當啟用此選項時, 所有在擁有軌道的遊樂設施中的車輛將會於晚中被照亮.
 STR_6363    :複製文字到剪貼簿

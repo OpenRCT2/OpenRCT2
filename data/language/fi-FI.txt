@@ -1805,7 +1805,6 @@ STR_2450    :{YELLOW}Mainoskampanjasi puistolle on päättynyt
 STR_2451    :{YELLOW}Mainoskampanjasi laitteelle {STRINGID} on päättynyt
 STR_2452    :{WINDOW_COLOUR_2}Varat (miinus velka): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Varat (miinus velka): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Näytä taloustiedot
 STR_2458    :Näytä kuvaaja varoista (miinus velka) ajan myötä
 STR_2459    :Näytä kuvaaja puiston arvosta ajan myötä
@@ -3438,7 +3437,6 @@ STR_6356    :Luo ankkoja jos puistossa on vettä
 STR_6357    :Poistaa kaikki kentän ankat
 STR_6358    :Sivu {UINT16}
 STR_6359    :{POP16}{POP16}Sivu {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Valaistustehosteet laitteissa (kokeellinen)
 STR_6362    :Jos päällä, kaikki radalliset laitteet valaistaan öisin.
 STR_6363    :Kopioitu leikepöydälle

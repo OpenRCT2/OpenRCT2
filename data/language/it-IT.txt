@@ -1802,7 +1802,6 @@ STR_2450    :{YELLOW}La campagna pubblicitaria per il parco è terminata
 STR_2451    :{YELLOW}La campagna pubblicitaria per {STRINGID} è terminata
 STR_2452    :{WINDOW_COLOUR_2}Denaro (sottratti i prestiti): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Denaro (sottratti i prestiti): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Mostra i conti economici
 STR_2458    :Mostra il grafico di cassa (sottratti i prestiti) nel tempo
 STR_2459    :Mostra il grafico del valore del parco nel tempo
@@ -3437,7 +3436,6 @@ STR_6356    :Fa apparire anatre se il parco contiene acqua
 STR_6357    :Rimuove tutte le anatre dalla mappa
 STR_6358    :Pagina {UINT16}
 STR_6359    :{POP16}{POP16}Pagina {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Attiva effetti luce su attrazioni (sperimentale)
 STR_6362    :Se abilitato, i veicoli delle attrazioni con percorso saranno illuminati di notte.
 STR_6363    :Testo copiato negli appunti

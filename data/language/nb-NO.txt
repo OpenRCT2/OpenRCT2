@@ -1797,7 +1797,6 @@ STR_2450    :{YELLOW}Din reklamekampanje for parken er ferdig
 STR_2451    :{YELLOW}Din reklamekampanje for {STRINGID} er ferdig
 STR_2452    :{WINDOW_COLOUR_2}Penger (utenom lån): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Penger (utenom lån): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Vis økonomisk regnskap
 STR_2458    :Vis graf av penger (utenom lån) over tid
 STR_2459    :Vis graf av parkverdi over tid
@@ -3429,7 +3428,6 @@ STR_6356    :{SMALLFONT}{BLACK}Legger til ender dersom parken inneholder vann
 STR_6357    :{SMALLFONT}{BLACK}Fjerner alle ender fra parken
 STR_6358    :Side {UINT16}
 STR_6359    :{POP16}{POP16}Side {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Aktiver attraksjonlyseffekter (eksperimentelt)
 STR_6362    :Hvis aktivert vil det være lys på vognene til attraksjoner som går på bane.
 STR_6363    :Tekst kopiert til utklippstavlen

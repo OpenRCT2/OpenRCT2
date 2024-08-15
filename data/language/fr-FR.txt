@@ -1806,7 +1806,6 @@ STR_2450    :{YELLOW}Votre campagne marketing pour le parc est terminée
 STR_2451    :{YELLOW}Votre campagne marketing pour {STRINGID} est terminée
 STR_2452    :{WINDOW_COLOUR_2}Argent (moins l’emprunt) : {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Argent (moins l’emprunt) : {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Voir comptes financiers
 STR_2458    :Voir graphique Argent (moins emprunt) sur durée
 STR_2459    :Voir graphique Valeur du parc sur durée
@@ -3440,7 +3439,6 @@ STR_6356    :Fait apparaître des canards si le parc contient de l’eau.
 STR_6357    :Supprime tous les canards de la carte.
 STR_6358    :Page {UINT16}
 STR_6359    :{POP16}{POP16}Page {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Activer les effets de lumières sur les{NEWLINE}attractions (expérimental)
 STR_6362    :Si activé, les véhicules sur les attractions sur rails seront éclairés la nuit
 STR_6363    :Texte copié dans le presse-papier

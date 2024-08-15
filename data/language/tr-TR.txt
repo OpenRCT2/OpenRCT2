@@ -1790,7 +1790,6 @@ STR_2450    :{YELLOW}Park için reklam kampanyası bitti
 STR_2451    :{YELLOW}{STRINGID} için reklam kampanyası bitti
 STR_2452    :{WINDOW_COLOUR_2}Para (borçsuz): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Para (borçsuz): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Finansal genel bakış
 STR_2458    :Aylık para değişimi grafiği (kredisiz)
 STR_2459    :Aylık park değeri grafiği
@@ -3341,7 +3340,6 @@ STR_6266    :Özel içerik klasörünü aç
 STR_6267    :Zemin deneticisini aç
 STR_6268    :Bir sonraki tick’e atla
 STR_6269    :Geçersiz hava ID’si
-STR_6360    :{BLACK}{COMMA32}
 STR_6502    :{COMMA16} ve {COMMA16} arasında değer giriniz.
 STR_6503    :En az bir istasyon nesnesi seçilmelidir
 STR_6504    :En az bir arazi yüzeyi seçilmelidir
