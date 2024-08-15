@@ -126,10 +126,11 @@ static Widget _scenarioSelectWidgets[] = {
 
         void OnOpen() override
         {
+            widgets = _scenarioSelectWidgets;
+
             // Load scenario list
             ScenarioRepositoryScan();
 
-            widgets = _scenarioSelectWidgets;
             _highlightedScenario = nullptr;
             InitTabs();
             InitialiseListItems();
