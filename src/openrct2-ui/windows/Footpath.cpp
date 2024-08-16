@@ -811,7 +811,10 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 {
                     _footpathPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_footpathPlaceShiftZ);
                 }
-                _footpathPlaceShiftZ = Floor2(_footpathPlaceShiftZ, 8);
+
+                const bool allowInvalidHeights = GetGameState().Cheats.AllowTrackPlaceInvalidHeights;
+                const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
+                _footpathPlaceShiftZ = Floor2(_footpathPlaceShiftZ, heightStep);
 
                 // Clamp to maximum possible value of BaseHeight can offer.
                 _footpathPlaceShiftZ = std::min<int16_t>(_footpathPlaceShiftZ, maxHeight);
