@@ -15,6 +15,7 @@
 - Fix: [#22316] Potential crash when switching the drawing engine while the game is running.
 - Fix: [#22395, #22396] Misaligned tick marks in financial and guest count graphs (original bug).
 - Fix: [#22457] Potential crash opening the scenario select window.
+- Fix: [#22582] Lighting effects are not enabled/disabled correctly, making the game appear frozen.
 
 0.4.13 (2024-08-04)
 ------------------------------------------------------------------------
