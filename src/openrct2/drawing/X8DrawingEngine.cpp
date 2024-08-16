@@ -191,6 +191,7 @@ void X8DrawingEngine::BeginDraw()
         if (_lastLightFXenabled != Config::Get().general.EnableLightFx)
         {
             Resize(_width, _height);
+            GfxInvalidateScreen();
             _lastLightFXenabled = Config::Get().general.EnableLightFx;
         }
         _weatherDrawer.Restore(_bitsDPI);
