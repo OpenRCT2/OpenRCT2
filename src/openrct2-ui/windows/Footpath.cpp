@@ -791,6 +791,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             else if (!im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
                 _footpathPlaceCtrlState = false;
+                _footpathPlaceCtrlZ = 0;
             }
 
             if (!_footpathPlaceShiftState && im.IsModifierKeyPressed(ModifierKey::shift))
@@ -824,6 +825,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             else if (_footpathPlaceShiftState)
             {
                 _footpathPlaceShiftState = false;
+                _footpathPlaceShiftZ = 0;
             }
 
             if (!_footpathPlaceCtrlState)
