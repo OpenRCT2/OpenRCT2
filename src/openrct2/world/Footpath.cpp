@@ -1200,7 +1200,7 @@ static int32_t FootpathIsConnectedToMapEdgeHelper(CoordsXYZ footpathPos, int32_t
         {
             if (DirectionReverse(ste_slopeDirection) != ste_direction)
                 return true;
-            if (ste_tileElement->GetBaseZ() + PATH_HEIGHT_STEP != ste_targetPos.z)
+            if (ste_tileElement->GetBaseZ() + kPathHeightStep != ste_targetPos.z)
                 return true;
         }
         else if (ste_tileElement->GetBaseZ() != ste_targetPos.z)
@@ -1279,7 +1279,7 @@ static int32_t FootpathIsConnectedToMapEdgeHelper(CoordsXYZ footpathPos, int32_t
             {
                 // Only possible direction to go
                 if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == currentTile.direction)
-                    targetPos.z += PATH_HEIGHT_STEP;
+                    targetPos.z += kPathHeightStep;
 
                 // Prepare the next iteration
                 currentTile.footpathPos = targetPos;
@@ -1308,7 +1308,7 @@ static int32_t FootpathIsConnectedToMapEdgeHelper(CoordsXYZ footpathPos, int32_t
                     if (tileElement->AsPath()->IsSloped()
                         && tileElement->AsPath()->GetSlopeDirection() == currentTile.direction)
                     {
-                        targetPos.z += PATH_HEIGHT_STEP;
+                        targetPos.z += kPathHeightStep;
                     }
 
                     // Add each possible path to the list of pending tiles
@@ -1869,7 +1869,7 @@ void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos)
 
 bool FootpathIsBlockedByVehicle(const TileCoordsXYZ& position)
 {
-    auto pathElement = MapGetFirstTileElementWithBaseHeightBetween<PathElement>({ position, position.z + PATH_HEIGHT_STEP });
+    auto pathElement = MapGetFirstTileElementWithBaseHeightBetween<PathElement>({ position, position.z + kPathHeightStep });
     return pathElement != nullptr && pathElement->IsBlockedByVehicle();
 }
 

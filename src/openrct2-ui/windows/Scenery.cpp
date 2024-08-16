@@ -2187,7 +2187,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 return kMoney64Undefined;
 
             gSceneryGhostPosition = loc;
-            gSceneryGhostPosition.z += PATH_HEIGHT_STEP;
+            gSceneryGhostPosition.z += kPathHeightStep;
             gSceneryPlaceRotation = loc.direction;
             gSceneryGhostType |= SCENERY_GHOST_FLAG_4;
             return res.Cost;

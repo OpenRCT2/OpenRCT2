@@ -25,10 +25,10 @@ enum
     PROVISIONAL_PATH_FLAG_2 = (1 << 2),
 };
 
-constexpr auto FootpathMaxHeight = 248 * kCoordsZStep;
-constexpr auto FootpathMinHeight = 2 * kCoordsZStep;
-constexpr auto PATH_HEIGHT_STEP = 2 * kCoordsZStep;
-constexpr auto PATH_CLEARANCE = 4 * kCoordsZStep;
+constexpr auto kFootpathMaxHeight = 248 * kCoordsZStep;
+constexpr auto kFootpathMinHeight = 2 * kCoordsZStep;
+constexpr auto kPathHeightStep = 2 * kCoordsZStep;
+constexpr auto kPathClearance = 4 * kCoordsZStep;
 
 enum class RailingEntrySupportType : uint8_t
 {
