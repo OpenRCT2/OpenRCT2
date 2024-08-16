@@ -3622,7 +3622,7 @@ static void WoodenRCTrackLeftVerticalLoop(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
@@ -3644,25 +3644,25 @@ static void WoodenRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23454), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23462), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23459), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23467), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3824,25 +3824,25 @@ static void WoodenRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23459), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23467), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23454), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23462), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3876,7 +3876,7 @@ static void WoodenRCTrackLeftVerticalLoop(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             switch (direction)
             {
                 case 1:
@@ -3927,7 +3927,7 @@ static void WoodenRCTrackRightVerticalLoop(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
@@ -3941,25 +3941,25 @@ static void WoodenRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23483), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23475), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23478), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23470), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -4081,25 +4081,25 @@ static void WoodenRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23478), { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23470), { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23483), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(23475), { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -4125,7 +4125,7 @@ static void WoodenRCTrackRightVerticalLoop(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportGraphic::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             switch (direction)
             {
                 case 1:

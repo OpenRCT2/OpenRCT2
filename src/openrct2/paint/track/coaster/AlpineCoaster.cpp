@@ -855,33 +855,27 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 3)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 7)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 11)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, DirectionPrev(direction), 0, height,
+                    session.SupportColours);
+
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -1021,33 +1015,26 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 19)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::LeftCorner, 0, height,
-                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 27)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::RightCorner, 0, height,
-                            session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::BottomCorner, DirectionNext(direction), 0, height,
+                    session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -1205,27 +1192,11 @@ namespace OpenRCT2::AlpineRC
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours.WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 9, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 9, height,
-                                session.SupportColours);
                             break;
                     }
                 }
@@ -1233,29 +1204,15 @@ namespace OpenRCT2::AlpineRC
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 9, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 9, height,
-                                session.SupportColours);
                             break;
                     }
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 9, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -1382,27 +1339,11 @@ namespace OpenRCT2::AlpineRC
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours.WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 5)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 6, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 6, height,
-                                session.SupportColours);
                             break;
                     }
                 }
@@ -1410,29 +1351,15 @@ namespace OpenRCT2::AlpineRC
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 5)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 6, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 6, height,
-                                session.SupportColours);
                             break;
                     }
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -1559,58 +1486,30 @@ namespace OpenRCT2::AlpineRC
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 2,
-                                session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours.WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 2,
-                                session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                                session.SupportColours);
                             break;
                     }
+                    MetalBSupportsPaintSetupRotated(
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0,
+                        height + (direction & 1) ? 0 : 2, session.SupportColours);
                 }
                 else
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 2, height, session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 2, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 2, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 2, height,
-                                session.SupportColours);
                             break;
                     }
+                    MetalBSupportsPaintSetupRotated(
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 2, height,
+                        session.SupportColours);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -1738,27 +1637,11 @@ namespace OpenRCT2::AlpineRC
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours.WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 8, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 8, height,
-                                session.SupportColours);
                             break;
                     }
                 }
@@ -1766,29 +1649,15 @@ namespace OpenRCT2::AlpineRC
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 8, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 8, height,
-                                session.SupportColours);
                             break;
                     }
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 8, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -1912,27 +1781,11 @@ namespace OpenRCT2::AlpineRC
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours.WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
-                                session.SupportColours);
                             break;
                     }
                 }
@@ -1940,29 +1793,15 @@ namespace OpenRCT2::AlpineRC
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
-                                session.SupportColours);
                             break;
                     }
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -2090,27 +1929,11 @@ namespace OpenRCT2::AlpineRC
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours.WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                                session.SupportColours);
                             break;
                     }
                 }
@@ -2118,29 +1941,15 @@ namespace OpenRCT2::AlpineRC
                 {
                     switch (direction)
                     {
-                        case 0:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                            break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                                session.SupportColours);
-                            break;
-                        case 2:
-                            MetalBSupportsPaintSetup(
-                                session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                            break;
-                        case 3:
-                            MetalBSupportsPaintSetup(
-                                session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                                session.SupportColours);
                             break;
                     }
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -2606,29 +2415,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 2)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -2715,29 +2510,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 6)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -2824,29 +2605,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 9)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -2933,29 +2700,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 4)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3042,29 +2795,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 12)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3151,29 +2890,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 16)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3260,29 +2985,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 22)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3369,29 +3080,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 26)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3475,29 +3172,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 29)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3582,29 +3265,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 24)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3692,29 +3361,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 19)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3801,29 +3456,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 14)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalBSupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalBSupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalBSupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3906,29 +3547,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 31)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -4011,29 +3638,15 @@ namespace OpenRCT2::AlpineRC
             case 3:
                 switch (direction)
                 {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                        break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 33)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
-                        break;
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -4536,33 +4149,26 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 3)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
-                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 7)),
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 16, 18, 0 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 11)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
-                            session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::LeftCorner, DirectionPrev(direction), 0, height,
+                    session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -4702,33 +4308,26 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 19)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::LeftCorner, 0, height,
-                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 27)),
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 16, 18, 0 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::RightCorner, 0, height,
-                            session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::BottomCorner, DirectionNext(direction), 0, height,
+                    session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -4918,33 +4517,26 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 9)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::Centre, 8, height,
-                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 11)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 13)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::Centre, 10, height,
-                            session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_SMALL_CURVE + 15)),
                             { 6, 0, height }, { 20, 32, 3 });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), direction == 2 ? 10 : 8,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 0:
@@ -5465,8 +5057,8 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopRightSide, 1, height - 1,
+                        MetalASupportsPaintSetupRotated(
+                            session, supportType.metal, MetalSupportPlace::TopLeftSide, direction, 1, height - 1,
                             session.SupportColours);
                         break;
                     case 2:
@@ -5514,8 +5106,8 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::TopRightSide, 1, height - 1,
+                        MetalASupportsPaintSetupRotated(
+                            session, supportType.metal, MetalSupportPlace::BottomRightSide, direction, 1, height - 1,
                             session.SupportColours);
                         break;
                 }
@@ -5637,8 +5229,8 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomLeftSide, 0, height,
+                        MetalASupportsPaintSetupRotated(
+                            session, supportType.metal, MetalSupportPlace::BottomRightSide, direction, 0, height,
                             session.SupportColours);
                         break;
                     case 2:
@@ -5686,8 +5278,8 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::BottomLeftSide, 0, height,
+                        MetalASupportsPaintSetupRotated(
+                            session, supportType.metal, MetalSupportPlace::TopLeftSide, direction, 0, height,
                             session.SupportColours);
                         break;
                 }
@@ -6881,9 +6473,6 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 26)),
                             { 0, 0, height }, { { 6, 0, height + 8 }, { 20, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::Centre, 9, height,
-                            session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6892,25 +6481,21 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 37)),
                             { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::Centre, 9, height,
-                            session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), direction == 1 ? 5 : 9,
+                    height, session.SupportColours);
                 switch (direction)
                 {
                     case 0:
@@ -7097,33 +6682,26 @@ namespace OpenRCT2::AlpineRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 37)),
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::Centre, 9, height,
-                            session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_ALPINE_TRACK_LARGE_HELIX + 26)),
                             { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, MetalSupportGraphic::ForkAlt, MetalSupportPlace::Centre, 9, height,
-                            session.SupportColours);
                         break;
                 }
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::Centre, direction, direction == 0 ? 5 : 9, height,
+                    session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlat);

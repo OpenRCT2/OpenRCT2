@@ -169,29 +169,13 @@ static void PaintSwingingShip(
         WoodenASupportsPaintSetupRotated(
             session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
     }
-    else if (direction & 1)
-    {
-        MetalASupportsPaintSetup(
-            session, MetalSupportGraphic::Tubes, MetalSupportPlace::TopRightSide, 0, height, session.SupportColours);
-        MetalASupportsPaintSetup(
-            session, MetalSupportGraphic::Tubes, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
-
-        if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
-        {
-            imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_A_NW_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
-        }
-    }
     else
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportGraphic::Tubes, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
-        MetalASupportsPaintSetup(
-            session, MetalSupportGraphic::Tubes, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
-
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
         if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
         {
-            imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_A_SW_NE);
+            ImageIndex base = (direction & 1) ? SPR_STATION_BASE_A_NW_SE : SPR_STATION_BASE_A_SW_NE;
+            imageId = session.SupportColours.WithIndex(base);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
         }
     }

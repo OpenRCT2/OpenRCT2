@@ -456,22 +456,6 @@ static void PaintMonorailCyclesTrackSBendLeft(
         {
             PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
         }
-
-        switch (trackSequence)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-        }
     }
     else
     {
@@ -479,22 +463,22 @@ static void PaintMonorailCyclesTrackSBendLeft(
         {
             PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
         }
+    }
 
-        switch (trackSequence)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::TopRightSide, 0, height, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::Centre, 0, height - 2, session.SupportColours);
-                break;
-        }
+    switch (trackSequence)
+    {
+        case 0:
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            break;
+        case 1:
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::TopLeftSide, direction & 1, 0, height, session.SupportColours);
+            break;
+        case 3:
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            break;
     }
 
     switch (trackSequence)
@@ -576,22 +560,6 @@ static void PaintMonorailCyclesTrackSBendRight(
         {
             PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
         }
-
-        switch (trackSequence)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height - 2, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-        }
     }
     else
     {
@@ -599,23 +567,22 @@ static void PaintMonorailCyclesTrackSBendRight(
         {
             PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
         }
-
-        switch (trackSequence)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::BottomLeftSide, 0, height,
-                    session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-        }
+    }
+    switch (trackSequence)
+    {
+        case 0:
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            break;
+        case 1:
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::BottomRightSide, direction & 1, 0, height - 2,
+                session.SupportColours);
+            break;
+        case 3:
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+            break;
     }
 
     switch (trackSequence)

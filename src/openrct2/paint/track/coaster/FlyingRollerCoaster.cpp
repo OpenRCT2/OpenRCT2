@@ -9911,8 +9911,8 @@ static void FlyingRCTrackDiagBrakesInverted(
 
     if (trackSequence == 3)
     {
-        MetalASupportsPaintSetup(
-            session, MetalSupportGraphic::Boxed, kDiagSupportPlacement[direction], 0, height + 39, session.SupportColours);
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 39, session.SupportColours);
     }
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
