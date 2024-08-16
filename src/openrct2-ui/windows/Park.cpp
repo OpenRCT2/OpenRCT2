@@ -705,11 +705,20 @@ static constexpr WindowParkAward _parkAwards[] = {
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
             AnchorBorderWidgets();
 
+            _ratingProps.min = 0;
+            _ratingProps.max = 250;
+            _ratingProps.series = GetGameState().Park.RatingHistory;
             const Widget* background = &widgets[WIDX_PAGE_BACKGROUND];
             _ratingGraphBounds = { windowPos + ScreenCoordsXY{ background->left + 4, background->top + 15 },
                                    windowPos + ScreenCoordsXY{ background->right - 4, background->bottom - 4 } };
+
+            char buffer[64]{};
+            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", Graph::kParkRatingMax);
+            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
+
             _ratingProps.RecalculateLayout(
-                { _ratingGraphBounds.Point1 + kGraphTopLeftPadding, _ratingGraphBounds.Point2 - kGraphBottomRightPadding },
+                { _ratingGraphBounds.Point1 + dynamicPadding, _ratingGraphBounds.Point2 - kGraphBottomRightPadding },
                 kGraphNumYLabels, kParkRatingHistorySize);
         }
 
@@ -719,19 +728,14 @@ static constexpr WindowParkAward _parkAwards[] = {
             DrawTabImages(dpi);
 
             Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
-            const auto& gameState = OpenRCT2::GetGameState();
 
             // Current value
             Formatter ft;
-            ft.Add<uint16_t>(gameState.Park.Rating);
+            ft.Add<uint16_t>(GetGameState().Park.Rating);
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
             // Graph border
             GfxFillRectInset(dpi, _ratingGraphBounds, colours[1], INSET_RECT_F_30);
-
-            _ratingProps.min = 0;
-            _ratingProps.max = 250;
-            _ratingProps.series = gameState.Park.RatingHistory;
             Graph::DrawRatingGraph(dpi, _ratingProps);
         }
 
@@ -765,29 +769,11 @@ static constexpr WindowParkAward _parkAwards[] = {
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
             AnchorBorderWidgets();
 
+            const auto& gameState = GetGameState();
+            _guestProps.series = gameState.GuestsInParkHistory;
             const Widget* background = &widgets[WIDX_PAGE_BACKGROUND];
             _guestGraphBounds = { windowPos + ScreenCoordsXY{ background->left + 4, background->top + 15 },
                                   windowPos + ScreenCoordsXY{ background->right - 4, background->bottom - 4 } };
-            _guestProps.RecalculateLayout(
-                { _guestGraphBounds.Point1 + kGraphTopLeftPadding, _guestGraphBounds.Point2 - kGraphBottomRightPadding },
-                kGraphNumYLabels, kGuestsInParkHistorySize);
-        }
-
-        void OnDrawGuests(DrawPixelInfo& dpi)
-        {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
-
-            Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
-            const auto& gameState = OpenRCT2::GetGameState();
-
-            // Current value
-            Formatter ft;
-            ft.Add<uint32_t>(gameState.NumGuestsInPark);
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
-
-            // Graph border
-            GfxFillRectInset(dpi, _guestGraphBounds, colours[1], INSET_RECT_F_30);
 
             // Calculate Y axis max and min
             _guestProps.min = 0;
@@ -800,7 +786,31 @@ static constexpr WindowParkAward _parkAwards[] = {
                 while (value > _guestProps.max)
                     _guestProps.max += 5000;
             }
-            _guestProps.series = gameState.GuestsInParkHistory;
+
+            char buffer[64]{};
+            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", _guestProps.max);
+            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
+
+            _guestProps.RecalculateLayout(
+                { _guestGraphBounds.Point1 + dynamicPadding, _guestGraphBounds.Point2 - kGraphBottomRightPadding },
+                kGraphNumYLabels, kGuestsInParkHistorySize);
+        }
+
+        void OnDrawGuests(DrawPixelInfo& dpi)
+        {
+            DrawWidgets(dpi);
+            DrawTabImages(dpi);
+
+            Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
+
+            // Current value
+            Formatter ft;
+            ft.Add<uint32_t>(GetGameState().NumGuestsInPark);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
+
+            // Graph border
+            GfxFillRectInset(dpi, _guestGraphBounds, colours[1], INSET_RECT_F_30);
             Graph::DrawGuestGraph(dpi, _guestProps);
         }
 
