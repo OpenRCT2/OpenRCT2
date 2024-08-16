@@ -21,7 +21,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionLogFlume,
-        .supportType = MetalSupportType::Boxed,
+        .supportType = MetalSupportGraphic::Boxed,
         .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::onridePhoto, TrackGroup::logFlumeReverser, TrackGroup::slopeSteepDown},
         .ExtraTrackPieces = {},
     }),

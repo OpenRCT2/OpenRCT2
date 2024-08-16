@@ -23,7 +23,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .Drawer = GetTrackPaintFunctionDinghySlide,
-            .supportType = MetalSupportType::Tubes,
+            .supportType = MetalSupportGraphic::Tubes,
             .EnabledTrackPieces = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve },
             .ExtraTrackPieces = {},
             .icon = SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK,
@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
         }, 
         {
             .Drawer = GetTrackPaintFunctionDinghySlideCovered,
-            .supportType = MetalSupportType::Tubes,
+            .supportType = MetalSupportGraphic::Tubes,
             .EnabledTrackPieces = {OpenRCT2::TrackElemType::Flat, OpenRCT2::TrackElemType::Up25, OpenRCT2::TrackElemType::Up60, OpenRCT2::TrackElemType::FlatToUp25, OpenRCT2::TrackElemType::Up25ToUp60, OpenRCT2::TrackElemType::Up60ToUp25, OpenRCT2::TrackElemType::Up25ToFlat, OpenRCT2::TrackElemType::Down25, OpenRCT2::TrackElemType::Down60, OpenRCT2::TrackElemType::FlatToDown25, OpenRCT2::TrackElemType::Down25ToDown60, OpenRCT2::TrackElemType::Down60ToDown25, OpenRCT2::TrackElemType::Down25ToFlat, OpenRCT2::TrackElemType::LeftQuarterTurn5Tiles, OpenRCT2::TrackElemType::RightQuarterTurn5Tiles, OpenRCT2::TrackElemType::SBendLeft, OpenRCT2::TrackElemType::SBendRight, OpenRCT2::TrackElemType::LeftQuarterTurn3Tiles,OpenRCT2::TrackElemType::RightQuarterTurn3Tiles},
             .ExtraTrackPieces = {},
             .icon = SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK,

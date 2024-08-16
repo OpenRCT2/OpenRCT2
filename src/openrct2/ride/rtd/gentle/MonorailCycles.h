@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionMonorailCycles,
-        .supportType = MetalSupportType::Stick,
+        .supportType = MetalSupportGraphic::Stick,
         .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve},
         .ExtraTrackPieces = {},
     }),

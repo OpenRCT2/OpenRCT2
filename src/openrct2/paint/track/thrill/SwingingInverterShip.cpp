@@ -141,16 +141,16 @@ static void PaintSwingingInverterShip(
         if (direction & 1)
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height, session.SupportColours);
+                session, MetalSupportGraphic::Tubes, MetalSupportPlace::TopRightSide, 0, height, session.SupportColours);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
+                session, MetalSupportGraphic::Tubes, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
         }
         else
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
+                session, MetalSupportGraphic::Tubes, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
+                session, MetalSupportGraphic::Tubes, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
         }
 
         if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))

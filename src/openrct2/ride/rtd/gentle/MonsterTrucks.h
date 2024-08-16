@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionCarRide,
-        .supportType = MetalSupportType::Boxed,
+        .supportType = MetalSupportGraphic::Boxed,
         .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::rapids},
         .ExtraTrackPieces = {TrackGroup::spinningTunnel},
     }),

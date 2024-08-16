@@ -16,7 +16,7 @@
 
 // There are 13 types of metal supports. A graphic showing all of them is available here:
 // https://cloud.githubusercontent.com/assets/737603/19420485/7eaba28e-93ec-11e6-83cb-03190accc094.png
-enum class MetalSupportType : uint8_t
+enum class MetalSupportGraphic : uint8_t
 {
     /**
      * Used by the Steel Twister, Looping RC, and other rides.
@@ -95,19 +95,19 @@ struct FootpathPaintInfo;
 struct PaintSession;
 
 bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
 bool MetalASupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
+    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, Direction direction,
     int32_t special, int32_t height, ImageId imageTemplate);
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
 bool MetalBSupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, Direction direction,
+    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, Direction direction,
     int32_t special, int32_t height, ImageId imageTemplate);
 void DrawSupportsSideBySide(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportGraphic type, int32_t special = 0);
 bool PathPoleSupportsPaintSetup(
     PaintSession& session, MetalSupportPlace supportPlace, bool isSloped, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo);

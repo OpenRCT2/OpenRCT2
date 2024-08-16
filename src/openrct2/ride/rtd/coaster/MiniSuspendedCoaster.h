@@ -21,7 +21,7 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionMiniSuspendedRC,
-        .supportType = MetalSupportType::Fork,
+        .supportType = MetalSupportGraphic::Fork,
         .EnabledTrackPieces = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge},
         .ExtraTrackPieces = {},
     }),

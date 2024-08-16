@@ -214,7 +214,7 @@ static void PaintMonorailCyclesStation(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
     }
 
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportGraphic::Boxed);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
@@ -484,15 +484,15 @@ static void PaintMonorailCyclesTrackSBendLeft(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, MetalSupportPlace::TopRightSide, 0, height, session.SupportColours);
+                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::TopRightSide, 0, height, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height - 2, session.SupportColours);
+                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::Centre, 0, height - 2, session.SupportColours);
                 break;
         }
     }
@@ -604,15 +604,16 @@ static void PaintMonorailCyclesTrackSBendRight(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
+                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::BottomLeftSide, 0, height,
+                    session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                    session, MetalSupportGraphic::StickAlt, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                 break;
         }
     }
