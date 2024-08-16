@@ -99,6 +99,7 @@ STR_0093    :Hybridberg- och dalbana
 STR_0094    :Enkelspårig berg- och dalbana
 STR_0095    :Alpin berg- och dalbana
 STR_0096    :Klassisk berg- och dalbana i trä
+STR_0097    :Klassisk stående berg- och dalbana
 STR_0512    :En kompakt berg- och dalbana med en spiralvriden kedjelift och mjuka, vridna stup.
 STR_0513    :En ringlande berg- och dalbana där passagerarna åker stående
 STR_0514    :Tåg hängande under banan som svingar ut åt sidan i kurvorna
@@ -182,6 +183,7 @@ STR_0603    :En berg- och dalbana i trästil med stålspår, som möjliggör bra
 STR_0604    :Passagerare åker i singelled längs en stålbalk, som tar dem genom tighta inversioner och krökar
 STR_0605    :Passagerare åker släde nerför ett slingrande stålspår och bromsar för att reglera hastigheten
 STR_0606    :Den här berg- och dalbanan i trä är i äldre stil. Den är snabb, tuff, högljudd och ger en känsla av att förlora kontrollen. Dessutom spenderar man mycket tid flygandes över topparna
+STR_0607    :En intensiv berg- och dalbana i äldre stil där passagerarna åker stående
 STR_0767    :Besökare {INT32}
 STR_0768    :Vaktmästare {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -2780,7 +2782,7 @@ STR_5608    :BH
 STR_5609    :CH
 STR_5610    :Ta bort den valda rutan eller elementet. Detta kommer tvinga en borttagning, inga pengar kommer ges eller användas. Använd med försiktighet.
 STR_5611    :G
-STR_5612    :Spökflagga
+STR_5612    :Skissflagga
 STR_5613    :B
 STR_5614    :Trasig flagga
 STR_5615    :L
@@ -3084,7 +3086,7 @@ STR_5957    :Nordväst
 STR_5958    :Nordost
 STR_5959    :Sydost
 STR_5960    :Placering i väderstreck:
-STR_5961    :Entré-index: {BLACK}{COMMA16}
+STR_5961    :Noteringsindex: {BLACK}{COMMA16}
 STR_5962    :Kollisionsdetektering:
 STR_5963    :Upphöjda hörn:
 STR_5964    :Diagonal
@@ -3669,6 +3671,65 @@ STR_6593    :Ta bort parkstängsel
 STR_6594    :Rutinspekteraren: Växla vägglutning
 STR_6595    :{WINDOW_COLOUR_2}Författare: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Författare: {BLACK}{STRING}
+STR_6597    :Ogiltig parameter
+STR_6598    :Värde utanför intervallet
+STR_6599    :Skisselementet hittades inte
+STR_6600    :Ballongen hittades inte
+STR_6601    :Personalen hittades inte
+STR_6602    :Åkturen hittades inte
+STR_6603    :Attraktionsobjektet hittades inte
+STR_6604    :Spelaren hittades inte
+STR_6605    :Entréelementet hittades inte
+STR_6606    :Ytelementet hittades inte
+STR_6607    :Rutelelementet hittades inte
+STR_6608    :Spårelementet hittades inte
+STR_6609    :Spårblocket hittades inte
+STR_6610    :Gångvägselementet hittades inte
+STR_6611    :Väggelementet hittades inte
+STR_6612    :Bannerelementet hittades inte
+STR_6613    :Ladda om objektet
+STR_6614    :Kan inte ändra entréavgiften till parken
+STR_6615    :Spår på denna ruta behöver vatten
+STR_6616    :Åtgärden ogiltig för den personaltypen
+STR_6617    :Kan inte byta rutelementet med sig självt
+STR_6618    :Kan inte begränsa eller avbegränsa objekt...
+STR_6619    :Objekttypen kan inte begränsas!
+STR_6620    :Objektet hittades inte!
+STR_6621    :Begränsa
+STR_6622    :Begränsa objektet till scenarieredigerare och sandlådeläge
+STR_6623    :Skriv "help" för en lista över tillgängliga kommandon. Skriv "hide" för att dölja konsolen.
+STR_6624    :Rutinspekteraren: Sortera element
+STR_6625    :Ogiltig färg
+STR_6626    :Animationen är spegelvänd
+STR_6627    :Spårhastigheten för hög!
+STR_6628    :Kan endast placeras på gångvägskanter!
+STR_6629    :Centrera verktygsfältsknapparna horisontellt
+STR_6630    :Denna inställning kommer att rikta in verktygsfältsknapparna horisontellt i mitten av skärmen. Det traditionella sättet att justera dem är i det vänstra och högra hörnet.
+STR_6631    :Laddar…
+STR_6632    :Kontrollerar objektfiler...
+STR_6633    :Kontrollerar scenariefiler...
+STR_6634    :Kontrollerar spårdesignfiler...
+STR_6635    :Kontrollerar resurspaket...
+STR_6636    :Kontrollerar titelsekvenser...
+STR_6637    :Laddar titelsekvens...
+STR_6638    :Förstorat användargränssnitt
+STR_6639    :Modifierar gränssnittet för att vara mer lämpligt för touchanvändning
+STR_6640    :Redigera resurspaket...
+STR_6641    :Laddar/förloppsfönster
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Förbättringar för touchanvändning
+STR_6645    :Gör vissa element i gränssnittet större så att de är lättare att klicka eller trycka på.
+STR_6646    :Skaparen: {STRING}
+STR_6647    :Skaparna: {STRING}
+STR_6648    :Laddar plugin-motorn…
+STR_6649    :Laddar scenariet...
+STR_6650    :Laddar sparade spelet...
+STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Felmeddelande
+STR_6653    :Alla källor visas
+STR_6654    :Visar {POP16}{UINT16} källor
+STR_6655    :Endast ‘{POP16}{STRINGID}’
 
 #############
 # Scenarion #

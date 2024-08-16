@@ -254,7 +254,7 @@ STR_0851    :{WINDOW_COLOUR_2}Design e programmazione di Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafica di Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Effetti sonori e musica di Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Audio aggiuntivo registrato da David Ellis
-STR_0855    :{WINDOW_COLOUR_2}Rappresentazione di Jacqui Lyons a Marjacq Ltd.
+STR_0855    :{WINDOW_COLOUR_2}Rappresentanza di Jacqui Lyons presso Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Grazie a: 
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth e John Wardley
 STR_0865    :{STRINGID}
@@ -549,7 +549,7 @@ STR_1155    :Altezza indicata sui sentieri
 STR_1156    :{MOVE_X}{10}{STRINGID}
 STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Impossibile cancellarlo…
-STR_1159    :Colloca lo scenario, i giardini e gli altri accessori
+STR_1159    :Colloca lo scenario, i giardini e gli altri arredi
 STR_1160    :Crea/regola i laghi e gli specchi d’acqua
 STR_1161    :Impossibile posizionarlo qui…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
@@ -1174,11 +1174,11 @@ STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Costume da sceriffo
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Costume da pirata
 STR_1790    :Scegli il colore dell’uniforme per questo tipo di dipendente
 STR_1791    :{WINDOW_COLOUR_2}Colore dell’uniforme:
-STR_1792    :Sta accorrendo alla chiamata d’emergenza venuta da: {STRINGID}
+STR_1792    :Sta accorrendo al guasto di {STRINGID}
 STR_1793    :Si sta dirigendo verso {STRINGID} per un’ispezione
 STR_1794    :Sta riparando {STRINGID}
 STR_1795    :Sta rispondendo a una chiamata via radio
-STR_1796    :Si è guastato/a e ha bisogno di riparazioni
+STR_1796    :È guasto e ha bisogno di riparazioni
 STR_1798    :Vortice
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Salvavita
@@ -1305,7 +1305,7 @@ STR_1921    :Inizia una nuova partita
 STR_1922    :Continua a giocare alla partita salvata
 STR_1924    :Esci
 STR_1925    :Impossibile collocare una persona qui…
-STR_1927    :{YELLOW}{STRINGID} si è guastato/a
+STR_1927    :{YELLOW}{STRINGID} ha avuto un guasto
 STR_1928    :{RED}{STRINGID} ha avuto un incidente!
 STR_1929    :{RED}{STRINGID} ancora non è stato riparato{NEWLINE}Guarda dove si trovano i tuoi meccanici e prendi in considerazione l’idea di organizzarli meglio
 STR_1930    :Attiva/disattiva le informazioni in tempo reale su questo visitatore - (se l’opzione è attivata, i movimenti del visitatore saranno visualizzati nell’area messaggi)
@@ -1911,7 +1911,7 @@ STR_2636    :Tastierino numerico /
 STR_2669    :BlocNum
 STR_2670    :Scorr
 STR_2680    :Tutte le ricerche sono completate
-STR_2684    :Arriva un largo numero di visitatori
+STR_2684    :Fa arrivare una folla di visitatori
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Basso:
 STR_2687    :Alto:
@@ -1980,7 +1980,7 @@ STR_2775    :A schermo intero (desktop)
 STR_2776    :Lingua:
 STR_2777    :{MOVE_X}{10}{STRING}
 STR_2778    :»{MOVE_X}{10}{STRING}
-STR_2779    :Finestra #{COMMA16}
+STR_2779    :Finestra n. {COMMA16}
 STR_2780    :Finestra extra
 STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
@@ -2010,11 +2010,11 @@ STR_2805    :Mostra la mappa del parco
 STR_2806    :{RED}I visitatori si lamentano dello stato indecente dei percorsi del parco{NEWLINE}Guarda dove sono i tuoi tuttofare e prendi in considerazione l’idea di organizzarli meglio
 STR_2807    :{RED}I visitatori si lamentano della quantità di cartacce per terra nel parco{NEWLINE}Guarda dove sono i tuoi tuttofare e prendi in considerazione l’idea di organizzarli meglio
 STR_2808    :{RED}I visitatori si lamentano degli atti di vandalismo compiuti nel parco{NEWLINE}Guarda dove sono i tuoi vigilanti e prendi in considerazione l’idea di organizzarli meglio
-STR_2809    :{RED}I visitatori hanno fame e non riescono a trovare un posto dove comprare del cibo
-STR_2810    :{RED}I visitatori hanno sete e non riescono a trovare un posto dove comprare delle bevande
-STR_2811    :{RED}I visitatori si lamentano perché non riescono a trovare dei servizi igienici nel parco
-STR_2812    :{RED}I visitatori si perdono e rimangono bloccati{NEWLINE}Controlla se è il caso di migliorare la disposizione dei sentieri per aiutare i tuoi visitatori a orientarsi più facilmente
-STR_2813    :{RED}Il prezzo del biglietto d’ingresso per il parco è troppo alto!{NEWLINE}Riduci il prezzo del biglietto o fai in modo di aumentare il valore del parco per attrarre più visitatori
+STR_2809    :{RED}I visitatori sono affamati e non trovano dove comprare del cibo
+STR_2810    :{RED}I visitatori sono assetati e non trovano dove comprare delle bevande
+STR_2811    :{RED}I visitatori si lamentano perché non riescono a trovare i servizi igienici nel parco
+STR_2812    :{RED}I visitatori si perdono e rimangono bloccati{NEWLINE}Controlla se sia il caso di migliorare la disposizione dei sentieri per aiutare i visitatori a orientarsi più facilmente
+STR_2813    :{RED}Il prezzo per l’ingresso al parco è troppo alto!{NEWLINE}Riduci il prezzo del biglietto o migliora il valore del parco per attrarre più visitatori
 STR_2814    :{WINDOW_COLOUR_2}Premio parco più sporco
 STR_2815    :{WINDOW_COLOUR_2}Premio parco più pulito
 STR_2816    :{WINDOW_COLOUR_2}Premio parco con il miglior ottovolante
@@ -2049,7 +2049,7 @@ STR_2844    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il
 STR_2845    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco con i colori più sconvolgenti di tutto paese”!
 STR_2846    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco più confuso”!
 STR_2847    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco con le migliori attrazioni tranquille del paese”!
-STR_2848    :{WINDOW_COLOUR_2}Nessun premio di recente
+STR_2848    :{WINDOW_COLOUR_2}Nessun premio recente
 STR_2849    :Installazione del nuovo scenario eseguita correttamente
 STR_2850    :Installazione del nuovo progetto di tracciato eseguita correttamente
 STR_2851    :Scenario già installato
@@ -2203,8 +2203,8 @@ STR_3181    :Selezione degli oggetti - {STRINGID}
 STR_3182    :Dev’essere selezionato il tipo di entrata del parco
 STR_3183    :Dev’essere selezionato il tipo di acqua
 STR_3184    :Prova veicoli/attrazioni
-STR_3185    :Scenario piccolo
-STR_3186    :Scenario grande
+STR_3185    :Arredo piccolo
+STR_3186    :Arredo grande
 STR_3187    :Muri/recinti
 STR_3188    :Cartelli dei percorsi
 STR_3189    :Sentieri classici
@@ -2607,7 +2607,7 @@ STR_5356    :{BLACK}Nausea:
 STR_5357    :{BLACK}Tolleranza nausea:
 STR_5358    :{BLACK}Bagno:
 STR_5359    :Rimuovi visitatori
-STR_5360    :Rimuovi tutti i visitatori dalla mappa
+STR_5360    :Rimuove tutti i visitatori dalla mappa
 STR_5361    :Dai a tutti i visitatori:
 STR_5362    :{BLACK}Imposta ai visitatori l’intensità attrazione:
 STR_5363    :Più di 1
@@ -2922,7 +2922,7 @@ STR_5787    :{COMMA32} giocatori connessi
 STR_5788    :Ispeziona attrazioni:
 STR_5789    :Disattiva effetto fulmine
 STR_5790    :Attiva/disattiva i prezzi di RCT1{NEWLINE}(es. sia prezzo di ingresso che prezzo sulle attrazioni)
-STR_5791    :Imposta l’affidabilità di tutte le attrazioni a 100%{NEWLINE}e reimposta la loro data di costruzione a “quest’anno”
+STR_5791    :Imposta l’affidabilità di tutte le attrazioni{NEWLINE}a 100% e reimposta la loro data{NEWLINE}di costruzione a “quest’anno”
 STR_5792    :Aggiusta tutte le attrazioni rotte
 STR_5793    :Pulisce lo storico degli incidenti di questa attrazione,{NEWLINE}affinché i visitatori non si lamentino che non è sicura
 STR_5794    :Alcuni scenari disattivano{NEWLINE}la modifica dei percorsi{NEWLINE}già presenti nel parco.{NEWLINE}Questa opzione la riattiva
@@ -3226,7 +3226,7 @@ STR_6097    :{STRING} ha piazzato un tratto di percorso “{STRING}”.
 STR_6098    :{STRING} ha rimosso un tratto di percorso.
 STR_6099    :Connesso al server.
 STR_6100    :Disconnesso dal server.
-STR_6101    :Il valore delle attrazioni non cala col tempo
+STR_6101    :Valore delle attrazioni fisso nel tempo
 STR_6102    :Il valore delle attrazioni non calerà con il tempo, in modo che i visitatori non pensino improvvisamente che il costo dell’attrazione sia troppo alto.
 STR_6103    :Questa opzione è disabilitata durante il gioco online.
 STR_6105    :Hypercoaster
@@ -3662,7 +3662,7 @@ STR_6583    :{WINDOW_COLOUR_2}Treni invertiti
 STR_6584    :Selezionare per far andare i treni al contrario
 STR_6585    :Impossibile effettuare modifiche…
 STR_6586    :OpenRCT2
-STR_6587    :Il tema principale di OpenRCT2 è un lavoro di Allister Brimble,{NEWLINE}con licenza CC BY-SA 4.0.
+STR_6587    :Il tema musicale principale di OpenRCT2 è opera di Allister Brimble,{NEWLINE}con licenza CC BY-SA 4.0.
 STR_6588    :Si ringrazia Herman Riddering per averci permesso di registrare il 35er Voigt.
 STR_6589    :Mostra i pulsanti di controllo della finestra a sinistra
 STR_6590    :Mostra i pulsanti di controllo della finestra (ad es. per chiuderla) a sinistra della barra del titolo invece che a destra.
@@ -3721,6 +3721,21 @@ STR_6642    :{STRING} ({COMMA32} / {COMMA32})
 STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
 STR_6644    :Migliorie touch
 STR_6645    :Rende alcuni elementi della UI più grandi per renderli più semplici da cliccare o premere.
+STR_6646    :Autore: {STRING}
+STR_6647    :Autori: {STRING}
+STR_6648    :Caricamento motore plugin…
+STR_6649    :Caricamento scenario…
+STR_6650    :Caricamento partita salvata…
+STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Finestra d’errore
+STR_6653    :Mostra tutte le fonti
+STR_6654    :Mostrate {POP16}{UINT16} fonti
+STR_6655    :Solo ‘{POP16}{STRINGID}’
+STR_6656    :Rimuovi tutti i recinti dal parco
+STR_6657    :Terreno non posseduto
+STR_6658    :Imposta il terreno come non posseduto dal parco, né disponibile per l’acquisto
+STR_6659    :Prezzi ignorati dai visitatori
+STR_6660    :I visitatori ignoreranno i prezzi di attrazioni e chioschi.
 
 
 #############
