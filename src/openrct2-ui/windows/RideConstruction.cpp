@@ -3390,7 +3390,7 @@ static Widget _rideConstructionWidgets[] = {
                 // Sloped path on the level below
                 if (pathsByDir[i] == nullptr)
                 {
-                    pathsByDir[i] = MapGetFootpathElement({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
+                    pathsByDir[i] = MapGetFootpathElement({ *mapCoords + CoordsDirectionDelta[i], z - kPathHeightStep });
 
                     if (pathsByDir[i] != nullptr
                         && (!pathsByDir[i]->IsSloped() || pathsByDir[i]->GetSlopeDirection() != DirectionReverse(i)))

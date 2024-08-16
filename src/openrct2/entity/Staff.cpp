@@ -165,7 +165,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
         {
             if (path->AsPath()->GetSlopeDirection() == adjac_dir)
             {
-                adjacPos.z += PATH_HEIGHT_STEP;
+                adjacPos.z += kPathHeightStep;
             }
         }
 
@@ -859,7 +859,7 @@ bool Staff::IsMechanicHeadingToFixRideBlockingPath()
 
     auto tileCoords = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
     auto trackElement = MapGetFirstTileElementWithBaseHeightBetween<TrackElement>(
-        { tileCoords, tileCoords.z + PATH_HEIGHT_STEP });
+        { tileCoords, tileCoords.z + kPathHeightStep });
     if (trackElement == nullptr)
         return false;
 

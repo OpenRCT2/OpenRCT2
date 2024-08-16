@@ -240,7 +240,7 @@ namespace OpenRCT2::PathFinding
      */
     static int32_t GuestSurfacePathFinding(Peep& peep)
     {
-        auto pathPos = CoordsXYRangedZ{ peep.NextLoc, peep.NextLoc.z, peep.NextLoc.z + PATH_CLEARANCE };
+        auto pathPos = CoordsXYRangedZ{ peep.NextLoc, peep.NextLoc.z, peep.NextLoc.z + kPathClearance };
         Direction randDirection = ScenarioRand() & 3;
 
         if (!WallInTheWay(pathPos, randDirection))

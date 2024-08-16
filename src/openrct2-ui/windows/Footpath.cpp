@@ -823,7 +823,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 if (slope & RAISE_FOOTPATH_FLAG)
                 {
                     slope &= ~RAISE_FOOTPATH_FLAG;
-                    z += PATH_HEIGHT_STEP;
+                    z += kPathHeightStep;
                 }
 
                 auto pathType = gFootpathSelection.GetSelectedSurface();
@@ -866,10 +866,10 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 uint8_t slope = tileElement->AsSurface()->GetSlope();
                 if (slope & kTileSlopeRaisedCornersMask)
                 {
-                    z += PATH_HEIGHT_STEP;
+                    z += kPathHeightStep;
                 } // Add 2 for a slope
                 if (slope & kTileSlopeDiagonalFlag)
-                    z += PATH_HEIGHT_STEP; // Add another 2 for a steep slope
+                    z += kPathHeightStep; // Add another 2 for a steep slope
             }
 
             gMapSelectArrowPosition = CoordsXYZ{ mapCoords, z };
@@ -920,7 +920,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             if (slope & RAISE_FOOTPATH_FLAG)
             {
                 slope &= ~RAISE_FOOTPATH_FLAG;
-                z += PATH_HEIGHT_STEP;
+                z += kPathHeightStep;
             }
 
             // Try and place path
@@ -970,12 +970,12 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 if (slope & kTileSlopeDiagonalFlag)
                 {
                     // Steep diagonal slope
-                    z += 2 * PATH_HEIGHT_STEP;
+                    z += 2 * kPathHeightStep;
                 }
                 else if (slope & kTileSlopeRaisedCornersMask)
                 {
                     // Normal slope
-                    z += PATH_HEIGHT_STEP;
+                    z += kPathHeightStep;
                 }
             }
             else
@@ -987,7 +987,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                     {
                         if (direction == (tileElement->AsPath()->GetSlopeDirection()))
                         {
-                            z += PATH_HEIGHT_STEP;
+                            z += kPathHeightStep;
                         }
                     }
                 }
@@ -1056,7 +1056,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                     // already is lowered if we are building a downwards slope.
                     if (gFootpathConstructSlope == 2)
                     {
-                        gFootpathConstructFromPosition.z += PATH_HEIGHT_STEP;
+                        gFootpathConstructFromPosition.z += kPathHeightStep;
                     }
                 }
                 self->WindowFootpathSetEnabledAndPressedWidgets();
@@ -1077,7 +1077,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 slopeDirection = DirectionReverse(slopeDirection);
                 if (slopeDirection == _footpathConstructDirection)
                 {
-                    z += PATH_HEIGHT_STEP;
+                    z += kPathHeightStep;
                 }
             }
 
@@ -1128,7 +1128,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             }
 
             z = std::min(255 * kCoordsZStep, gFootpathConstructFromPosition.z);
-            zLow = z - PATH_HEIGHT_STEP;
+            zLow = z - kPathHeightStep;
 
             tileElement = MapGetFirstElementAt(gFootpathConstructFromPosition);
             do
@@ -1277,7 +1277,7 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                 *slope = _footpathConstructDirection | kTileSlopeSCornerUp;
                 if (gFootpathConstructSlope != 2)
                 {
-                    footpathLoc.z -= PATH_HEIGHT_STEP;
+                    footpathLoc.z -= kPathHeightStep;
                     *slope ^= kTileSlopeECornerUp;
                 }
             }
