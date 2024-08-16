@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionChairlift,
-        .supportType = MetalSupportGraphic::Truss,
+        .supportType = MetalSupportType::Truss,
         .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall},
         .ExtraTrackPieces = {},
     }),

@@ -1185,7 +1185,7 @@ void TrackPaintUtilDiagTilesPaint(
 
 void TrackPaintUtilDiagTilesPaintExtra(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const uint32_t sprites[4], MetalSupportGraphic supportType)
+    const uint32_t sprites[4], MetalSupportType supportType)
 {
     TrackPaintUtilDiagTilesPaint(
         session, thickness, height, direction, trackSequence, sprites, defaultDiagTileOffsets, defaultDiagBoundLengths,
@@ -1777,7 +1777,7 @@ void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, 
 }
 
 void TrackPaintUtilOnridePhotoPlatformPaint(
-    PaintSession& session, Direction direction, int32_t height, MetalSupportGraphic supportType)
+    PaintSession& session, Direction direction, int32_t height, MetalSupportType supportType)
 {
     PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType);

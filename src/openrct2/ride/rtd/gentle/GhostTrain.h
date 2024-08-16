@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor GhostTrainRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionGhostTrain,
-        .supportType = MetalSupportGraphic::Boxed,
+        .supportType = MetalSupportType::Boxed,
         .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::brakes, TrackGroup::spinningTunnel},
         .ExtraTrackPieces = {},
     }),

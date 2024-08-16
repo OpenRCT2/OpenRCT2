@@ -21,7 +21,7 @@ constexpr RideTypeDescriptor SpinningWildMouseRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionWildMouse,
-        .supportType = MetalSupportGraphic::Tubes,
+        .supportType = MetalSupportType::Tubes,
         .EnabledTrackPieces = {TrackGroup::straight,TrackGroup::stationEnd,TrackGroup::liftHill,  TrackGroup::slope,TrackGroup::slopeLong,TrackGroup::curveVerySmall,TrackGroup::curveSmall, TrackGroup::brakes,TrackGroup::blockBrakes,TrackGroup::rotationControlToggle},
         .ExtraTrackPieces = {TrackGroup::liftHillSteep, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve},
     }),

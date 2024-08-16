@@ -20,7 +20,7 @@ struct SupportType
     {
         uint8_t generic{};
         WoodenSupportType wooden;
-        MetalSupportGraphic metal;
+        MetalSupportType metal;
     };
 
     explicit constexpr SupportType()
@@ -37,7 +37,7 @@ struct SupportType
     {
     }
 
-    constexpr SupportType(MetalSupportGraphic _metal)
+    constexpr SupportType(MetalSupportType _metal)
         : metal(_metal)
     {
     }

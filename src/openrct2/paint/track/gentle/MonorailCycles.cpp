@@ -214,7 +214,7 @@ static void PaintMonorailCyclesStation(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
     }
 
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportGraphic::Boxed);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);

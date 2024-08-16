@@ -216,22 +216,13 @@ static constexpr MetalSupportPlace kMetalSupportPlacementRotated[][kNumOrthogona
       MetalSupportPlace::TopRightSide },
 };
 
-constexpr uint8_t MetalSupportGraphicCount = 13;
-constexpr MetalSupportGraphic kMetalSupportGraphicRotated[MetalSupportGraphicCount][kNumOrthogonalDirections] = {
+constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount][kNumOrthogonalDirections] = {
     { MetalSupportGraphic::Tubes, MetalSupportGraphic::Tubes, MetalSupportGraphic::Tubes, MetalSupportGraphic::Tubes },
     { MetalSupportGraphic::Fork, MetalSupportGraphic::ForkAlt, MetalSupportGraphic::Fork, MetalSupportGraphic::ForkAlt },
-    { MetalSupportGraphic::ForkAlt, MetalSupportGraphic::Fork, MetalSupportGraphic::ForkAlt, MetalSupportGraphic::Fork },
     { MetalSupportGraphic::Boxed, MetalSupportGraphic::Boxed, MetalSupportGraphic::Boxed, MetalSupportGraphic::Boxed },
     { MetalSupportGraphic::Stick, MetalSupportGraphic::StickAlt, MetalSupportGraphic::Stick, MetalSupportGraphic::StickAlt },
-    { MetalSupportGraphic::StickAlt, MetalSupportGraphic::Stick, MetalSupportGraphic::StickAlt, MetalSupportGraphic::Stick },
-    { MetalSupportGraphic::ThickCentred, MetalSupportGraphic::ThickAltCentred, MetalSupportGraphic::Thick,
-      MetalSupportGraphic::ThickAlt },
     { MetalSupportGraphic::Thick, MetalSupportGraphic::ThickAlt, MetalSupportGraphic::ThickCentred,
       MetalSupportGraphic::ThickAltCentred },
-    { MetalSupportGraphic::ThickAlt, MetalSupportGraphic::ThickCentred, MetalSupportGraphic::ThickAltCentred,
-      MetalSupportGraphic::Thick },
-    { MetalSupportGraphic::ThickAltCentred, MetalSupportGraphic::Thick, MetalSupportGraphic::ThickAlt,
-      MetalSupportGraphic::ThickCentred },
     { MetalSupportGraphic::Truss, MetalSupportGraphic::Truss, MetalSupportGraphic::Truss, MetalSupportGraphic::Truss },
     { MetalSupportGraphic::TubesInverted, MetalSupportGraphic::TubesInverted, MetalSupportGraphic::TubesInverted,
       MetalSupportGraphic::TubesInverted },
@@ -433,13 +424,21 @@ bool MetalASupportsPaintSetup(
     return true;
 }
 
-bool MetalASupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, Direction direction,
-    int32_t special, int32_t height, ImageId imageTemplate)
+bool MetalASupportsPaintSetup(
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
+    ImageId imageTemplate)
 {
-    supportTypeMember = kMetalSupportGraphicRotated[EnumValue(supportTypeMember)][direction];
+    auto supportGraphic = RotateMetalSupportGraphic(supportType, 0);
+    return MetalASupportsPaintSetup(session, supportGraphic, placement, special, height, imageTemplate);
+}
+
+bool MetalASupportsPaintSetupRotated(
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
+    int32_t height, ImageId imageTemplate)
+{
+    auto supportGraphic = RotateMetalSupportGraphic(supportType, direction);
     placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
-    return MetalASupportsPaintSetup(session, supportTypeMember, placement, special, height, imageTemplate);
+    return MetalASupportsPaintSetup(session, supportGraphic, placement, special, height, imageTemplate);
 }
 
 /**
@@ -625,29 +624,42 @@ bool MetalBSupportsPaintSetup(
     return false; // AND
 }
 
-bool MetalBSupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, Direction direction,
-    int32_t special, int32_t height, ImageId imageTemplate)
+bool MetalBSupportsPaintSetup(
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
+    ImageId imageTemplate)
 {
-    supportTypeMember = kMetalSupportGraphicRotated[EnumValue(supportTypeMember)][direction];
+    auto supportGraphic = RotateMetalSupportGraphic(supportType, 0);
+    return MetalBSupportsPaintSetup(session, supportGraphic, placement, special, height, imageTemplate);
+}
+
+bool MetalBSupportsPaintSetupRotated(
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
+    int32_t height, ImageId imageTemplate)
+{
+    auto supportGraphic = RotateMetalSupportGraphic(supportType, direction);
     placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
-    return MetalBSupportsPaintSetup(session, supportTypeMember, placement, special, height, imageTemplate);
+    return MetalBSupportsPaintSetup(session, supportGraphic, placement, special, height, imageTemplate);
+}
+
+MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction)
+{
+    return kMetalSupportGraphicRotated[EnumValue(supportType)][direction];
 }
 
 void DrawSupportsSideBySide(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportGraphic type, int32_t special)
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType supportType, int32_t special)
 {
-    type = kMetalSupportGraphicRotated[EnumValue(type)][direction];
+    auto graphic = RotateMetalSupportGraphic(supportType, direction);
 
     if (direction & 1)
     {
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopRightSide, special, height, colour);
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomLeftSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::TopRightSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::BottomLeftSide, special, height, colour);
     }
     else
     {
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopLeftSide, special, height, colour);
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomRightSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::TopLeftSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::BottomRightSide, special, height, colour);
     }
 }
 
