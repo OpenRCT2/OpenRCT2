@@ -21,6 +21,56 @@ using namespace OpenRCT2;
 
 constexpr auto kMetalSupportSkip = 9 * 4 * 2;
 
+// There are 13 types of metal support graphics, including rotated versions. A graphic showing all of them is available here:
+// https://cloud.githubusercontent.com/assets/737603/19420485/7eaba28e-93ec-11e6-83cb-03190accc094.png
+enum class MetalSupportGraphic : uint8_t
+{
+    /**
+     * Used by the Steel Twister, Looping RC, and other rides.
+     */
+    Tubes = 0,
+    /**
+     * Used by the Junior RC and other rides.
+     */
+    Fork = 1,
+    /**
+     * Rotated version of `Fork`.
+     */
+    ForkAlt = 2,
+    /**
+     * Used by the vertical roller coasters, the Log Flume and other rides.
+     */
+    Boxed = 3,
+    /**
+     * Used by the Steeplechase.
+     */
+    Stick = 4,
+    /**
+     * No visible difference from `Stick`, also used by the Steeplechase
+     */
+    StickAlt = 5,
+    /**
+     * Every “Thick” type seems to be used for the Looping Roller Coaster’s loop, and only for that specific part.
+     */
+    ThickCentred = 6,
+    Thick = 7,
+    ThickAlt = 8,
+    ThickAltCentred = 9,
+    /**
+     * Used by the chairlift.
+     */
+    Truss = 10,
+    /**
+     * Used by inverted rcs like the flying, lay-down, compact inverted.
+     * Mostly the same as `Tubes`, but with a thinner crossbeam.
+     */
+    TubesInverted = 11,
+    /**
+     * Does not seem to be used in RCT2, but it was used in RCT1 for one of the path support types.
+     */
+    BoxedCoated,
+};
+
 /** rct2: 0x0097AF20, 0x0097AF21 */
 // clang-format off
 static constexpr CoordsXY SupportBoundBoxes[] = {
@@ -230,6 +280,14 @@ constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount
       MetalSupportGraphic::BoxedCoated },
 };
 
+static bool MetalASupportsPaintSetup(
+    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
+    ImageId imageTemplate);
+static bool MetalBSupportsPaintSetup(
+    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
+    ImageId imageTemplate);
+static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction);
+
 /**
  * Metal pole supports
  * @param supportType (edi)
@@ -239,7 +297,7 @@ constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount
  * @param imageTemplate (ebp)
  *  rct2: 0x00663105
  */
-bool MetalASupportsPaintSetup(
+static bool MetalASupportsPaintSetup(
     PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate)
 {
@@ -453,7 +511,7 @@ bool MetalASupportsPaintSetupRotated(
  *
  * @return (Carry Flag)
  */
-bool MetalBSupportsPaintSetup(
+static bool MetalBSupportsPaintSetup(
     PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate)
 {
@@ -641,7 +699,7 @@ bool MetalBSupportsPaintSetupRotated(
     return MetalBSupportsPaintSetup(session, supportGraphic, placement, special, height, imageTemplate);
 }
 
-MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction)
+static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction)
 {
     return kMetalSupportGraphicRotated[EnumValue(supportType)][direction];
 }
