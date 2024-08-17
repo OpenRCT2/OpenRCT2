@@ -51,22 +51,22 @@ namespace OpenRCT2::Ui::Windows
     {
         return MapColour2((colour & 0xFF00) >> 8, PALETTE_INDEX_10);
     }
-    static int32_t getTechnicalMapSize()
+    static int32_t getPracticalMapSize()
     {
         // Take non-square maps into account
         return std::max(GetGameState().MapSize.x, GetGameState().MapSize.y) - 2;
     }
-    static int32_t getTechnicalMapSizeBig()
+    static int32_t getPracticalMapSizeBig()
     {
-        return getTechnicalMapSize() * kCoordsXYStep;
+        return getPracticalMapSize() * kCoordsXYStep;
     }
     static int32_t getMaxTileStartXY()
     {
-        return getTechnicalMapSizeBig() - kCoordsXYStep;
+        return getPracticalMapSizeBig() - kCoordsXYStep;
     }
     static int32_t getMiniMapWidth()
     {
-        return getTechnicalMapSize() * 2;
+        return getPracticalMapSize() * 2;
     }
 
     static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
@@ -518,8 +518,8 @@ static Widget window_map_widgets[] = {
             }
 
             CoordsXY c = ScreenToMap(adjCoords);
-            auto mapCoords = CoordsXY{ std::clamp(c.x, 0, getTechnicalMapSizeBig() - 1),
-                                       std::clamp(c.y, 0, getTechnicalMapSizeBig() - 1) };
+            auto mapCoords = CoordsXY{ std::clamp(c.x, 0, getPracticalMapSizeBig() - 1),
+                                       std::clamp(c.y, 0, getPracticalMapSizeBig() - 1) };
             auto mapZ = TileElementHeight(mapCoords);
 
             WindowBase* mainWindow = WindowGetMain();
@@ -707,8 +707,8 @@ static Widget window_map_widgets[] = {
 
             cx = ((mainWindow->viewport->view_width >> 1) + mainWindow->viewport->viewPos.x) >> 5;
             dx = ((mainWindow->viewport->view_height >> 1) + mainWindow->viewport->viewPos.y) >> 4;
-            cx += offset.x * getTechnicalMapSize();
-            dx += offset.y * getTechnicalMapSize();
+            cx += offset.x * getPracticalMapSize();
+            dx += offset.y * getPracticalMapSize();
 
             // calculate width and height of minimap
 
@@ -764,7 +764,7 @@ static Widget window_map_widgets[] = {
         {
             int32_t x = 0, y = 0, dx = 0, dy = 0;
 
-            int32_t pos = (_currentLine * (getMiniMapWidth() - 1)) + getTechnicalMapSize() - 1;
+            int32_t pos = (_currentLine * (getMiniMapWidth() - 1)) + getPracticalMapSize() - 1;
             auto destinationPosition = ScreenCoordsXY{ pos % getMiniMapWidth(), pos / getMiniMapWidth() };
             auto destination = _mapImageData.data() + (destinationPosition.y * getMiniMapWidth()) + destinationPosition.x;
             switch (GetCurrentRotation())
@@ -782,20 +782,20 @@ static Widget window_map_widgets[] = {
                     dy = 0;
                     break;
                 case 2:
-                    x = getTechnicalMapSizeBig() - ((_currentLine + 1) * kCoordsXYStep);
+                    x = getPracticalMapSizeBig() - ((_currentLine + 1) * kCoordsXYStep);
                     y = getMaxTileStartXY();
                     dx = 0;
                     dy = -kCoordsXYStep;
                     break;
                 case 3:
                     x = 0;
-                    y = getTechnicalMapSizeBig() - ((_currentLine + 1) * kCoordsXYStep);
+                    y = getPracticalMapSizeBig() - ((_currentLine + 1) * kCoordsXYStep);
                     dx = kCoordsXYStep;
                     dy = 0;
                     break;
             }
 
-            for (int32_t i = 0; i < getTechnicalMapSize(); i++)
+            for (int32_t i = 0; i < getPracticalMapSize(); i++)
             {
                 if (!MapIsEdge({ x, y }))
                 {
@@ -820,7 +820,7 @@ static Widget window_map_widgets[] = {
                 destination = _mapImageData.data() + (destinationPosition.y * getMiniMapWidth()) + destinationPosition.x;
             }
             _currentLine++;
-            if (_currentLine >= static_cast<uint32_t>(getTechnicalMapSize()))
+            if (_currentLine >= static_cast<uint32_t>(getPracticalMapSize()))
                 _currentLine = 0;
         }
 
@@ -1019,8 +1019,8 @@ static Widget window_map_widgets[] = {
                 return;
 
             auto mapOffset = MiniMapOffsetFactors[GetCurrentRotation()];
-            mapOffset.x *= getTechnicalMapSize();
-            mapOffset.y *= getTechnicalMapSize();
+            mapOffset.x *= getPracticalMapSize();
+            mapOffset.y *= getPracticalMapSize();
 
             auto leftTop = widgetOffset + mapOffset
                 + ScreenCoordsXY{ (mainViewport->viewPos.x >> 5), (mainViewport->viewPos.y >> 4) };
@@ -1104,7 +1104,7 @@ static Widget window_map_widgets[] = {
 
         CoordsXY ScreenToMap(ScreenCoordsXY screenCoords)
         {
-            screenCoords.x = ((screenCoords.x + 8) - getTechnicalMapSize()) / 2;
+            screenCoords.x = ((screenCoords.x + 8) - getPracticalMapSize()) / 2;
             screenCoords.y = ((screenCoords.y + 8)) / 2;
             auto location = TileCoordsXY(screenCoords.y - screenCoords.x, screenCoords.x + screenCoords.y).ToCoordsXY();
 
@@ -1113,11 +1113,11 @@ static Widget window_map_widgets[] = {
                 case 0:
                     return location;
                 case 1:
-                    return { getTechnicalMapSizeBig() - 1 - location.y, location.x };
+                    return { getPracticalMapSizeBig() - 1 - location.y, location.x };
                 case 2:
-                    return { getTechnicalMapSizeBig() - 1 - location.x, getTechnicalMapSizeBig() - 1 - location.y };
+                    return { getPracticalMapSizeBig() - 1 - location.x, getPracticalMapSizeBig() - 1 - location.y };
                 case 3:
-                    return { location.y, getTechnicalMapSizeBig() - 1 - location.x };
+                    return { location.y, getPracticalMapSizeBig() - 1 - location.x };
             }
 
             return { 0, 0 }; // unreachable
@@ -1131,15 +1131,15 @@ static Widget window_map_widgets[] = {
             {
                 case 3:
                     std::swap(x, y);
-                    x = getTechnicalMapSizeBig() - 1 - x;
+                    x = getPracticalMapSizeBig() - 1 - x;
                     break;
                 case 2:
-                    x = getTechnicalMapSizeBig() - 1 - x;
-                    y = getTechnicalMapSizeBig() - 1 - y;
+                    x = getPracticalMapSizeBig() - 1 - x;
+                    y = getPracticalMapSizeBig() - 1 - y;
                     break;
                 case 1:
                     std::swap(x, y);
-                    y = getTechnicalMapSizeBig() - 1 - y;
+                    y = getPracticalMapSizeBig() - 1 - y;
                     break;
                 case 0:
                     break;
@@ -1147,7 +1147,7 @@ static Widget window_map_widgets[] = {
             x /= 32;
             y /= 32;
 
-            return { -x + y + getTechnicalMapSize(), x + y };
+            return { -x + y + getPracticalMapSize(), x + y };
         }
 
         uint16_t GetReservedBottomSpace()
@@ -1163,11 +1163,11 @@ static Widget window_map_widgets[] = {
         void SetInitialWindowDimensions()
         {
             // The initial mini map size should be able to show a reasonably sized map
-            auto initSize = std::clamp(getTechnicalMapSize(), 100, 254) * 2;
+            auto initSize = std::clamp(getPracticalMapSize(), 100, 254) * 2;
             width = initSize + kReservedHSpace;
             height = initSize + kReservedTopSpace + GetReservedBottomSpace();
 
-            auto scrollbarSize = getTechnicalMapSize() > 254 ? kScrollBarWidth : 2;
+            auto scrollbarSize = getPracticalMapSize() > 254 ? kScrollBarWidth : 2;
             width += scrollbarSize;
             height += scrollbarSize;
 
