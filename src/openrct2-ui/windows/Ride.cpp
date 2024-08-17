@@ -194,6 +194,7 @@ enum {
     WIDX_VEHICLE_TRIM_COLOUR,
     WIDX_VEHICLE_TERTIARY_COLOUR,
     WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX,
+    WIDX_RANDOMISE_VEHICLE_COLOURS,
 
     WIDX_PLAY_MUSIC = 14,
     WIDX_MUSIC,
@@ -338,6 +339,7 @@ static Widget _colourWidgets[] = {
     MakeWidget({ 99, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
     MakeWidget({119, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
     MakeWidget({100,  74}, {239, 12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_RANDOM_COLOUR                                                 ),
+    MakeWidget({139, 190}, {110, 12}, WindowWidgetType::Button,    WindowColour::Secondary, STR_RANDOMISE_VEHICLE_COLOURS, STR_RANDOMISE_VEHICLE_COLOURS_TIP  ),
     kWidgetsEnd,
 };
 
@@ -4157,6 +4159,7 @@ static_assert(std::size(RatingNames) == 6);
                     ToolSet(*this, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
                     break;
                 case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
+                {
                     auto ride = GetRide(rideId);
                     if (ride != nullptr)
                     {
@@ -4166,6 +4169,61 @@ static_assert(std::size(RatingNames) == 6);
                         GameActions::Execute(&rideSetAppearanceAction);
                     }
                     break;
+                }
+                case WIDX_RANDOMISE_VEHICLE_COLOURS:
+                {
+                    auto ride = GetRide(rideId);
+                    if (ride == nullptr)
+                        return;
+
+                    auto rideEntry = ride->GetRideEntry();
+                    if (rideEntry == nullptr)
+                        return;
+
+                    bool allowChangingTrimColour = false;
+                    bool allowChangingTertiaryColour = false;
+                    for (int32_t i = 0; i < ride->num_cars_per_train; i++)
+                    {
+                        uint8_t vehicleTypeIndex = RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, i);
+
+                        if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
+                        {
+                            allowChangingTrimColour = true;
+                        }
+                        if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR)
+                        {
+                            allowChangingTertiaryColour = true;
+                        }
+                    }
+
+                    int32_t numItems = ride->NumTrains;
+                    if (ride->vehicleColourSettings != VehicleColourSettings::perTrain)
+                        numItems = ride->num_cars_per_train;
+
+                    uint16_t i, colour;
+                    for (i = 0; i < numItems; i++)
+                    {
+                        colour = UtilRand() & COLOUR_NUM_NORMAL;
+                        auto vehicleSetBodyColourAction = RideSetAppearanceAction(
+                            rideId, RideSetAppearanceType::VehicleColourBody, colour, i);
+                        GameActions::Execute(&vehicleSetBodyColourAction);
+                        if (allowChangingTrimColour)
+                        {
+                            colour = UtilRand() & COLOUR_NUM_NORMAL;
+                            auto vehicleSetTrimColourAction = RideSetAppearanceAction(
+                                rideId, RideSetAppearanceType::VehicleColourTrim, colour, i);
+                            GameActions::Execute(&vehicleSetTrimColourAction);
+                            if (allowChangingTertiaryColour)
+                            {
+                                colour = UtilRand() & COLOUR_NUM_NORMAL;
+                                auto vehicleSetTertiaryColourAction = RideSetAppearanceAction(
+                                    rideId, RideSetAppearanceType::VehicleColourTertiary, colour, i);
+                                GameActions::Execute(&vehicleSetTertiaryColourAction);
+                            }
+                        }
+                    }
+                    break;
+                }
             }
         }
 
@@ -4557,7 +4615,14 @@ static_assert(std::size(RatingNames) == 6);
                 && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasVehicleColours))
             {
                 if (ride->vehicleColourSettings == VehicleColourSettings::same)
+                {
                     _vehicleIndex = 0;
+                    widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WindowWidgetType::Empty;
+                }
+                else
+                {
+                    widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WindowWidgetType::Button;
+                }
 
                 vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
@@ -4647,6 +4712,7 @@ static_assert(std::size(RatingNames) == 6);
                 widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::Empty;
                 widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::Empty;
                 widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::Empty;
+                widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WindowWidgetType::Empty;
             }
 
             ft.Rewind();
