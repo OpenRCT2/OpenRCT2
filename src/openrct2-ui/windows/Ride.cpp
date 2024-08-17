@@ -4200,10 +4200,9 @@ static_assert(std::size(RatingNames) == 6);
                     if (ride->vehicleColourSettings != VehicleColourSettings::perTrain)
                         numItems = ride->num_cars_per_train;
 
-                    uint16_t i, colour;
-                    for (i = 0; i < numItems; i++)
+                    for (auto i = 0; i < numItems; i++)
                     {
-                        colour = UtilRand() % COLOUR_NUM_NORMAL;
+                        colour_t colour = UtilRand() % COLOUR_NUM_NORMAL;
                         auto vehicleSetBodyColourAction = RideSetAppearanceAction(
                             rideId, RideSetAppearanceType::VehicleColourBody, colour, i);
                         GameActions::Execute(&vehicleSetBodyColourAction);
