@@ -54,6 +54,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_THEMES_FEATURES_TAB,
         WIDX_THEMES_HEADER_WINDOW,
         WIDX_THEMES_HEADER_PALETTE,
+        WIDX_THEMES_HEADER_TRANSPARENCY,
         WIDX_THEMES_PRESETS,
         WIDX_THEMES_PRESETS_DROPDOWN,
         WIDX_THEMES_DUPLICATE_BUTTON,
@@ -84,8 +85,9 @@ static Widget _themesWidgets[] = {
     MakeTab   ({189, 17},                                                                                                        STR_THEMES_TAB_MISC_TIP            ), // misc tab
     MakeTab   ({220, 17},                                                                                                        STR_THEMES_TAB_PROMPTS_TIP         ), // prompts tab
     MakeTab   ({251, 17},                                                                                                        STR_THEMES_TAB_FEATURES_TIP        ), // features tab
-    MakeWidget({  5, 46}, {214,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
-    MakeWidget({219, 46}, { 97,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
+    MakeWidget({  5, 46}, {152,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
+    MakeWidget({157, 46}, { 79,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
+    MakeWidget({236, 46}, { 80,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_TRANSPARENCY                                                          ), // Transparency header
     MakeWidget({125, 60}, {175,  12}, WindowWidgetType::DropdownMenu,     WindowColour::Secondary                                                                                     ), // Preset colour schemes
     MakeWidget({288, 61}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                                 ),
     MakeWidget({ 10, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_THEMES_ACTION_DUPLICATE,                    STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
@@ -244,10 +246,11 @@ static WindowClass window_themes_tab_7_classes[] = {
         uint8_t _selected_tab = 0;
         int16_t _colour_index_1 = -1;
         int8_t _colour_index_2 = -1;
-        const uint8_t _row_height = 32;
-        const uint8_t _button_offset_x = 220;
+        const uint8_t _row_height = 56;
+        const uint8_t _button_offset_x = 185;
         const uint8_t _button_offset_y = 3;
-        const uint8_t _check_offset_y = 3 + 12 + 2;
+        const uint8_t _check_offset_y = 3;
+        const uint16_t _check_offset_x = 265;
 
     public:
 #pragma region Window Override Events
@@ -391,6 +394,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             {
                 widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::Empty;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Empty;
@@ -407,6 +411,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             {
                 widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::Empty;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Checkbox;
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Checkbox;
@@ -430,6 +435,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             {
                 widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::TableHeader;
                 widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::TableHeader;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WindowWidgetType::TableHeader;
                 widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Scroll;
                 widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Empty;
@@ -799,10 +805,10 @@ static WindowClass window_themes_tab_7_classes[] = {
                         auto colour = ThemeGetColour(wc, j);
                         const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
                         auto image = ImageId(isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour.colour);
-                        GfxDrawSprite(dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
+                        GfxDrawSprite(dpi, image, { _button_offset_x, screenCoords.y + _button_offset_y + 12 * j});
 
-                        ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
-                        ScreenCoordsXY bottomRight{ _button_offset_x + 12 * j + 9, screenCoords.y + _check_offset_y + 10 };
+                        ScreenCoordsXY topLeft{ _check_offset_x, screenCoords.y + _check_offset_y + 12 * j };
+                        ScreenCoordsXY bottomRight{ _check_offset_x + 10, screenCoords.y + _check_offset_y + 10 + 12 * j };
                         GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                         if (colour.hasFlag(ColourFlag::translucent))
                         {

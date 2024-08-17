@@ -3732,6 +3732,7 @@ STR_6659    :Guests ignore prices
 STR_6660    :Guests will ignore the price of rides and stalls.
 STR_6661    :Randomise all
 STR_6662    :Randomise colours for every train or vehicle.
+STR_6663    :Transparency
 
 #############
 # Scenarios #
