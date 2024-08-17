@@ -701,14 +701,14 @@ static WindowClass window_themes_tab_7_classes[] = {
             {
                 int32_t y2 = screenCoords.y % _row_height;
                 _colour_index_1 = screenCoords.y / _row_height;
-                _colour_index_2 = ((screenCoords.x - _button_offset_x) / 12);
+                _colour_index_2 = (y2 / 12);
 
                 WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
                 int32_t numColours = ThemeDescGetNumColours(wc);
                 if (_colour_index_2 < numColours)
                 {
-                    if (screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + 12 * 6
-                        && y2 >= _button_offset_y && y2 < _button_offset_y + 11)
+                    if (screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + 12
+                        && y2 >= _button_offset_y && y2 < _button_offset_y + 12 * 6)
                     {
                         if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                         {
@@ -731,8 +731,8 @@ static WindowClass window_themes_tab_7_classes[] = {
                         }
                     }
                     else if (
-                        screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + 12 * 6 - 1
-                        && y2 >= _check_offset_y && y2 < _check_offset_y + 11)
+                        screenCoords.x >= _check_offset_x && screenCoords.x < _check_offset_x + 12
+                        && y2 >= _check_offset_y && y2 < _check_offset_y + 12 * 6 - 1)
                     {
                         if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                         {
