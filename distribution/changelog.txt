@@ -3,6 +3,7 @@
 - Feature: [#15750] Allow using different types of park entrance in one park.
 - Feature: [#20942] Allow removing all park fences from the Cheats window.
 - Feature: [#21675] Guests ignore price limit cheat.
+- Feature: [#22206] Add option to randomise train or vehicle colours.
 - Feature: [#22392] [Plugin] Expose ride vehicle’s spin to the plugin API.
 - Feature: [#22414] Finance graphs can be resized.
 - Change: [#21659] Increase the Hybrid Roller Coaster’s maximum lift speed to 17 km/h (11 mph).
@@ -24,7 +25,6 @@
 - Feature: [#20832] The ride music tab now shows a track listing for the current music style.
 - Feature: [#22172] [Plugin] Expose ride satisfaction ratings to the plugin API.
 - Feature: [#22184] [Plugin] Expose staff statistics to the plugin API.
-- Feature: [#22206] Add option to randomise train or vehicle colours.
 - Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
 - Feature: [#22272] [Plugin] Expose ride vehicle’s current track type via car trackLocation.
 - Feature: [#22301] Loading save games or scenarios now indicates loading progress.
