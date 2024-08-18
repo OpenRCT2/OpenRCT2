@@ -685,7 +685,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS || _selected_tab == WINDOW_THEMES_TAB_FEATURES)
                 return {};
 
-            int32_t scrollHeight = GetTotalColoursUpTo(GetColourSchemeTabCount() - 1) * (_button_size + 2);
+            int32_t scrollHeight = GetTotalColoursUpTo(GetColourSchemeTabCount()) * (_button_size + 2);
             int32_t i = scrollHeight - widgets[WIDX_THEMES_LIST].bottom + widgets[WIDX_THEMES_LIST].top + 21;
             if (i < 0)
                 i = 0;
@@ -708,7 +708,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                 int32_t numColours = ThemeDescGetNumColours(wc);
 
                 //position of y relative to the current class
-                int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_colour_index_1) - numColours) * (_button_size + 2);
+                int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_colour_index_1 + 1) - numColours) * (_button_size + 2);
                 _colour_index_2 = (y2 / _button_size);
 
                 if (_colour_index_2 < numColours)
@@ -725,7 +725,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                             widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::ColourBtn;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + widgets[WIDX_THEMES_LIST].left
                                 + _button_size;
-                            widgets[WIDX_THEMES_COLOURBTN_MASK].top = GetTotalColoursUpTo(_colour_index_1 - 1) * (_button_size + 2) + _button_offset_y
+                            widgets[WIDX_THEMES_COLOURBTN_MASK].top = GetTotalColoursUpTo(_colour_index_1) * (_button_size + 2) + _button_offset_y
                                 + _button_size * _colour_index_2
                                 - scrolls[0].contentOffsetY + widgets[WIDX_THEMES_LIST].top;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].right = widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
@@ -862,7 +862,7 @@ static WindowClass window_themes_tab_7_classes[] = {
 
         int8_t GetTotalColoursUpTo(int8_t index) {
             int8_t total = 0;
-            for (int32_t i = 0; i < (index + 1); ++i)
+            for (int32_t i = 0; i < (index); ++i)
             {
                 total += ThemeDescGetNumColours(GetWindowClassTabIndex(i));
             }
