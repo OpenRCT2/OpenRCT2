@@ -770,7 +770,6 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             WindowFootpathSetEnabledAndPressedWidgets();
         }
 
-        // TODO: clean up
         std::optional<CoordsXY> FootpathGetPlacePositionFromScreenPosition(ScreenCoordsXY screenCoords)
         {
             CoordsXY mapCoords;
@@ -873,6 +872,81 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             return mapCoords.ToTileStart();
         }
 
+        int32_t FootpathGetSlopeFromInfo(const InteractionInfo& info)
+        {
+            if (info.SpriteType == ViewportInteractionItem::None || info.Element == nullptr)
+            {
+                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+                FootpathProvisionalUpdate();
+                return kTileSlopeFlat;
+            }
+
+            switch (info.SpriteType)
+            {
+                case ViewportInteractionItem::Terrain:
+                {
+                    auto surfaceElement = info.Element->AsSurface();
+                    if (surfaceElement != nullptr)
+                    {
+                        return DefaultPathSlope[surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask];
+                    }
+                    break;
+                }
+                case ViewportInteractionItem::Footpath:
+                {
+                    auto pathElement = info.Element->AsPath();
+                    if (pathElement != nullptr)
+                    {
+                        auto slope = pathElement->GetSlopeDirection();
+                        if (pathElement->IsSloped())
+                        {
+                            slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+                        }
+                        return slope;
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            return kTileSlopeFlat;
+        }
+
+        int32_t FootpathGetBaseZFromInfo(const InteractionInfo& info)
+        {
+            if (info.SpriteType == ViewportInteractionItem::None || info.Element == nullptr)
+            {
+                return 0;
+            }
+
+            switch (info.SpriteType)
+            {
+                case ViewportInteractionItem::Terrain:
+                {
+                    auto surfaceElement = info.Element->AsSurface();
+                    if (surfaceElement != nullptr)
+                    {
+                        return surfaceElement->GetBaseZ();
+                    }
+                    break;
+                }
+                case ViewportInteractionItem::Footpath:
+                {
+                    auto pathElement = info.Element->AsPath();
+                    if (pathElement != nullptr)
+                    {
+                        return pathElement->GetBaseZ();
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            return 0;
+        }
+
         /**
          *
          *  rct2: 0x006A81FB
@@ -882,22 +956,10 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             MapInvalidateSelectionRect();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-            auto info = GetMapCoordinatesFromPos(
-                screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
-
-            // TODO: integrate code path below
+            // Get current map pos and handle key modifier state
             auto mapPos = FootpathGetPlacePositionFromScreenPosition(screenCoords);
             if (!mapPos)
                 return;
-
-            // !!!
-
-            if (info.SpriteType == ViewportInteractionItem::None || info.Element == nullptr)
-            {
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                FootpathProvisionalUpdate();
-                return;
-            }
 
             // Check for change
             auto provisionalPos = CoordsXYZ(*mapPos, _footpathPlaceZ);
@@ -914,47 +976,31 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
 
             FootpathProvisionalUpdate();
 
-            // Set provisional path
-            int32_t slope = 0;
-            switch (info.SpriteType)
-            {
-                case ViewportInteractionItem::Terrain:
-                {
-                    auto surfaceElement = info.Element->AsSurface();
-                    if (surfaceElement != nullptr)
-                    {
-                        slope = DefaultPathSlope[surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask];
-                    }
-                    break;
-                }
-                case ViewportInteractionItem::Footpath:
-                {
-                    auto pathElement = info.Element->AsPath();
-                    if (pathElement != nullptr)
-                    {
-                        slope = pathElement->GetSlopeDirection();
-                        if (pathElement->IsSloped())
-                        {
-                            slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
-                        }
-                    }
-                    break;
-                }
-                default:
-                    break;
-            }
-
+            // Figure out what slope and height to use
+            int32_t slope = kTileSlopeFlat;
             auto baseZ = _footpathPlaceZ;
             if (baseZ == 0)
             {
-                baseZ = info.Element->GetBaseZ();
+                auto info = GetMapCoordinatesFromPos(
+                    screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
+
+                baseZ = FootpathGetBaseZFromInfo(info);
+                slope = FootpathGetSlopeFromInfo(info);
                 if (slope & RAISE_FOOTPATH_FLAG)
                 {
                     slope &= ~RAISE_FOOTPATH_FLAG;
                     baseZ += kPathHeightStep;
                 }
+
+                if (baseZ == 0)
+                {
+                    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+                    FootpathProvisionalUpdate();
+                    return;
+                }
             }
 
+            // Set provisional path
             auto pathType = gFootpathSelection.GetSelectedSurface();
             auto constructFlags = FootpathCreateConstructFlags(pathType);
             _windowFootpathCost = FootpathProvisionalSet(
@@ -1019,36 +1065,19 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
 
             FootpathProvisionalUpdate();
 
-            const auto info = GetMapCoordinatesFromPos(
-                screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
-
-            // TODO: integrate code path below
             auto mapPos = FootpathGetPlacePositionFromScreenPosition(screenCoords);
             if (!mapPos)
                 return;
 
-            // Get path slope
-            auto slope = 0;
-            switch (info.SpriteType)
-            {
-                case ViewportInteractionItem::Terrain:
-                    slope = DefaultPathSlope[info.Element->AsSurface()->GetSlope() & kTileSlopeRaisedCornersMask];
-                    break;
-                case ViewportInteractionItem::Footpath:
-                    slope = info.Element->AsPath()->GetSlopeDirection();
-                    if (info.Element->AsPath()->IsSloped())
-                    {
-                        slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
-                    }
-                    break;
-                default:
-                    break;
-            }
-
+            auto slope = kTileSlopeFlat;
             auto baseZ = _footpathPlaceZ;
             if (baseZ == 0)
             {
-                baseZ = info.Element->GetBaseZ();
+                const auto info = GetMapCoordinatesFromPos(
+                    screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
+
+                slope = FootpathGetSlopeFromInfo(info);
+                baseZ = FootpathGetBaseZFromInfo(info);
                 if (slope & RAISE_FOOTPATH_FLAG)
                 {
                     slope &= ~RAISE_FOOTPATH_FLAG;
