@@ -41,6 +41,7 @@
 - Change: [#22251] Hide author info in the scenery window unless debug tools are active.
 - Change: [#22283] Let heavy snow and blizzard increase chance of brakes failure.
 - Change: [#22309] The scenario editor now supports loading landscapes from .sea save files.
+- Change: [#22494] Themes window now displays colours and checkboxes vertically.
 - Fix: [#17390] Glitchy animations for the ride type tabs in the object selection window.
 - Fix: [#19210] The load/save window executes the loading code twice, resulting in a slowdown.
 - Fix: [#21175] Terraform tool hotkeys don't work when toolbars are hidden.
