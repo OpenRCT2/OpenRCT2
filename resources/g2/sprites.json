@@ -308,6 +308,12 @@
         "y": 2
     },
     {
+        "path": "icons/map_gen_button.png"
+    },
+    {
+        "path": "icons/peep_spawn.png"
+    },
+    {
         "path": "icons/colour_invisible.png"
     },
     {

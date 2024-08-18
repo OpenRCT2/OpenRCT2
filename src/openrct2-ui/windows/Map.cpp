@@ -69,19 +69,30 @@ namespace OpenRCT2::Ui::Windows
         return getPracticalMapSize() * 2;
     }
 
+    static bool isEditorOrSandbox()
+    {
+        return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode;
+    }
+
     static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
     static constexpr int32_t WH = 259;
     static constexpr int32_t WW = 245;
 
-    static constexpr uint16_t kReservedHSpace = 6;
+    static constexpr uint16_t kReservedHSpace = 4;
     static constexpr uint16_t kReservedTopSpace = 46;
-    static constexpr uint16_t kScenarioEditorReservedSpace = 72;
-    static constexpr uint16_t kRidesTabReservedSpace = 4 * kListRowHeight + 4;
-    static constexpr uint16_t kDefaultReservedSpace = 14;
+    static constexpr uint16_t kEditorReservedHSpace = 26;
+    static constexpr uint16_t kEditorReservedVSpace = 18;
+    static constexpr uint16_t kRidesTabReservedVSpace = 4 * kListRowHeight + 4;
+    static constexpr uint16_t kDefaultReservedVSpace = 14;
+
+    static uint16_t GetReservedRightSpace()
+    {
+        return isEditorOrSandbox() ? kEditorReservedHSpace : kReservedHSpace;
+    }
 
     static int32_t getMapOffset(int16_t width)
     {
-        return (width - getMiniMapWidth() - kReservedHSpace - kScrollBarWidth) / 2;
+        return (width - getMiniMapWidth() - GetReservedRightSpace() - kScrollBarWidth) / 2;
     }
 
     // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
@@ -111,27 +122,27 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAP_SIZE_SPINNER_X_UP,
         WIDX_MAP_SIZE_SPINNER_X_DOWN,
         WIDX_SET_LAND_RIGHTS,
-        WIDX_BUILD_PARK_ENTRANCE,
         WIDX_PEOPLE_STARTING_POSITION,
+        WIDX_BUILD_PARK_ENTRANCE,
         WIDX_MAP_GENERATOR
     };
 
     // clang-format off
-static Widget window_map_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget        ({  0,  43}, {245, 215}, WindowWidgetType::Resize,    WindowColour::Secondary                                                                                  ),
-    MakeRemapWidget   ({  3,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_PEOPLE_ON_MAP_TIP                     ),
-    MakeRemapWidget   ({ 34,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_RIDES_STALLS_ON_MAP_TIP               ),
-    MakeWidget        ({  3,  46}, {239, 180}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_BOTH                                                                     ),
-    MakeSpinnerWidgets({102, 229}, { 50,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_COMMA16                                                                     ), // NB: 3 widgets
-    MakeWidget        ({153, 230}, { 20,  12}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),               STR_MAINTAIN_SQUARE_MAP_TOOLTIP                ),
-    MakeSpinnerWidgets({174, 229}, { 50,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_POP16_COMMA16                                                               ), // NB: 3 widgets
-    MakeWidget        ({  4,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS),             STR_SELECT_PARK_OWNED_LAND_TIP                 ),
-    MakeWidget        ({  4,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PARK_ENTRANCE),               STR_BUILD_PARK_ENTRANCE_TIP                    ),
-    MakeWidget        ({ 28,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, 0xFFFFFFFF,                      STR_SET_STARTING_POSITIONS_TIP                 ),
-    MakeWidget        ({110, 189}, {131,  14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_MAPGEN_WINDOW_TITLE,         STR_MAP_GENERATOR_TIP                          ),
-    kWidgetsEnd,
-};
+    static Widget window_map_widgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget        ({  0,  43}, {245, 215}, WindowWidgetType::Resize,    WindowColour::Secondary                                                                ),
+        MakeRemapWidget   ({  3,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
+        MakeRemapWidget   ({ 34,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                      STR_SHOW_RIDES_STALLS_ON_MAP_TIP),
+        MakeWidget        ({  3,  46}, {239, 180}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_BOTH                                                   ),
+        MakeSpinnerWidgets({102, 229}, { 50,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_COMMA16                                                   ), // NB: 3 widgets
+        MakeWidget        ({153, 230}, { 20,  12}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),   STR_MAINTAIN_SQUARE_MAP_TOOLTIP ),
+        MakeSpinnerWidgets({174, 229}, { 50,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_POP16_COMMA16                                             ), // NB: 3 widgets
+        MakeWidget        ({  4,  46}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS), STR_SELECT_PARK_OWNED_LAND_TIP  ),
+        MakeWidget        ({  4,  70}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_PEEP_SPAWN),   STR_SET_STARTING_POSITIONS_TIP  ),
+        MakeWidget        ({ 28,  94}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
+        MakeWidget        ({110, 118}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_MAP_GEN_BTN),  STR_MAP_GENERATOR_TIP           ),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     // These represent a coefficient for the map size to be multiplied
@@ -204,8 +215,11 @@ static Widget window_map_widgets[] = {
         uint16_t _landRightsToolSize;
         int32_t _firstColumnWidth;
         std::vector<uint8_t> _mapImageData;
-        bool _mapWidthAndHeightLinked{ true };
+
+        bool _mapWidthAndHeightLinked = true;
         bool _recalculateScrollbars = false;
+        bool _adjustedForSandboxMode = false;
+
         enum class ResizeDirection
         {
             Both,
@@ -366,6 +380,12 @@ static Widget window_map_widgets[] = {
 
             Invalidate();
 
+            if (_adjustedForSandboxMode != isEditorOrSandbox())
+            {
+                SetInitialWindowDimensions();
+                ResetMaxWindowDimensions();
+            }
+
             // Update tab animations
             list_information_type++;
             switch (selected_tab)
@@ -504,7 +524,16 @@ static Widget window_map_widgets[] = {
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            return ScreenSize(getMiniMapWidth(), getMiniMapWidth());
+            auto size = ScreenSize(getMiniMapWidth(), getMiniMapWidth());
+
+            // Adjust for hidden scrollbars if needed
+            auto& mapArea = widgets[WIDX_MAP];
+            if (size.width >= mapArea.width())
+                size.width -= kScrollBarWidth;
+            if (size.height >= mapArea.height())
+                size.height -= kScrollBarWidth;
+
+            return size;
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -576,6 +605,9 @@ static Widget window_map_widgets[] = {
             if (WindowFindByClass(WindowClass::LandRights))
                 pressed_widgets |= (1uLL << WIDX_SET_LAND_RIGHTS);
 
+            if (WindowFindByClass(WindowClass::Mapgen))
+                pressed_widgets |= (1uLL << WIDX_MAP_GENERATOR);
+
             // Set disabled widgets
             auto& gameState = GetGameState();
             SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gameState.MapSize.x != gameState.MapSize.y);
@@ -599,15 +631,14 @@ static Widget window_map_widgets[] = {
             widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].top = height - 14;
             widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].bottom = height - 5;
 
-            widgets[WIDX_SET_LAND_RIGHTS].top = height - 70;
-            widgets[WIDX_SET_LAND_RIGHTS].bottom = height - 70 + 23;
-            widgets[WIDX_BUILD_PARK_ENTRANCE].top = height - 46;
-            widgets[WIDX_BUILD_PARK_ENTRANCE].bottom = height - 46 + 23;
-            widgets[WIDX_PEOPLE_STARTING_POSITION].top = height - 46;
-            widgets[WIDX_PEOPLE_STARTING_POSITION].bottom = height - 46 + 23;
-
-            widgets[WIDX_MAP_GENERATOR].top = height - 69;
-            widgets[WIDX_MAP_GENERATOR].bottom = height - 69 + 13;
+            widgets[WIDX_SET_LAND_RIGHTS].left = width - 26;
+            widgets[WIDX_SET_LAND_RIGHTS].right = width - 2;
+            widgets[WIDX_BUILD_PARK_ENTRANCE].left = width - 26;
+            widgets[WIDX_BUILD_PARK_ENTRANCE].right = width - 2;
+            widgets[WIDX_PEOPLE_STARTING_POSITION].left = width - 26;
+            widgets[WIDX_PEOPLE_STARTING_POSITION].right = width - 2;
+            widgets[WIDX_MAP_GENERATOR].left = width - 26;
+            widgets[WIDX_MAP_GENERATOR].right = width - 2;
 
             // Disable all scenario editor related widgets
             for (int32_t i = WIDX_MAP_SIZE_SPINNER_Y; i <= WIDX_MAP_GENERATOR; i++)
@@ -615,10 +646,8 @@ static Widget window_map_widgets[] = {
                 widgets[i].type = WindowWidgetType::Empty;
             }
 
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
+            if (isEditorOrSandbox())
             {
-                // Always show set land rights button
-                widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
                 ShowDefaultScenarioEditorButtons();
             }
             if (_recalculateScrollbars)
@@ -633,16 +662,7 @@ static Widget window_map_widgets[] = {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            // People starting position (scenario editor only)
-            if (widgets[WIDX_PEOPLE_STARTING_POSITION].type != WindowWidgetType::Empty)
-            {
-                auto screenCoords = windowPos
-                    + ScreenCoordsXY{ widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
-                                      widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
-                GfxDrawSprite(dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
-            }
-
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+            if (!isEditorOrSandbox())
             {
                 // Render the map legend
                 if (selected_tab == PAGE_RIDES)
@@ -1068,8 +1088,14 @@ static Widget window_map_widgets[] = {
 
         void ShowDefaultScenarioEditorButtons()
         {
+            widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
             widgets[WIDX_BUILD_PARK_ENTRANCE].type = WindowWidgetType::FlatBtn;
             widgets[WIDX_PEOPLE_STARTING_POSITION].type = WindowWidgetType::FlatBtn;
+
+            // Only show this in the scenario editor, even when in sandbox mode.
+            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+                widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::FlatBtn;
+
             widgets[WIDX_MAP_SIZE_SPINNER_Y].type = WindowWidgetType::Spinner;
             widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].type = WindowWidgetType::Button;
             widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].type = WindowWidgetType::Button;
@@ -1077,10 +1103,6 @@ static Widget window_map_widgets[] = {
             widgets[WIDX_MAP_SIZE_SPINNER_X].type = WindowWidgetType::Spinner;
             widgets[WIDX_MAP_SIZE_SPINNER_X_UP].type = WindowWidgetType::Button;
             widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].type = WindowWidgetType::Button;
-
-            // Only show this in the scenario editor, even when in sandbox mode.
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-                widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::Button;
 
             // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
             auto& gameState = GetGameState();
@@ -1152,19 +1174,19 @@ static Widget window_map_widgets[] = {
 
         uint16_t GetReservedBottomSpace()
         {
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
-                return kScenarioEditorReservedSpace;
+            if (isEditorOrSandbox())
+                return kEditorReservedVSpace;
             else if (selected_tab == PAGE_RIDES)
-                return kRidesTabReservedSpace;
+                return kRidesTabReservedVSpace;
             else
-                return kDefaultReservedSpace;
+                return kDefaultReservedVSpace;
         }
 
         void SetInitialWindowDimensions()
         {
             // The initial mini map size should be able to show a reasonably sized map
             auto initSize = std::clamp(getPracticalMapSize(), 100, 254) * 2;
-            width = initSize + kReservedHSpace;
+            width = initSize + GetReservedRightSpace();
             height = initSize + kReservedTopSpace + GetReservedBottomSpace();
 
             auto scrollbarSize = getPracticalMapSize() > 254 ? kScrollBarWidth : 2;
@@ -1174,22 +1196,24 @@ static Widget window_map_widgets[] = {
             auto maxWindowHeight = ContextGetHeight() - 68;
             width = std::min<int16_t>(width, ContextGetWidth());
             height = std::min<int16_t>(height, maxWindowHeight);
+
+            _adjustedForSandboxMode = isEditorOrSandbox();
         }
 
         void ResetMaxWindowDimensions()
         {
-            max_width = std::clamp(getMiniMapWidth() + kReservedHSpace, WW, ContextGetWidth());
+            max_width = std::clamp(getMiniMapWidth() + GetReservedRightSpace(), WW, ContextGetWidth());
             max_height = std::clamp(
                 getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), WH, ContextGetHeight() - 68);
 
-            auto scrollbarSize = getMiniMapWidth() + kReservedHSpace > ContextGetWidth() ? kScrollBarWidth : 2;
+            auto scrollbarSize = getMiniMapWidth() + GetReservedRightSpace() > ContextGetWidth() ? kScrollBarWidth : 2;
             max_width += scrollbarSize;
             max_height += scrollbarSize;
         }
 
         void ResizeMiniMap()
         {
-            widgets[WIDX_MAP].right = width - 4;
+            widgets[WIDX_MAP].right = width - GetReservedRightSpace();
             widgets[WIDX_MAP].bottom = height - 1 - GetReservedBottomSpace();
         }
 
