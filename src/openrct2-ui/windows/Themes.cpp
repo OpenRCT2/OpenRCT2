@@ -244,13 +244,16 @@ static WindowClass window_themes_tab_7_classes[] = {
     {
     private:
         uint8_t _selected_tab = 0;
+        //index of class within tab
         int16_t _colour_index_1 = -1;
+        //index of button within class
         int8_t _colour_index_2 = -1;
-        const uint8_t _row_height = 56;
+        const uint8_t _max_row_height = 56;
         const uint8_t _button_offset_x = 185;
         const uint8_t _button_offset_y = 3;
         const uint8_t _check_offset_y = 3;
         const uint16_t _check_offset_x = 265;
+        const uint8_t _button_size = 12;
 
     public:
 #pragma region Window Override Events
@@ -682,7 +685,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS || _selected_tab == WINDOW_THEMES_TAB_FEATURES)
                 return {};
 
-            int32_t scrollHeight = GetTotalColoursUpTo(GetColourSchemeTabCount() - 1) * 14;
+            int32_t scrollHeight = GetTotalColoursUpTo(GetColourSchemeTabCount() - 1) * (_button_size + 2);
             int32_t i = scrollHeight - widgets[WIDX_THEMES_LIST].bottom + widgets[WIDX_THEMES_LIST].top + 21;
             if (i < 0)
                 i = 0;
@@ -697,18 +700,21 @@ static WindowClass window_themes_tab_7_classes[] = {
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (screenCoords.y / _row_height < GetColourSchemeTabCount())
+            if (screenCoords.y / _max_row_height < GetColourSchemeTabCount())
             {
-                int32_t y2 = screenCoords.y % _row_height;
-                _colour_index_1 = screenCoords.y / _row_height;
-                _colour_index_2 = (y2 / 12);
+                _colour_index_1 = GetColourIndex(screenCoords.y);
 
                 WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
                 int32_t numColours = ThemeDescGetNumColours(wc);
+
+                //position of y relative to the current class
+                int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_colour_index_1) - numColours) * (_button_size + 2);
+                _colour_index_2 = (y2 / _button_size);
+
                 if (_colour_index_2 < numColours)
                 {
-                    if (screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + 12
-                        && y2 >= _button_offset_y && y2 < _button_offset_y + 12 * 6)
+                    if (screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + (_button_size + 2)
+                        && y2 >= _button_offset_y && y2 < _button_offset_y + (_button_size + 2) * 6)
                     {
                         if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                         {
@@ -717,9 +723,10 @@ static WindowClass window_themes_tab_7_classes[] = {
                         else
                         {
                             widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::ColourBtn;
-                            widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + _colour_index_2 * 12
-                                + widgets[WIDX_THEMES_LIST].left;
-                            widgets[WIDX_THEMES_COLOURBTN_MASK].top = _colour_index_1 * _row_height + _button_offset_y
+                            widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + widgets[WIDX_THEMES_LIST].left
+                                + _button_size;
+                            widgets[WIDX_THEMES_COLOURBTN_MASK].top = GetTotalColoursUpTo(_colour_index_1 - 1) * (_button_size + 2) + _button_offset_y
+                                + _button_size * _colour_index_2
                                 - scrolls[0].contentOffsetY + widgets[WIDX_THEMES_LIST].top;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].right = widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].bottom = widgets[WIDX_THEMES_COLOURBTN_MASK].top + 12;
@@ -731,8 +738,8 @@ static WindowClass window_themes_tab_7_classes[] = {
                         }
                     }
                     else if (
-                        screenCoords.x >= _check_offset_x && screenCoords.x < _check_offset_x + 12
-                        && y2 >= _check_offset_y && y2 < _check_offset_y + 12 * 6 - 1)
+                        screenCoords.x >= _check_offset_x && screenCoords.x < _check_offset_x + _button_size
+                        && y2 >= _check_offset_y && y2 < _check_offset_y + _button_size * 6 - 1)
                     {
                         if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                         {
@@ -772,17 +779,17 @@ static WindowClass window_themes_tab_7_classes[] = {
                 {
                     break;
                 }
-                if (screenCoords.y + _row_height >= dpi.y)
+                if (screenCoords.y + _max_row_height >= dpi.y)
                 {
                     if (i + 1 < GetColourSchemeTabCount())
                     {
                         auto colour = colours[1];
 
-                        int8_t colorOffset = 14 * (4 - numColours);
+                        int8_t colorOffset = (_button_size + 2) * (4 - numColours);
 
-                        auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + _row_height - colorOffset + 1 };
+                        auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + _max_row_height - colorOffset + 1 };
                         auto rightBottom = ScreenCoordsXY{ widgets[WIDX_THEMES_LIST].right,
-                                                           screenCoords.y + _row_height - colorOffset + 1 };
+                                                           screenCoords.y + _max_row_height - colorOffset + 1 };
                         auto yPixelOffset = ScreenCoordsXY{ 0, 1 };
 
                         if (colour.hasFlag(ColourFlag::translucent))
@@ -809,10 +816,11 @@ static WindowClass window_themes_tab_7_classes[] = {
                         auto colour = ThemeGetColour(wc, j);
                         const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
                         auto image = ImageId(isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour.colour);
-                        GfxDrawSprite(dpi, image, { _button_offset_x, screenCoords.y + _button_offset_y + 12 * j + 1});
+                        GfxDrawSprite(dpi, image, { _button_offset_x, screenCoords.y + _button_offset_y + _button_size * j + 1});
 
-                        ScreenCoordsXY topLeft{ _check_offset_x, screenCoords.y + _check_offset_y + 12 * j };
-                        ScreenCoordsXY bottomRight{ _check_offset_x + 10, screenCoords.y + _check_offset_y + 11 + 12 * j };
+                        ScreenCoordsXY topLeft{ _check_offset_x, screenCoords.y + _check_offset_y + _button_size * j };
+                        ScreenCoordsXY bottomRight{ _check_offset_x + 10,
+                                                    screenCoords.y + _check_offset_y + 11 + _button_size * j };
                         GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                         if (colour.hasFlag(ColourFlag::translucent))
                         {
@@ -822,7 +830,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                     }
                 }
 
-                screenCoords.y += (14 * numColours);
+                screenCoords.y += ((_button_size + 2) * numColours);
             }
         }
 
@@ -837,6 +845,19 @@ static WindowClass window_themes_tab_7_classes[] = {
         {
             WindowClass* classes = window_themes_tab_classes[_selected_tab];
             return classes[index];
+        }
+
+        int8_t GetColourIndex(int32_t y) {
+            int8_t total = 0;
+            for (int32_t i = 0; i < GetColourSchemeTabCount(); ++i)
+            {
+                total += ThemeDescGetNumColours(GetWindowClassTabIndex(i));
+                if ((total * (_button_size + 2)) >= y)
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
 
         int8_t GetTotalColoursUpTo(int8_t index) {
