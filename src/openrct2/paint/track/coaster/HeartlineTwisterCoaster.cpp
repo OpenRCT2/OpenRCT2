@@ -24,12 +24,10 @@
 
 using namespace OpenRCT2;
 
-static constexpr WoodenSupportType kSupportType = WoodenSupportType::Mine;
-
 /** rct2: 0x0087694C */
 static void HeartlineTwisterRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasChain())
     {
@@ -95,7 +93,7 @@ static void HeartlineTwisterRCTrackFlat(
     }
 
     DrawSupportForSequenceA<TrackElemType::Flat>(
-        session, kSupportType, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -104,7 +102,7 @@ static void HeartlineTwisterRCTrackFlat(
 
 static void HeartlineTwisterRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][3] = {
         { 19732, SPR_STATION_BASE_B_SW_NE },
@@ -129,7 +127,7 @@ static void HeartlineTwisterRCTrackStation(
 /** rct2: 0x0087695C */
 static void HeartlineTwisterRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasChain())
     {
@@ -209,7 +207,7 @@ static void HeartlineTwisterRCTrack25DegUp(
     }
 
     DrawSupportForSequenceA<TrackElemType::Up25>(
-        session, kSupportType, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -226,7 +224,7 @@ static void HeartlineTwisterRCTrack25DegUp(
 /** rct2: 0x008769FC */
 static void HeartlineTwisterRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasChain())
     {
@@ -306,7 +304,7 @@ static void HeartlineTwisterRCTrack60DegUp(
     }
 
     DrawSupportForSequenceA<TrackElemType::Up60>(
-        session, kSupportType, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -323,7 +321,7 @@ static void HeartlineTwisterRCTrack60DegUp(
 /** rct2: 0x0087696C */
 static void HeartlineTwisterRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasChain())
     {
@@ -403,7 +401,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
     }
 
     DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
-        session, kSupportType, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -420,7 +418,7 @@ static void HeartlineTwisterRCTrackFlatTo25DegUp(
 /** rct2: 0x008769BC */
 static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasChain())
     {
@@ -500,7 +498,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
     }
 
     DrawSupportForSequenceA<TrackElemType::Up25ToUp60>(
-        session, kSupportType, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -517,7 +515,7 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
 /** rct2: 0x008769CC */
 static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasChain())
     {
@@ -597,7 +595,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
     }
 
     DrawSupportForSequenceA<TrackElemType::Up60ToUp25>(
-        session, kSupportType, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -614,7 +612,7 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
 /** rct2: 0x0087697C */
 static void HeartlineTwisterRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasChain())
     {
@@ -694,7 +692,7 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
     }
 
     DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
-        session, kSupportType, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     if (direction == 0 || direction == 3)
     {
@@ -711,55 +709,57 @@ static void HeartlineTwisterRCTrack25DegUpToFlat(
 /** rct2: 0x0087698C */
 static void HeartlineTwisterRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    HeartlineTwisterRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x00876A0C */
 static void HeartlineTwisterRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    HeartlineTwisterRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x0087699C */
 static void HeartlineTwisterRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    HeartlineTwisterRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008769DC */
 static void HeartlineTwisterRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    HeartlineTwisterRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrack60DegUpTo25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008769EC */
 static void HeartlineTwisterRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    HeartlineTwisterRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrack25DegUpTo60DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008769AC */
 static void HeartlineTwisterRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    HeartlineTwisterRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    HeartlineTwisterRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x00876A6C */
 static void HeartlineTwisterRCTrackHeartlineTransferUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -801,7 +801,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
             }
 
             DrawSupportForSequenceA<TrackElemType::HeartLineTransferUp>(
-                session, kSupportType, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -876,7 +876,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
             }
 
             DrawSupportForSequenceA<TrackElemType::HeartLineTransferUp>(
-                session, kSupportType, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -919,7 +919,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
             }
 
             DrawSupportForSequenceA<TrackElemType::HeartLineTransferUp>(
-                session, kSupportType, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -977,7 +977,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferUp(
 /** rct2: 0x00876A7C */
 static void HeartlineTwisterRCTrackHeartlineTransferDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1090,7 +1090,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
             }
 
             DrawSupportForSequenceA<TrackElemType::HeartLineTransferDown>(
-                session, kSupportType, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -1133,7 +1133,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
             }
 
             DrawSupportForSequenceA<TrackElemType::HeartLineTransferDown>(
-                session, kSupportType, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1176,7 +1176,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
             }
 
             DrawSupportForSequenceA<TrackElemType::HeartLineTransferDown>(
-                session, kSupportType, trackSequence, direction, height, session.SupportColours);
+                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1195,7 +1195,7 @@ static void HeartlineTwisterRCTrackHeartlineTransferDown(
 /** rct2: 0x00876A4C */
 static void HeartlineTwisterRCTrackLeftHeartlineRoll(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1424,7 +1424,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
     }
 
     DrawSupportForSequenceA<TrackElemType::LeftHeartLineRoll>(
-        session, kSupportType, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1434,7 +1434,7 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
 /** rct2: 0x00876A5C */
 static void HeartlineTwisterRCTrackRightHeartlineRoll(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1663,7 +1663,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
     }
 
     DrawSupportForSequenceA<TrackElemType::RightHeartLineRoll>(
-        session, kSupportType, trackSequence, direction, height, session.SupportColours);
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);

@@ -12,6 +12,7 @@
 #include "../paint/Paint.h"
 #include "../paint/support/MetalSupports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
+#include "../paint/track/Support.h"
 #include "../world/Map.h"
 
 class StationObject;
@@ -527,7 +528,7 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
 
 using TRACK_PAINT_FUNCTION = void (*)(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
-    const TrackElement& trackElement);
+    const TrackElement& trackElement, SupportType supportType);
 using TRACK_PAINT_FUNCTION_GETTER = TRACK_PAINT_FUNCTION (*)(int32_t trackType);
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionStandUpRC(int32_t trackType);
@@ -600,6 +601,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineRide(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwisterRC(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(int32_t trackType);
 namespace OpenRCT2::HybridRC
 {
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);

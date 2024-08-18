@@ -21,6 +21,7 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionSplashBoats,
+        .supportType = WoodenSupportType::Truss,
         .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::sBend, TrackGroup::curve},
         .ExtraTrackPieces = {TrackGroup::slope, TrackGroup::slopeSteepDown, TrackGroup::onridePhoto},
     }),

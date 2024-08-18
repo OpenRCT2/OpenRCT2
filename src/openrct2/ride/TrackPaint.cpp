@@ -2032,7 +2032,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             TRACK_PAINT_FUNCTION paintFunction = trackDrawerEntry.Drawer(trackType);
             if (paintFunction != nullptr)
             {
-                paintFunction(session, *ride, trackSequence, direction, height, trackElement);
+                paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
             }
         }
     }

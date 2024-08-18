@@ -36,7 +36,7 @@ enum
 /** rct2: 0x00886194 */
 static void PaintRotoDropBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kTrackMap3x3[direction][trackSequence];
 
@@ -121,7 +121,7 @@ static void PaintRotoDropBase(
 /** rct2: 0x008861A4 */
 static void PaintRotoDropTowerSection(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence == 1)
     {

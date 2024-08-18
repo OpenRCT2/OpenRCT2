@@ -92,7 +92,7 @@ static void PaintEnterpriseStructure(
 
 static void PaintEnterprise(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kTrackMap4x4[direction][trackSequence];
 

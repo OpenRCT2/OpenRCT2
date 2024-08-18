@@ -21,6 +21,7 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionReverseFreefallRC,
+        .supportType = WoodenSupportType::Truss,
         .EnabledTrackPieces = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHillSteep, TrackGroup::reverseFreefall, TrackGroup::onridePhoto},
         .ExtraTrackPieces = {},
     }),
