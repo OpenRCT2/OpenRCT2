@@ -682,7 +682,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS || _selected_tab == WINDOW_THEMES_TAB_FEATURES)
                 return {};
 
-            int32_t scrollHeight = GetColourSchemeTabCount() * _row_height;
+            int32_t scrollHeight = GetTotalColoursUpTo(GetColourSchemeTabCount() - 1) * 14;
             int32_t i = scrollHeight - widgets[WIDX_THEMES_LIST].bottom + widgets[WIDX_THEMES_LIST].top + 21;
             if (i < 0)
                 i = 0;
@@ -765,6 +765,9 @@ static WindowClass window_themes_tab_7_classes[] = {
             screenCoords.y = 0;
             for (int32_t i = 0; i < GetColourSchemeTabCount(); i++)
             {
+                WindowClass wc = GetWindowClassTabIndex(i);
+                int32_t numColours = ThemeDescGetNumColours(wc);
+
                 if (screenCoords.y > dpi.y + dpi.height)
                 {
                     break;
@@ -775,8 +778,11 @@ static WindowClass window_themes_tab_7_classes[] = {
                     {
                         auto colour = colours[1];
 
-                        auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + _row_height - 2 };
-                        auto rightBottom = ScreenCoordsXY{ widgets[WIDX_THEMES_LIST].right, screenCoords.y + _row_height - 2 };
+                        int8_t colorOffset = 14 * (4 - numColours);
+
+                        auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + _row_height - colorOffset + 1 };
+                        auto rightBottom = ScreenCoordsXY{ widgets[WIDX_THEMES_LIST].right,
+                                                           screenCoords.y + _row_height - colorOffset + 1 };
                         auto yPixelOffset = ScreenCoordsXY{ 0, 1 };
 
                         if (colour.hasFlag(ColourFlag::translucent))
@@ -796,8 +802,6 @@ static WindowClass window_themes_tab_7_classes[] = {
                         }
                     }
 
-                    WindowClass wc = GetWindowClassTabIndex(i);
-                    int32_t numColours = ThemeDescGetNumColours(wc);
                     for (uint8_t j = 0; j < numColours; j++)
                     {
                         DrawTextBasic(dpi, { 2, screenCoords.y + 4 }, ThemeDescGetName(wc), {}, { colours[1] });
@@ -805,10 +809,10 @@ static WindowClass window_themes_tab_7_classes[] = {
                         auto colour = ThemeGetColour(wc, j);
                         const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
                         auto image = ImageId(isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour.colour);
-                        GfxDrawSprite(dpi, image, { _button_offset_x, screenCoords.y + _button_offset_y + 12 * j});
+                        GfxDrawSprite(dpi, image, { _button_offset_x, screenCoords.y + _button_offset_y + 12 * j + 1});
 
                         ScreenCoordsXY topLeft{ _check_offset_x, screenCoords.y + _check_offset_y + 12 * j };
-                        ScreenCoordsXY bottomRight{ _check_offset_x + 10, screenCoords.y + _check_offset_y + 10 + 12 * j };
+                        ScreenCoordsXY bottomRight{ _check_offset_x + 10, screenCoords.y + _check_offset_y + 11 + 12 * j };
                         GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                         if (colour.hasFlag(ColourFlag::translucent))
                         {
@@ -818,7 +822,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                     }
                 }
 
-                screenCoords.y += _row_height;
+                screenCoords.y += (14 * numColours);
             }
         }
 
@@ -833,6 +837,15 @@ static WindowClass window_themes_tab_7_classes[] = {
         {
             WindowClass* classes = window_themes_tab_classes[_selected_tab];
             return classes[index];
+        }
+
+        int8_t GetTotalColoursUpTo(int8_t index) {
+            int8_t total = 0;
+            for (int32_t i = 0; i < (index + 1); ++i)
+            {
+                total += ThemeDescGetNumColours(GetWindowClassTabIndex(i));
+            }
+            return total;
         }
 
         int32_t GetColourSchemeTabCount()
