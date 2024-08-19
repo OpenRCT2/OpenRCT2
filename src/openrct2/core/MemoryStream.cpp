@@ -21,7 +21,7 @@ namespace OpenRCT2
         _access = copy._access;
         _dataCapacity = copy._dataCapacity;
         _dataSize = copy._dataSize;
-        _position = copy.GetPosition();
+        _position = copy._position;
 
         if (_access & MEMORY_ACCESS::OWNER)
         {
