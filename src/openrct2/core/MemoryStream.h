@@ -39,6 +39,9 @@ namespace OpenRCT2
         explicit MemoryStream(size_t capacity);
         MemoryStream(void* data, size_t dataSize);
         MemoryStream(const void* data, size_t dataSize);
+        // Constructor that takes ownership, the memory has to be allocated by Memory::Allocate, this function only exists for
+        // Android interop reasons.
+        MemoryStream(const void* data, size_t dataSize, bool);
         virtual ~MemoryStream();
 
         MemoryStream& operator=(MemoryStream&& mv) noexcept;

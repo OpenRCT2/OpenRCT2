@@ -61,6 +61,15 @@ namespace OpenRCT2
     {
     }
 
+    MemoryStream::MemoryStream(const void* data, size_t dataSize, bool)
+        : _access{ MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER }
+        , _dataCapacity{ dataSize }
+        , _dataSize{ dataSize }
+        , _data{ static_cast<std::byte*>(const_cast<void*>(data)) }
+        , _position{ 0 }
+    {
+    }
+
     MemoryStream::MemoryStream(MemoryStream&& mv) noexcept
         : _access(mv._access)
         , _dataCapacity(mv._dataCapacity)
