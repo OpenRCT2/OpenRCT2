@@ -28,7 +28,6 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
-using OpenRCT2::Date;
 namespace OpenRCT2::Ui::Windows
 {
     constexpr auto CHEATS_MONEY_DEFAULT = 10000.00_GBP;
@@ -38,6 +37,7 @@ namespace OpenRCT2::Ui::Windows
 enum
 {
     WINDOW_CHEATS_PAGE_MONEY,
+    WINDOW_CHEATS_PAGE_DATE,
     WINDOW_CHEATS_PAGE_GUESTS,
     WINDOW_CHEATS_PAGE_MISC,
     WINDOW_CHEATS_PAGE_RIDES,
@@ -74,6 +74,7 @@ enum WindowCheatsWidgetIdx
     WIDX_TAB_2,
     WIDX_TAB_3,
     WIDX_TAB_4,
+    WIDX_TAB_5,
     WIDX_TAB_CONTENT,
 
     WIDX_NO_MONEY = WIDX_TAB_CONTENT,
@@ -84,7 +85,8 @@ enum WindowCheatsWidgetIdx
     WIDX_ADD_MONEY,
     WIDX_SET_MONEY,
     WIDX_CLEAR_LOAN,
-    WIDX_DATE_GROUP,
+
+    WIDX_DATE_GROUP = WIDX_TAB_CONTENT,
     WIDX_YEAR_BOX,
     WIDX_YEAR_UP,
     WIDX_YEAR_DOWN,
@@ -195,32 +197,38 @@ static constexpr ScreenSize MINMAX_BUTTON = {55, 17};
 static constexpr int32_t TAB_WIDTH = 31;
 static constexpr int32_t TAB_START = 3;
 
-
 #pragma endregion
 
 #define MAIN_CHEATS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({ 0, 43}, {WW, 257}, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */ \
-    MakeTab   ({ 3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */ \
-    MakeTab   ({34, 17}, STR_GUEST_CHEATS_TIP                          ), /* tab 2 */ \
-    MakeTab   ({65, 17}, STR_PARK_CHEATS_TIP                           ), /* tab 3 */ \
-    MakeTab   ({96, 17}, STR_RIDE_CHEATS_TIP                           )  /* tab 4 */
+    MakeWidget({  0, 43}, {WW, 257}, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */ \
+    MakeTab   ({  3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */ \
+    MakeTab   ({ 34, 17}, STR_DATE_CHEATS_TIP                           ), /* tab 2 */ \
+    MakeTab   ({ 65, 17}, STR_GUEST_CHEATS_TIP                          ), /* tab 3 */ \
+    MakeTab   ({ 96, 17}, STR_PARK_CHEATS_TIP                           ), /* tab 4 */ \
+    MakeTab   ({127, 17}, STR_RIDE_CHEATS_TIP                           )  /* tab 5 */
 
 static Widget window_cheats_money_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({ 11,  48}, CHEAT_BUTTON,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY), // No money
-    MakeWidget        ({  5,  69}, {238,  69},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_ADD_SET_MONEY     ), // add / set money group frame
+    MakeWidget        ({  5,  69}, {238, 69},     WindowWidgetType::Groupbox, WindowColour::Secondary, STR_ADD_SET_MONEY     ), // add / set money group frame
     MakeSpinnerWidgets({ 11,  92}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // money value
     MakeWidget        ({ 11, 111}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_MONEY         ), // add money
     MakeWidget        ({127, 111}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_SET_MONEY         ), // set money
-    MakeWidget        ({ 11, 153}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_CLEAR_LOAN  ), // Clear loan
-    MakeWidget        ({  5, 184}, {238, 101},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_DATE_SET          ), // Date group
-    MakeSpinnerWidgets({120, 197}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // Year box
-    MakeSpinnerWidgets({120, 218}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // Month box
-    MakeSpinnerWidgets({120, 239}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // Day box
-    MakeWidget        ({ 11, 258}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_DATE_SET          ), // Set Date
-    MakeWidget        ({127, 258}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_DATE_RESET        ), // Reset Date
+    MakeWidget        ({ 11, 145}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_CLEAR_LOAN  ), // Clear loan
+    kWidgetsEnd,
+};
+
+static Widget window_cheats_date_widgets[] =
+{
+    MAIN_CHEATS_WIDGETS,
+    MakeWidget        ({  5,  48}, {238, 99} ,    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_DATE_SET  ), // Date group
+    MakeSpinnerWidgets({120,  61}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::Secondary                ), // Year box
+    MakeSpinnerWidgets({120,  82}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::Secondary                ), // Month box
+    MakeSpinnerWidgets({120, 103}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::Secondary                ), // Day box
+    MakeWidget        ({ 11, 122}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_DATE_SET  ), // Set Date
+    MakeWidget        ({127, 122}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_DATE_RESET), // Reset Date
     kWidgetsEnd,
 };
 
@@ -329,6 +337,7 @@ static Widget window_cheats_rides_widgets[] =
 static Widget *window_cheats_page_widgets[] =
 {
     window_cheats_money_widgets,
+    window_cheats_date_widgets,
     window_cheats_guests_widgets,
     window_cheats_misc_widgets,
     window_cheats_rides_widgets,
@@ -337,7 +346,8 @@ static Widget *window_cheats_page_widgets[] =
 static uint64_t window_cheats_page_hold_down_widgets[] = {
     (1uLL << WIDX_MONEY_SPINNER_INCREMENT) |
     (1uLL << WIDX_MONEY_SPINNER_DECREMENT) |
-    (1uLL << WIDX_ADD_MONEY) |
+    (1uLL << WIDX_ADD_MONEY),
+
     (1uLL << WIDX_YEAR_UP) |
     (1uLL << WIDX_YEAR_DOWN) |
     (1uLL << WIDX_MONTH_UP) |
@@ -355,6 +365,7 @@ static uint64_t window_cheats_page_hold_down_widgets[] = {
 
 static StringId window_cheats_page_titles[] = {
     STR_CHEAT_TITLE_FINANCIAL,
+    STR_CHEAT_TITLE_DATE,
     STR_CHEAT_TITLE_GUEST,
     STR_CHEAT_TITLE_PARK,
     STR_CHEAT_TITLE_RIDE,
@@ -391,6 +402,9 @@ static StringId window_cheats_page_titles[] = {
                 case WINDOW_CHEATS_PAGE_MONEY:
                     OnMouseDownMoney(widgetIndex);
                     break;
+                case WINDOW_CHEATS_PAGE_DATE:
+                    OnMouseDownDate(widgetIndex);
+                    break;
                 case WINDOW_CHEATS_PAGE_MISC:
                     OnMouseDownMisc(widgetIndex);
                     break;
@@ -408,6 +422,7 @@ static StringId window_cheats_page_titles[] = {
                 case WIDX_TAB_2:
                 case WIDX_TAB_3:
                 case WIDX_TAB_4:
+                case WIDX_TAB_5:
                     SetPage(widgetIndex - WIDX_TAB_1);
                     break;
                 default:
@@ -547,24 +562,36 @@ static StringId window_cheats_page_titles[] = {
                 {
                     colour.setFlag(ColourFlag::inset, true);
                 }
-                int32_t actual_month = _monthSpinnerValue - 1;
                 DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_YEAR);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_MONTH);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 240 }, STR_DAY);
-                ft = Formatter();
+            }
+            else if (page == WINDOW_CHEATS_PAGE_DATE)
+            {
+                auto& yearBox = widgets[WIDX_YEAR_BOX];
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, yearBox.top + 2 }, STR_YEAR);
+
+                auto& monthBox = widgets[WIDX_MONTH_BOX];
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, monthBox.top + 2 }, STR_MONTH);
+
+                auto& dayBox = widgets[WIDX_DAY_BOX];
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, dayBox.top + 2 }, STR_DAY);
+
+                auto ft = Formatter();
                 ft.Add<int32_t>(_yearSpinnerValue);
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ _xRcol, 198 }, STR_FORMAT_INTEGER, ft,
+                    dpi, windowPos + ScreenCoordsXY{ _xRcol, yearBox.top + 2 }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::RIGHT });
+
                 ft = Formatter();
+                int32_t actual_month = _monthSpinnerValue - 1;
                 ft.Add<int32_t>(actual_month);
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ _xRcol, 219 }, STR_FORMAT_MONTH, ft, { colours[1], TextAlignment::RIGHT });
+                    dpi, windowPos + ScreenCoordsXY{ _xRcol, monthBox.top + 2 }, STR_FORMAT_MONTH, ft,
+                    { colours[1], TextAlignment::RIGHT });
+
                 ft = Formatter();
                 ft.Add<int32_t>(_daySpinnerValue);
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ _xRcol, 240 }, STR_FORMAT_INTEGER, ft,
+                    dpi, windowPos + ScreenCoordsXY{ _xRcol, dayBox.top + 2 }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::RIGHT });
             }
             else if (page == WINDOW_CHEATS_PAGE_MISC)
@@ -659,6 +686,7 @@ static StringId window_cheats_page_titles[] = {
                 WIDX_TAB_2,
                 WIDX_TAB_3,
                 WIDX_TAB_4,
+                WIDX_TAB_5,
             };
 
             auto left = TAB_START;
@@ -684,32 +712,42 @@ static StringId window_cheats_page_titles[] = {
                     dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
             }
 
-            // Guests tab
+            // Date tab
             if (!IsWidgetDisabled(WIDX_TAB_2))
+            {
+                uint32_t sprite_idx = SPR_TAB_TIMER_0;
+                if (page == WINDOW_CHEATS_PAGE_DATE)
+                    sprite_idx += (frame_no / 8) % 8;
+                GfxDrawSprite(
+                    dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+            }
+
+            // Guests tab
+            if (!IsWidgetDisabled(WIDX_TAB_3))
             {
                 uint32_t sprite_idx = SPR_TAB_GUESTS_0;
                 if (page == WINDOW_CHEATS_PAGE_GUESTS)
                     sprite_idx += (frame_no / 3) % 8;
                 GfxDrawSprite(
-                    dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+                    dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
             }
 
             // Misc tab
-            if (!IsWidgetDisabled(WIDX_TAB_3))
+            if (!IsWidgetDisabled(WIDX_TAB_4))
             {
                 GfxDrawSprite(
                     dpi, ImageId(SPR_TAB_PARK),
-                    windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+                    windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
             }
 
             // Rides tab
-            if (!IsWidgetDisabled(WIDX_TAB_4))
+            if (!IsWidgetDisabled(WIDX_TAB_5))
             {
                 uint32_t sprite_idx = SPR_TAB_RIDE_0;
                 if (page == WINDOW_CHEATS_PAGE_RIDES)
                     sprite_idx += (frame_no / 4) % 16;
                 GfxDrawSprite(
-                    dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
+                    dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
             }
         }
 
@@ -732,6 +770,13 @@ static StringId window_cheats_page_titles[] = {
                 case WIDX_ADD_MONEY:
                     CheatsSet(CheatType::AddMoney, _moneySpinnerValue);
                     break;
+            }
+        }
+
+        void OnMouseDownDate(WidgetIndex widgetIndex)
+        {
+            switch (widgetIndex)
+            {
                 case WIDX_YEAR_UP:
                     _yearSpinnerValue++;
                     _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, kMaxYear);
