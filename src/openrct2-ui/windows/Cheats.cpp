@@ -40,7 +40,7 @@ enum
     WINDOW_CHEATS_PAGE_DATE,
     WINDOW_CHEATS_PAGE_GUESTS,
     WINDOW_CHEATS_PAGE_STAFF,
-    WINDOW_CHEATS_PAGE_MISC,
+    WINDOW_CHEATS_PAGE_PARK,
     WINDOW_CHEATS_PAGE_RIDES,
     WINDOW_CHEATS_PAGE_WEATHER,
     WINDOW_CHEATS_PAGE_COUNT,
@@ -293,7 +293,7 @@ static Widget window_cheats_staff_widgets[] =
     kWidgetsEnd,
 };
 
-static Widget window_cheats_misc_widgets[] =
+static Widget window_cheats_park_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5,  48}, {238,  60},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
@@ -301,16 +301,16 @@ static Widget window_cheats_misc_widgets[] =
     MakeWidget        ({127,  62}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_REMOVE_PARK_FENCES,    STR_CHEAT_REMOVE_PARK_FENCES_TIP   ), // Remove park fences
     MakeWidget        ({ 11,  83}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_OPEN_PARK,             STR_CHEAT_OPEN_PARK_TIP            ), // open / close park
 
-    MakeWidget        ({  5, 131}, {238,  75},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_OBJECTIVE_GROUP                                           ), // Objective group
-    MakeWidget        ({ 11, 146}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
-    MakeWidget        ({ 11, 163}, {281,  12},   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
-    MakeSpinnerWidgets({156, 161}, { 81,  14},   WindowWidgetType::Spinner,  WindowColour::Secondary                                                                      ), // park rating (3 widgets)
-    MakeWidget        ({ 11, 181}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
-    MakeWidget        ({127, 181}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
+    MakeWidget        ({  5, 113}, {238,  75},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_OBJECTIVE_GROUP                                           ), // Objective group
+    MakeWidget        ({ 11, 128}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
+    MakeWidget        ({ 11, 145}, {281,  12},   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
+    MakeSpinnerWidgets({156, 143}, { 81,  14},   WindowWidgetType::Spinner,  WindowColour::Secondary                                                                      ), // park rating (3 widgets)
+    MakeWidget        ({ 11, 163}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
+    MakeWidget        ({127, 163}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
 
-    MakeWidget        ({  5, 392}, {238,  56},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                        ), // Construction group
-    MakeWidget        ({ 11, 407}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,   STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP  ), // Allow regular footpaths as queue path
-    MakeWidget        ({ 11, 428}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES,   STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP  ), // Allow special colours in dropdown
+    MakeWidget        ({  5, 192}, {238,  56},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                        ), // Construction group
+    MakeWidget        ({ 11, 207}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,   STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP  ), // Allow regular footpaths as queue path
+    MakeWidget        ({ 11, 228}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES,   STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP  ), // Allow special colours in dropdown
 
     kWidgetsEnd,
 };
@@ -361,7 +361,7 @@ static Widget *window_cheats_page_widgets[] =
     window_cheats_date_widgets,
     window_cheats_guests_widgets,
     window_cheats_staff_widgets,
-    window_cheats_misc_widgets,
+    window_cheats_park_widgets,
     window_cheats_rides_widgets,
     window_cheats_weather_widgets,
 };
@@ -434,8 +434,8 @@ static StringId window_cheats_page_titles[] = {
                 case WINDOW_CHEATS_PAGE_DATE:
                     OnMouseDownDate(widgetIndex);
                     break;
-                case WINDOW_CHEATS_PAGE_MISC:
-                    OnMouseDownMisc(widgetIndex);
+                case WINDOW_CHEATS_PAGE_PARK:
+                    OnMouseDownPark(widgetIndex);
                     break;
                 case WINDOW_CHEATS_PAGE_STAFF:
                     OnMouseDownStaff(widgetIndex);
@@ -471,8 +471,8 @@ static StringId window_cheats_page_titles[] = {
                         case WINDOW_CHEATS_PAGE_GUESTS:
                             OnMouseUpGuests(widgetIndex);
                             break;
-                        case WINDOW_CHEATS_PAGE_MISC:
-                            OnMouseUpMisc(widgetIndex);
+                        case WINDOW_CHEATS_PAGE_PARK:
+                            OnMouseUpPark(widgetIndex);
                             break;
                         case WINDOW_CHEATS_PAGE_RIDES:
                             OnMouseUpRides(widgetIndex);
@@ -546,7 +546,7 @@ static StringId window_cheats_page_titles[] = {
                     SetCheckboxValue(WIDX_DISABLE_LITTERING, gameState.Cheats.DisableLittering);
                     break;
                 }
-                case WINDOW_CHEATS_PAGE_MISC:
+                case WINDOW_CHEATS_PAGE_PARK:
                     widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_OPEN_PARK;
                     if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
                         widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
@@ -646,7 +646,7 @@ static StringId window_cheats_page_titles[] = {
                     dpi, windowPos + ScreenCoordsXY{ _xRcol, dayBox.top + 2 }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::RIGHT });
             }
-            else if (page == WINDOW_CHEATS_PAGE_MISC)
+            else if (page == WINDOW_CHEATS_PAGE_PARK)
             {
                 {
                     auto ft = Formatter();
@@ -793,7 +793,7 @@ static StringId window_cheats_page_titles[] = {
                     windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left + 2, widgets[WIDX_TAB_4].top + 1 });
             }
 
-            // Misc tab
+            // Park tab
             if (!IsWidgetDisabled(WIDX_TAB_5))
             {
                 GfxDrawSprite(
@@ -927,7 +927,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseDownMisc(WidgetIndex widgetIndex)
+        void OnMouseDownPark(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
             {
@@ -1004,7 +1004,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnMouseUpMisc(WidgetIndex widgetIndex)
+        void OnMouseUpPark(WidgetIndex widgetIndex)
         {
             auto& gameState = GetGameState();
             switch (widgetIndex)
