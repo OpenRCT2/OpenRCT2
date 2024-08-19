@@ -21,12 +21,18 @@ namespace OpenRCT2
         _access = copy._access;
         _dataCapacity = copy._dataCapacity;
         _dataSize = copy._dataSize;
+        _position = copy.GetPosition();
 
         if (_access & MEMORY_ACCESS::OWNER)
         {
-            _position = copy.GetPosition();
+            // Create a copy when the memory stream owns the memory.
             _data = Memory::Allocate<std::byte>(_dataCapacity);
             std::memcpy(_data, copy._data, _dataCapacity);
+        }
+        else
+        {
+            // External pointer.
+            _data = copy._data;
         }
     }
 
