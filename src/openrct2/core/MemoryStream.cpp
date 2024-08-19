@@ -214,7 +214,7 @@ namespace OpenRCT2
 
         std::memcpy(_data + _position, buffer, length);
         _position += length;
-        _dataSize = std::max(_dataSize, nextPosition);
+        _dataSize = std::max<size_t>(_dataSize, nextPosition);
     }
 
     void MemoryStream::Write1(const void* buffer)
