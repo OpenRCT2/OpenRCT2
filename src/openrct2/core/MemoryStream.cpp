@@ -99,19 +99,6 @@ namespace OpenRCT2
         return _data;
     }
 
-    void* MemoryStream::GetDataCopy() const
-    {
-        auto result = Memory::Allocate<void>(_dataSize);
-        std::memcpy(result, _data, _dataSize);
-        return result;
-    }
-
-    void* MemoryStream::TakeData()
-    {
-        _access &= ~MEMORY_ACCESS::OWNER;
-        return _data;
-    }
-
     bool MemoryStream::CanRead() const
     {
         return (_access & MEMORY_ACCESS::READ) != 0;
