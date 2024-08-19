@@ -79,6 +79,11 @@ namespace OpenRCT2
     {
         if (this != &mv)
         {
+            if (_access & MEMORY_ACCESS::OWNER)
+            {
+                Memory::Free(_data);
+            }
+
             _access = mv._access;
             _dataCapacity = mv._dataCapacity;
             _data = mv._data;
