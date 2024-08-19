@@ -3729,6 +3729,8 @@ STR_6657    :Nem birtokolt földterület
 STR_6658    :A földterület ne legyen a park tulajdonában és ne legyen megvásárolható
 STR_6659    :Vendégeket nem érdeklik az árak
 STR_6660    :A vendégek hagyják figyelmen kívül a játékok és bódék árait
+STR_6661    :Véletlenszerűek
+STR_6662    :Véletlenszerű színek minden vonat vagy jármű számára
 
 #############
 # Scenarios #

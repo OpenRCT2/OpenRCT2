@@ -3721,6 +3721,13 @@ STR_6652    :Fehlermeldung
 STR_6653    :Alle Quellen angezeigt
 STR_6654    :{POP16}{UINT16} Quellen angezeigt
 STR_6655    :Nur ‘{POP16}{STRINGID}’
+STR_6656    :Alle Zäune vom Park entfernen
+STR_6657    :Gelände nicht im Besitz
+STR_6658    :Legen Sie das Gelände fest,{NEWLINE}das weder dem Park gehören soll noch gekauft werden kann
+STR_6659    :Gäste ignorieren Preise
+STR_6660    :Gäste werden den Preis von Fahrgeschäften und Läden ignorieren
+STR_6661    :Alle zufällig
+STR_6662    :Zufallsfarben für jeden Zug oder jedes Fahrzeug
 
 #############
 # Scenarios #

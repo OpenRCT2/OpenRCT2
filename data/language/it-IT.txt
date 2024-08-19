@@ -3736,6 +3736,8 @@ STR_6657    :Terreno non posseduto
 STR_6658    :Imposta il terreno come non posseduto dal parco, né disponibile per l’acquisto
 STR_6659    :Prezzi ignorati dai visitatori
 STR_6660    :I visitatori ignoreranno i prezzi di attrazioni e chioschi.
+STR_6661    :Tutti a caso
+STR_6662    :Imposta un colore a caso per ciascun treno o veicolo.
 
 
 #############
