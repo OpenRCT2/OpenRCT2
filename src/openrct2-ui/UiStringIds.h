@@ -401,6 +401,7 @@ namespace OpenRCT2
         STR_FORMAT_MONTH = 6201,
         STR_FROZEN = 6232,
         STR_GUEST_CHEATS_TIP = 5179,
+        STR_GUEST_BEHAVIOUR = 6670,
         STR_MAX = 5350,
         STR_MIN = 5351,
         STR_MONTH = 6197,

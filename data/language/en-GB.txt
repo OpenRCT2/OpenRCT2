@@ -2602,8 +2602,8 @@ STR_5357    :{BLACK}Nausea tolerance:
 STR_5358    :{BLACK}Toilet:
 STR_5359    :Remove guests
 STR_5360    :Removes all guests from the map
-STR_5361    :Give all guests:
-STR_5362    :{BLACK}Set all guests’ preferred ride intensity to:
+STR_5361    :Add to guest inventory
+STR_5362    :{BLACK}Preferred ride intensity:
 STR_5363    :More than 1
 STR_5364    :Less than 15
 STR_5365    :{BLACK}Staff speed:
@@ -2633,7 +2633,7 @@ STR_5457    :Disable support limits
 STR_5458    :Rotate clockwise
 STR_5459    :Rotate anti-clockwise
 STR_5460    :Rotate view anti-clockwise
-STR_5461    :Set guests’ parameters
+STR_5461    :Set parameters for all guests
 STR_5462    :{CURRENCY}
 STR_5463    :Goal: Have fun!
 STR_5464    :General
@@ -3739,6 +3739,7 @@ STR_6666    :Show nature/weather cheats
 STR_6667    :Fauna
 STR_6668    :Staff cheats
 STR_6669    :Show staff cheats
+STR_6670    :Guest behaviour
 
 #############
 # Scenarios #

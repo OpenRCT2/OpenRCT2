@@ -103,7 +103,9 @@ enum WindowCheatsWidgetIdx
     WIDX_DATE_SET,
     WIDX_DATE_RESET,
 
-    WIDX_GUEST_PARAMETERS_GROUP = WIDX_TAB_CONTENT,
+    WIDX_TRAM_GUESTS = WIDX_TAB_CONTENT,
+    WIDX_REMOVE_ALL_GUESTS,
+    WIDX_GUEST_PARAMETERS_GROUP,
     WIDX_GUEST_HAPPINESS_MAX,
     WIDX_GUEST_HAPPINESS_MIN,
     WIDX_GUEST_ENERGY_MAX,
@@ -120,17 +122,16 @@ enum WindowCheatsWidgetIdx
     WIDX_GUEST_TOILET_MIN,
     WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1,
     WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15,
-    WIDX_GUEST_IGNORE_RIDE_INTENSITY,
-    WIDX_GUEST_IGNORE_PRICE,
-    WIDX_DISABLE_VANDALISM,
-    WIDX_DISABLE_LITTERING,
     WIDX_GIVE_ALL_GUESTS_GROUP,
     WIDX_GIVE_GUESTS_MONEY,
     WIDX_GIVE_GUESTS_PARK_MAPS,
     WIDX_GIVE_GUESTS_BALLOONS,
     WIDX_GIVE_GUESTS_UMBRELLAS,
-    WIDX_TRAM_GUESTS,
-    WIDX_REMOVE_ALL_GUESTS,
+    WIDX_GUEST_BEHAVIOUR_GROUP,
+    WIDX_GUEST_IGNORE_RIDE_INTENSITY,
+    WIDX_GUEST_IGNORE_PRICE,
+    WIDX_DISABLE_VANDALISM,
+    WIDX_DISABLE_LITTERING,
 
     WIDX_STAFF_GROUP = WIDX_TAB_CONTENT,
     WIDX_STAFF_SPEED,
@@ -244,34 +245,39 @@ static Widget window_cheats_date_widgets[] =
 static Widget window_cheats_guests_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    MakeWidget({  5,  48}, {238, 290},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_SET_GUESTS_PARAMETERS                                 ), // Guests parameters group frame
-    MakeWidget({183,  69}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // happiness max
-    MakeWidget({127,  69}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // happiness min
-    MakeWidget({183,  90}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // energy max
-    MakeWidget({127,  90}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // energy min
-    MakeWidget({183, 111}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // hunger max
-    MakeWidget({127, 111}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // hunger min
-    MakeWidget({183, 132}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // thirst max
-    MakeWidget({127, 132}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // thirst min
-    MakeWidget({183, 153}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // nausea max
-    MakeWidget({127, 153}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // nausea min
-    MakeWidget({183, 174}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // nausea tolerance max
-    MakeWidget({127, 174}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // nausea tolerance min
-    MakeWidget({183, 195}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // toilet max
-    MakeWidget({127, 195}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // toilet min
-    MakeWidget({127, 237}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_MORE_THAN_1                                           ), // ride intensity > 1
-    MakeWidget({ 11, 237}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_LESS_THAN_15                                          ), // ride intensity < 15
-    MakeWidget({ 11, 258}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_INTENSITY,      STR_CHEAT_IGNORE_INTENSITY_TIP ), // guests ignore intensity
-    MakeWidget({ 11, 279}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_PRICE,          STR_CHEAT_IGNORE_PRICE_TIP     ), // guests ignore price
-    MakeWidget({ 11, 300}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
-    MakeWidget({ 11, 321}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP), // disable littering
-    MakeWidget({  5, 342}, {238,  69},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GIVE_ALL_GUESTS                                       ), // Guests parameters group frame
-    MakeWidget({ 11, 363}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CURRENCY_FORMAT                                             ), // give guests money
-    MakeWidget({127, 363}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_PARK_MAP                                   ), // give guests park maps
-    MakeWidget({ 11, 384}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_BALLOON                                    ), // give guests balloons
-    MakeWidget({127, 384}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
-    MakeWidget({ 11, 426}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_LARGE_TRAM_GUESTS,     STR_CHEAT_LARGE_TRAM_GUESTS_TIP), // large tram
-    MakeWidget({127, 426}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_REMOVE_ALL_GUESTS,     STR_CHEAT_REMOVE_ALL_GUESTS_TIP), // remove all guests
+    MakeWidget({ 11,  48}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_LARGE_TRAM_GUESTS,     STR_CHEAT_LARGE_TRAM_GUESTS_TIP), // large tram
+    MakeWidget({127,  48}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_REMOVE_ALL_GUESTS,     STR_CHEAT_REMOVE_ALL_GUESTS_TIP), // remove all guests
+
+    MakeWidget({  5,  70}, {238, 206},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_SET_GUESTS_PARAMETERS                                 ), // Guests parameters group frame
+    MakeWidget({183,  84}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // happiness max
+    MakeWidget({127,  84}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // happiness min
+    MakeWidget({183, 105}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // energy max
+    MakeWidget({127, 105}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // energy min
+    MakeWidget({183, 126}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // hunger max
+    MakeWidget({127, 126}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // hunger min
+    MakeWidget({183, 147}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // thirst max
+    MakeWidget({127, 147}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // thirst min
+    MakeWidget({183, 168}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // nausea max
+    MakeWidget({127, 168}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // nausea min
+    MakeWidget({183, 189}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // nausea tolerance max
+    MakeWidget({127, 189}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // nausea tolerance min
+    MakeWidget({183, 210}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAX                                                         ), // toilet max
+    MakeWidget({127, 210}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_MIN                                                         ), // toilet min
+    MakeWidget({127, 251}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_MORE_THAN_1                                           ), // ride intensity > 1
+    MakeWidget({ 11, 251}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_LESS_THAN_15                                          ), // ride intensity < 15
+
+    MakeWidget({  5, 258+15+6+2}, {238, 62},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GIVE_ALL_GUESTS                                       ), // Guests inventory group frame
+    MakeWidget({ 11, 279+15+6-3}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CURRENCY_FORMAT                                             ), // give guests money
+    MakeWidget({127, 279+15+6-3}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_PARK_MAP                                   ), // give guests park maps
+    MakeWidget({ 11, 300+15+6-3}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_BALLOON                                    ), // give guests balloons
+    MakeWidget({127, 300+15+6-3}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
+
+    MakeWidget({  5, 342+6}, {238,  85},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_GUEST_BEHAVIOUR                                             ), // Guests behaviour group frame
+    MakeWidget({ 11, 363+1}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_INTENSITY,      STR_CHEAT_IGNORE_INTENSITY_TIP ), // guests ignore intensity
+    MakeWidget({ 11, 380+1}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_PRICE,          STR_CHEAT_IGNORE_PRICE_TIP     ), // guests ignore price
+    MakeWidget({ 11, 397+1}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
+    MakeWidget({ 11, 414+1}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP), // disable littering
+
     kWidgetsEnd,
 };
 
@@ -670,14 +676,40 @@ static StringId window_cheats_page_titles[] = {
             }
             else if (page == WINDOW_CHEATS_PAGE_GUESTS)
             {
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 72 }, STR_CHEAT_GUEST_HAPPINESS);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_CHEAT_GUEST_ENERGY);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 114 }, STR_CHEAT_GUEST_HUNGER);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 135 }, STR_CHEAT_GUEST_THIRST);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 156 }, STR_CHEAT_GUEST_NAUSEA);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 177 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_CHEAT_GUEST_TOILET);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_CHEAT_GUEST_PREFERRED_INTENSITY);
+                {
+                    auto& widget = widgets[WIDX_GUEST_HAPPINESS_MIN];
+                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_HAPPINESS);
+                }
+                {
+                    auto& widget = widgets[WIDX_GUEST_ENERGY_MIN];
+                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_ENERGY);
+                }
+                {
+                    auto& widget = widgets[WIDX_GUEST_HUNGER_MIN];
+                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_HUNGER);
+                }
+                {
+                    auto& widget = widgets[WIDX_GUEST_THIRST_MIN];
+                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_THIRST);
+                }
+                {
+                    auto& widget = widgets[WIDX_GUEST_NAUSEA_MIN];
+                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_NAUSEA);
+                }
+                {
+                    auto& widget = widgets[WIDX_GUEST_NAUSEA_TOLERANCE_MIN];
+                    DrawTextBasic(
+                        dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
+                }
+                {
+                    auto& widget = widgets[WIDX_GUEST_TOILET_MIN];
+                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_TOILET);
+                }
+                {
+                    auto& widget = widgets[WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15];
+                    DrawTextBasic(
+                        dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top - 17 }, STR_CHEAT_GUEST_PREFERRED_INTENSITY);
+                }
             }
             else if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
