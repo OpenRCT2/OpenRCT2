@@ -51,16 +51,6 @@ namespace OpenRCT2
     {
     }
 
-    MemoryStream::MemoryStream(std::vector<uint8_t>&& v)
-    {
-        _access = MEMORY_ACCESS::OWNER;
-        _dataCapacity = v.size();
-        _dataSize = v.size();
-        _data = Memory::Allocate<void>(v.size());
-        _position = _data;
-        std::memcpy(_data, v.data(), v.size());
-    }
-
     MemoryStream::MemoryStream(MemoryStream&& mv) noexcept
         : _access(mv._access)
         , _dataCapacity(mv._dataCapacity)
