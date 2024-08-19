@@ -63,6 +63,20 @@ namespace OpenRCT2
         void Read8(void* buffer) override;
         void Read16(void* buffer) override;
 
+        void Write(const void* buffer, uint64_t length) override;
+        void Write1(const void* buffer) override;
+        void Write2(const void* buffer) override;
+        void Write4(const void* buffer) override;
+        void Write8(const void* buffer) override;
+        void Write16(const void* buffer) override;
+
+        uint64_t TryRead(void* buffer, uint64_t length) override;
+
+        void Clear();
+
+    private:
+        void EnsureCapacity(size_t capacity);
+
         template<size_t N> void Read(void* buffer)
         {
             uint64_t position = GetPosition();
@@ -75,13 +89,6 @@ namespace OpenRCT2
             _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + N);
         }
 
-        void Write(const void* buffer, uint64_t length) override;
-        void Write1(const void* buffer) override;
-        void Write2(const void* buffer) override;
-        void Write4(const void* buffer) override;
-        void Write8(const void* buffer) override;
-        void Write16(const void* buffer) override;
-
         template<size_t N> void Write(const void* buffer)
         {
             uint64_t position = GetPosition();
@@ -92,13 +99,6 @@ namespace OpenRCT2
             _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + N);
             _dataSize = std::max<size_t>(_dataSize, static_cast<size_t>(nextPosition));
         }
-
-        uint64_t TryRead(void* buffer, uint64_t length) override;
-
-        void Clear();
-
-    private:
-        void EnsureCapacity(size_t capacity);
     };
 
 } // namespace OpenRCT2
