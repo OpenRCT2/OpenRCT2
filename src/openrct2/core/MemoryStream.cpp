@@ -37,17 +37,21 @@ namespace OpenRCT2
         _position = _data;
     }
 
-    MemoryStream::MemoryStream(void* data, size_t dataSize, uint8_t access)
+    MemoryStream::MemoryStream(void* data, size_t dataSize)
+        : _access{ MEMORY_ACCESS::READ | MEMORY_ACCESS::WRITE }
+        , _dataCapacity{ dataSize }
+        , _dataSize{ dataSize }
+        , _data{ data }
+        , _position{ _data }
     {
-        _access = access;
-        _dataCapacity = dataSize;
-        _dataSize = dataSize;
-        _data = data;
-        _position = _data;
     }
 
     MemoryStream::MemoryStream(const void* data, size_t dataSize)
-        : MemoryStream(const_cast<void*>(data), dataSize, MEMORY_ACCESS::READ)
+        : _access{ MEMORY_ACCESS::READ }
+        , _dataCapacity{ dataSize }
+        , _dataSize{ dataSize }
+        , _data{ const_cast<void*>(data) }
+        , _position{ _data }
     {
     }
 

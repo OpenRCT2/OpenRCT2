@@ -37,7 +37,7 @@ namespace OpenRCT2
         MemoryStream(const MemoryStream& copy);
         MemoryStream(MemoryStream&& mv) noexcept;
         explicit MemoryStream(size_t capacity);
-        MemoryStream(void* data, size_t dataSize, uint8_t access = MEMORY_ACCESS::READ);
+        MemoryStream(void* data, size_t dataSize);
         MemoryStream(const void* data, size_t dataSize);
         virtual ~MemoryStream();
 
