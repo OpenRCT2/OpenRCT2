@@ -1,0 +1,16 @@
+{
+    "scenario_name": "katie's dreamland (.sea)",
+    "sha256": "b8b572d394b145535cdb20f66b0bee9a497683a5885e4d78af6773c5bc0323ff",
+    "land_ownership": {
+        "construction_rights_owned": {
+            "coordinates": [
+                [ 115, 63 ], [ 105, 66 ], [ 109, 66 ]
+            ]
+        },
+        "owned": {
+            "coordinates": [
+                [ 45, 69 ], [ 59, 74 ]
+            ]
+        }
+    }
+}

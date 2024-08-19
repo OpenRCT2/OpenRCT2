@@ -1,0 +1,22 @@
+{
+    "scenario_name": "Six Flags Holland (.sea)",
+    "sha256": "8965a5c3b498dec016e6ac317616426ed84b0e9145f6c1d752c9942479758cce",
+    "land_ownership": {
+        "available": {
+            "cannot_downgrade": true,
+            "coordinates": [
+                [ 112, 33 ], [ 112, 34 ],
+                [ 113, 117 ], [ 114, 117 ], [ 115, 117 ], [ 116, 117 ], [ 117, 117 ],
+                [ 114, 118 ], [ 115, 118 ], [ 116, 118 ], [ 117, 118 ]
+            ]
+        }
+    },
+    "water": [
+        {
+            "height": 96,
+            "coordinates": [
+                [ 126, 73 ]
+            ]
+        }
+    ]
+}
