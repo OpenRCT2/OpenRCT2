@@ -10,6 +10,7 @@
 #include "SawyerChunkReader.h"
 
 #include "../core/IStream.hpp"
+#include "../core/MemoryStream.h"
 #include "../core/Numerics.hpp"
 
 using namespace OpenRCT2;
@@ -33,7 +34,7 @@ constexpr const char* EXCEPTION_MSG_DESTINATION_TOO_SMALL = "Chunk data larger t
 constexpr const char* EXCEPTION_MSG_INVALID_CHUNK_ENCODING = "Invalid chunk encoding.";
 constexpr const char* EXCEPTION_MSG_ZERO_SIZED_CHUNK = "Encountered zero-sized chunk.";
 
-static std::vector<uint8_t> DecodeChunk(const void* src, const SawyerCodingChunkHeader& header);
+static MemoryStream DecodeChunk(const void* src, const SawyerCodingChunkHeader& header);
 
 SawyerChunkReader::SawyerChunkReader(OpenRCT2::IStream* stream)
     : _stream(stream)
@@ -79,10 +80,11 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
                 }
 
                 auto buffer = DecodeChunk(compressedData.get(), header);
-                if (buffer.empty())
+                if (buffer.GetLength() == 0)
                 {
                     throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
                 }
+
                 return std::make_shared<SawyerChunk>(static_cast<SAWYER_ENCODING>(header.encoding), std::move(buffer));
             }
             default:
@@ -118,7 +120,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunkTrack()
 
         SawyerCodingChunkHeader header{ CHUNK_ENCODING_RLE, compressedDataLength };
         auto buffer = DecodeChunk(compressedData.get(), header);
-        if (buffer.empty())
+        if (buffer.GetLength() == 0)
         {
             throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
         }
@@ -153,10 +155,9 @@ void SawyerChunkReader::ReadChunk(void* dst, size_t length)
     }
 }
 
-static std::vector<uint8_t> DecodeChunkRLE(const void* src, size_t srcLength)
+static MemoryStream DecodeChunkRLE(const void* src, size_t srcLength)
 {
-    std::vector<uint8_t> buf;
-    buf.reserve(srcLength);
+    MemoryStream buf;
 
     auto src8 = static_cast<const uint8_t*>(src);
     for (size_t i = 0; i < srcLength; i++)
@@ -171,12 +172,15 @@ static std::vector<uint8_t> DecodeChunkRLE(const void* src, size_t srcLength)
             {
                 throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
             }
-            if (buf.size() + count > MAX_UNCOMPRESSED_CHUNK_SIZE)
+            if (buf.GetLength() + count > MAX_UNCOMPRESSED_CHUNK_SIZE)
             {
                 throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
             }
 
-            buf.insert(buf.end(), count, src8[i]);
+            for (size_t n = 0; n < count; n++)
+            {
+                buf.Write1(src8 + i);
+            }
         }
         else
         {
@@ -186,7 +190,7 @@ static std::vector<uint8_t> DecodeChunkRLE(const void* src, size_t srcLength)
             {
                 throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
             }
-            if (buf.size() + len > MAX_UNCOMPRESSED_CHUNK_SIZE)
+            if (buf.GetLength() + len > MAX_UNCOMPRESSED_CHUNK_SIZE)
             {
                 throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
             }
@@ -196,8 +200,8 @@ static std::vector<uint8_t> DecodeChunkRLE(const void* src, size_t srcLength)
             }
 
             const auto* pos = src8 + i + 1;
-            buf.insert(buf.end(), pos, pos + len);
 
+            buf.Write(pos, len);
             i += len;
         }
     }
@@ -205,10 +209,9 @@ static std::vector<uint8_t> DecodeChunkRLE(const void* src, size_t srcLength)
     return buf;
 }
 
-static std::vector<uint8_t> DecodeChunkRepeat(const void* src, size_t srcLength)
+static MemoryStream DecodeChunkRepeat(const void* src, size_t srcLength)
 {
-    std::vector<uint8_t> buf;
-    buf.reserve(srcLength);
+    MemoryStream buf;
 
     auto src8 = static_cast<const uint8_t*>(src);
     for (size_t i = 0; i < srcLength; i++)
@@ -219,15 +222,17 @@ static std::vector<uint8_t> DecodeChunkRepeat(const void* src, size_t srcLength)
             {
                 throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
             }
-            buf.push_back(src8[++i]);
+            i++;
+            buf.Write1(src8 + i);
         }
         else
         {
             size_t count = (src8[i] & 7) + 1;
             int32_t offset = static_cast<int32_t>(src8[i] >> 3) - 32;
-            const uint8_t* copySrc = buf.data() + (buf.size() + offset);
+            const uint8_t* copySrc = static_cast<const uint8_t*>(buf.GetData()) + (buf.GetLength() + offset);
 
-            if (copySrc < buf.data() || copySrc + count > buf.data() + buf.size())
+            if (copySrc < static_cast<const uint8_t*>(buf.GetData())
+                || copySrc + count > static_cast<const uint8_t*>(buf.GetData()) + buf.GetLength())
             {
                 throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
             }
@@ -236,44 +241,44 @@ static std::vector<uint8_t> DecodeChunkRepeat(const void* src, size_t srcLength)
             uint8_t temp[16];
             std::memcpy(temp, copySrc, count);
 
-            buf.insert(buf.end(), std::begin(temp), std::begin(temp) + count);
+            buf.Write(temp, count);
         }
     }
 
     return buf;
 }
 
-static std::vector<uint8_t> DecodeChunkRLERepeat(const void* src, size_t srcLength)
+static MemoryStream DecodeChunkRLERepeat(const void* src, size_t srcLength)
 {
     auto tempBuf = DecodeChunkRLE(src, srcLength);
-    return DecodeChunkRepeat(tempBuf.data(), tempBuf.size());
+    return DecodeChunkRepeat(tempBuf.GetData(), tempBuf.GetLength());
 }
 
-static std::vector<uint8_t> DecodeChunkRotate(const void* src, size_t srcLength)
+static MemoryStream DecodeChunkRotate(const void* src, size_t srcLength)
 {
-    std::vector<uint8_t> buf;
-    buf.reserve(srcLength);
+    MemoryStream buf;
 
     auto src8 = static_cast<const uint8_t*>(src);
 
     uint8_t code = 1;
     for (size_t i = 0; i < srcLength; i++)
     {
-        buf.push_back(Numerics::ror8(src8[i], code));
+        uint8_t temp = Numerics::ror8(src8[i], code);
+        buf.Write1(&temp);
         code = (code + 2) % 8;
     }
 
     return buf;
 }
 
-static std::vector<uint8_t> DecodeChunk(const void* src, const SawyerCodingChunkHeader& header)
+static MemoryStream DecodeChunk(const void* src, const SawyerCodingChunkHeader& header)
 {
-    std::vector<uint8_t> buf;
+    MemoryStream buf;
+
     switch (header.encoding)
     {
         case CHUNK_ENCODING_NONE:
-            buf.resize(header.length);
-            std::memcpy(buf.data(), src, header.length);
+            buf.Write(src, header.length);
             break;
         case CHUNK_ENCODING_RLE:
             buf = DecodeChunkRLE(src, header.length);
@@ -287,5 +292,9 @@ static std::vector<uint8_t> DecodeChunk(const void* src, const SawyerCodingChunk
         default:
             throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
     }
+
+    // Return the stream with the position at the beginning.
+    buf.SetPosition(0);
+
     return buf;
 }
