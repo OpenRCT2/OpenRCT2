@@ -29,8 +29,8 @@ namespace OpenRCT2
         uint8_t _access = MEMORY_ACCESS::READ | MEMORY_ACCESS::WRITE | MEMORY_ACCESS::OWNER;
         size_t _dataCapacity = 0;
         size_t _dataSize = 0;
-        void* _data = nullptr;
-        void* _position = nullptr;
+        std::byte* _data = nullptr;
+        size_t _position = 0;
 
     public:
         MemoryStream() = default;
@@ -79,25 +79,23 @@ namespace OpenRCT2
 
         template<size_t N> void Read(void* buffer)
         {
-            uint64_t position = GetPosition();
-            if (position + N > _dataSize)
+            if (_position + N > _dataSize)
             {
                 throw IOException("Attempted to read past end of stream.");
             }
 
-            std::memcpy(buffer, _position, N);
-            _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + N);
+            std::memcpy(buffer, _data + _position, N);
+            _position += N;
         }
 
         template<size_t N> void Write(const void* buffer)
         {
-            uint64_t position = GetPosition();
-            uint64_t nextPosition = position + N;
-            EnsureCapacity(static_cast<size_t>(nextPosition));
+            const auto nextPosition = _position + N;
+            EnsureCapacity(nextPosition);
 
-            std::memcpy(_position, buffer, N);
-            _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + N);
-            _dataSize = std::max<size_t>(_dataSize, static_cast<size_t>(nextPosition));
+            std::memcpy(_data + _position, buffer, N);
+            _position += N;
+            _dataSize = std::max(_dataSize, nextPosition);
         }
     };
 

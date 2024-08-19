@@ -24,25 +24,25 @@ namespace OpenRCT2
 
         if (_access & MEMORY_ACCESS::OWNER)
         {
-            _data = Memory::Allocate<void>(_dataCapacity);
+            _position = copy.GetPosition();
+            _data = Memory::Allocate<std::byte>(_dataCapacity);
             std::memcpy(_data, copy._data, _dataCapacity);
-            _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_data) + copy.GetPosition());
         }
     }
 
     MemoryStream::MemoryStream(size_t capacity)
     {
         _dataCapacity = capacity;
-        _data = Memory::Allocate<void>(capacity);
-        _position = _data;
+        _data = Memory::Allocate<std::byte>(capacity);
+        _position = 0;
     }
 
     MemoryStream::MemoryStream(void* data, size_t dataSize)
         : _access{ MEMORY_ACCESS::READ | MEMORY_ACCESS::WRITE }
         , _dataCapacity{ dataSize }
         , _dataSize{ dataSize }
-        , _data{ data }
-        , _position{ _data }
+        , _data{ static_cast<std::byte*>(data) }
+        , _position{ 0 }
     {
     }
 
@@ -50,8 +50,8 @@ namespace OpenRCT2
         : _access{ MEMORY_ACCESS::READ }
         , _dataCapacity{ dataSize }
         , _dataSize{ dataSize }
-        , _data{ const_cast<void*>(data) }
-        , _position{ _data }
+        , _data{ static_cast<std::byte*>(const_cast<void*>(data)) }
+        , _position{ 0 }
     {
     }
 
@@ -63,7 +63,7 @@ namespace OpenRCT2
         , _position(mv._position)
     {
         mv._data = nullptr;
-        mv._position = nullptr;
+        mv._position = 0;
         mv._dataCapacity = 0;
         mv._dataSize = 0;
     }
@@ -95,7 +95,7 @@ namespace OpenRCT2
             _position = mv._position;
 
             mv._data = nullptr;
-            mv._position = nullptr;
+            mv._position = 0;
             mv._dataCapacity = 0;
             mv._dataSize = 0;
         }
@@ -105,7 +105,7 @@ namespace OpenRCT2
 
     const void* MemoryStream::GetData() const
     {
-        return _data;
+        return static_cast<const void*>(_data);
     }
 
     bool MemoryStream::CanRead() const
@@ -125,7 +125,7 @@ namespace OpenRCT2
 
     uint64_t MemoryStream::GetPosition() const
     {
-        return static_cast<uint64_t>(reinterpret_cast<uintptr_t>(_position) - reinterpret_cast<uintptr_t>(_data));
+        return _position;
     }
 
     void MemoryStream::SetPosition(uint64_t position)
@@ -154,19 +154,18 @@ namespace OpenRCT2
         {
             throw IOException("New position out of bounds.");
         }
-        _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_data) + static_cast<uintptr_t>(newPosition));
+        _position = newPosition;
     }
 
     void MemoryStream::Read(void* buffer, uint64_t length)
     {
-        uint64_t position = GetPosition();
-        if (position + length > _dataSize)
+        if (_position + length > _dataSize)
         {
             throw IOException("Attempted to read past end of stream.");
         }
 
-        std::memcpy(buffer, _position, length);
-        _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + length);
+        std::memcpy(buffer, _data + _position, length);
+        _position += length;
     }
 
     void MemoryStream::Read1(void* buffer)
@@ -204,13 +203,12 @@ namespace OpenRCT2
 
     void MemoryStream::Write(const void* buffer, uint64_t length)
     {
-        uint64_t position = GetPosition();
-        uint64_t nextPosition = position + length;
-        EnsureCapacity(static_cast<size_t>(nextPosition));
+        const auto nextPosition = _position + length;
+        EnsureCapacity(nextPosition);
 
-        std::memcpy(_position, buffer, length);
-        _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + length);
-        _dataSize = std::max<size_t>(_dataSize, static_cast<size_t>(nextPosition));
+        std::memcpy(_data + _position, buffer, length);
+        _position += length;
+        _dataSize = std::max(_dataSize, nextPosition);
     }
 
     void MemoryStream::Write1(const void* buffer)
@@ -241,7 +239,7 @@ namespace OpenRCT2
     void MemoryStream::Clear()
     {
         _dataSize = 0;
-        SetPosition(0);
+        _position = 0;
     }
 
     void MemoryStream::EnsureCapacity(size_t capacity)
@@ -258,10 +256,8 @@ namespace OpenRCT2
 
         size_t newCapacity = std::max<size_t>(32, std::bit_ceil(capacity));
 
-        uint64_t position = GetPosition();
         _dataCapacity = newCapacity;
         _data = Memory::Reallocate(_data, _dataCapacity);
-        _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_data) + static_cast<uintptr_t>(position));
     }
 
 } // namespace OpenRCT2
