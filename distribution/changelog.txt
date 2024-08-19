@@ -12,6 +12,7 @@
 - Change: [#22490] In sandbox mode, changing land or construction rights now acts as buying or selling.
 - Change: [#22491] Scrollbars are now hidden if the scrollable widget is not actually overflowing.
 - Change: [#22541] In editor/sandbox mode, tool widgets now appear on the side of the map window, instead of the bottom.
+- Change: [#22592] Cheats have been redistributed along three new tabs: date, staff, and nature/weather.
 - Fix: [#21908] Errors showing up when placing/moving track design previews.
 - Fix: [#22307] Hover tooltips in financial charts are not invalidated properly.
 - Fix: [#22316] Potential crash when switching the drawing engine while the game is running.
