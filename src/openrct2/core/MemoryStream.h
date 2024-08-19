@@ -91,18 +91,8 @@ namespace OpenRCT2
         {
             uint64_t position = GetPosition();
             uint64_t nextPosition = position + N;
-            if (nextPosition > _dataCapacity)
-            {
-                if (_access & MEMORY_ACCESS::OWNER)
-                {
-                    EnsureCapacity(static_cast<size_t>(nextPosition));
-                }
-                else
-                {
-                    throw IOException("Attempted to write past end of stream.");
-                }
-            }
-
+            EnsureCapacity(static_cast<size_t>(nextPosition));
+            
             std::memcpy(_position, buffer, N);
             _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + N);
             _dataSize = std::max<size_t>(_dataSize, static_cast<size_t>(nextPosition));

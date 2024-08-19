@@ -11,6 +11,7 @@
 
 #include "Memory.hpp"
 
+#include <bit>
 #include <cstring>
 
 namespace OpenRCT2
@@ -219,17 +220,7 @@ namespace OpenRCT2
     {
         uint64_t position = GetPosition();
         uint64_t nextPosition = position + length;
-        if (nextPosition > _dataCapacity)
-        {
-            if (_access & MEMORY_ACCESS::OWNER)
-            {
-                EnsureCapacity(static_cast<size_t>(nextPosition));
-            }
-            else
-            {
-                throw IOException("Attempted to write past end of stream.");
-            }
-        }
+        EnsureCapacity(static_cast<size_t>(nextPosition));
 
         std::memcpy(_position, buffer, length);
         _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + length);
@@ -269,19 +260,22 @@ namespace OpenRCT2
 
     void MemoryStream::EnsureCapacity(size_t capacity)
     {
-        if (_dataCapacity < capacity)
+        if (capacity <= _dataCapacity)
         {
-            size_t newCapacity = std::max<size_t>(8, _dataCapacity);
-            while (newCapacity < capacity)
-            {
-                newCapacity *= 2;
-            }
-
-            uint64_t position = GetPosition();
-            _dataCapacity = newCapacity;
-            _data = Memory::Reallocate(_data, _dataCapacity);
-            _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_data) + static_cast<uintptr_t>(position));
+            return;
         }
+
+        if ((_access & MEMORY_ACCESS::OWNER) == 0)
+        {
+            throw IOException("Can not grow external memory");
+        }
+
+        size_t newCapacity = std::max<size_t>(32, std::bit_ceil(capacity));
+
+        uint64_t position = GetPosition();
+        _dataCapacity = newCapacity;
+        _data = Memory::Reallocate(_data, _dataCapacity);
+        _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_data) + static_cast<uintptr_t>(position));
     }
 
 } // namespace OpenRCT2
