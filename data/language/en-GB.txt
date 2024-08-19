@@ -3737,6 +3737,8 @@ STR_6664    :Show date cheats
 STR_6665    :Nature/weather cheats
 STR_6666    :Show nature/weather cheats
 STR_6667    :Fauna
+STR_6668    :Staff cheats
+STR_6669    :Show staff cheats
 
 #############
 # Scenarios #

@@ -39,6 +39,7 @@ enum
     WINDOW_CHEATS_PAGE_MONEY,
     WINDOW_CHEATS_PAGE_DATE,
     WINDOW_CHEATS_PAGE_GUESTS,
+    WINDOW_CHEATS_PAGE_STAFF,
     WINDOW_CHEATS_PAGE_MISC,
     WINDOW_CHEATS_PAGE_RIDES,
     WINDOW_CHEATS_PAGE_WEATHER,
@@ -77,6 +78,7 @@ enum WindowCheatsWidgetIdx
     WIDX_TAB_4,
     WIDX_TAB_5,
     WIDX_TAB_6,
+    WIDX_TAB_7,
     WIDX_TAB_CONTENT,
 
     WIDX_NO_MONEY = WIDX_TAB_CONTENT,
@@ -130,6 +132,17 @@ enum WindowCheatsWidgetIdx
     WIDX_TRAM_GUESTS,
     WIDX_REMOVE_ALL_GUESTS,
 
+    WIDX_STAFF_GROUP = WIDX_TAB_CONTENT,
+    WIDX_STAFF_SPEED,
+    WIDX_STAFF_SPEED_DROPDOWN_BUTTON,
+    WIDX_MAINTENANCE_GROUP,
+    WIDX_REMOVE_LITTER,
+    WIDX_FIX_VANDALISM,
+    WIDX_CLEAR_GRASS,
+    WIDX_MOWED_GRASS,
+    WIDX_WATER_PLANTS,
+    WIDX_DISABLE_PLANT_AGING,
+
     WIDX_GENERAL_GROUP = WIDX_TAB_CONTENT,
     WIDX_OWN_ALL_LAND,
     WIDX_REMOVE_PARK_FENCES,
@@ -142,16 +155,6 @@ enum WindowCheatsWidgetIdx
     WIDX_DECREASE_PARK_RATING,
     WIDX_WIN_SCENARIO,
     WIDX_HAVE_FUN,
-    WIDX_MAINTENANCE_GROUP,
-    WIDX_REMOVE_LITTER,
-    WIDX_FIX_VANDALISM,
-    WIDX_CLEAR_GRASS,
-    WIDX_MOWED_GRASS,
-    WIDX_WATER_PLANTS,
-    WIDX_DISABLE_PLANT_AGING,
-    WIDX_STAFF_GROUP,
-    WIDX_STAFF_SPEED,
-    WIDX_STAFF_SPEED_DROPDOWN_BUTTON,
     WIDX_PARK_CONSTRUCTION_GROUP,
     WIDX_ALLOW_REGULAR_PATH_AS_QUEUE,
     WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES,
@@ -209,9 +212,10 @@ static constexpr int32_t TAB_START = 3;
     MakeTab   ({  3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */ \
     MakeTab   ({ 34, 17}, STR_DATE_CHEATS_TIP                           ), /* tab 2 */ \
     MakeTab   ({ 65, 17}, STR_GUEST_CHEATS_TIP                          ), /* tab 3 */ \
-    MakeTab   ({ 96, 17}, STR_PARK_CHEATS_TIP                           ), /* tab 4 */ \
-    MakeTab   ({127, 17}, STR_RIDE_CHEATS_TIP                           ), /* tab 5 */ \
-    MakeTab   ({158, 17}, STR_WEATHER_NATURE_CHEATS_TIP                 )  /* tab 6 */
+    MakeTab   ({ 96, 17}, STR_STAFF_CHEATS_TIP                          ), /* tab 5 */ \
+    MakeTab   ({127, 17}, STR_PARK_CHEATS_TIP                           ), /* tab 6 */ \
+    MakeTab   ({158, 17}, STR_RIDE_CHEATS_TIP                           ), /* tab 4 */ \
+    MakeTab   ({189, 17}, STR_WEATHER_NATURE_CHEATS_TIP                 )  /* tab 7 */
 
 static Widget window_cheats_money_widgets[] =
 {
@@ -271,6 +275,24 @@ static Widget window_cheats_guests_widgets[] =
     kWidgetsEnd,
 };
 
+static Widget window_cheats_staff_widgets[] =
+{
+    MAIN_CHEATS_WIDGETS,
+    MakeWidget        ({  5, 357-309}, {238,  35},   WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                           ), // Staff group
+    MakeWidget        ({126, 371-309}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                  ), // Staff speed
+    MakeWidget        ({225, 372-309}, { 11,  12},   WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                              ), // Staff speed
+
+    MakeWidget        ({  5, 257-168}, {238,  99},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_MAINTENANCE_GROUP                                         ), // Maintenance group
+    MakeWidget        ({ 11, 271-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
+    MakeWidget        ({127, 271-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_FIX_VANDALISM                                             ), // Fix vandalism
+    MakeWidget        ({ 11, 292-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
+    MakeWidget        ({127, 292-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
+    MakeWidget        ({ 11, 313-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
+    MakeWidget        ({ 11, 334-164}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
+
+    kWidgetsEnd,
+};
+
 static Widget window_cheats_misc_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
@@ -285,18 +307,6 @@ static Widget window_cheats_misc_widgets[] =
     MakeSpinnerWidgets({156, 161}, { 81,  14},   WindowWidgetType::Spinner,  WindowColour::Secondary                                                                      ), // park rating (3 widgets)
     MakeWidget        ({ 11, 181}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
     MakeWidget        ({127, 181}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
-
-    MakeWidget        ({  5, 257}, {238,  99},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_MAINTENANCE_GROUP                                         ), // Maintenance group
-    MakeWidget        ({ 11, 271}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
-    MakeWidget        ({127, 271}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_FIX_VANDALISM                                             ), // Fix vandalism
-    MakeWidget        ({ 11, 292}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
-    MakeWidget        ({127, 292}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
-    MakeWidget        ({ 11, 313}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
-    MakeWidget        ({ 11, 334}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
-
-    MakeWidget        ({  5, 357}, {238,  35},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
-    MakeWidget        ({126, 371}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Staff speed
-    MakeWidget        ({225, 372}, { 11,  12},   WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
 
     MakeWidget        ({  5, 392}, {238,  56},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                        ), // Construction group
     MakeWidget        ({ 11, 407}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,   STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP  ), // Allow regular footpaths as queue path
@@ -350,6 +360,7 @@ static Widget *window_cheats_page_widgets[] =
     window_cheats_money_widgets,
     window_cheats_date_widgets,
     window_cheats_guests_widgets,
+    window_cheats_staff_widgets,
     window_cheats_misc_widgets,
     window_cheats_rides_widgets,
     window_cheats_weather_widgets,
@@ -369,6 +380,8 @@ static uint64_t window_cheats_page_hold_down_widgets[] = {
 
     0,
 
+    0,
+
     (1uLL << WIDX_INCREASE_PARK_RATING) |
     (1uLL << WIDX_DECREASE_PARK_RATING),
 
@@ -381,6 +394,7 @@ static StringId window_cheats_page_titles[] = {
     STR_CHEAT_TITLE_FINANCIAL,
     STR_CHEAT_TITLE_DATE,
     STR_CHEAT_TITLE_GUEST,
+    STR_CHEAT_TITLE_STAFF,
     STR_CHEAT_TITLE_PARK,
     STR_CHEAT_TITLE_RIDE,
     STR_CHEAT_TITLE_WEATHER,
@@ -423,6 +437,9 @@ static StringId window_cheats_page_titles[] = {
                 case WINDOW_CHEATS_PAGE_MISC:
                     OnMouseDownMisc(widgetIndex);
                     break;
+                case WINDOW_CHEATS_PAGE_STAFF:
+                    OnMouseDownStaff(widgetIndex);
+                    break;
                 case WINDOW_CHEATS_PAGE_WEATHER:
                     OnMouseDownWeather(widgetIndex);
                     break;
@@ -442,6 +459,7 @@ static StringId window_cheats_page_titles[] = {
                 case WIDX_TAB_4:
                 case WIDX_TAB_5:
                 case WIDX_TAB_6:
+                case WIDX_TAB_7:
                     SetPage(widgetIndex - WIDX_TAB_1);
                     break;
                 default:
@@ -459,6 +477,9 @@ static StringId window_cheats_page_titles[] = {
                         case WINDOW_CHEATS_PAGE_RIDES:
                             OnMouseUpRides(widgetIndex);
                             break;
+                        case WINDOW_CHEATS_PAGE_STAFF:
+                            OnMouseUpStaff(widgetIndex);
+                            break;
                         case WINDOW_CHEATS_PAGE_WEATHER:
                             OnMouseUpWeather(widgetIndex);
                             break;
@@ -469,9 +490,9 @@ static StringId window_cheats_page_titles[] = {
 
         void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
-            if (page == WINDOW_CHEATS_PAGE_MISC)
+            if (page == WINDOW_CHEATS_PAGE_STAFF)
             {
-                OnDropdownMisc(widgetIndex, selectedIndex);
+                OnDropdownStaff(widgetIndex, selectedIndex);
             }
             else if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
@@ -532,7 +553,6 @@ static StringId window_cheats_page_titles[] = {
 
                     SetCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
                     SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gameState.Cheats.NeverendingMarketing);
-                    SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.Cheats.DisablePlantAging);
                     SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gameState.Cheats.AllowRegularPathAsQueue);
                     SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gameState.Cheats.AllowSpecialColourSchemes);
                     break;
@@ -553,6 +573,9 @@ static StringId window_cheats_page_titles[] = {
                     SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gameState.Cheats.AllowTrackPlaceInvalidHeights);
                     SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gameState.Cheats.MakeAllDestructible);
                     break;
+                case WINDOW_CHEATS_PAGE_STAFF:
+                    SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.Cheats.DisablePlantAging);
+                    break;
                 case WINDOW_CHEATS_PAGE_WEATHER:
                     SetCheckboxValue(WIDX_FREEZE_WEATHER, gameState.Cheats.FreezeWeather);
                     break;
@@ -562,7 +585,7 @@ static StringId window_cheats_page_titles[] = {
             window_cheats_weather_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.ClimateCurrent.Weather)];
 
             // Staff speed
-            window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(
+            window_cheats_staff_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(
                 gameState.Cheats.SelectedStaffSpeed)];
 
             if (gScreenFlags & SCREEN_FLAGS_EDITOR)
@@ -634,7 +657,9 @@ static StringId window_cheats_page_titles[] = {
                         dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft,
                         { colours[1] });
                 }
-
+            }
+            else if (page == WINDOW_CHEATS_PAGE_STAFF)
+            {
                 {
                     auto& widget = widgets[WIDX_STAFF_SPEED];
                     DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
@@ -759,31 +784,40 @@ static StringId window_cheats_page_titles[] = {
                     dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
             }
 
-            // Misc tab
+            // Staff tab
             if (!IsWidgetDisabled(WIDX_TAB_4))
+            {
+                uint32_t sprite_idx = SPR_MECHANIC;
+                GfxDrawSprite(
+                    dpi, ImageId(sprite_idx),
+                    windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left + 2, widgets[WIDX_TAB_4].top + 1 });
+            }
+
+            // Misc tab
+            if (!IsWidgetDisabled(WIDX_TAB_5))
             {
                 GfxDrawSprite(
                     dpi, ImageId(SPR_TAB_PARK),
-                    windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
+                    windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
             }
 
             // Rides tab
-            if (!IsWidgetDisabled(WIDX_TAB_5))
+            if (!IsWidgetDisabled(WIDX_TAB_6))
             {
                 uint32_t sprite_idx = SPR_TAB_RIDE_0;
                 if (page == WINDOW_CHEATS_PAGE_RIDES)
                     sprite_idx += (frame_no / 4) % 16;
                 GfxDrawSprite(
-                    dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
+                    dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
             }
 
             // Nature/weather tab
-            if (!IsWidgetDisabled(WIDX_TAB_6))
+            if (!IsWidgetDisabled(WIDX_TAB_7))
             {
                 uint32_t sprite_idx = SPR_WEATHER_SUN_CLOUD;
                 GfxDrawSprite(
                     dpi, ImageId(sprite_idx),
-                    windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left + 2, widgets[WIDX_TAB_6].top + 4 });
+                    windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_7].left + 2, widgets[WIDX_TAB_7].top + 4 });
             }
         }
 
@@ -895,8 +929,6 @@ static StringId window_cheats_page_titles[] = {
 
         void OnMouseDownMisc(WidgetIndex widgetIndex)
         {
-            auto* widget = &widgets[widgetIndex];
-            auto& gameState = GetGameState();
             switch (widgetIndex)
             {
                 case WIDX_INCREASE_PARK_RATING:
@@ -916,6 +948,15 @@ static StringId window_cheats_page_titles[] = {
                         CheatsSet(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
                     }
                     break;
+            }
+        }
+
+        void OnMouseDownStaff(WidgetIndex widgetIndex)
+        {
+            auto* widget = &widgets[widgetIndex];
+            auto& gameState = GetGameState();
+            switch (widgetIndex)
+            {
                 case WIDX_STAFF_SPEED_DROPDOWN_BUTTON:
                 {
                     Widget* dropdownWidget;
@@ -968,38 +1009,20 @@ static StringId window_cheats_page_titles[] = {
             auto& gameState = GetGameState();
             switch (widgetIndex)
             {
+                case WIDX_OWN_ALL_LAND:
+                    CheatsSet(CheatType::OwnAllLand);
+                    break;
+                case WIDX_REMOVE_PARK_FENCES:
+                    CheatsSet(CheatType::RemoveParkFences);
+                    break;
                 case WIDX_OPEN_CLOSE_PARK:
                     CheatsSet(CheatType::OpenClosePark);
-                    break;
-                case WIDX_CLEAR_GRASS:
-                    CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_CLEAR_0);
-                    break;
-                case WIDX_MOWED_GRASS:
-                    CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_MOWED);
-                    break;
-                case WIDX_WATER_PLANTS:
-                    CheatsSet(CheatType::WaterPlants);
-                    break;
-                case WIDX_FIX_VANDALISM:
-                    CheatsSet(CheatType::FixVandalism);
-                    break;
-                case WIDX_REMOVE_LITTER:
-                    CheatsSet(CheatType::RemoveLitter);
-                    break;
-                case WIDX_DISABLE_PLANT_AGING:
-                    CheatsSet(CheatType::DisablePlantAging, !gameState.Cheats.DisablePlantAging);
                     break;
                 case WIDX_WIN_SCENARIO:
                     CheatsSet(CheatType::WinScenario);
                     break;
                 case WIDX_HAVE_FUN:
                     CheatsSet(CheatType::HaveFun);
-                    break;
-                case WIDX_OWN_ALL_LAND:
-                    CheatsSet(CheatType::OwnAllLand);
-                    break;
-                case WIDX_REMOVE_PARK_FENCES:
-                    CheatsSet(CheatType::RemoveParkFences);
                     break;
                 case WIDX_NEVERENDING_MARKETING:
                     CheatsSet(CheatType::NeverEndingMarketing, !gameState.Cheats.NeverendingMarketing);
@@ -1023,6 +1046,32 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
+        void OnMouseUpStaff(WidgetIndex widgetIndex)
+        {
+            auto& gameState = GetGameState();
+            switch (widgetIndex)
+            {
+                case WIDX_CLEAR_GRASS:
+                    CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_CLEAR_0);
+                    break;
+                case WIDX_MOWED_GRASS:
+                    CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_MOWED);
+                    break;
+                case WIDX_WATER_PLANTS:
+                    CheatsSet(CheatType::WaterPlants);
+                    break;
+                case WIDX_FIX_VANDALISM:
+                    CheatsSet(CheatType::FixVandalism);
+                    break;
+                case WIDX_REMOVE_LITTER:
+                    CheatsSet(CheatType::RemoveLitter);
+                    break;
+                case WIDX_DISABLE_PLANT_AGING:
+                    CheatsSet(CheatType::DisablePlantAging, !gameState.Cheats.DisablePlantAging);
+                    break;
+            }
+        }
+
         void OnMouseUpWeather(WidgetIndex widgetIndex)
         {
             auto& gameState = GetGameState();
@@ -1040,7 +1089,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnDropdownMisc(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        void OnDropdownStaff(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
             if (dropdownIndex == -1)
             {
