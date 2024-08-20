@@ -190,7 +190,7 @@ jobs:
           if-no-files-found: error
   macos-cmake:
     name: macOS (${{ matrix.arch }}) using CMake
-    runs-on: macos-12
+    runs-on: macos-14
     needs: check-code-formatting
     strategy:
       fail-fast: false
@@ -249,7 +249,7 @@ jobs:
         if: ${{matrix.run_tests}}
   macos-universal:
     name: macOS universal app bundle
-    runs-on: macos-12
+    runs-on: macos-14
     needs: macos-cmake
     steps:
       - name: Checkout
