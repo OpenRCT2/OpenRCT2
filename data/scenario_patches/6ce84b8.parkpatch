@@ -1,0 +1,33 @@
+{
+    "scenario_name": "Canyon Calamities",
+    "sha256": "6ce84b809471ba539d94d4198832b848b47d81316f5c8cc1297d8328299b4c52",
+    "land_ownership": {
+        "available": {
+            "cannot_downgrade": true,
+            "coordinates": [
+                [ 42, 147 ],
+                [ 58, 122 ],
+                [ 87, 147 ]
+            ]
+        },
+        "construction_rights_available": {
+            "cannot_downgrade": true,
+            "coordinates": [
+                [ 128, 90 ],
+                [ 135, 91 ], [ 136, 91 ],
+                [ 129, 90 ], [ 130, 90 ], [ 131, 90 ], [ 132, 90 ], 
+                [ 137, 92 ], [ 138, 92 ], [ 139, 92 ], [ 140, 92 ],
+                [ 125, 88 ], [ 126, 89 ], [ 127, 91 ], [ 127, 92 ], [ 127, 93 ],
+                [  47, 85 ], [  48, 85 ],
+                [  32, 97 ]
+            ]
+        },
+        "construction_rights_owned": {
+            "cannot_downgrade": true,
+            "coordinates": [
+                [ 98, 64 ], [ 98, 65 ], [ 98, 66 ],
+                [ 96, 84 ]
+            ]
+        }
+    }
+}

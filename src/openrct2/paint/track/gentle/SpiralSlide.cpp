@@ -54,7 +54,7 @@ enum
 
 static void SpiralSlidePaintTileRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -76,7 +76,7 @@ static void SpiralSlidePaintTileRight(
 
 static void SpiralSlidePaintTileLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -98,7 +98,7 @@ static void SpiralSlidePaintTileLeft(
 
 static void SpiralSlidePaintTileFront(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -198,7 +198,7 @@ static void SpiralSlidePaintTileFront(
  */
 static void PaintSpiralSlide(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -236,13 +236,13 @@ static void PaintSpiralSlide(
     switch (trackSequence)
     {
         case 1:
-            SpiralSlidePaintTileRight(session, ride, trackSequence, direction, height, trackElement);
+            SpiralSlidePaintTileRight(session, ride, trackSequence, direction, height, trackElement, supportType);
             break;
         case 2:
-            SpiralSlidePaintTileLeft(session, ride, trackSequence, direction, height, trackElement);
+            SpiralSlidePaintTileLeft(session, ride, trackSequence, direction, height, trackElement, supportType);
             break;
         case 3:
-            SpiralSlidePaintTileFront(session, ride, trackSequence, direction, height, trackElement);
+            SpiralSlidePaintTileFront(session, ride, trackSequence, direction, height, trackElement, supportType);
             break;
     }
 

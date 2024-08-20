@@ -215,7 +215,7 @@ static void PaintMagicCarpetStructure(
 
 static void PaintMagicCarpet(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     uint8_t relativeTrackSequence = kTrackMap1x4[direction][trackSequence];
 

@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Trinity Islands",
+    "sha256": "829abd64d95a646e6a1462b1465588e434e0b1b42d9857308687b7986b558a57",
+    "land_ownership": {
+        "construction_rights_owned": {
+            "coordinates": [
+                [ 80, 60 ]
+            ]
+        }
+    }
+}

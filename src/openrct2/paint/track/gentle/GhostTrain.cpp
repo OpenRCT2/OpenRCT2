@@ -21,8 +21,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr MetalSupportType kSupportType = MetalSupportType::Boxed;
-
 enum
 {
     SprGhostTrainTrackFlatSwNe = 28821,
@@ -185,7 +183,7 @@ static TunnelType GetTunnelDoorsImageStraightFlat(const TrackElement& trackEleme
 /** rct2: 0x00770BEC */
 static void PaintGhostTrainTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     auto imageId = session.TrackColours.WithIndex(GhostTrainTrackPiecesFlat[direction]);
 
@@ -196,7 +194,7 @@ static void PaintGhostTrainTrackFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -210,7 +208,7 @@ static void PaintGhostTrainTrackFlat(
 /** rct2: 0x00770BFC */
 static void PaintGhostTrainTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     auto imageId = session.TrackColours.WithIndex(GhostTrainTrackPieces25DegUp[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
@@ -220,7 +218,7 @@ static void PaintGhostTrainTrack25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
 
     switch (direction)
@@ -250,7 +248,7 @@ static void PaintGhostTrainTrack25DegUp(
 /** rct2: 0x00770C0C */
 static void PaintGhostTrainTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     bool isBackwards = trackElement.GetTrackType() == TrackElemType::Down25ToFlat;
     TunnelType doorImage;
@@ -271,7 +269,7 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
 
     switch (direction)
@@ -300,7 +298,7 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
 
 static void PaintGhostTrainTrack25DegUpToFlatShared(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     auto imageId = session.TrackColours.WithIndex(GhostTrainTrackPieces25DegUpToFlat[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
@@ -310,7 +308,7 @@ static void PaintGhostTrainTrack25DegUpToFlatShared(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -324,9 +322,9 @@ static void PaintGhostTrainTrack25DegUpToFlatShared(
 /** rct2: 0x00770C1C */
 static void PaintGhostTrainTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintGhostTrainTrack25DegUpToFlatShared(session, ride, trackSequence, direction, height, trackElement);
+    PaintGhostTrainTrack25DegUpToFlatShared(session, ride, trackSequence, direction, height, trackElement, supportType);
 
     switch (direction)
     {
@@ -348,17 +346,18 @@ static void PaintGhostTrainTrack25DegUpToFlat(
 /** rct2: 0x00770C2C */
 static void PaintGhostTrainTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintGhostTrainTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintGhostTrainTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x00770C3C */
 static void PaintGhostTrainTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintGhostTrainTrack25DegUpToFlatShared(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintGhostTrainTrack25DegUpToFlatShared(
+        session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 
     switch ((direction + 2) % 4)
     {
@@ -380,15 +379,15 @@ static void PaintGhostTrainTrackFlatTo25DegDown(
 /** rct2: 0x00770C4C */
 static void PaintGhostTrainTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintGhostTrainTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintGhostTrainTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x00770C5C, 0x00770C6C, 0x00770C7C */
 static void PaintGhostTrainStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -407,7 +406,7 @@ static void PaintGhostTrainStation(
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
 
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, kSupportType);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
@@ -418,7 +417,7 @@ static void PaintGhostTrainStation(
 /** rct2: 0x00770C9C */
 static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, GhostTrainTrackPiecesQuarterTurn3Tiles, nullptr,
@@ -433,7 +432,7 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 
@@ -461,16 +460,17 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
 /** rct2: 0x00770CAC */
 static void PaintGhostTrainTrackLeftQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    PaintGhostTrainTrackRightQuarterTurn3Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
+    PaintGhostTrainTrackRightQuarterTurn3Tiles(
+        session, ride, trackSequence, (direction + 1) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x00770CAC */
 static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     bool isBackwards = trackElement.GetTrackType() == TrackElemType::RightQuarterTurn1Tile;
     TunnelType tunnelStartImage, tunnelEndImage;
@@ -489,7 +489,7 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
         session, 3, height, 0, direction, session.TrackColours, GhostTrainTrackPiecesQuarterTurn1Tile);
     TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, 0, tunnelStartImage, 0, tunnelEndImage);
 
-    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -497,15 +497,16 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
 /** rct2: 0x00770CBC */
 static void PaintGhostTrainTrackRightQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintGhostTrainTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    PaintGhostTrainTrackLeftQuarterTurn1Tile(
+        session, ride, trackSequence, (direction + 3) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x00770CCC */
 static void PaintGhostTrainTrackSpinningTunnel(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     auto imageId = session.TrackColours.WithIndex(ghost_train_track_pieces_spinning_tunnel_track[direction]);
 
@@ -527,7 +528,7 @@ static void PaintGhostTrainTrackSpinningTunnel(
 /** rct2: 0x00770CDC */
 static void PaintGhostTrainTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     auto imageId = session.TrackColours.WithIndex(GhostTrainTrackPiecesBrakes[direction]);
 
@@ -538,7 +539,7 @@ static void PaintGhostTrainTrackBrakes(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(

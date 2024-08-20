@@ -22,6 +22,7 @@ constexpr RideTypeDescriptor MiniHelicoptersRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionMiniHelicopters,
+        .supportType = MetalSupportType::Stick,
         .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall},
         .ExtraTrackPieces = {TrackGroup::spinningTunnel},
     }),

@@ -32,7 +32,7 @@ enum
 /** rct2: 0x006FD1F8 */
 static void PaintLaunchedFreefallBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kTrackMap3x3[direction][trackSequence];
 
@@ -116,7 +116,7 @@ static void PaintLaunchedFreefallBase(
 /** rct2: 0x006FD208 */
 static void PaintLaunchedFreefallTowerSection(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence == 1)
     {

@@ -24,6 +24,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .Drawer = GetTrackPaintFunctionWaterRC,
+            .supportType = MetalSupportType::Fork,
             .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::onridePhoto, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
             .ExtraTrackPieces = {TrackGroup::slopeLong},
             .icon = SPR_RIDE_CONSTRUCTION_RC_TRACK,
@@ -31,6 +32,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         },
         {
             .Drawer = GetTrackPaintFunctionSplashBoats,
+            .supportType = WoodenSupportType::Truss,
             .EnabledTrackPieces = {OpenRCT2::TrackElemType::Flat, OpenRCT2::TrackElemType::LeftQuarterTurn5Tiles, OpenRCT2::TrackElemType::RightQuarterTurn5Tiles, OpenRCT2::TrackElemType::SBendLeft, OpenRCT2::TrackElemType::SBendRight},
             .ExtraTrackPieces = {},
             .icon = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL,

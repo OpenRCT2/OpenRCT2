@@ -2608,8 +2608,8 @@ STR_5357    :{BLACK}Tolleranza nausea:
 STR_5358    :{BLACK}Bagno:
 STR_5359    :Rimuovi visitatori
 STR_5360    :Rimuove tutti i visitatori dalla mappa
-STR_5361    :Dai a tutti i visitatori:
-STR_5362    :{BLACK}Imposta ai visitatori l’intensità attrazione:
+STR_5361    :Aggiungi a inventario dei visitatori
+STR_5362    :{BLACK}Intensità attrazioni preferita:
 STR_5363    :Più di 1
 STR_5364    :Meno di 15
 STR_5365    :{BLACK}Velocità personale:
@@ -2639,7 +2639,7 @@ STR_5457    :Disabilita limite supporti
 STR_5458    :Ruota senso orario
 STR_5459    :Ruota antiorario
 STR_5460    :Ruota visuale antiorario
-STR_5461    :Imposta parametri visitatori
+STR_5461    :Imposta parametri per tutti i visitatori
 STR_5462    :{CURRENCY}
 STR_5463    :Obiett. “Divertiti”
 STR_5464    :Generale
@@ -3736,6 +3736,16 @@ STR_6657    :Terreno non posseduto
 STR_6658    :Imposta il terreno come non posseduto dal parco, né disponibile per l’acquisto
 STR_6659    :Prezzi ignorati dai visitatori
 STR_6660    :I visitatori ignoreranno i prezzi di attrazioni e chioschi.
+STR_6661    :Tutti a caso
+STR_6662    :Imposta un colore a caso per ciascun treno o veicolo.
+STR_6663    :Trucchi data
+STR_6664    :Mostra i trucchi sulla data
+STR_6665    :Trucchi natura/meteo
+STR_6666    :Mostra i trucchi sulla natura/meteo
+STR_6667    :Fauna
+STR_6668    :Trucchi personale
+STR_6669    :Mostra i trucchi sul personale
+STR_6670    :Comportamento visitatori
 
 
 #############

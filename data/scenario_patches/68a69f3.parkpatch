@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Coaster Canyon",
+    "sha256": "68a69f3c7db661430ce94e23caba7e31d14e822ea13f4ad32e5455c3c26354fa",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 21, 55 ]
+            ]
+        }
+    }
+}

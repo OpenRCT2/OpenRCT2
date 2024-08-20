@@ -21,12 +21,10 @@
 
 using namespace OpenRCT2;
 
-static constexpr MetalSupportType kSupportType = MetalSupportType::Stick;
-
 /** rct2: 0x */
 static void PaintMiniHelicoptersTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -59,7 +57,7 @@ static void PaintMiniHelicoptersTrackStation(
 /** rct2: 0x0081F348 */
 static void PaintMiniHelicoptersTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -78,9 +76,8 @@ static void PaintMiniHelicoptersTrackFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(
-            session, (direction & 1) ? MetalSupportType::StickAlt : kSupportType, MetalSupportPlace::Centre, -1, height,
-            session.SupportColours);
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, -1, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -94,7 +91,7 @@ static void PaintMiniHelicoptersTrackFlat(
 /** rct2: 0x0081F368 */
 static void PaintMiniHelicoptersTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -124,7 +121,7 @@ static void PaintMiniHelicoptersTrackFlatTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, -4, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -4, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -138,7 +135,7 @@ static void PaintMiniHelicoptersTrackFlatTo25DegUp(
 /** rct2: 0x0081F358 */
 static void PaintMiniHelicoptersTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -168,7 +165,7 @@ static void PaintMiniHelicoptersTrack25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, -9, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -9, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -182,7 +179,7 @@ static void PaintMiniHelicoptersTrack25DegUp(
 /** rct2: 0x0081F378 */
 static void PaintMiniHelicoptersTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -212,7 +209,7 @@ static void PaintMiniHelicoptersTrack25DegUpToFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, -7, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -7, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -226,31 +223,33 @@ static void PaintMiniHelicoptersTrack25DegUpToFlat(
 /** rct2: 0x */
 static void PaintMiniHelicoptersTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintMiniHelicoptersTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintMiniHelicoptersTrack25DegUpToFlat(
+        session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x0081F388 */
 static void PaintMiniHelicoptersTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintMiniHelicoptersTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintMiniHelicoptersTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x0081F3A8 */
 static void PaintMiniHelicoptersTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintMiniHelicoptersTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintMiniHelicoptersTrackFlatTo25DegUp(
+        session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x0081F3E8 */
 static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours,
@@ -260,7 +259,7 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -281,7 +280,7 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
                 0xFFFF, 0);
             break;
         case 3:
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -306,16 +305,17 @@ static constexpr uint8_t MiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[] = 
 /** rct2: 0x0081F3F8 */
 static void PaintMiniHelicoptersTrackRightQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = MiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[trackSequence];
-    PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
+        session, ride, trackSequence, (direction + 3) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x0081F408 */
 static void PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 1, height, 0, direction, session.TrackColours, kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile);
@@ -335,14 +335,15 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(
 /** rct2: 0x0081F418 */
 static void PaintMiniHelicoptersTrackRightQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(
+        session, ride, trackSequence, (direction + 3) % 4, height, trackElement, supportType);
 }
 
 static void PaintMiniHelicoptersTrackSpinningTunnel(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     const uint32_t sprites[kNumOrthogonalDirections][2] = {
         { SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW, 28773 },

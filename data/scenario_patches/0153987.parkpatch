@@ -1,0 +1,16 @@
+{
+    "scenario_name": "Three Monkeys Park",
+    "sha256": "0153987dbf8e1ec665205d7b39aeb4b88cf1f24dcadba61cf352ee22a919fcdb",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 46, 22 ]
+            ]
+        },
+        "unowned": {
+            "coordinates": [
+                [ 89, 92 ]
+            ]
+        }
+    }
+}

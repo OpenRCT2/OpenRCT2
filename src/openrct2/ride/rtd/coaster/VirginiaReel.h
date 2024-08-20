@@ -21,6 +21,7 @@ constexpr RideTypeDescriptor VirginiaReelRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionVirginiaReel,
+        .supportType = WoodenSupportType::Truss,
         .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall},
         .ExtraTrackPieces = {},
     }),

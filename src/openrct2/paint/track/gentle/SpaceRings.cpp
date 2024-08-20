@@ -89,7 +89,7 @@ static void PaintSpaceRingsStructure(
 /** rct2: 0x00767C40 */
 static void PaintSpaceRings(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kTrackMap3x3[direction][trackSequence];
 

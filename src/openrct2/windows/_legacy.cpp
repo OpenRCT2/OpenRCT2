@@ -18,6 +18,7 @@
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../network/network.h"
+#include "../paint/VirtualFloor.h"
 #include "../ride/RideConstruction.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
@@ -78,12 +79,17 @@ money64 PlaceProvisionalTrackPiece(
     if (res.Error != GameActions::Status::Ok)
         return kMoney64Undefined;
 
-    int16_t zBegin{};
+    int16_t zBegin{}, zEnd{};
     const auto& ted = GetTrackElementDescriptor(trackType);
     const TrackCoordinates& coords = ted.coordinates;
     if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
     {
         zBegin = coords.zBegin;
+        zEnd = coords.zEnd;
+    }
+    else
+    {
+        zEnd = zBegin = coords.zBegin;
     }
 
     _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + zBegin, static_cast<Direction>(trackDirection) };
@@ -95,6 +101,15 @@ money64 PlaceProvisionalTrackPiece(
     ViewportSetVisibility(visiblity);
     if (_currentTrackPitchEnd != TrackPitch::None)
         ViewportSetVisibility(ViewportVisibility::TrackHeights);
+
+    // Invalidate previous track piece (we may not be changing height!)
+    VirtualFloorInvalidate();
+
+    if (!isToolActive(WindowClass::Scenery))
+    {
+        // Set height to where the next track piece would begin
+        VirtualFloorSetHeight(trackPos.z - zBegin + zEnd);
+    }
 
     return res.Cost;
 }

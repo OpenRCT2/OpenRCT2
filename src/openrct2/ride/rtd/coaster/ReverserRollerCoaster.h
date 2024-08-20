@@ -21,6 +21,7 @@ constexpr RideTypeDescriptor ReverserRollerCoasterRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionReverserRC,
+        .supportType = WoodenSupportType::Truss,
         .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::brakes, TrackGroup::reverser},
         .ExtraTrackPieces = {},
     }),

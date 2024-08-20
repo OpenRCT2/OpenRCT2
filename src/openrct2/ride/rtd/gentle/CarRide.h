@@ -22,6 +22,7 @@ constexpr RideTypeDescriptor CarRideRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionCarRide,
+        .supportType = MetalSupportType::Boxed,
         .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::spinningTunnel},
         .ExtraTrackPieces = {TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::rapids},
     }),

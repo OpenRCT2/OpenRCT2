@@ -1,0 +1,19 @@
+{
+    "scenario_name": "Beach Barbecue Blast",
+    "sha256": "1340eefc16e867a39eb597febabf12a9207146615fb419de20f486e2f06242de",
+    "land_ownership": {
+        "unowned": {
+            "coordinates": [
+                [ 63, 97 ],
+                [ 64, 97 ]
+            ]
+        },
+        "available": {
+            "cannot_downgrade": true,
+            "coordinates": [
+                [ 63, 97 ],
+                [ 64, 97 ]
+            ]
+        }
+    }
+}

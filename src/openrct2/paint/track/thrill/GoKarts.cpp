@@ -20,8 +20,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr WoodenSupportType kSupportType = WoodenSupportType::Truss;
-
 enum
 {
     SPR_GO_KARTS_FLAT_SW_NE = 20752,
@@ -132,7 +130,7 @@ static constexpr uint32_t go_karts_track_pieces_25_deg_up_to_flat[4][2] = {
 /** rct2: 0x0074A748 */
 static void PaintGoKartsTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
     if (direction == 0 || direction == 2)
@@ -157,7 +155,7 @@ static void PaintGoKartsTrackFlat(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -166,7 +164,7 @@ static void PaintGoKartsTrackFlat(
 /** rct2: 0x0074A758 */
 static void PaintGoKartsTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
     PaintStruct* ps;
@@ -194,7 +192,7 @@ static void PaintGoKartsTrack25DegUp(
     session.WoodenSupportsPrependTo = ps;
 
     WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25Deg);
 
     switch (direction)
@@ -220,7 +218,7 @@ static void PaintGoKartsTrack25DegUp(
 /** rct2: 0x0074A768 */
 static void PaintGoKartsTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
     PaintStruct* ps;
@@ -248,7 +246,7 @@ static void PaintGoKartsTrackFlatTo25DegUp(
     session.WoodenSupportsPrependTo = ps;
 
     WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::FlatToUp25Deg);
 
     switch (direction)
@@ -274,7 +272,7 @@ static void PaintGoKartsTrackFlatTo25DegUp(
 /** rct2: 0x */
 static void PaintGoKartsTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
     PaintStruct* ps;
@@ -302,7 +300,7 @@ static void PaintGoKartsTrack25DegUpToFlat(
     session.WoodenSupportsPrependTo = ps;
 
     WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25DegToFlat);
 
     switch (direction)
@@ -329,31 +327,31 @@ static void PaintGoKartsTrack25DegUpToFlat(
 /** rct2: 0x0074A788 */
 static void PaintGoKartsTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintGoKartsTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintGoKartsTrack25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x0074A798 */
 static void PaintGoKartsTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintGoKartsTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintGoKartsTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x0074A7A8 */
 static void PaintGoKartsTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintGoKartsTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
+    PaintGoKartsTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement, supportType);
 }
 
 /** rct2: 0x */
 static void PaintGoKartsStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     const auto* stationObj = ride.GetStationObject();
 
@@ -455,7 +453,7 @@ static void PaintGoKartsStation(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -464,7 +462,7 @@ static void PaintGoKartsStation(
 /** rct2: 0x0074A7E8 */
 static void PaintGoKartsTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
 
@@ -526,7 +524,7 @@ static void PaintGoKartsTrackLeftQuarterTurn1Tile(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, kSupportType, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -535,9 +533,9 @@ static void PaintGoKartsTrackLeftQuarterTurn1Tile(
 /** rct2: 0x0074A7F8 */
 static void PaintGoKartsTrackRightQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    PaintGoKartsTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
+    PaintGoKartsTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement, supportType);
 }
 
 /**

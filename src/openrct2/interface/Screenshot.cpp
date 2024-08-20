@@ -190,36 +190,6 @@ std::string ScreenshotDumpPNG(DrawPixelInfo& dpi)
     return "";
 }
 
-std::string ScreenshotDumpPNG32bpp(int32_t width, int32_t height, const void* pixels)
-{
-    auto path = ScreenshotGetNextPath();
-
-    if (!path.has_value())
-    {
-        return "";
-    }
-
-    const auto pixels8 = static_cast<const uint8_t*>(pixels);
-    const auto pixelsLen = width * 4 * height;
-
-    try
-    {
-        Image image;
-        image.Width = width;
-        image.Height = height;
-        image.Depth = 32;
-        image.Stride = width * 4;
-        image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
-        Imaging::WriteToFile(path.value(), image, IMAGE_FORMAT::PNG_32);
-        return path.value();
-    }
-    catch (const std::exception& e)
-    {
-        LOG_ERROR("Unable to save screenshot: %s", e.what());
-        return "";
-    }
-}
-
 static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool useViewClipping)
 {
     int32_t z = 0;

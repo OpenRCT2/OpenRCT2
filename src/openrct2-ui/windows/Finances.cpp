@@ -834,8 +834,8 @@ static Widget _windowFinancesResearchWidgets[] =
 
             // dynamic padding for long axis lables:
             char buffer[64]{};
-            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{CURRENCY2DP} -", centredGraph ? -max : max);
-            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + 1;
+            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{CURRENCY2DP}", centredGraph ? -max : max);
+            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
             const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _graphBounds = { windowPos + ScreenCoordsXY{ graphPageWidget->left + 4, graphPageWidget->top + 15 },
