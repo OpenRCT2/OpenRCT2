@@ -3729,6 +3729,8 @@ STR_6657    :Terreno Não Adquirido
 STR_6658    :Configurar terreno como não adquirido pelo parque nem disponível para compra
 STR_6659    :Visitantes ignoram preços
 STR_6660    :Visitantes irão ignorar o preço das atrações e lojas.
+STR_6661    :Aleatorizar tudo
+STR_6662    :Tornar aleatórias as cores de cada trem e veículo.
 
 #############
 # Scenarios #
