@@ -197,16 +197,16 @@ jobs:
       matrix:
         arch: [x64, arm64]
         include:
-          - arch: x64
-            cache_key: macos-x64
+          - arch: arm64
+            cache_key: macos-arm64
             # Note: only build/run tests on the native architecture of the CI agent
             # GitHub macos-12 agents are all Intel, but as of 2024-04-25 new images, e.g. macos-14 (current macos-latest) are arm64
             # See https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
-            build_flags: -DARCH="x86_64" -DWITH_TESTS=on
+            build_flags: -DARCH="arm64" -DWITH_TESTS=on
             run_tests: true
-          - arch: arm64
-            cache_key: macos-arm64
-            build_flags: -DARCH="arm64"
+          - arch: x64
+            cache_key: macos-x64
+            build_flags: -DARCH="x86_64"
             run_tests: false
     steps:
       - name: Checkout
