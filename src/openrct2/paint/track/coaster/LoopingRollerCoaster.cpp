@@ -2355,9 +2355,9 @@ static void LoopingRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15350), { 16, 0, height },
                         { { 16, 0, height }, { 3, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickCentred, MetalSupportPlace::LeftCorner, 0, height - 8,
-                        session.TrackColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::RightCorner, DirectionReverse(direction), 0,
+                        height - 8, session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15364), { 16, 0, height },
                         { { 16, 0, height }, { 3, 16, 119 } });
@@ -2366,9 +2366,9 @@ static void LoopingRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15358), { 12, 0, height },
                         { { 12, 0, height }, { 3, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickAltCentred, MetalSupportPlace::TopCorner, 0, height - 8,
-                        session.TrackColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::RightCorner, DirectionReverse(direction), 0,
+                        height - 8, session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15366), { 12, 0, height },
                         { { 12, 0, height }, { 3, 16, 119 } });
@@ -2377,8 +2377,9 @@ static void LoopingRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15353), { 10, 16, height },
                         { { 10, 16, height }, { 4, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::Thick, MetalSupportPlace::RightCorner, 0, height - 8, session.TrackColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::RightCorner, DirectionReverse(direction), 0,
+                        height - 8, session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15365), { 10, 16, height },
                         { { 10, 16, height }, { 4, 16, 119 } });
@@ -2387,9 +2388,9 @@ static void LoopingRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15361), { 16, 16, height },
                         { { 16, 16, height }, { 2, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickAlt, MetalSupportPlace::BottomCorner, 0, height - 8,
-                        session.TrackColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::RightCorner, DirectionReverse(direction), 0,
+                        height - 8, session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15367), { 16, 16, height },
                         { { 16, 16, height }, { 2, 16, 119 } });
@@ -2478,8 +2479,9 @@ static void LoopingRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15353), { 10, 16, height },
                         { { 10, 16, height }, { 4, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::Thick, MetalSupportPlace::RightCorner, 0, height - 8, session.TrackColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::RightCorner, direction, 0, height - 8,
+                        session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15365), { 10, 16, height },
                         { { 10, 16, height }, { 4, 16, 119 } });
@@ -2488,8 +2490,8 @@ static void LoopingRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15361), { 16, 16, height },
                         { { 16, 16, height }, { 2, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickAlt, MetalSupportPlace::BottomCorner, 0, height - 8,
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::RightCorner, direction, 0, height - 8,
                         session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15367), { 16, 16, height },
@@ -2499,8 +2501,8 @@ static void LoopingRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15350), { 16, 0, height },
                         { { 16, 0, height }, { 3, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickCentred, MetalSupportPlace::LeftCorner, 0, height - 8,
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::RightCorner, direction, 0, height - 8,
                         session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15364), { 16, 0, height },
@@ -2510,8 +2512,8 @@ static void LoopingRCTrackLeftVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15358), { 12, 0, height },
                         { { 12, 0, height }, { 3, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickAltCentred, MetalSupportPlace::TopCorner, 0, height - 8,
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::RightCorner, direction, 0, height - 8,
                         session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15366), { 12, 0, height },
@@ -2662,8 +2664,9 @@ static void LoopingRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15381), { 16, 16, height },
                         { { 16, 16, height }, { 2, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::Thick, MetalSupportPlace::BottomCorner, 0, height - 8, session.TrackColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::BottomCorner, direction, 0, height - 8,
+                        session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15384), { 16, 16, height },
                         { { 16, 16, height }, { 2, 16, 119 } });
@@ -2672,8 +2675,8 @@ static void LoopingRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15373), { 10, 16, height },
                         { { 10, 16, height }, { 4, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickAlt, MetalSupportPlace::LeftCorner, 0, height - 8,
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::BottomCorner, direction, 0, height - 8,
                         session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15386), { 10, 16, height },
@@ -2683,8 +2686,8 @@ static void LoopingRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15378), { 12, 0, height },
                         { { 12, 0, height }, { 3, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickCentred, MetalSupportPlace::TopCorner, 0, height - 8,
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::BottomCorner, direction, 0, height - 8,
                         session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15385), { 12, 0, height },
@@ -2694,8 +2697,8 @@ static void LoopingRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15370), { 16, 0, height },
                         { { 16, 0, height }, { 2, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickAltCentred, MetalSupportPlace::RightCorner, 0, height - 8,
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::BottomCorner, direction, 0, height - 8,
                         session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15387), { 16, 0, height },
@@ -2761,9 +2764,9 @@ static void LoopingRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15378), { 12, 0, height },
                         { { 12, 0, height }, { 3, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickCentred, MetalSupportPlace::TopCorner, 0, height - 8,
-                        session.TrackColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::BottomCorner, DirectionReverse(direction), 0,
+                        height - 8, session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15385), { 12, 0, height },
                         { { 12, 0, height }, { 3, 16, 119 } });
@@ -2772,9 +2775,9 @@ static void LoopingRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15370), { 16, 0, height },
                         { { 16, 0, height }, { 2, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickAltCentred, MetalSupportPlace::RightCorner, 0, height - 8,
-                        session.TrackColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::BottomCorner, DirectionReverse(direction), 0,
+                        height - 8, session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15387), { 16, 0, height },
                         { { 16, 0, height }, { 2, 16, 119 } });
@@ -2783,8 +2786,9 @@ static void LoopingRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15381), { 16, 16, height },
                         { { 16, 16, height }, { 2, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::Thick, MetalSupportPlace::BottomCorner, 0, height - 8, session.TrackColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::BottomCorner, DirectionReverse(direction), 0,
+                        height - 8, session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15384), { 16, 16, height },
                         { { 16, 16, height }, { 2, 16, 119 } });
@@ -2793,9 +2797,9 @@ static void LoopingRCTrackRightVerticalLoop(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15373), { 10, 16, height },
                         { { 10, 16, height }, { 4, 16, 119 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ThickAlt, MetalSupportPlace::LeftCorner, 0, height - 8,
-                        session.TrackColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, MetalSupportType::Thick, MetalSupportPlace::BottomCorner, DirectionReverse(direction), 0,
+                        height - 8, session.TrackColours);
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(15386), { 10, 16, height },
                         { { 10, 16, height }, { 4, 16, 119 } });
