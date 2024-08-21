@@ -834,11 +834,15 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
 
             if (!_footpathPlaceCtrlState)
             {
-                mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
-                if (mapCoords.IsNull())
+                auto info = GetMapCoordinatesFromPos(
+                    screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
+
+                if (info.SpriteType == ViewportInteractionItem::None)
                     return std::nullopt;
 
+                mapCoords = info.Loc;
                 _footpathPlaceZ = 0;
+
                 if (_footpathPlaceShiftState)
                 {
                     auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
