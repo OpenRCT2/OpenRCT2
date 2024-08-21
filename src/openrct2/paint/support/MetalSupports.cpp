@@ -701,6 +701,7 @@ bool MetalBSupportsPaintSetupRotated(
 
 static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction)
 {
+    assert(direction < kNumOrthogonalDirections);
     return kMetalSupportGraphicRotated[EnumValue(supportType)][direction];
 }
 
