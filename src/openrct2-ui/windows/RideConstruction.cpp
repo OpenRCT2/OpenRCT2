@@ -2928,7 +2928,12 @@ static Widget _rideConstructionWidgets[] = {
         {
             if (im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
-                auto info = GetMapCoordinatesFromPos(screenCoords, 0xFCCA);
+                auto interactionFlags = EnumsToFlags(
+                    ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Footpath,
+                    ViewportInteractionItem::PathAddition, ViewportInteractionItem::LargeScenery,
+                    ViewportInteractionItem::Label, ViewportInteractionItem::Banner);
+
+                auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
                 if (info.SpriteType != ViewportInteractionItem::None)
                 {
                     _trackPlaceCtrlZ = info.Element->GetBaseZ();
