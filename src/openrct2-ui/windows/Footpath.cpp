@@ -779,7 +779,12 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
             {
                 if (im.IsModifierKeyPressed(ModifierKey::ctrl))
                 {
-                    auto info = GetMapCoordinatesFromPos(screenCoords, 0xFCCA);
+                    constexpr auto interactionFlags = EnumsToFlags(
+                        ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
+                        ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
+                        ViewportInteractionItem::LargeScenery);
+
+                    auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
                     if (info.SpriteType != ViewportInteractionItem::None)
                     {
                         _footpathPlaceCtrlZ = info.Element->GetBaseZ();
