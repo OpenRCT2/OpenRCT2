@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include <memory>
-#include <vector>
+#include "../core/MemoryStream.h"
+
+#include <cstdint>
 
 /**
  * The type of encoding / compression for a sawyer encoded chunk.
@@ -29,22 +30,22 @@ enum class SAWYER_ENCODING : uint8_t
 class SawyerChunk final
 {
 private:
-    std::vector<uint8_t> _data;
+    OpenRCT2::MemoryStream _data;
     SAWYER_ENCODING _encoding = SAWYER_ENCODING::NONE;
 
 public:
     const void* GetData() const
     {
-        return _data.data();
+        return _data.GetData();
     }
     size_t GetLength() const
     {
-        return _data.size();
+        return _data.GetLength();
     }
     SAWYER_ENCODING GetEncoding() const
     {
         return _encoding;
     }
 
-    SawyerChunk(SAWYER_ENCODING encoding, std::vector<uint8_t>&& data);
+    SawyerChunk(SAWYER_ENCODING encoding, OpenRCT2::MemoryStream&& data);
 };
