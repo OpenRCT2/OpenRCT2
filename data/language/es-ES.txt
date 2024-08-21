@@ -3728,6 +3728,9 @@ STR_6652    :Ventana de Error
 STR_6653    :Mostrando todas las fuentes
 STR_6654    :Mostrando {POP16}{UINT16} fuentes
 STR_6655    :Sólo ‘{POP16}{STRINGID}’
+STR_6656    :Eliminar todas las vallas del parque
+STR_6657    :Terreno No Adquirido
+STR_6658    :Establecer terreno como no adquirido por el parque ni disponible para compra
 
 ##############
 # Escenarios #

@@ -2602,8 +2602,8 @@ STR_5357    :{BLACK}Naŭzotolero:
 STR_5358    :{BLACK}Veziko:
 STR_5359    :Forigi gastojn
 STR_5360    :Forigas ĉiujn gastojn el la mapo
-STR_5361    :Doni al ĉiu gasto:
-STR_5362    :{BLACK}Agordi preferatajn intensojn de atrakcioj por ĉiu gasto al:
+STR_5361    :Aldoni al inventaro de gastoj:
+STR_5362    :{BLACK}Preferataj intensoj de atrakcioj:
 STR_5363    :Pli ol 1
 STR_5364    :Malpli ol 15
 STR_5365    :{BLACK}Rapideco de dungitaro:
@@ -2633,7 +2633,7 @@ STR_5457    :Malŝalti limojn de apogiloj
 STR_5458    :Turni dekstrumen
 STR_5459    :Turni maldekstrumen
 STR_5460    :Turni vidon maldekstrumen
-STR_5461    :Agordi parametrojn de gastoj
+STR_5461    :Agordi parametrojn por ĉiuj gastoj
 STR_5462    :{CURRENCY}
 STR_5463    :Celo: Amuzi vin!
 STR_5464    :Ĝenerala
@@ -3731,6 +3731,14 @@ STR_6659    :Gastoj ignoras prezojn
 STR_6660    :Gastoj ignoros la prezojn de atrakcioj kaj budoj.
 STR_6661    :Hazardigi ĉiujn
 STR_6662    :Hazardigi kolorojn por ĉiu trajno aŭ veturilo.
+STR_6663    :Trompoj de dato
+STR_6664    :Montri trompojn de dato
+STR_6665    :Trompoj de naturo/vetero
+STR_6666    :Montri trompojn de naturo/vetero
+STR_6667    :Faŭno
+STR_6668    :Trompoj de dungitaro
+STR_6669    :Montri trompojn de dungitaro
+STR_6670    :Konduto de gastoj
 
 #############
 # Scenarios #
