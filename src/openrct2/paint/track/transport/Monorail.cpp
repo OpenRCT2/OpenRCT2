@@ -945,7 +945,8 @@ static void PaintMonorailTrackRightQuarterTurn3Tiles(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, monorail_track_pieces_flat_quarter_turn_3_tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::SquareFlat);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Square, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {

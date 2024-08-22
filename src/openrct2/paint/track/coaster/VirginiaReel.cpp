@@ -430,7 +430,8 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 2, height, direction, trackSequence, session.TrackColours,
         virginia_reel_track_pieces_flat_quarter_turn_3_tiles);
-    TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, height, TunnelType::SquareFlat, direction, trackSequence);
+    TrackPaintUtilLeftQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Square, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {

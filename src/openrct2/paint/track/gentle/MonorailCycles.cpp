@@ -230,7 +230,8 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles);
-    TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, height, TunnelType::StandardFlat, direction, trackSequence);
+    TrackPaintUtilLeftQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Standard, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {

@@ -526,7 +526,8 @@ static void WoodenWildMouseTrackRightQuarterTurn3(
     };
 
     TrackPaintUtilRightQuarterTurn3TilesPaint4(session, height, direction, trackSequence, session.TrackColours, imageIds);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::StandardFlat);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Standard, TunnelSubType::Flat, height, direction, trackSequence);
 
     DrawSupportForSequenceA<TrackElemType::RightQuarterTurn3Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -587,7 +588,7 @@ static void WoodenWildMouseTrackLeftQuarterTurn1(
     DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn1Tile>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, direction, height, 0, TunnelType::StandardFlat, 0, TunnelType::StandardFlat);
+        session, TunnelGroup::Standard, direction, height, 0, TunnelSubType::Flat, 0, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }

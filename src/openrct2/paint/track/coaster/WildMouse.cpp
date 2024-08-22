@@ -534,7 +534,8 @@ static void WildMouseTrackRightQuarterTurn3(
     };
 
     TrackPaintUtilRightQuarterTurn3TilesPaint3(session, height, direction, trackSequence, session.TrackColours, imageIds);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::StandardFlat);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Standard, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -598,7 +599,7 @@ static void WildMouseTrackRightQuarterTurn325DegDown(
     }
 
     TrackPaintUtilRightQuarterTurn3Tiles25DegDownTunnel(
-        session, height, direction, trackSequence, TunnelType::StandardSlopeEnd, TunnelType::StandardSlopeStart);
+        session, TunnelGroup::Standard, height, direction, trackSequence, TunnelSubType::SlopeEnd, TunnelSubType::SlopeStart);
 
     switch (trackSequence)
     {
@@ -668,7 +669,7 @@ static void WildMouseTrackRightQuarterTurn325DegUp(
     }
 
     TrackPaintUtilRightQuarterTurn3Tiles25DegUpTunnel(
-        session, height, direction, trackSequence, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd);
+        session, TunnelGroup::Standard, height, direction, trackSequence, TunnelSubType::SlopeStart, TunnelSubType::SlopeEnd);
 
     switch (trackSequence)
     {
@@ -753,7 +754,7 @@ static void WildMouseTrackLeftQuarterTurn1(
     }
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, direction, height, 0, TunnelType::StandardFlat, 0, TunnelType::StandardFlat);
+        session, TunnelGroup::Standard, direction, height, 0, TunnelSubType::Flat, 0, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(

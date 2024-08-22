@@ -1408,7 +1408,8 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
         PaintAddImageAsChild(
             session, imageId, { offset, height }, { boundsOffset + CoordsXYZ{ 0, 0, height }, { boundsLength, 3 } });
     }
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::SquareFlat);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Square, TunnelSubType::Flat, height, direction, trackSequence);
 
     int32_t blockedSegments = 0;
     switch (trackSequence)

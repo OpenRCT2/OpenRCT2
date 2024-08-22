@@ -393,7 +393,8 @@ static void PaintCarRideTrackRightQuarterTurn3Tiles(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, CarRideTrackPiecesQuarterTurn3Tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::StandardFlat);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Standard, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -463,7 +464,7 @@ static void PaintCarRideTrackLeftQuarterTurn1Tile(
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
 
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, direction, height, 0, TunnelType::StandardFlat, 0, TunnelType::StandardFlat);
+        session, TunnelGroup::Standard, direction, height, 0, TunnelSubType::Flat, 0, TunnelSubType::Flat);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

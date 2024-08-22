@@ -254,7 +254,8 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours,
         kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles);
-    TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, height, TunnelType::StandardFlat, direction, trackSequence);
+    TrackPaintUtilLeftQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Standard, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -320,7 +321,7 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn1Tile(
     TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 1, height, 0, direction, session.TrackColours, kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile);
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, direction, height, 0, TunnelType::StandardFlat, 0, TunnelType::StandardFlat);
+        session, TunnelGroup::Standard, direction, height, 0, TunnelSubType::Flat, 0, TunnelSubType::Flat);
 
     PaintUtilSetSegmentSupportHeight(
         session,

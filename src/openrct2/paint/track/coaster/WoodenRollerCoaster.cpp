@@ -1465,7 +1465,8 @@ static void WoodenRCTrackRightQuarterTurn5(
 
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[0][direction][trackSequence], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[1][direction][trackSequence], height);
-    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TunnelType::SquareFlat);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(
+        session, TunnelGroup::Square, TunnelSubType::Flat, height, direction, trackSequence);
 
     if (supportSubType[direction][trackSequence] != WoodenSupportSubType::Null)
     {
@@ -1943,7 +1944,8 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
 
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[0][direction][trackSequence], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[1][direction][trackSequence], height);
-    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TunnelType::SquareFlat);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(
+        session, TunnelGroup::Square, TunnelSubType::Flat, height, direction, trackSequence);
 
     if (supportSubType[direction][trackSequence] != WoodenSupportSubType::Null)
     {
@@ -7677,7 +7679,7 @@ static void WoodenRCTrackLeftQuarterTurn160DegUp(
             break;
     }
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, direction, height, -8, TunnelType::SquareSlopeStart, +56, TunnelType::SquareSlopeEnd);
+        session, TunnelGroup::Square, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -7748,7 +7750,7 @@ static void WoodenRCTrackRightQuarterTurn160DegUp(
             break;
     }
     TrackPaintUtilRightQuarterTurn1TileTunnel(
-        session, direction, height, -8, TunnelType::SquareSlopeStart, +56, TunnelType::SquareSlopeEnd);
+        session, TunnelGroup::Square, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }

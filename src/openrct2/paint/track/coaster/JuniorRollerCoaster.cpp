@@ -3246,7 +3246,8 @@ static void JuniorRCRightQuarterTurn3TilesPaintSetup(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_flat_quarter_turn_3_tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::StandardFlat);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Standard, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -3354,7 +3355,8 @@ static void JuniorRCRightQuarterTurn3TilesBankPaintSetup(
         session, thickness[direction][trackSequence], height, direction, trackSequence, session.TrackColours,
         junior_rc_track_pieces_banked_quarter_turn_3_tiles, nullptr, junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths,
         junior_rc_right_quarter_turn_3_tiles_bank_offsets);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::StandardFlat);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Standard, TunnelSubType::Flat, height, direction, trackSequence);
 
     if (direction == 1 && trackSequence == 3)
     {

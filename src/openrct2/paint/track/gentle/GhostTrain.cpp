@@ -21,6 +21,12 @@
 
 using namespace OpenRCT2;
 
+void TrackPaintUtilLeftQuarterTurn1TileTunnel(
+    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, TunnelType startTunnel,
+    int8_t endOffset, TunnelType endTunnel);
+void TrackPaintUtilRightQuarterTurn3TilesTunnel(
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType);
+
 enum
 {
     SprGhostTrainTrackFlatSwNe = 28821,

@@ -798,7 +798,8 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TunnelType::SquareFlat);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(
+        session, TunnelGroup::Square, TunnelSubType::Flat, height, direction, trackSequence);
 
     if (_supportType[direction][trackSequence] != WoodenSupportSubType::Null)
     {
@@ -962,7 +963,8 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::SquareFlat);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Square, TunnelSubType::Flat, height, direction, trackSequence);
 
     if (trackSequence == 0 || trackSequence == 3)
     {

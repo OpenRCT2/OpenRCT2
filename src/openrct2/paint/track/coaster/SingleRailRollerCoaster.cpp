@@ -7261,7 +7261,7 @@ namespace OpenRCT2::SingleRailRC
                 break;
         }
         TrackPaintUtilLeftQuarterTurn1TileTunnel(
-            session, direction, height, -8, TunnelType::StandardSlopeStart, +56, TunnelType::StandardSlopeEnd);
+            session, TunnelGroup::Standard, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
@@ -7306,7 +7306,7 @@ namespace OpenRCT2::SingleRailRC
                 break;
         }
         TrackPaintUtilRightQuarterTurn1TileTunnel(
-            session, direction, height, -8, TunnelType::StandardSlopeStart, +56, TunnelType::StandardSlopeEnd);
+            session, TunnelGroup::Standard, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104);
     }

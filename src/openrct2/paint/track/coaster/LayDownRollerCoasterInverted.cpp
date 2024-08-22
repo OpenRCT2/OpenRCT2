@@ -2917,7 +2917,7 @@ static void LayDownRCTrackLeftQuarterTurn160DegUp(
     }
 
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, direction, height, -8, TunnelType::StandardSlopeStart, +56, TunnelType::StandardSlopeEnd);
+        session, TunnelGroup::Standard, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -2964,7 +2964,7 @@ static void LayDownRCTrackRightQuarterTurn160DegUp(
     }
 
     TrackPaintUtilRightQuarterTurn1TileTunnel(
-        session, direction, height, -8, TunnelType::StandardSlopeStart, +56, TunnelType::StandardSlopeEnd);
+        session, TunnelGroup::Standard, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }

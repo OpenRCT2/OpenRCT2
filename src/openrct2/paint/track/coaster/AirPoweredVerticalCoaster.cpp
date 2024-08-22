@@ -259,7 +259,8 @@ static void AirPoweredVerticalRCTrackRightQuarterTurn5(
 
     TrackPaintUtilRightQuarterTurn5TilesPaint3(session, height, direction, trackSequence, session.TrackColours, imageIds);
     TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(session, height, direction, trackSequence);
-    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TunnelType::SquareFlat);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(
+        session, TunnelGroup::Square, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -454,7 +455,8 @@ static void AirPoweredVerticalRCTrackBankedRightQuarterTurn5(
     }
 
     TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(session, height, direction, trackSequence);
-    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TunnelType::SquareFlat);
+    TrackPaintUtilRightQuarterTurn5TilesTunnel(
+        session, TunnelGroup::Square, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
