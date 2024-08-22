@@ -111,13 +111,31 @@ public:
         auto dataPtr = reinterpret_cast<uint8_t*>(ptr);
         auto dataSize = this->GetFileSize(index);
 
-        return std::vector<uint8_t>(dataPtr, dataPtr + dataSize);
+        auto res = std::vector<uint8_t>(dataPtr, dataPtr + dataSize);
+
+        Memory::Free(dataPtr);
+        return res;
     }
 
     std::unique_ptr<IStream> GetFileStream(std::string_view path) const override
     {
-        auto data = GetFileData(path);
-        return std::make_unique<MemoryStream>(std::move(data));
+        // retrieve the JNI environment.
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+
+        jclass zipClass = env->GetObjectClass(_zip);
+        jstring javaPath = env->NewStringUTF(path.data());
+        jmethodID indexMethod = env->GetMethodID(zipClass, "getFileIndex", "(Ljava/lang/String;)I");
+        jint index = env->CallIntMethod(_zip, indexMethod, javaPath);
+
+        jmethodID fileMethod = env->GetMethodID(zipClass, "getFile", "(I)J");
+        jlong ptr = env->CallLongMethod(_zip, fileMethod, index);
+
+        auto dataPtr = reinterpret_cast<uint8_t*>(ptr);
+        auto dataSize = this->GetFileSize(index);
+
+        // The Java code for getFile uses Java_io_openrct2_ZipArchive_allocBytes which
+        // allocates memory using Memory::Allocate so its safe for MemoryStream to take full ownershp.
+        return std::make_unique<MemoryStream>(dataPtr, dataSize, true);
     }
 
     void SetFileData(std::string_view path, std::vector<uint8_t>&& data) override
