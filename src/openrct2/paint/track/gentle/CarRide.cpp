@@ -177,11 +177,11 @@ static void PaintCarRideTrackFlat(
 
     if (direction == 0 || direction == 2)
     {
-        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
+        PaintUtilPushTunnelLeft(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
+        PaintUtilPushTunnelRight(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
     }
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
@@ -212,16 +212,16 @@ static void PaintCarRideTrack25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
             break;
     }
 
@@ -253,16 +253,16 @@ static void PaintCarRideTrackFlatTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
+            PaintUtilPushTunnelLeft(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelRight(session, height, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelLeft(session, height, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
+            PaintUtilPushTunnelRight(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
             break;
     }
 
@@ -294,16 +294,16 @@ static void PaintCarRideTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardFlat);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelGroup::Standard, TunnelSubType::Flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardFlatTo25Deg);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelGroup::Standard, TunnelSubType::FlatTo25Deg);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardFlatTo25Deg);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelGroup::Standard, TunnelSubType::FlatTo25Deg);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardFlat);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelGroup::Standard, TunnelSubType::Flat);
             break;
     }
 
@@ -370,11 +370,11 @@ static void PaintCarRideStation(
 
     if (direction == 0 || direction == 2)
     {
-        PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
     }
 
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
@@ -498,11 +498,11 @@ static void PaintCarRideTrackSpinningTunnel(
 
     if (direction == 0 || direction == 2)
     {
-        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
+        PaintUtilPushTunnelLeft(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
+        PaintUtilPushTunnelRight(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
     }
 
     WoodenASupportsPaintSetupRotated(
@@ -539,16 +539,16 @@ static void PaintCarRideTrack60DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 56, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 56, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 56, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 56, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
             break;
     }
 
@@ -598,16 +598,16 @@ static void PaintCarRideTrack25DegUpTo60DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 24, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 24, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
             break;
     }
 
@@ -657,16 +657,16 @@ static void PaintCarRideTrack60DegUpTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 24, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 24, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
             break;
     }
 
@@ -725,11 +725,11 @@ static void PaintCarRideTrackLogBumps(
 
     if (direction == 0 || direction == 2)
     {
-        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
+        PaintUtilPushTunnelLeft(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
+        PaintUtilPushTunnelRight(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
     }
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
