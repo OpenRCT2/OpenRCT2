@@ -787,7 +787,10 @@ static constexpr uint8_t ConstructionPreviewImages[][4] = {
                     auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
                     if (info.SpriteType != ViewportInteractionItem::None)
                     {
-                        _footpathPlaceCtrlZ = info.Element->GetBaseZ();
+                        const bool allowInvalidHeights = GetGameState().Cheats.AllowTrackPlaceInvalidHeights;
+                        const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
+
+                        _footpathPlaceCtrlZ = Floor2(info.Element->GetBaseZ(), heightStep);
                         _footpathPlaceCtrlState = true;
                     }
                 }
