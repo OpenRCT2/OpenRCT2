@@ -910,7 +910,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
     }
 
     RideConstructionInvalidateCurrentTrack();
-    if (_rideConstructionState != RideConstructionState::EntranceExit || isToolActive(WindowClass::RideConstruction))
+    if (_rideConstructionState != RideConstructionState::EntranceExit || !isToolActive(WindowClass::RideConstruction))
     {
         // Replace entrance / exit
         ToolSet(
