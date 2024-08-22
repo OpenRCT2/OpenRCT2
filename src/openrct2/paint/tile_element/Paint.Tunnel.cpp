@@ -7,6 +7,16 @@
 
 using namespace OpenRCT2;
 
+using TunnelGroupMap = std::array<TunnelType, kTunnelSubTypeCount>;
+static std::array<TunnelGroupMap, kTunnelGroupCount> tunnelMap = {
+    TunnelGroupMap{ TunnelType::StandardFlat, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd,
+                    TunnelType::StandardFlatTo25Deg },
+    TunnelGroupMap{ TunnelType::SquareFlat, TunnelType::SquareSlopeStart, TunnelType::SquareSlopeEnd,
+                    TunnelType::SquareFlatTo25Deg },
+    TunnelGroupMap{ TunnelType::InvertedFlat, TunnelType::InvertedSlopeStart, TunnelType::InvertedSlopeEnd,
+                    TunnelType::InvertedFlatTo25Deg },
+};
+
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type)
 {
     session.LeftTunnels[session.LeftTunnelCount] = { static_cast<uint8_t>((height / 16)), type };
@@ -182,4 +192,9 @@ void TrackPaintUtilLeftQuarterTurn1TileTunnel(
             PaintUtilPushTunnelLeft(session, baseHeight + endOffset, endTunnel);
             break;
     }
+}
+
+TunnelType GetTunnelType(TunnelGroup tunnelGroup, TunnelSubType tunnelSubType)
+{
+    return tunnelMap[EnumValue(tunnelGroup)][EnumValue(tunnelSubType)];
 }
