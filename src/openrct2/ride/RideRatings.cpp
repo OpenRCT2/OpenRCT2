@@ -28,6 +28,8 @@
 
 #include <iterator>
 
+#define ORIGINAL_RATINGS
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::TrackMetaData;
