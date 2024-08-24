@@ -23,6 +23,7 @@
 - Fix: [#22520] Virtual floor no longer appears when holding modifier keys during track construction.
 - Fix: [#22582] Lighting effects are not enabled/disabled correctly, making the game appear frozen.
 - Fix: [#22593] Memory leak on Android builds when reading zip files.
+- Fix: [#22625] Fix compilation with orignal ride ratings.
 
 0.4.13 (2024-08-04)
 ------------------------------------------------------------------------
