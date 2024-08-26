@@ -51,35 +51,75 @@ enum class TunnelType : uint8_t
 };
 constexpr uint8_t kRegularTunnelTypeCount = 16;
 
+enum class TunnelGroup : uint8_t
+{
+    Standard = 0,
+    Square = 1,
+    Inverted = 2,
+};
+constexpr uint8_t kTunnelGroupCount = 3;
+
+enum class TunnelSubType : uint8_t
+{
+    Flat = 0,
+    SlopeStart = 1,
+    SlopeEnd = 2,
+    FlatTo25Deg = 3,
+};
+constexpr uint8_t kTunnelSubTypeCount = 4;
+
 struct TunnelEntry
 {
     uint8_t height;
     TunnelType type;
 };
 
+TunnelType GetTunnelType(TunnelGroup tunnelGroup, TunnelSubType tunnelSubType);
+
 void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, TunnelType type);
 void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, TunnelType type);
 void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height);
 void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, TunnelType type);
 
+inline void PaintUtilPushTunnelLeft(
+    PaintSession& session, uint16_t height, TunnelGroup tunnelGroup, TunnelSubType tunnelSubType)
+{
+    PaintUtilPushTunnelLeft(session, height, GetTunnelType(tunnelGroup, tunnelSubType));
+}
+
+inline void PaintUtilPushTunnelRight(
+    PaintSession& session, uint16_t height, TunnelGroup tunnelGroup, TunnelSubType tunnelSubType)
+{
+    PaintUtilPushTunnelRight(session, height, GetTunnelType(tunnelGroup, tunnelSubType));
+}
+
+inline void PaintUtilPushTunnelRotated(
+    PaintSession& session, uint8_t direction, uint16_t height, TunnelGroup tunnelGroup, TunnelSubType tunnelSubType)
+{
+    PaintUtilPushTunnelRotated(session, direction, height, GetTunnelType(tunnelGroup, tunnelSubType));
+}
+
 void TrackPaintUtilRightQuarterTurn5TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType);
+    PaintSession& session, TunnelGroup group, TunnelSubType tunnelType, int16_t height, Direction direction,
+    uint8_t trackSequence);
 
 void TrackPaintUtilRightQuarterTurn3Tiles25DegUpTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType0,
-    TunnelType tunnelType3);
+    PaintSession& session, TunnelGroup group, int16_t height, Direction direction, uint8_t trackSequence,
+    TunnelSubType tunnelType0, TunnelSubType tunnelType3);
 void TrackPaintUtilRightQuarterTurn3Tiles25DegDownTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType0,
-    TunnelType tunnelType3);
+    PaintSession& session, TunnelGroup group, int16_t height, Direction direction, uint8_t trackSequence,
+    TunnelSubType tunnelType0, TunnelSubType tunnelType3);
 
-void TrackPaintUtilRightQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, TunnelType tunnelType);
 void TrackPaintUtilLeftQuarterTurn3TilesTunnel(
-    PaintSession& session, int16_t height, TunnelType tunnelType, Direction direction, uint8_t trackSequence);
+    PaintSession& session, TunnelGroup group, TunnelSubType tunnelType, int16_t height, Direction direction,
+    uint8_t trackSequence);
+void TrackPaintUtilRightQuarterTurn3TilesTunnel(
+    PaintSession& session, TunnelGroup group, TunnelSubType tunnelType, int16_t height, Direction direction,
+    uint8_t trackSequence);
 
 void TrackPaintUtilLeftQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, TunnelType startTunnel,
-    int8_t endOffset, TunnelType endTunnel);
+    PaintSession& session, TunnelGroup group, Direction direction, uint16_t baseHeight, int8_t startOffset,
+    TunnelSubType startTunnel, int8_t endOffset, TunnelSubType endTunnel);
 void TrackPaintUtilRightQuarterTurn1TileTunnel(
-    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, TunnelType startTunnel,
-    int8_t endOffset, TunnelType endTunnel);
+    PaintSession& session, TunnelGroup group, Direction direction, uint16_t baseHeight, int8_t startOffset,
+    TunnelSubType startTunnel, int8_t endOffset, TunnelSubType endTunnel);
