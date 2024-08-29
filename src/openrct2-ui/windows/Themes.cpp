@@ -17,6 +17,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
@@ -72,10 +73,12 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 320;
     static constexpr int32_t WH = 107;
 
+    const uint16_t _window_header_size = 152;
+
     // clang-format off
 static Widget _themesWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {320,  64}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                                     ), // tab content panel
+    MakeWidget({  0, 43}, {320,  64}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                       ), // tab content panel
     MakeTab   ({  3, 17},                                                                                                        STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab
     MakeTab   ({ 34, 17},                                                                                                        STR_THEMES_TAB_MAIN_TIP            ), // main ui tab
     MakeTab   ({ 65, 17},                                                                                                        STR_THEMES_TAB_PARK_TIP            ), // park tab
@@ -85,7 +88,7 @@ static Widget _themesWidgets[] = {
     MakeTab   ({189, 17},                                                                                                        STR_THEMES_TAB_MISC_TIP            ), // misc tab
     MakeTab   ({220, 17},                                                                                                        STR_THEMES_TAB_PROMPTS_TIP         ), // prompts tab
     MakeTab   ({251, 17},                                                                                                        STR_THEMES_TAB_FEATURES_TIP        ), // features tab
-    MakeWidget({  5, 46}, {152,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
+    MakeWidget({  5, 46}, {_window_header_size,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
     MakeWidget({157, 46}, { 79,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
     MakeWidget({236, 46}, { 80,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_TRANSPARENCY                                                          ), // Transparency header
     MakeWidget({125, 60}, {175,  12}, WindowWidgetType::DropdownMenu,     WindowColour::Secondary                                                                                     ), // Preset colour schemes
@@ -707,6 +710,12 @@ static WindowClass window_themes_tab_7_classes[] = {
                 WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
                 int32_t numColours = ThemeDescGetNumColours(wc);
 
+                // add colour to account for text wrapping
+                if (numColours == 1 && GetTextWidth(_colour_index_1) >= _window_header_size)
+                {
+                    numColours++;
+                }
+
                 // position of y relative to the current class
                 int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_colour_index_1 + 1) - numColours) * (_button_size + 2);
                 _colour_index_2 = (y2 / _button_size);
@@ -775,6 +784,15 @@ static WindowClass window_themes_tab_7_classes[] = {
                 WindowClass wc = GetWindowClassTabIndex(i);
                 int32_t numColours = ThemeDescGetNumColours(wc);
 
+                // make an empty row to account for text wrapping
+                bool empty_row = false;
+
+                if (numColours == 1 && GetTextWidth(i) >= _window_header_size)
+                {
+                    numColours++;
+                    empty_row = true;
+                }
+
                 if (screenCoords.y > dpi.y + dpi.height)
                 {
                     break;
@@ -811,7 +829,14 @@ static WindowClass window_themes_tab_7_classes[] = {
 
                     for (uint8_t j = 0; j < numColours; j++)
                     {
-                        DrawTextBasic(dpi, { 2, screenCoords.y + 4 }, ThemeDescGetName(wc), {}, { colours[1] });
+                        DrawTextWrapped(
+                            dpi, { 2, screenCoords.y + 4 }, _window_header_size, ThemeDescGetName(wc), {}, { colours[1] });
+
+                        // Don't draw the empty row
+                        if (empty_row && j == 1)
+                        {
+                            break;
+                        }
 
                         auto colour = ThemeGetColour(wc, j);
                         const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
@@ -853,7 +878,14 @@ static WindowClass window_themes_tab_7_classes[] = {
             int8_t total = 0;
             for (int32_t i = 0; i < GetColourSchemeTabCount(); ++i)
             {
-                total += ThemeDescGetNumColours(GetWindowClassTabIndex(i));
+                uint8_t num_colours = ThemeDescGetNumColours(GetWindowClassTabIndex(i));
+                total += num_colours;
+
+                if (num_colours == 1 && GetTextWidth(i) >= _window_header_size)
+                {
+                    total++;
+                }
+
                 if ((total * (_button_size + 2)) >= y)
                 {
                     return i;
@@ -862,12 +894,31 @@ static WindowClass window_themes_tab_7_classes[] = {
             return -1;
         }
 
+        int32_t GetTextWidth(int8_t index)
+        {
+            WindowClass wc = GetWindowClassTabIndex(index);
+            Formatter ft{};
+
+            const void* args{};
+            StringId format = ThemeDescGetName(wc);
+
+            std::string str = FormatStringIDLegacy(format, args);
+
+            return GfxGetStringWidth(str, FontStyle::Medium);
+        }
+
         int8_t GetTotalColoursUpTo(int8_t index)
         {
             int8_t total = 0;
-            for (int32_t i = 0; i < (index); ++i)
+            for (int32_t i = 0; i < index; ++i)
             {
-                total += ThemeDescGetNumColours(GetWindowClassTabIndex(i));
+                uint8_t num_colours = ThemeDescGetNumColours(GetWindowClassTabIndex(i));
+
+                if (num_colours == 1 && GetTextWidth(i) >= _window_header_size)
+                {
+                    num_colours++;
+                }
+                total += num_colours;
             }
             return total;
         }
