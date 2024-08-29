@@ -204,70 +204,30 @@ private:
         LOG_VERBOSE("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
         try
         {
+            auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+            std::unique_ptr<IParkImporter> importer;
             std::string extension = Path::GetExtension(path);
+
             if (String::IEquals(extension, ".park"))
-            {
-                // OpenRCT2 park
-                bool result = false;
-                try
-                {
-                    auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
-                    auto importer = ParkImporter::CreateParkFile(objRepository);
-                    importer->LoadScenario(path, true);
-                    if (importer->GetDetails(entry))
-                    {
-                        entry->Path = path;
-                        entry->Timestamp = timestamp;
-                        result = true;
-                    }
-                }
-                catch (const std::exception&)
-                {
-                }
-                return result;
-            }
+                importer = ParkImporter::CreateParkFile(objRepository);
+            else if (String::IEquals(extension, ".sc4"))
+                importer = ParkImporter::CreateS4();
+            else
+                importer = ParkImporter::CreateS6(objRepository);
 
-            if (String::IEquals(extension, ".sc4"))
+            if (importer)
             {
-                // RCT1 scenario
-                bool result = false;
-                try
-                {
-                    auto s4Importer = ParkImporter::CreateS4();
-                    s4Importer->LoadScenario(path, true);
-                    if (s4Importer->GetDetails(entry))
-                    {
-                        entry->Path = path;
-                        entry->Timestamp = timestamp;
-                        result = true;
-                    }
-                }
-                catch (const std::exception&)
-                {
-                }
-                return result;
-            }
-
-            // RCT2 or RCTC scenario
-            bool result = false;
-            try
-            {
-                auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
-                auto s6Importer = ParkImporter::CreateS6(objRepository);
-                s6Importer->LoadScenario(path, true);
-                if (s6Importer->GetDetails(entry))
+                importer->LoadScenario(path, true);
+                if (importer->GetDetails(entry))
                 {
                     entry->Path = path;
                     entry->Timestamp = timestamp;
-                    result = true;
+                    return true;
                 }
-            }
-            catch (const std::exception&)
-            {
             }
 
             LOG_VERBOSE("%s is not a scenario", path.c_str());
-            return result;
+            return false;
         }
         catch (const std::exception&)
         {
