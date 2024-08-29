@@ -22,18 +22,14 @@
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window_internal.h"
-#include "../management/Finance.h"
-#include "../network/network.h"
 #include "../object/FootpathObject.h"
 #include "../object/FootpathRailingsObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectEntryManager.h"
-#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
 #include "../paint/VirtualFloor.h"
 #include "../ride/RideData.h"
-#include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../util/Util.h"
@@ -41,8 +37,6 @@
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
-#include "Park.h"
-#include "Scenery.h"
 #include "Surface.h"
 #include "TileElement.h"
 
@@ -173,7 +167,7 @@ money64 FootpathProvisionalSet(
             VirtualFloorSetHeight(0);
         }
         else if (
-            gFootpathConstructSlope == kTileSlopeFlat || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
+            gProvisionalFootpath.Slope == kTileSlopeFlat || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
         {
             // Going either straight on, or down.
             VirtualFloorSetHeight(gProvisionalFootpath.Position.z);
