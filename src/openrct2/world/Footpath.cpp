@@ -173,7 +173,7 @@ money64 FootpathProvisionalSet(
             VirtualFloorSetHeight(0);
         }
         else if (
-            gFootpathConstructSlope == kTileSlopeFlat || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
+            gProvisionalFootpath.Slope == kTileSlopeFlat || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
         {
             // Going either straight on, or down.
             VirtualFloorSetHeight(gProvisionalFootpath.Position.z);
