@@ -39,6 +39,7 @@
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/TerrainSurfaceObject.h"
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
@@ -924,4 +925,76 @@ bool ObjectiveNeedsMoney(const uint8_t objective)
     }
 
     return false;
+}
+
+static PaletteIndex getPreviewColourByTilePos(const TileCoordsXY& pos)
+{
+    PaletteIndex colour = PALETTE_INDEX_0;
+    auto tileElement = MapGetFirstElementAt(pos);
+    do
+    {
+        switch (tileElement->GetType())
+        {
+            case TileElementType::Surface:
+            {
+                auto* surfaceElement = tileElement->AsSurface();
+                if (surfaceElement == nullptr)
+                {
+                    colour = PALETTE_INDEX_0;
+                    continue;
+                }
+
+                if (surfaceElement->GetWaterHeight() > 0)
+                {
+                    colour = PALETTE_INDEX_195;
+                    continue;
+                }
+
+                const auto* surfaceObject = surfaceElement->GetSurfaceObject();
+                if (surfaceObject != nullptr)
+                {
+                    colour = surfaceObject->MapColours[0];
+                }
+                break;
+            }
+
+            case TileElementType::Path:
+            case TileElementType::Track:
+            {
+                colour = PALETTE_INDEX_14; // 41
+                break;
+            }
+
+            case TileElementType::SmallScenery:
+            case TileElementType::Entrance:
+            case TileElementType::LargeScenery:
+            {
+                colour = PALETTE_INDEX_62; // 64
+                break;
+            }
+
+            default:
+                break;
+        }
+    } while (!(tileElement++)->IsLastForTile());
+
+    return colour;
+}
+
+// 0x0046DB4C
+void GeneratePreviewImage(const GameState_t& gameState, ScenarioIndexEntry& entry)
+{
+    const auto kPreviewSize = sizeof(entry.preview[0]);
+    const auto kMapSkipFactor = Ceil2(gameState.MapSize.x, kPreviewSize) / kPreviewSize;
+
+    for (auto y = 0U; y < kPreviewSize; y++)
+    {
+        for (auto x = 0U; x < kPreviewSize; x++)
+        {
+            auto pos = TileCoordsXY(gameState.MapSize.x - (x + 1) * kMapSkipFactor + 1, y * kMapSkipFactor + 1);
+
+            // TODO: 2D array
+            entry.preview[y * kPreviewSize + x] = getPreviewColourByTilePos(pos);
+        }
+    }
 }

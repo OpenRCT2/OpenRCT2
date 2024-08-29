@@ -179,3 +179,6 @@ void ScenarioFailure(OpenRCT2::GameState_t& gameState);
 void ScenarioSuccess(OpenRCT2::GameState_t& gameState);
 void ScenarioSuccessSubmitName(OpenRCT2::GameState_t& gameState, const char* name);
 void ScenarioAutosaveCheck();
+
+struct ScenarioIndexEntry;
+void GeneratePreviewImage(const OpenRCT2::GameState_t& gameState, ScenarioIndexEntry& entry);

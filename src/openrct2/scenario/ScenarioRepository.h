@@ -61,6 +61,9 @@ struct ScenarioIndexEntry
     utf8 InternalName[64]; // Untranslated name
     utf8 Name[64];         // Translated name
     utf8 Details[256];
+
+    // TODO: 2D array
+    uint8_t preview[128 * 128];
 };
 
 namespace OpenRCT2
