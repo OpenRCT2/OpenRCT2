@@ -63,6 +63,7 @@ struct ScenarioIndexEntry
     utf8 Details[256];
 
     // TODO: 2D array
+    bool previewGenerated = false;
     uint8_t preview[128 * 128];
 };
 

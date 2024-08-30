@@ -12,7 +12,6 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../Game.h"
-#include "../GameState.h"
 #include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
@@ -179,6 +178,7 @@ protected:
         ds << item.Name;
         ds << item.Details;
 
+        ds << item.previewGenerated;
         ds << item.preview;
     }
 
@@ -225,8 +225,6 @@ private:
                 {
                     entry->Path = path;
                     entry->Timestamp = timestamp;
-
-                    GeneratePreviewImage(GetGameState(), *entry);
                     return true;
                 }
             }

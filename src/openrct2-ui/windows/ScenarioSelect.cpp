@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
@@ -164,8 +165,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            const ScenarioIndexEntry* scenario;
-
             DrawWidgets(dpi);
 
             StringId format = STR_WINDOW_COLOUR_2_STRINGID;
@@ -199,8 +198,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Return if no scenario highlighted
-            scenario = _highlightedScenario;
-            if (scenario == nullptr)
+            if (_highlightedScenario == nullptr)
             {
                 if (_showLockedInformation)
                 {
@@ -222,6 +220,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 return;
             }
+
+            const ScenarioIndexEntry* scenario = _highlightedScenario;
 
             // Scenario path
             if (Config::Get().general.DebuggingTools)
@@ -274,6 +274,46 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const char*>(completedByName.c_str());
                 ft.Add<money64>(scenario->Highscore->company_value);
                 screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
+            }
+
+            DrawPreviewImage(dpi, screenPos);
+        }
+
+        void DrawPreviewImage(DrawPixelInfo& dpi, ScreenCoordsXY screenPos)
+        {
+            const ScenarioIndexEntry* scenario = _highlightedScenario;
+
+            if (!scenario->previewGenerated)
+            {
+                // TODO: this needs to:
+                // - load the scenario to a temp game state,
+                // - swap it with the global one
+                // - call preview generation, storing in scenario index entry
+                // - save the scenario index to cache the preview
+                // - swap the global one back again
+
+                auto& tempState = GetGameState();
+                GeneratePreviewImage(tempState, const_cast<ScenarioIndexEntry&>(*scenario));
+            }
+
+            // Preview image
+            const auto imageId = ImageId(0);
+            auto* g1 = const_cast<G1Element*>(GfxGetG1Element(imageId));
+            if (g1 != nullptr)
+            {
+                // Temporarily substitute a G1 image with the data in the scenario index
+                const auto backupG1 = *g1;
+                *g1 = {};
+                g1->offset = const_cast<uint8_t*>(&scenario->preview[0]);
+                g1->width = 128;
+                g1->height = 128;
+
+                // Draw preview image and restore original G1 image.
+                GfxDrawSprite(dpi, imageId, screenPos);
+                *g1 = backupG1;
+
+                // Draw compass
+                // GfxDrawSprite(dpi, ImageIds::height_map_compass, screenPos);
             }
         }
 
