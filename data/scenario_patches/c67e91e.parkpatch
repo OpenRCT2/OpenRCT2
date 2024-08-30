@@ -1,0 +1,12 @@
+{
+    "scenario_name": "Crumbly Woods",
+    "sha256": "c67e91ee0fac0b377b81f73d3b41eadaf4bfdabd277344091d5b83a4ef4b2b3a",
+    "water": [
+        {
+            "height": 96,
+            "coordinates": [
+                [ 13, 83 ]
+            ]
+        }
+    ]
+}
