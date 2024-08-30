@@ -3740,7 +3740,7 @@ STR_6667    :Fauna
 STR_6668    :Staff cheats
 STR_6669    :Show staff cheats
 STR_6670    :Guest behaviour
-STR_6671    :Transparency
+STR_6671    :Transparent
 
 #############
 # Scenarios #
