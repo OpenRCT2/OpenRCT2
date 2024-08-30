@@ -182,7 +182,7 @@ namespace OpenRCT2::RCT1
             ImportRides();
             ImportRideMeasurements();
             ImportEntities();
-            ImportTileElements();
+            ImportTileElements(gameState);
             ImportPeepSpawns();
             ImportFinance(gameState);
             ImportResearch(gameState);
@@ -1517,7 +1517,7 @@ namespace OpenRCT2::RCT1
             return result;
         }
 
-        void ImportTileElements()
+        void ImportTileElements(GameState_t& gameState)
         {
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
@@ -1565,7 +1565,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            SetTileElements(std::move(tileElements));
+            SetTileElements(gameState, std::move(tileElements));
             FixEntrancePositions();
         }
 

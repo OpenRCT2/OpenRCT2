@@ -147,9 +147,8 @@ const std::vector<TileElement>& GetTileElements()
     return GetGameState().TileElements;
 }
 
-void SetTileElements(std::vector<TileElement>&& tileElements)
+void SetTileElements(GameState_t& gameState, std::vector<TileElement>&& tileElements)
 {
-    auto& gameState = GetGameState();
     gameState.TileElements = std::move(tileElements);
     _tileIndex = TilePointerIndex<TileElement>(
         kMaximumMapSizeTechnical, gameState.TileElements.data(), gameState.TileElements.size());
@@ -211,7 +210,7 @@ std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
     return newElements;
 }
 
-static void ReorganiseTileElements(size_t capacity)
+static void ReorganiseTileElements(GameState_t& gameState, size_t capacity)
 {
     ContextSetCurrentCursor(CursorID::ZZZ);
 
@@ -236,12 +235,19 @@ static void ReorganiseTileElements(size_t capacity)
         }
     }
 
-    SetTileElements(std::move(newElements));
+    SetTileElements(gameState, std::move(newElements));
+}
+
+static void ReorganiseTileElements(size_t capacity)
+{
+    auto& gameState = GetGameState();
+    ReorganiseTileElements(gameState, capacity);
 }
 
 void ReorganiseTileElements()
 {
-    ReorganiseTileElements(GetGameState().TileElements.size());
+    auto& gameState = GetGameState();
+    ReorganiseTileElements(gameState, gameState.TileElements.size());
 }
 
 static bool MapCheckFreeElementsAndReorganise(size_t numElementsOnTile, size_t numNewElements)
@@ -454,9 +460,9 @@ BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t positio
 void MapInit(const TileCoordsXY& size)
 {
     auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
-    SetTileElements(std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
     auto& gameState = GetGameState();
+    SetTileElements(gameState, std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
     gameState.GrassSceneryTileLoopPosition = 0;
     gameState.WidePathTileLoopPosition = {};
@@ -2294,7 +2300,8 @@ void ShiftMap(const TileCoordsXY& amount)
             }
         }
     }
-    SetTileElements(std::move(newElements));
+
+    SetTileElements(gameState, std::move(newElements));
     MapRemoveOutOfRangeElements();
 
     for (auto& spawn : gameState.PeepSpawns)

@@ -329,7 +329,7 @@ namespace OpenRCT2::RCT2
             ScenarioRandSeed(_s6.ScenarioSrand0, _s6.ScenarioSrand1);
 
             DetermineFlatRideStatus();
-            ImportTileElements();
+            ImportTileElements(gameState);
             ImportEntities();
 
             gameState.InitialCash = ToMoney64(_s6.InitialCash);
@@ -1162,7 +1162,7 @@ namespace OpenRCT2::RCT2
             dst->num_riders = numRiders;
         }
 
-        void ImportTileElements()
+        void ImportTileElements(GameState_t& gameState)
         {
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
@@ -1232,7 +1232,7 @@ namespace OpenRCT2::RCT2
                     }
                 }
             }
-            SetTileElements(std::move(tileElements));
+            SetTileElements(gameState, std::move(tileElements));
         }
 
         void ImportTileElement(TileElement* dst, const RCT12TileElement* src, bool invisible)
