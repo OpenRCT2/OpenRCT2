@@ -33,11 +33,16 @@ using namespace OpenRCT2::Scripting;
 
 namespace OpenRCT2
 {
-    static GameState_t _gameState{};
+    static auto _gameState = std::make_unique<GameState_t>();
 
     GameState_t& GetGameState()
     {
-        return _gameState;
+        return *_gameState;
+    }
+
+    void SwapGameState(std::unique_ptr<GameState_t>& otherState)
+    {
+        _gameState.swap(otherState);
     }
 
     /**
