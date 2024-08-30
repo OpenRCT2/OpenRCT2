@@ -710,7 +710,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                 WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
                 int32_t numColours = ThemeDescGetNumColours(wc);
 
-                // add colour to account for text wrapping
+                // If the window description wraps, make sure the row is high enough.
                 if (numColours == 1 && GetTextWidth(_colour_index_1) >= _window_header_size)
                 {
                     numColours++;
