@@ -284,17 +284,7 @@ namespace OpenRCT2::Ui::Windows
             const ScenarioIndexEntry* scenario = _highlightedScenario;
 
             if (!scenario->previewGenerated)
-            {
-                // TODO: this needs to:
-                // - load the scenario to a temp game state,
-                // - swap it with the global one
-                // - call preview generation, storing in scenario index entry
-                // - save the scenario index to cache the preview
-                // - swap the global one back again
-
-                auto& tempState = GetGameState();
-                GeneratePreviewImage(tempState, const_cast<ScenarioIndexEntry&>(*scenario));
-            }
+                GeneratePreviewImage(const_cast<ScenarioIndexEntry&>(*scenario));
 
             // Preview image
             const auto imageId = ImageId(0);

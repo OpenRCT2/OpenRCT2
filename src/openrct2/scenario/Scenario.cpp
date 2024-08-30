@@ -988,8 +988,37 @@ static PaletteIndex getPreviewColourByTilePos(const TileCoordsXY& pos)
 }
 
 // 0x0046DB4C
-void GeneratePreviewImage(const GameState_t& gameState, ScenarioIndexEntry& entry)
+void GeneratePreviewImage(ScenarioIndexEntry& entry)
 {
+    // TODO: this needs to:
+    // - load the scenario to a temp game state,
+    // - swap it with the global one
+    // - call preview generation, storing in scenario index entry
+    // - save the scenario index to cache the preview
+    // - swap the global one back again
+
+    GameState_t& tempState = GetGameState(); // {};
+
+    auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+    std::unique_ptr<IParkImporter> importer;
+    std::string extension = Path::GetExtension(entry.Path);
+
+    if (String::IEquals(extension, ".park"))
+        importer = ParkImporter::CreateParkFile(objRepository);
+    else if (String::IEquals(extension, ".sc4"))
+        importer = ParkImporter::CreateS4();
+    else
+        importer = ParkImporter::CreateS6(objRepository);
+
+    if (importer)
+    {
+        importer->LoadScenario(entry.Path, true);
+        importer->Import(tempState);
+    }
+
+    GameState_t& gameState = GetGameState();
+    // std::swap(tempState, gameState);
+
     const auto kPreviewSize = 128; // sizeof(entry.preview[0]);
     const auto kMapSkipFactor = Ceil2(gameState.MapSize.x, kPreviewSize) / kPreviewSize;
 
@@ -1005,4 +1034,5 @@ void GeneratePreviewImage(const GameState_t& gameState, ScenarioIndexEntry& entr
     }
 
     entry.previewGenerated = true;
+    // std::swap(tempState, gameState);
 }
