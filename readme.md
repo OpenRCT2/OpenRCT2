@@ -52,7 +52,7 @@ If you want to help translate the game to your language, please stop by the Loca
   - 4.4 - [Graphics](#44-graphics)
   - 4.5 - [Audio](#45-audio)
   - 4.6 - [Scenarios](#46-scenarios)
-- 5. [License](#5-license)
+- 5. [Licence](#5-licence)
 - 6. [More information](#6-more-information)
 - 7. [Sponsors](#7-sponsors)
 
@@ -70,9 +70,9 @@ RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly an
 
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/RollerCoaster_Tycoon_2_Triple_Thrill_Pack/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2). If you have the original RollerCoaster Tycoon and its expansion packs, you can [point OpenRCT2 to these](https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data) in order to play the original scenarios.
 
-[OpenRCT2.org](https://openrct2.org/downloads) offers pre-built builds and installers of the latest master and the develop branch. There is also a [launcher](https://github.com/IntelOrca/OpenLauncher/releases) available for Windows and Linux that will automatically update your build of the game so that you always have the latest version.
+Our website, [OpenRCT2.io](https://openrct2.io/download) offers portable builds and installers of the latest versions of the `master` and `develop` branches. There is also a [launcher](https://openrct2.io/download/launcher) available for Windows and Linux that will automatically update your build of the game so that you always have the latest version.
 
-For most Linux distributions, we recommend the [latest Flatpak stable release](https://flathub.org/apps/details/io.openrct2.OpenRCT2). When downloading from Flathub, you will always receive the latest updates regardless of which Linux distribution you use.
+Alternatively to using the launcher, for most Linux distributions, we recommend the [latest Flatpak stable release](https://flathub.org/apps/details/io.openrct2.OpenRCT2). When downloading from Flathub, you will always receive the latest updates regardless of which Linux distribution you use.
 
 Some Linux distributions offer native packages:
 * Arch Linux: [openrct2](https://archlinux.org/packages/extra/x86_64/openrct2/) stable release (`extra` repository) and, alternatively, [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR)
@@ -246,23 +246,8 @@ We would also like to distribute additional scenarios with the game, when the ti
 
 ---
 
-# 5. License
-**OpenRCT2**, an open-source re-implementation of RollerCoaster Tycoon 2.
-
-Copyright (C) 2014 OpenRCT2 contributors
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
+# 5. Licence
+**OpenRCT2** is licenced under the GNU General Public License version 3 or (at your option) any later version. See the [licence](licence.txt) file for more details.
 
 ---
 
