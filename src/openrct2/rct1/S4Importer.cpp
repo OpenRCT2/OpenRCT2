@@ -186,12 +186,12 @@ namespace OpenRCT2::RCT1
             ImportPeepSpawns();
             ImportFinance(gameState);
             ImportResearch(gameState);
-            ImportParkName();
+            ImportParkName(gameState);
             ImportParkFlags(gameState);
             ImportClimate(gameState);
             ImportScenarioNameDetails(gameState);
             ImportScenarioObjective(gameState);
-            ImportSavedView();
+            ImportSavedView(gameState);
 
             RCT12::FetchAndApplyScenarioPatch(_s4Path, _isScenario);
             FixNextGuestNumber(gameState);
@@ -2121,7 +2121,7 @@ namespace OpenRCT2::RCT1
             }
         }
 
-        void ImportParkName()
+        void ImportParkName(GameState_t& gameState)
         {
             std::string parkName = std::string(_s4.ScenarioName);
             if (IsUserStringID(static_cast<StringId>(_s4.ParkNameStringIndex)))
@@ -2133,7 +2133,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            auto& park = GetGameState().Park;
+            auto& park = gameState.Park;
             park.Name = std::move(parkName);
         }
 
@@ -2371,9 +2371,8 @@ namespace OpenRCT2::RCT1
                 gameState.ScenarioObjective.RideId = GetBuildTheBestRideId();
         }
 
-        void ImportSavedView()
+        void ImportSavedView(GameState_t& gameState)
         {
-            auto& gameState = GetGameState();
             gameState.SavedView = ScreenCoordsXY{ _s4.ViewX, _s4.ViewY };
             gameState.SavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s4.ViewZoom) };
             gameState.SavedViewRotation = _s4.ViewRotation;
