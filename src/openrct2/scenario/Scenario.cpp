@@ -997,7 +997,13 @@ void GeneratePreviewImage(ScenarioIndexEntry& entry)
     // - save the scenario index to cache the preview
     // - swap the global one back again
 
-    GameState_t& tempState = GetGameState(); // {};
+    auto tempState = std::make_unique<GameState_t>();
+
+    // Swap tempState with the original game state.
+    // TODO: Ideally we'd import the scenario _into_ the temp state, i.e. swap only after importing.
+    //       This is pending making importing rides/entities/etc game state aware.
+    SwapGameState(tempState);
+    auto& gameState = GetGameState();
 
     auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
     std::unique_ptr<IParkImporter> importer;
@@ -1013,11 +1019,8 @@ void GeneratePreviewImage(ScenarioIndexEntry& entry)
     if (importer)
     {
         importer->LoadScenario(entry.Path, true);
-        importer->Import(tempState);
+        importer->Import(gameState);
     }
-
-    GameState_t& gameState = GetGameState();
-    // std::swap(tempState, gameState);
 
     const auto kPreviewSize = 128; // sizeof(entry.preview[0]);
     const auto kMapSkipFactor = Ceil2(gameState.MapSize.x, kPreviewSize) / kPreviewSize;
@@ -1034,5 +1037,7 @@ void GeneratePreviewImage(ScenarioIndexEntry& entry)
     }
 
     entry.previewGenerated = true;
-    // std::swap(tempState, gameState);
+
+    // NB: swap the original game state back in
+    SwapGameState(tempState);
 }
