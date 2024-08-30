@@ -40,21 +40,21 @@ If you want to help translate the game to your language, please stop by the Loca
 ---
 
 # Contents
-- 1 - [Introduction](#1-introduction)
-- 2 - [Downloading the game (pre-built)](#2-downloading-the-game-pre-built)
-- 3 - [Building the game](#3-building-the-game)
+- 1. [Introduction](#1-introduction)
+- 2. [Downloading the game (pre-built)](#2-downloading-the-game-pre-built)
+- 3. [Building the game](#3-building-the-game)
   - 3.1 - [Building prerequisites](#31-building-prerequisites)
   - 3.2 - [Compiling and running](#32-compiling-and-running)
-- 4 - [Contributing](#4-contributing)
+- 4. [Contributing](#4-contributing)
   - 4.1 - [Bug fixes](#41-bug-fixes)
   - 4.2 - [New features](#42-new-features)
   - 4.3 - [Translation](#43-translation)
   - 4.4 - [Graphics](#44-graphics)
   - 4.5 - [Audio](#45-audio)
   - 4.6 - [Scenarios](#46-scenarios)
-- 5 - [Licence](#5-licence)
-- 6 - [More information](#6-more-information)
-- 7 - [Sponsors](#7-sponsors)
+- 5. [License](#5-license)
+- 6. [More information](#6-more-information)
+- 7. [Sponsors](#7-sponsors)
 
 ---
 
@@ -68,22 +68,20 @@ RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly an
 
 # 2. Downloading the game (pre-built)
 
-OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2). If you have the original RollerCoaster Tycoon and its expansion packs, you can [point OpenRCT2 to these](https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data) in order to play the original scenarios.
+OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/RollerCoaster_Tycoon_2_Triple_Thrill_Pack/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2). If you have the original RollerCoaster Tycoon and its expansion packs, you can [point OpenRCT2 to these](https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data) in order to play the original scenarios.
 
-[OpenRCT2.org](https://openrct2.org/downloads) offers precompiled builds and installers of the latest master and the develop branch. There is also a [Launcher](https://github.com/IntelOrca/OpenLauncher/releases) available for Windows and Linux that will automatically update your build of the game so that you always have the latest version.
+[OpenRCT2.org](https://openrct2.org/downloads) offers pre-built builds and installers of the latest master and the develop branch. There is also a [launcher](https://github.com/IntelOrca/OpenLauncher/releases) available for Windows and Linux that will automatically update your build of the game so that you always have the latest version.
 
-[Flathub](https://flathub.org/) offers flatpaks for Linux distributions that support this application distribution system:
-* [Latest release](https://flathub.org/apps/details/io.openrct2.OpenRCT2)
+For most Linux distributions, we recommend the [latest Flatpak stable release](https://flathub.org/apps/details/io.openrct2.OpenRCT2). When downloading from Flathub, you will always receive the latest updates regardless of which Linux distribution you use.
 
-Some Linux distributions offer native packages already. These packages are usually third-party, but we're trying to resolve issues they are facing.
-* Arch Linux: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR) and [openrct2](https://archlinux.org/packages/extra/x86_64/openrct2/) ([extra] repository)
-* Ubuntu PPA: [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (nightly builds)
-* openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
+Some Linux distributions offer native packages:
+* Arch Linux: [openrct2](https://archlinux.org/packages/extra/x86_64/openrct2/) stable release (`extra` repository) and, alternatively, [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR)
 * Gentoo (main portage tree): [games-simulation/openrct2](https://packages.gentoo.org/packages/games-simulation/openrct2)
 * NixOS (`nixos-unstable` channel): [openrct2](https://github.com/NixOS/nixpkgs/blob/master/pkgs/games/openrct2/default.nix)
-* Fedora 28 i386/amd64: [openrct2](https://copr.fedorainfracloud.org/coprs/nauticalnexus/openrct2/)
+* openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
+* Ubuntu PPA (nightly builds): [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly)
 
-Some \*BSD operating systems offer native packages. These packages are usually third-party, but we're trying to resolve issues they are facing.
+Some \*BSD operating systems offer native packages:
 * FreeBSD: [games/openrct2](https://www.freshports.org/games/openrct2)
 * OpenBSD: [games/openrct2](https://openports.se/games/openrct2)
 
@@ -248,8 +246,23 @@ We would also like to distribute additional scenarios with the game, when the ti
 
 ---
 
-# 5. Licence
-**OpenRCT2** is licensed under the GNU General Public License version 3.
+# 5. License
+**OpenRCT2**, an open-source re-implementation of RollerCoaster Tycoon 2.
+
+Copyright (C) 2014 OpenRCT2 contributors
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ---
 
