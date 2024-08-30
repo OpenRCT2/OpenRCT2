@@ -40,21 +40,21 @@ If you want to help translate the game to your language, please stop by the Loca
 ---
 
 # Contents
-- 1. [Introduction](#1-introduction)
-- 2. [Downloading the game (pre-built)](#2-downloading-the-game-pre-built)
-- 3. [Building the game](#3-building-the-game)
-  - 3.1 - [Building prerequisites](#31-building-prerequisites)
+- 1 - [Introduction](#1-introduction)
+- 2 - [Downloading the game (pre-built)](#2-downloading-the-game-pre-built)
+- 3 - [Building the game](#3-building-the-game)
+  - 3.1 - [Building pre-requisites](#31-building-pre-requisites)
   - 3.2 - [Compiling and running](#32-compiling-and-running)
-- 4. [Contributing](#4-contributing)
+- 4 - [Contributing](#4-contributing)
   - 4.1 - [Bug fixes](#41-bug-fixes)
   - 4.2 - [New features](#42-new-features)
   - 4.3 - [Translation](#43-translation)
   - 4.4 - [Graphics](#44-graphics)
   - 4.5 - [Audio](#45-audio)
   - 4.6 - [Scenarios](#46-scenarios)
-- 5. [Licence](#5-licence)
-- 6. [More information](#6-more-information)
-- 7. [Sponsors](#7-sponsors)
+- 5 - [Licence](#5-licence)
+- 6 - [More information](#6-more-information)
+- 7 - [Sponsors](#7-sponsors)
 
 ---
 
@@ -89,12 +89,12 @@ Some \*BSD operating systems offer native packages:
 
 # 3. Building the game
 
-## 3.1 Building prerequisites
+## 3.1 Building pre-requisites
 
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2).
 
 <details>
-  <summary>Windows prerequisites</summary>
+  <summary>Windows pre-requisites</summary>
 
   There are two toolchain options for building the game on Windows:
 
@@ -109,7 +109,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 </details>
 
 <details>
-  <summary>macOS prerequisites</summary>
+  <summary>macOS pre-requisites</summary>
 
   - Xcode Command Line Tools
   - [Homebrew](https://brew.sh)
@@ -118,7 +118,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 </details>
 
 <details>
-  <summary>Linux prerequisites</summary>
+  <summary>Linux pre-requisites</summary>
 
   - gcc (>= 8.0) or clang (>= 10.0) (for C++20 support)
   - sdl2 (only for UI client)
@@ -247,7 +247,7 @@ We would also like to distribute additional scenarios with the game, when the ti
 ---
 
 # 5. Licence
-**OpenRCT2** is licenced under the GNU General Public License version 3 or (at your option) any later version. See the [licence](licence.txt) file for more details.
+**OpenRCT2** is licenced under the GNU General Public License version 3 or (at your option) any later version. See the [`licence.txt`](licence.txt) file for more details.
 
 ---
 
