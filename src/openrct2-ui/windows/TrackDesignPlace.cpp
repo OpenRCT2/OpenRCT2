@@ -79,6 +79,16 @@ namespace OpenRCT2::Ui::Windows
     class TrackDesignPlaceWindow final : public Window
     {
     private:
+        std::unique_ptr<TrackDesign> _trackDesign;
+
+        CoordsXY _placementLoc;
+        RideId _placementGhostRideId;
+        bool _hasPlacementGhost;
+        money64 _placementCost;
+        CoordsXYZD _placementGhostLoc;
+
+        std::vector<uint8_t> _miniPreview;
+
         bool _trackPlaceCtrlState = false;
         int32_t _trackPlaceCtrlZ;
 
@@ -409,16 +419,6 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        std::unique_ptr<TrackDesign> _trackDesign;
-
-        CoordsXY _placementLoc;
-        RideId _placementGhostRideId;
-        bool _hasPlacementGhost;
-        money64 _placementCost;
-        CoordsXYZD _placementGhostLoc;
-
-        std::vector<uint8_t> _miniPreview;
-
         void ClearProvisional()
         {
             if (_hasPlacementGhost)
