@@ -11,7 +11,6 @@
 
 #include "Memory.hpp"
 
-#include <bit>
 #include <cstring>
 
 namespace OpenRCT2
@@ -21,53 +20,44 @@ namespace OpenRCT2
         _access = copy._access;
         _dataCapacity = copy._dataCapacity;
         _dataSize = copy._dataSize;
-        _position = copy._position;
 
         if (_access & MEMORY_ACCESS::OWNER)
         {
-            // Create a copy when the memory stream owns the memory.
-            _data = Memory::Allocate<std::byte>(_dataCapacity);
+            _data = Memory::Allocate<void>(_dataCapacity);
             std::memcpy(_data, copy._data, _dataCapacity);
-        }
-        else
-        {
-            // External pointer.
-            _data = copy._data;
+            _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_data) + copy.GetPosition());
         }
     }
 
     MemoryStream::MemoryStream(size_t capacity)
     {
         _dataCapacity = capacity;
-        _data = Memory::Allocate<std::byte>(capacity);
-        _position = 0;
+        _data = Memory::Allocate<void>(capacity);
+        _position = _data;
     }
 
-    MemoryStream::MemoryStream(void* data, size_t dataSize)
-        : _access{ MEMORY_ACCESS::READ | MEMORY_ACCESS::WRITE }
-        , _dataCapacity{ dataSize }
-        , _dataSize{ dataSize }
-        , _data{ static_cast<std::byte*>(data) }
-        , _position{ 0 }
+    MemoryStream::MemoryStream(void* data, size_t dataSize, uint8_t access)
     {
+        _access = access;
+        _dataCapacity = dataSize;
+        _dataSize = dataSize;
+        _data = data;
+        _position = _data;
     }
 
     MemoryStream::MemoryStream(const void* data, size_t dataSize)
-        : _access{ MEMORY_ACCESS::READ }
-        , _dataCapacity{ dataSize }
-        , _dataSize{ dataSize }
-        , _data{ static_cast<std::byte*>(const_cast<void*>(data)) }
-        , _position{ 0 }
+        : MemoryStream(const_cast<void*>(data), dataSize, MEMORY_ACCESS::READ)
     {
     }
 
-    MemoryStream::MemoryStream(const void* data, size_t dataSize, bool)
-        : _access{ MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER }
-        , _dataCapacity{ dataSize }
-        , _dataSize{ dataSize }
-        , _data{ static_cast<std::byte*>(const_cast<void*>(data)) }
-        , _position{ 0 }
+    MemoryStream::MemoryStream(std::vector<uint8_t>&& v)
     {
+        _access = MEMORY_ACCESS::OWNER;
+        _dataCapacity = v.size();
+        _dataSize = v.size();
+        _data = Memory::Allocate<void>(v.size());
+        _position = _data;
+        std::memcpy(_data, v.data(), v.size());
     }
 
     MemoryStream::MemoryStream(MemoryStream&& mv) noexcept
@@ -78,7 +68,7 @@ namespace OpenRCT2
         , _position(mv._position)
     {
         mv._data = nullptr;
-        mv._position = 0;
+        mv._position = nullptr;
         mv._dataCapacity = 0;
         mv._dataSize = 0;
     }
@@ -98,11 +88,6 @@ namespace OpenRCT2
     {
         if (this != &mv)
         {
-            if (_access & MEMORY_ACCESS::OWNER)
-            {
-                Memory::Free(_data);
-            }
-
             _access = mv._access;
             _dataCapacity = mv._dataCapacity;
             _data = mv._data;
@@ -110,7 +95,7 @@ namespace OpenRCT2
             _position = mv._position;
 
             mv._data = nullptr;
-            mv._position = 0;
+            mv._position = nullptr;
             mv._dataCapacity = 0;
             mv._dataSize = 0;
         }
@@ -120,7 +105,20 @@ namespace OpenRCT2
 
     const void* MemoryStream::GetData() const
     {
-        return static_cast<const void*>(_data);
+        return _data;
+    }
+
+    void* MemoryStream::GetDataCopy() const
+    {
+        auto result = Memory::Allocate<void>(_dataSize);
+        std::memcpy(result, _data, _dataSize);
+        return result;
+    }
+
+    void* MemoryStream::TakeData()
+    {
+        _access &= ~MEMORY_ACCESS::OWNER;
+        return _data;
     }
 
     bool MemoryStream::CanRead() const
@@ -140,7 +138,7 @@ namespace OpenRCT2
 
     uint64_t MemoryStream::GetPosition() const
     {
-        return _position;
+        return static_cast<uint64_t>(reinterpret_cast<uintptr_t>(_position) - reinterpret_cast<uintptr_t>(_data));
     }
 
     void MemoryStream::SetPosition(uint64_t position)
@@ -169,18 +167,19 @@ namespace OpenRCT2
         {
             throw IOException("New position out of bounds.");
         }
-        _position = newPosition;
+        _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_data) + static_cast<uintptr_t>(newPosition));
     }
 
     void MemoryStream::Read(void* buffer, uint64_t length)
     {
-        if (_position + length > _dataSize)
+        uint64_t position = GetPosition();
+        if (position + length > _dataSize)
         {
             throw IOException("Attempted to read past end of stream.");
         }
 
-        std::memcpy(buffer, _data + _position, length);
-        _position += length;
+        std::memcpy(buffer, _position, length);
+        _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + length);
     }
 
     void MemoryStream::Read1(void* buffer)
@@ -218,12 +217,23 @@ namespace OpenRCT2
 
     void MemoryStream::Write(const void* buffer, uint64_t length)
     {
-        const auto nextPosition = _position + length;
-        EnsureCapacity(nextPosition);
+        uint64_t position = GetPosition();
+        uint64_t nextPosition = position + length;
+        if (nextPosition > _dataCapacity)
+        {
+            if (_access & MEMORY_ACCESS::OWNER)
+            {
+                EnsureCapacity(static_cast<size_t>(nextPosition));
+            }
+            else
+            {
+                throw IOException("Attempted to write past end of stream.");
+            }
+        }
 
-        std::memcpy(_data + _position, buffer, length);
-        _position += length;
-        _dataSize = std::max<size_t>(_dataSize, nextPosition);
+        std::memcpy(_position, buffer, length);
+        _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + length);
+        _dataSize = std::max<size_t>(_dataSize, static_cast<size_t>(nextPosition));
     }
 
     void MemoryStream::Write1(const void* buffer)
@@ -254,25 +264,24 @@ namespace OpenRCT2
     void MemoryStream::Clear()
     {
         _dataSize = 0;
-        _position = 0;
+        SetPosition(0);
     }
 
     void MemoryStream::EnsureCapacity(size_t capacity)
     {
-        if (capacity <= _dataCapacity)
+        if (_dataCapacity < capacity)
         {
-            return;
+            size_t newCapacity = std::max<size_t>(8, _dataCapacity);
+            while (newCapacity < capacity)
+            {
+                newCapacity *= 2;
+            }
+
+            uint64_t position = GetPosition();
+            _dataCapacity = newCapacity;
+            _data = Memory::Reallocate(_data, _dataCapacity);
+            _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_data) + static_cast<uintptr_t>(position));
         }
-
-        if ((_access & MEMORY_ACCESS::OWNER) == 0)
-        {
-            throw IOException("Can not grow external memory");
-        }
-
-        size_t newCapacity = std::max<size_t>(32, std::bit_ceil(capacity));
-
-        _dataCapacity = newCapacity;
-        _data = Memory::Reallocate(_data, _dataCapacity);
     }
 
 } // namespace OpenRCT2
