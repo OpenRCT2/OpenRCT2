@@ -419,11 +419,11 @@ namespace OpenRCT2::Ui::Windows
             // Increase Z above slope
             if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
             {
-                z += 16;
+                z += kCoordsZPerTinyZ;
 
                 // Increase Z above double slope
                 if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
-                    z += 16;
+                    z += kCoordsZPerTinyZ;
             }
 
             // Increase Z above water
@@ -597,7 +597,7 @@ namespace OpenRCT2::Ui::Windows
         GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t newFlags)
         {
             GameActions::Result res;
-            for (int32_t i = 0; i < 7; i++, loc.z += 8)
+            for (int32_t i = 0; i < 7; i++, loc.z += kCoordsZStep)
             {
                 auto tdAction = TrackDesignAction(
                     CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign);
