@@ -529,35 +529,6 @@ namespace OpenRCT2::Ui::Windows
                        *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, _trackPlaceZ, _currentTrackPieceDirection });
         }
 
-        /*
-        int32_t GetBaseZ(const CoordsXY& loc)
-        {
-            auto surfaceElement = MapGetSurfaceElementAt(loc);
-            if (surfaceElement == nullptr)
-                return 0;
-
-            auto z = surfaceElement->GetBaseZ();
-
-            // Increase Z above slope
-            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
-            {
-                z += kCoordsZPerTinyZ;
-
-                // Increase Z above double slope
-                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
-                    z += kCoordsZPerTinyZ;
-            }
-
-            // Increase Z above water
-            if (surfaceElement->GetWaterHeight() > 0)
-                z = std::max(z, surfaceElement->GetWaterHeight());
-
-            return z
-                + TrackDesignGetZPlacement(
-                       *_trackDesign, RideGetTemporaryForPreview(), { loc, z, _currentTrackPieceDirection });
-        }
-        */
-
         void DrawMiniPreviewEntrances(
             const TrackDesign& td, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max, Direction rotation)
         {
