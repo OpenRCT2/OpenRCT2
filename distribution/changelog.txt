@@ -7,6 +7,7 @@
 - Feature: [#22392] [Plugin] Expose ride vehicle’s spin to the plugin API.
 - Feature: [#22414] Finance graphs can be resized.
 - Feature: [#22569] Footpath placement now respects the construction modifier keys (ctrl/shift).
+- Change: [#21189] Patches to fix scenario bugs are now described in .parkpatch files, instead of inside the code.
 - Change: [#21659] Increase the Hybrid Roller Coaster’s maximum lift speed to 17 km/h (11 mph).
 - Change: [#22466] The Clear Scenery tool now uses a bulldozer cursor instead of a generic crosshair.
 - Change: [#22490] The tool to change land and construction rights has been moved out of the Map window.
