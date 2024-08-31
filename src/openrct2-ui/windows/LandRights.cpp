@@ -95,6 +95,11 @@ static Widget window_land_rights_widgets[] = {
         LandRightsMode _landRightsMode;
         money64 _landRightsCost;
 
+        bool IsOwnershipMode() const
+        {
+            return (gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.SandboxMode;
+        }
+
         void SwitchToMode(LandRightsMode mode)
         {
             auto widgetIndex = WIDX_BUY_LAND_RIGHTS + EnumValue(mode);
@@ -128,7 +133,7 @@ static Widget window_land_rights_widgets[] = {
             gLandToolSize = kLandToolMinimumSize;
             ShowGridlines();
 
-            if (!GetGameState().Cheats.SandboxMode)
+            if (!IsOwnershipMode())
             {
                 if (gLandRemainingOwnershipSales > 0)
                     SwitchToMode(LandRightsMode::BuyLand);
@@ -327,7 +332,7 @@ static Widget window_land_rights_widgets[] = {
 
         ScreenCoordsXY GetModeDimensions() const
         {
-            if ((gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.SandboxMode)
+            if (IsOwnershipMode())
                 return kEditorSize;
             else
                 return kInGameSize;
@@ -341,7 +346,7 @@ static Widget window_land_rights_widgets[] = {
             if (width != GetModeDimensions().x)
                 OnResize();
 
-            if ((gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.SandboxMode)
+            if (IsOwnershipMode())
             {
                 PrepareDrawSandbox();
                 ColourSchemeUpdateByClass(this, WindowClass::Map);
@@ -506,7 +511,7 @@ static Widget window_land_rights_widgets[] = {
             if (!state_changed)
                 return;
 
-            if ((gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.SandboxMode)
+            if (IsOwnershipMode())
             {
                 auto landSetRightsAction = GetLandSetAction();
                 auto res = GameActions::Query(&landSetRightsAction);
@@ -534,7 +539,7 @@ static Widget window_land_rights_widgets[] = {
             if (screenCoords.x == kLocationNull)
                 return;
 
-            if ((gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.SandboxMode)
+            if (IsOwnershipMode())
             {
                 auto landSetRightsAction = GetLandSetAction();
                 GameActions::Execute(&landSetRightsAction);
