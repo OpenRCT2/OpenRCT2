@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/world/Footpath.h>
 
@@ -35,7 +36,7 @@ static Widget _mainWidgets[] = {
             widgets = _mainWidgets;
 
             ViewportCreate(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
-            if (viewport != nullptr)
+            if (viewport != nullptr && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
             {
                 SetViewportFlags();
                 viewport->rotation = 0;
