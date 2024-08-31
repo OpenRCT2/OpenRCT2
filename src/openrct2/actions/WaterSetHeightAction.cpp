@@ -49,8 +49,9 @@ GameActions::Result WaterSetHeightAction::Query() const
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = { _coords, _height * kCoordsZStep };
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode
-        && GetGameState().Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+    auto& gameState = GetGameState();
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode
+        && gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
@@ -66,7 +67,7 @@ GameActions::Result WaterSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {

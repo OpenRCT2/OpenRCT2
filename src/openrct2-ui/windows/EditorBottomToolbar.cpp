@@ -140,7 +140,7 @@ static Widget _editorBottomToolbarWidgets[] = {
             if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
             {
                 if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                    || (GetNumFreeEntities() == MAX_ENTITIES && !(GetGameState().Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)))
+                    || (GetNumFreeEntities() == MAX_ENTITIES && !(gameState.Park.Flags & PARK_FLAGS_SPRITES_INITIALISED)))
                 {
                     ((this)->*(_previousButtonMouseUp[EnumValue(gameState.EditorStep)]))();
                 }

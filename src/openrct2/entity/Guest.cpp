@@ -1550,7 +1550,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 
     if (!hasVoucher)
     {
-        if (price != 0 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+        if (price != 0 && !(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
         {
             if (CashInPocket == 0)
             {
@@ -1597,7 +1597,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
             itemValue -= price;
             itemValue = std::max(0.80_GBP, itemValue);
 
-            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 if (itemValue >= static_cast<money64>(ScenarioRand() & 0x07))
                 {

@@ -49,7 +49,8 @@ static bool IsLocationLitterable(const CoordsXYZ& mapPos)
  */
 void Litter::Create(const CoordsXYZD& litterPos, Type type)
 {
-    if (GetGameState().Cheats.DisableLittering)
+    auto& gameState = GetGameState();
+    if (gameState.Cheats.DisableLittering)
         return;
 
     auto offsetLitterPos = litterPos
@@ -89,7 +90,7 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
     litter->SpriteData.HeightMax = 3;
     litter->SubType = type;
     litter->MoveTo(offsetLitterPos);
-    litter->creationTick = GetGameState().CurrentTicks;
+    litter->creationTick = gameState.CurrentTicks;
 }
 
 /**

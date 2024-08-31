@@ -80,7 +80,7 @@ namespace OpenRCT2
 
         gInMapInitCode = false;
 
-        GetGameState().NextGuestNumber = 1;
+        gameState.NextGuestNumber = 1;
 
         ContextInit();
 
@@ -264,6 +264,8 @@ namespace OpenRCT2
 
         NetworkUpdate();
 
+        auto& gameState = GetGameState();
+
         if (NetworkGetMode() == NETWORK_MODE_SERVER)
         {
             if (NetworkGamestateSnapshotsEnabled())
@@ -277,7 +279,7 @@ namespace OpenRCT2
         else if (NetworkGetMode() == NETWORK_MODE_CLIENT)
         {
             // Don't run past the server, this condition can happen during map changes.
-            if (NetworkGetServerTick() == GetGameState().CurrentTicks)
+            if (NetworkGetServerTick() == gameState.CurrentTicks)
             {
                 gInUpdateCode = false;
                 return;
@@ -299,7 +301,6 @@ namespace OpenRCT2
             }
         }
 
-        auto& gameState = GetGameState();
 #ifdef ENABLE_SCRIPTING
         // Stash the current day number before updating the date so that we
         // know if the day number changes on this tick.
