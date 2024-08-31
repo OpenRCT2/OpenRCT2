@@ -457,7 +457,7 @@ namespace OpenRCT2
 
                 if (os.GetHeader().TargetVersion >= 1)
                 {
-                    cs.ReadWrite(gScenarioFileName);
+                    cs.ReadWrite(gameState.ScenarioFileName);
                 }
             });
         }

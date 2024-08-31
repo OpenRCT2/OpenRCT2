@@ -501,12 +501,13 @@ namespace OpenRCT2::RCT2
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
             {
                 // _s6.ScenarioFilename is wrong for some RCT2 expansion scenarios, so we use the real filename
-                gScenarioFileName = Path::GetFileName(_s6Path);
+                gameState.ScenarioFileName = Path::GetFileName(_s6Path);
             }
             else
             {
                 // For savegames the filename can be arbitrary, so we have no choice but to rely on the name provided
-                gScenarioFileName = std::string(String::ToStringView(_s6.ScenarioFilename, std::size(_s6.ScenarioFilename)));
+                gameState.ScenarioFileName = std::string(
+                    String::ToStringView(_s6.ScenarioFilename, std::size(_s6.ScenarioFilename)));
             }
             gCurrentRealTimeTicks = 0;
 

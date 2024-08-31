@@ -87,6 +87,7 @@ namespace OpenRCT2
         std::string ScenarioName;
         std::string ScenarioDetails;
         std::string ScenarioCompletedBy;
+        std::string ScenarioFileName;
 
         std::vector<Banner> Banners;
         Entity_t Entities[MAX_ENTITIES]{};

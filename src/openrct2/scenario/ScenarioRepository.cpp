@@ -362,7 +362,7 @@ public:
                 // Get scenario using RCTC style name of RCT2 scenario
                 scenario = GetByFilename((scenarioBaseName + ".sea").c_str());
             }
-            // gScenarioFileName .Park scenarios is the full file path instead of just <scenarioName.park>, so need to convert
+            // ScenarioFileName .Park scenarios is the full file path instead of just <scenarioName.park>, so need to convert
             else if (String::IEquals(scenarioExtension, ".park"))
             {
                 scenario = GetByFilename((scenarioBaseName + ".park").c_str());
