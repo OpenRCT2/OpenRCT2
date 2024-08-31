@@ -11,6 +11,8 @@
 
 #include "IStream.hpp"
 
+#include <vector>
+
 namespace OpenRCT2
 {
     namespace MEMORY_ACCESS
@@ -29,24 +31,24 @@ namespace OpenRCT2
         uint8_t _access = MEMORY_ACCESS::READ | MEMORY_ACCESS::WRITE | MEMORY_ACCESS::OWNER;
         size_t _dataCapacity = 0;
         size_t _dataSize = 0;
-        std::byte* _data = nullptr;
-        size_t _position = 0;
+        void* _data = nullptr;
+        void* _position = nullptr;
 
     public:
         MemoryStream() = default;
         MemoryStream(const MemoryStream& copy);
         MemoryStream(MemoryStream&& mv) noexcept;
         explicit MemoryStream(size_t capacity);
-        MemoryStream(void* data, size_t dataSize);
+        MemoryStream(void* data, size_t dataSize, uint8_t access = MEMORY_ACCESS::READ);
         MemoryStream(const void* data, size_t dataSize);
-        // Constructor that takes ownership, the memory has to be allocated by Memory::Allocate, this function only exists for
-        // Android interop reasons.
-        MemoryStream(const void* data, size_t dataSize, bool);
+        MemoryStream(std::vector<uint8_t>&& v);
         virtual ~MemoryStream();
 
         MemoryStream& operator=(MemoryStream&& mv) noexcept;
 
         const void* GetData() const override;
+        void* GetDataCopy() const;
+        void* TakeData();
 
         ///////////////////////////////////////////////////////////////////////////
         // ISteam methods
@@ -66,6 +68,18 @@ namespace OpenRCT2
         void Read8(void* buffer) override;
         void Read16(void* buffer) override;
 
+        template<size_t N> void Read(void* buffer)
+        {
+            uint64_t position = GetPosition();
+            if (position + N > _dataSize)
+            {
+                throw IOException("Attempted to read past end of stream.");
+            }
+
+            std::memcpy(buffer, _position, N);
+            _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + N);
+        }
+
         void Write(const void* buffer, uint64_t length) override;
         void Write1(const void* buffer) override;
         void Write2(const void* buffer) override;
@@ -73,33 +87,33 @@ namespace OpenRCT2
         void Write8(const void* buffer) override;
         void Write16(const void* buffer) override;
 
+        template<size_t N> void Write(const void* buffer)
+        {
+            uint64_t position = GetPosition();
+            uint64_t nextPosition = position + N;
+            if (nextPosition > _dataCapacity)
+            {
+                if (_access & MEMORY_ACCESS::OWNER)
+                {
+                    EnsureCapacity(static_cast<size_t>(nextPosition));
+                }
+                else
+                {
+                    throw IOException("Attempted to write past end of stream.");
+                }
+            }
+
+            std::memcpy(_position, buffer, N);
+            _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + N);
+            _dataSize = std::max<size_t>(_dataSize, static_cast<size_t>(nextPosition));
+        }
+
         uint64_t TryRead(void* buffer, uint64_t length) override;
 
         void Clear();
 
     private:
         void EnsureCapacity(size_t capacity);
-
-        template<size_t N> void Read(void* buffer)
-        {
-            if (_position + N > _dataSize)
-            {
-                throw IOException("Attempted to read past end of stream.");
-            }
-
-            std::memcpy(buffer, _data + _position, N);
-            _position += N;
-        }
-
-        template<size_t N> void Write(const void* buffer)
-        {
-            const auto nextPosition = _position + N;
-            EnsureCapacity(nextPosition);
-
-            std::memcpy(_data + _position, buffer, N);
-            _position += N;
-            _dataSize = std::max(_dataSize, nextPosition);
-        }
     };
 
 } // namespace OpenRCT2

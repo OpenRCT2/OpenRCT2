@@ -719,8 +719,8 @@ namespace OpenRCT2
             {
                 if (String::IEquals(Path::GetExtension(path), ".sea"))
                 {
-                    const auto data = DecryptSea(fs::u8path(path));
-                    auto ms = MemoryStream(data.data(), data.size());
+                    auto data = DecryptSea(fs::u8path(path));
+                    auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
                     if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail, asScenario))
                     {
                         throw std::runtime_error(".sea file may have been renamed.");
@@ -1060,14 +1060,14 @@ namespace OpenRCT2
                     {
 #ifndef DISABLE_HTTP
                         // Download park and open it using its temporary filename
-                        const auto data = DownloadPark(gOpenRCT2StartupActionPath);
+                        auto data = DownloadPark(gOpenRCT2StartupActionPath);
                         if (data.empty())
                         {
                             nextScene = GetTitleScene();
                             break;
                         }
 
-                        auto ms = MemoryStream(data.data(), data.size());
+                        auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
                         if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
