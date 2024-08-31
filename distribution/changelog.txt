@@ -28,6 +28,7 @@
 - Fix: [#22606] Virtual floor is sometimes drawn above the path when placing paths.
 - Fix: [#22625] Fix compilation with orignal ride ratings.
 - Fix: [#22671] Game default to hide supports on startup.
+- Fix: [#22671] Unchecking invisible option does not uncheck see-through option on transparency options and vice versa.
 
 0.4.13 (2024-08-04)
 ------------------------------------------------------------------------
