@@ -81,7 +81,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         std::unique_ptr<TrackDesign> _trackDesign;
 
-        CoordsXYZD _placementLoc;
+        CoordsXY _placementLoc;
         RideId _placementGhostRideId;
         bool _hasPlacementGhost;
         money64 _placementCost;
@@ -173,43 +173,34 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-            // Take shift modifier into account
-            ScreenCoordsXY targetScreenCoords = screenCoords;
-            if (_trackPlaceShiftState)
-                targetScreenCoords = _trackPlaceShiftStart;
-
             // Get the tool map position
-            CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(targetScreenCoords);
+            CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
             if (mapCoords.IsNull())
             {
                 ClearProvisional();
                 return;
             }
 
-            // Get base Z position
-            auto maybeMapZ = GetBaseZ(mapCoords, targetScreenCoords);
-            if (!maybeMapZ.has_value())
-            {
-                ClearProvisional();
-                return;
-            }
-            else
-            {
-                printf("\rmapZ: %d\n", *maybeMapZ);
-            }
-
-            CoordsXYZD trackLoc = { mapCoords, *maybeMapZ, _currentTrackPieceDirection };
-
             // Check if tool map position has changed since last update
-            if (_placementLoc == trackLoc)
+            if (mapCoords == _placementLoc)
             {
-                printf("\rBailing out early\n");
                 TrackDesignPreviewDrawOutlines(
                     tds, *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, 0, _currentTrackPieceDirection });
                 return;
             }
 
             money64 cost = kMoney64Undefined;
+
+            // Get base Z position
+            auto maybeMapZ = GetBaseZ(mapCoords, screenCoords);
+            if (!maybeMapZ.has_value())
+            {
+                ClearProvisional();
+                return;
+            }
+
+            CoordsXYZD trackLoc = { mapCoords, *maybeMapZ, _currentTrackPieceDirection };
+
             if (GameIsNotPaused() || GetGameState().Cheats.BuildInPauseMode)
             {
                 ClearProvisional();
@@ -264,7 +255,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto maybeMapZ = GetBaseZ(mapCoords, targetScreenCoords);
+            // NB: always use the actual screenCoords here, not the shifted ones
+            auto maybeMapZ = GetBaseZ(mapCoords, screenCoords);
             if (!maybeMapZ.has_value())
             {
                 ClearProvisional();
