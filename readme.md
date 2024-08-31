@@ -247,7 +247,7 @@ We would also like to distribute additional scenarios with the game, when the ti
 ---
 
 # 5. Licence
-**OpenRCT2** is licenced under the GNU General Public License version 3 or (at your option) any later version. See the [`licence.txt`](licence.txt) file for more details.
+**OpenRCT2** is licensed under the GNU General Public License version 3 or (at your option) any later version. See the [`licence.txt`](licence.txt) file for more details.
 
 ---
 
