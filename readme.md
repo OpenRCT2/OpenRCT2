@@ -75,7 +75,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 Alternatively to using the launcher, for most Linux distributions, we recommend the [latest Flatpak stable release](https://flathub.org/apps/details/io.openrct2.OpenRCT2). When downloading from Flathub, you will always receive the latest updates regardless of which Linux distribution you use.
 
 Some Linux distributions offer native packages:
-* Arch Linux: [openrct2](https://archlinux.org/packages/extra/x86_64/openrct2/) stable release (`extra` repository) and, alternatively, [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR)
+* Arch Linux: [openrct2](https://archlinux.org/packages/extra/x86_64/openrct2/) release version (`extra` repository) and, alternatively, [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR)
 * Gentoo (main portage tree): [games-simulation/openrct2](https://packages.gentoo.org/packages/games-simulation/openrct2)
 * NixOS (`nixos-unstable` channel): [openrct2](https://github.com/NixOS/nixpkgs/blob/master/pkgs/games/openrct2/default.nix)
 * openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
