@@ -43,7 +43,7 @@ If you want to help translate the game to your language, please stop by the Loca
 - 1 - [Introduction](#1-introduction)
 - 2 - [Downloading the game (pre-built)](#2-downloading-the-game-pre-built)
 - 3 - [Building the game](#3-building-the-game)
-  - 3.1 - [Building pre-requisites](#31-building-pre-requisites)
+  - 3.1 - [Building prerequisites](#31-building-prerequisites)
   - 3.2 - [Compiling and running](#32-compiling-and-running)
 - 4 - [Contributing](#4-contributing)
   - 4.1 - [Bug fixes](#41-bug-fixes)
@@ -72,10 +72,10 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 
 [Our website](https://openrct2.io/download) offers portable builds and installers with the latest versions of the `master` and `develop` branches. There is also a [launcher](https://openrct2.io/download/launcher) available for Windows and Linux that will automatically update your build of the game so that you always have the latest version.
 
-Alternatively to using the launcher, for most Linux distributions, we recommend the [latest Flatpak stable release](https://flathub.org/apps/details/io.openrct2.OpenRCT2). When downloading from Flathub, you will always receive the latest updates regardless of which Linux distribution you use.
+Alternatively to using the launcher, for most Linux distributions, we recommend the [latest Flatpak release](https://flathub.org/apps/details/io.openrct2.OpenRCT2). When downloading from Flathub, you will always receive the latest updates regardless of which Linux distribution you use.
 
 Some Linux distributions offer native packages:
-* Arch Linux: [openrct2](https://archlinux.org/packages/extra/x86_64/openrct2/) release version (`extra` repository) and, alternatively, [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR)
+* Arch Linux: [openrct2](https://archlinux.org/packages/extra/x86_64/openrct2/) latest release (`extra` repository) and, alternatively, [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR)
 * Gentoo (main portage tree): [games-simulation/openrct2](https://packages.gentoo.org/packages/games-simulation/openrct2)
 * NixOS (`nixos-unstable` channel): [openrct2](https://github.com/NixOS/nixpkgs/blob/master/pkgs/games/openrct2/default.nix)
 * openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
@@ -89,12 +89,12 @@ Some \*BSD operating systems offer native packages:
 
 # 3. Building the game
 
-## 3.1 Building pre-requisites
+## 3.1 Building prerequisites
 
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2).
 
 <details>
-  <summary>Windows pre-requisites</summary>
+  <summary>Windows prerequisites</summary>
 
   There are two toolchain options for building the game on Windows:
 
@@ -109,7 +109,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 </details>
 
 <details>
-  <summary>macOS pre-requisites</summary>
+  <summary>macOS prerequisites</summary>
 
   - Xcode Command Line Tools
   - [Homebrew](https://brew.sh)
@@ -118,7 +118,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 </details>
 
 <details>
-  <summary>Linux pre-requisites</summary>
+  <summary>Linux prerequisites</summary>
 
   - gcc (>= 8.0) or clang (>= 10.0) (for C++20 support)
   - sdl2 (only for UI client)
