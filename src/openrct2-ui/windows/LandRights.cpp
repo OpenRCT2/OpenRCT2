@@ -248,9 +248,26 @@ static Widget window_land_rights_widgets[] = {
         void OnUpdate() override
         {
             frame_no++;
+
             // Close window if another tool is open
             if (!isToolActive(WindowClass::LandRights))
+            {
                 Close();
+                return;
+            }
+
+            bool inRightsMode = _landRightsMode == LandRightsMode::BuyLand
+                || _landRightsMode == LandRightsMode::BuyConstructionRights;
+
+            if (!IsOwnershipMode() && !inRightsMode)
+            {
+                if (gLandRemainingOwnershipSales > 0)
+                    SwitchToMode(LandRightsMode::BuyLand);
+                else
+                    SwitchToMode(LandRightsMode::BuyConstructionRights);
+            }
+            else if (IsOwnershipMode() && inRightsMode)
+                SwitchToMode(LandRightsMode::SetLandUnowned);
         }
 
         void PrepareDrawInGame()
