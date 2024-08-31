@@ -224,50 +224,49 @@ namespace OpenRCT2::Ui::Windows
             CoordsXYZ trackLoc = { mapCoords, mapZ };
 
             auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
-            if (res.Error == GameActions::Status::Ok)
+            if (res.Error != GameActions::Status::Ok)
             {
-                auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
-                tdAction.SetCallback([&](const GameAction*, const GameActions::Result* result) {
-                    if (result->Error == GameActions::Status::Ok)
-                    {
-                        rideId = result->GetData<RideId>();
-                        auto getRide = GetRide(rideId);
-                        if (getRide != nullptr)
-                        {
-                            WindowCloseByClass(WindowClass::Error);
-                            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackLoc);
+                // Unable to build track
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, trackLoc);
 
-                            _currentRideIndex = rideId;
-                            if (TrackDesignAreEntranceAndExitPlaced())
-                            {
-                                auto intent = Intent(WindowClass::Ride);
-                                intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
-                                ContextOpenIntent(&intent);
-                                auto wnd = WindowFindByClass(WindowClass::TrackDesignPlace);
-                                WindowClose(*wnd);
-                            }
-                            else
-                            {
-                                RideInitialiseConstructionWindow(*getRide);
-                                auto wnd = WindowFindByClass(WindowClass::RideConstruction);
-                                wnd->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, result->Position);
-                    }
-                });
-                GameActions::Execute(&tdAction);
+                auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+                windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
                 return;
             }
 
-            // Unable to build track
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, trackLoc);
+            auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
+            tdAction.SetCallback([&](const GameAction*, const GameActions::Result* result) {
+                if (result->Error != GameActions::Status::Ok)
+                {
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, result->Position);
+                    return;
+                }
 
-            auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-            windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
+                rideId = result->GetData<RideId>();
+                auto getRide = GetRide(rideId);
+                if (getRide != nullptr)
+                {
+                    WindowCloseByClass(WindowClass::Error);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackLoc);
+
+                    _currentRideIndex = rideId;
+                    if (TrackDesignAreEntranceAndExitPlaced())
+                    {
+                        auto intent = Intent(WindowClass::Ride);
+                        intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
+                        ContextOpenIntent(&intent);
+                        auto wnd = WindowFindByClass(WindowClass::TrackDesignPlace);
+                        WindowClose(*wnd);
+                    }
+                    else
+                    {
+                        RideInitialiseConstructionWindow(*getRide);
+                        auto wnd = WindowFindByClass(WindowClass::RideConstruction);
+                        wnd->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                    }
+                }
+            });
+            GameActions::Execute(&tdAction);
         }
 
         void OnToolAbort(WidgetIndex widgetIndex) override
