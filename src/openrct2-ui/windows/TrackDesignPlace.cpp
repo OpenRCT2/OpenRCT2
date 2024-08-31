@@ -81,7 +81,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         std::unique_ptr<TrackDesign> _trackDesign;
 
-        CoordsXY _placementLoc;
+        CoordsXYZD _placementLoc;
         RideId _placementGhostRideId;
         bool _hasPlacementGhost;
         money64 _placementCost;
@@ -173,25 +173,21 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
+            // Take shift modifier into account
+            ScreenCoordsXY targetScreenCoords = screenCoords;
+            if (_trackPlaceShiftState)
+                targetScreenCoords = _trackPlaceShiftStart;
+
             // Get the tool map position
-            CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
+            CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(targetScreenCoords);
             if (mapCoords.IsNull())
             {
                 ClearProvisional();
                 return;
             }
 
-            // Check if tool map position has changed since last update
-            if (mapCoords == _placementLoc)
-            {
-                TrackDesignPreviewDrawOutlines(
-                    tds, *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, 0, _currentTrackPieceDirection });
-                return;
-            }
-
-            money64 cost = kMoney64Undefined;
-
             // Get base Z position
+            // NB: always use the actual screenCoords here, not the shifted ones
             auto maybeMapZ = GetBaseZ(mapCoords, screenCoords);
             if (!maybeMapZ.has_value())
             {
@@ -201,6 +197,15 @@ namespace OpenRCT2::Ui::Windows
 
             CoordsXYZD trackLoc = { mapCoords, *maybeMapZ, _currentTrackPieceDirection };
 
+            // Check if tool map position has changed since last update
+            if (trackLoc == _placementLoc)
+            {
+                TrackDesignPreviewDrawOutlines(
+                    tds, *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, 0, _currentTrackPieceDirection });
+                return;
+            }
+
+            money64 cost = kMoney64Undefined;
             if (GameIsNotPaused() || GetGameState().Cheats.BuildInPauseMode)
             {
                 ClearProvisional();
