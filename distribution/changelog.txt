@@ -14,6 +14,7 @@
 - Change: [#22491] Scrollbars are now hidden if the scrollable widget is not actually overflowing.
 - Change: [#22541] In editor/sandbox mode, tool widgets now appear on the side of the map window, instead of the bottom.
 - Change: [#22592] Cheats have been redistributed along three new tabs: date, staff, and nature/weather.
+- Fix: [#21123] Transparency options are not respected on startup.
 - Fix: [#21189] Additional missing/misplaced land & construction rights tiles in Schneider Shores and Urban Park.
 - Fix: [#21908] Errors showing up when placing/moving track design previews.
 - Fix: [#22307] Hover tooltips in financial charts are not invalidated properly.
