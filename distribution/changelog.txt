@@ -1,5 +1,6 @@
 0.4.15 (in development)
 ------------------------------------------------------------------------
+- Fix: [#22231] Invalid object version can cause a crash.
 - Fix: [#22653] Add several .parkpatch files for missing water tiles in RCT1 and RCT2 scenarios.
 
 0.4.14 (2024-09-01)
