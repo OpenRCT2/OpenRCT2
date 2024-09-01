@@ -1,0 +1,12 @@
+{
+    "scenario_name": "Geoffrey Gardens",
+    "sha256": "1ee9f4c0520ff48c866df90931d431694d3727f9f772ffbe680c9f857f0dca2e",
+    "water": [
+        {
+            "height": 96,
+            "coordinates": [
+                [ 60, 1 ], [ 60, 2 ]
+            ]
+        }
+    ]
+}
