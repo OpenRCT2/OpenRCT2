@@ -2216,7 +2216,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::Wall:
             {
                 auto wallEntry = _element->AsWall()->GetEntry();
-                if (wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
+                if (wallEntry == nullptr || wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
                     return;
                 break;
             }

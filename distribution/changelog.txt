@@ -23,6 +23,7 @@
 - Fix: [#22395, #22396] Misaligned tick marks in financial and guest count graphs (original bug).
 - Fix: [#22457] Potential crash opening the scenario select window.
 - Fix: [#22520] Virtual floor no longer appears when holding modifier keys during track construction.
+- Fix: [#22527] Forcing an element type to “wall” via scripts can crash the game.
 - Fix: [#22582] Lighting effects are not enabled/disabled correctly, making the game appear frozen.
 - Fix: [#22598] Add several .parkpatch files to .sea scenarios with corresponding patches for RCT1 and RCT2 scenarios.
 - Fix: [#22606] Virtual floor is sometimes drawn above the path when placing paths.
