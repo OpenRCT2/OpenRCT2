@@ -454,11 +454,23 @@ namespace OpenRCT2::Ui::Windows
 
             if (!_trackPlaceCtrlState && im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
-                _trackPlaceCtrlZ = Floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
+                constexpr auto interactionFlags = EnumsToFlags(
+                    ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
+                    ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery);
 
-                // Increase Z above water
-                if (surfaceElement->GetWaterHeight() > 0)
-                    _trackPlaceCtrlZ = std::max(_trackPlaceCtrlZ, surfaceElement->GetWaterHeight());
+                auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
+                if (info.SpriteType == ViewportInteractionItem::Terrain)
+                {
+                    _trackPlaceCtrlZ = Floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
+
+                    // Increase Z above water
+                    if (surfaceElement->GetWaterHeight() > 0)
+                        _trackPlaceCtrlZ = std::max(_trackPlaceCtrlZ, surfaceElement->GetWaterHeight());
+                }
+                else
+                {
+                    _trackPlaceCtrlZ = Floor2(info.Element->GetBaseZ(), kCoordsZStep);
+                }
 
                 _trackPlaceCtrlState = true;
             }
