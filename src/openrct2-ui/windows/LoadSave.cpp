@@ -931,9 +931,11 @@ static Widget window_loadsave_widgets[] =
             if (selectedItem >= no_list_items)
                 return;
 
-            selected_list_item = selectedItem;
-
-            Invalidate();
+            if (selected_list_item != selectedItem)
+            {
+                selected_list_item = selectedItem;
+                Invalidate();
+            }
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
