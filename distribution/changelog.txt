@@ -1,4 +1,4 @@
-0.4.14 (in development)
+0.4.14 (2024-09-01)
 ------------------------------------------------------------------------
 - Feature: [#15750] Allow using different types of park entrance in one park.
 - Feature: [#20942] Allow removing all park fences from the Cheats window.
