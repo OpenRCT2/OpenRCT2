@@ -1,6 +1,6 @@
 {
-    "scenario_name": "Urban Park",
-    "sha256": "835ec8bdba3dc4086906126907c022cf42fa0f9cd6ee06221f36aac526ac4ec4",
+    "scenario_name": "Urban Park (.sea)",
+    "sha256": "100dc43fe777600003ae155de7080a5575fdd67bc35ccb9f8f871b7b50b7dba7",
     "land_ownership": {
         "available": {
             "coordinates": [
@@ -13,11 +13,6 @@
                 [ 59, 62 ], [ 59, 63 ], [ 59, 64 ], [ 59, 65 ],
                 [ 60, 62 ], [ 60, 63 ], [ 60, 64 ], [ 60, 65 ],
                 [ 61, 62 ], [ 61, 63 ], [ 61, 64 ], [ 61, 65 ]
-            ]
-        },
-        "construction_rights_available": {
-            "coordinates": [
-                [ 46, 47 ]
             ]
         }
     },

@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Nevermore Park (.sea)",
+    "sha256": "72b0ef7340b8812b7a100f751a7bb29f45da63fcbc5087ea647712007ebf724b",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 9, 74 ]
+            ]
+        }
+    }
+}
