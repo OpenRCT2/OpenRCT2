@@ -31,6 +31,7 @@
 - Fix: [#22663] Additional missing/misplaced land & construction rights tiles in Mystic Mountain, Build your own Six Flags Holland and Build your own Six Flags over Texas.
 - Fix: [#22671] Game default to hide supports on startup.
 - Fix: [#22671] Unchecking invisible option does not uncheck see-through option on transparency options and vice versa.
+- Fix: [#22677] Hovering the file list in the load/save window causes a slowdown.
 
 0.4.13 (2024-08-04)
 ------------------------------------------------------------------------
