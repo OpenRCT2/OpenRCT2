@@ -36,9 +36,9 @@ static Widget _mainWidgets[] = {
             widgets = _mainWidgets;
 
             ViewportCreate(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
-            if (viewport != nullptr && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+            if (viewport != nullptr)
             {
-                SetViewportFlags();
+                SetViewportFlags(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO);
                 viewport->rotation = 0;
             }
             gShowGridLinesRefCount = 0;
@@ -53,9 +53,14 @@ static Widget _mainWidgets[] = {
         }
 
     private:
-        void SetViewportFlags()
+        void SetViewportFlags(bool isTitleWindow)
         {
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+            if (isTitleWindow)
+            {
+                return;
+            }
+
             if (Config::Get().general.InvisibleRides)
             {
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_RIDES;
