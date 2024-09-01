@@ -1797,7 +1797,6 @@ STR_2448    :{YELLOW}Az félárú parkbelépés marketingkampánya befejeződöt
 STR_2449    :{YELLOW}Az ingyen {STRINGID} marketingkampánya befejeződött
 STR_2450    :{YELLOW}A park reklámkampánya befejeződött
 STR_2451    :{YELLOW}{STRINGID} reklámkampánya befejeződött
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2452    :{WINDOW_COLOUR_2}Pénz (kölcsön nélkül): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Pénz (kölcsön nélkül): {RED}{CURRENCY2DP}
 STR_2457    :A pénzügyi számlák adatai
@@ -2603,8 +2602,8 @@ STR_5357    :{BLACK}Émelygéstűrés:
 STR_5358    :{BLACK}WC:
 STR_5359    :Vendégek törlése
 STR_5360    :Eltávolít minden vendéget a térképről
-STR_5361    :Minden vendég kapjon:
-STR_5362    :{BLACK}A vendégek preferált játékintenzitása:
+STR_5361    :Hozzáadás a vendégek tulajdonához
+STR_5362    :{BLACK}Preferált játékintenzitás:
 STR_5363    :Több mint 1
 STR_5364    :Kevesebb mint 15
 STR_5365    :{BLACK}Dolgozók sebessége:
@@ -2634,7 +2633,7 @@ STR_5457    :Állványzatlimitek ki
 STR_5458    :Forgatás órajárás szerint
 STR_5459    :Forgatás órajárással ellentétesen
 STR_5460    :Forgatás órajárással ellentétesen
-STR_5461    :Vendégek paramétereinek beállítása
+STR_5461    :Minden vendég paramétereinek beállítása
 STR_5462    :{CURRENCY}
 STR_5463    :Cél: Érezd jól magad!
 STR_5464    :Általános
@@ -3431,7 +3430,6 @@ STR_6356    :Kacsákat rak le, ha van víz a parkban
 STR_6357    :Eltávolít minden kacsát a térképről
 STR_6358    :{UINT16}. oldal
 STR_6359    :{POP16}{POP16}{UINT16}. oldal
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Fényhatások a játékokon (kísérleti)
 STR_6362    :Ha be van kapcsolva, a pályával rendelkező játékokon a járművek éjjel ki lesznek világítva.
 STR_6363    :A szöveg a vágólapra másolva
@@ -3663,7 +3661,7 @@ STR_6589    :Ablak gombok mutatása a bal oldalon
 STR_6590    :Az ablak gombok (pl. az ablak bezárása) mutatása az ablak címsorának bal oldalán, ahelyett hogy a jobb oldalon lennének.
 STR_6591    :Az alkalmazott jelenleg egy játékot javít, és nem lehet kirúgni.
 STR_6592    :Az alkalmazott jelenleg egy játékot ellenőriz, és nem lehet kirúgni.
-STR_6593    :Park kerítések eltávolítása
+STR_6593    :Kerítések törlése
 STR_6594    :Mezővizsgáló: Fal lejtésének változtatása
 STR_6595    :{WINDOW_COLOUR_2}Szerző: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Szerzők: {BLACK}{STRING}
@@ -3726,6 +3724,21 @@ STR_6652    :Hibaablak
 STR_6653    :Minden forrás mutatása
 STR_6654    :{POP16}{UINT16} forrás mutatása
 STR_6655    :Csak „{POP16}{STRINGID}”
+STR_6656    :Az összes kerítés eltávolítása a parkból
+STR_6657    :Nem birtokolt földterület
+STR_6658    :A földterület ne legyen a park tulajdonában és ne legyen megvásárolható
+STR_6659    :Vendégeket nem érdeklik az árak
+STR_6660    :A vendégek hagyják figyelmen kívül a játékok és bódék árait
+STR_6661    :Véletlenszerűek
+STR_6662    :Véletlenszerű színek minden vonat vagy jármű számára
+STR_6663    :Dátum csalások
+STR_6664    :Dátum csalások megjelenítése
+STR_6665    :Természet/időjárás csalások
+STR_6666    :Természet/időjárás csalások megjelenítése
+STR_6667    :Fauna
+STR_6668    :Személyzeti csalások
+STR_6669    :Személyzeti csalások megjelenítése
+STR_6670    :Vendégek viselkedése
 
 #############
 # Scenarios #

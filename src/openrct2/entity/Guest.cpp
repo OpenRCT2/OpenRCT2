@@ -49,6 +49,7 @@
 #include "../scenario/Scenario.h"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
+#include "../sprites.h"
 #include "../util/Math.hpp"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -445,7 +446,7 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
 static void PeepUpdateHunger(Guest* peep);
 static void PeepDecideWhetherToLeavePark(Guest* peep);
 static void PeepLeavePark(Guest* peep);
-static void PeepHeadForNearestRideWithFlags(Guest* peep, bool considerOnlyCloseRides, int64_t rideTypeFlags);
+static void PeepHeadForNearestRideWithFlag(Guest* peep, bool considerOnlyCloseRides, RtdFlag rtdFlag);
 bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
 template<> bool EntityBase::Is<Guest>() const
@@ -1004,7 +1005,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                 auto ride = GetRide(CurrentRide);
                 if (ride != nullptr)
                 {
-                    PeepThoughtType thought_type = ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE)
+                    PeepThoughtType thought_type = ride->GetRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside)
                         ? PeepThoughtType::GetOut
                         : PeepThoughtType::GetOff;
 
@@ -1108,16 +1109,16 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                 switch (chosen_thought)
                 {
                     case PeepThoughtType::Hungry:
-                        PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_SELLS_FOOD);
+                        PeepHeadForNearestRideWithFlag(this, false, RtdFlag::sellsFood);
                         break;
                     case PeepThoughtType::Thirsty:
-                        PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_SELLS_DRINKS);
+                        PeepHeadForNearestRideWithFlag(this, false, RtdFlag::sellsDrinks);
                         break;
                     case PeepThoughtType::Toilet:
-                        PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_IS_TOILET);
+                        PeepHeadForNearestRideWithFlag(this, false, RtdFlag::isToilet);
                         break;
                     case PeepThoughtType::RunningOut:
-                        PeepHeadForNearestRideWithFlags(this, false, RIDE_TYPE_FLAG_IS_CASH_MACHINE);
+                        PeepHeadForNearestRideWithFlag(this, false, RtdFlag::isCashMachine);
                         break;
                     default:
                         break;
@@ -1137,7 +1138,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
             if (Nausea >= 200)
             {
                 thought_type = PeepThoughtType::VerySick;
-                PeepHeadForNearestRideWithFlags(this, true, RIDE_TYPE_FLAG_IS_FIRST_AID);
+                PeepHeadForNearestRideWithFlag(this, true, RtdFlag::isFirstAid);
             }
             InsertNewThought(thought_type);
         }
@@ -1583,7 +1584,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
                     if (Happiness >= 180)
                         itemValue /= 2;
                 }
-                if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)))
+                if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)) && !(GetGameState().Cheats.IgnorePrice))
                 {
                     // "I'm not paying that much for x"
                     InsertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
@@ -1944,7 +1945,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
         assert(ride.type < std::size(RideTypeDescriptors));
-        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_TRANSPORT_RIDE) || ride.value == RIDE_VALUE_UNDEFINED
+        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == RIDE_VALUE_UNDEFINED
             || RideGetPrice(ride) != 0)
         {
             if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -1954,7 +1955,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
             }
         }
 
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         {
             return ShouldGoToShop(ride, peepAtRide);
         }
@@ -2005,7 +2006,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
         // Assuming the queue conditions are met, peeps will always go on free transport rides.
         // Ride ratings, recent crashes and weather will all be ignored.
         auto ridePrice = RideGetPrice(ride);
-        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_TRANSPORT_RIDE) || ride.value == RIDE_VALUE_UNDEFINED
+        if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isTransportRide) || ride.value == RIDE_VALUE_UNDEFINED
             || ridePrice != 0)
         {
             if (PreviousRide == ride.id)
@@ -2143,7 +2144,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
 
             // If the ride has not yet been rated and is capable of having g-forces,
             // there's a 90% chance that the peep will ignore it.
-            if (!RideHasRatings(ride) && ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES))
+            if (!RideHasRatings(ride) && ride.GetRideTypeDescriptor().HasFlag(RtdFlag::checkGForces))
             {
                 if ((ScenarioRand() & 0xFFFF) > 0x1999u)
                 {
@@ -2174,7 +2175,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
 
                 // Peeps won't pay more than twice the value of the ride.
                 ridePrice = RideGetPrice(ride);
-                if (ridePrice > (value * 2))
+                if ((ridePrice > (value * 2)) && !(gameState.Cheats.IgnorePrice))
                 {
                     if (peepAtRide)
                     {
@@ -2232,7 +2233,7 @@ bool Guest::ShouldGoToShop(Ride& ride, bool peepAtShop)
     }
 
     const auto& rtd = ride.GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
+    if (rtd.HasFlag(RtdFlag::isToilet))
     {
         if (Toilet < 70)
         {
@@ -2242,7 +2243,7 @@ bool Guest::ShouldGoToShop(Ride& ride, bool peepAtShop)
 
         // The amount that peeps are willing to pay to use the Toilets scales with their toilet stat.
         // It effectively has a minimum of $0.10 (due to the check above) and a maximum of $0.60.
-        if (RideGetPrice(ride) * 40 > Toilet)
+        if ((RideGetPrice(ride) * 40 > Toilet) && !GetGameState().Cheats.IgnorePrice)
         {
             if (peepAtShop)
             {
@@ -2258,7 +2259,7 @@ bool Guest::ShouldGoToShop(Ride& ride, bool peepAtShop)
         }
     }
 
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID))
+    if (rtd.HasFlag(RtdFlag::isFirstAid))
     {
         if (Nausea < 128)
         {
@@ -2369,7 +2370,7 @@ bool Guest::ShouldRideWhileRaining(const Ride& ride)
     }
 
     // Peeps with umbrellas will go on rides where they can use their umbrella on it (like the Maze) 50% of the time
-    if (HasItem(ShopItem::Umbrella) && ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA)
+    if (HasItem(ShopItem::Umbrella) && ride.GetRideTypeDescriptor().HasFlag(RtdFlag::guestsCanUseUmbrella)
         && (ScenarioRand() & 2) == 0)
     {
         return true;
@@ -2452,7 +2453,7 @@ static void PeepRideIsTooIntense(Guest* peep, Ride& ride, bool peepAtRide)
 static Vehicle* PeepChooseCarFromRide(Peep* peep, const Ride& ride, std::vector<uint8_t>& car_array)
 {
     uint8_t chosen_car = ScenarioRand();
-    if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES) && ((chosen_car & 0xC) != 0xC))
+    if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasGForces) && ((chosen_car & 0xC) != 0xC))
     {
         chosen_car = (ScenarioRand() & 1) ? 0 : static_cast<uint8_t>(car_array.size()) - 1;
     }
@@ -2649,7 +2650,7 @@ static bool PeepCheckRidePriceAtEntrance(Guest* peep, const Ride& ride, money64 
     auto value = ride.value;
     if (value != RIDE_VALUE_UNDEFINED)
     {
-        if ((value * 2) < ridePrice)
+        if (((value * 2) < ridePrice) && !(GetGameState().Cheats.IgnorePrice))
         {
             peep->InsertNewThought(PeepThoughtType::BadValue, peep->CurrentRide);
             PeepUpdateRideAtEntranceTryLeave(peep);
@@ -2861,7 +2862,7 @@ static void PeepUpdateRideNauseaGrowth(Guest* peep, const Ride& ride)
 
 static bool PeepShouldGoOnRideAgain(Guest* peep, const Ride& ride)
 {
-    if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN))
+    if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::guestsWillRideAgain))
         return false;
     if (!RideHasRatings(ride))
         return false;
@@ -3240,15 +3241,14 @@ template<typename T> static void PeepHeadForNearestRide(Guest* peep, bool consid
     }
 }
 
-static void PeepHeadForNearestRideWithFlags(Guest* peep, bool considerOnlyCloseRides, int64_t rideTypeFlags)
+static void PeepHeadForNearestRideWithFlag(Guest* peep, bool considerOnlyCloseRides, RtdFlag rtdFlag)
 {
-    if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_TOILET) && peep->HasFoodOrDrink())
+    if ((rtdFlag == RtdFlag::isToilet) && peep->HasFoodOrDrink())
     {
         return;
     }
-    PeepHeadForNearestRide(peep, considerOnlyCloseRides, [rideTypeFlags](const Ride& ride) {
-        return ride.GetRideTypeDescriptor().HasFlag(rideTypeFlags);
-    });
+    PeepHeadForNearestRide(
+        peep, considerOnlyCloseRides, [rtdFlag](const Ride& ride) { return ride.GetRideTypeDescriptor().HasFlag(rtdFlag); });
 }
 
 /**
@@ -3263,16 +3263,16 @@ void Guest::StopPurchaseThought(ride_type_t rideType)
     auto thoughtType = PeepThoughtType::Hungry;
 
     const auto& rtd = GetRideTypeDescriptor(rideType);
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
+    if (!rtd.HasFlag(RtdFlag::sellsFood))
     {
         thoughtType = PeepThoughtType::Thirsty;
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_SELLS_DRINKS))
+        if (!rtd.HasFlag(RtdFlag::sellsDrinks))
         {
             thoughtType = PeepThoughtType::RunningOut;
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
+            if (!rtd.HasFlag(RtdFlag::isCashMachine))
             {
                 thoughtType = PeepThoughtType::Toilet;
-                if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
+                if (!rtd.HasFlag(RtdFlag::isToilet))
                 {
                     return;
                 }
@@ -3357,7 +3357,7 @@ void Guest::UpdateBuying()
         }
 
         const auto& rtd = GetRideTypeDescriptor(ride->type);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
+        if (rtd.HasFlag(RtdFlag::isCashMachine))
         {
             if (CurrentRide != PreviousRide)
             {
@@ -3380,7 +3380,7 @@ void Guest::UpdateBuying()
     if (CurrentRide != PreviousRide)
     {
         const auto& rtd = GetRideTypeDescriptor(ride->type);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
+        if (rtd.HasFlag(RtdFlag::isCashMachine))
         {
             item_bought = PeepShouldUseCashMachine(this, CurrentRide);
             if (!item_bought)
@@ -3483,7 +3483,7 @@ void Guest::UpdateRideAtEntrance()
 
     std::vector<uint8_t> carArray;
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
     {
         if (ride->num_riders >= ride->operation_option)
             return;
@@ -3510,7 +3510,7 @@ void Guest::UpdateRideAtEntrance()
             return;
     }
 
-    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+    if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
     {
         Vehicle* vehicle = PeepChooseCarFromRide(this, *ride, carArray);
         PeepChooseSeatFromCar(this, *ride, vehicle);
@@ -3709,7 +3709,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         return;
     }
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
     {
         const auto& station = ride->GetStation(CurrentRideStation);
         auto entranceLocation = station.Entrance.ToCoordsXYZD();
@@ -3887,7 +3887,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         ride.FormatNameTo(ft);
 
         StringId msg_string;
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE))
+        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside))
             msg_string = STR_PEEP_TRACKING_PEEP_IS_IN_X;
         else
             msg_string = STR_PEEP_TRACKING_PEEP_IS_ON_X;
@@ -3899,7 +3899,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
     }
 
     const auto& rtd = ride.GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE))
+    if (rtd.HasFlag(RtdFlag::isSpiralSlide))
     {
         SwitchToSpecialSprite(1);
     }
@@ -3945,7 +3945,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     if (ride == nullptr)
         return;
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
     {
         if (ride->status != RideStatus::Open || ride->vehicle_change_timeout != 0 || (++RejoinQueueTimeout) == 0)
         {
@@ -4178,7 +4178,7 @@ void Guest::UpdateRideLeaveVehicle()
 
         platformLocation.direction = DirectionReverse(exitLocation.direction);
 
-        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
+        if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
         {
             for (; vehicle != nullptr && !vehicle->IsHead(); vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
             {
@@ -4689,7 +4689,7 @@ void Guest::UpdateRideApproachSpiralSlide()
             Var37 = (directionTemp * 4) | (Var37 & 0x30) | waypoint;
             CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
-            assert(rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE));
+            assert(rtd.HasFlag(RtdFlag::isSpiralSlide));
             targetLoc += SpiralSlideWalkingPath[Var37];
 
             SetDestination(targetLoc);
@@ -4703,7 +4703,7 @@ void Guest::UpdateRideApproachSpiralSlide()
 
     CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
-    assert(rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE));
+    assert(rtd.HasFlag(RtdFlag::isSpiralSlide));
     targetLoc += SpiralSlideWalkingPath[Var37];
 
     SetDestination(targetLoc);
@@ -4737,7 +4737,7 @@ void Guest::UpdateRideOnSpiralSlide()
         return;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE))
+    if (!rtd.HasFlag(RtdFlag::isSpiralSlide))
         return;
 
     auto destination = GetDestination();
@@ -4842,7 +4842,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
         CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
         [[maybe_unused]] const auto& rtd = ride->GetRideTypeDescriptor();
-        assert(rtd.HasFlag(RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE));
+        assert(rtd.HasFlag(RtdFlag::isSpiralSlide));
         targetLoc += SpiralSlideWalkingPath[Var37];
 
         SetDestination(targetLoc);
@@ -5102,7 +5102,7 @@ void Guest::UpdateRideShopInteract()
     const int16_t tileCentreY = NextLoc.y + 16;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID))
+    if (rtd.HasFlag(RtdFlag::isFirstAid))
     {
         if (Nausea <= 35)
         {
@@ -6305,14 +6305,14 @@ static bool PeepShouldWatchRide(TileElement* tileElement)
         return true;
     }
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT))
+    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::interestingToLookAt))
     {
         if ((ScenarioRand() & 0xFFFF) > 0x3333)
         {
             return false;
         }
     }
-    else if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT))
+    else if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::slightlyInterestingToLookAt))
     {
         if ((ScenarioRand() & 0xFFFF) > 0x1000)
         {

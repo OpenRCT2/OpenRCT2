@@ -1,0 +1,26 @@
+{
+    "scenario_name": "Lost City Founder (.sea)",
+    "sha256": "70ce3e11f1dd59929a6d82d0f6f88897c95b94d1f9d4efd6ef3a0c6c449f966f",
+    "land_ownership": {
+        "unowned": {
+            "coordinates": [
+                [ 15, 59 ]
+            ]
+        },
+        "construction_rights_owned": {
+            "cannot_downgrade": true,
+            "coordinates": [
+                [ 11, 64 ], [ 11, 65 ], [ 11, 66 ],
+                [ 13, 68 ], [ 13, 69 ],
+                [ 14, 69 ],
+                [ 15, 59 ],
+                [ 55, 60 ],
+                [ 61, 6 ],
+                [ 86, 63 ],
+                [ 84, 22 ], [ 84, 23 ],
+                [ 83, 77 ], [ 84, 77 ], [ 84, 78 ],
+                [ 44, 61 ], [ 45, 61 ], [ 46, 61 ], [ 45, 62 ]
+            ]
+        }
+    }
+}

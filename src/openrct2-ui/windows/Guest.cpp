@@ -214,11 +214,8 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
 
         void OnClose() override
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-            {
-                if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                    ToolCancel();
-            }
+            if (isToolActive(classification, number))
+                ToolCancel();
         }
 
         void OnMouseUp(WidgetIndex widx) override
@@ -499,11 +496,9 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
 
         void SetPage(int32_t newPage)
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-            {
-                if (number == gCurrentToolWidget.window_number && classification == gCurrentToolWidget.window_classification)
-                    ToolCancel();
-            }
+            if (isToolActive(classification, number))
+                ToolCancel();
+
             int32_t listen = 0;
             if (newPage == WINDOW_GUEST_OVERVIEW && page == WINDOW_GUEST_OVERVIEW && viewport != nullptr)
             {
@@ -1258,9 +1253,9 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
             if (visableHeight < 0)
                 visableHeight = 0;
 
-            if (visableHeight < scrolls[0].v_top)
+            if (visableHeight < scrolls[0].contentOffsetY)
             {
-                scrolls[0].v_top = visableHeight;
+                scrolls[0].contentOffsetY = visableHeight;
                 Invalidate();
             }
             return newSize;

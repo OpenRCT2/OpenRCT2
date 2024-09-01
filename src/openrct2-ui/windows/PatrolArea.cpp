@@ -23,6 +23,7 @@
 #include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -267,11 +268,7 @@ static Widget PatrolAreaWidgets[] = {
 
         bool PatrolAreaToolIsActive()
         {
-            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                return false;
-            if (gCurrentToolWidget.window_classification != WindowClass::PatrolArea)
-                return false;
-            return true;
+            return isToolActive(WindowClass::PatrolArea);
         }
 
         bool IsStaffWindowOpen()

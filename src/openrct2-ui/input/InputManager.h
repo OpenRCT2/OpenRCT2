@@ -43,6 +43,15 @@ namespace OpenRCT2::Ui
         InputEventState State;
     };
 
+    enum class ModifierKey : uint8_t
+    {
+        none = 0,
+        shift = 1 << 0,
+        ctrl = 1 << 1,
+        alt = 1 << 2,
+        cmd = 1 << 3,
+    };
+
     class InputManager
     {
     private:
@@ -52,6 +61,7 @@ namespace OpenRCT2::Ui
         ScreenCoordsXY _viewScroll;
         uint32_t _mouseState{};
         std::vector<uint8_t> _keyboardState;
+        uint8_t _modifierKeyState;
 
         void CheckJoysticks();
 
@@ -70,6 +80,9 @@ namespace OpenRCT2::Ui
         bool HasTextInputFocus() const;
 
     public:
+        InputManager();
+
+        bool IsModifierKeyPressed(ModifierKey modifier) const;
         void QueueInputEvent(const SDL_Event& e);
         void QueueInputEvent(InputEvent&& e);
         void Process();

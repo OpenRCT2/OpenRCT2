@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Extreme Heights (.sea)",
+    "sha256": "43b5d615bcd7ec9c6dac1297ec130548267ae74b08cf9d312dc82f173e449702",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 105, 147 ], [ 106, 147 ], [ 107, 147 ]
+            ]
+        }
+    }
+}

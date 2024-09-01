@@ -10,7 +10,6 @@
 #include "../interface/Theme.h"
 
 #include <array>
-#include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2-ui/interface/LandTool.h>
@@ -27,19 +26,22 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/management/Award.h>
 #include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/world/Entrance.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_STRINGID;
     static constexpr int32_t WH = 224;
+
+    static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 45, 15 };
+    static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 5, 5 };
+    static constexpr uint8_t kGraphNumYLabels = 6;
 
     // clang-format off
 enum WindowParkPage {
@@ -197,6 +199,12 @@ static constexpr WindowParkAward _parkAwards[] = {
         int32_t _numberOfRides = -1;
         uint8_t _peepAnimationFrame = 0;
 
+        Graph::GraphProperties<uint8_t> _ratingProps{};
+        Graph::GraphProperties<uint32_t> _guestProps{};
+
+        ScreenRect _ratingGraphBounds;
+        ScreenRect _guestGraphBounds;
+
     public:
         void OnOpen() override
         {
@@ -206,12 +214,16 @@ static constexpr WindowParkAward _parkAwards[] = {
             _numberOfStaff = -1;
             _peepAnimationFrame = 0;
             SetPage(0);
+
+            _ratingProps.lineCol = colours[2];
+            _guestProps.lineCol = colours[2];
+            _ratingProps.hoverIdx = -1;
+            _guestProps.hoverIdx = -1;
         }
 
         void OnClose() override
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && classification == gCurrentToolWidget.window_classification
-                && number == gCurrentToolWidget.window_number)
+            if (isToolActive(classification, number))
             {
                 ToolCancel();
             }
@@ -692,6 +704,22 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
             AnchorBorderWidgets();
+
+            _ratingProps.min = 0;
+            _ratingProps.max = 250;
+            _ratingProps.series = GetGameState().Park.RatingHistory;
+            const Widget* background = &widgets[WIDX_PAGE_BACKGROUND];
+            _ratingGraphBounds = { windowPos + ScreenCoordsXY{ background->left + 4, background->top + 15 },
+                                   windowPos + ScreenCoordsXY{ background->right - 4, background->bottom - 4 } };
+
+            char buffer[64]{};
+            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", Graph::kParkRatingMax);
+            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
+
+            _ratingProps.RecalculateLayout(
+                { _ratingGraphBounds.Point1 + dynamicPadding, _ratingGraphBounds.Point2 - kGraphBottomRightPadding },
+                kGraphNumYLabels, kParkRatingHistorySize);
         }
 
         void OnDrawRating(DrawPixelInfo& dpi)
@@ -699,41 +727,16 @@ static constexpr WindowParkAward _parkAwards[] = {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            auto screenPos = windowPos;
             Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
 
             // Current value
-            auto ft = Formatter();
+            Formatter ft;
             ft.Add<uint16_t>(GetGameState().Park.Rating);
-            DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
             // Graph border
-            GfxFillRectInset(
-                dpi,
-                { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
-                  screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
-                colours[1], INSET_RECT_F_30);
-
-            // Y axis labels
-            screenPos = screenPos + ScreenCoordsXY{ widget->left + 27, widget->top + 23 };
-            for (int i = 5; i >= 0; i--)
-            {
-                uint32_t axisValue = i * 200;
-                ft = Formatter();
-                ft.Add<uint32_t>(axisValue);
-                DrawTextBasic(
-                    dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-                    { FontStyle::Small, TextAlignment::RIGHT });
-                GfxFillRectInset(
-                    dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
-                    INSET_RECT_FLAG_BORDER_INSET);
-                screenPos.y += 20;
-            }
-
-            // Graph
-            screenPos = windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
-
-            Graph::Draw(dpi, GetGameState().Park.RatingHistory, kParkRatingHistorySize, screenPos);
+            GfxFillRectInset(dpi, _ratingGraphBounds, colours[1], INSET_RECT_F_30);
+            Graph::DrawRatingGraph(dpi, _ratingProps);
         }
 
 #pragma endregion
@@ -765,6 +768,33 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
             AnchorBorderWidgets();
+
+            const auto& gameState = GetGameState();
+            _guestProps.series = gameState.GuestsInParkHistory;
+            const Widget* background = &widgets[WIDX_PAGE_BACKGROUND];
+            _guestGraphBounds = { windowPos + ScreenCoordsXY{ background->left + 4, background->top + 15 },
+                                  windowPos + ScreenCoordsXY{ background->right - 4, background->bottom - 4 } };
+
+            // Calculate Y axis max and min
+            _guestProps.min = 0;
+            _guestProps.max = 5000;
+            for (size_t i = 0; i < std::size(gameState.GuestsInParkHistory); i++)
+            {
+                auto value = gameState.GuestsInParkHistory[i];
+                if (value == GuestsInParkHistoryUndefined)
+                    continue;
+                while (value > _guestProps.max)
+                    _guestProps.max += 5000;
+            }
+
+            char buffer[64]{};
+            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", _guestProps.max);
+            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
+
+            _guestProps.RecalculateLayout(
+                { _guestGraphBounds.Point1 + dynamicPadding, _guestGraphBounds.Point2 - kGraphBottomRightPadding },
+                kGraphNumYLabels, kGuestsInParkHistorySize);
         }
 
         void OnDrawGuests(DrawPixelInfo& dpi)
@@ -772,56 +802,16 @@ static constexpr WindowParkAward _parkAwards[] = {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            auto screenPos = windowPos;
             Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
 
-            const auto& gameState = OpenRCT2::GetGameState();
-
             // Current value
-            auto ft = Formatter();
-            ft.Add<uint32_t>(gameState.NumGuestsInPark);
-            DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
+            Formatter ft;
+            ft.Add<uint32_t>(GetGameState().NumGuestsInPark);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
             // Graph border
-            GfxFillRectInset(
-                dpi,
-                { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
-                  screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
-                colours[1], INSET_RECT_F_30);
-
-            // Y axis labels
-            screenPos = screenPos + ScreenCoordsXY{ widget->left + 27, widget->top + 23 };
-            for (int i = 5; i >= 0; i--)
-            {
-                uint32_t axisValue = i * 1000;
-                ft = Formatter();
-                ft.Add<uint32_t>(axisValue);
-                DrawTextBasic(
-                    dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-                    { FontStyle::Small, TextAlignment::RIGHT });
-                GfxFillRectInset(
-                    dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
-                    INSET_RECT_FLAG_BORDER_INSET);
-                screenPos.y += 20;
-            }
-
-            // Graph
-            screenPos = windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
-
-            uint8_t cappedHistory[32];
-            for (size_t i = 0; i < std::size(cappedHistory); i++)
-            {
-                auto value = gameState.GuestsInParkHistory[i];
-                if (value != std::numeric_limits<uint32_t>::max())
-                {
-                    cappedHistory[i] = static_cast<uint8_t>(std::min<uint32_t>(value, 5000) / 20);
-                }
-                else
-                {
-                    cappedHistory[i] = std::numeric_limits<uint8_t>::max();
-                }
-            }
-            Graph::Draw(dpi, cappedHistory, static_cast<int32_t>(std::size(cappedHistory)), screenPos);
+            GfxFillRectInset(dpi, _guestGraphBounds, colours[1], INSET_RECT_F_30);
+            Graph::DrawGuestGraph(dpi, _guestProps);
         }
 
 #pragma endregion
@@ -1201,9 +1191,8 @@ static constexpr WindowParkAward _parkAwards[] = {
 #pragma region Common
         void SetPage(int32_t newPage)
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-                if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                    ToolCancel();
+            if (isToolActive(classification, number))
+                ToolCancel();
 
             // Set listen only to viewport
             bool listen = false;
@@ -1315,6 +1304,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                     windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_7].left, widgets[WIDX_TAB_7].top });
             }
         }
+#pragma endregion
     };
 
     static ParkWindow* ParkWindowOpen(uint8_t page)

@@ -36,15 +36,6 @@ enum INPUT_FLAGS
     INPUT_FLAG_VIEWPORT_SCROLLING = (1 << 7)
 };
 
-enum class MouseState : uint32_t
-{
-    Released,
-    LeftPress,
-    LeftRelease,
-    RightPress,
-    RightRelease
-};
-
 enum class InputState
 {
     Reset,
@@ -59,24 +50,6 @@ enum class InputState
     ScrollRight
 };
 
-enum PLACE_OBJECT_MODIFIER
-{
-    PLACE_OBJECT_MODIFIER_NONE = 0,
-    PLACE_OBJECT_MODIFIER_SHIFT_Z = (1 << 0),
-    PLACE_OBJECT_MODIFIER_COPY_Z = (1 << 1),
-};
-
-struct WidgetRef
-{
-    WindowClass window_classification;
-    rct_windownumber window_number;
-    WidgetIndex widget_index;
-};
-
-extern uint8_t gInputPlaceObjectModifier;
-
-extern ScreenCoordsXY gInputDragLast;
-
 extern WidgetRef gHoverWidget;
 extern WidgetRef gPressedWidget;
 
@@ -84,35 +57,19 @@ extern uint32_t gTooltipCloseTimeout;
 extern WidgetRef gTooltipWidget;
 extern ScreenCoordsXY gTooltipCursor;
 
-extern Tool gCurrentToolId;
-extern WidgetRef gCurrentToolWidget;
-
 // TODO: Move to openrct2-ui and make static again
 extern InputState _inputState;
 extern uint8_t _inputFlags;
 extern uint32_t _tooltipNotShownTimeout;
 
-void InputWindowPositionBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-
 void TitleHandleKeyboardInput();
-void GameHandleInput();
 void GameHandleKeyboardInput();
-void GameHandleEdgeScroll();
-int32_t GetNextKey();
-
-void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords);
 
 void InputSetFlag(INPUT_FLAGS flag, bool on);
 bool InputTestFlag(INPUT_FLAGS flag);
 void InputResetFlags();
 
-bool InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER modifier);
-
 void InputSetState(InputState state);
 InputState InputGetState();
 
 void ResetTooltipNotShown();
-
-void InputResetPlaceObjModifier();
-
-void InputScrollViewport(const ScreenCoordsXY& screenCoords);

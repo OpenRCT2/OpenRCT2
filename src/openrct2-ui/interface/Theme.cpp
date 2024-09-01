@@ -196,6 +196,7 @@ static constexpr WindowThemeDesc WindowThemeDescriptors[] =
     { WindowClass::Chat,                        "WC_CHAT",                           STR_CHAT,                                         COLOURS_1(translucent(COLOUR_GREY)                                                                                                                     ) },
     { WindowClass::Console,                     "WC_CONSOLE",                        STR_CONSOLE,                                      COLOURS_2(translucent(COLOUR_LIGHT_BLUE),          opaque(COLOUR_WHITE)                                                                                ) },
     { WindowClass::ProgressWindow,              "WC_PROGRESS_WINDOW",                STR_THEME_LOADING_WINDOW,                         COLOURS_1(opaque(COLOUR_BLACK)                                                                                                                         ) },
+    { WindowClass::EditorParkEntrance,          "WC_EDITOR_PARK_ENTRANCE",           STR_OBJECT_SELECTION_PARK_ENTRANCE,               COLOURS_2(opaque(COLOUR_DARK_GREEN),               opaque(COLOUR_DARK_BROWN)                                                                           ) },
 };
 
 #pragma endregion

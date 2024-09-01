@@ -1797,7 +1797,6 @@ STR_2450    :{YELLOW}Ваша рекламная кампания парка з�
 STR_2451    :{YELLOW}Ваша рекламная кампания для {STRINGID} закончилась
 STR_2452    :{WINDOW_COLOUR_2}Деньги (с займом): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Деньги (с займом): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Показать балансы
 STR_2458    :Показать график денег по времени
 STR_2459    :Показать график стоимости парка
@@ -2665,7 +2664,6 @@ STR_6034    :{BLACK}{STRING}
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 STR_6164    :{WHITE}❌
-STR_6360    :{BLACK}{COMMA32}
 
 # This language is unmaintained. All untranslated strings have been removed. 
 # If you intend to become the maintainer, please copy the missing strings from en-GB.txt and translate them.

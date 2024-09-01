@@ -115,7 +115,7 @@ namespace OpenRCT2::RCT2
         tempStream.WriteValue<uint8_t>(_trackDesign.operation.liftHillSpeed | (_trackDesign.operation.numCircuits << 5));
 
         const auto& rtd = GetRideTypeDescriptor(_trackDesign.trackAndVehicle.rtdIndex);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+        if (rtd.HasFlag(RtdFlag::isMaze))
         {
             for (const auto& mazeElement : _trackDesign.mazeElements)
             {

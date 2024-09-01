@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Haunted Harbour",
+    "sha256": "102a1c52853e77b6efd448a44572a862fa440615b4ea9ae5d7fb31c48c96aac9",
+    "land_ownership": {
+        "available": {
+            "coordinates": [
+                [ 49, 42 ]
+            ]
+        }
+    }
+}

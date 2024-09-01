@@ -10,9 +10,10 @@
 #pragma once
 
 #include "../core/Money.hpp"
-#include "../interface/Cursors.h"
 #include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
+
+enum class CursorID : uint8_t;
 
 enum class PathAdditionDrawType : uint8_t
 {

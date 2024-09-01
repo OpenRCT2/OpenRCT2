@@ -26,7 +26,6 @@
 #include "../platform/Platform.h"
 #include "../ride/RideAudio.h"
 #include "../scenario/Scenario.h"
-#include "../sprites.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Map.h"
@@ -49,6 +48,9 @@ WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindow
 
 uint32_t gWindowUpdateTicks;
 colour_t gCurrentWindowColours[3];
+
+Tool gCurrentToolId;
+WidgetRef gCurrentToolWidget;
 
 // converted from uint16_t values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to centre to, if a window is obscuring a location, the next is tried
@@ -1101,6 +1103,31 @@ static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, in
     gCurrentWindowColours[2] = w.colours[2].colour;
 
     w.OnDraw(copy);
+}
+
+bool isToolActive(WindowClass cls)
+{
+    return InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == cls;
+}
+
+bool isToolActive(WindowClass cls, rct_windownumber number)
+{
+    return isToolActive(cls) && gCurrentToolWidget.window_number == number;
+}
+
+bool isToolActive(WindowClass cls, WidgetIndex widgetIndex)
+{
+    return isToolActive(cls) && gCurrentToolWidget.widget_index == widgetIndex;
+}
+
+bool isToolActive(WindowClass cls, WidgetIndex widgetIndex, rct_windownumber number)
+{
+    return isToolActive(cls, widgetIndex) && gCurrentToolWidget.window_number == number;
+}
+
+bool isToolActive(const WindowBase& w, WidgetIndex widgetIndex)
+{
+    return isToolActive(w.classification, widgetIndex, w.number);
 }
 
 /**

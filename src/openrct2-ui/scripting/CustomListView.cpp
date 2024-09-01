@@ -433,9 +433,9 @@ ScreenSize CustomListView::GetSize()
         auto left = result.width - widget->right + widget->left + 21;
         if (left < 0)
             left = 0;
-        if (left < scroll.h_left)
+        if (left < scroll.contentOffsetX)
         {
-            scroll.h_left = left;
+            scroll.contentOffsetX = left;
             Invalidate();
         }
 
@@ -443,9 +443,9 @@ ScreenSize CustomListView::GetSize()
         auto top = result.height - widget->bottom + widget->top + 21;
         if (top < 0)
             top = 0;
-        if (top < scroll.v_top)
+        if (top < scroll.contentOffsetY)
         {
-            scroll.v_top = top;
+            scroll.contentOffsetY = top;
             Invalidate();
         }
     }
@@ -549,7 +549,7 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
     }
 }
 
-void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* scroll) const
+void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollArea* scroll) const
 {
     auto paletteIndex = ColourMapA[w->colours[1].colour].mid_light;
     GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, paletteIndex);
@@ -638,7 +638,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* s
 
     if (ShowColumnHeaders)
     {
-        y = scroll->v_top;
+        y = scroll->contentOffsetY;
 
         auto bgColour = ColourMapA[w->colours[1].colour].mid_light;
         GfxFillRect(dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + 12 } }, bgColour);
@@ -771,7 +771,7 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
     {
         // Check if we pressed the header
         auto& scroll = ParentWindow->scrolls[ScrollIndex];
-        int32_t absoluteY = pos.y - scroll.v_top;
+        int32_t absoluteY = pos.y - scroll.contentOffsetY;
         if (ShowColumnHeaders && absoluteY >= 0 && absoluteY < kListRowHeight)
         {
             result = RowColumn();

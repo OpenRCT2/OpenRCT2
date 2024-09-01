@@ -49,7 +49,7 @@ static void PaintDodgemsRoof(PaintSession& session, int32_t height, int32_t offs
 
 static void PaintDodgems(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     uint8_t relativeTrackSequence = kTrackMap4x4[direction][trackSequence];
 

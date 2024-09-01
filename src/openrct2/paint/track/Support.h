@@ -10,8 +10,38 @@
 #pragma once
 
 #include "../support/MetalSupports.h"
+#include "../support/WoodenSupports.h"
 
 constexpr int8_t kDefaultGeneralSupportHeight = 32;
+
+struct SupportType
+{
+    union
+    {
+        uint8_t generic{};
+        WoodenSupportType wooden;
+        MetalSupportType metal;
+    };
+
+    explicit constexpr SupportType()
+    {
+    }
+
+    constexpr SupportType(uint8_t _generic)
+        : generic(_generic)
+    {
+    }
+
+    constexpr SupportType(WoodenSupportType _wooden)
+        : wooden(_wooden)
+    {
+    }
+
+    constexpr SupportType(MetalSupportType _metal)
+        : metal(_metal)
+    {
+    }
+};
 
 namespace OpenRCT2::SupportedSequences
 {

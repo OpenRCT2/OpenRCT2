@@ -7,11 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/ViewportQuery.h"
-
 #include <limits>
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/ViewportQuery.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -230,7 +231,7 @@ static Widget _staffListWidgets[] = {
                         _selectedTab = static_cast<uint8_t>(newSelectedTab);
                         RefreshList();
                         Invalidate();
-                        scrolls[0].v_top = 0;
+                        scrolls[0].contentOffsetY = 0;
                         CancelTools();
                     }
                     break;
@@ -329,9 +330,9 @@ static Widget _staffListWidgets[] = {
             auto i = scrollHeight - widgets[WIDX_STAFF_LIST_LIST].bottom + widgets[WIDX_STAFF_LIST_LIST].top + 21;
             if (i < 0)
                 i = 0;
-            if (i < scrolls[0].v_top)
+            if (i < scrolls[0].contentOffsetY)
             {
-                scrolls[0].v_top = i;
+                scrolls[0].contentOffsetY = i;
                 Invalidate();
             }
 
@@ -526,7 +527,7 @@ static Widget _staffListWidgets[] = {
         void HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
         {
             bool autoPosition = Config::Get().general.AutoStaffPlacement;
-            if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+            if (GetInputManager().IsModifierKeyPressed(ModifierKey::shift))
             {
                 autoPosition = autoPosition ^ 1;
             }
@@ -632,13 +633,8 @@ static Widget _staffListWidgets[] = {
 
         void CancelTools()
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-            {
-                if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                {
-                    ToolCancel();
-                }
-            }
+            if (isToolActive(classification, number))
+                ToolCancel();
         }
 
         Peep* GetClosestStaffMemberTo(const ScreenCoordsXY& screenCoords)

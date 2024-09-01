@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Woodworm Park",
+    "sha256": "66ab5d1e8412c94cd6bfa40a664167df7df651d67b90da2a612108212ebc98d3",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 62, 105 ], [ 101, 55 ]
+            ]
+        }
+    }
+}

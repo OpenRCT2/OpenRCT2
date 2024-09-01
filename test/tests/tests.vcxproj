@@ -97,6 +97,7 @@
     <ClCompile Include="RideRatings.cpp" />
     <ClCompile Include="S6ImportExportTests.cpp" />
     <ClCompile Include="SawyerCodingTest.cpp" />
+    <ClCompile Include="ScenarioPatcherTests.cpp" />
     <ClCompile Include="TestData.cpp" />
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="StringTest.cpp" />

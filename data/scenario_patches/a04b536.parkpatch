@@ -1,0 +1,13 @@
+{
+    "scenario_name": "Sherwood Forest (.sea)",
+    "sha256": "a04b536d83b556f5af116e967f7a5759c9cdc5dd2172da9ceffbd00458f13fef",
+    "land_ownership": {
+        "available": {
+            "cannot_downgrade": true,
+            "coordinates": [
+                [ 104, 64 ],
+                [ 111, 114 ], [ 112, 114 ]
+            ]
+        }
+    }
+}

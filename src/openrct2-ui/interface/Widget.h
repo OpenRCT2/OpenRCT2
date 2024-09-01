@@ -177,7 +177,6 @@ namespace OpenRCT2::Ui
     bool WidgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex);
     bool WidgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex);
     bool WidgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex);
-    bool WidgetIsActiveTool(const WindowBase& w, WidgetIndex widgetIndex);
     void WidgetScrollGetPart(
         WindowBase& w, const Widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
         int32_t* output_scroll_area, int32_t* scroll_id);

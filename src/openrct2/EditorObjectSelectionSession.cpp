@@ -77,7 +77,7 @@ static void SetupTrackManagerObjects()
 
             for (auto rideType : item->RideInfo.RideType)
             {
-                if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+                if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::hasTrack))
                 {
                     *selectionFlags &= ~ObjectSelectionFlags::Flag6;
                     break;
@@ -108,7 +108,7 @@ static void SetupTrackDesignerObjects()
             {
                 if (rideType != RIDE_TYPE_NULL)
                 {
-                    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER))
+                    if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::showInTrackDesigner))
                     {
                         *selectionFlags &= ~ObjectSelectionFlags::Flag6;
                         break;
@@ -194,7 +194,8 @@ void SetupInUseSelectionFlags()
                 if (parkEntranceEl->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
 
-                Editor::SetSelectedObject(ObjectType::ParkEntrance, 0, ObjectSelectionFlags::InUse);
+                type = iter.element->AsEntrance()->getEntryIndex();
+                Editor::SetSelectedObject(ObjectType::ParkEntrance, type, ObjectSelectionFlags::InUse);
 
                 // Skip if not the middle part
                 if (parkEntranceEl->GetSequenceIndex() != 0)
@@ -692,9 +693,8 @@ int32_t EditorRemoveUnusedObjects()
                 if (ObjectTypeIsIntransient(objectType))
                     continue;
 
-                // These object types require exactly one object to be selected at all times.
-                // Removing that object can badly break the game state.
-                if (objectType == ObjectType::ParkEntrance || objectType == ObjectType::Water)
+                // The water type controls the entire palette. Removing that object can badly break the game state.
+                if (objectType == ObjectType::Water)
                     continue;
 
                 // It’s hard to determine exactly if a scenery group is used, so do not remove these automatically.

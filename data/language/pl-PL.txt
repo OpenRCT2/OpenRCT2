@@ -1795,7 +1795,6 @@ STR_2450    :{YELLOW}Twoja kampania reklamująca park dobiegła końca
 STR_2451    :{YELLOW}Twoja kampania reklamująca {STRINGID} dobiegła końca
 STR_2452    :{WINDOW_COLOUR_2}Gotówka (minus pożyczka): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Gotówka (minus pożyczka): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Pokaż rachunki
 STR_2458    :Pokaż wykres zmian gotówki w czasie pomniejszonej o wysokość pożyczki
 STR_2459    :Pokaż wykres zmian wartości parku w czasie
@@ -3427,7 +3426,6 @@ STR_6356    :Przyzywa kaczki jeśli park zawiera wodę
 STR_6357    :Usuwa wszystkie kaczki z mapu
 STR_6358    :Strona {UINT16}
 STR_6359    :{POP16}{POP16}Strona {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Włącz efekty świetlne atrakcji (eksperymentalne)
 STR_6362    :Jeśłi włączone, pojazdy będą oświetlone w nocy.
 STR_6363    :Tekst skopiowany do schowka

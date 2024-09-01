@@ -7,11 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../UiStringIds.h"
-#include "../interface/Viewport.h"
-
 #include <iterator>
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/UiStringIds.h>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
@@ -515,7 +516,8 @@ static uint64_t PageDisabledWidgets[] = {
                     InvalidateWidget(WIDX_LIST);
                 _highlightedIndex = -1;
             }
-            if (gCurrentToolWidget.window_classification != WindowClass::TileInspector)
+
+            if (!isToolActive(WindowClass::TileInspector))
                 Close();
         }
 
@@ -722,8 +724,9 @@ static uint64_t PageDisabledWidgets[] = {
 
         void OnClose() override
         {
-            if (gCurrentToolWidget.window_classification == WindowClass::TileInspector)
+            if (isToolActive(WindowClass::TileInspector))
                 ToolCancel();
+
             TileElement* const elem = OpenRCT2::TileInspector::GetSelectedElement();
             if (elem != nullptr)
             {
@@ -956,7 +959,7 @@ static uint64_t PageDisabledWidgets[] = {
             CoordsXY mapCoords;
             TileElement* clickedElement = nullptr;
             bool mouseOnViewport = false;
-            if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z))
+            if (GetInputManager().IsModifierKeyPressed(ModifierKey::ctrl))
             {
                 auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionFlags);
                 clickedElement = info.Element;
@@ -1770,7 +1773,7 @@ static uint64_t PageDisabledWidgets[] = {
 
         void UpdateSelectedTile(const ScreenCoordsXY& screenCoords)
         {
-            const bool ctrlIsHeldDown = InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z);
+            const bool ctrlIsHeldDown = GetInputManager().IsModifierKeyPressed(ModifierKey::ctrl);
             // Mouse hasn't moved
             if (screenCoords.x == _toolMouseX && screenCoords.y == _toolMouseY && _toolCtrlDown == ctrlIsHeldDown)
                 return;
@@ -1829,7 +1832,7 @@ static uint64_t PageDisabledWidgets[] = {
         void LoadTile(TileElement* elementToSelect)
         {
             windowTileInspectorSelectedIndex = -1;
-            scrolls[0].v_top = 0;
+            scrolls[0].contentOffsetY = 0;
 
             TileElement* element = MapGetFirstElementAt(_toolMap);
             int16_t numItems = 0;

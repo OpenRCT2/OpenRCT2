@@ -194,6 +194,7 @@ enum {
     WIDX_VEHICLE_TRIM_COLOUR,
     WIDX_VEHICLE_TERTIARY_COLOUR,
     WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX,
+    WIDX_RANDOMISE_VEHICLE_COLOURS,
 
     WIDX_PLAY_MUSIC = 14,
     WIDX_MUSIC,
@@ -338,6 +339,7 @@ static Widget _colourWidgets[] = {
     MakeWidget({ 99, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
     MakeWidget({119, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
     MakeWidget({100,  74}, {239, 12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_RANDOM_COLOUR                                                 ),
+    MakeWidget({139, 190}, {110, 12}, WindowWidgetType::Button,    WindowColour::Secondary, STR_RANDOMISE_VEHICLE_COLOURS, STR_RANDOMISE_VEHICLE_COLOURS_TIP  ),
     kWidgetsEnd,
 };
 
@@ -1048,9 +1050,8 @@ static_assert(std::size(RatingNames) == 6);
 
         void SetPage(int32_t newPage)
         {
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-                if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                    ToolCancel();
+            if (isToolActive(classification, number))
+                ToolCancel();
 
             if (newPage == WINDOW_RIDE_PAGE_VEHICLE)
             {
@@ -1205,7 +1206,7 @@ static_assert(std::size(RatingNames) == 6);
                 }
 
                 // For any suspended rides, move image higher in the vehicle tab on the rides window
-                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SUSPENDED))
+                if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isSuspended))
                 {
                     screenCoords.y /= 4;
                 }
@@ -1271,31 +1272,31 @@ static_assert(std::size(RatingNames) == 6);
 
             const auto& rtd = ride->GetRideTypeDescriptor();
 
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+            if (!rtd.HasFlag(RtdFlag::hasDataLogging))
                 disabledTabs |= (1uLL << WIDX_TAB_8); // 0x800
 
             if (ride->type == RIDE_TYPE_MINI_GOLF)
                 disabledTabs |= (1uLL << WIDX_TAB_2 | 1uLL << WIDX_TAB_3 | 1uLL << WIDX_TAB_4); // 0xE0
 
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+            if (rtd.HasFlag(RtdFlag::noVehicles))
                 disabledTabs |= (1uLL << WIDX_TAB_2); // 0x20
 
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN) && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL)
-                && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS) && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS)
-                && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+            if (!rtd.HasFlag(RtdFlag::hasTrackColourMain) && !rtd.HasFlag(RtdFlag::hasTrackColourAdditional)
+                && !rtd.HasFlag(RtdFlag::hasTrackColourSupports) && !rtd.HasFlag(RtdFlag::hasVehicleColours)
+                && !rtd.HasFlag(RtdFlag::hasEntranceAndExit))
             {
                 disabledTabs |= (1uLL << WIDX_TAB_5); // 0x100
             }
 
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+            if (rtd.HasFlag(RtdFlag::isShopOrFacility))
                 disabledTabs |= (1uLL << WIDX_TAB_3 | 1uLL << WIDX_TAB_4 | 1uLL << WIDX_TAB_7); // 0x4C0
 
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+            if (!rtd.HasFlag(RtdFlag::allowMusic))
             {
                 disabledTabs |= (1uLL << WIDX_TAB_6); // 0x200
             }
 
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID)
+            if (rtd.HasFlag(RtdFlag::isCashMachine) || rtd.HasFlag(RtdFlag::isFirstAid)
                 || (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) != 0)
                 disabledTabs |= (1uLL << WIDX_TAB_9); // 0x1000
 
@@ -1668,7 +1669,7 @@ static_assert(std::size(RatingNames) == 6);
             const auto& rtd = ride->GetRideTypeDescriptor();
 
             int32_t numItems = 1;
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+            if (!rtd.HasFlag(RtdFlag::noVehicles))
             {
                 numItems += ride->num_stations;
                 numItems += ride->NumTrains;
@@ -1880,8 +1881,7 @@ static_assert(std::size(RatingNames) == 6);
             WindowDropdownShowText(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 2);
             gDropdownDefaultIndex = 0;
-            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || _viewIndex == 0
-                || _viewIndex > ride->NumTrains)
+            if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack) || _viewIndex == 0 || _viewIndex > ride->NumTrains)
             {
                 // Disable if we're a flat ride, 'overall view' is selected or a station is selected
                 Dropdown::SetDisabled(1, true);
@@ -1922,9 +1922,7 @@ static_assert(std::size(RatingNames) == 6);
 
             const auto& rtd = ride.GetRideTypeDescriptor();
             if (GetGameState().Cheats.ShowVehiclesFromOtherTrackTypes
-                && !(
-                    rtd.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE)
-                    || ride.type == RIDE_TYPE_MINI_GOLF))
+                && !(rtd.HasFlag(RtdFlag::isFlatRide) || rtd.HasFlag(RtdFlag::isMaze) || ride.type == RIDE_TYPE_MINI_GOLF))
             {
                 selectionShouldBeExpanded = true;
                 rideTypeIterator = 0;
@@ -1948,10 +1946,10 @@ static_assert(std::size(RatingNames) == 6);
             for (; rideTypeIterator <= rideTypeIteratorMax; rideTypeIterator++)
             {
                 const auto& rtdIterator = GetRideTypeDescriptor(rideTypeIterator);
-                if (selectionShouldBeExpanded && rtdIterator.HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+                if (selectionShouldBeExpanded && rtdIterator.HasFlag(RtdFlag::isFlatRide))
                     continue;
                 if (selectionShouldBeExpanded
-                    && (rtdIterator.HasFlag(RIDE_TYPE_FLAG_IS_MAZE) || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
+                    && (rtdIterator.HasFlag(RtdFlag::isMaze) || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
                     continue;
 
                 auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
@@ -2026,7 +2024,7 @@ static_assert(std::size(RatingNames) == 6);
 
             auto& objManager = GetContext()->GetObjectManager();
 
-            for (ObjectEntryIndex i = 0; i < MAX_STATION_OBJECTS; i++)
+            for (ObjectEntryIndex i = 0; i < kMaxStationObjects; i++)
             {
                 auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, i));
                 if (stationObj != nullptr)
@@ -2407,7 +2405,7 @@ static_assert(std::size(RatingNames) == 6);
                     || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat
                     || trackType == TrackElemType::DiagBlockBrakes)
                 {
-                    if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
+                    if (ride->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::blockBrakes) && vehicle->velocity == 0)
                     {
                         ft.Add<StringId>(STR_STOPPED_BY_BLOCK_BRAKES);
                         return STR_BLACK_STRING;
@@ -2419,7 +2417,7 @@ static_assert(std::size(RatingNames) == 6);
                 return STR_EMPTY;
 
             auto stringId = VehicleStatusNames[EnumValue(vehicle->status)];
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SINGLE_SESSION)
+            if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::singleSession)
                 && vehicle->status <= Vehicle::Status::UnloadingPassengers)
             {
                 stringId = SingleSessionVehicleStatusNames[EnumValue(vehicle->status)];
@@ -2747,9 +2745,9 @@ static_assert(std::size(RatingNames) == 6);
                 widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE].type = WindowWidgetType::Empty;
             }
 
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS)
+            if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::allowReversedTrains)
                 || (GetGameState().Cheats.DisableTrainLengthLimit
-                    && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE)))
+                    && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide)))
             {
                 widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Checkbox;
                 if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
@@ -2964,7 +2962,7 @@ static_assert(std::size(RatingNames) == 6);
                     y -= (carEntry.spacing / 2) / 17432;
                 }
 
-                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LAYERED_VEHICLE_PREVIEW))
+                if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::layeredVehiclePreview))
                 {
                     VehicleDrawInfo tmp = *(nextSpriteToDraw - 1);
                     *(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);
@@ -3410,9 +3408,9 @@ static_assert(std::size(RatingNames) == 6);
 
             // Sometimes, only one of the alternatives support lift hill pieces. Make sure to check both.
             const auto& rtd = ride->GetRideTypeDescriptor();
-            bool hasAlternativeType = rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE);
-            if (rtd.TrackPaintFunctions.Regular.SupportsTrackPiece(TRACK_LIFT_HILL)
-                || (hasAlternativeType && rtd.InvertedTrackPaintFunctions.SupportsTrackPiece(TRACK_LIFT_HILL)))
+            bool hasAlternativeType = rtd.HasFlag(RtdFlag::hasInvertedVariant);
+            if (rtd.TrackPaintFunctions.Regular.SupportsTrackGroup(TrackGroup::liftHill)
+                || (hasAlternativeType && rtd.InvertedTrackPaintFunctions.Regular.SupportsTrackGroup(TrackGroup::liftHill)))
             {
                 widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WindowWidgetType::Label;
                 widgets[WIDX_LIFT_HILL_SPEED].type = WindowWidgetType::Spinner;
@@ -3450,7 +3448,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             // Leave if another vehicle arrives at station
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION)
+            if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation)
                 && ride->NumTrains > 1 && !ride->IsBlockSectioned())
             {
                 widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WindowWidgetType::Checkbox;
@@ -3466,7 +3464,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             // Synchronise with adjacent stations
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
+            if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::canSynchroniseWithAdjacentStations))
             {
                 widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WindowWidgetType::Checkbox;
                 widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].text = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
@@ -3482,7 +3480,7 @@ static_assert(std::size(RatingNames) == 6);
 
             // Waiting
             widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS))
+            if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasLoadOptions))
             {
                 widgets[WIDX_LOAD_CHECKBOX].type = WindowWidgetType::Checkbox;
                 widgets[WIDX_LOAD].type = WindowWidgetType::DropdownMenu;
@@ -3589,7 +3587,7 @@ static_assert(std::size(RatingNames) == 6);
                     format = STR_MAX_PEOPLE_ON_RIDE_VALUE;
                     caption = STR_MAX_PEOPLE_ON_RIDE;
                     tooltip = STR_MAX_PEOPLE_ON_RIDE_TIP;
-                    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+                    if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
                         format = 0;
                     break;
             }
@@ -4086,7 +4084,7 @@ static_assert(std::size(RatingNames) == 6);
         {
             // Get station flags (shops don't have them)
             auto stationObjFlags = 0;
-            if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+            if (!ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
             {
                 auto stationObj = ride.GetStationObject();
                 if (stationObj != nullptr)
@@ -4099,12 +4097,12 @@ static_assert(std::size(RatingNames) == 6);
             {
                 case 0:
                     return (stationObjFlags & STATION_OBJECT_FLAGS::HAS_PRIMARY_COLOUR)
-                        || ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN);
+                        || ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrackColourMain);
                 case 1:
                     return (stationObjFlags & STATION_OBJECT_FLAGS::HAS_SECONDARY_COLOUR)
-                        || ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL);
+                        || ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrackColourAdditional);
                 case 2:
-                    return ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS);
+                    return ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrackColourSupports);
                 default:
                     return 0;
             }
@@ -4134,16 +4132,8 @@ static_assert(std::size(RatingNames) == 6);
 
         void ColourClose()
         {
-            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                return;
-
-            if (gCurrentToolWidget.window_classification != classification)
-                return;
-
-            if (gCurrentToolWidget.window_number != number)
-                return;
-
-            ToolCancel();
+            if (isToolActive(classification, number))
+                ToolCancel();
         }
 
         void ColourOnMouseUp(WidgetIndex widgetIndex)
@@ -4169,6 +4159,7 @@ static_assert(std::size(RatingNames) == 6);
                     ToolSet(*this, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
                     break;
                 case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
+                {
                     auto ride = GetRide(rideId);
                     if (ride != nullptr)
                     {
@@ -4178,6 +4169,60 @@ static_assert(std::size(RatingNames) == 6);
                         GameActions::Execute(&rideSetAppearanceAction);
                     }
                     break;
+                }
+                case WIDX_RANDOMISE_VEHICLE_COLOURS:
+                {
+                    auto ride = GetRide(rideId);
+                    if (ride == nullptr)
+                        return;
+
+                    auto rideEntry = ride->GetRideEntry();
+                    if (rideEntry == nullptr)
+                        return;
+
+                    bool allowChangingTrimColour = false;
+                    bool allowChangingTertiaryColour = false;
+                    for (int32_t i = 0; i < ride->num_cars_per_train; i++)
+                    {
+                        uint8_t vehicleTypeIndex = RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, i);
+
+                        if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
+                        {
+                            allowChangingTrimColour = true;
+                        }
+                        if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR)
+                        {
+                            allowChangingTertiaryColour = true;
+                        }
+                    }
+
+                    int32_t numItems = ride->NumTrains;
+                    if (ride->vehicleColourSettings != VehicleColourSettings::perTrain)
+                        numItems = ride->num_cars_per_train;
+
+                    for (auto i = 0; i < numItems; i++)
+                    {
+                        colour_t colour = UtilRand() % COLOUR_NUM_NORMAL;
+                        auto vehicleSetBodyColourAction = RideSetAppearanceAction(
+                            rideId, RideSetAppearanceType::VehicleColourBody, colour, i);
+                        GameActions::Execute(&vehicleSetBodyColourAction);
+                        if (allowChangingTrimColour)
+                        {
+                            colour = UtilRand() % COLOUR_NUM_NORMAL;
+                            auto vehicleSetTrimColourAction = RideSetAppearanceAction(
+                                rideId, RideSetAppearanceType::VehicleColourTrim, colour, i);
+                            GameActions::Execute(&vehicleSetTrimColourAction);
+                            if (allowChangingTertiaryColour)
+                            {
+                                colour = UtilRand() % COLOUR_NUM_NORMAL;
+                                auto vehicleSetTertiaryColourAction = RideSetAppearanceAction(
+                                    rideId, RideSetAppearanceType::VehicleColourTertiary, colour, i);
+                                GameActions::Execute(&vehicleSetTertiaryColourAction);
+                            }
+                        }
+                    }
+                    break;
+                }
             }
         }
 
@@ -4458,7 +4503,7 @@ static_assert(std::size(RatingNames) == 6);
 
             // Maze style
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (rtd.HasFlag(RtdFlag::isMaze))
             {
                 widgets[WIDX_MAZE_STYLE].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_MAZE_STYLE_DROPDOWN].type = WindowWidgetType::Button;
@@ -4471,7 +4516,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             // Track, multiple colour schemes
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR))
+            if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::supportsMultipleColourSchemes))
             {
                 widgets[WIDX_TRACK_COLOUR_SCHEME].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].type = WindowWidgetType::Button;
@@ -4525,7 +4570,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             // Track supports colour
-            if (HasTrackColour(*ride, 2) && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (HasTrackColour(*ride, 2) && !rtd.HasFlag(RtdFlag::isMaze))
             {
                 widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WindowWidgetType::ColourBtn;
                 widgets[WIDX_TRACK_SUPPORT_COLOUR].image = GetColourButtonImage(trackColour.supports);
@@ -4536,15 +4581,14 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             // Track preview
-            if (ride->GetRideTypeDescriptor().HasFlag(
-                    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL
-                    | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS))
+            if (rtd.HasFlag(RtdFlag::hasTrackColourMain) || rtd.HasFlag(RtdFlag::hasTrackColourAdditional)
+                || rtd.HasFlag(RtdFlag::hasTrackColourSupports))
                 widgets[WIDX_TRACK_PREVIEW].type = WindowWidgetType::Spinner;
             else
                 widgets[WIDX_TRACK_PREVIEW].type = WindowWidgetType::Empty;
 
             // Entrance style
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+            if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasEntranceAndExit))
             {
                 widgets[WIDX_ENTRANCE_PREVIEW].type = WindowWidgetType::Spinner;
                 widgets[WIDX_ENTRANCE_STYLE].type = WindowWidgetType::DropdownMenu;
@@ -4566,11 +4610,18 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             // Vehicle colours
-            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES)
-                && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS))
+            if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::noVehicles)
+                && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasVehicleColours))
             {
                 if (ride->vehicleColourSettings == VehicleColourSettings::same)
+                {
                     _vehicleIndex = 0;
+                    widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WindowWidgetType::Empty;
+                }
+                else
+                {
+                    widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WindowWidgetType::Button;
+                }
 
                 vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
@@ -4617,7 +4668,7 @@ static_assert(std::size(RatingNames) == 6);
                 }
 
                 // Vehicle colour scheme type
-                if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL)
+                if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral)
                     && (ride->num_cars_per_train | ride->NumTrains) > 1)
                 {
                     widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WindowWidgetType::DropdownMenu;
@@ -4660,6 +4711,7 @@ static_assert(std::size(RatingNames) == 6);
                 widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::Empty;
                 widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::Empty;
                 widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::Empty;
+                widgets[WIDX_RANDOMISE_VEHICLE_COLOURS].type = WindowWidgetType::Empty;
             }
 
             ft.Rewind();
@@ -4701,7 +4753,7 @@ static_assert(std::size(RatingNames) == 6);
 
                 // Track
                 const auto& rtd = ride->GetRideTypeDescriptor();
-                if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                if (rtd.HasFlag(RtdFlag::isMaze))
                 {
                     GfxDrawSprite(dpi, ImageId(MazeOptions[trackColour.supports].sprite), screenCoords);
                 }
@@ -4908,7 +4960,7 @@ static_assert(std::size(RatingNames) == 6);
             auto& musicOrder = window_ride_current_music_style_order;
             musicOrder.clear();
             auto& objManager = GetContext()->GetObjectManager();
-            for (ObjectEntryIndex i = 0; i < MAX_MUSIC_OBJECTS; i++)
+            for (ObjectEntryIndex i = 0; i < kMaxMusicObjects; i++)
             {
                 auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, i));
                 if (musicObj != nullptr)
@@ -5027,46 +5079,8 @@ static_assert(std::size(RatingNames) == 6);
                 newWidth = std::max(newWidth, nameWidth + composerWidth + 24);
             }
 
-            // Do we need a horizontal scrollbar?
-            auto left = newWidth - widgets[WIDX_MUSIC_DATA].width() + kScrollBarWidth;
-            if (left < 0)
-            {
-                scrolls[0].flags &= ~HSCROLLBAR_VISIBLE;
-                left = 0;
-            }
-            else
-            {
-                scrolls[0].flags |= HSCROLLBAR_VISIBLE;
-            }
-
-            // Reset the horizontal scrollbar?
-            if (left < scrolls[0].h_left)
-            {
-                scrolls[0].h_left = left;
-                Invalidate();
-            }
-
             // Compute scroll height based on number of tracks
             const int32_t newHeight = static_cast<int32_t>(musicObj->GetTrackCount()) * kScrollableRowHeight;
-
-            // Do we need a vertical scrollbar?
-            auto top = newHeight - widgets[WIDX_MUSIC_DATA].height() + kScrollBarWidth;
-            if (top < 0)
-            {
-                top = 0;
-                scrolls[0].flags &= ~VSCROLLBAR_VISIBLE;
-            }
-            else
-            {
-                scrolls[0].flags |= VSCROLLBAR_VISIBLE;
-            }
-
-            // Reset the vertical scrollbar?
-            if (top < scrolls[0].v_top)
-            {
-                scrolls[0].v_top = top;
-                Invalidate();
-            }
 
             // Return the computed size
             return { newWidth, newHeight };
@@ -5381,7 +5395,7 @@ static_assert(std::size(RatingNames) == 6);
                 { windowPos.x + widgets[widgetIndex].left, windowPos.y + widgets[widgetIndex].top },
                 widgets[widgetIndex].height() + 1, colours[1], Dropdown::Flag::StayOpen, 2);
             gDropdownDefaultIndex = 0;
-            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+            if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
             {
                 // Disable saving without scenery if we're a flat ride
                 Dropdown::SetDisabled(0, true);
@@ -5688,7 +5702,7 @@ static_assert(std::size(RatingNames) == 6);
 
                         screenCoords.y += kListRowHeight;
 
-                        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+                        if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasGForces))
                         {
                             // Max. positive vertical G's
                             stringId = STR_MAX_POSITIVE_VERTICAL_G;
@@ -5722,7 +5736,7 @@ static_assert(std::size(RatingNames) == 6);
                             screenCoords.y += kListRowHeight;
                         }
 
-                        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
+                        if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasDrops))
                         {
                             ft = Formatter();
                             ft.Add<uint16_t>(ride->getNumDrops());
@@ -5840,7 +5854,7 @@ static_assert(std::size(RatingNames) == 6);
             WidgetInvalidate(*this, WIDX_GRAPH);
 
             widget = &widgets[WIDX_GRAPH];
-            x = scrolls[0].h_left;
+            x = scrolls[0].contentOffsetX;
             if (_autoScrollGraph)
             {
                 auto ride = GetRide(rideId);
@@ -5852,7 +5866,7 @@ static_assert(std::size(RatingNames) == 6);
                 }
             }
 
-            scrolls[0].h_left = std::clamp(x, 0, scrolls[0].h_right - (widget->width() - 2));
+            scrolls[0].contentOffsetX = std::clamp(x, 0, scrolls[0].contentWidth - (widget->width() - 2));
             WidgetScrollUpdateThumbs(*this, WIDX_GRAPH);
         }
 
@@ -5936,7 +5950,7 @@ static_assert(std::size(RatingNames) == 6);
             pressed_widgets |= (1LL << (WIDX_GRAPH_VELOCITY + list_information_type));
 
             // Hide graph buttons that are not applicable
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+            if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasGForces))
             {
                 widgets[WIDX_GRAPH_VERTICAL].type = WindowWidgetType::Button;
                 widgets[WIDX_GRAPH_LATERAL].type = WindowWidgetType::Button;
@@ -6043,7 +6057,7 @@ static_assert(std::size(RatingNames) == 6);
                 auto ft = Formatter();
                 ft.Add<int16_t>(scaled_yUnit);
 
-                DrawTextBasic(dpi, { scrolls[0].h_left + 1, y - 4 }, stringID, ft, { FontStyle::Small });
+                DrawTextBasic(dpi, { scrolls[0].contentOffsetX + 1, y - 4 }, stringID, ft, { FontStyle::Small });
             }
 
             // Time marks
@@ -6178,7 +6192,7 @@ static_assert(std::size(RatingNames) == 6);
 
             ShopItem shopItem;
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
+            if (rtd.HasFlag(RtdFlag::isToilet))
             {
                 shopItem = ShopItem::Admission;
             }
@@ -6284,7 +6298,7 @@ static_assert(std::size(RatingNames) == 6);
 
             auto rideEntry = ride->GetRideEntry();
             const auto& rtd = ride->GetRideTypeDescriptor();
-            return Park::RidePricesUnlocked() || rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET)
+            return Park::RidePricesUnlocked() || rtd.HasFlag(RtdFlag::isToilet)
                 || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::None);
         }
 
@@ -6459,8 +6473,7 @@ static_assert(std::size(RatingNames) == 6);
 
             // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None
-                && !rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
+            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None && !rtd.HasFlag(RtdFlag::isToilet))
             {
                 disabled_widgets |= (1uLL << WIDX_PRIMARY_PRICE);
                 widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
@@ -6479,7 +6492,7 @@ static_assert(std::size(RatingNames) == 6);
                 widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
 
             ShopItem primaryItem = ShopItem::Admission;
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
+            if (rtd.HasFlag(RtdFlag::isToilet) || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
             {
                 widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Checkbox;
 
@@ -6726,7 +6739,7 @@ static_assert(std::size(RatingNames) == 6);
                 ride->FormatNameTo(ft);
 
                 widgets[WIDX_SHOW_GUESTS_THOUGHTS].type = WindowWidgetType::FlatBtn;
-                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+                if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
                 {
                     widgets[WIDX_SHOW_GUESTS_ON_RIDE].type = WindowWidgetType::Empty;
                     widgets[WIDX_SHOW_GUESTS_QUEUING].type = WindowWidgetType::Empty;
@@ -6899,12 +6912,9 @@ static_assert(std::size(RatingNames) == 6);
             w->SetViewIndex(0);
         }
 
-        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
+        if (isToolActive(w->classification, w->number))
         {
-            if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
-            {
-                ToolCancel();
-            }
+            ToolCancel();
         }
 
         if (w->page != WINDOW_RIDE_PAGE_MAIN)
@@ -6925,7 +6935,7 @@ static_assert(std::size(RatingNames) == 6);
         if (ride.type >= RIDE_TYPE_COUNT)
             return nullptr;
 
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
             return RideMainOpen(ride);
 
         auto* w = static_cast<RideWindow*>(WindowBringToFrontByNumber(WindowClass::Ride, ride.id.ToUnderlying()));
@@ -6934,8 +6944,7 @@ static_assert(std::size(RatingNames) == 6);
             w = WindowRideOpen(ride);
         }
 
-        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
-            && gCurrentToolWidget.window_number == w->number)
+        if (isToolActive(w->classification, w->number))
         {
             ToolCancel();
         }
@@ -6977,7 +6986,7 @@ static_assert(std::size(RatingNames) == 6);
                     auto trackElement = tileElement->AsTrack();
                     auto trackType = trackElement->GetTrackType();
                     const auto& ted = GetTrackElementDescriptor(trackType);
-                    if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                    if (ted.sequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                     {
                         auto stationIndex = trackElement->GetStationIndex();
                         return WindowRideOpenStation(*ride, stationIndex);
@@ -7024,8 +7033,7 @@ static_assert(std::size(RatingNames) == 6);
         {
             w->Invalidate();
 
-            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
-                && gCurrentToolWidget.window_number == w->number)
+            if (isToolActive(w->classification, w->number))
             {
                 ToolCancel();
             }

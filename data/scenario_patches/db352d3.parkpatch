@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Ghost Town",
+    "sha256": "db352d3dcf74b8a1931963c4e07e8c23802227bb1d31d8c57b97c3239a382f5e",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 43, 79 ], [ 42, 80 ], [ 43, 80 ]
+            ]
+        }
+    }
+}

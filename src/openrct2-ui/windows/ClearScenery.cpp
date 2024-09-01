@@ -17,6 +17,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
@@ -87,7 +88,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnClose() override
         {
-            if (ClearSceneryToolIsActive())
+            if (isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
                 ToolCancel();
         }
 
@@ -164,7 +165,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
             // Close window if another tool is open
-            if (!ClearSceneryToolIsActive())
+            if (!isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
                 Close();
         }
 
@@ -329,7 +330,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action);
-                        gCurrentToolId = Tool::Crosshair;
+                        gCurrentToolId = Tool::Bulldozer;
                     }
                     break;
             }
@@ -344,7 +345,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action);
-                        gCurrentToolId = Tool::Crosshair;
+                        gCurrentToolId = Tool::Bulldozer;
                     }
                     break;
             }
@@ -357,7 +358,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                     MapInvalidateSelectionRect();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                    gCurrentToolId = Tool::Crosshair;
+                    gCurrentToolId = Tool::Bulldozer;
                     break;
             }
         }
@@ -381,27 +382,11 @@ namespace OpenRCT2::Ui::Windows
 
     /**
      *
-     *  rct2: 0x0066D125
-     */
-    bool ClearSceneryToolIsActive()
-    {
-        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-            return false;
-        if (gCurrentToolWidget.window_classification != WindowClass::ClearScenery)
-            return false;
-        if (gCurrentToolWidget.widget_index != WIDX_BACKGROUND)
-            return false;
-        return true;
-    }
-
-    /**
-     *
      *  rct2: 0x0066CD0C
      */
     void ToggleClearSceneryWindow()
     {
-        if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WindowClass::ClearScenery
-             && gCurrentToolWidget.widget_index == WIDX_BACKGROUND))
+        if (isToolActive(WindowClass::ClearScenery, WIDX_BACKGROUND))
         {
             ToolCancel();
         }
@@ -409,7 +394,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ShowGridlines();
             auto* toolWindow = ContextOpenWindow(WindowClass::ClearScenery);
-            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::Crosshair);
+            ToolSet(*toolWindow, WIDX_BACKGROUND, Tool::Bulldozer);
             InputSetFlag(INPUT_FLAG_6, true);
         }
     }

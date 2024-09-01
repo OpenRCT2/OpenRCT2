@@ -129,8 +129,8 @@ static Widget _viewClippingWidgets[] = {
                 case WIDX_CLIP_CLEAR:
                     if (IsActive())
                     {
-                        _toolActive = false;
                         ToolCancel();
+                        _toolActive = false;
                     }
                     gClipSelectionA = { 0, 0 };
                     gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
@@ -165,10 +165,10 @@ static Widget _viewClippingWidgets[] = {
         void OnUpdate() override
         {
             const auto& widget = widgets[WIDX_CLIP_HEIGHT_SLIDER];
-            const ScrollBar* const scroll = &this->scrolls[0];
+            const ScrollArea* const scroll = &this->scrolls[0];
             const int16_t scroll_width = widget.width() - 1;
             const uint8_t clip_height = static_cast<uint8_t>(
-                (static_cast<float>(scroll->h_left) / (scroll->h_right - scroll_width)) * 255);
+                (static_cast<float>(scroll->contentOffsetX) / (scroll->contentWidth - scroll_width)) * 255);
             if (clip_height != gClipHeight)
             {
                 gClipHeight = clip_height;
@@ -388,17 +388,13 @@ static Widget _viewClippingWidgets[] = {
             gClipHeight = clipHeight;
             const auto& widget = widgets[WIDX_CLIP_HEIGHT_SLIDER];
             const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
-            this->scrolls[0].h_left = static_cast<int16_t>(
-                std::ceil(clip_height_ratio * (this->scrolls[0].h_right - (widget.width() - 1))));
+            this->scrolls[0].contentOffsetX = static_cast<int16_t>(
+                std::ceil(clip_height_ratio * (this->scrolls[0].contentWidth - (widget.width() - 1))));
         }
 
         bool IsActive()
         {
-            if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-                return false;
-            if (gCurrentToolWidget.window_classification != WindowClass::ViewClipping)
-                return false;
-            return _toolActive;
+            return isToolActive(WindowClass::ViewClipping);
         }
     };
 

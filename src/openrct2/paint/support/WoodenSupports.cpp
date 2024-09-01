@@ -10,6 +10,7 @@
 #include "WoodenSupports.h"
 
 #include "../../interface/Viewport.h"
+#include "../../ride/TrackData.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"
@@ -141,13 +142,13 @@ static constexpr const ImagesByTransitionTypeArray::const_pointer WoodenCurveSup
     }, 
 };
 
-struct UnkSupportsDescriptor {
+struct SlopedSupportsDescriptor {
     BoundBoxXYZ BoundingBox;
     bool AsOrphan;
 };
 
 /* 0x0097B23C */
-static constexpr UnkSupportsDescriptor SupportsDescriptors[] = {
+static constexpr SlopedSupportsDescriptor SupportsDescriptors[] = {
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to gentle
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
@@ -235,12 +236,7 @@ static constexpr UnkSupportsDescriptor SupportsDescriptors[] = {
 };
 
 /* 0x0098D8D4 */
-static constexpr UnkSupportsDescriptor Byte98D8D4[] = {
-    {{{0, 0, 0}, {1, 1, 4}}, false},
-    {{{0, 0, 0}, {1, 1, 4}}, false},
-    {{{0, 0, 0}, {1, 1, 4}}, false},
-    {{{0, 0, 0}, {1, 1, 4}}, false},
-};
+static constexpr SlopedSupportsDescriptor kSlopedPathSupportsDescriptor = {{{0, 0, 0}, {1, 1, 4}}, false};
 
 /* 0x0097B3C4 */
 static constexpr uint16_t word_97B3C4[] = {
@@ -321,9 +317,9 @@ static WoodenSupportSubType rotatedWoodenSupportSubTypes[kNumWoodenSupportSubTyp
 /**
  * Draw repeated supports for left over space
  */
-static void WoodenABPaintRepeatedSupports(
-    WoodenSupportType supportType, WoodenSupportSubType subType, const ImageId& imageTemplate, int16_t heightSteps,
-    PaintSession& session, uint16_t& baseHeight, bool& hasSupports)
+static void PaintRepeatedWoodenSupports(
+    const SupportsIdDescriptor supportImages, const ImageId& imageTemplate, int16_t heightSteps, PaintSession& session,
+    uint16_t& baseHeight, bool& hasSupports)
 {
     while (heightSteps > 0)
     {
@@ -331,7 +327,7 @@ static void WoodenABPaintRepeatedSupports(
         if (isHalf)
         {
             // Half support
-            auto imageId = imageTemplate.WithIndex(GetWoodenSupportIds(supportType, subType).Half);
+            auto imageId = imageTemplate.WithIndex(supportImages.Half);
             uint8_t boundBoxHeight = (heightSteps == 1) ? 7 : 12;
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
             baseHeight += 16;
@@ -340,7 +336,7 @@ static void WoodenABPaintRepeatedSupports(
         else
         {
             // Full support
-            auto imageId = imageTemplate.WithIndex(GetWoodenSupportIds(supportType, subType).Full);
+            auto imageId = imageTemplate.WithIndex(supportImages.Full);
             uint8_t boundBoxHeight = (heightSteps == 2) ? 23 : 28;
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
             baseHeight += 32;
@@ -354,18 +350,11 @@ static void WoodenABPaintRepeatedSupports(
 /**
  * Draw special pieces, e.g. curved supports.
  */
-static bool WoodenABSupportPaintSetupPaintSpecial(
-    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType,
-    WoodenSupportTransitionType transitionType, Direction direction, const ImageId& imageTemplate, uint16_t baseHeight)
+static void PaintSlopeTransitions(
+    const SlopedSupportsDescriptor& supportsDesc, ImageIndex imageIndex, PaintSession& session, const ImageId& imageTemplate,
+    uint16_t baseHeight)
 {
-    const uint16_t supportsDescriptorIndex = (EnumValue(transitionType) * kNumOrthogonalDirections) + direction;
-    const UnkSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
-    const auto* imageIds = WoodenCurveSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
-
-    if (imageIds == nullptr || imageIds[EnumValue(transitionType)][direction] == 0)
-        return false;
-
-    auto imageId = imageTemplate.WithIndex(imageIds[EnumValue(transitionType)][direction]);
+    auto imageId = imageTemplate.WithIndex(imageIndex);
 
     auto boundBox = supportsDesc.BoundingBox;
     boundBox.offset.z += baseHeight;
@@ -382,26 +371,29 @@ static bool WoodenABSupportPaintSetupPaintSpecial(
             session.WoodenSupportsPrependTo->Children = paintStruct;
         }
     }
+}
+
+static bool WoodenABPaintSlopeTransitions(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType,
+    WoodenSupportTransitionType transitionType, Direction direction, const ImageId& imageTemplate, uint16_t baseHeight)
+{
+    const uint16_t supportsDescriptorIndex = (EnumValue(transitionType) * kNumOrthogonalDirections) + direction;
+    const SlopedSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
+    const auto* imageIds = WoodenCurveSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
+
+    if (imageIds == nullptr || imageIds[EnumValue(transitionType)][direction] == 0)
+        return false;
+
+    PaintSlopeTransitions(supportsDesc, imageIds[EnumValue(transitionType)][direction], session, imageTemplate, baseHeight);
 
     return true;
 }
 
-/**
- * Adds paint structs for wooden supports.
- *  rct2: 0x006629BC
- * @param supportType (edi) Type and direction of supports.
- * @param special (ax) Used for curved supports.
- * @param height (dx) The height of the supports.
- * @param imageTemplate (ebp) The colour and palette flags for the support sprites.
- * @param[out] underground (Carry flag) true if underground.
- * @returns (al) true if any supports have been drawn, otherwise false.
- */
-bool WoodenASupportsPaintSetup(
-    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
-    WoodenSupportTransitionType transitionType, Direction direction)
+template<uint8_t zOffset, bool doHeightStepsCheck>
+static inline bool WoodenSupportsPaintSetupCommon(
+    PaintSession& session, const SupportsIdDescriptor& supportImages, int32_t height, ImageId& imageTemplate, bool& hasSupports,
+    uint16_t& baseHeight)
 {
-    assert(subType != WoodenSupportSubType::Null);
-
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false;
@@ -416,7 +408,7 @@ bool WoodenASupportsPaintSetup(
         imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    uint16_t baseHeight = Floor2(session.Support.height + 15, 16);
+    baseHeight = Ceil2(session.Support.height, 16);
     int16_t supportLength = height - baseHeight;
 
     if (supportLength < 0)
@@ -426,7 +418,7 @@ bool WoodenASupportsPaintSetup(
 
     int16_t heightSteps = supportLength / 16;
 
-    bool hasSupports = false;
+    hasSupports = false;
     bool drawFlatPiece = false;
 
     // Draw base support (usually shaped to the slope)
@@ -445,7 +437,7 @@ bool WoodenASupportsPaintSetup(
             return false;
         }
 
-        auto imageIndex = GetWoodenSupportIds(supportType, subType).Slope;
+        ImageIndex imageIndex = supportImages.Slope;
         if (imageIndex == 0)
         {
             drawFlatPiece = true;
@@ -457,7 +449,7 @@ bool WoodenASupportsPaintSetup(
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
             PaintAddImageAsParent(
                 session, imageId.WithIndexOffset(4), { 0, 0, baseHeight + 16 },
-                { { 0, 0, baseHeight + 16 + 2 }, { 32, 32, 11 } });
+                { { 0, 0, baseHeight + 16 + 2 }, { 32, 32, zOffset } });
 
             hasSupports = true;
         }
@@ -473,7 +465,7 @@ bool WoodenASupportsPaintSetup(
             return false;
         }
 
-        auto imageIndex = GetWoodenSupportIds(supportType, subType).Slope;
+        ImageIndex imageIndex = supportImages.Slope;
         if (imageIndex == 0)
         {
             drawFlatPiece = true;
@@ -481,7 +473,7 @@ bool WoodenASupportsPaintSetup(
         else
         {
             auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileSlopeMask]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, zOffset } });
             hasSupports = true;
         }
 
@@ -491,20 +483,66 @@ bool WoodenASupportsPaintSetup(
     // Draw flat base support
     if (drawFlatPiece)
     {
-        auto imageId = imageTemplate.WithIndex(GetWoodenSupportIds(supportType, subType).Flat);
-        PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
-        hasSupports = true;
+        bool shouldDraw = true;
+        if constexpr (doHeightStepsCheck)
+        {
+            shouldDraw = heightSteps > 0;
+        }
+
+        if (shouldDraw)
+        {
+            auto imageId = imageTemplate.WithIndex(supportImages.Flat);
+            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
+            hasSupports = true;
+        }
     }
 
-    WoodenABPaintRepeatedSupports(supportType, subType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
+    PaintRepeatedWoodenSupports(supportImages, imageTemplate, heightSteps, session, baseHeight, hasSupports);
+    return true;
+}
+
+template<uint8_t zOffset, bool doHeightStepsCheck>
+inline bool WoodenABSupportsPaintSetupCommon(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
+    WoodenSupportTransitionType transitionType, Direction direction)
+{
+    assert(subType != WoodenSupportSubType::Null);
+
+    uint16_t baseHeight = 0;
+    bool hasSupports = false;
+    auto supportIds = GetWoodenSupportIds(supportType, subType);
+
+    if (!WoodenSupportsPaintSetupCommon<zOffset, doHeightStepsCheck>(
+            session, supportIds, height, imageTemplate, hasSupports, baseHeight))
+    {
+        return false;
+    }
 
     if (transitionType != WoodenSupportTransitionType::None)
     {
-        hasSupports = WoodenABSupportPaintSetupPaintSpecial(
+        hasSupports = WoodenABPaintSlopeTransitions(
             session, supportType, subType, transitionType, direction, imageTemplate, baseHeight);
     }
 
     return hasSupports;
+}
+
+/**
+ * Adds paint structs for wooden supports.
+ *  rct2: 0x006629BC
+ * @param supportType (edi) Type and direction of supports.
+ * @param special (ax) Used for curved supports.
+ * @param height (dx) The height of the supports.
+ * @param imageTemplate (ebp) The colour and palette flags for the support sprites.
+ * @param[out] underground (Carry flag) true if underground.
+ * @returns (al) true if any supports have been drawn, otherwise false.
+ */
+bool WoodenASupportsPaintSetup(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
+    WoodenSupportTransitionType transitionType, Direction direction)
+{
+    return WoodenABSupportsPaintSetupCommon<11, false>(
+        session, supportType, subType, height, imageTemplate, transitionType, direction);
 }
 
 bool WoodenASupportsPaintSetupRotated(
@@ -532,114 +570,8 @@ bool WoodenBSupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType, Direction direction)
 {
-    assert(subType != WoodenSupportSubType::Null);
-
-    if (!(session.Flags & PaintSessionFlags::PassedSurface))
-    {
-        return false;
-    }
-
-    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
-    {
-        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-        {
-            return false;
-        }
-        imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
-    }
-
-    uint16_t baseHeight = Floor2(session.Support.height + 15, 16);
-    int16_t supportLength = height - baseHeight;
-
-    if (supportLength < 0)
-    {
-        return false;
-    }
-
-    int16_t heightSteps = supportLength / 16;
-
-    bool hasSupports = false;
-    bool drawFlatPiece = false;
-
-    // Draw base support (usually shaped to the slope)
-    auto slope = session.Support.slope;
-    if (slope & kTileSlopeAboveTrackOrScenery)
-    {
-        // Above scenery (just put a base piece above it)
-        drawFlatPiece = true;
-    }
-    else if (slope & kTileSlopeDiagonalFlag)
-    {
-        // Steep diagonal (place the correct shaped support for the slope)
-        heightSteps -= 2;
-        if (heightSteps < 0)
-        {
-            return false;
-        }
-
-        auto imageIndex = GetWoodenSupportIds(supportType, subType).Slope;
-        if (imageIndex == 0)
-        {
-            drawFlatPiece = true;
-        }
-        else
-        {
-            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileSlopeMask]);
-
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
-            PaintAddImageAsParent(
-                session, imageId.WithIndexOffset(4), { 0, 0, baseHeight + 16 },
-                { { 0, 0, baseHeight + 16 + 2 }, { 32, 32, 3 } });
-
-            hasSupports = true;
-        }
-
-        baseHeight += 32;
-    }
-    else if ((slope & kTileSlopeRaisedCornersMask) != 0)
-    {
-        // 1 to 3 quarters up
-        heightSteps--;
-        if (heightSteps < 0)
-        {
-            return false;
-        }
-
-        auto imageIndex = GetWoodenSupportIds(supportType, subType).Slope;
-        if (imageIndex == 0)
-        {
-            drawFlatPiece = true;
-        }
-        else
-        {
-            auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileSlopeMask]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 3 } });
-            hasSupports = true;
-        }
-
-        baseHeight += 16;
-    }
-
-    // Draw flat base support
-    if (drawFlatPiece)
-    {
-        if (heightSteps > 0)
-        {
-            auto imageId = imageTemplate.WithIndex(GetWoodenSupportIds(supportType, subType).Flat);
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
-            hasSupports = true;
-        }
-    }
-
-    WoodenABPaintRepeatedSupports(supportType, subType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
-
-    if (transitionType != WoodenSupportTransitionType::None)
-    {
-        hasSupports = WoodenABSupportPaintSetupPaintSpecial(
-            session, supportType, subType, transitionType, direction, imageTemplate, baseHeight);
-    }
-
-    return hasSupports;
+    return WoodenABSupportsPaintSetupCommon<3, true>(
+        session, supportType, subType, height, imageTemplate, transitionType, direction);
 }
 
 bool WoodenBSupportsPaintSetupRotated(
@@ -669,125 +601,55 @@ bool PathBoxSupportsPaintSetup(
 {
     auto supportOrientationOffset = (supportType == WoodenSupportSubType::NwSe) ? 24 : 0;
 
-    if (!(session.Flags & PaintSessionFlags::PassedSurface))
-    {
-        return false;
-    }
-
-    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
-    {
-        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-        {
-            return false;
-        }
-        imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
-    }
-
-    uint16_t baseHeight = Ceil2(session.Support.height, 16);
-    int32_t supportLength = height - baseHeight;
-    if (supportLength < 0)
-    {
-        return false;
-    }
-
+    uint16_t baseHeight = 0;
     bool hasSupports = false;
+    SupportsIdDescriptor supportIds = {
+        .Full = pathPaintInfo.BridgeImageId + 22 + supportOrientationOffset,
+        .Half = pathPaintInfo.BridgeImageId + 23 + supportOrientationOffset,
+        .Flat = pathPaintInfo.BridgeImageId + 48,
+        .Slope = pathPaintInfo.BridgeImageId + supportOrientationOffset,
+    };
 
-    int16_t heightSteps = supportLength / 16;
-
-    if (session.Support.slope & kTileSlopeAboveTrackOrScenery)
+    if (!WoodenSupportsPaintSetupCommon<11, false>(session, supportIds, height, imageTemplate, hasSupports, baseHeight))
     {
-        // save dx2
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(pathPaintInfo.BridgeImageId + 48), { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
-        hasSupports = true;
-    }
-    else if (session.Support.slope & 0x10)
-    {
-        heightSteps -= 2;
-        if (heightSteps < 0)
-        {
-            return false;
-        }
-
-        uint32_t imageId = supportOrientationOffset + word_97B3C4[session.Support.slope & kTileSlopeMask]
-            + pathPaintInfo.BridgeImageId;
-
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageId), { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
-        baseHeight += 16;
-
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageId + 4), { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
-        baseHeight += 16;
-
-        hasSupports = true;
-    }
-    else if (session.Support.slope & 0x0F)
-    {
-        heightSteps -= 1;
-        if (heightSteps < 0)
-        {
-            return false;
-        }
-
-        uint32_t ebx = supportOrientationOffset + word_97B3C4[session.Support.slope & kTileSlopeMask]
-            + pathPaintInfo.BridgeImageId;
-
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(ebx), { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
-
-        hasSupports = true;
-        baseHeight += 16;
-    }
-
-    while (heightSteps > 0)
-    {
-        if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + WATER_HEIGHT_STEP == session.WaterHeight)
-        {
-            uint32_t imageId = supportOrientationOffset + pathPaintInfo.BridgeImageId + 23;
-
-            PaintAddImageAsParent(
-                session, imageTemplate.WithIndex(imageId), { 0, 0, baseHeight }, { 32, 32, ((heightSteps == 1) ? 7 : 12) });
-            heightSteps -= 1;
-            baseHeight += 16;
-            hasSupports = true;
-        }
-        else
-        {
-            uint32_t imageId = supportOrientationOffset + pathPaintInfo.BridgeImageId + 22;
-
-            PaintAddImageAsParent(
-                session, imageTemplate.WithIndex(imageId), { 0, 0, baseHeight }, { 32, 32, ((heightSteps == 2) ? 23 : 28) });
-            heightSteps -= 2;
-            baseHeight += 32;
-            hasSupports = true;
-        }
+        return false;
     }
 
     if (isSloped)
     {
         ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + slopeRotation;
 
-        const UnkSupportsDescriptor& supportsDesc = Byte98D8D4[slopeRotation];
-        auto boundBox = supportsDesc.BoundingBox;
-        boundBox.offset.z += baseHeight;
-
-        if (supportsDesc.AsOrphan == false || session.WoodenSupportsPrependTo == nullptr)
-        {
-            PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, boundBox);
-            hasSupports = true;
-        }
-        else
-        {
-            PaintStruct* paintStruct = PaintAddImageAsOrphan(
-                session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, boundBox);
-            hasSupports = true;
-            if (paintStruct != nullptr)
-            {
-                session.WoodenSupportsPrependTo->Children = paintStruct;
-            }
-        }
+        PaintSlopeTransitions(kSlopedPathSupportsDescriptor, imageIndex, session, imageTemplate, baseHeight);
+        hasSupports = true;
     }
 
     return hasSupports;
+}
+
+bool DrawSupportForSequenceA(
+    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
+    int32_t height, ImageId imageTemplate)
+{
+    const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
+    const auto& desc = ted.sequenceWoodenSupports[sequence];
+
+    if (desc.subType == WoodenSupportSubType::Null)
+        return false;
+
+    return WoodenASupportsPaintSetupRotated(
+        session, supportType, desc.subType, direction, height, imageTemplate, desc.transitionType);
+}
+
+bool DrawSupportForSequenceB(
+    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
+    int32_t height, ImageId imageTemplate)
+{
+    const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
+    const auto& desc = ted.sequenceWoodenSupports[sequence];
+
+    if (desc.subType == WoodenSupportSubType::Null)
+        return false;
+
+    return WoodenBSupportsPaintSetupRotated(
+        session, supportType, desc.subType, direction, height, imageTemplate, desc.transitionType);
 }

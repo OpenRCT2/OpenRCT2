@@ -13,7 +13,9 @@
 #include "ride/VehicleSounds.h"
 #include "windows/Window.h"
 
+#include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
+#include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Input.h>
@@ -144,6 +146,8 @@ public:
                 return TransparencyOpen();
             case WindowClass::AssetPacks:
                 return AssetPacksOpen();
+            case WindowClass::EditorParkEntrance:
+                return EditorParkEntranceOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;

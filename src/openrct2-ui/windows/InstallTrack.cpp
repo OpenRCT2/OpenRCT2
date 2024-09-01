@@ -239,7 +239,7 @@ static Widget window_install_track_widgets[] = {
             }
 
             const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (!rtd.HasFlag(RtdFlag::isMaze))
             {
                 if (td.trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
                 {
@@ -277,7 +277,7 @@ static Widget window_install_track_widgets[] = {
                 screenPos.y += kListRowHeight;
             }
 
-            if (GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+            if (GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasGForces))
             {
                 // Maximum positive vertical Gs
                 {
@@ -313,7 +313,7 @@ static Widget window_install_track_widgets[] = {
                 }
             }
 
-            if (GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
+            if (GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasDrops))
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(td.statistics.drops);

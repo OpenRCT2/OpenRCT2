@@ -574,9 +574,9 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     + window_multiplayer_players_widgets[WIDX_LIST].top + 21;
                 if (i < 0)
                     i = 0;
-                if (i < scrolls[0].v_top)
+                if (i < scrolls[0].contentOffsetY)
                 {
-                    scrolls[0].v_top = i;
+                    scrolls[0].contentOffsetY = i;
                     Invalidate();
                 }
                 break;
@@ -595,9 +595,9 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     + window_multiplayer_groups_widgets[WIDX_LIST].top + 21;
                 if (i < 0)
                     i = 0;
-                if (i < scrolls[0].v_top)
+                if (i < scrolls[0].contentOffsetY)
                 {
-                    scrolls[0].v_top = i;
+                    scrolls[0].contentOffsetY = i;
                     Invalidate();
                 }
                 break;

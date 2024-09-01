@@ -714,7 +714,6 @@ static Widget *window_options_page_widgets[] = {
                     break;
                 case WIDX_MINIMIZE_FOCUS_LOSS:
                     Config::Get().general.MinimizeFullscreenFocusLoss ^= 1;
-                    RefreshVideo(false);
                     Config::Save();
                     Invalidate();
                     break;
@@ -853,12 +852,10 @@ static Widget *window_options_page_widgets[] = {
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
                     if (dropdownIndex != EnumValue(Config::Get().general.DrawingEngine))
                     {
-                        DrawingEngine srcEngine = drawing_engine_get_type();
                         DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
 
                         Config::Get().general.DrawingEngine = dstEngine;
-                        bool recreate_window = DrawingEngineRequiresNewWindow(srcEngine, dstEngine);
-                        RefreshVideo(recreate_window);
+                        RefreshVideo();
                         Config::Save();
                         Invalidate();
                     }
@@ -2146,10 +2143,10 @@ static Widget *window_options_page_widgets[] = {
             GfxInvalidateScreen();
         }
 
-        uint8_t GetScrollPercentage(const Widget& widget, const ScrollBar& scroll)
+        uint8_t GetScrollPercentage(const Widget& widget, const ScrollArea& scroll)
         {
             uint8_t w = widget.width() - 1;
-            return static_cast<float>(scroll.h_left) / (scroll.h_right - w) * 100;
+            return static_cast<float>(scroll.contentOffsetX) / (scroll.contentWidth - w) * 100;
         }
 
         void InitializeScrollPosition(WidgetIndex widgetIndex, int32_t scrollId, uint8_t volume)
@@ -2157,8 +2154,8 @@ static Widget *window_options_page_widgets[] = {
             const auto& widget = widgets[widgetIndex];
             auto& scroll = scrolls[scrollId];
 
-            int32_t widgetSize = scroll.h_right - (widget.width() - 1);
-            scroll.h_left = ceil(volume / 100.0f * widgetSize);
+            int32_t widgetSize = scroll.contentWidth - (widget.width() - 1);
+            scroll.contentOffsetX = ceil(volume / 100.0f * widgetSize);
 
             WidgetScrollUpdateThumbs(*this, widgetIndex);
         }

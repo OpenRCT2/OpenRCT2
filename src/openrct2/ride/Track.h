@@ -15,8 +15,6 @@
 
 #include <optional>
 
-constexpr uint32_t RideConstructionSpecialPieceSelected = 0x10000;
-
 constexpr uint8_t kRCT2DefaultBlockBrakeSpeed = 2;
 constexpr int32_t kBlockBrakeBaseSpeed = 0x20364;
 constexpr int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
@@ -49,24 +47,121 @@ enum class TrackPitch : uint8_t
     ReverseFreefall = 10
 };
 
+// Vehicle sprite groups required by track groups are defined in ride_entry_get_supported_track_pieces
+enum TrackGroup : uint8_t
+{
+    flat = 0,
+    straight,
+    stationEnd,
+    liftHill,
+    liftHillSteep,
+    liftHillCurve,
+    flatRollBanking,
+    verticalLoop,
+    slope,
+    slopeSteepDown,
+    slopeLong,
+    slopeCurve,
+    slopeCurveSteep,
+    sBend,
+    curveVerySmall,
+    curveSmall,
+    curve,
+    curveLarge,
+    twist,
+    halfLoop,
+    corkscrew,
+    tower,
+    helixUpBankedHalf,
+    helixDownBankedHalf,
+    helixUpBankedQuarter,
+    helixDownBankedQuarter,
+    helixUpUnbankedQuarter,
+    helixDownUnbankedQuarter,
+    brakes,
+    onridePhoto,
+    waterSplash,
+    slopeVertical,
+    barrelRoll,
+    poweredLift,
+    halfLoopLarge,
+    slopeCurveBanked,
+    logFlumeReverser,
+    heartlineRoll,
+    reverser,
+    reverseFreefall,
+    slopeToFlat,
+    blockBrakes,
+    slopeRollBanking,
+    slopeSteepLong,
+    curveVertical,
+    liftHillCable,
+    liftHillCurved,
+    quarterLoop,
+    spinningTunnel,
+    booster,
+    inlineTwistUninverted,
+    inlineTwistInverted,
+    quarterLoopUninvertedUp,
+    quarterLoopUninvertedDown,
+    quarterLoopInvertedUp,
+    quarterLoopInvertedDown,
+    rapids,
+    flyingHalfLoopUninvertedUp,
+    flyingHalfLoopInvertedDown,
+
+    flatRideBase,
+
+    waterfall,
+    whirlpool,
+    brakeForDrop,
+    corkscrewUninverted,
+    corkscrewInverted,
+    heartlineTransfer,
+    miniGolfHole,
+    rotationControlToggle,
+    slopeSteepUp,
+
+    corkscrewLarge,
+    halfLoopMedium,
+    zeroGRoll,
+    zeroGRollLarge,
+
+    flyingLargeHalfLoopUninvertedUp,
+    flyingLargeHalfLoopInvertedDown,
+    flyingLargeHalfLoopUninvertedDown,
+    flyingLargeHalfLoopInvertedUp,
+
+    flyingHalfLoopUninvertedDown,
+    flyingHalfLoopInvertedUp,
+
+    slopeCurveLarge,
+    slopeCurveLargeBanked,
+
+    diagBrakes,
+    diagBlockBrakes,
+
+    count,
+};
+
 struct TrackDefinition
 {
-    track_type_t Type;
-    TrackPitch PitchEnd;
-    TrackPitch PitchStart;
-    TrackRoll RollEnd;
-    TrackRoll RollStart;
-    int8_t PreviewZOffset;
+    TrackGroup group;
+    TrackPitch pitchEnd;
+    TrackPitch pitchStart;
+    TrackRoll rollEnd;
+    TrackRoll rollStart;
+    int8_t previewZOffset;
 };
 
 struct PitchAndRoll
 {
-    TrackPitch Pitch;
-    TrackRoll Roll;
+    TrackPitch pitch;
+    TrackRoll roll;
 };
 constexpr bool operator==(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 {
-    return vb1.Pitch == vb2.Pitch && vb1.Roll == vb2.Roll;
+    return vb1.pitch == vb2.pitch && vb1.roll == vb2.roll;
 }
 constexpr bool operator!=(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 {
@@ -80,20 +175,20 @@ struct PreviewTrack
     int16_t x;     // 0x01
     int16_t y;     // 0x03
     int16_t z;     // 0x05
-    uint8_t ClearanceZ;
-    QuarterTile var_08;
+    uint8_t clearanceZ;
+    QuarterTile quarterTile;
     uint8_t flags;
 };
 
 /* size 0x0A */
 struct TrackCoordinates
 {
-    int8_t rotation_begin; // 0x00
-    int8_t rotation_end;   // 0x01
-    int16_t z_begin;       // 0x02
-    int16_t z_end;         // 0x04
-    int16_t x;             // 0x06
-    int16_t y;             // 0x08
+    int8_t rotationBegin; // 0x00
+    int8_t rotationEnd;   // 0x01
+    int16_t zBegin;       // 0x02
+    int16_t zEnd;         // 0x04
+    int16_t x;            // 0x06
+    int16_t y;            // 0x08
 };
 
 enum
@@ -128,105 +223,6 @@ constexpr int8_t kMaxStationPlatformLength = 32;
 constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * kCoordsZStep;
 constexpr uint8_t const DEFAULT_SEAT_ROTATION = 4;
 
-// Vehicle sprite groups required by track groups are defined in ride_entry_get_supported_track_pieces
-enum
-{
-    TRACK_NONE = 0,
-
-    TRACK_FLAT = 0,
-    TRACK_STRAIGHT,
-    TRACK_STATION_END,
-    TRACK_LIFT_HILL,
-    TRACK_LIFT_HILL_STEEP,
-    TRACK_LIFT_HILL_CURVE,
-    TRACK_FLAT_ROLL_BANKING,
-    TRACK_VERTICAL_LOOP,
-    TRACK_SLOPE,
-    TRACK_SLOPE_STEEP_DOWN,
-    TRACK_SLOPE_LONG,
-    TRACK_SLOPE_CURVE,
-    TRACK_SLOPE_CURVE_STEEP,
-    TRACK_S_BEND,
-    TRACK_CURVE_VERY_SMALL,
-    TRACK_CURVE_SMALL,
-    TRACK_CURVE,
-    TRACK_CURVE_LARGE,
-    TRACK_TWIST,
-    TRACK_HALF_LOOP,
-    TRACK_CORKSCREW,
-    TRACK_TOWER_BASE,
-    TRACK_HELIX_UP_BANKED_HALF,
-    TRACK_HELIX_DOWN_BANKED_HALF,
-    TRACK_HELIX_UP_BANKED_QUARTER,
-    TRACK_HELIX_DOWN_BANKED_QUARTER,
-    TRACK_HELIX_UP_UNBANKED_QUARTER,
-    TRACK_HELIX_DOWN_UNBANKED_QUARTER,
-    TRACK_BRAKES,
-    TRACK_ON_RIDE_PHOTO,
-    TRACK_WATER_SPLASH,
-    TRACK_SLOPE_VERTICAL,
-    TRACK_BARREL_ROLL,
-    TRACK_POWERED_LIFT,
-    TRACK_HALF_LOOP_LARGE,
-    TRACK_SLOPE_CURVE_BANKED,
-    TRACK_LOG_FLUME_REVERSER,
-    TRACK_HEARTLINE_ROLL,
-    TRACK_REVERSER,
-    TRACK_REVERSE_FREEFALL,
-    TRACK_SLOPE_TO_FLAT,
-    TRACK_BLOCK_BRAKES,
-    TRACK_SLOPE_ROLL_BANKING,
-    TRACK_SLOPE_STEEP_LONG,
-    TRACK_CURVE_VERTICAL,
-    TRACK_LIFT_HILL_CABLE,
-    TRACK_LIFT_HILL_CURVED,
-    TRACK_QUARTER_LOOP,
-    TRACK_SPINNING_TUNNEL,
-    TRACK_BOOSTER,
-    TRACK_INLINE_TWIST_UNINVERTED,
-    TRACK_INLINE_TWIST_INVERTED,
-    TRACK_QUARTER_LOOP_UNINVERTED_UP,
-    TRACK_QUARTER_LOOP_UNINVERTED_DOWN,
-    TRACK_QUARTER_LOOP_INVERTED_UP,
-    TRACK_QUARTER_LOOP_INVERTED_DOWN,
-    TRACK_RAPIDS,
-    TRACK_FLYING_HALF_LOOP_UNINVERTED_UP,
-    TRACK_FLYING_HALF_LOOP_INVERTED_DOWN,
-
-    TRACK_FLAT_RIDE_BASE,
-
-    TRACK_WATERFALL,
-    TRACK_WHIRLPOOL,
-    TRACK_BRAKE_FOR_DROP,
-    TRACK_CORKSCREW_UNINVERTED,
-    TRACK_CORKSCREW_INVERTED,
-    TRACK_HEARTLINE_TRANSFER,
-    TRACK_MINI_GOLF_HOLE,
-    TRACK_ROTATION_CONTROL_TOGGLE,
-    TRACK_SLOPE_STEEP_UP,
-
-    TRACK_CORKSCREW_LARGE,
-    TRACK_HALF_LOOP_MEDIUM,
-    TRACK_ZERO_G_ROLL,
-    TRACK_ZERO_G_ROLL_LARGE,
-
-    TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_UP,
-    TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_DOWN,
-    TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_DOWN,
-    TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_UP,
-
-    TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN,
-    TRACK_FLYING_HALF_LOOP_INVERTED_UP,
-
-    TRACK_SLOPE_CURVE_LARGE,
-    TRACK_SLOPE_CURVE_LARGE_BANKED,
-
-    TRACK_DIAG_BRAKES,
-    TRACK_DIAG_BLOCK_BRAKES,
-
-    TRACK_GROUP_COUNT,
-};
-
 enum class TrackCurve : uint8_t
 {
     LeftVerySmall = 5,
@@ -239,6 +235,7 @@ enum class TrackCurve : uint8_t
     RightSmall = 4,
     RightVerySmall = 6
 };
+constexpr const uint8_t kHighestCurveValue = 8;
 
 enum
 {
@@ -663,6 +660,58 @@ struct TrackCircuitIterator
     TileElement* first;
     bool firstIteration;
     bool looped;
+};
+
+struct TypeOrCurve
+{
+    bool isTrackType = true; // true if a track_type_t is selected, false if a TrackCurve is selected;
+    union
+    {
+        track_type_t trackType = OpenRCT2::TrackElemType::None;
+        TrackCurve curve;
+    };
+
+    constexpr TypeOrCurve() noexcept
+    {
+        isTrackType = false;
+        curve = TrackCurve::None;
+    }
+
+    constexpr bool operator==(track_type_t rhs)
+    {
+        return isTrackType && (trackType == rhs);
+    }
+
+    constexpr bool operator==(TrackCurve rhs)
+    {
+        return !isTrackType && (curve == rhs);
+    }
+
+    constexpr TypeOrCurve(track_type_t _type) noexcept
+    {
+        isTrackType = true;
+        trackType = _type;
+    }
+
+    constexpr TypeOrCurve& operator=(track_type_t rhs) noexcept
+    {
+        isTrackType = true;
+        trackType = rhs;
+        return *this;
+    }
+
+    constexpr TypeOrCurve(TrackCurve _curve) noexcept
+    {
+        isTrackType = false;
+        curve = _curve;
+    }
+
+    constexpr TypeOrCurve& operator=(TrackCurve rhs) noexcept
+    {
+        isTrackType = false;
+        curve = rhs;
+        return *this;
+    }
 };
 
 PitchAndRoll TrackPitchAndRollStart(track_type_t trackType);

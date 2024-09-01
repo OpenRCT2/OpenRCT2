@@ -32,26 +32,27 @@ namespace OpenRCT2
 
     enum class DIRID
     {
-        DATA,        // Contains g1.dat, music etc.
-        LANDSCAPE,   // Contains scenario editor landscapes (SC6).
-        LANGUAGE,    // Contains language packs.
-        LOG_CHAT,    // Contains chat logs.
-        LOG_SERVER,  // Contains server logs.
-        NETWORK_KEY, // Contains the user's public and private keys.
-        OBJECT,      // Contains objects.
-        PLUGIN,      // Contains plugins (.js).
-        SAVE,        // Contains saved games (SV6).
-        SCENARIO,    // Contains scenarios (SC6).
-        SCREENSHOT,  // Contains screenshots.
-        SEQUENCE,    // Contains title sequences.
-        SHADER,      // Contains OpenGL shaders.
-        THEME,       // Contains interface themes.
-        TRACK,       // Contains track designs.
-        HEIGHTMAP,   // Contains heightmap data.
-        REPLAY,      // Contains recorded replays.
-        LOG_DESYNCS, // Contains desync reports.
-        CRASH,       // Contains crash dumps.
-        ASSET_PACK,  // Contains asset packs.
+        DATA,             // Contains g1.dat, music etc.
+        LANDSCAPE,        // Contains scenario editor landscapes (SC6).
+        LANGUAGE,         // Contains language packs.
+        LOG_CHAT,         // Contains chat logs.
+        LOG_SERVER,       // Contains server logs.
+        NETWORK_KEY,      // Contains the user's public and private keys.
+        OBJECT,           // Contains objects.
+        PLUGIN,           // Contains plugins (.js).
+        SAVE,             // Contains saved games (SV6).
+        SCENARIO,         // Contains scenarios (SC6).
+        SCREENSHOT,       // Contains screenshots.
+        SEQUENCE,         // Contains title sequences.
+        SHADER,           // Contains OpenGL shaders.
+        THEME,            // Contains interface themes.
+        TRACK,            // Contains track designs.
+        HEIGHTMAP,        // Contains heightmap data.
+        REPLAY,           // Contains recorded replays.
+        LOG_DESYNCS,      // Contains desync reports.
+        CRASH,            // Contains crash dumps.
+        ASSET_PACK,       // Contains asset packs.
+        SCENARIO_PATCHES, // Contains scenario patches.
     };
 
     enum class PATHID

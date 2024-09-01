@@ -88,7 +88,7 @@ GameActions::Result RideCreateAction::Query() const
     }
 
     int32_t rideEntryIndex = RideGetEntryIndex(_rideType, _subType);
-    if (rideEntryIndex >= MAX_RIDE_OBJECTS)
+    if (rideEntryIndex >= kMaxRideObjects)
     {
         LOG_ERROR("Ride entry not found for rideType %d, subType %d", _rideType, _subType);
         return GameActions::Result(
@@ -185,13 +185,13 @@ GameActions::Result RideCreateAction::Execute() const
     ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+    if (rtd.HasFlag(RtdFlag::allowMusic))
     {
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
         ride->music = objManager.GetLoadedObjectEntryIndex(rtd.DefaultMusic);
         if (ride->music != OBJECT_ENTRY_INDEX_NULL)
         {
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT))
+            if (rtd.HasFlag(RtdFlag::hasMusicByDefault))
             {
                 ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
             }
@@ -234,7 +234,7 @@ GameActions::Result RideCreateAction::Execute() const
             ride->price[0] = 0;
         }
 
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
+        if (rtd.HasFlag(RtdFlag::isToilet))
         {
             if (ShopItemHasCommonPrice(ShopItem::Admission))
             {
@@ -262,7 +262,7 @@ GameActions::Result RideCreateAction::Execute() const
         }
 
         // Set the on-ride photo price, whether the ride has one or not (except shops).
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) && ShopItemHasCommonPrice(ShopItem::Photo))
+        if (!rtd.HasFlag(RtdFlag::isShopOrFacility) && ShopItemHasCommonPrice(ShopItem::Photo))
         {
             auto price = ShopItemGetCommonPrice(ride, ShopItem::Photo);
             if (price != kMoney64Undefined)
@@ -288,7 +288,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->profit = kMoney64Undefined;
 
     ride->entrance_style = OBJECT_ENTRY_INDEX_NULL;
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+    if (rtd.HasFlag(RtdFlag::hasEntranceAndExit))
     {
         ride->entrance_style = _entranceObjectIndex;
     }

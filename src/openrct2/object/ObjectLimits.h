@@ -13,23 +13,23 @@
 
 // Maximums based on number of values that can be represented in bit group.
 // Subtract 1 to reserve the NULL entry identifier.
-constexpr uint16_t MAX_RIDE_OBJECTS = 2047;
-constexpr uint16_t MAX_SMALL_SCENERY_OBJECTS = 2047;
-constexpr uint16_t MAX_LARGE_SCENERY_OBJECTS = 2047;
-constexpr uint16_t MAX_WALL_SCENERY_OBJECTS = 2047;
-constexpr uint16_t MAX_BANNER_OBJECTS = 255;
-constexpr uint16_t MAX_PATH_OBJECTS = 255;
-constexpr uint16_t MAX_PATH_ADDITION_OBJECTS = 255;
-constexpr uint16_t MAX_SCENERY_GROUP_OBJECTS = 255;
-constexpr uint16_t MAX_PARK_ENTRANCE_OBJECTS = 1;
-constexpr uint16_t MAX_WATER_OBJECTS = 1;
-constexpr uint16_t MAX_SCENARIO_TEXT_OBJECTS = 0;
-constexpr uint16_t MAX_TERRAIN_SURFACE_OBJECTS = 255;
-constexpr uint16_t MAX_TERRAIN_EDGE_OBJECTS = 255;
-constexpr uint16_t MAX_STATION_OBJECTS = 255;
-constexpr uint16_t MAX_MUSIC_OBJECTS = 255;
-constexpr uint16_t MAX_FOOTPATH_SURFACE_OBJECTS = 255;
-constexpr uint16_t MAX_FOOTPATH_RAILINGS_OBJECTS = 255;
-constexpr uint16_t MAX_AUDIO_OBJECTS = 255;
+constexpr uint16_t kMaxRideObjects = 2047;
+constexpr uint16_t kMaxSmallSceneryObjects = 2047;
+constexpr uint16_t kMaxLargeSceneryObjects = 2047;
+constexpr uint16_t kMaxWallSceneryObjects = 2047;
+constexpr uint16_t kMaxBannerObjects = 255;
+constexpr uint16_t kMaxPathObjects = 255;
+constexpr uint16_t kMaxPathAdditionObjects = 255;
+constexpr uint16_t kMaxSceneryGroupObjects = 255;
+constexpr uint16_t kMaxParkEntranceObjects = 4;
+constexpr uint16_t kMaxWaterObjects = 1;
+constexpr uint16_t kMaxScenarioTextObjects = 0;
+constexpr uint16_t kMaxTerrainSurfaceObjects = 255;
+constexpr uint16_t kMaxTerrainEdgeObjects = 255;
+constexpr uint16_t kMaxStationObjects = 255;
+constexpr uint16_t kMaxMusicObjects = 255;
+constexpr uint16_t kMaxFootpathSurfaceObjects = 255;
+constexpr uint16_t kMaxFootpathRailingsObjects = 255;
+constexpr uint16_t kMaxAudioObjects = 255;
 
-constexpr uint8_t DAT_NAME_LENGTH = 8;
+constexpr uint8_t kDatNameLength = 8;

@@ -52,7 +52,7 @@ static void PaintLiftCage(PaintSession& session, int8_t index, ImageId colourFla
 /** rct2: 0x0076C6CC */
 static void PaintLiftBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kTrackMap3x3[direction][trackSequence];
 
@@ -126,7 +126,7 @@ static void PaintLiftBase(
 /** rct2: 0x0076C6DC */
 static void PaintLiftTowerSection(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence == 1)
     {

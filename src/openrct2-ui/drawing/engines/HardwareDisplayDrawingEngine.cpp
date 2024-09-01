@@ -62,6 +62,14 @@ public:
 
     ~HardwareDisplayDrawingEngine() override
     {
+        if (_screenTexture != nullptr)
+        {
+            SDL_DestroyTexture(_screenTexture);
+        }
+        if (_scaledScreenTexture != nullptr)
+        {
+            SDL_DestroyTexture(_scaledScreenTexture);
+        }
         SDL_FreeFormat(_screenTextureFormat);
         SDL_DestroyRenderer(_sdlRenderer);
     }
@@ -76,11 +84,15 @@ public:
         if (_useVsync != vsync)
         {
             _useVsync = vsync;
+#if SDL_VERSION_ATLEAST(2, 0, 18)
+            SDL_RenderSetVSync(_sdlRenderer, vsync ? 1 : 0);
+#else
             SDL_DestroyRenderer(_sdlRenderer);
             _screenTexture = nullptr;
             _scaledScreenTexture = nullptr;
             Initialise();
             Resize(_uiContext->GetWidth(), _uiContext->GetHeight());
+#endif
         }
     }
 

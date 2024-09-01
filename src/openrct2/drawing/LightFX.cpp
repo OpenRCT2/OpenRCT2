@@ -131,12 +131,12 @@ void LightFXSetAvailable(bool available)
 
 bool LightFXIsAvailable()
 {
-    return _lightfxAvailable && Config::Get().general.EnableLightFx != 0;
+    return _lightfxAvailable && Config::Get().general.EnableLightFx;
 }
 
 bool LightFXForVehiclesIsAvailable()
 {
-    return LightFXIsAvailable() && Config::Get().general.EnableLightFxForVehicles != 0;
+    return LightFXIsAvailable() && Config::Get().general.EnableLightFxForVehicles;
 }
 
 void LightFXInit()

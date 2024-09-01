@@ -340,7 +340,7 @@ static Widget window_new_ride_widgets[] = {
 
             if (_currentTab < RESEARCH_TAB)
             {
-                _windowNewRideTabScroll[_currentTab] = scrolls[0].v_top;
+                _windowNewRideTabScroll[_currentTab] = scrolls[0].contentOffsetY;
 
                 // Remove highlight when mouse leaves rides list
                 if (!WidgetIsHighlighted(*this, WIDX_RIDE_LIST))
@@ -374,7 +374,7 @@ static Widget window_new_ride_widgets[] = {
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
                     _filter.clear();
-                    scrolls->v_top = 0;
+                    scrolls->contentOffsetY = 0;
                     Invalidate();
                     break;
             }
@@ -523,7 +523,7 @@ static Widget window_new_ride_widgets[] = {
 
             _filter.assign(text);
 
-            scrolls->v_top = 0;
+            scrolls->contentOffsetY = 0;
             Invalidate();
         }
 
@@ -588,7 +588,7 @@ static Widget window_new_ride_widgets[] = {
 
             if (item.Type < 0x80)
             {
-                if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (GetRideTypeDescriptor(item.Type).HasFlag(RtdFlag::listVehiclesSeparately))
                 {
                     entryName = GetRideEntryName(item.EntryIndex);
                 }
@@ -603,7 +603,7 @@ static Widget window_new_ride_widgets[] = {
         void UpdateVehicleAvailability(ObjectEntryIndex rideType)
         {
             _vehicleAvailability.clear();
-            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
             {
                 return;
             }
@@ -686,7 +686,7 @@ static Widget window_new_ride_widgets[] = {
 
                 // Skip if the vehicle isn't the preferred vehicle for this generic track type
                 if (!Config::Get().interface.ListRideVehiclesSeparately
-                    && !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+                    && !GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately)
                     && highestVehiclePriority > rideEntry->BuildMenuPriority)
                 {
                     continue;
@@ -701,7 +701,7 @@ static Widget window_new_ride_widgets[] = {
 
                 // Determines how and where to draw a button for this ride type/vehicle.
                 if (Config::Get().interface.ListRideVehiclesSeparately
-                    || GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                    || GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
                 {
                     // Separate, draw apart
                     allowDrawingOverLastButton = false;
@@ -913,7 +913,7 @@ static Widget window_new_ride_widgets[] = {
             // Ensure the current tab scroll is within range
             currentTabScroll = std::min<uint16_t>(currentTabScroll, std::max(0, scrollSize.height - listWidgetHeight));
 
-            scrolls[0].v_top = currentTabScroll;
+            scrolls[0].contentOffsetY = currentTabScroll;
             WidgetScrollUpdateThumbs(*this, WIDX_RIDE_LIST);
         }
 
@@ -960,12 +960,12 @@ static Widget window_new_ride_widgets[] = {
                 int32_t startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
                 money64 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
                 const auto& ted = GetTrackElementDescriptor(startPieceId);
-                price *= ted.PriceModifier;
+                price *= ted.priceModifier;
                 price = (price >> 16) * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
 
                 //
                 StringId stringId = STR_NEW_RIDE_COST;
-                if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+                if (GetRideTypeDescriptor(item.Type).HasFlag(RtdFlag::hasTrack))
                     stringId = STR_NEW_RIDE_COST_FROM;
 
                 ft = Formatter();

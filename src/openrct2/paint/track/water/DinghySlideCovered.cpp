@@ -18,8 +18,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr MetalSupportType kSupportType = MetalSupportType::Tubes;
-
 enum
 {
     SPR_DINGHY_SLIDE_FLAT_COVERED_SW_NE = 19736,
@@ -177,7 +175,7 @@ enum
 
 static void DinghySlideTrackCoveredFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_FLAT_COVERED_SW_NE, SPR_DINGHY_SLIDE_FLAT_COVERED_FRONT_SW_NE },
@@ -194,10 +192,10 @@ static void DinghySlideTrackCoveredFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Standard, TunnelSubType::Flat);
 
     PaintUtilSetSegmentSupportHeight(
         session,
@@ -209,7 +207,7 @@ static void DinghySlideTrackCoveredFlat(
 
 static void DinghySlideTrackCovered25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_25_DEG_COVERED_SW_NE, SPR_DINGHY_SLIDE_25_DEG_COVERED_FRONT_SW_NE },
@@ -226,16 +224,16 @@ static void DinghySlideTrackCovered25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -248,7 +246,7 @@ static void DinghySlideTrackCovered25DegUp(
 
 static void DinghySlideTrackCovered60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_60_DEG_COVERED_SW_NE, SPR_DINGHY_SLIDE_60_DEG_COVERED_FRONT_SW_NE },
@@ -265,16 +263,16 @@ static void DinghySlideTrackCovered60DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 32, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 32, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 56, TunnelType::StandardSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 56, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -287,7 +285,7 @@ static void DinghySlideTrackCovered60DegUp(
 
 static void DinghySlideTrackCoveredFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_FLAT_TO_25_DEG_COVERED_SW_NE, SPR_DINGHY_SLIDE_FLAT_TO_25_DEG_COVERED_FRONT_SW_NE },
@@ -304,16 +302,16 @@ static void DinghySlideTrackCoveredFlatTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Standard, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -326,7 +324,7 @@ static void DinghySlideTrackCoveredFlatTo25DegUp(
 
 static void DinghySlideTrackCovered25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_COVERED_SW_NE, SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_COVERED_FRONT_SW_NE },
@@ -343,16 +341,16 @@ static void DinghySlideTrackCovered25DegUpTo60DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelType::StandardSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -365,7 +363,7 @@ static void DinghySlideTrackCovered25DegUpTo60DegUp(
 
 static void DinghySlideTrackCovered60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_COVERED_SW_NE, SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_COVERED_FRONT_SW_NE },
@@ -382,16 +380,16 @@ static void DinghySlideTrackCovered60DegUpTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelType::StandardSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -404,7 +402,7 @@ static void DinghySlideTrackCovered60DegUpTo25DegUp(
 
 static void DinghySlideTrackCovered25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
         { SPR_DINGHY_SLIDE_25_DEG_TO_FLAT_COVERED_SW_NE, SPR_DINGHY_SLIDE_25_DEG_TO_FLAT_COVERED_FRONT_SW_NE },
@@ -421,16 +419,16 @@ static void DinghySlideTrackCovered25DegUpToFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardFlat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::Standard, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::StandardFlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::Standard, TunnelSubType::FlatTo25Deg);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -443,42 +441,43 @@ static void DinghySlideTrackCovered25DegUpToFlat(
 
 static void DinghySlideTrackCovered25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    DinghySlideTrackCovered25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    DinghySlideTrackCovered25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 static void DinghySlideTrackCovered60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    DinghySlideTrackCovered60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    DinghySlideTrackCovered60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 static void DinghySlideTrackCoveredFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    DinghySlideTrackCovered25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    DinghySlideTrackCovered25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 static void DinghySlideTrackCovered25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    DinghySlideTrackCovered60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    DinghySlideTrackCovered60DegUpTo25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 static void DinghySlideTrackCovered25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    DinghySlideTrackCoveredFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    DinghySlideTrackCoveredFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 static void DinghySlideTrackCoveredRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr SpriteBb imageIds[4][5] = {
         {
@@ -548,25 +547,25 @@ static void DinghySlideTrackCoveredRightQuarterTurn5(
     {
         case 0:
         case 6:
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
+        PaintUtilPushTunnelLeft(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
     }
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
+        PaintUtilPushTunnelRight(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
     }
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, TunnelType::StandardFlat);
+        PaintUtilPushTunnelLeft(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, TunnelType::StandardFlat);
+        PaintUtilPushTunnelRight(session, height, TunnelGroup::Standard, TunnelSubType::Flat);
     }
 
     switch (trackSequence)
@@ -627,15 +626,16 @@ static void DinghySlideTrackCoveredRightQuarterTurn5(
 
 static void DinghySlideTrackCoveredLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    DinghySlideTrackCoveredRightQuarterTurn5(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
+    DinghySlideTrackCoveredRightQuarterTurn5(
+        session, ride, trackSequence, (direction + 1) % 4, height, trackElement, supportType);
 }
 
 static void DinghySlideTrackCoveredSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][4][2] = {
         {
@@ -674,7 +674,7 @@ static void DinghySlideTrackCoveredSBendLeft(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -692,7 +692,8 @@ static void DinghySlideTrackCoveredSBendLeft(
             if (direction == 0 || direction == 1)
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
-                MetalASupportsPaintSetup(session, kSupportType, supportPlace, (direction & 1), height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, supportPlace, (direction & 1), height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -711,7 +712,8 @@ static void DinghySlideTrackCoveredSBendLeft(
             if (direction == 2 || direction == 3)
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
-                MetalASupportsPaintSetup(session, kSupportType, supportPlace, (direction & 1), height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, supportPlace, (direction & 1), height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -726,7 +728,7 @@ static void DinghySlideTrackCoveredSBendLeft(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -742,14 +744,14 @@ static void DinghySlideTrackCoveredSBendLeft(
     {
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Standard, TunnelSubType::Flat);
         }
     }
     else if (trackSequence == 3)
     {
         if (direction == 1 || direction == 2)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Standard, TunnelSubType::Flat);
         }
     }
 
@@ -758,7 +760,7 @@ static void DinghySlideTrackCoveredSBendLeft(
 
 static void DinghySlideTrackCoveredSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][4][2] = {
         {
@@ -797,7 +799,7 @@ static void DinghySlideTrackCoveredSBendRight(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -816,7 +818,7 @@ static void DinghySlideTrackCoveredSBendRight(
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
                                                           : MetalSupportPlace::BottomRightSide;
-                MetalASupportsPaintSetup(session, kSupportType, supportPlace, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(session, supportType.metal, supportPlace, 0, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -836,7 +838,7 @@ static void DinghySlideTrackCoveredSBendRight(
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
                                                           : MetalSupportPlace::BottomRightSide;
-                MetalASupportsPaintSetup(session, kSupportType, supportPlace, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(session, supportType.metal, supportPlace, 0, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -851,7 +853,7 @@ static void DinghySlideTrackCoveredSBendRight(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -867,14 +869,14 @@ static void DinghySlideTrackCoveredSBendRight(
     {
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Standard, TunnelSubType::Flat);
         }
     }
     else if (trackSequence == 3)
     {
         if (direction == 1 || direction == 2)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
+            PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Standard, TunnelSubType::Flat);
         }
     }
 
@@ -883,7 +885,7 @@ static void DinghySlideTrackCoveredSBendRight(
 
 static void DinghySlideTrackCoveredRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr SpriteBb imageIds[4][3] = {
         {
@@ -932,13 +934,14 @@ static void DinghySlideTrackCoveredRightQuarterTurn3(
 
     TrackPaintUtilRightQuarterTurn3TilesPaint3(session, height, direction, trackSequence, session.TrackColours, imageIds);
     TrackPaintUtilRightQuarterTurn3TilesPaint3(session, height, direction, trackSequence, session.TrackColours, frontImageIds);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TunnelType::StandardFlat);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(
+        session, TunnelGroup::Standard, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 
@@ -965,17 +968,19 @@ static void DinghySlideTrackCoveredRightQuarterTurn3(
 
 static void DinghySlideTrackCoveredLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    DinghySlideTrackCoveredRightQuarterTurn3(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
+    DinghySlideTrackCoveredRightQuarterTurn3(
+        session, ride, trackSequence, (direction + 1) % 4, height, trackElement, supportType);
 }
 
 static void DinghySlideTrackCovered60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    DinghySlideTrackCovered25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    DinghySlideTrackCovered25DegUpTo60DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlideCovered(int32_t trackType)

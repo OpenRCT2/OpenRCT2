@@ -40,9 +40,9 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
 #ifdef __APPLE__
-static constexpr bool WindowButtonsOnTheLeftDefault = true;
+static constexpr bool kWindowButtonsOnTheLeftDefault = true;
 #else
-static constexpr bool WindowButtonsOnTheLeftDefault = false;
+static constexpr bool kWindowButtonsOnTheLeftDefault = false;
 #endif
 #ifdef __ANDROID__
 static constexpr bool kEnlargedUiDefault = true;
@@ -248,7 +248,7 @@ namespace OpenRCT2::Config
             model->InvisibleTrees = reader->GetBoolean("invisible_trees", false);
             model->InvisibleScenery = reader->GetBoolean("invisible_scenery", false);
             model->InvisiblePaths = reader->GetBoolean("invisible_paths", false);
-            model->InvisibleSupports = reader->GetBoolean("invisible_supports", true);
+            model->InvisibleSupports = reader->GetBoolean("invisible_supports", false);
 
             model->LastVersionCheckTime = reader->GetInt64("last_version_check_time", 0);
         }
@@ -358,7 +358,7 @@ namespace OpenRCT2::Config
             model->ObjectSelectionFilterFlags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
             model->ScenarioselectLastTab = reader->GetInt32("scenarioselect_last_tab", 0);
             model->ListRideVehiclesSeparately = reader->GetBoolean("list_ride_vehicles_separately", false);
-            model->WindowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", WindowButtonsOnTheLeftDefault);
+            model->WindowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", kWindowButtonsOnTheLeftDefault);
             model->EnlargedUi = reader->GetBoolean("enlarged_ui", kEnlargedUiDefault);
             model->TouchEnhancements = reader->GetBoolean("touch_enhancements", kEnlargedUiDefault);
         }

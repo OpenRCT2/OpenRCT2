@@ -59,12 +59,12 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    if (_loc.z < FootpathMinHeight)
+    if (_loc.z < kFootpathMinHeight)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_LOW);
     }
 
-    if (_loc.z > FootpathMaxHeight)
+    if (_loc.z > kFootpathMaxHeight)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_HIGH);
     }

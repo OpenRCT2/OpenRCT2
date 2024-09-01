@@ -7,10 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/Viewport.h"
-
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
+#include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -25,6 +27,7 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
+#include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -34,7 +37,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 98;
 
     // clang-format off
-enum WindowLandWidgetIdx {
+enum WindowLandWidgetIdx : WidgetIndex
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -100,7 +104,7 @@ static Widget window_land_widgets[] = {
         void OnClose() override
         {
             // If the tool wasn't changed, turn tool off
-            if (LandToolIsActive())
+            if (isToolActive(WindowClass::Land, WIDX_BACKGROUND))
                 ToolCancel();
         }
 
@@ -224,7 +228,7 @@ static Widget window_land_widgets[] = {
 
         void OnUpdate() override
         {
-            if (!LandToolIsActive())
+            if (!isToolActive(WindowClass::Land, WIDX_BACKGROUND))
                 Close();
         }
 
@@ -598,7 +602,7 @@ static Widget window_land_widgets[] = {
          */
         void ToolUpdateLand(const ScreenCoordsXY& screenPos)
         {
-            const bool mapCtrlPressed = InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z);
+            const bool mapCtrlPressed = GetInputManager().IsModifierKeyPressed(ModifierKey::ctrl);
 
             MapInvalidateSelectionRect();
 
@@ -869,27 +873,11 @@ static Widget window_land_widgets[] = {
 
     /**
      *
-     *  rct2: 0x0066D104
-     */
-    bool LandToolIsActive()
-    {
-        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
-            return false;
-        if (gCurrentToolWidget.window_classification != WindowClass::Land)
-            return false;
-        if (gCurrentToolWidget.widget_index != WIDX_BACKGROUND)
-            return false;
-        return true;
-    }
-
-    /**
-     *
      *  rct2: 0x0066CD54
      */
     void ToggleLandWindow()
     {
-        if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Land
-            && gCurrentToolWidget.widget_index == WIDX_BACKGROUND)
+        if (isToolActive(WindowClass::Land, WIDX_BACKGROUND))
         {
             ToolCancel();
         }

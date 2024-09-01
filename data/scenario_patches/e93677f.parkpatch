@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Fort Anachronism",
+    "sha256": "e93677fc42c8b657fddb3c92bfeebcda868c7dd2d2a352f719302778a1c676bd",
+    "land_ownership": {
+        "available": {
+            "coordinates": [
+                [ 36, 87 ], [ 54, 29 ], [ 53, 88 ]
+            ]
+        }
+    }
+}

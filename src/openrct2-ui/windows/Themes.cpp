@@ -149,6 +149,7 @@ static WindowClass window_themes_tab_1_classes[] = {
 
 static WindowClass window_themes_tab_2_classes[] = {
     WindowClass::ParkInformation,
+    WindowClass::EditorParkEntrance,
     WindowClass::Finances,
     WindowClass::NewCampaign,
     WindowClass::Research,
@@ -490,7 +491,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                     if (_selected_tab == newSelectedTab)
                         break;
                     _selected_tab = static_cast<uint8_t>(newSelectedTab);
-                    scrolls[0].v_top = 0;
+                    scrolls[0].contentOffsetY = 0;
                     frame_no = 0;
                     OnResize();
                     Invalidate();
@@ -679,9 +680,9 @@ static WindowClass window_themes_tab_7_classes[] = {
             int32_t i = scrollHeight - widgets[WIDX_THEMES_LIST].bottom + widgets[WIDX_THEMES_LIST].top + 21;
             if (i < 0)
                 i = 0;
-            if (i < scrolls[0].v_top)
+            if (i < scrolls[0].contentOffsetY)
             {
-                scrolls[0].v_top = i;
+                scrolls[0].contentOffsetY = i;
                 Invalidate();
             }
 
@@ -713,7 +714,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                             widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + _colour_index_2 * 12
                                 + widgets[WIDX_THEMES_LIST].left;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].top = _colour_index_1 * _row_height + _button_offset_y
-                                - scrolls[0].v_top + widgets[WIDX_THEMES_LIST].top;
+                                - scrolls[0].contentOffsetY + widgets[WIDX_THEMES_LIST].top;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].right = widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].bottom = widgets[WIDX_THEMES_COLOURBTN_MASK].top + 12;
 

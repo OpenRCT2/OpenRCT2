@@ -7,10 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../input/ShortcutManager.h"
 #include "Window.h"
 
 #include <algorithm>
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
@@ -266,9 +267,9 @@ static Widget window_shortcut_change_widgets[] = {
         {
             auto h = static_cast<int32_t>(_list.size() * kScrollableRowHeight);
             auto bottom = std::max(0, h - widgets[WIDX_SCROLL].bottom + widgets[WIDX_SCROLL].top + 21);
-            if (bottom < scrolls[0].v_top)
+            if (bottom < scrolls[0].contentOffsetY)
             {
-                scrolls[0].v_top = bottom;
+                scrolls[0].contentOffsetY = bottom;
                 Invalidate();
             }
             return { 0, h };

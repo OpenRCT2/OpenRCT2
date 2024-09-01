@@ -23,45 +23,30 @@
 
 using namespace OpenRCT2;
 
-static constexpr MetalSupportType kSupportType = MetalSupportType::Fork;
-
 /** rct2: 0x008B08D0 */
 static void MineRideTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    switch (direction)
+    static constexpr ImageIndex _imageIds[4] = { 19338, 19339, 19338, 19339 };
+
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(_imageIds[direction]), { 0, 0, height },
+        { { 0, 6, height }, { 32, 20, 3 } });
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        case 0:
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19338), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
-            break;
-        case 1:
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19339), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
-            break;
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 static void MineRideTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][3] = {
         { 19338, SPR_STATION_BASE_A_SW_NE },
@@ -78,7 +63,7 @@ static void MineRideTrackStation(
         { 32, 32, 1 });
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -86,56 +71,26 @@ static void MineRideTrackStation(
 /** rct2: 0x008B08E0 */
 static void MineRideTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    switch (direction)
+    static constexpr ImageIndex _imageIds[4] = { 19388, 19389, 19390, 19391 };
+
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(_imageIds[direction]), { 0, 0, height },
+        { { 0, 6, height }, { 32, 20, 3 } });
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19388), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
-            }
-            break;
-        case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19389), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 14, height, session.SupportColours);
-            }
-            break;
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19390), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
-            }
-            break;
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19391), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 14, height, session.SupportColours);
-            }
-            break;
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
     }
+
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::Square, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::Square, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -144,56 +99,26 @@ static void MineRideTrack25DegUp(
 /** rct2: 0x008B08F0 */
 static void MineRideTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    switch (direction)
+    static constexpr ImageIndex _imageIds[] = { 19380, 19381, 19382, 19383 };
+
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(_imageIds[direction]), { 0, 0, height },
+        { { 0, 6, height }, { 32, 20, 3 } });
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19380), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
-            break;
-        case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19381), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
-            break;
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19382), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
-            break;
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19383), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
-            break;
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
     }
+
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -202,56 +127,26 @@ static void MineRideTrackFlatTo25DegUp(
 /** rct2: 0x008B0900 */
 static void MineRideTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    switch (direction)
+    static constexpr ImageIndex _imageIds[] = { 19384, 19385, 19386, 19387 };
+
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(_imageIds[direction]), { 0, 0, height },
+        { { 0, 6, height }, { 32, 20, 3 } });
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19384), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
-            break;
-        case 1:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19385), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
-            break;
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19386), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
-            break;
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(19387), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
-            break;
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
     }
+
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::Square, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::Square, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -260,69 +155,47 @@ static void MineRideTrack25DegUpToFlat(
 /** rct2: 0x008B0910 */
 static void MineRideTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MineRideTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MineRideTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0920 */
 static void MineRideTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MineRideTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MineRideTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0930 */
 static void MineRideTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MineRideTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MineRideTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0940 */
 static void MineRideTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
+    static constexpr ImageIndex _imageIds0[] = { 19427, 19432, 19437, 19422 };
+    static constexpr ImageIndex _imageIds6[] = { 19423, 19428, 19433, 19418 };
+
     switch (trackSequence)
     {
         case 0:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19427), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19432), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19437), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19422), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-                    break;
-            }
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(_imageIds0[direction]), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -443,44 +316,20 @@ static void MineRideTrackLeftQuarterTurn5(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 6:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19423), { 0, 0, height },
-                        { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19428), { 0, 0, height },
-                        { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19433), { 0, 0, height },
-                        { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(19418), { 0, 0, height },
-                        { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-                    break;
-            }
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(_imageIds6[direction]), { 0, 0, height },
+                { { 6, 0, height }, { 20, 32, 3 } });
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 6, height,
+                session.SupportColours);
+
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -499,16 +348,16 @@ static void MineRideTrackLeftQuarterTurn5(
 /** rct2: 0x008B0950 */
 static void MineRideTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MineRideTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MineRideTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0960 */
 static void MineRideTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -519,10 +368,6 @@ static void MineRideTrackFlatToLeftBank(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19348), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -531,33 +376,26 @@ static void MineRideTrackFlatToLeftBank(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19349), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19342), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19343), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+    }
+
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -565,7 +403,7 @@ static void MineRideTrackFlatToLeftBank(
 /** rct2: 0x008B0970 */
 static void MineRideTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -573,20 +411,11 @@ static void MineRideTrackFlatToRightBank(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19344), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19345), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -595,10 +424,6 @@ static void MineRideTrackFlatToRightBank(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19350), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -607,14 +432,16 @@ static void MineRideTrackFlatToRightBank(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19351), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+    }
+
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -622,7 +449,7 @@ static void MineRideTrackFlatToRightBank(
 /** rct2: 0x008B0980 */
 static void MineRideTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -633,10 +460,6 @@ static void MineRideTrackLeftBankToFlat(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19350), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -645,33 +468,26 @@ static void MineRideTrackLeftBankToFlat(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19351), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19344), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19345), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+    }
+
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -679,7 +495,7 @@ static void MineRideTrackLeftBankToFlat(
 /** rct2: 0x008B0990 */
 static void MineRideTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -687,20 +503,11 @@ static void MineRideTrackRightBankToFlat(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19342), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19343), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -709,10 +516,6 @@ static void MineRideTrackRightBankToFlat(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19348), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -721,14 +524,16 @@ static void MineRideTrackRightBankToFlat(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19349), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+    }
+
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -736,7 +541,7 @@ static void MineRideTrackRightBankToFlat(
 /** rct2: 0x008B09A0 */
 static void MineRideTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -750,34 +555,30 @@ static void MineRideTrackBankedLeftQuarterTurn5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19458), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19452), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19457), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19442), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -904,15 +705,11 @@ static void MineRideTrackBankedLeftQuarterTurn5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19443), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19448), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -921,24 +718,25 @@ static void MineRideTrackBankedLeftQuarterTurn5(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19459), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19438), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 6, height,
+                session.SupportColours);
+
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -957,16 +755,16 @@ static void MineRideTrackBankedLeftQuarterTurn5(
 /** rct2: 0x008B09B0 */
 static void MineRideTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MineRideTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MineRideTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B09C0 */
 static void MineRideTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -977,10 +775,6 @@ static void MineRideTrackLeftBankTo25DegUp(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19356), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -989,39 +783,30 @@ static void MineRideTrackLeftBankTo25DegUp(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19357), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19354), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19355), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
             break;
+    }
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -1030,7 +815,7 @@ static void MineRideTrackLeftBankTo25DegUp(
 /** rct2: 0x008B09D0 */
 static void MineRideTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1038,20 +823,11 @@ static void MineRideTrackRightBankTo25DegUp(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19358), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19359), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -1060,10 +836,6 @@ static void MineRideTrackRightBankTo25DegUp(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19362), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -1072,20 +844,20 @@ static void MineRideTrackRightBankTo25DegUp(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19363), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 9, height, session.SupportColours);
-            }
             break;
+    }
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -1094,7 +866,7 @@ static void MineRideTrackRightBankTo25DegUp(
 /** rct2: 0x008B09E0 */
 static void MineRideTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1105,10 +877,6 @@ static void MineRideTrack25DegUpToLeftBank(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19368), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -1117,39 +885,30 @@ static void MineRideTrack25DegUpToLeftBank(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19369), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19366), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19367), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
             break;
+    }
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::Square, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::Square, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -1158,7 +917,7 @@ static void MineRideTrack25DegUpToLeftBank(
 /** rct2: 0x008B09F0 */
 static void MineRideTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1166,20 +925,11 @@ static void MineRideTrack25DegUpToRightBank(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19370), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19371), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -1188,10 +938,6 @@ static void MineRideTrack25DegUpToRightBank(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19374), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -1200,20 +946,20 @@ static void MineRideTrack25DegUpToRightBank(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19375), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 34 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 12, height, session.SupportColours);
-            }
             break;
+    }
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 12, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelGroup::Square, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::Square, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -1222,39 +968,39 @@ static void MineRideTrack25DegUpToRightBank(
 /** rct2: 0x008B0A00 */
 static void MineRideTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MineRideTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MineRideTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0A10 */
 static void MineRideTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MineRideTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MineRideTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0A20 */
 static void MineRideTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MineRideTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MineRideTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0A30 */
 static void MineRideTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MineRideTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MineRideTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0A40 */
 static void MineRideTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1262,42 +1008,29 @@ static void MineRideTrackLeftBank(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19376), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19377), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19378), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(19379), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
-            }
             break;
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+    }
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -1305,15 +1038,15 @@ static void MineRideTrackLeftBank(
 /** rct2: 0x008B0A50 */
 static void MineRideTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    MineRideTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MineRideTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0A60 */
 static void MineRideTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1324,34 +1057,28 @@ static void MineRideTrackSBendLeft(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19460), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19464), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19463), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19467), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1369,14 +1096,16 @@ static void MineRideTrackSBendLeft(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19461), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 3, height, session.SupportColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, direction, 3, height,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19465), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopRightSide, 6, height, session.SupportColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, direction, 6, height,
+                        session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1415,14 +1144,16 @@ static void MineRideTrackSBendLeft(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19461), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 3, height, session.SupportColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, direction, 3, height,
+                        session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19465), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopRightSide, 6, height, session.SupportColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, direction, 6, height,
+                        session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1442,38 +1173,33 @@ static void MineRideTrackSBendLeft(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19463), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19467), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19460), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19464), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1492,7 +1218,7 @@ static void MineRideTrackSBendLeft(
 /** rct2: 0x008B0A70 */
 static void MineRideTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1503,34 +1229,28 @@ static void MineRideTrackSBendRight(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19468), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19472), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19471), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19475), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1549,15 +1269,16 @@ static void MineRideTrackSBendRight(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19469), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 6, height, session.SupportColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, direction, 6, height,
+                        session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19473), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomLeftSide, 6, height,
+                    MetalASupportsPaintSetupRotated(
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, direction, 6, height,
                         session.SupportColours);
                     break;
                 case 2:
@@ -1595,14 +1316,14 @@ static void MineRideTrackSBendRight(
                         session, direction, session.TrackColours.WithIndex(19469), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19473), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomLeftSide, 6, height,
+                    MetalASupportsPaintSetupRotated(
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, direction, 6, height,
                         session.SupportColours);
                     break;
             }
@@ -1623,38 +1344,32 @@ static void MineRideTrackSBendRight(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19471), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19475), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19468), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19472), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1673,7 +1388,7 @@ static void MineRideTrackSBendRight(
 /** rct2: 0x008B0AB0 */
 static void MineRideTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1684,34 +1399,28 @@ static void MineRideTrackLeftQuarterTurn3(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19397), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19400), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19403), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19394), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1767,38 +1476,33 @@ static void MineRideTrackLeftQuarterTurn3(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19395), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19398), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19401), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19392), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 6, height,
+                session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1817,16 +1521,16 @@ static void MineRideTrackLeftQuarterTurn3(
 /** rct2: 0x008B0AC0 */
 static void MineRideTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MineRideTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MineRideTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0AD0 */
 static void MineRideTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1840,34 +1544,28 @@ static void MineRideTrackLeftQuarterTurn3Bank(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19416), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19412), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19415), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19406), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1923,15 +1621,11 @@ static void MineRideTrackLeftQuarterTurn3Bank(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19407), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19410), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1940,24 +1634,23 @@ static void MineRideTrackLeftQuarterTurn3Bank(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19417), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19404), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 6, height,
+                session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1976,16 +1669,16 @@ static void MineRideTrackLeftQuarterTurn3Bank(
 /** rct2: 0x008B0AE0 */
 static void MineRideTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MineRideTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MineRideTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0AF0 */
 static void MineRideTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2000,33 +1693,33 @@ static void MineRideTrackLeftHalfBankedHelixUpSmall(
                         session, direction, session.TrackColours.WithIndex(19502), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19498), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19501), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19492), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                    MetalASupportsPaintSetupRotated(
+                        session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2082,15 +1775,11 @@ static void MineRideTrackLeftHalfBankedHelixUpSmall(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19493), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19496), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -2099,24 +1788,23 @@ static void MineRideTrackLeftHalfBankedHelixUpSmall(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19503), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 15, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19490), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), direction == 2 ? 15 : 12,
+                height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2136,8 +1824,6 @@ static void MineRideTrackLeftHalfBankedHelixUpSmall(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19492), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2146,31 +1832,28 @@ static void MineRideTrackLeftHalfBankedHelixUpSmall(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19502), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19498), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19501), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 8, height,
+                session.SupportColours);
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2227,22 +1910,16 @@ static void MineRideTrackLeftHalfBankedHelixUpSmall(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19490), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19493), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19496), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2251,13 +1928,14 @@ static void MineRideTrackLeftHalfBankedHelixUpSmall(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19503), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 15, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, direction == 3 ? 15 : 12, height,
+                session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2275,33 +1953,28 @@ static void MineRideTrackLeftHalfBankedHelixUpSmall(
 /** rct2: 0x008B0B00 */
 static void MineRideTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
         case 0:
+        {
             switch (direction)
             {
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19476), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19479), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19482), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -2310,13 +1983,16 @@ static void MineRideTrackRightHalfBankedHelixUpSmall(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19489), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 11, height, session.SupportColours);
                     break;
             }
+            constexpr uint8_t _specialValues[] = { 8, 8, 9, 11 };
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, _specialValues[direction], height,
+                session.SupportColours);
+
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2328,6 +2004,7 @@ static void MineRideTrackRightHalfBankedHelixUpSmall(
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
+        }
         case 1:
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -2366,14 +2043,13 @@ static void MineRideTrackRightHalfBankedHelixUpSmall(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 3:
+        {
             switch (direction)
             {
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19478), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2382,31 +2058,30 @@ static void MineRideTrackRightHalfBankedHelixUpSmall(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19488), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 15, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19484), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19487), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
             }
+            constexpr uint8_t _specialValues[] = { 12, 15, 14, 12 };
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), _specialValues[direction],
+                height, session.SupportColours);
+
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2419,22 +2094,20 @@ static void MineRideTrackRightHalfBankedHelixUpSmall(
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
+        }
         case 4:
+        {
             switch (direction)
             {
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19479), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19482), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -2443,24 +2116,24 @@ static void MineRideTrackRightHalfBankedHelixUpSmall(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19489), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 11, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19476), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
             }
+            constexpr uint8_t _specialValues[] = { 8, 9, 11, 8 };
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), _specialValues[direction],
+                height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2473,6 +2146,7 @@ static void MineRideTrackRightHalfBankedHelixUpSmall(
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
+        }
         case 5:
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -2511,6 +2185,7 @@ static void MineRideTrackRightHalfBankedHelixUpSmall(
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
         case 7:
+        {
             switch (direction)
             {
                 case 0:
@@ -2520,34 +2195,30 @@ static void MineRideTrackRightHalfBankedHelixUpSmall(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19488), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 15, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19484), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19487), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19478), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
             }
+            constexpr uint8_t _specialValues[] = { 15, 14, 12, 12 };
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionReverse(direction), _specialValues[direction],
+                height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2559,13 +2230,14 @@ static void MineRideTrackRightHalfBankedHelixUpSmall(
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
+        }
     }
 }
 
 /** rct2: 0x008B0B10 */
 static void MineRideTrackLeftHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 4)
     {
@@ -2573,13 +2245,14 @@ static void MineRideTrackLeftHalfBankedHelixDownSmall(
         direction = (direction - 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MineRideTrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    MineRideTrackRightHalfBankedHelixUpSmall(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0B20 */
 static void MineRideTrackRightHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 4)
     {
@@ -2587,13 +2260,14 @@ static void MineRideTrackRightHalfBankedHelixDownSmall(
         direction = (direction + 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    MineRideTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MineRideTrackLeftHalfBankedHelixUpSmall(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0B30 */
 static void MineRideTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2607,34 +2281,28 @@ static void MineRideTrackLeftHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19546), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19540), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19545), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19530), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2761,15 +2429,11 @@ static void MineRideTrackLeftHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19531), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19536), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -2778,24 +2442,23 @@ static void MineRideTrackLeftHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19547), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19526), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 13, height,
+                session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2815,8 +2478,6 @@ static void MineRideTrackLeftHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19530), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -2825,31 +2486,28 @@ static void MineRideTrackLeftHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19546), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19540), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19545), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 7, height,
+                session.SupportColours);
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2976,22 +2634,16 @@ static void MineRideTrackLeftHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19526), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19531), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19536), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -3000,13 +2652,14 @@ static void MineRideTrackLeftHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19547), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionReverse(direction), 13, height,
+                session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -3024,7 +2677,7 @@ static void MineRideTrackLeftHalfBankedHelixUpLarge(
 /** rct2: 0x008B0B40 */
 static void MineRideTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3035,22 +2688,16 @@ static void MineRideTrackRightHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19504), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19509), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19514), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -3059,13 +2706,13 @@ static void MineRideTrackRightHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19525), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 7, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -3191,8 +2838,6 @@ static void MineRideTrackRightHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19508), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -3201,31 +2846,28 @@ static void MineRideTrackRightHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19524), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19518), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19523), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 13, height,
+                session.SupportColours);
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3245,15 +2887,11 @@ static void MineRideTrackRightHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19509), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19514), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3262,24 +2900,23 @@ static void MineRideTrackRightHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19525), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19504), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 7, height,
+                session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3410,34 +3047,29 @@ static void MineRideTrackRightHalfBankedHelixUpLarge(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19524), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19518), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19523), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19508), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 13, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionReverse(direction), 13, height,
+                session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -3455,7 +3087,7 @@ static void MineRideTrackRightHalfBankedHelixUpLarge(
 /** rct2: 0x008B0B50 */
 static void MineRideTrackLeftHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 7)
     {
@@ -3463,13 +3095,14 @@ static void MineRideTrackLeftHalfBankedHelixDownLarge(
         direction = (direction - 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MineRideTrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    MineRideTrackRightHalfBankedHelixUpLarge(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0B60 */
 static void MineRideTrackRightHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 7)
     {
@@ -3477,17 +3110,18 @@ static void MineRideTrackRightHalfBankedHelixDownLarge(
         direction = (direction + 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    MineRideTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    MineRideTrackLeftHalfBankedHelixUpLarge(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0B70 */
 static void MineRideTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     PaintAddImageAsParentRotated(
         session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, kSupportType, 6);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal, 6);
 
     switch (direction)
     {
@@ -3513,7 +3147,7 @@ static void MineRideTrackOnRidePhoto(
             break;
     }
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -3521,7 +3155,7 @@ static void MineRideTrackOnRidePhoto(
 /** rct2: 0x008B0B90 */
 static void MineRideTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3532,34 +3166,28 @@ static void MineRideTrackLeftEighthToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19564), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19568), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19572), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19576), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -3651,31 +3279,25 @@ static void MineRideTrackLeftEighthToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19567), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19571), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19575), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19579), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::BottomCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -3692,7 +3314,7 @@ static void MineRideTrackLeftEighthToDiag(
 /** rct2: 0x008B0BA0 */
 static void MineRideTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3703,34 +3325,28 @@ static void MineRideTrackRightEighthToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19548), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19552), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19556), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19560), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -3822,31 +3438,25 @@ static void MineRideTrackRightEighthToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19551), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19555), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19559), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19563), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -3863,25 +3473,25 @@ static void MineRideTrackRightEighthToDiag(
 /** rct2: 0x008B0BB0 */
 static void MineRideTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    MineRideTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MineRideTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0BC0 */
 static void MineRideTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    MineRideTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    MineRideTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0BD0 */
 static void MineRideTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3892,34 +3502,28 @@ static void MineRideTrackLeftEighthBankToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19596), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19600), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19604), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19608), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -4011,31 +3615,25 @@ static void MineRideTrackLeftEighthBankToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19599), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19603), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19607), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19611), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::BottomCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -4052,7 +3650,7 @@ static void MineRideTrackLeftEighthBankToDiag(
 /** rct2: 0x008B0BE0 */
 static void MineRideTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4063,34 +3661,28 @@ static void MineRideTrackRightEighthBankToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19580), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19584), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19588), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19592), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -4182,31 +3774,25 @@ static void MineRideTrackRightEighthBankToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19583), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19587), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19591), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19595), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -4223,25 +3809,25 @@ static void MineRideTrackRightEighthBankToDiag(
 /** rct2: 0x008B0BF0 */
 static void MineRideTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    MineRideTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    MineRideTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0C00 */
 static void MineRideTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    MineRideTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    MineRideTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008B0B80 */
 static void MineRideTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     constexpr ImageIndex images[kNumOrthogonalDirections] = { 19612, 19613, 19614, 19615 };
 
@@ -4250,7 +3836,7 @@ static void MineRideTrackDiagFlat(
 
     if (trackSequence == 3)
         MetalASupportsPaintSetupRotated(
-            session, kSupportType, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
@@ -4260,7 +3846,7 @@ static void MineRideTrackDiagFlat(
 /** rct2: 0x008B0C30 */
 static void MineRideTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4323,27 +3909,14 @@ static void MineRideTrackDiag25DegUp(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19625), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 14, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 14, height,
-                        session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 14, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -4360,7 +3933,7 @@ static void MineRideTrackDiag25DegUp(
 /** rct2: 0x008B0C10 */
 static void MineRideTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4423,26 +3996,14 @@ static void MineRideTrackDiagFlatTo25DegUp(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19617), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -4459,7 +4020,7 @@ static void MineRideTrackDiagFlatTo25DegUp(
 /** rct2: 0x008B0C20 */
 static void MineRideTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4522,27 +4083,14 @@ static void MineRideTrackDiag25DegUpToFlat(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19621), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 10, height,
-                        session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -4559,7 +4107,7 @@ static void MineRideTrackDiag25DegUpToFlat(
 /** rct2: 0x008B0C60 */
 static void MineRideTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4622,27 +4170,14 @@ static void MineRideTrackDiag25DegDown(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19627), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 14, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 14, height,
-                        session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 14, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -4659,7 +4194,7 @@ static void MineRideTrackDiag25DegDown(
 /** rct2: 0x008B0C40 */
 static void MineRideTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4719,27 +4254,14 @@ static void MineRideTrackDiagFlatTo25DegDown(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19623), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 10, height,
-                        session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -4757,7 +4279,7 @@ static void MineRideTrackDiagFlatTo25DegDown(
 /** rct2: 0x008B0C50 */
 static void MineRideTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4820,26 +4342,14 @@ static void MineRideTrackDiag25DegDownToFlat(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19619), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -4856,7 +4366,7 @@ static void MineRideTrackDiag25DegDownToFlat(
 /** rct2: 0x008B0C90 */
 static void MineRideTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4922,26 +4432,14 @@ static void MineRideTrackDiagFlatToLeftBank(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19633), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -4958,7 +4456,7 @@ static void MineRideTrackDiagFlatToLeftBank(
 /** rct2: 0x008B0CA0 */
 static void MineRideTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5024,26 +4522,14 @@ static void MineRideTrackDiagFlatToRightBank(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19638), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -5060,7 +4546,7 @@ static void MineRideTrackDiagFlatToRightBank(
 /** rct2: 0x008B0CB0 */
 static void MineRideTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5126,26 +4612,14 @@ static void MineRideTrackDiagLeftBankToFlat(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19640), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -5162,7 +4636,7 @@ static void MineRideTrackDiagLeftBankToFlat(
 /** rct2: 0x008B0CC0 */
 static void MineRideTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5228,26 +4702,14 @@ static void MineRideTrackDiagRightBankToFlat(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19635), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -5264,7 +4726,7 @@ static void MineRideTrackDiagRightBankToFlat(
 /** rct2: 0x008B0CF0 */
 static void MineRideTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5330,26 +4792,14 @@ static void MineRideTrackDiagLeftBankTo25DegUp(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19653), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -5366,7 +4816,7 @@ static void MineRideTrackDiagLeftBankTo25DegUp(
 /** rct2: 0x008B0D00 */
 static void MineRideTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5432,26 +4882,14 @@ static void MineRideTrackDiagRightBankTo25DegUp(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19658), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -5468,7 +4906,7 @@ static void MineRideTrackDiagRightBankTo25DegUp(
 /** rct2: 0x008B0CD0 */
 static void MineRideTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5534,27 +4972,14 @@ static void MineRideTrackDiag25DegUpToLeftBank(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19643), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 10, height,
-                        session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -5571,7 +4996,7 @@ static void MineRideTrackDiag25DegUpToLeftBank(
 /** rct2: 0x008B0CE0 */
 static void MineRideTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5637,27 +5062,14 @@ static void MineRideTrackDiag25DegUpToRightBank(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19648), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 10, height,
-                        session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -5674,7 +5086,7 @@ static void MineRideTrackDiag25DegUpToRightBank(
 /** rct2: 0x008B0D10 */
 static void MineRideTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5737,27 +5149,14 @@ static void MineRideTrackDiagLeftBankTo25DegDown(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19650), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 10, height,
-                        session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -5775,7 +5174,7 @@ static void MineRideTrackDiagLeftBankTo25DegDown(
 /** rct2: 0x008B0D20 */
 static void MineRideTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5838,27 +5237,14 @@ static void MineRideTrackDiagRightBankTo25DegDown(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19645), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 10, height,
-                        session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 10, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -5876,7 +5262,7 @@ static void MineRideTrackDiagRightBankTo25DegDown(
 /** rct2: 0x008B0D30 */
 static void MineRideTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5942,26 +5328,14 @@ static void MineRideTrackDiag25DegDownToLeftBank(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19660), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -5978,7 +5352,7 @@ static void MineRideTrackDiag25DegDownToLeftBank(
 /** rct2: 0x008B0D40 */
 static void MineRideTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6044,26 +5418,14 @@ static void MineRideTrackDiag25DegDownToRightBank(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19655), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalBSupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -6080,7 +5442,7 @@ static void MineRideTrackDiag25DegDownToRightBank(
 /** rct2: 0x008B0C70 */
 static void MineRideTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6143,26 +5505,14 @@ static void MineRideTrackDiagLeftBank(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19629), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -6179,7 +5529,7 @@ static void MineRideTrackDiagLeftBank(
 /** rct2: 0x008B0C80 */
 static void MineRideTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6242,26 +5592,14 @@ static void MineRideTrackDiagRightBank(
         case 3:
             switch (direction)
             {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(19631), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
                     break;
             }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(

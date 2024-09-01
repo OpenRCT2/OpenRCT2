@@ -68,22 +68,20 @@ RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly an
 
 # 2. Downloading the game (pre-built)
 
-OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2). If you have the original RollerCoaster Tycoon and its expansion packs, you can [point OpenRCT2 to these](https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data) in order to play the original scenarios.
+OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/RollerCoaster_Tycoon_2_Triple_Thrill_Pack/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2). If you have the original RollerCoaster Tycoon and its expansion packs, you can [point OpenRCT2 to these](https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data) in order to play the original scenarios.
 
-[OpenRCT2.org](https://openrct2.org/downloads) offers precompiled builds and installers of the latest master and the develop branch. There is also a [Launcher](https://github.com/IntelOrca/OpenLauncher/releases) available for Windows and Linux that will automatically update your build of the game so that you always have the latest version.
+[Our website](https://openrct2.io/download) offers portable builds and installers with the latest versions of the `master` and `develop` branches. There is also a [launcher](https://openrct2.io/download/launcher) available for Windows and Linux that will automatically update your build of the game so that you always have the latest version.
 
-[Flathub](https://flathub.org/) offers flatpaks for Linux distributions that support this application distribution system:
-* [Latest release](https://flathub.org/apps/details/io.openrct2.OpenRCT2)
+Alternatively to using the launcher, for most Linux distributions, we recommend the [latest Flatpak release](https://flathub.org/apps/details/io.openrct2.OpenRCT2). When downloading from Flathub, you will always receive the latest updates regardless of which Linux distribution you use.
 
-Some Linux distributions offer native packages already. These packages are usually third-party, but we're trying to resolve issues they are facing.
-* Arch Linux: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR) and [openrct2](https://archlinux.org/packages/extra/x86_64/openrct2/) ([extra] repository)
-* Ubuntu PPA: [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (nightly builds)
-* openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
+Some Linux distributions offer native packages:
+* Arch Linux: [openrct2](https://archlinux.org/packages/extra/x86_64/openrct2/) latest release (`extra` repository) and, alternatively, [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR)
 * Gentoo (main portage tree): [games-simulation/openrct2](https://packages.gentoo.org/packages/games-simulation/openrct2)
 * NixOS (`nixos-unstable` channel): [openrct2](https://github.com/NixOS/nixpkgs/blob/master/pkgs/games/openrct2/default.nix)
-* Fedora 28 i386/amd64: [openrct2](https://copr.fedorainfracloud.org/coprs/nauticalnexus/openrct2/)
+* openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
+* Ubuntu PPA (nightly builds): [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly)
 
-Some \*BSD operating systems offer native packages. These packages are usually third-party, but we're trying to resolve issues they are facing.
+Some \*BSD operating systems offer native packages:
 * FreeBSD: [games/openrct2](https://www.freshports.org/games/openrct2)
 * OpenBSD: [games/openrct2](https://openports.se/games/openrct2)
 
@@ -249,7 +247,7 @@ We would also like to distribute additional scenarios with the game, when the ti
 ---
 
 # 5. Licence
-**OpenRCT2** is licensed under the GNU General Public License version 3.
+**OpenRCT2** is licensed under the GNU General Public License version 3 or (at your option) any later version. See the [`licence.txt`](licence.txt) file for more details.
 
 ---
 

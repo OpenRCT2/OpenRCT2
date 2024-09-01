@@ -162,7 +162,7 @@ GameActions::Result TrackRemoveAction::Query() const
 
     money64 supportCosts = 0;
 
-    trackBlock = ted.Block;
+    trackBlock = ted.block;
     for (; trackBlock->index != 255; trackBlock++)
     {
         rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
@@ -213,7 +213,7 @@ GameActions::Result TrackRemoveAction::Query() const
                 GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
         }
 
-        int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
+        int32_t entranceDirections = std::get<0>(ted.sequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, 0);
@@ -242,7 +242,7 @@ GameActions::Result TrackRemoveAction::Query() const
     }
 
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.PriceModifier;
+    price *= ted.priceModifier;
     price >>= 16;
     price = supportCosts + price;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
@@ -341,7 +341,7 @@ GameActions::Result TrackRemoveAction::Execute() const
 
     money64 supportCosts = 0;
 
-    trackBlock = ted.Block;
+    trackBlock = ted.block;
     for (; trackBlock->index != 255; trackBlock++)
     {
         rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
@@ -387,7 +387,7 @@ GameActions::Result TrackRemoveAction::Execute() const
                 GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
         }
 
-        int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
+        int32_t entranceDirections = std::get<0>(ted.sequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, 0);
@@ -429,7 +429,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             }
         }
 
-        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER))
+        if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::trackMustBeOnWater))
         {
             surfaceElement->SetHasTrackThatNeedsWater(false);
         }
@@ -493,7 +493,7 @@ GameActions::Result TrackRemoveAction::Execute() const
     }
 
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.PriceModifier;
+    price *= ted.priceModifier;
     price >>= 16;
     price = supportCosts + price;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)

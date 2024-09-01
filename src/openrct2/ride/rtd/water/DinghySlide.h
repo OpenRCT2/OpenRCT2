@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../ride/RideStringIds.h"
 #include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
@@ -22,23 +23,29 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .Drawer = GetTrackPaintFunctionDinghySlide,
-            .EnabledTrackPieces = { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE },
+            .supportType = MetalSupportType::Tubes,
+            .EnabledTrackPieces = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve },
             .ExtraTrackPieces = {},
+            .icon = SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK,
+            .tooltip = STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP,
         }, 
         {
             .Drawer = GetTrackPaintFunctionDinghySlideCovered,
+            .supportType = MetalSupportType::Tubes,
             .EnabledTrackPieces = {OpenRCT2::TrackElemType::Flat, OpenRCT2::TrackElemType::Up25, OpenRCT2::TrackElemType::Up60, OpenRCT2::TrackElemType::FlatToUp25, OpenRCT2::TrackElemType::Up25ToUp60, OpenRCT2::TrackElemType::Up60ToUp25, OpenRCT2::TrackElemType::Up25ToFlat, OpenRCT2::TrackElemType::Down25, OpenRCT2::TrackElemType::Down60, OpenRCT2::TrackElemType::FlatToDown25, OpenRCT2::TrackElemType::Down25ToDown60, OpenRCT2::TrackElemType::Down60ToDown25, OpenRCT2::TrackElemType::Down25ToFlat, OpenRCT2::TrackElemType::LeftQuarterTurn5Tiles, OpenRCT2::TrackElemType::RightQuarterTurn5Tiles, OpenRCT2::TrackElemType::SBendLeft, OpenRCT2::TrackElemType::SBendRight, OpenRCT2::TrackElemType::LeftQuarterTurn3Tiles,OpenRCT2::TrackElemType::RightQuarterTurn3Tiles},
             .ExtraTrackPieces = {},
+            .icon = SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK,
+            .tooltip = STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP,
         }
     ),
     .InvertedTrackPaintFunctions = {},
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
-                     RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES |
-                     RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
-                     RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR |
-                     RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_HAS_AIR_TIME |
-                     RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT,
+    .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, 
+                     RtdFlag::canSynchroniseWithAdjacentStations, RtdFlag::hasGForces, 
+                     RtdFlag::hasDataLogging, RtdFlag::hasDrops, RtdFlag::hasCoveredPieces, 
+                     RtdFlag::hasLoadOptions, RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours, 
+                     RtdFlag::checkForStalling, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes, 
+                     RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::hasAirTime, 
+                     RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt),
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
     .DefaultMode = RideMode::ContinuousCircuit,
     .Naming = { STR_RIDE_NAME_DINGHY_SLIDE, STR_RIDE_DESCRIPTION_DINGHY_SLIDE },

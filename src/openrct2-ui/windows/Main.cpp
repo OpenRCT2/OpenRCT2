@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/world/Footpath.h>
 
@@ -37,7 +38,7 @@ static Widget _mainWidgets[] = {
             ViewportCreate(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
             if (viewport != nullptr)
             {
-                SetViewportFlags();
+                SetViewportFlags(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO);
                 viewport->rotation = 0;
             }
             gShowGridLinesRefCount = 0;
@@ -52,21 +53,44 @@ static Widget _mainWidgets[] = {
         }
 
     private:
-        void SetViewportFlags()
+        void SetViewportFlags(bool isTitleWindow)
         {
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+            if (isTitleWindow)
+            {
+                return;
+            }
+
             if (Config::Get().general.InvisibleRides)
+            {
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_RIDES;
+                viewport->flags |= VIEWPORT_FLAG_HIDE_RIDES;
+            }
             if (Config::Get().general.InvisibleVehicles)
+            {
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_VEHICLES;
+                viewport->flags |= VIEWPORT_FLAG_HIDE_VEHICLES;
+            }
             if (Config::Get().general.InvisibleTrees)
+            {
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_VEGETATION;
+                viewport->flags |= VIEWPORT_FLAG_HIDE_VEGETATION;
+            }
             if (Config::Get().general.InvisibleScenery)
+            {
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_SCENERY;
+                viewport->flags |= VIEWPORT_FLAG_HIDE_SCENERY;
+            }
             if (Config::Get().general.InvisiblePaths)
+            {
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_PATHS;
+                viewport->flags |= VIEWPORT_FLAG_HIDE_PATHS;
+            }
             if (Config::Get().general.InvisibleSupports)
+            {
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+                viewport->flags |= VIEWPORT_FLAG_HIDE_SUPPORTS;
+            }
         }
     };
 

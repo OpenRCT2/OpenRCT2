@@ -106,9 +106,9 @@ namespace OpenRCT2
 
     private:
         std::unique_ptr<OrcaStream> _os;
-        ObjectEntryIndex _pathToSurfaceMap[MAX_PATH_OBJECTS];
-        ObjectEntryIndex _pathToQueueSurfaceMap[MAX_PATH_OBJECTS];
-        ObjectEntryIndex _pathToRailingsMap[MAX_PATH_OBJECTS];
+        ObjectEntryIndex _pathToSurfaceMap[kMaxPathObjects];
+        ObjectEntryIndex _pathToQueueSurfaceMap[kMaxPathObjects];
+        ObjectEntryIndex _pathToRailingsMap[kMaxPathObjects];
 
         void ThrowIfIncompatibleVersion()
         {

@@ -26,15 +26,15 @@ namespace OpenRCT2::RCT2
         switch (rct2RideType)
         {
             case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
-                if (!RideEntryGetSupportedTrackPieces(rideEntry).get(TRACK_VERTICAL_LOOP))
+                if (!RideEntryGetSupportedTrackPieces(rideEntry).get(EnumValue(TrackGroup::verticalLoop)))
                     return RIDE_TYPE_HYPERCOASTER;
                 return RIDE_TYPE_CORKSCREW_ROLLER_COASTER;
             case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
-                if (RideEntryGetSupportedTrackPieces(rideEntry).get(TRACK_SLOPE_STEEP_DOWN))
+                if (RideEntryGetSupportedTrackPieces(rideEntry).get(EnumValue(TrackGroup::slopeSteepDown)))
                     return RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER;
                 return RIDE_TYPE_JUNIOR_ROLLER_COASTER;
             case RIDE_TYPE_CAR_RIDE:
-                if (RideEntryGetSupportedTrackPieces(rideEntry).get(TRACK_SLOPE_STEEP_DOWN))
+                if (RideEntryGetSupportedTrackPieces(rideEntry).get(EnumValue(TrackGroup::slopeSteepDown)))
                     return RIDE_TYPE_MONSTER_TRUCKS;
                 return RIDE_TYPE_CAR_RIDE;
             case RIDE_TYPE_TWISTER_ROLLER_COASTER:
@@ -42,7 +42,7 @@ namespace OpenRCT2::RCT2
                     return RIDE_TYPE_HYPER_TWISTER;
                 return RIDE_TYPE_TWISTER_ROLLER_COASTER;
             case RIDE_TYPE_STEEL_WILD_MOUSE:
-                if (!RideEntryGetSupportedTrackPieces(rideEntry).get(TRACK_SLOPE_STEEP_DOWN))
+                if (!RideEntryGetSupportedTrackPieces(rideEntry).get(EnumValue(TrackGroup::slopeSteepDown)))
                     return RIDE_TYPE_SPINNING_WILD_MOUSE;
                 return RIDE_TYPE_STEEL_WILD_MOUSE;
 
@@ -118,7 +118,7 @@ namespace OpenRCT2::RCT2
 
     track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType, bool convertFlat)
     {
-        if (convertFlat && GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (convertFlat && GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isFlatRide))
             return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
         if (origTrackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(rideType, origTrackType))
             return TrackElemType::RotationControlToggle;

@@ -51,6 +51,7 @@
 #include "../peep/RideUseSystem.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
+#include "../rct12/ScenarioPatcher.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
@@ -124,7 +125,7 @@ namespace OpenRCT2::RCT1
         ObjectEntryIndex _footpathRailingsTypeToEntryMap[4]{};
 
         // Research
-        BitSet<MAX_RIDE_OBJECTS> _researchRideEntryUsed{};
+        BitSet<kMaxRideObjects> _researchRideEntryUsed{};
         BitSet<EnumValue(RideType::Count)> _researchRideTypeUsed{};
 
         // Scenario repository - used for determining scenario name
@@ -178,8 +179,6 @@ namespace OpenRCT2::RCT1
         {
             Initialise(gameState);
 
-            CreateAvailableObjectMappings();
-
             ImportRides();
             ImportRideMeasurements();
             ImportEntities();
@@ -193,8 +192,8 @@ namespace OpenRCT2::RCT1
             ImportScenarioNameDetails(gameState);
             ImportScenarioObjective(gameState);
             ImportSavedView();
-            FixLandOwnership();
-            FixUrbanPark();
+
+            RCT12::FetchAndApplyScenarioPatch(_s4Path, _isScenario);
             FixNextGuestNumber(gameState);
             CountBlockSections();
             SetDefaultNames();
@@ -743,9 +742,9 @@ namespace OpenRCT2::RCT1
             else
             {
                 auto entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
-                if (_sceneryGroupEntries.GetCount() >= MAX_SCENERY_GROUP_OBJECTS)
+                if (_sceneryGroupEntries.GetCount() >= kMaxSceneryGroupObjects)
                 {
-                    Console::WriteLine("Warning: More than %d (max scenery groups) in RCT1 park.", MAX_SCENERY_GROUP_OBJECTS);
+                    Console::WriteLine("Warning: More than %d (max scenery groups) in RCT1 park.", kMaxSceneryGroupObjects);
                     std::string entryNameString = std::string(entryName);
                     Console::WriteLine("         [%s] scenery group not added.", entryNameString.c_str());
                 }
@@ -957,7 +956,7 @@ namespace OpenRCT2::RCT1
             dst->lift_hill_speed = 5;
 
             dst->music = OBJECT_ENTRY_INDEX_NULL;
-            if (GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+            if (GetRideTypeDescriptor(dst->type).HasFlag(RtdFlag::allowMusic))
             {
                 if (_gameVersion == FILE_VERSION_RCT1)
                 {
@@ -1119,7 +1118,7 @@ namespace OpenRCT2::RCT1
             }
 
             dst->entrance_style = OBJECT_ENTRY_INDEX_NULL;
-            if (dst->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+            if (dst->GetRideTypeDescriptor().HasFlag(RtdFlag::hasEntranceAndExit))
             {
                 // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
                 if (_gameVersion == FILE_VERSION_RCT1)
@@ -2513,143 +2512,6 @@ namespace OpenRCT2::RCT1
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
-        }
-
-        void FixLandOwnership()
-        {
-            switch (_s4.ScenarioSlotIndex)
-            {
-                case SC_DYNAMITE_DUNES:
-                    FixLandOwnershipTiles({ { 97, 18 }, { 99, 19 }, { 83, 34 } });
-                    break;
-                case SC_LEAFY_LAKE:
-                    FixLandOwnershipTiles({ { 49, 66 }, { 74, 96 } });
-                    break;
-                case SC_TRINITY_ISLANDS:
-                    FixLandOwnershipTilesWithOwnership({ { 80, 60 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                    break;
-                case SC_KATIES_DREAMLAND:
-                    FixLandOwnershipTiles({ { 74, 70 }, { 75, 70 }, { 76, 70 }, { 77, 73 }, { 80, 77 } });
-                    FixLandOwnershipTilesWithOwnership(
-                        { { 115, 63 }, { 105, 66 }, { 109, 66 }, { 118, 67 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                    FixLandOwnershipTilesWithOwnership({ { 45, 69 }, { 59, 74 } }, OWNERSHIP_OWNED);
-                    break;
-                case SC_POKEY_PARK:
-                    FixLandOwnershipTiles({ { 84, 71 }, { 64, 102 } });
-                    break;
-                case SC_WHITE_WATER_PARK:
-                    FixLandOwnershipTilesWithOwnership({ { 42, 85 }, { 89, 42 } }, OWNERSHIP_OWNED);
-                    break;
-                case SC_MELS_WORLD:
-                    FixLandOwnershipTilesWithOwnership({ { 93, 76 }, { 93, 77 } }, OWNERSHIP_OWNED);
-                    break;
-                case SC_MYSTIC_MOUNTAIN:
-                    FixLandOwnershipTiles({ { 98, 69 }, { 98, 70 }, { 103, 64 }, { 53, 79 }, { 86, 93 }, { 87, 93 } });
-                    break;
-                case SC_PACIFIC_PYRAMIDS:
-                    FixLandOwnershipTiles({ { 93, 105 }, { 63, 34 }, { 76, 25 }, { 85, 31 }, { 96, 47 }, { 96, 48 } });
-                    break;
-                case SC_THREE_MONKEYS_PARK:
-                    FixLandOwnershipTilesWithOwnership({ { 89, 92 } }, OWNERSHIP_UNOWNED);
-                    FixLandOwnershipTilesWithOwnership({ { 46, 22 } }, OWNERSHIP_OWNED);
-                    break;
-                case SC_HAUNTED_HARBOUR:
-                    FixLandOwnershipTiles({ { 49, 42 } });
-                    break;
-                case SC_COASTER_CANYON:
-                    FixLandOwnershipTilesWithOwnership({ { 21, 55 } }, OWNERSHIP_OWNED);
-                    break;
-                case SC_UTOPIA_PARK:
-                    FixLandOwnershipTiles({ { 85, 73 }, { 71, 75 }, { 90, 73 } });
-                    break;
-                case SC_ROTTING_HEIGHTS:
-                    FixLandOwnershipTilesWithOwnership({ { 35, 20 } }, OWNERSHIP_OWNED);
-                    break;
-                case SC_URBAN_PARK:
-                    FixLandOwnershipTiles({ { 64, 77 }, { 61, 66 }, { 61, 67 }, { 39, 20 } });
-                    FixLandOwnershipTilesWithOwnership({ { 46, 47 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
-                    break;
-                case SC_GRAND_GLACIER:
-                    FixLandOwnershipTilesWithOwnership({ { 99, 58 } }, OWNERSHIP_OWNED);
-                    break;
-                case SC_WOODWORM_PARK:
-                    FixLandOwnershipTilesWithOwnership({ { 62, 105 }, { 101, 55 } }, OWNERSHIP_OWNED);
-                    break;
-                case SC_PLEASURE_ISLAND:
-                    FixLandOwnershipTilesWithOwnership({ { 37, 66 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                    break;
-                case SC_NEVERMORE_PARK:
-                    FixLandOwnershipTilesWithOwnership({ { 9, 74 } }, OWNERSHIP_OWNED);
-                    break;
-                case SC_ALTON_TOWERS:
-                    FixLandOwnershipTilesWithOwnership({ { 11, 31 }, { 68, 112 }, { 72, 118 } }, OWNERSHIP_OWNED);
-                    break;
-                case SC_BLACKPOOL_PLEASURE_BEACH:
-                    FixLandOwnershipTilesWithOwnership(
-                        { { 93, 23 },
-                          { 94, 23 },
-                          { 95, 23 },
-                          { 95, 24 },
-                          { 96, 24 },
-                          { 96, 25 },
-                          { 97, 25 },
-                          { 97, 26 },
-                          { 97, 27 },
-                          { 96, 28 } },
-                        OWNERSHIP_OWNED);
-                    FixLandOwnershipTilesWithOwnership({ { 94, 24 }, { 95, 25 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                    break;
-                case SC_FORT_ANACHRONISM:
-                    FixLandOwnershipTiles({ { 36, 87 }, { 54, 29 }, { 53, 88 } });
-                    break;
-            }
-        }
-
-        /**
-         * In Urban Park, the entrance and exit of the merry-go-round are the wrong way round. This code fixes that.
-         * To avoid messing up saves (in which this problem is most likely solved by the user), only carry out this
-         * fix when loading from a scenario.
-         */
-        void FixUrbanPark()
-        {
-            if (_s4.ScenarioSlotIndex == SC_URBAN_PARK && _isScenario)
-            {
-                const auto merryGoRoundId = RideId::FromUnderlying(0);
-
-                // First, make the queuing peep exit
-                for (auto peep : EntityList<Guest>())
-                {
-                    if (peep->State == PeepState::QueuingFront && peep->CurrentRide == merryGoRoundId)
-                    {
-                        peep->RemoveFromQueue();
-                        peep->SetState(PeepState::Falling);
-                        break;
-                    }
-                }
-
-                // Now, swap the entrance and exit.
-                auto ride = GetRide(merryGoRoundId);
-                if (ride != nullptr)
-                {
-                    auto& station = ride->GetStation();
-                    auto entranceCoords = station.Exit;
-                    auto exitCoords = station.Entrance;
-                    station.Entrance = entranceCoords;
-                    station.Exit = exitCoords;
-
-                    auto entranceElement = MapGetRideExitElementAt(entranceCoords.ToCoordsXYZD(), false);
-                    entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
-                    auto exitElement = MapGetRideEntranceElementAt(exitCoords.ToCoordsXYZD(), false);
-                    exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
-
-                    // Trigger footpath update
-                    FootpathQueueChainReset();
-                    FootpathConnectEdges(
-                        entranceCoords.ToCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
-                        GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-                    FootpathUpdateQueueChains();
-                }
-            }
         }
 
         void FixNextGuestNumber(GameState_t& gameState)

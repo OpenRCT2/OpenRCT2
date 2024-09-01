@@ -395,9 +395,9 @@ static Widget _rideListWidgets[] = {
             auto top = newHeight - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21;
             if (top < 0)
                 top = 0;
-            if (top < scrolls[0].v_top)
+            if (top < scrolls[0].contentOffsetY)
             {
-                scrolls[0].v_top = top;
+                scrolls[0].contentOffsetY = top;
                 Invalidate();
             }
 

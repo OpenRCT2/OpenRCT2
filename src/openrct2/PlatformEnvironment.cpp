@@ -39,26 +39,27 @@ static constexpr const char* DirectoryNamesRCT2[] = {
 };
 
 static constexpr u8string_view DirectoryNamesOpenRCT2[] = {
-    u8"data",       // DATA
-    u8"landscape",  // LANDSCAPE
-    u8"language",   // LANGUAGE
-    u8"chatlogs",   // LOG_CHAT
-    u8"serverlogs", // LOG_SERVER
-    u8"keys",       // NETWORK_KEY
-    u8"object",     // OBJECT
-    u8"plugin",     // PLUGIN
-    u8"save",       // SAVE
-    u8"scenario",   // SCENARIO
-    u8"screenshot", // SCREENSHOT
-    u8"sequence",   // SEQUENCE
-    u8"shaders",    // SHADER
-    u8"themes",     // THEME
-    u8"track",      // TRACK
-    u8"heightmap",  // HEIGHTMAP
-    u8"replay",     // REPLAY
-    u8"desyncs",    // DESYNCS
-    u8"crash",      // CRASH
-    u8"assetpack",  // ASSET_PACK
+    u8"data",             // DATA
+    u8"landscape",        // LANDSCAPE
+    u8"language",         // LANGUAGE
+    u8"chatlogs",         // LOG_CHAT
+    u8"serverlogs",       // LOG_SERVER
+    u8"keys",             // NETWORK_KEY
+    u8"object",           // OBJECT
+    u8"plugin",           // PLUGIN
+    u8"save",             // SAVE
+    u8"scenario",         // SCENARIO
+    u8"screenshot",       // SCREENSHOT
+    u8"sequence",         // SEQUENCE
+    u8"shaders",          // SHADER
+    u8"themes",           // THEME
+    u8"track",            // TRACK
+    u8"heightmap",        // HEIGHTMAP
+    u8"replay",           // REPLAY
+    u8"desyncs",          // DESYNCS
+    u8"crash",            // CRASH
+    u8"assetpack",        // ASSET_PACK
+    u8"scenario_patches", // SCENARIO_PATCHES
 };
 
 static constexpr u8string_view FileNames[] = {

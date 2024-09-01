@@ -268,16 +268,16 @@ static void WindowScrollWheelInput(WindowBase& w, int32_t scrollIndex, int32_t w
         int32_t size = widget->height() - 1;
         if (scroll.flags & HSCROLLBAR_VISIBLE)
             size -= 11;
-        size = std::max(0, scroll.v_bottom - size);
-        scroll.v_top = std::min(std::max(0, scroll.v_top + wheel), size);
+        size = std::max(0, scroll.contentHeight - size);
+        scroll.contentOffsetY = std::min(std::max(0, scroll.contentOffsetY + wheel), size);
     }
     else
     {
         int32_t size = widget->width() - 1;
         if (scroll.flags & VSCROLLBAR_VISIBLE)
             size -= 11;
-        size = std::max(0, scroll.h_right - size);
-        scroll.h_left = std::min(std::max(0, scroll.h_left + wheel), size);
+        size = std::max(0, scroll.contentWidth - size);
+        scroll.contentOffsetX = std::min(std::max(0, scroll.contentOffsetX + wheel), size);
     }
 
     WidgetScrollUpdateThumbs(w, widgetIndex);
@@ -497,7 +497,7 @@ static void WindowInvalidatePressedImageButton(const WindowBase& w)
         if (widget->type != WindowWidgetType::ImgBtn)
             continue;
 
-        if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
+        if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
             GfxSetDirtyBlocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height } });
     }
 }
@@ -936,8 +936,8 @@ namespace OpenRCT2::Ui::Windows
         // Update scroll widgets
         for (auto& scroll : w.scrolls)
         {
-            scroll.h_right = WINDOW_SCROLL_UNDEFINED;
-            scroll.v_bottom = WINDOW_SCROLL_UNDEFINED;
+            scroll.contentWidth = -1;
+            scroll.contentHeight = -1;
         }
         WindowUpdateScrollWidgets(w);
 
@@ -971,26 +971,26 @@ namespace OpenRCT2::Ui::Windows
 
             if (height == 0)
             {
-                scroll.v_top = 0;
+                scroll.contentOffsetY = 0;
             }
             else if (width == 0)
             {
-                scroll.h_left = 0;
+                scroll.contentOffsetX = 0;
             }
             width++;
             height++;
 
             scrollPositionChanged = 0;
-            if ((widget->content & SCROLL_HORIZONTAL) && width != scroll.h_right)
+            if ((widget->content & SCROLL_HORIZONTAL) && width != scroll.contentWidth)
             {
                 scrollPositionChanged = 1;
-                scroll.h_right = width;
+                scroll.contentWidth = width;
             }
 
-            if ((widget->content & SCROLL_VERTICAL) && height != scroll.v_bottom)
+            if ((widget->content & SCROLL_VERTICAL) && height != scroll.contentHeight)
             {
                 scrollPositionChanged = 1;
-                scroll.v_bottom = height;
+                scroll.contentHeight = height;
             }
 
             if (scrollPositionChanged)
@@ -1023,10 +1023,10 @@ namespace OpenRCT2::Ui::Windows
             auto& scroll = w.scrolls[scroll_index];
             scroll.flags = 0;
             ScreenSize scrollSize = w.OnScrollGetSize(scroll_index);
-            scroll.h_left = 0;
-            scroll.h_right = scrollSize.width + 1;
-            scroll.v_top = 0;
-            scroll.v_bottom = scrollSize.height + 1;
+            scroll.contentOffsetX = 0;
+            scroll.contentWidth = scrollSize.width + 1;
+            scroll.contentOffsetY = 0;
+            scroll.contentHeight = scrollSize.height + 1;
 
             if (widget->content & SCROLL_HORIZONTAL)
                 scroll.flags |= HSCROLLBAR_VISIBLE;

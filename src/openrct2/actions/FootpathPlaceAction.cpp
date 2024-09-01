@@ -92,12 +92,12 @@ GameActions::Result FootpathPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_SLOPE_UNSUITABLE);
     }
 
-    if (_loc.z < FootpathMinHeight)
+    if (_loc.z < kFootpathMinHeight)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_LOW);
     }
 
-    if (_loc.z > FootpathMaxHeight)
+    if (_loc.z > kFootpathMaxHeight)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
     }
@@ -141,7 +141,7 @@ GameActions::Result FootpathPlaceAction::Execute() const
         {
             // It is possible, let's remove walls between the old and new piece of path
             auto zLow = _loc.z;
-            auto zHigh = zLow + PATH_CLEARANCE;
+            auto zHigh = zLow + kPathClearance;
             WallRemoveIntersectingWalls(
                 { _loc, zLow, zHigh + ((_slope & kTileSlopeRaisedCornersMask) ? 16 : 0) }, DirectionReverse(_direction));
             WallRemoveIntersectingWalls(
@@ -283,11 +283,11 @@ GameActions::Result FootpathPlaceAction::ElementInsertQuery(GameActions::Result 
 
     QuarterTile quarterTile{ 0b1111, 0 };
     auto zLow = _loc.z;
-    auto zHigh = zLow + PATH_CLEARANCE;
+    auto zHigh = zLow + kPathClearance;
     if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
     {
         quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & kTileElementDirectionMask);
-        zHigh += PATH_HEIGHT_STEP;
+        zHigh += kPathHeightStep;
     }
 
     auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
@@ -330,7 +330,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertQuery(GameActions::Result 
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-    res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;
+    res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 
     // Prevent the place sound from being spammed
     if (entranceIsSamePath)
@@ -352,11 +352,11 @@ GameActions::Result FootpathPlaceAction::ElementInsertExecute(GameActions::Resul
 
     QuarterTile quarterTile{ 0b1111, 0 };
     auto zLow = _loc.z;
-    auto zHigh = zLow + PATH_CLEARANCE;
+    auto zHigh = zLow + kPathClearance;
     if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
     {
         quarterTile = QuarterTile{ 0b1111, 0b1100 }.Rotate(_slope & kTileElementDirectionMask);
-        zHigh += PATH_HEIGHT_STEP;
+        zHigh += kPathHeightStep;
     }
 
     auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
@@ -393,7 +393,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertExecute(GameActions::Resul
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-    res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;
+    res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / kPathHeightStep) * 5.00_GBP;
 
     if (entrancePath)
     {

@@ -769,7 +769,7 @@ namespace OpenRCT2::RCT1
         uint8_t Unk1990AA[94];
         uint16_t ParkRating;
         uint8_t ParkRatingHistory[kParkRatingHistorySize];
-        uint8_t GuestsInParkHistory[32];
+        uint8_t GuestsInParkHistory[kGuestsInParkHistorySize];
         uint8_t ResearchPriority;
         uint8_t ResearchProgressStage;
         uint8_t LastResearchItem;
