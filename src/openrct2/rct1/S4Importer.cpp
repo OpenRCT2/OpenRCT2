@@ -183,7 +183,7 @@ namespace OpenRCT2::RCT1
             ImportRideMeasurements();
             ImportEntities();
             ImportTileElements(gameState);
-            ImportPeepSpawns();
+            ImportPeepSpawns(gameState);
             ImportFinance(gameState);
             ImportResearch(gameState);
             ImportParkName(gameState);
@@ -1405,9 +1405,8 @@ namespace OpenRCT2::RCT1
             dst->z = src->z;
         }
 
-        void ImportPeepSpawns()
+        void ImportPeepSpawns(GameState_t& gameState)
         {
-            auto& gameState = GetGameState();
             gameState.PeepSpawns.clear();
             for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {

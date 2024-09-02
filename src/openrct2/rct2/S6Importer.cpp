@@ -352,7 +352,7 @@ namespace OpenRCT2::RCT2
             // Pad013573EE
             // rct1_park_entrance_z
 
-            ImportPeepSpawns();
+            ImportPeepSpawns(gameState);
 
             gameState.GuestChangeModifier = _s6.GuestCountChangeModifier;
             gameState.ResearchFundingLevel = _s6.CurrentResearchLevel;
@@ -1098,7 +1098,7 @@ namespace OpenRCT2::RCT2
          * Imports guest entry points.
          * Includes fixes for incorrectly set guest entry points in some scenarios.
          */
-        void ImportPeepSpawns()
+        void ImportPeepSpawns(GameState_t& gameState)
         {
             // Many WW and TT have scenario_filename fields containing an incorrect filename. Check for both this filename
             // and the corrected filename.
@@ -1129,7 +1129,6 @@ namespace OpenRCT2::RCT2
                 _s6.PeepSpawns[0].z = 7;
             }
 
-            auto& gameState = GetGameState();
             gameState.PeepSpawns.clear();
             for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
