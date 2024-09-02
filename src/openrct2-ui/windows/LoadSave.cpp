@@ -461,7 +461,7 @@ static Widget window_loadsave_widgets[] =
             }
             else
             {
-                auto buffer = OpenRCT2::GetGameState().Park.Name;
+                auto buffer = GetGameState().Park.Name;
                 if (buffer.empty())
                 {
                     buffer = LanguageGetString(STR_UNNAMED_PARK);

@@ -208,7 +208,7 @@ void ScenarioSuccess(GameState_t& gameState)
     if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
-        GetGameState().Park.Flags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+        gameState.Park.Flags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
         gameState.ScenarioCompanyValueRecord = companyValue;
     }
     ScenarioEnd();
@@ -600,7 +600,7 @@ ResultWithMessage ScenarioPrepareForSave(GameState_t& gameState)
     }
 
     if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
-        GetGameState().Park.Flags |= PARK_FLAGS_PARK_OPEN;
+        gameState.Park.Flags |= PARK_FLAGS_PARK_OPEN;
 
     ScenarioReset(gameState);
 

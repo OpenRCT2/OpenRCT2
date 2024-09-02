@@ -1609,7 +1609,7 @@ static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
 
         std::pair<StringId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
         {
-            auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
+            auto parkName = GetGameState().Park.Name.c_str();
 
             // Default arguments
             auto ft = Formatter();

@@ -971,7 +971,7 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
             widthToSet = widgets[WIDX_PARK_NAME].left - 16;
 
             {
-                auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
+                auto parkName = GetGameState().Park.Name.c_str();
 
                 ft = Formatter();
                 ft.Add<StringId>(STR_STRING);

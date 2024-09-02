@@ -298,7 +298,7 @@ namespace OpenRCT2::Editor
 
             gameState.GuestInitialCash = std::clamp(gameState.GuestInitialCash, 10.00_GBP, MAX_ENTRANCE_FEE);
 
-            gameState.InitialCash = std::min<money64>(GetGameState().InitialCash, 100000);
+            gameState.InitialCash = std::min<money64>(gameState.InitialCash, 100000);
             FinanceResetCashToInitial();
 
             gameState.BankLoan = std::clamp<money64>(gameState.BankLoan, 0.00_GBP, 5000000.00_GBP);

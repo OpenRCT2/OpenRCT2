@@ -2636,7 +2636,7 @@ static Widget _rideConstructionWidgets[] = {
                 return;
             }
 
-            auto& gameState = OpenRCT2::GetGameState();
+            auto& gameState = GetGameState();
             auto preserveMapSize = gameState.MapSize;
 
             gameState.MapSize = { kMaximumMapSizeTechnical, kMaximumMapSizeTechnical };

@@ -113,7 +113,7 @@ void StashMap()
     auto& gameState = GetGameState();
     _tileIndexStash = std::move(_tileIndex);
     _tileElementsStash = std::move(gameState.TileElements);
-    _mapSizeStash = GetGameState().MapSize;
+    _mapSizeStash = gameState.MapSize;
     _tileElementsInUseStash = _tileElementsInUse;
 }
 
@@ -122,18 +122,18 @@ void UnstashMap()
     auto& gameState = GetGameState();
     _tileIndex = std::move(_tileIndexStash);
     gameState.TileElements = std::move(_tileElementsStash);
-    GetGameState().MapSize = _mapSizeStash;
+    gameState.MapSize = _mapSizeStash;
     _tileElementsInUse = _tileElementsInUseStash;
 }
 
 CoordsXY GetMapSizeUnits()
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     return { (gameState.MapSize.x - 1) * kCoordsXYStep, (gameState.MapSize.y - 1) * kCoordsXYStep };
 }
 CoordsXY GetMapSizeMinus2()
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     return { (gameState.MapSize.x * kCoordsXYStep) + (8 * kCoordsXYStep - 2),
              (gameState.MapSize.y * kCoordsXYStep) + (8 * kCoordsXYStep - 2) };
 }
@@ -1351,8 +1351,9 @@ void MapRemoveOutOfRangeElements()
     // NOTE: This is only a workaround for non-networked games.
     // Map resize has to become its own Game Action to properly solve this issue.
     //
-    bool buildState = GetGameState().Cheats.BuildInPauseMode;
-    GetGameState().Cheats.BuildInPauseMode = true;
+    auto& gameState = GetGameState();
+    bool buildState = gameState.Cheats.BuildInPauseMode;
+    gameState.Cheats.BuildInPauseMode = true;
 
     for (int32_t y = MAXIMUM_MAP_SIZE_BIG - kCoordsXYStep; y >= 0; y -= kCoordsXYStep)
     {
@@ -1373,7 +1374,7 @@ void MapRemoveOutOfRangeElements()
     }
 
     // Reset cheat state
-    GetGameState().Cheats.BuildInPauseMode = buildState;
+    gameState.Cheats.BuildInPauseMode = buildState;
 }
 
 static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile, SurfaceElement& destTile)

@@ -603,7 +603,8 @@ void AwardUpdateAll()
 {
     PROFILED_FUNCTION();
 
-    auto& currentAwards = GetGameState().CurrentAwards;
+    auto& gameState = GetGameState();
+    auto& currentAwards = gameState.CurrentAwards;
     // Decrease award times
     for (auto& award : currentAwards)
     {
@@ -619,7 +620,7 @@ void AwardUpdateAll()
     }
 
     // Only add new awards if park is open
-    if (GetGameState().Park.Flags & PARK_FLAGS_PARK_OPEN)
+    if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
     {
         // Set active award types as flags
         int32_t activeAwardTypes = 0;

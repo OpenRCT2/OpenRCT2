@@ -60,7 +60,8 @@ GameActions::Result MazePlaceTrackAction::Query() const
         res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
-    if (!MapIsLocationOwned(_loc) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
+    auto& gameState = GetGameState();
+    if (!MapIsLocationOwned(_loc) && !gameState.Cheats.SandboxMode)
     {
         res.Error = GameActions::Status::NotOwned;
         res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -85,7 +86,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
 
     auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
-    if (heightDifference >= 0 && !OpenRCT2::GetGameState().Cheats.DisableSupportLimits)
+    if (heightDifference >= 0 && !gameState.Cheats.DisableSupportLimits)
     {
         heightDifference /= kCoordsZPerTinyZ;
 
