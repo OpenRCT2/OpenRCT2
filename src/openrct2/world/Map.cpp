@@ -128,12 +128,12 @@ void UnstashMap()
 
 CoordsXY GetMapSizeUnits()
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     return { (gameState.MapSize.x - 1) * kCoordsXYStep, (gameState.MapSize.y - 1) * kCoordsXYStep };
 }
 CoordsXY GetMapSizeMinus2()
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     return { (gameState.MapSize.x * kCoordsXYStep) + (8 * kCoordsXYStep - 2),
              (gameState.MapSize.y * kCoordsXYStep) + (8 * kCoordsXYStep - 2) };
 }

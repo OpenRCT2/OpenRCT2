@@ -483,7 +483,7 @@ void ResetSelectedObjectCountAndSize()
 
 void FinishObjectSelection()
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
         SetEveryRideTypeInvented();

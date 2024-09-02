@@ -206,7 +206,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
             screenCoords = { windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
                              static_cast<int32_t>(screenCoords.y + line_height + 1) };
 
-            int32_t temperature = OpenRCT2::GetGameState().ClimateCurrent.Temperature;
+            int32_t temperature = GetGameState().ClimateCurrent.Temperature;
             StringId format = STR_CELSIUS_VALUE;
             if (Config::Get().general.TemperatureFormat == TemperatureUnit::Fahrenheit)
             {
@@ -219,7 +219,7 @@ static Widget window_game_bottom_toolbar_widgets[] =
             screenCoords.x += 30;
 
             // Current weather
-            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(OpenRCT2::GetGameState().ClimateCurrent);
+            auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().ClimateCurrent);
             GfxDrawSprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
             // Next weather

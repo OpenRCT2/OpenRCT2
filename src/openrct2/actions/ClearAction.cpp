@@ -217,7 +217,7 @@ money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
 
 void ClearAction::ResetClearLargeSceneryFlag()
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     // TODO: Improve efficiency of this
     for (int32_t y = 0; y < gameState.MapSize.y; y++)
     {
