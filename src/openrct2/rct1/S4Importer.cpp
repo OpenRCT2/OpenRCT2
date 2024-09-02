@@ -1565,7 +1565,7 @@ namespace OpenRCT2::RCT1
             }
 
             SetTileElements(gameState, std::move(tileElements));
-            FixEntrancePositions();
+            FixEntrancePositions(gameState);
         }
 
         size_t ImportTileElement(TileElement* dst, const RCT12TileElement* src)
@@ -2438,9 +2438,8 @@ namespace OpenRCT2::RCT1
             dst->position.y = src->y;
         }
 
-        void FixEntrancePositions()
+        void FixEntrancePositions(GameState_t& gameState)
         {
-            auto& gameState = GetGameState();
             gameState.Park.Entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
