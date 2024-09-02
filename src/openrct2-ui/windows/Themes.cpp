@@ -710,11 +710,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                 WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
                 int32_t numColours = ThemeDescGetNumColours(wc);
 
-                // If the window description wraps, make sure the row is high enough.
-                if (numColours == 1 && GetTextWidth(_colour_index_1) >= _window_header_size)
-                {
-                    numColours++;
-                }
+                AddGap(numColours, _colour_index_1);
 
                 // position of y relative to the current class
                 int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_colour_index_1 + 1) - numColours) * (_button_size + 2);
@@ -784,13 +780,12 @@ static WindowClass window_themes_tab_7_classes[] = {
                 WindowClass wc = GetWindowClassTabIndex(i);
                 int32_t numColours = ThemeDescGetNumColours(wc);
 
-                // make an empty row to account for text wrapping
-                bool empty_row = false;
+                // If the window description wraps, make sure the row is high enough.
+                bool emptyRow = false;
 
-                if (numColours == 1 && GetTextWidth(i) >= _window_header_size)
+                if(AddGap(numColours, i))
                 {
-                    numColours++;
-                    empty_row = true;
+                    emptyRow = true;
                 }
 
                 if (screenCoords.y > dpi.y + dpi.height)
@@ -833,7 +828,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                             dpi, { 2, screenCoords.y + 4 }, _window_header_size, ThemeDescGetName(wc), {}, { colours[1] });
 
                         // Don't draw the empty row
-                        if (empty_row && j == 1)
+                        if (emptyRow && j == 1)
                         {
                             break;
                         }
@@ -873,20 +868,28 @@ static WindowClass window_themes_tab_7_classes[] = {
             return classes[index];
         }
 
+        // If the window description wraps, make sure the row is high enough.       
+        bool AddGap(int32_t& numColours, int8_t index)
+        {
+            if (numColours == 1 && GetTextWidth(index) >= _window_header_size)
+            {
+                numColours++;
+                return true;
+            }
+            return false;
+        }
+
         int8_t GetColourIndex(int32_t y)
         {
-            int8_t total = 0;
+            int8_t numRows = 0;
             for (int32_t i = 0; i < GetColourSchemeTabCount(); ++i)
             {
-                uint8_t num_colours = ThemeDescGetNumColours(GetWindowClassTabIndex(i));
-                total += num_colours;
+                int32_t numColours = ThemeDescGetNumColours(GetWindowClassTabIndex(i));
+                numRows += numColours;
 
-                if (num_colours == 1 && GetTextWidth(i) >= _window_header_size)
-                {
-                    total++;
-                }
+                AddGap(numColours, i);
 
-                if ((total * (_button_size + 2)) >= y)
+                if ((numRows * (_button_size + 2)) >= y)
                 {
                     return i;
                 }
@@ -909,18 +912,19 @@ static WindowClass window_themes_tab_7_classes[] = {
 
         int8_t GetTotalColoursUpTo(int8_t index)
         {
-            int8_t total = 0;
+            int8_t numRows = 0;
             for (int32_t i = 0; i < index; ++i)
             {
-                uint8_t num_colours = ThemeDescGetNumColours(GetWindowClassTabIndex(i));
+                uint8_t numColours = ThemeDescGetNumColours(GetWindowClassTabIndex(i));
 
-                if (num_colours == 1 && GetTextWidth(i) >= _window_header_size)
+                if (numColours == 1 && GetTextWidth(i) >= _window_header_size)
                 {
-                    num_colours++;
+                    numColours++;
                 }
-                total += num_colours;
+
+                numRows += numColours;
             }
-            return total;
+            return numRows;
         }
 
         int32_t GetColourSchemeTabCount()
