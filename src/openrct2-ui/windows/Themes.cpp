@@ -783,7 +783,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                 // If the window description wraps, make sure the row is high enough.
                 bool emptyRow = false;
 
-                if(AddGap(numColours, i))
+                if (AddGap(numColours, i))
                 {
                     emptyRow = true;
                 }
@@ -868,7 +868,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             return classes[index];
         }
 
-        // If the window description wraps, make sure the row is high enough.       
+        // If the window description wraps, make sure the row is high enough.
         bool AddGap(int32_t& numColours, int8_t index)
         {
             if (numColours == 1 && GetTextWidth(index) >= _window_header_size)
