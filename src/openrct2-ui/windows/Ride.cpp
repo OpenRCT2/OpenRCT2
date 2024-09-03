@@ -1920,8 +1920,9 @@ static_assert(std::size(RatingNames) == 6);
             bool selectionShouldBeExpanded;
             int32_t rideTypeIterator, rideTypeIteratorMax;
 
+            const auto& gameState = GetGameState();
             const auto& rtd = ride.GetRideTypeDescriptor();
-            if (GetGameState().Cheats.ShowVehiclesFromOtherTrackTypes
+            if (gameState.Cheats.ShowVehiclesFromOtherTrackTypes
                 && !(rtd.HasFlag(RtdFlag::isFlatRide) || rtd.HasFlag(RtdFlag::isMaze) || ride.type == RIDE_TYPE_MINI_GOLF))
             {
                 selectionShouldBeExpanded = true;
@@ -1960,7 +1961,7 @@ static_assert(std::size(RatingNames) == 6);
                         continue;
 
                     // Skip if vehicle type has not been invented yet
-                    if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.IgnoreResearchStatus)
+                    if (!RideEntryIsInvented(rideEntryIndex) && !gameState.Cheats.IgnoreResearchStatus)
                         continue;
 
                     auto name = currentRideEntry->naming.Name;
@@ -2245,9 +2246,10 @@ static_assert(std::size(RatingNames) == 6);
             if (ride == nullptr)
                 return;
 
+            const auto& gameState = GetGameState();
             disabled_widgets &= ~((1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_CONSTRUCTION));
             if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-                && !GetGameState().Cheats.MakeAllDestructible)
+                && !gameState.Cheats.MakeAllDestructible)
                 disabled_widgets |= (1uLL << WIDX_DEMOLISH);
 
             auto ft = Formatter::Common();
@@ -2286,7 +2288,7 @@ static_assert(std::size(RatingNames) == 6);
 
             AnchorBorderWidgets();
 
-            const int32_t offset = GetGameState().Cheats.AllowArbitraryRideTypeChanges ? 15 : 0;
+            const int32_t offset = gameState.Cheats.AllowArbitraryRideTypeChanges ? 15 : 0;
             // Anchor main page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
             widgets[WIDX_VIEWPORT].bottom = height - (14 + offset);
@@ -2304,7 +2306,7 @@ static_assert(std::size(RatingNames) == 6);
             widgets[WIDX_RIDE_TYPE_DROPDOWN].top = height - 16;
             widgets[WIDX_RIDE_TYPE_DROPDOWN].bottom = height - 5;
 
-            if (!GetGameState().Cheats.AllowArbitraryRideTypeChanges)
+            if (!gameState.Cheats.AllowArbitraryRideTypeChanges)
             {
                 widgets[WIDX_RIDE_TYPE].type = WindowWidgetType::Empty;
                 widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WindowWidgetType::Empty;
@@ -2717,8 +2719,9 @@ static_assert(std::size(RatingNames) == 6);
             // Vehicle type
             widgets[WIDX_VEHICLE_TYPE].text = rideEntry->naming.Name;
 
+            const auto& gameState = GetGameState();
             // Trains
-            if (rideEntry->cars_per_flat_ride > 1 || GetGameState().Cheats.DisableTrainLengthLimit)
+            if (rideEntry->cars_per_flat_ride > 1 || gameState.Cheats.DisableTrainLengthLimit)
             {
                 widgets[WIDX_VEHICLE_TRAINS].type = WindowWidgetType::Spinner;
                 widgets[WIDX_VEHICLE_TRAINS_INCREASE].type = WindowWidgetType::Button;
@@ -2732,7 +2735,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             // Cars per train
-            if (rideEntry->zero_cars + 1 < rideEntry->max_cars_in_train || GetGameState().Cheats.DisableTrainLengthLimit)
+            if (rideEntry->zero_cars + 1 < rideEntry->max_cars_in_train || gameState.Cheats.DisableTrainLengthLimit)
             {
                 widgets[WIDX_VEHICLE_CARS_PER_TRAIN].type = WindowWidgetType::Spinner;
                 widgets[WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE].type = WindowWidgetType::Button;
@@ -2746,8 +2749,7 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::allowReversedTrains)
-                || (GetGameState().Cheats.DisableTrainLengthLimit
-                    && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide)))
+                || (gameState.Cheats.DisableTrainLengthLimit && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide)))
             {
                 widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Checkbox;
                 if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
@@ -2988,10 +2990,11 @@ static_assert(std::size(RatingNames) == 6);
                 return;
 
             const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
+            const auto& gameState = GetGameState();
             uint8_t maxValue = operatingSettings.MaxValue;
-            uint8_t minValue = GetGameState().Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+            uint8_t minValue = gameState.Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
 
-            if (GetGameState().Cheats.UnlockOperatingLimits)
+            if (gameState.Cheats.UnlockOperatingLimits)
             {
                 maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
@@ -3009,9 +3012,10 @@ static_assert(std::size(RatingNames) == 6);
                 return;
 
             const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
+            const auto& gameState = GetGameState();
             uint8_t maxValue = operatingSettings.MaxValue;
-            uint8_t minValue = GetGameState().Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
-            if (GetGameState().Cheats.UnlockOperatingLimits)
+            uint8_t minValue = gameState.Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+            if (gameState.Cheats.UnlockOperatingLimits)
             {
                 maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
@@ -3262,9 +3266,10 @@ static_assert(std::size(RatingNames) == 6);
             }
 
             const auto& operatingSettings = ride.GetRideTypeDescriptor().OperatingSettings;
-            int16_t maxValue = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
-                                                                           : operatingSettings.MaxValue;
-            int16_t minValue = GetGameState().Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+            const auto& gameState = GetGameState();
+            int16_t maxValue = gameState.Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
+                                                                      : operatingSettings.MaxValue;
+            int16_t minValue = gameState.Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
 
             const auto& title = widgets[WIDX_MODE_TWEAK_LABEL].text;
             Formatter ft;
@@ -3344,9 +3349,10 @@ static_assert(std::size(RatingNames) == 6);
             if (widgetIndex == WIDX_MODE_TWEAK)
             {
                 const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
-                uint32_t maxValue = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
-                                                                                : operatingSettings.MaxValue;
-                uint32_t minValue = GetGameState().Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+                const auto& gameState = GetGameState();
+                uint32_t maxValue = gameState.Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
+                                                                           : operatingSettings.MaxValue;
+                uint32_t minValue = gameState.Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
                 auto multiplier = ride->GetRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
 
                 try

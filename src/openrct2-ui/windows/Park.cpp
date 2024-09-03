@@ -526,7 +526,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Set open / close park button state
             {
-                auto parkName = GetGameState().Park.Name.c_str();
+                auto parkName = gameState.Park.Name.c_str();
 
                 auto ft = Formatter::Common();
                 ft.Add<StringId>(STR_STRING);
@@ -547,7 +547,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
 
             // Only allow purchase of land when there is money
-            if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
+            if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
                 widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::Empty;
             else
                 widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
