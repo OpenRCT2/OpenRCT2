@@ -557,6 +557,9 @@ public:
             case INTENT_ACTION_RESTORE_PROVISIONAL_ELEMENTS:
                 ProvisionalElementsRestore();
                 break;
+            case INTENT_ACTION_REMOVE_PROVISIONAL_FOOTPATH:
+                FootpathRemoveProvisional();
+                break;
 
             default:
                 break;

@@ -173,7 +173,6 @@ enum
 };
 
 extern FootpathSelection gFootpathSelection;
-extern ProvisionalFootpath gProvisionalFootpath;
 extern uint16_t gFootpathSelectedId;
 extern CoordsXYZ gFootpathConstructFromPosition;
 extern uint8_t gFootpathConstructSlope;
@@ -186,11 +185,6 @@ extern const std::array<CoordsXY, kNumOrthogonalDirections * 2> BenchUseOffsets;
 
 PathElement* MapGetFootpathElement(const CoordsXYZ& coords);
 void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);
-money64 FootpathProvisionalSet(
-    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
-    PathConstructFlags constructFlags);
-void FootpathProvisionalRemove();
-void FootpathProvisionalUpdate();
 void FootpathRemoveLitter(const CoordsXYZ& footpathPos);
 void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags);
 void FootpathUpdateQueueChains();

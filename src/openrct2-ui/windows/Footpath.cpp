@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <openrct2-ui/ProvisionalElements.h>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/input/ShortcutIds.h>
@@ -31,6 +32,7 @@
 #include <openrct2/object/FootpathSurfaceObject.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Footpath.h>
@@ -40,12 +42,18 @@
 
 namespace OpenRCT2::Ui::Windows
 {
+    static money64 FootpathProvisionalSet(
+        ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
+        PathConstructFlags constructFlags);
+
     enum
     {
         PATH_CONSTRUCTION_MODE_LAND,
         PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL,
         PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
     };
+
+    static ProvisionalFootpath _provisionalFootpath;
 
 #pragma region Measurements
 
@@ -199,7 +207,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnClose() override
         {
-            FootpathProvisionalUpdate();
+            FootpathUpdateProvisional();
             ViewportSetVisibility(ViewportVisibility::Default);
             MapInvalidateMapSelectionTiles();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -291,7 +299,7 @@ namespace OpenRCT2::Ui::Windows
 
                     _windowFootpathCost = kMoney64Undefined;
                     ToolCancel();
-                    FootpathProvisionalUpdate();
+                    FootpathUpdateProvisional();
                     MapInvalidateMapSelectionTiles();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                     _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
@@ -308,7 +316,7 @@ namespace OpenRCT2::Ui::Windows
 
                     _windowFootpathCost = kMoney64Undefined;
                     ToolCancel();
-                    FootpathProvisionalUpdate();
+                    FootpathUpdateProvisional();
                     MapInvalidateMapSelectionTiles();
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
                     _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
@@ -361,7 +369,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            FootpathProvisionalUpdate();
+            FootpathUpdateProvisional();
             _windowFootpathCost = kMoney64Undefined;
             Invalidate();
         }
@@ -522,14 +530,14 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Recheck area for construction. Set by ride_construction window
-            if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_2)
+            if (_provisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_2)
             {
-                FootpathProvisionalRemove();
-                gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_2;
+                FootpathRemoveProvisional();
+                _provisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_2;
             }
 
             // Update provisional bridge mode path
-            if (!(gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1))
+            if (!(_provisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1))
             {
                 ObjectEntryIndex type;
                 ObjectEntryIndex railings = gFootpathSelection.Railings;
@@ -550,13 +558,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 _footpathConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
 
-                gProvisionalFootpath.Flags ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
+                _provisionalFootpath.Flags ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
                 CoordsXYZ footpathLoc;
                 int32_t slope;
                 FootpathGetNextPathInfo(nullptr, footpathLoc, &slope);
                 gMapSelectArrowPosition = footpathLoc;
                 gMapSelectArrowDirection = _footpathConstructDirection;
-                if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
+                if (_provisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
                 {
                     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
                 }
@@ -752,7 +760,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void WindowFootpathMousedownDirection(int32_t direction)
         {
-            FootpathProvisionalUpdate();
+            FootpathUpdateProvisional();
             _footpathConstructDirection = (direction - GetCurrentRotation()) & 3;
             _windowFootpathCost = kMoney64Undefined;
             WindowFootpathSetEnabledAndPressedWidgets();
@@ -764,7 +772,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void WindowFootpathMousedownSlope(int32_t slope)
         {
-            FootpathProvisionalUpdate();
+            FootpathUpdateProvisional();
             gFootpathConstructSlope = slope;
             _windowFootpathCost = kMoney64Undefined;
             WindowFootpathSetEnabledAndPressedWidgets();
@@ -889,7 +897,7 @@ namespace OpenRCT2::Ui::Windows
             if (info.SpriteType == ViewportInteractionItem::None || info.Element == nullptr)
             {
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                FootpathProvisionalUpdate();
+                FootpathUpdateProvisional();
                 return kTileSlopeFlat;
             }
 
@@ -975,7 +983,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Check for change
             auto provisionalPos = CoordsXYZ(*mapPos, _footpathPlaceZ);
-            if ((gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1) && gProvisionalFootpath.Position == provisionalPos)
+            if ((_provisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1) && _provisionalFootpath.Position == provisionalPos)
             {
                 return;
             }
@@ -986,7 +994,7 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectPositionA = *mapPos;
             gMapSelectPositionB = *mapPos;
 
-            FootpathProvisionalUpdate();
+            FootpathUpdateProvisional();
 
             // Figure out what slope and height to use
             int32_t slope = kTileSlopeFlat;
@@ -1007,7 +1015,7 @@ namespace OpenRCT2::Ui::Windows
                 if (baseZ == 0)
                 {
                     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-                    FootpathProvisionalUpdate();
+                    FootpathUpdateProvisional();
                     return;
                 }
             }
@@ -1075,7 +1083,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            FootpathProvisionalUpdate();
+            FootpathUpdateProvisional();
 
             auto mapPos = FootpathGetPlacePositionFromScreenPosition(screenCoords);
             if (!mapPos)
@@ -1170,7 +1178,7 @@ namespace OpenRCT2::Ui::Windows
             ToolCancel();
             gFootpathConstructFromPosition = { mapCoords, z };
             _footpathConstructDirection = direction;
-            gProvisionalFootpath.Flags = 0;
+            _provisionalFootpath.Flags = 0;
             gFootpathConstructSlope = 0;
             _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
             _footpathConstructValidDirections = INVALID_DIRECTION;
@@ -1184,7 +1192,7 @@ namespace OpenRCT2::Ui::Windows
         void WindowFootpathConstruct()
         {
             _windowFootpathCost = kMoney64Undefined;
-            FootpathProvisionalUpdate();
+            FootpathUpdateProvisional();
 
             ObjectEntryIndex type;
             int32_t slope;
@@ -1350,7 +1358,7 @@ namespace OpenRCT2::Ui::Windows
             TileElement* tileElement;
 
             _windowFootpathCost = kMoney64Undefined;
-            FootpathProvisionalUpdate();
+            FootpathUpdateProvisional();
 
             tileElement = FootpathGetTileElementToRemove();
             if (tileElement != nullptr)
@@ -1693,5 +1701,125 @@ namespace OpenRCT2::Ui::Windows
             ToolCancel();
             WindowCloseByClass(WindowClass::Footpath);
         }
+    }
+
+    /**
+     *
+     *  rct2: 0x006A76FF
+     */
+    static money64 FootpathProvisionalSet(
+        ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
+        PathConstructFlags constructFlags)
+    {
+        money64 cost;
+
+        FootpathRemoveProvisional();
+
+        auto footpathPlaceAction = FootpathPlaceAction(
+            footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
+        footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+        auto res = GameActions::Execute(&footpathPlaceAction);
+        cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+        if (res.Error == GameActions::Status::Ok)
+        {
+            _provisionalFootpath.SurfaceIndex = type;
+            _provisionalFootpath.RailingsIndex = railingsType;
+            _provisionalFootpath.Position = footpathLoc;
+            _provisionalFootpath.Slope = slope;
+            _provisionalFootpath.ConstructFlags = constructFlags;
+            _provisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
+
+            if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
+            {
+                ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
+            }
+            else
+            {
+                ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
+            }
+        }
+
+        // Invalidate previous footpath piece.
+        VirtualFloorInvalidate();
+
+        if (!isToolActive(WindowClass::Scenery))
+        {
+            if (res.Error != GameActions::Status::Ok)
+            {
+                // If we can't build this, don't show a virtual floor.
+                VirtualFloorSetHeight(0);
+            }
+            else if (
+                _provisionalFootpath.Slope == kTileSlopeFlat
+                || _provisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
+            {
+                // Going either straight on, or down.
+                VirtualFloorSetHeight(_provisionalFootpath.Position.z);
+            }
+            else
+            {
+                // Going up in the world!
+                VirtualFloorSetHeight(_provisionalFootpath.Position.z + LAND_HEIGHT_STEP);
+            }
+        }
+
+        return cost;
+    }
+
+    /**
+     *
+     *  rct2: 0x006A77FF
+     */
+    void FootpathRemoveProvisional()
+    {
+        if (_provisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
+        {
+            _provisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
+
+            auto action = FootpathRemoveAction(_provisionalFootpath.Position);
+            action.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+            GameActions::Execute(&action);
+        }
+    }
+
+    /**
+     *
+     *  rct2: 0x006A7831
+     */
+    void FootpathUpdateProvisional()
+    {
+        if (_provisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
+        {
+            _provisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
+
+            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+            MapInvalidateTileFull(gFootpathConstructFromPosition);
+        }
+        FootpathRemoveProvisional();
+    }
+
+    void FootpathRemoveProvisionalTemporarily()
+    {
+        if (_provisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
+        {
+            FootpathRemoveProvisional();
+            _provisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
+        }
+    }
+
+    void FootpathRestoreProvisional()
+    {
+        if (_provisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
+        {
+            _provisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
+            FootpathProvisionalSet(
+                _provisionalFootpath.SurfaceIndex, _provisionalFootpath.RailingsIndex, _provisionalFootpath.Position,
+                _provisionalFootpath.Slope, _provisionalFootpath.ConstructFlags);
+        }
+    }
+
+    void FootpathRecheckProvisional()
+    {
+        _provisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
     }
 } // namespace OpenRCT2::Ui::Windows

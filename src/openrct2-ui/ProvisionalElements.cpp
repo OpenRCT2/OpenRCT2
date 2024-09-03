@@ -9,27 +9,24 @@
 
 #include "ProvisionalElements.h"
 
+#include <openrct2-ui/windows/Window.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/interface/WindowClasses.h>
 #include <openrct2/network/network.h>
 #include <openrct2/profiling/Profiling.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/world/Footpath.h>
-#include <openrct2-ui/windows/Window.h>
 
 using namespace OpenRCT2::Ui::Windows;
 
-namespace OpenRCT2
+namespace OpenRCT2::Ui
 {
     void ProvisionalElementsRemove()
     {
         PROFILED_FUNCTION();
 
-        if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
-        {
-            FootpathProvisionalRemove();
-            gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
-        }
+        FootpathRemoveProvisionalTemporarily();
+
         if (WindowFindByClass(WindowClass::RideConstruction) != nullptr)
         {
             RideRemoveProvisionalTrackPiece();
@@ -47,13 +44,8 @@ namespace OpenRCT2
     {
         PROFILED_FUNCTION();
 
-        if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
-        {
-            gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
-            FootpathProvisionalSet(
-                gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
-                gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
-        }
+        FootpathRestoreProvisional();
+
         if (WindowFindByClass(WindowClass::RideConstruction) != nullptr)
         {
             RideRestoreProvisionalTrackPiece();
@@ -66,4 +58,4 @@ namespace OpenRCT2
             TrackPlaceRestoreProvisional();
         }
     }
-} // namespace OpenRCT2
+} // namespace OpenRCT2::Ui

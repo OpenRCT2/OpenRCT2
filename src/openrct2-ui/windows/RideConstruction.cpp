@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2-ui/ProvisionalElements.h"
+
 #include <limits>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
@@ -46,7 +48,6 @@
 #include <openrct2/util/Math.hpp>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Entrance.h>
-#include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
 constexpr int8_t kDefaultSpeedIncrement = 2;
@@ -1018,7 +1019,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     Construct();
                     // Force any footpath construction to recheck the area.
-                    gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
+                    FootpathRecheckProvisional();
                     break;
                 }
                 case WIDX_DEMOLISH:
