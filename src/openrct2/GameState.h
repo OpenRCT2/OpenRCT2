@@ -29,9 +29,7 @@
 #include "world/ScenerySelection.h"
 
 #include <array>
-#include <chrono>
 #include <memory>
-#include <unordered_map>
 #include <vector>
 
 namespace OpenRCT2
