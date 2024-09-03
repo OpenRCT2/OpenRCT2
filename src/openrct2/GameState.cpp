@@ -9,49 +9,30 @@
 
 #include "GameState.h"
 
-#include "./peep/GuestPathfinding.h"
-#include "Context.h"
-#include "Date.h"
-#include "Editor.h"
 #include "Game.h"
-#include "GameState.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ReplayManager.h"
-#include "actions/GameAction.h"
 #include "config/Config.h"
-#include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
-#include "entity/Staff.h"
 #include "interface/Screenshot.h"
-#include "localisation/Localisation.Date.h"
-#include "management/NewsItem.h"
-#include "network/network.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
-#include "ride/Vehicle.h"
-#include "scenario/Scenario.h"
 #include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequencePlayer.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "windows/Intent.h"
-#include "world/Climate.h"
-#include "world/MapAnimation.h"
-#include "world/Park.h"
 #include "world/Scenery.h"
 
-#include <chrono>
-
-using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
-
-static GameState_t _gameState{};
 
 namespace OpenRCT2
 {
+    static GameState_t _gameState{};
+
     GameState_t& GetGameState()
     {
         return _gameState;
