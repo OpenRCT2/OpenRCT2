@@ -13,6 +13,7 @@
 #include "ride/VehicleSounds.h"
 #include "windows/Window.h"
 
+#include <openrct2-ui/ProvisionalElements.h>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/input/MouseInput.h>
@@ -534,14 +535,6 @@ public:
                 OpenRCT2::Audio::UpdateVehicleSounds();
                 break;
 
-            case INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL:
-                TrackPlaceClearProvisionalTemporarily();
-                break;
-
-            case INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL:
-                TrackPlaceRestoreProvisional();
-                break;
-
             case INTENT_ACTION_SET_MAP_TOOLTIP:
             {
                 auto ft = static_cast<Formatter*>(intent.GetPointerExtra(INTENT_EXTRA_FORMATTER));
@@ -557,6 +550,13 @@ public:
                 WindowInvalidateByClass(WindowClass::TileInspector);
                 break;
             }
+
+            case INTENT_ACTION_REMOVE_PROVISIONAL_ELEMENTS:
+                ProvisionalElementsRemove();
+                break;
+            case INTENT_ACTION_RESTORE_PROVISIONAL_ELEMENTS:
+                ProvisionalElementsRestore();
+                break;
 
             default:
                 break;

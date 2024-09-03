@@ -1290,54 +1290,6 @@ void MapUpdateTiles()
     }
 }
 
-void MapRemoveProvisionalElements()
-{
-    PROFILED_FUNCTION();
-
-    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
-    {
-        FootpathProvisionalRemove();
-        gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
-    }
-    if (WindowFindByClass(WindowClass::RideConstruction) != nullptr)
-    {
-        RideRemoveProvisionalTrackPiece();
-        RideEntranceExitRemoveGhost();
-    }
-    // This is in non performant so only make network games suffer for it
-    // non networked games do not need this as its to prevent desyncs.
-    if ((NetworkGetMode() != NETWORK_MODE_NONE) && WindowFindByClass(WindowClass::TrackDesignPlace) != nullptr)
-    {
-        auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL);
-        ContextBroadcastIntent(&intent);
-    }
-}
-
-void MapRestoreProvisionalElements()
-{
-    PROFILED_FUNCTION();
-
-    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
-    {
-        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
-        FootpathProvisionalSet(
-            gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
-            gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
-    }
-    if (WindowFindByClass(WindowClass::RideConstruction) != nullptr)
-    {
-        RideRestoreProvisionalTrackPiece();
-        RideEntranceExitPlaceProvisionalGhost();
-    }
-    // This is in non performant so only make network games suffer for it
-    // non networked games do not need this as its to prevent desyncs.
-    if ((NetworkGetMode() != NETWORK_MODE_NONE) && WindowFindByClass(WindowClass::TrackDesignPlace) != nullptr)
-    {
-        auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL);
-        ContextBroadcastIntent(&intent);
-    }
-}
-
 /**
  * Removes elements that are out of the map size range and crops the park perimeter.
  *  rct2: 0x0068ADBC

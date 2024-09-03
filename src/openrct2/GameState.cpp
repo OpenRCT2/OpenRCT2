@@ -295,11 +295,15 @@ namespace OpenRCT2
         ScenarioUpdate(gameState);
         ClimateUpdate();
         MapUpdateTiles();
+
         // Temporarily remove provisional paths to prevent peep from interacting with them
-        MapRemoveProvisionalElements();
+        auto removeProvisionalIntent = Intent(INTENT_ACTION_REMOVE_PROVISIONAL_ELEMENTS);
+        ContextBroadcastIntent(&removeProvisionalIntent);
+
         MapUpdatePathWideFlags();
         PeepUpdateAll();
-        MapRestoreProvisionalElements();
+        auto restoreProvisionalIntent = Intent(INTENT_ACTION_RESTORE_PROVISIONAL_ELEMENTS);
+        ContextBroadcastIntent(&restoreProvisionalIntent);
         VehicleUpdateAll();
         UpdateAllMiscEntities();
         Ride::UpdateAll();

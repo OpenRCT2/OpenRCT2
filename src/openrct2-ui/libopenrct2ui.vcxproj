@@ -93,6 +93,7 @@
     <ClInclude Include="scripting\ScWidget.hpp" />
     <ClInclude Include="scripting\ScWindow.hpp" />
     <ClInclude Include="scripting\UiExtensions.h" />
+    <ClInclude Include="ProvisionalElements.h" />
     <ClInclude Include="SDLException.h" />
     <ClInclude Include="TextComposition.h" />
     <ClInclude Include="title\TitleSequencePlayer.h" />
@@ -148,6 +149,7 @@
     <ClCompile Include="scripting\CustomMenu.cpp" />
     <ClCompile Include="scripting\CustomWindow.cpp" />
     <ClCompile Include="scripting\UiExtensions.cpp" />
+    <ClCompile Include="ProvisionalElements.cpp" />
     <ClCompile Include="SDLException.cpp" />
     <ClCompile Include="TextComposition.cpp" />
     <ClCompile Include="title\TitleSequencePlayer.cpp" />
