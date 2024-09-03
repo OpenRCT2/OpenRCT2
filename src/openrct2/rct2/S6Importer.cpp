@@ -66,6 +66,7 @@
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
+#include "../scenario/ScenarioSources.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
@@ -156,6 +157,14 @@ namespace OpenRCT2::RCT2
                     throw std::runtime_error("Park is not a scenario.");
                 }
                 chunkReader.ReadChunk(&_s6.Info, sizeof(_s6.Info));
+
+                // If the name or the details contain a colour code, they might be in UTF-8 already.
+                // This is caused by a bug that was in OpenRCT2 for 3 years.
+                if (!IsLikelyUTF8(_s6.Info.Name) && !IsLikelyUTF8(_s6.Info.Details))
+                {
+                    RCT2StringToUTF8Self(_s6.Info.Name, sizeof(_s6.Info.Name));
+                    RCT2StringToUTF8Self(_s6.Info.Details, sizeof(_s6.Info.Details));
+                }
             }
             else
             {
@@ -225,7 +234,69 @@ namespace OpenRCT2::RCT2
         bool GetDetails(ScenarioIndexEntry* dst) override
         {
             *dst = {};
-            return false;
+
+            dst->Category = _s6.Info.Category;
+            dst->ObjectiveType = _s6.Info.ObjectiveType;
+            dst->ObjectiveArg1 = _s6.Info.ObjectiveArg1;
+            dst->ObjectiveArg2 = _s6.Info.ObjectiveArg2;
+            dst->ObjectiveArg3 = _s6.Info.ObjectiveArg3;
+            dst->Highscore = nullptr;
+
+            if (String::IsNullOrEmpty(_s6.Info.Name))
+            {
+                // If the scenario doesn't have a name, set it to the filename
+                String::Set(dst->Name, sizeof(dst->Name), Path::GetFileNameWithoutExtension(dst->Path).c_str());
+            }
+            else
+            {
+                String::Set(dst->Name, sizeof(dst->Name), _s6.Info.Name);
+                // Normalise the name to make the scenario as recognisable as possible.
+                ScenarioSources::NormaliseName(dst->Name, sizeof(dst->Name), dst->Name);
+            }
+
+            // dst->name will be translated later so keep the untranslated name here
+            String::Set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
+
+            String::Set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
+
+            // Look up and store information regarding the origins of this scenario.
+            SourceDescriptor desc;
+            if (ScenarioSources::TryGetByName(dst->Name, &desc))
+            {
+                dst->ScenarioId = desc.id;
+                dst->SourceIndex = desc.index;
+                dst->SourceGame = ScenarioSource{ desc.source };
+                dst->Category = desc.category;
+            }
+            else
+            {
+                dst->ScenarioId = SC_UNIDENTIFIED;
+                dst->SourceIndex = -1;
+                if (dst->Category == SCENARIO_CATEGORY_REAL)
+                {
+                    dst->SourceGame = ScenarioSource::Real;
+                }
+                else
+                {
+                    dst->SourceGame = ScenarioSource::Other;
+                }
+            }
+
+            // Localise the park name and description
+            StringId localisedStringIds[3];
+            if (LanguageGetLocalisedScenarioStrings(dst->Name, localisedStringIds))
+            {
+                if (localisedStringIds[0] != STR_NONE)
+                {
+                    String::Set(dst->Name, sizeof(dst->Name), LanguageGetString(localisedStringIds[0]));
+                }
+                if (localisedStringIds[2] != STR_NONE)
+                {
+                    String::Set(dst->Details, sizeof(dst->Details), LanguageGetString(localisedStringIds[2]));
+                }
+            }
+
+            return true;
         }
 
         void Import(GameState_t& gameState) override

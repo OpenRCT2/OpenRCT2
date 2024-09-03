@@ -26,6 +26,7 @@
 #include "world/Climate.h"
 #include "world/Location.hpp"
 #include "world/Park.h"
+#include "world/ScenerySelection.h"
 
 #include <array>
 #include <chrono>
