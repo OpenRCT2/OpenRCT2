@@ -18,13 +18,6 @@ class FootpathRailingsObject;
 struct PathElement;
 struct TileElement;
 
-enum
-{
-    PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0),
-    PROVISIONAL_PATH_FLAG_1 = (1 << 1),
-    PROVISIONAL_PATH_FLAG_2 = (1 << 2),
-};
-
 constexpr auto kFootpathMaxHeight = 248 * kCoordsZStep;
 constexpr auto kFootpathMinHeight = 2 * kCoordsZStep;
 constexpr auto kPathHeightStep = 2 * kCoordsZStep;
@@ -76,17 +69,6 @@ struct FootpathSelection
     {
         return IsQueueSelected ? QueueSurface : NormalSurface;
     }
-};
-
-struct ProvisionalFootpath
-{
-    ObjectEntryIndex Type;
-    CoordsXYZ Position;
-    uint8_t Slope;
-    uint8_t Flags;
-    ObjectEntryIndex SurfaceIndex;
-    ObjectEntryIndex RailingsIndex;
-    PathConstructFlags ConstructFlags;
 };
 
 // Masks for values stored in TileElement.type
