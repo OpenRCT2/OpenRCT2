@@ -3,6 +3,7 @@
 - Feature: [#775] Add 2x and 4x zoom levels to software renderer (previously limited to OpenGL).
 - Feature: [#15642] Track design placement can now use construction modifier keys (ctrl/shift).
 - Feature: [#21521] [Plugin] Add hook 'park.guest.softcap.calculate' called before calculating the soft guest cap.
+- Feature: [#22694] Park graphs have tooltips and can be resized like finance graphs.
 - Improved: [#22777] Add long flat-to-steep track pieces to the Wooden and Classic Wooden Roller Coasters.
 - Change: [#22596] Land ownership fixes described by .parkpatch files are now only considered on scenarios.
 - Change: [#22724] Staff now have optional ‘real’ names as well.
