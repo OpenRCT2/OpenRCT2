@@ -1929,7 +1929,7 @@ static void JuniorRCPaintStation(
     }
 
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
+    TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 

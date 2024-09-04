@@ -241,7 +241,6 @@ static void PaintReverseFreefallRCStation(
 
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-        PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
     }
     else if (direction == 1 || direction == 3)
     {
@@ -255,8 +254,8 @@ static void PaintReverseFreefallRCStation(
 
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-        PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
     }
+    TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement);
 

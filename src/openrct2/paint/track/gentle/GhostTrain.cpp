@@ -410,7 +410,7 @@ static void PaintGhostTrainStation(
     imageId = session.TrackColours.WithIndex(GhostTrainTrackPiecesFlat[direction]);
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 3 } });
 
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
+    TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
 
