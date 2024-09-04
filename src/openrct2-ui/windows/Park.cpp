@@ -88,7 +88,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    // clang-format off
+// clang-format off
     #define MAIN_PARK_WIDGETS(WW) \
         WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
         MakeWidget({  0, 43}, {WW, 131}, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */ \

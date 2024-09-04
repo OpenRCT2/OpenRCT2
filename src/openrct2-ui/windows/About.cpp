@@ -56,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CONTRIBUTORS_BUTTON,
     };
 
-    // clang-format off
+// clang-format off
     #define WIDGETS_MAIN \
         WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
         MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::Frame,  WindowColour::Secondary               ), /* page background */       \

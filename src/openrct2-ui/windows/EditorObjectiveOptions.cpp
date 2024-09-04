@@ -109,7 +109,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_RIDES = 6
     };
 
-    // clang-format off
+// clang-format off
     #define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
         WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
         MakeWidget({  0,  43}, {280, 106}, WindowWidgetType::Resize, WindowColour::Secondary), \

@@ -97,7 +97,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    // clang-format off
+// clang-format off
     #define MAIN_FINANCES_WIDGETS(TITLE, RSW, RSH, WW, WH) \
         WINDOW_SHIM(TITLE, WW, WH), \
         MakeWidget({0, 43}, {RSW, RSH}, WindowWidgetType::Resize, WindowColour::Secondary), \

@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 310;
     static constexpr int32_t WH = 332;
 
-    // clang-format off
+// clang-format off
     #define MAIN_OPTIONS_WIDGETS \
         WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
         MakeWidget({  0, 43}, {WW, 289}, WindowWidgetType::Resize, WindowColour::Secondary), \

@@ -124,7 +124,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 250;
     static constexpr int32_t WH = 273;
 
-    // clang-format off
+// clang-format off
     #define SHARED_WIDGETS \
         WINDOW_SHIM(WINDOW_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \
         MakeWidget({ 0, 43}, {WW, 229}, WindowWidgetType::Resize, WindowColour::Secondary), /* WIDX_PAGE_BACKGROUND */ \

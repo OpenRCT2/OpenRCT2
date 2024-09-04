@@ -233,7 +233,7 @@ namespace OpenRCT2::Ui::Windows
 
     constexpr int32_t RCT1_LIGHT_OFFSET = 4;
 
-    // clang-format off
+// clang-format off
     #define MAIN_RIDE_WIDGETS \
         WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
         MakeWidget({  0, 43}, {316, 137}, WindowWidgetType::Resize, WindowColour::Secondary), \

@@ -49,7 +49,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VIEWPORT,
     };
 
-    // clang-format off
+// clang-format off
     #define WINDOW_PLAYER_COMMON_WIDGETS                                                                                                    \
         MakeWidget({  0,  0}, {192, 157}, WindowWidgetType::Frame,    WindowColour::Primary                                     ), /* Panel / Background */ \
         MakeWidget({  1,  1}, {190,  14}, WindowWidgetType::Caption,  WindowColour::Primary  , STR_STRING,  STR_WINDOW_TITLE_TIP), /* Title              */ \

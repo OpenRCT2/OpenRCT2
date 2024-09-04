@@ -244,7 +244,7 @@ namespace OpenRCT2::Ui::Windows
         return anchorPoint + ScreenCoordsXY{ 14 * horizontalMultiplier, 7 * verticalMultiplier };
     }
 
-    // clang-format off
+// clang-format off
     // Macros for easily obtaining the top and bottom of a widget inside a properties group box
     #define GBBT(GROUPTOP, row)     ((GROUPTOP) + 14 + row * (PropertyButtonSize.height + VERTICAL_GROUPBOX_PADDING))
     #define GBBB(GROUPTOP, row)     (GBBT((GROUPTOP), row) + PropertyButtonSize.height)

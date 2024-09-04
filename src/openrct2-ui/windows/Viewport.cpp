@@ -38,7 +38,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 200;
     static constexpr int32_t WH = 200;
 
-    static constexpr ScreenSize VIEWPORT_BUTTON = {24, 24};
+    static constexpr ScreenSize VIEWPORT_BUTTON = { 24, 24 };
 
 #pragma endregion
 

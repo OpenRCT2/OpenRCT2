@@ -95,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr int32_t TabWidth = 30;
 
-    // clang-format off
+// clang-format off
     #define MAIN_GUEST_WIDGETS                                                                                                     \
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
             MakeWidget({ 0, 43 }, { 192, 114 }, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */                   \
