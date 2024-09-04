@@ -231,17 +231,23 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SHOW_GUESTS_QUEUING
     };
 
+    // clang-format off
     constexpr int32_t RCT1_LIGHT_OFFSET = 4;
 
-#define MAIN_RIDE_WIDGETS                                                                                                      \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), MakeWidget({ 0, 43 }, { 316, 137 }, WindowWidgetType::Resize, WindowColour::Secondary), \
-        MakeTab({ 3, 17 }, STR_VIEW_OF_RIDE_ATTRACTION_TIP), MakeTab({ 34, 17 }, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP),         \
-        MakeTab({ 65, 17 }, STR_OPERATING_OPTIONS_TIP), MakeTab({ 96, 17 }, STR_MAINTENANCE_OPTIONS_TIP),                      \
-        MakeTab({ 127, 17 }, STR_COLOUR_SCHEME_OPTIONS_TIP), MakeTab({ 158, 17 }, STR_SOUND_AND_MUSIC_OPTIONS_TIP),            \
-        MakeTab({ 189, 17 }, STR_MEASUREMENTS_AND_TEST_DATA_TIP), MakeTab({ 220, 17 }, STR_GRAPHS_TIP),                        \
-        MakeTab({ 251, 17 }, STR_INCOME_AND_COSTS_TIP), MakeTab({ 282, 17 }, STR_CUSTOMER_INFORMATION_TIP)
+    #define MAIN_RIDE_WIDGETS \
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
+        MakeWidget({ 0, 43 }, { 316, 137 }, WindowWidgetType::Resize, WindowColour::Secondary), \
+        MakeTab({ 3, 17 }, STR_VIEW_OF_RIDE_ATTRACTION_TIP), \
+        MakeTab({ 34, 17 }, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP), \
+        MakeTab({ 65, 17 }, STR_OPERATING_OPTIONS_TIP), \
+        MakeTab({ 96, 17 }, STR_MAINTENANCE_OPTIONS_TIP), \
+        MakeTab({ 127, 17 }, STR_COLOUR_SCHEME_OPTIONS_TIP), \
+        MakeTab({ 158, 17 }, STR_SOUND_AND_MUSIC_OPTIONS_TIP), \
+        MakeTab({ 189, 17 }, STR_MEASUREMENTS_AND_TEST_DATA_TIP), \
+        MakeTab({ 220, 17 }, STR_GRAPHS_TIP), \
+        MakeTab({ 251, 17 }, STR_INCOME_AND_COSTS_TIP), \
+        MakeTab({ 282, 17 }, STR_CUSTOMER_INFORMATION_TIP)
 
-    // clang-format off
     // 0x009ADC34
     static Widget _mainWidgets[] = {
         MAIN_RIDE_WIDGETS,

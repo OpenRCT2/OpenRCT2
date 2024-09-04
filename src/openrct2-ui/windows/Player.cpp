@@ -50,8 +50,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VIEWPORT,
     };
 
-#define WINDOW_PLAYER_COMMON_WIDGETS                                                                                              \
-    MakeWidget({ 0, 0 }, { 192, 157 }, WindowWidgetType::Frame, WindowColour::Primary),                                           \
+    #define WINDOW_PLAYER_COMMON_WIDGETS                                                                                              \
+        MakeWidget({ 0, 0 }, { 192, 157 }, WindowWidgetType::Frame, WindowColour::Primary),                                           \
         MakeWidget({ 1, 1 }, { 190, 14 }, WindowWidgetType::Caption, WindowColour::Primary, STR_STRING, STR_WINDOW_TITLE_TIP),    \
         MakeWidget({ 179, 2 }, { 11, 12 }, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), \
         MakeWidget({ 0, 43 }, { 192, 114 }, WindowWidgetType::Resize, WindowColour::Secondary),                                   \
