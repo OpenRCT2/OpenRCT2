@@ -58,14 +58,9 @@ namespace OpenRCT2::Ui::Windows
 
 #define WIDGETS_MAIN                                                                                                           \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
-        MakeWidget(                                                                                                            \
-            { 0, TABHEIGHT }, { WW, WH - TABHEIGHT }, WindowWidgetType::Frame, WindowColour::Secondary), /* page background */ \
-        MakeRemapWidget(                                                                                                       \
-            { 3, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary,                                 \
-            SPR_TAB_LARGE), /* about OpenRCT2 button */                                                                        \
-        MakeRemapWidget(                                                                                                       \
-            { 94, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary,                                \
-            SPR_TAB_LARGE) /* about RCT2 button */
+        MakeWidget({ 0, TABHEIGHT }, { WW, WH - TABHEIGHT }, WindowWidgetType::Frame, WindowColour::Secondary),                \
+        MakeRemapWidget({ 3, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE),     \
+        MakeRemapWidget({ 94, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE)
 
     // clang-format off
     static Widget _windowAboutOpenRCT2Widgets[] = {
