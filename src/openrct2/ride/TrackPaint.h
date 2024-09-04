@@ -435,6 +435,10 @@ bool TrackPaintUtilShouldPaintSupports(const CoordsXY& position);
 void TrackPaintUtilDrawPier(
     PaintSession& session, const Ride& ride, const StationObject* stationObject, const CoordsXY& position, Direction direction,
     int32_t height, const TrackElement& trackElement, uint8_t rotation);
+inline void TrackPaintUtilDrawStationTunnel(PaintSession& session, Direction direction, int32_t height)
+{
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
+}
 
 void TrackPaintUtilRightQuarterTurn5TilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,

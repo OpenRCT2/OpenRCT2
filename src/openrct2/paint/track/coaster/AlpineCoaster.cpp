@@ -115,7 +115,7 @@ namespace OpenRCT2::AlpineRC
             { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
+        TrackPaintUtilDrawStationTunnel(session, direction, height);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }

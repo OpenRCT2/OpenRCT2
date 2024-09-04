@@ -134,7 +134,7 @@ static void TwisterRCTrackStation(
 
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 9, trackElement);
 
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
+    TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
