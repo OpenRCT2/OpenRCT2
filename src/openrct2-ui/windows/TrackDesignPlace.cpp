@@ -7,9 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/ViewportInteraction.h"
-
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Cheats.h>
@@ -77,6 +78,26 @@ namespace OpenRCT2::Ui::Windows
 
     class TrackDesignPlaceWindow final : public Window
     {
+    private:
+        std::unique_ptr<TrackDesign> _trackDesign;
+
+        CoordsXYZD _placementLoc;
+        RideId _placementGhostRideId;
+        bool _hasPlacementGhost;
+        money64 _placementCost;
+        CoordsXYZD _placementGhostLoc;
+
+        std::vector<uint8_t> _miniPreview;
+
+        bool _trackPlaceCtrlState = false;
+        int32_t _trackPlaceCtrlZ;
+
+        bool _trackPlaceShiftState = false;
+        ScreenCoordsXY _trackPlaceShiftStart;
+        int32_t _trackPlaceShiftZ;
+
+        int32_t _trackPlaceZ;
+
     public:
         void OnOpen() override
         {
@@ -146,23 +167,38 @@ namespace OpenRCT2::Ui::Windows
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             TrackDesignState tds{};
-            int16_t mapZ;
 
             MapInvalidateMapSelectionTiles();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
+            // Take shift modifier into account
+            ScreenCoordsXY targetScreenCoords = screenCoords;
+            if (_trackPlaceShiftState)
+                targetScreenCoords = _trackPlaceShiftStart;
+
             // Get the tool map position
-            CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
+            CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(targetScreenCoords);
             if (mapCoords.IsNull())
             {
                 ClearProvisional();
                 return;
             }
 
+            // Get base Z position
+            // NB: always use the actual screenCoords here, not the shifted ones
+            auto maybeMapZ = GetBaseZ(mapCoords, screenCoords);
+            if (!maybeMapZ.has_value())
+            {
+                ClearProvisional();
+                return;
+            }
+
+            CoordsXYZD trackLoc = { mapCoords, *maybeMapZ, _currentTrackPieceDirection };
+
             // Check if tool map position has changed since last update
-            if (mapCoords == _placementLoc)
+            if (trackLoc == _placementLoc)
             {
                 TrackDesignPreviewDrawOutlines(
                     tds, *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, 0, _currentTrackPieceDirection });
@@ -170,11 +206,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             money64 cost = kMoney64Undefined;
-
-            // Get base Z position
-            mapZ = GetBaseZ(mapCoords);
-            CoordsXYZD trackLoc = { mapCoords, mapZ, _currentTrackPieceDirection };
-
             if (GameIsNotPaused() || GetGameState().Cheats.BuildInPauseMode)
             {
                 ClearProvisional();
@@ -216,59 +247,73 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-            const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
+            // Take shift modifier into account
+            ScreenCoordsXY targetScreenCoords = screenCoords;
+            if (_trackPlaceShiftState)
+                targetScreenCoords = _trackPlaceShiftStart;
+
+            // Get the tool map position
+            CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(targetScreenCoords);
             if (mapCoords.IsNull())
-                return;
-
-            // Try increasing Z until a feasible placement is found
-            int16_t mapZ = GetBaseZ(mapCoords);
-            CoordsXYZ trackLoc = { mapCoords, mapZ };
-
-            auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
-            if (res.Error == GameActions::Status::Ok)
             {
-                auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
-                tdAction.SetCallback([&](const GameAction*, const GameActions::Result* result) {
-                    if (result->Error == GameActions::Status::Ok)
-                    {
-                        rideId = result->GetData<RideId>();
-                        auto getRide = GetRide(rideId);
-                        if (getRide != nullptr)
-                        {
-                            WindowCloseByClass(WindowClass::Error);
-                            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackLoc);
-
-                            _currentRideIndex = rideId;
-                            if (TrackDesignAreEntranceAndExitPlaced())
-                            {
-                                auto intent = Intent(WindowClass::Ride);
-                                intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
-                                ContextOpenIntent(&intent);
-                                auto wnd = WindowFindByClass(WindowClass::TrackDesignPlace);
-                                WindowClose(*wnd);
-                            }
-                            else
-                            {
-                                RideInitialiseConstructionWindow(*getRide);
-                                auto wnd = WindowFindByClass(WindowClass::RideConstruction);
-                                wnd->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, result->Position);
-                    }
-                });
-                GameActions::Execute(&tdAction);
+                ClearProvisional();
                 return;
             }
 
-            // Unable to build track
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, trackLoc);
+            // NB: always use the actual screenCoords here, not the shifted ones
+            auto maybeMapZ = GetBaseZ(mapCoords, screenCoords);
+            if (!maybeMapZ.has_value())
+            {
+                ClearProvisional();
+                return;
+            }
 
-            auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-            windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
+            // Try increasing Z until a feasible placement is found
+            CoordsXYZ trackLoc = { mapCoords, maybeMapZ.value() };
+            auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
+            if (res.Error != GameActions::Status::Ok)
+            {
+                // Unable to build track
+                Audio::Play3D(Audio::SoundId::Error, trackLoc);
+
+                auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+                windowManager->ShowError(res.GetErrorTitle(), res.GetErrorMessage());
+                return;
+            }
+
+            auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
+            tdAction.SetCallback([&](const GameAction*, const GameActions::Result* result) {
+                if (result->Error != GameActions::Status::Ok)
+                {
+                    Audio::Play3D(Audio::SoundId::Error, result->Position);
+                    return;
+                }
+
+                rideId = result->GetData<RideId>();
+                auto getRide = GetRide(rideId);
+                if (getRide != nullptr)
+                {
+                    WindowCloseByClass(WindowClass::Error);
+                    Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
+
+                    _currentRideIndex = rideId;
+                    if (TrackDesignAreEntranceAndExitPlaced())
+                    {
+                        auto intent = Intent(WindowClass::Ride);
+                        intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
+                        ContextOpenIntent(&intent);
+                        auto wnd = WindowFindByClass(WindowClass::TrackDesignPlace);
+                        WindowClose(*wnd);
+                    }
+                    else
+                    {
+                        RideInitialiseConstructionWindow(*getRide);
+                        auto wnd = WindowFindByClass(WindowClass::RideConstruction);
+                        wnd->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                    }
+                }
+            });
+            GameActions::Execute(&tdAction);
         }
 
         void OnToolAbort(WidgetIndex widgetIndex) override
@@ -385,16 +430,6 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        std::unique_ptr<TrackDesign> _trackDesign;
-
-        CoordsXY _placementLoc;
-        RideId _placementGhostRideId;
-        bool _hasPlacementGhost;
-        money64 _placementCost;
-        CoordsXYZD _placementGhostLoc;
-
-        std::vector<uint8_t> _miniPreview;
-
         void ClearProvisional()
         {
             if (_hasPlacementGhost)
@@ -408,31 +443,102 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        int32_t GetBaseZ(const CoordsXY& loc)
+        std::optional<int32_t> GetBaseZ([[maybe_unused]] const CoordsXY& loc, const ScreenCoordsXY& screenCoords)
         {
-            auto surfaceElement = MapGetSurfaceElementAt(loc);
+            CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
+            auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
             if (surfaceElement == nullptr)
-                return 0;
+                return std::nullopt;
 
-            auto z = surfaceElement->GetBaseZ();
+            auto& im = GetInputManager();
 
-            // Increase Z above slope
-            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
+            if (!_trackPlaceCtrlState && im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
-                z += 16;
+                constexpr auto interactionFlags = EnumsToFlags(
+                    ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
+                    ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery);
 
-                // Increase Z above double slope
-                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
-                    z += 16;
+                auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
+                if (info.SpriteType == ViewportInteractionItem::Terrain)
+                {
+                    _trackPlaceCtrlZ = Floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
+
+                    // Increase Z above water
+                    if (surfaceElement->GetWaterHeight() > 0)
+                        _trackPlaceCtrlZ = std::max(_trackPlaceCtrlZ, surfaceElement->GetWaterHeight());
+                }
+                else
+                {
+                    _trackPlaceCtrlZ = Floor2(info.Element->GetBaseZ(), kCoordsZStep);
+                }
+
+                _trackPlaceCtrlState = true;
+            }
+            else if (!im.IsModifierKeyPressed(ModifierKey::ctrl))
+            {
+                _trackPlaceCtrlState = false;
+                _trackPlaceCtrlZ = 0;
             }
 
-            // Increase Z above water
-            if (surfaceElement->GetWaterHeight() > 0)
-                z = std::max(z, surfaceElement->GetWaterHeight());
+            if (!_trackPlaceShiftState && im.IsModifierKeyPressed(ModifierKey::shift))
+            {
+                _trackPlaceShiftState = true;
+                _trackPlaceShiftStart = screenCoords;
+                _trackPlaceShiftZ = 0;
+            }
+            else if (im.IsModifierKeyPressed(ModifierKey::shift))
+            {
+                uint16_t maxHeight = ZoomLevel::max().ApplyTo(
+                    std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
 
-            return z
+                _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
+
+                // Scale delta by zoom to match mouse position.
+                auto* mainWnd = WindowGetMain();
+                if (mainWnd != nullptr && mainWnd->viewport != nullptr)
+                    _trackPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_trackPlaceShiftZ);
+
+                // Floor to closest kCoordsZStep
+                _trackPlaceShiftZ = Floor2(_trackPlaceShiftZ, kCoordsZStep);
+
+                // Clamp to maximum possible value of BaseHeight can offer.
+                _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
+            }
+            else if (_trackPlaceShiftState)
+            {
+                _trackPlaceShiftState = false;
+                _trackPlaceShiftZ = 0;
+            }
+
+            if (!_trackPlaceCtrlState)
+            {
+                _trackPlaceZ = Floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
+
+                // Increase Z above water
+                if (surfaceElement->GetWaterHeight() > 0)
+                    _trackPlaceZ = std::max(_trackPlaceZ, surfaceElement->GetWaterHeight());
+
+                if (_trackPlaceShiftState)
+                {
+                    _trackPlaceZ += _trackPlaceShiftZ;
+                    _trackPlaceZ = std::max<int16_t>(16, _trackPlaceZ);
+                }
+            }
+            else
+            {
+                _trackPlaceZ = _trackPlaceCtrlZ;
+                if (_trackPlaceShiftState)
+                    _trackPlaceZ += _trackPlaceShiftZ;
+
+                _trackPlaceZ = std::max<int32_t>(16, _trackPlaceZ);
+            }
+
+            if (mapCoords.x == kLocationNull)
+                return std::nullopt;
+
+            return _trackPlaceZ
                 + TrackDesignGetZPlacement(
-                       *_trackDesign, RideGetTemporaryForPreview(), { loc, z, _currentTrackPieceDirection });
+                       *_trackDesign, RideGetTemporaryForPreview(), { mapCoords, _trackPlaceZ, _currentTrackPieceDirection });
         }
 
         void DrawMiniPreviewEntrances(
@@ -597,7 +703,7 @@ namespace OpenRCT2::Ui::Windows
         GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t newFlags)
         {
             GameActions::Result res;
-            for (int32_t i = 0; i < 7; i++, loc.z += 8)
+            for (int32_t i = 0; i < 7; i++, loc.z += kCoordsZStep)
             {
                 auto tdAction = TrackDesignAction(
                     CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign);
