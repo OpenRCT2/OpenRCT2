@@ -910,7 +910,7 @@ namespace OpenRCT2
                         return true;
                     });
 
-                    if (version <= 36)
+                    if (version < k16BitParkHistoryVersion)
                     {
                         if (cs.GetMode() == OrcaStream::Mode::READING)
                         {
@@ -922,7 +922,7 @@ namespace OpenRCT2
                             for (int i = 0; i < kParkRatingHistorySize; i++)
                             {
                                 if (smallHistory[i] == RCT12ParkHistoryUndefined)
-                                    gameState.Park.RatingHistory[i] = ParkRatingHistoryUndefined;
+                                    gameState.Park.RatingHistory[i] = kParkRatingHistoryUndefined;
                                 else
                                 {
                                     gameState.Park.RatingHistory[i] = static_cast<uint16_t>(
@@ -935,7 +935,7 @@ namespace OpenRCT2
                             uint8_t smallHistory[kParkRatingHistorySize];
                             for (int i = 0; i < kParkRatingHistorySize; i++)
                             {
-                                if (gameState.Park.RatingHistory[i] == ParkRatingHistoryUndefined)
+                                if (gameState.Park.RatingHistory[i] == kParkRatingHistoryUndefined)
                                     smallHistory[i] = RCT12ParkHistoryUndefined;
                                 else
                                 {
