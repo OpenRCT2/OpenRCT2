@@ -80,12 +80,12 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_PEEP, WIDX_PATROL);
     validate_global_widx(WC_STAFF, WIDX_PICKUP);
 
-#define MAIN_STAFF_WIDGETS \
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-        MakeWidget({ 0, 43}, {190, 137}, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */ \
-        MakeTab   ({ 3, 17}, STR_STAFF_OVERVIEW_TIP                         ), /* Tab 1 */ \
-        MakeTab   ({34, 17}, STR_STAFF_OPTIONS_TIP                          ), /* Tab 2 */ \
-        MakeTab   ({65, 17}, STR_STAFF_STATS_TIP                            )  /* Tab 3 */
+#define MAIN_STAFF_WIDGETS                                                                                                     \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
+        MakeWidget({ 0, 43 }, { 190, 137 }, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */                   \
+        MakeTab({ 3, 17 }, STR_STAFF_OVERVIEW_TIP),                                             /* Tab 1 */                    \
+        MakeTab({ 34, 17 }, STR_STAFF_OPTIONS_TIP),                                             /* Tab 2 */                    \
+        MakeTab({ 65, 17 }, STR_STAFF_STATS_TIP)                                                /* Tab 3 */
 
     // clang-format off
     static Widget _staffOverviewWidgets[] = {
