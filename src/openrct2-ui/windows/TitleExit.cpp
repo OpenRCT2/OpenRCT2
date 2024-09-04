@@ -14,16 +14,15 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    // clang-format off
-enum WindowTitleExitWidgetIdx {
-    WIDX_EXIT,
-};
+    enum WindowTitleExitWidgetIdx
+    {
+        WIDX_EXIT,
+    };
 
-static Widget _titleExitWidgets[] = {
-    MakeWidget({0, 0}, {40, 64}, WindowWidgetType::ImgBtn, WindowColour::Tertiary, ImageId(SPR_MENU_EXIT), STR_EXIT),
-    kWidgetsEnd,
-};
-    // clang-format on
+    static Widget _titleExitWidgets[] = {
+        MakeWidget({ 0, 0 }, { 40, 64 }, WindowWidgetType::ImgBtn, WindowColour::Tertiary, ImageId(SPR_MENU_EXIT), STR_EXIT),
+        kWidgetsEnd,
+    };
 
     class TitleExitWindow final : public Window
     {
