@@ -28,64 +28,64 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId WINDOW_TITLE = STR_ABOUT;
     static constexpr int32_t TABHEIGHT = 50;
 
+    enum
+    {
+        WINDOW_ABOUT_PAGE_OPENRCT2,
+        WINDOW_ABOUT_PAGE_RCT2,
+    };
+
+    enum WindowAboutWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_PAGE_BACKGROUND,
+        WIDX_TAB_ABOUT_OPENRCT2,
+        WIDX_TAB_ABOUT_RCT2,
+
+        WIDX_PAGE_START,
+
+        // About OpenRCT2
+        WIDX_INTRO = WIDX_PAGE_START,
+        WIDX_OPENRCT2_LOGO,
+        WIDX_VERSION,
+        WIDX_COPY_BUILD_INFO,
+        WIDX_NEW_VERSION,
+        WIDX_CHANGELOG,
+        WIDX_JOIN_DISCORD,
+        WIDX_CONTRIBUTORS_BUTTON,
+    };
+
     // clang-format off
-enum
-{
-    WINDOW_ABOUT_PAGE_OPENRCT2,
-    WINDOW_ABOUT_PAGE_RCT2,
-};
+    #define WIDGETS_MAIN \
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
+        MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::Frame,  WindowColour::Secondary               ), /* page background */       \
+        MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
+        MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */ \
 
-enum WindowAboutWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_PAGE_BACKGROUND,
-    WIDX_TAB_ABOUT_OPENRCT2,
-    WIDX_TAB_ABOUT_RCT2,
-
-    WIDX_PAGE_START,
-
-    // About OpenRCT2
-    WIDX_INTRO = WIDX_PAGE_START,
-    WIDX_OPENRCT2_LOGO,
-    WIDX_VERSION,
-    WIDX_COPY_BUILD_INFO,
-    WIDX_NEW_VERSION,
-    WIDX_CHANGELOG,
-    WIDX_JOIN_DISCORD,
-    WIDX_CONTRIBUTORS_BUTTON,
-};
-
-#define WIDGETS_MAIN \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::Frame,  WindowColour::Secondary               ), /* page background */       \
-    MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
-    MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */ \
-
-static Widget _windowAboutOpenRCT2Widgets[] = {
-    WIDGETS_MAIN,
-    MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
-    MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // OpenRCT2 Logo
-    MakeWidget({168, 100},      {173, 24},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // Build version
-    MakeWidget({344, 100 },     {24, 24},      WindowWidgetType::ImgBtn,       WindowColour::Secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH   ), // "Copy build info" button
-    MakeWidget({168, 115 + 20}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
-    MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
-    MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
-    MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON), // "contributors" button
-    kWidgetsEnd,
-};
-
-static Widget _windowAboutRCT2Widgets[] = {
-    WIDGETS_MAIN,
-    kWidgetsEnd,
-};
-
-static Widget *_windowAboutPageWidgets[] = {
-    _windowAboutOpenRCT2Widgets,
-    _windowAboutRCT2Widgets,
-};
-
+    static Widget _windowAboutOpenRCT2Widgets[] = {
+        WIDGETS_MAIN,
+        MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
+        MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // OpenRCT2 Logo
+        MakeWidget({168, 100},      {173, 24},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // Build version
+        MakeWidget({344, 100 },     {24, 24},      WindowWidgetType::ImgBtn,       WindowColour::Secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH   ), // "Copy build info" button
+        MakeWidget({168, 115 + 20}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
+        MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
+        MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
+        MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON), // "contributors" button
+        kWidgetsEnd,
+    };
     // clang-format on
+
+    static Widget _windowAboutRCT2Widgets[] = {
+        WIDGETS_MAIN,
+        kWidgetsEnd,
+    };
+
+    static Widget* _windowAboutPageWidgets[] = {
+        _windowAboutOpenRCT2Widgets,
+        _windowAboutRCT2Widgets,
+    };
 
     class AboutWindow final : public Window
     {
