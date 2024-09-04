@@ -44,14 +44,24 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
     };
 
+    // clang-format off
     static constexpr StringId BannerColouredTextFormats[] = {
-        STR_TEXT_COLOUR_BLACK,     STR_TEXT_COLOUR_GREY,         STR_TEXT_COLOUR_WHITE,    STR_TEXT_COLOUR_RED,
-        STR_TEXT_COLOUR_GREEN,     STR_TEXT_COLOUR_YELLOW,       STR_TEXT_COLOUR_TOPAZ,    STR_TEXT_COLOUR_CELADON,
-        STR_TEXT_COLOUR_BABYBLUE,  STR_TEXT_COLOUR_PALELAVENDER, STR_TEXT_COLOUR_PALEGOLD, STR_TEXT_COLOUR_LIGHTPINK,
-        STR_TEXT_COLOUR_PEARLAQUA, STR_TEXT_COLOUR_PALESILVER,
+        STR_TEXT_COLOUR_BLACK,
+        STR_TEXT_COLOUR_GREY,
+        STR_TEXT_COLOUR_WHITE,
+        STR_TEXT_COLOUR_RED,
+        STR_TEXT_COLOUR_GREEN,
+        STR_TEXT_COLOUR_YELLOW,
+        STR_TEXT_COLOUR_TOPAZ,
+        STR_TEXT_COLOUR_CELADON,
+        STR_TEXT_COLOUR_BABYBLUE,
+        STR_TEXT_COLOUR_PALELAVENDER,
+        STR_TEXT_COLOUR_PALEGOLD,
+        STR_TEXT_COLOUR_LIGHTPINK,
+        STR_TEXT_COLOUR_PEARLAQUA,
+        STR_TEXT_COLOUR_PALESILVER,
     };
 
-    // clang-format off
     static Widget window_banner_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, 0x0FFFFFFFE                                        ), // tab content panel
