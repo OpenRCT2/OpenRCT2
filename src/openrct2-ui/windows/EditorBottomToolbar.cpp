@@ -29,21 +29,22 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    // clang-format off
-enum {
-    WIDX_PREVIOUS_IMAGE,        // 1
-    WIDX_PREVIOUS_STEP_BUTTON,  // 2
-    WIDX_NEXT_IMAGE,            // 4
-    WIDX_NEXT_STEP_BUTTON,      // 8
-};
+    enum
+    {
+        WIDX_PREVIOUS_IMAGE,       // 1
+        WIDX_PREVIOUS_STEP_BUTTON, // 2
+        WIDX_NEXT_IMAGE,           // 4
+        WIDX_NEXT_STEP_BUTTON,     // 8
+    };
 
-static Widget _editorBottomToolbarWidgets[] = {
-    MakeWidget({  0, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
-    MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
-    MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
-    MakeWidget({442, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
-    kWidgetsEnd,
-};
+    // clang-format off
+    static Widget _editorBottomToolbarWidgets[] = {
+        MakeWidget({  0, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
+        MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
+        MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
+        MakeWidget({442, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class EditorBottomToolbarWindow final : public Window
