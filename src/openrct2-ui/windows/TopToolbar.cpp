@@ -1457,15 +1457,16 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::SetDisabled(DDIDX_ENABLE_SANDBOX_MODE, true);
         }
 
-        if (GetGameState().Cheats.SandboxMode)
+        auto& gameState = GetGameState();
+        if (gameState.Cheats.SandboxMode)
         {
             Dropdown::SetChecked(DDIDX_ENABLE_SANDBOX_MODE, true);
         }
-        if (GetGameState().Cheats.DisableClearanceChecks)
+        if (gameState.Cheats.DisableClearanceChecks)
         {
             Dropdown::SetChecked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
         }
-        if (GetGameState().Cheats.DisableSupportLimits)
+        if (gameState.Cheats.DisableSupportLimits)
         {
             Dropdown::SetChecked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
         }

@@ -1719,15 +1719,16 @@ static Widget _rideConstructionWidgets[] = {
                 widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
             }
 
+            const auto& gameState = GetGameState();
             if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                 && (_currentTrackPitchEnd == TrackPitch::Up25 || _currentTrackPitchEnd == TrackPitch::Up60)
-                && !GetGameState().Cheats.EnableAllDrawableTrackPieces)
+                && !gameState.Cheats.EnableAllDrawableTrackPieces)
             {
                 _currentTrackLiftHill |= CONSTRUCTION_LIFT_HILL_SELECTED;
             }
 
             if ((IsTrackEnabled(TrackGroup::liftHill) && !_currentlySelectedTrack.isTrackType)
-                || (GetGameState().Cheats.EnableChainLiftOnAllTrack
+                || (gameState.Cheats.EnableChainLiftOnAllTrack
                     && currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack)))
             {
                 widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::FlatBtn;
