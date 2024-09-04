@@ -88,18 +88,18 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-// clang-format off
-    #define MAIN_PARK_WIDGETS(WW) \
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-        MakeWidget({  0, 43}, {WW, 131}, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */ \
-        MakeTab   ({  3, 17}, STR_PARK_ENTRANCE_TAB_TIP                     ), /* tab 1 */ \
-        MakeTab   ({ 34, 17}, STR_PARK_RATING_TAB_TIP                       ), /* tab 2 */ \
-        MakeTab   ({ 65, 17}, STR_PARK_GUESTS_TAB_TIP                       ), /* tab 3 */ \
-        MakeTab   ({ 96, 17}, STR_PARK_PRICE_TAB_TIP                        ), /* tab 4 */ \
-        MakeTab   ({127, 17}, STR_PARK_STATS_TAB_TIP                        ), /* tab 5 */ \
-        MakeTab   ({158, 17}, STR_PARK_OBJECTIVE_TAB_TIP                    ), /* tab 6 */ \
-        MakeTab   ({189, 17}, STR_PARK_AWARDS_TAB_TIP                       )  /* tab 7 */
+#define MAIN_PARK_WIDGETS(WW)                                                                                                  \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
+        MakeWidget({ 0, 43 }, { WW, 131 }, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */         \
+        MakeTab({ 3, 17 }, STR_PARK_ENTRANCE_TAB_TIP),                                         /* tab 1 */                     \
+        MakeTab({ 34, 17 }, STR_PARK_RATING_TAB_TIP),                                          /* tab 2 */                     \
+        MakeTab({ 65, 17 }, STR_PARK_GUESTS_TAB_TIP),                                          /* tab 3 */                     \
+        MakeTab({ 96, 17 }, STR_PARK_PRICE_TAB_TIP),                                           /* tab 4 */                     \
+        MakeTab({ 127, 17 }, STR_PARK_STATS_TAB_TIP),                                          /* tab 5 */                     \
+        MakeTab({ 158, 17 }, STR_PARK_OBJECTIVE_TAB_TIP),                                      /* tab 6 */                     \
+        MakeTab({ 189, 17 }, STR_PARK_AWARDS_TAB_TIP)                                          /* tab 7 */
 
+    // clang-format off
     static Widget _entranceWidgets[] = {
         MAIN_PARK_WIDGETS(230),
         MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport

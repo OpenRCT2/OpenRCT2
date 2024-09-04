@@ -97,17 +97,14 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-// clang-format off
-    #define MAIN_FINANCES_WIDGETS(TITLE, RSW, RSH, WW, WH) \
-        WINDOW_SHIM(TITLE, WW, WH), \
-        MakeWidget({0, 43}, {RSW, RSH}, WindowWidgetType::Resize, WindowColour::Secondary), \
-        MakeTab({  3, 17}, STR_FINANCES_SHOW_SUMMARY_TAB_TIP      ), \
-        MakeTab({ 34, 17}, STR_FINANCES_SHOW_CASH_TAB_TIP         ), \
-        MakeTab({ 65, 17}, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP   ), \
-        MakeTab({ 96, 17}, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP), \
-        MakeTab({127, 17}, STR_FINANCES_SHOW_MARKETING_TAB_TIP    ), \
-        MakeTab({158, 17}, STR_FINANCES_RESEARCH_TIP              )
+#define MAIN_FINANCES_WIDGETS(TITLE, RSW, RSH, WW, WH)                                                                         \
+    WINDOW_SHIM(TITLE, WW, WH), MakeWidget({ 0, 43 }, { RSW, RSH }, WindowWidgetType::Resize, WindowColour::Secondary),        \
+        MakeTab({ 3, 17 }, STR_FINANCES_SHOW_SUMMARY_TAB_TIP), MakeTab({ 34, 17 }, STR_FINANCES_SHOW_CASH_TAB_TIP),            \
+        MakeTab({ 65, 17 }, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP),                                                             \
+        MakeTab({ 96, 17 }, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP),                                                          \
+        MakeTab({ 127, 17 }, STR_FINANCES_SHOW_MARKETING_TAB_TIP), MakeTab({ 158, 17 }, STR_FINANCES_RESEARCH_TIP)
 
+    // clang-format off
     static Widget _windowFinancesSummaryWidgets[] =
     {
         MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),

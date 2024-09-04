@@ -56,13 +56,18 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CONTRIBUTORS_BUTTON,
     };
 
-// clang-format off
-    #define WIDGETS_MAIN \
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-        MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::Frame,  WindowColour::Secondary               ), /* page background */       \
-        MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
-        MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */ \
+#define WIDGETS_MAIN                                                                                                           \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
+        MakeWidget(                                                                                                            \
+            { 0, TABHEIGHT }, { WW, WH - TABHEIGHT }, WindowWidgetType::Frame, WindowColour::Secondary), /* page background */ \
+        MakeRemapWidget(                                                                                                       \
+            { 3, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary,                                 \
+            SPR_TAB_LARGE), /* about OpenRCT2 button */                                                                        \
+        MakeRemapWidget(                                                                                                       \
+            { 94, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary,                                \
+            SPR_TAB_LARGE) /* about RCT2 button */
 
+    // clang-format off
     static Widget _windowAboutOpenRCT2Widgets[] = {
         WIDGETS_MAIN,
         MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction

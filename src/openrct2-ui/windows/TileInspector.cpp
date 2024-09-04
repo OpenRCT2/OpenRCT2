@@ -229,6 +229,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t VERTICAL_GROUPBOX_PADDING = 4;
     constexpr auto PropertyButtonSize = ScreenSize{ 130, 18 };
     constexpr auto PropertyFullWidth = ScreenSize{ 370, 18 };
+
 #pragma endregion
 
     constexpr ScreenCoordsXY PropertyRowCol(ScreenCoordsXY anchor, int32_t row, int32_t column)
@@ -245,6 +246,7 @@ namespace OpenRCT2::Ui::Windows
     }
 
 // clang-format off
+
     // Macros for easily obtaining the top and bottom of a widget inside a properties group box
     #define GBBT(GROUPTOP, row)     ((GROUPTOP) + 14 + row * (PropertyButtonSize.height + VERTICAL_GROUPBOX_PADDING))
     #define GBBB(GROUPTOP, row)     (GBBT((GROUPTOP), row) + PropertyButtonSize.height)

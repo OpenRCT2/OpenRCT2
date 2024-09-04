@@ -223,18 +223,14 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 310;
     static constexpr int32_t WH = 332;
 
-// clang-format off
-    #define MAIN_OPTIONS_WIDGETS \
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-        MakeWidget({  0, 43}, {WW, 289}, WindowWidgetType::Resize, WindowColour::Secondary), \
-        MakeTab   ({  3, 17}, STR_OPTIONS_DISPLAY_TIP                       ), \
-        MakeTab   ({ 34, 17}, STR_OPTIONS_RENDERING_TIP                     ), \
-        MakeTab   ({ 65, 17}, STR_OPTIONS_CULTURE_TIP                       ), \
-        MakeTab   ({ 96, 17}, STR_OPTIONS_AUDIO_TIP                         ), \
-        MakeTab   ({127, 17}, STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP        ), \
-        MakeTab   ({158, 17}, STR_OPTIONS_MISCELLANEOUS_TIP                 ), \
-        MakeTab   ({189, 17}, STR_OPTIONS_ADVANCED                          )
+#define MAIN_OPTIONS_WIDGETS                                                                                                   \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), MakeWidget({ 0, 43 }, { WW, 289 }, WindowWidgetType::Resize, WindowColour::Secondary),  \
+        MakeTab({ 3, 17 }, STR_OPTIONS_DISPLAY_TIP), MakeTab({ 34, 17 }, STR_OPTIONS_RENDERING_TIP),                           \
+        MakeTab({ 65, 17 }, STR_OPTIONS_CULTURE_TIP), MakeTab({ 96, 17 }, STR_OPTIONS_AUDIO_TIP),                              \
+        MakeTab({ 127, 17 }, STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP), MakeTab({ 158, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP),     \
+        MakeTab({ 189, 17 }, STR_OPTIONS_ADVANCED)
 
+    // clang-format off
     static Widget window_options_display_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget        ({  5,  53}, {300, 170}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group

@@ -49,15 +49,19 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VIEWPORT,
     };
 
-// clang-format off
-    #define WINDOW_PLAYER_COMMON_WIDGETS                                                                                                    \
-        MakeWidget({  0,  0}, {192, 157}, WindowWidgetType::Frame,    WindowColour::Primary                                     ), /* Panel / Background */ \
-        MakeWidget({  1,  1}, {190,  14}, WindowWidgetType::Caption,  WindowColour::Primary  , STR_STRING,  STR_WINDOW_TITLE_TIP), /* Title              */ \
-        MakeWidget({179,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary  , STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), /* Close x button     */ \
-        MakeWidget({  0, 43}, {192, 114}, WindowWidgetType::Resize,   WindowColour::Secondary                                   ), /* Resize             */ \
-        MakeTab   ({  3, 17}                                                                                      ), /* Tab 1              */ \
-        MakeTab   ({ 34, 17}                                                                                      )  /* Tab 2              */
+#define WINDOW_PLAYER_COMMON_WIDGETS                                                                                           \
+    MakeWidget({ 0, 0 }, { 192, 157 }, WindowWidgetType::Frame, WindowColour::Primary), /* Panel / Background */               \
+        MakeWidget(                                                                                                            \
+            { 1, 1 }, { 190, 14 }, WindowWidgetType::Caption, WindowColour::Primary, STR_STRING,                               \
+            STR_WINDOW_TITLE_TIP), /* Title              */                                                                    \
+        MakeWidget(                                                                                                            \
+            { 179, 2 }, { 11, 12 }, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,                            \
+            STR_CLOSE_WINDOW_TIP),                                                              /* Close x button     */       \
+        MakeWidget({ 0, 43 }, { 192, 114 }, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize             */       \
+        MakeTab({ 3, 17 }),                                                                     /* Tab 1              */       \
+        MakeTab({ 34, 17 })                                                                     /* Tab 2              */
 
+    // clang-format off
     static Widget window_player_overview_widgets[] = {
         WINDOW_PLAYER_COMMON_WIDGETS,
         MakeWidget({  3, 46}, {175, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                           ), // Permission group

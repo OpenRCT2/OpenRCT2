@@ -124,15 +124,15 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 250;
     static constexpr int32_t WH = 273;
 
-// clang-format off
-    #define SHARED_WIDGETS \
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \
-        MakeWidget({ 0, 43}, {WW, 229}, WindowWidgetType::Resize, WindowColour::Secondary), /* WIDX_PAGE_BACKGROUND */ \
-        MakeTab   ({ 3, 17}                                                ), /* WIDX_TAB_1 */ \
-        MakeTab   ({34, 17}                                                ), /* WIDX_TAB_2 */ \
-        MakeTab   ({65, 17}                                                ), /* WIDX_TAB_3 */ \
-        MakeTab   ({96, 17}                                                )  /* WIDX_TAB_4 */
+#define SHARED_WIDGETS                                                                                                         \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */                                           \
+        MakeWidget({ 0, 43 }, { WW, 229 }, WindowWidgetType::Resize, WindowColour::Secondary), /* WIDX_PAGE_BACKGROUND */      \
+        MakeTab({ 3, 17 }),                                                                    /* WIDX_TAB_1 */                \
+        MakeTab({ 34, 17 }),                                                                   /* WIDX_TAB_2 */                \
+        MakeTab({ 65, 17 }),                                                                   /* WIDX_TAB_3 */                \
+        MakeTab({ 96, 17 })                                                                    /* WIDX_TAB_4 */
 
+    // clang-format off
     static Widget MapWidgets[] = {
         SHARED_WIDGETS,
         MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                 ),

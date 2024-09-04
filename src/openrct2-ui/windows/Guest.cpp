@@ -95,18 +95,18 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr int32_t TabWidth = 30;
 
-// clang-format off
-    #define MAIN_GUEST_WIDGETS                                                                                                     \
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
-            MakeWidget({ 0, 43 }, { 192, 114 }, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */                   \
-            MakeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                            /* Tab 1 */                    \
-            MakeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                          /* Tab 2 */                    \
-            MakeTab({ 65, 17 }, STR_SHOW_GUEST_VISITED_RIDES_TIP),                                  /* Tab 3 */                    \
-            MakeTab({ 96, 17 }, STR_SHOW_GUEST_FINANCE_TIP),                                        /* Tab 4 */                    \
-            MakeTab({ 127, 17 }, STR_SHOW_GUEST_THOUGHTS_TIP),                                      /* Tab 5 */                    \
-            MakeTab({ 158, 17 }, STR_SHOW_GUEST_ITEMS_TIP),                                         /* Tab 6 */                    \
-            MakeTab({ 189, 17 }, STR_DEBUG_TIP)                                                     /* Tab 7 */
+#define MAIN_GUEST_WIDGETS                                                                                                     \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
+        MakeWidget({ 0, 43 }, { 192, 114 }, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */                   \
+        MakeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                            /* Tab 1 */                    \
+        MakeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                          /* Tab 2 */                    \
+        MakeTab({ 65, 17 }, STR_SHOW_GUEST_VISITED_RIDES_TIP),                                  /* Tab 3 */                    \
+        MakeTab({ 96, 17 }, STR_SHOW_GUEST_FINANCE_TIP),                                        /* Tab 4 */                    \
+        MakeTab({ 127, 17 }, STR_SHOW_GUEST_THOUGHTS_TIP),                                      /* Tab 5 */                    \
+        MakeTab({ 158, 17 }, STR_SHOW_GUEST_ITEMS_TIP),                                         /* Tab 6 */                    \
+        MakeTab({ 189, 17 }, STR_DEBUG_TIP)                                                     /* Tab 7 */
 
+    // clang-format off
     static Widget _guestWindowWidgetsOverview[] = {
         MAIN_GUEST_WIDGETS,
         MakeWidget({  3,  45}, {164, 12}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Thought marquee
