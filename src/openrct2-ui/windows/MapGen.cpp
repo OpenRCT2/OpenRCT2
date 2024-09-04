@@ -125,66 +125,66 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 273;
 
     // clang-format off
-#define SHARED_WIDGETS \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \
-    MakeWidget({ 0, 43}, {WW, 229}, WindowWidgetType::Resize, WindowColour::Secondary), /* WIDX_PAGE_BACKGROUND */ \
-    MakeTab   ({ 3, 17}                                                ), /* WIDX_TAB_1 */ \
-    MakeTab   ({34, 17}                                                ), /* WIDX_TAB_2 */ \
-    MakeTab   ({65, 17}                                                ), /* WIDX_TAB_3 */ \
-    MakeTab   ({96, 17}                                                )  /* WIDX_TAB_4 */
+    #define SHARED_WIDGETS \
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \
+        MakeWidget({ 0, 43}, {WW, 229}, WindowWidgetType::Resize, WindowColour::Secondary), /* WIDX_PAGE_BACKGROUND */ \
+        MakeTab   ({ 3, 17}                                                ), /* WIDX_TAB_1 */ \
+        MakeTab   ({34, 17}                                                ), /* WIDX_TAB_2 */ \
+        MakeTab   ({65, 17}                                                ), /* WIDX_TAB_3 */ \
+        MakeTab   ({96, 17}                                                )  /* WIDX_TAB_4 */
 
-static Widget MapWidgets[] = {
-    SHARED_WIDGETS,
-    MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                 ),
-    MakeSpinnerWidgets({104,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_COMMA16                                                ), // NB: 3 widgets
-    MakeWidget        ({155,  52}, {21, 12}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),          STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
-    MakeSpinnerWidgets({177,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
-    MakeSpinnerWidgets({104,  70}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
-    MakeSpinnerWidgets({104,  88}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
-    MakeWidget        ({104, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP       ),
-    MakeWidget        ({151, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP   ),
-    kWidgetsEnd,
-};
+    static Widget MapWidgets[] = {
+        SHARED_WIDGETS,
+        MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                 ),
+        MakeSpinnerWidgets({104,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_COMMA16                                                ), // NB: 3 widgets
+        MakeWidget        ({155,  52}, {21, 12}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),          STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
+        MakeSpinnerWidgets({177,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
+        MakeSpinnerWidgets({104,  70}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
+        MakeSpinnerWidgets({104,  88}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
+        MakeWidget        ({104, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP       ),
+        MakeWidget        ({151, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP   ),
+        kWidgetsEnd,
+    };
 
-static Widget RandomWidgets[] = {
-    SHARED_WIDGETS,
-    MakeWidget({155, 255}, { 90, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE      ),
-    MakeWidget({  4,  52}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN),
-    MakeWidget({  4,  70}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES   ),
-    kWidgetsEnd,
-};
+    static Widget RandomWidgets[] = {
+        SHARED_WIDGETS,
+        MakeWidget({155, 255}, { 90, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE      ),
+        MakeWidget({  4,  52}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN),
+        MakeWidget({  4,  70}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES   ),
+        kWidgetsEnd,
+    };
 
-static Widget SimplexWidgets[] = {
-    SHARED_WIDGETS,
-    MakeWidget        ({155, 255}, { 90, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                       ), // WIDX_SIMPLEX_GENERATE
-    MakeWidget        ({  4,  52}, {195, 12}, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_MAPGEN_SIMPLEX_NOISE                                         ), // WIDX_SIMPLEX_LABEL
-    MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_LOW{,_UP,_DOWN}
-    MakeSpinnerWidgets({104,  88}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_HIGH{,_UP,_DOWN}
-    MakeSpinnerWidgets({104, 106}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
-    MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
-    MakeSpinnerWidgets({104, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_COMMA16                                                      ), // WIDX_SIMPLEX_MAP_SIZE_Y{,_UP,_DOWN}
-    MakeWidget        ({155, 148}, { 21, 12}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),                STR_MAINTAIN_SQUARE_MAP_TOOLTIP), // WIDX_SIMPLEX_MAP_SIZE_LINK
-    MakeSpinnerWidgets({177, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_POP16_COMMA16                                                ), // WIDX_SIMPLEX_MAP_SIZE_X{,_UP,_DOWN}
-    MakeSpinnerWidgets({104, 166}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_WATER_LEVEL{,_UP,_DOWN}
-    MakeWidget        ({104, 190}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN                                 ), // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX
-    MakeWidget        ({102, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP       ), // WIDX_SIMPLEX_FLOOR_TEXTURE
-    MakeWidget        ({150, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_VERTICAL_LAND_TIP   ), // WIDX_SIMPLEX_WALL_TEXTURE
-    MakeWidget        ({104, 239}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
-    kWidgetsEnd,
-};
+    static Widget SimplexWidgets[] = {
+        SHARED_WIDGETS,
+        MakeWidget        ({155, 255}, { 90, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                       ), // WIDX_SIMPLEX_GENERATE
+        MakeWidget        ({  4,  52}, {195, 12}, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_MAPGEN_SIMPLEX_NOISE                                         ), // WIDX_SIMPLEX_LABEL
+        MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_LOW{,_UP,_DOWN}
+        MakeSpinnerWidgets({104,  88}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_HIGH{,_UP,_DOWN}
+        MakeSpinnerWidgets({104, 106}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
+        MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
+        MakeSpinnerWidgets({104, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_COMMA16                                                      ), // WIDX_SIMPLEX_MAP_SIZE_Y{,_UP,_DOWN}
+        MakeWidget        ({155, 148}, { 21, 12}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),                STR_MAINTAIN_SQUARE_MAP_TOOLTIP), // WIDX_SIMPLEX_MAP_SIZE_LINK
+        MakeSpinnerWidgets({177, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_POP16_COMMA16                                                ), // WIDX_SIMPLEX_MAP_SIZE_X{,_UP,_DOWN}
+        MakeSpinnerWidgets({104, 166}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_WATER_LEVEL{,_UP,_DOWN}
+        MakeWidget        ({104, 190}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN                                 ), // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX
+        MakeWidget        ({102, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP       ), // WIDX_SIMPLEX_FLOOR_TEXTURE
+        MakeWidget        ({150, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_VERTICAL_LAND_TIP   ), // WIDX_SIMPLEX_WALL_TEXTURE
+        MakeWidget        ({104, 239}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
+        kWidgetsEnd,
+    };
 
-static Widget HeightmapWidgets[] = {
-    SHARED_WIDGETS,
-    MakeWidget        ({ 95, 255}, {150, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_SELECT
-    MakeWidget        ({  4,  52}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
-    MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
-    MakeWidget        ({  4,  88}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
-    MakeWidget        ({  4, 106}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE     ), // WIDX_HEIGHTMAP_SMOOTH_TILES
-    MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
-    MakeSpinnerWidgets({104, 142}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
-    MakeSpinnerWidgets({104, 160}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_WATER_LEVEL{,_UP,_DOWN}
-    kWidgetsEnd,
-};
+    static Widget HeightmapWidgets[] = {
+        SHARED_WIDGETS,
+        MakeWidget        ({ 95, 255}, {150, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_SELECT
+        MakeWidget        ({  4,  52}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
+        MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
+        MakeWidget        ({  4,  88}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
+        MakeWidget        ({  4, 106}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE     ), // WIDX_HEIGHTMAP_SMOOTH_TILES
+        MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
+        MakeSpinnerWidgets({104, 142}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
+        MakeSpinnerWidgets({104, 160}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_WATER_LEVEL{,_UP,_DOWN}
+        kWidgetsEnd,
+    };
     // clang-format on
 
     static Widget* PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
@@ -199,73 +199,73 @@ static Widget HeightmapWidgets[] = {
 #pragma region Widget flags
 
     // clang-format off
-static uint64_t PageDisabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-    0,
+    static uint64_t PageDisabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
+        0,
 
-    0,
+        0,
 
-    0,
+        0,
 
-    (1uLL << WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP) |
-    (1uLL << WIDX_HEIGHTMAP_STRENGTH) |
-    (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
-    (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
-    (1uLL << WIDX_HEIGHTMAP_NORMALIZE) |
-    (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILES) |
-    (1uLL << WIDX_HEIGHTMAP_HIGH) |
-    (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
-    (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN) |
-    (1uLL << WIDX_HEIGHTMAP_LOW) |
-    (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
-    (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
-    (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL) |
-    (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_UP) |
-    (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_DOWN)
-};
+        (1uLL << WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP) |
+        (1uLL << WIDX_HEIGHTMAP_STRENGTH) |
+        (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
+        (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
+        (1uLL << WIDX_HEIGHTMAP_NORMALIZE) |
+        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILES) |
+        (1uLL << WIDX_HEIGHTMAP_HIGH) |
+        (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
+        (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN) |
+        (1uLL << WIDX_HEIGHTMAP_LOW) |
+        (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
+        (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
+        (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL) |
+        (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_UP) |
+        (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_DOWN)
+    };
 
-static uint64_t HoldDownWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-    (1uLL << WIDX_MAP_SIZE_Y_UP) |
-    (1uLL << WIDX_MAP_SIZE_Y_DOWN) |
-    (1uLL << WIDX_MAP_SIZE_X_UP) |
-    (1uLL << WIDX_MAP_SIZE_X_DOWN) |
-    (1uLL << WIDX_BASE_HEIGHT_UP) |
-    (1uLL << WIDX_BASE_HEIGHT_DOWN) |
-    (1uLL << WIDX_WATER_LEVEL_UP) |
-    (1uLL << WIDX_WATER_LEVEL_DOWN),
+    static uint64_t HoldDownWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
+        (1uLL << WIDX_MAP_SIZE_Y_UP) |
+        (1uLL << WIDX_MAP_SIZE_Y_DOWN) |
+        (1uLL << WIDX_MAP_SIZE_X_UP) |
+        (1uLL << WIDX_MAP_SIZE_X_DOWN) |
+        (1uLL << WIDX_BASE_HEIGHT_UP) |
+        (1uLL << WIDX_BASE_HEIGHT_DOWN) |
+        (1uLL << WIDX_WATER_LEVEL_UP) |
+        (1uLL << WIDX_WATER_LEVEL_DOWN),
 
-    0,
+        0,
 
-    (1uLL << WIDX_SIMPLEX_LOW_UP) |
-    (1uLL << WIDX_SIMPLEX_LOW_DOWN) |
-    (1uLL << WIDX_SIMPLEX_HIGH_UP) |
-    (1uLL << WIDX_SIMPLEX_HIGH_DOWN) |
-    (1uLL << WIDX_SIMPLEX_BASE_FREQ_UP) |
-    (1uLL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
-    (1uLL << WIDX_SIMPLEX_OCTAVES_UP) |
-    (1uLL << WIDX_SIMPLEX_OCTAVES_DOWN) |
-    (1uLL << WIDX_SIMPLEX_MAP_SIZE_Y_UP) |
-    (1uLL << WIDX_SIMPLEX_MAP_SIZE_Y_DOWN) |
-    (1uLL << WIDX_SIMPLEX_MAP_SIZE_X_UP) |
-    (1uLL << WIDX_SIMPLEX_MAP_SIZE_X_DOWN) |
-    (1uLL << WIDX_SIMPLEX_WATER_LEVEL_UP) |
-    (1uLL << WIDX_SIMPLEX_WATER_LEVEL_DOWN),
+        (1uLL << WIDX_SIMPLEX_LOW_UP) |
+        (1uLL << WIDX_SIMPLEX_LOW_DOWN) |
+        (1uLL << WIDX_SIMPLEX_HIGH_UP) |
+        (1uLL << WIDX_SIMPLEX_HIGH_DOWN) |
+        (1uLL << WIDX_SIMPLEX_BASE_FREQ_UP) |
+        (1uLL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
+        (1uLL << WIDX_SIMPLEX_OCTAVES_UP) |
+        (1uLL << WIDX_SIMPLEX_OCTAVES_DOWN) |
+        (1uLL << WIDX_SIMPLEX_MAP_SIZE_Y_UP) |
+        (1uLL << WIDX_SIMPLEX_MAP_SIZE_Y_DOWN) |
+        (1uLL << WIDX_SIMPLEX_MAP_SIZE_X_UP) |
+        (1uLL << WIDX_SIMPLEX_MAP_SIZE_X_DOWN) |
+        (1uLL << WIDX_SIMPLEX_WATER_LEVEL_UP) |
+        (1uLL << WIDX_SIMPLEX_WATER_LEVEL_DOWN),
 
-    (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
-    (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
-    (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
-    (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
-    (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
-    (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN) |
-    (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_UP) |
-    (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_DOWN)
-};
+        (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
+        (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
+        (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
+        (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
+        (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
+        (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN) |
+        (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_UP) |
+        (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_DOWN)
+    };
 
-static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-    0,
-    0,
-    0,
-    (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILES)
-};
+    static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
+        0,
+        0,
+        0,
+        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILES)
+    };
     // clang-format on
 
 #pragma endregion
