@@ -380,7 +380,13 @@ namespace OpenRCT2::RCT2
             gameState.Park.Rating = _s6.ParkRating;
 
             Park::ResetHistories(gameState);
-            std::copy(std::begin(_s6.ParkRatingHistory), std::end(_s6.ParkRatingHistory), gameState.Park.RatingHistory);
+            for (size_t i = 0; i < std::size(_s6.ParkRatingHistory); i++)
+            {
+                if (_s6.ParkRatingHistory[i] != RCT12ParkHistoryUndefined)
+                {
+                    gameState.Park.RatingHistory[i] = _s6.ParkRatingHistory[i] * RCT12ParkRatingHistoryFactor;
+                }
+            }
             for (size_t i = 0; i < std::size(_s6.GuestsInParkHistory); i++)
             {
                 if (_s6.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)

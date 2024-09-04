@@ -71,6 +71,7 @@ constexpr uint16_t RCT12VehicleTrackTypeMask = 0b1111111111111100;
 constexpr uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max();
 
 constexpr uint8_t RCT12GuestsInParkHistoryFactor = 20;
+constexpr uint8_t RCT12ParkRatingHistoryFactor = 4;
 constexpr uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
 
 constexpr uint8_t kTD46RatingsMultiplier = 10;

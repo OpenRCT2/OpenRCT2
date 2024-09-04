@@ -910,10 +910,52 @@ namespace OpenRCT2
                         return true;
                     });
 
-                    cs.ReadWriteArray(gameState.Park.RatingHistory, [&cs](uint8_t& value) {
-                        cs.ReadWrite(value);
-                        return true;
-                    });
+                    if (version <= 36)
+                    {
+                        if (cs.GetMode() == OrcaStream::Mode::READING)
+                        {
+                            uint8_t smallHistory[kParkRatingHistorySize];
+                            cs.ReadWriteArray(smallHistory, [&cs](uint8_t& value) {
+                                cs.ReadWrite(value);
+                                return true;
+                            });
+                            for (int i = 0; i < kParkRatingHistorySize; i++)
+                            {
+                                if (smallHistory[i] == RCT12ParkHistoryUndefined)
+                                    gameState.Park.RatingHistory[i] = ParkRatingHistoryUndefined;
+                                else
+                                {
+                                    gameState.Park.RatingHistory[i] = static_cast<uint16_t>(
+                                        smallHistory[i] * RCT12ParkRatingHistoryFactor);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            uint8_t smallHistory[kParkRatingHistorySize];
+                            for (int i = 0; i < kParkRatingHistorySize; i++)
+                            {
+                                if (gameState.Park.RatingHistory[i] == ParkRatingHistoryUndefined)
+                                    smallHistory[i] = RCT12ParkHistoryUndefined;
+                                else
+                                {
+                                    smallHistory[i] = static_cast<uint8_t>(
+                                        gameState.Park.RatingHistory[i] / RCT12ParkRatingHistoryFactor);
+                                }
+                            }
+                            cs.ReadWriteArray(smallHistory, [&cs](uint8_t& value) {
+                                cs.ReadWrite(value);
+                                return true;
+                            });
+                        }
+                    }
+                    else
+                    {
+                        cs.ReadWriteArray(gameState.Park.RatingHistory, [&cs](uint16_t& value) {
+                            cs.ReadWrite(value);
+                            return true;
+                        });
+                    }
 
                     cs.ReadWriteArray(gameState.GuestsInParkHistory, [&cs](uint32_t& value) {
                         cs.ReadWrite(value);
