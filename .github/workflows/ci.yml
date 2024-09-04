@@ -294,7 +294,7 @@ jobs:
             echo 'Not going to push build'
           fi
   linux-portable:
-    name: ${{ matrix.distro }} Linux (${{ matrix.release }}, ${{ matrix.platform }}, portable)
+    name: ${{ matrix.distro }} Linux (${{ matrix.release }}, ${{ matrix.platform }}, no LTO, portable)
     runs-on: ubuntu-latest
     needs: check-code-formatting
     container: ${{ matrix.image }}
@@ -330,7 +330,7 @@ jobs:
       - name: Install GCC problem matcher
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON ${{ matrix.build_flags }}
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ${{ matrix.build_flags }}
       - name: Build artifacts
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}.tar.gz bin/install/usr
       - name: Upload artifacts (CI)
