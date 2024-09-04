@@ -23,23 +23,23 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 200;
     static constexpr int32_t WH = 100;
 
+    enum WindowStaffFireWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_YES,
+        WIDX_CANCEL
+    };
+
     // clang-format off
-enum WindowStaffFireWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_YES,
-    WIDX_CANCEL
-};
-
-// 0x9AFB4C
-static Widget _staffFireWidgets[] = {
-    WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
-    MakeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_YES               ),
-    MakeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
-    kWidgetsEnd,
-};
-
+    // 0x9AFB4C
+    static Widget _staffFireWidgets[] = {
+        WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
+        MakeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_YES               ),
+        MakeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class StaffFirePromptWindow final : public Window

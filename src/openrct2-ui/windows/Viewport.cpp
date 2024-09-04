@@ -19,42 +19,41 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    // clang-format off
-enum WindowViewportWidgetIdx
-{
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_CONTENT_PANEL,
-    WIDX_VIEWPORT,
-    WIDX_ZOOM_IN,
-    WIDX_ZOOM_OUT,
-    WIDX_LOCATE,
-    WIDX_ROTATE,
-};
+    enum WindowViewportWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_CONTENT_PANEL,
+        WIDX_VIEWPORT,
+        WIDX_ZOOM_IN,
+        WIDX_ZOOM_OUT,
+        WIDX_LOCATE,
+        WIDX_ROTATE,
+    };
 
 #pragma region MEASUREMENTS
 
-static constexpr StringId WINDOW_TITLE = STR_VIEWPORT_NO;
-static constexpr int32_t WW = 200;
-static constexpr int32_t WH = 200;
+    static constexpr StringId WINDOW_TITLE = STR_VIEWPORT_NO;
+    static constexpr int32_t WW = 200;
+    static constexpr int32_t WH = 200;
 
-static constexpr ScreenSize VIEWPORT_BUTTON = {24, 24};
+    static constexpr ScreenSize VIEWPORT_BUTTON = { 24, 24 };
 
 #pragma endregion
 
-static Widget _viewportWidgets[] =
-{
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
-    MakeWidget({      3, 17}, {WW - 26, WH - 3}, WindowWidgetType::Viewport, WindowColour::Primary                                           ), // viewport
-    MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
-    MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
-    MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
-    MakeWidget({WW - 25, 89}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP), // rotate
-    kWidgetsEnd,
-};
-
+    // clang-format off
+    static Widget _viewportWidgets[] =
+    {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
+        MakeWidget({      3, 17}, {WW - 26, WH - 3}, WindowWidgetType::Viewport, WindowColour::Primary                                           ), // viewport
+        MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
+        MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
+        MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
+        MakeWidget({WW - 25, 89}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP), // rotate
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class ViewportWindow final : public Window

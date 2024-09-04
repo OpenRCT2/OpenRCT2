@@ -31,61 +31,61 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    // clang-format off
-enum WINDOW_TRANSPARENCY_WIDGET_IDX
-{
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
+    enum WINDOW_TRANSPARENCY_WIDGET_IDX
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
 
-    WIDX_HIDE_VEGETATION,
-    WIDX_HIDE_SCENERY,
-    WIDX_HIDE_PATHS,
-    WIDX_HIDE_RIDES,
-    WIDX_HIDE_VEHICLES,
-    WIDX_HIDE_SUPPORTS,
-    WIDX_HIDE_GUESTS,
-    WIDX_HIDE_STAFF,
-    WIDX_INVISIBLE_VEGETATION,
-    WIDX_INVISIBLE_SCENERY,
-    WIDX_INVISIBLE_PATHS,
-    WIDX_INVISIBLE_RIDES,
-    WIDX_INVISIBLE_VEHICLES,
-    WIDX_INVISIBLE_SUPPORTS,
-};
+        WIDX_HIDE_VEGETATION,
+        WIDX_HIDE_SCENERY,
+        WIDX_HIDE_PATHS,
+        WIDX_HIDE_RIDES,
+        WIDX_HIDE_VEHICLES,
+        WIDX_HIDE_SUPPORTS,
+        WIDX_HIDE_GUESTS,
+        WIDX_HIDE_STAFF,
+        WIDX_INVISIBLE_VEGETATION,
+        WIDX_INVISIBLE_SCENERY,
+        WIDX_INVISIBLE_PATHS,
+        WIDX_INVISIBLE_RIDES,
+        WIDX_INVISIBLE_VEHICLES,
+        WIDX_INVISIBLE_SUPPORTS,
+    };
 
 #pragma region MEASUREMENTS
 
-static constexpr StringId WINDOW_TITLE = STR_TRANSPARENCY_OPTIONS_TITLE;
-static constexpr int32_t WW = 204;
-static constexpr int32_t WH = 57;
+    static constexpr StringId WINDOW_TITLE = STR_TRANSPARENCY_OPTIONS_TITLE;
+    static constexpr int32_t WW = 204;
+    static constexpr int32_t WH = 57;
 
-static constexpr ScreenSize HIDE_SIZE = {24, 24};
-static constexpr ScreenSize INVISIBLE_SIZE = {24, 12};
+    static constexpr ScreenSize HIDE_SIZE = { 24, 24 };
+    static constexpr ScreenSize INVISIBLE_SIZE = { 24, 12 };
 
 #pragma endregion
 
-static Widget _transparancyWidgets[] =
-{
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEGETATION),  STR_SEE_THROUGH_VEGETATION),
-    MakeWidget({ 27, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_SCENERY),     STR_SEE_THROUGH_SCENERY),
-    MakeWidget({ 52, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_FOOTPATH),         STR_SEE_THROUGH_PATHS),
-    MakeWidget({ 77, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_RIDE),                       STR_SEE_THROUGH_RIDES),
-    MakeWidget({102, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEHICLES),    STR_SEE_THROUGH_VEHICLES),
-    MakeWidget({127, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_SUPPORTS),    STR_SEE_THROUGH_SUPPORTS),
-    MakeWidget({152, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_GUESTS),                     STR_SEE_THROUGH_GUESTS),
-    MakeWidget({177, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_SEE_THROUGH_STAFF),
+    // clang-format off
+    static Widget _transparancyWidgets[] =
+    {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEGETATION),  STR_SEE_THROUGH_VEGETATION),
+        MakeWidget({ 27, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_SCENERY),     STR_SEE_THROUGH_SCENERY),
+        MakeWidget({ 52, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_FOOTPATH),         STR_SEE_THROUGH_PATHS),
+        MakeWidget({ 77, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_RIDE),                       STR_SEE_THROUGH_RIDES),
+        MakeWidget({102, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEHICLES),    STR_SEE_THROUGH_VEHICLES),
+        MakeWidget({127, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_SUPPORTS),    STR_SEE_THROUGH_SUPPORTS),
+        MakeWidget({152, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_GUESTS),                     STR_SEE_THROUGH_GUESTS),
+        MakeWidget({177, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_SEE_THROUGH_STAFF),
 
-    MakeWidget({  2, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEGETATION),
-    MakeWidget({ 27, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SCENERY),
-    MakeWidget({ 52, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_PATHS),
-    MakeWidget({ 77, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_RIDES),
-    MakeWidget({102, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEHICLES),
-    MakeWidget({127, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SUPPORTS),
+        MakeWidget({  2, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEGETATION),
+        MakeWidget({ 27, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SCENERY),
+        MakeWidget({ 52, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_PATHS),
+        MakeWidget({ 77, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_RIDES),
+        MakeWidget({102, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEHICLES),
+        MakeWidget({127, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SUPPORTS),
 
-    { kWidgetsEnd },
-};
+        { kWidgetsEnd },
+    };
     // clang-format on
 
     class TransparencyWindow final : public Window

@@ -35,38 +35,39 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 400;
     static constexpr StringId WINDOW_TITLE = STR_INVENTION_LIST;
 
+    enum
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_RESIZE,
+        WIDX_TAB_1,
+        WIDX_PRE_RESEARCHED_SCROLL,
+        WIDX_RESEARCH_ORDER_SCROLL,
+        WIDX_PREVIEW,
+        WIDX_MOVE_ITEMS_TO_TOP,
+        WIDX_MOVE_ITEMS_TO_BOTTOM,
+        WIDX_RANDOM_SHUFFLE
+    };
+
     // clang-format off
-enum {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_RESIZE,
-    WIDX_TAB_1,
-    WIDX_PRE_RESEARCHED_SCROLL,
-    WIDX_RESEARCH_ORDER_SCROLL,
-    WIDX_PREVIEW,
-    WIDX_MOVE_ITEMS_TO_TOP,
-    WIDX_MOVE_ITEMS_TO_BOTTOM,
-    WIDX_RANDOM_SHUFFLE
-};
+    static Widget _inventionListWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
+        MakeTab   ({  3,  17}                                                                                               ),
+        MakeWidget({  4,  56}, {368, 161}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
+        MakeWidget({  4, 231}, {368, 157}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
+        MakeWidget({431, 106}, {114, 114}, WindowWidgetType::FlatBtn, WindowColour::Secondary                                             ),
+        MakeWidget({375, 343}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_TOP                           ),
+        MakeWidget({375, 358}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_BOTTOM                        ),
+        MakeWidget({375, 373}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP),
+        kWidgetsEnd,
+    };
 
-static Widget _inventionListWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
-    MakeTab   ({  3,  17}                                                                                               ),
-    MakeWidget({  4,  56}, {368, 161}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
-    MakeWidget({  4, 231}, {368, 157}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
-    MakeWidget({431, 106}, {114, 114}, WindowWidgetType::FlatBtn, WindowColour::Secondary                                             ),
-    MakeWidget({375, 343}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_TOP                           ),
-    MakeWidget({375, 358}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_BOTTOM                        ),
-    MakeWidget({375, 373}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP),
-    kWidgetsEnd,
-};
-
-static Widget _inventionListDragWidgets[] = {
-    MakeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    kWidgetsEnd,
-};
+    static Widget _inventionListDragWidgets[] = {
+        MakeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary),
+        kWidgetsEnd,
+    };
     // clang-format on
 
 #pragma endregion

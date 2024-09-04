@@ -6,6 +6,7 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
 #include "../interface/ViewportInteraction.h"
 
 #include <openrct2-ui/interface/Viewport.h>
@@ -50,28 +51,28 @@ namespace OpenRCT2::Ui::Windows
     static constexpr uint8_t _PaletteIndexColourTrack = PALETTE_INDEX_248;   // Grey (dark)
     static constexpr uint8_t _PaletteIndexColourStation = PALETTE_INDEX_252; // Grey (light)
 
+    enum
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_ROTATE,
+        WIDX_MIRROR,
+        WIDX_SELECT_DIFFERENT_DESIGN,
+        WIDX_PRICE
+    };
+
+    validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
+
     // clang-format off
-enum {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_ROTATE,
-    WIDX_MIRROR,
-    WIDX_SELECT_DIFFERENT_DESIGN,
-    WIDX_PRICE
-};
-
-validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
-
-static Widget _trackPlaceWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({173,  83}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),              STR_ROTATE_90_TIP                         ),
-    MakeWidget({173,  59}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_MIRROR_ARROW),              STR_MIRROR_IMAGE_TIP                      ),
-    MakeWidget({  4, 109}, {192, 12}, WindowWidgetType::Button,  WindowColour::Primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
-    MakeWidget({  0,   0}, {  1,  1}, WindowWidgetType::Empty,   WindowColour::Primary),
-    kWidgetsEnd,
-};
-
+    static Widget _trackPlaceWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({173,  83}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),              STR_ROTATE_90_TIP                         ),
+        MakeWidget({173,  59}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_MIRROR_ARROW),              STR_MIRROR_IMAGE_TIP                      ),
+        MakeWidget({  4, 109}, {192, 12}, WindowWidgetType::Button,  WindowColour::Primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
+        MakeWidget({  0,   0}, {  1,  1}, WindowWidgetType::Empty,   WindowColour::Primary),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class TrackDesignPlaceWindow final : public Window

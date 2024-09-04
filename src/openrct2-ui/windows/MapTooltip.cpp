@@ -20,13 +20,11 @@
 namespace OpenRCT2::Ui::Windows
 {
     // clang-format off
-static Widget window_map_tooltip_widgets[] = {
-    MakeWidget({0, 0}, {200, 30}, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    kWidgetsEnd,
-};
-
-// clang-format on
-#define MAP_TOOLTIP_ARGS
+    static Widget window_map_tooltip_widgets[] = {
+        MakeWidget({0, 0}, {200, 30}, WindowWidgetType::ImgBtn, WindowColour::Primary),
+        kWidgetsEnd,
+    };
+    // clang-format on
 
     static ScreenCoordsXY _lastCursor;
     static int32_t _cursorHoldDuration;

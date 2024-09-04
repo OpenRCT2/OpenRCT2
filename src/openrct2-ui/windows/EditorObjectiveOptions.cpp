@@ -61,96 +61,98 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
+    enum
+    {
+        WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN,
+        WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES,
+        WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_COUNT
+    };
+
+    static constexpr StringId ObjectiveDropdownOptionNames[] = {
+        STR_OBJECTIVE_DROPDOWN_NONE,
+        STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE,
+        STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE,
+        STR_OBJECTIVE_DROPDOWN_HAVE_FUN,
+        STR_OBJECTIVE_DROPDOWN_BUILD_THE_BEST_RIDE_YOU_CAN,
+        STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS,
+        STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_IN_PARK,
+        STR_OBJECTIVE_DROPDOWN_MONTHLY_INCOME_FROM_RIDE_TICKETS,
+        STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS_OF_A_GIVEN_LENGTH,
+        STR_OBJECTIVE_DROPDOWN_FINISH_BUILDING_5_ROLLER_COASTERS,
+        STR_OBJECTIVE_DROPDOWN_REPAY_LOAN_AND_ACHIEVE_A_GIVEN_PARK_VALUE,
+        STR_OBJECTIVE_DROPDOWN_MONTHLY_PROFIT_FROM_FOOD_MERCHANDISE,
+    };
+
     // clang-format off
-enum {
-    WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN,
-    WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES,
-    WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_COUNT
-};
+    enum
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_PAGE_BACKGROUND,
+        WIDX_TAB_1,
+        WIDX_TAB_2,
 
-static constexpr StringId ObjectiveDropdownOptionNames[] = {
-    STR_OBJECTIVE_DROPDOWN_NONE,
-    STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE,
-    STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE,
-    STR_OBJECTIVE_DROPDOWN_HAVE_FUN,
-    STR_OBJECTIVE_DROPDOWN_BUILD_THE_BEST_RIDE_YOU_CAN,
-    STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS,
-    STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_IN_PARK,
-    STR_OBJECTIVE_DROPDOWN_MONTHLY_INCOME_FROM_RIDE_TICKETS,
-    STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS_OF_A_GIVEN_LENGTH,
-    STR_OBJECTIVE_DROPDOWN_FINISH_BUILDING_5_ROLLER_COASTERS,
-    STR_OBJECTIVE_DROPDOWN_REPAY_LOAN_AND_ACHIEVE_A_GIVEN_PARK_VALUE,
-    STR_OBJECTIVE_DROPDOWN_MONTHLY_PROFIT_FROM_FOOD_MERCHANDISE,
-};
+        WIDX_OBJECTIVE = 6,
+        WIDX_OBJECTIVE_DROPDOWN,
+        WIDX_OBJECTIVE_ARG_1,
+        WIDX_OBJECTIVE_ARG_1_INCREASE,
+        WIDX_OBJECTIVE_ARG_1_DECREASE,
+        WIDX_OBJECTIVE_ARG_2,
+        WIDX_OBJECTIVE_ARG_2_INCREASE,
+        WIDX_OBJECTIVE_ARG_2_DECREASE,
+        WIDX_PARK_NAME,
+        WIDX_SCENARIO_NAME,
+        WIDX_CATEGORY,
+        WIDX_CATEGORY_DROPDOWN,
+        WIDX_DETAILS,
 
-enum {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_PAGE_BACKGROUND,
-    WIDX_TAB_1,
-    WIDX_TAB_2,
+        WIDX_RIDES = 6
+    };
 
-    WIDX_OBJECTIVE = 6,
-    WIDX_OBJECTIVE_DROPDOWN,
-    WIDX_OBJECTIVE_ARG_1,
-    WIDX_OBJECTIVE_ARG_1_INCREASE,
-    WIDX_OBJECTIVE_ARG_1_DECREASE,
-    WIDX_OBJECTIVE_ARG_2,
-    WIDX_OBJECTIVE_ARG_2_INCREASE,
-    WIDX_OBJECTIVE_ARG_2_DECREASE,
-    WIDX_PARK_NAME,
-    WIDX_SCENARIO_NAME,
-    WIDX_CATEGORY,
-    WIDX_CATEGORY_DROPDOWN,
-    WIDX_DETAILS,
+    #define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
+        MakeWidget({  0,  43}, {280, 106}, WindowWidgetType::Resize, WindowColour::Secondary), \
+        MakeTab   ({  3,  17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP         ), \
+        MakeTab   ({ 34,  17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP           )
 
-    WIDX_RIDES = 6
-};
+    static Widget window_editor_objective_options_main_widgets[] = {
+        MAIN_OBJECTIVE_OPTIONS_WIDGETS,
+        MakeWidget        ({ 98,  48}, {344,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
+        MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
+        MakeSpinnerWidgets({158,  65}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
+        MakeSpinnerWidgets({158,  82}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
+        MakeWidget        ({370,  99}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_PARK_TIP                    ),
+        MakeWidget        ({370, 116}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_SCENARIO_TIP                ),
+        MakeWidget        ({ 98, 133}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
+        MakeWidget        ({266, 134}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
+        MakeWidget        ({370, 150}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP),
+        kWidgetsEnd,
+    };
 
-#define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({  0,  43}, {280, 106}, WindowWidgetType::Resize, WindowColour::Secondary), \
-    MakeTab   ({  3,  17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP         ), \
-    MakeTab   ({ 34,  17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP           )
+    static Widget window_editor_objective_options_rides_widgets[] = {
+        MAIN_OBJECTIVE_OPTIONS_WIDGETS,
+        MakeWidget({  3,  60}, {374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
+        kWidgetsEnd,
+    };
 
-static Widget window_editor_objective_options_main_widgets[] = {
-    MAIN_OBJECTIVE_OPTIONS_WIDGETS,
-    MakeWidget        ({ 98,  48}, {344,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
-    MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
-    MakeSpinnerWidgets({158,  65}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
-    MakeSpinnerWidgets({158,  82}, {120,  12}, WindowWidgetType::Button,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
-    MakeWidget        ({370,  99}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_PARK_TIP                    ),
-    MakeWidget        ({370, 116}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_SCENARIO_TIP                ),
-    MakeWidget        ({ 98, 133}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
-    MakeWidget        ({266, 134}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
-    MakeWidget        ({370, 150}, { 75,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP),
-    kWidgetsEnd,
-};
-
-static Widget window_editor_objective_options_rides_widgets[] = {
-    MAIN_OBJECTIVE_OPTIONS_WIDGETS,
-    MakeWidget({  3,  60}, {374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
-    kWidgetsEnd,
-};
-
-static Widget *window_editor_objective_options_widgets[] = {
-    window_editor_objective_options_main_widgets,
-    window_editor_objective_options_rides_widgets,
-};
+    static Widget *window_editor_objective_options_widgets[] = {
+        window_editor_objective_options_main_widgets,
+        window_editor_objective_options_rides_widgets,
+    };
 
 #pragma endregion
 
 #pragma region Enabled widgets
 
-static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
-    (1uLL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
-    (1uLL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
-    (1uLL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
-    (1uLL << WIDX_OBJECTIVE_ARG_2_DECREASE),
+    static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
+        (1uLL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
+        (1uLL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
+        (1uLL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
+        (1uLL << WIDX_OBJECTIVE_ARG_2_DECREASE),
 
-    0,
-};
+        0,
+    };
     // clang-format on
 
 #pragma endregion

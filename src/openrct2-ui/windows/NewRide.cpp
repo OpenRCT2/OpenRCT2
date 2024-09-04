@@ -206,26 +206,26 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize GroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
 
     // clang-format off
-static Widget window_new_ride_widgets[] = {
-    WINDOW_SHIM(WindowTitle, WindowWidth, WindowHeight),
-    MakeWidget({  0,  43},             {601, 339},         WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
-    MakeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
-    MakeTab   ({ 34,  17},                                                                                      STR_GENTLE_RIDES_TIP                                          ),
-    MakeTab   ({ 65,  17},                                                                                      STR_ROLLER_COASTERS_TIP                                       ),
-    MakeTab   ({ 96,  17},                                                                                      STR_THRILL_RIDES_TIP                                          ),
-    MakeTab   ({127,  17},                                                                                      STR_WATER_RIDES_TIP                                           ),
-    MakeTab   ({158,  17},                                                                                      STR_SHOPS_STALLS_TIP                                          ),
-    MakeTab   ({189,  17},                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP                              ),
-    MakeWidget({  3,  62},             {595, 256},         WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                               ),
-    MakeWidget({  3,  47},             {290,  70},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                  ),
-    MakeWidget({  3, 124},             {290,  65},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                          ),
-    MakeWidget({265, 161},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                      STR_RESEARCH_SHOW_DETAILS_TIP),
-    MakeWidget({265,  68},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  ImageId(SPR_FINANCE),                     STR_FINANCES_RESEARCH_TIP    ),
-    MakeWidget({  4,  46},             {211, 14},          WindowWidgetType::TextBox,  WindowColour::Secondary                          ),
-    MakeWidget({218,  46},             { 70, 14},          WindowWidgetType::Button,   WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
-    MakeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,         STR_GROUP_BY_TRACK_TYPE_TIP  ),
-    kWidgetsEnd,
-};
+    static Widget window_new_ride_widgets[] = {
+        WINDOW_SHIM(WindowTitle, WindowWidth, WindowHeight),
+        MakeWidget({  0,  43},             {601, 339},         WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
+        MakeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
+        MakeTab   ({ 34,  17},                                                                                      STR_GENTLE_RIDES_TIP                                          ),
+        MakeTab   ({ 65,  17},                                                                                      STR_ROLLER_COASTERS_TIP                                       ),
+        MakeTab   ({ 96,  17},                                                                                      STR_THRILL_RIDES_TIP                                          ),
+        MakeTab   ({127,  17},                                                                                      STR_WATER_RIDES_TIP                                           ),
+        MakeTab   ({158,  17},                                                                                      STR_SHOPS_STALLS_TIP                                          ),
+        MakeTab   ({189,  17},                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP                              ),
+        MakeWidget({  3,  62},             {595, 256},         WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                               ),
+        MakeWidget({  3,  47},             {290,  70},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                  ),
+        MakeWidget({  3, 124},             {290,  65},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                          ),
+        MakeWidget({265, 161},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                      STR_RESEARCH_SHOW_DETAILS_TIP),
+        MakeWidget({265,  68},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  ImageId(SPR_FINANCE),                     STR_FINANCES_RESEARCH_TIP    ),
+        MakeWidget({  4,  46},             {211, 14},          WindowWidgetType::TextBox,  WindowColour::Secondary                          ),
+        MakeWidget({218,  46},             { 70, 14},          WindowWidgetType::Button,   WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
+        MakeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,         STR_GROUP_BY_TRACK_TYPE_TIP  ),
+        kWidgetsEnd,
+    };
     // clang-format on
 
 #pragma endregion

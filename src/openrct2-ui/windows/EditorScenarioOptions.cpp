@@ -42,171 +42,173 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
+    enum
+    {
+        WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL,
+        WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS,
+        WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK,
+        WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT
+    };
+
+    static constexpr StringId ClimateNames[] = {
+        STR_CLIMATE_COOL_AND_WET,
+        STR_CLIMATE_WARM,
+        STR_CLIMATE_HOT_AND_DRY,
+        STR_CLIMATE_COLD,
+    };
+
+    enum
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_PAGE_BACKGROUND,
+        WIDX_TAB_1,
+        WIDX_TAB_2,
+        WIDX_TAB_3,
+        WIDX_PAGE_START,
+
+        // Financial tab
+        WIDX_NO_MONEY = WIDX_PAGE_START,
+        WIDX_INITIAL_CASH,
+        WIDX_INITIAL_CASH_INCREASE,
+        WIDX_INITIAL_CASH_DECREASE,
+        WIDX_INITIAL_LOAN,
+        WIDX_INITIAL_LOAN_INCREASE,
+        WIDX_INITIAL_LOAN_DECREASE,
+        WIDX_MAXIMUM_LOAN,
+        WIDX_MAXIMUM_LOAN_INCREASE,
+        WIDX_MAXIMUM_LOAN_DECREASE,
+        WIDX_INTEREST_RATE,
+        WIDX_INTEREST_RATE_INCREASE,
+        WIDX_INTEREST_RATE_DECREASE,
+        WIDX_FORBID_MARKETING,
+        WIDX_RCT1_INTEREST,
+
+        // Guests tab
+        WIDX_CASH_PER_GUEST = WIDX_PAGE_START,
+        WIDX_CASH_PER_GUEST_INCREASE,
+        WIDX_CASH_PER_GUEST_DECREASE,
+        WIDX_GUEST_INITIAL_HAPPINESS,
+        WIDX_GUEST_INITIAL_HAPPINESS_INCREASE,
+        WIDX_GUEST_INITIAL_HAPPINESS_DECREASE,
+        WIDX_GUEST_INITIAL_HUNGER,
+        WIDX_GUEST_INITIAL_HUNGER_INCREASE,
+        WIDX_GUEST_INITIAL_HUNGER_DECREASE,
+        WIDX_GUEST_INITIAL_THIRST,
+        WIDX_GUEST_INITIAL_THIRST_INCREASE,
+        WIDX_GUEST_INITIAL_THIRST_DECREASE,
+        WIDX_GUEST_PREFER_LESS_INTENSE_RIDES,
+        WIDX_GUEST_PREFER_MORE_INTENSE_RIDES,
+
+        // Park tab
+        WIDX_LAND_COST = WIDX_PAGE_START,
+        WIDX_LAND_COST_INCREASE,
+        WIDX_LAND_COST_DECREASE,
+        WIDX_CONSTRUCTION_RIGHTS_COST,
+        WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE,
+        WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE,
+        WIDX_PAY_FOR_PARK_OR_RIDES,
+        WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN,
+        WIDX_ENTRY_PRICE,
+        WIDX_ENTRY_PRICE_INCREASE,
+        WIDX_ENTRY_PRICE_DECREASE,
+        WIDX_CLIMATE,
+        WIDX_CLIMATE_DROPDOWN,
+        WIDX_FORBID_TREE_REMOVAL,
+        WIDX_FORBID_LANDSCAPE_CHANGES,
+        WIDX_FORBID_HIGH_CONSTRUCTION,
+        WIDX_HARD_PARK_RATING,
+        WIDX_HARD_GUEST_GENERATION
+    };
+
     // clang-format off
-enum {
-    WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL,
-    WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS,
-    WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK,
-    WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT
-};
+    static Widget window_editor_scenario_options_financial_widgets[] = {
+        WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
+        MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                            ),
+        MakeTab           ({  3,  17},                                                                                          STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
+        MakeTab           ({ 34,  17},                                                                                          STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
+        MakeTab           ({ 65,  17},                                                                                          STR_SCENARIO_OPTIONS_PARK_TIP     ),
+        MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
+        MakeSpinnerWidgets({168,  65}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeSpinnerWidgets({168,  82}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeSpinnerWidgets({168,  99}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeSpinnerWidgets({168, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+        MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
+        MakeWidget        ({  8, 116}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
+        kWidgetsEnd,
+    };
 
-static constexpr StringId ClimateNames[] = {
-    STR_CLIMATE_COOL_AND_WET,
-    STR_CLIMATE_WARM,
-    STR_CLIMATE_HOT_AND_DRY,
-    STR_CLIMATE_COLD,
-};
+    static Widget window_editor_scenario_options_guests_widgets[] = {
+        WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
+        MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WindowWidgetType::Resize,   WindowColour::Secondary),
+        MakeRemapWidget   ({  3,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
+        MakeRemapWidget   ({ 34,  17}, {            31,  30}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_GUESTS_TIP         ),
+        MakeRemapWidget   ({ 65,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_PARK_TIP           ),
+        MakeSpinnerWidgets({268,  48}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+        MakeSpinnerWidgets({268,  65}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+        MakeSpinnerWidgets({268,  82}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+        MakeSpinnerWidgets({268,  99}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+        MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
+        MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
+        kWidgetsEnd,
+    };
 
-enum {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_PAGE_BACKGROUND,
-    WIDX_TAB_1,
-    WIDX_TAB_2,
-    WIDX_TAB_3,
-    WIDX_PAGE_START,
+    static Widget window_editor_scenario_options_park_widgets[] = {
+        WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
+        MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                  ),
+        MakeRemapWidget   ({  3,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
+        MakeRemapWidget   ({ 34,  17}, {          31,  30}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
+        MakeRemapWidget   ({ 65,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_PARK_TIP     ),
+        MakeSpinnerWidgets({188,  48}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+        MakeSpinnerWidgets({188,  65}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+        MakeWidget        ({  8,  82}, {         210,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        MakeWidget        ({206,  83}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+        MakeSpinnerWidgets({328,  82}, {          67,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+        MakeWidget        ({188,  99}, {         207,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                     STR_SELECT_CLIMATE_TIP            ),
+        MakeWidget        ({383, 100}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
+        MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
+        MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
+        MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
+        MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
+        MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
+        kWidgetsEnd,
+    };
 
-    // Financial tab
-    WIDX_NO_MONEY = WIDX_PAGE_START,
-    WIDX_INITIAL_CASH,
-    WIDX_INITIAL_CASH_INCREASE,
-    WIDX_INITIAL_CASH_DECREASE,
-    WIDX_INITIAL_LOAN,
-    WIDX_INITIAL_LOAN_INCREASE,
-    WIDX_INITIAL_LOAN_DECREASE,
-    WIDX_MAXIMUM_LOAN,
-    WIDX_MAXIMUM_LOAN_INCREASE,
-    WIDX_MAXIMUM_LOAN_DECREASE,
-    WIDX_INTEREST_RATE,
-    WIDX_INTEREST_RATE_INCREASE,
-    WIDX_INTEREST_RATE_DECREASE,
-    WIDX_FORBID_MARKETING,
-    WIDX_RCT1_INTEREST,
-
-    // Guests tab
-    WIDX_CASH_PER_GUEST = WIDX_PAGE_START,
-    WIDX_CASH_PER_GUEST_INCREASE,
-    WIDX_CASH_PER_GUEST_DECREASE,
-    WIDX_GUEST_INITIAL_HAPPINESS,
-    WIDX_GUEST_INITIAL_HAPPINESS_INCREASE,
-    WIDX_GUEST_INITIAL_HAPPINESS_DECREASE,
-    WIDX_GUEST_INITIAL_HUNGER,
-    WIDX_GUEST_INITIAL_HUNGER_INCREASE,
-    WIDX_GUEST_INITIAL_HUNGER_DECREASE,
-    WIDX_GUEST_INITIAL_THIRST,
-    WIDX_GUEST_INITIAL_THIRST_INCREASE,
-    WIDX_GUEST_INITIAL_THIRST_DECREASE,
-    WIDX_GUEST_PREFER_LESS_INTENSE_RIDES,
-    WIDX_GUEST_PREFER_MORE_INTENSE_RIDES,
-
-    // Park tab
-    WIDX_LAND_COST = WIDX_PAGE_START,
-    WIDX_LAND_COST_INCREASE,
-    WIDX_LAND_COST_DECREASE,
-    WIDX_CONSTRUCTION_RIGHTS_COST,
-    WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE,
-    WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE,
-    WIDX_PAY_FOR_PARK_OR_RIDES,
-    WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN,
-    WIDX_ENTRY_PRICE,
-    WIDX_ENTRY_PRICE_INCREASE,
-    WIDX_ENTRY_PRICE_DECREASE,
-    WIDX_CLIMATE,
-    WIDX_CLIMATE_DROPDOWN,
-    WIDX_FORBID_TREE_REMOVAL,
-    WIDX_FORBID_LANDSCAPE_CHANGES,
-    WIDX_FORBID_HIGH_CONSTRUCTION,
-    WIDX_HARD_PARK_RATING,
-    WIDX_HARD_GUEST_GENERATION
-};
-
-static Widget window_editor_scenario_options_financial_widgets[] = {
-    WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
-    MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                            ),
-    MakeTab           ({  3,  17},                                                                                          STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
-    MakeTab           ({ 34,  17},                                                                                          STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
-    MakeTab           ({ 65,  17},                                                                                          STR_SCENARIO_OPTIONS_PARK_TIP     ),
-    MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
-    MakeSpinnerWidgets({168,  65}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-    MakeSpinnerWidgets({168,  82}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-    MakeSpinnerWidgets({168,  99}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-    MakeSpinnerWidgets({168, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-    MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
-    MakeWidget        ({  8, 116}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
-    kWidgetsEnd,
-};
-
-static Widget window_editor_scenario_options_guests_widgets[] = {
-    WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
-    MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WindowWidgetType::Resize,   WindowColour::Secondary),
-    MakeRemapWidget   ({  3,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
-    MakeRemapWidget   ({ 34,  17}, {            31,  30}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_GUESTS_TIP         ),
-    MakeRemapWidget   ({ 65,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_PARK_TIP           ),
-    MakeSpinnerWidgets({268,  48}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-    MakeSpinnerWidgets({268,  65}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-    MakeSpinnerWidgets({268,  82}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-    MakeSpinnerWidgets({268,  99}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-    MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
-    MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
-    kWidgetsEnd,
-};
-
-static Widget window_editor_scenario_options_park_widgets[] = {
-    WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
-    MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                  ),
-    MakeRemapWidget   ({  3,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
-    MakeRemapWidget   ({ 34,  17}, {          31,  30}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
-    MakeRemapWidget   ({ 65,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_PARK_TIP     ),
-    MakeSpinnerWidgets({188,  48}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-    MakeSpinnerWidgets({188,  65}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-    MakeWidget        ({  8,  82}, {         210,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-    MakeWidget        ({206,  83}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-    MakeSpinnerWidgets({328,  82}, {          67,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-    MakeWidget        ({188,  99}, {         207,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                     STR_SELECT_CLIMATE_TIP            ),
-    MakeWidget        ({383, 100}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
-    MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
-    MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
-    MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
-    MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
-    MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
-    kWidgetsEnd,
-};
-
-static Widget *window_editor_scenario_options_widgets[] = {
-    window_editor_scenario_options_financial_widgets,
-    window_editor_scenario_options_guests_widgets,
-    window_editor_scenario_options_park_widgets,
-};
+    static Widget *window_editor_scenario_options_widgets[] = {
+        window_editor_scenario_options_financial_widgets,
+        window_editor_scenario_options_guests_widgets,
+        window_editor_scenario_options_park_widgets,
+    };
 
 #pragma endregion
 
 #pragma region Enabled widgets
 
-static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
-    (1uLL << WIDX_INITIAL_CASH_INCREASE) |
-        (1uLL << WIDX_INITIAL_CASH_DECREASE) |
-        (1uLL << WIDX_INITIAL_LOAN_INCREASE) |
-        (1uLL << WIDX_INITIAL_LOAN_DECREASE) |
-        (1uLL << WIDX_MAXIMUM_LOAN_INCREASE) |
-        (1uLL << WIDX_MAXIMUM_LOAN_DECREASE) |
-        (1uLL << WIDX_INTEREST_RATE_INCREASE) |
-        (1uLL << WIDX_INTEREST_RATE_DECREASE),
-    (1uLL << WIDX_CASH_PER_GUEST_INCREASE) |
-        (1uLL << WIDX_CASH_PER_GUEST_DECREASE) |
-        (1uLL << WIDX_GUEST_INITIAL_HAPPINESS_INCREASE) |
-        (1uLL << WIDX_GUEST_INITIAL_HAPPINESS_DECREASE) |
-        (1uLL << WIDX_GUEST_INITIAL_HUNGER_INCREASE) |
-        (1uLL << WIDX_GUEST_INITIAL_HUNGER_DECREASE) |
-        (1uLL << WIDX_GUEST_INITIAL_THIRST_INCREASE) |
-        (1uLL << WIDX_GUEST_INITIAL_THIRST_DECREASE),
-    (1uLL << WIDX_LAND_COST_INCREASE) |
-        (1uLL << WIDX_LAND_COST_DECREASE) |
-        (1uLL << WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE) |
-        (1uLL << WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE) |
-        (1uLL << WIDX_ENTRY_PRICE_INCREASE) |
-        (1uLL << WIDX_ENTRY_PRICE_DECREASE),
-};
+    static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
+        (1uLL << WIDX_INITIAL_CASH_INCREASE) |
+            (1uLL << WIDX_INITIAL_CASH_DECREASE) |
+            (1uLL << WIDX_INITIAL_LOAN_INCREASE) |
+            (1uLL << WIDX_INITIAL_LOAN_DECREASE) |
+            (1uLL << WIDX_MAXIMUM_LOAN_INCREASE) |
+            (1uLL << WIDX_MAXIMUM_LOAN_DECREASE) |
+            (1uLL << WIDX_INTEREST_RATE_INCREASE) |
+            (1uLL << WIDX_INTEREST_RATE_DECREASE),
+        (1uLL << WIDX_CASH_PER_GUEST_INCREASE) |
+            (1uLL << WIDX_CASH_PER_GUEST_DECREASE) |
+            (1uLL << WIDX_GUEST_INITIAL_HAPPINESS_INCREASE) |
+            (1uLL << WIDX_GUEST_INITIAL_HAPPINESS_DECREASE) |
+            (1uLL << WIDX_GUEST_INITIAL_HUNGER_INCREASE) |
+            (1uLL << WIDX_GUEST_INITIAL_HUNGER_DECREASE) |
+            (1uLL << WIDX_GUEST_INITIAL_THIRST_INCREASE) |
+            (1uLL << WIDX_GUEST_INITIAL_THIRST_DECREASE),
+        (1uLL << WIDX_LAND_COST_INCREASE) |
+            (1uLL << WIDX_LAND_COST_DECREASE) |
+            (1uLL << WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE) |
+            (1uLL << WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE) |
+            (1uLL << WIDX_ENTRY_PRICE_INCREASE) |
+            (1uLL << WIDX_ENTRY_PRICE_DECREASE),
+    };
     // clang-format on
 
 #pragma endregion
