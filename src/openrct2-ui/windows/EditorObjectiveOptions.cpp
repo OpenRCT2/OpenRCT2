@@ -61,6 +61,13 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
+    enum
+    {
+        WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN,
+        WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES,
+        WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_COUNT
+    };
+
     static constexpr StringId ObjectiveDropdownOptionNames[] = {
         STR_OBJECTIVE_DROPDOWN_NONE,
         STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE,
@@ -102,20 +109,13 @@ namespace OpenRCT2::Ui::Windows
         WIDX_RIDES = 6
     };
 
-    // clang-format off
-    enum
-    {
-        WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN,
-        WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES,
-        WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_COUNT
-    };
-
-    #define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
+#define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
         WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
         MakeWidget({  0,  43}, {280, 106}, WindowWidgetType::Resize, WindowColour::Secondary), \
         MakeTab   ({  3,  17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP         ), \
         MakeTab   ({ 34,  17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP           )
 
+    // clang-format off
     static Widget window_editor_objective_options_main_widgets[] = {
         MAIN_OBJECTIVE_OPTIONS_WIDGETS,
         MakeWidget        ({ 98,  48}, {344,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
