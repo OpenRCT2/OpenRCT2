@@ -161,44 +161,40 @@ namespace OpenRCT2::Graph
         }
     }
 
-    void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p)
+    template<typename T, T TkNoValue>
+    static void DrawGraph(
+        DrawPixelInfo& dpi, const GraphProperties<T>& p, const FmtString& labelFmt, const FmtString& tooltipFmt)
     {
-        const FmtString fmt("{BLACK}{CURRENCY2DP}");
-        DrawYLabels<money64>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
-        DrawMonths<money64, kMoney64Undefined>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
-        DrawLine<money64, kMoney64Undefined, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
-        DrawLine<money64, kMoney64Undefined, false>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        DrawYLabels<T>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, labelFmt);
+        DrawMonths<T, TkNoValue>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
+        DrawLine<T, TkNoValue, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        DrawLine<T, TkNoValue, false>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
         if (p.hoverIdx >= 0 && p.hoverIdx < p.numPoints)
         {
-            const money64 value = p.series[p.hoverIdx];
-            if (value != kMoney64Undefined)
+            const T value = p.series[p.hoverIdx];
+            if (value != TkNoValue)
             {
                 char buffer[64]{};
-                FormatStringToBuffer(buffer, sizeof(buffer), "{CURRENCY2DP}", value);
-                DrawHoveredValue<money64>(
+                FormatStringToBuffer(buffer, sizeof(buffer), tooltipFmt, value);
+                DrawHoveredValue<T>(
                     dpi, value, p.hoverIdx, p.internalBounds, p.xStepPx, p.min, p.max, buffer,
                     p.lineCol.withFlag(ColourFlag::withOutline, true));
             }
         }
     }
 
+    void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p)
+    {
+        DrawGraph<money64, kMoney64Undefined>(dpi, p, "{BLACK}{CURRENCY2DP}", "{CURRENCY2DP}");
+    }
+
     void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint16_t>& p)
     {
-        constexpr uint16_t noValue = kParkRatingHistoryUndefined;
-        const FmtString fmt("{BLACK}{COMMA32}");
-        DrawYLabels<uint16_t>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
-        DrawMonths<uint16_t, noValue>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
-        DrawLine<uint16_t, noValue, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
-        DrawLine<uint16_t, noValue, false>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        DrawGraph<uint16_t, kParkRatingHistoryUndefined>(dpi, p, "{BLACK}{COMMA32}", "{COMMA32}");
     }
 
     void DrawGuestGraph(DrawPixelInfo& dpi, const GraphProperties<uint32_t>& p)
     {
-        constexpr uint32_t noValue = kGuestsInParkHistoryUndefined;
-        const FmtString fmt("{BLACK}{COMMA32}");
-        DrawYLabels<uint32_t>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
-        DrawMonths<uint32_t, noValue>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
-        DrawLine<uint32_t, noValue, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
-        DrawLine<uint32_t, noValue, false>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        DrawGraph<uint32_t, kGuestsInParkHistoryUndefined>(dpi, p, "{BLACK}{COMMA32}", "{COMMA32}");
     }
 } // namespace OpenRCT2::Graph

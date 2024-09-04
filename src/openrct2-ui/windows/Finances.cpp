@@ -832,7 +832,7 @@ namespace OpenRCT2::Ui::Windows
             _graphProps.min = centredGraph ? -max : 0.00_GBP;
             _graphProps.max = max;
 
-            // dynamic padding for long axis lables:
+            // dynamic padding for long axis labels:
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{CURRENCY2DP}", centredGraph ? -max : max);
             int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;

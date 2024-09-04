@@ -39,8 +39,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId WINDOW_TITLE = STR_STRINGID;
     static constexpr int32_t WH = 224;
 
-    static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 45, 15 };
-    static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 5, 5 };
+    static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 45, 20 };
+    static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 25, 10 };
     static constexpr uint8_t kGraphNumYLabels = 6;
 
     enum WindowParkPage
@@ -685,13 +685,18 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Rating page
         void OnResizeRating()
         {
-            WindowSetResize(*this, 255, 182, 255, 182);
+            flags |= WF_RESIZABLE;
+            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
         }
 
         void OnUpdateRating()
         {
             frame_no++;
             WidgetInvalidate(*this, WIDX_TAB_2);
+            if (_ratingProps.UpdateHoverIndex())
+            {
+                InvalidateWidget(WIDX_BACKGROUND);
+            }
         }
 
         void OnPrepareDrawRating()
@@ -740,6 +745,13 @@ namespace OpenRCT2::Ui::Windows
 
             // Graph border
             GfxFillRectInset(dpi, _ratingGraphBounds, colours[1], INSET_RECT_F_30);
+            // hide resize widget on graph area
+            constexpr ScreenCoordsXY offset{ 1, 1 };
+            constexpr ScreenCoordsXY bigOffset{ 5, 5 };
+            GfxFillRectInset(
+                dpi, { _ratingGraphBounds.Point2 - bigOffset, _ratingGraphBounds.Point2 - offset }, colours[1],
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+
             Graph::DrawRatingGraph(dpi, _ratingProps);
         }
 
@@ -748,7 +760,8 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Guests page
         void OnResizeGuests()
         {
-            WindowSetResize(*this, 255, 182, 255, 182);
+            flags |= WF_RESIZABLE;
+            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
         }
 
         void OnUpdateGuests()
@@ -756,6 +769,10 @@ namespace OpenRCT2::Ui::Windows
             frame_no++;
             _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
             WidgetInvalidate(*this, WIDX_TAB_3);
+            if (_guestProps.UpdateHoverIndex())
+            {
+                InvalidateWidget(WIDX_BACKGROUND);
+            }
         }
 
         void OnPrepareDrawGuests()
@@ -815,6 +832,13 @@ namespace OpenRCT2::Ui::Windows
 
             // Graph border
             GfxFillRectInset(dpi, _guestGraphBounds, colours[1], INSET_RECT_F_30);
+            // hide resize widget on graph area
+            constexpr ScreenCoordsXY offset{ 1, 1 };
+            constexpr ScreenCoordsXY bigOffset{ 5, 5 };
+            GfxFillRectInset(
+                dpi, { _guestGraphBounds.Point2 - bigOffset, _guestGraphBounds.Point2 - offset }, colours[1],
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+
             Graph::DrawGuestGraph(dpi, _guestProps);
         }
 
