@@ -43,154 +43,158 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 5, 5 };
     static constexpr uint8_t kGraphNumYLabels = 6;
 
-    // clang-format off
-enum WindowParkPage {
-    WINDOW_PARK_PAGE_ENTRANCE,
-    WINDOW_PARK_PAGE_RATING,
-    WINDOW_PARK_PAGE_GUESTS,
-    WINDOW_PARK_PAGE_PRICE,
-    WINDOW_PARK_PAGE_STATS,
-    WINDOW_PARK_PAGE_OBJECTIVE,
-    WINDOW_PARK_PAGE_AWARDS,
-    WINDOW_PARK_PAGE_COUNT,
-};
+    enum WindowParkPage
+    {
+        WINDOW_PARK_PAGE_ENTRANCE,
+        WINDOW_PARK_PAGE_RATING,
+        WINDOW_PARK_PAGE_GUESTS,
+        WINDOW_PARK_PAGE_PRICE,
+        WINDOW_PARK_PAGE_STATS,
+        WINDOW_PARK_PAGE_OBJECTIVE,
+        WINDOW_PARK_PAGE_AWARDS,
+        WINDOW_PARK_PAGE_COUNT,
+    };
 
-enum WindowParkWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_PAGE_BACKGROUND,
-    WIDX_TAB_1,
-    WIDX_TAB_2,
-    WIDX_TAB_3,
-    WIDX_TAB_4,
-    WIDX_TAB_5,
-    WIDX_TAB_6,
-    WIDX_TAB_7,
+    enum WindowParkWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_PAGE_BACKGROUND,
+        WIDX_TAB_1,
+        WIDX_TAB_2,
+        WIDX_TAB_3,
+        WIDX_TAB_4,
+        WIDX_TAB_5,
+        WIDX_TAB_6,
+        WIDX_TAB_7,
 
-    WIDX_VIEWPORT = 11,
-    WIDX_STATUS,
-    WIDX_OPEN_OR_CLOSE,
-    WIDX_BUY_LAND_RIGHTS,
-    WIDX_LOCATE,
-    WIDX_RENAME,
-    WIDX_CLOSE_LIGHT,
-    WIDX_OPEN_LIGHT,
+        WIDX_VIEWPORT = 11,
+        WIDX_STATUS,
+        WIDX_OPEN_OR_CLOSE,
+        WIDX_BUY_LAND_RIGHTS,
+        WIDX_LOCATE,
+        WIDX_RENAME,
+        WIDX_CLOSE_LIGHT,
+        WIDX_OPEN_LIGHT,
 
-    WIDX_PRICE_LABEL = 11,
-    WIDX_PRICE,
-    WIDX_INCREASE_PRICE,
-    WIDX_DECREASE_PRICE,
+        WIDX_PRICE_LABEL = 11,
+        WIDX_PRICE,
+        WIDX_INCREASE_PRICE,
+        WIDX_DECREASE_PRICE,
 
-    WIDX_ENTER_NAME = 11
-};
+        WIDX_ENTER_NAME = 11
+    };
 
 #pragma region Widgets
 
-#define MAIN_PARK_WIDGETS(WW) \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({  0, 43}, {WW, 131}, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */ \
-    MakeTab   ({  3, 17}, STR_PARK_ENTRANCE_TAB_TIP                     ), /* tab 1 */ \
-    MakeTab   ({ 34, 17}, STR_PARK_RATING_TAB_TIP                       ), /* tab 2 */ \
-    MakeTab   ({ 65, 17}, STR_PARK_GUESTS_TAB_TIP                       ), /* tab 3 */ \
-    MakeTab   ({ 96, 17}, STR_PARK_PRICE_TAB_TIP                        ), /* tab 4 */ \
-    MakeTab   ({127, 17}, STR_PARK_STATS_TAB_TIP                        ), /* tab 5 */ \
-    MakeTab   ({158, 17}, STR_PARK_OBJECTIVE_TAB_TIP                    ), /* tab 6 */ \
-    MakeTab   ({189, 17}, STR_PARK_AWARDS_TAB_TIP                       )  /* tab 7 */
+    // clang-format off
+    #define MAIN_PARK_WIDGETS(WW) \
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
+        MakeWidget({  0, 43}, {WW, 131}, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */ \
+        MakeTab   ({  3, 17}, STR_PARK_ENTRANCE_TAB_TIP                     ), /* tab 1 */ \
+        MakeTab   ({ 34, 17}, STR_PARK_RATING_TAB_TIP                       ), /* tab 2 */ \
+        MakeTab   ({ 65, 17}, STR_PARK_GUESTS_TAB_TIP                       ), /* tab 3 */ \
+        MakeTab   ({ 96, 17}, STR_PARK_PRICE_TAB_TIP                        ), /* tab 4 */ \
+        MakeTab   ({127, 17}, STR_PARK_STATS_TAB_TIP                        ), /* tab 5 */ \
+        MakeTab   ({158, 17}, STR_PARK_OBJECTIVE_TAB_TIP                    ), /* tab 6 */ \
+        MakeTab   ({189, 17}, STR_PARK_AWARDS_TAB_TIP                       )  /* tab 7 */
 
-static Widget _entranceWidgets[] = {
-    MAIN_PARK_WIDGETS(230),
-    MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
-    MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
-    MakeWidget({205,  49}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
-    MakeWidget({205,  73}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS),        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
-    MakeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
-    MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
-    MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
-    MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       ),
-    kWidgetsEnd,
-};
+    static Widget _entranceWidgets[] = {
+        MAIN_PARK_WIDGETS(230),
+        MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
+        MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
+        MakeWidget({205,  49}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
+        MakeWidget({205,  73}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS),        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
+        MakeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
+        MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
+        MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
+        MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       ),
+        kWidgetsEnd,
+    };
 
-static Widget _ratingWidgets[] = {
-    MAIN_PARK_WIDGETS(255),
-    kWidgetsEnd,
-};
+    static Widget _ratingWidgets[] = {
+        MAIN_PARK_WIDGETS(255),
+        kWidgetsEnd,
+    };
 
-static Widget _guestsWidgets[] = {
-    MAIN_PARK_WIDGETS(255),
-    kWidgetsEnd,
-};
+    static Widget _guestsWidgets[] = {
+        MAIN_PARK_WIDGETS(255),
+        kWidgetsEnd,
+    };
 
-static Widget _priceWidgets[] = {
-    MAIN_PARK_WIDGETS(230),
-    MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
-    MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
-    kWidgetsEnd,
-};
+    static Widget _priceWidgets[] = {
+        MAIN_PARK_WIDGETS(230),
+        MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
+        MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
+        kWidgetsEnd,
+    };
 
-static Widget _statsWidgets[] = {
-    MAIN_PARK_WIDGETS(230),
-    kWidgetsEnd,
-};
+    static Widget _statsWidgets[] = {
+        MAIN_PARK_WIDGETS(230),
+        kWidgetsEnd,
+    };
 
-static Widget _objectiveWidgets[] = {
-    MAIN_PARK_WIDGETS(230),
-    MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
-    kWidgetsEnd,
-};
+    static Widget _objectiveWidgets[] = {
+        MAIN_PARK_WIDGETS(230),
+        MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
+        kWidgetsEnd,
+    };
 
-static Widget _awardsWidgets[] = {
-    MAIN_PARK_WIDGETS(230),
-    kWidgetsEnd,
-};
+    static Widget _awardsWidgets[] = {
+        MAIN_PARK_WIDGETS(230),
+        kWidgetsEnd,
+    };
 
-static std::array<Widget*, WINDOW_PARK_PAGE_COUNT> _pagedWidgets = {
-    _entranceWidgets,
-    _ratingWidgets,
-    _guestsWidgets,
-    _priceWidgets,
-    _statsWidgets,
-    _objectiveWidgets,
-    _awardsWidgets,
-};
+    static std::array<Widget*, WINDOW_PARK_PAGE_COUNT> _pagedWidgets = {
+        _entranceWidgets,
+        _ratingWidgets,
+        _guestsWidgets,
+        _priceWidgets,
+        _statsWidgets,
+        _objectiveWidgets,
+        _awardsWidgets,
+    };
+    // clang-format on
 
 #pragma endregion
 
-static std::array<uint32_t, WINDOW_PARK_PAGE_COUNT> _pagedHoldDownWidgets = {
-    0,
-    0,
-    0,
-    (1uLL << WIDX_INCREASE_PRICE) |
-    (1uLL << WIDX_DECREASE_PRICE),
-    0,
-    0,
-    0,
-};
+    // clang-format off
+    static std::array<uint32_t, WINDOW_PARK_PAGE_COUNT> _pagedHoldDownWidgets = {
+        0,
+        0,
+        0,
+        (1uLL << WIDX_INCREASE_PRICE) |
+        (1uLL << WIDX_DECREASE_PRICE),
+        0,
+        0,
+        0,
+    };
 
-struct WindowParkAward {
-    StringId text;
-    uint32_t sprite;
-};
+    struct WindowParkAward {
+        StringId text;
+        uint32_t sprite;
+    };
 
-static constexpr WindowParkAward _parkAwards[] = {
-    { STR_AWARD_MOST_UNTIDY,                SPR_AWARD_MOST_UNTIDY },
-    { STR_AWARD_MOST_TIDY,                  SPR_AWARD_MOST_TIDY },
-    { STR_AWARD_BEST_ROLLERCOASTERS,        SPR_AWARD_BEST_ROLLERCOASTERS },
-    { STR_AWARD_BEST_VALUE,                 SPR_AWARD_BEST_VALUE },
-    { STR_AWARD_MOST_BEAUTIFUL,             SPR_AWARD_MOST_BEAUTIFUL },
-    { STR_AWARD_WORST_VALUE,                SPR_AWARD_WORST_VALUE },
-    { STR_AWARD_SAFEST,                     SPR_AWARD_SAFEST },
-    { STR_AWARD_BEST_STAFF,                 SPR_AWARD_BEST_STAFF },
-    { STR_AWARD_BEST_FOOD,                  SPR_AWARD_BEST_FOOD },
-    { STR_AWARD_WORST_FOOD,                 SPR_AWARD_WORST_FOOD },
-    { STR_AWARD_BEST_TOILETS,               SPR_AWARD_BEST_TOILETS },
-    { STR_AWARD_MOST_DISAPPOINTING,         SPR_AWARD_MOST_DISAPPOINTING },
-    { STR_AWARD_BEST_WATER_RIDES,           SPR_AWARD_BEST_WATER_RIDES },
-    { STR_AWARD_BEST_CUSTOM_DESIGNED_RIDES, SPR_AWARD_BEST_CUSTOM_DESIGNED_RIDES },
-    { STR_AWARD_MOST_DAZZLING_RIDE_COLOURS, SPR_AWARD_MOST_DAZZLING_RIDE_COLOURS },
-    { STR_AWARD_MOST_CONFUSING_LAYOUT,      SPR_AWARD_MOST_CONFUSING_LAYOUT },
-    { STR_AWARD_BEST_GENTLE_RIDES,          SPR_AWARD_BEST_GENTLE_RIDES },
-};
+    static constexpr WindowParkAward _parkAwards[] = {
+        { STR_AWARD_MOST_UNTIDY,                SPR_AWARD_MOST_UNTIDY },
+        { STR_AWARD_MOST_TIDY,                  SPR_AWARD_MOST_TIDY },
+        { STR_AWARD_BEST_ROLLERCOASTERS,        SPR_AWARD_BEST_ROLLERCOASTERS },
+        { STR_AWARD_BEST_VALUE,                 SPR_AWARD_BEST_VALUE },
+        { STR_AWARD_MOST_BEAUTIFUL,             SPR_AWARD_MOST_BEAUTIFUL },
+        { STR_AWARD_WORST_VALUE,                SPR_AWARD_WORST_VALUE },
+        { STR_AWARD_SAFEST,                     SPR_AWARD_SAFEST },
+        { STR_AWARD_BEST_STAFF,                 SPR_AWARD_BEST_STAFF },
+        { STR_AWARD_BEST_FOOD,                  SPR_AWARD_BEST_FOOD },
+        { STR_AWARD_WORST_FOOD,                 SPR_AWARD_WORST_FOOD },
+        { STR_AWARD_BEST_TOILETS,               SPR_AWARD_BEST_TOILETS },
+        { STR_AWARD_MOST_DISAPPOINTING,         SPR_AWARD_MOST_DISAPPOINTING },
+        { STR_AWARD_BEST_WATER_RIDES,           SPR_AWARD_BEST_WATER_RIDES },
+        { STR_AWARD_BEST_CUSTOM_DESIGNED_RIDES, SPR_AWARD_BEST_CUSTOM_DESIGNED_RIDES },
+        { STR_AWARD_MOST_DAZZLING_RIDE_COLOURS, SPR_AWARD_MOST_DAZZLING_RIDE_COLOURS },
+        { STR_AWARD_MOST_CONFUSING_LAYOUT,      SPR_AWARD_MOST_CONFUSING_LAYOUT },
+        { STR_AWARD_BEST_GENTLE_RIDES,          SPR_AWARD_BEST_GENTLE_RIDES },
+    };
     // clang-format on
 
     class ParkWindow final : public Window
