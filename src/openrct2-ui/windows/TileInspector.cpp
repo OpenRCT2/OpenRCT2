@@ -192,6 +192,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region MEASUREMENTS
 
     static constexpr StringId WINDOW_TITLE = STR_TILE_INSPECTOR_TITLE;
+
     // Window sizes
     static constexpr int32_t WW = 400;
     static constexpr int32_t WH = 170;
@@ -232,11 +233,11 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
+    // clang-format off
     constexpr ScreenCoordsXY PropertyRowCol(ScreenCoordsXY anchor, int32_t row, int32_t column)
     {
-        return anchor
-            + ScreenCoordsXY{ column * (PropertyButtonSize.width + HORIZONTAL_GROUPBOX_PADDING),
-                              row * (PropertyButtonSize.height + VERTICAL_GROUPBOX_PADDING) };
+        return anchor + ScreenCoordsXY{ column * (PropertyButtonSize.width + HORIZONTAL_GROUPBOX_PADDING),
+                                        row * (PropertyButtonSize.height + VERTICAL_GROUPBOX_PADDING) };
     }
 
     constexpr ScreenCoordsXY CheckboxGroupOffset(
@@ -244,8 +245,6 @@ namespace OpenRCT2::Ui::Windows
     {
         return anchorPoint + ScreenCoordsXY{ 14 * horizontalMultiplier, 7 * verticalMultiplier };
     }
-
-    // clang-format off
 
     // Macros for easily obtaining the top and bottom of a widget inside a properties group box
     #define GBBT(GROUPTOP, row)     ((GROUPTOP) + 14 + row * (PropertyButtonSize.height + VERTICAL_GROUPBOX_PADDING))
