@@ -2829,8 +2829,7 @@ static void MultiDimensionRCTrackSBendLeft(
                             { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -2844,14 +2843,10 @@ static void MultiDimensionRCTrackSBendLeft(
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(15817), { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(15821), { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopRightSide, 1, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2864,6 +2859,7 @@ static void MultiDimensionRCTrackSBendLeft(
                             { { 0, 6, height }, { 32, 26, 3 } });
                         break;
                 }
+                DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 1);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -2883,16 +2879,13 @@ static void MultiDimensionRCTrackSBendLeft(
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(15817), { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(15821), { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopRightSide, 1, height, session.SupportColours);
                         break;
                 }
+                DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 1);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -2920,8 +2913,7 @@ static void MultiDimensionRCTrackSBendLeft(
                             { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 switch (direction)
                 {
                     case 1:
@@ -3162,8 +3154,7 @@ static void MultiDimensionRCTrackSBendRight(
                             { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -3178,15 +3169,11 @@ static void MultiDimensionRCTrackSBendRight(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(15825), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(15829), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -3197,6 +3184,7 @@ static void MultiDimensionRCTrackSBendRight(
                             session, direction, session.TrackColours.WithIndex(15830), { 0, 0, height }, { 32, 26, 3 });
                         break;
                 }
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -3215,17 +3203,14 @@ static void MultiDimensionRCTrackSBendRight(
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(15825), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(15829), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
                         break;
                 }
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -3253,8 +3238,7 @@ static void MultiDimensionRCTrackSBendRight(
                             { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 switch (direction)
                 {
                     case 1:
@@ -3306,8 +3290,7 @@ static void MultiDimensionRCTrackSBendRight(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, session.SupportColours);
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 36, 0, 0);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -3348,19 +3331,7 @@ static void MultiDimensionRCTrackSBendRight(
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                         direction),
                     0xFFFF, 0);
-                switch (direction)
-                {
-                    case 0:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 36,
-                            session.SupportColours);
-                        break;
-                    case 1:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 36,
-                            session.SupportColours);
-                        break;
-                }
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 36, 0, 0);
 
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -3397,19 +3368,7 @@ static void MultiDimensionRCTrackSBendRight(
                             PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                switch (direction)
-                {
-                    case 2:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 36,
-                            session.SupportColours);
-                        break;
-                    case 3:
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 36,
-                            session.SupportColours);
-                        break;
-                }
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 36, 0, 0);
 
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -3446,8 +3405,7 @@ static void MultiDimensionRCTrackSBendRight(
                             PaintSegment::bottomLeftSide),
                         direction),
                     0xFFFF, 0);
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height + 36, session.SupportColours);
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 36, 0, 0);
 
                 switch (direction)
                 {

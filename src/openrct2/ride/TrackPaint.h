@@ -540,6 +540,13 @@ void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction di
 
 void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction direction, uint16_t height);
 
+void DrawSBendLeftSupports(
+    PaintSession& session, MetalSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
+    int32_t specialA, int32_t specialB);
+void DrawSBendRightSupports(
+    PaintSession& session, MetalSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
+    int32_t specialA, int32_t specialB);
+
 using TRACK_PAINT_FUNCTION = void (*)(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType);

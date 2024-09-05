@@ -591,8 +591,7 @@ static void MiniSuspendedRCTrackSBendLeft(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, session.SupportColours);
+            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + 30, 0, 0);
 
             if (direction == 0 || direction == 3)
             {
@@ -629,15 +628,7 @@ static void MiniSuspendedRCTrackSBendLeft(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                case 1:
-                    MetalASupportsPaintSetupRotated(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, direction, 0, height + 30,
-                        session.SupportColours);
-                    break;
-            }
+            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + 30, 0, 0);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -670,15 +661,7 @@ static void MiniSuspendedRCTrackSBendLeft(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 2:
-                case 3:
-                    MetalASupportsPaintSetupRotated(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, direction, 0, height + 30,
-                        session.SupportColours);
-                    break;
-            }
+            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + 30, 0, 0);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -764,8 +747,7 @@ static void MiniSuspendedRCTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, session.SupportColours);
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 30, 0, 0);
 
             if (direction == 0 || direction == 3)
             {
@@ -802,15 +784,7 @@ static void MiniSuspendedRCTrackSBendRight(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                case 1:
-                    MetalASupportsPaintSetupRotated(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, direction, 0, height + 30,
-                        session.SupportColours);
-                    break;
-            }
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 30, 0, 0);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -843,15 +817,7 @@ static void MiniSuspendedRCTrackSBendRight(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 2:
-                case 3:
-                    MetalASupportsPaintSetupRotated(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, direction, 0, height + 30,
-                        session.SupportColours);
-                    break;
-            }
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 30, 0, 0);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -884,8 +850,7 @@ static void MiniSuspendedRCTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height + 30, session.SupportColours);
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 30, 0, 0);
 
             switch (direction)
             {

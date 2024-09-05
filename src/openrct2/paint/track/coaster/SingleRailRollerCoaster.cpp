@@ -8907,8 +8907,7 @@ namespace OpenRCT2::SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -8930,15 +8929,11 @@ namespace OpenRCT2::SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopRightSide, 1, height - 1, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -8951,6 +8946,8 @@ namespace OpenRCT2::SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         break;
                 }
+                DrawSBendLeftSupports(
+                    session, supportType.metal, trackSequence, direction, direction == 1 ? height - 1 : height, 0, 1);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -8978,17 +8975,15 @@ namespace OpenRCT2::SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::TopRightSide, 1, height - 1, session.SupportColours);
                         break;
                 }
+                DrawSBendLeftSupports(
+                    session, supportType.metal, trackSequence, direction, direction == 3 ? height - 1 : height, 0, 0);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -9023,8 +9018,7 @@ namespace OpenRCT2::SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 switch (direction)
                 {
                     case 1:
@@ -9077,8 +9071,7 @@ namespace OpenRCT2::SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -9100,15 +9093,11 @@ namespace OpenRCT2::SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -9121,6 +9110,7 @@ namespace OpenRCT2::SingleRailRC
                             { 0, 0, height }, { 32, 26, 3 });
                         break;
                 }
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -9148,17 +9138,14 @@ namespace OpenRCT2::SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
-                        MetalASupportsPaintSetup(
-                            session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
                         break;
                 }
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -9193,8 +9180,7 @@ namespace OpenRCT2::SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
                 switch (direction)
                 {
                     case 1:

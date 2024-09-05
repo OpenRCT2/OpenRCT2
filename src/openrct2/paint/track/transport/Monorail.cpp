@@ -741,6 +741,7 @@ static void PaintMonorailTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    uint8_t originalTrackSequence = trackSequence;
     if (direction == 2 || direction == 3)
     {
         trackSequence = 3 - trackSequence;
@@ -771,22 +772,6 @@ static void PaintMonorailTrackSBendLeft(
         {
             PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
         }
-
-        switch (trackSequence)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-        }
     }
     else
     {
@@ -794,23 +779,8 @@ static void PaintMonorailTrackSBendLeft(
         {
             PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
         }
-
-        switch (trackSequence)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-        }
     }
+    DrawSBendLeftSupports(session, supportType.metal, originalTrackSequence, direction, height, 0, 0);
 
     int32_t blockedSegments = 0;
     switch (trackSequence)
@@ -844,6 +814,7 @@ static void PaintMonorailTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
+    uint8_t originalTrackSequence = trackSequence;
     if (direction == 2 || direction == 3)
     {
         trackSequence = 3 - trackSequence;
@@ -871,22 +842,6 @@ static void PaintMonorailTrackSBendRight(
         {
             PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
         }
-
-        switch (trackSequence)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-        }
     }
     else
     {
@@ -894,23 +849,8 @@ static void PaintMonorailTrackSBendRight(
         {
             PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
         }
-
-        switch (trackSequence)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
-                break;
-        }
     }
+    DrawSBendRightSupports(session, supportType.metal, originalTrackSequence, direction, height, 0, 0);
 
     int32_t blockedSegments = 0;
     switch (trackSequence)
