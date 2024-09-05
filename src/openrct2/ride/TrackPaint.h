@@ -439,6 +439,10 @@ inline void TrackPaintUtilDrawStationTunnel(PaintSession& session, Direction dir
 {
     PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
 }
+inline void TrackPaintUtilDrawStationTunnelTall(PaintSession& session, Direction direction, int32_t height)
+{
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Tall);
+}
 
 void TrackPaintUtilRightQuarterTurn5TilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
