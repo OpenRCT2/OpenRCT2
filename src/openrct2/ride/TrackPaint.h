@@ -496,6 +496,12 @@ void TrackPaintUtilOnridePhotoSmallPaint(
     PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement);
 void TrackPaintUtilOnridePhotoPaint(
     PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement);
+void TrackPaintUtilOnridePhotoPaint2(
+    PaintSession& session, Direction direction, int32_t height, int32_t trackHeightOffset, int32_t supportsAboveHeightOffset,
+    const TrackElement& trackElement);
+void TrackPaintUtilOnridePhotoPaint2(
+    PaintSession& session, Direction direction, const TrackElement& trackElement, int32_t height,
+    int32_t supportsAboveHeightOffset = kGeneralSupportHeightOnRidePhoto, int32_t trackHeightOffset = 3);
 void TrackPaintUtilRightHelixUpSmallQuarterTilesPaint(
     PaintSession& session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
     const ImageId colourFlags, const uint32_t sprites[4][3][2], const CoordsXY offsets[4][3][2],

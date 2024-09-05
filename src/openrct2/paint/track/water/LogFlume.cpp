@@ -872,11 +872,7 @@ static void PaintLogFlumeTrackOnRidePhoto(
     imageId = session.TrackColours.WithIndex(LogFlumeTrackFlatImageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height + 5 }, { 32, 1, 21 } });
 
-    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
-
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
 static void PaintLogFlumeTrackReverser(

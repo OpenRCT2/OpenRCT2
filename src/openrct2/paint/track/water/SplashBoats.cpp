@@ -1320,10 +1320,7 @@ static void PaintSplashBoatsTrackOnRidePhoto(
 
     PaintSplashBoatsTrackFlat(session, ride, trackSequence, direction, height, trackElement, supportType);
 
-    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionSplashBoats(int32_t trackType)

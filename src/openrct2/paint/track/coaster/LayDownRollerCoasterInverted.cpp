@@ -3047,10 +3047,7 @@ static void LayDownRCTrackOnRidePhoto(
                 { { 0, 6, height + 24 }, { 32, 20, 3 } });
             break;
     }
-    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Standard, TunnelSubType::Flat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 64);
+    TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height, kGeneralSupportHeightOnRidePhotoInverted);
 }
 
 /** rct2: 0x00824D8C */

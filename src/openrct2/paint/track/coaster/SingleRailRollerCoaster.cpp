@@ -11191,10 +11191,7 @@ namespace OpenRCT2::SingleRailRC
                     { { 0, 6, height + 3 }, { 32, 20, 0 } });
                 break;
         }
-        TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
+        TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
     }
 
     static void TrackFlatTo60DegUpLongBase(

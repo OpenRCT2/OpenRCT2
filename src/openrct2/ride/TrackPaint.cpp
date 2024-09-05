@@ -2038,3 +2038,13 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         }
     }
 }
+
+void TrackPaintUtilOnridePhotoPaint2(
+    PaintSession& session, Direction direction, const TrackElement& trackElement, int32_t height,
+    int32_t supportsAboveHeightOffset, int32_t trackHeightOffset)
+{
+    TrackPaintUtilOnridePhotoPaint(session, direction, height + trackHeightOffset, trackElement);
+    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + supportsAboveHeightOffset);
+}

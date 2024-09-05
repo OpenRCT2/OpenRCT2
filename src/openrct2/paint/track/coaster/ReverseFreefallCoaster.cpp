@@ -423,11 +423,7 @@ static void PaintReverseFreefallRCOnridePhoto(
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
-    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
-
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverseFreefallRC(int32_t trackType)

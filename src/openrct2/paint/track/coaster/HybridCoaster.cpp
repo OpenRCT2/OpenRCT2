@@ -11011,12 +11011,9 @@ namespace OpenRCT2::HybridRC
         PaintAddImageAsParentRotated(
             session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_FLAT + (direction & 1)), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 0 } });
-        TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
-        PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
+        TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
     }
 
     static void TrackFlatTo60DegUpLongBase(
