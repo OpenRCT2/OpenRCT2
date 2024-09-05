@@ -657,6 +657,90 @@ namespace OpenRCT2::Ui::Windows
         std::vector<EntranceTypeLabel> _entranceDropdownData;
         bool _autoScrollGraph = true;
 
+        uint8_t getNumVisibleCars()
+        {
+            auto* ride = GetRide(rideId);
+            if (ride == nullptr)
+                return 0;
+
+            auto* rideEntry = ride->GetRideEntry();
+            if (rideEntry == nullptr)
+                return 0;
+
+            uint8_t numItems = 0;
+            for (auto i = 0; i < ride->num_cars_per_train; i++)
+            {
+                const auto& carEntry = rideEntry
+                                           ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, i)];
+                if (carEntry.isVisible())
+                    numItems++;
+            }
+
+            return numItems;
+        }
+
+        uint8_t dropdownIndexToCarIndex(int32_t dropdownIndex) const
+        {
+            auto* ride = GetRide(rideId);
+            if (ride == nullptr || ride->vehicleColourSettings != VehicleColourSettings::perCar)
+                return dropdownIndex;
+
+            auto* rideEntry = ride->GetRideEntry();
+            if (rideEntry == nullptr)
+                return dropdownIndex;
+
+            // `dropdownIndex` will contain a number picked from the visible cars.
+            // Convert this to the actual index.
+            auto carDropdownIndex = -1;
+            for (auto carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++)
+            {
+                const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
+                    ride->subtype, ride->num_cars_per_train, carIndex)];
+                if (!carEntry.isVisible())
+                    continue;
+
+                carDropdownIndex++;
+                if (dropdownIndex == carDropdownIndex)
+                {
+                    return carIndex;
+                }
+            }
+
+            // Should never happen
+            return dropdownIndex;
+        }
+
+        int32_t carIndexToDropdownIndex(uint8_t selectedCarIndex) const
+        {
+            auto* ride = GetRide(rideId);
+            if (ride == nullptr || ride->vehicleColourSettings != VehicleColourSettings::perCar)
+                return selectedCarIndex;
+
+            auto* rideEntry = ride->GetRideEntry();
+            if (rideEntry == nullptr)
+                return selectedCarIndex;
+
+            // `selectedCarIndex` will contain an offset that includes invisible cars.
+            // Convert this to the corresponding dropdown index of actually visible cars.
+            auto carDropdownIndex = -1;
+            for (auto carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++)
+            {
+                const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
+                    ride->subtype, ride->num_cars_per_train, carIndex)];
+                if (!carEntry.isVisible())
+                    continue;
+
+                carDropdownIndex++;
+                if (carIndex == selectedCarIndex)
+                {
+                    return carDropdownIndex;
+                }
+            }
+
+            // Should never happen
+            return selectedCarIndex;
+        }
+
     public:
         RideWindow(const Ride& ride)
         {
@@ -1110,7 +1194,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ResetVehicleIndex()
         {
-            _vehicleIndex = 0;
+            _vehicleIndex = dropdownIndexToCarIndex(0);
         }
 
     private:
@@ -4305,18 +4389,25 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
                 {
-                    for (auto i = 0; i < 3; i++)
+                    // Train, boat, ...
+                    auto vehicleTypeName = GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).singular;
+
+                    auto numDropdownItems = 2;
+                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[0].Args = STR_ALL_VEHICLES_IN_SAME_COLOURS;
+                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[1].Args = (vehicleTypeName << 16) | STR_DIFFERENT_COLOURS_PER;
+
+                    if (getNumVisibleCars() > 1)
                     {
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = (GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle)
-                                                      .singular
-                                                  << 16)
-                            | VehicleColourSchemeNames[i];
+                        numDropdownItems++;
+                        gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdownItems[2].Args = STR_DIFFERENT_COLOURS_PER_VEHICLE;
                     }
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                        colours[1], 0, Dropdown::Flag::StayOpen, rideEntry->max_cars_in_train > 1 ? 3 : 2,
+                        colours[1], 0, Dropdown::Flag::StayOpen, numDropdownItems,
                         widgets[widgetIndex].right - dropdownWidget->left);
 
                     Dropdown::SetChecked(EnumValue(ride->vehicleColourSettings), true);
@@ -4330,19 +4421,33 @@ namespace OpenRCT2::Ui::Windows
 
                     stringId = ride->vehicleColourSettings == VehicleColourSettings::perTrain ? STR_RIDE_COLOUR_TRAIN_OPTION
                                                                                               : STR_RIDE_COLOUR_VEHICLE_OPTION;
+                    auto dropdownIndex = 0;
                     for (auto i = 0; i < std::min(numItems, Dropdown::ItemsMaxSize); i++)
                     {
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = (static_cast<int64_t>(i + 1) << 32)
+                        if (ride->vehicleColourSettings == VehicleColourSettings::perCar)
+                        {
+                            const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
+                                ride->subtype, ride->num_cars_per_train, i)];
+                            if (!carEntry.isVisible())
+                            {
+                                continue;
+                            }
+                        }
+
+                        int64_t vehicleIndex = dropdownIndex + 1;
+                        gDropdownItems[dropdownIndex].Format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdownItems[dropdownIndex].Args = (vehicleIndex << 32)
                             | ((GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).capitalised) << 16)
                             | stringId;
+                        dropdownIndex++;
                     }
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                        colours[1], 0, Dropdown::Flag::StayOpen, numItems, widgets[widgetIndex].right - dropdownWidget->left);
+                        colours[1], 0, Dropdown::Flag::StayOpen, dropdownIndex,
+                        widgets[widgetIndex].right - dropdownWidget->left);
 
-                    Dropdown::SetChecked(_vehicleIndex, true);
+                    Dropdown::SetChecked(carIndexToDropdownIndex(_vehicleIndex), true);
                     break;
                 }
                 case WIDX_VEHICLE_BODY_COLOUR:
@@ -4423,12 +4528,17 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto rideSetAppearanceAction = RideSetAppearanceAction(
                         rideId, RideSetAppearanceType::VehicleColourScheme, dropdownIndex, 0);
+                    rideSetAppearanceAction.SetCallback([this](const GameAction* ga, const GameActions::Result* result) {
+                        if (result->Error == GameActions::Status::Ok)
+                        {
+                            ResetVehicleIndex();
+                        }
+                    });
                     GameActions::Execute(&rideSetAppearanceAction);
-                    _vehicleIndex = 0;
+                    break;
                 }
-                break;
                 case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
-                    _vehicleIndex = dropdownIndex;
+                    _vehicleIndex = dropdownIndexToCarIndex(dropdownIndex);
                     Invalidate();
                     break;
                 case WIDX_VEHICLE_BODY_COLOUR:
@@ -4692,7 +4802,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(VehicleColourSchemeNames[EnumValue(ride->vehicleColourSettings)]);
                 ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).singular);
                 ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).capitalised);
-                ft.Add<uint16_t>(_vehicleIndex + 1);
+                ft.Add<uint16_t>(carIndexToDropdownIndex(_vehicleIndex) + 1);
 
                 // Vehicle index
                 if (ride->vehicleColourSettings != VehicleColourSettings::same)
