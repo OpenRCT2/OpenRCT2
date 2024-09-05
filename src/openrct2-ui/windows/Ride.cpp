@@ -620,6 +620,7 @@ namespace OpenRCT2::Ui::Windows
         ride_type_t RideTypeId;
         StringId LabelId;
         u8string_view LabelString;
+        bool isDummy;
     };
 
     // Used for sorting the vehicle type dropdown.
@@ -1906,7 +1907,8 @@ namespace OpenRCT2::Ui::Windows
             for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
             {
                 auto name = GetRideTypeNameForDropdown(i);
-                _rideDropdownData.push_back({ i, name, u8string_view{ ls.GetString(name) } });
+                bool isDummy = GetRideTypeDescriptor(i).HasFlag(RtdFlag::isDummyType);
+                _rideDropdownData.push_back({ i, name, u8string_view{ ls.GetString(name) }, isDummy });
             }
 
             std::sort(_rideDropdownData.begin(), _rideDropdownData.end(), [](auto& a, auto& b) {
@@ -1924,10 +1926,14 @@ namespace OpenRCT2::Ui::Windows
 
             PopulateRideTypeDropdown();
 
+            std::vector<size_t> indicesToDisable{};
             for (size_t i = 0; i < _rideDropdownData.size(); i++)
             {
                 gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItems[i].Args = _rideDropdownData[i].LabelId;
+
+                if (_rideDropdownData[i].isDummy)
+                    indicesToDisable.push_back(i);
             }
 
             Widget* dropdownWidget = widget - 1;
@@ -1949,6 +1955,10 @@ namespace OpenRCT2::Ui::Windows
             gDropdownHighlightedIndex = pos;
             gDropdownDefaultIndex = pos;
             Dropdown::SetChecked(pos, true);
+            for (auto i : indicesToDisable)
+            {
+                Dropdown::SetDisabled(i, true);
+            }
         }
 
         void ShowLocateDropdown(Widget* widget)
