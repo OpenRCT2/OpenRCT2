@@ -35,6 +35,7 @@
 #include <openrct2/actions/RideSetPriceAction.h>
 #include <openrct2/actions/RideSetSettingAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
+#include <openrct2/actions/RideSetVisibilityAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
@@ -132,6 +133,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OPEN_LIGHT,
         WIDX_RIDE_TYPE,
         WIDX_RIDE_TYPE_DROPDOWN,
+        WIDX_MAKE_INVISIBLE,
+        WIDX_MAKE_VISIBLE,
 
         WIDX_VEHICLE_TYPE = 14,
         WIDX_VEHICLE_TYPE_DROPDOWN,
@@ -270,8 +273,10 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({296,  62}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_SIMULATE_RIDE_TIP      ),
         MakeWidget({296,  62}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_TEST_RIDE_TIP          ),
         MakeWidget({296,  76}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_RIDE_TIP          ),
-        MakeWidget({  3, 180}, {305,  12}, WindowWidgetType::DropdownMenu,      WindowColour::Secondary, STR_ARG_6_STRINGID                                     ),
-        MakeWidget({297, 180}, { 11,  12}, WindowWidgetType::Button,        WindowColour::Secondary, STR_DROPDOWN_GLYPH                                     ),
+        MakeWidget({  3, 180}, {305,  12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary, STR_ARG_6_STRINGID                                              ),
+        MakeWidget({297, 180}, { 11,  12}, WindowWidgetType::Button,        WindowColour::Secondary, STR_DROPDOWN_GLYPH                                              ),
+        MakeWidget({  3, 195}, {144,  12}, WindowWidgetType::Button,        WindowColour::Secondary, STR_MAKE_INVISIBLE,                  STR_MAKE_INVISIBLE_TIP     ),
+        MakeWidget({153, 195}, {144,  12}, WindowWidgetType::Button,        WindowColour::Secondary, STR_MAKE_VISIBLE,                    STR_MAKE_VISIBLE_TIP       ),
     };
 
     // 0x009ADDA8
@@ -1678,6 +1683,18 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
+                case WIDX_MAKE_INVISIBLE:
+                {
+                    auto gameAction = RideSetVisibilityAction(rideId, RideSetVisibilityType::Invisible);
+                    GameActions::Execute(&gameAction);
+                    break;
+                }
+                case WIDX_MAKE_VISIBLE:
+                {
+                    auto gameAction = RideSetVisibilityAction(rideId, RideSetVisibilityType::Visible);
+                    GameActions::Execute(&gameAction);
+                    break;
+                }
             }
         }
 
@@ -1705,7 +1722,7 @@ namespace OpenRCT2::Ui::Windows
             }
             if (GetGameState().Cheats.allowArbitraryRideTypeChanges)
             {
-                minHeight += 15;
+                minHeight += 30;
             }
 
             flags |= WF_RESIZABLE;
@@ -1957,7 +1974,7 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::SetChecked(pos, true);
             for (auto i : indicesToDisable)
             {
-                Dropdown::SetDisabled(i, true);
+                Dropdown::SetDisabled(static_cast<int32_t>(i), true);
             }
         }
 
@@ -2375,7 +2392,7 @@ namespace OpenRCT2::Ui::Windows
 
             AnchorBorderWidgets();
 
-            const int32_t offset = gameState.Cheats.allowArbitraryRideTypeChanges ? 15 : 0;
+            const int32_t offset = gameState.Cheats.allowArbitraryRideTypeChanges ? 30 : 0;
             // Anchor main page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
             widgets[WIDX_VIEWPORT].bottom = height - (14 + offset);
@@ -2386,23 +2403,25 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_VIEW_DROPDOWN].right = width - 61;
             widgets[WIDX_VIEW_DROPDOWN].left = width - 71;
             widgets[WIDX_RIDE_TYPE].right = width - 26;
-            widgets[WIDX_RIDE_TYPE].top = height - 17;
-            widgets[WIDX_RIDE_TYPE].bottom = height - 4;
-            widgets[WIDX_RIDE_TYPE_DROPDOWN].left = width - 37;
-            widgets[WIDX_RIDE_TYPE_DROPDOWN].right = width - 27;
-            widgets[WIDX_RIDE_TYPE_DROPDOWN].top = height - 16;
-            widgets[WIDX_RIDE_TYPE_DROPDOWN].bottom = height - 5;
+            widgets[WIDX_RIDE_TYPE].moveToY(height - 32);
+            widgets[WIDX_RIDE_TYPE_DROPDOWN].moveTo({ width - 37, height - 31 });
+            widgets[WIDX_MAKE_INVISIBLE].moveToY(height - 17);
+            widgets[WIDX_MAKE_VISIBLE].moveToY(height - 17);
 
             if (!gameState.Cheats.allowArbitraryRideTypeChanges)
             {
                 widgets[WIDX_RIDE_TYPE].type = WindowWidgetType::Empty;
                 widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WindowWidgetType::Empty;
+                widgets[WIDX_MAKE_INVISIBLE].type = WindowWidgetType::Empty;
+                widgets[WIDX_MAKE_VISIBLE].type = WindowWidgetType::Empty;
             }
             else
             {
                 widgets[WIDX_RIDE_TYPE].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_RIDE_TYPE].text = ride->GetRideTypeDescriptor().Naming.Name;
                 widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WindowWidgetType::Button;
+                widgets[WIDX_MAKE_INVISIBLE].type = WindowWidgetType::Button;
+                widgets[WIDX_MAKE_VISIBLE].type = WindowWidgetType::Button;
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);

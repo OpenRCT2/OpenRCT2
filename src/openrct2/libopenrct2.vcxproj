@@ -134,6 +134,7 @@
     <ClInclude Include="actions\RideSetColourSchemeAction.h" />
     <ClInclude Include="actions\RideSetNameAction.h" />
     <ClInclude Include="actions\RideSetPriceAction.h" />
+    <ClInclude Include="actions\RideSetVisibilityAction.h" />
     <ClInclude Include="actions\RideSetSettingAction.h" />
     <ClInclude Include="actions\RideSetStatusAction.h" />
     <ClInclude Include="actions\RideSetVehicleAction.h" />
@@ -713,6 +714,7 @@
     <ClCompile Include="actions\RideSetSettingAction.cpp" />
     <ClCompile Include="actions\RideSetStatusAction.cpp" />
     <ClCompile Include="actions\RideSetVehicleAction.cpp" />
+    <ClCompile Include="actions\RideSetVisibilityAction.cpp" />
     <ClCompile Include="actions\ScenarioSetSettingAction.cpp" />
     <ClCompile Include="actions\ScenerySetRestrictedAction.cpp" />
     <ClCompile Include="actions\SignSetNameAction.cpp" />
