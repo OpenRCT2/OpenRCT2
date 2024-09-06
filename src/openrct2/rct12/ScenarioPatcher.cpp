@@ -19,6 +19,7 @@
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
 #include "../entity/Peep.h"
+#include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
 #include "../world/Footpath.h"
@@ -55,6 +56,10 @@ static const std::string s_fromKey = "from";
 static const std::string s_toKey = "to";
 static const std::string s_tilesKey = "tiles";
 static const std::string s_typeKey = "type";
+
+// Surface fix keys
+static const std::string s_surfacesKey = "surfaces";
+static const std::string s_destinationSurface = "to_surface";
 
 // Ride fix keys
 static const std::string s_ridesKey = "rides";
@@ -307,6 +312,57 @@ static void ApplyTileFixes(const json_t& scenarioPatch)
     }
 }
 
+static void ApplySurfaceFixes(const json_t& scenarioPatch)
+{
+    if (!scenarioPatch.contains(s_surfacesKey))
+    {
+        return;
+    }
+
+    if (!scenarioPatch[s_surfacesKey].is_array())
+    {
+        OpenRCT2::Guard::Assert(0, "Surface fix should be an array");
+        return;
+    }
+
+    auto surfaceFixes = OpenRCT2::Json::AsArray(scenarioPatch[s_surfacesKey]);
+    if (surfaceFixes.empty())
+    {
+        OpenRCT2::Guard::Assert(0, "Surface fix array should not be empty");
+        return;
+    }
+
+    for (size_t i = 0; i < surfaceFixes.size(); ++i)
+    {
+        if (!surfaceFixes[i].contains(s_destinationSurface))
+        {
+            OpenRCT2::Guard::Assert(0, "Surface fix sub-array should set a destination surface");
+            return;
+        }
+        if (s_dryRun)
+        {
+            continue;
+        }
+
+        auto destinationSurface = OpenRCT2::Json::GetString(surfaceFixes[i][s_destinationSurface]);
+        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto surfaceObj = objectManager.GetLoadedObject(ObjectEntryDescriptor::Parse(destinationSurface));
+        if (surfaceObj == nullptr)
+        {
+            OpenRCT2::Guard::Assert(0, "Surface object not found");
+            return;
+        }
+
+        auto surfaceObjIndex = objectManager.GetLoadedObjectEntryIndex(surfaceObj);
+        auto coordinatesVector = getCoordinates(surfaceFixes[i]);
+        for (const auto& tile : coordinatesVector)
+        {
+            auto surfaceElement = MapGetSurfaceElementAt(tile);
+            surfaceElement->SetSurfaceObjectIndex(surfaceObjIndex);
+        }
+    }
+}
+
 static void SwapRideEntranceAndExit(RideId rideId)
 {
     auto ride = GetRide(rideId);
@@ -464,6 +520,7 @@ void OpenRCT2::RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8stri
     ApplyLandOwnershipFixes(scenarioPatch);
     ApplyWaterFixes(scenarioPatch);
     ApplyTileFixes(scenarioPatch);
+    ApplySurfaceFixes(scenarioPatch);
     ApplyRideFixes(scenarioPatch);
 }
 
