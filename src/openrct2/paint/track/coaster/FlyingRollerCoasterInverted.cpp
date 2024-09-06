@@ -168,25 +168,8 @@ static void InvertedFlyingRCTrack25DegUp(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 57, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 57, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 57, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -301,25 +284,8 @@ static void InvertedFlyingRCTrackFlatTo25DegUp(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 49, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 49, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 49, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 49, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 49, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -417,25 +383,8 @@ static void InvertedFlyingRCTrack60DegUpTo25DegUp(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 71, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 71, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 71, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 71, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 71, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -510,25 +459,8 @@ static void InvertedFlyingRCTrack25DegUpToFlat(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 47, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 47, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 47, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -1245,25 +1177,8 @@ static void InvertedFlyingRCTrackLeftBankTo25DegUp(
         0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 47, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 47, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 47, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -1316,25 +1231,8 @@ static void InvertedFlyingRCTrackRightBankTo25DegUp(
         0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 47, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 47, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 47, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -1387,25 +1285,8 @@ static void InvertedFlyingRCTrack25DegUpToLeftBank(
         0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 47, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 47, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 47, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -1458,25 +1339,8 @@ static void InvertedFlyingRCTrack25DegUpToRightBank(
         0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 47, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 47, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 47, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -3894,25 +3758,8 @@ static void InvertedFlyingRCTrack25DegUpLeftBanked(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 57, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 57, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 57, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -3958,25 +3805,8 @@ static void InvertedFlyingRCTrack25DegUpRightBanked(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 57, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 57, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 57, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -4196,29 +4026,9 @@ static void InvertedFlyingRCTrackLeftEighthToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::BottomCorner, direction, 0, height + kSupportHeight,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -4380,29 +4190,9 @@ static void InvertedFlyingRCTrackRightEighthToDiag(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + kSupportHeight,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -4589,29 +4379,9 @@ static void InvertedFlyingRCTrackLeftEighthBankToDiag(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::BottomCorner, direction, 0, height + kSupportHeight,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -4779,29 +4549,9 @@ static void InvertedFlyingRCTrackRightEighthBankToDiag(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + kSupportHeight,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -4965,29 +4715,9 @@ static void InvertedFlyingRCTrackDiagFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + kSupportHeight,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -5131,25 +4861,8 @@ static void InvertedFlyingRCTrackDiag25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 51, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 51, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 51, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 51, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 51, session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
@@ -5403,25 +5116,8 @@ static void InvertedFlyingRCTrackDiagFlatTo25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 43, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 43, session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -5785,25 +5481,8 @@ static void InvertedFlyingRCTrackDiag25DegUpToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 45, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 45, session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
@@ -5891,25 +5570,8 @@ static void InvertedFlyingRCTrackDiag25DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 51, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 51, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 51, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 51, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 51, session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
@@ -6104,25 +5766,8 @@ static void InvertedFlyingRCTrackDiagFlatTo25DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 45, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 45, session.SupportColours);
             break;
     }
 
@@ -6430,25 +6075,8 @@ static void InvertedFlyingRCTrackDiag25DegDownToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 43, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 43, session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -6536,29 +6164,9 @@ static void InvertedFlyingRCTrackDiagFlatToLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + kSupportHeight,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -6646,29 +6254,9 @@ static void InvertedFlyingRCTrackDiagFlatToRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + kSupportHeight,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -6756,29 +6344,9 @@ static void InvertedFlyingRCTrackDiagLeftBankToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + kSupportHeight,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -6866,29 +6434,9 @@ static void InvertedFlyingRCTrackDiagRightBankToFlat(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + kSupportHeight,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -6976,25 +6524,8 @@ static void InvertedFlyingRCTrackDiagLeftBankTo25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 43, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 43, session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -7082,25 +6613,8 @@ static void InvertedFlyingRCTrackDiagRightBankTo25DegUp(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 43, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 43, session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -7188,25 +6702,8 @@ static void InvertedFlyingRCTrackDiag25DegUpToLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 45, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 45, session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
@@ -7294,25 +6791,8 @@ static void InvertedFlyingRCTrackDiag25DegUpToRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 45, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 45, session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
@@ -7397,25 +6877,8 @@ static void InvertedFlyingRCTrackDiagLeftBankTo25DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 45, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 45, session.SupportColours);
             break;
     }
 
@@ -7500,25 +6963,8 @@ static void InvertedFlyingRCTrackDiagRightBankTo25DegDown(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 45, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 45, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 45, session.SupportColours);
             break;
     }
 
@@ -7606,25 +7052,8 @@ static void InvertedFlyingRCTrackDiag25DegDownToLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 43, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 43, session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -7712,25 +7141,8 @@ static void InvertedFlyingRCTrackDiag25DegDownToRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 43, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 43, session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 43, session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -7818,29 +7230,9 @@ static void InvertedFlyingRCTrackDiagLeftBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + kSupportHeight,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -7928,29 +7320,9 @@ static void InvertedFlyingRCTrackDiagRightBank(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + kSupportHeight,
-                        session.SupportColours);
-                    break;
-            }
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + kSupportHeight,
+                session.SupportColours);
 
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -8628,25 +8000,8 @@ static void InvertedFlyingRCTrack25DegUpToLeftBanked25DegUp(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 57, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 57, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 57, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -8692,25 +8047,8 @@ static void InvertedFlyingRCTrack25DegUpToRightBanked25DegUp(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 57, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 57, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 57, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -8756,25 +8094,8 @@ static void InvertedFlyingRCTrackLeftBanked25DegUpTo25DegUp(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 57, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 57, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 57, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -8820,25 +8141,8 @@ static void InvertedFlyingRCTrackRightBanked25DegUpTo25DegUp(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 57, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 57, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 57, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 57, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -8920,25 +8224,8 @@ static void InvertedFlyingRCTrackLeftBankedFlatToLeftBanked25DegUp(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 49, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 49, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 49, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 49, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 49, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -8984,25 +8271,8 @@ static void InvertedFlyingRCTrackRightBankedFlatToRightBanked25DegUp(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 49, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 49, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 49, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 49, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 49, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -9048,25 +8318,8 @@ static void InvertedFlyingRCTrackLeftBanked25DegUpToLeftBankedFlat(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 47, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 47, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 47, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -9112,25 +8365,8 @@ static void InvertedFlyingRCTrackRightBanked25DegUpToRightBankedFlat(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 47, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 47, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 47, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -9212,25 +8448,8 @@ static void InvertedFlyingRCTrackFlatToLeftBanked25DegUp(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 49, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 49, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 49, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 49, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 49, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -9276,25 +8495,8 @@ static void InvertedFlyingRCTrackFlatToRightBanked25DegUp(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 49, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 49, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 49, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 49, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 49, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -9340,25 +8542,8 @@ static void InvertedFlyingRCTrackLeftBanked25DegUpToFlat(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 47, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 47, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 47, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -9404,25 +8589,8 @@ static void InvertedFlyingRCTrackRightBanked25DegUpToFlat(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        switch (direction)
-        {
-            case 0:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 1:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 47, session.SupportColours);
-                break;
-            case 2:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 47, session.SupportColours);
-                break;
-            case 3:
-                MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 47, session.SupportColours);
-                break;
-        }
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::TopRightSide, direction, 0, height + 47, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
