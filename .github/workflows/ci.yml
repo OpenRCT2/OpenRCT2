@@ -312,7 +312,7 @@ jobs:
             distro: Debian
             release: bookworm
             image: openrct2/openrct2-build:15-bookworm
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off -DCMAKE_BUILD_TYPE=Debug # overwrite the default build type to avoid GCC 12 bugs
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
     steps:
       - name: Checkout
         uses: actions/checkout@v4
