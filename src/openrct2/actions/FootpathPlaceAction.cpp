@@ -10,6 +10,7 @@
 #include "FootpathPlaceAction.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -19,6 +20,7 @@
 #include "../management/Finance.h"
 #include "../object/PathAdditionEntry.h"
 #include "../ride/RideConstruction.h"
+#include "../windows/Intent.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
@@ -109,7 +111,9 @@ GameActions::Result FootpathPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
-    FootpathProvisionalRemove();
+    auto intent = Intent(INTENT_ACTION_REMOVE_PROVISIONAL_FOOTPATH);
+    ContextBroadcastIntent(&intent);
+
     auto tileElement = MapGetFootpathElementSlope(_loc, _slope);
     if (tileElement == nullptr)
     {

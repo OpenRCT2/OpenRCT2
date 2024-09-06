@@ -49,7 +49,6 @@ using namespace OpenRCT2::TrackMetaData;
 void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement* tileElement);
 
 FootpathSelection gFootpathSelection;
-ProvisionalFootpath gProvisionalFootpath;
 uint16_t gFootpathSelectedId;
 CoordsXYZ gFootpathConstructFromPosition;
 uint8_t gFootpathConstructSlope;
@@ -119,99 +118,6 @@ PathElement* MapGetFootpathElement(const CoordsXYZ& coords)
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-}
-
-/**
- *
- *  rct2: 0x006A76FF
- */
-money64 FootpathProvisionalSet(
-    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
-    PathConstructFlags constructFlags)
-{
-    money64 cost;
-
-    FootpathProvisionalRemove();
-
-    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
-    footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-    auto res = GameActions::Execute(&footpathPlaceAction);
-    cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
-    if (res.Error == GameActions::Status::Ok)
-    {
-        gProvisionalFootpath.SurfaceIndex = type;
-        gProvisionalFootpath.RailingsIndex = railingsType;
-        gProvisionalFootpath.Position = footpathLoc;
-        gProvisionalFootpath.Slope = slope;
-        gProvisionalFootpath.ConstructFlags = constructFlags;
-        gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
-
-        if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
-        {
-            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
-        }
-        else
-        {
-            ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
-        }
-    }
-
-    // Invalidate previous footpath piece.
-    VirtualFloorInvalidate();
-
-    if (!isToolActive(WindowClass::Scenery))
-    {
-        if (res.Error != GameActions::Status::Ok)
-        {
-            // If we can't build this, don't show a virtual floor.
-            VirtualFloorSetHeight(0);
-        }
-        else if (
-            gProvisionalFootpath.Slope == kTileSlopeFlat || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
-        {
-            // Going either straight on, or down.
-            VirtualFloorSetHeight(gProvisionalFootpath.Position.z);
-        }
-        else
-        {
-            // Going up in the world!
-            VirtualFloorSetHeight(gProvisionalFootpath.Position.z + LAND_HEIGHT_STEP);
-        }
-    }
-
-    return cost;
-}
-
-/**
- *
- *  rct2: 0x006A77FF
- */
-void FootpathProvisionalRemove()
-{
-    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
-    {
-        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
-
-        auto action = FootpathRemoveAction(gProvisionalFootpath.Position);
-        action.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-        GameActions::Execute(&action);
-    }
-}
-
-/**
- *
- *  rct2: 0x006A7831
- */
-void FootpathProvisionalUpdate()
-{
-    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
-    {
-        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
-
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-        MapInvalidateTileFull(gFootpathConstructFromPosition);
-    }
-    FootpathProvisionalRemove();
 }
 
 /**
