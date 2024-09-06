@@ -1071,7 +1071,7 @@ namespace OpenRCT2
                         std::vector<TileElement> tileElements;
                         tileElements.resize(numElements);
                         cs.Read(tileElements.data(), tileElements.size() * sizeof(TileElement));
-                        SetTileElements(std::move(tileElements));
+                        SetTileElements(gameState, std::move(tileElements));
                         {
                             TileElementIterator it;
                             TileElementIteratorBegin(&it);
