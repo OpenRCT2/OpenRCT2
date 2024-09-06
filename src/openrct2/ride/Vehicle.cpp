@@ -7604,6 +7604,183 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     }
 }
 
+Vehicle::UpdateMiniGolfFlagsStatus Vehicle::UpdateTrackMotionMiniGolfFlagsStatus(const Ride& curRide)
+{
+    if (var_D3 != 0)
+    {
+        var_D3--;
+        remaining_distance -= 0x368A;
+        if (remaining_distance < 0)
+        {
+            remaining_distance = 0;
+        }
+
+        if (remaining_distance < 0x368A)
+        {
+            Loc6DCDE4(curRide);
+            return Vehicle::UpdateMiniGolfFlagsStatus::stop;
+        }
+        acceleration = AccelerationFromPitch[Pitch];
+        _vehicleUnkF64E10++;
+        return Vehicle::UpdateMiniGolfFlagsStatus::restart;
+    }
+
+    if (mini_golf_flags & MiniGolfFlag::Flag2)
+    {
+        uint8_t nextFrame = animation_frame + 1;
+        if (nextFrame < MiniGolfPeepAnimationLengths[EnumValue(mini_golf_current_animation)])
+        {
+            animation_frame = nextFrame;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return Vehicle::UpdateMiniGolfFlagsStatus::stop;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            return Vehicle::UpdateMiniGolfFlagsStatus::restart;
+        }
+        mini_golf_flags &= ~MiniGolfFlag::Flag2;
+    }
+
+    if (mini_golf_flags & MiniGolfFlag::Flag0)
+    {
+        auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
+        Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
+        if (vEDI == nullptr)
+        {
+            return Vehicle::UpdateMiniGolfFlagsStatus::stop;
+        }
+        if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag0) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
+        {
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return Vehicle::UpdateMiniGolfFlagsStatus::stop;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            return Vehicle::UpdateMiniGolfFlagsStatus::restart;
+        }
+        if (vEDI->var_D3 != 0)
+        {
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return Vehicle::UpdateMiniGolfFlagsStatus::stop;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            return Vehicle::UpdateMiniGolfFlagsStatus::restart;
+        }
+        vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag0;
+        mini_golf_flags &= ~MiniGolfFlag::Flag0;
+    }
+
+    if (mini_golf_flags & MiniGolfFlag::Flag1)
+    {
+        auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
+        Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
+        if (vEDI == nullptr)
+        {
+            return Vehicle::UpdateMiniGolfFlagsStatus::stop;
+        }
+        if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag1) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
+        {
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return Vehicle::UpdateMiniGolfFlagsStatus::stop;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            return Vehicle::UpdateMiniGolfFlagsStatus::restart;
+        }
+        if (vEDI->var_D3 != 0)
+        {
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return Vehicle::UpdateMiniGolfFlagsStatus::stop;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            return Vehicle::UpdateMiniGolfFlagsStatus::restart;
+        }
+        vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag1;
+        mini_golf_flags &= ~MiniGolfFlag::Flag1;
+    }
+
+    if (mini_golf_flags & MiniGolfFlag::Flag3)
+    {
+        Vehicle* vEDI = this;
+
+        for (;;)
+        {
+            vEDI = GetEntity<Vehicle>(vEDI->prev_vehicle_on_ride);
+            if (vEDI == this || vEDI == nullptr)
+            {
+                break;
+            }
+            if (vEDI->IsHead())
+                continue;
+            if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag4))
+                continue;
+            if (vEDI->TrackLocation != TrackLocation)
+                continue;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return Vehicle::UpdateMiniGolfFlagsStatus::stop;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            return Vehicle::UpdateMiniGolfFlagsStatus::restart;
+        }
+
+        mini_golf_flags |= MiniGolfFlag::Flag4;
+        mini_golf_flags &= ~MiniGolfFlag::Flag3;
+    }
+
+    return Vehicle::UpdateMiniGolfFlagsStatus::carryOn;
+}
+
 /**
  *  rct2: 0x006DC3A7
  *
@@ -7637,177 +7814,15 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideOb
         goto Loc6DCA9A;
 
 Loc6DC462:
-    if (var_D3 != 0)
+{
+    Vehicle::UpdateMiniGolfFlagsStatus flagsStatus = Vehicle::UpdateMiniGolfFlagsStatus::restart;
+    while (flagsStatus == Vehicle::UpdateMiniGolfFlagsStatus::restart)
     {
-        var_D3--;
-        remaining_distance -= 0x368A;
-        if (remaining_distance < 0)
-        {
-            remaining_distance = 0;
-        }
-
-        if (remaining_distance < 0x368A)
-        {
-            Loc6DCDE4(curRide);
-            return;
-        }
-        acceleration = AccelerationFromPitch[Pitch];
-        _vehicleUnkF64E10++;
-        goto Loc6DC462;
+        flagsStatus = UpdateTrackMotionMiniGolfFlagsStatus(curRide);
     }
-
-    if (mini_golf_flags & MiniGolfFlag::Flag2)
-    {
-        uint8_t nextFrame = animation_frame + 1;
-        if (nextFrame < MiniGolfPeepAnimationLengths[EnumValue(mini_golf_current_animation)])
-        {
-            animation_frame = nextFrame;
-            remaining_distance -= 0x368A;
-            if (remaining_distance < 0)
-            {
-                remaining_distance = 0;
-            }
-
-            if (remaining_distance < 0x368A)
-            {
-                Loc6DCDE4(curRide);
-                return;
-            }
-            acceleration = AccelerationFromPitch[Pitch];
-            _vehicleUnkF64E10++;
-            goto Loc6DC462;
-        }
-        mini_golf_flags &= ~MiniGolfFlag::Flag2;
-    }
-
-    if (mini_golf_flags & MiniGolfFlag::Flag0)
-    {
-        auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
-        if (vEDI == nullptr)
-        {
-            return;
-        }
-        if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag0) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
-        {
-            remaining_distance -= 0x368A;
-            if (remaining_distance < 0)
-            {
-                remaining_distance = 0;
-            }
-
-            if (remaining_distance < 0x368A)
-            {
-                Loc6DCDE4(curRide);
-                return;
-            }
-            acceleration = AccelerationFromPitch[Pitch];
-            _vehicleUnkF64E10++;
-            goto Loc6DC462;
-        }
-        if (vEDI->var_D3 != 0)
-        {
-            remaining_distance -= 0x368A;
-            if (remaining_distance < 0)
-            {
-                remaining_distance = 0;
-            }
-
-            if (remaining_distance < 0x368A)
-            {
-                Loc6DCDE4(curRide);
-                return;
-            }
-            acceleration = AccelerationFromPitch[Pitch];
-            _vehicleUnkF64E10++;
-            goto Loc6DC462;
-        }
-        vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag0;
-        mini_golf_flags &= ~MiniGolfFlag::Flag0;
-    }
-
-    if (mini_golf_flags & MiniGolfFlag::Flag1)
-    {
-        auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
-        if (vEDI == nullptr)
-        {
-            return;
-        }
-        if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag1) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
-        {
-            remaining_distance -= 0x368A;
-            if (remaining_distance < 0)
-            {
-                remaining_distance = 0;
-            }
-
-            if (remaining_distance < 0x368A)
-            {
-                Loc6DCDE4(curRide);
-                return;
-            }
-            acceleration = AccelerationFromPitch[Pitch];
-            _vehicleUnkF64E10++;
-            goto Loc6DC462;
-        }
-        if (vEDI->var_D3 != 0)
-        {
-            remaining_distance -= 0x368A;
-            if (remaining_distance < 0)
-            {
-                remaining_distance = 0;
-            }
-
-            if (remaining_distance < 0x368A)
-            {
-                Loc6DCDE4(curRide);
-                return;
-            }
-            acceleration = AccelerationFromPitch[Pitch];
-            _vehicleUnkF64E10++;
-            goto Loc6DC462;
-        }
-        vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag1;
-        mini_golf_flags &= ~MiniGolfFlag::Flag1;
-    }
-
-    if (mini_golf_flags & MiniGolfFlag::Flag3)
-    {
-        Vehicle* vEDI = this;
-
-        for (;;)
-        {
-            vEDI = GetEntity<Vehicle>(vEDI->prev_vehicle_on_ride);
-            if (vEDI == this || vEDI == nullptr)
-            {
-                break;
-            }
-            if (vEDI->IsHead())
-                continue;
-            if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag4))
-                continue;
-            if (vEDI->TrackLocation != TrackLocation)
-                continue;
-            remaining_distance -= 0x368A;
-            if (remaining_distance < 0)
-            {
-                remaining_distance = 0;
-            }
-
-            if (remaining_distance < 0x368A)
-            {
-                Loc6DCDE4(curRide);
-                return;
-            }
-            acceleration = AccelerationFromPitch[Pitch];
-            _vehicleUnkF64E10++;
-            goto Loc6DC462;
-        }
-
-        mini_golf_flags |= MiniGolfFlag::Flag4;
-        mini_golf_flags &= ~MiniGolfFlag::Flag3;
-    }
+    if (flagsStatus == UpdateMiniGolfFlagsStatus::stop)
+        return;
+};
 
     {
         uint16_t trackTotalProgress = GetTrackProgress();
