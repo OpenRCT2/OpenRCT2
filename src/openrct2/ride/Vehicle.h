@@ -379,6 +379,16 @@ private:
 
     void Loc6DCE02(const Ride& curRide);
     void Loc6DCDE4(const Ride& curRide);
+    /**
+     * @return true If UpdateTrackMotion() must return after calling this function.
+     */
+    bool UpdateTrackMotionLoc6DBF3E(Vehicle* car, int32_t* outStation, EntityId& spriteId);
+    /**
+     * @return true If UpdateTrackMotion() must return after calling this function.
+     */
+    bool UpdateTrackMotionUpdateCar(
+        Vehicle* car, const CarEntry& carEntry, const Ride& curRide, const RideObjectEntry& rideEntry, int32_t* outStation,
+        EntityId& spriteId);
 };
 static_assert(sizeof(Vehicle) <= 512);
 

@@ -8495,6 +8495,111 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
     return curAcceleration + poweredAcceleration;
 }
 
+bool Vehicle::UpdateTrackMotionLoc6DBF3E(Vehicle* car, int32_t* outStation, EntityId& spriteId)
+{
+    car->Sub6DBF3E();
+
+    // Loc6DC0F7
+    if (car->HasFlag(VehicleFlags::OnLiftHill))
+    {
+        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
+    }
+    if (car->HasFlag(VehicleFlags::MoveSingleCar))
+    {
+        if (outStation != nullptr)
+            *outStation = _vehicleStationIndex.ToUnderlying();
+        return true;
+    }
+    if (_vehicleVelocityF64E08 >= 0)
+    {
+        spriteId = car->next_vehicle_on_train;
+    }
+    else
+    {
+        if (car == gCurrentVehicle)
+        {
+            return false;
+        }
+        spriteId = car->prev_vehicle_on_ride;
+    }
+
+    return false;
+}
+
+bool Vehicle::UpdateTrackMotionUpdateCar(
+    Vehicle* car, const CarEntry& carEntry, const Ride& curRide, const RideObjectEntry& rideEntry, int32_t* outStation,
+    EntityId& spriteId)
+{
+    // Swinging cars
+    if (carEntry.flags & CAR_ENTRY_FLAG_SWINGING)
+    {
+        car->UpdateSwingingCar();
+    }
+    // Spinning cars
+    if (carEntry.flags & CAR_ENTRY_FLAG_SPINNING)
+    {
+        car->UpdateSpinningCar();
+    }
+    // Rider sprites?? animation??
+    if ((carEntry.flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION) || (carEntry.flags & CAR_ENTRY_FLAG_RIDER_ANIMATION))
+    {
+        car->UpdateAdditionalAnimation();
+    }
+    car->acceleration = AccelerationFromPitch[car->Pitch];
+    _vehicleUnkF64E10 = 1;
+
+    if (!car->HasFlag(VehicleFlags::MoveSingleCar))
+    {
+        car->remaining_distance += _vehicleVelocityF64E0C;
+    }
+
+    car->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
+    _vehicleCurPosition.x = car->x;
+    _vehicleCurPosition.y = car->y;
+    _vehicleCurPosition.z = car->z;
+    car->Invalidate();
+
+    while (true)
+    {
+        if (car->remaining_distance < 0)
+        {
+            // Backward loop
+            if (car->UpdateTrackMotionBackwards(&carEntry, curRide, rideEntry))
+            {
+                break;
+            }
+
+            if (car->remaining_distance < 0x368A)
+            {
+                break;
+            }
+            car->acceleration += AccelerationFromPitch[car->Pitch];
+            _vehicleUnkF64E10++;
+            continue;
+        }
+        if (car->remaining_distance < 0x368A)
+        {
+            // Location found
+            return UpdateTrackMotionLoc6DBF3E(car, outStation, spriteId);
+        }
+        if (car->UpdateTrackMotionForwards(&carEntry, curRide, rideEntry))
+        {
+            break;
+        }
+
+        if (car->remaining_distance >= 0)
+        {
+            break;
+        }
+        car->acceleration = AccelerationFromPitch[car->Pitch];
+        _vehicleUnkF64E10++;
+        continue;
+    }
+    // Loc6DBF20
+    car->MoveTo(_vehicleCurPosition);
+    return false;
+}
+
 /**
  *
  *  rct2: 0x006DAB4C
@@ -8545,105 +8650,16 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
             break;
         }
         carEntry = car->Entry();
-        if (carEntry == nullptr)
+        if (carEntry != nullptr)
         {
-            goto Loc6DBF3E;
+            auto mustReturn = UpdateTrackMotionUpdateCar(car, *carEntry, *curRide, *rideEntry, outStation, spriteId);
+            if (mustReturn)
+                return _vehicleMotionTrackFlags;
         }
 
-        // Swinging cars
-        if (carEntry->flags & CAR_ENTRY_FLAG_SWINGING)
-        {
-            car->UpdateSwingingCar();
-        }
-        // Spinning cars
-        if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING)
-        {
-            car->UpdateSpinningCar();
-        }
-        // Rider sprites?? animation??
-        if ((carEntry->flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION) || (carEntry->flags & CAR_ENTRY_FLAG_RIDER_ANIMATION))
-        {
-            car->UpdateAdditionalAnimation();
-        }
-        car->acceleration = AccelerationFromPitch[car->Pitch];
-        _vehicleUnkF64E10 = 1;
-
-        if (!car->HasFlag(VehicleFlags::MoveSingleCar))
-        {
-            car->remaining_distance += _vehicleVelocityF64E0C;
-        }
-
-        car->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        _vehicleCurPosition.x = car->x;
-        _vehicleCurPosition.y = car->y;
-        _vehicleCurPosition.z = car->z;
-        car->Invalidate();
-
-        while (true)
-        {
-            if (car->remaining_distance < 0)
-            {
-                // Backward loop
-                if (car->UpdateTrackMotionBackwards(carEntry, *curRide, *rideEntry))
-                {
-                    break;
-                }
-
-                if (car->remaining_distance < 0x368A)
-                {
-                    break;
-                }
-                car->acceleration += AccelerationFromPitch[car->Pitch];
-                _vehicleUnkF64E10++;
-                continue;
-            }
-            if (car->remaining_distance < 0x368A)
-            {
-                // Location found
-                goto Loc6DBF3E;
-            }
-            if (car->UpdateTrackMotionForwards(carEntry, *curRide, *rideEntry))
-            {
-                break;
-            }
-
-            if (car->remaining_distance >= 0)
-            {
-                break;
-            }
-            car->acceleration = AccelerationFromPitch[car->Pitch];
-            _vehicleUnkF64E10++;
-            continue;
-        }
-        // Loc6DBF20
-        car->MoveTo(_vehicleCurPosition);
-
-    Loc6DBF3E:
-        car->Sub6DBF3E();
-
-        // Loc6DC0F7
-        if (car->HasFlag(VehicleFlags::OnLiftHill))
-        {
-            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
-        }
-        if (car->HasFlag(VehicleFlags::MoveSingleCar))
-        {
-            if (outStation != nullptr)
-                *outStation = _vehicleStationIndex.ToUnderlying();
+        auto mustReturn = UpdateTrackMotionLoc6DBF3E(car, outStation, spriteId);
+        if (mustReturn)
             return _vehicleMotionTrackFlags;
-        }
-        if (_vehicleVelocityF64E08 >= 0)
-        {
-            spriteId = car->next_vehicle_on_train;
-        }
-        else
-        {
-            if (car == gCurrentVehicle)
-            {
-                break;
-            }
-            spriteId = car->prev_vehicle_on_ride;
-        }
     }
     // Loc6DC144
     vehicle = gCurrentVehicle;
