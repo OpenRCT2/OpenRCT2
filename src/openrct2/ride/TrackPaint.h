@@ -598,6 +598,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionWildMouse(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRCInverted(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionVirginiaReel(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionSplashBoats(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniHelicopters(int32_t trackType);

@@ -898,6 +898,7 @@
     <ClCompile Include="paint\track\coaster\CompactInvertedCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\CorkscrewRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\FlyingRollerCoaster.cpp" />
+    <ClCompile Include="paint\track\coaster\FlyingRollerCoasterInverted.cpp" />
     <ClCompile Include="paint\track\coaster\LatticeTriangleTrack.cpp" />
     <ClCompile Include="paint\track\coaster\HeartlineTwisterCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\HybridCoaster.cpp" />
