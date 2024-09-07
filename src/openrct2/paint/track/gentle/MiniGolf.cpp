@@ -473,16 +473,16 @@ static void PaintMiniGolfTrack25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardSlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardSlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
             break;
     }
 
@@ -518,10 +518,10 @@ static void PaintMiniGolfTrackFlatTo25DegUp(
             PaintUtilPushTunnelLeft(session, height, TunnelType::PathAndMiniGolf);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelRight(session, height, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, TunnelType::StandardSlopeEnd);
+            PaintUtilPushTunnelLeft(session, height, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
             break;
         case 3:
             PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
@@ -557,7 +557,7 @@ static void PaintMiniGolfTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TunnelType::StandardFlat);
+            PaintUtilPushTunnelLeft(session, height - 8, TunnelGroup::Standard, TunnelSubType::Flat);
             break;
         case 1:
             PaintUtilPushTunnelRight(session, height + 8, TunnelType::PathAndMiniGolf);
@@ -566,7 +566,7 @@ static void PaintMiniGolfTrack25DegUpToFlat(
             PaintUtilPushTunnelLeft(session, height + 8, TunnelType::PathAndMiniGolf);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TunnelType::StandardFlat);
+            PaintUtilPushTunnelRight(session, height - 8, TunnelGroup::Standard, TunnelSubType::Flat);
             break;
     }
 
@@ -630,7 +630,7 @@ static void PaintMiniGolfStation(
         TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasSWFence, stationObj, height, stationColour);
 
         // Was leftwards tunnel in game, seems odd
-        PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
     }
     else
     {
@@ -652,7 +652,7 @@ static void PaintMiniGolfStation(
         TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height, stationColour);
         TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasSEFence, stationObj, height, stationColour);
 
-        PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
     }
 
     WoodenASupportsPaintSetupRotated(

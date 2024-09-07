@@ -1396,7 +1396,8 @@ static int32_t GetAgePenalty(const Ride& ride)
  */
 static void RideBreakdownUpdate(Ride& ride)
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    auto& gameState = GetGameState();
+    const auto currentTicks = gameState.CurrentTicks;
     if (currentTicks & 255)
         return;
 
@@ -1450,7 +1451,7 @@ static void RideBreakdownUpdate(Ride& ride)
     // continues.
     if ((ride.reliability == 0
          || static_cast<uint32_t>(ScenarioRand() & 0x2FFFFF) <= 1u + kRideInitialReliability - ride.reliability)
-        && !GetGameState().Cheats.DisableAllBreakdowns)
+        && !gameState.Cheats.DisableAllBreakdowns)
     {
         int32_t breakdownReason = RideGetNewBreakdownProblem(ride);
         if (breakdownReason != -1)

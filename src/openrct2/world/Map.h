@@ -111,9 +111,14 @@ extern uint32_t gLandRemainingConstructionSales;
 
 extern bool gMapLandRightsUpdateSuccess;
 
+namespace OpenRCT2
+{
+    struct GameState_t;
+}
+
 void ReorganiseTileElements();
 const std::vector<TileElement>& GetTileElements();
-void SetTileElements(std::vector<TileElement>&& tileElements);
+void SetTileElements(OpenRCT2::GameState_t& gameState, std::vector<TileElement>&& tileElements);
 void StashMap();
 void UnstashMap();
 std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts();
@@ -141,8 +146,6 @@ EntranceElement* MapGetRideExitElementAt(const CoordsXYZ& exitCoords, bool ghost
 uint8_t MapGetHighestLandHeight(const MapRange& range);
 uint8_t MapGetLowestLandHeight(const MapRange& range);
 bool MapCoordIsConnected(const TileCoordsXYZ& loc, uint8_t faceDirection);
-void MapRemoveProvisionalElements();
-void MapRestoreProvisionalElements();
 void MapUpdatePathWideFlags();
 bool MapIsLocationValid(const CoordsXY& coords);
 bool MapIsEdge(const CoordsXY& coords);

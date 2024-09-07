@@ -1048,7 +1048,7 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 #ifdef ORIGINAL_RATINGS
-    if (!ride.ratings.excitement.isNull())
+    if (!ride.ratings.isNull())
     {
         // Address underflows allowed by original RCT2 code
         ride.ratings.excitement = std::max<uint16_t>(0, ride.ratings.excitement);

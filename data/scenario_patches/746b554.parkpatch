@@ -1,0 +1,14 @@
+{
+    "scenario_name": "Crazy Castle (.sea)",
+    "sha256": "746b554127362137aaabe56aa5dc6c78376db41a8619fbae58da1d41a37a9bd4",
+    "land_ownership": {
+        "available": {
+            "coordinates": [
+                [ 2, 4 ],
+                [ 2, 62 ], [ 2, 63 ],
+                [ 2, 83 ], [ 2, 84 ],
+                [ 9, 4 ]
+            ]
+        }
+    }
+}

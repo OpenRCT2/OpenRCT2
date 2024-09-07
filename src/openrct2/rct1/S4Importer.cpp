@@ -182,16 +182,16 @@ namespace OpenRCT2::RCT1
             ImportRides();
             ImportRideMeasurements();
             ImportEntities();
-            ImportTileElements();
-            ImportPeepSpawns();
+            ImportTileElements(gameState);
+            ImportPeepSpawns(gameState);
             ImportFinance(gameState);
             ImportResearch(gameState);
-            ImportParkName();
+            ImportParkName(gameState);
             ImportParkFlags(gameState);
             ImportClimate(gameState);
             ImportScenarioNameDetails(gameState);
             ImportScenarioObjective(gameState);
-            ImportSavedView();
+            ImportSavedView(gameState);
 
             RCT12::FetchAndApplyScenarioPatch(_s4Path, _isScenario);
             FixNextGuestNumber(gameState);
@@ -324,7 +324,7 @@ namespace OpenRCT2::RCT1
 
             uint16_t mapSize = _s4.MapSize == 0 ? Limits::kMaxMapSize : _s4.MapSize;
 
-            gScenarioFileName = GetRCT1ScenarioName();
+            gameState.ScenarioFileName = GetRCT1ScenarioName();
 
             // Do map initialisation, same kind of stuff done when loading scenario editor
             gameStateInitAll(gameState, { mapSize, mapSize });
@@ -1405,9 +1405,8 @@ namespace OpenRCT2::RCT1
             dst->z = src->z;
         }
 
-        void ImportPeepSpawns()
+        void ImportPeepSpawns(GameState_t& gameState)
         {
-            auto& gameState = GetGameState();
             gameState.PeepSpawns.clear();
             for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
@@ -1517,7 +1516,7 @@ namespace OpenRCT2::RCT1
             return result;
         }
 
-        void ImportTileElements()
+        void ImportTileElements(GameState_t& gameState)
         {
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
@@ -1565,8 +1564,8 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            SetTileElements(std::move(tileElements));
-            FixEntrancePositions();
+            SetTileElements(gameState, std::move(tileElements));
+            FixEntrancePositions(gameState);
         }
 
         size_t ImportTileElement(TileElement* dst, const RCT12TileElement* src)
@@ -2121,7 +2120,7 @@ namespace OpenRCT2::RCT1
             }
         }
 
-        void ImportParkName()
+        void ImportParkName(GameState_t& gameState)
         {
             std::string parkName = std::string(_s4.ScenarioName);
             if (IsUserStringID(static_cast<StringId>(_s4.ParkNameStringIndex)))
@@ -2133,7 +2132,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            auto& park = GetGameState().Park;
+            auto& park = gameState.Park;
             park.Name = std::move(parkName);
         }
 
@@ -2371,9 +2370,8 @@ namespace OpenRCT2::RCT1
                 gameState.ScenarioObjective.RideId = GetBuildTheBestRideId();
         }
 
-        void ImportSavedView()
+        void ImportSavedView(GameState_t& gameState)
         {
-            auto& gameState = GetGameState();
             gameState.SavedView = ScreenCoordsXY{ _s4.ViewX, _s4.ViewY };
             gameState.SavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s4.ViewZoom) };
             gameState.SavedViewRotation = _s4.ViewRotation;
@@ -2440,9 +2438,8 @@ namespace OpenRCT2::RCT1
             dst->position.y = src->y;
         }
 
-        void FixEntrancePositions()
+        void FixEntrancePositions(GameState_t& gameState)
         {
-            auto& gameState = GetGameState();
             gameState.Park.Entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);

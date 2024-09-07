@@ -1,0 +1,23 @@
+{
+    "scenario_name": "Mirage Madness (.sea)",
+    "sha256": "82aeaf6bd628bf26dabd1ca87455b667f3081598bcf4d4c7751e2bdfbd266ac2",
+    "land_ownership": {
+        "unowned": {
+            "coordinates": [
+                [ 61, 35 ]
+            ]
+        },
+        "owned": {
+            "coordinates": [
+                [ 46, 87 ]
+            ]
+        },
+        "construction_rights_owned": {
+            "cannot_downgrade": true,
+            "coordinates": [
+                [  140, 58 ], [  141, 58 ], [  142, 58 ], [ 143, 58 ], [ 144, 58 ], [ 145, 58 ], [ 146, 58 ], [ 147, 58 ], 
+                [  141, 74 ], [  142, 74 ], [ 143, 74 ], [ 144, 74 ], [ 145, 74 ], [ 146, 74 ], [ 147, 74 ]
+            ]
+        }
+    }
+}

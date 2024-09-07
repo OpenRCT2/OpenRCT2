@@ -28,23 +28,22 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 300;
     static constexpr int32_t WW = 400;
 
+    enum WindowNewsWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_SETTINGS,
+        WIDX_SCROLL
+    };
+
     // clang-format off
-enum WindowNewsWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_SETTINGS,
-    WIDX_SCROLL
-};
-
-
-static Widget window_news_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_TAB_GEARS_0)), // settings
-    MakeWidget({  4, 44}, {392, 252}, WindowWidgetType::Scroll,  WindowColour::Primary, SCROLL_VERTICAL), // scroll
-    kWidgetsEnd,
-};
-
+    static Widget window_news_widgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_TAB_GEARS_0)), // settings
+        MakeWidget({  4, 44}, {392, 252}, WindowWidgetType::Scroll,  WindowColour::Primary, SCROLL_VERTICAL), // scroll
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class NewsWindow final : public Window

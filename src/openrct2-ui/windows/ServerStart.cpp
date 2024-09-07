@@ -23,43 +23,45 @@
 
 namespace OpenRCT2::Ui::Windows
 {
+    enum
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_PORT_INPUT,
+        WIDX_NAME_INPUT,
+        WIDX_DESCRIPTION_INPUT,
+        WIDX_GREETING_INPUT,
+        WIDX_PASSWORD_INPUT,
+        WIDX_MAXPLAYERS,
+        WIDX_MAXPLAYERS_INCREASE,
+        WIDX_MAXPLAYERS_DECREASE,
+        WIDX_ADVERTISE_CHECKBOX,
+        WIDX_START_SERVER,
+        WIDX_LOAD_SERVER
+    };
+
+    static constexpr int32_t WW = 300;
+    static constexpr int32_t WH = 154;
+
     // clang-format off
-enum {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_PORT_INPUT,
-    WIDX_NAME_INPUT,
-    WIDX_DESCRIPTION_INPUT,
-    WIDX_GREETING_INPUT,
-    WIDX_PASSWORD_INPUT,
-    WIDX_MAXPLAYERS,
-    WIDX_MAXPLAYERS_INCREASE,
-    WIDX_MAXPLAYERS_DECREASE,
-    WIDX_ADVERTISE_CHECKBOX,
-    WIDX_START_SERVER,
-    WIDX_LOAD_SERVER
-};
-
-static constexpr int32_t WW = 300;
-static constexpr int32_t WH = 154;
-
-static Widget _windowServerStartWidgets[] = {
-    MakeWidget({ 0, 0 }, { WW, WH }, WindowWidgetType::Frame, WindowColour::Primary), // panel / background
-    MakeWidget({ 1, 1 }, { 298, 14 }, WindowWidgetType::Caption, WindowColour::Primary, STR_START_SERVER,STR_WINDOW_TITLE_TIP), // title bar
-    MakeWidget({ WW - 13, 2 }, { 11, 12 }, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,STR_CLOSE_WINDOW_TIP), // close x button
-    MakeWidget({ 120, 20 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // port text box
-    MakeWidget({ 120, 36 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // name text box
-    MakeWidget({ 120, 52 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // description text box
-    MakeWidget({ 120, 68 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // greeting text box
-    MakeWidget({ 120, 84 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // password text box
-    MakeSpinnerWidgets({ 120, 100 }, { 173, 12 }, WindowWidgetType::Spinner, WindowColour::Secondary,STR_SERVER_MAX_PLAYERS_VALUE), // max players (3 widgets)
-    MakeWidget({ 6, 117 }, { 287, 14 }, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ADVERTISE,STR_ADVERTISE_SERVER_TIP), // advertise checkbox
-    MakeWidget({ 6, WH - 6 - 13 }, { 101, 14 }, WindowWidgetType::Button, WindowColour::Secondary,STR_NEW_GAME), // start server button
-    MakeWidget({ 112, WH - 6 - 13 }, { 101, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_LOAD_GAME), // None
-    kWidgetsEnd,
-};
+    static Widget _windowServerStartWidgets[] = {
+        MakeWidget({ 0, 0 }, { WW, WH }, WindowWidgetType::Frame, WindowColour::Primary), // panel / background
+        MakeWidget({ 1, 1 }, { 298, 14 }, WindowWidgetType::Caption, WindowColour::Primary, STR_START_SERVER,STR_WINDOW_TITLE_TIP), // title bar
+        MakeWidget({ WW - 13, 2 }, { 11, 12 }, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,STR_CLOSE_WINDOW_TIP), // close x button
+        MakeWidget({ 120, 20 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // port text box
+        MakeWidget({ 120, 36 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // name text box
+        MakeWidget({ 120, 52 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // description text box
+        MakeWidget({ 120, 68 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // greeting text box
+        MakeWidget({ 120, 84 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // password text box
+        MakeSpinnerWidgets({ 120, 100 }, { 173, 12 }, WindowWidgetType::Spinner, WindowColour::Secondary,STR_SERVER_MAX_PLAYERS_VALUE), // max players (3 widgets)
+        MakeWidget({ 6, 117 }, { 287, 14 }, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ADVERTISE,STR_ADVERTISE_SERVER_TIP), // advertise checkbox
+        MakeWidget({ 6, WH - 6 - 13 }, { 101, 14 }, WindowWidgetType::Button, WindowColour::Secondary,STR_NEW_GAME), // start server button
+        MakeWidget({ 112, WH - 6 - 13 }, { 101, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_LOAD_GAME), // None
+        kWidgetsEnd,
+    };
     // clang-format on
+
     class ServerStartWindow final : public Window
     {
     public:

@@ -9,52 +9,40 @@
 
 #include "GameState.h"
 
-#include "./peep/GuestPathfinding.h"
-#include "Context.h"
-#include "Date.h"
-#include "Editor.h"
 #include "Game.h"
-#include "GameState.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ReplayManager.h"
 #include "actions/GameAction.h"
 #include "config/Config.h"
-#include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
-#include "entity/Staff.h"
 #include "interface/Screenshot.h"
-#include "localisation/Localisation.Date.h"
-#include "management/NewsItem.h"
-#include "network/network.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
 #include "ride/Vehicle.h"
-#include "scenario/Scenario.h"
 #include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequencePlayer.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "windows/Intent.h"
-#include "world/Climate.h"
-#include "world/MapAnimation.h"
-#include "world/Park.h"
 #include "world/Scenery.h"
 
-#include <chrono>
-
-using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
-
-static GameState_t _gameState{};
 
 namespace OpenRCT2
 {
+    static auto _gameState = std::make_unique<GameState_t>();
+
     GameState_t& GetGameState()
     {
-        return _gameState;
+        return *_gameState;
+    }
+
+    void SwapGameState(std::unique_ptr<GameState_t>& otherState)
+    {
+        _gameState.swap(otherState);
     }
 
     /**
@@ -80,7 +68,7 @@ namespace OpenRCT2
 
         gInMapInitCode = false;
 
-        GetGameState().NextGuestNumber = 1;
+        gameState.NextGuestNumber = 1;
 
         ContextInit();
 
@@ -264,6 +252,8 @@ namespace OpenRCT2
 
         NetworkUpdate();
 
+        auto& gameState = GetGameState();
+
         if (NetworkGetMode() == NETWORK_MODE_SERVER)
         {
             if (NetworkGamestateSnapshotsEnabled())
@@ -277,7 +267,7 @@ namespace OpenRCT2
         else if (NetworkGetMode() == NETWORK_MODE_CLIENT)
         {
             // Don't run past the server, this condition can happen during map changes.
-            if (NetworkGetServerTick() == GetGameState().CurrentTicks)
+            if (NetworkGetServerTick() == gameState.CurrentTicks)
             {
                 gInUpdateCode = false;
                 return;
@@ -299,7 +289,6 @@ namespace OpenRCT2
             }
         }
 
-        auto& gameState = GetGameState();
 #ifdef ENABLE_SCRIPTING
         // Stash the current day number before updating the date so that we
         // know if the day number changes on this tick.
@@ -311,11 +300,15 @@ namespace OpenRCT2
         ScenarioUpdate(gameState);
         ClimateUpdate();
         MapUpdateTiles();
+
         // Temporarily remove provisional paths to prevent peep from interacting with them
-        MapRemoveProvisionalElements();
+        auto removeProvisionalIntent = Intent(INTENT_ACTION_REMOVE_PROVISIONAL_ELEMENTS);
+        ContextBroadcastIntent(&removeProvisionalIntent);
+
         MapUpdatePathWideFlags();
         PeepUpdateAll();
-        MapRestoreProvisionalElements();
+        auto restoreProvisionalIntent = Intent(INTENT_ACTION_RESTORE_PROVISIONAL_ELEMENTS);
+        ContextBroadcastIntent(&restoreProvisionalIntent);
         VehicleUpdateAll();
         UpdateAllMiscEntities();
         Ride::UpdateAll();

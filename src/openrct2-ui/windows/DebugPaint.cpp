@@ -19,29 +19,29 @@
 
 namespace OpenRCT2::Ui::Windows
 {
+    enum WindowDebugPaintWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TOGGLE_SHOW_WIDE_PATHS,
+        WIDX_TOGGLE_SHOW_BLOCKED_TILES,
+        WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS,
+        WIDX_TOGGLE_SHOW_BOUND_BOXES,
+        WIDX_TOGGLE_SHOW_DIRTY_VISUALS,
+    };
+
+    constexpr int32_t WINDOW_WIDTH = 200;
+    constexpr int32_t WINDOW_HEIGHT = 8 + 15 + 15 + 15 + 15 + 11 + 8;
+
     // clang-format off
-enum WindowDebugPaintWidgetIdx
-{
-    WIDX_BACKGROUND,
-    WIDX_TOGGLE_SHOW_WIDE_PATHS,
-    WIDX_TOGGLE_SHOW_BLOCKED_TILES,
-    WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS,
-    WIDX_TOGGLE_SHOW_BOUND_BOXES,
-    WIDX_TOGGLE_SHOW_DIRTY_VISUALS,
-};
-
-constexpr int32_t WINDOW_WIDTH = 200;
-constexpr int32_t WINDOW_HEIGHT = 8 + 15 + 15 + 15 + 15 + 11 + 8;
-
-static Widget window_debug_paint_widgets[] = {
-    MakeWidget({0,          0}, {WINDOW_WIDTH, WINDOW_HEIGHT}, WindowWidgetType::Frame,    WindowColour::Primary                                        ),
-    MakeWidget({8, 8 + 15 * 0}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
-    MakeWidget({8, 8 + 15 * 1}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
-    MakeWidget({8, 8 + 15 * 2}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS),
-    MakeWidget({8, 8 + 15 * 3}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BOUND_BOXES    ),
-    MakeWidget({8, 8 + 15 * 4}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
-    kWidgetsEnd,
-};
+    static Widget window_debug_paint_widgets[] = {
+        MakeWidget({0,          0}, {WINDOW_WIDTH, WINDOW_HEIGHT}, WindowWidgetType::Frame,    WindowColour::Primary                                        ),
+        MakeWidget({8, 8 + 15 * 0}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
+        MakeWidget({8, 8 + 15 * 1}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
+        MakeWidget({8, 8 + 15 * 2}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS),
+        MakeWidget({8, 8 + 15 * 3}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BOUND_BOXES    ),
+        MakeWidget({8, 8 + 15 * 4}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class DebugPaintWindow final : public Window

@@ -22,18 +22,14 @@
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window_internal.h"
-#include "../management/Finance.h"
-#include "../network/network.h"
 #include "../object/FootpathObject.h"
 #include "../object/FootpathRailingsObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectEntryManager.h"
-#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
 #include "../paint/VirtualFloor.h"
 #include "../ride/RideData.h"
-#include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../util/Util.h"
@@ -41,8 +37,6 @@
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
-#include "Park.h"
-#include "Scenery.h"
 #include "Surface.h"
 #include "TileElement.h"
 
@@ -55,7 +49,6 @@ using namespace OpenRCT2::TrackMetaData;
 void FootpathUpdateQueueEntranceBanner(const CoordsXY& footpathPos, TileElement* tileElement);
 
 FootpathSelection gFootpathSelection;
-ProvisionalFootpath gProvisionalFootpath;
 uint16_t gFootpathSelectedId;
 CoordsXYZ gFootpathConstructFromPosition;
 uint8_t gFootpathConstructSlope;
@@ -125,99 +118,6 @@ PathElement* MapGetFootpathElement(const CoordsXYZ& coords)
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-}
-
-/**
- *
- *  rct2: 0x006A76FF
- */
-money64 FootpathProvisionalSet(
-    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
-    PathConstructFlags constructFlags)
-{
-    money64 cost;
-
-    FootpathProvisionalRemove();
-
-    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
-    footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-    auto res = GameActions::Execute(&footpathPlaceAction);
-    cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
-    if (res.Error == GameActions::Status::Ok)
-    {
-        gProvisionalFootpath.SurfaceIndex = type;
-        gProvisionalFootpath.RailingsIndex = railingsType;
-        gProvisionalFootpath.Position = footpathLoc;
-        gProvisionalFootpath.Slope = slope;
-        gProvisionalFootpath.ConstructFlags = constructFlags;
-        gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
-
-        if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
-        {
-            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
-        }
-        else
-        {
-            ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
-        }
-    }
-
-    // Invalidate previous footpath piece.
-    VirtualFloorInvalidate();
-
-    if (!isToolActive(WindowClass::Scenery))
-    {
-        if (res.Error != GameActions::Status::Ok)
-        {
-            // If we can't build this, don't show a virtual floor.
-            VirtualFloorSetHeight(0);
-        }
-        else if (
-            gFootpathConstructSlope == kTileSlopeFlat || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
-        {
-            // Going either straight on, or down.
-            VirtualFloorSetHeight(gProvisionalFootpath.Position.z);
-        }
-        else
-        {
-            // Going up in the world!
-            VirtualFloorSetHeight(gProvisionalFootpath.Position.z + LAND_HEIGHT_STEP);
-        }
-    }
-
-    return cost;
-}
-
-/**
- *
- *  rct2: 0x006A77FF
- */
-void FootpathProvisionalRemove()
-{
-    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
-    {
-        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
-
-        auto action = FootpathRemoveAction(gProvisionalFootpath.Position);
-        action.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-        GameActions::Execute(&action);
-    }
-}
-
-/**
- *
- *  rct2: 0x006A7831
- */
-void FootpathProvisionalUpdate()
-{
-    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
-    {
-        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
-
-        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-        MapInvalidateTileFull(gFootpathConstructFromPosition);
-    }
-    FootpathProvisionalRemove();
 }
 
 /**
@@ -658,7 +558,7 @@ static void Loc6A6D7E(
     FootpathNeighbourList* neighbourList)
 {
     auto targetPos = CoordsXY{ initialTileElementPos } + CoordsDirectionDelta[direction];
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode) && MapIsEdge(targetPos))
+    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode) && MapIsEdge(targetPos))
     {
         if (query)
         {
@@ -2186,7 +2086,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
 
 static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
 {
-    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode);
+    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode);
     for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
     {
         auto pathEntry = GetPathSurfaceEntry(i);
@@ -2210,7 +2110,7 @@ static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
     auto pathEntry = GetPathSurfaceEntry(index);
     if (pathEntry != nullptr)
     {
-        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode);
+        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode);
         if (!showEditorPaths && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
         {
             return false;
@@ -2238,7 +2138,7 @@ static ObjectEntryIndex FootpathGetDefaultRailings()
 
 static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
 {
-    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode);
+    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode);
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     auto footpathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, index));
     if (footpathObj != nullptr)

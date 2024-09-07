@@ -2602,8 +2602,8 @@ STR_5357    :{BLACK}Émelygéstűrés:
 STR_5358    :{BLACK}WC:
 STR_5359    :Vendégek törlése
 STR_5360    :Eltávolít minden vendéget a térképről
-STR_5361    :Minden vendég kapjon:
-STR_5362    :{BLACK}A vendégek preferált játékintenzitása:
+STR_5361    :Hozzáadás a vendégek tulajdonához
+STR_5362    :{BLACK}Preferált játékintenzitás:
 STR_5363    :Több mint 1
 STR_5364    :Kevesebb mint 15
 STR_5365    :{BLACK}Dolgozók sebessége:
@@ -2633,7 +2633,7 @@ STR_5457    :Állványzatlimitek ki
 STR_5458    :Forgatás órajárás szerint
 STR_5459    :Forgatás órajárással ellentétesen
 STR_5460    :Forgatás órajárással ellentétesen
-STR_5461    :Vendégek paramétereinek beállítása
+STR_5461    :Minden vendég paramétereinek beállítása
 STR_5462    :{CURRENCY}
 STR_5463    :Cél: Érezd jól magad!
 STR_5464    :Általános
@@ -3661,7 +3661,7 @@ STR_6589    :Ablak gombok mutatása a bal oldalon
 STR_6590    :Az ablak gombok (pl. az ablak bezárása) mutatása az ablak címsorának bal oldalán, ahelyett hogy a jobb oldalon lennének.
 STR_6591    :Az alkalmazott jelenleg egy játékot javít, és nem lehet kirúgni.
 STR_6592    :Az alkalmazott jelenleg egy játékot ellenőriz, és nem lehet kirúgni.
-STR_6593    :Park kerítések eltávolítása
+STR_6593    :Kerítések törlése
 STR_6594    :Mezővizsgáló: Fal lejtésének változtatása
 STR_6595    :{WINDOW_COLOUR_2}Szerző: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Szerzők: {BLACK}{STRING}
@@ -3731,6 +3731,14 @@ STR_6659    :Vendégeket nem érdeklik az árak
 STR_6660    :A vendégek hagyják figyelmen kívül a játékok és bódék árait
 STR_6661    :Véletlenszerűek
 STR_6662    :Véletlenszerű színek minden vonat vagy jármű számára
+STR_6663    :Dátum csalások
+STR_6664    :Dátum csalások megjelenítése
+STR_6665    :Természet/időjárás csalások
+STR_6666    :Természet/időjárás csalások megjelenítése
+STR_6667    :Fauna
+STR_6668    :Személyzeti csalások
+STR_6669    :Személyzeti csalások megjelenítése
+STR_6670    :Vendégek viselkedése
 
 #############
 # Scenarios #

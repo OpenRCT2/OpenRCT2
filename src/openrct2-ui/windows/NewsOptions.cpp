@@ -20,73 +20,75 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 300;
     static constexpr int32_t WW = 400;
 
+    enum
+    {
+        NOTIFICATION_CATEGORY_PARK,
+        NOTIFICATION_CATEGORY_RIDE,
+        NOTIFICATION_CATEGORY_GUEST,
+        NOTIFICATION_CATEGORY_COUNT
+    };
+
+    struct NotificationDef
+    {
+        uint8_t category;
+        StringId caption;
+        size_t config_offset;
+    };
+
     // clang-format off
-enum
-{
-    NOTIFICATION_CATEGORY_PARK,
-    NOTIFICATION_CATEGORY_RIDE,
-    NOTIFICATION_CATEGORY_GUEST,
-    NOTIFICATION_CATEGORY_COUNT
-};
+    static constexpr NotificationDef NewsItemOptionDefinitions[] = {
+        { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_AWARD,                        offsetof(Config::Notification, ParkAward)                          },
+        { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_MARKETING_CAMPAIGN_FINISHED,  offsetof(Config::Notification, ParkMarketingCampaignFinished)      },
+        { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_WARNINGS,                     offsetof(Config::Notification, ParkWarnings)                       },
+        { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_RATING_WARNINGS,              offsetof(Config::Notification, ParkRatingWarnings)                 },
+        { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_BROKEN_DOWN,                  offsetof(Config::Notification, RideBrokenDown)                     },
+        { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_CRASHED,                      offsetof(Config::Notification, RideCrashed)                        },
+        { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_CASUALTIES,                   offsetof(Config::Notification, RideCasualties)                     },
+        { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_WARNINGS,                     offsetof(Config::Notification, RideWarnings)                       },
+        { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_RESEARCHED,                   offsetof(Config::Notification, RideResearched)                     },
+        { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_VEHICLE_STALLED,              offsetof(Config::Notification, RideStalledVehicles)                },
+        { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_WARNINGS,                    offsetof(Config::Notification, GuestWarnings)                      },
+        { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_LEFT_PARK,                   offsetof(Config::Notification, GuestLeftPark)                      },
+        { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_QUEUING_FOR_RIDE,            offsetof(Config::Notification, GuestQueuingForRide)                },
+        { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_ON_RIDE,                     offsetof(Config::Notification, GuestOnRide)                        },
+        { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_LEFT_RIDE,                   offsetof(Config::Notification, GuestLeftRide)                      },
+        { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_BOUGHT_ITEM,                 offsetof(Config::Notification, GuestBoughtItem)                    },
+        { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_USED_FACILITY,               offsetof(Config::Notification, GuestUsedFacility)                  },
+        { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_DIED,                        offsetof(Config::Notification, GuestDied)                          },
+    };
+    // clang-format on
 
-struct NotificationDef
-{
-    uint8_t category;
-    StringId caption;
-    size_t config_offset;
-};
+    enum WindowNewsOptionsWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_TAB_CONTENT_PANEL,
+        WIDX_FIRST_TAB,
+        WIDX_TAB_PARK = WIDX_FIRST_TAB,
+        WIDX_TAB_RIDE,
+        WIDX_TAB_GUEST,
+        WIDX_CHECKBOX_0
+    };
 
-static constexpr NotificationDef NewsItemOptionDefinitions[] = {
-    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_AWARD,                        offsetof(Config::Notification, ParkAward)                          },
-    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_MARKETING_CAMPAIGN_FINISHED,  offsetof(Config::Notification, ParkMarketingCampaignFinished)      },
-    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_WARNINGS,                     offsetof(Config::Notification, ParkWarnings)                       },
-    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_RATING_WARNINGS,              offsetof(Config::Notification, ParkRatingWarnings)                 },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_BROKEN_DOWN,                  offsetof(Config::Notification, RideBrokenDown)                     },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_CRASHED,                      offsetof(Config::Notification, RideCrashed)                        },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_CASUALTIES,                   offsetof(Config::Notification, RideCasualties)                     },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_WARNINGS,                     offsetof(Config::Notification, RideWarnings)                       },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_RESEARCHED,                   offsetof(Config::Notification, RideResearched)                     },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_VEHICLE_STALLED,              offsetof(Config::Notification, RideStalledVehicles)                },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_WARNINGS,                    offsetof(Config::Notification, GuestWarnings)                      },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_LEFT_PARK,                   offsetof(Config::Notification, GuestLeftPark)                      },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_QUEUING_FOR_RIDE,            offsetof(Config::Notification, GuestQueuingForRide)                },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_ON_RIDE,                     offsetof(Config::Notification, GuestOnRide)                        },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_LEFT_RIDE,                   offsetof(Config::Notification, GuestLeftRide)                      },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_BOUGHT_ITEM,                 offsetof(Config::Notification, GuestBoughtItem)                    },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_USED_FACILITY,               offsetof(Config::Notification, GuestUsedFacility)                  },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_DIED,                        offsetof(Config::Notification, GuestDied)                          },
-};
-
-enum WindowNewsOptionsWidgetIdx
-{
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_TAB_CONTENT_PANEL,
-    WIDX_FIRST_TAB,
-    WIDX_TAB_PARK = WIDX_FIRST_TAB,
-    WIDX_TAB_RIDE,
-    WIDX_TAB_GUEST,
-    WIDX_CHECKBOX_0
-};
-
-static Widget WindowNewsOptionsWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::Secondary), // Tab content panel
-    MakeTab   ({ 3, 17}                                                                 ), // Park tab
-    MakeTab   ({34, 17}                                                                 ), // Ride tab
-    MakeTab   ({65, 17}                                                                 ), // Guest tab
-    MakeWidget({ 7, 49}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-    kWidgetsEnd,
-};
+    // clang-format off
+    static Widget WindowNewsOptionsWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::Secondary), // Tab content panel
+        MakeTab   ({ 3, 17}                                                                 ), // Park tab
+        MakeTab   ({34, 17}                                                                 ), // Ride tab
+        MakeTab   ({65, 17}                                                                 ), // Guest tab
+        MakeWidget({ 7, 49}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+        MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+        MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+        MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+        MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+        MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+        MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+        MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+        MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class NewsOptionsWindow final : public Window

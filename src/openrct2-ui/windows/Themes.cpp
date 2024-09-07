@@ -76,158 +76,159 @@ namespace OpenRCT2::Ui::Windows
     const uint16_t _window_header_size = 152;
 
     // clang-format off
-static Widget _themesWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {320,  64}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                       ), // tab content panel
-    MakeTab   ({  3, 17},                                                                                                        STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab
-    MakeTab   ({ 34, 17},                                                                                                        STR_THEMES_TAB_MAIN_TIP            ), // main ui tab
-    MakeTab   ({ 65, 17},                                                                                                        STR_THEMES_TAB_PARK_TIP            ), // park tab
-    MakeTab   ({ 96, 17},                                                                                                        STR_THEMES_TAB_TOOLS_TIP           ), // tools tab
-    MakeTab   ({127, 17},                                                                                                        STR_THEMES_TAB_RIDES_AND_GUESTS_TIP), // rides and peeps tab
-    MakeTab   ({158, 17},                                                                                                        STR_THEMES_TAB_EDITORS_TIP         ), // editors tab
-    MakeTab   ({189, 17},                                                                                                        STR_THEMES_TAB_MISC_TIP            ), // misc tab
-    MakeTab   ({220, 17},                                                                                                        STR_THEMES_TAB_PROMPTS_TIP         ), // prompts tab
-    MakeTab   ({251, 17},                                                                                                        STR_THEMES_TAB_FEATURES_TIP        ), // features tab
-    MakeWidget({  5, 46}, {_window_header_size,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
-    MakeWidget({157, 46}, { 79,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
-    MakeWidget({236, 46}, { 80,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_TRANSPARENCY                                                          ), // Transparency header
-    MakeWidget({125, 60}, {175,  12}, WindowWidgetType::DropdownMenu,     WindowColour::Secondary                                                                                     ), // Preset colour schemes
-    MakeWidget({288, 61}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                                 ),
-    MakeWidget({ 10, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_THEMES_ACTION_DUPLICATE,                    STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
-    MakeWidget({110, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP       ), // Delete button
-    MakeWidget({210, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,                        STR_THEMES_ACTION_RENAME_TIP       ), // Rename button
-    MakeWidget({  0,  0}, {  1,   1}, WindowWidgetType::ColourBtn,    WindowColour::Secondary                                                                                     ), // colour button mask
-    MakeWidget({  3, 60}, {314,  44}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                                    ), // staff list
-    MakeWidget({ 10, 54}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                               ), // rct1 ride lights
-    MakeWidget({ 10, 69}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                               ), // rct1 park lights
-    MakeWidget({ 10, 84}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                     ), // rct1 scenario font
-    MakeWidget({ 10, 99}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                              ), // rct1 bottom toolbar
-    kWidgetsEnd,
-};
+    static Widget _themesWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({  0, 43}, {320,  64}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                       ), // tab content panel
+        MakeTab   ({  3, 17},                                                                                                        STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab
+        MakeTab   ({ 34, 17},                                                                                                        STR_THEMES_TAB_MAIN_TIP            ), // main ui tab
+        MakeTab   ({ 65, 17},                                                                                                        STR_THEMES_TAB_PARK_TIP            ), // park tab
+        MakeTab   ({ 96, 17},                                                                                                        STR_THEMES_TAB_TOOLS_TIP           ), // tools tab
+        MakeTab   ({127, 17},                                                                                                        STR_THEMES_TAB_RIDES_AND_GUESTS_TIP), // rides and peeps tab
+        MakeTab   ({158, 17},                                                                                                        STR_THEMES_TAB_EDITORS_TIP         ), // editors tab
+        MakeTab   ({189, 17},                                                                                                        STR_THEMES_TAB_MISC_TIP            ), // misc tab
+        MakeTab   ({220, 17},                                                                                                        STR_THEMES_TAB_PROMPTS_TIP         ), // prompts tab
+        MakeTab   ({251, 17},                                                                                                        STR_THEMES_TAB_FEATURES_TIP        ), // features tab
+        MakeWidget({  5, 46}, {_window_header_size,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
+        MakeWidget({157, 46}, { 79,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
+        MakeWidget({236, 46}, { 80,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_TRANSPARENCY                                                          ), // Transparency header
+        MakeWidget({288, 61}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                                 ),
+        MakeWidget({ 10, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_THEMES_ACTION_DUPLICATE,                    STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
+        MakeWidget({110, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP       ), // Delete button
+        MakeWidget({210, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,                        STR_THEMES_ACTION_RENAME_TIP       ), // Rename button
+        MakeWidget({  0,  0}, {  1,   1}, WindowWidgetType::ColourBtn,    WindowColour::Secondary                                                                                     ), // colour button mask
+        MakeWidget({  3, 60}, {314,  44}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                                    ), // staff list
+        MakeWidget({ 10, 54}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                               ), // rct1 ride lights
+        MakeWidget({ 10, 69}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                               ), // rct1 park lights
+        MakeWidget({ 10, 84}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                     ), // rct1 scenario font
+        MakeWidget({ 10, 99}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                              ), // rct1 bottom toolbar
+        kWidgetsEnd,
+    };
+    // clang-format on
 
 #pragma region Tabs
 
-static int32_t window_themes_tab_animation_loops[] = {
-    32,
-    32,
-    1,
-    1,
-    64,
-    32,
-    8,
-    14,
-    38,
-};
-static int32_t window_themes_tab_animation_divisor[] = {
-    4,
-    4,
-    1,
-    1,
-    4,
-    2,
-    2,
-    2,
-    2,
-};
-static int32_t window_themes_tab_sprites[] = {
-    SPR_TAB_PAINT_0,
-    SPR_TAB_KIOSKS_AND_FACILITIES_0,
-    SPR_TAB_PARK_ENTRANCE,
-    SPR_G2_TAB_LAND,
-    SPR_TAB_RIDE_0,
-    SPR_TAB_WRENCH_0,
-    SPR_TAB_GEARS_0,
-    SPR_TAB_STAFF_OPTIONS_0,
-    SPR_TAB_FINANCES_MARKETING_0,
-};
+    // clang-format off
+    static int32_t window_themes_tab_animation_loops[] = {
+        32,
+        32,
+        1,
+        1,
+        64,
+        32,
+        8,
+        14,
+        38,
+    };
+    static int32_t window_themes_tab_animation_divisor[] = {
+        4,
+        4,
+        1,
+        1,
+        4,
+        2,
+        2,
+        2,
+        2,
+    };
+    static int32_t window_themes_tab_sprites[] = {
+        SPR_TAB_PAINT_0,
+        SPR_TAB_KIOSKS_AND_FACILITIES_0,
+        SPR_TAB_PARK_ENTRANCE,
+        SPR_G2_TAB_LAND,
+        SPR_TAB_RIDE_0,
+        SPR_TAB_WRENCH_0,
+        SPR_TAB_GEARS_0,
+        SPR_TAB_STAFF_OPTIONS_0,
+        SPR_TAB_FINANCES_MARKETING_0,
+    };
 
-static WindowClass window_themes_tab_1_classes[] = {
-    WindowClass::TopToolbar,
-    WindowClass::BottomToolbar,
-    WindowClass::EditorScenarioBottomToolbar,
-    WindowClass::EditorTrackBottomToolbar,
-    WindowClass::TitleMenu,
-    WindowClass::TitleExit,
-    WindowClass::TitleOptions,
-    WindowClass::ScenarioSelect,
-};
+    static WindowClass window_themes_tab_1_classes[] = {
+        WindowClass::TopToolbar,
+        WindowClass::BottomToolbar,
+        WindowClass::EditorScenarioBottomToolbar,
+        WindowClass::EditorTrackBottomToolbar,
+        WindowClass::TitleMenu,
+        WindowClass::TitleExit,
+        WindowClass::TitleOptions,
+        WindowClass::ScenarioSelect,
+    };
 
-static WindowClass window_themes_tab_2_classes[] = {
-    WindowClass::ParkInformation,
-    WindowClass::EditorParkEntrance,
-    WindowClass::Finances,
-    WindowClass::NewCampaign,
-    WindowClass::Research,
-    WindowClass::Map,
-    WindowClass::Viewport,
-    WindowClass::RecentNews,
-};
+    static WindowClass window_themes_tab_2_classes[] = {
+        WindowClass::ParkInformation,
+        WindowClass::EditorParkEntrance,
+        WindowClass::Finances,
+        WindowClass::NewCampaign,
+        WindowClass::Research,
+        WindowClass::Map,
+        WindowClass::Viewport,
+        WindowClass::RecentNews,
+    };
 
-static WindowClass window_themes_tab_3_classes[] = {
-    WindowClass::Land,
-    WindowClass::Water,
-    WindowClass::ClearScenery,
-    WindowClass::LandRights,
-    WindowClass::Scenery,
-    WindowClass::SceneryScatter,
-    WindowClass::Footpath,
-    WindowClass::RideConstruction,
-    WindowClass::TrackDesignPlace,
-    WindowClass::ConstructRide,
-    WindowClass::TrackDesignList,
-    WindowClass::PatrolArea,
-};
+    static WindowClass window_themes_tab_3_classes[] = {
+        WindowClass::Land,
+        WindowClass::Water,
+        WindowClass::ClearScenery,
+        WindowClass::LandRights,
+        WindowClass::Scenery,
+        WindowClass::SceneryScatter,
+        WindowClass::Footpath,
+        WindowClass::RideConstruction,
+        WindowClass::TrackDesignPlace,
+        WindowClass::ConstructRide,
+        WindowClass::TrackDesignList,
+        WindowClass::PatrolArea,
+    };
 
-static WindowClass window_themes_tab_4_classes[] = {
-    WindowClass::Ride,
-    WindowClass::RideList,
-    WindowClass::Peep,
-    WindowClass::GuestList,
-    WindowClass::Staff,
-    WindowClass::StaffList,
-    WindowClass::Banner,
-};
+    static WindowClass window_themes_tab_4_classes[] = {
+        WindowClass::Ride,
+        WindowClass::RideList,
+        WindowClass::Peep,
+        WindowClass::GuestList,
+        WindowClass::Staff,
+        WindowClass::StaffList,
+        WindowClass::Banner,
+    };
 
-static WindowClass window_themes_tab_5_classes[] = {
-    WindowClass::EditorObjectSelection,
-    WindowClass::EditorInventionList,
-    WindowClass::EditorScenarioOptions,
-    WindowClass::EditorObjectiveOptions,
-    WindowClass::Mapgen,
-    WindowClass::ManageTrackDesign,
-    WindowClass::InstallTrack,
-};
+    static WindowClass window_themes_tab_5_classes[] = {
+        WindowClass::EditorObjectSelection,
+        WindowClass::EditorInventionList,
+        WindowClass::EditorScenarioOptions,
+        WindowClass::EditorObjectiveOptions,
+        WindowClass::Mapgen,
+        WindowClass::ManageTrackDesign,
+        WindowClass::InstallTrack,
+    };
 
-static WindowClass window_themes_tab_6_classes[] = {
-    WindowClass::Cheats,
-    WindowClass::TileInspector,
-    WindowClass::ViewClipping,
-    WindowClass::Transparency,
-    WindowClass::Themes,
-    WindowClass::Options,
-    WindowClass::KeyboardShortcutList,
-    WindowClass::ChangeKeyboardShortcut,
-    WindowClass::AssetPacks,
-    WindowClass::Loadsave,
-    WindowClass::About,
-    WindowClass::Changelog,
-    WindowClass::ServerList,
-    WindowClass::Multiplayer,
-    WindowClass::Player,
-    WindowClass::Chat,
-    WindowClass::Console,
-};
+    static WindowClass window_themes_tab_6_classes[] = {
+        WindowClass::Cheats,
+        WindowClass::TileInspector,
+        WindowClass::ViewClipping,
+        WindowClass::Transparency,
+        WindowClass::Themes,
+        WindowClass::Options,
+        WindowClass::KeyboardShortcutList,
+        WindowClass::ChangeKeyboardShortcut,
+        WindowClass::AssetPacks,
+        WindowClass::Loadsave,
+        WindowClass::About,
+        WindowClass::Changelog,
+        WindowClass::ServerList,
+        WindowClass::Multiplayer,
+        WindowClass::Player,
+        WindowClass::Chat,
+        WindowClass::Console,
+    };
 
-static WindowClass window_themes_tab_7_classes[] = {
-    WindowClass::Error,
-    WindowClass::SavePrompt,
-    WindowClass::DemolishRidePrompt,
-    WindowClass::FirePrompt,
-    WindowClass::TrackDeletePrompt,
-    WindowClass::LoadsaveOverwritePrompt,
-    WindowClass::ProgressWindow,
-    WindowClass::NetworkStatus,
-};
+    static WindowClass window_themes_tab_7_classes[] = {
+        WindowClass::Error,
+        WindowClass::SavePrompt,
+        WindowClass::DemolishRidePrompt,
+        WindowClass::FirePrompt,
+        WindowClass::TrackDeletePrompt,
+        WindowClass::LoadsaveOverwritePrompt,
+        WindowClass::ProgressWindow,
+        WindowClass::NetworkStatus,
+    };
 
     static WindowClass* window_themes_tab_classes[] = {
         nullptr,

@@ -1,4 +1,12 @@
-0.4.14 (in development)
+0.4.15 (in development)
+------------------------------------------------------------------------
+- Feature: [#15642] Track design placement can now use contruction modifier keys (ctrl/shift).
+- Fix: [#2614] The colour tab of the ride window does not hide invisible cars (original bug).
+- Fix: [#21959] “Save this before...?” message does not appear when selecting “New Game”.
+- Fix: [#22231] Invalid object version can cause a crash.
+- Fix: [#22653] Add several .parkpatch files for missing water tiles in RCT1 and RCT2 scenarios.
+
+0.4.14 (2024-09-01)
 ------------------------------------------------------------------------
 - Feature: [#15750] Allow using different types of park entrance in one park.
 - Feature: [#20942] Allow removing all park fences from the Cheats window.
@@ -6,6 +14,8 @@
 - Feature: [#22206] Add option to randomise train or vehicle colours.
 - Feature: [#22392] [Plugin] Expose ride vehicle’s spin to the plugin API.
 - Feature: [#22414] Finance graphs can be resized.
+- Feature: [#22569] Footpath placement now respects the construction modifier keys (ctrl/shift).
+- Change: [#21189] Patches to fix scenario bugs are now described in .parkpatch files, instead of inside the code.
 - Change: [#21659] Increase the Hybrid Roller Coaster’s maximum lift speed to 17 km/h (11 mph).
 - Change: [#22466] The Clear Scenery tool now uses a bulldozer cursor instead of a generic crosshair.
 - Change: [#22490] The tool to change land and construction rights has been moved out of the Map window.
@@ -13,6 +23,7 @@
 - Change: [#22491] Scrollbars are now hidden if the scrollable widget is not actually overflowing.
 - Change: [#22541] In editor/sandbox mode, tool widgets now appear on the side of the map window, instead of the bottom.
 - Change: [#22592] Cheats have been redistributed along three new tabs: date, staff, and nature/weather.
+- Fix: [#21123] Transparency options are not respected on startup.
 - Fix: [#21189] Additional missing/misplaced land & construction rights tiles in Schneider Shores and Urban Park.
 - Fix: [#21908] Errors showing up when placing/moving track design previews.
 - Fix: [#22307] Hover tooltips in financial charts are not invalidated properly.
@@ -20,7 +31,15 @@
 - Fix: [#22395, #22396] Misaligned tick marks in financial and guest count graphs (original bug).
 - Fix: [#22457] Potential crash opening the scenario select window.
 - Fix: [#22520] Virtual floor no longer appears when holding modifier keys during track construction.
+- Fix: [#22527] Forcing an element type to “wall” via scripts can crash the game.
 - Fix: [#22582] Lighting effects are not enabled/disabled correctly, making the game appear frozen.
+- Fix: [#22598] Add several .parkpatch files to .sea scenarios with corresponding patches for RCT1 and RCT2 scenarios.
+- Fix: [#22606] Virtual floor is sometimes drawn above the path when placing paths.
+- Fix: [#22625] Fix compilation with original ride ratings.
+- Fix: [#22663] Additional missing/misplaced land & construction rights tiles in Mystic Mountain, Build your own Six Flags Holland and Build your own Six Flags over Texas.
+- Fix: [#22671] Game defaults to hiding supports on startup.
+- Fix: [#22671] Unchecking invisible option does not uncheck see-through option on transparency options and vice versa.
+- Fix: [#22677] Hovering the file list in the load/save window causes a slowdown.
 
 0.4.13 (2024-08-04)
 ------------------------------------------------------------------------
@@ -32,6 +51,7 @@
 - Feature: [#22213] [Plugin] Allow plugins to focus on textboxes in custom windows.
 - Feature: [#22272] [Plugin] Expose ride vehicle’s current track type via car trackLocation.
 - Feature: [#22301] Loading save games or scenarios now indicates loading progress.
+- Feature: [#22472] New title sequence (see https://github.com/OpenRCT2/title-sequences/releases/tag/v0.4.14 for credits).
 - Feature: [OpenMusic#54] Added Progressive ride music style (feat. Approaching Nirvana).
 - Improved: [#22352] The object selection window now groups relevant object tabs together.
 - Improved: [#22357] Error messages are now themeable and easier to read.

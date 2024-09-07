@@ -161,7 +161,9 @@ GameActions::Result RideCreateAction::Execute() const
 
     ride->status = RideStatus::Closed;
     ride->NumTrains = 1;
-    if (GetGameState().Cheats.DisableTrainLengthLimit)
+
+    auto& gameState = GetGameState();
+    if (gameState.Cheats.DisableTrainLengthLimit)
     {
         // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled
         if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
@@ -205,7 +207,6 @@ GameActions::Result RideCreateAction::Execute() const
 
     ride->ratings.setNull();
 
-    auto& gameState = GetGameState();
     if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
     {
         for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)

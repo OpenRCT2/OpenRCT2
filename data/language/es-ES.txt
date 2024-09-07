@@ -2605,8 +2605,8 @@ STR_5357    :{BLACK}Tolerancia a náusea:
 STR_5358    :{BLACK}Vejiga:
 STR_5359    :Eliminar visitantes
 STR_5360    :Elimina todos los visitantes del mapa
-STR_5361    :Dar a todos los visitantes:
-STR_5362    :{BLACK}Todos los visitantes prefieren intensidades:
+STR_5361    :Añadir al inventario los visitantes:
+STR_5362    :{BLACK}Intensidad de atracción preferida:
 STR_5363    :Más de 1
 STR_5364    :Menos de 15
 STR_5365    :{BLACK}Velocidad empleados:
@@ -2636,7 +2636,7 @@ STR_5457    :Desactivar límites de altura
 STR_5458    :Rotar en el sentido de las agujas del reloj
 STR_5459    :Rotar en sentido contrario a las agujas del reloj
 STR_5460    :Rotar vista a la izquierda
-STR_5461    :Ajustar parámetros de los visitantes
+STR_5461    :Ajustar parámetros de todos los visitantes
 STR_5462    :{CURRENCY}
 STR_5463    :Meta: ¡Diviértete!
 STR_5464    :General
@@ -3728,6 +3728,21 @@ STR_6652    :Ventana de Error
 STR_6653    :Mostrando todas las fuentes
 STR_6654    :Mostrando {POP16}{UINT16} fuentes
 STR_6655    :Sólo ‘{POP16}{STRINGID}’
+STR_6656    :Eliminar todas las vallas del parque
+STR_6657    :Terreno No Adquirido
+STR_6658    :Establecer terreno como no adquirido por el parque ni disponible para compra
+STR_6659    :Los visitantes ignoran los precios
+STR_6660    :Los visitantes ignorarán el precio de las atracciones y puestos.
+STR_6661    :Aleatorizar todo
+STR_6662    :Colores aleatorios para cada tren o vehículo.
+STR_6663    :Trucos de fecha
+STR_6664    :Mostrar trucos de fecha
+STR_6665    :Trucos de naturaleza/clima
+STR_6666    :Mostrar trucos de naturaleza/clima
+STR_6667    :Fauna
+STR_6668    :Trucos de empleados
+STR_6669    :Mostrar trucos de empleados
+STR_6670    :Comportamiento de los visitantes
 
 ##############
 # Escenarios #

@@ -248,7 +248,7 @@ namespace OpenRCT2::Config
             model->InvisibleTrees = reader->GetBoolean("invisible_trees", false);
             model->InvisibleScenery = reader->GetBoolean("invisible_scenery", false);
             model->InvisiblePaths = reader->GetBoolean("invisible_paths", false);
-            model->InvisibleSupports = reader->GetBoolean("invisible_supports", true);
+            model->InvisibleSupports = reader->GetBoolean("invisible_supports", false);
 
             model->LastVersionCheckTime = reader->GetInt64("last_version_check_time", 0);
         }

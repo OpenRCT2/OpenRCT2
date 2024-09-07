@@ -226,6 +226,8 @@ struct CarEntry
     bool GroupEnabled(SpriteGroupType rotationType) const;
     uint32_t GroupImageId(SpriteGroupType spriteGroup) const;
     uint32_t SpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const;
+
+    bool isVisible() const;
 };
 
 void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages);

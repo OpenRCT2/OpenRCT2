@@ -2152,7 +2152,8 @@ static void TrackDesignPreviewClearMap()
 {
     auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
-    GetGameState().MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
+    auto& gameState = GetGameState();
+    gameState.MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 
     // Reserve ~8 elements per tile
     std::vector<TileElement> tileElements;
@@ -2171,7 +2172,8 @@ static void TrackDesignPreviewClearMap()
         element->AsSurface()->SetOwnership(OWNERSHIP_OWNED);
         element->AsSurface()->SetParkFences(0);
     }
-    SetTileElements(std::move(tileElements));
+
+    SetTileElements(gameState, std::move(tileElements));
 }
 
 bool TrackDesignAreEntranceAndExitPlaced()

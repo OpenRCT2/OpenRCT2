@@ -1,0 +1,11 @@
+{
+    "scenario_name": "From The Ashes (.sea)",
+    "sha256": "37817192c2210a8375e9aac2781e98fa16a8f776aaa9837046badc80d006b838",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 12, 21 ]
+            ]
+        }
+    }
+}

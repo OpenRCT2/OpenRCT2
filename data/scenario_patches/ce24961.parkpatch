@@ -1,0 +1,12 @@
+{
+    "scenario_name": "Hydro Hills (.sea)",
+    "sha256": "ce249614e735c560c5019318bc6fa8603ba6630576f7fb038def0bdac3e143ef",
+    "water": [
+        {
+            "height": 288,
+            "coordinates": [
+                [ 81, 8 ], [ 82, 7 ], [ 82, 8 ], [ 82, 9 ], [ 83, 8 ], [ 83, 9 ]
+            ]
+        }
+    ]
+}

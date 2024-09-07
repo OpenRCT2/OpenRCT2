@@ -85,11 +85,4 @@ public:
         ReadChunk(&result, sizeof(result));
         return result;
     }
-
-private:
-    static std::vector<uint8_t> DecodeChunk(const void* src, const SawyerCodingChunkHeader& header);
-    static std::vector<uint8_t> DecodeChunkRLERepeat(const void* src, size_t srcLength);
-    static std::vector<uint8_t> DecodeChunkRLE(const void* src, size_t srcLength);
-    static std::vector<uint8_t> DecodeChunkRepeat(const void* src, size_t srcLength);
-    static std::vector<uint8_t> DecodeChunkRotate(const void* src, size_t srcLength);
 };

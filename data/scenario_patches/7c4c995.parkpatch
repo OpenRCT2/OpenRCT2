@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Great Wall of China Tourism Enhancement (.sea)",
+    "sha256": "7c4c995aa00d0756c4667a069cd65f0c75efa32c69471be9d332608ef237a4d5",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 127, 31 ]
+            ]
+        }
+    }
+}

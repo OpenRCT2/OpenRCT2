@@ -9,6 +9,7 @@
 
 #include "ViewportInteraction.h"
 
+#include "../ProvisionalElements.h"
 #include "../UiStringIds.h"
 #include "../windows/Window.h"
 #include "Viewport.h"
@@ -629,7 +630,7 @@ namespace OpenRCT2::Ui
     {
         WindowBase* w = WindowFindByClass(WindowClass::Footpath);
         if (w != nullptr)
-            FootpathProvisionalUpdate();
+            FootpathUpdateProvisional();
 
         TileElement* tileElement2 = MapGetFirstElementAt(mapCoords);
         if (tileElement2 == nullptr)

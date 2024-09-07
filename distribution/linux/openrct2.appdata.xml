@@ -37,7 +37,7 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>https://camo.githubusercontent.com/fdb7e0506eedc4625f2f776f495c1072c520496dba3ee6c07bfdbf907d478afd/68747470733a2f2f692e696d6775722e636f6d2f6537434b3553632e706e67</image>
+      <image>https://camo.githubusercontent.com/f513bc551e2c9e04e292724113ea4789726d23921d286f21dad39a6e955b5a56/68747470733a2f2f692e696d6775722e636f6d2f6537434b3553632e706e67</image>
       <caption>Amusement park featuring an inverted roller coaster, a river rapids ride and custom scenery</caption>
     </screenshot>
   </screenshots>
@@ -69,6 +69,9 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+      <release version="0.4.14" date="2024-09-01">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.13</url>
+      </release>
       <release version="0.4.13" date="2024-08-04">
           <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.13</url>
       </release>

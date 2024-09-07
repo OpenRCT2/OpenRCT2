@@ -93,7 +93,8 @@ GameActions::Result TrackPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
-    if (_rideType != ride->type && !GetGameState().Cheats.AllowArbitraryRideTypeChanges)
+    auto& gameState = GetGameState();
+    if (_rideType != ride->type && !gameState.Cheats.AllowArbitraryRideTypeChanges)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
@@ -131,7 +132,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
     if (!(GetActionFlags() & GameActions::Flags::AllowWhilePaused))
     {
-        if (GameIsPaused() && !GetGameState().Cheats.BuildInPauseMode)
+        if (GameIsPaused() && !gameState.Cheats.BuildInPauseMode)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -161,7 +162,7 @@ GameActions::Result TrackPlaceAction::Query() const
         }
         // Backwards steep lift hills are allowed, even on roller coasters that do not support forwards steep lift hills.
         if ((_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED) && !rtd.SupportsTrackGroup(TrackGroup::liftHillSteep)
-            && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            && !gameState.Cheats.EnableChainLiftOnAllTrack)
         {
             const auto& ted = GetTrackElementDescriptor(_trackType);
             if (ted.flags & TRACK_ELEM_FLAG_IS_STEEP_UP)
@@ -187,7 +188,7 @@ GameActions::Result TrackPlaceAction::Query() const
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
-        if (!MapIsLocationOwned(tileCoords) && !GetGameState().Cheats.SandboxMode)
+        if (!MapIsLocationOwned(tileCoords) && !gameState.Cheats.SandboxMode)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -203,7 +204,7 @@ GameActions::Result TrackPlaceAction::Query() const
             STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    if (!GetGameState().Cheats.AllowTrackPlaceInvalidHeights)
+    if (!gameState.Cheats.AllowTrackPlaceInvalidHeights)
     {
         if (ted.flags & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
         {
@@ -306,7 +307,7 @@ GameActions::Result TrackPlaceAction::Query() const
             }
         }
 
-        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER && !GetGameState().Cheats.DisableClearanceChecks)
+        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER && !gameState.Cheats.DisableClearanceChecks)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -372,7 +373,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        if (!GetGameState().Cheats.DisableSupportLimits)
+        if (!gameState.Cheats.DisableSupportLimits)
         {
             int32_t ride_height = clearanceZ - surfaceElement->GetBaseZ();
             if (ride_height >= 0)
@@ -497,7 +498,8 @@ GameActions::Result TrackPlaceAction::Execute() const
             }
         }
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !GetGameState().Cheats.DisableClearanceChecks)
+        auto& gameState = GetGameState();
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.Cheats.DisableClearanceChecks)
         {
             FootpathRemoveLitter(mapLoc);
             if (rtd.HasFlag(RtdFlag::noWallsAroundTrack))
@@ -629,7 +631,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             uint32_t availableDirections = entranceDirections & 0x0F;
             if (availableDirections != 0)
             {
-                if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !GetGameState().Cheats.DisableClearanceChecks)
+                if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.Cheats.DisableClearanceChecks)
                 {
                     for (int32_t chosenDirection = UtilBitScanForward(availableDirections); chosenDirection != -1;
                          chosenDirection = UtilBitScanForward(availableDirections))
@@ -671,7 +673,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             }
         }
 
-        if (!GetGameState().Cheats.DisableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!gameState.Cheats.DisableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             FootpathConnectEdges(mapLoc, tileElement, GetFlags());
         }

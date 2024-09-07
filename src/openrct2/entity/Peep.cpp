@@ -200,7 +200,7 @@ void PeepUpdateAll()
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
-    const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
+    const auto currentTicks = GetGameState().CurrentTicks;
 
     constexpr auto kTicks128Mask = 128u - 1u;
     const auto currentTicksMasked = currentTicks & kTicks128Mask;
@@ -898,7 +898,7 @@ void Peep::SetState(PeepState new_state)
  */
 void Peep::UpdatePicked()
 {
-    if (OpenRCT2::GetGameState().CurrentTicks & 0x1F)
+    if (GetGameState().CurrentTicks & 0x1F)
         return;
     SubState++;
     auto* guest = As<Guest>();
