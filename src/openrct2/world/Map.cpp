@@ -2159,16 +2159,13 @@ uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos)
     return destOwnership;
 }
 
-void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade)
+void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership)
 {
     for (const auto& tile : tiles)
     {
         auto surfaceElement = MapGetSurfaceElementAt(tile);
         if (surfaceElement != nullptr)
         {
-            if (doNotDowngrade && surfaceElement->GetOwnership() == OWNERSHIP_OWNED)
-                continue;
-
             surfaceElement->SetOwnership(ownership);
             Park::UpdateFencesAroundTile(tile.ToCoordsXY());
         }

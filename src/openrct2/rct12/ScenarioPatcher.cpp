@@ -43,7 +43,6 @@ static const std::string s_fullSHAKey = "sha256";
 static const std::string s_coordinatesKey = "coordinates";
 
 // Land Ownership Keys
-static const std::string s_cannotDowngradeKey = "cannot_downgrade";
 static const std::string s_landOwnershipKey = "land_ownership";
 
 // Water fix keys
@@ -132,15 +131,12 @@ static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int owners
     }
 
     auto ownershipParameters = landOwnershipFixes[ownershipTypeKey];
-    const bool cannotDowngrade = ownershipParameters.contains(s_cannotDowngradeKey)
-        ? OpenRCT2::Json::GetBoolean(ownershipParameters[s_cannotDowngradeKey], false)
-        : false;
     auto coordinatesVector = getCoordinates(ownershipParameters);
     if (s_dryRun)
     {
         return;
     }
-    FixLandOwnershipTilesWithOwnership(coordinatesVector, ownershipType, cannotDowngrade);
+    FixLandOwnershipTilesWithOwnership(coordinatesVector, ownershipType);
 }
 
 static void ApplyLandOwnershipFixes(const json_t& scenarioPatch)
