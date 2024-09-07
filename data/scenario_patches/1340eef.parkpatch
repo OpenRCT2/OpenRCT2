@@ -9,7 +9,6 @@
             ]
         },
         "available": {
-            "cannot_downgrade": true,
             "coordinates": [
                 [ 63, 97 ],
                 [ 64, 97 ]

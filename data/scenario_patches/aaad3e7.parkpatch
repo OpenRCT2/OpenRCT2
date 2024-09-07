@@ -20,7 +20,6 @@
             ]
         },
         "available": {
-            "cannot_downgrade": true,
             "coordinates": [
                 [ 49, 99 ],
                 [ 50, 99 ],
