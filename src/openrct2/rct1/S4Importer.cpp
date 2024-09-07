@@ -193,7 +193,10 @@ namespace OpenRCT2::RCT1
             ImportScenarioObjective(gameState);
             ImportSavedView(gameState);
 
-            RCT12::FetchAndApplyScenarioPatch(_s4Path, _isScenario);
+            if (_isScenario)
+            {
+                RCT12::FetchAndApplyScenarioPatch(_s4Path);
+            }
             FixNextGuestNumber(gameState);
             CountBlockSections();
             SetDefaultNames();

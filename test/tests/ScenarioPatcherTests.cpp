@@ -42,7 +42,7 @@ TEST(FetchAndApplyScenarioPatch, expected_json_format)
         auto path = entry.path().u8string();
         if (OpenRCT2::String::EndsWith(path, ".parkpatch"))
         {
-            OpenRCT2::RCT12::ApplyScenarioPatch(path, dummySHA, true);
+            OpenRCT2::RCT12::ApplyScenarioPatch(path, dummySHA);
         }
     }
     SUCCEED();

@@ -457,7 +457,7 @@ static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHa
     return scenarioSHA == scenarioHash;
 }
 
-void OpenRCT2::RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenarioSHA, bool isScenario)
+void OpenRCT2::RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenarioSHA)
 {
     auto scenarioPatch = OpenRCT2::Json::ReadFromFile(scenarioPatchFile);
     if (!ValidateSHA256(scenarioPatch, scenarioSHA))
@@ -465,17 +465,13 @@ void OpenRCT2::RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8stri
         OpenRCT2::Guard::Assert(0, "Invalid full SHA256. Check for shortened SHA collision");
         return;
     }
-    // TODO: Land ownership is applied even when loading saved scenario. Should it?
     ApplyLandOwnershipFixes(scenarioPatch);
-    if (isScenario)
-    {
-        ApplyWaterFixes(scenarioPatch);
-        ApplyTileFixes(scenarioPatch);
-        ApplyRideFixes(scenarioPatch);
-    }
+    ApplyWaterFixes(scenarioPatch);
+    ApplyTileFixes(scenarioPatch);
+    ApplyRideFixes(scenarioPatch);
 }
 
-void OpenRCT2::RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath, bool isScenario)
+void OpenRCT2::RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath)
 {
     if (scenarioPath.empty())
     {
@@ -486,7 +482,7 @@ void OpenRCT2::RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath, boo
     auto patchPath = GetPatchFileName(scenarioSHA);
     if (OpenRCT2::File::Exists(patchPath))
     {
-        ApplyScenarioPatch(patchPath, scenarioSHA, isScenario);
+        ApplyScenarioPatch(patchPath, scenarioSHA);
     }
 }
 
