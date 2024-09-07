@@ -1,6 +1,7 @@
 0.4.15 (in development)
 ------------------------------------------------------------------------
 - Feature: [#15642] Track design placement can now use contruction modifier keys (ctrl/shift).
+- Fix: [#2614] The colour tab of the ride window does not hide invisible cars (original bug).
 - Fix: [#21959] “Save this before...?” message does not appear when selecting “New Game”.
 - Fix: [#22231] Invalid object version can cause a crash.
 - Fix: [#22653] Add several .parkpatch files for missing water tiles in RCT1 and RCT2 scenarios.
