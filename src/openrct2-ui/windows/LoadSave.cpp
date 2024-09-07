@@ -326,7 +326,7 @@ namespace OpenRCT2::Ui::Windows
 
             case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
                 SetAndSaveConfigPath(Config::Get().general.LastSaveLandscapeDirectory, pathBuffer);
-                gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
+                gameState.ScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
                 if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2))
                 {
                     gCurrentLoadedPath = pathBuffer;
@@ -347,7 +347,7 @@ namespace OpenRCT2::Ui::Windows
                 int32_t parkFlagsBackup = gameState.Park.Flags;
                 gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                 gameState.EditorStep = EditorStep::Invalid;
-                gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
+                gameState.ScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
                 int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
                 gameState.Park.Flags = parkFlagsBackup;
 

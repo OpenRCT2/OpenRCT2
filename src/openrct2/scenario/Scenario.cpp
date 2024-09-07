@@ -70,8 +70,6 @@ uint32_t gLastAutoSaveUpdate = 0;
 
 bool gAllowEarlyCompletionInNetworkPlay;
 
-std::string gScenarioFileName;
-
 static void ScenarioCheckObjective(GameState_t& gameState);
 
 using namespace OpenRCT2;
@@ -205,7 +203,7 @@ void ScenarioSuccess(GameState_t& gameState)
     gameState.ScenarioCompletedCompanyValue = companyValue;
     PeepApplause();
 
-    if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), companyValue, nullptr))
+    if (ScenarioRepositoryTryRecordHighscore(gameState.ScenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
         gameState.Park.Flags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
@@ -220,7 +218,7 @@ void ScenarioSuccess(GameState_t& gameState)
  */
 void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
 {
-    if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), gameState.ScenarioCompanyValueRecord, name))
+    if (ScenarioRepositoryTryRecordHighscore(gameState.ScenarioFileName.c_str(), gameState.ScenarioCompanyValueRecord, name))
     {
         gameState.ScenarioCompletedBy = name;
     }
