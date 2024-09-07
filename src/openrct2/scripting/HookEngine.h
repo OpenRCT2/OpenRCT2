@@ -43,6 +43,7 @@ namespace OpenRCT2::Scripting
         MAP_CHANGED,
         MAP_SAVE,
         PARK_CALCULATE_GUEST_CAP,
+        MONEY_SPEND,
         COUNT,
         UNDEFINED = -1,
     };

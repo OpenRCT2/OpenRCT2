@@ -33,6 +33,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesignRepository.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -964,6 +965,9 @@ namespace OpenRCT2::Ui::Windows
                 const auto& ted = GetTrackElementDescriptor(startPieceId);
                 price *= ted.priceModifier;
                 price = (price >> 16) * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
+#ifdef ENABLE_SCRIPTING
+                GetContext()->GetScriptEngine().RunMoneySpendHooks(price, ExpenditureType::RideConstruction);
+#endif
 
                 //
                 StringId stringId = STR_NEW_RIDE_COST;

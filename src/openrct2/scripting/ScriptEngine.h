@@ -46,7 +46,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 103;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 104;
 
     // Versions marking breaking changes.
     static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
@@ -255,6 +255,8 @@ namespace OpenRCT2::Scripting
         [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(
             const std::string& actionid, const DukValue& args, const std::string& pluginName);
         [[nodiscard]] DukValue GameActionResultToDuk(const GameAction& action, const GameActions::Result& result);
+
+        void RunMoneySpendHooks(money64& amount, const ExpenditureType expenditureType);
 
         void SaveSharedStorage();
 

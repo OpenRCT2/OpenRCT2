@@ -47,6 +47,7 @@
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Footpath.h>
@@ -831,6 +832,9 @@ namespace OpenRCT2::Ui::Windows
             auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
             if (price != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
+#ifdef ENABLE_SCRIPTING
+                GetContext()->GetScriptEngine().RunMoneySpendHooks(price, ExpenditureType::Landscaping);
+#endif
                 auto ft = Formatter();
                 ft.Add<money64>(price);
 

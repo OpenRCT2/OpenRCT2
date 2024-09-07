@@ -1563,6 +1563,24 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(
     return customAction;
 }
 
+void ScriptEngine::RunMoneySpendHooks(money64& amount, const ExpenditureType expenditureType)
+{
+    DukStackFrame frame(_context);
+
+    if (_hookEngine.HasSubscriptions(HOOK_TYPE::MONEY_SPEND))
+    {
+        DukObject obj(_context);
+        obj.Set("amount", amount);
+        obj.Set("expenditureType", ExpenditureTypeToString(expenditureType));
+        auto dukEventArgs = obj.Take();
+
+        _hookEngine.Call(HOOK_TYPE::MONEY_SPEND, dukEventArgs, false);
+
+        // int32, but that is what is used in e.g. DukToGameActionResult
+        amount = AsOrDefault<int32_t>(dukEventArgs["amount"]);
+    }
+}
+
 void ScriptEngine::InitSharedStorage()
 {
     duk_push_object(_context);

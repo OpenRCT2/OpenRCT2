@@ -1,5 +1,6 @@
 0.4.17 (in development)
 ------------------------------------------------------------------------
+- Feature: [#22715] [Plugin] Add money spend hook that can modify the cost based on expenditure.
 - Feature: [#23166] Add Galician translation.
 - Feature: [#23227] Add Classic Wooden Twister roller coaster, for better compatibility with RCT1.
 - Improved: [#23051] Add large sloped turns and new inversions to the Twister, Vertical Drop, Hyper and Flying Roller Coasters.

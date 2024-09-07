@@ -1713,7 +1713,13 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     }
 
     if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
-        FinancePayment(shopItemDescriptor.Cost, expenditure);
+    {
+        auto cost = shopItemDescriptor.Cost;
+#ifdef ENABLE_SCRIPTING
+        GetContext()->GetScriptEngine().RunMoneySpendHooks(cost, expenditure);
+#endif
+        FinancePayment(cost, expenditure);
+    }
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
@@ -2327,6 +2333,11 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
     peep_expend_type += amount;
 
     WindowInvalidateByNumber(WindowClass::Peep, Id);
+
+#ifdef ENABLE_SCRIPTING
+    // guest pays original price, player receives modified amount
+    GetContext()->GetScriptEngine().RunMoneySpendHooks(amount, expenditure);
+#endif
 
     FinancePayment(-amount, expenditure);
 

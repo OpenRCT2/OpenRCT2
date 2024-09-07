@@ -15,6 +15,7 @@
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
@@ -51,6 +52,9 @@ namespace OpenRCT2::Ui::Windows
         {
             rideId = currentRide.id;
             _demolishRideCost = -RideGetRefundPrice(currentRide);
+#ifdef ENABLE_SCRIPTING
+            GetContext()->GetScriptEngine().RunMoneySpendHooks(_demolishRideCost, ExpenditureType::RideConstruction);
+#endif
         }
 
         void OnOpen() override

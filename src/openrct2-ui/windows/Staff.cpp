@@ -31,6 +31,7 @@
 #include <openrct2/management/Finance.h>
 #include <openrct2/network/network.h>
 #include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
@@ -939,8 +940,12 @@ namespace OpenRCT2::Ui::Windows
 
             if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
+                auto wage = GetStaffWage(staff->AssignedStaffType);
+#ifdef ENABLE_SCRIPTING
+                GetContext()->GetScriptEngine().RunMoneySpendHooks(wage, ExpenditureType::Wages);
+#endif
                 auto ft = Formatter();
-                ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));
+                ft.Add<money64>(wage);
                 DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
                 screenCoords.y += kListRowHeight;
             }

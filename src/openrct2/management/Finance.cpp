@@ -20,6 +20,7 @@
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/ScriptEngine.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
@@ -105,7 +106,11 @@ void FinancePayWages()
 
     for (auto peep : EntityList<Staff>())
     {
-        FinancePayment(GetStaffWage(peep->AssignedStaffType) / 4, ExpenditureType::Wages);
+        auto wage = GetStaffWage(peep->AssignedStaffType);
+#ifdef ENABLE_SCRIPTING
+        GetContext()->GetScriptEngine().RunMoneySpendHooks(wage, ExpenditureType::Wages);
+#endif
+        FinancePayment(wage / 4, ExpenditureType::Wages);
     }
 }
 
@@ -122,7 +127,11 @@ void FinancePayResearch()
     }
 
     const uint8_t level = gameState.ResearchFundingLevel;
-    FinancePayment(research_cost_table[level] / 4, ExpenditureType::Research);
+    auto cost = research_cost_table[level];
+#ifdef ENABLE_SCRIPTING
+    GetContext()->GetScriptEngine().RunMoneySpendHooks(cost, ExpenditureType::Research);
+#endif
+    FinancePayment(cost / 4, ExpenditureType::Research);
 }
 
 /**
@@ -142,10 +151,12 @@ void FinancePayInterest()
     // that will overflow money64 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
     const money64 current_loan = gameState.BankLoan;
     const auto current_interest_rate = gameState.BankLoanInterestRate;
-    const money64 interest_to_pay = (gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST)
+    money64 interest_to_pay = (gameState.Park.Flags & PARK_FLAGS_RCT1_INTEREST)
         ? (current_loan / 2400)
         : (current_loan * 5 * current_interest_rate) >> 14;
-
+#ifdef ENABLE_SCRIPTING
+    GetContext()->GetScriptEngine().RunMoneySpendHooks(interest_to_pay, ExpenditureType::Interest);
+#endif
     FinancePayment(interest_to_pay, ExpenditureType::Interest);
 }
 
@@ -169,6 +180,9 @@ void FinancePayRideUpkeep()
             auto upkeep = ride.upkeep_cost;
             if (upkeep != kMoney64Undefined)
             {
+#ifdef ENABLE_SCRIPTING
+                GetContext()->GetScriptEngine().RunMoneySpendHooks(upkeep, ExpenditureType::RideRunningCosts);
+#endif
                 ride.total_profit -= upkeep;
                 ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
                 FinancePayment(upkeep, ExpenditureType::RideRunningCosts);

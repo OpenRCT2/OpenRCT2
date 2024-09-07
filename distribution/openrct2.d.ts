@@ -511,6 +511,7 @@ declare global {
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
         subscribe(hook: "map.change", callback: () => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
+        subscribe(hook: "money.spend", callback: (e: MoneySpendEventArgs) => void): IDisposable;
         subscribe(hook: "network.authenticate", callback: (e: NetworkAuthenticateEventArgs) => void): IDisposable;
         subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
         subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
@@ -1373,6 +1374,11 @@ declare global {
 
     interface StaffHireNewActionResult extends GameActionResult {
         readonly peep?: number;
+    }
+
+    interface MoneySpendEventArgs {
+        amount: number;
+        readonly expenditureType: ExpenditureType;
     }
 
     interface NetworkEventArgs {

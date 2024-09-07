@@ -35,6 +35,7 @@ static const EnumMap<HOOK_TYPE> HooksLookupTable({
     { "map.changed", HOOK_TYPE::MAP_CHANGED },
     { "map.save", HOOK_TYPE::MAP_SAVE },
     { "park.guest.softcap.calculate", HOOK_TYPE::PARK_CALCULATE_GUEST_CAP },
+    { "money.spend", HOOK_TYPE::MONEY_SPEND },
 });
 
 HOOK_TYPE OpenRCT2::Scripting::GetHookType(const std::string& name)
