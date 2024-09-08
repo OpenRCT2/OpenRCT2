@@ -415,13 +415,16 @@ namespace OpenRCT2::Ui::Windows
                 _resizeDirection = ResizeDirection::Both;
 
             if (_resizeDirection != ResizeDirection::X)
-                _settings.mapSize.y = std::clamp(
-                    _settings.mapSize.y + sizeOffset, static_cast<int>(kMinimumMapSizeTechnical),
-                    static_cast<int>(kMaximumMapSizeTechnical));
+            {
+                _settings.mapSize.y = std::clamp<int32_t>(
+                    _settings.mapSize.y + sizeOffset, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
+            }
+
             if (_resizeDirection != ResizeDirection::Y)
-                _settings.mapSize.x = std::clamp(
-                    _settings.mapSize.x + sizeOffset, static_cast<int>(kMinimumMapSizeTechnical),
-                    static_cast<int>(kMaximumMapSizeTechnical));
+            {
+                _settings.mapSize.x = std::clamp<int32_t>(
+                    _settings.mapSize.x + sizeOffset, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
+            }
         }
 
         void InputMapSize(WidgetIndex callingWidget, int32_t currentValue)
