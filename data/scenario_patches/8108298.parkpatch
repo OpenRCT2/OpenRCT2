@@ -20,14 +20,12 @@
             ]
         },
         "construction_rights_owned": {
-            "cannot_downgrade": true,
             "coordinates": [
                 [ 2, 30 ], [ 3, 30 ], [ 4, 30 ],
                 [ 25, 23 ]
             ]
         },
         "construction_rights_available": {
-            "cannot_downgrade": true,
             "coordinates": [
                 [ 26, 116 ],
                 [ 61, 110 ],
@@ -35,7 +33,6 @@
             ]
         },
         "available": {
-            "cannot_downgrade": true,
             "coordinates": [
                 [ 6, 100 ], [ 7, 100 ], [ 8, 100 ], [ 9, 100 ], [ 10, 100 ], [ 15, 100 ], [ 16, 100 ],
                 [ 6, 101 ], [ 7, 101 ], [ 8, 101 ], [ 9, 101 ], [ 10, 101 ], [ 15, 101 ], [ 16, 101 ],

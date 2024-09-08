@@ -43,7 +43,6 @@ static const std::string s_fullSHAKey = "sha256";
 static const std::string s_coordinatesKey = "coordinates";
 
 // Land Ownership Keys
-static const std::string s_cannotDowngradeKey = "cannot_downgrade";
 static const std::string s_landOwnershipKey = "land_ownership";
 
 // Water fix keys
@@ -132,15 +131,12 @@ static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int owners
     }
 
     auto ownershipParameters = landOwnershipFixes[ownershipTypeKey];
-    const bool cannotDowngrade = ownershipParameters.contains(s_cannotDowngradeKey)
-        ? OpenRCT2::Json::GetBoolean(ownershipParameters[s_cannotDowngradeKey], false)
-        : false;
     auto coordinatesVector = getCoordinates(ownershipParameters);
     if (s_dryRun)
     {
         return;
     }
-    FixLandOwnershipTilesWithOwnership(coordinatesVector, ownershipType, cannotDowngrade);
+    FixLandOwnershipTilesWithOwnership(coordinatesVector, ownershipType);
 }
 
 static void ApplyLandOwnershipFixes(const json_t& scenarioPatch)
@@ -457,7 +453,7 @@ static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHa
     return scenarioSHA == scenarioHash;
 }
 
-void OpenRCT2::RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenarioSHA, bool isScenario)
+void OpenRCT2::RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenarioSHA)
 {
     auto scenarioPatch = OpenRCT2::Json::ReadFromFile(scenarioPatchFile);
     if (!ValidateSHA256(scenarioPatch, scenarioSHA))
@@ -465,17 +461,13 @@ void OpenRCT2::RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8stri
         OpenRCT2::Guard::Assert(0, "Invalid full SHA256. Check for shortened SHA collision");
         return;
     }
-    // TODO: Land ownership is applied even when loading saved scenario. Should it?
     ApplyLandOwnershipFixes(scenarioPatch);
-    if (isScenario)
-    {
-        ApplyWaterFixes(scenarioPatch);
-        ApplyTileFixes(scenarioPatch);
-        ApplyRideFixes(scenarioPatch);
-    }
+    ApplyWaterFixes(scenarioPatch);
+    ApplyTileFixes(scenarioPatch);
+    ApplyRideFixes(scenarioPatch);
 }
 
-void OpenRCT2::RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath, bool isScenario)
+void OpenRCT2::RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath)
 {
     if (scenarioPath.empty())
     {
@@ -486,7 +478,7 @@ void OpenRCT2::RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath, boo
     auto patchPath = GetPatchFileName(scenarioSHA);
     if (OpenRCT2::File::Exists(patchPath))
     {
-        ApplyScenarioPatch(patchPath, scenarioSHA, isScenario);
+        ApplyScenarioPatch(patchPath, scenarioSHA);
     }
 }
 
