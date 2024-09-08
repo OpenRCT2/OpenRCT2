@@ -91,6 +91,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({  5, 46}, {_window_header_size,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
         MakeWidget({157, 46}, { 79,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
         MakeWidget({236, 46}, { 80,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_TRANSPARENCY                                                          ), // Transparency header
+        MakeWidget({125, 60}, {175,  12}, WindowWidgetType::DropdownMenu,     WindowColour::Secondary                                                                                     ), // Preset colour schemes
         MakeWidget({288, 61}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                                 ),
         MakeWidget({ 10, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_THEMES_ACTION_DUPLICATE,                    STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
         MakeWidget({110, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP       ), // Delete button
@@ -711,7 +712,7 @@ namespace OpenRCT2::Ui::Windows
                 WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
                 int32_t numColours = ThemeDescGetNumColours(wc);
 
-                AddGap(numColours, _colour_index_1);
+                numColours = AddGap(numColours, _colour_index_1);
 
                 // position of y relative to the current class
                 int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_colour_index_1 + 1) - numColours) * (_button_size + 2);
@@ -784,8 +785,11 @@ namespace OpenRCT2::Ui::Windows
                 // If the window description wraps, make sure the row is high enough.
                 bool emptyRow = false;
 
-                if (AddGap(numColours, i))
+                int32_t newNumColours = AddGap(numColours, i);
+
+                if (newNumColours != numColours)
                 {
+                    numColours = newNumColours;
                     emptyRow = true;
                 }
 
@@ -870,14 +874,13 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // If the window description wraps, make sure the row is high enough.
-        bool AddGap(int32_t& numColours, int8_t index)
+        int32_t AddGap(int32_t numColours, int8_t index)
         {
             if (numColours == 1 && GetTextWidth(index) >= _window_header_size)
             {
                 numColours++;
-                return true;
             }
-            return false;
+            return numColours;
         }
 
         int8_t GetColourIndex(int32_t y)
@@ -886,9 +889,10 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < GetColourSchemeTabCount(); ++i)
             {
                 int32_t numColours = ThemeDescGetNumColours(GetWindowClassTabIndex(i));
-                numRows += numColours;
 
-                AddGap(numColours, i);
+                numColours = AddGap(numColours, i);
+
+                numRows += numColours;
 
                 if ((numRows * (_button_size + 2)) >= y)
                 {
