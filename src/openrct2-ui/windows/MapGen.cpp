@@ -308,26 +308,35 @@ namespace OpenRCT2::Ui::Windows
     class MapGenWindow final : public Window
     {
     private:
-        TileCoordsXY _mapSize{ 150, 150 };
         ResizeDirection _resizeDirection{ ResizeDirection::Both };
         bool _mapWidthAndHeightLinked{ true };
-        int32_t _baseHeight = 12;
-        int32_t _waterLevel = 6;
-        int32_t _floorTexture = 0;
-        int32_t _wallTexture = 0;
+
+        MapGenSettings _settings{
+            // Base
+            .mapSize{ 150, 150 },
+            .height = 12,
+            .water_level = 6,
+            .floor = 0,
+            .wall = 0,
+
+            // Features (e.g. tree, rivers, lakes etc.)
+            .trees = 1,
+
+            // Simplex Noise Parameters
+            .simplex_low = 6,
+            .simplex_high = 10,
+            .simplex_base_freq = 60,
+            .simplex_octaves = 4,
+
+            // Height map _settings
+            .smooth = true,
+            .smooth_height_map = false,
+            .smooth_strength = 1,
+            .normalize_height = false,
+        };
+
         bool _randomTerrain = true;
-        int32_t _placeTrees = 1;
-
-        int32_t _simplex_low = 6;
-        int32_t _simplex_high = 10;
-        int32_t _simplex_base_freq = 60;
-        int32_t _simplex_octaves = 4;
-
         bool _heightmapLoaded = false;
-        bool _heightmapSmoothMap = false;
-        int32_t _heightmapSmoothStrength = 1;
-        bool _heightmapNormalize = false;
-        bool _heightmapSmoothTiles = true;
         int32_t _heightmapLow = 2;
         int32_t _heightmapHigh = 70;
 
@@ -346,9 +355,9 @@ namespace OpenRCT2::Ui::Windows
             if (newPage == WINDOW_MAPGEN_PAGE_HEIGHTMAP && _heightmapLoaded)
             {
                 SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, true);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
+                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _settings.smooth_height_map);
+                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _settings.smooth_height_map);
+                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _settings.smooth_height_map);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, true);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILES, true);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH, true);
@@ -406,12 +415,12 @@ namespace OpenRCT2::Ui::Windows
                 _resizeDirection = ResizeDirection::Both;
 
             if (_resizeDirection != ResizeDirection::X)
-                _mapSize.y = std::clamp(
-                    _mapSize.y + sizeOffset, static_cast<int>(kMinimumMapSizeTechnical),
+                _settings.mapSize.y = std::clamp(
+                    _settings.mapSize.y + sizeOffset, static_cast<int>(kMinimumMapSizeTechnical),
                     static_cast<int>(kMaximumMapSizeTechnical));
             if (_resizeDirection != ResizeDirection::Y)
-                _mapSize.x = std::clamp(
-                    _mapSize.x + sizeOffset, static_cast<int>(kMinimumMapSizeTechnical),
+                _settings.mapSize.x = std::clamp(
+                    _settings.mapSize.x + sizeOffset, static_cast<int>(kMinimumMapSizeTechnical),
                     static_cast<int>(kMaximumMapSizeTechnical));
         }
 
@@ -449,45 +458,49 @@ namespace OpenRCT2::Ui::Windows
         {
             SharedMouseUp(widgetIndex);
 
-            MapGenSettings mapgenSettings;
-            Formatter ft;
             switch (widgetIndex)
             {
                 case WIDX_MAP_GENERATE:
-                    mapgenSettings.mapSize = _mapSize;
-                    mapgenSettings.height = _baseHeight + 2;
-                    mapgenSettings.water_level = _waterLevel + 2;
-                    mapgenSettings.floor = _floorTexture;
-                    mapgenSettings.wall = _wallTexture;
+                {
+                    MapGenSettings mapgenSettings = _settings;
+                    mapgenSettings.height += 2;
+                    mapgenSettings.water_level += 2;
 
                     MapGenGenerateBlank(&mapgenSettings);
                     GfxInvalidateScreen();
                     break;
+                }
                 case WIDX_MAP_SIZE_Y:
                     _resizeDirection = ResizeDirection::Y;
-                    InputMapSize(WIDX_MAP_SIZE_Y, _mapSize.y);
+                    InputMapSize(WIDX_MAP_SIZE_Y, _settings.mapSize.y);
                     break;
                 case WIDX_MAP_SIZE_X:
                     _resizeDirection = ResizeDirection::X;
-                    InputMapSize(WIDX_MAP_SIZE_X, _mapSize.x);
+                    InputMapSize(WIDX_MAP_SIZE_X, _settings.mapSize.x);
                     break;
                 case WIDX_MAP_SIZE_LINK:
                     _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
                     break;
                 case WIDX_BASE_HEIGHT:
+                {
+                    Formatter ft;
                     ft.Add<int16_t>((BASESIZE_MIN - 12) / 2);
                     ft.Add<int16_t>((BASESIZE_MAX - 12) / 2);
                     WindowTextInputOpen(
                         this, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, ft, STR_FORMAT_INTEGER,
-                        (_baseHeight - 12) / 2, 3);
+                        (_settings.height - 12) / 2, 3);
                     break;
+                }
                 case WIDX_WATER_LEVEL:
+                {
+                    Formatter ft;
                     ft.Add<int16_t>((WATERLEVEL_MIN - 12) / 2);
                     ft.Add<int16_t>((WATERLEVEL_MAX - 12) / 2);
                     WindowTextInputOpen(
                         this, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, ft, STR_FORMAT_INTEGER,
-                        (_waterLevel - 12) / 2, 3);
+                        (_settings.water_level - 12) / 2, 3);
                     break;
+                }
             }
         }
 
@@ -516,26 +529,26 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_BASE_HEIGHT_UP:
-                    _baseHeight = std::min(_baseHeight + 2, BASESIZE_MAX);
+                    _settings.height = std::min(_settings.height + 2, BASESIZE_MAX);
                     Invalidate();
                     break;
                 case WIDX_BASE_HEIGHT_DOWN:
-                    _baseHeight = std::max(_baseHeight - 2, BASESIZE_MIN);
+                    _settings.height = std::max(_settings.height - 2, BASESIZE_MIN);
                     Invalidate();
                     break;
                 case WIDX_WATER_LEVEL_UP:
-                    _waterLevel = std::min(_waterLevel + 2, WATERLEVEL_MAX);
+                    _settings.water_level = std::min(_settings.water_level + 2, WATERLEVEL_MAX);
                     Invalidate();
                     break;
                 case WIDX_WATER_LEVEL_DOWN:
-                    _waterLevel = std::max(_waterLevel - 2, WATERLEVEL_MIN);
+                    _settings.water_level = std::max(_settings.water_level - 2, WATERLEVEL_MIN);
                     Invalidate();
                     break;
                 case WIDX_FLOOR_TEXTURE:
-                    LandTool::ShowSurfaceStyleDropdown(this, widget, _floorTexture);
+                    LandTool::ShowSurfaceStyleDropdown(this, widget, _settings.floor);
                     break;
                 case WIDX_WALL_TEXTURE:
-                    LandTool::ShowEdgeStyleDropdown(this, widget, _wallTexture);
+                    LandTool::ShowEdgeStyleDropdown(this, widget, _settings.wall);
                     break;
             }
         }
@@ -550,7 +563,7 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == -1)
                         dropdownIndex = gDropdownHighlightedIndex;
 
-                    type = (dropdownIndex == -1) ? _floorTexture : dropdownIndex;
+                    type = (dropdownIndex == -1) ? _settings.floor : dropdownIndex;
 
                     if (gLandToolTerrainSurface == type)
                     {
@@ -559,7 +572,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         gLandToolTerrainSurface = type;
-                        _floorTexture = type;
+                        _settings.floor = type;
                     }
                     Invalidate();
                     break;
@@ -567,7 +580,7 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == -1)
                         dropdownIndex = gDropdownHighlightedIndex;
 
-                    type = (dropdownIndex == -1) ? _wallTexture : dropdownIndex;
+                    type = (dropdownIndex == -1) ? _settings.wall : dropdownIndex;
 
                     if (gLandToolTerrainEdge == type)
                     {
@@ -576,7 +589,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         gLandToolTerrainEdge = type;
-                        _wallTexture = type;
+                        _settings.wall = type;
                     }
                     Invalidate();
                     break;
@@ -613,15 +626,15 @@ namespace OpenRCT2::Ui::Windows
                     // The practical size is 2 lower than the technical size
                     value += 2;
                     if (_resizeDirection == ResizeDirection::Y || _mapWidthAndHeightLinked)
-                        _mapSize.y = value;
+                        _settings.mapSize.y = value;
                     if (_resizeDirection == ResizeDirection::X || _mapWidthAndHeightLinked)
-                        _mapSize.x = value;
+                        _settings.mapSize.x = value;
                     break;
                 case WIDX_BASE_HEIGHT:
-                    _baseHeight = std::clamp((value * 2) + 12, BASESIZE_MIN, BASESIZE_MAX);
+                    _settings.height = std::clamp((value * 2) + 12, BASESIZE_MIN, BASESIZE_MAX);
                     break;
                 case WIDX_WATER_LEVEL:
-                    _waterLevel = std::clamp((value * 2) + 12, WATERLEVEL_MIN, WATERLEVEL_MAX);
+                    _settings.water_level = std::clamp((value * 2) + 12, WATERLEVEL_MIN, WATERLEVEL_MAX);
                     break;
             }
 
@@ -638,14 +651,14 @@ namespace OpenRCT2::Ui::Windows
 
             // Only allow linking the map size when X and Y are the same
             SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-            SetWidgetDisabled(WIDX_MAP_SIZE_LINK, _mapSize.x != _mapSize.y);
+            SetWidgetDisabled(WIDX_MAP_SIZE_LINK, _settings.mapSize.x != _settings.mapSize.y);
 
             SetPressedTab();
 
             // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
             auto ft = Formatter::Common();
-            ft.Add<uint16_t>(_mapSize.y - 2);
-            ft.Add<uint16_t>(_mapSize.x - 2);
+            ft.Add<uint16_t>(_settings.mapSize.y - 2);
+            ft.Add<uint16_t>(_settings.mapSize.x - 2);
         }
 
         void DrawDropdownButton(DrawPixelInfo& dpi, WidgetIndex widgetIndex, ImageId image)
@@ -674,7 +687,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainSurface, _floorTexture));
+                objManager.GetLoadedObject(ObjectType::TerrainSurface, _settings.floor));
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -687,7 +700,7 @@ namespace OpenRCT2::Ui::Windows
 
             ImageId edgeImage;
             const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainEdge, _wallTexture));
+                objManager.GetLoadedObject(ObjectType::TerrainEdge, _settings.wall));
             if (edgeObj != nullptr)
             {
                 edgeImage = ImageId(edgeObj->IconImageId);
@@ -718,13 +731,13 @@ namespace OpenRCT2::Ui::Windows
                 { textColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>((_baseHeight - 12) / 2);
+            ft.Add<uint16_t>((_settings.height - 12) / 2);
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_BASE_HEIGHT].left + 1, widgets[WIDX_BASE_HEIGHT].top + 1 },
                 STR_COMMA16, ft, { colours[1] });
 
             ft = Formatter();
-            ft.Add<uint16_t>((_waterLevel - 12) / 2);
+            ft.Add<uint16_t>((_settings.water_level - 12) / 2);
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
                 STR_COMMA16, ft, { colours[1] });
@@ -738,17 +751,18 @@ namespace OpenRCT2::Ui::Windows
         {
             SharedMouseUp(widgetIndex);
 
-            MapGenSettings mapgenSettings;
-
             switch (widgetIndex)
             {
                 case WIDX_RANDOM_GENERATE:
-                    mapgenSettings.mapSize = _mapSize;
-                    mapgenSettings.height = _baseHeight + 2;
-                    mapgenSettings.water_level = _waterLevel + 2;
-                    mapgenSettings.floor = _randomTerrain ? -1 : _floorTexture;
-                    mapgenSettings.wall = _randomTerrain ? -1 : _wallTexture;
-                    mapgenSettings.trees = _placeTrees;
+                {
+                    MapGenSettings mapgenSettings = _settings;
+                    mapgenSettings.height += 2;
+                    mapgenSettings.water_level += 2;
+                    if (_randomTerrain)
+                    {
+                        mapgenSettings.floor = -1;
+                        mapgenSettings.wall = -1;
+                    }
 
                     mapgenSettings.simplex_low = UtilRand() % 4;
                     mapgenSettings.simplex_high = 12 + (UtilRand() % (32 - 12));
@@ -758,11 +772,12 @@ namespace OpenRCT2::Ui::Windows
                     MapGenGenerate(&mapgenSettings);
                     GfxInvalidateScreen();
                     break;
+                }
                 case WIDX_RANDOM_TERRAIN:
                     _randomTerrain = !_randomTerrain;
                     break;
                 case WIDX_RANDOM_PLACE_TREES:
-                    _placeTrees ^= 1;
+                    _settings.trees ^= 1;
                     break;
             }
         }
@@ -786,7 +801,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets = 0;
             if (_randomTerrain)
                 pressed_widgets |= 1uLL << WIDX_RANDOM_TERRAIN;
-            if (_placeTrees)
+            if (_settings.trees)
                 pressed_widgets |= 1uLL << WIDX_RANDOM_PLACE_TREES;
 
             SetPressedTab();
@@ -806,38 +821,34 @@ namespace OpenRCT2::Ui::Windows
         {
             SharedMouseUp(widgetIndex);
 
-            MapGenSettings mapgenSettings;
-
             switch (widgetIndex)
             {
                 case WIDX_SIMPLEX_MAP_SIZE_Y:
                     _resizeDirection = ResizeDirection::Y;
-                    InputMapSize(WIDX_SIMPLEX_MAP_SIZE_Y, _mapSize.y);
+                    InputMapSize(WIDX_SIMPLEX_MAP_SIZE_Y, _settings.mapSize.y);
                     break;
                 case WIDX_SIMPLEX_MAP_SIZE_X:
                     _resizeDirection = ResizeDirection::X;
-                    InputMapSize(WIDX_SIMPLEX_MAP_SIZE_X, _mapSize.x);
+                    InputMapSize(WIDX_SIMPLEX_MAP_SIZE_X, _settings.mapSize.x);
                     break;
                 case WIDX_SIMPLEX_MAP_SIZE_LINK:
                     _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
                     break;
                 case WIDX_SIMPLEX_GENERATE:
-                    mapgenSettings.mapSize = _mapSize;
-
-                    mapgenSettings.height = _baseHeight;
-                    mapgenSettings.water_level = _waterLevel + kMinimumWaterHeight;
-                    mapgenSettings.floor = _randomTerrain ? -1 : _floorTexture;
-                    mapgenSettings.wall = _randomTerrain ? -1 : _wallTexture;
-                    mapgenSettings.trees = _placeTrees;
-
-                    mapgenSettings.simplex_low = _simplex_low;
-                    mapgenSettings.simplex_high = _simplex_high;
-                    mapgenSettings.simplex_base_freq = (static_cast<float>(_simplex_base_freq)) / 100.00f;
-                    mapgenSettings.simplex_octaves = _simplex_octaves;
+                {
+                    MapGenSettings mapgenSettings = _settings;
+                    mapgenSettings.water_level += kMinimumWaterHeight;
+                    mapgenSettings.simplex_base_freq /= 100.00f;
+                    if (_randomTerrain)
+                    {
+                        mapgenSettings.floor = -1;
+                        mapgenSettings.wall = -1;
+                    }
 
                     MapGenGenerate(&mapgenSettings);
                     GfxInvalidateScreen();
                     break;
+                }
             }
         }
 
@@ -846,35 +857,35 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SIMPLEX_LOW_UP:
-                    _simplex_low = std::min(_simplex_low + 1, 24);
+                    _settings.simplex_low = std::min(_settings.simplex_low + 1, 24);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_LOW_DOWN:
-                    _simplex_low = std::max(_simplex_low - 1, 0);
+                    _settings.simplex_low = std::max(_settings.simplex_low - 1, 0);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_HIGH_UP:
-                    _simplex_high = std::min(_simplex_high + 1, 36);
+                    _settings.simplex_high = std::min(_settings.simplex_high + 1, 36);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_HIGH_DOWN:
-                    _simplex_high = std::max(_simplex_high - 1, 0);
+                    _settings.simplex_high = std::max(_settings.simplex_high - 1, 0);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_BASE_FREQ_UP:
-                    _simplex_base_freq = std::min(_simplex_base_freq + 5, 1000);
+                    _settings.simplex_base_freq = std::min<int32_t>(_settings.simplex_base_freq + 5, 1000);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_BASE_FREQ_DOWN:
-                    _simplex_base_freq = std::max(_simplex_base_freq - 5, 0);
+                    _settings.simplex_base_freq = std::max<int32_t>(_settings.simplex_base_freq - 5, 0);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_UP:
-                    _simplex_octaves = std::min(_simplex_octaves + 1, 10);
+                    _settings.simplex_octaves = std::min(_settings.simplex_octaves + 1, 10);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_OCTAVES_DOWN:
-                    _simplex_octaves = std::max(_simplex_octaves - 1, 1);
+                    _settings.simplex_octaves = std::max(_settings.simplex_octaves - 1, 1);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_MAP_SIZE_Y_UP:
@@ -898,11 +909,11 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_WATER_LEVEL_UP:
-                    _waterLevel = std::min(_waterLevel + kMinimumWaterHeight, kMinimumWaterHeight + kMaximumWaterHeight);
+                    _settings.water_level = std::min(_settings.water_level + kMinimumWaterHeight, kMinimumWaterHeight + kMaximumWaterHeight);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_WATER_LEVEL_DOWN:
-                    _waterLevel = std::max(_waterLevel - kMinimumWaterHeight, 0);
+                    _settings.water_level = std::max(_settings.water_level - kMinimumWaterHeight, 0);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX:
@@ -910,13 +921,13 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_FLOOR_TEXTURE:
-                    LandTool::ShowSurfaceStyleDropdown(this, widget, _floorTexture);
+                    LandTool::ShowSurfaceStyleDropdown(this, widget, _settings.floor);
                     break;
                 case WIDX_SIMPLEX_WALL_TEXTURE:
-                    LandTool::ShowEdgeStyleDropdown(this, widget, _wallTexture);
+                    LandTool::ShowEdgeStyleDropdown(this, widget, _settings.wall);
                     break;
                 case WIDX_SIMPLEX_PLACE_TREES_CHECKBOX:
-                    _placeTrees ^= 1;
+                    _settings.trees ^= 1;
                     Invalidate();
                     break;
             }
@@ -932,7 +943,7 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == -1)
                         dropdownIndex = gDropdownHighlightedIndex;
 
-                    type = (dropdownIndex == -1) ? _floorTexture : dropdownIndex;
+                    type = (dropdownIndex == -1) ? _settings.floor : dropdownIndex;
 
                     if (gLandToolTerrainSurface == type)
                     {
@@ -941,7 +952,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         gLandToolTerrainSurface = type;
-                        _floorTexture = type;
+                        _settings.floor = type;
                     }
                     Invalidate();
                     break;
@@ -949,7 +960,7 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == -1)
                         dropdownIndex = gDropdownHighlightedIndex;
 
-                    type = (dropdownIndex == -1) ? _wallTexture : dropdownIndex;
+                    type = (dropdownIndex == -1) ? _settings.wall : dropdownIndex;
 
                     if (gLandToolTerrainEdge == type)
                     {
@@ -958,7 +969,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         gLandToolTerrainEdge = type;
-                        _wallTexture = type;
+                        _settings.wall = type;
                     }
                     Invalidate();
                     break;
@@ -983,10 +994,10 @@ namespace OpenRCT2::Ui::Windows
 
             // Only allow linking the map size when X and Y are the same
             SetWidgetPressed(WIDX_SIMPLEX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-            SetWidgetDisabled(WIDX_SIMPLEX_MAP_SIZE_LINK, _mapSize.x != _mapSize.y);
+            SetWidgetDisabled(WIDX_SIMPLEX_MAP_SIZE_LINK, _settings.mapSize.x != _settings.mapSize.y);
 
             SetCheckboxValue(WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
-            SetCheckboxValue(WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);
+            SetCheckboxValue(WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _settings.trees != 0);
 
             // Only allow floor and wall texture options if random terrain is disabled
             if (!_randomTerrain)
@@ -1004,8 +1015,8 @@ namespace OpenRCT2::Ui::Windows
 
             // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
             auto ft = Formatter::Common();
-            ft.Add<uint16_t>(_mapSize.y - 2);
-            ft.Add<uint16_t>(_mapSize.x - 2);
+            ft.Add<uint16_t>(_settings.mapSize.y - 2);
+            ft.Add<uint16_t>(_settings.mapSize.x - 2);
         }
 
         void SimplexDraw(DrawPixelInfo& dpi)
@@ -1036,23 +1047,23 @@ namespace OpenRCT2::Ui::Windows
                 { textColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>(_simplex_low);
+            ft.Add<uint16_t>(_settings.simplex_low);
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_LOW].left + 1, widgets[WIDX_SIMPLEX_LOW].top + 1 },
                 STR_COMMA16, ft, { textColour });
             ft = Formatter();
-            ft.Add<uint16_t>(_simplex_high);
+            ft.Add<uint16_t>(_settings.simplex_high);
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_HIGH].left + 1, widgets[WIDX_SIMPLEX_HIGH].top + 1 },
                 STR_COMMA16, ft, { textColour });
             ft = Formatter();
-            ft.Add<uint16_t>(_simplex_base_freq);
+            ft.Add<uint16_t>(_settings.simplex_base_freq);
             DrawTextBasic(
                 dpi,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { textColour });
             ft = Formatter();
-            ft.Add<uint16_t>(_simplex_octaves);
+            ft.Add<uint16_t>(_settings.simplex_octaves);
             DrawTextBasic(
                 dpi,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_OCTAVES].left + 1, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
@@ -1065,7 +1076,7 @@ namespace OpenRCT2::Ui::Windows
                 STR_MAPGEN_OPTION_PLACE_TREES, {}, { textColour });
 
             ft = Formatter();
-            ft.Add<uint16_t>((_waterLevel - 12) / 2);
+            ft.Add<uint16_t>((_settings.water_level - 12) / 2);
             DrawTextBasic(
                 dpi,
                 windowPos
@@ -1082,11 +1093,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_STRENGTH_UP:
-                    _heightmapSmoothStrength = std::min(_heightmapSmoothStrength + 1, MAX_SMOOTH_ITERATIONS);
+                    _settings.smooth_strength = std::min<uint32_t>(_settings.smooth_strength + 1, MAX_SMOOTH_ITERATIONS);
                     InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_STRENGTH_DOWN:
-                    _heightmapSmoothStrength = std::max(_heightmapSmoothStrength - 1, 1);
+                    _settings.smooth_strength = std::max<uint32_t>(_settings.smooth_strength - 1, 1);
                     InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_LOW_UP:
@@ -1108,11 +1119,11 @@ namespace OpenRCT2::Ui::Windows
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_WATER_LEVEL_UP:
-                    _waterLevel = std::min(_waterLevel + kMinimumWaterHeight, kMinimumWaterHeight + kMaximumWaterHeight);
+                    _settings.water_level = std::min(_settings.water_level + kMinimumWaterHeight, kMinimumWaterHeight + kMaximumWaterHeight);
                     InvalidateWidget(WIDX_HEIGHTMAP_WATER_LEVEL);
                     break;
                 case WIDX_HEIGHTMAP_WATER_LEVEL_DOWN:
-                    _waterLevel = std::max(_waterLevel - kMinimumWaterHeight, 0);
+                    _settings.water_level = std::max(_settings.water_level - kMinimumWaterHeight, 0);
                     InvalidateWidget(WIDX_HEIGHTMAP_WATER_LEVEL);
                     break;
             }
@@ -1120,12 +1131,7 @@ namespace OpenRCT2::Ui::Windows
 
         void HeightmapGenerateMap()
         {
-            MapGenSettings mapgenSettings;
-            mapgenSettings.water_level = _waterLevel;
-            mapgenSettings.smooth = _heightmapSmoothTiles;
-            mapgenSettings.smooth_height_map = _heightmapSmoothMap;
-            mapgenSettings.smooth_strength = _heightmapSmoothStrength;
-            mapgenSettings.normalize_height = _heightmapNormalize;
+            MapGenSettings mapgenSettings = _settings;
             mapgenSettings.simplex_low = _heightmapLow;
             mapgenSettings.simplex_high = _heightmapHigh;
             MapGenGenerateFromHeightmap(&mapgenSettings);
@@ -1155,22 +1161,22 @@ namespace OpenRCT2::Ui::Windows
                     return;
                 }
                 case WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP:
-                    _heightmapSmoothMap = !_heightmapSmoothMap;
-                    SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
-                    SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
-                    SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
-                    SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
+                    _settings.smooth_height_map = !_settings.smooth_height_map;
+                    SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _settings.smooth_height_map);
+                    SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _settings.smooth_height_map);
+                    SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _settings.smooth_height_map);
+                    SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _settings.smooth_height_map);
                     InvalidateWidget(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
                     InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_NORMALIZE:
-                    _heightmapNormalize = !_heightmapNormalize;
-                    SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
+                    _settings.normalize_height = !_settings.normalize_height;
+                    SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
                     InvalidateWidget(WIDX_HEIGHTMAP_NORMALIZE);
                     break;
                 case WIDX_HEIGHTMAP_SMOOTH_TILES:
-                    _heightmapSmoothTiles = !_heightmapSmoothTiles;
-                    SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
+                    _settings.smooth = !_settings.smooth;
+                    SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILES, _settings.smooth);
                     InvalidateWidget(WIDX_HEIGHTMAP_SMOOTH_TILES);
                     break;
             }
@@ -1187,9 +1193,9 @@ namespace OpenRCT2::Ui::Windows
                 InitScrollWidgets();
             }
 
-            SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
-            SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
-            SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
+            SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _settings.smooth_height_map);
+            SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
+            SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILES, _settings.smooth);
 
             SetPressedTab();
         }
@@ -1203,13 +1209,13 @@ namespace OpenRCT2::Ui::Windows
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
             // Smooth strength label and value
-            const auto strengthColour = _heightmapSmoothMap ? enabledColour : disabledColour;
+            const auto strengthColour = _settings.smooth_height_map ? enabledColour : disabledColour;
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
                 { strengthColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>(_heightmapSmoothStrength);
+            ft.Add<uint16_t>(_settings.smooth_strength);
             DrawTextBasic(
                 dpi,
                 windowPos
@@ -1245,7 +1251,7 @@ namespace OpenRCT2::Ui::Windows
                 { labelColour });
 
             ft = Formatter();
-            ft.Add<uint16_t>(_waterLevel);
+            ft.Add<uint16_t>(_settings.water_level);
             DrawTextBasic(
                 dpi,
                 windowPos
