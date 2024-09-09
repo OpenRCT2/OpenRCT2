@@ -121,7 +121,7 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiC
     _drawingContext = new X8DrawingContext(this);
     _bitsDPI.DrawingEngine = this;
     LightFXSetAvailable(true);
-    _lastLightFXenabled = (Config::Get().general.EnableLightFx != 0);
+    _lastLightFXenabled = Config::Get().general.EnableLightFx;
 }
 
 X8DrawingEngine::~X8DrawingEngine()
@@ -188,9 +188,11 @@ void X8DrawingEngine::BeginDraw()
     if (!IntroIsPlaying())
     {
         // HACK we need to re-configure the bits if light fx has been enabled / disabled
-        if (_lastLightFXenabled != (Config::Get().general.EnableLightFx != 0))
+        if (_lastLightFXenabled != Config::Get().general.EnableLightFx)
         {
             Resize(_width, _height);
+            GfxInvalidateScreen();
+            _lastLightFXenabled = Config::Get().general.EnableLightFx;
         }
         _weatherDrawer.Restore(_bitsDPI);
     }

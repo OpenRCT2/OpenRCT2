@@ -1799,7 +1799,6 @@ STR_2450    :{YELLOW}Sua campanha publicitária para o parque terminou
 STR_2451    :{YELLOW}Sua campanha publicitária para {STRINGID} terminou
 STR_2452    :{WINDOW_COLOUR_2}Dinheiro (menos empréstimo): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Dinheiro (menos empréstimo): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Mostrar contas financeiras
 STR_2458    :Mostrar gráfico de dinheiro (menos de empréstimo) ao longo do tempo
 STR_2459    :Mostrar gráfico de valor parque ao longo do tempo
@@ -2603,8 +2602,8 @@ STR_5357    :{BLACK}Tolerância a náusea:
 STR_5358    :{BLACK}Banheiro:
 STR_5359    :Remover visitantes
 STR_5360    :Remove todos os visitantes do mapa
-STR_5361    :{BLACK}Dar a todos os visitantes:
-STR_5362    :{BLACK}Intensidade preferida:
+STR_5361    :Adicionar aos itens dos visitantes:
+STR_5362    :{BLACK}Intensidade de atração preferida:
 STR_5363    :Maior que 1
 STR_5364    :Menor que 15
 STR_5365    :{BLACK}Vel. dos funcionários:
@@ -2634,7 +2633,7 @@ STR_5457    :Desativar limites de apoio
 STR_5458    :Girar no sentido horário
 STR_5459    :Girar no sentido anti-horário
 STR_5460    :Girar visão no sentido anti-horário
-STR_5461    :Definir parâmetros dos visitantes
+STR_5461    :Definir parâmetros de todos os visitantes
 STR_5462    :{CURRENCY}
 STR_5463    :Objetivo: Divirta-se!
 STR_5464    :Geral
@@ -3431,7 +3430,6 @@ STR_6356    :Gerar patos se o parque tiver água
 STR_6357    :Remover todos os patos do mapa
 STR_6358    :Página {UINT16}
 STR_6359    :{POP16}{POP16}Página {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Habilitar efeitos luminosos em atrações (experimental)
 STR_6362    :Se habilitados, veículos de atrações com trilhos serão iluminados à noite.
 STR_6363    :Texto copiado para a área de transferência
@@ -3726,6 +3724,21 @@ STR_6652    :Janela de Erro
 STR_6653    :Todas fontes exibidas
 STR_6654    :Mostrando {POP16}{UINT16} fontes
 STR_6655    :Apenas ‘{POP16}{STRINGID}’
+STR_6656    :Remover todas as cercas do parque
+STR_6657    :Terreno Não Adquirido
+STR_6658    :Configurar terreno como não adquirido pelo parque nem disponível para compra
+STR_6659    :Visitantes ignoram preços
+STR_6660    :Visitantes irão ignorar o preço das atrações e lojas.
+STR_6661    :Aleatorizar tudo
+STR_6662    :Tornar aleatórias as cores de cada trem e veículo.
+STR_6663    :Trapaças de data
+STR_6664    :Mostrar trapaças de data
+STR_6665    :Trapaças de Natureza/Clima
+STR_6666    :Mostrar trapaças de natureza/clima
+STR_6667    :Fauna
+STR_6668    :Trapaças de Funcionários
+STR_6669    :Mostrar trapaças de funcionários
+STR_6670    :Comportamento dos visitantes
 
 #############
 # Scenarios #

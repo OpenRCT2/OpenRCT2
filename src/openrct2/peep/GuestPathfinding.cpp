@@ -240,7 +240,7 @@ namespace OpenRCT2::PathFinding
      */
     static int32_t GuestSurfacePathFinding(Peep& peep)
     {
-        auto pathPos = CoordsXYRangedZ{ peep.NextLoc, peep.NextLoc.z, peep.NextLoc.z + PATH_CLEARANCE };
+        auto pathPos = CoordsXYRangedZ{ peep.NextLoc, peep.NextLoc.z, peep.NextLoc.z + kPathClearance };
         Direction randDirection = ScenarioRand() & 3;
 
         if (!WallInTheWay(pathPos, randDirection))
@@ -408,7 +408,7 @@ namespace OpenRCT2::PathFinding
                         continue;
                     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                     auto ride = GetRide(rideIndex);
-                    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+                    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
                     {
                         *outRideIndex = rideIndex;
                         return PathSearchResult::ShopEntrance;
@@ -774,7 +774,7 @@ namespace OpenRCT2::PathFinding
                      * tile. */
                     rideIndex = tileElement->AsTrack()->GetRideIndex();
                     auto ride = GetRide(rideIndex);
-                    if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+                    if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
                         continue;
 
                     found = true;

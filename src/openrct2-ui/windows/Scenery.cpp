@@ -6,11 +6,13 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#include "../interface/ViewportInteraction.h"
 
 #include <deque>
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -91,22 +93,22 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
     // clang-format off
-static Widget WindowSceneryBaseWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
-    MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
-    MakeWidget     ({  2,  62}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
-    MakeWidget     ({609,  59}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW),    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
-    MakeWidget     ({609,  83}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),      STR_SCENERY_PAINTBRUSH_TIP ), // 4000000   0x009DE438
-    MakeWidget     ({615,  108}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_COLOUR          ), // 8000000   0x009DE448
-    MakeWidget     ({615, 120}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_SECONDARY_COLOUR), // 10000000  0x009DE458
-    MakeWidget     ({615, 132}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_TERTIARY_COLOUR  ), // 20000000  0x009DE468
-    MakeWidget     ({609, 145}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_EYEDROPPER),   STR_SCENERY_EYEDROPPER_TIP ), // 40000000  0x009DE478
-    MakeWidget     ({609, 169}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_SCENERY_CLUSTER), STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
-    MakeWidget     ({  4,  46}, {211, 14}, WindowWidgetType::TextBox,   WindowColour::Secondary                          ),
-    MakeWidget     ({218,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
-    MakeWidget     ({539,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_RESTRICT_SCENERY,   STR_RESTRICT_SCENERY_TIP ),
-    kWidgetsEnd,
-};
+    static Widget WindowSceneryBaseWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
+        MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
+        MakeWidget     ({  2,  62}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
+        MakeWidget     ({609,  59}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW),    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
+        MakeWidget     ({609,  83}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),      STR_SCENERY_PAINTBRUSH_TIP ), // 4000000   0x009DE438
+        MakeWidget     ({615,  108}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_COLOUR          ), // 8000000   0x009DE448
+        MakeWidget     ({615, 120}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_SECONDARY_COLOUR), // 10000000  0x009DE458
+        MakeWidget     ({615, 132}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_TERTIARY_COLOUR  ), // 20000000  0x009DE468
+        MakeWidget     ({609, 145}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_EYEDROPPER),   STR_SCENERY_EYEDROPPER_TIP ), // 40000000  0x009DE478
+        MakeWidget     ({609, 169}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_SCENERY_CLUSTER), STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
+        MakeWidget     ({  4,  46}, {211, 14}, WindowWidgetType::TextBox,   WindowColour::Secondary                          ),
+        MakeWidget     ({218,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
+        MakeWidget     ({539,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_RESTRICT_SCENERY,   STR_RESTRICT_SCENERY_TIP ),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     // Persistent between window instances
@@ -296,7 +298,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 case WIDX_FILTER_CLEAR_BUTTON:
                     _tabEntries[_activeTabIndex].Filter.clear();
                     ContentUpdateScroll();
-                    scrolls->v_top = 0;
+                    scrolls->contentOffsetY = 0;
                     Invalidate();
                     break;
                 case WIDX_RESTRICT_SCENERY:
@@ -549,7 +551,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             _tabEntries[_activeTabIndex].Filter.assign(text);
             ContentUpdateScroll();
 
-            scrolls->v_top = 0;
+            scrolls->contentOffsetY = 0;
             Invalidate();
         }
 
@@ -985,7 +987,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             _tabEntries.emplace_back(SceneryWindow::SceneryTabInfo{ SCENERY_TAB_TYPE_ALL });
 
             // small scenery
-            for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS; sceneryId++)
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxSmallSceneryObjects; sceneryId++)
             {
                 const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
@@ -995,7 +997,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
 
             // large scenery
-            for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_LARGE_SCENERY_OBJECTS; sceneryId++)
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxLargeSceneryObjects; sceneryId++)
             {
                 const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
@@ -1005,7 +1007,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
 
             // walls
-            for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_WALL_SCENERY_OBJECTS; sceneryId++)
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxWallSceneryObjects; sceneryId++)
             {
                 const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
@@ -1015,7 +1017,7 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
 
             // banners
-            for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_BANNER_OBJECTS; sceneryId++)
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxBannerObjects; sceneryId++)
             {
                 const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
@@ -1024,7 +1026,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
             }
 
-            for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS; sceneryId++)
+            for (ObjectEntryIndex sceneryId = 0; sceneryId < kMaxPathAdditionObjects; sceneryId++)
             {
                 const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(sceneryId);
                 if (sceneryEntry != nullptr)
@@ -1098,9 +1100,9 @@ static Widget WindowSceneryBaseWidgets[] = {
             const int32_t listHeight = height - 14 - widgets[WIDX_SCENERY_LIST].top - 1;
 
             const auto sceneryItem = ContentCountRowsWithSelectedItem(tabIndex);
-            scrolls[SceneryContentScrollIndex].v_bottom = ContentRowsHeight(sceneryItem.allRows) + 1;
+            scrolls[SceneryContentScrollIndex].contentHeight = ContentRowsHeight(sceneryItem.allRows) + 1;
 
-            const int32_t maxTop = std::max(0, scrolls[SceneryContentScrollIndex].v_bottom - listHeight);
+            const int32_t maxTop = std::max(0, scrolls[SceneryContentScrollIndex].contentHeight - listHeight);
             auto rowSelected = CountRows(sceneryItem.selected_item);
             if (sceneryItem.scenerySelection.IsUndefined())
             {
@@ -1127,8 +1129,9 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
             }
 
-            scrolls[SceneryContentScrollIndex].v_top = ContentRowsHeight(rowSelected);
-            scrolls[SceneryContentScrollIndex].v_top = std::min<int32_t>(maxTop, scrolls[SceneryContentScrollIndex].v_top);
+            scrolls[SceneryContentScrollIndex].contentOffsetY = ContentRowsHeight(rowSelected);
+            scrolls[SceneryContentScrollIndex].contentOffsetY = std::min<int32_t>(
+                maxTop, scrolls[SceneryContentScrollIndex].contentOffsetY);
 
             WidgetScrollUpdateThumbs(*this, WIDX_SCENERY_LIST);
         }
@@ -2184,7 +2187,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 return kMoney64Undefined;
 
             gSceneryGhostPosition = loc;
-            gSceneryGhostPosition.z += PATH_HEIGHT_STEP;
+            gSceneryGhostPosition.z += kPathHeightStep;
             gSceneryPlaceRotation = loc.direction;
             gSceneryGhostType |= SCENERY_GHOST_FLAG_4;
             return res.Cost;
@@ -2358,9 +2361,10 @@ static Widget WindowSceneryBaseWidgets[] = {
             }
             else
             {
+                auto& im = GetInputManager();
                 if (!gSceneryCtrlPressed)
                 {
-                    if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z))
+                    if (im.IsModifierKeyPressed(ModifierKey::ctrl))
                     {
                         // CTRL pressed
                         constexpr auto flag = EnumsToFlags(
@@ -2378,7 +2382,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
                 else
                 {
-                    if (!(InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z)))
+                    if (!(im.IsModifierKeyPressed(ModifierKey::ctrl)))
                     {
                         // CTRL not pressed
                         gSceneryCtrlPressed = false;
@@ -2387,7 +2391,7 @@ static Widget WindowSceneryBaseWidgets[] = {
 
                 if (!gSceneryShiftPressed)
                 {
-                    if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_SHIFT_Z))
+                    if (im.IsModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressed = true;
@@ -2398,7 +2402,7 @@ static Widget WindowSceneryBaseWidgets[] = {
                 }
                 else
                 {
-                    if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_SHIFT_Z))
+                    if (im.IsModifierKeyPressed(ModifierKey::shift))
                     {
                         // SHIFT pressed
                         gSceneryShiftPressZOffset = (gSceneryShiftPressY - screenPos.y + 4);

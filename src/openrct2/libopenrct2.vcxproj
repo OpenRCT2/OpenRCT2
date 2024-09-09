@@ -276,6 +276,7 @@
     <ClInclude Include="interface\Fonts.h" />
     <ClInclude Include="interface\InteractiveConsole.h" />
     <ClInclude Include="interface\Screenshot.h" />
+    <ClInclude Include="interface\ScrollArea.h" />
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
@@ -371,8 +372,6 @@
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\tile_element\Segment.h" />
     <ClInclude Include="paint\tile_element\Paint.Tunnel.h" />
-    <ClInclude Include="paint\track\coaster\BolligerMabillardTrack.hpp" />
-    <ClInclude Include="paint\track\coaster\CorkscrewRollerCoaster.hpp" />
     <ClInclude Include="paint\track\coaster\WoodenRollerCoaster.h" />
     <ClInclude Include="paint\track\Segment.h" />
     <ClInclude Include="paint\track\Support.h" />
@@ -897,8 +896,10 @@
     <ClCompile Include="paint\track\coaster\ClassicStandUpRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\ClassicWoodenRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\CompactInvertedCoaster.cpp" />
+    <ClCompile Include="paint\track\coaster\CorkscrewRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\FlyingRollerCoaster.cpp" />
-    <ClCompile Include="paint\track\coaster\GigaCoaster.cpp" />
+    <ClCompile Include="paint\track\coaster\FlyingRollerCoasterInverted.cpp" />
+    <ClCompile Include="paint\track\coaster\LatticeTriangleTrack.cpp" />
     <ClCompile Include="paint\track\coaster\HeartlineTwisterCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\HybridCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\InvertedHairpinCoaster.cpp" />
@@ -920,6 +921,7 @@
     <ClCompile Include="paint\track\coaster\StandUpRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\Steeplechase.cpp" />
     <ClCompile Include="paint\track\coaster\SuspendedSwingingCoaster.cpp" />
+    <ClCompile Include="paint\track\coaster\TwisterRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\VirginiaReel.cpp" />
     <ClCompile Include="paint\track\coaster\WildMouse.cpp" />
     <ClCompile Include="paint\track\coaster\WoodenRollerCoaster.cpp" />
@@ -994,6 +996,7 @@
     <ClCompile Include="profiling\Profiling.cpp" />
     <ClCompile Include="rct12\CSStringConverter.cpp" />
     <ClCompile Include="rct12\RCT12.cpp" />
+    <ClCompile Include="rct12\ScenarioPatcher.cpp" />
     <ClCompile Include="rct12\SawyerChunk.cpp" />
     <ClCompile Include="rct12\SawyerChunkReader.cpp" />
     <ClCompile Include="rct12\SawyerChunkWriter.cpp" />

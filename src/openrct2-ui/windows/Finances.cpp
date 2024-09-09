@@ -16,6 +16,7 @@
 #include <openrct2/actions/ParkSetLoanAction.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/ride/RideData.h>
@@ -94,75 +95,75 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
+    // clang-format off
 #pragma region Widgets
 
-    // clang-format off
-#define MAIN_FINANCES_WIDGETS(TITLE, RSW, RSH, WW, WH) \
-    WINDOW_SHIM(TITLE, WW, WH), \
-    MakeWidget({0, 43}, {RSW, RSH}, WindowWidgetType::Resize, WindowColour::Secondary), \
-    MakeTab({  3, 17}, STR_FINANCES_SHOW_SUMMARY_TAB_TIP      ), \
-    MakeTab({ 34, 17}, STR_FINANCES_SHOW_CASH_TAB_TIP         ), \
-    MakeTab({ 65, 17}, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP   ), \
-    MakeTab({ 96, 17}, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP), \
-    MakeTab({127, 17}, STR_FINANCES_SHOW_MARKETING_TAB_TIP    ), \
-    MakeTab({158, 17}, STR_FINANCES_RESEARCH_TIP              )
+#define MAIN_FINANCES_WIDGETS(TITLE, RSW, RSH, WW, WH)                                          \
+    WINDOW_SHIM(TITLE, WW, WH),                                                                 \
+        MakeWidget({ 0, 43 }, { RSW, RSH }, WindowWidgetType::Resize, WindowColour::Secondary), \
+        MakeTab({ 3, 17 }, STR_FINANCES_SHOW_SUMMARY_TAB_TIP),                                  \
+        MakeTab({ 34, 17 }, STR_FINANCES_SHOW_CASH_TAB_TIP),                                    \
+        MakeTab({ 65, 17 }, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP),                              \
+        MakeTab({ 96, 17 }, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP),                           \
+        MakeTab({ 127, 17 }, STR_FINANCES_SHOW_MARKETING_TAB_TIP),                              \
+        MakeTab({ 158, 17 }, STR_FINANCES_RESEARCH_TIP)
 
-static Widget _windowFinancesSummaryWidgets[] =
-{
-    MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
-    MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
-    MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_FINANCES_SUMMARY_LOAN_VALUE), // NB: 3 widgets.
-    kWidgetsEnd,
-};
+    static Widget _windowFinancesSummaryWidgets[] =
+    {
+        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
+        MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
+        MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_FINANCES_SUMMARY_LOAN_VALUE), // NB: 3 widgets.
+        kWidgetsEnd,
+    };
 
-static Widget _windowFinancesCashWidgets[] =
-{
-    MAIN_FINANCES_WIDGETS(STR_FINANCIAL_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
-    kWidgetsEnd,
-};
+    static Widget _windowFinancesCashWidgets[] =
+    {
+        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        kWidgetsEnd,
+    };
 
-static Widget _windowFinancesParkValueWidgets[] =
-{
-    MAIN_FINANCES_WIDGETS(STR_PARK_VALUE_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
-    kWidgetsEnd,
-};
+    static Widget _windowFinancesParkValueWidgets[] =
+    {
+        MAIN_FINANCES_WIDGETS(STR_PARK_VALUE_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        kWidgetsEnd,
+    };
 
-static Widget _windowFinancesProfitWidgets[] =
-{
-    MAIN_FINANCES_WIDGETS(STR_PROFIT_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
-    kWidgetsEnd,
-};
+    static Widget _windowFinancesProfitWidgets[] =
+    {
+        MAIN_FINANCES_WIDGETS(STR_PROFIT_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        kWidgetsEnd,
+    };
 
-static Widget _windowFinancesMarketingWidgets[] =
-{
-    MAIN_FINANCES_WIDGETS(STR_MARKETING, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
-    MakeWidget({3, 47}, { WW_OTHER_TABS - 6, 206}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    kWidgetsEnd,
-};
+    static Widget _windowFinancesMarketingWidgets[] =
+    {
+        MAIN_FINANCES_WIDGETS(STR_MARKETING, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
+        MakeWidget({3, 47}, { WW_OTHER_TABS - 6, 206}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
+        MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+        MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+        MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+        MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+        MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+        MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+        kWidgetsEnd,
+    };
 
-static Widget _windowFinancesResearchWidgets[] =
-{
-    MAIN_FINANCES_WIDGETS(STR_RESEARCH_FUNDING, RSW_RESEARCH, RSH_RESEARCH, WW_RESEARCH, WH_RESEARCH),
-    MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_FUNDING_                                                             ),
-    MakeWidget({  8,  59}, {             160,  14}, WindowWidgetType::DropdownMenu, WindowColour::Tertiary, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-    MakeWidget({156,  60}, {              11,  12}, WindowWidgetType::Button,   WindowColour::Tertiary, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-    MakeWidget({  3,  96}, { WW_RESEARCH - 6, 107}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_PRIORITIES                                                           ),
-    MakeWidget({  8, 108}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
-    MakeWidget({  8, 121}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
-    MakeWidget({  8, 134}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
-    MakeWidget({  8, 147}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
-    MakeWidget({  8, 160}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
-    MakeWidget({  8, 173}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
-    MakeWidget({  8, 186}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
-    kWidgetsEnd,
-};
+    static Widget _windowFinancesResearchWidgets[] =
+    {
+        MAIN_FINANCES_WIDGETS(STR_RESEARCH_FUNDING, RSW_RESEARCH, RSH_RESEARCH, WW_RESEARCH, WH_RESEARCH),
+        MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_FUNDING_                                                             ),
+        MakeWidget({  8,  59}, {             160,  14}, WindowWidgetType::DropdownMenu, WindowColour::Tertiary, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
+        MakeWidget({156,  60}, {              11,  12}, WindowWidgetType::Button,   WindowColour::Tertiary, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
+        MakeWidget({  3,  96}, { WW_RESEARCH - 6, 107}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_PRIORITIES                                                           ),
+        MakeWidget({  8, 108}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
+        MakeWidget({  8, 121}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
+        MakeWidget({  8, 134}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
+        MakeWidget({  8, 147}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
+        MakeWidget({  8, 160}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
+        MakeWidget({  8, 173}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
+        MakeWidget({  8, 186}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     static Widget* _windowFinancesPageWidgets[] = {
@@ -326,46 +327,40 @@ static Widget _windowFinancesResearchWidgets[] =
             for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
                 SetWidgetPressed(WIDX_TAB_1 + i, false);
             SetWidgetPressed(WIDX_TAB_1 + page, true);
+
+            Widget* graphPageWidget;
+            bool centredGraph;
             switch (page)
             {
                 case WINDOW_FINANCES_PAGE_SUMMARY:
                     OnPrepareDrawSummary();
-                    break;
+                    return;
                 case WINDOW_FINANCES_PAGE_MARKETING:
                     OnPrepareDrawMarketing();
-                    break;
+                    return;
                 case WINDOW_FINANCES_PAGE_RESEARCH:
                     WindowResearchFundingPrepareDraw(this, WIDX_RESEARCH_FUNDING);
-                    break;
+                    return;
+                default:
+                    return;
+
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
+                    graphPageWidget = &_windowFinancesParkValueWidgets[WIDX_PAGE_BACKGROUND];
+                    centredGraph = false;
+                    _graphProps.series = GetGameState().Park.ValueHistory;
+                    break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
+                    graphPageWidget = &_windowFinancesProfitWidgets[WIDX_PAGE_BACKGROUND];
+                    centredGraph = true;
+                    _graphProps.series = GetGameState().WeeklyProfitHistory;
+                    break;
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
-                {
-                    // recalculate size for graph pages only.
-                    Widget* pageWidget;
-                    switch (page)
-                    {
-                        case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
-                            pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
-                            break;
-                        case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                            pageWidget = &_windowFinancesParkValueWidgets[WIDX_PAGE_BACKGROUND];
-                            break;
-                        case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
-                            pageWidget = &_windowFinancesProfitWidgets[WIDX_PAGE_BACKGROUND];
-                            break;
-                        default:
-                            return;
-                    }
-                    _graphBounds = { windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 },
-                                     windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 } };
-                    _graphProps.RecalculateLayout(
-                        { _graphBounds.Point1 + kGraphTopLeftPadding, _graphBounds.Point2 - kGraphBottomRightPadding },
-                        kGraphNumYLabels, kGraphNumPoints);
-                    _graphProps.lineCol = colours[2];
-                }
-                break;
+                    graphPageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
+                    centredGraph = true;
+                    _graphProps.series = GetGameState().CashHistory;
+                    break;
             }
+            OnPrepareDrawGraph(graphPageWidget, centredGraph);
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -381,24 +376,21 @@ static Widget _windowFinancesResearchWidgets[] =
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                 {
                     auto& gameState = GetGameState();
-                    auto cashLessLoan = gameState.Cash - gameState.BankLoan;
-                    auto fmt = cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
-                                                 : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE;
-                    OnDrawGraph(dpi, cashLessLoan, gameState.CashHistory, fmt, true);
+                    const auto cashLessLoan = gameState.Cash - gameState.BankLoan;
+                    const auto fmt = cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
+                                                       : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE;
+                    OnDrawGraph(dpi, cashLessLoan, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                {
-                    auto& gameState = GetGameState();
-                    OnDrawGraph(dpi, gameState.Park.Value, gameState.Park.ValueHistory, STR_FINANCES_PARK_VALUE, false);
+                    OnDrawGraph(dpi, GetGameState().Park.Value, STR_FINANCES_PARK_VALUE);
                     break;
-                }
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                 {
                     auto& gameState = GetGameState();
-                    auto fmt = gameState.CurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
-                                                            : STR_FINANCES_WEEKLY_PROFIT_LOSS;
-                    OnDrawGraph(dpi, gameState.CurrentProfit, gameState.WeeklyProfitHistory, fmt, true);
+                    const auto fmt = gameState.CurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
+                                                                  : STR_FINANCES_WEEKLY_PROFIT_LOSS;
+                    OnDrawGraph(dpi, gameState.CurrentProfit, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_MARKETING:
@@ -428,7 +420,7 @@ static Widget _windowFinancesResearchWidgets[] =
             auto screenCoords = ScreenCoordsXY{ 0, kTableCellHeight + 2 };
 
             Widget self = widgets[WIDX_SUMMARY_SCROLL];
-            int32_t row_width = std::max<uint16_t>(scrolls[0].h_right, self.width());
+            int32_t row_width = std::max<uint16_t>(scrolls[0].contentWidth, self.width());
 
             // Expenditure / Income row labels
             for (int32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
@@ -752,7 +744,7 @@ static Widget _windowFinancesResearchWidgets[] =
                         break;
                     default:
                     {
-                        auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
+                        auto parkName = GetGameState().Park.Name.c_str();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                     }
@@ -797,10 +789,69 @@ static Widget _windowFinancesResearchWidgets[] =
 
 #pragma endregion
 
+#pragma region Graph Events
+
+        void OnDrawGraph(DrawPixelInfo& dpi, const money64 currentValue, const StringId fmt) const
+        {
+            Formatter ft;
+            ft.Add<money64>(currentValue);
+            DrawTextBasic(dpi, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
+
+            // Graph
+            GfxFillRectInset(dpi, _graphBounds, colours[1], INSET_RECT_F_30);
+            // hide resize widget on graph area
+            constexpr ScreenCoordsXY offset{ 1, 1 };
+            constexpr ScreenCoordsXY bigOffset{ 5, 5 };
+            GfxFillRectInset(
+                dpi, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1],
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+
+            Graph::DrawFinanceGraph(dpi, _graphProps);
+        }
+
+        void OnPrepareDrawGraph(const Widget* graphPageWidget, const bool centredGraph)
+        {
+            // Calculate Y axis max and min.
+            money64 maxVal = 0;
+            const auto series = _graphProps.series;
+            for (int32_t i = 0; i < kGraphNumPoints; i++)
+            {
+                auto val = std::abs(series[i]);
+                if (val == kMoney64Undefined)
+                    continue;
+                if (val > maxVal)
+                    maxVal = val;
+            }
+            // This algorithm increments the leading digit of the max and sets all other digits to zero.
+            // e.g. 681 => 700.
+            money64 oom = 10;
+            while (maxVal / oom >= 10)
+                oom *= 10;
+            const money64 max = std::max(10.00_GBP, ((maxVal + oom - 1) / oom) * oom);
+
+            _graphProps.min = centredGraph ? -max : 0.00_GBP;
+            _graphProps.max = max;
+
+            // dynamic padding for long axis lables:
+            char buffer[64]{};
+            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{CURRENCY2DP}", centredGraph ? -max : max);
+            int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
+            const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
+
+            _graphBounds = { windowPos + ScreenCoordsXY{ graphPageWidget->left + 4, graphPageWidget->top + 15 },
+                             windowPos + ScreenCoordsXY{ graphPageWidget->right - 4, graphPageWidget->bottom - 4 } };
+            _graphProps.RecalculateLayout(
+                { _graphBounds.Point1 + dynamicPadding, _graphBounds.Point2 - kGraphBottomRightPadding }, kGraphNumYLabels,
+                kGraphNumPoints);
+            _graphProps.lineCol = colours[2];
+        }
+
+#pragma endregion
+
         void InitialiseScrollPosition(WidgetIndex widgetIndex, int32_t scrollId)
         {
             const auto& widget = this->widgets[widgetIndex];
-            scrolls[scrollId].h_left = std::max(0, scrolls[scrollId].h_right - (widget.width() - 2));
+            scrolls[scrollId].contentOffsetX = std::max(0, scrolls[scrollId].contentWidth - (widget.width() - 2));
 
             WidgetScrollUpdateThumbs(*this, widgetIndex);
         }
@@ -836,47 +887,6 @@ static Widget _windowFinancesResearchWidgets[] =
         void OnResize() override
         {
             ResizeFrameWithPage();
-        }
-
-        void OnDrawGraph(
-            DrawPixelInfo& dpi, const money64 currentValue, money64 (&series)[kFinanceHistorySize], const StringId fmt,
-            const bool centred)
-        {
-            Formatter ft;
-            ft.Add<money64>(currentValue);
-            DrawTextBasic(dpi, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
-
-            // Graph
-            GfxFillRectInset(dpi, _graphBounds, colours[1], INSET_RECT_F_30);
-            // hide resize widget on graph area
-            constexpr ScreenCoordsXY offset{ 1, 1 };
-            constexpr ScreenCoordsXY bigOffset{ 5, 5 };
-            GfxFillRectInset(
-                dpi, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1],
-                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
-
-            // Calculate Y axis max and min.
-            money64 maxVal = 0;
-            for (int32_t i = 0; i < kGraphNumPoints; i++)
-            {
-                auto val = std::abs(series[i]);
-                if (val == kMoney64Undefined)
-                    continue;
-                if (val > maxVal)
-                    maxVal = val;
-            }
-            // This algorithm increments the leading digit of the max and sets all other digits to zero.
-            // e.g. 681 => 700.
-            money64 oom = 10;
-            while (maxVal / oom >= 10)
-                oom *= 10;
-            const money64 max = ((maxVal + oom - 1) / oom) * oom;
-
-            _graphProps.min = centred ? -max : 0.00_GBP;
-            _graphProps.max = max;
-            _graphProps.series = series;
-
-            Graph::DrawFinanceGraph(dpi, _graphProps);
         }
     };
 

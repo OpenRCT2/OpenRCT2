@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <memory>
 #include <openrct2-ui/input/InputManager.h>
+#include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>

@@ -30,9 +30,17 @@ namespace OpenRCT2::Graph
         const T yLabelStep = (max - min) / (numYLabels - 1);
         for (int32_t i = 0; i < numYLabels; i++)
         {
+            // Draw Y label text
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), fmt, curLabel);
-            DrawText(dpi, { internalBounds.GetLeft(), curScreenPos }, { FontStyle::Small, TextAlignment::RIGHT }, buffer);
+            DrawText(
+                dpi, { internalBounds.GetLeft() - kYTickMarkPadding, curScreenPos }, { FontStyle::Small, TextAlignment::RIGHT },
+                buffer);
+            // Draw Y label tick mark
+            GfxFillRect(
+                dpi, { { internalBounds.GetLeft() - 5, curScreenPos + 5 }, { internalBounds.GetLeft(), curScreenPos + 5 } },
+                PALETTE_INDEX_10);
+            // Draw horizontal gridline
             GfxFillRectInset(
                 dpi, { { internalBounds.GetLeft(), curScreenPos + 5 }, { internalBounds.GetRight(), curScreenPos + 5 } },
                 lineCol, INSET_RECT_FLAG_BORDER_INSET);
@@ -59,8 +67,7 @@ namespace OpenRCT2::Graph
                 DrawTextBasic(
                     dpi, screenCoords - ScreenCoordsXY{ 0, 14 }, STR_GRAPH_LABEL, ft,
                     { FontStyle::Small, TextAlignment::CENTRE });
-
-                // Draw month mark
+                // Draw month tick mark
                 GfxFillRect(
                     dpi, { screenCoords - ScreenCoordsXY{ 0, 4 }, screenCoords - ScreenCoordsXY{ 0, 1 } }, PALETTE_INDEX_10);
             }
@@ -75,8 +82,8 @@ namespace OpenRCT2::Graph
         DrawPixelInfo& dpi, const T value, const int32_t hoverIdx, const ScreenRect& bounds, const int32_t xStep,
         const T minValue, const T maxValue, const_utf8string text, ColourWithFlags textCol)
     {
-        const int32_t screenRange = bounds.GetHeight();
-        const int32_t valueRange = maxValue - minValue;
+        const T screenRange = bounds.GetHeight();
+        const T valueRange = maxValue - minValue;
 
         const int32_t yPosition = bounds.GetBottom() - ((value - minValue) * screenRange) / valueRange;
         ScreenCoordsXY coords = { bounds.GetRight() - hoverIdx * xStep, yPosition };
@@ -103,8 +110,8 @@ namespace OpenRCT2::Graph
         DrawPixelInfo& dpi, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep,
         const T minValue, const T maxValue)
     {
-        const int32_t screenRange = bounds.GetHeight();
-        const int32_t valueRange = maxValue - minValue;
+        const T screenRange = bounds.GetHeight();
+        const T valueRange = maxValue - minValue;
 
         ScreenCoordsXY lastCoords;
         bool lastCoordsValid = false;
@@ -156,7 +163,7 @@ namespace OpenRCT2::Graph
 
     void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p)
     {
-        const FmtString fmt("{BLACK}{CURRENCY2DP} -");
+        const FmtString fmt("{BLACK}{CURRENCY2DP}");
         DrawYLabels<money64>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
         DrawMonths<money64, kMoney64Undefined>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
         DrawLine<money64, kMoney64Undefined, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
@@ -178,9 +185,9 @@ namespace OpenRCT2::Graph
     void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint8_t>& p)
     {
         constexpr uint8_t noValue = ParkRatingHistoryUndefined;
-        const FmtString fmt("{BLACK}{COMMA32} -");
+        const FmtString fmt("{BLACK}{COMMA32}");
         // Since the park rating rating history is divided by 4, we have to fudge the max number here.
-        DrawYLabels<uint16_t>(dpi, p.internalBounds, p.min, 1000, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
+        DrawYLabels<uint16_t>(dpi, p.internalBounds, p.min, kParkRatingMax, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
         DrawMonths<uint8_t, noValue>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
         DrawLine<uint8_t, noValue, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
         DrawLine<uint8_t, noValue, false>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
@@ -189,7 +196,7 @@ namespace OpenRCT2::Graph
     void DrawGuestGraph(DrawPixelInfo& dpi, const GraphProperties<uint32_t>& p)
     {
         constexpr uint32_t noValue = GuestsInParkHistoryUndefined;
-        const FmtString fmt("{BLACK}{COMMA32} -");
+        const FmtString fmt("{BLACK}{COMMA32}");
         DrawYLabels<uint32_t>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
         DrawMonths<uint32_t, noValue>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
         DrawLine<uint32_t, noValue, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);

@@ -210,7 +210,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     // start.
     TileElement* initialMap = trackElement.element;
 
-    CoordsXYZ startPos = { trackElement.x, trackElement.y, z + trackCoordinates->z_begin - trackBlock->z };
+    CoordsXYZ startPos = { trackElement.x, trackElement.y, z + trackCoordinates->zBegin - trackBlock->z };
     tds.origin = startPos;
 
     do
@@ -239,7 +239,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         if (element->HasChain())
             track.SetFlag(TrackDesignTrackElementFlag::hasChain);
 
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE) && element->IsInverted())
+        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasInvertedVariant) && element->IsInverted())
         {
             track.SetFlag(TrackDesignTrackElementFlag::isInverted);
         }
@@ -642,7 +642,7 @@ struct TrackSceneryEntry
 
 static ObjectEntryIndex TrackDesignGetDefaultSurfaceIndex(bool isQueue)
 {
-    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
     {
         auto footpathSurfaceObj = GetPathSurfaceEntry(i);
         if (footpathSurfaceObj != nullptr)
@@ -665,7 +665,7 @@ static ObjectEntryIndex TrackDesignGetDefaultSurfaceIndex(bool isQueue)
 
 static ObjectEntryIndex TrackDesignGetDefaultRailingIndex()
 {
-    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxFootpathRailingsObjects; i++)
     {
         auto footpathRailingsObj = GetPathRailingsEntry(i);
         if (footpathRailingsObj != nullptr)
@@ -903,7 +903,7 @@ static void TrackDesignMirrorMaze(TrackDesign& td)
 void TrackDesignMirror(TrackDesign& td)
 {
     const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RtdFlag::isMaze))
     {
         TrackDesignMirrorMaze(td);
     }
@@ -1576,7 +1576,7 @@ static GameActions::Result TrackDesignPlaceRide(
             {
                 const TrackCoordinates* trackCoordinates = &ted.coordinates;
                 const PreviewTrack* trackBlock = ted.block;
-                int32_t tempZ = newCoords.z - trackCoordinates->z_begin + trackBlock->z;
+                int32_t tempZ = newCoords.z - trackCoordinates->zBegin + trackBlock->z;
                 auto trackRemoveAction = TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
@@ -1593,7 +1593,7 @@ static GameActions::Result TrackDesignPlaceRide(
                 const TrackCoordinates* trackCoordinates = &ted.coordinates;
 
                 // di
-                int16_t tempZ = newCoords.z - trackCoordinates->z_begin;
+                int16_t tempZ = newCoords.z - trackCoordinates->zBegin;
 
                 int32_t liftHillAndAlternativeState = 0;
                 if (track.HasFlag(TrackDesignTrackElementFlag::hasChain))
@@ -1643,7 +1643,7 @@ static GameActions::Result TrackDesignPlaceRide(
             }
             case TrackPlaceOperation::getPlaceZ:
             {
-                int32_t tempZ = newCoords.z - ted.coordinates.z_begin;
+                int32_t tempZ = newCoords.z - ted.coordinates.zBegin;
                 for (const PreviewTrack* trackBlock = ted.block; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
@@ -1689,9 +1689,9 @@ static GameActions::Result TrackDesignPlaceRide(
         auto offsetAndRotatedTrack = CoordsXY{ newCoords }
             + CoordsXY{ track_coordinates.x, track_coordinates.y }.Rotate(rotation);
 
-        newCoords = { offsetAndRotatedTrack, newCoords.z - track_coordinates.z_begin + track_coordinates.z_end };
-        rotation = (rotation + track_coordinates.rotation_end - track_coordinates.rotation_begin) & 3;
-        if (track_coordinates.rotation_end & (1 << 2))
+        newCoords = { offsetAndRotatedTrack, newCoords.z - track_coordinates.zBegin + track_coordinates.zEnd };
+        rotation = (rotation + track_coordinates.rotationEnd - track_coordinates.rotationBegin) & 3;
+        if (track_coordinates.rotationEnd & (1 << 2))
         {
             rotation |= (1 << 2);
         }
@@ -1763,7 +1763,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
 
     GameActions::Result trackPlaceRes;
     const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RtdFlag::isMaze))
     {
         trackPlaceRes = TrackDesignPlaceMaze(tds, td, coords, ride);
     }
@@ -1903,7 +1903,7 @@ static bool TrackDesignPlacePreview(
 
     // Flat rides need their vehicle colours loaded for display
     // in the preview window
-    if (!GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasTrack))
     {
         for (size_t i = 0; i < std::size(ride->vehicle_colours); i++)
         {
@@ -2084,7 +2084,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
 
     // Special case for flat rides - Z-axis info is irrelevant
     // and must be zeroed out lest the preview be off-centre
-    if (!GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasTrack))
     {
         centre.z = 0;
         size_z = 0;
@@ -2152,7 +2152,8 @@ static void TrackDesignPreviewClearMap()
 {
     auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
-    GetGameState().MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
+    auto& gameState = GetGameState();
+    gameState.MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 
     // Reserve ~8 elements per tile
     std::vector<TileElement> tileElements;
@@ -2171,7 +2172,8 @@ static void TrackDesignPreviewClearMap()
         element->AsSurface()->SetOwnership(OWNERSHIP_OWNED);
         element->AsSurface()->SetParkFences(0);
     }
-    SetTileElements(std::move(tileElements));
+
+    SetTileElements(gameState, std::move(tileElements));
 }
 
 bool TrackDesignAreEntranceAndExitPlaced()

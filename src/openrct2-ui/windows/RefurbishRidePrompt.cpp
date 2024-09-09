@@ -22,23 +22,23 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 200;
     static constexpr int32_t WH = 100;
 
-    // clang-format off
-enum WindowRideRefurbishWidgetIdx
-{
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_REFURBISH,
-    WIDX_CANCEL
-};
+    enum WindowRideRefurbishWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_REFURBISH,
+        WIDX_CANCEL
+    };
 
-static Widget window_ride_refurbish_widgets[] =
-{
-    WINDOW_SHIM_WHITE(STR_REFURBISH_RIDE, WW, WH),
-    MakeWidget({ 10, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_REFURBISH),
-    MakeWidget({ WW - 95, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
-    kWidgetsEnd,
-};
+    // clang-format off
+    static Widget window_ride_refurbish_widgets[] =
+    {
+        WINDOW_SHIM_WHITE(STR_REFURBISH_RIDE, WW, WH),
+        MakeWidget({ 10, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_REFURBISH),
+        MakeWidget({ WW - 95, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class RefurbishRidePromptWindow final : public Window

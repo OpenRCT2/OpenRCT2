@@ -1,0 +1,12 @@
+{
+    "scenario_name": "Sherwood Forest",
+    "sha256": "825134aad8365e12efba50b58f67e96b729640e6ff4007dfe5dffe99c167531f",
+    "land_ownership": {
+        "available": {
+            "coordinates": [
+                [ 104, 64 ],
+                [ 111, 114 ], [ 112, 114 ]
+            ]
+        }
+    }
+}

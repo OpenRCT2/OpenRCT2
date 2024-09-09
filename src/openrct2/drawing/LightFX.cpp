@@ -131,12 +131,12 @@ void LightFXSetAvailable(bool available)
 
 bool LightFXIsAvailable()
 {
-    return _lightfxAvailable && Config::Get().general.EnableLightFx != 0;
+    return _lightfxAvailable && Config::Get().general.EnableLightFx;
 }
 
 bool LightFXForVehiclesIsAvailable()
 {
-    return LightFXIsAvailable() && Config::Get().general.EnableLightFxForVehicles != 0;
+    return LightFXIsAvailable() && Config::Get().general.EnableLightFxForVehicles;
 }
 
 void LightFXInit()
@@ -838,7 +838,7 @@ void LightFxAddShopLights(const CoordsXY& mapPosition, const uint8_t direction, 
 
 void LightFXApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
 
     float night = static_cast<float>(pow(gDayNightCycle, 1.5));
 

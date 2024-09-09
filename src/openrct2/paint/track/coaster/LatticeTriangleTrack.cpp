@@ -23,74 +23,74 @@
 
 using namespace OpenRCT2;
 
-static constexpr MetalSupportType kSupportType = MetalSupportType::Tubes;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
 // Closed block brakes and regular brakes use the same images
-static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_1 = 18076;
-static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_1 = 18077;
-static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_1 = 18078;
-static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 = 18079;
-static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_2 = 18080;
-static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_2 = 18081;
-static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 = 18082;
-static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 = 18083;
+static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_SW_NE_OPEN_1 = 18076;
+static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_NW_SE_OPEN_1 = 18077;
+static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_SW_NE_CLOSED_1 = 18078;
+static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_NW_SE_CLOSED_1 = 18079;
+static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_SW_NE_OPEN_2 = 18080;
+static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_NW_SE_OPEN_2 = 18081;
+static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_SW_NE_CLOSED_2 = 18082;
+static constexpr uint32_t LATTICE_TRIANGLE_BRAKE_NW_SE_CLOSED_2 = 18083;
 
-static constexpr uint32_t _GigaCoasterBrakeImages[kNumOrthogonalDirections][2][2] = {
-    { { GIGA_COASTER_BRAKE_SW_NE_OPEN_1, GIGA_COASTER_BRAKE_SW_NE_OPEN_2 },
-      { GIGA_COASTER_BRAKE_SW_NE_CLOSED_1, GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 } },
-    { { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_OPEN_2 },
-      { GIGA_COASTER_BRAKE_NW_SE_CLOSED_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 } },
-    { { GIGA_COASTER_BRAKE_SW_NE_OPEN_1, GIGA_COASTER_BRAKE_SW_NE_OPEN_2 },
-      { GIGA_COASTER_BRAKE_SW_NE_CLOSED_1, GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 } },
-    { { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_OPEN_2 },
-      { GIGA_COASTER_BRAKE_NW_SE_CLOSED_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 } },
+static constexpr uint32_t _LatticeTriangleBrakeImages[kNumOrthogonalDirections][2][2] = {
+    { { LATTICE_TRIANGLE_BRAKE_SW_NE_OPEN_1, LATTICE_TRIANGLE_BRAKE_SW_NE_OPEN_2 },
+      { LATTICE_TRIANGLE_BRAKE_SW_NE_CLOSED_1, LATTICE_TRIANGLE_BRAKE_SW_NE_CLOSED_2 } },
+    { { LATTICE_TRIANGLE_BRAKE_NW_SE_OPEN_1, LATTICE_TRIANGLE_BRAKE_NW_SE_OPEN_2 },
+      { LATTICE_TRIANGLE_BRAKE_NW_SE_CLOSED_1, LATTICE_TRIANGLE_BRAKE_NW_SE_CLOSED_2 } },
+    { { LATTICE_TRIANGLE_BRAKE_SW_NE_OPEN_1, LATTICE_TRIANGLE_BRAKE_SW_NE_OPEN_2 },
+      { LATTICE_TRIANGLE_BRAKE_SW_NE_CLOSED_1, LATTICE_TRIANGLE_BRAKE_SW_NE_CLOSED_2 } },
+    { { LATTICE_TRIANGLE_BRAKE_NW_SE_OPEN_1, LATTICE_TRIANGLE_BRAKE_NW_SE_OPEN_2 },
+      { LATTICE_TRIANGLE_BRAKE_NW_SE_CLOSED_1, LATTICE_TRIANGLE_BRAKE_NW_SE_CLOSED_2 } },
 };
 
 /* first level : open, closed
  * second level: background, foreground
  * third level: direction
  */
-static constexpr uint32_t GigaDiagBrakeImages[2][2][kNumOrthogonalDirections] = {
+static constexpr uint32_t LatticeTriangleBrakeImages[2][2][kNumOrthogonalDirections] = {
     {
         // Open
         {
             // Background
-            SPR_G2_GIGA_RC_DIAG_BRAKES,
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 3,
-            SPR_G2_GIGA_RC_DIAG_BRAKES,
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 3,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 3,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 3,
         },
         {
             // Foreground
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 2,
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 4,
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 2,
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 4,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 2,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 4,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 2,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 4,
         },
     },
     {
         // Closed
         {
             // Background
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 1,
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 3,
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 1,
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 3,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 1,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 3,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 1,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 3,
         },
         {
             // Foreground
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 2,
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 5,
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 2,
-            SPR_G2_GIGA_RC_DIAG_BRAKES + 5,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 2,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 5,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 2,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKES + 5,
         },
     },
 };
 
 /** rct2: 0x008AD674 */
-static void GigaRCTrackFlat(
+static void LatticeTriangleTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasCableLift())
     {
@@ -111,7 +111,7 @@ static void GigaRCTrackFlat(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
         }
     }
     else if (trackElement.HasChain())
@@ -141,7 +141,7 @@ static void GigaRCTrackFlat(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
         }
     }
     else
@@ -163,17 +163,17 @@ static void GigaRCTrackFlat(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
         }
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-static void GigaRCTrackStation(
+static void LatticeTriangleTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
         { 18084, SPR_STATION_BASE_A_SW_NE },
@@ -186,7 +186,7 @@ static void GigaRCTrackStation(
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(_GigaCoasterBrakeImages[direction][isClosed][0]),
+            session, direction, session.TrackColours.WithIndex(_LatticeTriangleBrakeImages[direction][isClosed][0]),
             { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
@@ -198,17 +198,17 @@ static void GigaRCTrackStation(
     PaintAddImageAsParentRotated(
         session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, kSupportType);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD684 */
-static void GigaRCTrack25DegUp(
+static void LatticeTriangleTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasCableLift())
     {
@@ -237,7 +237,7 @@ static void GigaRCTrack25DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
         }
     }
     else if (trackElement.HasChain())
@@ -267,7 +267,7 @@ static void GigaRCTrack25DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
         }
     }
     else
@@ -297,25 +297,25 @@ static void GigaRCTrack25DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008AD694 */
-static void GigaRCTrack60DegUp(
+static void LatticeTriangleTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasCableLift())
     {
@@ -344,7 +344,7 @@ static void GigaRCTrack60DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 32, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 32, height, session.SupportColours);
         }
     }
     else
@@ -374,25 +374,25 @@ static void GigaRCTrack60DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 32, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 32, height, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 56, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008AD6A4 */
-static void GigaRCTrackFlatTo25DegUp(
+static void LatticeTriangleTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasCableLift())
     {
@@ -421,7 +421,7 @@ static void GigaRCTrackFlatTo25DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
         }
     }
     else if (trackElement.HasChain())
@@ -451,7 +451,7 @@ static void GigaRCTrackFlatTo25DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
         }
     }
     else
@@ -481,25 +481,25 @@ static void GigaRCTrackFlatTo25DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AD6B4 */
-static void GigaRCTrack25DegUpTo60DegUp(
+static void LatticeTriangleTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasCableLift())
     {
@@ -534,7 +534,7 @@ static void GigaRCTrack25DegUpTo60DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
         }
     }
     else
@@ -570,25 +570,25 @@ static void GigaRCTrack25DegUpTo60DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008AD6C4 */
-static void GigaRCTrack60DegUpTo25DegUp(
+static void LatticeTriangleTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasCableLift())
     {
@@ -623,7 +623,7 @@ static void GigaRCTrack60DegUpTo25DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
         }
     }
     else
@@ -659,25 +659,25 @@ static void GigaRCTrack60DegUpTo25DegUp(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
 /** rct2: 0x008AD6D4 */
-static void GigaRCTrack25DegUpToFlat(
+static void LatticeTriangleTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackElement.HasCableLift())
     {
@@ -706,7 +706,7 @@ static void GigaRCTrack25DegUpToFlat(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
         }
     }
     else if (trackElement.HasChain())
@@ -736,7 +736,7 @@ static void GigaRCTrack25DegUpToFlat(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
         }
     }
     else
@@ -766,73 +766,73 @@ static void GigaRCTrack25DegUpToFlat(
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
         }
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008AD6E4 */
-static void GigaRCTrack25DegDown(
+static void LatticeTriangleTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD6F4 */
-static void GigaRCTrack60DegDown(
+static void LatticeTriangleTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD704 */
-static void GigaRCTrackFlatTo25DegDown(
+static void LatticeTriangleTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD714 */
-static void GigaRCTrack25DegDownTo60DegDown(
+static void LatticeTriangleTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD724 */
-static void GigaRCTrack60DegDownTo25DegDown(
+static void LatticeTriangleTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD734 */
-static void GigaRCTrack25DegDownToFlat(
+static void LatticeTriangleTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD744 */
-static void GigaRCTrackLeftQuarterTurn5(
+static void LatticeTriangleTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -860,10 +860,10 @@ static void GigaRCTrackLeftQuarterTurn5(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1007,14 +1007,14 @@ static void GigaRCTrackLeftQuarterTurn5(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1031,18 +1031,18 @@ static void GigaRCTrackLeftQuarterTurn5(
 }
 
 /** rct2: 0x008AD754 */
-static void GigaRCTrackRightQuarterTurn5(
+static void LatticeTriangleTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD764 */
-static void GigaRCTrackFlatToLeftBank(
+static void LatticeTriangleTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1075,17 +1075,17 @@ static void GigaRCTrackFlatToLeftBank(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD774 */
-static void GigaRCTrackFlatToRightBank(
+static void LatticeTriangleTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1118,17 +1118,17 @@ static void GigaRCTrackFlatToRightBank(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD784 */
-static void GigaRCTrackLeftBankToFlat(
+static void LatticeTriangleTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1161,17 +1161,17 @@ static void GigaRCTrackLeftBankToFlat(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD794 */
-static void GigaRCTrackRightBankToFlat(
+static void LatticeTriangleTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1204,17 +1204,17 @@ static void GigaRCTrackRightBankToFlat(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD7A4 */
-static void GigaRCTrackBankedLeftQuarterTurn5(
+static void LatticeTriangleTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1245,10 +1245,10 @@ static void GigaRCTrackBankedLeftQuarterTurn5(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1395,14 +1395,14 @@ static void GigaRCTrackBankedLeftQuarterTurn5(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1419,18 +1419,19 @@ static void GigaRCTrackBankedLeftQuarterTurn5(
 }
 
 /** rct2: 0x008AD7B4 */
-static void GigaRCTrackBankedRightQuarterTurn5(
+static void LatticeTriangleTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackBankedLeftQuarterTurn5(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD7C4 */
-static void GigaRCTrackLeftBankTo25DegUp(
+static void LatticeTriangleTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1463,24 +1464,24 @@ static void GigaRCTrackLeftBankTo25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AD7D4 */
-static void GigaRCTrackRightBankTo25DegUp(
+static void LatticeTriangleTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1513,24 +1514,24 @@ static void GigaRCTrackRightBankTo25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008AD7E4 */
-static void GigaRCTrack25DegUpToLeftBank(
+static void LatticeTriangleTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1563,24 +1564,24 @@ static void GigaRCTrack25DegUpToLeftBank(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008AD7F4 */
-static void GigaRCTrack25DegUpToRightBank(
+static void LatticeTriangleTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1613,56 +1614,58 @@ static void GigaRCTrack25DegUpToRightBank(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008AD804 */
-static void GigaRCTrackLeftBankTo25DegDown(
+static void LatticeTriangleTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpToRightBank(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD814 */
-static void GigaRCTrackRightBankTo25DegDown(
+static void LatticeTriangleTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD824 */
-static void GigaRCTrack25DegDownToLeftBank(
+static void LatticeTriangleTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightBankTo25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD834 */
-static void GigaRCTrack25DegDownToRightBank(
+static void LatticeTriangleTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD844 */
-static void GigaRCTrackLeftBank(
+static void LatticeTriangleTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -1689,25 +1692,25 @@ static void GigaRCTrackLeftBank(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008AD854 */
-static void GigaRCTrackRightBank(
+static void LatticeTriangleTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD864 */
-static void GigaRCTrackLeftQuarterTurn525DegUp(
+static void LatticeTriangleTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1735,10 +1738,10 @@ static void GigaRCTrackLeftQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1877,14 +1880,14 @@ static void GigaRCTrackLeftQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1901,9 +1904,9 @@ static void GigaRCTrackLeftQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008AD874 */
-static void GigaRCTrackRightQuarterTurn525DegUp(
+static void LatticeTriangleTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -1931,10 +1934,10 @@ static void GigaRCTrackRightQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2072,14 +2075,14 @@ static void GigaRCTrackRightQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2096,27 +2099,29 @@ static void GigaRCTrackRightQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008AD884 */
-static void GigaRCTrackLeftQuarterTurn525DegDown(
+static void LatticeTriangleTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightQuarterTurn525DegUp(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD894 */
-static void GigaRCTrackRightQuarterTurn525DegDown(
+static void LatticeTriangleTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn525DegUp(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD8A4 */
-static void GigaRCTrackSBendLeft(
+static void LatticeTriangleTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2144,10 +2149,10 @@ static void GigaRCTrackSBendLeft(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2165,14 +2170,10 @@ static void GigaRCTrackSBendLeft(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18239), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18243), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 1, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -2185,6 +2186,7 @@ static void GigaRCTrackSBendLeft(
                         { { 0, 6, height }, { 32, 26, 3 } });
                     break;
             }
+            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 1);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -2211,16 +2213,13 @@ static void GigaRCTrackSBendLeft(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18239), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18243), { 0, 0, height }, { 32, 26, 3 });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 1, height, session.SupportColours);
                     break;
             }
+            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height, 0, 1);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -2255,14 +2254,14 @@ static void GigaRCTrackSBendLeft(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2279,9 +2278,9 @@ static void GigaRCTrackSBendLeft(
 }
 
 /** rct2: 0x008AD8B4 */
-static void GigaRCTrackSBendRight(
+static void LatticeTriangleTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2309,10 +2308,10 @@ static void GigaRCTrackSBendRight(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2331,15 +2330,11 @@ static void GigaRCTrackSBendRight(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18247), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18251), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -2350,6 +2345,7 @@ static void GigaRCTrackSBendRight(
                         session, direction, session.TrackColours.WithIndex(18252), { 0, 0, height }, { 32, 26, 3 });
                     break;
             }
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -2375,17 +2371,14 @@ static void GigaRCTrackSBendRight(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18247), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18251), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
                     break;
             }
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -2420,14 +2413,14 @@ static void GigaRCTrackSBendRight(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height, 0, 0);
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2444,9 +2437,9 @@ static void GigaRCTrackSBendRight(
 }
 
 /** rct2: 0x008AD8F4 */
-static void GigaRCTrackLeftQuarterTurn3(
+static void LatticeTriangleTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2474,10 +2467,10 @@ static void GigaRCTrackLeftQuarterTurn3(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2550,14 +2543,14 @@ static void GigaRCTrackLeftQuarterTurn3(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2574,18 +2567,18 @@ static void GigaRCTrackLeftQuarterTurn3(
 }
 
 /** rct2: 0x008AD904 */
-static void GigaRCTrackRightQuarterTurn3(
+static void LatticeTriangleTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD914 */
-static void GigaRCTrackLeftQuarterTurn3Bank(
+static void LatticeTriangleTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2616,10 +2609,10 @@ static void GigaRCTrackLeftQuarterTurn3Bank(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2695,14 +2688,14 @@ static void GigaRCTrackLeftQuarterTurn3Bank(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2719,18 +2712,19 @@ static void GigaRCTrackLeftQuarterTurn3Bank(
 }
 
 /** rct2: 0x008AD924 */
-static void GigaRCTrackRightQuarterTurn3Bank(
+static void LatticeTriangleTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn3Bank(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD934 */
-static void GigaRCTrackLeftQuarterTurn325DegUp(
+static void LatticeTriangleTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2754,10 +2748,10 @@ static void GigaRCTrackLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18303), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2795,14 +2789,14 @@ static void GigaRCTrackLeftQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18302), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2819,9 +2813,9 @@ static void GigaRCTrackLeftQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008AD944 */
-static void GigaRCTrackRightQuarterTurn325DegUp(
+static void LatticeTriangleTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2845,10 +2839,10 @@ static void GigaRCTrackRightQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18300), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -2873,34 +2867,34 @@ static void GigaRCTrackRightQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18295), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18297), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18299), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18301), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
             }
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2917,27 +2911,29 @@ static void GigaRCTrackRightQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008AD954 */
-static void GigaRCTrackLeftQuarterTurn325DegDown(
+static void LatticeTriangleTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightQuarterTurn325DegUp(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD964 */
-static void GigaRCTrackRightQuarterTurn325DegDown(
+static void LatticeTriangleTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn325DegUp(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD974 */
-static void GigaRCTrackLeftHalfBankedHelixUpSmall(
+static void LatticeTriangleTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -2968,10 +2964,10 @@ static void GigaRCTrackLeftHalfBankedHelixUpSmall(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 2, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -3047,14 +3043,14 @@ static void GigaRCTrackLeftHalfBankedHelixUpSmall(
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3094,14 +3090,14 @@ static void GigaRCTrackLeftHalfBankedHelixUpSmall(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 2, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3178,10 +3174,10 @@ static void GigaRCTrackLeftHalfBankedHelixUpSmall(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -3197,9 +3193,9 @@ static void GigaRCTrackLeftHalfBankedHelixUpSmall(
 }
 
 /** rct2: 0x008AD984 */
-static void GigaRCTrackRightHalfBankedHelixUpSmall(
+static void LatticeTriangleTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3230,10 +3226,10 @@ static void GigaRCTrackRightHalfBankedHelixUpSmall(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 2, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -3309,14 +3305,14 @@ static void GigaRCTrackRightHalfBankedHelixUpSmall(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3356,14 +3352,14 @@ static void GigaRCTrackRightHalfBankedHelixUpSmall(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 2, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 2, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3440,10 +3436,10 @@ static void GigaRCTrackRightHalfBankedHelixUpSmall(
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -3459,9 +3455,9 @@ static void GigaRCTrackRightHalfBankedHelixUpSmall(
 }
 
 /** rct2: 0x008AD994 */
-static void GigaRCTrackLeftHalfBankedHelixDownSmall(
+static void LatticeTriangleTrackLeftHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 4)
     {
@@ -3469,13 +3465,14 @@ static void GigaRCTrackLeftHalfBankedHelixDownSmall(
         direction = (direction - 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightHalfBankedHelixUpSmall(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD9A4 */
-static void GigaRCTrackRightHalfBankedHelixDownSmall(
+static void LatticeTriangleTrackRightHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 4)
     {
@@ -3483,13 +3480,14 @@ static void GigaRCTrackRightHalfBankedHelixDownSmall(
         direction = (direction + 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftHalfBankedHelixUpSmall(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD9B4 */
-static void GigaRCTrackLeftHalfBankedHelixUpLarge(
+static void LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3520,10 +3518,10 @@ static void GigaRCTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -3670,14 +3668,14 @@ static void GigaRCTrackLeftHalfBankedHelixUpLarge(
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3717,14 +3715,14 @@ static void GigaRCTrackLeftHalfBankedHelixUpLarge(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -3871,10 +3869,10 @@ static void GigaRCTrackLeftHalfBankedHelixUpLarge(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -3890,9 +3888,9 @@ static void GigaRCTrackLeftHalfBankedHelixUpLarge(
 }
 
 /** rct2: 0x008AD9C4 */
-static void GigaRCTrackRightHalfBankedHelixUpLarge(
+static void LatticeTriangleTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -3923,10 +3921,10 @@ static void GigaRCTrackRightHalfBankedHelixUpLarge(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -4053,7 +4051,7 @@ static void GigaRCTrackRightHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(18342), { 0, 0, height },
                         { { 6, 0, height + 8 }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -4063,30 +4061,30 @@ static void GigaRCTrackRightHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(18358), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18352), { 0, 0, height },
                         { { 27, 0, height }, { 1, 32, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18357), { 0, 0, height },
                         { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
             }
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4126,14 +4124,14 @@ static void GigaRCTrackRightHalfBankedHelixUpLarge(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4265,33 +4263,33 @@ static void GigaRCTrackRightHalfBankedHelixUpLarge(
                         session, direction, session.TrackColours.WithIndex(18358), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18352), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18357), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18342), { 0, 0, height },
                         { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -4307,9 +4305,9 @@ static void GigaRCTrackRightHalfBankedHelixUpLarge(
 }
 
 /** rct2: 0x008AD9D4 */
-static void GigaRCTrackLeftHalfBankedHelixDownLarge(
+static void LatticeTriangleTrackLeftHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 7)
     {
@@ -4317,13 +4315,14 @@ static void GigaRCTrackLeftHalfBankedHelixDownLarge(
         direction = (direction - 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightHalfBankedHelixUpLarge(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008AD9E4 */
-static void GigaRCTrackRightHalfBankedHelixDownLarge(
+static void LatticeTriangleTrackRightHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence >= 7)
     {
@@ -4331,13 +4330,14 @@ static void GigaRCTrackRightHalfBankedHelixDownLarge(
         direction = (direction + 1) & 3;
     }
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftHalfBankedHelixUpLarge(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADA14 */
-static void GigaRCTrackLeftQuarterTurn160DegUp(
+static void LatticeTriangleTrackLeftQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -4375,15 +4375,15 @@ static void GigaRCTrackLeftQuarterTurn160DegUp(
             break;
     }
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, direction, height, -8, TunnelType::SquareSlopeStart, +56, TunnelType::SquareSlopeEnd);
+        session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008AD9F4 */
-static void GigaRCTrackRightQuarterTurn160DegUp(
+static void LatticeTriangleTrackRightQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -4421,66 +4421,68 @@ static void GigaRCTrackRightQuarterTurn160DegUp(
             break;
     }
     TrackPaintUtilRightQuarterTurn1TileTunnel(
-        session, direction, height, -8, TunnelType::SquareSlopeStart, +56, TunnelType::SquareSlopeEnd);
+        session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
 
 /** rct2: 0x008ADA04 */
-static void GigaRCTrackLeftQuarterTurn160DegDown(
+static void LatticeTriangleTrackLeftQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightQuarterTurn160DegUp(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADA24 */
-static void GigaRCTrackRightQuarterTurn160DegDown(
+static void LatticeTriangleTrackRightQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn160DegUp(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADA34 */
-static void GigaRCTrackBrakes(
+static void LatticeTriangleTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(GIGA_COASTER_BRAKE_SW_NE_CLOSED_1), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(LATTICE_TRIANGLE_BRAKE_SW_NE_CLOSED_1), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(GIGA_COASTER_BRAKE_SW_NE_CLOSED_2), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(LATTICE_TRIANGLE_BRAKE_SW_NE_CLOSED_2), { 0, 0, height },
                 { { 0, 27, height + 5 }, { 32, 1, 11 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(GIGA_COASTER_BRAKE_NW_SE_CLOSED_1), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(LATTICE_TRIANGLE_BRAKE_NW_SE_CLOSED_1), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(GIGA_COASTER_BRAKE_NW_SE_CLOSED_2), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(LATTICE_TRIANGLE_BRAKE_NW_SE_CLOSED_2), { 0, 0, height },
                 { { 0, 27, height + 5 }, { 32, 1, 11 } });
             break;
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008ADC84 */
-static void GigaRCTrack25DegUpLeftBanked(
+static void LatticeTriangleTrack25DegUpLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -4507,24 +4509,24 @@ static void GigaRCTrack25DegUpLeftBanked(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADC94 */
-static void GigaRCTrack25DegUpRightBanked(
+static void LatticeTriangleTrack25DegUpRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -4551,26 +4553,26 @@ static void GigaRCTrack25DegUpRightBanked(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADA44 */
-static void GigaRCTrackOnRidePhoto(
+static void LatticeTriangleTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, kSupportType);
+    TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, supportType.metal);
 
     switch (direction)
     {
@@ -4595,32 +4597,30 @@ static void GigaRCTrackOnRidePhoto(
                 { { 0, 6, height + 3 }, { 32, 20, 0 } });
             break;
     }
-    TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 48);
+    TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
 /** rct2: 0x008ADCA4 */
-static void GigaRCTrack25DegDownLeftBanked(
+static void LatticeTriangleTrack25DegDownLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack25DegUpRightBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpRightBanked(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADCB4 */
-static void GigaRCTrack25DegDownRightBanked(
+static void LatticeTriangleTrack25DegDownRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADED4 */
-static void GigaRCTrackFlatTo60DegUpLongBase(
+static void LatticeTriangleTrackFlatTo60DegUpLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4653,7 +4653,7 @@ static void GigaRCTrackFlatTo60DegUpLongBase(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                 }
             }
             else
@@ -4684,12 +4684,12 @@ static void GigaRCTrackFlatTo60DegUpLongBase(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                 }
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -4724,7 +4724,7 @@ static void GigaRCTrackFlatTo60DegUpLongBase(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                 }
             }
             else
@@ -4755,7 +4755,7 @@ static void GigaRCTrackFlatTo60DegUpLongBase(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                 }
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4791,7 +4791,7 @@ static void GigaRCTrackFlatTo60DegUpLongBase(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                 }
             }
             else
@@ -4822,7 +4822,7 @@ static void GigaRCTrackFlatTo60DegUpLongBase(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
                 }
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4858,7 +4858,7 @@ static void GigaRCTrackFlatTo60DegUpLongBase(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                 }
             }
             else
@@ -4889,16 +4889,16 @@ static void GigaRCTrackFlatTo60DegUpLongBase(
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                 }
             }
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 24, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 24, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -4909,9 +4909,9 @@ static void GigaRCTrackFlatTo60DegUpLongBase(
 }
 
 /** rct2: 0x008ADEE4 */
-static void GigaRCTrack60DegUpToFlatLongBase(
+static void LatticeTriangleTrack60DegUpToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -4941,11 +4941,12 @@ static void GigaRCTrack60DegUpToFlatLongBase(
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -4977,7 +4978,8 @@ static void GigaRCTrack60DegUpToFlatLongBase(
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5009,7 +5011,8 @@ static void GigaRCTrack60DegUpToFlatLongBase(
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5041,15 +5044,16 @@ static void GigaRCTrack60DegUpToFlatLongBase(
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
             }
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5060,25 +5064,27 @@ static void GigaRCTrack60DegUpToFlatLongBase(
 }
 
 /** rct2: 0x008ADEF4 */
-static void GigaRCTrack60DegDownToFlatLongBase(
+static void LatticeTriangleTrack60DegDownToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackFlatTo60DegUpLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackFlatTo60DegUpLongBase(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADF04 */
-static void GigaRCTrackFlatTo60DegDownLongBase(
+static void LatticeTriangleTrackFlatTo60DegDownLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack60DegUpToFlatLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack60DegUpToFlatLongBase(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADF14 */
-static void GigaRCTrackCableLiftHill(
+static void LatticeTriangleTrackCableLiftHill(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5108,15 +5114,16 @@ static void GigaRCTrackCableLiftHill(
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
             }
             else
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5148,15 +5155,16 @@ static void GigaRCTrackCableLiftHill(
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
             else
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5194,15 +5202,16 @@ static void GigaRCTrackCableLiftHill(
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelType::SquareSlopeEnd);
+                PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
             else
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5234,15 +5243,16 @@ static void GigaRCTrackCableLiftHill(
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 32, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 32, height, session.SupportColours);
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 56, TunnelType::SquareSlopeEnd);
+                PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
             else
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5252,9 +5262,9 @@ static void GigaRCTrackCableLiftHill(
 }
 
 /** rct2: 0x008ADA64 */
-static void GigaRCTrackLeftEighthToDiag(
+static void LatticeTriangleTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5282,10 +5292,10 @@ static void GigaRCTrackLeftEighthToDiag(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5378,28 +5388,28 @@ static void GigaRCTrackLeftEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(18417), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18421), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18425), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18429), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5416,9 +5426,9 @@ static void GigaRCTrackLeftEighthToDiag(
 }
 
 /** rct2: 0x008ADA74 */
-static void GigaRCTrackRightEighthToDiag(
+static void LatticeTriangleTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5446,10 +5456,10 @@ static void GigaRCTrackRightEighthToDiag(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5542,28 +5552,28 @@ static void GigaRCTrackRightEighthToDiag(
                         session, direction, session.TrackColours.WithIndex(18401), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18405), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18409), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18413), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5580,27 +5590,27 @@ static void GigaRCTrackRightEighthToDiag(
 }
 
 /** rct2: 0x008ADA84 */
-static void GigaRCTrackLeftEighthToOrthogonal(
+static void LatticeTriangleTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADA94 */
-static void GigaRCTrackRightEighthToOrthogonal(
+static void LatticeTriangleTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADAA4 */
-static void GigaRCTrackLeftEighthBankToDiag(
+static void LatticeTriangleTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5628,10 +5638,10 @@ static void GigaRCTrackLeftEighthBankToDiag(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5724,28 +5734,28 @@ static void GigaRCTrackLeftEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(18449), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18453), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18457), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18461), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5762,9 +5772,9 @@ static void GigaRCTrackLeftEighthBankToDiag(
 }
 
 /** rct2: 0x008ADAB4 */
-static void GigaRCTrackRightEighthBankToDiag(
+static void LatticeTriangleTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -5792,10 +5802,10 @@ static void GigaRCTrackRightEighthBankToDiag(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -5888,28 +5898,28 @@ static void GigaRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(18433), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18437), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18441), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18445), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -5926,27 +5936,29 @@ static void GigaRCTrackRightEighthBankToDiag(
 }
 
 /** rct2: 0x008ADAC4 */
-static void GigaRCTrackLeftEighthBankToOrthogonal(
+static void LatticeTriangleTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthBankToDiag(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADAD4 */
-static void GigaRCTrackRightEighthBankToOrthogonal(
+static void LatticeTriangleTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthBankToDiag(
+        session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADA54 */
-static void GigaRCTrackDiagFlat(
+static void LatticeTriangleTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
         { 18462, 18463, 18464, 18465 },
@@ -5954,13 +5966,13 @@ static void GigaRCTrackDiagFlat(
     };
 
     TrackPaintUtilDiagTilesPaintExtra(
-        session, 3, height, direction, trackSequence, images[trackElement.HasChain()], kSupportType);
+        session, 3, height, direction, trackSequence, images[trackElement.HasChain()], supportType.metal);
 }
 
 /** rct2: 0x008ADB04 */
-static void GigaRCTrackDiag25DegUp(
+static void LatticeTriangleTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6069,22 +6081,22 @@ static void GigaRCTrackDiag25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18537), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                         break;
                 }
             }
@@ -6094,22 +6106,22 @@ static void GigaRCTrackDiag25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18475), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                         break;
                 }
             }
@@ -6127,9 +6139,9 @@ static void GigaRCTrackDiag25DegUp(
 }
 
 /** rct2: 0x008ADB64 */
-static void GigaRCTrackDiag60DegUp(
+static void LatticeTriangleTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6194,22 +6206,22 @@ static void GigaRCTrackDiag60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 32, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 32, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18487), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 36, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 36, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 32, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 32, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 36, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 36, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -6226,9 +6238,9 @@ static void GigaRCTrackDiag60DegUp(
 }
 
 /** rct2: 0x008ADAE4 */
-static void GigaRCTrackDiagFlatTo25DegUp(
+static void LatticeTriangleTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6337,22 +6349,22 @@ static void GigaRCTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18529), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
             }
@@ -6362,22 +6374,22 @@ static void GigaRCTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18467), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
             }
@@ -6395,9 +6407,9 @@ static void GigaRCTrackDiagFlatTo25DegUp(
 }
 
 /** rct2: 0x008ADB44 */
-static void GigaRCTrackDiag25DegUpTo60DegUp(
+static void LatticeTriangleTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6462,22 +6474,22 @@ static void GigaRCTrackDiag25DegUpTo60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18479), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 16, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 16, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -6494,9 +6506,9 @@ static void GigaRCTrackDiag25DegUpTo60DegUp(
 }
 
 /** rct2: 0x008ADB54 */
-static void GigaRCTrackDiag60DegUpTo25DegUp(
+static void LatticeTriangleTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6561,22 +6573,22 @@ static void GigaRCTrackDiag60DegUpTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 21, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18483), { -16, -16, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 21, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 21, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 21, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 21, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 21, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -6593,9 +6605,9 @@ static void GigaRCTrackDiag60DegUpTo25DegUp(
 }
 
 /** rct2: 0x008ADAF4 */
-static void GigaRCTrackDiag25DegUpToFlat(
+static void LatticeTriangleTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6704,22 +6716,22 @@ static void GigaRCTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18533), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                         break;
                 }
             }
@@ -6729,22 +6741,22 @@ static void GigaRCTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18471), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                         break;
                 }
             }
@@ -6762,9 +6774,9 @@ static void GigaRCTrackDiag25DegUpToFlat(
 }
 
 /** rct2: 0x008ADB34 */
-static void GigaRCTrackDiag25DegDown(
+static void LatticeTriangleTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6873,22 +6885,22 @@ static void GigaRCTrackDiag25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18539), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                         break;
                 }
             }
@@ -6898,22 +6910,22 @@ static void GigaRCTrackDiag25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18477), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                         break;
                 }
             }
@@ -6931,9 +6943,9 @@ static void GigaRCTrackDiag25DegDown(
 }
 
 /** rct2: 0x008ADB94 */
-static void GigaRCTrackDiag60DegDown(
+static void LatticeTriangleTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -6998,22 +7010,22 @@ static void GigaRCTrackDiag60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 24, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 24, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18489), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 28, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 28, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 24, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 24, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 28, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 28, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7030,9 +7042,9 @@ static void GigaRCTrackDiag60DegDown(
 }
 
 /** rct2: 0x008ADB14 */
-static void GigaRCTrackDiagFlatTo25DegDown(
+static void LatticeTriangleTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7138,22 +7150,22 @@ static void GigaRCTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18535), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                         break;
                 }
             }
@@ -7163,22 +7175,22 @@ static void GigaRCTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18473), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                         break;
                 }
             }
@@ -7197,9 +7209,9 @@ static void GigaRCTrackDiagFlatTo25DegDown(
 }
 
 /** rct2: 0x008ADB74 */
-static void GigaRCTrackDiag25DegDownTo60DegDown(
+static void LatticeTriangleTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7264,22 +7276,22 @@ static void GigaRCTrackDiag25DegDownTo60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 17, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 17, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18485), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 17, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 17, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 17, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 17, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 17, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 17, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7296,9 +7308,9 @@ static void GigaRCTrackDiag25DegDownTo60DegDown(
 }
 
 /** rct2: 0x008ADB84 */
-static void GigaRCTrackDiag60DegDownTo25DegDown(
+static void LatticeTriangleTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7363,22 +7375,22 @@ static void GigaRCTrackDiag60DegDownTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18481), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7395,9 +7407,9 @@ static void GigaRCTrackDiag60DegDownTo25DegDown(
 }
 
 /** rct2: 0x008ADB24 */
-static void GigaRCTrackDiag25DegDownToFlat(
+static void LatticeTriangleTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7506,22 +7518,22 @@ static void GigaRCTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18531), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
             }
@@ -7531,22 +7543,22 @@ static void GigaRCTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(18469), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                         break;
                 }
             }
@@ -7564,9 +7576,9 @@ static void GigaRCTrackDiag25DegDownToFlat(
 }
 
 /** rct2: 0x008ADBC4 */
-static void GigaRCTrackDiagFlatToLeftBank(
+static void LatticeTriangleTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7634,22 +7646,22 @@ static void GigaRCTrackDiagFlatToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18495), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7666,9 +7678,9 @@ static void GigaRCTrackDiagFlatToLeftBank(
 }
 
 /** rct2: 0x008ADBD4 */
-static void GigaRCTrackDiagFlatToRightBank(
+static void LatticeTriangleTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7736,22 +7748,22 @@ static void GigaRCTrackDiagFlatToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18500), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7768,9 +7780,9 @@ static void GigaRCTrackDiagFlatToRightBank(
 }
 
 /** rct2: 0x008ADBE4 */
-static void GigaRCTrackDiagLeftBankToFlat(
+static void LatticeTriangleTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7838,22 +7850,22 @@ static void GigaRCTrackDiagLeftBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18502), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7870,9 +7882,9 @@ static void GigaRCTrackDiagLeftBankToFlat(
 }
 
 /** rct2: 0x008ADBF4 */
-static void GigaRCTrackDiagRightBankToFlat(
+static void LatticeTriangleTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -7940,22 +7952,22 @@ static void GigaRCTrackDiagRightBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18497), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -7972,9 +7984,9 @@ static void GigaRCTrackDiagRightBankToFlat(
 }
 
 /** rct2: 0x008ADC24 */
-static void GigaRCTrackDiagLeftBankTo25DegUp(
+static void LatticeTriangleTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8042,22 +8054,22 @@ static void GigaRCTrackDiagLeftBankTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18515), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8074,9 +8086,9 @@ static void GigaRCTrackDiagLeftBankTo25DegUp(
 }
 
 /** rct2: 0x008ADC34 */
-static void GigaRCTrackDiagRightBankTo25DegUp(
+static void LatticeTriangleTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8144,22 +8156,22 @@ static void GigaRCTrackDiagRightBankTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18520), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8176,9 +8188,9 @@ static void GigaRCTrackDiagRightBankTo25DegUp(
 }
 
 /** rct2: 0x008ADC04 */
-static void GigaRCTrackDiag25DegUpToLeftBank(
+static void LatticeTriangleTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8246,22 +8258,22 @@ static void GigaRCTrackDiag25DegUpToLeftBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18505), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8278,9 +8290,9 @@ static void GigaRCTrackDiag25DegUpToLeftBank(
 }
 
 /** rct2: 0x008ADC14 */
-static void GigaRCTrackDiag25DegUpToRightBank(
+static void LatticeTriangleTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8348,22 +8360,22 @@ static void GigaRCTrackDiag25DegUpToRightBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18510), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8380,9 +8392,9 @@ static void GigaRCTrackDiag25DegUpToRightBank(
 }
 
 /** rct2: 0x008ADC44 */
-static void GigaRCTrackDiagLeftBankTo25DegDown(
+static void LatticeTriangleTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8447,22 +8459,22 @@ static void GigaRCTrackDiagLeftBankTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18512), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8480,9 +8492,9 @@ static void GigaRCTrackDiagLeftBankTo25DegDown(
 }
 
 /** rct2: 0x008ADC54 */
-static void GigaRCTrackDiagRightBankTo25DegDown(
+static void LatticeTriangleTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8547,22 +8559,22 @@ static void GigaRCTrackDiagRightBankTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18507), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8580,9 +8592,9 @@ static void GigaRCTrackDiagRightBankTo25DegDown(
 }
 
 /** rct2: 0x008ADC64 */
-static void GigaRCTrackDiag25DegDownToLeftBank(
+static void LatticeTriangleTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8650,22 +8662,22 @@ static void GigaRCTrackDiag25DegDownToLeftBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18522), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8682,9 +8694,9 @@ static void GigaRCTrackDiag25DegDownToLeftBank(
 }
 
 /** rct2: 0x008ADC74 */
-static void GigaRCTrackDiag25DegDownToRightBank(
+static void LatticeTriangleTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8752,22 +8764,22 @@ static void GigaRCTrackDiag25DegDownToRightBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18517), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8784,9 +8796,9 @@ static void GigaRCTrackDiag25DegDownToRightBank(
 }
 
 /** rct2: 0x008ADBA4 */
-static void GigaRCTrackDiagLeftBank(
+static void LatticeTriangleTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8851,22 +8863,22 @@ static void GigaRCTrackDiagLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18491), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8883,9 +8895,9 @@ static void GigaRCTrackDiagLeftBank(
 }
 
 /** rct2: 0x008ADBB4 */
-static void GigaRCTrackDiagRightBank(
+static void LatticeTriangleTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -8950,22 +8962,22 @@ static void GigaRCTrackDiagRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18493), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8982,31 +8994,31 @@ static void GigaRCTrackDiagRightBank(
 }
 
 /** rct2: 0x008ADEC4 */
-static void GigaRCTrackBlockBrakes(
+static void LatticeTriangleTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_GigaCoasterBrakeImages[direction][isClosed][0]), { 0, 0, height },
-        { { 0, 6, height }, { 32, 20, 3 } });
+        session, direction, session.TrackColours.WithIndex(_LatticeTriangleBrakeImages[direction][isClosed][0]),
+        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_GigaCoasterBrakeImages[direction][isClosed][1]), { 0, 0, height },
-        { { 0, 27, height + 5 }, { 32, 1, 11 } });
+        session, direction, session.TrackColours.WithIndex(_LatticeTriangleBrakeImages[direction][isClosed][1]),
+        { 0, 0, height }, { { 0, 27, height + 5 }, { 32, 1, 11 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 /** rct2: 0x008ADCC4 */
-static void GigaRCTrackLeftBankedQuarterTurn325DegUp(
+static void LatticeTriangleTrackLeftBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -9031,10 +9043,10 @@ static void GigaRCTrackLeftBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18653), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -9074,14 +9086,14 @@ static void GigaRCTrackLeftBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18652), { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9098,9 +9110,9 @@ static void GigaRCTrackLeftBankedQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008ADCD4 */
-static void GigaRCTrackRightBankedQuarterTurn325DegUp(
+static void LatticeTriangleTrackRightBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -9125,10 +9137,10 @@ static void GigaRCTrackRightBankedQuarterTurn325DegUp(
                         session, direction, session.TrackColours.WithIndex(18650), { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -9153,36 +9165,36 @@ static void GigaRCTrackRightBankedQuarterTurn325DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18645), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18647), { 6, 0, height },
                         { { 27, 0, height }, { 1, 32, 34 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18649), { 6, 0, height },
                         { { 27, 0, height }, { 1, 32, 34 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 10, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(18651), { 6, 0, height }, { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
             }
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9199,27 +9211,29 @@ static void GigaRCTrackRightBankedQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008ADCE4 */
-static void GigaRCTrackLeftBankedQuarterTurn325DegDown(
+static void LatticeTriangleTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackRightBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightBankedQuarterTurn325DegUp(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADCF4 */
-static void GigaRCTrackRightBankedQuarterTurn325DegDown(
+static void LatticeTriangleTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackLeftBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBankedQuarterTurn325DegUp(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADD04 */
-static void GigaRCTrackLeftBankedQuarterTurn525DegUp(
+static void LatticeTriangleTrackLeftBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -9247,10 +9261,10 @@ static void GigaRCTrackLeftBankedQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -9392,14 +9406,14 @@ static void GigaRCTrackLeftBankedQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9416,9 +9430,9 @@ static void GigaRCTrackLeftBankedQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008ADD14 */
-static void GigaRCTrackRightBankedQuarterTurn525DegUp(
+static void LatticeTriangleTrackRightBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -9446,10 +9460,10 @@ static void GigaRCTrackRightBankedQuarterTurn525DegUp(
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -9590,14 +9604,14 @@ static void GigaRCTrackRightBankedQuarterTurn525DegUp(
                         { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -9614,27 +9628,29 @@ static void GigaRCTrackRightBankedQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008ADD24 */
-static void GigaRCTrackLeftBankedQuarterTurn525DegDown(
+static void LatticeTriangleTrackLeftBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackRightBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightBankedQuarterTurn525DegUp(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADD34 */
-static void GigaRCTrackRightBankedQuarterTurn525DegDown(
+static void LatticeTriangleTrackRightBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackLeftBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBankedQuarterTurn525DegUp(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADD44 */
-static void GigaRCTrack25DegUpToLeftBanked25DegUp(
+static void LatticeTriangleTrack25DegUpToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9664,24 +9680,24 @@ static void GigaRCTrack25DegUpToLeftBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADD54 */
-static void GigaRCTrack25DegUpToRightBanked25DegUp(
+static void LatticeTriangleTrack25DegUpToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9711,24 +9727,24 @@ static void GigaRCTrack25DegUpToRightBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADD64 */
-static void GigaRCTrackLeftBanked25DegUpTo25DegUp(
+static void LatticeTriangleTrackLeftBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9758,24 +9774,24 @@ static void GigaRCTrackLeftBanked25DegUpTo25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADD74 */
-static void GigaRCTrackRightBanked25DegUpTo25DegUp(
+static void LatticeTriangleTrackRightBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9805,56 +9821,60 @@ static void GigaRCTrackRightBanked25DegUpTo25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
 /** rct2: 0x008ADD84 */
-static void GigaRCTrack25DegDownToLeftBanked25DegDown(
+static void LatticeTriangleTrack25DegDownToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightBanked25DegUpTo25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADD94 */
-static void GigaRCTrack25DegDownToRightBanked25DegDown(
+static void LatticeTriangleTrack25DegDownToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBanked25DegUpTo25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADDA4 */
-static void GigaRCTrackLeftBanked25DegDownTo25DegDown(
+static void LatticeTriangleTrackLeftBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack25DegUpToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpToRightBanked25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADDB4 */
-static void GigaRCTrackRightBanked25DegDownTo25DegDown(
+static void LatticeTriangleTrackRightBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack25DegUpToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack25DegUpToLeftBanked25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADDC4 */
-static void GigaRCTrackLeftBankedFlatToLeftBanked25DegUp(
+static void LatticeTriangleTrackLeftBankedFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9881,24 +9901,24 @@ static void GigaRCTrackLeftBankedFlatToLeftBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ADDD4 */
-static void GigaRCTrackRightBankedFlatToRightBanked25DegUp(
+static void LatticeTriangleTrackRightBankedFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9925,24 +9945,24 @@ static void GigaRCTrackRightBankedFlatToRightBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ADE04 */
-static void GigaRCTrackLeftBanked25DegUpToLeftBankedFlat(
+static void LatticeTriangleTrackLeftBanked25DegUpToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -9969,24 +9989,24 @@ static void GigaRCTrackLeftBanked25DegUpToLeftBankedFlat(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ADE14 */
-static void GigaRCTrackRightBanked25DegUpToRightBankedFlat(
+static void LatticeTriangleTrackRightBanked25DegUpToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -10013,56 +10033,60 @@ static void GigaRCTrackRightBanked25DegUpToRightBankedFlat(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ADE24 */
-static void GigaRCTrackLeftBankedFlatToLeftBanked25DegDown(
+static void LatticeTriangleTrackLeftBankedFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightBanked25DegUpToRightBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightBanked25DegUpToRightBankedFlat(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADE34 */
-static void GigaRCTrackRightBankedFlatToRightBanked25DegDown(
+static void LatticeTriangleTrackRightBankedFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftBanked25DegUpToLeftBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBanked25DegUpToLeftBankedFlat(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADDE4 */
-static void GigaRCTrackLeftBanked25DegDownToLeftBankedFlat(
+static void LatticeTriangleTrackLeftBanked25DegDownToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightBankedFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightBankedFlatToRightBanked25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADDF4 */
-static void GigaRCTrackRightBanked25DegDownToRightBankedFlat(
+static void LatticeTriangleTrackRightBanked25DegDownToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftBankedFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBankedFlatToLeftBanked25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADE44 */
-static void GigaRCTrackFlatToLeftBanked25DegUp(
+static void LatticeTriangleTrackFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -10092,24 +10116,24 @@ static void GigaRCTrackFlatToLeftBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ADE54 */
-static void GigaRCTrackFlatToRightBanked25DegUp(
+static void LatticeTriangleTrackFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -10139,24 +10163,24 @@ static void GigaRCTrackFlatToRightBanked25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
 /** rct2: 0x008ADE64 */
-static void GigaRCTrackLeftBanked25DegUpToFlat(
+static void LatticeTriangleTrackLeftBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -10186,24 +10210,24 @@ static void GigaRCTrackLeftBanked25DegUpToFlat(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ADE74 */
-static void GigaRCTrackRightBanked25DegUpToFlat(
+static void LatticeTriangleTrackRightBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
@@ -10233,107 +10257,111 @@ static void GigaRCTrackRightBanked25DegUpToFlat(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 /** rct2: 0x008ADE84 */
-static void GigaRCTrackFlatToLeftBanked25DegDown(
+static void LatticeTriangleTrackFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightBanked25DegUpToFlat(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADE94 */
-static void GigaRCTrackFlatToRightBanked25DegDown(
+static void LatticeTriangleTrackFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBanked25DegUpToFlat(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADEA4 */
-static void GigaRCTrackLeftBanked25DegDownToFlat(
+static void LatticeTriangleTrackLeftBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackFlatToRightBanked25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
 /** rct2: 0x008ADEB4 */
-static void GigaRCTrackRightBanked25DegDownToFlat(
+static void LatticeTriangleTrackRightBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackFlatToLeftBanked25DegUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackBooster(
+static void LatticeTriangleTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_BOOSTER_NE_SW), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
+                session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_BOOSTER_NE_SW),
+                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_BOOSTER_NW_SE), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
+                session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_BOOSTER_NW_SE),
+                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-static void GigaRCTrackPoweredLift(
+static void LatticeTriangleTrackPoweredLift(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_POWERED_LIFT_0 + direction), { 0, 0, height },
-        { { 0, 6, height }, { 32, 20, 3 } });
+        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_POWERED_LIFT_0 + direction),
+        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
-static void GigaRCTrack90DegUp(
+static void LatticeTriangleTrack90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -10342,23 +10370,23 @@ static void GigaRCTrack90DegUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 8)), { 0, 0, height },
-                        { { 4, 6, height + 8 }, { 2, 20, 31 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 8)),
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 9)), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 9)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 10)), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 10)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 11)), { 0, 0, height },
-                        { { 4, 6, height + 8 }, { 2, 20, 31 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 11)),
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
             }
             PaintUtilSetVerticalTunnel(session, height + 32);
@@ -10371,16 +10399,16 @@ static void GigaRCTrack90DegUp(
     }
 }
 
-static void GigaRCTrack90DegDown(
+static void LatticeTriangleTrack90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrack60DegUpTo90DegUp(
+static void LatticeTriangleTrack60DegUpTo90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -10389,32 +10417,33 @@ static void GigaRCTrack60DegUpTo90DegUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 0)), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 0)),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 1)), { 0, 0, height },
-                        { { 24, 6, height }, { 2, 20, 55 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 1)),
+                        { 0, 0, height }, { { 24, 6, height }, { 2, 20, 55 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 2)), { 0, 0, height },
-                        { { 24, 6, height }, { 2, 20, 55 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 2)),
+                        { 0, 0, height }, { { 24, 6, height }, { 2, 20, 55 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 3)), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 3)),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 36, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 36, height, session.SupportColours);
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetVerticalTunnel(session, height + 56);
             PaintUtilSetSegmentSupportHeight(
@@ -10426,56 +10455,56 @@ static void GigaRCTrack60DegUpTo90DegUp(
     }
 }
 
-static void GigaRCTrack90DegDownTo60DegDown(
+static void LatticeTriangleTrack90DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack60DegUpTo90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack60DegUpTo90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrack90DegUpTo60DegUp(
+static void LatticeTriangleTrack90DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 4)), { 0, 0, height },
-                { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 4)),
+                { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 5)), { 0, 0, height },
-                { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 5)),
+                { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 6)), { 0, 0, height },
-                { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 6)),
+                { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 7)), { 0, 0, height },
-                { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 7)),
+                { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
             break;
     }
     switch (direction)
     {
         case 1:
-            PaintUtilPushTunnelRight(session, height + 48, TunnelType::SquareSlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 48, TunnelType::SquareSlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 80);
 }
 
-static void GigaRCTrack60DegDownTo90DegDown(
+static void LatticeTriangleTrack60DegDownTo90DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -10484,28 +10513,28 @@ static void GigaRCTrack60DegDownTo90DegDown(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 6)), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 6)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 7)), { 0, 0, height },
-                        { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 7)),
+                        { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 4)), { 0, 0, height },
-                        { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 4)),
+                        { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL + 5)), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL + 5)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 48, TunnelType::SquareSlopeEnd);
+                PaintUtilPushTunnelRotated(session, direction, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -10516,9 +10545,9 @@ static void GigaRCTrack60DegDownTo90DegDown(
     }
 }
 
-static void GigaRCTrackLeftQuarterTurn190DegUp(
+static void LatticeTriangleTrackLeftQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -10527,28 +10556,28 @@ static void GigaRCTrackLeftQuarterTurn190DegUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 0)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 0)),
                         { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 1)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 1)),
                         { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 2)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 3)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 4)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 4)),
                         { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 5)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
             }
@@ -10562,9 +10591,9 @@ static void GigaRCTrackLeftQuarterTurn190DegUp(
     }
 }
 
-static void GigaRCTrackRightQuarterTurn190DegUp(
+static void LatticeTriangleTrackRightQuarterTurn190DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -10573,28 +10602,28 @@ static void GigaRCTrackRightQuarterTurn190DegUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 6)),
                         { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 7)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 8)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 8)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 9)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 9)),
                         { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 10)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 10)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 11)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_TWIST + 11)),
                         { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     break;
             }
@@ -10608,23 +10637,25 @@ static void GigaRCTrackRightQuarterTurn190DegUp(
     }
 }
 
-static void GigaRCTrackLeftQuarterTurn190DegDown(
+static void LatticeTriangleTrackLeftQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightQuarterTurn190DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightQuarterTurn190DegUp(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackRightQuarterTurn190DegDown(
+static void LatticeTriangleTrackRightQuarterTurn190DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftQuarterTurn190DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftQuarterTurn190DegUp(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackLeftBarrelRollUpToDown(
+static void LatticeTriangleTrackLeftBarrelRollUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -10633,48 +10664,48 @@ static void GigaRCTrackLeftBarrelRollUpToDown(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 0)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 0)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 1)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 1)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 4, height - 2, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height - 2, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 6)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 7)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 4, height - 2, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height - 2, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 12)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 12)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 13)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 13)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height + 1, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 1, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 18)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 18)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 19)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 19)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 1, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 1, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -10691,34 +10722,34 @@ static void GigaRCTrackLeftBarrelRollUpToDown(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 2)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 3)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 8)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 8)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 9)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 9)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 14)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 14)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 15)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 15)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 20)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 20)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 21)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 21)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
             }
@@ -10737,44 +10768,44 @@ static void GigaRCTrackLeftBarrelRollUpToDown(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 4)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 4)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 5)),
                         { 0, 0, height }, { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 10)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 10)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 11)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 11)),
                         { 0, 0, height }, { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 16)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 16)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 17)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 17)),
                         { 0, 0, height }, { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 22)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 22)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 23)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 23)),
                         { 0, 0, height }, { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
             }
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::InvertedFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::InvertedFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Tall);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -10790,9 +10821,9 @@ static void GigaRCTrackLeftBarrelRollUpToDown(
     }
 }
 
-static void GigaRCTrackRightBarrelRollUpToDown(
+static void LatticeTriangleTrackRightBarrelRollUpToDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -10801,48 +10832,48 @@ static void GigaRCTrackRightBarrelRollUpToDown(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 24)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 24)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 25)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 25)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 0, height + 1, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 1, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 30)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 30)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 31)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 31)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height + 1, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 1, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 36)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 36)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 37)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 37)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 4, height - 2, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height - 2, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 42)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 42)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 43)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 43)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 4, height - 2, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height - 2, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -10859,34 +10890,34 @@ static void GigaRCTrackRightBarrelRollUpToDown(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 26)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 26)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 27)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 27)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 32)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 32)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 33)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 33)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 38)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 38)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 39)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 39)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 44)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 44)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 45)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 45)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     break;
             }
@@ -10905,44 +10936,44 @@ static void GigaRCTrackRightBarrelRollUpToDown(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 28)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 28)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 29)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 29)),
                         { 0, 0, height }, { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 34)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 34)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 35)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 35)),
                         { 0, 0, height }, { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 40)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 40)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 41)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 41)),
                         { 0, 0, height }, { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 46)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 46)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 47)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_BARREL_ROLL + 47)),
                         { 0, 0, height }, { { 0, 6, height + 44 }, { 32, 20, 0 } });
                     break;
             }
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::InvertedFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::InvertedFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Tall);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -10958,23 +10989,25 @@ static void GigaRCTrackRightBarrelRollUpToDown(
     }
 }
 
-static void GigaRCTrackLeftBarrelRollDownToUp(
+static void LatticeTriangleTrackLeftBarrelRollDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftBarrelRollUpToDown(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftBarrelRollUpToDown(
+        session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackRightBarrelRollDownToUp(
+static void LatticeTriangleTrackRightBarrelRollDownToUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightBarrelRollUpToDown(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightBarrelRollUpToDown(
+        session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackHalfLoopUp(
+static void LatticeTriangleTrackHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -10983,29 +11016,29 @@ static void GigaRCTrackHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 0)), { 0, 6, height },
-                        { 32, 20, 3 });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 0)),
+                        { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 4)), { 0, 6, height },
-                        { 32, 20, 11 });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 4)),
+                        { 0, 6, height }, { 32, 20, 11 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 8)), { 0, 6, height },
-                        { 32, 20, 9 });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 8)),
+                        { 0, 6, height }, { 32, 20, 9 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 12)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 12)),
                         { 0, 6, height }, { 32, 20, 7 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -11016,31 +11049,31 @@ static void GigaRCTrackHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 1)), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 1)),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 20, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 20, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 5)),
                         { 0, 14, height }, { { 28, 6, height }, { 3, 20, 63 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 15, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 15, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 9)), { 0, 6, height },
-                        { { 28, 6, height }, { 3, 20, 63 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 9)),
+                        { 0, 6, height }, { { 28, 6, height }, { 3, 20, 63 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 13)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 13)),
                         { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 16, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -11051,22 +11084,22 @@ static void GigaRCTrackHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 2)),
                         { 16, 0, height }, { 2, 16, 119 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 6)),
                         { 12, 0, height }, { { 12, 0, height }, { 3, 16, 119 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 10)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 10)),
                         { 10, 16, height }, { 4, 12, 119 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 14)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 14)),
                         { 16, 16, height }, { { 15, 6, height }, { 2, 16, 119 } });
                     break;
             }
@@ -11085,28 +11118,28 @@ static void GigaRCTrackHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 3)),
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 7)),
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 11)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 11)),
                         { 0, 16, height + 32 }, { 32, 12, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_HALF_LOOP + 15)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_HALF_LOOP + 15)),
                         { 0, 16, height + 32 }, { 32, 12, 3 });
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -11115,16 +11148,16 @@ static void GigaRCTrackHalfLoopUp(
     }
 }
 
-static void GigaRCTrackHalfLoopDown(
+static void LatticeTriangleTrackHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackHalfLoopUp(session, ride, 3 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrackHalfLoopUp(session, ride, 3 - trackSequence, direction, height, trackElement, supportType);
 }
 
-static void GigaRCTrackLeftVerticalLoop(
+static void LatticeTriangleTrackLeftVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -11133,36 +11166,36 @@ static void GigaRCTrackLeftVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 0),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 0),
                         { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 4),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 4),
                         { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 8),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 8),
                         { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 12),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 12),
                         { 0, 6, height }, { 32, 20, 7 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -11179,31 +11212,31 @@ static void GigaRCTrackLeftVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 1),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 1),
                         { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 26, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 26, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 5),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 5),
                         { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height + 10, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 10, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 9),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 9),
                         { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 13),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 13),
                         { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11221,22 +11254,22 @@ static void GigaRCTrackLeftVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 2),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 2),
                         { 16, 0, height }, { { 16, 0, height }, { 3, 16, 119 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 6),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 6),
                         { 12, 0, height }, { { 12, 0, height }, { 3, 16, 119 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 10),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 10),
                         { 10, 16, height }, { { 10, 16, height }, { 4, 16, 119 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 14),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 14),
                         { 16, 16, height }, { { 16, 16, height }, { 2, 16, 119 } });
                     break;
             }
@@ -11255,22 +11288,22 @@ static void GigaRCTrackLeftVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 3),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 3),
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 7),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 7),
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 11),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 11),
                         { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 15),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 15),
                         { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
             }
@@ -11295,22 +11328,22 @@ static void GigaRCTrackLeftVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 11),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 11),
                         { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 15),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 15),
                         { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 3),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 3),
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 7),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 7),
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
             }
@@ -11329,22 +11362,22 @@ static void GigaRCTrackLeftVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 10),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 10),
                         { 10, 16, height }, { { 10, 16, height }, { 4, 16, 119 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 14),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 14),
                         { 16, 16, height }, { { 16, 16, height }, { 2, 16, 119 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 2),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 2),
                         { 16, 0, height }, { { 16, 0, height }, { 3, 16, 119 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 6),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 6),
                         { 12, 0, height }, { { 12, 0, height }, { 3, 16, 119 } });
                     break;
             }
@@ -11363,31 +11396,31 @@ static void GigaRCTrackLeftVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 9),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 9),
                         { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 13),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 13),
                         { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 1),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 1),
                         { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 26, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 26, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 5),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 5),
                         { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height + 10, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 10, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11405,40 +11438,40 @@ static void GigaRCTrackLeftVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 8),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 8),
                         { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 12),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 12),
                         { 0, 6, height }, { 32, 20, 7 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 0),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 0),
                         { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 4),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 4),
                         { 0, 6, height }, { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
             }
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 8, TunnelType::SquareSlopeStart);
+                    PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 8, TunnelType::SquareSlopeStart);
+                    PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -11454,9 +11487,9 @@ static void GigaRCTrackLeftVerticalLoop(
     }
 }
 
-static void GigaRCTrackRightVerticalLoop(
+static void LatticeTriangleTrackRightVerticalLoop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -11465,29 +11498,29 @@ static void GigaRCTrackRightVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 16),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 16),
                         { 0, 6, height }, { 32, 20, 7 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 20),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 20),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 24),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 24),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 28),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 28),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 56);
             break;
@@ -11496,31 +11529,31 @@ static void GigaRCTrackRightVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 17),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 17),
                         { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 21),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 21),
                         { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 25),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 25),
                         { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height + 10, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 10, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 29),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 29),
                         { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 26, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 26, height, session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -11530,22 +11563,22 @@ static void GigaRCTrackRightVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 18),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 18),
                         { 16, 16, height }, { { 16, 16, height }, { 2, 16, 119 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 22),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 22),
                         { 10, 16, height }, { { 10, 16, height }, { 4, 16, 119 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 26),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 26),
                         { 12, 0, height }, { { 12, 0, height }, { 3, 16, 119 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 30),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 30),
                         { 16, 0, height }, { { 16, 0, height }, { 2, 16, 119 } });
                     break;
             }
@@ -11556,22 +11589,22 @@ static void GigaRCTrackRightVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 19),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 19),
                         { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 23),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 23),
                         { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 27),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 27),
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 31),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 31),
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
             }
@@ -11588,22 +11621,22 @@ static void GigaRCTrackRightVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 27),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 27),
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 31),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 31),
                         { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 19),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 19),
                         { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 23),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 23),
                         { 0, 16, height + 32 }, { 32, 16, 3 });
                     break;
             }
@@ -11614,22 +11647,22 @@ static void GigaRCTrackRightVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 26),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 26),
                         { 12, 0, height }, { { 12, 0, height }, { 3, 16, 119 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 30),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 30),
                         { 16, 0, height }, { { 16, 0, height }, { 2, 16, 119 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 18),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 18),
                         { 16, 16, height }, { { 16, 16, height }, { 2, 16, 119 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 22),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 22),
                         { 10, 16, height }, { { 10, 16, height }, { 4, 16, 119 } });
                     break;
             }
@@ -11640,31 +11673,31 @@ static void GigaRCTrackRightVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 25),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 25),
                         { 0, 14, height }, { 32, 2, 63 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height + 10, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 10, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 29),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 29),
                         { 0, 0, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 26, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 26, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 17),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 17),
                         { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 21),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 21),
                         { 0, 6, height }, { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -11674,33 +11707,33 @@ static void GigaRCTrackRightVerticalLoop(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 24),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 24),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 28),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 28),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 16),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 16),
                         { 0, 6, height }, { 32, 20, 7 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_TRACK_VERTICAL_LOOP + 20),
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_LATTICE_TRIANGLE_TRACK_VERTICAL_LOOP + 20),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 8, TunnelType::SquareSlopeStart);
+                    PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 8, TunnelType::SquareSlopeStart);
+                    PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -11710,9 +11743,9 @@ static void GigaRCTrackRightVerticalLoop(
     TrackPaintUtilRightVerticalLoopSegments(session, direction, trackSequence);
 }
 
-static void GigaRCTrackLeftCorkscrewUp(
+static void LatticeTriangleTrackLeftCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -11721,36 +11754,36 @@ static void GigaRCTrackLeftCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 0)), { 0, 0, height },
-                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 0)),
+                        { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height - 3, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height - 3, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 3)), { 0, 0, height },
-                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 3)),
+                        { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 6)), { 0, 0, height },
-                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 6)),
+                        { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 9)), { 0, 0, height },
-                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 9)),
+                        { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height + 3, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 3, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -11767,22 +11800,22 @@ static void GigaRCTrackLeftCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 1)), { 0, 0, height },
-                        { { 6, 6, height + 10 }, { 20, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 1)),
+                        { 0, 0, height }, { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 4)), { 0, 0, height },
-                        { { 6, 6, height + 10 }, { 20, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 4)),
+                        { 0, 0, height }, { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 7)), { 0, 0, height },
-                        { { 6, 6, height + 10 }, { 20, 20, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 7)),
+                        { 0, 0, height }, { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 10)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 10)),
                         { 0, 0, height }, { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
             }
@@ -11794,22 +11827,22 @@ static void GigaRCTrackLeftCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 2)), { 0, 0, height },
-                        { { 6, 0, height + 24 }, { 20, 32, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 2)),
+                        { 0, 0, height }, { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 5)), { 0, 0, height },
-                        { { 6, 0, height + 24 }, { 20, 32, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 5)),
+                        { 0, 0, height }, { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 8)), { 0, 0, height },
-                        { { 6, 0, height + 24 }, { 20, 32, 3 } });
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 8)),
+                        { 0, 0, height }, { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 11)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 11)),
                         { 0, 0, height }, { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
             }
@@ -11822,15 +11855,16 @@ static void GigaRCTrackLeftCorkscrewUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 40, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 40, session.SupportColours);
 
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -11838,9 +11872,9 @@ static void GigaRCTrackLeftCorkscrewUp(
     }
 }
 
-static void GigaRCTrackRightCorkscrewUp(
+static void LatticeTriangleTrackRightCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -11849,36 +11883,36 @@ static void GigaRCTrackRightCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 12)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 12)),
                         { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height + 3, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height + 3, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 15)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 15)),
                         { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 18)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 18)),
                         { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 21)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 21)),
                         { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height - 3, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height - 3, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -11895,22 +11929,22 @@ static void GigaRCTrackRightCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 13)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 13)),
                         { 0, 0, height }, { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 16)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 16)),
                         { 0, 0, height }, { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 19)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 19)),
                         { 0, 0, height }, { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 22)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 22)),
                         { 0, 0, height }, { { 6, 6, height + 10 }, { 20, 20, 3 } });
                     break;
             }
@@ -11922,22 +11956,22 @@ static void GigaRCTrackRightCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 14)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 14)),
                         { 0, 0, height }, { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 17)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 17)),
                         { 0, 0, height }, { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 20)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 20)),
                         { 0, 0, height }, { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_CORKSCREW + 23)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_CORKSCREW + 23)),
                         { 0, 0, height }, { { 6, 0, height + 24 }, { 20, 32, 3 } });
                     break;
             }
@@ -11950,15 +11984,16 @@ static void GigaRCTrackRightCorkscrewUp(
                         PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 40, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 40, session.SupportColours);
 
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -11966,22 +12001,24 @@ static void GigaRCTrackRightCorkscrewUp(
     }
 }
 
-static void GigaRCTrackLeftCorkscrewDown(
+static void LatticeTriangleTrackLeftCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightCorkscrewUp(session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightCorkscrewUp(
+        session, ride, 2 - trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
-static void GigaRCTrackRightCorkscrewDown(
+static void LatticeTriangleTrackRightCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftCorkscrewUp(session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftCorkscrewUp(
+        session, ride, 2 - trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackLeftLargeCorkscrewUp(
+static void LatticeTriangleTrackLeftLargeCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -11990,31 +12027,33 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 0)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 0)),
                         { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 5)),
                         { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 10)),
-                        { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 10)), { 0, 0, height },
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 15)),
-                        { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 15)), { 0, 0, height },
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
             }
 
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -12031,31 +12070,33 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 1)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 1)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 21, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 21, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 6)),
                         { 0, 0, height }, { { 0, 29, height }, { 26, 1, 32 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 19, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 19, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 11)),
-                        { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 11)), { 0, 0, height },
+                        { { 0, 6, height }, { 20, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 19, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 19, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 16)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 16)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 16, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12073,23 +12114,25 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 2)),
                         { 0, 0, height }, { { 0, 31, height }, { 48, 1, 64 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 7)),
                         { 0, 0, height }, { { 2, 2, height + 40 }, { 28, 28, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 12)),
-                        { 0, 0, height }, { { 2, 2, height + 48 }, { 28, 28, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 12)), { 0, 0, height },
+                        { { 2, 2, height + 48 }, { 28, 28, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 17)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 17)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12118,31 +12161,33 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 3)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 65, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 65, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 8)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 8)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 65, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 65, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 13)),
-                        { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 13)), { 0, 0, height },
+                        { { 2, 2, height + 50 }, { 24, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 65, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 65, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 18)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 18)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 65, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 65, session.SupportColours);
                     break;
             }
 
@@ -12153,23 +12198,25 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 4)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 4)),
                         { 0, 0, height }, { { 2, 2, height + 40 }, { 28, 28, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 9)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 9)),
                         { 0, 0, height }, { { 2, 2, height + 40 }, { 28, 28, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 14)),
-                        { 0, 0, height }, { { 2, 2, height + 40 }, { 26, 28, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 14)), { 0, 0, height },
+                        { { 2, 2, height + 40 }, { 26, 28, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 19)),
-                        { 0, 0, height }, { { 2, 2, height + 40 }, { 26, 28, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 19)), { 0, 0, height },
+                        { { 2, 2, height + 40 }, { 26, 28, 1 } });
                     break;
             }
 
@@ -12184,10 +12231,10 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -12195,9 +12242,9 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
     }
 }
 
-static void GigaRCTrackRightLargeCorkscrewUp(
+static void LatticeTriangleTrackRightLargeCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -12206,31 +12253,35 @@ static void GigaRCTrackRightLargeCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 20)),
-                        { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 20)), { 0, 0, height },
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 25)),
-                        { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 25)), { 0, 0, height },
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 30)),
-                        { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 30)), { 0, 0, height },
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 35)),
-                        { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 35)), { 0, 0, height },
+                        { { 0, 6, height + 4 }, { 32, 20, 3 } });
                     break;
             }
 
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -12247,31 +12298,35 @@ static void GigaRCTrackRightLargeCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 21)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 21)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 16, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 26)),
-                        { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 26)), { 0, 0, height },
+                        { { 0, 6, height }, { 20, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 19, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 19, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 31)),
-                        { 0, 0, height }, { { 0, 29, height }, { 26, 1, 32 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 31)), { 0, 0, height },
+                        { { 0, 29, height }, { 26, 1, 32 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 19, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 19, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 36)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 36)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 21, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 21, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12289,23 +12344,27 @@ static void GigaRCTrackRightLargeCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 22)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 22)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 27)),
-                        { 0, 0, height }, { { 2, 2, height + 48 }, { 28, 28, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 27)), { 0, 0, height },
+                        { { 2, 2, height + 48 }, { 28, 28, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 32)),
-                        { 0, 0, height }, { { 2, 2, height + 48 }, { 28, 28, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 32)), { 0, 0, height },
+                        { { 2, 2, height + 48 }, { 28, 28, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 37)),
-                        { 0, 0, height }, { { 0, 31, height }, { 48, 1, 64 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 37)), { 0, 0, height },
+                        { { 0, 31, height }, { 48, 1, 64 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12334,31 +12393,35 @@ static void GigaRCTrackRightLargeCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 23)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 23)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 65, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 65, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 28)),
-                        { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 28)), { 0, 0, height },
+                        { { 2, 2, height + 50 }, { 24, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 65, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 65, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 33)),
-                        { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 33)), { 0, 0, height },
+                        { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 65, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 65, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 38)),
-                        { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 38)), { 0, 0, height },
+                        { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 65, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 65, session.SupportColours);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -12368,23 +12431,27 @@ static void GigaRCTrackRightLargeCorkscrewUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 24)),
-                        { 0, 0, height }, { { 2, 2, height + 40 }, { 26, 28, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 24)), { 0, 0, height },
+                        { { 2, 2, height + 40 }, { 26, 28, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 29)),
-                        { 0, 0, height }, { { 2, 2, height + 40 }, { 26, 28, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 29)), { 0, 0, height },
+                        { { 2, 2, height + 40 }, { 26, 28, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 34)),
-                        { 0, 0, height }, { { 2, 2, height + 40 }, { 28, 28, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 34)), { 0, 0, height },
+                        { { 2, 2, height + 40 }, { 28, 28, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 39)),
-                        { 0, 0, height }, { { 2, 2, height + 40 }, { 28, 28, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_CORKSCREW + 39)), { 0, 0, height },
+                        { { 2, 2, height + 40 }, { 28, 28, 1 } });
                     break;
             }
 
@@ -12399,10 +12466,10 @@ static void GigaRCTrackRightLargeCorkscrewUp(
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -12410,23 +12477,25 @@ static void GigaRCTrackRightLargeCorkscrewUp(
     }
 }
 
-static void GigaRCTrackLeftLargeCorkscrewDown(
+static void LatticeTriangleTrackLeftLargeCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightLargeCorkscrewUp(session, ride, 5 - trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightLargeCorkscrewUp(
+        session, ride, 5 - trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackRightLargeCorkscrewDown(
+static void LatticeTriangleTrackRightLargeCorkscrewDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftLargeCorkscrewUp(session, ride, 5 - trackSequence, (direction - 1) & 3, height, trackElement);
+    LatticeTriangleTrackLeftLargeCorkscrewUp(
+        session, ride, 5 - trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackLeftMediumHalfLoopUp(
+static void LatticeTriangleTrackLeftMediumHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -12435,31 +12504,35 @@ static void GigaRCTrackLeftMediumHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 0)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 0)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 5)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 5)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 10)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 10)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 15)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 15)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
 
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -12470,23 +12543,27 @@ static void GigaRCTrackLeftMediumHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 1)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 1)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 6)),
-                        { 0, 0, height }, { { 0, 31, height }, { 0, 32, 64 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 6)), { 0, 0, height },
+                        { { 0, 31, height }, { 0, 32, 64 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 11)),
-                        { 0, 0, height }, { { 0, 32, height }, { 40, 0, 64 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 11)), { 0, 0, height },
+                        { { 0, 32, height }, { 40, 0, 64 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 16)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 16)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
 
@@ -12505,31 +12582,35 @@ static void GigaRCTrackLeftMediumHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 2)),
-                        { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 2)), { 0, 0, height },
+                        { { 0, 0, height + 2 }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 7)),
-                        { 0, 0, height }, { { 29, 0, height }, { 1, 32, 96 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 7)), { 0, 0, height },
+                        { { 29, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 16, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 12)),
-                        { 0, 0, height }, { { 31, 0, height }, { 1, 32, 96 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 12)), { 0, 0, height },
+                        { { 31, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 18, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 18, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 17)),
-                        { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 17)), { 0, 0, height },
+                        { { 0, 0, height }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 14, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12547,23 +12628,27 @@ static void GigaRCTrackLeftMediumHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 3)),
-                        { 0, 0, height }, { { 2, 0, height }, { 1, 32, 160 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 3)), { 0, 0, height },
+                        { { 2, 0, height }, { 1, 32, 160 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 8)),
-                        { 0, 0, height }, { { 30, 24, height }, { 0, 8, 160 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 8)), { 0, 0, height },
+                        { { 30, 24, height }, { 0, 8, 160 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 13)),
-                        { 0, 0, height }, { { 29, 0, height }, { 1, 32, 160 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 13)), { 0, 0, height },
+                        { { 29, 0, height }, { 1, 32, 160 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 18)),
-                        { 0, 0, height }, { { 0, 0, height }, { 1, 32, 160 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 18)), { 0, 0, height },
+                        { { 0, 0, height }, { 1, 32, 160 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12581,23 +12666,27 @@ static void GigaRCTrackLeftMediumHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 4)),
-                        { 0, 0, height }, { { 0, 2, height + 48 }, { 32, 32, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 4)), { 0, 0, height },
+                        { { 0, 2, height + 48 }, { 32, 32, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 9)),
-                        { 0, 0, height }, { { 0, 2, height + 48 }, { 32, 32, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 9)), { 0, 0, height },
+                        { { 0, 2, height + 48 }, { 32, 32, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 14)),
-                        { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 14)), { 0, 0, height },
+                        { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 19)),
-                        { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 19)), { 0, 0, height },
+                        { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     break;
             }
 
@@ -12612,16 +12701,16 @@ static void GigaRCTrackLeftMediumHalfLoopUp(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 16, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
 
-static void GigaRCTrackRightMediumHalfLoopUp(
+static void LatticeTriangleTrackRightMediumHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -12630,31 +12719,35 @@ static void GigaRCTrackRightMediumHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 20)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 20)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 25)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 25)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 30)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 30)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 35)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 35)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
 
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 7, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 7, height, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -12665,23 +12758,27 @@ static void GigaRCTrackRightMediumHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 21)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 21)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 26)),
-                        { 0, 0, height }, { { 0, 32, height }, { 40, 0, 64 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 26)), { 0, 0, height },
+                        { { 0, 32, height }, { 40, 0, 64 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 31)),
-                        { 0, 0, height }, { { 0, 31, height }, { 0, 32, 64 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 31)), { 0, 0, height },
+                        { { 0, 31, height }, { 0, 32, 64 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 36)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 36)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
 
@@ -12700,31 +12797,35 @@ static void GigaRCTrackRightMediumHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 22)),
-                        { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 22)), { 0, 0, height },
+                        { { 0, 0, height }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 27)),
-                        { 0, 0, height }, { { 30, 16, height }, { 0, 32, 96 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 27)), { 0, 0, height },
+                        { { 30, 16, height }, { 0, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 18, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 18, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 32)),
-                        { 0, 0, height }, { { 29, 0, height }, { 0, 32, 96 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 32)), { 0, 0, height },
+                        { { 29, 0, height }, { 0, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 16, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 16, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 37)),
-                        { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 37)), { 0, 0, height },
+                        { { 0, 0, height + 2 }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 14, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12742,23 +12843,27 @@ static void GigaRCTrackRightMediumHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 23)),
-                        { 0, 0, height }, { { 0, 0, height }, { 1, 32, 160 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 23)), { 0, 0, height },
+                        { { 0, 0, height }, { 1, 32, 160 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 28)),
-                        { 0, 0, height }, { { 29, 16, height }, { 0, 16, 160 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 28)), { 0, 0, height },
+                        { { 29, 16, height }, { 0, 16, 160 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 33)),
-                        { 0, 0, height }, { { 30, 0, height }, { 0, 32, 160 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 33)), { 0, 0, height },
+                        { { 30, 0, height }, { 0, 32, 160 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 38)),
-                        { 0, 0, height }, { { 2, 0, height }, { 1, 32, 160 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 38)), { 0, 0, height },
+                        { { 2, 0, height }, { 1, 32, 160 } });
                     break;
             }
 
@@ -12777,23 +12882,27 @@ static void GigaRCTrackRightMediumHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 24)),
-                        { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 24)), { 0, 0, height },
+                        { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 29)),
-                        { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 29)), { 0, 0, height },
+                        { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 34)),
-                        { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 34)), { 0, 0, height },
+                        { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 39)),
-                        { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_MEDIUM_HALF_LOOP + 39)), { 0, 0, height },
+                        { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     break;
             }
 
@@ -12807,30 +12916,30 @@ static void GigaRCTrackRightMediumHalfLoopUp(
                 0xFFFF, 0);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 16, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
 }
 
-static void GigaRCTrackLeftMediumHalfLoopDown(
+static void LatticeTriangleTrackLeftMediumHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightMediumHalfLoopUp(session, ride, 4 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrackRightMediumHalfLoopUp(session, ride, 4 - trackSequence, direction, height, trackElement, supportType);
 }
 
-static void GigaRCTrackRightMediumHalfLoopDown(
+static void LatticeTriangleTrackRightMediumHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftMediumHalfLoopUp(session, ride, 4 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrackLeftMediumHalfLoopUp(session, ride, 4 - trackSequence, direction, height, trackElement, supportType);
 }
 
-static void GigaRCTrackLeftZeroGRollUp(
+static void LatticeTriangleTrackLeftZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -12839,43 +12948,43 @@ static void GigaRCTrackLeftZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 0)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 0)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 1)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 1)),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 4)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 4)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 5)),
                         { 0, 0, height }, { { 0, 31, height }, { 40, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 8)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 8)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 12)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 12)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, session.SupportColours);
                     break;
             }
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -12886,22 +12995,22 @@ static void GigaRCTrackLeftZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 2)),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 6)),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 40, 20, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 9)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 9)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 13)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 13)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
@@ -12920,38 +13029,38 @@ static void GigaRCTrackLeftZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 3)),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 40, 20, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 7)),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 10)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 10)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 11)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 11)),
                         { 0, 0, height }, { { 0, 6, height + 36 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 14)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 14)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 15)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 15)),
                         { 0, 0, height }, { { 0, 6, height + 36 }, { 32, 20, 0 } });
                     break;
             }
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12962,15 +13071,16 @@ static void GigaRCTrackLeftZeroGRollUp(
                         PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
             PaintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
 
-static void GigaRCTrackRightZeroGRollUp(
+static void LatticeTriangleTrackRightZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -12979,42 +13089,42 @@ static void GigaRCTrackRightZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 16)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 16)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 11, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 20)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 20)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 24)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 24)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 25)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 25)),
                         { 0, 0, height }, { { 0, 31, height }, { 40, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 28)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 28)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 29)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 29)),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -13025,22 +13135,22 @@ static void GigaRCTrackRightZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 17)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 17)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 21)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 21)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 26)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 26)),
                         { 0, 0, height }, { { 0, 31, height }, { 44, 1, 32 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 30)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 30)),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     break;
             }
@@ -13059,38 +13169,38 @@ static void GigaRCTrackRightZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 18)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 18)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 19)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 19)),
                         { 0, 0, height }, { { 0, 6, height + 36 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 22)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 22)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 32 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 23)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 23)),
                         { 0, 0, height }, { { 0, 6, height + 36 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 27)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 27)),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 31)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_ZERO_G_ROLL + 31)),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 40, 20, 1 } });
                     break;
             }
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13101,29 +13211,32 @@ static void GigaRCTrackRightZeroGRollUp(
                         PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
             PaintUtilSetGeneralSupportHeight(session, height + 40);
             break;
     }
 }
 
-static void GigaRCTrackLeftZeroGRollDown(
+static void LatticeTriangleTrackLeftZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftZeroGRollUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftZeroGRollUp(
+        session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackRightZeroGRollDown(
+static void LatticeTriangleTrackRightZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightZeroGRollUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightZeroGRollUp(
+        session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackLeftLargeZeroGRollUp(
+static void LatticeTriangleTrackLeftLargeZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -13132,32 +13245,37 @@ static void GigaRCTrackLeftLargeZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 0)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 0)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 5)),
-                        { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 5)), { 0, 0, height },
+                        { { 0, 30, height }, { 32, 0, 96 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 9)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 9)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 10)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 10)),
                         { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 15)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 15)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 21, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 21, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -13168,25 +13286,30 @@ static void GigaRCTrackLeftLargeZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 1)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 1)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 2)),
-                        { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 2)), { 0, 0, height },
+                        { { 0, 30, height }, { 32, 0, 96 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 6)),
-                        { 0, 0, height }, { { 0, 30, height }, { 32, 0, 64 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 6)), { 0, 0, height },
+                        { { 0, 30, height }, { 32, 0, 64 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 11)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 11)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 0, 64 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 16)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 16)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
@@ -13199,25 +13322,30 @@ static void GigaRCTrackLeftLargeZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 3)),
-                        { 0, 0, height }, { { 0, 30, height }, { 32, 0, 64 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 3)), { 0, 0, height },
+                        { { 0, 30, height }, { 32, 0, 64 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 7)),
-                        { 0, 0, height }, { { 0, 30, height }, { 32, 0, 48 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 7)), { 0, 0, height },
+                        { { 0, 30, height }, { 32, 0, 48 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 12)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 12)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 0, 48 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 17)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 17)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 0, 32 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 18)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 18)),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                     break;
             }
@@ -13244,43 +13372,48 @@ static void GigaRCTrackLeftLargeZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 4)),
-                        { 0, 0, height }, { { 0, 26, height }, { 32, 0, 32 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 4)), { 0, 0, height },
+                        { { 0, 26, height }, { 32, 0, 32 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 37, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 8)),
-                        { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 8)), { 0, 0, height },
+                        { { 0, 26, height }, { 26, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 37, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 13)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 13)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 0, 32 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 14)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 14)),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 37, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 19)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 19)),
                         { 0, 0, height }, { { 0, 18, height }, { 32, 1, 30 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 37, session.SupportColours);
                     break;
             }
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -13288,9 +13421,9 @@ static void GigaRCTrackLeftLargeZeroGRollUp(
     }
 }
 
-static void GigaRCTrackRightLargeZeroGRollUp(
+static void LatticeTriangleTrackRightLargeZeroGRollUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -13299,32 +13432,37 @@ static void GigaRCTrackRightLargeZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 20)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 20)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 25)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 25)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 26)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 26)),
                         { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 31)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 31)),
                         { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 35)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 35)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 21, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 21, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -13335,25 +13473,30 @@ static void GigaRCTrackRightLargeZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 21)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 21)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 27)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 27)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 0, 64 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 32)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 32)),
                         { 0, 0, height }, { { 0, 30, height }, { 32, 0, 64 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 36)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 36)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 37)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 37)),
                         { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
                     break;
             }
@@ -13366,25 +13509,30 @@ static void GigaRCTrackRightLargeZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 22)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 22)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 0, 32 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 23)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 23)),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 28)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 28)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 0, 48 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 33)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 33)),
                         { 0, 0, height }, { { 0, 30, height }, { 32, 0, 48 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 38)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 38)),
                         { 0, 0, height }, { { 0, 30, height }, { 32, 0, 64 } });
                     break;
             }
@@ -13412,43 +13560,48 @@ static void GigaRCTrackRightLargeZeroGRollUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 24)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 24)),
                         { 0, 0, height }, { { 0, 18, height }, { 32, 1, 30 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 37, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 29)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 29)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 0, 32 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 30)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 30)),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 37, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 34)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 34)),
                         { 0, 0, height }, { { 0, 26, height }, { 32, 0, 30 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 37, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 39)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_ZERO_G_ROLL + 39)),
                         { 0, 0, height }, { { 0, 26, height }, { 40, 0, 32 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 37, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 37, session.SupportColours);
                     break;
             }
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -13456,23 +13609,25 @@ static void GigaRCTrackRightLargeZeroGRollUp(
     }
 }
 
-static void GigaRCTrackLeftLargeZeroGRollDown(
+static void LatticeTriangleTrackLeftLargeZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftLargeZeroGRollUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftLargeZeroGRollUp(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackRightLargeZeroGRollDown(
+static void LatticeTriangleTrackRightLargeZeroGRollDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightLargeZeroGRollUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightLargeZeroGRollUp(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrack90DegToInvertedFlatQuarterLoopUp(
+static void LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -13481,22 +13636,22 @@ static void GigaRCTrack90DegToInvertedFlatQuarterLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 0)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 0)),
                         { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 3)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 6)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 9)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 9)),
                         { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                     break;
             }
@@ -13512,22 +13667,22 @@ static void GigaRCTrack90DegToInvertedFlatQuarterLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 1)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 1)),
                         { 0, 0, height }, { { -8, 6, height }, { 2, 20, 31 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 4)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 4)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 7)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 63 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 10)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 10)),
                         { 0, 0, height }, { { -8, 6, height }, { 2, 20, 31 } });
                     break;
             }
@@ -13543,28 +13698,28 @@ static void GigaRCTrack90DegToInvertedFlatQuarterLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 2)),
                         { 0, 0, height }, { { 0, 6, height + 24 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 5)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 8)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 8)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_QUARTER_LOOP + 11)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_QUARTER_LOOP + 11)),
                         { 0, 0, height }, { { 0, 6, height + 24 }, { 32, 20, 3 } });
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -13576,16 +13731,17 @@ static void GigaRCTrack90DegToInvertedFlatQuarterLoopUp(
     }
 }
 
-static void GigaRCTrackInvertedFlatTo90DegQuarterLoopDown(
+static void LatticeTriangleTrackInvertedFlatTo90DegQuarterLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack90DegToInvertedFlatQuarterLoopUp(session, ride, 2 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp(
+        session, ride, 2 - trackSequence, direction, height, trackElement, supportType);
 }
 
-static void GigaRCTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
+static void LatticeTriangleTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -13594,32 +13750,37 @@ static void GigaRCTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 0)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 0)),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 2)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 2)),
                         { 0, 6, height }, { 32, 20, 3 });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 3)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 3)),
                         { 0, 6, height }, { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 5)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 5)),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 7)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 7)),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -13642,33 +13803,38 @@ static void GigaRCTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 1)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 1)),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 4)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 4)),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 6)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 6)),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 8)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 8)),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 4, height - 6, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 4, height - 6, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13684,9 +13850,9 @@ static void GigaRCTrackLeftBankToLeftQuarterTurn3Tile25DegUp(
     }
 }
 
-static void GigaRCTrackRightBankToRightQuarterTurn3Tile25DegUp(
+static void LatticeTriangleTrackRightBankToRightQuarterTurn3Tile25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -13695,32 +13861,37 @@ static void GigaRCTrackRightBankToRightQuarterTurn3Tile25DegUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 9)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 9)),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 11)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 11)),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 13)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 13)),
                         { 0, 6, height }, { 32, 20, 3 });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 14)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 14)),
                         { 0, 6, height }, { { 0, 27, height }, { 32, 1, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 16)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 16)),
                         { 0, 6, height }, { 32, 20, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -13743,33 +13914,38 @@ static void GigaRCTrackRightBankToRightQuarterTurn3Tile25DegUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 10)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 10)),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 12)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 12)),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 15)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 15)),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 17)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 17)),
                         { 6, 0, height }, { { 0, 6, height - 6 }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 4, height - 6, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 4, height - 6, session.SupportColours);
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareSlopeEnd);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13785,9 +13961,9 @@ static void GigaRCTrackRightBankToRightQuarterTurn3Tile25DegUp(
     }
 }
 
-static void GigaRCTrackLeftQuarterTurn3Tile25DegDownToLeftBank(
+static void LatticeTriangleTrackLeftQuarterTurn3Tile25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -13796,29 +13972,34 @@ static void GigaRCTrackLeftQuarterTurn3Tile25DegDownToLeftBank(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 12)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 12)),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 15)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 15)),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 17)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 17)),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 10)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 10)),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 4, height - 6, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 4, height - 6, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -13841,36 +14022,41 @@ static void GigaRCTrackLeftQuarterTurn3Tile25DegDownToLeftBank(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 11)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 11)),
                         { 6, 0, height }, { 20, 32, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 13)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 13)),
                         { 6, 0, height }, { 20, 32, 3 });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 14)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 14)),
                         { 6, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 16)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 16)),
                         { 6, 0, height }, { 20, 32, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 9)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 9)),
                         { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13886,9 +14072,9 @@ static void GigaRCTrackLeftQuarterTurn3Tile25DegDownToLeftBank(
     }
 }
 
-static void GigaRCTrackRightQuarterTurn3Tile25DegDownToRightBank(
+static void LatticeTriangleTrackRightQuarterTurn3Tile25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -13897,29 +14083,34 @@ static void GigaRCTrackRightQuarterTurn3Tile25DegDownToRightBank(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 8)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 8)),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 1)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 1)),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 4)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 4)),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 6)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 6)),
                         { 0, 6, height }, { { 0, 6, height - 6 }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 4, height - 6, session.SupportColours);
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::Centre, 4, height - 6, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareSlopeEnd);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -13942,36 +14133,41 @@ static void GigaRCTrackRightQuarterTurn3Tile25DegDownToRightBank(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 7)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 7)),
                         { 6, 0, height }, { 20, 32, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 0)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 0)),
                         { 6, 0, height }, { 20, 32, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 2)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 2)),
                         { 6, 0, height }, { 20, 32, 3 });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 3)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 3)),
                         { 6, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_TURN_BANK_TRANSITION + 5)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_TURN_BANK_TRANSITION + 5)),
                         { 6, 0, height }, { 20, 32, 3 });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             switch (direction)
             {
                 case 0:
-                    PaintUtilPushTunnelRight(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 1:
-                    PaintUtilPushTunnelLeft(session, height, TunnelType::SquareFlat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -13987,9 +14183,9 @@ static void GigaRCTrackRightQuarterTurn3Tile25DegDownToRightBank(
     }
 }
 
-static void GigaRCTrackLeftLargeHalfLoopUp(
+static void LatticeTriangleTrackLeftLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -13998,29 +14194,31 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 0)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 0)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 7)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 7)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 14)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 14)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 21)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 21)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -14031,31 +14229,33 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 1)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 1)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 8)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 8)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 9 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 15)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 15)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 22)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 22)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14067,23 +14267,25 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 2)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 2)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 9)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 9)),
                         { 0, 0, height }, { { 0, 0, height + 70 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 16)),
-                        { 0, 0, height }, { { 0, 16, height + 70 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 16)), { 0, 0, height },
+                        { { 0, 16, height + 70 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 23)),
-                        { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 23)), { 0, 0, height },
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14101,31 +14303,34 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 3)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 3)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 14, height + 8, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 14, height + 8, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 10)),
-                        { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 10)), { 0, 0, height },
+                        { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 14, height + 8, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 14, height + 8, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 17)),
-                        { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 17)), { 0, 0, height },
+                        { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 0, height + 21, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 21, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 24)),
-                        { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 24)), { 0, 0, height },
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 22, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 22, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14143,23 +14348,26 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 4)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 4)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 11)),
-                        { 0, 0, height }, { { 0, 16, height + 110 }, { 16, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 11)), { 0, 0, height },
+                        { { 0, 16, height + 110 }, { 16, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 18)),
-                        { 0, 0, height }, { { 0, 0, height + 100 }, { 16, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 18)), { 0, 0, height },
+                        { { 0, 0, height + 100 }, { 16, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 25)),
-                        { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 25)), { 0, 0, height },
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14177,23 +14385,26 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 5)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 5)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 12)),
-                        { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 12)), { 0, 0, height },
+                        { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 19)),
-                        { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 19)), { 0, 0, height },
+                        { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 26)),
-                        { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 26)), { 0, 0, height },
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14211,28 +14422,31 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 6)),
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 6)),
                         { 0, 0, height }, { { 0, 16, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 13)),
-                        { 0, 0, height }, { { 0, 16, height + 32 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 13)), { 0, 0, height },
+                        { { 0, 16, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 20)),
-                        { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 20)), { 0, 0, height },
+                        { { 0, 0, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 27)),
-                        { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 27)), { 0, 0, height },
+                        { { 0, 0, height + 32 }, { 32, 16, 0 } });
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -14247,9 +14461,9 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
     }
 }
 
-static void GigaRCTrackRightLargeHalfLoopUp(
+static void LatticeTriangleTrackRightLargeHalfLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -14258,29 +14472,33 @@ static void GigaRCTrackRightLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 28)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 28)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 35)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 35)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 42)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 42)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 49)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 49)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -14291,31 +14509,35 @@ static void GigaRCTrackRightLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 29)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 29)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 36)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 36)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 43)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 9 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 43)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 9 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 50)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 50)), { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14327,23 +14549,27 @@ static void GigaRCTrackRightLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 30)),
-                        { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 30)), { 0, 0, height },
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 37)),
-                        { 0, 0, height }, { { 0, 16, height + 70 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 37)), { 0, 0, height },
+                        { { 0, 16, height + 70 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 44)),
-                        { 0, 0, height }, { { 0, 0, height + 70 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 44)), { 0, 0, height },
+                        { { 0, 0, height + 70 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 51)),
-                        { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 51)), { 0, 0, height },
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14361,31 +14587,35 @@ static void GigaRCTrackRightLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 31)),
-                        { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 31)), { 0, 0, height },
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomRightSide, 22, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 22, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 38)),
-                        { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 38)), { 0, 0, height },
+                        { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomLeftSide, 0, height + 21, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 21, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 45)),
-                        { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 45)), { 0, 0, height },
+                        { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopLeftSide, 14, height + 8, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 14, height + 8, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 52)),
-                        { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 52)), { 0, 0, height },
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopRightSide, 14, height + 8, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopRightSide, 14, height + 8, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14403,23 +14633,27 @@ static void GigaRCTrackRightLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 32)),
-                        { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 32)), { 0, 0, height },
+                        { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 39)),
-                        { 0, 0, height }, { { 0, 0, height + 100 }, { 16, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 39)), { 0, 0, height },
+                        { { 0, 0, height + 100 }, { 16, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 46)),
-                        { 0, 0, height }, { { 0, 16, height + 110 }, { 16, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 46)), { 0, 0, height },
+                        { { 0, 16, height + 110 }, { 16, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 53)),
-                        { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 53)), { 0, 0, height },
+                        { { 16, 16, height }, { 16, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14437,23 +14671,27 @@ static void GigaRCTrackRightLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 33)),
-                        { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 33)), { 0, 0, height },
+                        { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 40)),
-                        { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 40)), { 0, 0, height },
+                        { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 47)),
-                        { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 47)), { 0, 0, height },
+                        { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 54)),
-                        { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 54)), { 0, 0, height },
+                        { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14471,28 +14709,32 @@ static void GigaRCTrackRightLargeHalfLoopUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 34)),
-                        { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 34)), { 0, 0, height },
+                        { { 0, 0, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 41)),
-                        { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 41)), { 0, 0, height },
+                        { { 0, 0, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 48)),
-                        { 0, 0, height }, { { 0, 16, height + 32 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 48)), { 0, 0, height },
+                        { { 0, 16, height + 32 }, { 32, 16, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 55)),
-                        { 0, 0, height }, { { 0, 16, height + 32 }, { 32, 16, 0 } });
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_LARGE_HALF_LOOP + 55)), { 0, 0, height },
+                        { { 0, 16, height + 32 }, { 32, 16, 0 } });
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -14507,129 +14749,129 @@ static void GigaRCTrackRightLargeHalfLoopUp(
     }
 }
 
-static void GigaRCTrackLeftLargeHalfLoopDown(
+static void LatticeTriangleTrackLeftLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement, supportType);
 }
 
-static void GigaRCTrackRightLargeHalfLoopDown(
+static void LatticeTriangleTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackLeftLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
+    LatticeTriangleTrackLeftLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement, supportType);
 }
 
-static void GigaRCTrackFlatTo60DegUp(
+static void LatticeTriangleTrackFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 0)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 0)),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 2)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 2)),
                 { 0, 0, height }, { { 29, 4, height + 2 }, { 1, 24, 43 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 1)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 1)),
                 { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 4)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 4)),
                 { 0, 0, height }, { { 29, 4, height + 2 }, { 1, 24, 43 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 3)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 3)),
                 { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 5)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 5)),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
             break;
     }
-    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 1, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 1, height, session.SupportColours);
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelType::SquareSlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
-static void GigaRCTrack60DegUpToFlat(
+static void LatticeTriangleTrack60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (direction)
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 6)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 6)),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 7)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 7)),
                 { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 8)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 8)),
                 { 0, 0, height }, { { 29, 4, height + 2 }, { 1, 24, 43 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 10)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 10)),
                 { 0, 0, height }, { { 29, 4, height + 2 }, { 1, 24, 43 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 9)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 9)),
                 { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 11)),
+                session, direction, session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 11)),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
             break;
     }
-    MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 14, height, session.SupportColours);
+    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 14, height, session.SupportColours);
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 24, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::Flat);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
 
-static void GigaRCTrackFlatTo60DegDown(
+static void LatticeTriangleTrackFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrack60DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrack60DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrack60DegDownToFlat(
+static void LatticeTriangleTrack60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackFlatTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackFlatTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackDiagFlatTo60DegUp(
+static void LatticeTriangleTrackDiagFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -14638,7 +14880,8 @@ static void GigaRCTrackDiagFlatTo60DegUp(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 15)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 15)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14657,7 +14900,8 @@ static void GigaRCTrackDiagFlatTo60DegUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 12)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 12)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14675,7 +14919,8 @@ static void GigaRCTrackDiagFlatTo60DegUp(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 14)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 14)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14694,22 +14939,23 @@ static void GigaRCTrackDiagFlatTo60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 13)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 13)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14725,9 +14971,9 @@ static void GigaRCTrackDiagFlatTo60DegUp(
     }
 }
 
-static void GigaRCTrackDiag60DegUpToFlat(
+static void LatticeTriangleTrackDiag60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -14736,7 +14982,8 @@ static void GigaRCTrackDiag60DegUpToFlat(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 19)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 19)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14755,7 +15002,8 @@ static void GigaRCTrackDiag60DegUpToFlat(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 16)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 16)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14773,7 +15021,8 @@ static void GigaRCTrackDiag60DegUpToFlat(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 18)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 18)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14792,22 +15041,23 @@ static void GigaRCTrackDiag60DegUpToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 18, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 18, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 17)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 17)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 18, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 18, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 18, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 18, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 18, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 18, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14823,9 +15073,9 @@ static void GigaRCTrackDiag60DegUpToFlat(
     }
 }
 
-static void GigaRCTrackDiagFlatTo60DegDown(
+static void LatticeTriangleTrackDiagFlatTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -14834,7 +15084,8 @@ static void GigaRCTrackDiagFlatTo60DegDown(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 17)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 17)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14853,7 +15104,8 @@ static void GigaRCTrackDiagFlatTo60DegDown(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 18)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 18)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14871,7 +15123,8 @@ static void GigaRCTrackDiagFlatTo60DegDown(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 16)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 16)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14890,22 +15143,23 @@ static void GigaRCTrackDiagFlatTo60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 14, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 19)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 19)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 14, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 14, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 14, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 14, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14921,9 +15175,9 @@ static void GigaRCTrackDiagFlatTo60DegDown(
     }
 }
 
-static void GigaRCTrackDiag60DegDownToFlat(
+static void LatticeTriangleTrackDiag60DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -14932,7 +15186,8 @@ static void GigaRCTrackDiag60DegDownToFlat(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 13)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 13)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14951,7 +15206,8 @@ static void GigaRCTrackDiag60DegDownToFlat(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 14)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 14)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14969,7 +15225,8 @@ static void GigaRCTrackDiag60DegDownToFlat(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 12)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 12)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     break;
             }
@@ -14988,22 +15245,23 @@ static void GigaRCTrackDiag60DegDownToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 2, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 2, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 15)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_SMALL_FLAT_TO_STEEP + 15)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 2, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 2, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 2, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 2, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15019,9 +15277,9 @@ static void GigaRCTrackDiag60DegDownToFlat(
     }
 }
 
-static void GigaRCTrackLeftEighthToDiagUp25(
+static void LatticeTriangleTrackLeftEighthToDiagUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -15030,29 +15288,33 @@ static void GigaRCTrackLeftEighthToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 0)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 0)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 4)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 4)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 8)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 8)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 12)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 12)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -15063,22 +15325,26 @@ static void GigaRCTrackLeftEighthToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 1)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 1)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 5)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 5)),
                         { 0, 0, height }, { { 0, 0, height }, { 34, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 9)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 9)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 13)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 13)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
@@ -15097,22 +15363,26 @@ static void GigaRCTrackLeftEighthToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 2)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 2)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 6)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 6)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 10)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 10)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 14)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 14)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
@@ -15142,31 +15412,35 @@ static void GigaRCTrackLeftEighthToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 3)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 3)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 2, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 2, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 7)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 7)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 3, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 11)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 11)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 15)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 15)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 1, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 1, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15182,9 +15456,9 @@ static void GigaRCTrackLeftEighthToDiagUp25(
     }
 }
 
-static void GigaRCTrackRightEighthToDiagUp25(
+static void LatticeTriangleTrackRightEighthToDiagUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -15193,29 +15467,33 @@ static void GigaRCTrackRightEighthToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 16)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 16)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 20)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 20)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 24)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 24)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 28)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 28)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -15226,22 +15504,26 @@ static void GigaRCTrackRightEighthToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 17)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 17)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 21)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 21)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 25)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 25)),
                         { 0, 0, height }, { { 0, 0, height }, { 34, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 29)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 29)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
@@ -15260,22 +15542,26 @@ static void GigaRCTrackRightEighthToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 18)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 18)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 22)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 22)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 26)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 26)),
                         { 0, 0, height }, { { 4, 4, height }, { 28, 28, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 30)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 30)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
@@ -15305,31 +15591,35 @@ static void GigaRCTrackRightEighthToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 19)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 19)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 1, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 1, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 23)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 23)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 2, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 27)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 27)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 3, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 31)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 31)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 2, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 2, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15345,9 +15635,9 @@ static void GigaRCTrackRightEighthToDiagUp25(
     }
 }
 
-static void GigaRCTrackLeftEighthToOrthogonalUp25(
+static void LatticeTriangleTrackLeftEighthToOrthogonalUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -15356,31 +15646,35 @@ static void GigaRCTrackLeftEighthToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 32)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 32)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 36)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 36)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 40)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 40)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 3, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 44)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 44)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15398,22 +15692,26 @@ static void GigaRCTrackLeftEighthToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 33)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 33)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 37)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 37)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 41)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 41)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 45)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 45)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
@@ -15442,22 +15740,26 @@ static void GigaRCTrackLeftEighthToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 34)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 34)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 38)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 38)),
                         { 0, 0, height }, { { 0, 0, height }, { 34, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 42)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 42)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 46)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 46)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
@@ -15476,30 +15778,34 @@ static void GigaRCTrackLeftEighthToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 35)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 35)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 39)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 39)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 43)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 43)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 10 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 47)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 47)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 4, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 4, height, session.SupportColours);
 
             if (direction == 1 || direction == 2)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
 
             PaintUtilSetSegmentSupportHeight(
@@ -15509,9 +15815,9 @@ static void GigaRCTrackLeftEighthToOrthogonalUp25(
     }
 }
 
-static void GigaRCTrackRightEighthToOrthogonalUp25(
+static void LatticeTriangleTrackRightEighthToOrthogonalUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -15520,31 +15826,35 @@ static void GigaRCTrackRightEighthToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 48)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 48)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 3, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 52)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 52)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 5, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 56)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 56)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 60)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 60)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15562,22 +15872,26 @@ static void GigaRCTrackRightEighthToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 49)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 49)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 53)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 53)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 57)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 57)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 61)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 61)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
@@ -15607,22 +15921,26 @@ static void GigaRCTrackRightEighthToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 50)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 50)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 54)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 54)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 58)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 58)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 62)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 62)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
@@ -15641,29 +15959,33 @@ static void GigaRCTrackRightEighthToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 51)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 51)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 10 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 55)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 55)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 59)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 59)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 63)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE + 63)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::Centre, 4, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 4, height, session.SupportColours);
             if (direction == 0 || direction == 1)
             {
-                PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TunnelType::SquareSlopeEnd);
+                PaintUtilPushTunnelRotated(session, direction + 1, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -15675,43 +15997,47 @@ static void GigaRCTrackRightEighthToOrthogonalUp25(
     }
 }
 
-static void GigaRCTrackLeftEighthToDiagDown25(
+static void LatticeTriangleTrackLeftEighthToDiagDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     uint8_t map[5] = { 4, 3, 1, 2, 0 };
     trackSequence = map[trackSequence];
-    GigaRCTrackRightEighthToOrthogonalUp25(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthToOrthogonalUp25(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackRightEighthToDiagDown25(
+static void LatticeTriangleTrackRightEighthToDiagDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     uint8_t map[5] = { 4, 3, 1, 2, 0 };
     trackSequence = map[trackSequence];
-    GigaRCTrackLeftEighthToOrthogonalUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthToOrthogonalUp25(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackLeftEighthToOrthogonalDown25(
+static void LatticeTriangleTrackLeftEighthToOrthogonalDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackRightEighthToDiagUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthToDiagUp25(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackRightEighthToOrthogonalDown25(
+static void LatticeTriangleTrackRightEighthToOrthogonalDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackLeftEighthToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthToDiagUp25(
+        session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackDiagUp25ToLeftBankedUp25(
+static void LatticeTriangleTrackDiagUp25ToLeftBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -15720,7 +16046,8 @@ static void GigaRCTrackDiagUp25ToLeftBankedUp25(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 4)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 4)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -15739,10 +16066,12 @@ static void GigaRCTrackDiagUp25ToLeftBankedUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 0)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 0)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 1)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 1)),
                         { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                     break;
             }
@@ -15760,7 +16089,8 @@ static void GigaRCTrackDiagUp25ToLeftBankedUp25(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 3)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 3)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -15779,22 +16109,23 @@ static void GigaRCTrackDiagUp25ToLeftBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 2)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 2)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 10, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 10, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15810,9 +16141,9 @@ static void GigaRCTrackDiagUp25ToLeftBankedUp25(
     }
 }
 
-static void GigaRCTrackDiagUp25ToRightBankedUp25(
+static void LatticeTriangleTrackDiagUp25ToRightBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -15821,7 +16152,8 @@ static void GigaRCTrackDiagUp25ToRightBankedUp25(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 9)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 9)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -15840,7 +16172,8 @@ static void GigaRCTrackDiagUp25ToRightBankedUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 5)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 5)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -15858,10 +16191,12 @@ static void GigaRCTrackDiagUp25ToRightBankedUp25(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 7)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 7)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 8)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 8)),
                         { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                     break;
             }
@@ -15880,22 +16215,23 @@ static void GigaRCTrackDiagUp25ToRightBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 10, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 6)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 6)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 10, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 10, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 10, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15911,9 +16247,9 @@ static void GigaRCTrackDiagUp25ToRightBankedUp25(
     }
 }
 
-static void GigaRCTrackDiagLeftBankedUp25ToUp25(
+static void LatticeTriangleTrackDiagLeftBankedUp25ToUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -15922,7 +16258,8 @@ static void GigaRCTrackDiagLeftBankedUp25ToUp25(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 14)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 14)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -15941,10 +16278,12 @@ static void GigaRCTrackDiagLeftBankedUp25ToUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 10)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 10)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 11)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 11)),
                         { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                     break;
             }
@@ -15962,7 +16301,8 @@ static void GigaRCTrackDiagLeftBankedUp25ToUp25(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 13)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 13)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -15981,22 +16321,23 @@ static void GigaRCTrackDiagLeftBankedUp25ToUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 12)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 12)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 9, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 9, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -16012,9 +16353,9 @@ static void GigaRCTrackDiagLeftBankedUp25ToUp25(
     }
 }
 
-static void GigaRCTrackDiagRightBankedUp25ToUp25(
+static void LatticeTriangleTrackDiagRightBankedUp25ToUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -16023,7 +16364,8 @@ static void GigaRCTrackDiagRightBankedUp25ToUp25(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 19)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 19)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -16042,7 +16384,8 @@ static void GigaRCTrackDiagRightBankedUp25ToUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 15)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 15)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -16060,656 +16403,12 @@ static void GigaRCTrackDiagRightBankedUp25ToUp25(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 17)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 17)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 18)),
-                        { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 16)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 9, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 9, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-    }
-}
-
-static void GigaRCTrackDiagDown25ToLeftBankedDown25(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    GigaRCTrackDiagRightBankedUp25ToUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
-}
-
-static void GigaRCTrackDiagDown25ToRightBankedDown25(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    GigaRCTrackDiagLeftBankedUp25ToUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
-}
-
-static void GigaRCTrackDiagLeftBankedDown25ToDown25(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    GigaRCTrackDiagUp25ToRightBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
-}
-
-static void GigaRCTrackDiagRightBankedDown25ToDown25(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    GigaRCTrackDiagUp25ToLeftBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
-}
-
-static void GigaRCTrackDiagLeftBankedFlatToLeftBankedUp25(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 23)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 20)),
-                        { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 22)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 21)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-    }
-}
-
-static void GigaRCTrackDiagRightBankedFlatToRightBankedUp25(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 27)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 24)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 26)),
-                        { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 25)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-    }
-}
-
-static void GigaRCTrackDiagLeftBankedUp25ToLeftBankedFlat(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 31)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 28)),
-                        { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 30)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 29)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-    }
-}
-
-static void GigaRCTrackDiagRightBankedUp25ToRightBankedFlat(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 35)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 32)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 34)),
-                        { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 33)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-    }
-}
-
-static void GigaRCTrackDiagLeftBankedFlatToLeftBankedDown25(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    GigaRCTrackDiagRightBankedUp25ToRightBankedFlat(
-        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
-}
-
-static void GigaRCTrackDiagRightBankedFlatToRightBankedDown25(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    GigaRCTrackDiagLeftBankedUp25ToLeftBankedFlat(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
-}
-
-static void GigaRCTrackDiagLeftBankedDown25ToLeftBankedFlat(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    GigaRCTrackDiagRightBankedFlatToRightBankedUp25(
-        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
-}
-
-static void GigaRCTrackDiagRightBankedDown25ToRightBankedFlat(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    GigaRCTrackDiagLeftBankedFlatToLeftBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
-}
-
-static void GigaRCTrackDiagUp25LeftBanked(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 39)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 36)),
-                        { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 38)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 0:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
-                    break;
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 37)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 11, height, session.SupportColours);
-                    break;
-                case 2:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 11, height, session.SupportColours);
-                    break;
-                case 3:
-                    MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 11, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-    }
-}
-
-static void GigaRCTrackDiagUp25RightBanked(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 43)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 40)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
-                    direction),
-                0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 56);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 42)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 18)),
                         { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                     break;
             }
@@ -16728,22 +16427,23 @@ static void GigaRCTrackDiagUp25RightBanked(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 41)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 16)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 9, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 11, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 9, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -16759,23 +16459,41 @@ static void GigaRCTrackDiagUp25RightBanked(
     }
 }
 
-static void GigaRCTrackDiagDown25LeftBanked(
+static void LatticeTriangleTrackDiagDown25ToLeftBankedDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackDiagUp25RightBanked(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagRightBankedUp25ToUp25(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackDiagDown25RightBanked(
+static void LatticeTriangleTrackDiagDown25ToRightBankedDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackDiagUp25LeftBanked(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagLeftBankedUp25ToUp25(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackDiagFlatToLeftBankedUp25(
+static void LatticeTriangleTrackDiagLeftBankedDown25ToDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
+{
+    LatticeTriangleTrackDiagUp25ToRightBankedUp25(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+static void LatticeTriangleTrackDiagRightBankedDown25ToDown25(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    LatticeTriangleTrackDiagUp25ToLeftBankedUp25(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+static void LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedUp25(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -16784,7 +16502,8 @@ static void GigaRCTrackDiagFlatToLeftBankedUp25(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 48)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 23)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -16803,10 +16522,8 @@ static void GigaRCTrackDiagFlatToLeftBankedUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 44)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 45)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 20)),
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
@@ -16824,7 +16541,8 @@ static void GigaRCTrackDiagFlatToLeftBankedUp25(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 47)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 22)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -16843,22 +16561,23 @@ static void GigaRCTrackDiagFlatToLeftBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 46)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 21)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -16874,9 +16593,9 @@ static void GigaRCTrackDiagFlatToLeftBankedUp25(
     }
 }
 
-static void GigaRCTrackDiagFlatToRightBankedUp25(
+static void LatticeTriangleTrackDiagRightBankedFlatToRightBankedUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -16885,7 +16604,8 @@ static void GigaRCTrackDiagFlatToRightBankedUp25(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 53)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 27)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -16904,7 +16624,8 @@ static void GigaRCTrackDiagFlatToRightBankedUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 49)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 24)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -16922,10 +16643,8 @@ static void GigaRCTrackDiagFlatToRightBankedUp25(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 51)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 52)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 26)),
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
@@ -16944,22 +16663,23 @@ static void GigaRCTrackDiagFlatToRightBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 50)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 25)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -16975,9 +16695,9 @@ static void GigaRCTrackDiagFlatToRightBankedUp25(
     }
 }
 
-static void GigaRCTrackDiagLeftBankedUp25ToFlat(
+static void LatticeTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -16986,7 +16706,8 @@ static void GigaRCTrackDiagLeftBankedUp25ToFlat(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 58)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 31)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -17005,10 +16726,8 @@ static void GigaRCTrackDiagLeftBankedUp25ToFlat(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 54)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 55)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 28)),
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
@@ -17026,7 +16745,8 @@ static void GigaRCTrackDiagLeftBankedUp25ToFlat(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 57)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 30)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -17045,22 +16765,23 @@ static void GigaRCTrackDiagLeftBankedUp25ToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 56)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 29)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17076,9 +16797,9 @@ static void GigaRCTrackDiagLeftBankedUp25ToFlat(
     }
 }
 
-static void GigaRCTrackDiagRightBankedUp25ToFlat(
+static void LatticeTriangleTrackDiagRightBankedUp25ToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -17087,7 +16808,8 @@ static void GigaRCTrackDiagRightBankedUp25ToFlat(
             {
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 63)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 35)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -17106,7 +16828,8 @@ static void GigaRCTrackDiagRightBankedUp25ToFlat(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 59)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 32)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     break;
             }
@@ -17124,10 +16847,8 @@ static void GigaRCTrackDiagRightBankedUp25ToFlat(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 61)),
-                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 62)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 34)),
                         { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                     break;
             }
@@ -17146,22 +16867,23 @@ static void GigaRCTrackDiagRightBankedUp25ToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 60)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 33)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17177,37 +16899,717 @@ static void GigaRCTrackDiagRightBankedUp25ToFlat(
     }
 }
 
-static void GigaRCTrackDiagFlatToLeftBankedDown25(
+static void LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackDiagRightBankedUp25ToFlat(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagRightBankedUp25ToRightBankedFlat(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackDiagFlatToRightBankedDown25(
+static void LatticeTriangleTrackDiagRightBankedFlatToRightBankedDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackDiagLeftBankedUp25ToFlat(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackDiagLeftBankedDown25ToFlat(
+static void LatticeTriangleTrackDiagLeftBankedDown25ToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackDiagFlatToRightBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagRightBankedFlatToRightBankedUp25(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackDiagRightBankedDown25ToFlat(
+static void LatticeTriangleTrackDiagRightBankedDown25ToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
-    GigaRCTrackDiagFlatToLeftBankedUp25(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedUp25(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackLeftEighthBankToDiagUp25(
+static void LatticeTriangleTrackDiagUp25LeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 39)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 36)),
+                        { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 38)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 37)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 11, height, session.SupportColours);
+                    break;
+                case 2:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 11, height, session.SupportColours);
+                    break;
+                case 3:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 11, height, session.SupportColours);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+    }
+}
+
+static void LatticeTriangleTrackDiagUp25RightBanked(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 43)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 40)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 42)),
+                        { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 11, height, session.SupportColours);
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 41)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 11, height, session.SupportColours);
+                    break;
+                case 2:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                    break;
+                case 3:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 11, height, session.SupportColours);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+    }
+}
+
+static void LatticeTriangleTrackDiagDown25LeftBanked(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    LatticeTriangleTrackDiagUp25RightBanked(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+static void LatticeTriangleTrackDiagDown25RightBanked(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    LatticeTriangleTrackDiagUp25LeftBanked(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+static void LatticeTriangleTrackDiagFlatToLeftBankedUp25(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 48)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 44)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 45)),
+                        { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 47)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 46)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                    break;
+                case 2:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                    break;
+                case 3:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+    }
+}
+
+static void LatticeTriangleTrackDiagFlatToRightBankedUp25(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 53)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 49)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 51)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 52)),
+                        { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 50)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 4, height, session.SupportColours);
+                    break;
+                case 2:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                    break;
+                case 3:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 4, height, session.SupportColours);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+    }
+}
+
+static void LatticeTriangleTrackDiagLeftBankedUp25ToFlat(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 58)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 54)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 55)),
+                        { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 57)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 56)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
+                    break;
+                case 2:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 6, height, session.SupportColours);
+                    break;
+                case 3:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+    }
+}
+
+static void LatticeTriangleTrackDiagRightBankedUp25ToFlat(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 63)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 59)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 61)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 62)),
+                        { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                        PaintSegment::bottomRightSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 6, height, session.SupportColours);
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 60)),
+                        { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 6, height, session.SupportColours);
+                    break;
+                case 2:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                    break;
+                case 3:
+                    MetalBSupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 6, height, session.SupportColours);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(
+                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                        PaintSegment::bottomLeftSide),
+                    direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+    }
+}
+
+static void LatticeTriangleTrackDiagFlatToLeftBankedDown25(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    LatticeTriangleTrackDiagRightBankedUp25ToFlat(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+static void LatticeTriangleTrackDiagFlatToRightBankedDown25(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    LatticeTriangleTrackDiagLeftBankedUp25ToFlat(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+static void LatticeTriangleTrackDiagLeftBankedDown25ToFlat(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    LatticeTriangleTrackDiagFlatToRightBankedUp25(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+static void LatticeTriangleTrackDiagRightBankedDown25ToFlat(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    LatticeTriangleTrackDiagFlatToLeftBankedUp25(
+        session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+static void LatticeTriangleTrackLeftEighthBankToDiagUp25(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -17216,36 +17618,40 @@ static void GigaRCTrackLeftEighthBankToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 64)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 64)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 1, height - 4, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 1, height - 4, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 68)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 68)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 72)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 72)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 76)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 76)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -17256,22 +17662,26 @@ static void GigaRCTrackLeftEighthBankToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 65)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 65)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 69)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 69)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 73)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 73)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 77)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 77)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
@@ -17290,22 +17700,26 @@ static void GigaRCTrackLeftEighthBankToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 66)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 66)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 70)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 70)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 40, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 74)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 74)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 78)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 78)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     break;
             }
@@ -17335,31 +17749,35 @@ static void GigaRCTrackLeftEighthBankToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 67)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 67)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 71)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 71)),
                         { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 75)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 75)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 79)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 79)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 7, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17375,9 +17793,9 @@ static void GigaRCTrackLeftEighthBankToDiagUp25(
     }
 }
 
-static void GigaRCTrackRightEighthBankToDiagUp25(
+static void LatticeTriangleTrackRightEighthBankToDiagUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -17386,36 +17804,40 @@ static void GigaRCTrackRightEighthBankToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 80)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 80)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 12, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 12, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 84)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 84)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 88)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 88)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 92)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 92)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 1, height - 4, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 1, height - 4, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -17426,22 +17848,26 @@ static void GigaRCTrackRightEighthBankToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 81)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 81)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 85)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 85)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 89)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 89)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 93)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 93)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     break;
             }
@@ -17460,22 +17886,26 @@ static void GigaRCTrackRightEighthBankToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 82)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 82)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 86)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 86)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 90)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 90)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 40, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 94)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 94)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
@@ -17505,31 +17935,35 @@ static void GigaRCTrackRightEighthBankToDiagUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 83)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 83)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 7, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 87)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 87)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 91)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 91)),
                         { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 95)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 95)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17545,9 +17979,9 @@ static void GigaRCTrackRightEighthBankToDiagUp25(
     }
 }
 
-static void GigaRCTrackLeftEighthBankToOrthogonalUp25(
+static void LatticeTriangleTrackLeftEighthBankToOrthogonalUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -17556,31 +17990,35 @@ static void GigaRCTrackLeftEighthBankToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 96)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 96)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 5, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 100)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 100)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 104)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 104)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 9, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 108)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 108)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17598,22 +18036,26 @@ static void GigaRCTrackLeftEighthBankToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 97)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 97)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 101)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 101)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 105)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 105)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 109)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 109)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     break;
             }
@@ -17642,22 +18084,26 @@ static void GigaRCTrackLeftEighthBankToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 98)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 98)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 102)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 102)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 106)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 106)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 10 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 110)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 110)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     break;
             }
@@ -17676,36 +18122,40 @@ static void GigaRCTrackLeftEighthBankToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 99)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 99)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 103)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 103)),
                         { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 107)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 107)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 20, 10 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 111)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 111)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
             }
             if (direction == 1 || direction == 2)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
+                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -17714,9 +18164,9 @@ static void GigaRCTrackLeftEighthBankToOrthogonalUp25(
     }
 }
 
-static void GigaRCTrackRightEighthBankToOrthogonalUp25(
+static void LatticeTriangleTrackRightEighthBankToOrthogonalUp25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     switch (trackSequence)
     {
@@ -17725,31 +18175,35 @@ static void GigaRCTrackRightEighthBankToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 112)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 112)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 9, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 116)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 116)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::BottomCorner, 7, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 120)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 120)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 5, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 124)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 124)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 7, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -17767,22 +18221,26 @@ static void GigaRCTrackRightEighthBankToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 113)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 113)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 117)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 117)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 121)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 121)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 125)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 125)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     break;
             }
@@ -17812,22 +18270,26 @@ static void GigaRCTrackRightEighthBankToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 114)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 114)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 32, 10 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 118)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 118)),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 32 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 122)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 122)),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 32 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 126)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 126)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
                     break;
             }
@@ -17846,36 +18308,40 @@ static void GigaRCTrackRightEighthBankToOrthogonalUp25(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 115)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 115)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 10 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 119)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 119)),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 32 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 123)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 123)),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 32 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 127)),
+                        session, direction,
+                        session.TrackColours.WithIndex((SPR_G2_LATTICE_TRIANGLE_TRACK_GENTLE_LARGE_CURVE_BANKED + 127)),
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
                     break;
             }
             if (direction == 0 || direction == 1)
             {
-                PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TunnelType::SquareSlopeEnd);
+                PaintUtilPushTunnelRotated(session, direction + 1, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -17887,38 +18353,42 @@ static void GigaRCTrackRightEighthBankToOrthogonalUp25(
     }
 }
 
-static void GigaRCTrackLeftEighthBankToDiagDown25(
+static void LatticeTriangleTrackLeftEighthBankToDiagDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     uint8_t map[5] = { 4, 3, 1, 2, 0 };
     trackSequence = map[trackSequence];
-    GigaRCTrackRightEighthBankToOrthogonalUp25(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthBankToOrthogonalUp25(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackRightEighthBankToDiagDown25(
+static void LatticeTriangleTrackRightEighthBankToDiagDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     uint8_t map[5] = { 4, 3, 1, 2, 0 };
     trackSequence = map[trackSequence];
-    GigaRCTrackLeftEighthBankToOrthogonalUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthBankToOrthogonalUp25(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackLeftEighthBankToOrthogonalDown25(
+static void LatticeTriangleTrackLeftEighthBankToOrthogonalDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackRightEighthBankToDiagUp25(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    LatticeTriangleTrackRightEighthBankToDiagUp25(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-static void GigaRCTrackRightEighthBankToOrthogonalDown25(
+static void LatticeTriangleTrackRightEighthBankToOrthogonalDown25(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackLeftEighthBankToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    LatticeTriangleTrackLeftEighthBankToDiagUp25(
+        session, ride, trackSequence, (direction + 3) & 3, height, trackElement, supportType);
 }
 
 static constexpr CoordsXYZ diagBrakeBoundsOffsets[4] = {
@@ -17928,516 +18398,517 @@ static constexpr CoordsXYZ diagBrakeBoundsOffsets[4] = {
     { 0, 0, 24 },
 };
 
-static void GigaRCTrackDiagBrakes(
+static void LatticeTriangleTrackDiagBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, GigaDiagBrakeImages[trackElement.IsBrakeClosed()][0],
+        session, 3, height, direction, trackSequence, LatticeTriangleBrakeImages[trackElement.IsBrakeClosed()][0],
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     TrackPaintUtilDiagTilesPaint(
-        session, 3, height, direction, trackSequence, GigaDiagBrakeImages[trackElement.IsBrakeClosed()][1],
+        session, 3, height, direction, trackSequence, LatticeTriangleBrakeImages[trackElement.IsBrakeClosed()][1],
         defaultDiagTileOffsets, defaultDiagBoundLengths, diagBrakeBoundsOffsets);
 
     if (trackSequence == 3)
     {
-        MetalASupportsPaintSetup(session, kSupportType, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
+        MetalASupportsPaintSetup(
+            session, supportType.metal, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionGigaRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return GigaRCTrackFlat;
+            return LatticeTriangleTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return GigaRCTrackStation;
+            return LatticeTriangleTrackStation;
         case TrackElemType::Up25:
-            return GigaRCTrack25DegUp;
+            return LatticeTriangleTrack25DegUp;
         case TrackElemType::Up60:
-            return GigaRCTrack60DegUp;
+            return LatticeTriangleTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return GigaRCTrackFlatTo25DegUp;
+            return LatticeTriangleTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return GigaRCTrack25DegUpTo60DegUp;
+            return LatticeTriangleTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return GigaRCTrack60DegUpTo25DegUp;
+            return LatticeTriangleTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return GigaRCTrack25DegUpToFlat;
+            return LatticeTriangleTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return GigaRCTrack25DegDown;
+            return LatticeTriangleTrack25DegDown;
         case TrackElemType::Down60:
-            return GigaRCTrack60DegDown;
+            return LatticeTriangleTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return GigaRCTrackFlatTo25DegDown;
+            return LatticeTriangleTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return GigaRCTrack25DegDownTo60DegDown;
+            return LatticeTriangleTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return GigaRCTrack60DegDownTo25DegDown;
+            return LatticeTriangleTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return GigaRCTrack25DegDownToFlat;
+            return LatticeTriangleTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return GigaRCTrackLeftQuarterTurn5;
+            return LatticeTriangleTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return GigaRCTrackRightQuarterTurn5;
+            return LatticeTriangleTrackRightQuarterTurn5;
         case TrackElemType::FlatToLeftBank:
-            return GigaRCTrackFlatToLeftBank;
+            return LatticeTriangleTrackFlatToLeftBank;
         case TrackElemType::FlatToRightBank:
-            return GigaRCTrackFlatToRightBank;
+            return LatticeTriangleTrackFlatToRightBank;
         case TrackElemType::LeftBankToFlat:
-            return GigaRCTrackLeftBankToFlat;
+            return LatticeTriangleTrackLeftBankToFlat;
         case TrackElemType::RightBankToFlat:
-            return GigaRCTrackRightBankToFlat;
+            return LatticeTriangleTrackRightBankToFlat;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            return GigaRCTrackBankedLeftQuarterTurn5;
+            return LatticeTriangleTrackBankedLeftQuarterTurn5;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
-            return GigaRCTrackBankedRightQuarterTurn5;
+            return LatticeTriangleTrackBankedRightQuarterTurn5;
         case TrackElemType::LeftBankToUp25:
-            return GigaRCTrackLeftBankTo25DegUp;
+            return LatticeTriangleTrackLeftBankTo25DegUp;
         case TrackElemType::RightBankToUp25:
-            return GigaRCTrackRightBankTo25DegUp;
+            return LatticeTriangleTrackRightBankTo25DegUp;
         case TrackElemType::Up25ToLeftBank:
-            return GigaRCTrack25DegUpToLeftBank;
+            return LatticeTriangleTrack25DegUpToLeftBank;
         case TrackElemType::Up25ToRightBank:
-            return GigaRCTrack25DegUpToRightBank;
+            return LatticeTriangleTrack25DegUpToRightBank;
         case TrackElemType::LeftBankToDown25:
-            return GigaRCTrackLeftBankTo25DegDown;
+            return LatticeTriangleTrackLeftBankTo25DegDown;
         case TrackElemType::RightBankToDown25:
-            return GigaRCTrackRightBankTo25DegDown;
+            return LatticeTriangleTrackRightBankTo25DegDown;
         case TrackElemType::Down25ToLeftBank:
-            return GigaRCTrack25DegDownToLeftBank;
+            return LatticeTriangleTrack25DegDownToLeftBank;
         case TrackElemType::Down25ToRightBank:
-            return GigaRCTrack25DegDownToRightBank;
+            return LatticeTriangleTrack25DegDownToRightBank;
         case TrackElemType::LeftBank:
-            return GigaRCTrackLeftBank;
+            return LatticeTriangleTrackLeftBank;
         case TrackElemType::RightBank:
-            return GigaRCTrackRightBank;
+            return LatticeTriangleTrackRightBank;
         case TrackElemType::LeftQuarterTurn5TilesUp25:
-            return GigaRCTrackLeftQuarterTurn525DegUp;
+            return LatticeTriangleTrackLeftQuarterTurn525DegUp;
         case TrackElemType::RightQuarterTurn5TilesUp25:
-            return GigaRCTrackRightQuarterTurn525DegUp;
+            return LatticeTriangleTrackRightQuarterTurn525DegUp;
         case TrackElemType::LeftQuarterTurn5TilesDown25:
-            return GigaRCTrackLeftQuarterTurn525DegDown;
+            return LatticeTriangleTrackLeftQuarterTurn525DegDown;
         case TrackElemType::RightQuarterTurn5TilesDown25:
-            return GigaRCTrackRightQuarterTurn525DegDown;
+            return LatticeTriangleTrackRightQuarterTurn525DegDown;
         case TrackElemType::SBendLeft:
-            return GigaRCTrackSBendLeft;
+            return LatticeTriangleTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return GigaRCTrackSBendRight;
+            return LatticeTriangleTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return GigaRCTrackLeftQuarterTurn3;
+            return LatticeTriangleTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return GigaRCTrackRightQuarterTurn3;
+            return LatticeTriangleTrackRightQuarterTurn3;
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
-            return GigaRCTrackLeftQuarterTurn3Bank;
+            return LatticeTriangleTrackLeftQuarterTurn3Bank;
         case TrackElemType::RightBankedQuarterTurn3Tiles:
-            return GigaRCTrackRightQuarterTurn3Bank;
+            return LatticeTriangleTrackRightQuarterTurn3Bank;
         case TrackElemType::LeftQuarterTurn3TilesUp25:
-            return GigaRCTrackLeftQuarterTurn325DegUp;
+            return LatticeTriangleTrackLeftQuarterTurn325DegUp;
         case TrackElemType::RightQuarterTurn3TilesUp25:
-            return GigaRCTrackRightQuarterTurn325DegUp;
+            return LatticeTriangleTrackRightQuarterTurn325DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-            return GigaRCTrackLeftQuarterTurn325DegDown;
+            return LatticeTriangleTrackLeftQuarterTurn325DegDown;
         case TrackElemType::RightQuarterTurn3TilesDown25:
-            return GigaRCTrackRightQuarterTurn325DegDown;
+            return LatticeTriangleTrackRightQuarterTurn325DegDown;
         case TrackElemType::LeftHalfBankedHelixUpSmall:
-            return GigaRCTrackLeftHalfBankedHelixUpSmall;
+            return LatticeTriangleTrackLeftHalfBankedHelixUpSmall;
         case TrackElemType::RightHalfBankedHelixUpSmall:
-            return GigaRCTrackRightHalfBankedHelixUpSmall;
+            return LatticeTriangleTrackRightHalfBankedHelixUpSmall;
         case TrackElemType::LeftHalfBankedHelixDownSmall:
-            return GigaRCTrackLeftHalfBankedHelixDownSmall;
+            return LatticeTriangleTrackLeftHalfBankedHelixDownSmall;
         case TrackElemType::RightHalfBankedHelixDownSmall:
-            return GigaRCTrackRightHalfBankedHelixDownSmall;
+            return LatticeTriangleTrackRightHalfBankedHelixDownSmall;
         case TrackElemType::LeftHalfBankedHelixUpLarge:
-            return GigaRCTrackLeftHalfBankedHelixUpLarge;
+            return LatticeTriangleTrackLeftHalfBankedHelixUpLarge;
         case TrackElemType::RightHalfBankedHelixUpLarge:
-            return GigaRCTrackRightHalfBankedHelixUpLarge;
+            return LatticeTriangleTrackRightHalfBankedHelixUpLarge;
         case TrackElemType::LeftHalfBankedHelixDownLarge:
-            return GigaRCTrackLeftHalfBankedHelixDownLarge;
+            return LatticeTriangleTrackLeftHalfBankedHelixDownLarge;
         case TrackElemType::RightHalfBankedHelixDownLarge:
-            return GigaRCTrackRightHalfBankedHelixDownLarge;
+            return LatticeTriangleTrackRightHalfBankedHelixDownLarge;
         case TrackElemType::LeftQuarterTurn1TileUp60:
-            return GigaRCTrackLeftQuarterTurn160DegUp;
+            return LatticeTriangleTrackLeftQuarterTurn160DegUp;
         case TrackElemType::RightQuarterTurn1TileUp60:
-            return GigaRCTrackRightQuarterTurn160DegUp;
+            return LatticeTriangleTrackRightQuarterTurn160DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown60:
-            return GigaRCTrackLeftQuarterTurn160DegDown;
+            return LatticeTriangleTrackLeftQuarterTurn160DegDown;
         case TrackElemType::RightQuarterTurn1TileDown60:
-            return GigaRCTrackRightQuarterTurn160DegDown;
+            return LatticeTriangleTrackRightQuarterTurn160DegDown;
         case TrackElemType::Brakes:
-            return GigaRCTrackBrakes;
+            return LatticeTriangleTrackBrakes;
         case TrackElemType::Up25LeftBanked:
-            return GigaRCTrack25DegUpLeftBanked;
+            return LatticeTriangleTrack25DegUpLeftBanked;
         case TrackElemType::Up25RightBanked:
-            return GigaRCTrack25DegUpRightBanked;
+            return LatticeTriangleTrack25DegUpRightBanked;
         case TrackElemType::OnRidePhoto:
-            return GigaRCTrackOnRidePhoto;
+            return LatticeTriangleTrackOnRidePhoto;
         case TrackElemType::Down25LeftBanked:
-            return GigaRCTrack25DegDownLeftBanked;
+            return LatticeTriangleTrack25DegDownLeftBanked;
         case TrackElemType::Down25RightBanked:
-            return GigaRCTrack25DegDownRightBanked;
+            return LatticeTriangleTrack25DegDownRightBanked;
         case TrackElemType::FlatToUp60LongBase:
-            return GigaRCTrackFlatTo60DegUpLongBase;
+            return LatticeTriangleTrackFlatTo60DegUpLongBase;
         case TrackElemType::Up60ToFlatLongBase:
-            return GigaRCTrack60DegUpToFlatLongBase;
+            return LatticeTriangleTrack60DegUpToFlatLongBase;
         case TrackElemType::Down60ToFlatLongBase:
-            return GigaRCTrack60DegDownToFlatLongBase;
+            return LatticeTriangleTrack60DegDownToFlatLongBase;
         case TrackElemType::FlatToDown60LongBase:
-            return GigaRCTrackFlatTo60DegDownLongBase;
+            return LatticeTriangleTrackFlatTo60DegDownLongBase;
         case TrackElemType::CableLiftHill:
-            return GigaRCTrackCableLiftHill;
+            return LatticeTriangleTrackCableLiftHill;
         case TrackElemType::LeftEighthToDiag:
-            return GigaRCTrackLeftEighthToDiag;
+            return LatticeTriangleTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return GigaRCTrackRightEighthToDiag;
+            return LatticeTriangleTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return GigaRCTrackLeftEighthToOrthogonal;
+            return LatticeTriangleTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return GigaRCTrackRightEighthToOrthogonal;
+            return LatticeTriangleTrackRightEighthToOrthogonal;
         case TrackElemType::LeftEighthBankToDiag:
-            return GigaRCTrackLeftEighthBankToDiag;
+            return LatticeTriangleTrackLeftEighthBankToDiag;
         case TrackElemType::RightEighthBankToDiag:
-            return GigaRCTrackRightEighthBankToDiag;
+            return LatticeTriangleTrackRightEighthBankToDiag;
         case TrackElemType::LeftEighthBankToOrthogonal:
-            return GigaRCTrackLeftEighthBankToOrthogonal;
+            return LatticeTriangleTrackLeftEighthBankToOrthogonal;
         case TrackElemType::RightEighthBankToOrthogonal:
-            return GigaRCTrackRightEighthBankToOrthogonal;
+            return LatticeTriangleTrackRightEighthBankToOrthogonal;
         case TrackElemType::DiagFlat:
-            return GigaRCTrackDiagFlat;
+            return LatticeTriangleTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return GigaRCTrackDiag25DegUp;
+            return LatticeTriangleTrackDiag25DegUp;
         case TrackElemType::DiagUp60:
-            return GigaRCTrackDiag60DegUp;
+            return LatticeTriangleTrackDiag60DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return GigaRCTrackDiagFlatTo25DegUp;
+            return LatticeTriangleTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToUp60:
-            return GigaRCTrackDiag25DegUpTo60DegUp;
+            return LatticeTriangleTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagUp60ToUp25:
-            return GigaRCTrackDiag60DegUpTo25DegUp;
+            return LatticeTriangleTrackDiag60DegUpTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return GigaRCTrackDiag25DegUpToFlat;
+            return LatticeTriangleTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return GigaRCTrackDiag25DegDown;
+            return LatticeTriangleTrackDiag25DegDown;
         case TrackElemType::DiagDown60:
-            return GigaRCTrackDiag60DegDown;
+            return LatticeTriangleTrackDiag60DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return GigaRCTrackDiagFlatTo25DegDown;
+            return LatticeTriangleTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToDown60:
-            return GigaRCTrackDiag25DegDownTo60DegDown;
+            return LatticeTriangleTrackDiag25DegDownTo60DegDown;
         case TrackElemType::DiagDown60ToDown25:
-            return GigaRCTrackDiag60DegDownTo25DegDown;
+            return LatticeTriangleTrackDiag60DegDownTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return GigaRCTrackDiag25DegDownToFlat;
+            return LatticeTriangleTrackDiag25DegDownToFlat;
         case TrackElemType::DiagFlatToLeftBank:
-            return GigaRCTrackDiagFlatToLeftBank;
+            return LatticeTriangleTrackDiagFlatToLeftBank;
         case TrackElemType::DiagFlatToRightBank:
-            return GigaRCTrackDiagFlatToRightBank;
+            return LatticeTriangleTrackDiagFlatToRightBank;
         case TrackElemType::DiagLeftBankToFlat:
-            return GigaRCTrackDiagLeftBankToFlat;
+            return LatticeTriangleTrackDiagLeftBankToFlat;
         case TrackElemType::DiagRightBankToFlat:
-            return GigaRCTrackDiagRightBankToFlat;
+            return LatticeTriangleTrackDiagRightBankToFlat;
         case TrackElemType::DiagLeftBankToUp25:
-            return GigaRCTrackDiagLeftBankTo25DegUp;
+            return LatticeTriangleTrackDiagLeftBankTo25DegUp;
         case TrackElemType::DiagRightBankToUp25:
-            return GigaRCTrackDiagRightBankTo25DegUp;
+            return LatticeTriangleTrackDiagRightBankTo25DegUp;
         case TrackElemType::DiagUp25ToLeftBank:
-            return GigaRCTrackDiag25DegUpToLeftBank;
+            return LatticeTriangleTrackDiag25DegUpToLeftBank;
         case TrackElemType::DiagUp25ToRightBank:
-            return GigaRCTrackDiag25DegUpToRightBank;
+            return LatticeTriangleTrackDiag25DegUpToRightBank;
         case TrackElemType::DiagLeftBankToDown25:
-            return GigaRCTrackDiagLeftBankTo25DegDown;
+            return LatticeTriangleTrackDiagLeftBankTo25DegDown;
         case TrackElemType::DiagRightBankToDown25:
-            return GigaRCTrackDiagRightBankTo25DegDown;
+            return LatticeTriangleTrackDiagRightBankTo25DegDown;
         case TrackElemType::DiagDown25ToLeftBank:
-            return GigaRCTrackDiag25DegDownToLeftBank;
+            return LatticeTriangleTrackDiag25DegDownToLeftBank;
         case TrackElemType::DiagDown25ToRightBank:
-            return GigaRCTrackDiag25DegDownToRightBank;
+            return LatticeTriangleTrackDiag25DegDownToRightBank;
         case TrackElemType::DiagLeftBank:
-            return GigaRCTrackDiagLeftBank;
+            return LatticeTriangleTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
-            return GigaRCTrackDiagRightBank;
+            return LatticeTriangleTrackDiagRightBank;
         case TrackElemType::BlockBrakes:
-            return GigaRCTrackBlockBrakes;
+            return LatticeTriangleTrackBlockBrakes;
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:
-            return GigaRCTrackLeftBankedQuarterTurn325DegUp;
+            return LatticeTriangleTrackLeftBankedQuarterTurn325DegUp;
         case TrackElemType::RightBankedQuarterTurn3TileUp25:
-            return GigaRCTrackRightBankedQuarterTurn325DegUp;
+            return LatticeTriangleTrackRightBankedQuarterTurn325DegUp;
         case TrackElemType::LeftBankedQuarterTurn3TileDown25:
-            return GigaRCTrackLeftBankedQuarterTurn325DegDown;
+            return LatticeTriangleTrackLeftBankedQuarterTurn325DegDown;
         case TrackElemType::RightBankedQuarterTurn3TileDown25:
-            return GigaRCTrackRightBankedQuarterTurn325DegDown;
+            return LatticeTriangleTrackRightBankedQuarterTurn325DegDown;
         case TrackElemType::LeftBankedQuarterTurn5TileUp25:
-            return GigaRCTrackLeftBankedQuarterTurn525DegUp;
+            return LatticeTriangleTrackLeftBankedQuarterTurn525DegUp;
         case TrackElemType::RightBankedQuarterTurn5TileUp25:
-            return GigaRCTrackRightBankedQuarterTurn525DegUp;
+            return LatticeTriangleTrackRightBankedQuarterTurn525DegUp;
         case TrackElemType::LeftBankedQuarterTurn5TileDown25:
-            return GigaRCTrackLeftBankedQuarterTurn525DegDown;
+            return LatticeTriangleTrackLeftBankedQuarterTurn525DegDown;
         case TrackElemType::RightBankedQuarterTurn5TileDown25:
-            return GigaRCTrackRightBankedQuarterTurn525DegDown;
+            return LatticeTriangleTrackRightBankedQuarterTurn525DegDown;
         case TrackElemType::Up25ToLeftBankedUp25:
-            return GigaRCTrack25DegUpToLeftBanked25DegUp;
+            return LatticeTriangleTrack25DegUpToLeftBanked25DegUp;
         case TrackElemType::Up25ToRightBankedUp25:
-            return GigaRCTrack25DegUpToRightBanked25DegUp;
+            return LatticeTriangleTrack25DegUpToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToUp25:
-            return GigaRCTrackLeftBanked25DegUpTo25DegUp;
+            return LatticeTriangleTrackLeftBanked25DegUpTo25DegUp;
         case TrackElemType::RightBankedUp25ToUp25:
-            return GigaRCTrackRightBanked25DegUpTo25DegUp;
+            return LatticeTriangleTrackRightBanked25DegUpTo25DegUp;
         case TrackElemType::Down25ToLeftBankedDown25:
-            return GigaRCTrack25DegDownToLeftBanked25DegDown;
+            return LatticeTriangleTrack25DegDownToLeftBanked25DegDown;
         case TrackElemType::Down25ToRightBankedDown25:
-            return GigaRCTrack25DegDownToRightBanked25DegDown;
+            return LatticeTriangleTrack25DegDownToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToDown25:
-            return GigaRCTrackLeftBanked25DegDownTo25DegDown;
+            return LatticeTriangleTrackLeftBanked25DegDownTo25DegDown;
         case TrackElemType::RightBankedDown25ToDown25:
-            return GigaRCTrackRightBanked25DegDownTo25DegDown;
+            return LatticeTriangleTrackRightBanked25DegDownTo25DegDown;
         case TrackElemType::LeftBankedFlatToLeftBankedUp25:
-            return GigaRCTrackLeftBankedFlatToLeftBanked25DegUp;
+            return LatticeTriangleTrackLeftBankedFlatToLeftBanked25DegUp;
         case TrackElemType::RightBankedFlatToRightBankedUp25:
-            return GigaRCTrackRightBankedFlatToRightBanked25DegUp;
+            return LatticeTriangleTrackRightBankedFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
-            return GigaRCTrackLeftBanked25DegUpToLeftBankedFlat;
+            return LatticeTriangleTrackLeftBanked25DegUpToLeftBankedFlat;
         case TrackElemType::RightBankedUp25ToRightBankedFlat:
-            return GigaRCTrackRightBanked25DegUpToRightBankedFlat;
+            return LatticeTriangleTrackRightBanked25DegUpToRightBankedFlat;
         case TrackElemType::LeftBankedFlatToLeftBankedDown25:
-            return GigaRCTrackLeftBankedFlatToLeftBanked25DegDown;
+            return LatticeTriangleTrackLeftBankedFlatToLeftBanked25DegDown;
         case TrackElemType::RightBankedFlatToRightBankedDown25:
-            return GigaRCTrackRightBankedFlatToRightBanked25DegDown;
+            return LatticeTriangleTrackRightBankedFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
-            return GigaRCTrackLeftBanked25DegDownToLeftBankedFlat;
+            return LatticeTriangleTrackLeftBanked25DegDownToLeftBankedFlat;
         case TrackElemType::RightBankedDown25ToRightBankedFlat:
-            return GigaRCTrackRightBanked25DegDownToRightBankedFlat;
+            return LatticeTriangleTrackRightBanked25DegDownToRightBankedFlat;
         case TrackElemType::FlatToLeftBankedUp25:
-            return GigaRCTrackFlatToLeftBanked25DegUp;
+            return LatticeTriangleTrackFlatToLeftBanked25DegUp;
         case TrackElemType::FlatToRightBankedUp25:
-            return GigaRCTrackFlatToRightBanked25DegUp;
+            return LatticeTriangleTrackFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToFlat:
-            return GigaRCTrackLeftBanked25DegUpToFlat;
+            return LatticeTriangleTrackLeftBanked25DegUpToFlat;
         case TrackElemType::RightBankedUp25ToFlat:
-            return GigaRCTrackRightBanked25DegUpToFlat;
+            return LatticeTriangleTrackRightBanked25DegUpToFlat;
         case TrackElemType::FlatToLeftBankedDown25:
-            return GigaRCTrackFlatToLeftBanked25DegDown;
+            return LatticeTriangleTrackFlatToLeftBanked25DegDown;
         case TrackElemType::FlatToRightBankedDown25:
-            return GigaRCTrackFlatToRightBanked25DegDown;
+            return LatticeTriangleTrackFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToFlat:
-            return GigaRCTrackLeftBanked25DegDownToFlat;
+            return LatticeTriangleTrackLeftBanked25DegDownToFlat;
         case TrackElemType::RightBankedDown25ToFlat:
-            return GigaRCTrackRightBanked25DegDownToFlat;
+            return LatticeTriangleTrackRightBanked25DegDownToFlat;
         case TrackElemType::Booster:
-            return GigaRCTrackBooster;
+            return LatticeTriangleTrackBooster;
         case TrackElemType::PoweredLift:
-            return GigaRCTrackPoweredLift;
+            return LatticeTriangleTrackPoweredLift;
 
         case TrackElemType::Up90:
-            return GigaRCTrack90DegUp;
+            return LatticeTriangleTrack90DegUp;
         case TrackElemType::Down90:
-            return GigaRCTrack90DegDown;
+            return LatticeTriangleTrack90DegDown;
         case TrackElemType::Up60ToUp90:
-            return GigaRCTrack60DegUpTo90DegUp;
+            return LatticeTriangleTrack60DegUpTo90DegUp;
         case TrackElemType::Down90ToDown60:
-            return GigaRCTrack90DegDownTo60DegDown;
+            return LatticeTriangleTrack90DegDownTo60DegDown;
         case TrackElemType::Up90ToUp60:
-            return GigaRCTrack90DegUpTo60DegUp;
+            return LatticeTriangleTrack90DegUpTo60DegUp;
         case TrackElemType::Down60ToDown90:
-            return GigaRCTrack60DegDownTo90DegDown;
+            return LatticeTriangleTrack60DegDownTo90DegDown;
         case TrackElemType::LeftQuarterTurn1TileUp90:
-            return GigaRCTrackLeftQuarterTurn190DegUp;
+            return LatticeTriangleTrackLeftQuarterTurn190DegUp;
         case TrackElemType::RightQuarterTurn1TileUp90:
-            return GigaRCTrackRightQuarterTurn190DegUp;
+            return LatticeTriangleTrackRightQuarterTurn190DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown90:
-            return GigaRCTrackLeftQuarterTurn190DegDown;
+            return LatticeTriangleTrackLeftQuarterTurn190DegDown;
         case TrackElemType::RightQuarterTurn1TileDown90:
-            return GigaRCTrackRightQuarterTurn190DegDown;
+            return LatticeTriangleTrackRightQuarterTurn190DegDown;
         case TrackElemType::LeftBarrelRollUpToDown:
-            return GigaRCTrackLeftBarrelRollUpToDown;
+            return LatticeTriangleTrackLeftBarrelRollUpToDown;
         case TrackElemType::RightBarrelRollUpToDown:
-            return GigaRCTrackRightBarrelRollUpToDown;
+            return LatticeTriangleTrackRightBarrelRollUpToDown;
         case TrackElemType::LeftBarrelRollDownToUp:
-            return GigaRCTrackLeftBarrelRollDownToUp;
+            return LatticeTriangleTrackLeftBarrelRollDownToUp;
         case TrackElemType::RightBarrelRollDownToUp:
-            return GigaRCTrackRightBarrelRollDownToUp;
+            return LatticeTriangleTrackRightBarrelRollDownToUp;
         case TrackElemType::HalfLoopUp:
-            return GigaRCTrackHalfLoopUp;
+            return LatticeTriangleTrackHalfLoopUp;
         case TrackElemType::HalfLoopDown:
-            return GigaRCTrackHalfLoopDown;
+            return LatticeTriangleTrackHalfLoopDown;
         case TrackElemType::LeftVerticalLoop:
-            return GigaRCTrackLeftVerticalLoop;
+            return LatticeTriangleTrackLeftVerticalLoop;
         case TrackElemType::RightVerticalLoop:
-            return GigaRCTrackRightVerticalLoop;
+            return LatticeTriangleTrackRightVerticalLoop;
         case TrackElemType::LeftCorkscrewUp:
-            return GigaRCTrackLeftCorkscrewUp;
+            return LatticeTriangleTrackLeftCorkscrewUp;
         case TrackElemType::RightCorkscrewUp:
-            return GigaRCTrackRightCorkscrewUp;
+            return LatticeTriangleTrackRightCorkscrewUp;
         case TrackElemType::LeftCorkscrewDown:
-            return GigaRCTrackLeftCorkscrewDown;
+            return LatticeTriangleTrackLeftCorkscrewDown;
         case TrackElemType::RightCorkscrewDown:
-            return GigaRCTrackRightCorkscrewDown;
+            return LatticeTriangleTrackRightCorkscrewDown;
 
         case TrackElemType::LeftLargeCorkscrewUp:
-            return GigaRCTrackLeftLargeCorkscrewUp;
+            return LatticeTriangleTrackLeftLargeCorkscrewUp;
         case TrackElemType::RightLargeCorkscrewUp:
-            return GigaRCTrackRightLargeCorkscrewUp;
+            return LatticeTriangleTrackRightLargeCorkscrewUp;
         case TrackElemType::LeftLargeCorkscrewDown:
-            return GigaRCTrackLeftLargeCorkscrewDown;
+            return LatticeTriangleTrackLeftLargeCorkscrewDown;
         case TrackElemType::RightLargeCorkscrewDown:
-            return GigaRCTrackRightLargeCorkscrewDown;
+            return LatticeTriangleTrackRightLargeCorkscrewDown;
         case TrackElemType::LeftZeroGRollUp:
-            return GigaRCTrackLeftZeroGRollUp;
+            return LatticeTriangleTrackLeftZeroGRollUp;
         case TrackElemType::RightZeroGRollUp:
-            return GigaRCTrackRightZeroGRollUp;
+            return LatticeTriangleTrackRightZeroGRollUp;
         case TrackElemType::LeftZeroGRollDown:
-            return GigaRCTrackLeftZeroGRollDown;
+            return LatticeTriangleTrackLeftZeroGRollDown;
         case TrackElemType::RightZeroGRollDown:
-            return GigaRCTrackRightZeroGRollDown;
+            return LatticeTriangleTrackRightZeroGRollDown;
         case TrackElemType::LeftLargeZeroGRollUp:
-            return GigaRCTrackLeftLargeZeroGRollUp;
+            return LatticeTriangleTrackLeftLargeZeroGRollUp;
         case TrackElemType::RightLargeZeroGRollUp:
-            return GigaRCTrackRightLargeZeroGRollUp;
+            return LatticeTriangleTrackRightLargeZeroGRollUp;
         case TrackElemType::LeftLargeZeroGRollDown:
-            return GigaRCTrackLeftLargeZeroGRollDown;
+            return LatticeTriangleTrackLeftLargeZeroGRollDown;
         case TrackElemType::RightLargeZeroGRollDown:
-            return GigaRCTrackRightLargeZeroGRollDown;
+            return LatticeTriangleTrackRightLargeZeroGRollDown;
         case TrackElemType::Up90ToInvertedFlatQuarterLoop:
-            return GigaRCTrack90DegToInvertedFlatQuarterLoopUp;
+            return LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp;
         case TrackElemType::InvertedFlatToDown90QuarterLoop:
-            return GigaRCTrackInvertedFlatTo90DegQuarterLoopDown;
+            return LatticeTriangleTrackInvertedFlatTo90DegQuarterLoopDown;
         case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
-            return GigaRCTrackLeftBankToLeftQuarterTurn3Tile25DegUp;
+            return LatticeTriangleTrackLeftBankToLeftQuarterTurn3Tile25DegUp;
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
-            return GigaRCTrackRightBankToRightQuarterTurn3Tile25DegUp;
+            return LatticeTriangleTrackRightBankToRightQuarterTurn3Tile25DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
-            return GigaRCTrackLeftQuarterTurn3Tile25DegDownToLeftBank;
+            return LatticeTriangleTrackLeftQuarterTurn3Tile25DegDownToLeftBank;
         case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
-            return GigaRCTrackRightQuarterTurn3Tile25DegDownToRightBank;
+            return LatticeTriangleTrackRightQuarterTurn3Tile25DegDownToRightBank;
         case TrackElemType::LeftMediumHalfLoopUp:
-            return GigaRCTrackLeftMediumHalfLoopUp;
+            return LatticeTriangleTrackLeftMediumHalfLoopUp;
         case TrackElemType::RightMediumHalfLoopUp:
-            return GigaRCTrackRightMediumHalfLoopUp;
+            return LatticeTriangleTrackRightMediumHalfLoopUp;
         case TrackElemType::LeftMediumHalfLoopDown:
-            return GigaRCTrackLeftMediumHalfLoopDown;
+            return LatticeTriangleTrackLeftMediumHalfLoopDown;
         case TrackElemType::RightMediumHalfLoopDown:
-            return GigaRCTrackRightMediumHalfLoopDown;
+            return LatticeTriangleTrackRightMediumHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopUp:
-            return GigaRCTrackLeftLargeHalfLoopUp;
+            return LatticeTriangleTrackLeftLargeHalfLoopUp;
         case TrackElemType::RightLargeHalfLoopUp:
-            return GigaRCTrackRightLargeHalfLoopUp;
+            return LatticeTriangleTrackRightLargeHalfLoopUp;
         case TrackElemType::RightLargeHalfLoopDown:
-            return GigaRCTrackRightLargeHalfLoopDown;
+            return LatticeTriangleTrackRightLargeHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopDown:
-            return GigaRCTrackLeftLargeHalfLoopDown;
+            return LatticeTriangleTrackLeftLargeHalfLoopDown;
         case TrackElemType::FlatToUp60:
-            return GigaRCTrackFlatTo60DegUp;
+            return LatticeTriangleTrackFlatTo60DegUp;
         case TrackElemType::Up60ToFlat:
-            return GigaRCTrack60DegUpToFlat;
+            return LatticeTriangleTrack60DegUpToFlat;
         case TrackElemType::FlatToDown60:
-            return GigaRCTrackFlatTo60DegDown;
+            return LatticeTriangleTrackFlatTo60DegDown;
         case TrackElemType::Down60ToFlat:
-            return GigaRCTrack60DegDownToFlat;
+            return LatticeTriangleTrack60DegDownToFlat;
         case TrackElemType::DiagFlatToUp60:
-            return GigaRCTrackDiagFlatTo60DegUp;
+            return LatticeTriangleTrackDiagFlatTo60DegUp;
         case TrackElemType::DiagUp60ToFlat:
-            return GigaRCTrackDiag60DegUpToFlat;
+            return LatticeTriangleTrackDiag60DegUpToFlat;
         case TrackElemType::DiagFlatToDown60:
-            return GigaRCTrackDiagFlatTo60DegDown;
+            return LatticeTriangleTrackDiagFlatTo60DegDown;
         case TrackElemType::DiagDown60ToFlat:
-            return GigaRCTrackDiag60DegDownToFlat;
+            return LatticeTriangleTrackDiag60DegDownToFlat;
         case TrackElemType::LeftEighthToDiagUp25:
-            return GigaRCTrackLeftEighthToDiagUp25;
+            return LatticeTriangleTrackLeftEighthToDiagUp25;
         case TrackElemType::RightEighthToDiagUp25:
-            return GigaRCTrackRightEighthToDiagUp25;
+            return LatticeTriangleTrackRightEighthToDiagUp25;
         case TrackElemType::LeftEighthToDiagDown25:
-            return GigaRCTrackLeftEighthToDiagDown25;
+            return LatticeTriangleTrackLeftEighthToDiagDown25;
         case TrackElemType::RightEighthToDiagDown25:
-            return GigaRCTrackRightEighthToDiagDown25;
+            return LatticeTriangleTrackRightEighthToDiagDown25;
         case TrackElemType::LeftEighthToOrthogonalUp25:
-            return GigaRCTrackLeftEighthToOrthogonalUp25;
+            return LatticeTriangleTrackLeftEighthToOrthogonalUp25;
         case TrackElemType::RightEighthToOrthogonalUp25:
-            return GigaRCTrackRightEighthToOrthogonalUp25;
+            return LatticeTriangleTrackRightEighthToOrthogonalUp25;
         case TrackElemType::LeftEighthToOrthogonalDown25:
-            return GigaRCTrackLeftEighthToOrthogonalDown25;
+            return LatticeTriangleTrackLeftEighthToOrthogonalDown25;
         case TrackElemType::RightEighthToOrthogonalDown25:
-            return GigaRCTrackRightEighthToOrthogonalDown25;
+            return LatticeTriangleTrackRightEighthToOrthogonalDown25;
         case TrackElemType::DiagUp25ToLeftBankedUp25:
-            return GigaRCTrackDiagUp25ToLeftBankedUp25;
+            return LatticeTriangleTrackDiagUp25ToLeftBankedUp25;
         case TrackElemType::DiagUp25ToRightBankedUp25:
-            return GigaRCTrackDiagUp25ToRightBankedUp25;
+            return LatticeTriangleTrackDiagUp25ToRightBankedUp25;
         case TrackElemType::DiagLeftBankedUp25ToUp25:
-            return GigaRCTrackDiagLeftBankedUp25ToUp25;
+            return LatticeTriangleTrackDiagLeftBankedUp25ToUp25;
         case TrackElemType::DiagRightBankedUp25ToUp25:
-            return GigaRCTrackDiagRightBankedUp25ToUp25;
+            return LatticeTriangleTrackDiagRightBankedUp25ToUp25;
         case TrackElemType::DiagDown25ToLeftBankedDown25:
-            return GigaRCTrackDiagDown25ToLeftBankedDown25;
+            return LatticeTriangleTrackDiagDown25ToLeftBankedDown25;
         case TrackElemType::DiagDown25ToRightBankedDown25:
-            return GigaRCTrackDiagDown25ToRightBankedDown25;
+            return LatticeTriangleTrackDiagDown25ToRightBankedDown25;
         case TrackElemType::DiagLeftBankedDown25ToDown25:
-            return GigaRCTrackDiagLeftBankedDown25ToDown25;
+            return LatticeTriangleTrackDiagLeftBankedDown25ToDown25;
         case TrackElemType::DiagRightBankedDown25ToDown25:
-            return GigaRCTrackDiagRightBankedDown25ToDown25;
+            return LatticeTriangleTrackDiagRightBankedDown25ToDown25;
         case TrackElemType::DiagLeftBankedFlatToLeftBankedUp25:
-            return GigaRCTrackDiagLeftBankedFlatToLeftBankedUp25;
+            return LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedUp25;
         case TrackElemType::DiagRightBankedFlatToRightBankedUp25:
-            return GigaRCTrackDiagRightBankedFlatToRightBankedUp25;
+            return LatticeTriangleTrackDiagRightBankedFlatToRightBankedUp25;
         case TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat:
-            return GigaRCTrackDiagLeftBankedUp25ToLeftBankedFlat;
+            return LatticeTriangleTrackDiagLeftBankedUp25ToLeftBankedFlat;
         case TrackElemType::DiagRightBankedUp25ToRightBankedFlat:
-            return GigaRCTrackDiagRightBankedUp25ToRightBankedFlat;
+            return LatticeTriangleTrackDiagRightBankedUp25ToRightBankedFlat;
         case TrackElemType::DiagLeftBankedFlatToLeftBankedDown25:
-            return GigaRCTrackDiagLeftBankedFlatToLeftBankedDown25;
+            return LatticeTriangleTrackDiagLeftBankedFlatToLeftBankedDown25;
         case TrackElemType::DiagRightBankedFlatToRightBankedDown25:
-            return GigaRCTrackDiagRightBankedFlatToRightBankedDown25;
+            return LatticeTriangleTrackDiagRightBankedFlatToRightBankedDown25;
         case TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat:
-            return GigaRCTrackDiagLeftBankedDown25ToLeftBankedFlat;
+            return LatticeTriangleTrackDiagLeftBankedDown25ToLeftBankedFlat;
         case TrackElemType::DiagRightBankedDown25ToRightBankedFlat:
-            return GigaRCTrackDiagRightBankedDown25ToRightBankedFlat;
+            return LatticeTriangleTrackDiagRightBankedDown25ToRightBankedFlat;
         case TrackElemType::DiagUp25LeftBanked:
-            return GigaRCTrackDiagUp25LeftBanked;
+            return LatticeTriangleTrackDiagUp25LeftBanked;
         case TrackElemType::DiagUp25RightBanked:
-            return GigaRCTrackDiagUp25RightBanked;
+            return LatticeTriangleTrackDiagUp25RightBanked;
         case TrackElemType::DiagDown25LeftBanked:
-            return GigaRCTrackDiagDown25LeftBanked;
+            return LatticeTriangleTrackDiagDown25LeftBanked;
         case TrackElemType::DiagDown25RightBanked:
-            return GigaRCTrackDiagDown25RightBanked;
+            return LatticeTriangleTrackDiagDown25RightBanked;
         case TrackElemType::DiagFlatToLeftBankedUp25:
-            return GigaRCTrackDiagFlatToLeftBankedUp25;
+            return LatticeTriangleTrackDiagFlatToLeftBankedUp25;
         case TrackElemType::DiagFlatToRightBankedUp25:
-            return GigaRCTrackDiagFlatToRightBankedUp25;
+            return LatticeTriangleTrackDiagFlatToRightBankedUp25;
         case TrackElemType::DiagLeftBankedUp25ToFlat:
-            return GigaRCTrackDiagLeftBankedUp25ToFlat;
+            return LatticeTriangleTrackDiagLeftBankedUp25ToFlat;
         case TrackElemType::DiagRightBankedUp25ToFlat:
-            return GigaRCTrackDiagRightBankedUp25ToFlat;
+            return LatticeTriangleTrackDiagRightBankedUp25ToFlat;
         case TrackElemType::DiagFlatToLeftBankedDown25:
-            return GigaRCTrackDiagFlatToLeftBankedDown25;
+            return LatticeTriangleTrackDiagFlatToLeftBankedDown25;
         case TrackElemType::DiagFlatToRightBankedDown25:
-            return GigaRCTrackDiagFlatToRightBankedDown25;
+            return LatticeTriangleTrackDiagFlatToRightBankedDown25;
         case TrackElemType::DiagLeftBankedDown25ToFlat:
-            return GigaRCTrackDiagLeftBankedDown25ToFlat;
+            return LatticeTriangleTrackDiagLeftBankedDown25ToFlat;
         case TrackElemType::DiagRightBankedDown25ToFlat:
-            return GigaRCTrackDiagRightBankedDown25ToFlat;
+            return LatticeTriangleTrackDiagRightBankedDown25ToFlat;
         case TrackElemType::LeftEighthBankToDiagUp25:
-            return GigaRCTrackLeftEighthBankToDiagUp25;
+            return LatticeTriangleTrackLeftEighthBankToDiagUp25;
         case TrackElemType::RightEighthBankToDiagUp25:
-            return GigaRCTrackRightEighthBankToDiagUp25;
+            return LatticeTriangleTrackRightEighthBankToDiagUp25;
         case TrackElemType::LeftEighthBankToDiagDown25:
-            return GigaRCTrackLeftEighthBankToDiagDown25;
+            return LatticeTriangleTrackLeftEighthBankToDiagDown25;
         case TrackElemType::RightEighthBankToDiagDown25:
-            return GigaRCTrackRightEighthBankToDiagDown25;
+            return LatticeTriangleTrackRightEighthBankToDiagDown25;
         case TrackElemType::LeftEighthBankToOrthogonalUp25:
-            return GigaRCTrackLeftEighthBankToOrthogonalUp25;
+            return LatticeTriangleTrackLeftEighthBankToOrthogonalUp25;
         case TrackElemType::RightEighthBankToOrthogonalUp25:
-            return GigaRCTrackRightEighthBankToOrthogonalUp25;
+            return LatticeTriangleTrackRightEighthBankToOrthogonalUp25;
         case TrackElemType::LeftEighthBankToOrthogonalDown25:
-            return GigaRCTrackLeftEighthBankToOrthogonalDown25;
+            return LatticeTriangleTrackLeftEighthBankToOrthogonalDown25;
         case TrackElemType::RightEighthBankToOrthogonalDown25:
-            return GigaRCTrackRightEighthBankToOrthogonalDown25;
+            return LatticeTriangleTrackRightEighthBankToOrthogonalDown25;
         case TrackElemType::DiagBlockBrakes:
         case TrackElemType::DiagBrakes:
-            return GigaRCTrackDiagBrakes;
+            return LatticeTriangleTrackDiagBrakes;
     }
     return nullptr;
 }

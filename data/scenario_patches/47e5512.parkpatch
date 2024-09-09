@@ -1,0 +1,19 @@
+{
+    "scenario_name": "Mystic Mountain (.sea)",
+    "sha256": "47e55126051f5450c1a63c893035768b895deb150e78bb3e485fe4624a0cabd4",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 53, 79 ]
+            ]
+        }
+    },
+    "water": [
+        {
+            "height": 288,
+            "coordinates": [
+                [ 86, 24 ], [ 86, 25 ], [ 87, 23 ], [ 87, 24 ], [ 87, 25 ], [ 88, 22 ], [ 88, 23 ], [ 88, 24 ], [ 89, 22 ], [ 89, 23 ]
+            ]
+        }
+    ]
+}

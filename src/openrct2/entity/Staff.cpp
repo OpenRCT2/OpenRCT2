@@ -165,7 +165,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
         {
             if (path->AsPath()->GetSlopeDirection() == adjac_dir)
             {
-                adjacPos.z += PATH_HEIGHT_STEP;
+                adjacPos.z += kPathHeightStep;
             }
         }
 
@@ -859,7 +859,7 @@ bool Staff::IsMechanicHeadingToFixRideBlockingPath()
 
     auto tileCoords = TileCoordsXYZ(CoordsXYZ{ GetDestination(), NextLoc.z });
     auto trackElement = MapGetFirstTileElementWithBaseHeightBetween<TrackElement>(
-        { tileCoords, tileCoords.z + PATH_HEIGHT_STEP });
+        { tileCoords, tileCoords.z + kPathHeightStep });
     if (trackElement == nullptr)
         return false;
 
@@ -1008,7 +1008,7 @@ GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
 uint32_t StaffGetAvailableEntertainerCostumes()
 {
     uint32_t entertainerCostumes = 0;
-    for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    for (int32_t i = 0; i < kMaxSceneryGroupObjects; i++)
     {
         if (SceneryGroupIsInvented(i))
         {
@@ -2181,8 +2181,8 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION)
-            || !ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
+            || !ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
         {
             return true;
         }
@@ -2268,8 +2268,8 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION)
-            || !ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
+            || !ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
         {
             return true;
         }
@@ -2345,8 +2345,8 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION)
-            || !ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
+            || !ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
         {
             return true;
         }

@@ -337,7 +337,7 @@ static void MapGenPlaceTrees()
     // Place trees
     CoordsXY pos;
     float treeToLandRatio = (10 + (UtilRand() % 30)) / 100.0f;
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     for (int32_t y = 1; y < gameState.MapSize.y - 1; y++)
     {
         for (int32_t x = 1; x < gameState.MapSize.x - 1; x++)
@@ -418,7 +418,7 @@ static void MapGenPlaceTrees()
  */
 static void MapGenSetWaterLevel(int32_t waterLevel)
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     for (int32_t y = 1; y < gameState.MapSize.y - 1; y++)
     {
         for (int32_t x = 1; x < gameState.MapSize.x - 1; x++)

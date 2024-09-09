@@ -1800,7 +1800,6 @@ STR_2450    :{YELLOW}Ihre Werbekampagne für den Park ist zu Ende
 STR_2451    :{YELLOW}Ihre Werbekampagne für d. {STRINGID} ist zu Ende
 STR_2452    :{WINDOW_COLOUR_2}Kontostand (abzüglich Darlehen): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Kontostand (abzüglich Darlehen): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Finanzkonten anzeigen
 STR_2458    :Kontostand (abzüglich Darlehen){NEWLINE}im Zeitverlauf anzeigen
 STR_2459    :Verkehrswertdiagramm im{NEWLINE}Zeitverlauf anzeigen
@@ -3428,7 +3427,6 @@ STR_6356    :Erzeugt Enten, falls der Park Wasser enthält
 STR_6357    :Entfernt alle Enten aus der Karte
 STR_6358    :Seite {UINT16}
 STR_6359    :{POP16}{POP16}Seite {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Lichter an Fahrgeschäften akt. (experimentell)
 STR_6362    :Falls aktiviert, werden Fahrzeuge für Streckenfahrgeschäfte in der Nacht leuchten.
 STR_6363    :Text in die Zwischenablage kopiert
@@ -3723,6 +3721,13 @@ STR_6652    :Fehlermeldung
 STR_6653    :Alle Quellen angezeigt
 STR_6654    :{POP16}{UINT16} Quellen angezeigt
 STR_6655    :Nur ‘{POP16}{STRINGID}’
+STR_6656    :Alle Zäune vom Park entfernen
+STR_6657    :Gelände nicht im Besitz
+STR_6658    :Legen Sie das Gelände fest,{NEWLINE}das weder dem Park gehören soll noch gekauft werden kann
+STR_6659    :Gäste ignorieren Preise
+STR_6660    :Gäste werden den Preis von Fahrgeschäften und Läden ignorieren
+STR_6661    :Alle zufällig
+STR_6662    :Zufallsfarben für jeden Zug oder jedes Fahrzeug
 
 #############
 # Scenarios #

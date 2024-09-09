@@ -25,28 +25,28 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 100;
     static constexpr int32_t WW = 400;
 
+    enum WindowCustomCurrencyWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_RATE,
+        WIDX_RATE_UP,
+        WIDX_RATE_DOWN,
+        WIDX_SYMBOL_TEXT,
+        WIDX_AFFIX_DROPDOWN,
+        WIDX_AFFIX_DROPDOWN_BUTTON,
+    };
+
     // clang-format off
-enum WindowCustomCurrencyWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_RATE,
-    WIDX_RATE_UP,
-    WIDX_RATE_DOWN,
-    WIDX_SYMBOL_TEXT,
-    WIDX_AFFIX_DROPDOWN,
-    WIDX_AFFIX_DROPDOWN_BUTTON,
-};
-
-static Widget window_custom_currency_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeSpinnerWidgets({100, 30}, {101, 11}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
-    MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY          ),
-    MakeWidget        ({220, 50}, {131, 11}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                 ),
-    MakeWidget        ({339, 51}, { 11,  9}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH ),
-    kWidgetsEnd,
-};
-
+    static Widget window_custom_currency_widgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeSpinnerWidgets({100, 30}, {101, 11}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
+        MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY          ),
+        MakeWidget        ({220, 50}, {131, 11}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                 ),
+        MakeWidget        ({339, 51}, { 11,  9}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH ),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class CustomCurrencyWindow final : public Window

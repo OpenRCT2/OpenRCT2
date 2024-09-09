@@ -1800,7 +1800,6 @@ STR_2450    :{YELLOW}Je advertentiecampagne voor het park is afgelopen
 STR_2451    :{YELLOW}Je advertentiecampagne voor {STRINGID} is afgelopen
 STR_2452    :{WINDOW_COLOUR_2}Saldo (zonder lening): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Saldo (zonder lening): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Laat financiële posten zien
 STR_2458    :Toon grafiek van saldoverloop (zonder lening)
 STR_2459    :Toon grafiek van parkwaardeverloop
@@ -3430,7 +3429,6 @@ STR_6356    :Maakt eenden aan, mits er water op de kaart is.
 STR_6357    :Verwijdert alle eenden van de kaart.
 STR_6358    :Pagina {UINT16}
 STR_6359    :{POP16}{POP16}Pagina {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Belichtingseffecten op attracties (experimenteel)
 STR_6362    :Als dit is ingeschakeld zullen de voertuigen van attracties die een baan hebben ’s nachts verlicht worden.
 STR_6363    :Tekst is naar het klembord gekopieerd.
@@ -3722,6 +3720,14 @@ STR_6649    :Scenario laden…
 STR_6650    :Opgeslagen park laden…
 STR_6651    :{STRING} ({COMMA32}%)
 STR_6652    :Foutmeldingen
+STR_6653    :Alle bronnen
+STR_6654    :{POP16}{UINT16} bronnen
+STR_6655    :Enkel ‘{POP16}{STRINGID}’
+STR_6656    :Verwijdert alle parkafscheidingen.
+STR_6657    :Niet in bezit
+STR_6658    :Land dat niet bij het park hoort en ook niet te koop is.
+STR_6659    :Bezoekers negeren prijzen
+STR_6660    :Als deze optie is ingeschakeld zijn bezoekers bereid om elke prijs te betalen voor attracties en kraampjes.
 
 #############
 # Scenarios #

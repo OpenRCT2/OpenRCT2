@@ -77,7 +77,7 @@ static void SetupTrackManagerObjects()
 
             for (auto rideType : item->RideInfo.RideType)
             {
-                if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+                if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::hasTrack))
                 {
                     *selectionFlags &= ~ObjectSelectionFlags::Flag6;
                     break;
@@ -108,7 +108,7 @@ static void SetupTrackDesignerObjects()
             {
                 if (rideType != RIDE_TYPE_NULL)
                 {
-                    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER))
+                    if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::showInTrackDesigner))
                     {
                         *selectionFlags &= ~ObjectSelectionFlags::Flag6;
                         break;
@@ -483,7 +483,7 @@ void ResetSelectedObjectCountAndSize()
 
 void FinishObjectSelection()
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
         SetEveryRideTypeInvented();

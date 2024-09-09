@@ -35,34 +35,34 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
     static constexpr int32_t WINDOW_PADDING = 5;
 
+    enum
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_BACK,
+        WIDX_FILTER_STRING,
+        WIDX_FILTER_CLEAR,
+        WIDX_TRACK_LIST,
+        WIDX_TRACK_PREVIEW,
+        WIDX_ROTATE,
+        WIDX_TOGGLE_SCENERY,
+    };
+
+    validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
+
     // clang-format off
-enum {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_BACK,
-    WIDX_FILTER_STRING,
-    WIDX_FILTER_CLEAR,
-    WIDX_TRACK_LIST,
-    WIDX_TRACK_PREVIEW,
-    WIDX_ROTATE,
-    WIDX_TOGGLE_SCENERY,
-};
-
-validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
-
-static Widget _trackListWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_SELECT_OTHER_RIDE                                       ),
-    MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,     WindowColour::Secondary                                                              ),
-    MakeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::Primary  , STR_OBJECT_SEARCH_CLEAR                                     ),
-    MakeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary  , SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
-    MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                                ),
-    MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
-    MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             ),
-    kWidgetsEnd,
-};
-
+    static Widget _trackListWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader,  WindowColour::Primary, STR_SELECT_OTHER_RIDE                                       ),
+        MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                            ),
+        MakeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::Primary, STR_OBJECT_SEARCH_CLEAR                                     ),
+        MakeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary, SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
+        MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                              ),
+        MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
+        MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary, ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             ),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;
@@ -185,7 +185,7 @@ static Widget _trackListWidgets[] = {
             std::string entryName;
             if (item.Type < 0x80)
             {
-                if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (GetRideTypeDescriptor(item.Type).HasFlag(RtdFlag::listVehiclesSeparately))
                 {
                     entryName = GetRideEntryName(item.EntryIndex);
                 }
@@ -214,11 +214,11 @@ static Widget _trackListWidgets[] = {
 
         void OnOpen() override
         {
-            LoadDesignsList(_window_track_list_item);
-
             String::Set(_filterString, sizeof(_filterString), "");
             _trackListWidgets[WIDX_FILTER_STRING].string = _filterString;
             widgets = _trackListWidgets;
+
+            LoadDesignsList(_window_track_list_item);
 
             if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
             {
@@ -369,7 +369,7 @@ static Widget _trackListWidgets[] = {
 
             FilterList();
 
-            scrolls->v_top = 0;
+            scrolls->contentOffsetY = 0;
 
             Invalidate();
         }
@@ -558,10 +558,10 @@ static Widget _trackListWidgets[] = {
             screenPos.y += kListRowHeight + 4;
 
             // Information for tracked rides.
-            if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+            if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasTrack))
             {
                 const auto& rtd = GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex);
-                if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                if (!rtd.HasFlag(RtdFlag::isMaze))
                 {
                     if (_loadedTrackDesign->trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
                     {
@@ -594,7 +594,7 @@ static Widget _trackListWidgets[] = {
                     screenPos.y += kListRowHeight;
                 }
 
-                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
+                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasGForces))
                 {
                     // Maximum positive vertical Gs
                     ft = Formatter();
@@ -624,7 +624,7 @@ static Widget _trackListWidgets[] = {
                     }
                 }
 
-                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
+                if (GetRideTypeDescriptor(_loadedTrackDesign->trackAndVehicle.rtdIndex).HasFlag(RtdFlag::hasDrops))
                 {
                     // Drops
                     ft = Formatter();

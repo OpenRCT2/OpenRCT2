@@ -1058,7 +1058,7 @@ void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, Trac
 uint8_t RideEntryGetVehicleAtPosition(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void RideUpdateVehicleColours(const Ride& ride);
 
-OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideObjectEntry& rideEntry);
+OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(const RideObjectEntry& rideEntry);
 
 enum class RideSetSetting : uint8_t;
 money64 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value);

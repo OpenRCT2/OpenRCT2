@@ -7,10 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../input/ShortcutManager.h"
 #include "Window.h"
 
 #include <algorithm>
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
@@ -40,13 +41,13 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-static Widget _shortcutWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
-    MakeWidget({4,    47}, {412, 215}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
-    MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
-    kWidgetsEnd,
-};
+    static Widget _shortcutWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
+        MakeWidget({4,    47}, {412, 215}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
+        MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     static constexpr StringId CHANGE_WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
@@ -59,11 +60,11 @@ static Widget _shortcutWidgets[] = {
     };
 
     // clang-format off
-static Widget window_shortcut_change_widgets[] = {
-    WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
-    MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
-    kWidgetsEnd,
-};
+    static Widget window_shortcut_change_widgets[] = {
+        WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
+        MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class ChangeShortcutWindow final : public Window
@@ -266,9 +267,9 @@ static Widget window_shortcut_change_widgets[] = {
         {
             auto h = static_cast<int32_t>(_list.size() * kScrollableRowHeight);
             auto bottom = std::max(0, h - widgets[WIDX_SCROLL].bottom + widgets[WIDX_SCROLL].top + 21);
-            if (bottom < scrolls[0].v_top)
+            if (bottom < scrolls[0].contentOffsetY)
             {
-                scrolls[0].v_top = bottom;
+                scrolls[0].contentOffsetY = bottom;
                 Invalidate();
             }
             return { 0, h };

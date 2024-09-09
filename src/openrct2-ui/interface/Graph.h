@@ -16,6 +16,9 @@
 
 namespace OpenRCT2::Graph
 {
+    constexpr int32_t kYTickMarkPadding = 8;
+    constexpr int32_t kParkRatingMax = 1000;
+
     template<typename T> struct GraphProperties
     {
         ScreenRect internalBounds;

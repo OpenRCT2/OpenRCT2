@@ -54,7 +54,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 money64 _currentTrackPrice;
 
-uint32_t _currentTrackCurve;
+TypeOrCurve _currentlySelectedTrack{};
 RideConstructionState _rideConstructionState;
 RideId _currentRideIndex;
 
@@ -502,7 +502,7 @@ void RideRemoveProvisionalTrackPiece()
     int32_t z = _unkF440C5.z;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RtdFlag::isMaze))
     {
         const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
         const CoordsXYZD quadrants[kNumOrthogonalDirections] = {
@@ -608,14 +608,14 @@ static void ride_construction_reset_current_piece()
 
     const auto& rtd = ride->GetRideTypeDescriptor();
 
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || ride->num_stations == 0)
+    if (rtd.HasFlag(RtdFlag::hasTrack) || ride->num_stations == 0)
     {
-        _currentTrackCurve = rtd.StartTrackPiece | RideConstructionSpecialPieceSelected;
+        _currentlySelectedTrack = rtd.StartTrackPiece;
         _currentTrackPitchEnd = TrackPitch::None;
         _currentTrackRollEnd = TrackRoll::None;
         _currentTrackLiftHill = 0;
         _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED))
+        if (rtd.HasFlag(RtdFlag::startConstructionInverted))
         {
             _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
         }
@@ -624,7 +624,7 @@ static void ride_construction_reset_current_piece()
     }
     else
     {
-        _currentTrackCurve = TrackElemType::None;
+        _currentlySelectedTrack = TrackElemType::None;
         _rideConstructionState = RideConstructionState::State0;
     }
 }
@@ -642,7 +642,7 @@ void RideConstructionSetDefaultNextPiece()
 
     const auto& rtd = ride->GetRideTypeDescriptor();
 
-    int32_t z, direction, trackType, curve;
+    int32_t z, direction, trackType;
     TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
@@ -662,7 +662,7 @@ void RideConstructionSetDefaultNextPiece()
             tileElement = trackBeginEnd.begin_element;
             trackType = tileElement->AsTrack()->GetTrackType();
 
-            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+            if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
             {
                 ride_construction_reset_current_piece();
                 return;
@@ -670,7 +670,7 @@ void RideConstructionSetDefaultNextPiece()
 
             // Set whether track is covered
             _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+            if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
                 if (tileElement->AsTrack()->IsInverted())
                 {
@@ -679,15 +679,14 @@ void RideConstructionSetDefaultNextPiece()
             }
 
             ted = &GetTrackElementDescriptor(trackType);
-            curve = ted->curveChain.next;
-            auto bank = ted->definition.RollEnd;
-            auto slope = ted->definition.PitchEnd;
+            auto bank = ted->definition.rollEnd;
+            auto slope = ted->definition.pitchEnd;
 
             // Set track curve
-            _currentTrackCurve = curve;
+            _currentlySelectedTrack = ted->curveChain.next;
 
             // Set track banking
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+            if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
                 if (bank == TrackRoll::UpsideDown)
                 {
@@ -719,7 +718,7 @@ void RideConstructionSetDefaultNextPiece()
 
             // Set whether track is covered
             _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+            if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
                 if (tileElement->AsTrack()->IsInverted())
                 {
@@ -728,15 +727,14 @@ void RideConstructionSetDefaultNextPiece()
             }
 
             ted = &GetTrackElementDescriptor(trackType);
-            curve = ted->curveChain.previous;
-            auto bank = ted->definition.RollStart;
-            auto slope = ted->definition.PitchStart;
+            auto bank = ted->definition.rollStart;
+            auto slope = ted->definition.pitchStart;
 
             // Set track curve
-            _currentTrackCurve = curve;
+            _currentlySelectedTrack = ted->curveChain.previous;
 
             // Set track banking
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+            if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
                 if (bank == TrackRoll::UpsideDown)
                 {
@@ -912,7 +910,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
     }
 
     RideConstructionInvalidateCurrentTrack();
-    if (_rideConstructionState != RideConstructionState::EntranceExit || isToolActive(WindowClass::RideConstruction))
+    if (_rideConstructionState != RideConstructionState::EntranceExit || !isToolActive(WindowClass::RideConstruction))
     {
         // Replace entrance / exit
         ToolSet(
@@ -1028,12 +1026,12 @@ bool RideModify(const CoordsXYE& input)
     ride_create_or_find_construction_window(rideIndex);
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (rtd.HasFlag(RtdFlag::isMaze))
     {
         return ride_modify_maze(tileElement);
     }
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
+    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::cannotHaveGaps))
     {
         CoordsXYE endOfTrackElement{};
         if (ride->FindTrackGap(tileElement, &endOfTrackElement))
@@ -1059,7 +1057,7 @@ bool RideModify(const CoordsXYE& input)
     _rideConstructionNextArrowPulse = 0;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
     {
         WindowRideConstructionUpdateActiveElements();
         return true;
@@ -1114,13 +1112,13 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     ToolSet(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::Crosshair);
     InputSetFlag(INPUT_FLAG_6, true);
 
-    _currentTrackCurve = ride.GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
+    _currentlySelectedTrack = ride.GetRideTypeDescriptor().StartTrackPiece;
     _currentTrackPitchEnd = TrackPitch::None;
     _currentTrackRollEnd = TrackRoll::None;
     _currentTrackLiftHill = 0;
     _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
-    if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED))
+    if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
         _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
     _previousTrackRollEnd = TrackRoll::None;
@@ -1216,7 +1214,7 @@ void Ride::ValidateStations()
 {
     const TrackElementDescriptor* ted;
     const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+    if (!rtd.HasFlag(RtdFlag::isMaze))
     {
         // find the stations of the ride to begin stepping over track elements from
         for (const auto& station : stations)
@@ -1273,7 +1271,7 @@ void Ride::ValidateStations()
 
                 // In the future this could look at the TED and see if the station has a sequence longer than 1
                 // tower ride, flat ride, shop
-                if (GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
+                if (GetRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation))
                 {
                     // if the track has multiple sequences, stop looking for the next one.
                     specialTrack = true;
@@ -1513,7 +1511,7 @@ bool RideSelectForwardsFromBack()
  */
 ResultWithMessage RideAreAllPossibleEntrancesAndExitsBuilt(const Ride& ride)
 {
-    if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+    if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         return { true };
 
     for (auto& station : ride.GetStations())
@@ -1545,4 +1543,30 @@ TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd)
     const bool isInverted = _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
     const bool isCovered = _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
     return getTrackDrawerEntry(rtd, isInverted, isCovered);
+}
+
+track_type_t GetTrackTypeFromCurve(
+    TrackCurve curve, bool startsDiagonal, TrackPitch startSlope, TrackPitch endSlope, TrackRoll startBank, TrackRoll endBank)
+{
+    for (uint32_t i = 0; i < std::size(gTrackDescriptors); i++)
+    {
+        const TrackDescriptor* trackDescriptor = &gTrackDescriptors[i];
+
+        if (trackDescriptor->trackCurve != curve)
+            continue;
+        if (trackDescriptor->startsDiagonally != startsDiagonal)
+            continue;
+        if (trackDescriptor->slopeStart != startSlope)
+            continue;
+        if (trackDescriptor->slopeEnd != endSlope)
+            continue;
+        if (trackDescriptor->rollStart != startBank)
+            continue;
+        if (trackDescriptor->rollEnd != endBank)
+            continue;
+
+        return trackDescriptor->trackElement;
+    }
+
+    return TrackElemType::None;
 }

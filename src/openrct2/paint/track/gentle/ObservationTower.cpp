@@ -33,7 +33,7 @@ enum
 /** rct2: 0x0070DD6C */
 static void PaintObservationTowerBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kTrackMap3x3[direction][trackSequence];
 
@@ -116,7 +116,7 @@ static void PaintObservationTowerBase(
 /** rct2: 0x0070DD7C */
 static void PaintObservationTowerSection(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     if (trackSequence == 1)
     {

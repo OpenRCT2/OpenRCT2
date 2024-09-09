@@ -1802,7 +1802,6 @@ STR_2450    :{YELLOW}Reklamní kampaň pro park skončila
 STR_2451    :{YELLOW}Reklamní kampaň pro {STRINGID} skončila
 STR_2452    :{WINDOW_COLOUR_2}Hotovost (bez půjčky): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Hotovost (bez půjčky): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Zobrazit účet
 STR_2458    :Zobrazit graf hotovosti
 STR_2459    :Zobrazit graf hodnoty parku
@@ -3432,7 +3431,6 @@ STR_6356    :Přivolat kachny (pokud park má vodní plochu)
 STR_6357    :Zmizet kachny z mapy
 STR_6358    :Strana {UINT16}
 STR_6359    :{POP16}{POP16}Strana {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Povolit světelné efekty na atrakcích (experimentální)
 STR_6362    :Zapne noční osvětlené atrakcí na kolejích.
 STR_6363    :Text zkopírován do schránky

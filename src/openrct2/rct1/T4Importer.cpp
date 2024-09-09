@@ -235,7 +235,7 @@ namespace OpenRCT2::RCT1
                 td->operation.operationSetting, GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).OperatingSettings.MaxValue);
 
             const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
-            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+            if (rtd.HasFlag(RtdFlag::isMaze))
             {
                 TD46MazeElement t4MazeElement{};
                 t4MazeElement.All = !0;

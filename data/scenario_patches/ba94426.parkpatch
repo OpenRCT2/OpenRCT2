@@ -1,0 +1,11 @@
+{
+    "scenario_name": "White Water Park",
+    "sha256": "ba94426ecde1d6b375f566b155573e8a1471dcf62c651bafcb751f04f542cd5c",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 42, 85 ], [ 89, 42 ]
+            ]
+        }
+    }
+}

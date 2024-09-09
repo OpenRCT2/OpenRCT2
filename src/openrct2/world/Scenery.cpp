@@ -176,13 +176,14 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    if (OpenRCT2::GetGameState().Cheats.DisablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+    auto& gameState = GetGameState();
+    if (gameState.Cheats.DisablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
     {
         return;
     }
 
-    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED)
-        || WeatherIsDry(OpenRCT2::GetGameState().ClimateCurrent.Weather) || GetAge() < 5)
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gameState.ClimateCurrent.Weather)
+        || GetAge() < 5)
     {
         IncreaseAge(sceneryPos);
         return;
@@ -311,7 +312,8 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         return true;
     }
 
-    if (!OpenRCT2::GetGameState().Cheats.IgnoreResearchStatus)
+    auto& gameState = GetGameState();
+    if (!gameState.Cheats.IgnoreResearchStatus)
     {
         if (!SceneryIsInvented(item))
         {
@@ -319,7 +321,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         }
     }
 
-    if (!OpenRCT2::GetGameState().Cheats.SandboxMode && !(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!gameState.Cheats.SandboxMode && !(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         if (IsSceneryItemRestricted(item))
         {
@@ -335,15 +337,15 @@ static size_t GetMaxObjectsForSceneryType(const uint8_t sceneryType)
     switch (sceneryType)
     {
         case SCENERY_TYPE_SMALL:
-            return MAX_SMALL_SCENERY_OBJECTS;
+            return kMaxSmallSceneryObjects;
         case SCENERY_TYPE_PATH_ITEM:
-            return MAX_PATH_ADDITION_OBJECTS;
+            return kMaxPathAdditionObjects;
         case SCENERY_TYPE_WALL:
-            return MAX_WALL_SCENERY_OBJECTS;
+            return kMaxWallSceneryObjects;
         case SCENERY_TYPE_LARGE:
-            return MAX_LARGE_SCENERY_OBJECTS;
+            return kMaxLargeSceneryObjects;
         case SCENERY_TYPE_BANNER:
-            return MAX_BANNER_OBJECTS;
+            return kMaxBannerObjects;
         default:
             return 0;
     }
@@ -434,7 +436,7 @@ static MiscScenery GetAllMiscScenery()
     MiscScenery ret;
     std::vector<ScenerySelection> referencedBySceneryGroups;
     std::vector<ObjectEntryIndex> sceneryGroupIds;
-    for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxSceneryGroupObjects; i++)
     {
         const auto* sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sgEntry != nullptr)

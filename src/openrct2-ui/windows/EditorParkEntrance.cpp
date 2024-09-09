@@ -37,7 +37,7 @@ namespace OpenRCT2::Ui::Windows
     {
         ObjectEntryIndex entryIndex = OBJECT_ENTRY_INDEX_NULL;
         StringId stringId = STR_NONE;
-        ImageIndex imageId = static_cast<ImageIndex>(SPR_NONE);
+        ImageIndex imageId = kSpriteIdNull;
     };
 
     enum WindowEditorParkEntranceListWidgetIdx
@@ -74,7 +74,7 @@ namespace OpenRCT2::Ui::Windows
         void InitParkEntranceItems()
         {
             _entranceTypes.clear();
-            for (ObjectEntryIndex objectIndex = 0; objectIndex < MAX_PARK_ENTRANCE_OBJECTS; objectIndex++)
+            for (ObjectEntryIndex objectIndex = 0; objectIndex < kMaxParkEntranceObjects; objectIndex++)
             {
                 auto& objManager = GetContext()->GetObjectManager();
                 auto* object = static_cast<EntranceObject*>(objManager.GetLoadedObject(ObjectType::ParkEntrance, objectIndex));

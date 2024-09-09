@@ -81,7 +81,7 @@ GameActions::Result BannerPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    auto baseHeight = _loc.z + PATH_HEIGHT_STEP;
+    auto baseHeight = _loc.z + kPathHeightStep;
     BannerElement* existingBannerElement = MapGetBannerElementAt({ _loc.x, _loc.y, baseHeight }, _loc.direction);
     if (existingBannerElement != nullptr)
     {
@@ -151,7 +151,7 @@ GameActions::Result BannerPlaceAction::Execute() const
     auto* bannerElement = TileElementInsert<BannerElement>({ _loc, _loc.z + (2 * kCoordsZStep) }, 0b0000);
     Guard::Assert(bannerElement != nullptr);
 
-    bannerElement->SetClearanceZ(_loc.z + PATH_CLEARANCE);
+    bannerElement->SetClearanceZ(_loc.z + kPathClearance);
     bannerElement->SetPosition(_loc.direction);
     bannerElement->ResetAllowedEdges();
     bannerElement->SetIndex(banner->id);
@@ -168,7 +168,7 @@ PathElement* BannerPlaceAction::GetValidPathElement() const
 {
     for (auto* pathElement : TileElementsView<PathElement>(_loc))
     {
-        if (pathElement->GetBaseZ() != _loc.z && pathElement->GetBaseZ() != _loc.z - PATH_HEIGHT_STEP)
+        if (pathElement->GetBaseZ() != _loc.z && pathElement->GetBaseZ() != _loc.z - kPathHeightStep)
             continue;
 
         if (!(pathElement->GetEdges() & (1 << _loc.direction)))

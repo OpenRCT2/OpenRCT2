@@ -160,8 +160,6 @@ extern std::string gScenarioSavePath;
 extern bool gFirstTimeSaving;
 extern uint32_t gLastAutoSaveUpdate;
 
-extern std::string gScenarioFileName;
-
 void ScenarioBegin(OpenRCT2::GameState_t& gameState);
 void ScenarioReset(OpenRCT2::GameState_t& gameState);
 void ScenarioUpdate(OpenRCT2::GameState_t& gameState);

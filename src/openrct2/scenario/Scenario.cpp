@@ -70,8 +70,6 @@ uint32_t gLastAutoSaveUpdate = 0;
 
 bool gAllowEarlyCompletionInNetworkPlay;
 
-std::string gScenarioFileName;
-
 static void ScenarioCheckObjective(GameState_t& gameState);
 
 using namespace OpenRCT2;
@@ -205,10 +203,10 @@ void ScenarioSuccess(GameState_t& gameState)
     gameState.ScenarioCompletedCompanyValue = companyValue;
     PeepApplause();
 
-    if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), companyValue, nullptr))
+    if (ScenarioRepositoryTryRecordHighscore(gameState.ScenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
-        GetGameState().Park.Flags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+        gameState.Park.Flags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
         gameState.ScenarioCompanyValueRecord = companyValue;
     }
     ScenarioEnd();
@@ -220,7 +218,7 @@ void ScenarioSuccess(GameState_t& gameState)
  */
 void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
 {
-    if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), gameState.ScenarioCompanyValueRecord, name))
+    if (ScenarioRepositoryTryRecordHighscore(gameState.ScenarioFileName.c_str(), gameState.ScenarioCompanyValueRecord, name))
     {
         gameState.ScenarioCompletedBy = name;
     }
@@ -600,7 +598,7 @@ ResultWithMessage ScenarioPrepareForSave(GameState_t& gameState)
     }
 
     if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
-        GetGameState().Park.Flags |= PARK_FLAGS_PARK_OPEN;
+        gameState.Park.Flags |= PARK_FLAGS_PARK_OPEN;
 
     ScenarioReset(gameState);
 
@@ -658,7 +656,7 @@ ObjectiveStatus Objective::CheckParkValueBy() const
 ObjectiveStatus Objective::Check10RollerCoasters() const
 {
     auto rcs = 0;
-    BitSet<MAX_RIDE_OBJECTS> type_already_counted;
+    BitSet<kMaxRideObjects> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
         if (ride.status == RideStatus::Open && ride.ratings.excitement >= RIDE_RATING(6, 00)
@@ -759,7 +757,7 @@ ObjectiveStatus Objective::CheckMonthlyRideIncome() const
  */
 ObjectiveStatus Objective::Check10RollerCoastersLength() const
 {
-    BitSet<MAX_RIDE_OBJECTS> type_already_counted;
+    BitSet<kMaxRideObjects> type_already_counted;
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {

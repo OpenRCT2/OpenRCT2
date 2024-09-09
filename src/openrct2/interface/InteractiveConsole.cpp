@@ -1408,15 +1408,6 @@ static int32_t ConsoleCommandRemoveFloatingObjects(InteractiveConsole& console, 
     return 0;
 }
 
-static int32_t ConsoleCommandRemoveParkFences(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
-{
-    auto action = CheatSetAction(CheatType::RemoveParkFences);
-    GameActions::Execute(&action);
-
-    console.WriteFormatLine("Park fences have been removed.");
-    return 0;
-}
-
 static int32_t ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     const auto& tileElements = GetTileElements();
@@ -2027,7 +2018,6 @@ static constexpr ConsoleCommand console_command_table[] = {
     { "object_count", ConsoleCommandCountObjects, "Shows the number of objects of each type in the scenario.", "object_count" },
     { "open", ConsoleCommandOpen, "Opens the window with the give name.", "open <window>." },
     { "quit", ConsoleCommandClose, "Closes the console.", "quit" },
-    { "remove_park_fences", ConsoleCommandRemoveParkFences, "Removes all park fences from the surface", "remove_park_fences" },
     { "remove_unused_objects", ConsoleCommandRemoveUnusedObjects, "Removes all the unused objects from the object selection.",
       "remove_unused_objects" },
     { "remove_floating_objects", ConsoleCommandRemoveFloatingObjects, "Removes floating objects", "remove_floating_objects" },

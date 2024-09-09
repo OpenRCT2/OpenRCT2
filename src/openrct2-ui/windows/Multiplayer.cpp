@@ -22,103 +22,106 @@
 
 namespace OpenRCT2::Ui::Windows
 {
+    enum
+    {
+        WINDOW_MULTIPLAYER_PAGE_INFORMATION,
+        WINDOW_MULTIPLAYER_PAGE_PLAYERS,
+        WINDOW_MULTIPLAYER_PAGE_GROUPS,
+        WINDOW_MULTIPLAYER_PAGE_OPTIONS
+    };
+
+    enum WindowMultiplayerWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_CONTENT_PANEL,
+        WIDX_TAB1,
+        WIDX_TAB2,
+        WIDX_TAB3,
+        WIDX_TAB4,
+
+        WIDX_HEADER_PLAYER = 8,
+        WIDX_HEADER_GROUP,
+        WIDX_HEADER_LAST_ACTION,
+        WIDX_HEADER_PING,
+        WIDX_LIST,
+
+        WIDX_DEFAULT_GROUP = 8,
+        WIDX_DEFAULT_GROUP_DROPDOWN,
+        WIDX_ADD_GROUP,
+        WIDX_REMOVE_GROUP,
+        WIDX_RENAME_GROUP,
+        WIDX_SELECTED_GROUP,
+        WIDX_SELECTED_GROUP_DROPDOWN,
+        WIDX_PERMISSIONS_LIST,
+
+        WIDX_LOG_CHAT_CHECKBOX = 8,
+        WIDX_LOG_SERVER_ACTIONS_CHECKBOX,
+        WIDX_KNOWN_KEYS_ONLY_CHECKBOX,
+    };
+
     // clang-format off
-enum {
-    WINDOW_MULTIPLAYER_PAGE_INFORMATION,
-    WINDOW_MULTIPLAYER_PAGE_PLAYERS,
-    WINDOW_MULTIPLAYER_PAGE_GROUPS,
-    WINDOW_MULTIPLAYER_PAGE_OPTIONS
-};
 
-enum WindowMultiplayerWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_CONTENT_PANEL,
-    WIDX_TAB1,
-    WIDX_TAB2,
-    WIDX_TAB3,
-    WIDX_TAB4,
+    #define MAIN_MULTIPLAYER_WIDGETS \
+        MakeWidget({  0,  0}, {340, 240}, WindowWidgetType::Frame,    WindowColour::Primary                                        ), /* panel / background */ \
+        MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,  STR_NONE,    STR_WINDOW_TITLE_TIP    ), /* title bar */ \
+        MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,  STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), /* close x button */ \
+        MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                      ), /* content panel */ \
+        MakeTab   ({  3, 17},                                                                STR_SHOW_SERVER_INFO_TIP), /* tab */ \
+        MakeTab   ({ 34, 17},                                                                STR_PLAYERS_TIP         ), /* tab */ \
+        MakeTab   ({ 65, 17},                                                                STR_GROUPS_TIP          ), /* tab */ \
+        MakeTab   ({ 96, 17},                                                                STR_OPTIONS_TIP         )  /* tab */
 
-    WIDX_HEADER_PLAYER = 8,
-    WIDX_HEADER_GROUP,
-    WIDX_HEADER_LAST_ACTION,
-    WIDX_HEADER_PING,
-    WIDX_LIST,
+    static Widget window_multiplayer_information_widgets[] = {
+        MAIN_MULTIPLAYER_WIDGETS,
+        kWidgetsEnd,
+    };
 
-    WIDX_DEFAULT_GROUP = 8,
-    WIDX_DEFAULT_GROUP_DROPDOWN,
-    WIDX_ADD_GROUP,
-    WIDX_REMOVE_GROUP,
-    WIDX_RENAME_GROUP,
-    WIDX_SELECTED_GROUP,
-    WIDX_SELECTED_GROUP_DROPDOWN,
-    WIDX_PERMISSIONS_LIST,
+    static Widget window_multiplayer_players_widgets[] = {
+        MAIN_MULTIPLAYER_WIDGETS,
+        MakeWidget({  3, 46}, {173,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PLAYER     ), // Player name
+        MakeWidget({176, 46}, { 83,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_GROUP      ), // Player name
+        MakeWidget({259, 46}, {100,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_LAST_ACTION), // Player name
+        MakeWidget({359, 46}, { 42,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PING       ), // Player name
+        MakeWidget({  3, 60}, {334, 177}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL), // list
+        kWidgetsEnd,
+    };
 
-    WIDX_LOG_CHAT_CHECKBOX = 8,
-    WIDX_LOG_SERVER_ACTIONS_CHECKBOX,
-    WIDX_KNOWN_KEYS_ONLY_CHECKBOX,
-};
+    static Widget window_multiplayer_groups_widgets[] = {
+        MAIN_MULTIPLAYER_WIDGETS,
+        MakeWidget({141, 46}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // default group
+        MakeWidget({305, 47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
+        MakeWidget({ 11, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_GROUP     ), // add group button
+        MakeWidget({113, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_REMOVE_GROUP  ), // remove group button
+        MakeWidget({215, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RENAME_GROUP  ), // rename group button
+        MakeWidget({ 72, 80}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // selected group
+        MakeWidget({236, 81}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
+        MakeWidget({  3, 94}, {314, 207}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL   ), // permissions list
+        kWidgetsEnd,
+    };
 
-#define MAIN_MULTIPLAYER_WIDGETS \
-    MakeWidget({  0,  0}, {340, 240}, WindowWidgetType::Frame,    WindowColour::Primary                                        ), /* panel / background */ \
-    MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,  STR_NONE,    STR_WINDOW_TITLE_TIP    ), /* title bar */ \
-    MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,  STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), /* close x button */ \
-    MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                      ), /* content panel */ \
-    MakeTab   ({  3, 17},                                                                STR_SHOW_SERVER_INFO_TIP), /* tab */ \
-    MakeTab   ({ 34, 17},                                                                STR_PLAYERS_TIP         ), /* tab */ \
-    MakeTab   ({ 65, 17},                                                                STR_GROUPS_TIP          ), /* tab */ \
-    MakeTab   ({ 96, 17},                                                                STR_OPTIONS_TIP         )  /* tab */
+    static Widget window_multiplayer_options_widgets[] = {
+        MAIN_MULTIPLAYER_WIDGETS,
+        MakeWidget({3, 50}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
+        MakeWidget({3, 64}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
+        MakeWidget({3, 78}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP),
+        kWidgetsEnd,
+    };
 
-static Widget window_multiplayer_information_widgets[] = {
-    MAIN_MULTIPLAYER_WIDGETS,
-    kWidgetsEnd,
-};
+    static Widget *window_multiplayer_page_widgets[] = {
+        window_multiplayer_information_widgets,
+        window_multiplayer_players_widgets,
+        window_multiplayer_groups_widgets,
+        window_multiplayer_options_widgets,
+    };
 
-static Widget window_multiplayer_players_widgets[] = {
-    MAIN_MULTIPLAYER_WIDGETS,
-    MakeWidget({  3, 46}, {173,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PLAYER     ), // Player name
-    MakeWidget({176, 46}, { 83,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_GROUP      ), // Player name
-    MakeWidget({259, 46}, {100,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_LAST_ACTION), // Player name
-    MakeWidget({359, 46}, { 42,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PING       ), // Player name
-    MakeWidget({  3, 60}, {334, 177}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL), // list
-    kWidgetsEnd,
-};
-
-static Widget window_multiplayer_groups_widgets[] = {
-    MAIN_MULTIPLAYER_WIDGETS,
-    MakeWidget({141, 46}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // default group
-    MakeWidget({305, 47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
-    MakeWidget({ 11, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_GROUP     ), // add group button
-    MakeWidget({113, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_REMOVE_GROUP  ), // remove group button
-    MakeWidget({215, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RENAME_GROUP  ), // rename group button
-    MakeWidget({ 72, 80}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // selected group
-    MakeWidget({236, 81}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
-    MakeWidget({  3, 94}, {314, 207}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL   ), // permissions list
-    kWidgetsEnd,
-};
-
-static Widget window_multiplayer_options_widgets[] = {
-    MAIN_MULTIPLAYER_WIDGETS,
-    MakeWidget({3, 50}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
-    MakeWidget({3, 64}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
-    MakeWidget({3, 78}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP),
-    kWidgetsEnd,
-};
-
-static Widget *window_multiplayer_page_widgets[] = {
-    window_multiplayer_information_widgets,
-    window_multiplayer_players_widgets,
-    window_multiplayer_groups_widgets,
-    window_multiplayer_options_widgets,
-};
-
-static constexpr StringId WindowMultiplayerPageTitles[] = {
-    STR_MULTIPLAYER_INFORMATION_TITLE,
-    STR_MULTIPLAYER_PLAYERS_TITLE,
-    STR_MULTIPLAYER_GROUPS_TITLE,
-    STR_MULTIPLAYER_OPTIONS_TITLE,
-};
+    static constexpr StringId WindowMultiplayerPageTitles[] = {
+        STR_MULTIPLAYER_INFORMATION_TITLE,
+        STR_MULTIPLAYER_PLAYERS_TITLE,
+        STR_MULTIPLAYER_GROUPS_TITLE,
+        STR_MULTIPLAYER_OPTIONS_TITLE,
+    };
 
     // clang-format on
 
@@ -574,9 +577,9 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     + window_multiplayer_players_widgets[WIDX_LIST].top + 21;
                 if (i < 0)
                     i = 0;
-                if (i < scrolls[0].v_top)
+                if (i < scrolls[0].contentOffsetY)
                 {
-                    scrolls[0].v_top = i;
+                    scrolls[0].contentOffsetY = i;
                     Invalidate();
                 }
                 break;
@@ -595,9 +598,9 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
                     + window_multiplayer_groups_widgets[WIDX_LIST].top + 21;
                 if (i < 0)
                     i = 0;
-                if (i < scrolls[0].v_top)
+                if (i < scrolls[0].contentOffsetY)
                 {
-                    scrolls[0].v_top = i;
+                    scrolls[0].contentOffsetY = i;
                     Invalidate();
                 }
                 break;

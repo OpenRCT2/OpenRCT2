@@ -22,9 +22,11 @@
 
 using namespace OpenRCT2;
 
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+
 static void PaintShop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     bool hasSupports = WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
@@ -60,7 +62,7 @@ static void PaintShop(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 
     if (direction == 1 || direction == 2)
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionShop(int32_t trackType)

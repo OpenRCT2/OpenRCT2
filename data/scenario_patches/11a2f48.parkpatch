@@ -1,0 +1,17 @@
+{
+    "scenario_name": "Six Flags Great Adventure (.sea)",
+    "sha256": "11a2f48eb93aa0d058680ede840b507db3627818fdc1c0f74a353c1a110c836c",
+    "land_ownership": {
+        "unowned": {
+            "coordinates": [
+                [ 241, 59 ],
+                [ 242, 59 ]
+            ]
+        },
+        "owned": {
+            "coordinates": [
+                [ 145, 31 ]
+            ]
+        }
+    }
+}

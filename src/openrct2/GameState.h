@@ -26,11 +26,10 @@
 #include "world/Climate.h"
 #include "world/Location.hpp"
 #include "world/Park.h"
+#include "world/ScenerySelection.h"
 
 #include <array>
-#include <chrono>
 #include <memory>
-#include <unordered_map>
 #include <vector>
 
 namespace OpenRCT2
@@ -88,6 +87,7 @@ namespace OpenRCT2
         std::string ScenarioName;
         std::string ScenarioDetails;
         std::string ScenarioCompletedBy;
+        std::string ScenarioFileName;
 
         std::vector<Banner> Banners;
         Entity_t Entities[MAX_ENTITIES]{};
@@ -150,6 +150,7 @@ namespace OpenRCT2
     };
 
     GameState_t& GetGameState();
+    void SwapGameState(std::unique_ptr<GameState_t>& otherState);
 
     void gameStateInitAll(GameState_t& gameState, const TileCoordsXY& mapSize);
     void gameStateTick();

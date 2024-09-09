@@ -106,9 +106,9 @@ namespace OpenRCT2
 
     private:
         std::unique_ptr<OrcaStream> _os;
-        ObjectEntryIndex _pathToSurfaceMap[MAX_PATH_OBJECTS];
-        ObjectEntryIndex _pathToQueueSurfaceMap[MAX_PATH_OBJECTS];
-        ObjectEntryIndex _pathToRailingsMap[MAX_PATH_OBJECTS];
+        ObjectEntryIndex _pathToSurfaceMap[kMaxPathObjects];
+        ObjectEntryIndex _pathToQueueSurfaceMap[kMaxPathObjects];
+        ObjectEntryIndex _pathToRailingsMap[kMaxPathObjects];
 
         void ThrowIfIncompatibleVersion()
         {
@@ -457,7 +457,7 @@ namespace OpenRCT2
 
                 if (os.GetHeader().TargetVersion >= 1)
                 {
-                    cs.ReadWrite(gScenarioFileName);
+                    cs.ReadWrite(gameState.ScenarioFileName);
                 }
             });
         }
@@ -1071,7 +1071,7 @@ namespace OpenRCT2
                         std::vector<TileElement> tileElements;
                         tileElements.resize(numElements);
                         cs.Read(tileElements.data(), tileElements.size() * sizeof(TileElement));
-                        SetTileElements(std::move(tileElements));
+                        SetTileElements(gameState, std::move(tileElements));
                         {
                             TileElementIterator it;
                             TileElementIteratorBegin(&it);

@@ -30,49 +30,49 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 96;
     static constexpr StringId WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
+    enum WindowBannerWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_VIEWPORT,
+        WIDX_BANNER_TEXT,
+        WIDX_BANNER_NO_ENTRY,
+        WIDX_BANNER_DEMOLISH,
+        WIDX_MAIN_COLOUR,
+        WIDX_TEXT_COLOUR_DROPDOWN,
+        WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
+    };
+
     // clang-format off
-enum WindowBannerWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_VIEWPORT,
-    WIDX_BANNER_TEXT,
-    WIDX_BANNER_NO_ENTRY,
-    WIDX_BANNER_DEMOLISH,
-    WIDX_MAIN_COLOUR,
-    WIDX_TEXT_COLOUR_DROPDOWN,
-    WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
-};
+    static constexpr StringId BannerColouredTextFormats[] = {
+        STR_TEXT_COLOUR_BLACK,
+        STR_TEXT_COLOUR_GREY,
+        STR_TEXT_COLOUR_WHITE,
+        STR_TEXT_COLOUR_RED,
+        STR_TEXT_COLOUR_GREEN,
+        STR_TEXT_COLOUR_YELLOW,
+        STR_TEXT_COLOUR_TOPAZ,
+        STR_TEXT_COLOUR_CELADON,
+        STR_TEXT_COLOUR_BABYBLUE,
+        STR_TEXT_COLOUR_PALELAVENDER,
+        STR_TEXT_COLOUR_PALEGOLD,
+        STR_TEXT_COLOUR_LIGHTPINK,
+        STR_TEXT_COLOUR_PEARLAQUA,
+        STR_TEXT_COLOUR_PALESILVER,
+    };
 
-static constexpr StringId BannerColouredTextFormats[] = {
-    STR_TEXT_COLOUR_BLACK,
-    STR_TEXT_COLOUR_GREY,
-    STR_TEXT_COLOUR_WHITE,
-    STR_TEXT_COLOUR_RED,
-    STR_TEXT_COLOUR_GREEN,
-    STR_TEXT_COLOUR_YELLOW,
-    STR_TEXT_COLOUR_TOPAZ,
-    STR_TEXT_COLOUR_CELADON,
-    STR_TEXT_COLOUR_BABYBLUE,
-    STR_TEXT_COLOUR_PALELAVENDER,
-    STR_TEXT_COLOUR_PALEGOLD,
-    STR_TEXT_COLOUR_LIGHTPINK,
-    STR_TEXT_COLOUR_PEARLAQUA,
-    STR_TEXT_COLOUR_PALESILVER,
-};
-
-static Widget window_banner_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, 0x0FFFFFFFE                                        ), // tab content panel
-    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
-    MakeWidget({WW - 25,      43}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_NO_ENTRY),       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
-    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH),       STR_DEMOLISH_BANNER_TIP        ), // demolish button
-    MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,         STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
-    MakeWidget({     43, WH - 16}, {39, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary                                                     ), // high money
-    MakeWidget({     70, WH - 15}, {11, 10}, WindowWidgetType::Button,    WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_TEXT_COLOUR_TIP     ), // high money
-    kWidgetsEnd,
-};
-
+    static Widget window_banner_widgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, 0x0FFFFFFFE                                        ), // tab content panel
+        MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
+        MakeWidget({WW - 25,      43}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_NO_ENTRY),       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
+        MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH),       STR_DEMOLISH_BANNER_TIP        ), // demolish button
+        MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,         STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
+        MakeWidget({     43, WH - 16}, {39, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary                                                     ), // high money
+        MakeWidget({     70, WH - 15}, {11, 10}, WindowWidgetType::Button,    WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_TEXT_COLOUR_TIP     ), // high money
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class BannerWindow final : public Window

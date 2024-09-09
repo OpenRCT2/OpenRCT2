@@ -61,18 +61,17 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode)
-        && !MapIsLocationOwned(_loc))
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    if (_loc.z < FootpathMinHeight)
+    if (_loc.z < kFootpathMinHeight)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_LOW);
     }
 
-    if (_loc.z > FootpathMaxHeight)
+    if (_loc.z > kFootpathMaxHeight)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_HIGH);
     }

@@ -1799,7 +1799,6 @@ STR_2450    :{YELLOW}Via kampanjo de reklamado por la parko finiĝis
 STR_2451    :{YELLOW}Via kampanjo de reklamado por {STRINGID} finiĝis
 STR_2452    :{WINDOW_COLOUR_2}Mono (minus prunto): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Mono (minus prunto): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Montri financajn kontojn
 STR_2458    :Montri diagramon de mono (minus prunto) kontraŭ tempo
 STR_2459    :Montri diagramon de parkvaloro kontraŭ tempo
@@ -2603,8 +2602,8 @@ STR_5357    :{BLACK}Naŭzotolero:
 STR_5358    :{BLACK}Veziko:
 STR_5359    :Forigi gastojn
 STR_5360    :Forigas ĉiujn gastojn el la mapo
-STR_5361    :Doni al ĉiu gasto:
-STR_5362    :{BLACK}Agordi preferatajn intensojn de atrakcioj por ĉiu gasto al:
+STR_5361    :Aldoni al inventaro de gastoj:
+STR_5362    :{BLACK}Preferataj intensoj de atrakcioj:
 STR_5363    :Pli ol 1
 STR_5364    :Malpli ol 15
 STR_5365    :{BLACK}Rapideco de dungitaro:
@@ -2634,7 +2633,7 @@ STR_5457    :Malŝalti limojn de apogiloj
 STR_5458    :Turni dekstrumen
 STR_5459    :Turni maldekstrumen
 STR_5460    :Turni vidon maldekstrumen
-STR_5461    :Agordi parametrojn de gastoj
+STR_5461    :Agordi parametrojn por ĉiuj gastoj
 STR_5462    :{CURRENCY}
 STR_5463    :Celo: Amuzi vin!
 STR_5464    :Ĝenerala
@@ -3431,7 +3430,6 @@ STR_6356    :Generas anasojn se parko enhavas akvon
 STR_6357    :Forigas ĉiujn anasojn de la mapo
 STR_6358    :Paĝo {UINT16}
 STR_6359    :{POP16}{POP16}Paĝo {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Ŝalti lumefektojn sur atrakcioj (eksperimenta)
 STR_6362    :Se ŝaltita, veturiloj de atrakcioj kun trakoj lumos nokte.
 STR_6363    :Teksto kopiita al tondujo
@@ -3726,6 +3724,21 @@ STR_6652    :Erarfenestro
 STR_6653    :Ĉiuj fontoj montritaj
 STR_6654    :Montras {POP16}{UINT16} fontojn
 STR_6655    :Nur ‘{POP16}{STRINGID}’
+STR_6656    :Forigi ĉiujn barilojn de la parko
+STR_6657    :Bieno Ne Posedata
+STR_6658    :Agordi bienon ne posedatan de la parko, nek aĉeteblan
+STR_6659    :Gastoj ignoras prezojn
+STR_6660    :Gastoj ignoros la prezojn de atrakcioj kaj budoj.
+STR_6661    :Hazardigi ĉiujn
+STR_6662    :Hazardigi kolorojn por ĉiu trajno aŭ veturilo.
+STR_6663    :Trompoj de dato
+STR_6664    :Montri trompojn de dato
+STR_6665    :Trompoj de naturo/vetero
+STR_6666    :Montri trompojn de naturo/vetero
+STR_6667    :Faŭno
+STR_6668    :Trompoj de dungitaro
+STR_6669    :Montri trompojn de dungitaro
+STR_6670    :Konduto de gastoj
 
 #############
 # Scenarios #

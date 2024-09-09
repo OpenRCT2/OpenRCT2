@@ -9,7 +9,10 @@
 
 #pragma once
 
+#include "../paint/support/WoodenSupports.h"
 #include "Track.h"
+
+using namespace OpenRCT2;
 
 namespace OpenRCT2::TrackMetaData
 {
@@ -19,8 +22,8 @@ namespace OpenRCT2::TrackMetaData
 
     struct TrackCurveChain
     {
-        int32_t next;
-        int32_t previous;
+        TypeOrCurve next;
+        TypeOrCurve previous;
     };
 
     struct TrackDescriptor
@@ -72,6 +75,12 @@ namespace OpenRCT2::TrackMetaData
         return { 0, 0, 0, 0 };
     }
 
+    struct SequenceWoodenSupport
+    {
+        WoodenSupportSubType subType = WoodenSupportSubType::Null;
+        WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None;
+    };
+
     using TrackComputeFunction = int32_t (*)(const int16_t);
     struct TrackElementDescriptor
     {
@@ -91,6 +100,7 @@ namespace OpenRCT2::TrackMetaData
 
         std::array<uint8_t, kMaxSequencesPerPiece> sequenceElementAllowedWallEdges;
         std::array<uint8_t, kMaxSequencesPerPiece> sequenceProperties;
+        std::array<SequenceWoodenSupport, kMaxSequencesPerPiece> sequenceWoodenSupports;
 
         TrackDefinition definition;
         SpinFunction spinFunction;

@@ -1,0 +1,13 @@
+{
+    "scenario_name": "Build your own Six Flags Holland (.sea)",
+    "sha256": "d18eca150bd642ebe279bd6700e4914b63a2b589f0c37ba346de54adbbbb8055",
+    "land_ownership": {
+        "available": {
+            "coordinates": [
+                [ 112, 33 ], [ 112, 34 ],
+                [ 114, 118], [ 115, 118], [ 116, 118], [ 117, 118],
+                [ 113, 117], [ 114, 117], [ 115, 117], [ 116, 117], [ 117, 117]
+            ]
+        }
+    }
+}

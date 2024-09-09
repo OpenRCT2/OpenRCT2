@@ -54,7 +54,7 @@ enum
  */
 static void MazePaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    const TrackElement& trackElement, SupportType supportType)
 {
     uint16_t mazeEntry = trackElement.GetMazeEntry();
     mazeEntry = Numerics::rol16(mazeEntry, direction * 4);

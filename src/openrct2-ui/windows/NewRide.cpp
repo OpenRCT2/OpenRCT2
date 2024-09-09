@@ -206,26 +206,26 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize GroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
 
     // clang-format off
-static Widget window_new_ride_widgets[] = {
-    WINDOW_SHIM(WindowTitle, WindowWidth, WindowHeight),
-    MakeWidget({  0,  43},             {601, 339},         WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
-    MakeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
-    MakeTab   ({ 34,  17},                                                                                      STR_GENTLE_RIDES_TIP                                          ),
-    MakeTab   ({ 65,  17},                                                                                      STR_ROLLER_COASTERS_TIP                                       ),
-    MakeTab   ({ 96,  17},                                                                                      STR_THRILL_RIDES_TIP                                          ),
-    MakeTab   ({127,  17},                                                                                      STR_WATER_RIDES_TIP                                           ),
-    MakeTab   ({158,  17},                                                                                      STR_SHOPS_STALLS_TIP                                          ),
-    MakeTab   ({189,  17},                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP                              ),
-    MakeWidget({  3,  62},             {595, 256},         WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                               ),
-    MakeWidget({  3,  47},             {290,  70},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                  ),
-    MakeWidget({  3, 124},             {290,  65},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                          ),
-    MakeWidget({265, 161},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                      STR_RESEARCH_SHOW_DETAILS_TIP),
-    MakeWidget({265,  68},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  ImageId(SPR_FINANCE),                     STR_FINANCES_RESEARCH_TIP    ),
-    MakeWidget({  4,  46},             {211, 14},          WindowWidgetType::TextBox,  WindowColour::Secondary                          ),
-    MakeWidget({218,  46},             { 70, 14},          WindowWidgetType::Button,   WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
-    MakeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,         STR_GROUP_BY_TRACK_TYPE_TIP  ),
-    kWidgetsEnd,
-};
+    static Widget window_new_ride_widgets[] = {
+        WINDOW_SHIM(WindowTitle, WindowWidth, WindowHeight),
+        MakeWidget({  0,  43},             {601, 339},         WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
+        MakeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
+        MakeTab   ({ 34,  17},                                                                                      STR_GENTLE_RIDES_TIP                                          ),
+        MakeTab   ({ 65,  17},                                                                                      STR_ROLLER_COASTERS_TIP                                       ),
+        MakeTab   ({ 96,  17},                                                                                      STR_THRILL_RIDES_TIP                                          ),
+        MakeTab   ({127,  17},                                                                                      STR_WATER_RIDES_TIP                                           ),
+        MakeTab   ({158,  17},                                                                                      STR_SHOPS_STALLS_TIP                                          ),
+        MakeTab   ({189,  17},                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP                              ),
+        MakeWidget({  3,  62},             {595, 256},         WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                               ),
+        MakeWidget({  3,  47},             {290,  70},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                  ),
+        MakeWidget({  3, 124},             {290,  65},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                          ),
+        MakeWidget({265, 161},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                      STR_RESEARCH_SHOW_DETAILS_TIP),
+        MakeWidget({265,  68},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  ImageId(SPR_FINANCE),                     STR_FINANCES_RESEARCH_TIP    ),
+        MakeWidget({  4,  46},             {211, 14},          WindowWidgetType::TextBox,  WindowColour::Secondary                          ),
+        MakeWidget({218,  46},             { 70, 14},          WindowWidgetType::Button,   WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
+        MakeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,         STR_GROUP_BY_TRACK_TYPE_TIP  ),
+        kWidgetsEnd,
+    };
     // clang-format on
 
 #pragma endregion
@@ -340,7 +340,7 @@ static Widget window_new_ride_widgets[] = {
 
             if (_currentTab < RESEARCH_TAB)
             {
-                _windowNewRideTabScroll[_currentTab] = scrolls[0].v_top;
+                _windowNewRideTabScroll[_currentTab] = scrolls[0].contentOffsetY;
 
                 // Remove highlight when mouse leaves rides list
                 if (!WidgetIsHighlighted(*this, WIDX_RIDE_LIST))
@@ -374,7 +374,7 @@ static Widget window_new_ride_widgets[] = {
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
                     _filter.clear();
-                    scrolls->v_top = 0;
+                    scrolls->contentOffsetY = 0;
                     Invalidate();
                     break;
             }
@@ -523,7 +523,7 @@ static Widget window_new_ride_widgets[] = {
 
             _filter.assign(text);
 
-            scrolls->v_top = 0;
+            scrolls->contentOffsetY = 0;
             Invalidate();
         }
 
@@ -588,7 +588,7 @@ static Widget window_new_ride_widgets[] = {
 
             if (item.Type < 0x80)
             {
-                if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                if (GetRideTypeDescriptor(item.Type).HasFlag(RtdFlag::listVehiclesSeparately))
                 {
                     entryName = GetRideEntryName(item.EntryIndex);
                 }
@@ -603,7 +603,7 @@ static Widget window_new_ride_widgets[] = {
         void UpdateVehicleAvailability(ObjectEntryIndex rideType)
         {
             _vehicleAvailability.clear();
-            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
             {
                 return;
             }
@@ -686,7 +686,7 @@ static Widget window_new_ride_widgets[] = {
 
                 // Skip if the vehicle isn't the preferred vehicle for this generic track type
                 if (!Config::Get().interface.ListRideVehiclesSeparately
-                    && !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+                    && !GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately)
                     && highestVehiclePriority > rideEntry->BuildMenuPriority)
                 {
                     continue;
@@ -701,7 +701,7 @@ static Widget window_new_ride_widgets[] = {
 
                 // Determines how and where to draw a button for this ride type/vehicle.
                 if (Config::Get().interface.ListRideVehiclesSeparately
-                    || GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                    || GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
                 {
                     // Separate, draw apart
                     allowDrawingOverLastButton = false;
@@ -913,7 +913,7 @@ static Widget window_new_ride_widgets[] = {
             // Ensure the current tab scroll is within range
             currentTabScroll = std::min<uint16_t>(currentTabScroll, std::max(0, scrollSize.height - listWidgetHeight));
 
-            scrolls[0].v_top = currentTabScroll;
+            scrolls[0].contentOffsetY = currentTabScroll;
             WidgetScrollUpdateThumbs(*this, WIDX_RIDE_LIST);
         }
 
@@ -965,7 +965,7 @@ static Widget window_new_ride_widgets[] = {
 
                 //
                 StringId stringId = STR_NEW_RIDE_COST;
-                if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+                if (GetRideTypeDescriptor(item.Type).HasFlag(RtdFlag::hasTrack))
                     stringId = STR_NEW_RIDE_COST_FROM;
 
                 ft = Formatter();

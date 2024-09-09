@@ -44,9 +44,9 @@ namespace OpenRCT2::Ui
     static void WidgetCloseboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetScrollDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetHScrollbarDraw(
-        DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
+        DrawPixelInfo& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
     static void WidgetVScrollbarDraw(
-        DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
+        DrawPixelInfo& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
     static void WidgetDrawImage(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 
     /**
@@ -682,23 +682,30 @@ namespace OpenRCT2::Ui
         bottomRight.x--;
         bottomRight.y--;
 
+        bool hScrollNeeded = scroll.contentWidth > widget.width() && (scroll.flags & HSCROLLBAR_VISIBLE);
+        bool vScrollNeeded = scroll.contentHeight > widget.height() && (scroll.flags & VSCROLLBAR_VISIBLE);
+
         // Horizontal scrollbar
-        if (scroll.flags & HSCROLLBAR_VISIBLE)
+        if (hScrollNeeded)
+        {
             WidgetHScrollbarDraw(
                 dpi, scroll, topLeft.x, bottomRight.y - kScrollBarWidth,
                 ((scroll.flags & VSCROLLBAR_VISIBLE) ? bottomRight.x - (kScrollBarWidth + 1) : bottomRight.x), bottomRight.y,
                 colour);
+        }
 
         // Vertical scrollbar
-        if (scroll.flags & VSCROLLBAR_VISIBLE)
+        if (vScrollNeeded)
+        {
             WidgetVScrollbarDraw(
                 dpi, scroll, bottomRight.x - kScrollBarWidth, topLeft.y, bottomRight.x,
                 ((scroll.flags & HSCROLLBAR_VISIBLE) ? bottomRight.y - (kScrollBarWidth + 1) : bottomRight.y), colour);
+        }
 
         // Contents
-        if (scroll.flags & HSCROLLBAR_VISIBLE)
+        if (hScrollNeeded)
             bottomRight.y -= (kScrollBarWidth + 1);
-        if (scroll.flags & VSCROLLBAR_VISIBLE)
+        if (vScrollNeeded)
             bottomRight.x -= (kScrollBarWidth + 1);
 
         bottomRight.y++;
@@ -714,8 +721,8 @@ namespace OpenRCT2::Ui
         int32_t cb = std::min<int32_t>(dpi.y + dpi.height, bottomRight.y);
 
         // Set the respective dpi attributes
-        scroll_dpi.x = cl - topLeft.x + scroll.h_left;
-        scroll_dpi.y = ct - topLeft.y + scroll.v_top;
+        scroll_dpi.x = cl - topLeft.x + scroll.contentOffsetX;
+        scroll_dpi.y = ct - topLeft.y + scroll.contentOffsetY;
         scroll_dpi.width = cr - cl;
         scroll_dpi.height = cb - ct;
         scroll_dpi.bits += cl - dpi.x;
@@ -728,7 +735,7 @@ namespace OpenRCT2::Ui
     }
 
     static void WidgetHScrollbarDraw(
-        DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
+        DrawPixelInfo& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
     {
         colour.setFlag(ColourFlag::translucent, false);
 
@@ -753,8 +760,8 @@ namespace OpenRCT2::Ui
 
         // Thumb
         {
-            int16_t left = std::max(l + kScrollBarWidth, l + scroll.h_thumb_left - 1);
-            int16_t right = std::min(r - kScrollBarWidth, l + scroll.h_thumb_right - 1);
+            int16_t left = std::max(l + kScrollBarWidth, l + scroll.hThumbLeft - 1);
+            int16_t right = std::min(r - kScrollBarWidth, l + scroll.hThumbRight - 1);
             uint8_t flags = (scroll.flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
             GfxFillRectInset(dpi, { { left, t }, { right, b } }, colour, flags);
@@ -770,7 +777,7 @@ namespace OpenRCT2::Ui
     }
 
     static void WidgetVScrollbarDraw(
-        DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
+        DrawPixelInfo& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
     {
         colour.setFlag(ColourFlag::translucent, false);
 
@@ -794,8 +801,8 @@ namespace OpenRCT2::Ui
         // Thumb
         GfxFillRectInset(
             dpi,
-            { { l, std::max(t + kScrollBarWidth, t + scroll.v_thumb_top - 1) },
-              { r, std::min(b - kScrollBarWidth, t + scroll.v_thumb_bottom - 1) } },
+            { { l, std::max(t + kScrollBarWidth, t + scroll.vThumbTop - 1) },
+              { r, std::min(b - kScrollBarWidth, t + scroll.vThumbBottom - 1) } },
             { colour }, ((scroll.flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
         // Down button
@@ -815,7 +822,7 @@ namespace OpenRCT2::Ui
         const auto& widget = w.widgets[widgetIndex];
 
         // Get the image
-        if (static_cast<int32_t>(widget.image.ToUInt32()) == SPR_NONE)
+        if (widget.image.ToUInt32() == kSpriteIdNull)
             return;
         auto image = widget.image;
 
@@ -940,7 +947,8 @@ namespace OpenRCT2::Ui
         }
 
         const auto& scroll = w.scrolls[*scroll_id];
-        if ((scroll.flags & HSCROLLBAR_VISIBLE) && screenCoords.y >= (w.windowPos.y + widget->bottom - (kScrollBarWidth + 1)))
+        if ((scroll.flags & HSCROLLBAR_VISIBLE) && scroll.contentWidth > widget->width()
+            && screenCoords.y >= (w.windowPos.y + widget->bottom - (kScrollBarWidth + 1)))
         {
             // horizontal scrollbar
             int32_t rightOffset = 0;
@@ -963,11 +971,11 @@ namespace OpenRCT2::Ui
             {
                 *output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT;
             }
-            else if (screenCoords.x < (widget->left + w.windowPos.x + scroll.h_thumb_left))
+            else if (screenCoords.x < (widget->left + w.windowPos.x + scroll.hThumbLeft))
             {
                 *output_scroll_area = SCROLL_PART_HSCROLLBAR_LEFT_TROUGH;
             }
-            else if (screenCoords.x > (widget->left + w.windowPos.x + scroll.h_thumb_right))
+            else if (screenCoords.x > (widget->left + w.windowPos.x + scroll.hThumbRight))
             {
                 *output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH;
             }
@@ -977,7 +985,8 @@ namespace OpenRCT2::Ui
             }
         }
         else if (
-            (scroll.flags & VSCROLLBAR_VISIBLE) && (screenCoords.x >= w.windowPos.x + widget->right - (kScrollBarWidth + 1)))
+            (scroll.flags & VSCROLLBAR_VISIBLE) && scroll.contentHeight > widget->height()
+            && (screenCoords.x >= w.windowPos.x + widget->right - (kScrollBarWidth + 1)))
         {
             // vertical scrollbar
             int32_t bottomOffset = 0;
@@ -1000,11 +1009,11 @@ namespace OpenRCT2::Ui
             {
                 *output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM;
             }
-            else if (screenCoords.y < (widget->top + w.windowPos.y + scroll.v_thumb_top))
+            else if (screenCoords.y < (widget->top + w.windowPos.y + scroll.vThumbTop))
             {
                 *output_scroll_area = SCROLL_PART_VSCROLLBAR_TOP_TROUGH;
             }
-            else if (screenCoords.y > (widget->top + w.windowPos.y + scroll.v_thumb_bottom))
+            else if (screenCoords.y > (widget->top + w.windowPos.y + scroll.vThumbBottom))
             {
                 *output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH;
             }
@@ -1026,8 +1035,8 @@ namespace OpenRCT2::Ui
             }
             else
             {
-                retScreenCoords.x += scroll.h_left - 1;
-                retScreenCoords.y += scroll.v_top - 1;
+                retScreenCoords.x += scroll.contentOffsetX - 1;
+                retScreenCoords.y += scroll.contentOffsetY - 1;
             }
         }
     }
@@ -1241,27 +1250,27 @@ namespace OpenRCT2::Ui
             int32_t view_size = widget.width() - 21;
             if (scroll.flags & VSCROLLBAR_VISIBLE)
                 view_size -= 11;
-            int32_t x = scroll.h_left * view_size;
-            if (scroll.h_right != 0)
-                x /= scroll.h_right;
-            scroll.h_thumb_left = x + 11;
+            int32_t x = scroll.contentOffsetX * view_size;
+            if (scroll.contentWidth != 0)
+                x /= scroll.contentWidth;
+            scroll.hThumbLeft = x + 11;
 
             x = widget.width() - 2;
             if (scroll.flags & VSCROLLBAR_VISIBLE)
                 x -= 11;
-            x += scroll.h_left;
-            if (scroll.h_right != 0)
-                x = (x * view_size) / scroll.h_right;
+            x += scroll.contentOffsetX;
+            if (scroll.contentWidth != 0)
+                x = (x * view_size) / scroll.contentWidth;
             x += 11;
             view_size += 10;
-            scroll.h_thumb_right = std::min(x, view_size);
+            scroll.hThumbRight = std::min(x, view_size);
 
-            if (scroll.h_thumb_right - scroll.h_thumb_left < 20)
+            if (scroll.hThumbRight - scroll.hThumbLeft < 20)
             {
-                double barPosition = (scroll.h_thumb_right * 1.0) / view_size;
+                double barPosition = (scroll.hThumbRight * 1.0) / view_size;
 
-                scroll.h_thumb_left = static_cast<int32_t>(std::lround(scroll.h_thumb_left - (20 * barPosition)));
-                scroll.h_thumb_right = static_cast<int32_t>(std::lround(scroll.h_thumb_right + (20 * (1 - barPosition))));
+                scroll.hThumbLeft = static_cast<int32_t>(std::lround(scroll.hThumbLeft - (20 * barPosition)));
+                scroll.hThumbRight = static_cast<int32_t>(std::lround(scroll.hThumbRight + (20 * (1 - barPosition))));
             }
         }
 
@@ -1270,27 +1279,27 @@ namespace OpenRCT2::Ui
             int32_t view_size = widget.height() - 21;
             if (scroll.flags & HSCROLLBAR_VISIBLE)
                 view_size -= 11;
-            int32_t y = scroll.v_top * view_size;
-            if (scroll.v_bottom != 0)
-                y /= scroll.v_bottom;
-            scroll.v_thumb_top = y + 11;
+            int32_t y = scroll.contentOffsetY * view_size;
+            if (scroll.contentHeight != 0)
+                y /= scroll.contentHeight;
+            scroll.vThumbTop = y + 11;
 
             y = widget.height() - 2;
             if (scroll.flags & HSCROLLBAR_VISIBLE)
                 y -= 11;
-            y += scroll.v_top;
-            if (scroll.v_bottom != 0)
-                y = (y * view_size) / scroll.v_bottom;
+            y += scroll.contentOffsetY;
+            if (scroll.contentHeight != 0)
+                y = (y * view_size) / scroll.contentHeight;
             y += 11;
             view_size += 10;
-            scroll.v_thumb_bottom = std::min(y, view_size);
+            scroll.vThumbBottom = std::min(y, view_size);
 
-            if (scroll.v_thumb_bottom - scroll.v_thumb_top < 20)
+            if (scroll.vThumbBottom - scroll.vThumbTop < 20)
             {
-                double barPosition = (scroll.v_thumb_bottom * 1.0) / view_size;
+                double barPosition = (scroll.vThumbBottom * 1.0) / view_size;
 
-                scroll.v_thumb_top = static_cast<int32_t>(std::lround(scroll.v_thumb_top - (20 * barPosition)));
-                scroll.v_thumb_bottom = static_cast<int32_t>(std::lround(scroll.v_thumb_bottom + (20 * (1 - barPosition))));
+                scroll.vThumbTop = static_cast<int32_t>(std::lround(scroll.vThumbTop - (20 * barPosition)));
+                scroll.vThumbBottom = static_cast<int32_t>(std::lround(scroll.vThumbBottom + (20 * (1 - barPosition))));
             }
         }
     }

@@ -200,7 +200,7 @@ void PeepUpdateAll()
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
-    const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
+    const auto currentTicks = GetGameState().CurrentTicks;
 
     constexpr auto kTicks128Mask = 128u - 1u;
     const auto currentTicksMasked = currentTicks & kTicks128Mask;
@@ -898,7 +898,7 @@ void Peep::SetState(PeepState new_state)
  */
 void Peep::UpdatePicked()
 {
-    if (OpenRCT2::GetGameState().CurrentTicks & 0x1F)
+    if (GetGameState().CurrentTicks & 0x1F)
         return;
     SubState++;
     auto* guest = As<Guest>();
@@ -1116,7 +1116,7 @@ void PeepProblemWarningsUpdate()
                     break;
                 }
                 ride = GetRide(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
+                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::sellsFood))
                     hungerCounter++;
                 break;
 
@@ -1127,7 +1127,7 @@ void PeepProblemWarningsUpdate()
                     break;
                 }
                 ride = GetRide(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_DRINKS))
+                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::sellsDrinks))
                     thirstCounter++;
                 break;
 
@@ -1138,7 +1138,7 @@ void PeepProblemWarningsUpdate()
                     break;
                 }
                 ride = GetRide(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
+                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isToilet))
                     toiletCounter++;
                 break;
 
@@ -1426,7 +1426,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = GetRide(CurrentRide);
             if (ride != nullptr)
             {
-                ft.Add<StringId>(ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
+                ft.Add<StringId>(ride->GetRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside) ? STR_IN_RIDE : STR_ON_RIDE);
                 ride->FormatNameTo(ft);
             }
             else
@@ -2313,7 +2313,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
 {
     RideId rideIndex = coords.element->AsTrack()->GetRideIndex();
     auto ride = GetRide(rideIndex);
-    if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
+    if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         return false;
 
     auto* guest = peep->As<Guest>();
@@ -2350,7 +2350,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         return true;
     }
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
+    if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::guestsShouldGoInsideFacility))
     {
         guest->TimeLost = 0;
         if (!guest->ShouldGoOnRide(*ride, StationIndex::FromUnderlying(0), false, false))
@@ -2380,8 +2380,9 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
             auto ft = Formatter();
             guest->FormatNameTo(ft);
             ride->FormatNameTo(ft);
-            StringId string_id = ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE) ? STR_PEEP_TRACKING_PEEP_IS_IN_X
-                                                                                               : STR_PEEP_TRACKING_PEEP_IS_ON_X;
+            StringId string_id = ride->GetRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside)
+                ? STR_PEEP_TRACKING_PEEP_IS_IN_X
+                : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (Config::Get().notifications.GuestUsedFacility)
             {
                 News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, guest->Id, ft);

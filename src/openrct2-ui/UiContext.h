@@ -24,8 +24,11 @@ namespace OpenRCT2
 namespace OpenRCT2::Ui
 {
     struct FileDialogDesc;
-    class InGameConsole;
     struct IUiContext;
+
+    class InGameConsole;
+    class InputManager;
+    class ShortcutManager;
 
     struct IPlatformUiContext
     {
@@ -51,4 +54,6 @@ namespace OpenRCT2::Ui
     [[nodiscard]] std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext();
 
     [[nodiscard]] InGameConsole& GetInGameConsole();
+    [[nodiscard]] InputManager& GetInputManager();
+    [[nodiscard]] ShortcutManager& GetShortcutManager();
 } // namespace OpenRCT2::Ui

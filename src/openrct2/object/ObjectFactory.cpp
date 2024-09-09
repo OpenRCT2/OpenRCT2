@@ -272,7 +272,7 @@ namespace OpenRCT2::ObjectFactory
                 result = CreateObject(entry.GetType());
                 result->SetDescriptor(ObjectEntryDescriptor(entry));
 
-                utf8 objectName[DAT_NAME_LENGTH + 1] = { 0 };
+                utf8 objectName[kDatNameLength + 1] = { 0 };
                 ObjectEntryGetNameFixed(objectName, sizeof(objectName), &entry);
                 LOG_VERBOSE("  entry: { 0x%08X, \"%s\", 0x%08X }", entry.flags, objectName, entry.checksum);
 
@@ -307,7 +307,7 @@ namespace OpenRCT2::ObjectFactory
         {
             result->SetDescriptor(ObjectEntryDescriptor(*entry));
 
-            utf8 objectName[DAT_NAME_LENGTH + 1];
+            utf8 objectName[kDatNameLength + 1];
             ObjectEntryGetNameFixed(objectName, sizeof(objectName), entry);
 
             auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);

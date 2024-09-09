@@ -37,14 +37,14 @@
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v36/openrct2-libs-v36-arm64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='ARM64'">c3cf49093261e605f3d62c5e82e53ff5e7600661</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v36/openrct2-libs-v36-x64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">3816671560af3571ada728ffeceec0443471c03b</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v36/openrct2-libs-v36-x86-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">d2b8d98a9711cf319e3bd5330e77aef5395820f1</LibsSha1>
-    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.6/title-sequences.zip</TitleSequencesUrl>
-    <TitleSequencesSha1>80fefc6ebbabc42a6f4703412daa5c62f661420d</TitleSequencesSha1>
+    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-arm64-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='ARM64'">508bbd39b9be3d746ed8e17b6c0e7a79f6fa13c8</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-x64-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">28fabdb3fe8ddb7c73cd1c5e57ec8df5bd6232e5</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-x86-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">9984c1e317dcfb3aaf8e17f1db2ebb0f771e2373</LibsSha1>
+    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.14/title-sequences.zip</TitleSequencesUrl>
+    <TitleSequencesSha1>6c04781b959b468e1f65ec2d2f21f5aaa5e5724d</TitleSequencesSha1>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.4.7/objects.zip</ObjectsUrl>
     <ObjectsSha1>322de669d4b277fceff0d3f123fbc54785dceb4d</ObjectsSha1>
     <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.5/opensound.zip</OpenSFXUrl>

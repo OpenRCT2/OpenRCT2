@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -20,12 +21,13 @@ constexpr RideTypeDescriptor SpinningWildMouseRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionWildMouse,
-        .EnabledTrackPieces = {TRACK_STRAIGHT,TRACK_STATION_END,TRACK_LIFT_HILL,  TRACK_SLOPE,TRACK_SLOPE_LONG,TRACK_CURVE_VERY_SMALL,TRACK_CURVE_SMALL, TRACK_BRAKES,TRACK_BLOCK_BRAKES,TRACK_ROTATION_CONTROL_TOGGLE},
-        .ExtraTrackPieces = {TRACK_LIFT_HILL_STEEP, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE},
+        .supportType = MetalSupportType::Tubes,
+        .EnabledTrackPieces = {TrackGroup::straight,TrackGroup::stationEnd,TrackGroup::liftHill,  TrackGroup::slope,TrackGroup::slopeLong,TrackGroup::curveVerySmall,TrackGroup::curveSmall, TrackGroup::brakes,TrackGroup::blockBrakes,TrackGroup::rotationControlToggle},
+        .ExtraTrackPieces = {TrackGroup::liftHillSteep, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve},
     }),
     .InvertedTrackPaintFunctions = {},
-    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES,
+    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
+                 EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces),
     .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
     .DefaultMode = RideMode::ContinuousCircuit,
     .Naming = { STR_RIDE_NAME_SPINNING_WILD_MOUSE, STR_RIDE_DESCRIPTION_SPINNING_WILD_MOUSE },

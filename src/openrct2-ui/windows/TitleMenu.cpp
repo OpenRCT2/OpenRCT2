@@ -23,36 +23,37 @@
 
 namespace OpenRCT2::Ui::Windows
 {
+    enum
+    {
+        WIDX_START_NEW_GAME,
+        WIDX_CONTINUE_SAVED_GAME,
+        WIDX_MULTIPLAYER,
+        WIDX_GAME_TOOLS,
+        WIDX_NEW_VERSION,
+    };
+
+    enum
+    {
+        DDIDX_SCENARIO_EDITOR,
+        DDIDX_CONVERT_SAVED_GAME,
+        DDIDX_TRACK_DESIGNER,
+        DDIDX_TRACK_MANAGER,
+        DDIDX_OPEN_CONTENT_FOLDER,
+        DDIDX_CUSTOM_BEGIN = 6,
+    };
+
+    static constexpr ScreenSize MenuButtonDims = { 82, 82 };
+    static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
+
     // clang-format off
-enum {
-    WIDX_START_NEW_GAME,
-    WIDX_CONTINUE_SAVED_GAME,
-    WIDX_MULTIPLAYER,
-    WIDX_GAME_TOOLS,
-    WIDX_NEW_VERSION,
-};
-
-enum
-{
-    DDIDX_SCENARIO_EDITOR,
-    DDIDX_CONVERT_SAVED_GAME,
-    DDIDX_TRACK_DESIGNER,
-    DDIDX_TRACK_MANAGER,
-    DDIDX_OPEN_CONTENT_FOLDER,
-    DDIDX_CUSTOM_BEGIN = 6,
-};
-
-static constexpr ScreenSize MenuButtonDims = { 82, 82 };
-static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
-
-static Widget _titleMenuWidgets[] = {
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_NEW_GAME),       STR_START_NEW_GAME_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_LOAD_GAME),      STR_CONTINUE_SAVED_GAME_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_G2_MENU_MULTIPLAYER), STR_SHOW_MULTIPLAYER_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_TOOLBOX),        STR_GAME_TOOLS_TIP),
-    MakeWidget({0,                       0}, UpdateButtonDims, WindowWidgetType::Empty,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
-    kWidgetsEnd,
-};
+    static Widget _titleMenuWidgets[] = {
+        MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_NEW_GAME),       STR_START_NEW_GAME_TIP),
+        MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_LOAD_GAME),      STR_CONTINUE_SAVED_GAME_TIP),
+        MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_G2_MENU_MULTIPLAYER), STR_SHOW_MULTIPLAYER_TIP),
+        MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_TOOLBOX),        STR_GAME_TOOLS_TIP),
+        MakeWidget({0,                       0}, UpdateButtonDims, WindowWidgetType::Empty,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     static void WindowTitleMenuScenarioselectCallback(const utf8* path)

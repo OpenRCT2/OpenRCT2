@@ -102,7 +102,7 @@ static bool MapLoc68BABCShouldContinue(
         && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
     {
         auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
-        if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
+        if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings))
         {
             return true;
         }

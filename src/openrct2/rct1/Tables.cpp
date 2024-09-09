@@ -1499,7 +1499,7 @@ namespace OpenRCT2::RCT1
 
     track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType)
     {
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isFlatRide))
             return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
 
         return origTrackType;

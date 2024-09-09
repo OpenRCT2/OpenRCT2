@@ -63,17 +63,17 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-static Widget _serverListWidgets[] = {
-    MakeWidget({  0,  0}, {341,  91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
-    MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
-    MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
-    MakeWidget({100, 20}, {245,  12}, WindowWidgetType::TextBox,  WindowColour::Secondary                                         ), // player name text box
-    MakeWidget({  6, 37}, {489, 226}, WindowWidgetType::Scroll,   WindowColour::Secondary                                         ), // server list
-    MakeWidget({  6, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_FETCH_SERVERS                      ), // fetch servers button
-    MakeWidget({112, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_SERVER                         ), // add server button
-    MakeWidget({218, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_START_SERVER                       ), // start server button
-    kWidgetsEnd,
-};
+    static Widget _serverListWidgets[] = {
+        MakeWidget({  0,  0}, {341,  91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
+        MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
+        MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
+        MakeWidget({100, 20}, {245,  12}, WindowWidgetType::TextBox,  WindowColour::Secondary                                         ), // player name text box
+        MakeWidget({  6, 37}, {489, 226}, WindowWidgetType::Scroll,   WindowColour::Secondary                                         ), // server list
+        MakeWidget({  6, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_FETCH_SERVERS                      ), // fetch servers button
+        MakeWidget({112, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_SERVER                         ), // add server button
+        MakeWidget({218, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_START_SERVER                       ), // start server button
+        kWidgetsEnd,
+    };
     // clang-format on
 
     void JoinServer(std::string address);
@@ -237,8 +237,10 @@ static Widget _serverListWidgets[] = {
                 {
                     gDropdownItems[1].Format = STR_ADD_TO_FAVOURITES;
                 }
-                auto dropdownPos = ScreenCoordsXY{ windowPos.x + listWidget.left + screenCoords.x + 2 - scrolls[0].h_left,
-                                                   windowPos.y + listWidget.top + screenCoords.y + 2 - scrolls[0].v_top };
+                auto dropdownPos = ScreenCoordsXY{
+                    windowPos.x + listWidget.left + screenCoords.x + 2 - scrolls[0].contentOffsetX,
+                    windowPos.y + listWidget.top + screenCoords.y + 2 - scrolls[0].contentOffsetY
+                };
                 WindowDropdownShowText(dropdownPos, 0, { COLOUR_GREY }, 0, 2);
             }
         }

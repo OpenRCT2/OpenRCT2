@@ -22,49 +22,51 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    // clang-format off
-enum WindowViewClippingWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_CLIP_CHECKBOX_ENABLE,
-    WIDX_GROUPBOX_VERTICAL,
-    WIDX_CLIP_HEIGHT_VALUE,
-    WIDX_CLIP_HEIGHT_INCREASE,
-    WIDX_CLIP_HEIGHT_DECREASE,
-    WIDX_CLIP_HEIGHT_SLIDER,
-    WIDX_GROUPBOX_HORIZONTAL,
-    WIDX_CLIP_SELECTOR,
-    WIDX_CLIP_CLEAR,
-};
+    enum WindowViewClippingWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_CLIP_CHECKBOX_ENABLE,
+        WIDX_GROUPBOX_VERTICAL,
+        WIDX_CLIP_HEIGHT_VALUE,
+        WIDX_CLIP_HEIGHT_INCREASE,
+        WIDX_CLIP_HEIGHT_DECREASE,
+        WIDX_CLIP_HEIGHT_SLIDER,
+        WIDX_GROUPBOX_HORIZONTAL,
+        WIDX_CLIP_SELECTOR,
+        WIDX_CLIP_CLEAR,
+    };
 
-enum class DisplayType {
-    DisplayRaw,
-    DisplayUnits
-};
+    enum class DisplayType
+    {
+        DisplayRaw,
+        DisplayUnits
+    };
 
 #pragma region Widgets
 
-static constexpr StringId WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
-static constexpr int32_t WW = 180;
-static constexpr int32_t WH = 155;
+    static constexpr StringId WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
+    static constexpr int32_t WW = 180;
+    static constexpr int32_t WH = 155;
 
-static Widget _viewClippingWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget        ({     11,  19}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,       STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP  ), // clip enable/disable check box
-    MakeWidget        ({      5,  36}, {WW - 10,  48}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                         ),
-    MakeSpinnerWidgets({     90,  51}, {     79,  12}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_NONE,                              STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
-    MakeWidget        ({     11,  66}, {    158,  13}, WindowWidgetType::Scroll,   WindowColour::Primary, SCROLL_HORIZONTAL,                     STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP  ), // clip height scrollbar
-    MakeWidget        ({      5,  90}, {WW - 10,  60}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                       ),
-    MakeWidget        ({     11, 105}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
-    MakeWidget        ({     11, 126}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
+    // clang-format off
+    static Widget _viewClippingWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget        ({     11,  19}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,       STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP  ), // clip enable/disable check box
+        MakeWidget        ({      5,  36}, {WW - 10,  48}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                         ),
+        MakeSpinnerWidgets({     90,  51}, {     79,  12}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_NONE,                              STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
+        MakeWidget        ({     11,  66}, {    158,  13}, WindowWidgetType::Scroll,   WindowColour::Primary, SCROLL_HORIZONTAL,                     STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP  ), // clip height scrollbar
+        MakeWidget        ({      5,  90}, {WW - 10,  60}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                       ),
+        MakeWidget        ({     11, 105}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
+        MakeWidget        ({     11, 126}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
 
-    kWidgetsEnd,
-};
+        kWidgetsEnd,
+    };
+    // clang-format on
 
 #pragma endregion
 
-    // clang-format on
     class ViewClippingWindow final : public Window
     {
     private:
@@ -165,10 +167,10 @@ static Widget _viewClippingWidgets[] = {
         void OnUpdate() override
         {
             const auto& widget = widgets[WIDX_CLIP_HEIGHT_SLIDER];
-            const ScrollBar* const scroll = &this->scrolls[0];
+            const ScrollArea* const scroll = &this->scrolls[0];
             const int16_t scroll_width = widget.width() - 1;
             const uint8_t clip_height = static_cast<uint8_t>(
-                (static_cast<float>(scroll->h_left) / (scroll->h_right - scroll_width)) * 255);
+                (static_cast<float>(scroll->contentOffsetX) / (scroll->contentWidth - scroll_width)) * 255);
             if (clip_height != gClipHeight)
             {
                 gClipHeight = clip_height;
@@ -388,8 +390,8 @@ static Widget _viewClippingWidgets[] = {
             gClipHeight = clipHeight;
             const auto& widget = widgets[WIDX_CLIP_HEIGHT_SLIDER];
             const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
-            this->scrolls[0].h_left = static_cast<int16_t>(
-                std::ceil(clip_height_ratio * (this->scrolls[0].h_right - (widget.width() - 1))));
+            this->scrolls[0].contentOffsetX = static_cast<int16_t>(
+                std::ceil(clip_height_ratio * (this->scrolls[0].contentWidth - (widget.width() - 1))));
         }
 
         bool IsActive()

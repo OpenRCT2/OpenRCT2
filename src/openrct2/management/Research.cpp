@@ -53,7 +53,7 @@ static constexpr int32_t _researchRate[] = {
 };
 
 static bool _researchedRideTypes[RIDE_TYPE_COUNT];
-static bool _researchedRideEntries[MAX_RIDE_OBJECTS];
+static bool _researchedRideEntries[kMaxRideObjects];
 static bool _researchedSceneryItems[SCENERY_TYPE_COUNT][UINT16_MAX];
 
 bool gSilentResearch = false;
@@ -215,7 +215,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
             RideTypeSetInvented(base_ride_type);
             RideEntrySetInvented(rideEntryIndex);
 
-            bool seenRideEntry[MAX_RIDE_OBJECTS]{};
+            bool seenRideEntry[kMaxRideObjects]{};
             for (auto const& researchItem3 : gameState.ResearchItemsUninvented)
             {
                 ObjectEntryIndex index = researchItem3.entryIndex;
@@ -224,7 +224,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
 
             // RCT2 made non-separated vehicles available at once, by removing all but one from research.
             // To ensure old files keep working, look for ride entries not in research, and make them available as well.
-            for (int32_t i = 0; i < MAX_RIDE_OBJECTS; i++)
+            for (int32_t i = 0; i < kMaxRideObjects; i++)
             {
                 if (!seenRideEntry[i])
                 {
@@ -248,7 +248,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
 
             // If a vehicle is the first to be invented for its ride type, show the ride type/group name.
             // Independently listed vehicles (like all flat rides and shops) should always be announced as such.
-            if (GetRideTypeDescriptor(base_ride_type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+            if (GetRideTypeDescriptor(base_ride_type).HasFlag(RtdFlag::listVehiclesSeparately)
                 || researchItem.flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
             {
                 RideNaming naming = GetRideNaming(base_ride_type, *rideEntry);
@@ -465,7 +465,7 @@ void ResearchPopulateListRandom()
     ResearchResetItems(gameState);
 
     // Rides
-    for (int32_t i = 0; i < MAX_RIDE_OBJECTS; i++)
+    for (int32_t i = 0; i < kMaxRideObjects; i++)
     {
         const auto* rideEntry = GetRideEntryByIndex(i);
         if (rideEntry == nullptr)
@@ -485,7 +485,7 @@ void ResearchPopulateListRandom()
     }
 
     // Scenery
-    for (uint32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    for (uint32_t i = 0; i < kMaxSceneryGroupObjects; i++)
     {
         const auto* sceneryGroupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sceneryGroupEntry == nullptr)
@@ -665,7 +665,7 @@ void SceneryGroupSetInvented(int32_t sgIndex)
 
 void SetAllSceneryGroupsNotInvented()
 {
-    for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; ++i)
+    for (int32_t i = 0; i < kMaxSceneryGroupObjects; ++i)
     {
         const auto* scenery_set = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (scenery_set == nullptr)
@@ -834,7 +834,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
 {
     auto& gameState = GetGameState();
     // Mark base ridetypes as seen if they exist in the invented research list.
-    bool seenBaseEntry[MAX_RIDE_OBJECTS]{};
+    bool seenBaseEntry[kMaxRideObjects]{};
     for (auto const& researchItem : gameState.ResearchItemsInvented)
     {
         ObjectEntryIndex index = researchItem.baseRideType;
@@ -842,7 +842,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
     }
 
     // Unlock and add research entries to the invented list for ride types whose base ridetype has been seen.
-    for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxRideObjects; i++)
     {
         const auto* rideEntry = GetRideEntryByIndex(i);
         if (rideEntry != nullptr)
@@ -868,7 +868,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
 
     // Only add Rides to uninvented research that haven't had their base ridetype seen.
     // This prevents rct2 grouped rides from only unlocking the first train.
-    for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxRideObjects; i++)
     {
         const auto* rideEntry = GetRideEntryByIndex(i);
         if (rideEntry != nullptr)
@@ -889,7 +889,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
         }
     }
 
-    for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < kMaxSceneryGroupObjects; i++)
     {
         const auto* groupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (groupEntry != nullptr)
@@ -1042,7 +1042,7 @@ static void ResearchUpdateFirstOfType(ResearchItem* researchItem)
 
     researchItem->flags &= ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
     const auto& rtd = GetRideTypeDescriptor(rideType);
-    if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+    if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
     {
         researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
         return;
@@ -1076,7 +1076,7 @@ void ResearchDetermineFirstOfType()
             continue;
 
         const auto& rtd = GetRideTypeDescriptor(rideType);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (rtd.HasFlag(RtdFlag::listVehiclesSeparately))
             continue;
 
         // The last research item will also be present in gameState.ResearchItemsInvented.

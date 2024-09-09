@@ -1797,7 +1797,6 @@ STR_2450    :{YELLOW}Din reklamekampagne for parken, er slut
 STR_2451    :{YELLOW}Din reklamekampagne for {STRINGID}, er slut
 STR_2452    :{WINDOW_COLOUR_2}Penge (uden lån): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Penge (uden lån): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Vis finanskonti
 STR_2458    :Vis graf for penge (uden lån) over tid
 STR_2459    :Vis graf for park værdi over tid
@@ -3429,7 +3428,6 @@ STR_6356    :Generer ænder hvis parken indeholder vand
 STR_6357    :Fjern alle ænder fra kortet
 STR_6358    :Side {UINT16}
 STR_6359    :{POP16}{POP16}Side {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Aktiver lyseffekter på forlystelser (eksperimentel)
 STR_6362    :Hvis aktiv, vognene for spor-forlystelser vil lyse op om natten.
 STR_6363    :Kopierede tekst til udklipsholder

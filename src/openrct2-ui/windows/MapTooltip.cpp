@@ -7,8 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/Theme.h"
-
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/input/InputManager.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -19,13 +20,11 @@
 namespace OpenRCT2::Ui::Windows
 {
     // clang-format off
-static Widget window_map_tooltip_widgets[] = {
-    MakeWidget({0, 0}, {200, 30}, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    kWidgetsEnd,
-};
-
-// clang-format on
-#define MAP_TOOLTIP_ARGS
+    static Widget window_map_tooltip_widgets[] = {
+        MakeWidget({0, 0}, {200, 30}, WindowWidgetType::ImgBtn, WindowColour::Primary),
+        kWidgetsEnd,
+    };
+    // clang-format on
 
     static ScreenCoordsXY _lastCursor;
     static int32_t _cursorHoldDuration;
@@ -96,10 +95,9 @@ static Widget window_map_tooltip_widgets[] = {
         StringId stringId;
         std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
 
-        if (_cursorHoldDuration < 25 || stringId == STR_NONE
-            || InputTestPlaceObjectModifier(
-                static_cast<PLACE_OBJECT_MODIFIER>(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
-            || WindowFindByClass(WindowClass::Error) != nullptr)
+        auto& im = GetInputManager();
+        if (_cursorHoldDuration < 25 || stringId == STR_NONE || im.IsModifierKeyPressed(ModifierKey::ctrl)
+            || im.IsModifierKeyPressed(ModifierKey::shift) || WindowFindByClass(WindowClass::Error) != nullptr)
         {
             WindowCloseByClass(WindowClass::MapTooltip);
         }

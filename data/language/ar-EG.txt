@@ -1800,7 +1800,6 @@ STR_2450    :{YELLOW}Your advertising campaign for the park has finished
 STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
 STR_2452    :{WINDOW_COLOUR_2}Cash (less loan): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Cash (less loan): {RED}{CURRENCY2DP}
-STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Show financial accounts
 STR_2458    :Show graph of cash (less loan) over time
 STR_2459    :Show graph of park value over time
@@ -3430,7 +3429,6 @@ STR_6356    :{SMALLFONT}{BLACK}ينشئ البط إذا كانت الحديقة 
 STR_6357    :{SMALLFONT}{BLACK}حذف كل البط من الخريطة
 STR_6358    :الصفحة {UINT16}
 STR_6359    :{POP16}{POP16}الصفحة {UINT16}
-STR_6360    :{BLACK}{COMMA32}
 STR_6361    :تفعيل تأثيرات الإضاءة على الرحلات (تجريبي)
 STR_6362    :{SMALLFONT}{BLACK}في حالة التفعيل، ستضيء مركبات الرحلات في الليل.
 STR_6363    :تم نسخ النص إلى الحافظة

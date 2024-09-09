@@ -121,6 +121,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Alex Parisi (alex-parisi) - Added API for returning metadata from all registered plugins.
 * Arnold Zhou (mrmagic2020) - Various plugin additions, new game option, misc.
 * John Dolph (johnwdolph) - Ride music UI, misc.
+* Harry Hopkinson (Harry-Hopkinson) - Added Cheat for guests ignoring price of rides and stalls.
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)
@@ -243,6 +244,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Kaavya Ramachandhran (ayvaak)
 * Mike Harvey (harvito)
 * Robert Yan (lewyche)
+* Tom Matalenas (tmatale)
 
 ## Toolchain
 * (Balletie) - macOS
