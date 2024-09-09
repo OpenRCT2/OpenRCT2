@@ -34,6 +34,8 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_MAPGEN_PAGE_RANDOM,
         WINDOW_MAPGEN_PAGE_SIMPLEX,
         WINDOW_MAPGEN_PAGE_HEIGHTMAP,
+        WINDOW_MAPGEN_PAGE_TERRAIN,
+        WINDOW_MAPGEN_PAGE_WATER,
         WINDOW_MAPGEN_PAGE_COUNT
     };
 
@@ -47,6 +49,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_2,
         WIDX_TAB_3,
         WIDX_TAB_4,
+        WIDX_TAB_5,
+        WIDX_TAB_6,
 
         TAB_BEGIN,
 
@@ -58,17 +62,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAP_SIZE_X,
         WIDX_MAP_SIZE_X_UP,
         WIDX_MAP_SIZE_X_DOWN,
-        WIDX_BASE_HEIGHT,
-        WIDX_BASE_HEIGHT_UP,
-        WIDX_BASE_HEIGHT_DOWN,
-        WIDX_WATER_LEVEL,
-        WIDX_WATER_LEVEL_UP,
-        WIDX_WATER_LEVEL_DOWN,
-        WIDX_FLOOR_TEXTURE,
-        WIDX_WALL_TEXTURE,
 
         WIDX_RANDOM_GENERATE = TAB_BEGIN,
-        WIDX_RANDOM_TERRAIN,
         WIDX_RANDOM_PLACE_TREES,
 
         WIDX_SIMPLEX_GENERATE = TAB_BEGIN,
@@ -85,20 +80,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SIMPLEX_OCTAVES,
         WIDX_SIMPLEX_OCTAVES_UP,
         WIDX_SIMPLEX_OCTAVES_DOWN,
-        WIDX_SIMPLEX_MAP_SIZE_Y,
-        WIDX_SIMPLEX_MAP_SIZE_Y_UP,
-        WIDX_SIMPLEX_MAP_SIZE_Y_DOWN,
-        WIDX_SIMPLEX_MAP_SIZE_LINK,
-        WIDX_SIMPLEX_MAP_SIZE_X,
-        WIDX_SIMPLEX_MAP_SIZE_X_UP,
-        WIDX_SIMPLEX_MAP_SIZE_X_DOWN,
-        WIDX_SIMPLEX_WATER_LEVEL,
-        WIDX_SIMPLEX_WATER_LEVEL_UP,
-        WIDX_SIMPLEX_WATER_LEVEL_DOWN,
-        WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX,
-        WIDX_SIMPLEX_FLOOR_TEXTURE,
-        WIDX_SIMPLEX_WALL_TEXTURE,
-        WIDX_SIMPLEX_PLACE_TREES_CHECKBOX,
 
         WIDX_HEIGHTMAP_SELECT = TAB_BEGIN,
         WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP,
@@ -113,9 +94,19 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_HIGH,
         WIDX_HEIGHTMAP_HIGH_UP,
         WIDX_HEIGHTMAP_HIGH_DOWN,
-        WIDX_HEIGHTMAP_WATER_LEVEL,
-        WIDX_HEIGHTMAP_WATER_LEVEL_UP,
-        WIDX_HEIGHTMAP_WATER_LEVEL_DOWN,
+
+        WIDX_TERRAIN_GENERATE = TAB_BEGIN,
+        WIDX_BASE_HEIGHT,
+        WIDX_BASE_HEIGHT_UP,
+        WIDX_BASE_HEIGHT_DOWN,
+        WIDX_RANDOM_TERRAIN,
+        WIDX_FLOOR_TEXTURE,
+        WIDX_WALL_TEXTURE,
+
+        WIDX_WATER_GENERATE = TAB_BEGIN,
+        WIDX_WATER_LEVEL,
+        WIDX_WATER_LEVEL_UP,
+        WIDX_WATER_LEVEL_DOWN,
     };
 
 #pragma region Widgets
@@ -130,46 +121,35 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 3, 17 }),                                                                    /* WIDX_TAB_1 */                \
         MakeTab({ 34, 17 }),                                                                   /* WIDX_TAB_2 */                \
         MakeTab({ 65, 17 }),                                                                   /* WIDX_TAB_3 */                \
-        MakeTab({ 96, 17 })                                                                    /* WIDX_TAB_4 */
+        MakeTab({ 96, 17 }),                                                                   /* WIDX_TAB_4 */                \
+        MakeTab({ 127, 17 }),                                                                  /* WIDX_TAB_5 */                \
+        MakeTab({ 158, 17 })                                                                   /* WIDX_TAB_6 */
 
     // clang-format off
-    static Widget MapWidgets[] = {
+    static Widget BaseWidgets[] = {
         SHARED_WIDGETS,
         MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                 ),
         MakeSpinnerWidgets({104,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_COMMA16                                                ), // NB: 3 widgets
-        MakeWidget        ({155,  52}, {21, 12}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),          STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
+        MakeWidget        ({155,  52}, {21, 12}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
         MakeSpinnerWidgets({177,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
-        MakeSpinnerWidgets({104,  70}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
-        MakeSpinnerWidgets({104,  88}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
-        MakeWidget        ({104, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP       ),
-        MakeWidget        ({151, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP   ),
         kWidgetsEnd,
     };
 
     static Widget RandomWidgets[] = {
         SHARED_WIDGETS,
         MakeWidget({155, 255}, { 90, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE      ),
-        MakeWidget({  4,  52}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN),
-        MakeWidget({  4,  70}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES   ),
+        MakeWidget({  4,  52}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES   ),
         kWidgetsEnd,
     };
 
     static Widget SimplexWidgets[] = {
         SHARED_WIDGETS,
-        MakeWidget        ({155, 255}, { 90, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                       ), // WIDX_SIMPLEX_GENERATE
-        MakeWidget        ({  4,  52}, {195, 12}, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_MAPGEN_SIMPLEX_NOISE                                         ), // WIDX_SIMPLEX_LABEL
-        MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_LOW{,_UP,_DOWN}
-        MakeSpinnerWidgets({104,  88}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_HIGH{,_UP,_DOWN}
-        MakeSpinnerWidgets({104, 106}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
-        MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
-        MakeSpinnerWidgets({104, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_COMMA16                                                      ), // WIDX_SIMPLEX_MAP_SIZE_Y{,_UP,_DOWN}
-        MakeWidget        ({155, 148}, { 21, 12}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),                STR_MAINTAIN_SQUARE_MAP_TOOLTIP), // WIDX_SIMPLEX_MAP_SIZE_LINK
-        MakeSpinnerWidgets({177, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_POP16_COMMA16                                                ), // WIDX_SIMPLEX_MAP_SIZE_X{,_UP,_DOWN}
-        MakeSpinnerWidgets({104, 166}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_WATER_LEVEL{,_UP,_DOWN}
-        MakeWidget        ({104, 190}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN                                 ), // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX
-        MakeWidget        ({102, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP       ), // WIDX_SIMPLEX_FLOOR_TEXTURE
-        MakeWidget        ({150, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_VERTICAL_LAND_TIP   ), // WIDX_SIMPLEX_WALL_TEXTURE
-        MakeWidget        ({104, 239}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
+        MakeWidget        ({155, 255}, { 90, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE), // WIDX_SIMPLEX_GENERATE
+        MakeWidget        ({  4,  52}, {195, 12}, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_MAPGEN_SIMPLEX_NOISE  ), // WIDX_SIMPLEX_LABEL
+        MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                            ), // WIDX_SIMPLEX_LOW{,_UP,_DOWN}
+        MakeSpinnerWidgets({104,  88}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                            ), // WIDX_SIMPLEX_HIGH{,_UP,_DOWN}
+        MakeSpinnerWidgets({104, 106}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                            ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
+        MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                            ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
         kWidgetsEnd,
     };
 
@@ -182,17 +162,35 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  4, 106}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE     ), // WIDX_HEIGHTMAP_SMOOTH_TILES
         MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
         MakeSpinnerWidgets({104, 142}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
-        MakeSpinnerWidgets({104, 160}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_WATER_LEVEL{,_UP,_DOWN}
         kWidgetsEnd,
     };
-    // clang-format on
+
+    static Widget TerrainWidgets[] = {
+        SHARED_WIDGETS,
+        MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE              ),
+        MakeSpinnerWidgets({104,  52}, {95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                          ), // NB: 3 widgets
+        MakeWidget        ({104,  70}, {95, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
+        MakeWidget        ({104,  82}, {47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
+        MakeWidget        ({151,  82}, {47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
+        kWidgetsEnd,
+    };
+
+    static Widget WaterWidgets[] = {
+        SHARED_WIDGETS,
+        MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE),
+        MakeSpinnerWidgets({104,  52}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                            ), // NB: 3 widgets
+        kWidgetsEnd,
+    };
 
     static Widget* PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-        MapWidgets,
+        BaseWidgets,
         RandomWidgets,
         SimplexWidgets,
         HeightmapWidgets,
+        TerrainWidgets,
+        WaterWidgets,
     };
+    // clang-format on
 
 #pragma endregion
 
@@ -217,21 +215,14 @@ namespace OpenRCT2::Ui::Windows
         (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN) |
         (1uLL << WIDX_HEIGHTMAP_LOW) |
         (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
-        (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
-        (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL) |
-        (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_UP) |
-        (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_DOWN)
+        (1uLL << WIDX_HEIGHTMAP_LOW_DOWN)
     };
 
     static uint64_t HoldDownWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
         (1uLL << WIDX_MAP_SIZE_Y_UP) |
         (1uLL << WIDX_MAP_SIZE_Y_DOWN) |
         (1uLL << WIDX_MAP_SIZE_X_UP) |
-        (1uLL << WIDX_MAP_SIZE_X_DOWN) |
-        (1uLL << WIDX_BASE_HEIGHT_UP) |
-        (1uLL << WIDX_BASE_HEIGHT_DOWN) |
-        (1uLL << WIDX_WATER_LEVEL_UP) |
-        (1uLL << WIDX_WATER_LEVEL_DOWN),
+        (1uLL << WIDX_MAP_SIZE_X_DOWN),
 
         0,
 
@@ -242,41 +233,46 @@ namespace OpenRCT2::Ui::Windows
         (1uLL << WIDX_SIMPLEX_BASE_FREQ_UP) |
         (1uLL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
         (1uLL << WIDX_SIMPLEX_OCTAVES_UP) |
-        (1uLL << WIDX_SIMPLEX_OCTAVES_DOWN) |
-        (1uLL << WIDX_SIMPLEX_MAP_SIZE_Y_UP) |
-        (1uLL << WIDX_SIMPLEX_MAP_SIZE_Y_DOWN) |
-        (1uLL << WIDX_SIMPLEX_MAP_SIZE_X_UP) |
-        (1uLL << WIDX_SIMPLEX_MAP_SIZE_X_DOWN) |
-        (1uLL << WIDX_SIMPLEX_WATER_LEVEL_UP) |
-        (1uLL << WIDX_SIMPLEX_WATER_LEVEL_DOWN),
+        (1uLL << WIDX_SIMPLEX_OCTAVES_DOWN),
 
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
         (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
         (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
         (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
-        (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN) |
-        (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_UP) |
-        (1uLL << WIDX_HEIGHTMAP_WATER_LEVEL_DOWN)
+        (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN),
+
+        (1uLL << WIDX_BASE_HEIGHT_UP) |
+        (1uLL << WIDX_BASE_HEIGHT_DOWN),
+
+        (1uLL << WIDX_WATER_LEVEL_UP) |
+        (1uLL << WIDX_WATER_LEVEL_DOWN),
     };
 
     static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
         0,
         0,
         0,
-        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILES)
+        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILES),
+        0,
+        0,
     };
     // clang-format on
 
 #pragma endregion
 
+    // clang-format off
     static constexpr int32_t TabAnimationDivisor[WINDOW_MAPGEN_PAGE_COUNT] = {
+        2,
+        1,
         1,
         1,
         1,
         1,
     };
     static constexpr int32_t TabAnimationFrames[WINDOW_MAPGEN_PAGE_COUNT] = {
+        4,
+        1,
         1,
         1,
         1,
@@ -287,6 +283,8 @@ namespace OpenRCT2::Ui::Windows
         16,
         16,
         0,
+        1,
+        1,
     };
     // clang-format on
 
@@ -366,9 +364,6 @@ namespace OpenRCT2::Ui::Windows
                 SetWidgetEnabled(WIDX_HEIGHTMAP_LOW, true);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_LOW_UP, true);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_LOW_DOWN, true);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_WATER_LEVEL, true);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_WATER_LEVEL_UP, true);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_WATER_LEVEL_DOWN, true);
             }
 
             InitScrollWidgets();
@@ -377,8 +372,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPressedTab()
         {
-            int32_t i;
-            for (i = 0; i < WINDOW_MAPGEN_PAGE_COUNT; i++)
+            for (auto i = 0; i < WINDOW_MAPGEN_PAGE_COUNT; i++)
                 pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
             pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
         }
@@ -403,10 +397,12 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawTabImages(DrawPixelInfo& dpi)
         {
-            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_BASE, SPR_G2_TAB_LAND);
+            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_BASE, SPR_TAB_GEARS_0);
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_RANDOM, SPR_G2_TAB_TREE);
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_SIMPLEX, SPR_G2_TAB_PENCIL);
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_HEIGHTMAP, SPR_TAB_GRAPH_0);
+            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_TAB_LAND);
+            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_WATER, SPR_TAB_WATER);
         }
 
         void ChangeMapSize(int32_t sizeOffset)
@@ -450,6 +446,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_2:
                 case WIDX_TAB_3:
                 case WIDX_TAB_4:
+                case WIDX_TAB_5:
+                case WIDX_TAB_6:
                     SetPage(widgetIndex - WIDX_TAB_1);
                     break;
             }
@@ -484,26 +482,6 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAP_SIZE_LINK:
                     _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
                     break;
-                case WIDX_BASE_HEIGHT:
-                {
-                    Formatter ft;
-                    ft.Add<int16_t>((BASESIZE_MIN - 12) / 2);
-                    ft.Add<int16_t>((BASESIZE_MAX - 12) / 2);
-                    WindowTextInputOpen(
-                        this, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, ft, STR_FORMAT_INTEGER,
-                        (_settings.height - 12) / 2, 3);
-                    break;
-                }
-                case WIDX_WATER_LEVEL:
-                {
-                    Formatter ft;
-                    ft.Add<int16_t>((WATERLEVEL_MIN - 12) / 2);
-                    ft.Add<int16_t>((WATERLEVEL_MAX - 12) / 2);
-                    WindowTextInputOpen(
-                        this, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, ft, STR_FORMAT_INTEGER,
-                        (_settings.water_level - 12) / 2, 3);
-                    break;
-                }
             }
         }
 
@@ -531,71 +509,6 @@ namespace OpenRCT2::Ui::Windows
                     ChangeMapSize(-1);
                     Invalidate();
                     break;
-                case WIDX_BASE_HEIGHT_UP:
-                    _settings.height = std::min(_settings.height + 2, BASESIZE_MAX);
-                    Invalidate();
-                    break;
-                case WIDX_BASE_HEIGHT_DOWN:
-                    _settings.height = std::max(_settings.height - 2, BASESIZE_MIN);
-                    Invalidate();
-                    break;
-                case WIDX_WATER_LEVEL_UP:
-                    _settings.water_level = std::min(_settings.water_level + 2, WATERLEVEL_MAX);
-                    Invalidate();
-                    break;
-                case WIDX_WATER_LEVEL_DOWN:
-                    _settings.water_level = std::max(_settings.water_level - 2, WATERLEVEL_MIN);
-                    Invalidate();
-                    break;
-                case WIDX_FLOOR_TEXTURE:
-                    LandTool::ShowSurfaceStyleDropdown(this, widget, _settings.floor);
-                    break;
-                case WIDX_WALL_TEXTURE:
-                    LandTool::ShowEdgeStyleDropdown(this, widget, _settings.wall);
-                    break;
-            }
-        }
-
-        void BaseDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
-        {
-            int32_t type;
-
-            switch (widgetIndex)
-            {
-                case WIDX_FLOOR_TEXTURE:
-                    if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
-
-                    type = (dropdownIndex == -1) ? _settings.floor : dropdownIndex;
-
-                    if (gLandToolTerrainSurface == type)
-                    {
-                        gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
-                    }
-                    else
-                    {
-                        gLandToolTerrainSurface = type;
-                        _settings.floor = type;
-                    }
-                    Invalidate();
-                    break;
-                case WIDX_WALL_TEXTURE:
-                    if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
-
-                    type = (dropdownIndex == -1) ? _settings.wall : dropdownIndex;
-
-                    if (gLandToolTerrainEdge == type)
-                    {
-                        gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
-                    }
-                    else
-                    {
-                        gLandToolTerrainEdge = type;
-                        _settings.wall = type;
-                    }
-                    Invalidate();
-                    break;
             }
         }
 
@@ -607,7 +520,7 @@ namespace OpenRCT2::Ui::Windows
             InvalidateWidget(WIDX_TAB_1);
         }
 
-        void TextInput(WidgetIndex widgetIndex, std::string_view text)
+        void BaseTextInput(WidgetIndex widgetIndex, std::string_view text)
         {
             int32_t value;
             char* end;
@@ -624,20 +537,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_MAP_SIZE_Y:
                 case WIDX_MAP_SIZE_X:
-                case WIDX_SIMPLEX_MAP_SIZE_Y:
-                case WIDX_SIMPLEX_MAP_SIZE_X:
                     // The practical size is 2 lower than the technical size
                     value += 2;
                     if (_resizeDirection == ResizeDirection::Y || _mapWidthAndHeightLinked)
                         _settings.mapSize.y = value;
                     if (_resizeDirection == ResizeDirection::X || _mapWidthAndHeightLinked)
                         _settings.mapSize.x = value;
-                    break;
-                case WIDX_BASE_HEIGHT:
-                    _settings.height = std::clamp((value * 2) + 12, BASESIZE_MIN, BASESIZE_MAX);
-                    break;
-                case WIDX_WATER_LEVEL:
-                    _settings.water_level = std::clamp((value * 2) + 12, WATERLEVEL_MIN, WATERLEVEL_MAX);
                     break;
             }
 
@@ -664,86 +569,15 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<uint16_t>(_settings.mapSize.x - 2);
         }
 
-        void DrawDropdownButton(DrawPixelInfo& dpi, WidgetIndex widgetIndex, ImageId image)
-        {
-            const auto& widget = widgets[widgetIndex];
-            ScreenCoordsXY pos = { windowPos.x + widget.left, windowPos.y + widget.top };
-            if (IsWidgetDisabled(widgetIndex))
-            {
-                // Draw greyed out (light border bottom right shadow)
-                auto colour = colours[widget.colour].colour;
-                colour = ColourMapA[colour].lighter;
-                GfxDrawSpriteSolid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
-
-                // Draw greyed out (dark)
-                colour = colours[widget.colour].colour;
-                colour = ColourMapA[colour].mid_light;
-                GfxDrawSpriteSolid(dpi, image, pos, colour);
-            }
-            else
-            {
-                GfxDrawSprite(dpi, image, pos);
-            }
-        }
-
-        void DrawDropdownButtons(DrawPixelInfo& dpi, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
-        {
-            auto& objManager = GetContext()->GetObjectManager();
-            const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainSurface, _settings.floor));
-            ImageId surfaceImage;
-            if (surfaceObj != nullptr)
-            {
-                surfaceImage = ImageId(surfaceObj->IconImageId);
-                if (surfaceObj->Colour != TerrainSurfaceObject::kNoValue)
-                {
-                    surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
-                }
-            }
-
-            ImageId edgeImage;
-            const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainEdge, _settings.wall));
-            if (edgeObj != nullptr)
-            {
-                edgeImage = ImageId(edgeObj->IconImageId);
-            }
-
-            DrawDropdownButton(dpi, floorWidgetIndex, surfaceImage);
-            DrawDropdownButton(dpi, edgeWidgetIndex, edgeImage);
-        }
-
         void BaseDraw(DrawPixelInfo& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
-            DrawDropdownButtons(dpi, WIDX_FLOOR_TEXTURE, WIDX_WALL_TEXTURE);
 
             const auto textColour = colours[1];
 
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_BASE_HEIGHT].top + 1 }, STR_BASE_HEIGHT_LABEL, {},
-                { textColour });
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
-                { textColour });
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL, {},
-                { textColour });
-
-            auto ft = Formatter();
-            ft.Add<uint16_t>((_settings.height - 12) / 2);
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_BASE_HEIGHT].left + 1, widgets[WIDX_BASE_HEIGHT].top + 1 },
-                STR_COMMA16, ft, { colours[1] });
-
-            ft = Formatter();
-            ft.Add<uint16_t>((_settings.water_level - 12) / 2);
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
-                STR_COMMA16, ft, { colours[1] });
         }
 
 #pragma endregion
@@ -776,9 +610,6 @@ namespace OpenRCT2::Ui::Windows
                     GfxInvalidateScreen();
                     break;
                 }
-                case WIDX_RANDOM_TERRAIN:
-                    _randomTerrain = !_randomTerrain;
-                    break;
                 case WIDX_RANDOM_PLACE_TREES:
                     _settings.trees ^= 1;
                     break;
@@ -802,8 +633,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             pressed_widgets = 0;
-            if (_randomTerrain)
-                pressed_widgets |= 1uLL << WIDX_RANDOM_TERRAIN;
             if (_settings.trees)
                 pressed_widgets |= 1uLL << WIDX_RANDOM_PLACE_TREES;
 
@@ -826,17 +655,6 @@ namespace OpenRCT2::Ui::Windows
 
             switch (widgetIndex)
             {
-                case WIDX_SIMPLEX_MAP_SIZE_Y:
-                    _resizeDirection = ResizeDirection::Y;
-                    InputMapSize(WIDX_SIMPLEX_MAP_SIZE_Y, _settings.mapSize.y);
-                    break;
-                case WIDX_SIMPLEX_MAP_SIZE_X:
-                    _resizeDirection = ResizeDirection::X;
-                    InputMapSize(WIDX_SIMPLEX_MAP_SIZE_X, _settings.mapSize.x);
-                    break;
-                case WIDX_SIMPLEX_MAP_SIZE_LINK:
-                    _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
-                    break;
                 case WIDX_SIMPLEX_GENERATE:
                 {
                     MapGenSettings mapgenSettings = _settings;
@@ -891,91 +709,6 @@ namespace OpenRCT2::Ui::Windows
                     _settings.simplex_octaves = std::max(_settings.simplex_octaves - 1, 1);
                     Invalidate();
                     break;
-                case WIDX_SIMPLEX_MAP_SIZE_Y_UP:
-                    _resizeDirection = ResizeDirection::Y;
-                    ChangeMapSize(+1);
-                    Invalidate();
-                    break;
-                case WIDX_SIMPLEX_MAP_SIZE_Y_DOWN:
-                    _resizeDirection = ResizeDirection::Y;
-                    ChangeMapSize(-1);
-                    Invalidate();
-                    break;
-                case WIDX_SIMPLEX_MAP_SIZE_X_UP:
-                    _resizeDirection = ResizeDirection::X;
-                    ChangeMapSize(+1);
-                    Invalidate();
-                    break;
-                case WIDX_SIMPLEX_MAP_SIZE_X_DOWN:
-                    _resizeDirection = ResizeDirection::X;
-                    ChangeMapSize(-1);
-                    Invalidate();
-                    break;
-                case WIDX_SIMPLEX_WATER_LEVEL_UP:
-                    _settings.water_level = std::min(_settings.water_level + kMinimumWaterHeight, kMinimumWaterHeight + kMaximumWaterHeight);
-                    Invalidate();
-                    break;
-                case WIDX_SIMPLEX_WATER_LEVEL_DOWN:
-                    _settings.water_level = std::max(_settings.water_level - kMinimumWaterHeight, 0);
-                    Invalidate();
-                    break;
-                case WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX:
-                    _randomTerrain = !_randomTerrain;
-                    Invalidate();
-                    break;
-                case WIDX_SIMPLEX_FLOOR_TEXTURE:
-                    LandTool::ShowSurfaceStyleDropdown(this, widget, _settings.floor);
-                    break;
-                case WIDX_SIMPLEX_WALL_TEXTURE:
-                    LandTool::ShowEdgeStyleDropdown(this, widget, _settings.wall);
-                    break;
-                case WIDX_SIMPLEX_PLACE_TREES_CHECKBOX:
-                    _settings.trees ^= 1;
-                    Invalidate();
-                    break;
-            }
-        }
-
-        void SimplexDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
-        {
-            int32_t type;
-
-            switch (widgetIndex)
-            {
-                case WIDX_SIMPLEX_FLOOR_TEXTURE:
-                    if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
-
-                    type = (dropdownIndex == -1) ? _settings.floor : dropdownIndex;
-
-                    if (gLandToolTerrainSurface == type)
-                    {
-                        gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
-                    }
-                    else
-                    {
-                        gLandToolTerrainSurface = type;
-                        _settings.floor = type;
-                    }
-                    Invalidate();
-                    break;
-                case WIDX_SIMPLEX_WALL_TEXTURE:
-                    if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
-
-                    type = (dropdownIndex == -1) ? _settings.wall : dropdownIndex;
-
-                    if (gLandToolTerrainEdge == type)
-                    {
-                        gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
-                    }
-                    else
-                    {
-                        gLandToolTerrainEdge = type;
-                        _settings.wall = type;
-                    }
-                    Invalidate();
-                    break;
             }
         }
 
@@ -995,38 +728,13 @@ namespace OpenRCT2::Ui::Windows
                 InitScrollWidgets();
             }
 
-            // Only allow linking the map size when X and Y are the same
-            SetWidgetPressed(WIDX_SIMPLEX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-            SetWidgetDisabled(WIDX_SIMPLEX_MAP_SIZE_LINK, _settings.mapSize.x != _settings.mapSize.y);
-
-            SetCheckboxValue(WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
-            SetCheckboxValue(WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _settings.trees != 0);
-
-            // Only allow floor and wall texture options if random terrain is disabled
-            if (!_randomTerrain)
-            {
-                SetWidgetEnabled(WIDX_SIMPLEX_FLOOR_TEXTURE, true);
-                SetWidgetEnabled(WIDX_SIMPLEX_WALL_TEXTURE, true);
-            }
-            else
-            {
-                SetWidgetEnabled(WIDX_SIMPLEX_FLOOR_TEXTURE, false);
-                SetWidgetEnabled(WIDX_SIMPLEX_WALL_TEXTURE, false);
-            }
-
             SetPressedTab();
-
-            // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
-            auto ft = Formatter::Common();
-            ft.Add<uint16_t>(_settings.mapSize.y - 2);
-            ft.Add<uint16_t>(_settings.mapSize.x - 2);
         }
 
         void SimplexDraw(DrawPixelInfo& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
-            DrawDropdownButtons(dpi, WIDX_SIMPLEX_FLOOR_TEXTURE, WIDX_SIMPLEX_WALL_TEXTURE);
 
             const auto textColour = colours[1];
 
@@ -1042,12 +750,6 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES,
                 {}, { textColour });
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_SIMPLEX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {},
-                { textColour });
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
-                { textColour });
 
             auto ft = Formatter();
             ft.Add<uint16_t>(_settings.simplex_low);
@@ -1070,20 +772,6 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(
                 dpi,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_OCTAVES].left + 1, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
-                STR_COMMA16, ft, { textColour });
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX].top + 1 }, STR_TERRAIN_LABEL,
-                {}, { textColour });
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1 },
-                STR_MAPGEN_OPTION_PLACE_TREES, {}, { textColour });
-
-            ft = Formatter();
-            ft.Add<uint16_t>((_settings.water_level - 12) / 2);
-            DrawTextBasic(
-                dpi,
-                windowPos
-                    + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_WATER_LEVEL].left + 1, widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1 },
                 STR_COMMA16, ft, { textColour });
         }
 
@@ -1121,14 +809,6 @@ namespace OpenRCT2::Ui::Windows
                     _heightmapLow = std::min(_heightmapLow, _heightmapHigh - 1);
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
-                case WIDX_HEIGHTMAP_WATER_LEVEL_UP:
-                    _settings.water_level = std::min(_settings.water_level + kMinimumWaterHeight, kMinimumWaterHeight + kMaximumWaterHeight);
-                    InvalidateWidget(WIDX_HEIGHTMAP_WATER_LEVEL);
-                    break;
-                case WIDX_HEIGHTMAP_WATER_LEVEL_DOWN:
-                    _settings.water_level = std::max(_settings.water_level - kMinimumWaterHeight, 0);
-                    InvalidateWidget(WIDX_HEIGHTMAP_WATER_LEVEL);
-                    break;
             }
         }
 
@@ -1152,9 +832,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_2:
                 case WIDX_TAB_3:
                 case WIDX_TAB_4:
+                case WIDX_TAB_5:
+                case WIDX_TAB_6:
                     return; // Only widgets that change a setting need to regenerate the map
 
-                    // Page widgets
+                // Page widgets
                 case WIDX_HEIGHTMAP_SELECT:
                 {
                     auto intent = Intent(WindowClass::Loadsave);
@@ -1247,20 +929,344 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_HIGH].left + 1, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
                 STR_COMMA16, ft, { labelColour });
+        }
 
-            // Water level label and value
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
-                { labelColour });
+#pragma endregion
 
-            ft = Formatter();
-            ft.Add<uint16_t>(_settings.water_level);
+#pragma region Terrain page
+
+        void TerrainMouseUp(WidgetIndex widgetIndex)
+        {
+            SharedMouseUp(widgetIndex);
+
+            switch (widgetIndex)
+            {
+                case WIDX_MAP_GENERATE:
+                {
+                    MapGenSettings mapgenSettings = _settings;
+                    mapgenSettings.height += 2;
+                    mapgenSettings.water_level += 2;
+
+                    MapGenGenerateBlank(&mapgenSettings);
+                    GfxInvalidateScreen();
+                    break;
+                }
+
+                case WIDX_BASE_HEIGHT:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>((BASESIZE_MIN - 12) / 2);
+                    ft.Add<int16_t>((BASESIZE_MAX - 12) / 2);
+                    WindowTextInputOpen(
+                        this, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, ft, STR_FORMAT_INTEGER,
+                        (_settings.height - 12) / 2, 3);
+                    break;
+                }
+            }
+        }
+
+        void TerrainMouseDown(WidgetIndex widgetIndex, Widget* widget)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_BASE_HEIGHT_UP:
+                    _settings.height = std::min(_settings.height + 2, BASESIZE_MAX);
+                    Invalidate();
+                    break;
+                case WIDX_BASE_HEIGHT_DOWN:
+                    _settings.height = std::max(_settings.height - 2, BASESIZE_MIN);
+                    Invalidate();
+                    break;
+                case WIDX_RANDOM_TERRAIN:
+                    _randomTerrain = !_randomTerrain;
+                    Invalidate();
+                    break;
+                case WIDX_FLOOR_TEXTURE:
+                    LandTool::ShowSurfaceStyleDropdown(this, widget, _settings.floor);
+                    break;
+                case WIDX_WALL_TEXTURE:
+                    LandTool::ShowEdgeStyleDropdown(this, widget, _settings.wall);
+                    break;
+            }
+        }
+
+        void TerrainUpdate()
+        {
+            // Tab animation
+            if (++frame_no >= TabAnimationLoops[page])
+                frame_no = 0;
+            InvalidateWidget(WIDX_TAB_5);
+        }
+
+        void TerrainTextInput(WidgetIndex widgetIndex, std::string_view text)
+        {
+            int32_t value;
+            char* end;
+
+            const auto strText = u8string(text);
+            value = strtol(strText.c_str(), &end, 10);
+
+            if (*end != '\0')
+            {
+                return;
+            }
+
+            switch (widgetIndex)
+            {
+                case WIDX_BASE_HEIGHT:
+                    _settings.height = std::clamp((value * 2) + 12, BASESIZE_MIN, BASESIZE_MAX);
+                    break;
+            }
+
+            Invalidate();
+        }
+
+        void TerrainDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        {
+            int32_t type;
+
+            switch (widgetIndex)
+            {
+                case WIDX_FLOOR_TEXTURE:
+                    if (dropdownIndex == -1)
+                        dropdownIndex = gDropdownHighlightedIndex;
+
+                    type = (dropdownIndex == -1) ? _settings.floor : dropdownIndex;
+
+                    if (gLandToolTerrainSurface == type)
+                    {
+                        gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
+                    }
+                    else
+                    {
+                        gLandToolTerrainSurface = type;
+                        _settings.floor = type;
+                    }
+                    Invalidate();
+                    break;
+                case WIDX_WALL_TEXTURE:
+                    if (dropdownIndex == -1)
+                        dropdownIndex = gDropdownHighlightedIndex;
+
+                    type = (dropdownIndex == -1) ? _settings.wall : dropdownIndex;
+
+                    if (gLandToolTerrainEdge == type)
+                    {
+                        gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
+                    }
+                    else
+                    {
+                        gLandToolTerrainEdge = type;
+                        _settings.wall = type;
+                    }
+                    Invalidate();
+                    break;
+            }
+        }
+
+        void DrawDropdownButton(DrawPixelInfo& dpi, WidgetIndex widgetIndex, ImageId image)
+        {
+            const auto& widget = widgets[widgetIndex];
+            ScreenCoordsXY pos = { windowPos.x + widget.left, windowPos.y + widget.top };
+            if (IsWidgetDisabled(widgetIndex))
+            {
+                // Draw greyed out (light border bottom right shadow)
+                auto colour = colours[widget.colour].colour;
+                colour = ColourMapA[colour].lighter;
+                GfxDrawSpriteSolid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
+
+                // Draw greyed out (dark)
+                colour = colours[widget.colour].colour;
+                colour = ColourMapA[colour].mid_light;
+                GfxDrawSpriteSolid(dpi, image, pos, colour);
+            }
+            else
+            {
+                GfxDrawSprite(dpi, image, pos);
+            }
+        }
+
+        void DrawDropdownButtons(DrawPixelInfo& dpi, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
+        {
+            auto& objManager = GetContext()->GetObjectManager();
+            const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+                objManager.GetLoadedObject(ObjectType::TerrainSurface, _settings.floor));
+            ImageId surfaceImage;
+            if (surfaceObj != nullptr)
+            {
+                surfaceImage = ImageId(surfaceObj->IconImageId);
+                if (surfaceObj->Colour != TerrainSurfaceObject::kNoValue)
+                {
+                    surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
+                }
+            }
+
+            ImageId edgeImage;
+            const auto edgeObj = static_cast<TerrainEdgeObject*>(
+                objManager.GetLoadedObject(ObjectType::TerrainEdge, _settings.wall));
+            if (edgeObj != nullptr)
+            {
+                edgeImage = ImageId(edgeObj->IconImageId);
+            }
+
+            DrawDropdownButton(dpi, floorWidgetIndex, surfaceImage);
+            DrawDropdownButton(dpi, edgeWidgetIndex, edgeImage);
+        }
+
+        void TerrainPrepareDraw()
+        {
+            if (widgets != PageWidgets[WINDOW_MAPGEN_PAGE_TERRAIN])
+            {
+                widgets = PageWidgets[WINDOW_MAPGEN_PAGE_TERRAIN];
+                InitScrollWidgets();
+            }
+
+            SetCheckboxValue(WIDX_RANDOM_TERRAIN, _randomTerrain != 0);
+
+            // Only allow floor and wall texture options if random terrain is disabled
+            if (!_randomTerrain)
+            {
+                SetWidgetEnabled(WIDX_FLOOR_TEXTURE, true);
+                SetWidgetEnabled(WIDX_WALL_TEXTURE, true);
+            }
+            else
+            {
+                SetWidgetEnabled(WIDX_FLOOR_TEXTURE, false);
+                SetWidgetEnabled(WIDX_WALL_TEXTURE, false);
+            }
+
+            SetPressedTab();
+        }
+
+        void TerrainDraw(DrawPixelInfo& dpi)
+        {
+            DrawWidgets(dpi);
+            DrawTabImages(dpi);
+            DrawDropdownButtons(dpi, WIDX_FLOOR_TEXTURE, WIDX_WALL_TEXTURE);
+
+            const auto textColour = colours[1];
+
             DrawTextBasic(
-                dpi,
-                windowPos
-                    + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_WATER_LEVEL].left + 1,
-                                      widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 },
-                STR_COMMA16, ft, { labelColour });
+                dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_BASE_HEIGHT].top + 1 }, STR_BASE_HEIGHT_LABEL, {},
+                { textColour });
+            DrawTextBasic(
+                dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL, {},
+                { textColour });
+
+            auto ft = Formatter();
+            ft.Add<uint16_t>((_settings.height - 12) / 2);
+            DrawTextBasic(
+                dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_BASE_HEIGHT].left + 1, widgets[WIDX_BASE_HEIGHT].top + 1 },
+                STR_COMMA16, ft, { colours[1] });
+        }
+
+#pragma endregion
+
+#pragma region Water page
+
+        void WaterMouseUp(WidgetIndex widgetIndex)
+        {
+            SharedMouseUp(widgetIndex);
+
+            switch (widgetIndex)
+            {
+                case WIDX_MAP_GENERATE:
+                {
+                    MapGenSettings mapgenSettings = _settings;
+                    mapgenSettings.height += 2;
+                    mapgenSettings.water_level += 2;
+
+                    MapGenGenerateBlank(&mapgenSettings);
+                    GfxInvalidateScreen();
+                    break;
+                }
+
+                case WIDX_WATER_LEVEL:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>((WATERLEVEL_MIN - 12) / 2);
+                    ft.Add<int16_t>((WATERLEVEL_MAX - 12) / 2);
+                    WindowTextInputOpen(
+                        this, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, ft, STR_FORMAT_INTEGER,
+                        (_settings.water_level - 12) / 2, 3);
+                    break;
+                }
+            }
+        }
+
+        void WaterMouseDown(WidgetIndex widgetIndex, Widget* widget)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_WATER_LEVEL_UP:
+                    _settings.water_level = std::min(_settings.water_level + 2, WATERLEVEL_MAX);
+                    Invalidate();
+                    break;
+                case WIDX_WATER_LEVEL_DOWN:
+                    _settings.water_level = std::max(_settings.water_level - 2, WATERLEVEL_MIN);
+                    Invalidate();
+                    break;
+            }
+        }
+
+        void WaterUpdate()
+        {
+            // Tab animation
+            if (++frame_no >= TabAnimationLoops[page])
+                frame_no = 0;
+            InvalidateWidget(WIDX_TAB_6);
+        }
+
+        void WaterTextInput(WidgetIndex widgetIndex, std::string_view text)
+        {
+            int32_t value;
+            char* end;
+
+            const auto strText = u8string(text);
+            value = strtol(strText.c_str(), &end, 10);
+
+            if (*end != '\0')
+            {
+                return;
+            }
+
+            switch (widgetIndex)
+            {
+                case WIDX_WATER_LEVEL:
+                    _settings.water_level = std::clamp((value * 2) + 12, WATERLEVEL_MIN, WATERLEVEL_MAX);
+                    break;
+            }
+
+            Invalidate();
+        }
+
+        void WaterPrepareDraw()
+        {
+            if (widgets != PageWidgets[WINDOW_MAPGEN_PAGE_WATER])
+            {
+                widgets = PageWidgets[WINDOW_MAPGEN_PAGE_WATER];
+                InitScrollWidgets();
+            }
+
+            SetPressedTab();
+        }
+
+        void WaterDraw(DrawPixelInfo& dpi)
+        {
+            DrawWidgets(dpi);
+            DrawTabImages(dpi);
+
+            const auto textColour = colours[1];
+
+            DrawTextBasic(
+                dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
+                { textColour });
+
+            auto ft = Formatter();
+            ft.Add<uint16_t>((_settings.water_level - 12) / 2);
+            DrawTextBasic(
+                dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
+                STR_COMMA16, ft, { colours[1] });
         }
 
 #pragma endregion
@@ -1299,6 +1305,10 @@ namespace OpenRCT2::Ui::Windows
                     return SimplexMouseUp(widgetIndex);
                 case WINDOW_MAPGEN_PAGE_HEIGHTMAP:
                     return HeightmapMouseUp(widgetIndex);
+                case WINDOW_MAPGEN_PAGE_TERRAIN:
+                    return TerrainMouseUp(widgetIndex);
+                case WINDOW_MAPGEN_PAGE_WATER:
+                    return WaterMouseUp(widgetIndex);
             }
         }
 
@@ -1312,6 +1322,10 @@ namespace OpenRCT2::Ui::Windows
                     return SimplexMouseDown(widgetIndex, &widgets[widgetIndex]);
                 case WINDOW_MAPGEN_PAGE_HEIGHTMAP:
                     return HeightmapMouseDown(widgetIndex, &widgets[widgetIndex]);
+                case WINDOW_MAPGEN_PAGE_TERRAIN:
+                    return TerrainMouseDown(widgetIndex, &widgets[widgetIndex]);
+                case WINDOW_MAPGEN_PAGE_WATER:
+                    return WaterMouseDown(widgetIndex, &widgets[widgetIndex]);
             }
         }
 
@@ -1319,10 +1333,8 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (page)
             {
-                case WINDOW_MAPGEN_PAGE_BASE:
-                    return BaseDropdown(widgetIndex, selectedIndex);
-                case WINDOW_MAPGEN_PAGE_SIMPLEX:
-                    return SimplexDropdown(widgetIndex, selectedIndex);
+                case WINDOW_MAPGEN_PAGE_TERRAIN:
+                    return TerrainDropdown(widgetIndex, selectedIndex);
             }
         }
 
@@ -1336,6 +1348,10 @@ namespace OpenRCT2::Ui::Windows
                     return RandomUpdate();
                 case WINDOW_MAPGEN_PAGE_SIMPLEX:
                     return SimplexUpdate();
+                case WINDOW_MAPGEN_PAGE_TERRAIN:
+                    return TerrainUpdate();
+                case WINDOW_MAPGEN_PAGE_WATER:
+                    return WaterUpdate();
             }
         }
 
@@ -1351,6 +1367,10 @@ namespace OpenRCT2::Ui::Windows
                     return SimplexPrepareDraw();
                 case WINDOW_MAPGEN_PAGE_HEIGHTMAP:
                     return HeightmapPrepareDraw();
+                case WINDOW_MAPGEN_PAGE_TERRAIN:
+                    return TerrainPrepareDraw();
+                case WINDOW_MAPGEN_PAGE_WATER:
+                    return WaterPrepareDraw();
             }
         }
 
@@ -1366,6 +1386,10 @@ namespace OpenRCT2::Ui::Windows
                     return SimplexDraw(dpi);
                 case WINDOW_MAPGEN_PAGE_HEIGHTMAP:
                     return HeightmapDraw(dpi);
+                case WINDOW_MAPGEN_PAGE_TERRAIN:
+                    return TerrainDraw(dpi);
+                case WINDOW_MAPGEN_PAGE_WATER:
+                    return WaterDraw(dpi);
             }
         }
 
@@ -1374,9 +1398,11 @@ namespace OpenRCT2::Ui::Windows
             switch (page)
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
-                    return TextInput(widgetIndex, text);
-                case WINDOW_MAPGEN_PAGE_SIMPLEX:
-                    return TextInput(widgetIndex, text);
+                    return BaseTextInput(widgetIndex, text);
+                case WINDOW_MAPGEN_PAGE_TERRAIN:
+                    return TerrainTextInput(widgetIndex, text);
+                case WINDOW_MAPGEN_PAGE_WATER:
+                    return WaterTextInput(widgetIndex, text);
             }
         }
 
