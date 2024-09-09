@@ -237,6 +237,7 @@ namespace OpenRCT2::Config
             model->RenderWeatherGloom = reader->GetBoolean("render_weather_gloom", true);
             model->ShowGuestPurchases = reader->GetBoolean("show_guest_purchases", false);
             model->ShowRealNamesOfGuests = reader->GetBoolean("show_real_names_of_guests", true);
+            model->ShowRealNamesOfStaff = reader->GetBoolean("show_real_names_of_staff", true);
             model->AllowEarlyCompletion = reader->GetBoolean("allow_early_completion", false);
             model->AssetPackOrder = reader->GetString("asset_pack_order", "");
             model->EnabledAssetPacks = reader->GetString("enabled_asset_packs", "");
@@ -323,6 +324,7 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("render_weather_gloom", model->RenderWeatherGloom);
         writer->WriteBoolean("show_guest_purchases", model->ShowGuestPurchases);
         writer->WriteBoolean("show_real_names_of_guests", model->ShowRealNamesOfGuests);
+        writer->WriteBoolean("show_real_names_of_staff", model->ShowRealNamesOfStaff);
         writer->WriteBoolean("allow_early_completion", model->AllowEarlyCompletion);
         writer->WriteString("asset_pack_order", model->AssetPackOrder);
         writer->WriteString("enabled_asset_packs", model->EnabledAssetPacks);

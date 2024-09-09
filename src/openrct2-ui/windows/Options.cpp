@@ -194,7 +194,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SCENARIO_OPTIONS_GROUP,
         WIDX_ALLOW_EARLY_COMPLETION,
         WIDX_TWEAKS_GROUP,
-        WIDX_REAL_NAME_CHECKBOX,
+        WIDX_REAL_NAMES_GUESTS_CHECKBOX,
+        WIDX_REAL_NAMES_STAFF_CHECKBOX,
         WIDX_AUTO_STAFF_PLACEMENT,
         WIDX_AUTO_OPEN_SHOPS,
         WIDX_DEFAULT_INSPECTION_INTERVAL_LABEL,
@@ -377,13 +378,14 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 5,  kScenarioOptionsGroupStart + 0}, {300, 35}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_SCENARIO_OPTIONS                                ),
         MakeWidget({10, kScenarioOptionsGroupStart + 15}, {290, 15}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ALLOW_EARLY_COMPLETION, STR_EARLY_COMPLETION_TIP), // Allow early scenario completion
 
-        MakeWidget({  5,  kTweaksStart + 0}, {300, 81}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TWEAKS                                                  ),
-        MakeWidget({ 10, kTweaksStart + 15}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_REAL_NAME,            STR_REAL_NAME_TIP                         ), // Show 'real' names of guests
-        MakeWidget({ 10, kTweaksStart + 30}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
-        MakeWidget({ 10, kTweaksStart + 45}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
-        MakeWidget({ 10, kTweaksStart + 62}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
-        MakeWidget({175, kTweaksStart + 61}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Default inspection time dropdown
-        MakeWidget({288, kTweaksStart + 62}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
+        MakeWidget({  5,  kTweaksStart + 0}, {300, 96}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TWEAKS                                                  ),
+        MakeWidget({ 10, kTweaksStart + 15}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_REAL_NAME_GUESTS,     STR_REAL_NAME_GUESTS_TIP                  ), // Show 'real' names of guests
+        MakeWidget({ 10, kTweaksStart + 30}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_REAL_NAME_STAFF,      STR_REAL_NAME_STAFF_TIP                   ), // Show 'real' names of guests
+        MakeWidget({ 10, kTweaksStart + 45}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
+        MakeWidget({ 10, kTweaksStart + 60}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
+        MakeWidget({ 10, kTweaksStart + 77}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
+        MakeWidget({175, kTweaksStart + 76}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Default inspection time dropdown
+        MakeWidget({288, kTweaksStart + 77}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
         kWidgetsEnd,
     };
 
@@ -1693,11 +1695,17 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_REAL_NAME_CHECKBOX:
+                case WIDX_REAL_NAMES_GUESTS_CHECKBOX:
                     Config::Get().general.ShowRealNamesOfGuests ^= 1;
                     Config::Save();
                     Invalidate();
-                    PeepUpdateNames(Config::Get().general.ShowRealNamesOfGuests);
+                    PeepUpdateNames();
+                    break;
+                case WIDX_REAL_NAMES_STAFF_CHECKBOX:
+                    Config::Get().general.ShowRealNamesOfStaff ^= 1;
+                    Config::Save();
+                    Invalidate();
+                    PeepUpdateNames();
                     break;
                 case WIDX_AUTO_STAFF_PLACEMENT:
                     Config::Get().general.AutoStaffPlacement ^= 1;
@@ -1851,8 +1859,10 @@ namespace OpenRCT2::Ui::Windows
             // and the server cannot change the setting during gameplay to prevent desyncs
             if (NetworkGetMode() != NETWORK_MODE_NONE)
             {
-                disabled_widgets |= (1uLL << WIDX_REAL_NAME_CHECKBOX);
-                widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
+                disabled_widgets |= (1uLL << WIDX_REAL_NAMES_GUESTS_CHECKBOX) | (1uLL << WIDX_REAL_NAMES_STAFF_CHECKBOX);
+                widgets[WIDX_REAL_NAMES_GUESTS_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
+                widgets[WIDX_REAL_NAMES_STAFF_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
+
                 // Disable the use of the allow_early_completion option during network play on clients.
                 // This is to prevent confusion on clients because changing this setting during network play wouldn't change
                 // the way scenarios are completed during this network-session
@@ -1863,7 +1873,8 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            SetCheckboxValue(WIDX_REAL_NAME_CHECKBOX, Config::Get().general.ShowRealNamesOfGuests);
+            SetCheckboxValue(WIDX_REAL_NAMES_GUESTS_CHECKBOX, Config::Get().general.ShowRealNamesOfGuests);
+            SetCheckboxValue(WIDX_REAL_NAMES_STAFF_CHECKBOX, Config::Get().general.ShowRealNamesOfStaff);
             SetCheckboxValue(WIDX_AUTO_STAFF_PLACEMENT, Config::Get().general.AutoStaffPlacement);
             SetCheckboxValue(WIDX_AUTO_OPEN_SHOPS, Config::Get().general.AutoOpenShops);
             SetCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, Config::Get().general.AllowEarlyCompletion);
