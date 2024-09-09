@@ -1612,7 +1612,7 @@ void Peep::FormatNameTo(Formatter& ft) const
             ft.Add<StringId>(_staffNames[staffNameIndex]);
             ft.Add<uint32_t>(PeepId);
         }
-        if (gameState.Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        else if (gameState.Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             auto realNameStringId = GetRealNameStringIDFromPeepID(PeepId);
             ft.Add<StringId>(realNameStringId);
