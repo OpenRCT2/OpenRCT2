@@ -684,18 +684,16 @@ static float Grad(int32_t hash, float x, float y)
 
 static void MapGenSimplex(MapGenSettings* settings)
 {
-    int32_t x, y;
-
     float freq = settings->simplex_base_freq * (1.0f / _heightSize.x);
     int32_t octaves = settings->simplex_octaves;
 
-    int32_t low = settings->simplex_low;
-    int32_t high = settings->simplex_high;
+    int32_t low = settings->heightmapLow;
+    int32_t high = settings->heightmapHigh;
 
     NoiseRand();
-    for (y = 0; y < _heightSize.y; y++)
+    for (int32_t y = 0; y < _heightSize.y; y++)
     {
-        for (x = 0; x < _heightSize.x; x++)
+        for (int32_t x = 0; x < _heightSize.x; x++)
         {
             float noiseValue = std::clamp(FractalNoise(x, y, freq, octaves, 2.0f, 0.65f), -1.0f, 1.0f);
             float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;

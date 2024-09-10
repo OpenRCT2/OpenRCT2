@@ -1910,8 +1910,8 @@ STR_2670    :Scroll
 STR_2680    :All research complete
 STR_2684    :Large group of guests arrive
 STR_2685    :Simplex Noise Parameters
-STR_2686    :Low:
-STR_2687    :High:
+STR_2686    :Min. land height:
+STR_2687    :Max. land height:
 STR_2688    :Base Frequency:
 STR_2689    :Octaves:
 STR_2690    :Map Generation

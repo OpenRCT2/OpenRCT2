@@ -29,14 +29,14 @@ struct MapGenSettings
     int32_t waterLevel;
     int32_t landTexture;
     int32_t edgeTexture;
+    int32_t heightmapLow;
+    int32_t heightmapHigh;
 
     // Features (e.g. tree, rivers, lakes etc.)
     bool trees;
     bool beaches;
 
     // Simplex Noise Parameters
-    int32_t simplex_low;
-    int32_t simplex_high;
     float simplex_base_freq;
     int32_t simplex_octaves;
 
@@ -45,8 +45,6 @@ struct MapGenSettings
     uint32_t smooth_strength;
     bool normalize_height;
     bool smoothTileEdges;
-    int32_t heightmapLow;
-    int32_t heightmapHigh;
 };
 
 void MapGenGenerate(MapGenSettings* settings);
