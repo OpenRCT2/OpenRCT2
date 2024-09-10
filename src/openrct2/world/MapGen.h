@@ -15,7 +15,8 @@
 enum class MapGenAlgorithm : uint8_t
 {
     blank,
-    simplex,
+    simplexNoise,
+    simplexCustom,
     heightmapImage,
 };
 

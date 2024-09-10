@@ -109,7 +109,8 @@ void MapGenGenerate(MapGenSettings* settings)
             MapGenGenerateBlank(settings);
             break;
 
-        case MapGenAlgorithm::simplex:
+        case MapGenAlgorithm::simplexNoise:
+        case MapGenAlgorithm::simplexCustom:
             MapGenGenerateSimplex(settings);
             break;
 
