@@ -98,6 +98,7 @@ static void MapGenGenerateSimplex(MapGenSettings* settings);
 static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings);
 
 static void MapGenPlaceTrees();
+static void MapGenAddBeaches(MapGenSettings* settings);
 
 void MapGenGenerate(MapGenSettings* settings)
 {
@@ -116,6 +117,10 @@ void MapGenGenerate(MapGenSettings* settings)
             MapGenGenerateFromHeightmapImage(settings);
             break;
     }
+
+    // Add beaches?
+    if (settings->beaches)
+        MapGenAddBeaches(settings);
 
     // Place trees?
     if (settings->trees)
@@ -172,13 +177,13 @@ static void MapGenGenerateBlank(MapGenSettings* settings)
 
 static void MapGenGenerateSimplex(MapGenSettings* settings)
 {
-    const auto& mapSize = settings->mapSize;
-    auto waterLevel = settings->water_level;
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+
     const auto selectedFloor = TerrainSurfaceObject::GetById(settings->floor);
     std::string_view floorTexture = selectedFloor != nullptr ? selectedFloor->GetIdentifier() : "";
+
     const auto selectedEdge = TerrainEdgeObject::GetById(settings->wall);
     std::string_view edgeTexture = selectedFloor != nullptr ? selectedEdge->GetIdentifier() : "";
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
     if (floorTexture.empty())
     {
@@ -215,6 +220,7 @@ static void MapGenGenerateSimplex(MapGenSettings* settings)
     MapClearAllElements();
 
     // Initialise the base map
+    const auto& mapSize = settings->mapSize;
     MapInit(mapSize);
     for (auto y = 1; y < mapSize.y - 1; y++)
     {
@@ -249,30 +255,35 @@ static void MapGenGenerateSimplex(MapGenSettings* settings)
     }
 
     // Add the water
-    MapGenSetWaterLevel(waterLevel);
+    MapGenSetWaterLevel(settings->water_level);
+}
 
-    // Add sandy beaches
-    std::string_view beachTexture = floorTexture;
-    if (settings->floor == -1 && floorTexture == "rct2.terrain_surface.grass" && (UtilRand() & 1))
-    {
-        std::vector<std::string_view> availableBeachTextures;
-        if (objectManager.GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand")) != nullptr)
-            availableBeachTextures.push_back("rct2.terrain_surface.sand");
-        if (objectManager.GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand_brown")) != nullptr)
-            availableBeachTextures.push_back("rct2.terrain_surface.sand_brown");
+static void MapGenAddBeaches(MapGenSettings* settings)
+{
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
-        if (!availableBeachTextures.empty())
-            beachTexture = availableBeachTextures[UtilRand() % availableBeachTextures.size()];
-    }
+    // Figure out what beach texture to use
+    std::vector<std::string_view> availableBeachTextures;
+    if (objectManager.GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand")) != nullptr)
+        availableBeachTextures.push_back("rct2.terrain_surface.sand");
+    if (objectManager.GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand_brown")) != nullptr)
+        availableBeachTextures.push_back("rct2.terrain_surface.sand_brown");
+
+    if (availableBeachTextures.empty())
+        return;
+
+    std::string_view beachTexture = availableBeachTextures[UtilRand() % availableBeachTextures.size()];
     auto beachTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(beachTexture));
 
+    // Add sandy beaches
+    const auto& mapSize = settings->mapSize;
     for (auto y = 1; y < mapSize.y - 1; y++)
     {
         for (auto x = 1; x < mapSize.x - 1; x++)
         {
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
 
-            if (surfaceElement != nullptr && surfaceElement->BaseHeight < waterLevel + 6)
+            if (surfaceElement != nullptr && surfaceElement->BaseHeight < settings->water_level + 6)
                 surfaceElement->SetSurfaceObjectIndex(beachTextureId);
         }
     }

@@ -107,6 +107,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_WATER_LEVEL,
         WIDX_WATER_LEVEL_UP,
         WIDX_WATER_LEVEL_DOWN,
+        WIDX_ADD_BEACHES,
     };
 
 #pragma region Widgets
@@ -177,8 +178,9 @@ namespace OpenRCT2::Ui::Windows
 
     static Widget WaterWidgets[] = {
         SHARED_WIDGETS,
-        MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE),
-        MakeSpinnerWidgets({104,  52}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                            ), // NB: 3 widgets
+        MakeWidget        ({155, 255}, { 90, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE),
+        MakeSpinnerWidgets({104,  52}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                            ), // NB: 3 widgets
+        MakeWidget        ({  4,  70}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_BEACHES_WATER_BODIES  ),
         kWidgetsEnd,
     };
 
@@ -320,6 +322,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Features (e.g. tree, rivers, lakes etc.)
             .trees = true,
+            .beaches = true,
 
             // Simplex Noise Parameters
             .simplex_low = 6,
@@ -1198,6 +1201,13 @@ namespace OpenRCT2::Ui::Windows
                         (_settings.water_level - 12) / 2, 3);
                     break;
                 }
+
+                case WIDX_ADD_BEACHES:
+                {
+                    _settings.beaches ^= true;
+                    Invalidate();
+                    break;
+                }
             }
         }
 
@@ -1254,6 +1264,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets = PageWidgets[WINDOW_MAPGEN_PAGE_WATER];
                 InitScrollWidgets();
             }
+
+            SetCheckboxValue(WIDX_ADD_BEACHES, _settings.beaches != 0);
 
             SetPressedTab();
         }

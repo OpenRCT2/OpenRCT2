@@ -3748,6 +3748,7 @@ STR_6673    :Transparent
 STR_6674    :{MONTH}, Year {COMMA16}
 STR_6675    :Peep Names
 STR_6676    :At least one peep names object must be selected
+STR_6677    :Add beaches around water bodies
 
 #############
 # Scenarios #

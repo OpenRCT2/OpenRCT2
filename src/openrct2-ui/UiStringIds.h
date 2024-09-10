@@ -896,6 +896,7 @@ namespace OpenRCT2
         STR_SHOW_RIDES_STALLS_ON_MAP_TIP = 3144,
 
         // Window: MapGen
+        STR_BEACHES_WATER_BODIES = 6677,
         STR_BASE_HEIGHT = 5183,
         STR_BASE_HEIGHT_LABEL = 2691,
         STR_ENTER_BASE_HEIGHT = 5184,
