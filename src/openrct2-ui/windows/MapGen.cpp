@@ -31,9 +31,9 @@ namespace OpenRCT2::Ui::Windows
     enum
     {
         WINDOW_MAPGEN_PAGE_BASE,
-        WINDOW_MAPGEN_PAGE_RANDOM,
         WINDOW_MAPGEN_PAGE_TERRAIN,
         WINDOW_MAPGEN_PAGE_WATER,
+        WINDOW_MAPGEN_PAGE_FORESTS,
         WINDOW_MAPGEN_PAGE_COUNT
     };
 
@@ -77,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_STRENGTH_UP,
         WIDX_HEIGHTMAP_STRENGTH_DOWN,
 
-        WIDX_RANDOM_PLACE_TREES = TAB_BEGIN,
+        WIDX_FORESTS_PLACE_TREES = TAB_BEGIN,
 
         WIDX_BASE_HEIGHT = TAB_BEGIN,
         WIDX_BASE_HEIGHT_UP,
@@ -134,12 +134,6 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget RandomWidgets[] = {
-        SHARED_WIDGETS,
-        MakeWidget({  4,  52}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES   ),
-        kWidgetsEnd,
-    };
-
     static Widget TerrainWidgets[] = {
         SHARED_WIDGETS,
         MakeSpinnerWidgets({179,  52}, {95, 12}, WindowWidgetType::Spinner,   WindowColour::Secondary                                          ), // NB: 3 widgets
@@ -159,11 +153,17 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
+    static Widget ForestsWidgets[] = {
+        SHARED_WIDGETS,
+        MakeWidget({  4,  52}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES   ),
+        kWidgetsEnd,
+    };
+
     static Widget* PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
         BaseWidgets,
-        RandomWidgets,
         TerrainWidgets,
         WaterWidgets,
+        ForestsWidgets,
     };
     // clang-format on
 
@@ -198,8 +198,6 @@ namespace OpenRCT2::Ui::Windows
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN),
 
-        0,
-
         (1uLL << WIDX_BASE_HEIGHT_UP) |
         (1uLL << WIDX_BASE_HEIGHT_DOWN) |
         (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
@@ -209,12 +207,14 @@ namespace OpenRCT2::Ui::Windows
 
         (1uLL << WIDX_WATER_LEVEL_UP) |
         (1uLL << WIDX_WATER_LEVEL_DOWN),
+
+        0,
     };
 
     static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
         0,
-        0,
         (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES),
+        0,
         0,
     };
     // clang-format on
@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
     };
     static constexpr int32_t TabAnimationLoops[WINDOW_MAPGEN_PAGE_COUNT] = {
         16,
-        16,
+        1,
         1,
         1,
     };
@@ -306,11 +306,11 @@ namespace OpenRCT2::Ui::Windows
             // Enable heightmap widgets if one is loaded
             if (_settings.algorithm == MapGenAlgorithm::heightmapImage && _heightmapLoaded)
             {
+                SetWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, true);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, true);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _settings.smooth_height_map);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _settings.smooth_height_map);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _settings.smooth_height_map);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, true);
             }
 
             InitScrollWidgets();
@@ -345,9 +345,9 @@ namespace OpenRCT2::Ui::Windows
         void DrawTabImages(DrawPixelInfo& dpi)
         {
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_BASE, SPR_TAB_GEARS_0);
-            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_RANDOM, SPR_G2_TAB_TREE);
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_TAB_LAND);
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_WATER, SPR_TAB_WATER);
+            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_FORESTS, SPR_G2_TAB_TREE);
         }
 
         void ChangeMapSize(int32_t sizeOffset)
@@ -672,21 +672,21 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
-#pragma region Random page
+#pragma region Forests page
 
-        void RandomMouseUp(WidgetIndex widgetIndex)
+        void ForestsMouseUp(WidgetIndex widgetIndex)
         {
             SharedMouseUp(widgetIndex);
 
             switch (widgetIndex)
             {
-                case WIDX_RANDOM_PLACE_TREES:
+                case WIDX_FORESTS_PLACE_TREES:
                     _settings.trees ^= true;
                     break;
             }
         }
 
-        void RandomUpdate()
+        void ForestsUpdate()
         {
             // Tab animation
             if (++frame_no >= TabAnimationLoops[page])
@@ -694,22 +694,22 @@ namespace OpenRCT2::Ui::Windows
             InvalidateWidget(WIDX_TAB_2);
         }
 
-        void RandomPrepareDraw()
+        void ForestsPrepareDraw()
         {
-            if (widgets != PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM])
+            if (widgets != PageWidgets[WINDOW_MAPGEN_PAGE_FORESTS])
             {
-                widgets = PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM];
+                widgets = PageWidgets[WINDOW_MAPGEN_PAGE_FORESTS];
                 InitScrollWidgets();
             }
 
             pressed_widgets = 0;
             if (_settings.trees)
-                pressed_widgets |= 1uLL << WIDX_RANDOM_PLACE_TREES;
+                pressed_widgets |= 1uLL << WIDX_FORESTS_PLACE_TREES;
 
             SetPressedTab();
         }
 
-        void RandomDraw(DrawPixelInfo& dpi)
+        void ForestsDraw(DrawPixelInfo& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -1250,8 +1250,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
                     return BaseMouseUp(widgetIndex);
-                case WINDOW_MAPGEN_PAGE_RANDOM:
-                    return RandomMouseUp(widgetIndex);
+                case WINDOW_MAPGEN_PAGE_FORESTS:
+                    return ForestsMouseUp(widgetIndex);
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
                     return TerrainMouseUp(widgetIndex);
                 case WINDOW_MAPGEN_PAGE_WATER:
@@ -1289,8 +1289,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
                     return BaseUpdate();
-                case WINDOW_MAPGEN_PAGE_RANDOM:
-                    return RandomUpdate();
+                case WINDOW_MAPGEN_PAGE_FORESTS:
+                    return ForestsUpdate();
                 case WINDOW_MAPGEN_PAGE_WATER:
                     return WaterUpdate();
             }
@@ -1305,8 +1305,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
                     return BasePrepareDraw();
-                case WINDOW_MAPGEN_PAGE_RANDOM:
-                    return RandomPrepareDraw();
+                case WINDOW_MAPGEN_PAGE_FORESTS:
+                    return ForestsPrepareDraw();
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
                     return TerrainPrepareDraw();
                 case WINDOW_MAPGEN_PAGE_WATER:
@@ -1320,8 +1320,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
                     return BaseDraw(dpi);
-                case WINDOW_MAPGEN_PAGE_RANDOM:
-                    return RandomDraw(dpi);
+                case WINDOW_MAPGEN_PAGE_FORESTS:
+                    return ForestsDraw(dpi);
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
                     return TerrainDraw(dpi);
                 case WINDOW_MAPGEN_PAGE_WATER:
