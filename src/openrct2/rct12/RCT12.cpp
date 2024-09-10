@@ -9,6 +9,7 @@
 
 #include "RCT12.h"
 
+#include "../core/CodepointView.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Formatting.h"
 #include "../object/ObjectList.h"

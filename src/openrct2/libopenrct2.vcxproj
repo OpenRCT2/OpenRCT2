@@ -184,6 +184,7 @@
     <ClInclude Include="core\CallingConventions.h" />
     <ClInclude Include="core\ChecksumStream.h" />
     <ClInclude Include="core\CircularBuffer.h" />
+    <ClInclude Include="core\CodepointView.hpp" />
     <ClInclude Include="core\Collections.hpp" />
     <ClInclude Include="core\Console.hpp" />
     <ClInclude Include="core\Crypt.h" />
