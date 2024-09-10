@@ -430,13 +430,13 @@ namespace OpenRCT2::Ui::Windows
             switch (mapgenSettings.algorithm)
             {
                 case MapGenAlgorithm::blank:
-                    mapgenSettings.baseHeight += 2;
-                    mapgenSettings.waterLevel += 2;
+                    mapgenSettings.baseHeight += kMinimumLandHeight;
+                    mapgenSettings.waterLevel += kMinimumWaterHeight;
                     break;
 
                 case MapGenAlgorithm::simplexNoise:
-                    mapgenSettings.baseHeight += 2;
-                    mapgenSettings.waterLevel += 2;
+                    mapgenSettings.baseHeight += kMinimumLandHeight;
+                    mapgenSettings.waterLevel += kMinimumWaterHeight;
                     mapgenSettings.heightmapLow = UtilRand() % 4;
                     mapgenSettings.heightmapHigh = 12 + (UtilRand() % (32 - 12));
                     mapgenSettings.simplex_base_freq = 1.75f;

@@ -206,18 +206,17 @@ static ObjectEntryIndex MapGenEdgeTextureId(MapGenSettings* settings, ObjectEntr
     return edgeTextureId;
 }
 
-static void MapGenGenerateBlank(MapGenSettings* settings)
+static void MapGenResetSurfaces(MapGenSettings* settings)
 {
-    int32_t x, y;
     MapClearAllElements();
+    MapInit(settings->mapSize);
 
     const auto surfaceTextureId = MapGenSurfaceTextureId(settings);
     const auto edgeTextureId = MapGenEdgeTextureId(settings, surfaceTextureId);
 
-    MapInit(settings->mapSize);
-    for (y = 1; y < settings->mapSize.y - 1; y++)
+    for (auto y = 1; y < settings->mapSize.y - 1; y++)
     {
-        for (x = 1; x < settings->mapSize.x - 1; x++)
+        for (auto x = 1; x < settings->mapSize.x - 1; x++)
         {
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr)
@@ -229,36 +228,20 @@ static void MapGenGenerateBlank(MapGenSettings* settings)
             }
         }
     }
+}
 
+static void MapGenGenerateBlank(MapGenSettings* settings)
+{
+    MapGenResetSurfaces(settings);
     MapGenSetWaterLevel(settings->waterLevel);
 }
 
 static void MapGenGenerateSimplex(MapGenSettings* settings)
 {
-    const auto surfaceTextureId = MapGenSurfaceTextureId(settings);
-    const auto edgeTextureId = MapGenEdgeTextureId(settings);
-
-    MapClearAllElements();
-
-    // Initialise the base map
-    const auto& mapSize = settings->mapSize;
-    MapInit(mapSize);
-    for (auto y = 1; y < mapSize.y - 1; y++)
-    {
-        for (auto x = 1; x < mapSize.x - 1; x++)
-        {
-            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
-            if (surfaceElement != nullptr)
-            {
-                surfaceElement->SetSurfaceObjectIndex(surfaceTextureId);
-                surfaceElement->SetEdgeObjectIndex(edgeTextureId);
-                surfaceElement->BaseHeight = settings->baseHeight;
-                surfaceElement->ClearanceHeight = settings->baseHeight;
-            }
-        }
-    }
+    MapGenResetSurfaces(settings);
 
     // Create the temporary height map and initialise
+    auto& mapSize = settings->mapSize;
     _heightSize = { mapSize.x * 2, mapSize.y * 2 };
     _height = new uint8_t[_heightSize.y * _heightSize.x];
     std::fill_n(_height, _heightSize.y * _heightSize.x, 0x00);
