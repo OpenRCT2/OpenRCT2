@@ -402,6 +402,12 @@ namespace OpenRCT2::Ui::Windows
         void GenerateMap()
         {
             MapGenSettings mapgenSettings = _settings;
+            if (_randomTerrain)
+            {
+                mapgenSettings.landTexture = -1;
+                mapgenSettings.edgeTexture = -1;
+            }
+
             switch (mapgenSettings.algorithm)
             {
                 case MapGenAlgorithm::blank:
@@ -412,12 +418,6 @@ namespace OpenRCT2::Ui::Windows
                 case MapGenAlgorithm::simplexNoise:
                     mapgenSettings.baseHeight += 2;
                     mapgenSettings.waterLevel += 2;
-                    if (_randomTerrain)
-                    {
-                        mapgenSettings.landTexture = -1;
-                        mapgenSettings.edgeTexture = -1;
-                    }
-
                     mapgenSettings.heightmapLow = UtilRand() % 4;
                     mapgenSettings.heightmapHigh = 12 + (UtilRand() % (32 - 12));
                     mapgenSettings.simplex_base_freq = 1.75f;
@@ -427,11 +427,6 @@ namespace OpenRCT2::Ui::Windows
                 case MapGenAlgorithm::simplexCustom:
                     mapgenSettings.waterLevel += kMinimumWaterHeight;
                     mapgenSettings.simplex_base_freq /= 100.00f;
-                    if (_randomTerrain)
-                    {
-                        mapgenSettings.landTexture = -1;
-                        mapgenSettings.edgeTexture = -1;
-                    }
                     break;
 
                 case MapGenAlgorithm::heightmapImage:

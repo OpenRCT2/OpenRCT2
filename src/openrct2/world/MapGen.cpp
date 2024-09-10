@@ -152,10 +152,67 @@ static void SetHeight(int32_t x, int32_t y, int32_t height)
         _height[x + y * _heightSize.x] = height;
 }
 
+static ObjectEntryIndex MapGenSurfaceTextureId(MapGenSettings* settings)
+{
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+
+    const auto selectedFloor = TerrainSurfaceObject::GetById(settings->landTexture);
+    std::string_view surfaceTexture = selectedFloor != nullptr ? selectedFloor->GetIdentifier() : "";
+
+    if (surfaceTexture.empty())
+    {
+        std::vector<std::string_view> availableTerrains;
+        std::copy_if(std::begin(BaseTerrain), std::end(BaseTerrain), std::back_inserter(availableTerrains), [&](auto terrain) {
+            return objectManager.GetLoadedObject(ObjectEntryDescriptor(terrain)) != nullptr;
+        });
+
+        if (availableTerrains.empty())
+            // Fall back to the first available surface texture that is available in the park
+            surfaceTexture = TerrainSurfaceObject::GetById(0)->GetIdentifier();
+        else
+            surfaceTexture = availableTerrains[UtilRand() % availableTerrains.size()];
+    }
+
+    auto surfaceTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(surfaceTexture));
+    return surfaceTextureId;
+}
+
+static ObjectEntryIndex MapGenEdgeTextureId(MapGenSettings* settings, ObjectEntryIndex surfaceTextureId)
+{
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+
+    const auto selectedEdge = TerrainEdgeObject::GetById(settings->edgeTexture);
+    std::string_view edgeTexture = selectedEdge != nullptr ? selectedEdge->GetIdentifier() : "";
+
+    if (edgeTexture.empty())
+    {
+        auto surfaceObject = objectManager.GetLoadedObject(ObjectType::TerrainSurface, surfaceTextureId);
+        auto surfaceTexture = surfaceObject->GetIdentifier();
+
+        // Base edge type on surface type
+        if (surfaceTexture == "rct2.terrain_surface.dirt")
+            edgeTexture = "rct2.terrain_edge.wood_red";
+        else if (surfaceTexture == "rct2.terrain_surface.ice")
+            edgeTexture = "rct2.terrain_edge.ice";
+        else
+            edgeTexture = "rct2.terrain_edge.rock";
+
+        // Fall back to the first available edge texture that is available in the park
+        if (objectManager.GetLoadedObject(ObjectEntryDescriptor(edgeTexture)) == nullptr)
+            edgeTexture = TerrainEdgeObject::GetById(0)->GetIdentifier();
+    }
+
+    auto edgeTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(edgeTexture));
+    return edgeTextureId;
+}
+
 static void MapGenGenerateBlank(MapGenSettings* settings)
 {
     int32_t x, y;
     MapClearAllElements();
+
+    const auto surfaceTextureId = MapGenSurfaceTextureId(settings);
+    const auto edgeTextureId = MapGenEdgeTextureId(settings, surfaceTextureId);
 
     MapInit(settings->mapSize);
     for (y = 1; y < settings->mapSize.y - 1; y++)
@@ -165,8 +222,8 @@ static void MapGenGenerateBlank(MapGenSettings* settings)
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetSurfaceObjectIndex(settings->landTexture);
-                surfaceElement->SetEdgeObjectIndex(settings->edgeTexture);
+                surfaceElement->SetSurfaceObjectIndex(surfaceTextureId);
+                surfaceElement->SetEdgeObjectIndex(edgeTextureId);
                 surfaceElement->BaseHeight = settings->baseHeight;
                 surfaceElement->ClearanceHeight = settings->baseHeight;
             }
@@ -178,45 +235,8 @@ static void MapGenGenerateBlank(MapGenSettings* settings)
 
 static void MapGenGenerateSimplex(MapGenSettings* settings)
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-
-    const auto selectedFloor = TerrainSurfaceObject::GetById(settings->landTexture);
-    std::string_view floorTexture = selectedFloor != nullptr ? selectedFloor->GetIdentifier() : "";
-
-    const auto selectedEdge = TerrainEdgeObject::GetById(settings->edgeTexture);
-    std::string_view edgeTexture = selectedFloor != nullptr ? selectedEdge->GetIdentifier() : "";
-
-    if (floorTexture.empty())
-    {
-        std::vector<std::string_view> availableTerrains;
-        std::copy_if(std::begin(BaseTerrain), std::end(BaseTerrain), std::back_inserter(availableTerrains), [&](auto terrain) {
-            return objectManager.GetLoadedObject(ObjectEntryDescriptor(terrain)) != nullptr;
-        });
-
-        if (availableTerrains.empty())
-            // Fall back to the first available surface texture that is available in the park
-            floorTexture = TerrainSurfaceObject::GetById(0)->GetIdentifier();
-        else
-            floorTexture = availableTerrains[UtilRand() % availableTerrains.size()];
-    }
-
-    if (edgeTexture.empty())
-    {
-        // Base edge type on surface type
-        if (floorTexture == "rct2.terrain_surface.dirt")
-            edgeTexture = "rct2.terrain_edge.wood_red";
-        else if (floorTexture == "rct2.terrain_surface.ice")
-            edgeTexture = "rct2.terrain_edge.ice";
-        else
-            edgeTexture = "rct2.terrain_edge.rock";
-
-        // Fall back to the first available edge texture that is available in the park
-        if (objectManager.GetLoadedObject(ObjectEntryDescriptor(edgeTexture)) == nullptr)
-            edgeTexture = TerrainEdgeObject::GetById(0)->GetIdentifier();
-    }
-
-    auto floorTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(floorTexture));
-    auto edgeTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(edgeTexture));
+    const auto surfaceTextureId = MapGenSurfaceTextureId(settings);
+    const auto edgeTextureId = MapGenEdgeTextureId(settings);
 
     MapClearAllElements();
 
@@ -230,7 +250,7 @@ static void MapGenGenerateSimplex(MapGenSettings* settings)
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetSurfaceObjectIndex(floorTextureId);
+                surfaceElement->SetSurfaceObjectIndex(surfaceTextureId);
                 surfaceElement->SetEdgeObjectIndex(edgeTextureId);
                 surfaceElement->BaseHeight = settings->baseHeight;
                 surfaceElement->ClearanceHeight = settings->baseHeight;
@@ -879,6 +899,9 @@ static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
     Guard::Assert(maxValue > minValue, "Input range is invalid");
     Guard::Assert(settings->heightmapHigh > settings->heightmapLow, "Output range is invalid");
 
+    const auto surfaceTextureId = MapGenSurfaceTextureId(settings);
+    const auto edgeTextureId = MapGenEdgeTextureId(settings, surfaceTextureId);
+
     const uint8_t rangeIn = maxValue - minValue;
     const uint8_t rangeOut = (settings->heightmapHigh - settings->heightmapLow) * 2;
 
@@ -902,6 +925,10 @@ static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
             surfaceElement->BaseHeight /= 2;
             surfaceElement->BaseHeight *= 2;
             surfaceElement->ClearanceHeight = surfaceElement->BaseHeight;
+
+            // Set textures
+            surfaceElement->SetSurfaceObjectIndex(surfaceTextureId);
+            surfaceElement->SetEdgeObjectIndex(edgeTextureId);
 
             // Set water level
             if (surfaceElement->BaseHeight < settings->waterLevel)
