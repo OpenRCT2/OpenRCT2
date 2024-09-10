@@ -142,7 +142,7 @@ void MapGenGenerateBlank(MapGenSettings* settings)
     MapGenSetWaterLevel(settings->water_level);
 }
 
-void MapGenGenerate(MapGenSettings* settings)
+void MapGenGenerateSimplex(MapGenSettings* settings)
 {
     const auto& mapSize = settings->mapSize;
     auto waterLevel = settings->water_level;
@@ -682,7 +682,7 @@ static TileCoordsXY MapgenHeightmapCoordToTileCoordsXY(uint32_t x, uint32_t y)
     return TileCoordsXY(static_cast<int32_t>(y + 1), static_cast<int32_t>(x + 1));
 }
 
-bool MapGenLoadHeightmap(const utf8* path)
+bool MapGenLoadHeightmapImage(const utf8* path)
 {
     auto format = Imaging::GetImageFormatFromPath(path);
     if (format == IMAGE_FORMAT::PNG)
@@ -743,7 +743,7 @@ bool MapGenLoadHeightmap(const utf8* path)
 /**
  * Frees the memory used to store the selected height map
  */
-void MapGenUnloadHeightmap()
+void MapGenUnloadHeightmapImage()
 {
     _heightMapData.mono_bitmap.clear();
     _heightMapData.width = 0;
@@ -796,7 +796,7 @@ static void MapGenSmoothHeightmap(std::vector<uint8_t>& src, int32_t strength)
     }
 }
 
-void MapGenGenerateFromHeightmap(MapGenSettings* settings)
+void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
 {
     Guard::Assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
     Guard::Assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");

@@ -38,7 +38,7 @@ struct MapGenSettings
 };
 
 void MapGenGenerateBlank(MapGenSettings* settings);
-void MapGenGenerate(MapGenSettings* settings);
-bool MapGenLoadHeightmap(const utf8* path);
-void MapGenUnloadHeightmap();
-void MapGenGenerateFromHeightmap(MapGenSettings* settings);
+void MapGenGenerateSimplex(MapGenSettings* settings);
+bool MapGenLoadHeightmapImage(const utf8* path);
+void MapGenUnloadHeightmapImage();
+void MapGenGenerateFromHeightmapImage(MapGenSettings* settings);

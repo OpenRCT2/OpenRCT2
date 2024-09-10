@@ -606,7 +606,7 @@ namespace OpenRCT2::Ui::Windows
                     mapgenSettings.simplex_base_freq = 1.75f;
                     mapgenSettings.simplex_octaves = 6;
 
-                    MapGenGenerate(&mapgenSettings);
+                    MapGenGenerateSimplex(&mapgenSettings);
                     GfxInvalidateScreen();
                     break;
                 }
@@ -666,7 +666,7 @@ namespace OpenRCT2::Ui::Windows
                         mapgenSettings.wall = -1;
                     }
 
-                    MapGenGenerate(&mapgenSettings);
+                    MapGenGenerateSimplex(&mapgenSettings);
                     GfxInvalidateScreen();
                     break;
                 }
@@ -817,7 +817,7 @@ namespace OpenRCT2::Ui::Windows
             MapGenSettings mapgenSettings = _settings;
             mapgenSettings.simplex_low = _heightmapLow;
             mapgenSettings.simplex_high = _heightmapHigh;
-            MapGenGenerateFromHeightmap(&mapgenSettings);
+            MapGenGenerateFromHeightmapImage(&mapgenSettings);
             GfxInvalidateScreen();
         }
 
@@ -1290,7 +1290,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnClose() override
         {
-            MapGenUnloadHeightmap();
+            MapGenUnloadHeightmapImage();
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -1410,7 +1410,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (result == MODAL_RESULT_OK)
             {
-                if (!MapGenLoadHeightmap(path))
+                if (!MapGenLoadHeightmapImage(path))
                 {
                     // TODO: Display error popup
                     return;
