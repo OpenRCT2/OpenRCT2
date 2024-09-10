@@ -3754,6 +3754,10 @@ STR_6679    :Flatland
 STR_6680    :Simplex noise (random)
 STR_6681    :Simplex noise (custom)
 STR_6682    :Heightmap file
+STR_6683    :Map Generator - Generator
+STR_6684    :Map Generator - Terrain
+STR_6685    :Map Generator - Water
+STR_6686    :Map Generator - Forests
 
 #############
 # Scenarios #

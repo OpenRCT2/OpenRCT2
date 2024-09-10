@@ -101,12 +101,11 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    static constexpr StringId WINDOW_TITLE = STR_MAPGEN_WINDOW_TITLE;
     static constexpr int32_t WW = 300;
     static constexpr int32_t WH = 220;
 
-#define SHARED_WIDGETS                                                                                                         \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */                                           \
+#define SHARED_WIDGETS(PAGE_TITLE)                                                                                             \
+    WINDOW_SHIM(PAGE_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */                                             \
         MakeWidget({ 0, 43 }, { WW, 177 }, WindowWidgetType::Resize, WindowColour::Secondary), /* WIDX_PAGE_BACKGROUND */      \
         MakeTab({ 3, 17 }),                                                                    /* WIDX_TAB_1 */                \
         MakeTab({ 34, 17 }),                                                                   /* WIDX_TAB_2 */                \
@@ -116,7 +115,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static Widget BaseWidgets[] = {
-        SHARED_WIDGETS,
+        SHARED_WIDGETS(STR_MAPGEN_CAPTION_GENERATOR),
         MakeSpinnerWidgets ({165, 52}, { 50, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_COMMA16                                                ), // NB: 3 widgets
         MakeWidget         ({216, 52}, { 21, 12}, WindowWidgetType::FlatBtn,      WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
         MakeSpinnerWidgets ({238, 52}, { 50, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
@@ -135,7 +134,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static Widget TerrainWidgets[] = {
-        SHARED_WIDGETS,
+        SHARED_WIDGETS(STR_MAPGEN_CAPTION_TERRAIN),
         MakeSpinnerWidgets({179,  52}, {95, 12}, WindowWidgetType::Spinner,   WindowColour::Secondary                                          ), // NB: 3 widgets
         MakeWidget        ({179,  70}, {95, 12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
         MakeWidget        ({179,  82}, {47, 36}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
@@ -147,15 +146,15 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static Widget WaterWidgets[] = {
-        SHARED_WIDGETS,
+        SHARED_WIDGETS(STR_MAPGEN_CAPTION_WATER),
         MakeSpinnerWidgets({179,  52}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // NB: 3 widgets
         MakeWidget        ({ 10,  70}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_BEACHES_WATER_BODIES),
         kWidgetsEnd,
     };
 
     static Widget ForestsWidgets[] = {
-        SHARED_WIDGETS,
-        MakeWidget({  4,  52}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES   ),
+        SHARED_WIDGETS(STR_MAPGEN_CAPTION_FORESTS),
+        MakeWidget({ 10,  52}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES   ),
         kWidgetsEnd,
     };
 
