@@ -879,7 +879,7 @@ static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
     Guard::Assert(settings->heightmapHigh > settings->heightmapLow, "Output range is invalid");
 
     const uint8_t rangeIn = maxValue - minValue;
-    const uint8_t rangeOut = settings->heightmapHigh - settings->heightmapLow;
+    const uint8_t rangeOut = (settings->heightmapHigh - settings->heightmapLow) * 2;
 
     for (uint32_t y = 0; y < _heightMapData.height; y++)
     {
@@ -893,7 +893,8 @@ static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
 
             // Read value from bitmap, and convert its range
             uint8_t value = dest[x + y * _heightMapData.width];
-            value = static_cast<uint8_t>(static_cast<float>(value - minValue) / rangeIn * rangeOut) + settings->heightmapLow;
+            value = static_cast<uint8_t>(static_cast<float>(value - minValue) / rangeIn * rangeOut)
+                + (settings->heightmapLow * 2);
             surfaceElement->BaseHeight = value;
 
             // Floor to even number

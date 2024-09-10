@@ -330,8 +330,8 @@ namespace OpenRCT2::Ui::Windows
             .smooth_strength = 1,
             .normalize_height = false,
             .smoothTileEdges = true,
-            .heightmapLow = 2,
-            .heightmapHigh = 70,
+            .heightmapLow = 1,
+            .heightmapHigh = 35,
         };
 
         bool _randomTerrain = true;
@@ -735,7 +735,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SIMPLEX_LOW_UP:
-                    _settings.simplex_low = std::min(_settings.simplex_low + 1, 24);
+                    _settings.simplex_low = std::min(_settings.simplex_low + 1, kMaximumLandHeight / 2 - 1);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_LOW_DOWN:
@@ -743,7 +743,7 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_HIGH_UP:
-                    _settings.simplex_high = std::min(_settings.simplex_high + 1, 36);
+                    _settings.simplex_high = std::min(_settings.simplex_high + 1, kMaximumLandHeight / 2);
                     Invalidate();
                     break;
                 case WIDX_SIMPLEX_HIGH_DOWN:
@@ -849,7 +849,7 @@ namespace OpenRCT2::Ui::Windows
                     InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_LOW_UP:
-                    _settings.heightmapLow = std::min(_settings.heightmapLow + 1, kMaximumWaterHeight - 1);
+                    _settings.heightmapLow = std::min(_settings.heightmapLow + 1, kMaximumLandHeight / 2 - 1);
                     _settings.heightmapHigh = std::max(_settings.heightmapHigh, _settings.heightmapLow + 1);
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
@@ -858,7 +858,7 @@ namespace OpenRCT2::Ui::Windows
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_UP:
-                    _settings.heightmapHigh = std::min<int32_t>(_settings.heightmapHigh + 1, kMaximumWaterHeight);
+                    _settings.heightmapHigh = std::min<int32_t>(_settings.heightmapHigh + 1, kMaximumLandHeight - 1);
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_DOWN:
