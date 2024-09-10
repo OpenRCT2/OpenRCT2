@@ -87,7 +87,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_STRENGTH_UP,
         WIDX_HEIGHTMAP_STRENGTH_DOWN,
         WIDX_HEIGHTMAP_NORMALIZE,
-        WIDX_HEIGHTMAP_SMOOTH_TILES,
+        WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES,
         WIDX_HEIGHTMAP_LOW,
         WIDX_HEIGHTMAP_LOW_UP,
         WIDX_HEIGHTMAP_LOW_DOWN,
@@ -157,7 +157,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  4,  52}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
         MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
         MakeWidget        ({  4,  88}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
-        MakeWidget        ({  4, 106}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE     ), // WIDX_HEIGHTMAP_SMOOTH_TILES
+        MakeWidget        ({  4, 106}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE     ), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
         MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
         MakeSpinnerWidgets({104, 142}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
         kWidgetsEnd,
@@ -206,7 +206,7 @@ namespace OpenRCT2::Ui::Windows
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
         (1uLL << WIDX_HEIGHTMAP_NORMALIZE) |
-        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILES) |
+        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES) |
         (1uLL << WIDX_HEIGHTMAP_HIGH) |
         (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
         (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN) |
@@ -250,7 +250,7 @@ namespace OpenRCT2::Ui::Windows
         0,
         0,
         0,
-        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILES),
+        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES),
         0,
         0,
     };
@@ -326,16 +326,16 @@ namespace OpenRCT2::Ui::Windows
             .simplex_octaves = 4,
 
             // Height map _settings
-            .smooth = true,
             .smooth_height_map = false,
             .smooth_strength = 1,
             .normalize_height = false,
+            .smoothTileEdges = true,
+            .heightmapLow = 2,
+            .heightmapHigh = 70,
         };
 
         bool _randomTerrain = true;
         bool _heightmapLoaded = false;
-        int32_t _heightmapLow = 2;
-        int32_t _heightmapHigh = 70;
 
         void SetPage(int32_t newPage)
         {
@@ -356,7 +356,7 @@ namespace OpenRCT2::Ui::Windows
                 SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _settings.smooth_height_map);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _settings.smooth_height_map);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, true);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILES, true);
+                SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, true);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH, true);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH_UP, true);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH_DOWN, true);
@@ -493,9 +493,6 @@ namespace OpenRCT2::Ui::Windows
                 case MapGenAlgorithm::heightmapImage:
                     if (!_heightmapLoaded)
                         return;
-
-                    mapgenSettings.simplex_low = _heightmapLow;
-                    mapgenSettings.simplex_high = _heightmapHigh;
                     break;
             }
 
@@ -852,21 +849,21 @@ namespace OpenRCT2::Ui::Windows
                     InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_LOW_UP:
-                    _heightmapLow = std::min(_heightmapLow + 1, kMaximumWaterHeight - 1);
-                    _heightmapHigh = std::max(_heightmapHigh, _heightmapLow + 1);
+                    _settings.heightmapLow = std::min(_settings.heightmapLow + 1, kMaximumWaterHeight - 1);
+                    _settings.heightmapHigh = std::max(_settings.heightmapHigh, _settings.heightmapLow + 1);
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_LOW_DOWN:
-                    _heightmapLow = std::max(_heightmapLow - 1, 2);
+                    _settings.heightmapLow = std::max(_settings.heightmapLow - 1, 2);
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_UP:
-                    _heightmapHigh = std::min<int32_t>(_heightmapHigh + 1, kMaximumWaterHeight);
+                    _settings.heightmapHigh = std::min<int32_t>(_settings.heightmapHigh + 1, kMaximumWaterHeight);
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_DOWN:
-                    _heightmapHigh = std::max(_heightmapHigh - 1, 2 + 1);
-                    _heightmapLow = std::min(_heightmapLow, _heightmapHigh - 1);
+                    _settings.heightmapHigh = std::max(_settings.heightmapHigh - 1, 2 + 1);
+                    _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh - 1);
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
             }
@@ -911,10 +908,10 @@ namespace OpenRCT2::Ui::Windows
                     SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
                     InvalidateWidget(WIDX_HEIGHTMAP_NORMALIZE);
                     break;
-                case WIDX_HEIGHTMAP_SMOOTH_TILES:
-                    _settings.smooth = !_settings.smooth;
-                    SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILES, _settings.smooth);
-                    InvalidateWidget(WIDX_HEIGHTMAP_SMOOTH_TILES);
+                case WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES:
+                    _settings.smoothTileEdges = !_settings.smoothTileEdges;
+                    SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
+                    InvalidateWidget(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES);
                     break;
             }
 
@@ -932,7 +929,7 @@ namespace OpenRCT2::Ui::Windows
 
             SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _settings.smooth_height_map);
             SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
-            SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILES, _settings.smooth);
+            SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
 
             SetPressedTab();
         }
@@ -948,7 +945,7 @@ namespace OpenRCT2::Ui::Windows
             // Smooth strength label and value
             const auto strengthColour = _settings.smooth_height_map ? enabledColour : disabledColour;
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 5, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
+                dpi, windowPos + ScreenCoordsXY{ 18, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
                 { strengthColour });
 
             auto ft = Formatter();
@@ -966,7 +963,7 @@ namespace OpenRCT2::Ui::Windows
                 { labelColour });
 
             ft = Formatter();
-            ft.Add<uint16_t>(_heightmapLow);
+            ft.Add<uint16_t>(_settings.heightmapLow);
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_LOW].left + 1, widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
                 STR_COMMA16, ft, { labelColour });
@@ -977,7 +974,7 @@ namespace OpenRCT2::Ui::Windows
                 { labelColour });
 
             ft = Formatter();
-            ft.Add<uint16_t>(_heightmapHigh);
+            ft.Add<uint16_t>(_settings.heightmapHigh);
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_HIGH].left + 1, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
                 STR_COMMA16, ft, { labelColour });

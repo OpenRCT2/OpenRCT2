@@ -41,10 +41,12 @@ struct MapGenSettings
     int32_t simplex_octaves;
 
     // Height map settings
-    bool smooth;
     bool smooth_height_map;
     uint32_t smooth_strength;
     bool normalize_height;
+    bool smoothTileEdges;
+    int32_t heightmapLow;
+    int32_t heightmapHigh;
 };
 
 void MapGenGenerate(MapGenSettings* settings);

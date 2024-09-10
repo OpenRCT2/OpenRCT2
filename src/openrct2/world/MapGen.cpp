@@ -835,7 +835,7 @@ static void MapGenSmoothHeightmap(std::vector<uint8_t>& src, int32_t strength)
 static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
 {
     Guard::Assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
-    Guard::Assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
+    Guard::Assert(settings->heightmapHigh != settings->heightmapLow, "Low and high setting cannot be the same");
 
     // Make a copy of the original height map that we can edit
     auto dest = _heightMapData.mono_bitmap;
@@ -876,10 +876,10 @@ static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
     }
 
     Guard::Assert(maxValue > minValue, "Input range is invalid");
-    Guard::Assert(settings->simplex_high > settings->simplex_low, "Output range is invalid");
+    Guard::Assert(settings->heightmapHigh > settings->heightmapLow, "Output range is invalid");
 
     const uint8_t rangeIn = maxValue - minValue;
-    const uint8_t rangeOut = settings->simplex_high - settings->simplex_low;
+    const uint8_t rangeOut = settings->heightmapHigh - settings->heightmapLow;
 
     for (uint32_t y = 0; y < _heightMapData.height; y++)
     {
@@ -893,7 +893,7 @@ static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
 
             // Read value from bitmap, and convert its range
             uint8_t value = dest[x + y * _heightMapData.width];
-            value = static_cast<uint8_t>(static_cast<float>(value - minValue) / rangeIn * rangeOut) + settings->simplex_low;
+            value = static_cast<uint8_t>(static_cast<float>(value - minValue) / rangeIn * rangeOut) + settings->heightmapLow;
             surfaceElement->BaseHeight = value;
 
             // Floor to even number
@@ -909,8 +909,8 @@ static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
         }
     }
 
-    // Smooth map
-    if (settings->smooth)
+    // Smooth tile edges
+    if (settings->smoothTileEdges)
     {
         // Keep smoothing the entire map until no tiles are changed anymore
         while (true)
