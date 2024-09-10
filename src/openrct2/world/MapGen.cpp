@@ -93,6 +93,28 @@ static constexpr std::string_view BaseTerrain[] = {
     "rct2.terrain_surface.dirt",  "rct2.terrain_surface.ice",
 };
 
+static void MapGenGenerateBlank(MapGenSettings* settings);
+static void MapGenGenerateSimplex(MapGenSettings* settings);
+static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings);
+
+void MapGenGenerate(MapGenSettings* settings)
+{
+    switch (settings->algorithm)
+    {
+        case MapGenAlgorithm::blank:
+            MapGenGenerateBlank(settings);
+            break;
+
+        case MapGenAlgorithm::simplex:
+            MapGenGenerateSimplex(settings);
+            break;
+
+        case MapGenAlgorithm::heightmapImage:
+            MapGenGenerateFromHeightmapImage(settings);
+            break;
+    }
+}
+
 static void MapGenPlaceTrees();
 static void MapGenSetWaterLevel(int32_t waterLevel);
 static void MapGenSmoothHeight(int32_t iterations);
@@ -118,7 +140,7 @@ static void SetHeight(int32_t x, int32_t y, int32_t height)
         _height[x + y * _heightSize.x] = height;
 }
 
-void MapGenGenerateBlank(MapGenSettings* settings)
+static void MapGenGenerateBlank(MapGenSettings* settings)
 {
     int32_t x, y;
     MapClearAllElements();
@@ -142,7 +164,7 @@ void MapGenGenerateBlank(MapGenSettings* settings)
     MapGenSetWaterLevel(settings->water_level);
 }
 
-void MapGenGenerateSimplex(MapGenSettings* settings)
+static void MapGenGenerateSimplex(MapGenSettings* settings)
 {
     const auto& mapSize = settings->mapSize;
     auto waterLevel = settings->water_level;
@@ -796,7 +818,7 @@ static void MapGenSmoothHeightmap(std::vector<uint8_t>& src, int32_t strength)
     }
 }
 
-void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
+static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
 {
     Guard::Assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
     Guard::Assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");

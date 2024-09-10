@@ -311,6 +311,7 @@ namespace OpenRCT2::Ui::Windows
 
         MapGenSettings _settings{
             // Base
+            .algorithm = MapGenAlgorithm::blank,
             .mapSize{ 150, 150 },
             .height = 12,
             .water_level = 6,
@@ -464,10 +465,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAP_GENERATE:
                 {
                     MapGenSettings mapgenSettings = _settings;
+                    mapgenSettings.algorithm = MapGenAlgorithm::blank;
                     mapgenSettings.height += 2;
                     mapgenSettings.water_level += 2;
 
-                    MapGenGenerateBlank(&mapgenSettings);
+                    MapGenGenerate(&mapgenSettings);
                     GfxInvalidateScreen();
                     break;
                 }
@@ -593,6 +595,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_RANDOM_GENERATE:
                 {
                     MapGenSettings mapgenSettings = _settings;
+                    mapgenSettings.algorithm = MapGenAlgorithm::simplex;
                     mapgenSettings.height += 2;
                     mapgenSettings.water_level += 2;
                     if (_randomTerrain)
@@ -606,7 +609,7 @@ namespace OpenRCT2::Ui::Windows
                     mapgenSettings.simplex_base_freq = 1.75f;
                     mapgenSettings.simplex_octaves = 6;
 
-                    MapGenGenerateSimplex(&mapgenSettings);
+                    MapGenGenerate(&mapgenSettings);
                     GfxInvalidateScreen();
                     break;
                 }
@@ -658,6 +661,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_SIMPLEX_GENERATE:
                 {
                     MapGenSettings mapgenSettings = _settings;
+                    mapgenSettings.algorithm = MapGenAlgorithm::simplex;
                     mapgenSettings.water_level += kMinimumWaterHeight;
                     mapgenSettings.simplex_base_freq /= 100.00f;
                     if (_randomTerrain)
@@ -666,7 +670,7 @@ namespace OpenRCT2::Ui::Windows
                         mapgenSettings.wall = -1;
                     }
 
-                    MapGenGenerateSimplex(&mapgenSettings);
+                    MapGenGenerate(&mapgenSettings);
                     GfxInvalidateScreen();
                     break;
                 }
@@ -815,9 +819,10 @@ namespace OpenRCT2::Ui::Windows
         void HeightmapGenerateMap()
         {
             MapGenSettings mapgenSettings = _settings;
+            mapgenSettings.algorithm = MapGenAlgorithm::heightmapImage;
             mapgenSettings.simplex_low = _heightmapLow;
             mapgenSettings.simplex_high = _heightmapHigh;
-            MapGenGenerateFromHeightmapImage(&mapgenSettings);
+            MapGenGenerate(&mapgenSettings);
             GfxInvalidateScreen();
         }
 
@@ -944,10 +949,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAP_GENERATE:
                 {
                     MapGenSettings mapgenSettings = _settings;
+                    mapgenSettings.algorithm = MapGenAlgorithm::blank;
                     mapgenSettings.height += 2;
                     mapgenSettings.water_level += 2;
 
-                    MapGenGenerateBlank(&mapgenSettings);
+                    MapGenGenerate(&mapgenSettings);
                     GfxInvalidateScreen();
                     break;
                 }
@@ -1173,10 +1179,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAP_GENERATE:
                 {
                     MapGenSettings mapgenSettings = _settings;
+                    mapgenSettings.algorithm = MapGenAlgorithm::blank;
                     mapgenSettings.height += 2;
                     mapgenSettings.water_level += 2;
 
-                    MapGenGenerateBlank(&mapgenSettings);
+                    MapGenGenerate(&mapgenSettings);
                     GfxInvalidateScreen();
                     break;
                 }

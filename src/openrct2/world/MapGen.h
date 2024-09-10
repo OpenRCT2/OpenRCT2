@@ -12,9 +12,17 @@
 #include "../core/StringTypes.h"
 #include "Location.hpp"
 
+enum class MapGenAlgorithm : uint8_t
+{
+    blank,
+    simplex,
+    heightmapImage,
+};
+
 struct MapGenSettings
 {
     // Base
+    MapGenAlgorithm algorithm;
     TileCoordsXY mapSize;
     int32_t height;
     int32_t water_level;
@@ -37,8 +45,6 @@ struct MapGenSettings
     bool normalize_height;
 };
 
-void MapGenGenerateBlank(MapGenSettings* settings);
-void MapGenGenerateSimplex(MapGenSettings* settings);
+void MapGenGenerate(MapGenSettings* settings);
 bool MapGenLoadHeightmapImage(const utf8* path);
 void MapGenUnloadHeightmapImage();
-void MapGenGenerateFromHeightmapImage(MapGenSettings* settings);
