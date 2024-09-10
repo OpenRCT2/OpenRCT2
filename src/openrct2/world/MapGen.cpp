@@ -165,25 +165,25 @@ static void MapGenGenerateBlank(MapGenSettings* settings)
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetSurfaceObjectIndex(settings->floor);
-                surfaceElement->SetEdgeObjectIndex(settings->wall);
-                surfaceElement->BaseHeight = settings->height;
-                surfaceElement->ClearanceHeight = settings->height;
+                surfaceElement->SetSurfaceObjectIndex(settings->landTexture);
+                surfaceElement->SetEdgeObjectIndex(settings->edgeTexture);
+                surfaceElement->BaseHeight = settings->baseHeight;
+                surfaceElement->ClearanceHeight = settings->baseHeight;
             }
         }
     }
 
-    MapGenSetWaterLevel(settings->water_level);
+    MapGenSetWaterLevel(settings->waterLevel);
 }
 
 static void MapGenGenerateSimplex(MapGenSettings* settings)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
-    const auto selectedFloor = TerrainSurfaceObject::GetById(settings->floor);
+    const auto selectedFloor = TerrainSurfaceObject::GetById(settings->landTexture);
     std::string_view floorTexture = selectedFloor != nullptr ? selectedFloor->GetIdentifier() : "";
 
-    const auto selectedEdge = TerrainEdgeObject::GetById(settings->wall);
+    const auto selectedEdge = TerrainEdgeObject::GetById(settings->edgeTexture);
     std::string_view edgeTexture = selectedFloor != nullptr ? selectedEdge->GetIdentifier() : "";
 
     if (floorTexture.empty())
@@ -232,8 +232,8 @@ static void MapGenGenerateSimplex(MapGenSettings* settings)
             {
                 surfaceElement->SetSurfaceObjectIndex(floorTextureId);
                 surfaceElement->SetEdgeObjectIndex(edgeTextureId);
-                surfaceElement->BaseHeight = settings->height;
-                surfaceElement->ClearanceHeight = settings->height;
+                surfaceElement->BaseHeight = settings->baseHeight;
+                surfaceElement->ClearanceHeight = settings->baseHeight;
             }
         }
     }
@@ -256,7 +256,7 @@ static void MapGenGenerateSimplex(MapGenSettings* settings)
     }
 
     // Add the water
-    MapGenSetWaterLevel(settings->water_level);
+    MapGenSetWaterLevel(settings->waterLevel);
 }
 
 static void MapGenAddBeaches(MapGenSettings* settings)
@@ -284,7 +284,7 @@ static void MapGenAddBeaches(MapGenSettings* settings)
         {
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
 
-            if (surfaceElement != nullptr && surfaceElement->BaseHeight < settings->water_level + 6)
+            if (surfaceElement != nullptr && surfaceElement->BaseHeight < settings->waterLevel + 6)
                 surfaceElement->SetSurfaceObjectIndex(beachTextureId);
         }
     }
@@ -526,7 +526,7 @@ static void MapGenSetHeight(MapGenSettings* settings)
             surfaceElement->BaseHeight = std::max(2, baseHeight * 2);
 
             // If base height is below water level, lower it to create more natural shorelines
-            if (surfaceElement->BaseHeight >= 4 && surfaceElement->BaseHeight <= settings->water_level)
+            if (surfaceElement->BaseHeight >= 4 && surfaceElement->BaseHeight <= settings->waterLevel)
                 surfaceElement->BaseHeight -= 2;
 
             surfaceElement->ClearanceHeight = surfaceElement->BaseHeight;
@@ -903,9 +903,9 @@ static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
             surfaceElement->ClearanceHeight = surfaceElement->BaseHeight;
 
             // Set water level
-            if (surfaceElement->BaseHeight < settings->water_level)
+            if (surfaceElement->BaseHeight < settings->waterLevel)
             {
-                surfaceElement->SetWaterHeight(settings->water_level * kCoordsZStep);
+                surfaceElement->SetWaterHeight(settings->waterLevel * kCoordsZStep);
             }
         }
     }

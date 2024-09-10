@@ -25,10 +25,10 @@ struct MapGenSettings
     // Base
     MapGenAlgorithm algorithm;
     TileCoordsXY mapSize;
-    int32_t height;
-    int32_t water_level;
-    int32_t floor;
-    int32_t wall;
+    int32_t baseHeight;
+    int32_t waterLevel;
+    int32_t landTexture;
+    int32_t edgeTexture;
 
     // Features (e.g. tree, rivers, lakes etc.)
     bool trees;

@@ -310,10 +310,10 @@ namespace OpenRCT2::Ui::Windows
             // Base
             .algorithm = MapGenAlgorithm::blank,
             .mapSize{ 150, 150 },
-            .height = 12,
-            .water_level = 6,
-            .floor = 0,
-            .wall = 0,
+            .baseHeight = 12,
+            .waterLevel = 6,
+            .landTexture = 0,
+            .edgeTexture = 0,
 
             // Features (e.g. tree, rivers, lakes etc.)
             .trees = true,
@@ -461,17 +461,17 @@ namespace OpenRCT2::Ui::Windows
             switch (mapgenSettings.algorithm)
             {
                 case MapGenAlgorithm::blank:
-                    mapgenSettings.height += 2;
-                    mapgenSettings.water_level += 2;
+                    mapgenSettings.baseHeight += 2;
+                    mapgenSettings.waterLevel += 2;
                     break;
 
                 case MapGenAlgorithm::simplexNoise:
-                    mapgenSettings.height += 2;
-                    mapgenSettings.water_level += 2;
+                    mapgenSettings.baseHeight += 2;
+                    mapgenSettings.waterLevel += 2;
                     if (_randomTerrain)
                     {
-                        mapgenSettings.floor = -1;
-                        mapgenSettings.wall = -1;
+                        mapgenSettings.landTexture = -1;
+                        mapgenSettings.edgeTexture = -1;
                     }
 
                     mapgenSettings.simplex_low = UtilRand() % 4;
@@ -481,12 +481,12 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case MapGenAlgorithm::simplexCustom:
-                    mapgenSettings.water_level += kMinimumWaterHeight;
+                    mapgenSettings.waterLevel += kMinimumWaterHeight;
                     mapgenSettings.simplex_base_freq /= 100.00f;
                     if (_randomTerrain)
                     {
-                        mapgenSettings.floor = -1;
-                        mapgenSettings.wall = -1;
+                        mapgenSettings.landTexture = -1;
+                        mapgenSettings.edgeTexture = -1;
                     }
                     break;
 
@@ -997,7 +997,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int16_t>((BASESIZE_MAX - 12) / 2);
                     WindowTextInputOpen(
                         this, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, ft, STR_FORMAT_INTEGER,
-                        (_settings.height - 12) / 2, 3);
+                        (_settings.baseHeight - 12) / 2, 3);
                     break;
                 }
             }
@@ -1008,11 +1008,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BASE_HEIGHT_UP:
-                    _settings.height = std::min(_settings.height + 2, BASESIZE_MAX);
+                    _settings.baseHeight = std::min(_settings.baseHeight + 2, BASESIZE_MAX);
                     Invalidate();
                     break;
                 case WIDX_BASE_HEIGHT_DOWN:
-                    _settings.height = std::max(_settings.height - 2, BASESIZE_MIN);
+                    _settings.baseHeight = std::max(_settings.baseHeight - 2, BASESIZE_MIN);
                     Invalidate();
                     break;
                 case WIDX_RANDOM_TERRAIN:
@@ -1020,10 +1020,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_FLOOR_TEXTURE:
-                    LandTool::ShowSurfaceStyleDropdown(this, widget, _settings.floor);
+                    LandTool::ShowSurfaceStyleDropdown(this, widget, _settings.landTexture);
                     break;
                 case WIDX_WALL_TEXTURE:
-                    LandTool::ShowEdgeStyleDropdown(this, widget, _settings.wall);
+                    LandTool::ShowEdgeStyleDropdown(this, widget, _settings.edgeTexture);
                     break;
             }
         }
@@ -1052,7 +1052,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BASE_HEIGHT:
-                    _settings.height = std::clamp((value * 2) + 12, BASESIZE_MIN, BASESIZE_MAX);
+                    _settings.baseHeight = std::clamp((value * 2) + 12, BASESIZE_MIN, BASESIZE_MAX);
                     break;
             }
 
@@ -1069,7 +1069,7 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == -1)
                         dropdownIndex = gDropdownHighlightedIndex;
 
-                    type = (dropdownIndex == -1) ? _settings.floor : dropdownIndex;
+                    type = (dropdownIndex == -1) ? _settings.landTexture : dropdownIndex;
 
                     if (gLandToolTerrainSurface == type)
                     {
@@ -1078,7 +1078,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         gLandToolTerrainSurface = type;
-                        _settings.floor = type;
+                        _settings.landTexture = type;
                     }
                     Invalidate();
                     break;
@@ -1086,7 +1086,7 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == -1)
                         dropdownIndex = gDropdownHighlightedIndex;
 
-                    type = (dropdownIndex == -1) ? _settings.wall : dropdownIndex;
+                    type = (dropdownIndex == -1) ? _settings.edgeTexture : dropdownIndex;
 
                     if (gLandToolTerrainEdge == type)
                     {
@@ -1095,7 +1095,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         gLandToolTerrainEdge = type;
-                        _settings.wall = type;
+                        _settings.edgeTexture = type;
                     }
                     Invalidate();
                     break;
@@ -1128,7 +1128,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainSurface, _settings.floor));
+                objManager.GetLoadedObject(ObjectType::TerrainSurface, _settings.landTexture));
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -1141,7 +1141,7 @@ namespace OpenRCT2::Ui::Windows
 
             ImageId edgeImage;
             const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(ObjectType::TerrainEdge, _settings.wall));
+                objManager.GetLoadedObject(ObjectType::TerrainEdge, _settings.edgeTexture));
             if (edgeObj != nullptr)
             {
                 edgeImage = ImageId(edgeObj->IconImageId);
@@ -1192,7 +1192,7 @@ namespace OpenRCT2::Ui::Windows
                 { textColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>((_settings.height - 12) / 2);
+            ft.Add<uint16_t>((_settings.baseHeight - 12) / 2);
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_BASE_HEIGHT].left + 1, widgets[WIDX_BASE_HEIGHT].top + 1 },
                 STR_COMMA16, ft, { colours[1] });
@@ -1215,7 +1215,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int16_t>((WATERLEVEL_MAX - 12) / 2);
                     WindowTextInputOpen(
                         this, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, ft, STR_FORMAT_INTEGER,
-                        (_settings.water_level - 12) / 2, 3);
+                        (_settings.waterLevel - 12) / 2, 3);
                     break;
                 }
 
@@ -1233,11 +1233,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_WATER_LEVEL_UP:
-                    _settings.water_level = std::min(_settings.water_level + 2, WATERLEVEL_MAX);
+                    _settings.waterLevel = std::min(_settings.waterLevel + 2, WATERLEVEL_MAX);
                     Invalidate();
                     break;
                 case WIDX_WATER_LEVEL_DOWN:
-                    _settings.water_level = std::max(_settings.water_level - 2, WATERLEVEL_MIN);
+                    _settings.waterLevel = std::max(_settings.waterLevel - 2, WATERLEVEL_MIN);
                     Invalidate();
                     break;
             }
@@ -1267,7 +1267,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_WATER_LEVEL:
-                    _settings.water_level = std::clamp((value * 2) + 12, WATERLEVEL_MIN, WATERLEVEL_MAX);
+                    _settings.waterLevel = std::clamp((value * 2) + 12, WATERLEVEL_MIN, WATERLEVEL_MAX);
                     break;
             }
 
@@ -1299,7 +1299,7 @@ namespace OpenRCT2::Ui::Windows
                 { textColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>((_settings.water_level - 12) / 2);
+            ft.Add<uint16_t>((_settings.waterLevel - 12) / 2);
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
                 STR_COMMA16, ft, { colours[1] });
