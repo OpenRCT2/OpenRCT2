@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#15642] Track design placement can now use contruction modifier keys (ctrl/shift).
 - Change: [#22596] Land ownership fixes described by .parkpatch files are now only considered on scenarios.
+- Change: [#22740] Add virtual floor to shifted track design placement.
 - Fix: [#2614] The colour tab of the ride window does not hide invisible cars (original bug).
 - Fix: [#21959] “Save this before...?” message does not appear when selecting “New Game”.
 - Fix: [#22231] Invalid object version can cause a crash.
