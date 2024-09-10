@@ -308,6 +308,11 @@
         "y": 2
     },
     {
+        "path": "icons/map_gen_terrain_tab.png",
+        "x": 1,
+        "y": 10
+    },
+    {
         "path": "icons/map_gen_button.png"
     },
     {

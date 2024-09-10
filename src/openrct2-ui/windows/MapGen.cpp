@@ -364,9 +364,9 @@ namespace OpenRCT2::Ui::Windows
         void DrawTabImages(DrawPixelInfo& dpi)
         {
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_BASE, SPR_TAB_GEARS_0);
-            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_TAB_LAND);
+            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_MAP_GEN_TERRAIN_TAB);
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_WATER, SPR_TAB_WATER);
-            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_FORESTS, SPR_G2_TAB_TREE);
+            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_FORESTS, SPR_TAB_SCENERY_TREES);
         }
 
         void ChangeMapSize(int32_t sizeOffset)
