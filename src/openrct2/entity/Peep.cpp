@@ -1600,8 +1600,18 @@ void Peep::FormatNameTo(Formatter& ft) const
     if (Name == nullptr)
     {
         auto& gameState = GetGameState();
+        const bool showGuestNames = gameState.Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        const bool showStaffNames = gameState.Park.Flags & PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+
         auto* staff = As<Staff>();
-        if (staff != nullptr && !(gameState.Park.Flags & PARK_FLAGS_SHOW_REAL_STAFF_NAMES))
+        const bool isStaff = staff != nullptr;
+
+        if ((!isStaff && showGuestNames) || (isStaff && showStaffNames))
+        {
+            auto realNameStringId = GetRealNameStringIDFromPeepID(PeepId);
+            ft.Add<StringId>(realNameStringId);
+        }
+        else if (isStaff)
         {
             auto staffNameIndex = static_cast<uint8_t>(staff->AssignedStaffType);
             if (staffNameIndex >= std::size(_staffNames))
@@ -1611,11 +1621,6 @@ void Peep::FormatNameTo(Formatter& ft) const
 
             ft.Add<StringId>(_staffNames[staffNameIndex]);
             ft.Add<uint32_t>(PeepId);
-        }
-        else if (gameState.Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
-        {
-            auto realNameStringId = GetRealNameStringIDFromPeepID(PeepId);
-            ft.Add<StringId>(realNameStringId);
         }
         else
         {
