@@ -15,6 +15,7 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
@@ -295,7 +296,7 @@ static void PaintSwingingShip(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 112);
+    PaintUtilSetGeneralSupportHeight(session, height + trackElement.GetClearanceZ() - trackElement.GetBaseZ());
 }
 
 TrackPaintFunction GetTrackPaintFunctionSwingingShip(OpenRCT2::TrackElemType trackType)
