@@ -32,8 +32,6 @@ namespace OpenRCT2::Ui::Windows
     {
         WINDOW_MAPGEN_PAGE_BASE,
         WINDOW_MAPGEN_PAGE_RANDOM,
-        WINDOW_MAPGEN_PAGE_SIMPLEX,
-        WINDOW_MAPGEN_PAGE_HEIGHTMAP,
         WINDOW_MAPGEN_PAGE_TERRAIN,
         WINDOW_MAPGEN_PAGE_WATER,
         WINDOW_MAPGEN_PAGE_COUNT
@@ -49,8 +47,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_2,
         WIDX_TAB_3,
         WIDX_TAB_4,
-        WIDX_TAB_5,
-        WIDX_TAB_6,
         WIDX_MAP_GENERATE,
 
         TAB_BEGIN,
@@ -65,9 +61,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_SOURCE,
         WIDX_HEIGHTMAP_SOURCE_DROPDOWN,
 
-        WIDX_RANDOM_PLACE_TREES = TAB_BEGIN,
-
-        WIDX_SIMPLEX_LABEL = TAB_BEGIN,
+        WIDX_SIMPLEX_GROUP,
         WIDX_SIMPLEX_BASE_FREQ,
         WIDX_SIMPLEX_BASE_FREQ_UP,
         WIDX_SIMPLEX_BASE_FREQ_DOWN,
@@ -75,12 +69,15 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SIMPLEX_OCTAVES_UP,
         WIDX_SIMPLEX_OCTAVES_DOWN,
 
-        WIDX_HEIGHTMAP_SELECT = TAB_BEGIN,
+        WIDX_HEIGHTMAP_GROUP,
+        WIDX_HEIGHTMAP_SELECT,
+        WIDX_HEIGHTMAP_NORMALIZE,
         WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP,
         WIDX_HEIGHTMAP_STRENGTH,
         WIDX_HEIGHTMAP_STRENGTH_UP,
         WIDX_HEIGHTMAP_STRENGTH_DOWN,
-        WIDX_HEIGHTMAP_NORMALIZE,
+
+        WIDX_RANDOM_PLACE_TREES = TAB_BEGIN,
 
         WIDX_BASE_HEIGHT = TAB_BEGIN,
         WIDX_BASE_HEIGHT_UP,
@@ -115,8 +112,6 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 34, 17 }),                                                                   /* WIDX_TAB_2 */                \
         MakeTab({ 65, 17 }),                                                                   /* WIDX_TAB_3 */                \
         MakeTab({ 96, 17 }),                                                                   /* WIDX_TAB_4 */                \
-        MakeTab({ 127, 17 }),                                                                  /* WIDX_TAB_5 */                \
-        MakeTab({ 158, 17 }),                                                                  /* WIDX_TAB_6 */                \
         MakeWidget({ 155, 255 }, { 90, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE)
 
     // clang-format off
@@ -126,29 +121,22 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget         ({155,  52}, { 21, 12}, WindowWidgetType::FlatBtn,      WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
         MakeSpinnerWidgets ({177,  52}, { 50, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
         MakeDropdownWidgets({104,  70}, {123, 14}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_HEIGHTMAP_FLATLAND                                     ),
+
+        MakeWidget        ({  5,  90}, {240, 60}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_MAPGEN_SIMPLEX_NOISE), // WIDX_SIMPLEX_GROUP
+        MakeSpinnerWidgets({104, 107}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
+        MakeSpinnerWidgets({104, 125}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
+
+        MakeWidget        ({  5,  90}, {240, 88}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
+        MakeWidget        ({115, 107}, {120, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_SELECT
+        MakeWidget        ({  4, 107}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
+        MakeWidget        ({  4, 125}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
+        MakeSpinnerWidgets({104, 143}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
         kWidgetsEnd,
     };
 
     static Widget RandomWidgets[] = {
         SHARED_WIDGETS,
         MakeWidget({  4,  52}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES   ),
-        kWidgetsEnd,
-    };
-
-    static Widget SimplexWidgets[] = {
-        SHARED_WIDGETS,
-        MakeWidget        ({  4,  52}, {195, 12}, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_MAPGEN_SIMPLEX_NOISE  ), // WIDX_SIMPLEX_LABEL
-        MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                            ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
-        MakeSpinnerWidgets({104,  88}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                            ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
-        kWidgetsEnd,
-    };
-
-    static Widget HeightmapWidgets[] = {
-        SHARED_WIDGETS,
-        MakeWidget        ({ 95, 255}, {150, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_SELECT
-        MakeWidget        ({  4,  52}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
-        MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
-        MakeWidget        ({  4,  88}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
         kWidgetsEnd,
     };
 
@@ -174,8 +162,6 @@ namespace OpenRCT2::Ui::Windows
     static Widget* PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
         BaseWidgets,
         RandomWidgets,
-        SimplexWidgets,
-        HeightmapWidgets,
         TerrainWidgets,
         WaterWidgets,
     };
@@ -187,34 +173,32 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static uint64_t PageDisabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-        0,
-
-        0,
-
-        0,
-
         (1uLL << WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
-        (1uLL << WIDX_HEIGHTMAP_NORMALIZE)
+        (1uLL << WIDX_HEIGHTMAP_NORMALIZE),
+
+        0,
+
+        0,
+
+        0
     };
 
     static uint64_t HoldDownWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
         (1uLL << WIDX_MAP_SIZE_Y_UP) |
         (1uLL << WIDX_MAP_SIZE_Y_DOWN) |
         (1uLL << WIDX_MAP_SIZE_X_UP) |
-        (1uLL << WIDX_MAP_SIZE_X_DOWN),
-
-        0,
-
+        (1uLL << WIDX_MAP_SIZE_X_DOWN) |
         (1uLL << WIDX_SIMPLEX_BASE_FREQ_UP) |
         (1uLL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
         (1uLL << WIDX_SIMPLEX_OCTAVES_UP) |
-        (1uLL << WIDX_SIMPLEX_OCTAVES_DOWN),
-
+        (1uLL << WIDX_SIMPLEX_OCTAVES_DOWN) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN),
+
+        0,
 
         (1uLL << WIDX_BASE_HEIGHT_UP) |
         (1uLL << WIDX_BASE_HEIGHT_DOWN) |
@@ -230,8 +214,6 @@ namespace OpenRCT2::Ui::Windows
     static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
         0,
         0,
-        0,
-        0,
         (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES),
         0,
     };
@@ -245,13 +227,9 @@ namespace OpenRCT2::Ui::Windows
         1,
         1,
         1,
-        1,
-        1,
     };
     static constexpr int32_t TabAnimationFrames[WINDOW_MAPGEN_PAGE_COUNT] = {
         4,
-        1,
-        1,
         1,
         1,
         1,
@@ -259,8 +237,6 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t TabAnimationLoops[WINDOW_MAPGEN_PAGE_COUNT] = {
         16,
         16,
-        16,
-        0,
         1,
         1,
     };
@@ -328,7 +304,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets = PressedWidgets[newPage];
 
             // Enable heightmap widgets if one is loaded
-            if (newPage == WINDOW_MAPGEN_PAGE_HEIGHTMAP && _heightmapLoaded)
+            if (_settings.algorithm == MapGenAlgorithm::heightmapImage && _heightmapLoaded)
             {
                 SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, true);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _settings.smooth_height_map);
@@ -370,8 +346,6 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_BASE, SPR_TAB_GEARS_0);
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_RANDOM, SPR_G2_TAB_TREE);
-            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_SIMPLEX, SPR_G2_TAB_PENCIL);
-            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_HEIGHTMAP, SPR_TAB_GRAPH_0);
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_TAB_LAND);
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_WATER, SPR_TAB_WATER);
         }
@@ -417,8 +391,6 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_2:
                 case WIDX_TAB_3:
                 case WIDX_TAB_4:
-                case WIDX_TAB_5:
-                case WIDX_TAB_6:
                     SetPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_MAP_GENERATE:
@@ -478,6 +450,9 @@ namespace OpenRCT2::Ui::Windows
         {
             SharedMouseUp(widgetIndex);
 
+            if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
+                HeightmapMouseUp(widgetIndex);
+
             switch (widgetIndex)
             {
                 case WIDX_MAP_SIZE_Y:
@@ -496,6 +471,12 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseMouseDown(WidgetIndex widgetIndex, Widget* widget)
         {
+            if (_settings.algorithm == MapGenAlgorithm::simplexCustom)
+                SimplexMouseDown(widgetIndex, widget);
+
+            else if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
+                HeightmapMouseDown(widgetIndex, widget);
+
             switch (widgetIndex)
             {
                 case WIDX_MAP_SIZE_Y_UP:
@@ -617,26 +598,67 @@ namespace OpenRCT2::Ui::Windows
             {
                 case MapGenAlgorithm::blank:
                     sourceWidget.text = STR_HEIGHTMAP_FLATLAND;
+                    ToggleSimplexWidgets(false);
+                    ToggleHeightmapWidgets(false);
                     break;
 
                 case MapGenAlgorithm::simplexNoise:
                     sourceWidget.text = STR_HEIGHTMAP_SIMPLEX_NOISE;
+                    ToggleSimplexWidgets(false);
+                    ToggleHeightmapWidgets(false);
                     break;
 
                 case MapGenAlgorithm::simplexCustom:
                     sourceWidget.text = STR_HEIGHTMAP_SIMPLEX_CUSTOM;
+                    ToggleSimplexWidgets(true);
+                    ToggleHeightmapWidgets(false);
                     break;
 
                 case MapGenAlgorithm::heightmapImage:
                     sourceWidget.text = STR_HEIGHTMAP_FILE;
+                    ToggleSimplexWidgets(false);
+                    ToggleHeightmapWidgets(true);
+                    HeightmapPrepareDraw();
                     break;
             }
+        }
+
+        void ToggleSimplexWidgets(bool state)
+        {
+            // clang-format off
+            BaseWidgets[WIDX_SIMPLEX_GROUP].type          = state ? WindowWidgetType::Groupbox : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_SIMPLEX_BASE_FREQ].type      = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_SIMPLEX_BASE_FREQ_UP].type   = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].type = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_SIMPLEX_OCTAVES].type        = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_SIMPLEX_OCTAVES_UP].type     = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_SIMPLEX_OCTAVES_DOWN].type   = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            // clang-format on
+        }
+
+        void ToggleHeightmapWidgets(bool state)
+        {
+            // clang-format off
+            BaseWidgets[WIDX_HEIGHTMAP_GROUP].type            = state ? WindowWidgetType::Groupbox : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_HEIGHTMAP_SELECT].type           = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_HEIGHTMAP_NORMALIZE].type        = state ? WindowWidgetType::Checkbox : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].type = state ? WindowWidgetType::Checkbox : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_HEIGHTMAP_STRENGTH].type         = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_HEIGHTMAP_STRENGTH_UP].type      = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].type    = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            // clang-format on
         }
 
         void BaseDraw(DrawPixelInfo& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
+
+            if (_settings.algorithm == MapGenAlgorithm::simplexCustom)
+                SimplexDraw(dpi);
+
+            else if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
+                HeightmapDraw(dpi);
 
             const auto textColour = colours[1];
 
@@ -695,12 +717,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
-#pragma region Simplex page
-
-        void SimplexMouseUp(WidgetIndex widgetIndex)
-        {
-            SharedMouseUp(widgetIndex);
-        }
+#pragma region Simplex settings, part of generator tab
 
         void SimplexMouseDown(WidgetIndex widgetIndex, Widget* widget)
         {
@@ -723,25 +740,6 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
             }
-        }
-
-        void SimplexUpdate()
-        {
-            // Tab animation
-            if (++frame_no >= TabAnimationLoops[page])
-                frame_no = 0;
-            InvalidateWidget(WIDX_TAB_3);
-        }
-
-        void SimplexPrepareDraw()
-        {
-            if (widgets != PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX])
-            {
-                widgets = PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX];
-                InitScrollWidgets();
-            }
-
-            SetPressedTab();
         }
 
         void SimplexDraw(DrawPixelInfo& dpi)
@@ -775,7 +773,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
-#pragma region Heightmap page
+#pragma region Heightmap settings, part of generator tab
 
         void HeightmapMouseDown(WidgetIndex widgetIndex, Widget* widget)
         {
@@ -794,20 +792,8 @@ namespace OpenRCT2::Ui::Windows
 
         void HeightmapMouseUp(WidgetIndex widgetIndex)
         {
-            SharedMouseUp(widgetIndex);
-
             switch (widgetIndex)
             {
-                case WIDX_CLOSE:
-                case WIDX_TAB_1:
-                case WIDX_TAB_2:
-                case WIDX_TAB_3:
-                case WIDX_TAB_4:
-                case WIDX_TAB_5:
-                case WIDX_TAB_6:
-                case WIDX_MAP_GENERATE:
-                    return; // Only widgets that change a setting need to regenerate the map
-
                 // Page widgets
                 case WIDX_HEIGHTMAP_SELECT:
                 {
@@ -832,30 +818,16 @@ namespace OpenRCT2::Ui::Windows
                     InvalidateWidget(WIDX_HEIGHTMAP_NORMALIZE);
                     break;
             }
-
-            // Always regenerate the map after one of the page widgets has been changed
-            GenerateMap();
         }
 
         void HeightmapPrepareDraw()
         {
-            if (widgets != PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP])
-            {
-                widgets = PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP];
-                InitScrollWidgets();
-            }
-
             SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _settings.smooth_height_map);
             SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
-
-            SetPressedTab();
         }
 
         void HeightmapDraw(DrawPixelInfo& dpi)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
-
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
@@ -950,7 +922,7 @@ namespace OpenRCT2::Ui::Windows
             // Tab animation
             if (++frame_no >= TabAnimationLoops[page])
                 frame_no = 0;
-            InvalidateWidget(WIDX_TAB_5);
+            InvalidateWidget(WIDX_TAB_3);
         }
 
         void TerrainTextInput(WidgetIndex widgetIndex, std::string_view text)
@@ -1191,7 +1163,7 @@ namespace OpenRCT2::Ui::Windows
             // Tab animation
             if (++frame_no >= TabAnimationLoops[page])
                 frame_no = 0;
-            InvalidateWidget(WIDX_TAB_6);
+            InvalidateWidget(WIDX_TAB_4);
         }
 
         void WaterTextInput(WidgetIndex widgetIndex, std::string_view text)
@@ -1280,10 +1252,6 @@ namespace OpenRCT2::Ui::Windows
                     return BaseMouseUp(widgetIndex);
                 case WINDOW_MAPGEN_PAGE_RANDOM:
                     return RandomMouseUp(widgetIndex);
-                case WINDOW_MAPGEN_PAGE_SIMPLEX:
-                    return SimplexMouseUp(widgetIndex);
-                case WINDOW_MAPGEN_PAGE_HEIGHTMAP:
-                    return HeightmapMouseUp(widgetIndex);
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
                     return TerrainMouseUp(widgetIndex);
                 case WINDOW_MAPGEN_PAGE_WATER:
@@ -1297,10 +1265,6 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
                     return BaseMouseDown(widgetIndex, &widgets[widgetIndex]);
-                case WINDOW_MAPGEN_PAGE_SIMPLEX:
-                    return SimplexMouseDown(widgetIndex, &widgets[widgetIndex]);
-                case WINDOW_MAPGEN_PAGE_HEIGHTMAP:
-                    return HeightmapMouseDown(widgetIndex, &widgets[widgetIndex]);
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
                     return TerrainMouseDown(widgetIndex, &widgets[widgetIndex]);
                 case WINDOW_MAPGEN_PAGE_WATER:
@@ -1327,10 +1291,6 @@ namespace OpenRCT2::Ui::Windows
                     return BaseUpdate();
                 case WINDOW_MAPGEN_PAGE_RANDOM:
                     return RandomUpdate();
-                case WINDOW_MAPGEN_PAGE_SIMPLEX:
-                    return SimplexUpdate();
-                case WINDOW_MAPGEN_PAGE_TERRAIN:
-                    return TerrainUpdate();
                 case WINDOW_MAPGEN_PAGE_WATER:
                     return WaterUpdate();
             }
@@ -1338,16 +1298,15 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
+            bool isHeightMapImage = _settings.algorithm == MapGenAlgorithm::heightmapImage;
+            SetWidgetDisabled(WIDX_MAP_GENERATE, isHeightMapImage && !_heightmapLoaded);
+
             switch (page)
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
                     return BasePrepareDraw();
                 case WINDOW_MAPGEN_PAGE_RANDOM:
                     return RandomPrepareDraw();
-                case WINDOW_MAPGEN_PAGE_SIMPLEX:
-                    return SimplexPrepareDraw();
-                case WINDOW_MAPGEN_PAGE_HEIGHTMAP:
-                    return HeightmapPrepareDraw();
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
                     return TerrainPrepareDraw();
                 case WINDOW_MAPGEN_PAGE_WATER:
@@ -1363,10 +1322,6 @@ namespace OpenRCT2::Ui::Windows
                     return BaseDraw(dpi);
                 case WINDOW_MAPGEN_PAGE_RANDOM:
                     return RandomDraw(dpi);
-                case WINDOW_MAPGEN_PAGE_SIMPLEX:
-                    return SimplexDraw(dpi);
-                case WINDOW_MAPGEN_PAGE_HEIGHTMAP:
-                    return HeightmapDraw(dpi);
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
                     return TerrainDraw(dpi);
                 case WINDOW_MAPGEN_PAGE_WATER:
@@ -1399,9 +1354,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // The window needs to be open while using the map
                 _heightmapLoaded = true;
-                SetPage(WINDOW_MAPGEN_PAGE_HEIGHTMAP);
-
-                GenerateMap();
+                SetPage(WINDOW_MAPGEN_PAGE_BASE);
             }
         }
 
