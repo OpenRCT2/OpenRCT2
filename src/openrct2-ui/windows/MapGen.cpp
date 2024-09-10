@@ -81,7 +81,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_STRENGTH_UP,
         WIDX_HEIGHTMAP_STRENGTH_DOWN,
         WIDX_HEIGHTMAP_NORMALIZE,
-        WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES,
 
         WIDX_BASE_HEIGHT = TAB_BEGIN,
         WIDX_BASE_HEIGHT_UP,
@@ -95,6 +94,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_HIGH,
         WIDX_HEIGHTMAP_HIGH_UP,
         WIDX_HEIGHTMAP_HIGH_DOWN,
+        WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES,
 
         WIDX_WATER_LEVEL = TAB_BEGIN,
         WIDX_WATER_LEVEL_UP,
@@ -149,7 +149,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  4,  52}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
         MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
         MakeWidget        ({  4,  88}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
-        MakeWidget        ({  4, 106}, {100, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE     ), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
         kWidgetsEnd,
     };
 
@@ -159,8 +158,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({104,  70}, {95, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
         MakeWidget        ({104,  82}, {47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
         MakeWidget        ({151,  82}, {47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
-        MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
-        MakeSpinnerWidgets({104, 142}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
+        MakeSpinnerWidgets({104, 124}, {95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
+        MakeSpinnerWidgets({104, 142}, {95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
+        MakeWidget        ({104, 160}, {95, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE     ), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
         kWidgetsEnd,
     };
 
@@ -197,8 +197,7 @@ namespace OpenRCT2::Ui::Windows
         (1uLL << WIDX_HEIGHTMAP_STRENGTH) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
-        (1uLL << WIDX_HEIGHTMAP_NORMALIZE) |
-        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES)
+        (1uLL << WIDX_HEIGHTMAP_NORMALIZE)
     };
 
     static uint64_t HoldDownWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
@@ -232,8 +231,8 @@ namespace OpenRCT2::Ui::Windows
         0,
         0,
         0,
-        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES),
         0,
+        (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES),
         0,
     };
     // clang-format on
@@ -298,6 +297,7 @@ namespace OpenRCT2::Ui::Windows
             .edgeTexture = 0,
             .heightmapLow = 1,
             .heightmapHigh = 20,
+            .smoothTileEdges = true,
 
             // Features (e.g. tree, rivers, lakes etc.)
             .trees = true,
@@ -311,7 +311,6 @@ namespace OpenRCT2::Ui::Windows
             .smooth_height_map = false,
             .smooth_strength = 1,
             .normalize_height = false,
-            .smoothTileEdges = true,
         };
 
         bool _randomTerrain = true;
@@ -336,7 +335,6 @@ namespace OpenRCT2::Ui::Windows
                 SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _settings.smooth_height_map);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _settings.smooth_height_map);
                 SetWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, true);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, true);
             }
 
             InitScrollWidgets();
@@ -833,11 +831,6 @@ namespace OpenRCT2::Ui::Windows
                     SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
                     InvalidateWidget(WIDX_HEIGHTMAP_NORMALIZE);
                     break;
-                case WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES:
-                    _settings.smoothTileEdges = !_settings.smoothTileEdges;
-                    SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
-                    InvalidateWidget(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES);
-                    break;
             }
 
             // Always regenerate the map after one of the page widgets has been changed
@@ -854,7 +847,6 @@ namespace OpenRCT2::Ui::Windows
 
             SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _settings.smooth_height_map);
             SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
-            SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
 
             SetPressedTab();
         }
@@ -902,6 +894,11 @@ namespace OpenRCT2::Ui::Windows
                         (_settings.baseHeight - 12) / 2, 3);
                     break;
                 }
+                case WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES:
+                    _settings.smoothTileEdges = !_settings.smoothTileEdges;
+                    SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
+                    InvalidateWidget(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES);
+                    break;
             }
         }
 
@@ -1080,6 +1077,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             SetCheckboxValue(WIDX_RANDOM_TERRAIN, _randomTerrain != 0);
+            SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
 
             // Only allow floor and wall texture options if random terrain is disabled
             if (!_randomTerrain)

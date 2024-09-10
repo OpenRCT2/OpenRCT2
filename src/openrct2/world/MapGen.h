@@ -31,6 +31,7 @@ struct MapGenSettings
     int32_t edgeTexture;
     int32_t heightmapLow;
     int32_t heightmapHigh;
+    bool smoothTileEdges;
 
     // Features (e.g. tree, rivers, lakes etc.)
     bool trees;
@@ -44,7 +45,6 @@ struct MapGenSettings
     bool smooth_height_map;
     uint32_t smooth_strength;
     bool normalize_height;
-    bool smoothTileEdges;
 };
 
 void MapGenGenerate(MapGenSettings* settings);

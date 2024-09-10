@@ -250,9 +250,12 @@ static void MapGenGenerateSimplex(MapGenSettings* settings)
     MapGenSetHeight(settings);
     delete[] _height;
 
-    // Set the tile slopes so that there are no cliffs
-    while (MapSmooth(1, 1, mapSize.x - 1, mapSize.y - 1))
+    if (settings->smoothTileEdges)
     {
+        // Set the tile slopes so that there are no cliffs
+        while (MapSmooth(1, 1, mapSize.x - 1, mapSize.y - 1))
+        {
+        }
     }
 
     // Add the water
