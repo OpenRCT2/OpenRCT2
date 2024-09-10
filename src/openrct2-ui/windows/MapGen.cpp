@@ -258,12 +258,6 @@ namespace OpenRCT2::Ui::Windows
     };
     // clang-format on
 
-    constexpr int32_t BASESIZE_MIN = 0;
-    constexpr int32_t BASESIZE_MAX = 60;
-    constexpr int32_t WATERLEVEL_MIN = 0;
-    constexpr int32_t WATERLEVEL_MAX = 54;
-    constexpr int32_t MAX_SMOOTH_ITERATIONS = 20;
-
     enum class ResizeDirection
     {
         Both,
@@ -860,7 +854,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_STRENGTH_UP:
-                    _settings.smooth_strength = std::min<uint32_t>(_settings.smooth_strength + 1, MAX_SMOOTH_ITERATIONS);
+                    _settings.smooth_strength = std::min<uint32_t>(_settings.smooth_strength + 1, 20);
                     InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
                 case WIDX_HEIGHTMAP_STRENGTH_DOWN:
@@ -939,8 +933,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BASE_HEIGHT:
                 {
                     Formatter ft;
-                    ft.Add<int16_t>((BASESIZE_MIN - 12) / 2);
-                    ft.Add<int16_t>((BASESIZE_MAX - 12) / 2);
+                    ft.Add<int16_t>((kMinimumLandHeight - 12) / 2);
+                    ft.Add<int16_t>((kMaximumLandHeight - 12) / 2);
                     WindowTextInputOpen(
                         this, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, ft, STR_FORMAT_INTEGER,
                         (_settings.baseHeight - 12) / 2, 3);
@@ -959,11 +953,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BASE_HEIGHT_UP:
-                    _settings.baseHeight = std::min(_settings.baseHeight + 2, BASESIZE_MAX);
+                    _settings.baseHeight = std::min<int32_t>(_settings.baseHeight + 2, kMaximumLandHeight);
                     Invalidate();
                     break;
                 case WIDX_BASE_HEIGHT_DOWN:
-                    _settings.baseHeight = std::max(_settings.baseHeight - 2, BASESIZE_MIN);
+                    _settings.baseHeight = std::max<int32_t>(_settings.baseHeight - 2, kMinimumLandHeight);
                     Invalidate();
                     break;
                 case WIDX_RANDOM_TERRAIN:
@@ -982,7 +976,7 @@ namespace OpenRCT2::Ui::Windows
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_LOW_DOWN:
-                    _settings.heightmapLow = std::max(_settings.heightmapLow - 1, 2);
+                    _settings.heightmapLow = std::max<int32_t>(_settings.heightmapLow - 1, kMinimumLandHeight);
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_UP:
@@ -990,7 +984,7 @@ namespace OpenRCT2::Ui::Windows
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_DOWN:
-                    _settings.heightmapHigh = std::max(_settings.heightmapHigh - 1, 2 + 1);
+                    _settings.heightmapHigh = std::max(_settings.heightmapHigh - 1, kMinimumLandHeight + 1);
                     _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh - 1);
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
@@ -1021,7 +1015,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BASE_HEIGHT:
-                    _settings.baseHeight = std::clamp((value * 2) + 12, BASESIZE_MIN, BASESIZE_MAX);
+                    _settings.baseHeight = std::clamp<int32_t>((value * 2) + 12, kMinimumLandHeight, kMaximumLandHeight);
                     break;
             }
 
@@ -1206,8 +1200,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_LEVEL:
                 {
                     Formatter ft;
-                    ft.Add<int16_t>((WATERLEVEL_MIN - 12) / 2);
-                    ft.Add<int16_t>((WATERLEVEL_MAX - 12) / 2);
+                    ft.Add<int16_t>((kMinimumWaterHeight - 12) / 2);
+                    ft.Add<int16_t>((kMaximumWaterHeight - 12) / 2);
                     WindowTextInputOpen(
                         this, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, ft, STR_FORMAT_INTEGER,
                         (_settings.waterLevel - 12) / 2, 3);
@@ -1228,11 +1222,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_WATER_LEVEL_UP:
-                    _settings.waterLevel = std::min(_settings.waterLevel + 2, WATERLEVEL_MAX);
+                    _settings.waterLevel = std::min<int32_t>(_settings.waterLevel + 2, kMaximumWaterHeight);
                     Invalidate();
                     break;
                 case WIDX_WATER_LEVEL_DOWN:
-                    _settings.waterLevel = std::max(_settings.waterLevel - 2, WATERLEVEL_MIN);
+                    _settings.waterLevel = std::max<int32_t>(_settings.waterLevel - 2, kMinimumWaterHeight);
                     Invalidate();
                     break;
             }
@@ -1262,7 +1256,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_WATER_LEVEL:
-                    _settings.waterLevel = std::clamp((value * 2) + 12, WATERLEVEL_MIN, WATERLEVEL_MAX);
+                    _settings.waterLevel = std::clamp<int32_t>((value * 2) + 12, kMinimumWaterHeight, kMaximumWaterHeight);
                     break;
             }
 
