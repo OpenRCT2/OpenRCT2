@@ -97,7 +97,7 @@ static void MapGenGenerateBlank(MapGenSettings* settings);
 static void MapGenGenerateSimplex(MapGenSettings* settings);
 static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings);
 
-static void MapGenPlaceTrees();
+static void MapGenPlaceTrees(MapGenSettings* settings);
 static void MapGenAddBeaches(MapGenSettings* settings);
 
 void MapGenGenerate(MapGenSettings* settings)
@@ -125,7 +125,7 @@ void MapGenGenerate(MapGenSettings* settings)
 
     // Place trees?
     if (settings->trees)
-        MapGenPlaceTrees();
+        MapGenPlaceTrees(settings);
 }
 
 static void MapGenSetWaterLevel(int32_t waterLevel);
@@ -365,7 +365,7 @@ template<typename T> static bool TryFindTreeInList(std::string_view id, const T&
 /**
  * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
  */
-static void MapGenPlaceTrees()
+static void MapGenPlaceTrees(MapGenSettings* settings)
 {
     std::vector<int32_t> grassTreeIds;
     std::vector<int32_t> desertTreeIds;
@@ -394,22 +394,24 @@ static void MapGenPlaceTrees()
     }
 
     // Place trees
-    CoordsXY pos;
-    float treeToLandRatio = (10 + (UtilRand() % 30)) / 100.0f;
+    float treeToLandRatio = static_cast<float>(settings->treeToLandRatio) / 100.0f;
+
     auto& gameState = GetGameState();
     for (int32_t y = 1; y < gameState.MapSize.y - 1; y++)
     {
         for (int32_t x = 1; x < gameState.MapSize.x - 1; x++)
         {
-            pos.x = x * kCoordsXYStep;
-            pos.y = y * kCoordsXYStep;
-
+            auto pos = CoordsXY{ x, y } * kCoordsXYStep;
             auto* surfaceElement = MapGetSurfaceElementAt(pos);
             if (surfaceElement == nullptr)
                 continue;
 
             // Don't place on water
             if (surfaceElement->GetWaterHeight() > 0)
+                continue;
+
+            if (settings->minTreeAltitude > surfaceElement->BaseHeight
+                || settings->maxTreeAltitude < surfaceElement->BaseHeight)
                 continue;
 
             // On sand surfaces, give the tile a score based on nearby water, to be used to determine whether to spawn

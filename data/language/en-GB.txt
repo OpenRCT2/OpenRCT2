@@ -3758,6 +3758,10 @@ STR_6683    :Map Generator - Generator
 STR_6684    :Map Generator - Terrain
 STR_6685    :Map Generator - Water
 STR_6686    :Map Generator - Forests
+STR_6687    :Tree to land ratio:
+STR_6688    :Min. tree altitude:
+STR_6689    :Max. tree altitude:
+STR_6690    :{UINT16}%
 
 #############
 # Scenarios #

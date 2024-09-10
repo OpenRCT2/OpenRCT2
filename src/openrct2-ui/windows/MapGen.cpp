@@ -77,8 +77,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_STRENGTH_UP,
         WIDX_HEIGHTMAP_STRENGTH_DOWN,
 
-        WIDX_FORESTS_PLACE_TREES = TAB_BEGIN,
-
         WIDX_BASE_HEIGHT = TAB_BEGIN,
         WIDX_BASE_HEIGHT_UP,
         WIDX_BASE_HEIGHT_DOWN,
@@ -97,6 +95,17 @@ namespace OpenRCT2::Ui::Windows
         WIDX_WATER_LEVEL_UP,
         WIDX_WATER_LEVEL_DOWN,
         WIDX_ADD_BEACHES,
+
+        WIDX_FORESTS_PLACE_TREES = TAB_BEGIN,
+        WIDX_TREE_LAND_RATIO,
+        WIDX_TREE_LAND_RATIO_UP,
+        WIDX_TREE_LAND_RATIO_DOWN,
+        WIDX_TREE_ALTITUDE_MIN,
+        WIDX_TREE_ALTITUDE_MIN_UP,
+        WIDX_TREE_ALTITUDE_MIN_DOWN,
+        WIDX_TREE_ALTITUDE_MAX,
+        WIDX_TREE_ALTITUDE_MAX_UP,
+        WIDX_TREE_ALTITUDE_MAX_DOWN,
     };
 
 #pragma region Widgets
@@ -154,7 +163,10 @@ namespace OpenRCT2::Ui::Windows
 
     static Widget ForestsWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_FORESTS),
-        MakeWidget({ 10,  52}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES   ),
+        MakeWidget        ({ 10,  52}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES),
+        MakeSpinnerWidgets({179,  70}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
+        MakeSpinnerWidgets({179,  88}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
+        MakeSpinnerWidgets({179, 106}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
         kWidgetsEnd,
     };
 
@@ -207,7 +219,12 @@ namespace OpenRCT2::Ui::Windows
         (1uLL << WIDX_WATER_LEVEL_UP) |
         (1uLL << WIDX_WATER_LEVEL_DOWN),
 
-        0,
+        (1uLL << WIDX_TREE_LAND_RATIO_UP) |
+        (1uLL << WIDX_TREE_LAND_RATIO_DOWN) |
+        (1uLL << WIDX_TREE_ALTITUDE_MIN_UP) |
+        (1uLL << WIDX_TREE_ALTITUDE_MIN_DOWN) |
+        (1uLL << WIDX_TREE_ALTITUDE_MAX_UP) |
+        (1uLL << WIDX_TREE_ALTITUDE_MAX_DOWN),
     };
 
     static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
@@ -276,6 +293,9 @@ namespace OpenRCT2::Ui::Windows
 
             // Features (e.g. tree, rivers, lakes etc.)
             .trees = true,
+            .treeToLandRatio = 25,
+            .minTreeAltitude = 10,
+            .maxTreeAltitude = 50,
             .beaches = true,
 
             // Simplex Noise Parameters
@@ -680,6 +700,39 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void ForestsMouseDown(WidgetIndex widgetIndex, Widget* widget)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_TREE_LAND_RATIO_UP:
+                    _settings.treeToLandRatio = std::min(_settings.treeToLandRatio + 1, 50);
+                    InvalidateWidget(WIDX_TREE_LAND_RATIO);
+                    break;
+                case WIDX_TREE_LAND_RATIO_DOWN:
+                    _settings.treeToLandRatio = std::max(_settings.treeToLandRatio - 1, 10);
+                    InvalidateWidget(WIDX_TREE_LAND_RATIO);
+                    break;
+                case WIDX_TREE_ALTITUDE_MIN_UP:
+                    _settings.minTreeAltitude = std::min(_settings.minTreeAltitude + 1, kMaximumLandHeight / 2 - 1);
+                    _settings.maxTreeAltitude = std::max(_settings.maxTreeAltitude, _settings.minTreeAltitude + 1);
+                    InvalidateWidget(WIDX_TREE_ALTITUDE_MIN);
+                    break;
+                case WIDX_TREE_ALTITUDE_MIN_DOWN:
+                    _settings.minTreeAltitude = std::max(_settings.minTreeAltitude - 1, 2);
+                    InvalidateWidget(WIDX_TREE_ALTITUDE_MIN);
+                    break;
+                case WIDX_TREE_ALTITUDE_MAX_UP:
+                    _settings.maxTreeAltitude = std::min<int32_t>(_settings.maxTreeAltitude + 1, kMaximumLandHeight - 1);
+                    InvalidateWidget(WIDX_TREE_ALTITUDE_MAX);
+                    break;
+                case WIDX_TREE_ALTITUDE_MAX_DOWN:
+                    _settings.maxTreeAltitude = std::max(_settings.maxTreeAltitude - 1, 2 + 1);
+                    _settings.minTreeAltitude = std::min(_settings.minTreeAltitude, _settings.maxTreeAltitude - 1);
+                    InvalidateWidget(WIDX_TREE_ALTITUDE_MAX);
+                    break;
+            }
+        }
+
         void ForestsUpdate()
         {
             // Tab animation
@@ -707,6 +760,44 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
+
+            const auto textColour = colours[1];
+
+            // Tree to land ratio, label and value
+            DrawTextBasic(
+                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_LAND_RATIO].top + 1 }, STR_MAPGEN_TREE_TO_LAND_RATIO, {},
+                { textColour });
+
+            auto ft = Formatter();
+            ft.Add<uint16_t>(_settings.treeToLandRatio);
+            DrawTextBasic(
+                dpi,
+                windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_LAND_RATIO].left + 1, widgets[WIDX_TREE_LAND_RATIO].top + 1 },
+                STR_MAPGEN_TREE_TO_LAND_RATIO_PCT, ft, { textColour });
+
+            // Minimum tree altitude, label and value
+            DrawTextBasic(
+                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 }, STR_MAPGEN_TREE_MIN_ALTITUDE,
+                {}, { textColour });
+
+            ft = Formatter();
+            ft.Add<uint16_t>(_settings.minTreeAltitude);
+            DrawTextBasic(
+                dpi,
+                windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_ALTITUDE_MIN].left + 1, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 },
+                STR_COMMA16, ft, { textColour });
+
+            // Maximum tree altitude, label and value
+            DrawTextBasic(
+                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 }, STR_MAPGEN_TREE_MAX_ALTITUDE,
+                {}, { textColour });
+
+            ft = Formatter();
+            ft.Add<uint16_t>(_settings.maxTreeAltitude);
+            DrawTextBasic(
+                dpi,
+                windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_ALTITUDE_MAX].left + 1, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 },
+                STR_COMMA16, ft, { textColour });
         }
 
 #pragma endregion
@@ -1263,6 +1354,8 @@ namespace OpenRCT2::Ui::Windows
                     return TerrainMouseDown(widgetIndex, &widgets[widgetIndex]);
                 case WINDOW_MAPGEN_PAGE_WATER:
                     return WaterMouseDown(widgetIndex, &widgets[widgetIndex]);
+                case WINDOW_MAPGEN_PAGE_FORESTS:
+                    return ForestsMouseDown(widgetIndex, &widgets[widgetIndex]);
             }
         }
 

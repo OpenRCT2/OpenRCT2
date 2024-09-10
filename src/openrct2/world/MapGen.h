@@ -35,6 +35,9 @@ struct MapGenSettings
 
     // Features (e.g. tree, rivers, lakes etc.)
     bool trees;
+    int32_t treeToLandRatio;
+    int32_t minTreeAltitude;
+    int32_t maxTreeAltitude;
     bool beaches;
 
     // Simplex Noise Parameters
