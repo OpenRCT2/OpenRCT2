@@ -80,15 +80,15 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BASE_HEIGHT = TAB_BEGIN,
         WIDX_BASE_HEIGHT_UP,
         WIDX_BASE_HEIGHT_DOWN,
-        WIDX_RANDOM_TERRAIN,
-        WIDX_FLOOR_TEXTURE,
-        WIDX_WALL_TEXTURE,
         WIDX_HEIGHTMAP_LOW,
         WIDX_HEIGHTMAP_LOW_UP,
         WIDX_HEIGHTMAP_LOW_DOWN,
         WIDX_HEIGHTMAP_HIGH,
         WIDX_HEIGHTMAP_HIGH_UP,
         WIDX_HEIGHTMAP_HIGH_DOWN,
+        WIDX_FLOOR_TEXTURE,
+        WIDX_WALL_TEXTURE,
+        WIDX_RANDOM_TERRAIN,
         WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES,
 
         WIDX_WATER_LEVEL = TAB_BEGIN,
@@ -120,7 +120,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 34, 17 }),                                                                   /* WIDX_TAB_2 */                \
         MakeTab({ 65, 17 }),                                                                   /* WIDX_TAB_3 */                \
         MakeTab({ 96, 17 }),                                                                   /* WIDX_TAB_4 */                \
-        MakeWidget({ 204, 200 }, { 90, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE)
+        MakeWidget({ 185, 200 }, { 109, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE)
 
     // clang-format off
     static Widget BaseWidgets[] = {
@@ -144,19 +144,19 @@ namespace OpenRCT2::Ui::Windows
 
     static Widget TerrainWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_TERRAIN),
-        MakeSpinnerWidgets({179,  52}, {95, 12}, WindowWidgetType::Spinner,   WindowColour::Secondary                                          ), // NB: 3 widgets
-        MakeWidget        ({179,  70}, {95, 12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
-        MakeWidget        ({179,  82}, {47, 36}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
-        MakeWidget        ({236,  82}, {47, 36}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
-        MakeSpinnerWidgets({179, 124}, {95, 12}, WindowWidgetType::Spinner,   WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
-        MakeSpinnerWidgets({179, 142}, {95, 12}, WindowWidgetType::Spinner,   WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
-        MakeWidget        ({179, 160}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
+        MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                          ), // NB: 3 widgets
+        MakeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
+        MakeSpinnerWidgets({179,  88}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
+        MakeWidget        ({179, 106}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
+        MakeWidget        ({236, 106}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
+        MakeWidget        ({ 10, 124}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
+        MakeWidget        ({ 10, 142}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
         kWidgetsEnd,
     };
 
     static Widget WaterWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_WATER),
-        MakeSpinnerWidgets({179,  52}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // NB: 3 widgets
+        MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // NB: 3 widgets
         MakeWidget        ({ 10,  70}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_BEACHES_WATER_BODIES),
         kWidgetsEnd,
     };
@@ -164,9 +164,9 @@ namespace OpenRCT2::Ui::Windows
     static Widget ForestsWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_FORESTS),
         MakeWidget        ({ 10,  52}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES),
-        MakeSpinnerWidgets({179,  70}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
-        MakeSpinnerWidgets({179,  88}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
-        MakeSpinnerWidgets({179, 106}, { 95, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
+        MakeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
+        MakeSpinnerWidgets({179,  88}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
+        MakeSpinnerWidgets({179, 106}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
         kWidgetsEnd,
     };
 
