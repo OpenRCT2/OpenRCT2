@@ -319,7 +319,7 @@ namespace OpenRCT2::Ui::Windows
             .wall = 0,
 
             // Features (e.g. tree, rivers, lakes etc.)
-            .trees = 1,
+            .trees = true,
 
             // Simplex Noise Parameters
             .simplex_low = 6,
@@ -614,7 +614,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_RANDOM_PLACE_TREES:
-                    _settings.trees ^= 1;
+                    _settings.trees ^= true;
                     break;
             }
         }

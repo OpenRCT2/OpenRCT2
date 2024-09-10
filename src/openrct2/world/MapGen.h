@@ -30,7 +30,7 @@ struct MapGenSettings
     int32_t wall;
 
     // Features (e.g. tree, rivers, lakes etc.)
-    int32_t trees;
+    bool trees;
 
     // Simplex Noise Parameters
     int32_t simplex_low;

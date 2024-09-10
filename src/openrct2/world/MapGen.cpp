@@ -97,8 +97,11 @@ static void MapGenGenerateBlank(MapGenSettings* settings);
 static void MapGenGenerateSimplex(MapGenSettings* settings);
 static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings);
 
+static void MapGenPlaceTrees();
+
 void MapGenGenerate(MapGenSettings* settings)
 {
+    // First, generate the height map
     switch (settings->algorithm)
     {
         case MapGenAlgorithm::blank:
@@ -113,9 +116,12 @@ void MapGenGenerate(MapGenSettings* settings)
             MapGenGenerateFromHeightmapImage(settings);
             break;
     }
+
+    // Place trees?
+    if (settings->trees)
+        MapGenPlaceTrees();
 }
 
-static void MapGenPlaceTrees();
 static void MapGenSetWaterLevel(int32_t waterLevel);
 static void MapGenSmoothHeight(int32_t iterations);
 static void MapGenSetHeight(MapGenSettings* settings);
@@ -270,10 +276,6 @@ static void MapGenGenerateSimplex(MapGenSettings* settings)
                 surfaceElement->SetSurfaceObjectIndex(beachTextureId);
         }
     }
-
-    // Place the trees
-    if (settings->trees != 0)
-        MapGenPlaceTrees();
 }
 
 static void MapGenPlaceTree(ObjectEntryIndex type, const CoordsXY& loc)
