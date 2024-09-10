@@ -21,6 +21,7 @@
 #include <openrct2/actions/TrackDesignAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
@@ -226,6 +227,8 @@ namespace OpenRCT2::Ui::Windows
                     });
                     res = GameActions::Execute(&tdAction);
                     cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
+
+                    VirtualFloorSetHeight(trackLoc.z);
                 }
             }
 
@@ -440,6 +443,8 @@ namespace OpenRCT2::Ui::Windows
                     TrackDesignPreviewRemoveGhosts(*_trackDesign, *newRide, _placementGhostLoc);
                     _hasPlacementGhost = false;
                 }
+
+                VirtualFloorSetHeight(0);
             }
         }
 
