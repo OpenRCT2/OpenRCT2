@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 
 namespace OpenRCT2::RCT12
 {

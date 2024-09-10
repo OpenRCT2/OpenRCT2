@@ -23,6 +23,7 @@
 #include "../core/File.h"
 #include "../core/OrcaStream.hpp"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"

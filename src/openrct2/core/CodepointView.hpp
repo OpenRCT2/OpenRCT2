@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "String.hpp"
 #include "UTF8.h"
 
 namespace OpenRCT2

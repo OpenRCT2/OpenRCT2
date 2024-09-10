@@ -9,13 +9,12 @@
 
 #pragma once
 
-#include "core/String.hpp"
+#include "core/StringTypes.h"
 #include "interface/WindowClasses.h"
 #include "localisation/StringIdType.h"
 #include "world/Location.hpp"
 
 #include <memory>
-#include <string>
 
 struct IObjectManager;
 struct IObjectRepository;

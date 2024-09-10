@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "../core/String.hpp"
-
 #include <memory>
 #include <string>
 

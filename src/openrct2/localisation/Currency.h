@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../localisation/StringIdType.h"
 #include "../util/Util.h"
 #include "CurrencyTypes.h"
