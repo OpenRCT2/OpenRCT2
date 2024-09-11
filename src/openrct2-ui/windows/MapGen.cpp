@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
@@ -770,11 +771,11 @@ namespace OpenRCT2::Ui::Windows
                 {}, { textColour });
 
             ft = Formatter();
-            ft.Add<uint16_t>(_settings.minTreeAltitude);
+            ft.Add<int16_t>(BaseZToMetres(_settings.minTreeAltitude));
             DrawTextBasic(
                 dpi,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_ALTITUDE_MIN].left + 1, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 },
-                STR_COMMA16, ft, { textColour });
+                STR_RIDE_LENGTH_ENTRY, ft, { textColour });
 
             // Maximum tree altitude, label and value
             DrawTextBasic(
@@ -782,11 +783,11 @@ namespace OpenRCT2::Ui::Windows
                 {}, { textColour });
 
             ft = Formatter();
-            ft.Add<uint16_t>(_settings.maxTreeAltitude);
+            ft.Add<int16_t>(BaseZToMetres(_settings.maxTreeAltitude));
             DrawTextBasic(
                 dpi,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_ALTITUDE_MAX].left + 1, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 },
-                STR_COMMA16, ft, { textColour });
+                STR_RIDE_LENGTH_ENTRY, ft, { textColour });
         }
 
 #pragma endregion
@@ -933,11 +934,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BASE_HEIGHT:
                 {
                     Formatter ft;
-                    ft.Add<int16_t>((kMinimumLandHeight - 12) / 2);
-                    ft.Add<int16_t>((kMaximumLandHeight - 12) / 2);
+                    ft.Add<int16_t>(BaseZToMetres(kMinimumLandHeight));
+                    ft.Add<int16_t>(BaseZToMetres(kMaximumLandHeight));
                     WindowTextInputOpen(
                         this, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, ft, STR_FORMAT_INTEGER,
-                        (_settings.baseHeight - 12) / 2, 3);
+                        BaseZToMetres(_settings.baseHeight), 6);
                     break;
                 }
                 case WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES:
@@ -1001,21 +1002,30 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainTextInput(WidgetIndex widgetIndex, std::string_view text)
         {
-            int32_t value;
-            char* end;
-
             const auto strText = u8string(text);
-            value = strtol(strText.c_str(), &end, 10);
-
+            char* end;
+            int32_t value = strtol(strText.c_str(), &end, 10);
             if (*end != '\0')
             {
                 return;
             }
 
+            switch (Config::Get().general.MeasurementFormat)
+            {
+                case MeasurementFormat::Imperial:
+                    value = FeetToMetres(value);
+                    [[fallthrough]];
+
+                default:
+                    value = std::clamp(MetresToBaseZ(value), kMinimumLandHeight, kMaximumLandHeight);
+                    break;
+            }
+
             switch (widgetIndex)
             {
                 case WIDX_BASE_HEIGHT:
-                    _settings.baseHeight = std::clamp<int32_t>((value * 2) + 12, kMinimumLandHeight, kMaximumLandHeight);
+                    _settings.baseHeight = value;
+                    break;
                     break;
             }
 
@@ -1154,10 +1164,10 @@ namespace OpenRCT2::Ui::Windows
                 { textColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>((_settings.baseHeight - 12) / 2);
+            ft.Add<int32_t>(BaseZToMetres(_settings.baseHeight));
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_BASE_HEIGHT].left + 1, widgets[WIDX_BASE_HEIGHT].top + 1 },
-                STR_COMMA16, ft, { colours[1] });
+                STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
 
             // Floor texture label
             DrawTextBasic(
@@ -1170,10 +1180,10 @@ namespace OpenRCT2::Ui::Windows
                 { textColour });
 
             ft = Formatter();
-            ft.Add<uint16_t>(_settings.heightmapLow);
+            ft.Add<int32_t>(BaseZToMetres(_settings.heightmapLow));
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_LOW].left + 1, widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
-                STR_COMMA16, ft, { textColour });
+                STR_RIDE_LENGTH_ENTRY, ft, { textColour });
 
             // Maximum land height label and value
             DrawTextBasic(
@@ -1181,10 +1191,10 @@ namespace OpenRCT2::Ui::Windows
                 { textColour });
 
             ft = Formatter();
-            ft.Add<uint16_t>(_settings.heightmapHigh);
+            ft.Add<int32_t>(BaseZToMetres(_settings.heightmapHigh));
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_HIGH].left + 1, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
-                STR_COMMA16, ft, { textColour });
+                STR_RIDE_LENGTH_ENTRY, ft, { textColour });
         }
 
 #pragma endregion
@@ -1200,11 +1210,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WATER_LEVEL:
                 {
                     Formatter ft;
-                    ft.Add<int16_t>((kMinimumWaterHeight - 12) / 2);
-                    ft.Add<int16_t>((kMaximumWaterHeight - 12) / 2);
+                    ft.Add<int16_t>(kMinimumWaterHeight);
+                    ft.Add<int16_t>(kMaximumWaterHeight);
                     WindowTextInputOpen(
                         this, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, ft, STR_FORMAT_INTEGER,
-                        (_settings.waterLevel - 12) / 2, 3);
+                        _settings.waterLevel, 6);
                     break;
                 }
 
@@ -1253,10 +1263,21 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
+            switch (Config::Get().general.MeasurementFormat)
+            {
+                case MeasurementFormat::Imperial:
+                    value = FeetToMetres(value);
+                    [[fallthrough]];
+
+                default:
+                    value = std::clamp(MetresToBaseZ(value), kMinimumWaterHeight, kMaximumWaterHeight);
+                    break;
+            }
+
             switch (widgetIndex)
             {
                 case WIDX_WATER_LEVEL:
-                    _settings.waterLevel = std::clamp<int32_t>((value * 2) + 12, kMinimumWaterHeight, kMaximumWaterHeight);
+                    _settings.waterLevel = value;
                     break;
             }
 
@@ -1288,10 +1309,10 @@ namespace OpenRCT2::Ui::Windows
                 { textColour });
 
             auto ft = Formatter();
-            ft.Add<uint16_t>((_settings.waterLevel - 12) / 2);
+            ft.Add<int32_t>(BaseZToMetres(_settings.waterLevel));
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
-                STR_COMMA16, ft, { colours[1] });
+                STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
         }
 
 #pragma endregion
