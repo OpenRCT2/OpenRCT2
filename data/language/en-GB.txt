@@ -3762,6 +3762,21 @@ STR_6687    :Tree to land ratio:
 STR_6688    :Min. tree altitude:
 STR_6689    :Max. tree altitude:
 STR_6690    :{UINT16}%
+STR_6691    :Minimum land height
+STR_6692    :Enter min. land height between {COMMA16} and {COMMA16}
+STR_6693    :Maximum land height
+STR_6694    :Enter max. land height between {COMMA16} and {COMMA16}
+STR_6695    :Minimum tree altitude
+STR_6696    :Enter min. tree altitude between {COMMA16} and {COMMA16}
+STR_6697    :Maximum tree altitude
+STR_6698    :Enter max. tree altitude between {COMMA16} and {COMMA16}
+STR_6699    :Tree to land ratio
+STR_6700    :Enter tree to land ratio between {COMMA16} and {COMMA16}
+STR_6701    :Simplex Base Frequency
+STR_6702    :Enter Base Frequency between {COMMA2DP32} and {COMMA2DP32}
+STR_6703    :Simplex Octaves
+STR_6704    :Enter Octaves between {COMMA16} and {COMMA16}
+STR_6705    :{COMMA2DP32}
 
 #############
 # Scenarios #

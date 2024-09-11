@@ -454,7 +454,9 @@ namespace OpenRCT2::Ui::Windows
         {
             SharedMouseUp(widgetIndex);
 
-            if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
+            if (_settings.algorithm == MapGenAlgorithm::simplexNoise)
+                SimplexMouseUp(widgetIndex);
+            else if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
                 HeightmapMouseUp(widgetIndex);
 
             switch (widgetIndex)
@@ -549,18 +551,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void BaseTextInput(WidgetIndex widgetIndex, std::string_view text)
+        void BaseTextInput(WidgetIndex widgetIndex, int32_t value)
         {
-            int32_t value;
-            char* end;
-
-            const auto strText = u8string(text);
-            value = strtol(strText.c_str(), &end, 10);
-
-            if (*end != '\0')
-            {
-                return;
-            }
+            if (_settings.algorithm == MapGenAlgorithm::simplexNoise)
+                SimplexTextInput(widgetIndex, value);
 
             switch (widgetIndex)
             {
@@ -687,6 +681,39 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FORESTS_PLACE_TREES:
                     _settings.trees ^= true;
                     break;
+
+                case WIDX_TREE_LAND_RATIO:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(1);
+                    ft.Add<int16_t>(50);
+                    WindowTextInputOpen(
+                        this, widgetIndex, STR_TREE_TO_LAND_RATIO, STR_ENTER_TREE_TO_LAND_RATIO, ft, STR_FORMAT_INTEGER,
+                        _settings.treeToLandRatio, 2);
+                    break;
+                }
+
+                case WIDX_TREE_ALTITUDE_MIN:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(BaseZToMetres(kMinimumLandHeight));
+                    ft.Add<int16_t>(BaseZToMetres(kMaximumLandHeight));
+                    WindowTextInputOpen(
+                        this, widgetIndex, STR_MIN_TREE_ALTITUDE, STR_ENTER_MIN_TREE_ALTITUDE, ft, STR_FORMAT_INTEGER,
+                        BaseZToMetres(_settings.minTreeAltitude), 6);
+                    break;
+                }
+
+                case WIDX_TREE_ALTITUDE_MAX:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(BaseZToMetres(kMinimumLandHeight));
+                    ft.Add<int16_t>(BaseZToMetres(kMaximumLandHeight));
+                    WindowTextInputOpen(
+                        this, widgetIndex, STR_MAX_TREE_ALTITUDE, STR_ENTER_MAX_TREE_ALTITUDE, ft, STR_FORMAT_INTEGER,
+                        BaseZToMetres(_settings.maxTreeAltitude), 6);
+                    break;
+                }
             }
         }
 
@@ -729,6 +756,28 @@ namespace OpenRCT2::Ui::Windows
             if (++frame_no >= TabAnimationLoops[page])
                 frame_no = 0;
             InvalidateWidget(WIDX_TAB_2);
+        }
+
+        void ForestsTextInput(WidgetIndex widgetIndex, int32_t rawValue, int32_t value)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_TREE_LAND_RATIO:
+                    _settings.treeToLandRatio = std::clamp(rawValue, 1, 50);
+                    break;
+
+                case WIDX_TREE_ALTITUDE_MIN:
+                    _settings.minTreeAltitude = value;
+                    _settings.maxTreeAltitude = std::max(_settings.minTreeAltitude, _settings.maxTreeAltitude);
+                    break;
+
+                case WIDX_TREE_ALTITUDE_MAX:
+                    _settings.maxTreeAltitude = value;
+                    _settings.minTreeAltitude = std::min(_settings.minTreeAltitude, _settings.maxTreeAltitude);
+                    break;
+            }
+
+            Invalidate();
         }
 
         void ForestsPrepareDraw()
@@ -794,6 +843,34 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Simplex settings, part of generator tab
 
+        void SimplexMouseUp(WidgetIndex widgetIndex)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_SIMPLEX_BASE_FREQ:
+                {
+                    Formatter ft;
+                    ft.Add<int32_t>(0);
+                    ft.Add<int32_t>(1000);
+                    WindowTextInputOpen(
+                        this, widgetIndex, STR_SIMPLEX_BASE_FREQUENCY, STR_ENTER_BASE_FREQUENCY, ft, STR_FORMAT_COMMA2DP32,
+                        _settings.simplex_base_freq, 4);
+                    break;
+                }
+
+                case WIDX_SIMPLEX_OCTAVES:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(1);
+                    ft.Add<int16_t>(10);
+                    WindowTextInputOpen(
+                        this, widgetIndex, STR_SIMPLEX_OCTAVES, STR_ENTER_OCTAVES, ft, STR_FORMAT_INTEGER,
+                        _settings.simplex_octaves, 10);
+                    break;
+                }
+            }
+        }
+
         void SimplexMouseDown(WidgetIndex widgetIndex, Widget* widget)
         {
             switch (widgetIndex)
@@ -844,6 +921,20 @@ namespace OpenRCT2::Ui::Windows
                 dpi,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_OCTAVES].left + 1, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
                 STR_COMMA16, ft, { textColour });
+        }
+
+        void SimplexTextInput(WidgetIndex widgetIndex, int32_t value)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_SIMPLEX_BASE_FREQ:
+                    _settings.simplex_base_freq = std::clamp(value, 0, 1000);
+                    break;
+
+                case WIDX_SIMPLEX_OCTAVES:
+                    _settings.simplex_octaves = std::clamp(value, 1, 10);
+                    break;
+            }
         }
 
 #pragma endregion
@@ -941,6 +1032,29 @@ namespace OpenRCT2::Ui::Windows
                         BaseZToMetres(_settings.baseHeight), 6);
                     break;
                 }
+
+                case WIDX_HEIGHTMAP_LOW:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(BaseZToMetres(kMinimumLandHeight));
+                    ft.Add<int16_t>(BaseZToMetres(kMaximumLandHeight));
+                    WindowTextInputOpen(
+                        this, widgetIndex, STR_MIN_LAND_HEIGHT, STR_ENTER_MIN_LAND, ft, STR_FORMAT_INTEGER,
+                        BaseZToMetres(_settings.heightmapLow), 6);
+                    break;
+                }
+
+                case WIDX_HEIGHTMAP_HIGH:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(BaseZToMetres(kMinimumLandHeight));
+                    ft.Add<int16_t>(BaseZToMetres(kMaximumLandHeight));
+                    WindowTextInputOpen(
+                        this, widgetIndex, STR_MAX_LAND_HEIGHT, STR_ENTER_MAX_LAND, ft, STR_FORMAT_INTEGER,
+                        BaseZToMetres(_settings.heightmapHigh), 6);
+                    break;
+                }
+
                 case WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES:
                     _settings.smoothTileEdges = !_settings.smoothTileEdges;
                     SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
@@ -1000,32 +1114,22 @@ namespace OpenRCT2::Ui::Windows
             InvalidateWidget(WIDX_TAB_3);
         }
 
-        void TerrainTextInput(WidgetIndex widgetIndex, std::string_view text)
+        void TerrainTextInput(WidgetIndex widgetIndex, int32_t value)
         {
-            const auto strText = u8string(text);
-            char* end;
-            int32_t value = strtol(strText.c_str(), &end, 10);
-            if (*end != '\0')
-            {
-                return;
-            }
-
-            switch (Config::Get().general.MeasurementFormat)
-            {
-                case MeasurementFormat::Imperial:
-                    value = FeetToMetres(value);
-                    [[fallthrough]];
-
-                default:
-                    value = std::clamp(MetresToBaseZ(value), kMinimumLandHeight, kMaximumLandHeight);
-                    break;
-            }
-
             switch (widgetIndex)
             {
                 case WIDX_BASE_HEIGHT:
                     _settings.baseHeight = value;
                     break;
+
+                case WIDX_HEIGHTMAP_LOW:
+                    _settings.heightmapLow = value;
+                    _settings.heightmapHigh = std::max(_settings.heightmapLow, _settings.heightmapHigh);
+                    break;
+
+                case WIDX_HEIGHTMAP_HIGH:
+                    _settings.heightmapHigh = value;
+                    _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh);
                     break;
             }
 
@@ -1250,30 +1354,8 @@ namespace OpenRCT2::Ui::Windows
             InvalidateWidget(WIDX_TAB_4);
         }
 
-        void WaterTextInput(WidgetIndex widgetIndex, std::string_view text)
+        void WaterTextInput(WidgetIndex widgetIndex, int32_t value)
         {
-            int32_t value;
-            char* end;
-
-            const auto strText = u8string(text);
-            value = strtol(strText.c_str(), &end, 10);
-
-            if (*end != '\0')
-            {
-                return;
-            }
-
-            switch (Config::Get().general.MeasurementFormat)
-            {
-                case MeasurementFormat::Imperial:
-                    value = FeetToMetres(value);
-                    [[fallthrough]];
-
-                default:
-                    value = std::clamp(MetresToBaseZ(value), kMinimumWaterHeight, kMaximumWaterHeight);
-                    break;
-            }
-
             switch (widgetIndex)
             {
                 case WIDX_WATER_LEVEL:
@@ -1428,14 +1510,46 @@ namespace OpenRCT2::Ui::Windows
 
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
+            auto strText = std::string(text);
+            char* end;
+
+            // Convert text to integer value
+            int32_t value{};
+            if (page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_SIMPLEX_BASE_FREQ)
+                value = 100 * strtof(strText.c_str(), &end);
+            else
+                value = strtol(strText.c_str(), &end, 10);
+
+            if (*end != '\0')
+                return;
+
+            // Take care of unit conversion
+            int32_t rawValue = value;
+            if (page != WINDOW_MAPGEN_PAGE_BASE)
+            {
+                switch (Config::Get().general.MeasurementFormat)
+                {
+                    case MeasurementFormat::Imperial:
+                        value = FeetToMetres(value);
+                        [[fallthrough]];
+
+                    default:
+                        value = std::clamp(MetresToBaseZ(value), kMinimumLandHeight, kMaximumLandHeight);
+                        break;
+                }
+            }
+
+            // Pass on to the actual properties
             switch (page)
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
-                    return BaseTextInput(widgetIndex, text);
+                    return BaseTextInput(widgetIndex, value);
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
-                    return TerrainTextInput(widgetIndex, text);
+                    return TerrainTextInput(widgetIndex, value);
                 case WINDOW_MAPGEN_PAGE_WATER:
-                    return WaterTextInput(widgetIndex, text);
+                    return WaterTextInput(widgetIndex, value);
+                case WINDOW_MAPGEN_PAGE_FORESTS:
+                    return ForestsTextInput(widgetIndex, rawValue, value);
             }
         }
 
