@@ -11,7 +11,7 @@
 
 #include "../core/CallingConventions.h"
 #include "../core/Money.hpp"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 
 #include <cstdio>
 #include <ctime>

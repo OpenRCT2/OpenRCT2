@@ -16,6 +16,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
 #include "../entity/Peep.h"

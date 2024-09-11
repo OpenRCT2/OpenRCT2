@@ -11,10 +11,9 @@
 
 #include "../config/ConfigTypes.h"
 #include "../core/DateTime.h"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 
 #include <ctime>
-#include <string>
 
 #ifdef _WIN32
 #    define PATH_SEPARATOR u8"\\"

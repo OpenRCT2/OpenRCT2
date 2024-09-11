@@ -184,6 +184,7 @@
     <ClInclude Include="core\CallingConventions.h" />
     <ClInclude Include="core\ChecksumStream.h" />
     <ClInclude Include="core\CircularBuffer.h" />
+    <ClInclude Include="core\CodepointView.hpp" />
     <ClInclude Include="core\Collections.hpp" />
     <ClInclude Include="core\Console.hpp" />
     <ClInclude Include="core\Crypt.h" />
@@ -225,6 +226,7 @@
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
+    <ClInclude Include="core\StringTypes.h" />
     <ClInclude Include="core\Timer.hpp" />
     <ClInclude Include="core\UTF8.h" />
     <ClInclude Include="core\UnicodeChar.h" />

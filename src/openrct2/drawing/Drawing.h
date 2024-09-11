@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/CallingConventions.h"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"

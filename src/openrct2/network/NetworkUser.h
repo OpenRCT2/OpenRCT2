@@ -10,11 +10,10 @@
 #pragma once
 
 #include "../core/JsonFwd.hpp"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 
 #include <memory>
 #include <optional>
-#include <string>
 #include <unordered_map>
 
 class NetworkUser final

@@ -18,6 +18,7 @@
 #include "../core/DataSerialiser.h"
 #include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
+#include "../core/String.hpp"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"

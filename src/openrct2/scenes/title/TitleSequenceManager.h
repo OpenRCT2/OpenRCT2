@@ -9,10 +9,9 @@
 
 #pragma once
 
-#include "../../core/String.hpp"
+#include "../../core/StringTypes.h"
 
 #include <limits>
-#include <string>
 
 namespace OpenRCT2::TitleSequenceManager
 {

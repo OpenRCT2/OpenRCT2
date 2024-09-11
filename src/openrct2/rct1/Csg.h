@@ -9,9 +9,7 @@
 
 #pragma once
 
-#include "../core/String.hpp"
-
-#include <string>
+#include "../core/StringTypes.h"
 
 struct Gx;
 

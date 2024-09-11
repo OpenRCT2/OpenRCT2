@@ -19,7 +19,7 @@
 #include "../actions/LargeSceneryRemoveAction.h"
 #include "../actions/SmallSceneryRemoveAction.h"
 #include "../actions/WallRemoveAction.h"
-#include "../core/String.hpp"
+#include "../core/CodepointView.hpp"
 #include "../entity/Fountain.h"
 #include "../network/network.h"
 #include "../object/BannerSceneryEntry.h"

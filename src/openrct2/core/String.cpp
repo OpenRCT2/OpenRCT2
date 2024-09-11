@@ -726,8 +726,3 @@ namespace OpenRCT2::String
         return escaped.str();
     }
 } // namespace OpenRCT2::String
-
-char32_t CodepointView::iterator::GetNextCodepoint(const char* ch, const char** next)
-{
-    return UTF8GetNext(ch, next);
-}
