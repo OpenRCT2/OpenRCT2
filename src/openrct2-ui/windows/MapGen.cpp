@@ -282,8 +282,8 @@ namespace OpenRCT2::Ui::Windows
             .waterLevel = 6,
             .landTexture = 0,
             .edgeTexture = 0,
-            .heightmapLow = 1,
-            .heightmapHigh = 20,
+            .heightmapLow = 14,
+            .heightmapHigh = 60,
             .smoothTileEdges = true,
 
             // Features (e.g. tree, rivers, lakes etc.)
@@ -726,25 +726,25 @@ namespace OpenRCT2::Ui::Windows
                     InvalidateWidget(WIDX_TREE_LAND_RATIO);
                     break;
                 case WIDX_TREE_LAND_RATIO_DOWN:
-                    _settings.treeToLandRatio = std::max(_settings.treeToLandRatio - 1, 10);
+                    _settings.treeToLandRatio = std::max(_settings.treeToLandRatio - 1, 1);
                     InvalidateWidget(WIDX_TREE_LAND_RATIO);
                     break;
                 case WIDX_TREE_ALTITUDE_MIN_UP:
-                    _settings.minTreeAltitude = std::min(_settings.minTreeAltitude + 1, kMaximumLandHeight / 2 - 1);
-                    _settings.maxTreeAltitude = std::max(_settings.maxTreeAltitude, _settings.minTreeAltitude + 1);
+                    _settings.minTreeAltitude = std::min(_settings.minTreeAltitude + 2, kMaximumLandHeight / 2 - 1);
+                    _settings.maxTreeAltitude = std::max(_settings.maxTreeAltitude, _settings.minTreeAltitude + 2);
                     InvalidateWidget(WIDX_TREE_ALTITUDE_MIN);
                     break;
                 case WIDX_TREE_ALTITUDE_MIN_DOWN:
-                    _settings.minTreeAltitude = std::max(_settings.minTreeAltitude - 1, 2);
+                    _settings.minTreeAltitude = std::max<int32_t>(_settings.minTreeAltitude - 2, kMinimumLandHeight);
                     InvalidateWidget(WIDX_TREE_ALTITUDE_MIN);
                     break;
                 case WIDX_TREE_ALTITUDE_MAX_UP:
-                    _settings.maxTreeAltitude = std::min<int32_t>(_settings.maxTreeAltitude + 1, kMaximumLandHeight - 1);
+                    _settings.maxTreeAltitude = std::min<int32_t>(_settings.maxTreeAltitude + 2, kMaximumLandHeight - 1);
                     InvalidateWidget(WIDX_TREE_ALTITUDE_MAX);
                     break;
                 case WIDX_TREE_ALTITUDE_MAX_DOWN:
-                    _settings.maxTreeAltitude = std::max(_settings.maxTreeAltitude - 1, 2 + 1);
-                    _settings.minTreeAltitude = std::min(_settings.minTreeAltitude, _settings.maxTreeAltitude - 1);
+                    _settings.maxTreeAltitude = std::max<int32_t>(_settings.maxTreeAltitude - 2, kMinimumLandHeight - 1);
+                    _settings.minTreeAltitude = std::min(_settings.minTreeAltitude, _settings.maxTreeAltitude - 2);
                     InvalidateWidget(WIDX_TREE_ALTITUDE_MAX);
                     break;
             }
@@ -1086,21 +1086,21 @@ namespace OpenRCT2::Ui::Windows
                     LandTool::ShowEdgeStyleDropdown(this, widget, _settings.edgeTexture);
                     break;
                 case WIDX_HEIGHTMAP_LOW_UP:
-                    _settings.heightmapLow = std::min(_settings.heightmapLow + 1, kMaximumLandHeight / 2 - 1);
-                    _settings.heightmapHigh = std::max(_settings.heightmapHigh, _settings.heightmapLow + 1);
+                    _settings.heightmapLow = std::min(_settings.heightmapLow + 2, kMaximumLandHeight / 2 - 1);
+                    _settings.heightmapHigh = std::max(_settings.heightmapHigh, _settings.heightmapLow + 2);
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_LOW_DOWN:
-                    _settings.heightmapLow = std::max<int32_t>(_settings.heightmapLow - 1, kMinimumLandHeight);
+                    _settings.heightmapLow = std::max<int32_t>(_settings.heightmapLow - 2, kMinimumLandHeight);
                     InvalidateWidget(WIDX_HEIGHTMAP_LOW);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_UP:
-                    _settings.heightmapHigh = std::min<int32_t>(_settings.heightmapHigh + 1, kMaximumLandHeight - 1);
+                    _settings.heightmapHigh = std::min<int32_t>(_settings.heightmapHigh + 2, kMaximumLandHeight - 1);
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
                 case WIDX_HEIGHTMAP_HIGH_DOWN:
-                    _settings.heightmapHigh = std::max(_settings.heightmapHigh - 1, kMinimumLandHeight + 1);
-                    _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh - 1);
+                    _settings.heightmapHigh = std::max<int32_t>(_settings.heightmapHigh - 2, kMinimumLandHeight);
+                    _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh - 2);
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
             }
