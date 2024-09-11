@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 320;
     static constexpr int32_t WH = 107;
 
-    const uint16_t _window_header_size = 152;
+    const uint16_t kWindowHeaderWidth = 152;
 
     // clang-format off
     static Widget _themesWidgets[] = {
@@ -88,7 +88,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab   ({189, 17},                                                                                                        STR_THEMES_TAB_MISC_TIP            ), // misc tab
         MakeTab   ({220, 17},                                                                                                        STR_THEMES_TAB_PROMPTS_TIP         ), // prompts tab
         MakeTab   ({251, 17},                                                                                                        STR_THEMES_TAB_FEATURES_TIP        ), // features tab
-        MakeWidget({  5, 46}, {_window_header_size,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
+        MakeWidget({  5, 46}, {kWindowHeaderWidth,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
         MakeWidget({157, 46}, { 79,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
         MakeWidget({236, 46}, { 80,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_TRANSPARENCY                                                          ), // Transparency header
         MakeWidget({125, 60}, {175,  12}, WindowWidgetType::DropdownMenu,     WindowColour::Secondary                                                                                     ), // Preset colour schemes
@@ -733,7 +733,7 @@ namespace OpenRCT2::Ui::Windows
                             widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + widgets[WIDX_THEMES_LIST].left
                                 + _button_size;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].top = GetTotalColoursUpTo(_colour_index_1) * (_button_size + 2)
-                                + _button_offset_y + _button_size * _colour_index_2 - scrolls[0].contentOffsetY
+                                - _button_offset_y - 4 + _button_size * _colour_index_2 - scrolls[0].contentOffsetY
                                 + widgets[WIDX_THEMES_LIST].top;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].right = widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].bottom = widgets[WIDX_THEMES_COLOURBTN_MASK].top + 12;
@@ -830,7 +830,7 @@ namespace OpenRCT2::Ui::Windows
                     for (uint8_t j = 0; j < numColours; j++)
                     {
                         DrawTextWrapped(
-                            dpi, { 2, screenCoords.y + 4 }, _window_header_size, ThemeDescGetName(wc), {}, { colours[1] });
+                            dpi, { 2, screenCoords.y + 4 }, kWindowHeaderWidth, ThemeDescGetName(wc), {}, { colours[1] });
 
                         // Don't draw the empty row
                         if (emptyRow && j == 1)
@@ -876,7 +876,7 @@ namespace OpenRCT2::Ui::Windows
         // If the window description wraps, make sure the row is high enough.
         int32_t AddGap(int32_t numColours, int8_t index)
         {
-            if (numColours == 1 && GetTextWidth(index) >= _window_header_size)
+            if (numColours == 1 && GetTextWidth(index) >= kWindowHeaderWidth)
             {
                 numColours++;
             }
@@ -922,7 +922,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 uint8_t numColours = ThemeDescGetNumColours(GetWindowClassTabIndex(i));
 
-                if (numColours == 1 && GetTextWidth(i) >= _window_header_size)
+                if (numColours == 1 && GetTextWidth(i) >= kWindowHeaderWidth)
                 {
                     numColours++;
                 }
