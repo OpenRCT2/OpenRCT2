@@ -287,8 +287,8 @@ namespace OpenRCT2::Ui::Windows
             .beaches = true,
 
             // Simplex Noise Parameters
-            .simplex_base_freq = 60,
-            .simplex_octaves = 4,
+            .simplex_base_freq = 175,
+            .simplex_octaves = 6,
 
             // Height map _settings
             .smooth_height_map = false,
@@ -408,33 +408,14 @@ namespace OpenRCT2::Ui::Windows
 
         void GenerateMap()
         {
+            if (_settings.algorithm == MapGenAlgorithm::heightmapImage && !_heightmapLoaded)
+                return;
+
             MapGenSettings mapgenSettings = _settings;
             if (_randomTerrain)
             {
                 mapgenSettings.landTexture = -1;
                 mapgenSettings.edgeTexture = -1;
-            }
-
-            switch (mapgenSettings.algorithm)
-            {
-                case MapGenAlgorithm::blank:
-                    break;
-
-                case MapGenAlgorithm::simplexNoise:
-                    mapgenSettings.heightmapLow = UtilRand() % 4;
-                    mapgenSettings.heightmapHigh = 12 + (UtilRand() % (32 - 12));
-                    mapgenSettings.simplex_base_freq = 1.75f;
-                    mapgenSettings.simplex_octaves = 6;
-                    break;
-
-                case MapGenAlgorithm::simplexCustom:
-                    mapgenSettings.simplex_base_freq /= 100.00f;
-                    break;
-
-                case MapGenAlgorithm::heightmapImage:
-                    if (!_heightmapLoaded)
-                        return;
-                    break;
             }
 
             MapGenGenerate(&mapgenSettings);
@@ -470,7 +451,7 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseMouseDown(WidgetIndex widgetIndex, Widget* widget)
         {
-            if (_settings.algorithm == MapGenAlgorithm::simplexCustom)
+            if (_settings.algorithm == MapGenAlgorithm::simplexNoise)
                 SimplexMouseDown(widgetIndex, widget);
 
             else if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
@@ -505,16 +486,15 @@ namespace OpenRCT2::Ui::Windows
                     constexpr ItemExt items[] = {
                         ToggleOption(0, STR_HEIGHTMAP_FLATLAND),
                         ToggleOption(1, STR_HEIGHTMAP_SIMPLEX_NOISE),
-                        ToggleOption(2, STR_HEIGHTMAP_SIMPLEX_CUSTOM),
-                        ToggleOption(3, STR_HEIGHTMAP_FILE),
+                        ToggleOption(2, STR_HEIGHTMAP_FILE),
                     };
 
                     SetItems(items);
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];
-                    WindowDropdownShowText(
+                    WindowDropdownShowTextCustomWidth(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], 0,
-                        std::size(items));
+                        Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 2);
 
                     SetChecked(EnumValue(_settings.algorithm), true);
                     break;
@@ -595,12 +575,6 @@ namespace OpenRCT2::Ui::Windows
 
                 case MapGenAlgorithm::simplexNoise:
                     sourceWidget.text = STR_HEIGHTMAP_SIMPLEX_NOISE;
-                    ToggleSimplexWidgets(false);
-                    ToggleHeightmapWidgets(false);
-                    break;
-
-                case MapGenAlgorithm::simplexCustom:
-                    sourceWidget.text = STR_HEIGHTMAP_SIMPLEX_CUSTOM;
                     ToggleSimplexWidgets(true);
                     ToggleHeightmapWidgets(false);
                     break;
@@ -645,7 +619,7 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            if (_settings.algorithm == MapGenAlgorithm::simplexCustom)
+            if (_settings.algorithm == MapGenAlgorithm::simplexNoise)
                 SimplexDraw(dpi);
 
             else if (_settings.algorithm == MapGenAlgorithm::heightmapImage)

@@ -110,7 +110,6 @@ void MapGenGenerate(MapGenSettings* settings)
             break;
 
         case MapGenAlgorithm::simplexNoise:
-        case MapGenAlgorithm::simplexCustom:
             MapGenGenerateSimplex(settings);
             break;
 
@@ -692,7 +691,7 @@ static float Grad(int32_t hash, float x, float y)
 
 static void MapGenSimplex(MapGenSettings* settings)
 {
-    float freq = settings->simplex_base_freq * (1.0f / _heightSize.x);
+    float freq = settings->simplex_base_freq / 100.0f * (1.0f / _heightSize.x);
     int32_t octaves = settings->simplex_octaves;
 
     int32_t low = settings->heightmapLow / 2;

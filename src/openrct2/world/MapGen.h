@@ -16,7 +16,6 @@ enum class MapGenAlgorithm : uint8_t
 {
     blank,
     simplexNoise,
-    simplexCustom,
     heightmapImage,
 };
 
@@ -40,7 +39,7 @@ struct MapGenSettings
     bool beaches;
 
     // Simplex Noise Parameters
-    float simplex_base_freq;
+    int32_t simplex_base_freq;
     int32_t simplex_octaves;
 
     // Height map settings

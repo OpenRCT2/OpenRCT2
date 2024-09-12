@@ -3751,32 +3751,31 @@ STR_6676    :At least one peep names object must be selected
 STR_6677    :Add beaches around water bodies
 STR_6678    :Heightmap source:
 STR_6679    :Flatland
-STR_6680    :Simplex noise (random)
-STR_6681    :Simplex noise (custom)
-STR_6682    :Heightmap file
-STR_6683    :Map Generator - Generator
-STR_6684    :Map Generator - Terrain
-STR_6685    :Map Generator - Water
-STR_6686    :Map Generator - Forests
-STR_6687    :Tree to land ratio:
-STR_6688    :Min. tree altitude:
-STR_6689    :Max. tree altitude:
-STR_6690    :{UINT16}%
-STR_6691    :Minimum land height
-STR_6692    :Enter min. land height between {COMMA16} and {COMMA16}
-STR_6693    :Maximum land height
-STR_6694    :Enter max. land height between {COMMA16} and {COMMA16}
-STR_6695    :Minimum tree altitude
-STR_6696    :Enter min. tree altitude between {COMMA16} and {COMMA16}
-STR_6697    :Maximum tree altitude
-STR_6698    :Enter max. tree altitude between {COMMA16} and {COMMA16}
-STR_6699    :Tree to land ratio
-STR_6700    :Enter tree to land ratio between {COMMA16} and {COMMA16}
-STR_6701    :Simplex Base Frequency
-STR_6702    :Enter Base Frequency between {COMMA2DP32} and {COMMA2DP32}
-STR_6703    :Simplex Octaves
-STR_6704    :Enter Octaves between {COMMA16} and {COMMA16}
-STR_6705    :{COMMA2DP32}
+STR_6680    :Simplex noise
+STR_6681    :Heightmap file
+STR_6682    :Map Generator - Generator
+STR_6683    :Map Generator - Terrain
+STR_6684    :Map Generator - Water
+STR_6685    :Map Generator - Forests
+STR_6686    :Tree to land ratio:
+STR_6687    :Min. tree altitude:
+STR_6688    :Max. tree altitude:
+STR_6689    :{UINT16}%
+STR_6690    :Minimum land height
+STR_6691    :Enter min. land height between {COMMA16} and {COMMA16}
+STR_6692    :Maximum land height
+STR_6693    :Enter max. land height between {COMMA16} and {COMMA16}
+STR_6694    :Minimum tree altitude
+STR_6695    :Enter min. tree altitude between {COMMA16} and {COMMA16}
+STR_6696    :Maximum tree altitude
+STR_6697    :Enter max. tree altitude between {COMMA16} and {COMMA16}
+STR_6698    :Tree to land ratio
+STR_6699    :Enter tree to land ratio between {COMMA16} and {COMMA16}
+STR_6700    :Simplex Base Frequency
+STR_6701    :Enter Base Frequency between {COMMA2DP32} and {COMMA2DP32}
+STR_6702    :Simplex Octaves
+STR_6703    :Enter Octaves between {COMMA16} and {COMMA16}
+STR_6704    :{COMMA2DP32}
 
 #############
 # Scenarios #
