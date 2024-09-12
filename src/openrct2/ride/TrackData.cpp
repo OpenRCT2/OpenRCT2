@@ -721,12 +721,12 @@ namespace OpenRCT2::TrackMetaData
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToUp60Deg } }, // Up25ToUp60
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToUp25Deg } }, // Up60ToUp25
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // Up25ToFlat
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Down25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60Deg } }, // Down60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // FlatToDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToUp25Deg } }, // Down25ToDown60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToUp60Deg } }, // Down60ToDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // Down25ToFlat
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg } }, // Down25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60Deg } }, // Down60
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg } }, // FlatToDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToDown60Deg } }, // Down25ToDown60
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToDown25Deg } }, // Down60ToDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat } }, // Down25ToFlat
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NwSe } }, // LeftQuarterTurn5Tiles
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NwSe } }, // RightQuarterTurn5Tiles
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // FlatToLeftBank
@@ -739,16 +739,16 @@ namespace OpenRCT2::TrackMetaData
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // RightBankToUp25
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // Up25ToLeftBank
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // Up25ToRightBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // LeftBankToDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // RightBankToDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // Down25ToLeftBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // Down25ToRightBank
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg } }, // LeftBankToDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg } }, // RightBankToDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat } }, // Down25ToLeftBank
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat } }, // Down25ToRightBank
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // LeftBank
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // RightBank
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // LeftQuarterTurn5TilesUp25
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // RightQuarterTurn5TilesUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // LeftQuarterTurn5TilesDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // RightQuarterTurn5TilesDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // LeftQuarterTurn5TilesDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // RightQuarterTurn5TilesDown25
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {  WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::NeSw } }, // SBendLeft
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {  WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::NeSw } }, // SBendRight
         {}, // LeftVerticalLoop
@@ -762,7 +762,7 @@ namespace OpenRCT2::TrackMetaData
         { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // LeftQuarterTurn3TilesDown25
         { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // RightQuarterTurn3TilesDown25
         { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 } }, // LeftQuarterTurn1Tile
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 } }, // RightQuarterTurn1Tile
+        { SequenceWoodenSupport{ WoodenSupportSubType::Corner2 } }, // RightQuarterTurn1Tile
         {}, // LeftTwistDownToUp
         {}, // RightTwistDownToUp
         {}, // LeftTwistUpToDown
@@ -775,8 +775,8 @@ namespace OpenRCT2::TrackMetaData
         {}, // RightCorkscrewDown
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60Deg } }, // FlatToUp60
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlat } }, // Up60ToFlat
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlat } }, // FlatToDown60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60Deg } }, // Down60ToFlat
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60Deg } }, // FlatToDown60
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlat } }, // Down60ToFlat
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // TowerBase
         {}, // TowerSection
         {}, // FlatCovered
@@ -826,14 +826,14 @@ namespace OpenRCT2::TrackMetaData
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Waterfall
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Rapids
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // OnRidePhoto
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Down25LeftBanked
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Down25RightBanked
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg } }, // Down25LeftBanked
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg } }, // Down25RightBanked
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // Watersplash
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq0 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq1 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq2 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq3 } }, // FlatToUp60LongBase
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq0 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq1 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq2 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq3 } }, // Up60ToFlatLongBase
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Whirlpool
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq0 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq1 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq2 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq3 } }, // Down60ToFlatLongBase
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq0 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq1 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq2 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq3 } }, // FlatToDown60LongBase
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq0 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq1 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq2 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq3 } }, // Down60ToFlatLongBase
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq0 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq1 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq2 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq3 } }, // FlatToDown60LongBase
         {}, // CableLiftHill
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // ReverseFreefallSlope
         {}, // ReverseFreefallVertical
@@ -940,26 +940,26 @@ namespace OpenRCT2::TrackMetaData
         {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Up25ToRightBankedUp25
         {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // LeftBankedUp25ToUp25
         {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // RightBankedUp25ToUp25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Down25ToLeftBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Down25ToRightBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // LeftBankedDown25ToDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // RightBankedDown25ToDown25
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg } }, // Down25ToLeftBankedDown25
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg } }, // Down25ToRightBankedDown25
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg } }, // LeftBankedDown25ToDown25
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg } }, // RightBankedDown25ToDown25
         {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // LeftBankedFlatToLeftBankedUp25
         {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // RightBankedFlatToRightBankedUp25
         {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // LeftBankedUp25ToLeftBankedFlat
         {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // RightBankedUp25ToRightBankedFlat
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // LeftBankedFlatToLeftBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // RightBankedFlatToRightBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // LeftBankedDown25ToLeftBankedFlat
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // RightBankedDown25ToRightBankedFlat
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg } }, // LeftBankedFlatToLeftBankedDown25
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg } }, // RightBankedFlatToRightBankedDown25
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat } }, // LeftBankedDown25ToLeftBankedFlat
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat } }, // RightBankedDown25ToRightBankedFlat
         {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // FlatToLeftBankedUp25
         {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // FlatToRightBankedUp25
         {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // LeftBankedUp25ToFlat
         {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // RightBankedUp25ToFlat
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // FlatToLeftBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // FlatToRightBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // LeftBankedDown25ToFlat
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // RightBankedDown25ToFlat
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg } }, // FlatToLeftBankedDown25
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg } }, // FlatToRightBankedDown25
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat } }, // LeftBankedDown25ToFlat
+        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat } }, // RightBankedDown25ToFlat
         {}, // LeftQuarterTurn1TileUp90
         {}, // RightQuarterTurn1TileUp90
         {}, // LeftQuarterTurn1TileDown90
@@ -1006,12 +1006,12 @@ namespace OpenRCT2::TrackMetaData
         {}, // FlyerHalfLoopUninvertedDown
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthToDiagUp25
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthToDiagUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthToDiagDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthToDiagDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthToDiagDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthToDiagDown25
         { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftEighthToOrthogonalUp25
         { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NwSe }, { WoodenSupportSubType::NwSe } }, // RightEighthToOrthogonalUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // LeftEighthToOrthogonalDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // RightEighthToOrthogonalDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // LeftEighthToOrthogonalDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // RightEighthToOrthogonalDown25
         { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp25ToLeftBankedUp25
         { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp25ToRightBankedUp25
         { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankedUp25ToUp25
@@ -1042,12 +1042,12 @@ namespace OpenRCT2::TrackMetaData
         { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown25RightBanked
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthBankToDiagUp25
         { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthBankToDiagUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthBankToDiagDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthBankToDiagDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthBankToDiagDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthBankToDiagDown25
         { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftEighthBankToOrthogonalUp25
         { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NwSe }, { WoodenSupportSubType::NwSe } }, // RightEighthBankToOrthogonalUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // LeftEighthBankToOrthogonalDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // RightEighthBankToOrthogonalDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // LeftEighthBankToOrthogonalDown25
+        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // RightEighthBankToOrthogonalDown25
         { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagBrakes
         { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagBlockBrakes
     } };
