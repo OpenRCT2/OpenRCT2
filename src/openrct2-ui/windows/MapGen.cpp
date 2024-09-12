@@ -267,35 +267,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         ResizeDirection _resizeDirection{ ResizeDirection::Both };
         bool _mapWidthAndHeightLinked{ true };
-
-        MapGenSettings _settings{
-            // Base
-            .algorithm = MapGenAlgorithm::blank,
-            .mapSize{ 150, 150 },
-            .waterLevel = 6,
-            .landTexture = 0,
-            .edgeTexture = 0,
-            .heightmapLow = 14,
-            .heightmapHigh = 60,
-            .smoothTileEdges = true,
-
-            // Features (e.g. tree, rivers, lakes etc.)
-            .trees = true,
-            .treeToLandRatio = 25,
-            .minTreeAltitude = 10,
-            .maxTreeAltitude = 50,
-            .beaches = true,
-
-            // Simplex Noise Parameters
-            .simplex_base_freq = 175,
-            .simplex_octaves = 6,
-
-            // Height map _settings
-            .smooth_height_map = false,
-            .smooth_strength = 1,
-            .normalize_height = false,
-        };
-
+        MapGenSettings _settings{};
         bool _randomTerrain = true;
         bool _heightmapLoaded = false;
 

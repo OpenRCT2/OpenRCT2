@@ -22,30 +22,30 @@ enum class MapGenAlgorithm : uint8_t
 struct MapGenSettings
 {
     // Base
-    MapGenAlgorithm algorithm;
-    TileCoordsXY mapSize;
-    int32_t waterLevel;
-    int32_t landTexture;
-    int32_t edgeTexture;
-    int32_t heightmapLow;
-    int32_t heightmapHigh;
-    bool smoothTileEdges;
+    MapGenAlgorithm algorithm = MapGenAlgorithm::blank;
+    TileCoordsXY mapSize{ 150, 150 };
+    int32_t waterLevel = 6;
+    int32_t landTexture = 0;
+    int32_t edgeTexture = 0;
+    int32_t heightmapLow = 14;
+    int32_t heightmapHigh = 60;
+    bool smoothTileEdges = true;
 
     // Features (e.g. tree, rivers, lakes etc.)
-    bool trees;
-    int32_t treeToLandRatio;
-    int32_t minTreeAltitude;
-    int32_t maxTreeAltitude;
-    bool beaches;
+    bool trees = true;
+    int32_t treeToLandRatio = 25;
+    int32_t minTreeAltitude = 10;
+    int32_t maxTreeAltitude = 50;
+    bool beaches = true;
 
     // Simplex Noise Parameters
-    int32_t simplex_base_freq;
-    int32_t simplex_octaves;
+    int32_t simplex_base_freq = 175;
+    int32_t simplex_octaves = 6;
 
     // Height map settings
-    bool smooth_height_map;
-    uint32_t smooth_strength;
-    bool normalize_height;
+    bool smooth_height_map = true;
+    uint32_t smooth_strength = 1;
+    bool normalize_height = true;
 };
 
 void MapGenGenerate(MapGenSettings* settings);
