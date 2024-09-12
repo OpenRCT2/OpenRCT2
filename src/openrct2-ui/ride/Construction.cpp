@@ -125,7 +125,7 @@ namespace OpenRCT2
                 if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
                 {
                     const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-                    if (std::get<0>(ted.sequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN)
+                    if (ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN)
                     {
                         if (trackElement->GetTrackType() == TrackElemType::Maze)
                         {
@@ -220,7 +220,7 @@ namespace OpenRCT2
                     // get the ride entrance's side relative to the TrackElement
                     Direction direction = (DirectionReverse(entranceExitCoords.direction) - tileElement->GetDirection()) & 3;
                     const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-                    if (ted.sequenceProperties[trackElement->GetSequenceIndex()] & (1 << direction))
+                    if (ted.sequences[trackElement->GetSequenceIndex()].flags & (1 << direction))
                     {
                         // if that side of the TrackElement supports stations, the ride entrance is valid and faces away from
                         // the station

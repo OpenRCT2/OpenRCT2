@@ -721,29 +721,30 @@ namespace OpenRCT2::TileInspector
                     GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
 
             const auto& ted = GetTrackElementDescriptor(type);
-            const auto* trackBlock = ted.GetBlockForSequence(trackElement->AsTrack()->GetSequenceIndex());
-            if (trackBlock == nullptr)
+            auto sequenceIndex = trackElement->AsTrack()->GetSequenceIndex();
+            if (sequenceIndex >= ted.numSequences)
                 return GameActions::Result(
                     GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_BLOCK_NOT_FOUND);
 
+            const auto& trackBlock = ted.sequences[sequenceIndex].clearance;
             uint8_t originDirection = trackElement->GetDirection();
-            CoordsXY offsets = { trackBlock->x, trackBlock->y };
+            CoordsXY offsets = { trackBlock.x, trackBlock.y };
             CoordsXY coords = { originX, originY };
             coords += offsets.Rotate(DirectionReverse(originDirection));
 
             originX = static_cast<int16_t>(coords.x);
             originY = static_cast<int16_t>(coords.y);
-            originZ -= trackBlock->z;
+            originZ -= trackBlock.z;
 
-            trackBlock = ted.block;
-            for (; trackBlock->index != 255; trackBlock++)
+            for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };
-                offsets.x = trackBlock->x;
-                offsets.y = trackBlock->y;
+                const auto& trackBlock2 = ted.sequences[i].clearance;
+                CoordsXYZD elem = { originX, originY, originZ + trackBlock2.z, rotation };
+                offsets.x = trackBlock2.x;
+                offsets.y = trackBlock2.y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
+                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, i);
                 if (nextTrackElement == nullptr)
                 {
                     LOG_ERROR("Track map element part not found!");
@@ -802,29 +803,30 @@ namespace OpenRCT2::TileInspector
                     GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
 
             const auto& ted = GetTrackElementDescriptor(type);
-            auto trackBlock = ted.GetBlockForSequence(trackElement->AsTrack()->GetSequenceIndex());
-            if (trackBlock == nullptr)
+            auto sequenceIndex = trackElement->AsTrack()->GetSequenceIndex();
+            if (sequenceIndex >= ted.numSequences)
                 return GameActions::Result(
                     GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_BLOCK_NOT_FOUND);
 
+            const auto& trackBlock = ted.sequences[sequenceIndex].clearance;
             uint8_t originDirection = trackElement->GetDirection();
-            CoordsXY offsets = { trackBlock->x, trackBlock->y };
+            CoordsXY offsets = { trackBlock.x, trackBlock.y };
             CoordsXY coords = { originX, originY };
             coords += offsets.Rotate(DirectionReverse(originDirection));
 
             originX = static_cast<int16_t>(coords.x);
             originY = static_cast<int16_t>(coords.y);
-            originZ -= trackBlock->z;
+            originZ -= trackBlock.z;
 
-            trackBlock = ted.block;
-            for (; trackBlock->index != 255; trackBlock++)
+            for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };
-                offsets.x = trackBlock->x;
-                offsets.y = trackBlock->y;
+                const auto& trackBlock2 = ted.sequences[i].clearance;
+                CoordsXYZD elem = { originX, originY, originZ + trackBlock2.z, rotation };
+                offsets.x = trackBlock2.x;
+                offsets.y = trackBlock2.y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
+                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, i);
                 if (nextTrackElement == nullptr)
                 {
                     LOG_ERROR("Track map element part not found!");

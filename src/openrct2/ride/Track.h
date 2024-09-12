@@ -168,16 +168,14 @@ constexpr bool operator!=(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
     return !(vb1 == vb2);
 }
 
-/* size 0x0A */
-struct PreviewTrack
+struct SequenceClearance
 {
-    uint8_t index; // 0x00
-    int16_t x;     // 0x01
-    int16_t y;     // 0x03
-    int16_t z;     // 0x05
-    uint8_t clearanceZ;
-    QuarterTile quarterTile;
-    uint8_t flags;
+    int16_t x{};
+    int16_t y{};
+    int16_t z{};
+    uint8_t clearanceZ{};
+    QuarterTile quarterTile = { 0, 0 };
+    uint8_t flags{};
 };
 
 /* size 0x0A */

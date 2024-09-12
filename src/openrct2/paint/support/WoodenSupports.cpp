@@ -637,7 +637,7 @@ bool DrawSupportForSequenceA(
     int32_t height, ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
-    const auto& desc = ted.sequenceWoodenSupports[sequence];
+    const auto& desc = ted.sequences[sequence].woodenSupports;
 
     if (desc.subType == WoodenSupportSubType::Null)
         return false;
@@ -651,7 +651,7 @@ bool DrawSupportForSequenceB(
     int32_t height, ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
-    const auto& desc = ted.sequenceWoodenSupports[sequence];
+    const auto& desc = ted.sequences[sequence].woodenSupports;
 
     if (desc.subType == WoodenSupportSubType::Null)
         return false;

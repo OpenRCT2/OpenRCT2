@@ -393,32 +393,33 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     // Now find all the elements that belong to this track piece
     int32_t sequence = trackElement->GetSequenceIndex();
     uint8_t mapDirection = trackElement->GetDirection();
-    const auto* trackBlock = ted.GetBlockForSequence(sequence);
-    if (trackBlock == nullptr)
+    if (sequence >= ted.numSequences)
         return std::nullopt;
 
-    CoordsXY offsets = { trackBlock->x, trackBlock->y };
+    const auto& trackBlock = ted.sequences[sequence].clearance;
+
+    CoordsXY offsets = { trackBlock.x, trackBlock.y };
     CoordsXY newCoords = location;
     newCoords += offsets.Rotate(DirectionReverse(mapDirection));
 
-    auto retCoordsXYZ = CoordsXYZ{ newCoords.x, newCoords.y, location.z - trackBlock->z };
+    auto retCoordsXYZ = CoordsXYZ{ newCoords.x, newCoords.y, location.z - trackBlock.z };
 
     int32_t start_z = retCoordsXYZ.z;
-    const auto block0 = ted.GetBlockForSequence(0);
-    assert(block0 != nullptr);
+    assert(ted.numSequences > 0);
+    const auto block0 = ted.sequences[0].clearance;
 
-    retCoordsXYZ.z += block0->z;
-    for (int32_t i = 0; ted.block[i].index != 0xFF; ++i)
+    retCoordsXYZ.z += block0.z;
+    for (int32_t i = 0; i < ted.numSequences; i++)
     {
+        const auto& block = ted.sequences[i].clearance;
         CoordsXY cur = { retCoordsXYZ };
-        offsets = { ted.block[i].x, ted.block[i].y };
+        offsets = { block.x, block.y };
         cur += offsets.Rotate(mapDirection);
-        int32_t cur_z = start_z + ted.block[i].z;
+        int32_t cur_z = start_z + block.z;
 
         MapInvalidateTileFull(cur);
 
-        trackElement = MapGetTrackElementAtOfTypeSeq(
-            { cur, cur_z, static_cast<Direction>(location.direction) }, type, ted.block[i].index);
+        trackElement = MapGetTrackElementAtOfTypeSeq({ cur, cur_z, static_cast<Direction>(location.direction) }, type, i);
         if (trackElement == nullptr)
         {
             return std::nullopt;
@@ -1212,7 +1213,6 @@ money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t
  */
 void Ride::ValidateStations()
 {
-    const TrackElementDescriptor* ted;
     const auto& rtd = GetRideTypeDescriptor();
     if (!rtd.HasFlag(RtdFlag::isMaze))
     {
@@ -1252,9 +1252,9 @@ void Ride::ValidateStations()
                     if (tileElement->AsTrack()->GetSequenceIndex() != 0)
                         continue;
 
-                    ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+                    const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
                     // keep searching for a station piece (coaster station, tower ride base, shops, and flat ride base)
-                    if (!(std::get<0>(ted->sequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    if (!(ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1285,11 +1285,11 @@ void Ride::ValidateStations()
                 continue;
             }
             // update all the blocks with StationIndex
-            ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-            const PreviewTrack* trackBlock = ted->block;
-            while ((++trackBlock)->index != 0xFF)
+            const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+            const auto& firstBlock = ted.sequences[0].clearance;
+            for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };
+                CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ firstBlock.x, firstBlock.y }.Rotate(direction), 0 };
 
                 bool trackFound = false;
                 tileElement = MapGetFirstElementAt(blockLocation);
@@ -1303,8 +1303,8 @@ void Ride::ValidateStations()
                     if (tileElement->GetType() != TileElementType::Track)
                         continue;
 
-                    ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                    if (!(std::get<0>(ted->sequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
+                    const auto& ted2 = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
+                    if (!(ted2.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
 
                     trackFound = true;
@@ -1410,8 +1410,8 @@ void Ride::ValidateStations()
                     Direction direction = (tileElement->GetDirection() - DirectionReverse(trackElement->GetDirection())) & 3;
 
                     // if the ride entrance is not on a valid side, remove it
-                    ted = &GetTrackElementDescriptor(trackType);
-                    if (!(ted->sequenceProperties[trackSequence] & (1 << direction)))
+                    const auto& ted = GetTrackElementDescriptor(trackType);
+                    if (!(ted.sequences[trackSequence].flags & (1 << direction)))
                     {
                         continue;
                     }

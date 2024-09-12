@@ -2192,19 +2192,15 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            const PreviewTrack* trackBlock;
-
             const auto& ted = GetTrackElementDescriptor(trackType);
-            trackBlock = ted.block;
             trackDirection &= 3;
             gMapSelectionTiles.clear();
-            while (trackBlock->index != 255)
+            for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                CoordsXY offsets = { trackBlock->x, trackBlock->y };
+                CoordsXY offsets = { ted.sequences[i].clearance.x, ted.sequences[i].clearance.y };
                 CoordsXY currentTileCoords = tileCoords + offsets.Rotate(trackDirection);
 
                 gMapSelectionTiles.push_back(currentTileCoords);
-                trackBlock++;
             }
         }
 
@@ -2358,8 +2354,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                const PreviewTrack* trackBlock = ted.block;
-                newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
+                newCoords->z = (tileElement->GetBaseZ()) - ted.sequences[0].clearance.z;
                 _gotoStartPlacementMode = true;
             }
 
@@ -2595,12 +2590,9 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto* trackBlock = ted.block;
-            while ((trackBlock + 1)->index != 0xFF)
-                trackBlock++;
-
-            CoordsXYZ mapCoords{ trackBlock->x, trackBlock->y, trackBlock->z };
-            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_1)
+            const auto trackBlock = ted.sequences[ted.numSequences - 1].clearance;
+            CoordsXYZ mapCoords{ trackBlock.x, trackBlock.y, trackBlock.z };
+            if (trackBlock.flags & RCT_PREVIEW_TRACK_FLAG_1)
             {
                 mapCoords.x = 0;
                 mapCoords.y = 0;
@@ -2658,19 +2650,20 @@ namespace OpenRCT2::Ui::Windows
             tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto* trackBlock = ted.block;
             const auto* rideEntry = currentRide->GetRideEntry();
             auto clearanceHeight = (rideEntry != nullptr) ? rideEntry->Clearance
                                                           : currentRide->GetRideTypeDescriptor().Heights.ClearanceHeight;
 
-            while (trackBlock->index != 255)
+            for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                auto quarterTile = trackBlock->quarterTile.Rotate(trackDirection);
-                CoordsXY offsets = { trackBlock->x, trackBlock->y };
+                const auto& trackBlock = ted.sequences[i].clearance;
+
+                auto quarterTile = trackBlock.quarterTile.Rotate(trackDirection);
+                CoordsXY offsets = { trackBlock.x, trackBlock.y };
                 CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
-                int32_t baseZ = originZ + trackBlock->z;
-                int32_t clearanceZ = trackBlock->clearanceZ + clearanceHeight + baseZ + (4 * kCoordsZStep);
+                int32_t baseZ = originZ + trackBlock.z;
+                int32_t clearanceZ = trackBlock.clearanceZ + clearanceHeight + baseZ + (4 * kCoordsZStep);
 
                 auto centreTileCoords = TileCoordsXY{ coords };
                 auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];
@@ -2694,7 +2687,7 @@ namespace OpenRCT2::Ui::Windows
                 tempTrackTileElement.SetOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());
                 tempTrackTileElement.SetBaseZ(baseZ);
                 tempTrackTileElement.SetClearanceZ(clearanceZ);
-                tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
+                tempTrackTileElement.AsTrack()->SetSequenceIndex(i);
 
                 // Draw this map tile
                 TileElementPaintSetup(*session, coords, true);
@@ -2705,8 +2698,6 @@ namespace OpenRCT2::Ui::Windows
                 MapSetTileElement(westTileCoords, backupTileElementArrays[2]);
                 MapSetTileElement(northTileCoords, backupTileElementArrays[3]);
                 MapSetTileElement(southTileCoords, backupTileElementArrays[4]);
-
-                trackBlock++;
             }
 
             gameState.MapSize = preserveMapSize;
@@ -3228,7 +3219,6 @@ namespace OpenRCT2::Ui::Windows
     void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
     {
         int32_t z;
-        const PreviewTrack* trackBlock;
 
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -3306,13 +3296,11 @@ namespace OpenRCT2::Ui::Windows
         }
         // Loc6CC91B:
         const auto& ted = GetTrackElementDescriptor(trackType);
-        trackBlock = ted.block;
         int32_t bx = 0;
-        do
+        for (uint8_t i = 0; i < ted.numSequences; i++)
         {
-            bx = std::min<int32_t>(bx, trackBlock->z);
-            trackBlock++;
-        } while (trackBlock->index != 255);
+            bx = std::min<int32_t>(bx, ted.sequences[i].clearance.z);
+        }
         z -= bx;
 
         gMapSelectArrowPosition.z = z;
@@ -3542,13 +3530,11 @@ namespace OpenRCT2::Ui::Windows
         if (_trackPlaceZ == 0)
         {
             const auto& ted = GetTrackElementDescriptor(_currentTrackPieceType);
-            const PreviewTrack* trackBlock = ted.block;
             int32_t bx = 0;
-            do
+            for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                bx = std::min<int32_t>(bx, trackBlock->z);
-                trackBlock++;
-            } while (trackBlock->index != 255);
+                bx = std::min<int32_t>(bx, ted.sequences[i].clearance.z);
+            }
             z -= bx;
 
             // FIX not sure exactly why it starts trial and error place from a lower Z, but it causes issues with disable

@@ -589,11 +589,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Follow a single track piece shape
                 const auto& ted = GetTrackElementDescriptor(trackElement.type);
-                const PreviewTrack* trackBlock = ted.block;
-                while (trackBlock->index != 255)
+                for (size_t sequenceIndex = 0; sequenceIndex < ted.numSequences; sequenceIndex++)
                 {
+                    const auto& trackBlock = ted.sequences[sequenceIndex].clearance;
                     auto rotatedAndOffsetTrackBlock = curTrackStart
-                        + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(curTrackRotation);
+                        + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(curTrackRotation);
 
                     if (pass == 0)
                     {
@@ -609,12 +609,11 @@ namespace OpenRCT2::Ui::Windows
                         {
                             uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
 
-                            auto bits = trackBlock->quarterTile.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
+                            auto bits = trackBlock.quarterTile.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                             // Station track is a lighter colour
-                            uint8_t colour = (ted.sequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
-                                ? _PaletteIndexColourStation
-                                : _PaletteIndexColourTrack;
+                            uint8_t colour = (ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN) ? _PaletteIndexColourStation
+                                                                                                   : _PaletteIndexColourTrack;
 
                             for (int32_t i = 0; i < 4; i++)
                             {
@@ -629,7 +628,6 @@ namespace OpenRCT2::Ui::Windows
                             }
                         }
                     }
-                    trackBlock++;
                 }
 
                 // Change rotation and next position based on track curvature
