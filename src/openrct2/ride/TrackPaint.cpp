@@ -1367,27 +1367,6 @@ void TrackPaintUtilRightQuarterTurn5TilesPaint3(
     PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height + offset.z }, spriteBB->bb_size);
 }
 
-void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence)
-{
-    static constexpr WoodenSupportSubType supportTypes[kNumOrthogonalDirections][7] = {
-        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
-          WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
-        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
-          WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
-        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
-          WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
-        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
-          WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
-    };
-
-    const auto supportType = supportTypes[direction][trackSequence];
-    if (supportType != WoodenSupportSubType::Null)
-    {
-        WoodenASupportsPaintSetup(session, WoodenSupportType::Truss, supportType, height, session.SupportColours);
-    }
-}
-
 const uint8_t kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {
     3,
     1,
