@@ -223,8 +223,8 @@ static void MapGenResetSurfaces(MapGenSettings* settings)
             {
                 surfaceElement->SetSurfaceObjectIndex(surfaceTextureId);
                 surfaceElement->SetEdgeObjectIndex(edgeTextureId);
-                surfaceElement->BaseHeight = settings->baseHeight;
-                surfaceElement->ClearanceHeight = settings->baseHeight;
+                surfaceElement->BaseHeight = settings->heightmapLow;
+                surfaceElement->ClearanceHeight = settings->heightmapLow;
             }
         }
     }
@@ -695,8 +695,8 @@ static void MapGenSimplex(MapGenSettings* settings)
     float freq = settings->simplex_base_freq * (1.0f / _heightSize.x);
     int32_t octaves = settings->simplex_octaves;
 
-    int32_t low = settings->heightmapLow;
-    int32_t high = settings->heightmapHigh;
+    int32_t low = settings->heightmapLow / 2;
+    int32_t high = settings->heightmapHigh / 2 - low;
 
     NoiseRand();
     for (int32_t y = 0; y < _heightSize.y; y++)

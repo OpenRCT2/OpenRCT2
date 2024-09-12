@@ -897,11 +897,11 @@ namespace OpenRCT2
         STR_SHOW_RIDES_STALLS_ON_MAP_TIP = 3144,
 
         // Window: MapGen
-        STR_BASE_HEIGHT = 5183,
-        STR_BASE_HEIGHT_LABEL = 2691,
+        STR_BASE_HEIGHT = 5183, // unused
+        STR_BASE_HEIGHT_LABEL = 2691, // unused
         STR_BEACHES_WATER_BODIES = 6677,
         STR_ENTER_BASE_FREQUENCY = 6702,
-        STR_ENTER_BASE_HEIGHT = 5184,
+        STR_ENTER_BASE_HEIGHT = 5184, // unused
         STR_ENTER_MAX_LAND = 6694,
         STR_ENTER_MAX_TREE_ALTITUDE = 6698,
         STR_ENTER_MIN_LAND = 6692,

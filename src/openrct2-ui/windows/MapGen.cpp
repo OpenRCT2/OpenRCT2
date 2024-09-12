@@ -78,10 +78,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_STRENGTH_UP,
         WIDX_HEIGHTMAP_STRENGTH_DOWN,
 
-        WIDX_BASE_HEIGHT = TAB_BEGIN,
-        WIDX_BASE_HEIGHT_UP,
-        WIDX_BASE_HEIGHT_DOWN,
-        WIDX_HEIGHTMAP_LOW,
+        WIDX_HEIGHTMAP_LOW = TAB_BEGIN,
         WIDX_HEIGHTMAP_LOW_UP,
         WIDX_HEIGHTMAP_LOW_DOWN,
         WIDX_HEIGHTMAP_HIGH,
@@ -145,13 +142,12 @@ namespace OpenRCT2::Ui::Windows
 
     static Widget TerrainWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_TERRAIN),
-        MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                          ), // NB: 3 widgets
-        MakeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
-        MakeSpinnerWidgets({179,  88}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
-        MakeWidget        ({179, 106}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
-        MakeWidget        ({236, 106}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
-        MakeWidget        ({ 10, 124}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
-        MakeWidget        ({ 10, 142}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
+        MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
+        MakeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
+        MakeWidget        ({179,  88}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
+        MakeWidget        ({236,  88}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
+        MakeWidget        ({ 10, 106}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
+        MakeWidget        ({ 10, 122}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
         kWidgetsEnd,
     };
 
@@ -210,8 +206,6 @@ namespace OpenRCT2::Ui::Windows
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN),
 
-        (1uLL << WIDX_BASE_HEIGHT_UP) |
-        (1uLL << WIDX_BASE_HEIGHT_DOWN) |
         (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
         (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
         (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
@@ -278,7 +272,6 @@ namespace OpenRCT2::Ui::Windows
             // Base
             .algorithm = MapGenAlgorithm::blank,
             .mapSize{ 150, 150 },
-            .baseHeight = 12,
             .waterLevel = 6,
             .landTexture = 0,
             .edgeTexture = 0,
@@ -1022,17 +1015,6 @@ namespace OpenRCT2::Ui::Windows
 
             switch (widgetIndex)
             {
-                case WIDX_BASE_HEIGHT:
-                {
-                    Formatter ft;
-                    ft.Add<int16_t>(BaseZToMetres(kMinimumLandHeight));
-                    ft.Add<int16_t>(BaseZToMetres(kMaximumLandHeight));
-                    WindowTextInputOpen(
-                        this, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, ft, STR_FORMAT_INTEGER,
-                        BaseZToMetres(_settings.baseHeight), 6);
-                    break;
-                }
-
                 case WIDX_HEIGHTMAP_LOW:
                 {
                     Formatter ft;
@@ -1067,14 +1049,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_BASE_HEIGHT_UP:
-                    _settings.baseHeight = std::min<int32_t>(_settings.baseHeight + 2, kMaximumLandHeight);
-                    Invalidate();
-                    break;
-                case WIDX_BASE_HEIGHT_DOWN:
-                    _settings.baseHeight = std::max<int32_t>(_settings.baseHeight - 2, kMinimumLandHeight);
-                    Invalidate();
-                    break;
                 case WIDX_RANDOM_TERRAIN:
                     _randomTerrain = !_randomTerrain;
                     Invalidate();
@@ -1118,10 +1092,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_BASE_HEIGHT:
-                    _settings.baseHeight = value;
-                    break;
-
                 case WIDX_HEIGHTMAP_LOW:
                     _settings.heightmapLow = value;
                     _settings.heightmapHigh = std::max(_settings.heightmapLow, _settings.heightmapHigh);
@@ -1262,17 +1232,6 @@ namespace OpenRCT2::Ui::Windows
 
             const auto textColour = colours[1];
 
-            // Base height label and value
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_BASE_HEIGHT].top + 1 }, STR_BASE_HEIGHT_LABEL, {},
-                { textColour });
-
-            auto ft = Formatter();
-            ft.Add<int32_t>(BaseZToMetres(_settings.baseHeight));
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_BASE_HEIGHT].left + 1, widgets[WIDX_BASE_HEIGHT].top + 1 },
-                STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
-
             // Floor texture label
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL, {},
@@ -1283,7 +1242,7 @@ namespace OpenRCT2::Ui::Windows
                 dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_LOW].top + 1 }, STR_MAPGEN_MIN_LAND_HEIGHT, {},
                 { textColour });
 
-            ft = Formatter();
+            auto ft = Formatter();
             ft.Add<int32_t>(BaseZToMetres(_settings.heightmapLow));
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_LOW].left + 1, widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
