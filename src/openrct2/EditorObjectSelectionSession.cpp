@@ -610,6 +610,10 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         // Replace old palette with newly selected palette immediately.
         ReplaceSelectedWaterPalette(item);
     }
+    else if (objectType == ObjectType::GuestNames)
+    {
+        PeepUpdateNames();
+    }
 
     if (isMasterObject != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))
     {

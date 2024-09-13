@@ -33,6 +33,7 @@ constexpr std::array kAllObjectTypes = {
     ObjectType::FootpathSurface,
     ObjectType::FootpathRailings,
     ObjectType::Audio,
+    ObjectType::GuestNames,
 };
 
 static_assert(kAllObjectTypes.size() == EnumValue(ObjectType::Count));
@@ -43,6 +44,7 @@ static constexpr std::array<const ObjectType, kNumTransientObjectTypes> kTransie
     ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathAdditions,   ObjectType::SceneryGroup,
     ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
     ObjectType::Station,      ObjectType::Music,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
+    ObjectType::GuestNames,
 };
 
 // Object types that cannot be saved in a park file.
