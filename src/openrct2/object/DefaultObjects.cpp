@@ -144,6 +144,9 @@ const std::string_view DefaultSelectedObjects[] = {
     "rct2.footpath_railings.concrete_green",
     "rct2.footpath_railings.space",
     "rct2.footpath_railings.wood",
+
+    // Guest name objects
+    "rct2.guest_names.english",
 };
 
 const std::string_view DesignerSelectedObjects[] = {
