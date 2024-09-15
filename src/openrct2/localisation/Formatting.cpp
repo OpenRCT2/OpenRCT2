@@ -15,7 +15,6 @@
 #include "../core/String.hpp"
 #include "../object/GuestNamesObject.h"
 #include "../object/ObjectManager.h"
-#include "../peep/RealNames.h"
 #include "../util/Util.h"
 #include "Currency.h"
 #include "FormatCodes.h"
@@ -294,22 +293,12 @@ namespace OpenRCT2
         {
             auto& objManager = GetContext()->GetObjectManager();
             auto* guestNamesObj = static_cast<GuestNamesObject*>(objManager.GetLoadedObject(ObjectType::GuestNames, 0));
-
             if (guestNamesObj != nullptr)
             {
                 auto realNameIndex = id - kRealNameStart;
                 ss << guestNamesObj->GetGivenNameAt(realNameIndex);
                 ss << ' ';
                 ss << guestNamesObj->GetSurnameAt(realNameIndex);
-            }
-            else
-            {
-                auto realNameIndex = id - kRealNameStart;
-                ss << "LEGACY ";
-                ss << real_names[realNameIndex % std::size(real_names)];
-                ss << ' ';
-                ss << real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)];
-                ss << '.';
             }
         }
     }
