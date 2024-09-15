@@ -4567,38 +4567,32 @@ int32_t GetTurnCount4PlusElements(const Ride& ride, uint8_t type)
 
 bool Ride::hasSpinningTunnel() const
 {
-    return specialTrackElements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+    return specialTrackElements.has(SpecialElement::spinningTunnel);
 }
 
 bool Ride::hasWaterSplash() const
 {
-    return specialTrackElements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+    return specialTrackElements.has(SpecialElement::splash);
 }
 
 bool Ride::hasRapids() const
 {
-    return specialTrackElements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+    return specialTrackElements.has(SpecialElement::rapids);
 }
 
 bool Ride::hasLogReverser() const
 {
-    return specialTrackElements & RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+    return specialTrackElements.has(SpecialElement::reverser);
 }
 
 bool Ride::hasWaterfall() const
 {
-    return specialTrackElements & RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+    return specialTrackElements.has(SpecialElement::waterfall);
 }
 
 bool Ride::hasWhirlpool() const
 {
-    return specialTrackElements & RIDE_ELEMENT_WHIRLPOOL;
-}
-
-uint8_t RideGetHelixSections(const Ride& ride)
-{
-    // Helix sections stored in the low 5 bits.
-    return ride.specialTrackElements & 0x1F;
+    return specialTrackElements.has(SpecialElement::whirlpool);
 }
 
 bool Ride::isPoweredLaunched() const
@@ -6014,26 +6008,4 @@ ResultWithMessage Ride::changeStatusCreateVehicles(bool isApplying, const Coords
     }
 
     return { true };
-}
-
-uint8_t Ride::getNumDrops() const
-{
-    return dropsPoweredLifts & kRideNumDropsMask;
-}
-
-void Ride::setNumDrops(uint8_t newValue)
-{
-    dropsPoweredLifts &= ~kRideNumDropsMask;
-    dropsPoweredLifts |= (newValue & kRideNumDropsMask);
-}
-
-uint8_t Ride::getNumPoweredLifts() const
-{
-    return dropsPoweredLifts >> 6;
-}
-
-void Ride::setPoweredLifts(uint8_t newValue)
-{
-    dropsPoweredLifts &= ~kRideNumPoweredLiftsMask;
-    dropsPoweredLifts |= (newValue << 6);
 }

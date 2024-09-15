@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../object/Object.h"
 
 #include <cstdint>
@@ -36,6 +37,8 @@ namespace OpenRCT2
 struct ObjectEntryDescriptor;
 class ObjectList;
 using ride_type_t = uint16_t;
+enum class SpecialElement : uint8_t;
+using SpecialElements = FlagHolder<uint8_t, SpecialElement>;
 
 std::string_view MapToNewObjectIdentifier(std::string_view s);
 std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
@@ -62,3 +65,6 @@ std::string_view GetClimateObjectIdFromLegacyClimateType(OpenRCT2::RCT12::Climat
  * @return
  */
 bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+
+std::pair<uint8_t, SpecialElements> splitCombinedHelicesAndSpecialElements(uint8_t combinedValue);
+std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedValue);
