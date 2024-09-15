@@ -217,6 +217,7 @@ int32_t MapGetCornerHeight(int32_t z, int32_t slope, int32_t direction);
 int32_t TileElementGetCornerHeight(const SurfaceElement* surfaceElement, int32_t direction);
 
 void MapClearAllElements();
+void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr);
 
 LargeSceneryElement* MapGetLargeScenerySegment(const CoordsXYZD& sceneryPos, int32_t sequence);
 std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(

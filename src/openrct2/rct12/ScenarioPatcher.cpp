@@ -62,6 +62,10 @@ static const std::string _typeKey = "type";
 static const std::string _surfacesKey = "surfaces";
 static const std::string _destinationSurface = "to_surface";
 
+// Elements to be removed keys
+static const std::string _elementsToDelete = "elements_to_delete";
+static const std::string _element_index = "element_index";
+
 // Ride fix keys
 static const std::string _ridesKey = "rides";
 static const std::string _rideIdKey = "id";
@@ -364,6 +368,56 @@ static void ApplySurfaceFixes(const json_t& scenarioPatch)
     }
 }
 
+static void RemoveTileElements(const json_t& scenarioPatch)
+{
+    if (!scenarioPatch.contains(_elementsToDelete))
+    {
+        return;
+    }
+
+    if (!scenarioPatch[_elementsToDelete].is_array())
+    {
+        OpenRCT2::Guard::Assert(0, "Elements to delete should be an array");
+        return;
+    }
+
+    auto elementsToDelete = OpenRCT2::Json::AsArray(scenarioPatch[_elementsToDelete]);
+    if (elementsToDelete.empty())
+    {
+        OpenRCT2::Guard::Assert(0, "Elements to delete should not be empty");
+        return;
+    }
+
+    for (size_t i = 0; i < elementsToDelete.size(); ++i)
+    {
+        if (!elementsToDelete[i].contains(_element_index))
+        {
+            OpenRCT2::Guard::Assert(0, "Elements to delete sub-array should set an element_index");
+            return;
+        }
+        auto elementIndex = elementsToDelete[i][_element_index];
+        auto coordinatesVector = getCoordinates(elementsToDelete[i]);
+        if (_dryRun)
+        {
+            return;
+        }
+
+        for (const auto& tile : coordinatesVector)
+        {
+            auto tileElement = MapGetNthElementAt(tile.ToCoordsXY(), elementIndex);
+            if (tileElement == nullptr)
+            {
+                OpenRCT2::Guard::Assert(0, "Invalid Nth element at tile");
+                return;
+            }
+            else
+            {
+                ClearElementAt(tile.ToCoordsXY(), &tileElement);
+            }
+        }
+    }
+}
+
 static void SwapRideEntranceAndExit(RideId rideId)
 {
     auto ride = GetRide(rideId);
@@ -522,6 +576,7 @@ void OpenRCT2::RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8stri
     ApplyWaterFixes(scenarioPatch);
     ApplyTileFixes(scenarioPatch);
     ApplySurfaceFixes(scenarioPatch);
+    RemoveTileElements(scenarioPatch);
     ApplyRideFixes(scenarioPatch);
 }
 
