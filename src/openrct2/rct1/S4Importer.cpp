@@ -1500,7 +1500,7 @@ namespace OpenRCT2::RCT1
             AppendRequiredObjects(result, ObjectType::TerrainEdge, _terrainEdgeEntries);
             AppendRequiredObjects(result, ObjectType::FootpathSurface, _footpathSurfaceEntries);
             AppendRequiredObjects(result, ObjectType::FootpathRailings, _footpathRailingsEntries);
-            AppendRequiredObjects(result, ObjectType::GuestNames, std::vector<std::string>({ "rct2.guest_names.english" }));
+            AppendRequiredObjects(result, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
             RCT12AddDefaultObjects(result);
             return result;
         }

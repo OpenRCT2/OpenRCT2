@@ -39,7 +39,7 @@ enum class ObjectType : uint8_t
     FootpathSurface,
     FootpathRailings,
     Audio,
-    GuestNames,
+    PeepNames,
 
     Count,
     None = 255

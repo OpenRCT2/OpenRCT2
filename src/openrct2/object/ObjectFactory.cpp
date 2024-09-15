@@ -30,13 +30,13 @@
 #include "FootpathObject.h"
 #include "FootpathRailingsObject.h"
 #include "FootpathSurfaceObject.h"
-#include "GuestNamesObject.h"
 #include "LargeSceneryObject.h"
 #include "MusicObject.h"
 #include "Object.h"
 #include "ObjectLimits.h"
 #include "ObjectList.h"
 #include "PathAdditionObject.h"
+#include "PeepNamesObject.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
@@ -385,8 +385,8 @@ namespace OpenRCT2::ObjectFactory
             case ObjectType::Audio:
                 result = std::make_unique<AudioObject>();
                 break;
-            case ObjectType::GuestNames:
-                result = std::make_unique<GuestNamesObject>();
+            case ObjectType::PeepNames:
+                result = std::make_unique<PeepNamesObject>();
                 break;
             default:
                 throw std::runtime_error("Invalid object type");
@@ -428,8 +428,8 @@ namespace OpenRCT2::ObjectFactory
             return ObjectType::FootpathRailings;
         if (s == "audio")
             return ObjectType::Audio;
-        if (s == "guest_names")
-            return ObjectType::GuestNames;
+        if (s == "peep_names")
+            return ObjectType::PeepNames;
         return ObjectType::None;
     }
 

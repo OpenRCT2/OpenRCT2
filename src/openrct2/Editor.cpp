@@ -435,9 +435,9 @@ namespace OpenRCT2::Editor
             return { ObjectType::TerrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED };
         }
 
-        if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::GuestNames))
+        if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::PeepNames))
         {
-            return { ObjectType::GuestNames, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED }; // TODO: string id
+            return { ObjectType::PeepNames, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED }; // TODO: string id
         }
 
         if (!isTrackDesignerManager)

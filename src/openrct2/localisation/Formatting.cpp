@@ -13,8 +13,8 @@
 #include "../Diagnostic.h"
 #include "../config/Config.h"
 #include "../core/String.hpp"
-#include "../object/GuestNamesObject.h"
 #include "../object/ObjectManager.h"
+#include "../object/PeepNamesObject.h"
 #include "../util/Util.h"
 #include "Currency.h"
 #include "FormatCodes.h"
@@ -292,13 +292,13 @@ namespace OpenRCT2
         if (IsRealNameStringId(id))
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto* guestNamesObj = static_cast<GuestNamesObject*>(objManager.GetLoadedObject(ObjectType::GuestNames, 0));
-            if (guestNamesObj != nullptr)
+            auto* peepNamesObj = static_cast<PeepNamesObject*>(objManager.GetLoadedObject(ObjectType::PeepNames, 0));
+            if (peepNamesObj != nullptr)
             {
                 auto realNameIndex = id - kRealNameStart;
-                ss << guestNamesObj->GetGivenNameAt(realNameIndex);
+                ss << peepNamesObj->GetGivenNameAt(realNameIndex);
                 ss << ' ';
-                ss << guestNamesObj->GetSurnameAt(realNameIndex);
+                ss << peepNamesObj->GetSurnameAt(realNameIndex);
             }
         }
     }

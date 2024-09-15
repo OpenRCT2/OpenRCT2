@@ -15,7 +15,7 @@
 #include <string>
 #include <vector>
 
-class GuestNamesObject final : public Object
+class PeepNamesObject final : public Object
 {
 private:
     std::vector<std::string> _givenNames;

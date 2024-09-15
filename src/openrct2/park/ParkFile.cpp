@@ -378,7 +378,7 @@ namespace OpenRCT2
                 if (version <= 36)
                 {
                     AppendRequiredObjects(
-                        requiredObjects, ObjectType::GuestNames, std::vector<std::string>({ "rct2.guest_names.english" }));
+                        requiredObjects, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
                 }
 
                 RequiredObjects = std::move(requiredObjects);
