@@ -850,7 +850,9 @@ namespace OpenRCT2::RCT2
             dst->boatHireReturnDirection = src->boatHireReturnDirection;
             dst->boatHireReturnPosition = { src->boatHireReturnPosition.x, src->boatHireReturnPosition.y };
 
-            dst->specialTrackElements = src->specialTrackElements;
+            auto split = splitCombinedHelicesAndSpecialElements(src->specialTrackElements);
+            dst->numHelices = split.first;
+            dst->specialTrackElements = split.second;
             // Pad0D6[2];
 
             dst->maxSpeed = src->maxSpeed;
@@ -880,11 +882,13 @@ namespace OpenRCT2::RCT2
             dst->turnCountBanked = src->turnCountBanked;
             dst->turnCountSloped = src->turnCountSloped;
             if (src->type == RIDE_TYPE_MINI_GOLF)
-                dst->holes = src->inversions & kRCT12InversionAndHoleMask;
+                dst->numHoles = src->inversions & kRCT12InversionAndHoleMask;
             else
-                dst->inversions = src->inversions & kRCT12InversionAndHoleMask;
+                dst->numInversions = src->inversions & kRCT12InversionAndHoleMask;
             dst->shelteredEighths = src->inversions >> 5;
-            dst->dropsPoweredLifts = src->drops;
+            auto splitDropsLifts = splitCombinedNumDropsPoweredLifts(src->drops);
+            dst->numDrops = splitDropsLifts.first;
+            dst->numPoweredLifts = splitDropsLifts.second;
             dst->startDropHeight = src->startDropHeight;
             dst->highestDropHeight = src->highestDropHeight;
             dst->shelteredLength = src->shelteredLength;

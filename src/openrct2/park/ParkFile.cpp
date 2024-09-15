@@ -1373,7 +1373,7 @@ namespace OpenRCT2
         void ReadWriteRidesChunk(GameState_t& gameState, OrcaStream& os)
         {
             const auto version = os.GetHeader().TargetVersion;
-            os.ReadWriteChunk(ParkFileChunkType::RIDES, [this, &version](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::RIDES, [this, &version, &os](OrcaStream::ChunkStream& cs) {
                 std::vector<RideId> rideIds;
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -1401,7 +1401,7 @@ namespace OpenRCT2
                         }
                     }
                 }
-                cs.ReadWriteVector(rideIds, [&cs, &version](RideId& rideId) {
+                cs.ReadWriteVector(rideIds, [&cs, &version, &os](RideId& rideId) {
                     // Ride ID
                     cs.ReadWrite(rideId);
 
@@ -1548,7 +1548,19 @@ namespace OpenRCT2
                         }
                     }
 
-                    cs.ReadWrite(ride.specialTrackElements);
+                    if (os.GetHeader().TargetVersion < kHigherInversionsHolesHelicesStatsVersion)
+                    {
+                        uint8_t combinedValue = cs.Read<uint8_t>();
+                        auto split = splitCombinedHelicesAndSpecialElements(combinedValue);
+                        ride.numHelices = split.first;
+                        ride.specialTrackElements = split.second;
+                    }
+                    else
+                    {
+                        cs.ReadWrite(ride.numHelices);
+                        cs.ReadWrite(ride.specialTrackElements.holder);
+                    }
+
                     cs.ReadWrite(ride.maxSpeed);
                     cs.ReadWrite(ride.averageSpeed);
                     cs.ReadWrite(ride.currentTestSegment);
@@ -1567,17 +1579,38 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.turnCountBanked);
                     cs.ReadWrite(ride.turnCountSloped);
 
-                    cs.ReadWrite(ride.inversions);
-                    cs.ReadWrite(ride.dropsPoweredLifts);
+                    if (version < kHigherInversionsHolesHelicesStatsVersion)
+                    {
+                        uint16_t numInversions = cs.Read<uint16_t>();
+                        ride.numInversions = numInversions;
+                        auto combinedValue = cs.Read<uint8_t>();
+                        auto split = splitCombinedNumDropsPoweredLifts(combinedValue);
+                        ride.numDrops = split.first;
+                        ride.numPoweredLifts = split.second;
+                    }
+                    else
+                    {
+                        cs.ReadWrite(ride.numInversions);
+                        cs.ReadWrite(ride.numDrops);
+                        cs.ReadWrite(ride.numPoweredLifts);
+                    }
                     cs.ReadWrite(ride.startDropHeight);
                     cs.ReadWrite(ride.highestDropHeight);
                     cs.ReadWrite(ride.shelteredLength);
                     cs.ReadWrite(ride.var11C);
                     cs.ReadWrite(ride.numShelteredSections);
-                    if (version > 5)
+                    if (version >= kInversionsHolesShelteredEightsSplit)
                     {
                         cs.ReadWrite(ride.shelteredEighths);
-                        cs.ReadWrite(ride.holes);
+                        if (version < kHigherInversionsHolesHelicesStatsVersion)
+                        {
+                            auto numHoles = cs.Read<uint16_t>();
+                            ride.numHoles = numHoles;
+                        }
+                        else
+                        {
+                            cs.ReadWrite(ride.numHoles);
+                        }
                     }
                     cs.ReadWrite(ride.currentTestStation);
                     cs.ReadWrite(ride.numBlockBrakes);

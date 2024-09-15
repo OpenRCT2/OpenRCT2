@@ -18,6 +18,11 @@ struct FlagHolder
 
     FlagHolder() = default;
 
+    explicit FlagHolder(THolderType _holder)
+        : holder(_holder)
+    {
+    }
+
     template<typename... TTypes>
     constexpr FlagHolder(TTypes... types)
         : holder(EnumsToFlags(types...))
