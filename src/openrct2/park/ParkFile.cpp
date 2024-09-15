@@ -373,6 +373,14 @@ namespace OpenRCT2
                             }
                         }
                     });
+
+                // Append guest names object to old park files
+                if (version <= 36)
+                {
+                    AppendRequiredObjects(
+                        requiredObjects, ObjectType::GuestNames, std::vector<std::string>({ "rct2.guest_names.english" }));
+                }
+
                 RequiredObjects = std::move(requiredObjects);
             }
             else

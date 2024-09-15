@@ -1859,6 +1859,7 @@ namespace OpenRCT2::RCT2
 
             AppendRequiredObjects(objectList, ObjectType::TerrainSurface, _terrainSurfaceEntries);
             AppendRequiredObjects(objectList, ObjectType::TerrainEdge, _terrainEdgeEntries);
+            AppendRequiredObjects(objectList, ObjectType::GuestNames, std::vector<std::string>({ "rct2.guest_names.english" }));
             RCT12AddDefaultObjects(objectList);
             return objectList;
         }
