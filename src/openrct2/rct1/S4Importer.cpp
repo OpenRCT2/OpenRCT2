@@ -1483,21 +1483,6 @@ namespace OpenRCT2::RCT1
             }
         }
 
-        void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const RCT12::EntryList& entryList)
-        {
-            AppendRequiredObjects(objectList, objectType, entryList.GetEntries());
-        }
-
-        void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const std::vector<std::string>& objectNames)
-        {
-            for (const auto& objectName : objectNames)
-            {
-                auto descriptor = ObjectEntryDescriptor(objectName);
-                descriptor.Type = objectType;
-                objectList.Add(descriptor);
-            }
-        }
-
         ObjectList GetRequiredObjects()
         {
             ObjectList result;
