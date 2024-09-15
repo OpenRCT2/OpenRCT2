@@ -639,7 +639,6 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
             });
     }
 
-    RideObjectUpdateRideType(_legacyType);
     PopulateTablesFromJson(context, root);
 }
 
