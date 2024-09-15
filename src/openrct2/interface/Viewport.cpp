@@ -1127,6 +1127,7 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const Sc
         else
         {
             ViewportPaintColumn(*session);
+            DebugDPI(session->DPI); // TODO. Debug change. Revert.
         }
     }
     if (useParallelDrawing)
@@ -2081,12 +2082,14 @@ void ViewportSetSavedView()
 
 ZoomLevel ZoomLevel::min()
 {
-#ifndef DISABLE_OPENGL
-    if (drawing_engine_get_type() == DrawingEngine::OpenGL)
-    {
-        return ZoomLevel{ -2 };
-    }
-#endif
-
-    return ZoomLevel{ 0 };
+    // TODO complete work for sofware zooming or revert change.
+    return ZoomLevel{ -2 };
+// #ifndef DISABLE_OPENGL
+//     if (drawing_engine_get_type() == DrawingEngine::OpenGL)
+//     {
+//         return ZoomLevel{ -2 };
+//     }
+// #endif
+//
+//     return ZoomLevel{ 0 };
 }

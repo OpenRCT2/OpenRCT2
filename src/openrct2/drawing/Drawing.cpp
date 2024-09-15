@@ -1138,3 +1138,23 @@ void ToggleWindowedMode()
     Config::Get().general.FullscreenMode = targetMode;
     Config::Save();
 }
+
+void DebugDPI(DrawPixelInfo& dpi)
+{
+    DrawPixelInfo unzoomed = dpi;
+    unzoomed.zoom_level = ZoomLevel{ 0 };
+    unzoomed.x = dpi.zoom_level.ApplyInversedTo(dpi.x);
+    unzoomed.y = dpi.zoom_level.ApplyInversedTo(dpi.y);
+    unzoomed.width = dpi.zoom_level.ApplyInversedTo(dpi.width);
+    unzoomed.height = dpi.zoom_level.ApplyInversedTo(dpi.height);
+
+    ScreenCoordsXY topLeft = { unzoomed.x, unzoomed.y };
+    ScreenCoordsXY topRight = { unzoomed.x + unzoomed.width - 1, unzoomed.y };
+    ScreenCoordsXY bottomLeft = { unzoomed.x, unzoomed.y + unzoomed.height - 1 };
+    ScreenCoordsXY bottomRight = { unzoomed.x + unzoomed.width - 1, unzoomed.y + unzoomed.height - 1 };
+    GfxDrawLine(unzoomed, { topLeft, bottomRight }, PALETTE_INDEX_129);
+    GfxDrawLine(unzoomed, { topLeft, topRight }, PALETTE_INDEX_129);
+    GfxDrawLine(unzoomed, { topRight, bottomRight }, PALETTE_INDEX_129);
+    GfxDrawLine(unzoomed, { bottomLeft, bottomRight }, PALETTE_INDEX_129);
+    GfxDrawLine(unzoomed, { topLeft, bottomLeft }, PALETTE_INDEX_129);
+}

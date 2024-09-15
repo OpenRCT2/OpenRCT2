@@ -633,4 +633,6 @@ void UpdatePaletteEffects();
 void RefreshVideo();
 void ToggleWindowedMode();
 
+void DebugDPI(DrawPixelInfo& dpi);
+
 #include "NewDrawing.h"

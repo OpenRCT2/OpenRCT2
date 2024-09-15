@@ -703,7 +703,7 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     if (dpi.zoom_level != ZoomLevel{ 0 })
     {
         // TODO: Implement other zoom levels (probably not used though)
-        assert(false);
+        //assert(false); // TODO complete work for sofware zooming or revert change.
         return;
     }
 
