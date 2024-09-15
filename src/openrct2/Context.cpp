@@ -814,7 +814,6 @@ namespace OpenRCT2
                 EntityTweener::Get().Reset();
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = kAutosavePause;
-                PeepUpdateNames();
 
 #ifndef DISABLE_NETWORK
                 bool sendMap = false;
@@ -849,7 +848,9 @@ namespace OpenRCT2
                     }
 #endif
                 }
-
+                // This ensures that the newly loaded save reflects the user's
+                // 'show real names of guests' option, now that it's a global setting
+                PeepUpdateNames();
 #ifndef DISABLE_NETWORK
                 if (sendMap)
                 {
