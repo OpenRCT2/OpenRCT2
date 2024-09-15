@@ -540,9 +540,9 @@ namespace OpenRCT2::Ui::Windows
          */
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+            auto dpiCoords = ScreenCoordsXY{ dpi.ScreenX(), dpi.ScreenY() };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } },
+                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.ScreenWidth(), dpi.ScreenHeight() } },
                 ColourMapA[colours[1].colour].mid_light);
 
             auto y = 0;

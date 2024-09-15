@@ -52,8 +52,8 @@ static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_
     uint8_t drawingSurface[64];
     DrawPixelInfo dpi;
     dpi.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
-    dpi.width = 8;
-    dpi.height = 8;
+    dpi.SetWidth(8);
+    dpi.SetHeight(8);
 
     for (int32_t i = 0; i < count; i++)
     {

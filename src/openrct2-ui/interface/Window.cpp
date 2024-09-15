@@ -1299,7 +1299,9 @@ namespace OpenRCT2::Ui::Windows
      */
     void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w)
     {
-        ViewportRender(dpi, w.viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
+        ViewportRender(
+            dpi, w.viewport,
+            { { dpi.ScreenX(), dpi.ScreenY() }, { dpi.ScreenX() + dpi.ScreenWidth(), dpi.ScreenY() + dpi.ScreenHeight() } });
     }
 
     /**
@@ -1323,9 +1325,11 @@ namespace OpenRCT2::Ui::Windows
             if (widget->IsVisible())
             {
                 // Check if widget is outside the draw region
-                if (w.windowPos.x + widget->left < dpi.x + dpi.width && w.windowPos.x + widget->right >= dpi.x)
+                if (w.windowPos.x + widget->left < dpi.ScreenX() + dpi.ScreenWidth()
+                    && w.windowPos.x + widget->right >= dpi.ScreenX())
                 {
-                    if (w.windowPos.y + widget->top < dpi.y + dpi.height && w.windowPos.y + widget->bottom >= dpi.y)
+                    if (w.windowPos.y + widget->top < dpi.ScreenY() + dpi.ScreenHeight()
+                        && w.windowPos.y + widget->bottom >= dpi.ScreenY())
                     {
                         w.OnDrawWidget(widgetIndex, dpi);
                     }

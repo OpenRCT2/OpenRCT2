@@ -182,8 +182,8 @@ void LightFXInit()
 
 void LightFXUpdateBuffers(DrawPixelInfo& info)
 {
-    _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info.width * info.height);
-    _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info.width * info.height);
+    _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info.ScreenWidth() * info.ScreenHeight());
+    _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info.ScreenWidth() * info.ScreenHeight());
     _pixelInfo = info;
 }
 
@@ -205,8 +205,8 @@ void LightFXPrepareLightList()
         posOnScreenX = _current_view_zoom_front.ApplyInversedTo(posOnScreenX);
         posOnScreenY = _current_view_zoom_front.ApplyInversedTo(posOnScreenY);
 
-        if ((posOnScreenX < -128) || (posOnScreenY < -128) || (posOnScreenX > _pixelInfo.width + 128)
-            || (posOnScreenY > _pixelInfo.height + 128))
+        if ((posOnScreenX < -128) || (posOnScreenY < -128) || (posOnScreenX > _pixelInfo.ScreenWidth() + 128)
+            || (posOnScreenY > _pixelInfo.ScreenHeight() + 128))
         {
             entry->Type = LightType::None;
             continue;
@@ -299,11 +299,13 @@ void LightFXPrepareLightList()
                 {
                     // based on GetMapCoordinatesFromPosWindow
                     DrawPixelInfo dpi;
-                    dpi.x = entry->ViewCoords.x + offsetPattern[0 + pat * 2] / mapFrontDiv;
-                    dpi.y = entry->ViewCoords.y + offsetPattern[1 + pat * 2] / mapFrontDiv;
-                    dpi.height = 1;
                     dpi.zoom_level = _current_view_zoom_front;
-                    dpi.width = 1;
+                    dpi.SetX(_current_view_zoom_front.ApplyInversedTo(
+                        entry->ViewCoords.x + offsetPattern[0 + pat * 2] / mapFrontDiv));
+                    dpi.SetY(_current_view_zoom_front.ApplyInversedTo(
+                        entry->ViewCoords.y + offsetPattern[1 + pat * 2] / mapFrontDiv));
+                    dpi.SetHeight(1);
+                    dpi.SetWidth(1);
 
                     PaintSession* session = PaintSessionAlloc(dpi, w->viewport->flags, w->viewport->rotation);
                     PaintSessionGenerate(*session);
@@ -449,7 +451,7 @@ void LightFXRenderLightsToFrontBuffer()
         return;
     }
 
-    std::memset(_light_rendered_buffer_front, 0, _pixelInfo.width * _pixelInfo.height);
+    std::memset(_light_rendered_buffer_front, 0, _pixelInfo.ScreenWidth() * _pixelInfo.ScreenHeight());
 
     _lightPolution_back = 0;
 
@@ -524,8 +526,8 @@ void LightFXRenderLightsToFrontBuffer()
         }
 
         // Clamp the reads to be no larger than the buffer size
-        bufReadHeight = std::min<uint32_t>(_pixelInfo.height, bufReadHeight);
-        bufReadWidth = std::min<uint32_t>(_pixelInfo.width, bufReadWidth);
+        bufReadHeight = std::min<uint32_t>(_pixelInfo.ScreenHeight(), bufReadHeight);
+        bufReadWidth = std::min<uint32_t>(_pixelInfo.ScreenWidth(), bufReadWidth);
 
         bufWriteX = inRectCentreX - bufReadWidth / 2;
         bufWriteY = inRectCentreY - bufReadHeight / 2;
@@ -553,7 +555,7 @@ void LightFXRenderLightsToFrontBuffer()
         }
         else
         {
-            bufWriteBase += bufWriteY * _pixelInfo.width;
+            bufWriteBase += bufWriteY * _pixelInfo.ScreenWidth();
         }
 
         if (bufWriteHeight <= 0)
@@ -562,13 +564,13 @@ void LightFXRenderLightsToFrontBuffer()
         int32_t rightEdge = bufWriteX + bufWriteWidth;
         int32_t bottomEdge = bufWriteY + bufWriteHeight;
 
-        if (rightEdge > _pixelInfo.width)
+        if (rightEdge > _pixelInfo.ScreenWidth())
         {
-            bufWriteWidth -= rightEdge - _pixelInfo.width;
+            bufWriteWidth -= rightEdge - _pixelInfo.ScreenWidth();
         }
-        if (bottomEdge > _pixelInfo.height)
+        if (bottomEdge > _pixelInfo.ScreenHeight())
         {
-            bufWriteHeight -= bottomEdge - _pixelInfo.height;
+            bufWriteHeight -= bottomEdge - _pixelInfo.ScreenHeight();
         }
 
         if (bufWriteWidth <= 0)
@@ -579,7 +581,7 @@ void LightFXRenderLightsToFrontBuffer()
         _lightPolution_back += (bufWriteWidth * bufWriteHeight) / 256;
 
         bufReadSkip = bufReadWidth - bufWriteWidth;
-        bufWriteSkip = _pixelInfo.width - bufWriteWidth;
+        bufWriteSkip = _pixelInfo.ScreenWidth() - bufWriteWidth;
 
         if (entry->LightIntensity == 0xFF)
         {

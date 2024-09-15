@@ -1575,7 +1575,9 @@ static uint64_t PageDisabledWidgets[] = {
         {
             const int32_t listWidth = widgets[WIDX_LIST].width();
             GfxFillRect(
-                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },
+                dpi,
+                { { dpi.ScreenX(), dpi.ScreenY() },
+                  { dpi.ScreenX() + dpi.ScreenWidth() - 1, dpi.ScreenY() + dpi.ScreenHeight() - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
             // Show usage hint when nothing is selected

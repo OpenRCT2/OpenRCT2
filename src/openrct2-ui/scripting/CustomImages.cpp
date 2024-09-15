@@ -434,8 +434,8 @@ namespace OpenRCT2::Scripting
         auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
         DrawPixelInfo dpi;
         dpi.DrawingEngine = drawingEngine.get();
-        dpi.width = size.width;
-        dpi.height = size.height;
+        dpi.SetWidth(size.width);
+        dpi.SetHeight(size.height);
 
         auto createNewImage = false;
         auto g1 = GfxGetG1Element(id);

@@ -287,7 +287,7 @@ namespace OpenRCT2::Ui::Windows
             for (const auto& researchItem : researchList)
             {
                 itemY += kScrollableRowHeight;
-                if (itemY + kScrollableRowHeight < dpi.y || itemY >= dpi.y + dpi.height)
+                if (itemY + kScrollableRowHeight < dpi.ScreenY() || itemY >= dpi.ScreenY() + dpi.ScreenHeight())
                     continue;
 
                 if (_selectedResearchItem == &researchItem)

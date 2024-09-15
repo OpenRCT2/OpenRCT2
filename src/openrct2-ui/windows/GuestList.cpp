@@ -595,7 +595,9 @@ namespace OpenRCT2::Ui::Windows
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
             GfxFillRect(
-                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },
+                dpi,
+                { { dpi.ScreenX(), dpi.ScreenY() },
+                  { dpi.ScreenX() + dpi.ScreenWidth() - 1, dpi.ScreenY() + dpi.ScreenHeight() - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
             switch (_selectedTab)
             {
@@ -669,8 +671,8 @@ namespace OpenRCT2::Ui::Windows
             for (const auto& guestItem : _guestList)
             {
                 // Check if y is beyond the scroll control
-                if (y + kScrollableRowHeight + 1 >= -0x7FFF && y + kScrollableRowHeight + 1 > dpi.y && y < 0x7FFF
-                    && y < dpi.y + dpi.height)
+                if (y + kScrollableRowHeight + 1 >= -0x7FFF && y + kScrollableRowHeight + 1 > dpi.ScreenY() && y < 0x7FFF
+                    && y < dpi.ScreenY() + dpi.ScreenHeight())
                 {
                     // Highlight backcolour and text colour (format)
                     StringId format = STR_BLACK_STRING;
@@ -736,10 +738,10 @@ namespace OpenRCT2::Ui::Windows
             for (auto& group : _groups)
             {
                 // Check if y is beyond the scroll control
-                if (y + SUMMARISED_GUEST_ROW_HEIGHT + 1 >= dpi.y)
+                if (y + SUMMARISED_GUEST_ROW_HEIGHT + 1 >= dpi.ScreenY())
                 {
                     // Check if y is beyond the scroll control
-                    if (y >= dpi.y + dpi.height)
+                    if (y >= dpi.ScreenY() + dpi.ScreenHeight())
                         break;
 
                     // Highlight backcolour and text colour (format)

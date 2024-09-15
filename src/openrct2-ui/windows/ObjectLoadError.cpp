@@ -508,9 +508,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollDraw(const int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+            auto dpiCoords = ScreenCoordsXY{ dpi.ScreenX(), dpi.ScreenY() };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
+                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.ScreenWidth() - 1, dpi.ScreenHeight() - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
 
@@ -518,10 +518,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 ScreenCoordsXY screenCoords;
                 screenCoords.y = i * kScrollableRowHeight;
-                if (screenCoords.y > dpi.y + dpi.height)
+                if (screenCoords.y > dpi.ScreenY() + dpi.ScreenHeight())
                     break;
 
-                if (screenCoords.y + kScrollableRowHeight < dpi.y)
+                if (screenCoords.y + kScrollableRowHeight < dpi.ScreenY())
                     continue;
 
                 const auto screenRect = ScreenRect{ { 0, screenCoords.y },

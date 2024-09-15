@@ -1048,48 +1048,49 @@ static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int3
 
 static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
+    assert(dpi.zoom_level == ZoomLevel{ 0 });
     // Copy dpi so we can crop it
     DrawPixelInfo copy = dpi;
 
     // Clamp left to 0
-    int32_t overflow = left - copy.x;
+    int32_t overflow = left - copy.ScreenX();
     if (overflow > 0)
     {
-        copy.x += overflow;
-        copy.width -= overflow;
-        if (copy.width <= 0)
+        copy.SetX(copy.ScreenX() + overflow);
+        copy.SetWidth(copy.ScreenWidth() - overflow);
+        if (copy.ScreenWidth() <= 0)
             return;
         copy.pitch += overflow;
         copy.bits += overflow;
     }
 
     // Clamp width to right
-    overflow = copy.x + copy.width - right;
+    overflow = copy.ScreenX() + copy.ScreenWidth() - right;
     if (overflow > 0)
     {
-        copy.width -= overflow;
-        if (copy.width <= 0)
+        copy.SetWidth(copy.ScreenWidth() - overflow);
+        if (copy.ScreenWidth() <= 0)
             return;
         copy.pitch += overflow;
     }
 
     // Clamp top to 0
-    overflow = top - copy.y;
+    overflow = top - copy.ScreenY();
     if (overflow > 0)
     {
-        copy.y += overflow;
-        copy.height -= overflow;
-        if (copy.height <= 0)
+        copy.SetY(copy.ScreenY() + overflow);
+        copy.SetHeight(copy.ScreenHeight() - overflow);
+        if (copy.ScreenHeight() <= 0)
             return;
-        copy.bits += (copy.width + copy.pitch) * overflow;
+        copy.bits += copy.LineStride() * overflow;
     }
 
     // Clamp height to bottom
-    overflow = copy.y + copy.height - bottom;
+    overflow = copy.ScreenY() + copy.ScreenHeight() - bottom;
     if (overflow > 0)
     {
-        copy.height -= overflow;
-        if (copy.height <= 0)
+        copy.SetHeight(copy.ScreenHeight() - overflow);
+        if (copy.ScreenHeight() <= 0)
             return;
     }
 

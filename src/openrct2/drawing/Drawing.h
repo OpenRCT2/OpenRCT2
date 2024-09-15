@@ -108,20 +108,16 @@ struct Gx
 struct DrawPixelInfo
 {
     uint8_t* bits{};
+
+private:
     int32_t x{};
     int32_t y{};
     int32_t width{};
     int32_t height{};
+
+public:
     int32_t pitch{}; // note: this is actually (pitch - width)
     ZoomLevel zoom_level{};
-
-    /**
-     * As x and y are based on 1:1 units, zooming in will cause a reduction in precision when mapping zoomed-in
-     * pixels to 1:1 pixels. When x, y are not a multiple of the zoom level, the remainder will be non-zero.
-     * The drawing of sprites will need to be offset by this amount.
-     */
-    uint8_t remX{};
-    uint8_t remY{};
 
     // Last position of drawn text.
     ScreenCoordsXY lastStringPos{};
@@ -131,6 +127,62 @@ struct DrawPixelInfo
     size_t GetBytesPerRow() const;
     uint8_t* GetBitsOffset(const ScreenCoordsXY& pos) const;
     DrawPixelInfo Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const;
+
+    constexpr int32_t WorldX() const
+    {
+        return zoom_level.ApplyTo(x);
+    }
+    constexpr int32_t WorldY() const
+    {
+        return zoom_level.ApplyTo(y);
+    }
+    constexpr int32_t WorldWidth() const
+    {
+        return zoom_level.ApplyTo(width);
+    }
+    constexpr int32_t WorldHeight() const
+    {
+        return zoom_level.ApplyTo(height);
+    }
+
+    constexpr int32_t ScreenX() const
+    {
+        return x;
+    }
+    constexpr int32_t ScreenY() const
+    {
+        return y;
+    }
+    constexpr int32_t ScreenWidth() const
+    {
+        return width;
+    }
+    constexpr int32_t ScreenHeight() const
+    {
+        return height;
+    }
+
+    constexpr int32_t LineStride() const
+    {
+        return width + pitch;
+    }
+
+    void SetX(const int32_t value)
+    {
+        x = value;
+    }
+    void SetY(const int32_t value)
+    {
+        y = value;
+    }
+    void SetWidth(const int32_t value)
+    {
+        width = value;
+    }
+    void SetHeight(const int32_t value)
+    {
+        height = value;
+    }
 };
 
 struct TextDrawInfo

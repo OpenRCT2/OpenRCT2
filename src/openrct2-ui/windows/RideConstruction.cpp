@@ -2616,8 +2616,8 @@ namespace OpenRCT2::Ui::Windows
 
             const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);
 
-            dpi.x += rotatedScreenCoords.x - widgetWidth / 2;
-            dpi.y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
+            dpi.SetX(dpi.ScreenX() + rotatedScreenCoords.x - widgetWidth / 2);
+            dpi.SetY(dpi.ScreenY() + rotatedScreenCoords.y - widgetHeight / 2 - 16);
 
             DrawTrackPieceHelper(dpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, { 4096, 4096 }, 1024);
         }

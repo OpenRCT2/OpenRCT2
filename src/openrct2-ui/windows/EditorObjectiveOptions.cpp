@@ -1145,13 +1145,17 @@ namespace OpenRCT2::Ui::Windows
         void OnScrollDrawRides(DrawPixelInfo& dpi, int32_t scrollIndex)
         {
             int32_t colour = ColourMapA[colours[1].colour].mid_light;
-            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
+            GfxFillRect(
+                dpi,
+                { { dpi.ScreenX(), dpi.ScreenY() },
+                  { dpi.ScreenX() + dpi.ScreenWidth() - 1, dpi.ScreenY() + dpi.ScreenHeight() - 1 } },
+                colour);
 
             for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)
             {
                 int32_t y = i * 12;
 
-                if (y + 12 < dpi.y || y >= dpi.y + dpi.height)
+                if (y + 12 < dpi.ScreenY() || y >= dpi.ScreenY() + dpi.ScreenHeight())
                     continue;
 
                 // Checkbox

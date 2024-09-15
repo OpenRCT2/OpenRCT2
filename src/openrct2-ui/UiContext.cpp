@@ -299,10 +299,10 @@ public:
 
     void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, DrawPixelInfo& dpi, DrawWeatherFunc drawFunc) override
     {
-        int32_t left = dpi.x;
-        int32_t right = left + dpi.width;
-        int32_t top = dpi.y;
-        int32_t bottom = top + dpi.height;
+        int32_t left = dpi.ScreenX();
+        int32_t right = left + dpi.ScreenWidth();
+        int32_t top = dpi.ScreenY();
+        int32_t bottom = top + dpi.ScreenHeight();
 
         for (auto& w : g_window_list)
         {

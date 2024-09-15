@@ -195,10 +195,10 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
 
     DrawPixelInfo dpi;
     dpi.bits = pixels;
-    dpi.x = 0;
-    dpi.y = 0;
-    dpi.width = spriteElement.width;
-    dpi.height = spriteElement.height;
+    dpi.SetX(0);
+    dpi.SetY(0);
+    dpi.SetWidth(spriteElement.width);
+    dpi.SetHeight(spriteElement.height);
     dpi.pitch = 0;
     dpi.zoom_level = ZoomLevel{ 0 };
 
@@ -207,14 +207,14 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
     GfxSpriteToBuffer(dpi, args);
 
     auto const pixels8 = dpi.bits;
-    auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
+    auto const pixelsLen = dpi.LineStride() * dpi.WorldHeight();
     try
     {
         Image image;
-        image.Width = dpi.width;
-        image.Height = dpi.height;
+        image.Width = dpi.ScreenWidth();
+        image.Height = dpi.ScreenHeight();
         image.Depth = 8;
-        image.Stride = dpi.width + dpi.pitch;
+        image.Stride = dpi.LineStride();
         image.Palette = std::make_unique<GamePalette>(StandardPalette);
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(outPath, image, IMAGE_FORMAT::PNG);

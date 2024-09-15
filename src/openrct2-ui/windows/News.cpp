@@ -182,9 +182,9 @@ namespace OpenRCT2::Ui::Windows
 
             for (const auto& newsItem : GetGameState().NewsItems.GetArchived())
             {
-                if (y >= dpi.y + dpi.height)
+                if (y >= dpi.ScreenY() + dpi.ScreenHeight())
                     break;
-                if (y + itemHeight < dpi.y)
+                if (y + itemHeight < dpi.ScreenY())
                 {
                     y += itemHeight;
                     i++;

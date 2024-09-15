@@ -347,7 +347,7 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.y = 0;
             for (int32_t i = 0; i < no_list_items; i++)
             {
-                if (screenCoords.y >= dpi.y + dpi.height)
+                if (screenCoords.y >= dpi.ScreenY() + dpi.ScreenHeight())
                     continue;
 
                 const auto& serverDetails = _serverList.GetServer(i);

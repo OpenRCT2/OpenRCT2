@@ -289,13 +289,13 @@ AtlasTextureInfo TextureCache::LoadImageTexture(const ImageId imageId)
 {
     DrawPixelInfo dpi = GetImageAsDPI(ImageId(imageId.GetIndex()));
 
-    auto cacheInfo = AllocateImage(dpi.width, dpi.height);
+    auto cacheInfo = AllocateImage(dpi.ScreenWidth(), dpi.ScreenHeight());
     cacheInfo.image = imageId.GetIndex();
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(
-        GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.width, dpi.height, 1,
-        GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
+        GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.ScreenWidth(), dpi.ScreenHeight(),
+        1, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
 
     DeleteDPI(dpi);
 
@@ -306,13 +306,13 @@ AtlasTextureInfo TextureCache::LoadGlyphTexture(const ImageId imageId, const Pal
 {
     DrawPixelInfo dpi = GetGlyphAsDPI(imageId, paletteMap);
 
-    auto cacheInfo = AllocateImage(dpi.width, dpi.height);
+    auto cacheInfo = AllocateImage(dpi.ScreenWidth(), dpi.ScreenHeight());
     cacheInfo.image = imageId.GetIndex();
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(
-        GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.width, dpi.height, 1,
-        GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
+        GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.ScreenWidth(), dpi.ScreenHeight(),
+        1, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
 
     DeleteDPI(dpi);
 
@@ -407,10 +407,10 @@ DrawPixelInfo TextureCache::CreateDPI(int32_t width, int32_t height)
     DrawPixelInfo dpi;
     dpi.bits = pixels8;
     dpi.pitch = 0;
-    dpi.x = 0;
-    dpi.y = 0;
-    dpi.width = width;
-    dpi.height = height;
+    dpi.SetX(0);
+    dpi.SetY(0);
+    dpi.SetWidth(width);
+    dpi.SetHeight(height);
     dpi.zoom_level = ZoomLevel{ 0 };
     return dpi;
 }

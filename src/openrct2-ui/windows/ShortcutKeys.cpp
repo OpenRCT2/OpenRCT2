@@ -305,9 +305,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+            auto dpiCoords = ScreenCoordsXY{ dpi.ScreenX(), dpi.ScreenY() };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
+                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.ScreenWidth() - 1, dpi.ScreenHeight() - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
             // TODO: the line below is a workaround for what is presumably a bug with dpi->width
@@ -317,12 +317,12 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < _list.size(); ++i)
             {
                 auto y = static_cast<int32_t>(1 + i * kScrollableRowHeight);
-                if (y > dpi.y + dpi.height)
+                if (y > dpi.ScreenY() + dpi.ScreenHeight())
                 {
                     break;
                 }
 
-                if (y + kScrollableRowHeight < dpi.y)
+                if (y + kScrollableRowHeight < dpi.ScreenY())
                 {
                     continue;
                 }

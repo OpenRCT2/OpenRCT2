@@ -415,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t y = 0;
             for (const auto& listItem : _listItems)
             {
-                if (y > dpi.y + dpi.height)
+                if (y > dpi.ScreenY() + dpi.ScreenHeight())
                 {
                     continue;
                 }

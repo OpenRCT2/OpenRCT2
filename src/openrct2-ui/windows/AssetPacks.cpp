@@ -194,9 +194,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
-            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+            auto dpiCoords = ScreenCoordsXY{ dpi.ScreenX(), dpi.ScreenY() };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
+                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.ScreenWidth() - 1, dpi.ScreenHeight() - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
             auto assetPackManager = GetContext()->GetAssetPackManager();
@@ -207,9 +207,9 @@ namespace OpenRCT2::Ui::Windows
             auto y = 0;
             for (size_t i = 0; i <= numAssetPacks; i++)
             {
-                if (y > dpi.y + dpi.height)
+                if (y > dpi.ScreenY() + dpi.ScreenHeight())
                     break;
-                if (y + 11 < dpi.y)
+                if (y + 11 < dpi.ScreenY())
                     continue;
 
                 auto isSelected = i == _selectedIndex;

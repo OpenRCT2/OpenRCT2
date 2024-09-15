@@ -23,7 +23,7 @@ static void FASTCALL DrawRLESpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteAr
     auto height = args.Height;
     auto& paletteMap = args.PalMap;
     auto zoom = 1 << TZoom;
-    auto dstLineWidth = (static_cast<size_t>(dpi.width) << TZoom) + dpi.pitch;
+    auto dstLineWidth = static_cast<size_t>(dpi.LineStride());
 
     // Move up to the first line of the image if source_y_start is negative. Why does this even occur?
     if (srcY < 0)
@@ -93,7 +93,7 @@ static void FASTCALL DrawRLESpriteMinify(DrawPixelInfo& dpi, const DrawSpriteArg
     auto width = args.Width;
     auto height = args.Height;
     auto zoom = 1 << TZoom;
-    auto dstLineWidth = (static_cast<size_t>(dpi.width) >> TZoom) + dpi.pitch;
+    auto dstLineWidth = static_cast<size_t>(dpi.LineStride());
 
     // Move up to the first line of the image if source_y_start is negative. Why does this even occur?
     if (srcY < 0)

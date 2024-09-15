@@ -787,47 +787,48 @@ void GfxInvalidateScreen()
  */
 bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
+    assert(src.zoom_level == ZoomLevel{ 0 });
     int32_t right = coords.x + width;
     int32_t bottom = coords.y + height;
 
     dst = src;
     dst.zoom_level = ZoomLevel{ 0 };
 
-    if (coords.x > dst.x)
+    if (coords.x > dst.ScreenX())
     {
-        uint16_t clippedFromLeft = coords.x - dst.x;
-        dst.width -= clippedFromLeft;
-        dst.x = coords.x;
+        uint16_t clippedFromLeft = coords.x - dst.ScreenX();
+        dst.SetWidth(dst.ScreenWidth() - clippedFromLeft);
+        dst.SetX(coords.x);
         dst.pitch += clippedFromLeft;
         dst.bits += clippedFromLeft;
     }
 
-    int32_t stickOutWidth = dst.x + dst.width - right;
+    int32_t stickOutWidth = dst.ScreenX() + dst.ScreenWidth() - right;
     if (stickOutWidth > 0)
     {
-        dst.width -= stickOutWidth;
+        dst.SetWidth(dst.ScreenWidth() - stickOutWidth);
         dst.pitch += stickOutWidth;
     }
 
-    if (coords.y > dst.y)
+    if (coords.y > dst.ScreenY())
     {
-        uint16_t clippedFromTop = coords.y - dst.y;
-        dst.height -= clippedFromTop;
-        dst.y = coords.y;
-        uint32_t bitsPlus = (dst.pitch + dst.width) * clippedFromTop;
+        uint16_t clippedFromTop = coords.y - dst.ScreenY();
+        dst.SetHeight(dst.ScreenHeight() - clippedFromTop);
+        dst.SetY(coords.y);
+        uint32_t bitsPlus = dst.LineStride() * clippedFromTop;
         dst.bits += bitsPlus;
     }
 
-    int32_t bp = dst.y + dst.height - bottom;
+    int32_t bp = dst.ScreenY() + dst.ScreenHeight() - bottom;
     if (bp > 0)
     {
-        dst.height -= bp;
+        dst.SetHeight(dst.ScreenHeight() - bp);
     }
 
-    if (dst.width > 0 && dst.height > 0)
+    if (dst.ScreenWidth() > 0 && dst.ScreenHeight() > 0)
     {
-        dst.x -= coords.x;
-        dst.y -= coords.y;
+        dst.SetX(dst.ScreenX() - coords.x);
+        dst.SetY(dst.ScreenY() - coords.y);
         return true;
     }
 
@@ -1143,15 +1144,16 @@ void DebugDPI(DrawPixelInfo& dpi)
 {
     DrawPixelInfo unzoomed = dpi;
     unzoomed.zoom_level = ZoomLevel{ 0 };
-    unzoomed.x = dpi.zoom_level.ApplyInversedTo(dpi.x);
-    unzoomed.y = dpi.zoom_level.ApplyInversedTo(dpi.y);
-    unzoomed.width = dpi.zoom_level.ApplyInversedTo(dpi.width);
-    unzoomed.height = dpi.zoom_level.ApplyInversedTo(dpi.height);
+    unzoomed.SetX(dpi.ScreenX());
+    unzoomed.SetY(dpi.ScreenY());
+    unzoomed.SetWidth(dpi.ScreenWidth());
+    unzoomed.SetHeight(dpi.ScreenHeight());
 
-    ScreenCoordsXY topLeft = { unzoomed.x, unzoomed.y };
-    ScreenCoordsXY topRight = { unzoomed.x + unzoomed.width - 1, unzoomed.y };
-    ScreenCoordsXY bottomLeft = { unzoomed.x, unzoomed.y + unzoomed.height - 1 };
-    ScreenCoordsXY bottomRight = { unzoomed.x + unzoomed.width - 1, unzoomed.y + unzoomed.height - 1 };
+    ScreenCoordsXY topLeft = { unzoomed.ScreenX(), unzoomed.ScreenY() };
+    ScreenCoordsXY topRight = { unzoomed.ScreenX() + unzoomed.ScreenWidth() - 1, unzoomed.ScreenY() };
+    ScreenCoordsXY bottomLeft = { unzoomed.ScreenX(), unzoomed.ScreenY() + unzoomed.ScreenHeight() - 1 };
+    ScreenCoordsXY bottomRight = { unzoomed.ScreenX() + unzoomed.ScreenWidth() - 1,
+                                   unzoomed.ScreenY() + unzoomed.ScreenHeight() - 1 };
     GfxDrawLine(unzoomed, { topLeft, bottomRight }, PALETTE_INDEX_129);
     GfxDrawLine(unzoomed, { topLeft, topRight }, PALETTE_INDEX_129);
     GfxDrawLine(unzoomed, { topRight, bottomRight }, PALETTE_INDEX_129);

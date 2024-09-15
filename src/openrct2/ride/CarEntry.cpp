@@ -48,15 +48,14 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 {
     uint8_t bitmap[200][200] = { 0 };
 
-    DrawPixelInfo dpi = {
-        /*.bits = */ reinterpret_cast<uint8_t*>(bitmap),
-        /*.x = */ -100,
-        /*.y = */ -100,
-        /*.width = */ 200,
-        /*.height = */ 200,
-        /*.pitch = */ 0,
-        /*.zoom_level = */ ZoomLevel{ 0 },
-    };
+    DrawPixelInfo dpi;
+    dpi.zoom_level = ZoomLevel{ 0 };
+    dpi.bits = reinterpret_cast<uint8_t*>(bitmap);
+    dpi.pitch = 0;
+    dpi.SetX(-100);
+    dpi.SetY(-100);
+    dpi.SetWidth(200);
+    dpi.SetHeight(200);
 
     for (int32_t i = 0; i < numImages; ++i)
     {

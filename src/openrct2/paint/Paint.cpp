@@ -109,13 +109,13 @@ static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const G1Ele
     int32_t right = left + g1.width;
     int32_t top = bottom + g1.height;
 
-    if (right <= dpi.x)
+    if (right <= dpi.WorldX())
         return false;
-    if (top <= dpi.y)
+    if (top <= dpi.WorldY())
         return false;
-    if (left >= dpi.x + dpi.width)
+    if (left >= dpi.WorldX() + dpi.WorldWidth())
         return false;
-    if (bottom >= dpi.y + dpi.height)
+    if (bottom >= dpi.WorldY() + dpi.WorldHeight())
         return false;
     return true;
 }
@@ -200,7 +200,7 @@ static PaintStruct* CreateNormalPaintStruct(
 template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& session)
 {
     // Optimised modified version of ViewportPosToMapPos
-    ScreenCoordsXY screenCoord = { Floor2(session.DPI.x, 32), Floor2((session.DPI.y - 16), 32) };
+    ScreenCoordsXY screenCoord = { Floor2(session.DPI.WorldX(), 32), Floor2((session.DPI.WorldY() - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
 
@@ -210,7 +210,7 @@ template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& sessio
     }
     mapTile = mapTile.ToTileStart();
 
-    uint16_t numVerticalTiles = (session.DPI.height + 2128) >> 5;
+    uint16_t numVerticalTiles = (session.DPI.WorldHeight() + 2128) >> 5;
 
     // Adjacent tiles to also check due to overlapping of sprites
     constexpr CoordsXY adjacentTiles[] = {

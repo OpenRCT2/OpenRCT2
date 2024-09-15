@@ -151,7 +151,7 @@ public:
         uint8_t patternStartXOffset = xStart % patternXSpace;
         uint8_t patternStartYOffset = yStart % patternYSpace;
 
-        uint32_t pixelOffset = (dpi.pitch + dpi.width) * y + x;
+        uint32_t pixelOffset = dpi.LineStride() * y + x;
         uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
         for (; height != 0; height--)
@@ -167,14 +167,14 @@ public:
                 auto patternPixel = pattern[patternYPos * 2 + 1];
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
                 {
-                    int32_t pixelX = xPixelOffset % dpi.width;
-                    int32_t pixelY = (xPixelOffset / dpi.width) % dpi.height;
+                    int32_t pixelX = xPixelOffset % dpi.ScreenWidth();
+                    int32_t pixelY = (xPixelOffset / dpi.ScreenWidth()) % dpi.ScreenHeight();
 
                     _drawingContext->DrawLine(dpi, patternPixel, { { pixelX, pixelY }, { pixelX + 1, pixelY + 1 } });
                 }
             }
 
-            pixelOffset += dpi.pitch + dpi.width;
+            pixelOffset += dpi.LineStride();
             patternYPos++;
             patternYPos %= patternYSpace;
         }
@@ -442,10 +442,10 @@ private:
 
         DrawPixelInfo* dpi = &_bitsDPI;
         dpi->bits = _bits.get();
-        dpi->x = 0;
-        dpi->y = 0;
-        dpi->width = width;
-        dpi->height = height;
+        dpi->SetX(0);
+        dpi->SetY(0);
+        dpi->SetWidth(width);
+        dpi->SetHeight(height);
         dpi->pitch = _pitch - width;
     }
 
@@ -607,8 +607,9 @@ uint8_t OpenGLDrawingContext::ComputeOutCode(
 // based on: https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
 bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawPixelInfo& dpi)
 {
-    ScreenCoordsXY topLeft = { dpi.x, dpi.y };
-    ScreenCoordsXY bottomRight = { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 };
+    // TODO (mber) make this work entirely with screen coords.
+    ScreenCoordsXY topLeft = { dpi.WorldX(), dpi.WorldY() };
+    ScreenCoordsXY bottomRight = { dpi.WorldX() + dpi.WorldWidth() - 1, dpi.WorldY() + dpi.WorldHeight() - 1 };
     uint8_t outcode1 = ComputeOutCode(line.Point1, topLeft, bottomRight);
     uint8_t outcode2 = ComputeOutCode(line.Point2, topLeft, bottomRight);
 
@@ -671,6 +672,7 @@ bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawP
 
 void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line)
 {
+    // TODO (mber) make this work entirely with screen coords.
     ScreenLine trimmedLine = line;
     if (!CohenSutherlandLineClip(trimmedLine, dpi))
         return;
@@ -679,10 +681,10 @@ void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const S
 
     DrawLineCommand& command = _commandBuffers.lines.allocate();
 
-    const int32_t x1 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetX1() - dpi.x) + _clipLeft;
-    const int32_t y1 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetY1() - dpi.y) + _clipTop;
-    const int32_t x2 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetX2() - dpi.x) + _clipLeft;
-    const int32_t y2 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetY2() - dpi.y) + _clipTop;
+    const int32_t x1 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetX1() - dpi.WorldX()) + _clipLeft;
+    const int32_t y1 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetY1() - dpi.WorldY()) + _clipTop;
+    const int32_t x2 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetX2() - dpi.WorldX()) + _clipLeft;
+    const int32_t y2 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetY2() - dpi.WorldY()) + _clipTop;
 
     command.bounds = { x1, y1, x2, y2 };
     command.colour = colour & 0xFF;
@@ -705,10 +707,10 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
         {
             DrawPixelInfo zoomedDPI;
             zoomedDPI.bits = dpi.bits;
-            zoomedDPI.x = dpi.x >> 1;
-            zoomedDPI.y = dpi.y >> 1;
-            zoomedDPI.height = dpi.height >> 1;
-            zoomedDPI.width = dpi.width >> 1;
+            zoomedDPI.SetX(dpi.zoom_level.ApplyInversedTo(dpi.WorldX()) / 2);
+            zoomedDPI.SetY(dpi.zoom_level.ApplyInversedTo(dpi.WorldY()) / 2);
+            zoomedDPI.SetHeight(dpi.zoom_level.ApplyInversedTo(dpi.WorldHeight()) / 2);
+            zoomedDPI.SetWidth(dpi.zoom_level.ApplyInversedTo(dpi.WorldWidth()) / 2);
             zoomedDPI.pitch = dpi.pitch;
             zoomedDPI.zoom_level = dpi.zoom_level - 1;
             DrawSprite(zoomedDPI, imageId.WithIndex(imageId.GetIndex() - g1Element->zoomed_offset), x >> 1, y >> 1);
@@ -758,10 +760,10 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
         std::swap(top, bottom);
     }
 
-    left -= dpi.x;
-    top -= dpi.y;
-    right -= dpi.x;
-    bottom -= dpi.y;
+    left -= dpi.WorldX();
+    top -= dpi.WorldY();
+    right -= dpi.WorldX();
+    bottom -= dpi.WorldY();
 
     left = dpi.zoom_level.ApplyInversedTo(left);
     top = dpi.zoom_level.ApplyInversedTo(top);
@@ -873,10 +875,10 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
         std::swap(top, bottom);
     }
 
-    left -= dpi.x;
-    top -= dpi.y;
-    right -= dpi.x;
-    bottom -= dpi.y;
+    left -= dpi.WorldX();
+    top -= dpi.WorldY();
+    right -= dpi.WorldX();
+    bottom -= dpi.WorldY();
 
     left = dpi.zoom_level.ApplyInversedTo(left);
     top = dpi.zoom_level.ApplyInversedTo(top);
@@ -978,10 +980,10 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
         std::swap(top, bottom);
     }
 
-    left -= dpi.x;
-    top -= dpi.y;
-    right -= dpi.x;
-    bottom -= dpi.y;
+    left -= dpi.WorldX();
+    top -= dpi.WorldY();
+    right -= dpi.WorldX();
+    bottom -= dpi.WorldY();
 
     left = dpi.zoom_level.ApplyInversedTo(left);
     top = dpi.zoom_level.ApplyInversedTo(top);
@@ -1182,18 +1184,18 @@ void OpenGLDrawingContext::CalculcateClipping(DrawPixelInfo& dpi)
     auto bytesPerRow = screenDPI->GetBytesPerRow();
     auto bitsOffset = static_cast<size_t>(dpi.bits - screenDPI->bits);
 #    ifndef NDEBUG
-    auto bitsSize = static_cast<size_t>(screenDPI->height) * bytesPerRow;
+    auto bitsSize = static_cast<size_t>(screenDPI->ScreenHeight()) * bytesPerRow;
     assert(bitsOffset < bitsSize);
 #    endif
 
-    _clipLeft = static_cast<int32_t>(bitsOffset % bytesPerRow) + dpi.remX;
-    _clipTop = static_cast<int32_t>(bitsOffset / bytesPerRow) + dpi.remY;
-    _clipRight = _clipLeft + dpi.zoom_level.ApplyInversedTo(dpi.width);
-    _clipBottom = _clipTop + dpi.zoom_level.ApplyInversedTo(dpi.height);
-    _offsetX = _clipLeft - dpi.x;
-    _offsetY = _clipTop - dpi.y;
-    _spriteOffset.x = _clipLeft - dpi.remX;
-    _spriteOffset.y = _clipTop - dpi.remY;
+    _clipLeft = static_cast<int32_t>(bitsOffset % bytesPerRow);
+    _clipTop = static_cast<int32_t>(bitsOffset / bytesPerRow);
+    _clipRight = _clipLeft + dpi.zoom_level.ApplyInversedTo(dpi.WorldWidth());
+    _clipBottom = _clipTop + dpi.zoom_level.ApplyInversedTo(dpi.WorldHeight());
+    _offsetX = _clipLeft - dpi.WorldX();
+    _offsetY = _clipTop - dpi.WorldY();
+    _spriteOffset.x = _clipLeft;
+    _spriteOffset.y = _clipTop;
 }
 
 #endif /* DISABLE_OPENGL */

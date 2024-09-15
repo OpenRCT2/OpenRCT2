@@ -17,7 +17,7 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMagnify(DrawPix
     auto& paletteMap = args.PalMap;
     auto zoomLevel = dpi.zoom_level;
     size_t srcLineWidth = g1.width;
-    size_t dstLineWidth = zoomLevel.ApplyInversedTo(dpi.width) + dpi.pitch;
+    size_t dstLineWidth = dpi.LineStride();
     uint8_t zoom = zoomLevel.ApplyInversedTo(1);
     auto width = zoomLevel.ApplyInversedTo(args.Width);
     auto height = zoomLevel.ApplyInversedTo(args.Height);
@@ -45,7 +45,7 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(DrawPixe
     auto height = args.Height;
     auto zoomLevel = dpi.zoom_level;
     size_t srcLineWidth = zoomLevel.ApplyTo(g1.width);
-    size_t dstLineWidth = zoomLevel.ApplyInversedTo(static_cast<size_t>(dpi.width)) + dpi.pitch;
+    size_t dstLineWidth = dpi.LineStride();
     uint8_t zoom = zoomLevel.ApplyTo(1);
     for (; height > 0; height -= zoom)
     {

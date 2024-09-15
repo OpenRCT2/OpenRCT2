@@ -1026,6 +1026,7 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const Sc
 
     uint32_t width = screenRect.GetWidth();
     uint32_t height = screenRect.GetHeight();
+    // TODO: (mber) remove this masking code.
     const uint32_t bitmask = viewport->zoom >= ZoomLevel{ 0 } ? 0xFFFFFFFF & (viewport->zoom.ApplyTo(0xFFFFFFFF)) : 0xFFFFFFFF;
     ScreenCoordsXY topLeft = screenRect.Point1;
 
@@ -1044,20 +1045,18 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const Sc
 
     DrawPixelInfo dpi1;
     dpi1.DrawingEngine = dpi.DrawingEngine;
-    dpi1.bits = dpi.bits + (x - dpi.x) + ((y - dpi.y) * (dpi.width + dpi.pitch));
-    dpi1.x = topLeft.x;
-    dpi1.y = topLeft.y;
-    dpi1.width = width;
-    dpi1.height = height;
-    dpi1.pitch = (dpi.width + dpi.pitch) - viewport->zoom.ApplyInversedTo(width);
+    dpi1.bits = dpi.bits + (x - dpi.ScreenX()) + ((y - dpi.ScreenY()) * dpi.LineStride());
+    dpi1.SetX(viewport->zoom.ApplyInversedTo(topLeft.x));
+    dpi1.SetY(viewport->zoom.ApplyInversedTo(topLeft.y));
+    dpi1.SetWidth(viewport->zoom.ApplyInversedTo(width));
+    dpi1.SetHeight(viewport->zoom.ApplyInversedTo(height));
+    dpi1.pitch = dpi.LineStride() - viewport->zoom.ApplyInversedTo(width);
     dpi1.zoom_level = viewport->zoom;
-    dpi1.remX = std::max(0, dpi.x - x);
-    dpi1.remY = std::max(0, dpi.y - y);
 
     // make sure, the compare operation is done in int32_t to avoid the loop becoming an infinite loop.
     // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.
-    auto rightBorder = dpi1.x + dpi1.width;
-    auto alignedX = Floor2(dpi1.x, 32);
+    auto rightBorder = dpi1.WorldX() + dpi1.WorldWidth();
+    auto alignedX = Floor2(dpi1.WorldX(), 32);
 
     _paintColumns.clear();
 
@@ -1084,23 +1083,23 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const Sc
         _paintColumns.push_back(session);
 
         DrawPixelInfo& dpi2 = session->DPI;
-        if (x >= dpi2.x)
+        if (x >= dpi2.WorldX())
         {
-            auto leftPitch = x - dpi2.x;
-            dpi2.width -= leftPitch;
+            auto leftPitch = x - dpi2.WorldX();
+            dpi2.SetWidth(dpi2.ScreenWidth() - dpi2.zoom_level.ApplyInversedTo(leftPitch));
             dpi2.bits += dpi2.zoom_level.ApplyInversedTo(leftPitch);
             dpi2.pitch += dpi2.zoom_level.ApplyInversedTo(leftPitch);
-            dpi2.x = x;
+            dpi2.SetX(dpi2.zoom_level.ApplyInversedTo(x));
         }
 
-        auto paintRight = dpi2.x + dpi2.width;
+        auto paintRight = dpi2.WorldX() + dpi2.WorldWidth();
         if (paintRight >= x + 32)
         {
             auto rightPitch = paintRight - x - 32;
             paintRight -= rightPitch;
             dpi2.pitch += dpi2.zoom_level.ApplyInversedTo(rightPitch);
         }
-        dpi2.width = paintRight - dpi2.x;
+        dpi2.SetWidth(dpi2.zoom_level.ApplyInversedTo(paintRight - dpi2.WorldX()));
 
         if (useMultithreading)
         {
@@ -1127,7 +1126,7 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const Sc
         else
         {
             ViewportPaintColumn(*session);
-            DebugDPI(session->DPI); // TODO. Debug change. Revert.
+            DebugDPI(session->DPI); // TODO. Debug change. Revert. (mber)
         }
     }
     if (useParallelDrawing)
@@ -1147,12 +1146,10 @@ static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
     auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
     if (paletteId != FilterPaletteID::PaletteNull)
     {
-        // Only scale width if zoomed in more than 1:1
-        auto zoomLevel = dpi.zoom_level < ZoomLevel{ 0 } ? dpi.zoom_level : ZoomLevel{ 0 };
-        auto x = dpi.x;
-        auto y = dpi.y;
-        auto w = zoomLevel.ApplyInversedTo(dpi.width) - 1;
-        auto h = zoomLevel.ApplyInversedTo(dpi.height) - 1;
+        auto x = dpi.ScreenX();
+        auto y = dpi.ScreenX();
+        auto w = dpi.ScreenWidth() - 1;
+        auto h = dpi.ScreenHeight() - 1;
         GfxFilterRect(dpi, ScreenRect(x, y, x + w, y + h), paletteId);
     }
 }
@@ -1642,7 +1639,7 @@ static bool IsSpriteInteractedWithPaletteSet(
     }
 
     ZoomLevel zoomLevel = dpi.zoom_level;
-    ScreenCoordsXY interactionPoint{ dpi.x, dpi.y };
+    ScreenCoordsXY interactionPoint{ dpi.WorldX(), dpi.WorldY() };
     ScreenCoordsXY origin = coords;
 
     if (dpi.zoom_level > ZoomLevel{ 0 })
@@ -1816,11 +1813,11 @@ InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenC
             viewLoc.y &= viewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
         }
         DrawPixelInfo dpi;
-        dpi.x = viewLoc.x;
-        dpi.y = viewLoc.y;
-        dpi.height = 1;
         dpi.zoom_level = viewport->zoom;
-        dpi.width = 1;
+        dpi.SetX(viewport->zoom.ApplyInversedTo(viewLoc.x));
+        dpi.SetY(viewport->zoom.ApplyInversedTo(viewLoc.y));
+        dpi.SetHeight(1);
+        dpi.SetWidth(1);
 
         PaintSession* session = PaintSessionAlloc(dpi, viewport->flags, viewport->rotation);
         PaintSessionGenerate(*session);
@@ -2082,14 +2079,14 @@ void ViewportSetSavedView()
 
 ZoomLevel ZoomLevel::min()
 {
-    // TODO complete work for sofware zooming or revert change.
+    // TODO (mber) complete work for sofware zooming or revert change.
     return ZoomLevel{ -2 };
-// #ifndef DISABLE_OPENGL
-//     if (drawing_engine_get_type() == DrawingEngine::OpenGL)
-//     {
-//         return ZoomLevel{ -2 };
-//     }
-// #endif
-//
-//     return ZoomLevel{ 0 };
+    // #ifndef DISABLE_OPENGL
+    //     if (drawing_engine_get_type() == DrawingEngine::OpenGL)
+    //     {
+    //         return ZoomLevel{ -2 };
+    //     }
+    // #endif
+    //
+    //     return ZoomLevel{ 0 };
 }

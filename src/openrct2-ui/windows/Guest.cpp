@@ -1333,7 +1333,11 @@ namespace OpenRCT2::Ui::Windows
         void OnScrollDrawRides(int32_t scrollIndex, DrawPixelInfo& dpi)
         {
             auto colour = ColourMapA[colours[1].colour].mid_light;
-            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
+            GfxFillRect(
+                dpi,
+                { { dpi.ScreenX(), dpi.ScreenY() },
+                  { dpi.ScreenX() + dpi.ScreenWidth() - 1, dpi.ScreenY() + dpi.ScreenHeight() - 1 } },
+                colour);
 
             for (int32_t listIndex = 0; listIndex < static_cast<int32_t>(_riddenRides.size()); listIndex++)
             {

@@ -749,12 +749,12 @@ namespace OpenRCT2::Ui::Windows
 
         for (int32_t player = firstPlayerInList; player < NetworkGetNumPlayers(); player++)
         {
-            if (screenCoords.y > dpi.y + dpi.height)
+            if (screenCoords.y > dpi.ScreenY() + dpi.ScreenHeight())
             {
                 break;
             }
 
-            if (screenCoords.y + kScrollableRowHeight + 1 >= dpi.y)
+            if (screenCoords.y + kScrollableRowHeight + 1 >= dpi.ScreenY())
             {
                 thread_local std::string _buffer;
                 _buffer.reserve(512);
@@ -887,9 +887,9 @@ namespace OpenRCT2::Ui::Windows
     {
         auto screenCoords = ScreenCoordsXY{ 0, 0 };
 
-        auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+        auto dpiCoords = ScreenCoordsXY{ dpi.ScreenX(), dpi.ScreenY() };
         GfxFillRect(
-            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
+            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.ScreenWidth() - 1, dpi.ScreenHeight() - 1 } },
             ColourMapA[colours[1].colour].mid_light);
 
         for (int32_t i = 0; i < NetworkGetNumActions(); i++)
@@ -900,12 +900,12 @@ namespace OpenRCT2::Ui::Windows
                     dpi, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                     FilterPaletteID::PaletteDarken1);
             }
-            if (screenCoords.y > dpi.y + dpi.height)
+            if (screenCoords.y > dpi.ScreenY() + dpi.ScreenHeight())
             {
                 break;
             }
 
-            if (screenCoords.y + kScrollableRowHeight + 1 >= dpi.y)
+            if (screenCoords.y + kScrollableRowHeight + 1 >= dpi.ScreenY())
             {
                 int32_t groupindex = NetworkGetGroupIndex(_selectedGroup);
                 if (groupindex != -1)

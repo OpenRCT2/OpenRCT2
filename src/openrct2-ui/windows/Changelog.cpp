@@ -199,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
             for (const auto& line : _changelogLines)
             {
                 screenCoords.y += lineHeight;
-                if (screenCoords.y + lineHeight < dpi.y || screenCoords.y >= dpi.y + dpi.height)
+                if (screenCoords.y + lineHeight < dpi.ScreenY() || screenCoords.y >= dpi.ScreenY() + dpi.ScreenHeight())
                     continue;
 
                 DrawText(dpi, screenCoords, { colours[0] }, line.c_str());

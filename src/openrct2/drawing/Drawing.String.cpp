@@ -325,7 +325,7 @@ static void ColourCharacterWindow(colour_t colour, const uint16_t* current_font_
 void DrawStringCentredRaw(
     DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle)
 {
-    ScreenCoordsXY screenCoords(dpi.x, dpi.y);
+    ScreenCoordsXY screenCoords(dpi.ScreenX(), dpi.ScreenY());
     DrawText(dpi, screenCoords, { COLOUR_BLACK, fontStyle }, "");
     screenCoords = coords;
 
@@ -422,7 +422,7 @@ void DrawNewsTicker(
     int32_t ticks)
 {
     int32_t numLines, lineHeight, lineY;
-    ScreenCoordsXY screenCoords(dpi.x, dpi.y);
+    ScreenCoordsXY screenCoords(dpi.ScreenX(), dpi.ScreenY());
 
     DrawText(dpi, screenCoords, { colour }, "");
 

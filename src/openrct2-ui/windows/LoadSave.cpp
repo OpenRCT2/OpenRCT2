@@ -977,7 +977,9 @@ namespace OpenRCT2::Ui::Windows
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
             GfxFillRect(
-                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },
+                dpi,
+                { { dpi.ScreenX(), dpi.ScreenY() },
+                  { dpi.ScreenX() + dpi.ScreenWidth() - 1, dpi.ScreenY() + dpi.ScreenHeight() - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
             const int32_t dateAnchor = widgets[WIDX_SORT_DATE].left + maxDateWidth + DATE_TIME_GAP;
@@ -985,10 +987,10 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < no_list_items; i++)
             {
                 int32_t y = i * kScrollableRowHeight;
-                if (y > dpi.y + dpi.height)
+                if (y > dpi.ScreenY() + dpi.ScreenHeight())
                     break;
 
-                if (y + kScrollableRowHeight < dpi.y)
+                if (y + kScrollableRowHeight < dpi.ScreenY())
                     continue;
 
                 StringId stringId = STR_BLACK_STRING;

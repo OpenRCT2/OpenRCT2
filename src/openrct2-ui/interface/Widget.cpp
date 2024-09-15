@@ -715,22 +715,22 @@ namespace OpenRCT2::Ui
         DrawPixelInfo scroll_dpi = dpi;
 
         // Clip the scroll dpi against the outer dpi
-        int32_t cl = std::max<int32_t>(dpi.x, topLeft.x);
-        int32_t ct = std::max<int32_t>(dpi.y, topLeft.y);
-        int32_t cr = std::min<int32_t>(dpi.x + dpi.width, bottomRight.x);
-        int32_t cb = std::min<int32_t>(dpi.y + dpi.height, bottomRight.y);
+        int32_t cl = std::max<int32_t>(dpi.ScreenX(), topLeft.x);
+        int32_t ct = std::max<int32_t>(dpi.ScreenY(), topLeft.y);
+        int32_t cr = std::min<int32_t>(dpi.ScreenX() + dpi.ScreenWidth(), bottomRight.x);
+        int32_t cb = std::min<int32_t>(dpi.ScreenY() + dpi.ScreenHeight(), bottomRight.y);
 
         // Set the respective dpi attributes
-        scroll_dpi.x = cl - topLeft.x + scroll.contentOffsetX;
-        scroll_dpi.y = ct - topLeft.y + scroll.contentOffsetY;
-        scroll_dpi.width = cr - cl;
-        scroll_dpi.height = cb - ct;
-        scroll_dpi.bits += cl - dpi.x;
-        scroll_dpi.bits += (ct - dpi.y) * (dpi.width + dpi.pitch);
-        scroll_dpi.pitch = (dpi.width + dpi.pitch) - scroll_dpi.width;
+        scroll_dpi.SetX(cl - topLeft.x + scroll.contentOffsetX);
+        scroll_dpi.SetY(ct - topLeft.y + scroll.contentOffsetY);
+        scroll_dpi.SetWidth(cr - cl);
+        scroll_dpi.SetHeight(cb - ct);
+        scroll_dpi.bits += cl - dpi.ScreenX();
+        scroll_dpi.bits += (ct - dpi.ScreenY()) * dpi.LineStride();
+        scroll_dpi.pitch = dpi.LineStride() - scroll_dpi.ScreenWidth();
 
         // Draw the scroll contents
-        if (scroll_dpi.width > 0 && scroll_dpi.height > 0)
+        if (scroll_dpi.ScreenWidth() > 0 && scroll_dpi.ScreenHeight() > 0)
             w.OnScrollDraw(scrollIndex, scroll_dpi);
     }
 

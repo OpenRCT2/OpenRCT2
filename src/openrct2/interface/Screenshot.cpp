@@ -55,14 +55,14 @@ uint8_t gScreenshotCountdown = 0;
 static bool WriteDpiToFile(std::string_view path, const DrawPixelInfo& dpi, const GamePalette& palette)
 {
     auto const pixels8 = dpi.bits;
-    auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
+    auto const pixelsLen = dpi.LineStride() * dpi.ScreenHeight();
     try
     {
         Image image;
-        image.Width = dpi.width;
-        image.Height = dpi.height;
+        image.Width = dpi.ScreenWidth();
+        image.Height = dpi.ScreenHeight();
         image.Depth = 8;
-        image.Stride = dpi.width + dpi.pitch;
+        image.Stride = dpi.LineStride();
         image.Palette = std::make_unique<GamePalette>(palette);
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG);
@@ -230,9 +230,9 @@ static int32_t GetTallestVisibleTileTop(
 static DrawPixelInfo CreateDPI(const Viewport& viewport)
 {
     DrawPixelInfo dpi;
-    dpi.width = viewport.width;
-    dpi.height = viewport.height;
-    dpi.bits = new (std::nothrow) uint8_t[dpi.width * dpi.height];
+    dpi.SetWidth(viewport.width);
+    dpi.SetHeight(viewport.height);
+    dpi.bits = new (std::nothrow) uint8_t[dpi.ScreenWidth() * dpi.ScreenHeight()];
     if (dpi.bits == nullptr)
     {
         throw std::runtime_error("Giant screenshot failed, unable to allocate memory for image.");
@@ -240,7 +240,7 @@ static DrawPixelInfo CreateDPI(const Viewport& viewport)
 
     if (viewport.flags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND)
     {
-        std::memset(dpi.bits, PALETTE_INDEX_0, static_cast<size_t>(dpi.width) * dpi.height);
+        std::memset(dpi.bits, PALETTE_INDEX_0, static_cast<size_t>(dpi.ScreenWidth()) * dpi.ScreenHeight());
     }
 
     return dpi;
@@ -251,8 +251,8 @@ static void ReleaseDPI(DrawPixelInfo& dpi)
     if (dpi.bits != nullptr)
         delete[] dpi.bits;
     dpi.bits = nullptr;
-    dpi.width = 0;
-    dpi.height = 0;
+    dpi.SetWidth(0);
+    dpi.SetHeight(0);
 }
 
 static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)

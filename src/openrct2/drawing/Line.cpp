@@ -18,13 +18,13 @@
  */
 static void GfxDrawLineOnBuffer(DrawPixelInfo& dpi, char colour, const ScreenCoordsXY& coords, int32_t no_pixels)
 {
-    ScreenCoordsXY offset{ coords.x - dpi.x, coords.y - dpi.y };
+    ScreenCoordsXY offset{ coords.x - dpi.WorldX(), coords.y - dpi.WorldY() };
 
     offset.x = dpi.zoom_level.ApplyInversedTo(offset.x);
     offset.y = dpi.zoom_level.ApplyInversedTo(offset.y);
     no_pixels = dpi.zoom_level.ApplyInversedTo(no_pixels);
-    const int32_t width = dpi.zoom_level.ApplyInversedTo(dpi.width);
-    const int32_t height = dpi.zoom_level.ApplyInversedTo(dpi.height);
+    const int32_t width = dpi.zoom_level.ApplyInversedTo(dpi.WorldWidth());
+    const int32_t height = dpi.zoom_level.ApplyInversedTo(dpi.WorldHeight());
 
     // Check to make sure point is in the y range
     if (offset.y < 0)
@@ -79,27 +79,28 @@ static void GfxDrawLineOnBuffer(DrawPixelInfo& dpi, char colour, const ScreenCoo
 
 void GfxDrawLineSoftware(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour)
 {
+    // TODO: (mber) Rewrite to work with screen DPI coordinates rather than world.
     int32_t x1 = line.GetX1();
     int32_t x2 = line.GetX2();
     int32_t y1 = line.GetY1();
     int32_t y2 = line.GetY2();
     // Check to make sure the line is within the drawing area
-    if ((x1 < dpi.x) && (x2 < dpi.x))
+    if ((x1 < dpi.WorldX()) && (x2 < dpi.WorldX()))
     {
         return;
     }
 
-    if ((y1 < dpi.y) && (y2 < dpi.y))
+    if ((y1 < dpi.WorldY()) && (y2 < dpi.WorldY()))
     {
         return;
     }
 
-    if ((x1 > (dpi.x + dpi.width)) && (x2 > (dpi.x + dpi.width)))
+    if ((x1 > (dpi.WorldX() + dpi.WorldWidth())) && (x2 > (dpi.WorldX() + dpi.WorldWidth())))
     {
         return;
     }
 
-    if ((y1 > (dpi.y + dpi.height)) && (y2 > (dpi.y + dpi.height)))
+    if ((y1 > (dpi.WorldY() + dpi.WorldHeight())) && (y2 > (dpi.WorldY() + dpi.WorldHeight())))
     {
         return;
     }
