@@ -850,7 +850,7 @@ namespace OpenRCT2
                 }
                 // This ensures that the newly loaded save reflects the user's
                 // 'show real names of guests' option, now that it's a global setting
-                PeepUpdateNames(Config::Get().general.ShowRealNamesOfGuests);
+                PeepUpdateNames();
 #ifndef DISABLE_NETWORK
                 if (sendMap)
                 {
