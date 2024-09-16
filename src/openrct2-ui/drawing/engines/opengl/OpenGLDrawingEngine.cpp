@@ -707,10 +707,10 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
         {
             DrawPixelInfo zoomedDPI;
             zoomedDPI.bits = dpi.bits;
-            zoomedDPI.SetX(dpi.zoom_level.ApplyInversedTo(dpi.WorldX()) / 2);
-            zoomedDPI.SetY(dpi.zoom_level.ApplyInversedTo(dpi.WorldY()) / 2);
-            zoomedDPI.SetHeight(dpi.zoom_level.ApplyInversedTo(dpi.WorldHeight()) / 2);
-            zoomedDPI.SetWidth(dpi.zoom_level.ApplyInversedTo(dpi.WorldWidth()) / 2);
+            zoomedDPI.SetX(dpi.ScreenX());
+            zoomedDPI.SetY(dpi.ScreenY());
+            zoomedDPI.SetHeight(dpi.ScreenHeight());
+            zoomedDPI.SetWidth(dpi.ScreenWidth());
             zoomedDPI.pitch = dpi.pitch;
             zoomedDPI.zoom_level = dpi.zoom_level - 1;
             DrawSprite(zoomedDPI, imageId.WithIndex(imageId.GetIndex() - g1Element->zoomed_offset), x >> 1, y >> 1);

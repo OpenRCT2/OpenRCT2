@@ -1299,9 +1299,7 @@ namespace OpenRCT2::Ui::Windows
      */
     void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w)
     {
-        ViewportRender(
-            dpi, w.viewport,
-            { { dpi.ScreenX(), dpi.ScreenY() }, { dpi.ScreenX() + dpi.ScreenWidth(), dpi.ScreenY() + dpi.ScreenHeight() } });
+        ViewportRender(dpi, w.viewport);
     }
 
     /**

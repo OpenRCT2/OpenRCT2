@@ -2119,7 +2119,6 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_ENTITIES;
 
     DrawPixelInfo dpi;
-    // dpi.zoom_level = zoom_level; // TODO (mber) this can be removed I think
     dpi.SetX(0);
     dpi.SetY(0);
     dpi.SetWidth(370);
@@ -2135,7 +2134,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     {
         view.viewPos = Translate3DTo2DWithZ(i, centre) - offset;
         view.rotation = i;
-        ViewportRender(dpi, &view, { {}, ScreenCoordsXY{ size_x, size_y } });
+        ViewportRender(dpi, &view);
 
         dpi.bits += kTrackPreviewImageSize;
     }
