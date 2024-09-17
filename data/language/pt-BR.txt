@@ -3739,6 +3739,8 @@ STR_6667    :Fauna
 STR_6668    :Trapaças de Funcionários
 STR_6669    :Mostrar trapaças de funcionários
 STR_6670    :Comportamento dos visitantes
+STR_6671    :Exibir nomes ‘reais’ para os funcionários
+STR_6672    :Alternar entre exibir nomes ‘reais’ para os funcionários e números de funcionários
 
 #############
 # Scenarios #

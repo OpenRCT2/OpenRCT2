@@ -3743,6 +3743,8 @@ STR_6667    :Fauna
 STR_6668    :Trucos de empleados
 STR_6669    :Mostrar trucos de empleados
 STR_6670    :Comportamiento de los visitantes
+STR_6671    :Mostrar nombres ‘reales’ de empleados
+STR_6672    :Alternar entre mostrar nombres ‘reales’ y números de empleados
 
 ##############
 # Escenarios #
