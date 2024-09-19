@@ -561,6 +561,7 @@ constexpr std::string_view MUSIC_OBJECT_SUMMER = "rct2.music.summer";
 constexpr std::string_view MUSIC_OBJECT_TECHNO = "rct2.music.techno";
 constexpr std::string_view MUSIC_OBJECT_WATER = "rct2.music.water";
 constexpr std::string_view MUSIC_OBJECT_WILD_WEST = "rct2.music.wildwest";
+constexpr std::string_view MUSIC_OBJECT_MODERN = "rct2.music.modern";
 
 constexpr const RideComponentName& GetRideComponentName(const RideComponentType type)
 {

@@ -49,6 +49,7 @@
 #include "rtd/coaster/InvertedRollerCoaster.h"
 #include "rtd/coaster/JuniorRollerCoaster.h"
 #include "rtd/coaster/LIMLaunchedRollerCoaster.h"
+#include "rtd/coaster/LSMLaunchedRollerCoaster.h"
 #include "rtd/coaster/LayDownRollerCoaster.h"
 #include "rtd/coaster/LoopingRollerCoaster.h"
 #include "rtd/coaster/MineRide.h"
@@ -352,6 +353,7 @@ constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_ALPINE_COASTER                     */ AlpineCoasterRTD,
     /* RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER      */ ClassicWoodenRollerCoasterRTD,
     /* RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER    */ ClassicStandUpRollerCoasterRTD,
+    /* RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER        */ LSMLaunchedRollerCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(RtdFlag flag) const
