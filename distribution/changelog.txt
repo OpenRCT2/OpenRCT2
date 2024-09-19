@@ -1,6 +1,7 @@
 0.4.15 (in development)
 ------------------------------------------------------------------------
 - Feature: [#15642] Track design placement can now use contruction modifier keys (ctrl/shift).
+- Feature: [#20810] New ride type: LSM Launched Roller Coaster.
 - Feature: [#21521] [Plugin] Add hook 'park.guest.softcap.calculate' called before calculating the soft guest cap.
 - Change: [#22596] Land ownership fixes described by .parkpatch files are now only considered on scenarios.
 - Change: [#22724] Staff now have optional ‘real’ names as well.
