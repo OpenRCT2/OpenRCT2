@@ -297,10 +297,8 @@ static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 
     Viewport viewport{};
     viewport.viewPos = { left, top };
-    viewport.view_width = right - left;
-    viewport.view_height = bottom - top;
-    viewport.width = zoom.ApplyInversedTo(viewport.view_width);
-    viewport.height = zoom.ApplyInversedTo(viewport.view_height);
+    viewport.width = zoom.ApplyInversedTo(right - left);
+    viewport.height = zoom.ApplyInversedTo(bottom - top);
     viewport.zoom = zoom;
     viewport.rotation = rotation;
 
@@ -514,8 +512,6 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
 
             viewport.width = resolutionWidth;
             viewport.height = resolutionHeight;
-            viewport.view_width = viewport.width;
-            viewport.view_height = viewport.height;
             if (customLocation)
             {
                 if (centreMapX)
@@ -528,8 +524,8 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
 
                 auto coords2d = Translate3DTo2DWithZ(customRotation, coords3d);
 
-                viewport.viewPos = { coords2d.x - ((viewport.view_width << customZoom) / 2),
-                                     coords2d.y - ((viewport.view_height << customZoom) / 2) };
+                viewport.viewPos = { coords2d.x - ((viewport.ViewWidth() << customZoom) / 2),
+                                     coords2d.y - ((viewport.ViewHeight() << customZoom) / 2) };
                 viewport.zoom = ZoomLevel{ static_cast<int8_t>(customZoom) };
                 viewport.rotation = customRotation;
             }
@@ -537,7 +533,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             {
                 auto& gameState = GetGameState();
                 viewport.viewPos = { gameState.SavedView
-                                     - ScreenCoordsXY{ (viewport.view_width / 2), (viewport.view_height / 2) } };
+                                     - ScreenCoordsXY{ (viewport.ViewWidth() / 2), (viewport.ViewHeight() / 2) } };
                 viewport.zoom = gameState.SavedViewZoom;
                 viewport.rotation = gameState.SavedViewRotation;
             }
@@ -618,14 +614,12 @@ void CaptureImage(const CaptureOptions& options)
     {
         viewport.width = options.View->Width;
         viewport.height = options.View->Height;
-        viewport.view_width = viewport.width;
-        viewport.view_height = viewport.height;
 
         auto z = TileElementHeight(options.View->Position);
         CoordsXYZ coords3d(options.View->Position, z);
         auto coords2d = Translate3DTo2DWithZ(options.Rotation, coords3d);
-        viewport.viewPos = { coords2d.x - ((options.Zoom.ApplyTo(viewport.view_width)) / 2),
-                             coords2d.y - ((options.Zoom.ApplyTo(viewport.view_height)) / 2) };
+        viewport.viewPos = { coords2d.x - ((options.Zoom.ApplyTo(viewport.ViewWidth())) / 2),
+                             coords2d.y - ((options.Zoom.ApplyTo(viewport.ViewHeight())) / 2) };
         viewport.zoom = options.Zoom;
         viewport.rotation = options.Rotation;
     }

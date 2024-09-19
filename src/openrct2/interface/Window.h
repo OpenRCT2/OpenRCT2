@@ -155,19 +155,29 @@ struct Viewport
     int32_t height{};
     ScreenCoordsXY pos{};
     ScreenCoordsXY viewPos{};
-    int32_t view_width{};
-    int32_t view_height{};
     uint32_t flags{};
     ZoomLevel zoom{};
     uint8_t rotation{};
     VisibilityCache visibility{};
 
+    [[nodiscard]] constexpr int32_t ViewWidth() const
+    {
+        return zoom.ApplyTo(width);
+    }
+
+    [[nodiscard]] constexpr int32_t ViewHeight() const
+    {
+        return zoom.ApplyTo(height);
+    }
+
     // Use this function on coordinates that are relative to the viewport zoom i.e. a peeps x, y position after transforming
     // from its x, y, z
     [[nodiscard]] constexpr bool Contains(const ScreenCoordsXY& vpos) const
     {
+        // TODO (mber), change to compare in screen space coords.
         return (
-            vpos.y >= viewPos.y && vpos.y < viewPos.y + view_height && vpos.x >= viewPos.x && vpos.x < viewPos.x + view_width);
+            vpos.y >= viewPos.y && vpos.y < viewPos.y + ViewHeight() && vpos.x >= viewPos.x
+            && vpos.x < viewPos.x + ViewWidth());
     }
 
     // Use this function on coordinates that are relative to the screen that is been drawn i.e. the cursor position

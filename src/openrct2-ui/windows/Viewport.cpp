@@ -91,9 +91,9 @@ namespace OpenRCT2::Ui::Windows
             if (mainWindow != nullptr)
             {
                 Viewport* mainViewport = mainWindow->viewport;
-                int32_t x = mainViewport->viewPos.x + (mainViewport->view_width / 2);
-                int32_t y = mainViewport->viewPos.y + (mainViewport->view_height / 2);
-                savedViewPos = { x - (viewport->view_width / 2), y - (viewport->view_height / 2) };
+                int32_t x = mainViewport->viewPos.x + (mainViewport->ViewWidth() / 2);
+                int32_t y = mainViewport->viewPos.y + (mainViewport->ViewHeight() / 2);
+                savedViewPos = { x - (viewport->ViewWidth() / 2), y - (viewport->ViewHeight() / 2) };
             }
 
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
@@ -219,8 +219,6 @@ namespace OpenRCT2::Ui::Windows
                 viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 };
                 viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
                 viewport->height = widgets[WIDX_VIEWPORT].height() - 1;
-                viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
-                viewport->view_height = viewport->zoom.ApplyTo(viewport->height);
             }
         }
     };

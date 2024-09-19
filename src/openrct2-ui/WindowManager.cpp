@@ -614,20 +614,14 @@ public:
         if (mainWindow != nullptr)
         {
             auto viewport = WindowGetViewport(mainWindow);
-            auto zoomDifference = zoom - viewport->zoom;
 
             mainWindow->viewport_target_sprite = EntityId::GetNull();
             mainWindow->savedViewPos = viewPos;
             viewport->zoom = zoom;
             viewport->rotation = rotation;
 
-            if (zoomDifference != ZoomLevel{ 0 })
-            {
-                viewport->view_width = zoomDifference.ApplyTo(viewport->view_width);
-                viewport->view_height = zoomDifference.ApplyTo(viewport->view_height);
-            }
-            mainWindow->savedViewPos.x -= viewport->view_width >> 1;
-            mainWindow->savedViewPos.y -= viewport->view_height >> 1;
+            mainWindow->savedViewPos.x -= viewport->ViewWidth() / 2;
+            mainWindow->savedViewPos.y -= viewport->ViewHeight() / 2;
 
             // Make sure the viewport has correct coordinates set.
             ViewportUpdatePosition(mainWindow);

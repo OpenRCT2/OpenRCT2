@@ -113,8 +113,8 @@ namespace OpenRCT2::Audio
         if (g_music_tracking_viewport == nullptr)
             return false;
 
-        const auto quarter_w = g_music_tracking_viewport->view_width / 4;
-        const auto quarter_h = g_music_tracking_viewport->view_height / 4;
+        const auto quarter_w = g_music_tracking_viewport->ViewWidth() / 4;
+        const auto quarter_h = g_music_tracking_viewport->ViewHeight() / 4;
 
         auto left = g_music_tracking_viewport->viewPos.x;
         auto bottom = g_music_tracking_viewport->viewPos.y;
@@ -128,8 +128,8 @@ namespace OpenRCT2::Audio
         if (left >= vehicle.SpriteData.SpriteRect.GetRight() || bottom >= vehicle.SpriteData.SpriteRect.GetBottom())
             return false;
 
-        auto right = g_music_tracking_viewport->view_width + left;
-        auto top = g_music_tracking_viewport->view_height + bottom;
+        auto right = g_music_tracking_viewport->ViewWidth() + left;
+        auto top = g_music_tracking_viewport->ViewHeight() + bottom;
 
         if (Ui::Windows::WindowGetClassification(*gWindowAudioExclusive) == WindowClass::MainWindow)
         {

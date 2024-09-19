@@ -2112,8 +2112,6 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     Viewport view;
     view.width = 370;
     view.height = 217;
-    view.view_width = size_x;
-    view.view_height = size_y;
     view.pos = { 0, 0 };
     view.zoom = zoom_level;
     view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_ENTITIES;

@@ -611,8 +611,6 @@ namespace OpenRCT2::Ui::Windows
                 {
                     viewport->width = reqViewportWidth;
                     viewport->height = reqViewportHeight;
-                    viewport->view_width = viewport->zoom.ApplyInversedTo(viewport->width);
-                    viewport->view_height = viewport->zoom.ApplyInversedTo(viewport->height);
                 }
             }
             OnViewportRotate();
