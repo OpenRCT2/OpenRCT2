@@ -5454,7 +5454,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TilesSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b1000,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .metalSupports = { MetalSupportPlace::Centre },
     };
 
@@ -5471,7 +5471,7 @@ namespace OpenRCT2::TrackMetaData
     static constexpr SequenceDescriptor kRightBankedQuarterTurn3TilesSeq3 = {
         .clearance = { -32, 32, 0, 0, { 0b1011, 0 }, 0 },
         .allowedWallEdges = 0b0001,
-        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
         .metalSupports = { MetalSupportPlace::Centre },
         .extraSupportRotation = 1,
     };
