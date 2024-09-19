@@ -222,6 +222,7 @@
     <ClInclude Include="core\Range.hpp" />
     <ClInclude Include="core\RTL.h" />
     <ClInclude Include="core\FixedVector.h" />
+    <ClInclude Include="core\FlagHolder.hpp" />
     <ClInclude Include="core\Speed.hpp" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
