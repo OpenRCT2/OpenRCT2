@@ -101,11 +101,11 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             screenCoords - ScreenCoordsXY{ spr->SpriteData.Width, spr->SpriteData.HeightMin },
             screenCoords + ScreenCoordsXY{ spr->SpriteData.Width, spr->SpriteData.HeightMax });
 
-        // We must compare with world DPI coordinates as spriteRect is not adjusted for the DPI zoom.
-        if (session.DPI.WorldY() + session.DPI.WorldHeight() <= spriteRect.GetTop()
-            || spriteRect.GetBottom() <= session.DPI.WorldY()
-            || session.DPI.WorldX() + session.DPI.WorldWidth() <= spriteRect.GetLeft()
-            || spriteRect.GetRight() <= session.DPI.WorldX())
+        const ZoomLevel zoom = session.DPI.zoom_level;
+        if (session.DPI.ScreenY() + session.DPI.ScreenHeight() <= zoom.ApplyInversedTo(spriteRect.GetTop())
+            || zoom.ApplyInversedTo(spriteRect.GetBottom()) <= session.DPI.ScreenY()
+            || session.DPI.ScreenX() + session.DPI.ScreenWidth() <= zoom.ApplyInversedTo(spriteRect.GetLeft())
+            || zoom.ApplyInversedTo(spriteRect.GetRight()) <= session.DPI.ScreenX())
         {
             continue;
         }

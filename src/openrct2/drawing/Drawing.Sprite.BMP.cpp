@@ -11,26 +11,25 @@
 
 template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
-    auto& g1 = args.SourceImage;
-    auto src = g1.offset + ((static_cast<size_t>(g1.width) * args.SrcY) + args.SrcX);
-    auto dst = args.DestinationBits;
     auto& paletteMap = args.PalMap;
-    auto zoomLevel = dpi.zoom_level;
-    size_t srcLineWidth = g1.width;
-    size_t dstLineWidth = dpi.LineStride();
-    uint8_t zoom = zoomLevel.ApplyInversedTo(1);
-    auto width = zoomLevel.ApplyInversedTo(args.Width);
-    auto height = zoomLevel.ApplyInversedTo(args.Height);
-    for (; height > 0; height -= zoom)
+    auto src0 = args.SourceImage.offset;
+    auto dst = args.DestinationBits;
+    auto srcX = args.SrcX;
+    auto srcY = args.SrcY;
+    auto width = args.Width;
+    auto height = args.Height;
+    auto zoom = dpi.zoom_level;
+    auto dstLineWidth = dpi.LineStride();
+    auto srcLineWidth = args.SourceImage.width;
+
+    for (int32_t y = 0; y < height; y++)
     {
-        auto nextSrc = src + srcLineWidth;
-        auto nextDst = dst + (dstLineWidth * zoom);
-        for (int32_t widthRemaining = width; widthRemaining > 0; widthRemaining -= zoom, src++, dst += zoom)
+        auto nextDst = dst + dstLineWidth;
+        for (int32_t x = 0; x < width; x++, dst++)
         {
-            // Copy src to a block of zoom * zoom on dst
-            BlitPixels<TBlendOp>(src, dst, paletteMap, zoom, dstLineWidth);
+            auto src = src0 + (srcLineWidth * zoom.ApplyTo(srcY + y) + zoom.ApplyTo(srcX + x));
+            BlitPixel<TBlendOp>(src, dst, paletteMap);
         }
-        src = nextSrc;
         dst = nextDst;
     }
 }

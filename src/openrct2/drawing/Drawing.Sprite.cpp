@@ -513,6 +513,7 @@ void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo& dpi, const ImageId imageId, c
 void FASTCALL GfxDrawSpritePaletteSetSoftware(
     DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
+    const auto zoomLevel = dpi.zoom_level;
     int32_t x = coords.x;
     int32_t y = coords.y;
 
@@ -522,7 +523,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
         return;
     }
 
-    if (dpi.zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
+    if (zoomLevel > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
     {
         DrawPixelInfo zoomed_dpi = dpi;
         zoomed_dpi.bits = dpi.bits;
@@ -531,24 +532,52 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
         zoomed_dpi.SetHeight(dpi.ScreenHeight());
         zoomed_dpi.SetWidth(dpi.ScreenWidth());
         zoomed_dpi.pitch = dpi.pitch;
-        zoomed_dpi.zoom_level = dpi.zoom_level - 1;
+        zoomed_dpi.zoom_level = zoomLevel - 1;
 
-        const auto spriteCoords = ScreenCoordsXY{ x >> 1, y >> 1 };
+        const auto spriteCoords = ScreenCoordsXY{ coords.x / 2, coords.y / 2 };
         GfxDrawSpritePaletteSetSoftware(
             zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
         return;
     }
 
-    if (dpi.zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_NO_ZOOM_DRAW))
+    if (zoomLevel > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_NO_ZOOM_DRAW))
     {
         return;
     }
 
-    // Its used super often so we will define it to a separate variable.
-    const auto zoom_level = dpi.zoom_level;
-    const int32_t zoom_mask = zoom_level > ZoomLevel{ 0 } ? zoom_level.ApplyTo(0xFFFFFFFF) : 0xFFFFFFFF;
+    // mber: There should not be two separate code paths for minifying and magnifying sprites.
+    //       I haven't been able to refactor the code in a way that handles both cases properly with one code path.
+    //       For the moment, I've added this block here just for magnification with the old code continuing below.
+    if (zoomLevel < ZoomLevel{ 0 })
+    {
+        ScreenCoordsXY spriteTopLeft = { zoomLevel.ApplyInversedTo(coords.x + g1->x_offset),
+                                         zoomLevel.ApplyInversedTo(coords.y + g1->y_offset) };
 
-    if (zoom_level > ZoomLevel{ 0 } && g1->flags & G1_FLAG_RLE_COMPRESSION)
+        ScreenCoordsXY spriteBottomLeft{ zoomLevel.ApplyInversedTo(coords.x + g1->x_offset + g1->width),
+                                         zoomLevel.ApplyInversedTo(coords.y + g1->y_offset + g1->height) };
+
+        const int32_t width = std::min(spriteBottomLeft.x, dpi.ScreenX() + dpi.ScreenWidth())
+            - std::max(spriteTopLeft.x, dpi.ScreenX());
+        const int32_t height = std::min(spriteBottomLeft.y, dpi.ScreenY() + dpi.ScreenHeight())
+            - std::max(spriteTopLeft.y, dpi.ScreenY());
+
+        if (width <= 0 || height <= 0)
+            return;
+
+        const int32_t offsetX = dpi.ScreenX() - spriteTopLeft.x;
+        const int32_t offsetY = dpi.ScreenY() - spriteTopLeft.y;
+        const int32_t srcX = std::max(0, offsetX);
+        const int32_t srcY = std::max(0, offsetY);
+        uint8_t* dst = dpi.bits + std::max(0, -offsetX) + std::max(0, -offsetY) * dpi.LineStride();
+
+        DrawSpriteArgs args(imageId, paletteMap, *g1, srcX, srcY, width, height, dst);
+        GfxSpriteToBuffer(dpi, args);
+        return;
+    }
+
+    const int32_t zoom_mask = zoomLevel > ZoomLevel{ 0 } ? zoomLevel.ApplyTo(0xFFFFFFFF) : 0xFFFFFFFF;
+
+    if (zoomLevel > ZoomLevel{ 0 } && g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
         x -= ~zoom_mask;
         y -= ~zoom_mask;
@@ -590,7 +619,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     }
     else
     {
-        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoom_level > ZoomLevel{ 0 })
+        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoomLevel > ZoomLevel{ 0 })
         {
             source_start_y -= dest_start_y & ~zoom_mask;
             height += dest_start_y & ~zoom_mask;
@@ -609,7 +638,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     if (height <= 0)
         return;
 
-    dest_start_y = zoom_level.ApplyInversedTo(dest_start_y);
+    dest_start_y = zoomLevel.ApplyInversedTo(dest_start_y);
 
     // This will be the width of the drawn image
     int32_t width = g1->width;
@@ -636,7 +665,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     }
     else
     {
-        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoom_level > ZoomLevel{ 0 })
+        if ((g1->flags & G1_FLAG_RLE_COMPRESSION) && zoomLevel > ZoomLevel{ 0 })
         {
             source_start_x -= dest_start_x & ~zoom_mask;
         }
@@ -654,11 +683,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
             return;
     }
 
-    dest_start_x = zoom_level.ApplyInversedTo(dest_start_x);
+    dest_start_x = zoomLevel.ApplyInversedTo(dest_start_x);
 
     uint8_t* dest_pointer = dpi.bits;
     // Move the pointer to the start point of the destination
-    dest_pointer += (zoom_level.ApplyInversedTo(dpi.WorldWidth()) + dpi.pitch) * dest_start_y + dest_start_x;
+    dest_pointer += (zoomLevel.ApplyInversedTo(dpi.WorldWidth()) + dpi.pitch) * dest_start_y + dest_start_x;
 
     DrawSpriteArgs args(imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
     GfxSpriteToBuffer(dpi, args);

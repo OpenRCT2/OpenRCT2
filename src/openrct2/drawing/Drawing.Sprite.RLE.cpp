@@ -12,74 +12,46 @@
 #include <cassert>
 #include <cstring>
 
-template<DrawBlendOp TBlendOp, size_t TZoom>
-static void FASTCALL DrawRLESpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
+    auto& paletteMap = args.PalMap;
+    auto lineOffsets = reinterpret_cast<const uint16_t*>(args.SourceImage.offset);
     auto src0 = args.SourceImage.offset;
-    auto dst0 = args.DestinationBits;
+    auto dst = args.DestinationBits;
     auto srcX = args.SrcX;
     auto srcY = args.SrcY;
     auto width = args.Width;
     auto height = args.Height;
-    auto& paletteMap = args.PalMap;
-    auto zoom = 1 << TZoom;
-    auto dstLineWidth = static_cast<size_t>(dpi.LineStride());
+    auto zoom = dpi.zoom_level;
+    auto dstLineWidth = dpi.LineStride();
 
-    // Move up to the first line of the image if source_y_start is negative. Why does this even occur?
-    if (srcY < 0)
+    for (int32_t y = 0; y < height; y++)
     {
-        srcY += zoom;
-        height -= zoom;
-        dst0 += dstLineWidth;
-    }
+        uint8_t* nextDst = dst + dstLineWidth;
+        const int32_t rowNum = zoom.ApplyTo(srcY + y);
+        const uint8_t* data8 = src0 + lineOffsets[rowNum];
 
-    // For every line in the image
-    for (int32_t i = 0; i < height; i++)
-    {
-        int32_t y = srcY + i;
-
-        // The first part of the source pointer is a list of offsets to different lines
-        // This will move the pointer to the correct source line.
-        uint16_t lineOffset = src0[y * 2] | (src0[y * 2 + 1] << 8);
-        auto nextRun = src0 + lineOffset;
-        auto dstLineStart = dst0 + ((dstLineWidth * i) << TZoom);
-
-        // For every data chunk in the line
-        bool isEndOfLine = false;
-        while (!isEndOfLine)
+        bool lastDataForLine = false;
+        int32_t numPixels = 0;
+        uint8_t pixelRunStart = 0;
+        for (int32_t x = 0; x < width; x++)
         {
-            // Read chunk metadata
-            auto src = nextRun;
-            auto dataSize = *src++;
-            auto firstPixelX = *src++;
-            isEndOfLine = (dataSize & 0x80) != 0;
-            dataSize &= 0x7F;
+            const int32_t colNum = zoom.ApplyTo(srcX + x);
 
-            // Have our next source pointer point to the next data section
-            nextRun = src + dataSize;
-
-            int32_t x = firstPixelX - srcX;
-            int32_t numPixels = dataSize;
-            if (x < 0)
+            while (colNum >= pixelRunStart + numPixels && !lastDataForLine)
             {
-                src += -x;
-                numPixels += x;
-                x = 0;
+                data8 += numPixels;
+                numPixels = *data8++;
+                pixelRunStart = *data8++;
+                lastDataForLine = numPixels & 0x80;
+                numPixels &= 0x7F;
             }
-
-            // If the end position is further out than the whole image
-            // end position then we need to shorten the line again
-            numPixels = std::min(numPixels, width - x);
-
-            auto dst = dstLineStart + (static_cast<size_t>(x) << TZoom);
-            while (numPixels > 0)
-            {
-                BlitPixels<TBlendOp>(src, dst, paletteMap, zoom, dstLineWidth);
-                src++;
-                dst += zoom;
-                numPixels--;
-            }
+            if (pixelRunStart <= colNum && colNum < pixelRunStart + numPixels)
+                BlitPixel<TBlendOp>(data8 + colNum - pixelRunStart, dst, paletteMap);
+            dst++;
         }
+
+        dst = nextDst;
     }
 }
 
@@ -184,10 +156,8 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESprite(DrawPixelInfo&
     switch (zoom_level)
     {
         case -2:
-            DrawRLESpriteMagnify<TBlendOp, 2>(dpi, args);
-            break;
         case -1:
-            DrawRLESpriteMagnify<TBlendOp, 1>(dpi, args);
+            DrawRLESpriteMagnify<TBlendOp>(dpi, args);
             break;
         case 0:
             DrawRLESpriteMinify<TBlendOp, 0>(dpi, args);
