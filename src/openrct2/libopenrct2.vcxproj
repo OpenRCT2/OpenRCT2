@@ -184,6 +184,7 @@
     <ClInclude Include="core\CallingConventions.h" />
     <ClInclude Include="core\ChecksumStream.h" />
     <ClInclude Include="core\CircularBuffer.h" />
+    <ClInclude Include="core\CodepointView.hpp" />
     <ClInclude Include="core\Collections.hpp" />
     <ClInclude Include="core\Console.hpp" />
     <ClInclude Include="core\Crypt.h" />
@@ -221,10 +222,12 @@
     <ClInclude Include="core\Range.hpp" />
     <ClInclude Include="core\RTL.h" />
     <ClInclude Include="core\FixedVector.h" />
+    <ClInclude Include="core\FlagHolder.hpp" />
     <ClInclude Include="core\Speed.hpp" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
+    <ClInclude Include="core\StringTypes.h" />
     <ClInclude Include="core\Timer.hpp" />
     <ClInclude Include="core\UTF8.h" />
     <ClInclude Include="core\UnicodeChar.h" />
@@ -898,6 +901,7 @@
     <ClCompile Include="paint\track\coaster\CompactInvertedCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\CorkscrewRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\FlyingRollerCoaster.cpp" />
+    <ClCompile Include="paint\track\coaster\FlyingRollerCoasterInverted.cpp" />
     <ClCompile Include="paint\track\coaster\LatticeTriangleTrack.cpp" />
     <ClCompile Include="paint\track\coaster\HeartlineTwisterCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\HybridCoaster.cpp" />

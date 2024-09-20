@@ -11,6 +11,7 @@
 #include "helpers/StringHelpers.hpp"
 
 #include <gtest/gtest.h>
+#include <openrct2/core/CodepointView.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/util/Util.h>
 #include <string>

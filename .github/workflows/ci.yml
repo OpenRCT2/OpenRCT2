@@ -190,23 +190,23 @@ jobs:
           if-no-files-found: error
   macos-cmake:
     name: macOS (${{ matrix.arch }}) using CMake
-    runs-on: macos-12
+    runs-on: macos-14
     needs: check-code-formatting
     strategy:
       fail-fast: false
       matrix:
         arch: [x64, arm64]
         include:
-          - arch: x64
-            cache_key: macos-x64
+          - arch: arm64
+            cache_key: macos-arm64
             # Note: only build/run tests on the native architecture of the CI agent
             # GitHub macos-12 agents are all Intel, but as of 2024-04-25 new images, e.g. macos-14 (current macos-latest) are arm64
             # See https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
-            build_flags: -DARCH="x86_64" -DWITH_TESTS=on
+            build_flags: -DARCH="arm64" -DWITH_TESTS=on
             run_tests: true
-          - arch: arm64
-            cache_key: macos-arm64
-            build_flags: -DARCH="arm64"
+          - arch: x64
+            cache_key: macos-x64
+            build_flags: -DARCH="x86_64"
             run_tests: false
     steps:
       - name: Checkout
@@ -223,7 +223,8 @@ jobs:
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
         run: |
-          HOMEBREW_NO_ANALYTICS=1 brew install ninja pkg-config
+          # NB: GitHub comes with `pkg-config` preinstalled on macOS images
+          HOMEBREW_NO_ANALYTICS=1 brew install ninja
           . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=on ${{ matrix.build_flags }}
       - name: Build artifacts
         run: |
@@ -249,7 +250,7 @@ jobs:
         if: ${{matrix.run_tests}}
   macos-universal:
     name: macOS universal app bundle
-    runs-on: macos-12
+    runs-on: macos-14
     needs: macos-cmake
     steps:
       - name: Checkout

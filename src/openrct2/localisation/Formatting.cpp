@@ -11,6 +11,7 @@
 
 #include "../Diagnostic.h"
 #include "../config/Config.h"
+#include "../core/String.hpp"
 #include "../peep/RealNames.h"
 #include "../util/Util.h"
 #include "Currency.h"

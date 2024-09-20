@@ -9,12 +9,11 @@
 
 #pragma once
 
-#include "core/String.hpp"
+#include "core/StringTypes.h"
 #include "object/Object.h"
 #include "object/ObjectList.h"
 
 #include <memory>
-#include <string>
 #include <vector>
 
 struct IObjectManager;

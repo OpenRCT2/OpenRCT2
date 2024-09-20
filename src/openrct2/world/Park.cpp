@@ -33,6 +33,7 @@
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/ScriptEngine.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
@@ -43,6 +44,7 @@
 #include <type_traits>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Scripting;
 
 namespace OpenRCT2::Park
 {
@@ -157,6 +159,21 @@ namespace OpenRCT2::Park
         }
 
         suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 65535);
+
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(HOOK_TYPE::PARK_CALCULATE_GUEST_CAP))
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto obj = DukObject(ctx);
+            obj.Set("suggestedGuestMaximum", suggestedMaxGuests);
+            auto e = obj.Take();
+            hookEngine.Call(HOOK_TYPE::PARK_CALCULATE_GUEST_CAP, e, true);
+
+            suggestedMaxGuests = AsOrDefault(e["suggestedGuestMaximum"], static_cast<int32_t>(suggestedMaxGuests));
+            suggestedMaxGuests = std::clamp<uint16_t>(suggestedMaxGuests, 0, UINT16_MAX);
+        }
+#endif
         return suggestedMaxGuests;
     }
 

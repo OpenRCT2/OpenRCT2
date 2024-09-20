@@ -10,11 +10,11 @@ using namespace OpenRCT2;
 using TunnelGroupMap = std::array<TunnelType, kTunnelSubTypeCount>;
 static std::array<TunnelGroupMap, kTunnelGroupCount> tunnelMap = {
     TunnelGroupMap{ TunnelType::StandardFlat, TunnelType::StandardSlopeStart, TunnelType::StandardSlopeEnd,
-                    TunnelType::StandardFlatTo25Deg },
+                    TunnelType::StandardFlatTo25Deg, TunnelType::InvertedFlat },
     TunnelGroupMap{ TunnelType::SquareFlat, TunnelType::SquareSlopeStart, TunnelType::SquareSlopeEnd,
-                    TunnelType::SquareFlatTo25Deg },
+                    TunnelType::SquareFlatTo25Deg, TunnelType::InvertedSquare },
     TunnelGroupMap{ TunnelType::InvertedFlat, TunnelType::InvertedSlopeStart, TunnelType::InvertedSlopeEnd,
-                    TunnelType::InvertedFlatTo25Deg },
+                    TunnelType::InvertedFlatTo25Deg, TunnelType::InvertedFlat },
 };
 
 void TrackPaintUtilLeftQuarterTurn1TileTunnel(

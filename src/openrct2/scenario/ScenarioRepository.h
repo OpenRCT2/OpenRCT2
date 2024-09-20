@@ -11,7 +11,7 @@
 #pragma once
 
 #include "../core/DateTime.h"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../scenario/Scenario.h"
 
 #include <memory>

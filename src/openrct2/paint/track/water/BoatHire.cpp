@@ -75,18 +75,9 @@ static void PaintBoatHireStation(
 {
     const auto* stationObj = ride.GetStationObject();
 
-    if (direction & 1)
-    {
-        PaintUtilPushTunnelRight(session, height, TunnelGroup::Square, TunnelSubType::Flat);
-        TrackPaintUtilDrawPier(
-            session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
-    }
-    else
-    {
-        PaintUtilPushTunnelLeft(session, height, TunnelGroup::Square, TunnelSubType::Flat);
-        TrackPaintUtilDrawPier(
-            session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
-    }
+    TrackPaintUtilDrawStationTunnel(session, direction, height);
+    TrackPaintUtilDrawPier(
+        session, ride, stationObj, session.MapPosition, direction, height, trackElement, session.CurrentRotation);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

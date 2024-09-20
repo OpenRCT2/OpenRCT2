@@ -10,8 +10,6 @@
 #pragma once
 
 #include "../Cheats.h"
-#include "../core/MemoryStream.h"
-#include "../core/String.hpp"
 #include "../entity/Guest.h"
 #include "../network/NetworkTypes.h"
 #include "../network/network.h"
@@ -23,6 +21,7 @@
 #include "DataSerialiserTag.h"
 #include "Endianness.h"
 #include "MemoryStream.h"
+#include "StringTypes.h"
 
 #include <cstdio>
 #include <iomanip>

@@ -18,6 +18,7 @@
 #include "../interface/Viewport.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../park/ParkFile.h"
 #include "../platform/Platform.h"
 #include "../rct1/RCT1.h"
 #include "../ride/RideColour.h"
@@ -1007,7 +1008,7 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, 
     // Lots of Log Flumes exist where the downward slopes are simulated by using other track
     // types like the Splash Boats, but not actually made invisible, because they never needed
     // to be.
-    if (rideType == RIDE_TYPE_LOG_FLUME && parkFileVersion <= 15)
+    if (rideType == RIDE_TYPE_LOG_FLUME && parkFileVersion < kLogFlumeSteepSlopeVersion)
     {
         if (trackType == TrackElemType::Down25ToDown60 || trackType == TrackElemType::Down60
             || trackType == TrackElemType::Down60ToDown25)
@@ -1015,7 +1016,7 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, 
             return true;
         }
     }
-    else if (rideType == RIDE_TYPE_GIGA_COASTER && parkFileVersion <= 30)
+    else if (rideType == RIDE_TYPE_GIGA_COASTER && parkFileVersion < kGigaCoasterInversions)
     {
         switch (trackType)
         {
@@ -1119,6 +1120,19 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, 
             case TrackElemType::RightEighthBankToOrthogonalUp25:
             case TrackElemType::LeftEighthBankToOrthogonalDown25:
             case TrackElemType::RightEighthBankToOrthogonalDown25:
+                return true;
+        }
+    }
+    else if (
+        (rideType == RIDE_TYPE_WOODEN_ROLLER_COASTER || rideType == RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER)
+        && parkFileVersion < kWoodenFlatToSteepVersion)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::FlatToUp60LongBase:
+            case TrackElemType::Up60ToFlatLongBase:
+            case TrackElemType::FlatToDown60LongBase:
+            case TrackElemType::Down60ToFlatLongBase:
                 return true;
         }
     }

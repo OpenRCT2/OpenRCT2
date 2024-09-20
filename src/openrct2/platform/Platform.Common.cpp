@@ -29,6 +29,7 @@
 #include "../Game.h"
 #include "../core/File.h"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../localisation/Currency.h"
 #include "Platform.h"
 

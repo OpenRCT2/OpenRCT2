@@ -9,11 +9,10 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "RideTypes.h"
 
 #include <memory>
-#include <string>
 #include <vector>
 
 struct TrackDesignFileRef

@@ -3740,7 +3740,9 @@ STR_6667    :Fauna
 STR_6668    :Staff cheats
 STR_6669    :Show staff cheats
 STR_6670    :Guest behaviour
-STR_6671    :Transparent
+STR_6671    :Show ‘real’ names of staff
+STR_6672    :Toggle between showing ‘real’ names of staff and staff numbers
+STR_6673    :Transparent
 
 #############
 # Scenarios #

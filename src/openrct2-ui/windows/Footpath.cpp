@@ -26,6 +26,7 @@
 #include <openrct2/actions/FootpathPlaceAction.h>
 #include <openrct2/actions/FootpathRemoveAction.h>
 #include <openrct2/audio/audio.h>
+#include <openrct2/core/FlagHolder.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
@@ -64,35 +65,16 @@ namespace OpenRCT2::Ui::Windows
         forceRecheck = 2,
     };
 
+    using ProvisionalPathFlags = FlagHolder<uint8_t, ProvisionalPathFlag>;
     struct ProvisionalFootpath
     {
         ObjectEntryIndex type;
         CoordsXYZ position;
         uint8_t slope;
-        uint8_t flags;
+        ProvisionalPathFlags flags;
         ObjectEntryIndex surfaceIndex;
         ObjectEntryIndex railingsIndex;
         PathConstructFlags constructFlags;
-
-        bool hasFlag(ProvisionalPathFlag flag)
-        {
-            return HasFlag(flags, flag);
-        }
-
-        void setFlag(ProvisionalPathFlag flag)
-        {
-            flags |= EnumToFlag(flag);
-        }
-
-        void clearFlag(ProvisionalPathFlag flag)
-        {
-            flags &= ~EnumToFlag(flag);
-        }
-
-        void flipFlag(ProvisionalPathFlag flag)
-        {
-            flags ^= EnumToFlag(flag);
-        }
     };
 
     static ProvisionalFootpath _provisionalFootpath;
@@ -572,14 +554,14 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Recheck area for construction. Set by ride_construction window
-            if (_provisionalFootpath.hasFlag(ProvisionalPathFlag::forceRecheck))
+            if (_provisionalFootpath.flags.has(ProvisionalPathFlag::forceRecheck))
             {
                 FootpathRemoveProvisional();
-                _provisionalFootpath.clearFlag(ProvisionalPathFlag::forceRecheck);
+                _provisionalFootpath.flags.unset(ProvisionalPathFlag::forceRecheck);
             }
 
             // Update provisional bridge mode path
-            if (!(_provisionalFootpath.hasFlag(ProvisionalPathFlag::placed)))
+            if (!(_provisionalFootpath.flags.has(ProvisionalPathFlag::placed)))
             {
                 ObjectEntryIndex type;
                 ObjectEntryIndex railings = gFootpathSelection.Railings;
@@ -600,13 +582,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 _footpathConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
 
-                _provisionalFootpath.flipFlag(ProvisionalPathFlag::showArrow);
+                _provisionalFootpath.flags.flip(ProvisionalPathFlag::showArrow);
                 CoordsXYZ footpathLoc;
                 int32_t slope;
                 FootpathGetNextPathInfo(nullptr, footpathLoc, &slope);
                 gMapSelectArrowPosition = footpathLoc;
                 gMapSelectArrowDirection = _footpathConstructDirection;
-                if (_provisionalFootpath.hasFlag(ProvisionalPathFlag::showArrow))
+                if (_provisionalFootpath.flags.has(ProvisionalPathFlag::showArrow))
                 {
                     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
                 }
@@ -1025,7 +1007,8 @@ namespace OpenRCT2::Ui::Windows
 
             // Check for change
             auto provisionalPos = CoordsXYZ(*mapPos, _footpathPlaceZ);
-            if ((_provisionalFootpath.hasFlag(ProvisionalPathFlag::placed)) && _provisionalFootpath.position == provisionalPos)
+            if ((_provisionalFootpath.flags.has(ProvisionalPathFlag::placed))
+                && _provisionalFootpath.position == provisionalPos)
             {
                 return;
             }
@@ -1220,7 +1203,7 @@ namespace OpenRCT2::Ui::Windows
             ToolCancel();
             gFootpathConstructFromPosition = { mapCoords, z };
             _footpathConstructDirection = direction;
-            _provisionalFootpath.flags = 0;
+            _provisionalFootpath.flags.clearAll();
             gFootpathConstructSlope = 0;
             _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
             _footpathConstructValidDirections = INVALID_DIRECTION;
@@ -1769,7 +1752,7 @@ namespace OpenRCT2::Ui::Windows
             _provisionalFootpath.position = footpathLoc;
             _provisionalFootpath.slope = slope;
             _provisionalFootpath.constructFlags = constructFlags;
-            _provisionalFootpath.setFlag(ProvisionalPathFlag::placed);
+            _provisionalFootpath.flags.set(ProvisionalPathFlag::placed);
 
             if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
             {
@@ -1814,9 +1797,9 @@ namespace OpenRCT2::Ui::Windows
      */
     void FootpathRemoveProvisional()
     {
-        if (_provisionalFootpath.hasFlag(ProvisionalPathFlag::placed))
+        if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed))
         {
-            _provisionalFootpath.clearFlag(ProvisionalPathFlag::placed);
+            _provisionalFootpath.flags.unset(ProvisionalPathFlag::placed);
 
             auto action = FootpathRemoveAction(_provisionalFootpath.position);
             action.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
@@ -1830,9 +1813,9 @@ namespace OpenRCT2::Ui::Windows
      */
     void FootpathUpdateProvisional()
     {
-        if (_provisionalFootpath.hasFlag(ProvisionalPathFlag::showArrow))
+        if (_provisionalFootpath.flags.has(ProvisionalPathFlag::showArrow))
         {
-            _provisionalFootpath.clearFlag(ProvisionalPathFlag::showArrow);
+            _provisionalFootpath.flags.unset(ProvisionalPathFlag::showArrow);
 
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             MapInvalidateTileFull(gFootpathConstructFromPosition);
@@ -1842,18 +1825,18 @@ namespace OpenRCT2::Ui::Windows
 
     void FootpathRemoveProvisionalTemporarily()
     {
-        if (_provisionalFootpath.hasFlag(ProvisionalPathFlag::placed))
+        if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed))
         {
             FootpathRemoveProvisional();
-            _provisionalFootpath.setFlag(ProvisionalPathFlag::placed);
+            _provisionalFootpath.flags.set(ProvisionalPathFlag::placed);
         }
     }
 
     void FootpathRestoreProvisional()
     {
-        if (_provisionalFootpath.hasFlag(ProvisionalPathFlag::placed))
+        if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed))
         {
-            _provisionalFootpath.clearFlag(ProvisionalPathFlag::placed);
+            _provisionalFootpath.flags.unset(ProvisionalPathFlag::placed);
             FootpathProvisionalSet(
                 _provisionalFootpath.surfaceIndex, _provisionalFootpath.railingsIndex, _provisionalFootpath.position,
                 _provisionalFootpath.slope, _provisionalFootpath.constructFlags);
@@ -1862,6 +1845,6 @@ namespace OpenRCT2::Ui::Windows
 
     void FootpathRecheckProvisional()
     {
-        _provisionalFootpath.setFlag(ProvisionalPathFlag::forceRecheck);
+        _provisionalFootpath.flags.set(ProvisionalPathFlag::forceRecheck);
     }
 } // namespace OpenRCT2::Ui::Windows

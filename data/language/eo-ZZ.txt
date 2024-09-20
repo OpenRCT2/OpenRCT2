@@ -1828,7 +1828,7 @@ STR_2482    :Profito: po {CURRENCY} por semajno,  Parkvaloro: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Profito semajna: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Profito semajna: {RED}{CURRENCY2DP}
 STR_2487    :Montri ‘faktajn’ nomojn de gastoj
-STR_2488    :Baskuligi inter montrado de ‘faktaj’ nomoj de gastoj, kaj gastnumeroj
+STR_2488    :Baskuligi inter montrado de ‘faktaj’ gastonomoj kaj gastonumeroj
 STR_2489    :Klavarokomandojn…
 STR_2490    :Klavarokomandojn
 STR_2491    :Restarigi klavojn
@@ -3739,6 +3739,8 @@ STR_6667    :Faŭno
 STR_6668    :Trompoj de dungitaro
 STR_6669    :Montri trompojn de dungitaro
 STR_6670    :Konduto de gastoj
+STR_6671    :Montri ‘faktajn’ nomojn de dungitaro
+STR_6672    :Baskuligi inter montrado de ‘faktaj’ dungitonomoj kaj dungitonumeroj
 
 #############
 # Scenarios #

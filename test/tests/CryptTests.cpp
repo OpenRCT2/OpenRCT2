@@ -14,6 +14,7 @@
 #include <openrct2/core/Crypt.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/network/NetworkKey.h>
 #include <string>
 

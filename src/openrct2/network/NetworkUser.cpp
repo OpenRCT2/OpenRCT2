@@ -18,6 +18,7 @@
 #    include "../core/Guard.hpp"
 #    include "../core/Json.hpp"
 #    include "../core/Path.hpp"
+#    include "../core/String.hpp"
 
 #    include <unordered_set>
 

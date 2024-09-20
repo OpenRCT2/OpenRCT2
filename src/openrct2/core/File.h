@@ -9,10 +9,8 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 
-#include <string>
-#include <string_view>
 #include <vector>
 
 namespace OpenRCT2::File

@@ -217,6 +217,7 @@ int32_t MapGetCornerHeight(int32_t z, int32_t slope, int32_t direction);
 int32_t TileElementGetCornerHeight(const SurfaceElement* surfaceElement, int32_t direction);
 
 void MapClearAllElements();
+void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr);
 
 LargeSceneryElement* MapGetLargeScenerySegment(const CoordsXYZD& sceneryPos, int32_t sequence);
 std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
@@ -235,6 +236,6 @@ bool MapIsLocationAtEdge(const CoordsXY& loc);
 
 uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos);
 
-void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade = false);
+void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership);
 MapRange ClampRangeWithinMap(const MapRange& range);
 void ShiftMap(const TileCoordsXY& amount);

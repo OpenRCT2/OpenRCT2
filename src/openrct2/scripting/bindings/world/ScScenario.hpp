@@ -13,7 +13,7 @@
 
 #    include "../../../Context.h"
 #    include "../../../GameState.h"
-#    include "../../../core/String.hpp"
+#    include "../../../core/StringTypes.h"
 #    include "../../../scenario/Scenario.h"
 #    include "../../../world/Park.h"
 #    include "../../Duktape.hpp"

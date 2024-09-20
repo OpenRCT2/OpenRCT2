@@ -1829,7 +1829,7 @@ STR_2482    :Winst: {CURRENCY} per week,  parkwaarde: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Wekelijkse winst: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Wekelijkse winst: {RED}{CURRENCY2DP}
 STR_2487    :‘Echte’ namen van bezoekers tonen
-STR_2488    :Wissel tussen het tonen van ‘echte’ namen van bezoekers en bezoekernummers
+STR_2488    :Wissel tussen het tonen van ‘echte’ namen van bezoekers en bezoekernummers.
 STR_2489    :Sneltoetsen…
 STR_2490    :Sneltoetsen
 STR_2491    :Toetsen herstellen
@@ -2603,8 +2603,8 @@ STR_5357    :{BLACK}Misselijkheidstol.:
 STR_5358    :{BLACK}WC:
 STR_5359    :Bez. verwijderen
 STR_5360    :Verwijdert alle bezoekers van de kaart
-STR_5361    :Geef alle bez.:
-STR_5362    :{BLACK}Zet de voorkeursintensiteit van alle bez. op:
+STR_5361    :Inventaris
+STR_5362    :{BLACK}Voorkeursintensiteit
 STR_5363    :Meer dan 1
 STR_5364    :Minder dan 15
 STR_5365    :{BLACK}Snelh. werknemers:
@@ -2634,7 +2634,7 @@ STR_5457    :Ondersteuningslimieten uitschakelen
 STR_5458    :Met de klok mee draaien
 STR_5459    :Tegen de klok in draaien
 STR_5460    :Beeld tegen de klok in draaien
-STR_5461    :Bezoekersparameters aanpassen
+STR_5461    :Parameters aanpassen voor alle bezoekers
 STR_5462    :{CURRENCY}
 STR_5463    :Doel: Plezier hebben!
 STR_5464    :Algemeen
@@ -3728,6 +3728,18 @@ STR_6657    :Niet in bezit
 STR_6658    :Land dat niet bij het park hoort en ook niet te koop is.
 STR_6659    :Bezoekers negeren prijzen
 STR_6660    :Als deze optie is ingeschakeld zijn bezoekers bereid om elke prijs te betalen voor attracties en kraampjes.
+STR_6661    :Alles willek.
+STR_6662    :Geeft elk voertuig een willekeurige kleur.
+STR_6663    :Datumcheats
+STR_6664    :Datumcheats tonen
+STR_6665    :Natuur- en weercheats
+STR_6666    :Natuur- en weercheats tonen
+STR_6667    :Fauna
+STR_6668    :Werknemerscheats
+STR_6669    :Werknemerscheats tonen
+STR_6670    :Gedrag bezoekers
+STR_6671    :‘Echte’ namen van werknemers tonen
+STR_6672    :Wissel tussen het tonen van ‘echte’ namen van werknemers en werknemersnummers.
 
 #############
 # Scenarios #

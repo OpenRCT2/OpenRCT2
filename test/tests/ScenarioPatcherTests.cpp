@@ -15,6 +15,7 @@
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/rct12/ScenarioPatcher.h>
 
 /* Test that all JSONs are with the expected formatting, otherwise the fetcher will abort
@@ -42,7 +43,7 @@ TEST(FetchAndApplyScenarioPatch, expected_json_format)
         auto path = entry.path().u8string();
         if (OpenRCT2::String::EndsWith(path, ".parkpatch"))
         {
-            OpenRCT2::RCT12::ApplyScenarioPatch(path, dummySHA, true);
+            OpenRCT2::RCT12::ApplyScenarioPatch(path, dummySHA);
         }
     }
     SUCCEED();
