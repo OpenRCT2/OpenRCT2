@@ -5282,7 +5282,7 @@ static void MiniRCTrackDiag60DegUp(
                     break;
             }
             MetalBSupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::LeftCorner, (direction & 1) ? 42 : 38, direction, height,
+                session, supportType.metal, MetalSupportPlace::LeftCorner, direction, (direction & 1) ? 42 : 38, height,
                 session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
