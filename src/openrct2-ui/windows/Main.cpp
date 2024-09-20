@@ -36,9 +36,9 @@ namespace OpenRCT2::Ui::Windows
             widgets = _mainWidgets;
 
             ViewportCreate(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
-            if (viewport != nullptr)
+            if (viewport != nullptr && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
             {
-                SetViewportFlags(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO);
+                SetViewportFlags();
                 viewport->rotation = 0;
             }
             gShowGridLinesRefCount = 0;
@@ -53,14 +53,9 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void SetViewportFlags(bool isTitleWindow)
+        void SetViewportFlags()
         {
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-            if (isTitleWindow)
-            {
-                return;
-            }
-
             if (Config::Get().general.InvisibleRides)
             {
                 viewport->flags |= VIEWPORT_FLAG_INVISIBLE_RIDES;
