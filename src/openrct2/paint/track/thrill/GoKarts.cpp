@@ -14,6 +14,7 @@
 #include "../../../world/Map.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
+#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
@@ -156,8 +157,8 @@ static void PaintGoKartsTrackFlat(
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::Flat>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -193,9 +194,8 @@ static void PaintGoKartsTrack25DegUp(
 
     session.WoodenSupportsPrependTo = ps;
 
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up25Deg);
+    DrawSupportForSequenceA<TrackElemType::Up25>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     switch (direction)
     {
@@ -247,9 +247,8 @@ static void PaintGoKartsTrackFlatTo25DegUp(
 
     session.WoodenSupportsPrependTo = ps;
 
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::FlatToUp25Deg);
+    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     switch (direction)
     {
@@ -301,9 +300,8 @@ static void PaintGoKartsTrack25DegUpToFlat(
 
     session.WoodenSupportsPrependTo = ps;
 
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up25DegToFlat);
+    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     switch (direction)
     {
@@ -454,8 +452,8 @@ static void PaintGoKartsStation(
         }
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::EndStation>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

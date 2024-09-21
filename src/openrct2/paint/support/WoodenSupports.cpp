@@ -377,6 +377,12 @@ static bool WoodenABPaintSlopeTransitions(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType,
     WoodenSupportTransitionType transitionType, Direction direction, const ImageId& imageTemplate, uint16_t baseHeight)
 {
+    if (EnumValue(transitionType) >= 21)
+    {
+        transitionType = static_cast<WoodenSupportTransitionType>(EnumValue(transitionType) - 21);
+        direction = DirectionReverse(direction);
+    }
+
     const uint16_t supportsDescriptorIndex = (EnumValue(transitionType) * kNumOrthogonalDirections) + direction;
     const SlopedSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
     const auto* imageIds = WoodenCurveSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
@@ -631,7 +637,7 @@ bool DrawSupportForSequenceA(
     int32_t height, ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
-    const auto& desc = ted.sequenceWoodenSupports[sequence];
+    const auto& desc = ted.sequences[sequence].woodenSupports;
 
     if (desc.subType == WoodenSupportSubType::Null)
         return false;
@@ -645,7 +651,7 @@ bool DrawSupportForSequenceB(
     int32_t height, ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
-    const auto& desc = ted.sequenceWoodenSupports[sequence];
+    const auto& desc = ted.sequences[sequence].woodenSupports;
 
     if (desc.subType == WoodenSupportSubType::Null)
         return false;

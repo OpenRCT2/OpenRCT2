@@ -175,12 +175,12 @@ GameActions::Result TrackPlaceAction::Query() const
     }
 
     const auto& ted = GetTrackElementDescriptor(_trackType);
-    const PreviewTrack* trackBlock = ted.block;
     uint32_t numElements = 0;
     // First check if any of the track pieces are outside the park
-    for (; trackBlock->index != 0xFF; trackBlock++)
+    for (uint8_t i = 0; i < ted.numSequences; i++)
     {
-        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), 0 };
+        const auto& trackBlock = ted.sequences[i].clearance;
+        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), 0 };
         auto tileCoords = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
         if (!LocationValid(tileCoords))
@@ -225,16 +225,16 @@ GameActions::Result TrackPlaceAction::Query() const
     }
 
     // If that is not the case, then perform the remaining checks
-    trackBlock = ted.block;
     auto clearanceHeight = rideEntry->Clearance;
 
     money64 costs = 0;
     money64 supportCosts = 0;
-    for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
+    for (int32_t blockIndex = 0; blockIndex < ted.numSequences; blockIndex++)
     {
-        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
+        const auto& trackBlock = ted.sequences[blockIndex].clearance;
+        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), trackBlock.z };
         auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
-        auto quarterTile = trackBlock->quarterTile.Rotate(_origin.direction);
+        auto quarterTile = trackBlock.quarterTile.Rotate(_origin.direction);
 
         if (mapLoc.z < 16)
         {
@@ -244,8 +244,8 @@ GameActions::Result TrackPlaceAction::Query() const
 
         int32_t baseZ = Floor2(mapLoc.z, kCoordsZStep);
 
-        int32_t clearanceZ = trackBlock->clearanceZ;
-        if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
+        int32_t clearanceZ = trackBlock.clearanceZ;
+        if (trackBlock.flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;
         }
@@ -352,8 +352,8 @@ GameActions::Result TrackPlaceAction::Query() const
             }
         }
 
-        int32_t entranceDirections = std::get<0>(ted.sequenceProperties);
-        if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && trackBlock->index == 0)
+        int32_t entranceDirections = ted.sequences[0].flags;
+        if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && blockIndex == 0)
         {
             const auto addElementResult = TrackAddStationElement(
                 { mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign);
@@ -447,24 +447,24 @@ GameActions::Result TrackPlaceAction::Execute() const
     const auto& rtd = ride->GetRideTypeDescriptor();
 
     const auto& ted = GetTrackElementDescriptor(_trackType);
-    const auto& wallEdges = ted.sequenceElementAllowedWallEdges;
 
     money64 costs = 0;
     money64 supportCosts = 0;
-    const PreviewTrack* trackBlock = ted.block;
+    const auto& block0 = ted.sequences[0].clearance;
     auto clearanceHeight = rideEntry->Clearance;
     CoordsXYZ originLocation = CoordsXYZ{ _origin.x, _origin.y, _origin.z }
-        + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
-    for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
+        + CoordsXYZ{ CoordsXY{ block0.x, block0.y }.Rotate(_origin.direction), block0.z };
+    for (int32_t blockIndex = 0; blockIndex < ted.numSequences; blockIndex++)
     {
-        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
+        const auto& trackBlock = ted.sequences[blockIndex].clearance;
+        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), trackBlock.z };
         auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
-        auto quarterTile = trackBlock->quarterTile.Rotate(_origin.direction);
+        auto quarterTile = trackBlock.quarterTile.Rotate(_origin.direction);
 
         int32_t baseZ = Floor2(mapLoc.z, kCoordsZStep);
-        int32_t clearanceZ = trackBlock->clearanceZ;
-        if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
+        int32_t clearanceZ = trackBlock.clearanceZ;
+        if (trackBlock.flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;
         }
@@ -509,7 +509,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             else
             {
                 // Remove walls in the directions this track intersects
-                uint8_t intersectingDirections = wallEdges[blockIndex];
+                uint8_t intersectingDirections = ted.sequences[blockIndex].allowedWallEdges;
                 intersectingDirections ^= 0x0F;
                 intersectingDirections = Numerics::rol4(intersectingDirections, _origin.direction);
                 for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
@@ -558,7 +558,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         {
             if (!(GetFlags() & GAME_COMMAND_FLAG_NO_SPEND))
             {
-                entranceDirections = std::get<0>(ted.sequenceProperties);
+                entranceDirections = ted.sequences[0].flags;
             }
         }
 
@@ -579,7 +579,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         trackElement->SetClearanceZ(clearanceZ);
         trackElement->SetDirection(_origin.direction);
         trackElement->SetHasChain(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED);
-        trackElement->SetSequenceIndex(trackBlock->index);
+        trackElement->SetSequenceIndex(blockIndex);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetTrackType(_trackType);
         trackElement->SetRideType(_rideType);
@@ -625,7 +625,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         }
         trackElement->SetColourScheme(static_cast<RideColourScheme>(_colour));
 
-        entranceDirections = std::get<0>(ted.sequenceProperties);
+        entranceDirections = ted.sequences[0].flags;
         if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
         {
             uint32_t availableDirections = entranceDirections & 0x0F;
@@ -653,7 +653,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         // However, ghost tiles from track designs need to modify station data to display properly
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) || _fromTrackDesign))
         {
-            if (trackBlock->index == 0)
+            if (blockIndex == 0)
             {
                 TrackAddStationElement({ mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY, _fromTrackDesign);
             }
@@ -744,9 +744,10 @@ GameActions::Result TrackPlaceAction::Execute() const
 bool TrackPlaceAction::CheckMapCapacity(int16_t numTiles) const
 {
     const auto& ted = GetTrackElementDescriptor(_trackType);
-    for (const PreviewTrack* trackBlock = ted.block; trackBlock->index != 0xFF; trackBlock++)
+    for (uint8_t i = 0; i < ted.numSequences; i++)
     {
-        auto rotatedTrack = CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction);
+        const auto& trackBlock = ted.sequences[i].clearance;
+        auto rotatedTrack = CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction);
 
         auto tileCoords = CoordsXY{ _origin.x, _origin.y } + rotatedTrack;
         if (!MapCheckCapacityAndReorganise(tileCoords, numTiles))

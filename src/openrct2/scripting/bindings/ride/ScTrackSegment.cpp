@@ -157,14 +157,15 @@ DukValue ScTrackSegment::elements_get() const
     duk_push_array(ctx);
 
     duk_uarridx_t index = 0;
-    for (auto* block = ted.block; block->index != 0xFF; block++)
+    for (uint8_t i = 0; i < ted.numSequences; i++)
     {
+        auto& block = ted.sequences[i].clearance;
         duk_push_object(ctx);
-        duk_push_number(ctx, block->x);
+        duk_push_number(ctx, block.x);
         duk_put_prop_string(ctx, -2, "x");
-        duk_push_number(ctx, block->y);
+        duk_push_number(ctx, block.y);
         duk_put_prop_string(ctx, -2, "y");
-        duk_push_number(ctx, block->z);
+        duk_push_number(ctx, block.z);
         duk_put_prop_string(ctx, -2, "z");
 
         duk_put_prop_index(ctx, -2, index);

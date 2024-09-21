@@ -6300,13 +6300,9 @@ void Vehicle::UpdateSceneryDoor() const
 {
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const PreviewTrack* trackBlock = ted.block;
-    while ((trackBlock + 1)->index != 255)
-    {
-        trackBlock++;
-    }
+    const auto& trackBlock = ted.sequences[ted.numSequences - 1].clearance;
     const TrackCoordinates* trackCoordinates = &ted.coordinates;
-    auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->zEnd }.ToTileStart();
+    auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock.z + trackCoordinates->zEnd }.ToTileStart();
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotationEnd) & 3;
 
     AnimateSceneryDoor<false>({ wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train.IsNull());
@@ -6398,9 +6394,8 @@ void Vehicle::UpdateSceneryDoorBackwards() const
 {
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    const PreviewTrack* trackBlock = ted.block;
     const TrackCoordinates* trackCoordinates = &ted.coordinates;
-    auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->zBegin };
+    auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - ted.sequences[0].clearance.z + trackCoordinates->zBegin };
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotationBegin) & 3;
     direction = DirectionReverse(direction);
 
@@ -6746,7 +6741,7 @@ void Vehicle::Sub6DBF3E()
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!(std::get<0>(ted.sequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (!(ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return;
     }
@@ -8203,7 +8198,7 @@ void Vehicle::Loc6DCE02(const Ride& curRide)
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!(std::get<0>(ted.sequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (!(ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return;
     }

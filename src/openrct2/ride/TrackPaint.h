@@ -455,8 +455,6 @@ void TrackPaintUtilRightQuarterTurn5TilesPaint3(
     PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
     const SpriteBb sprites[][5]);
 
-void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence);
 void TrackPaintUtilRightQuarterTurn3TilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
     const ImageId colourFlags, const uint32_t sprites[4][3], const CoordsXY offsets[4][3], const CoordsXY boundsLengths[4][3],

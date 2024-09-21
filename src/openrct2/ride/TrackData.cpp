@@ -20,6 +20,12 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2::TrackMetaData
 {
+    struct SequenceData
+    {
+        uint8_t numSequences;
+        std::array<SequenceDescriptor, kMaxSequencesPerPiece> sequences;
+    };
+
     // clang-format off
     static constexpr TrackCoordinates _trackCoordinates[] = {
             { 0, 0, 0, 0, 0, 0 },       // ELEM_FLAT
@@ -363,3351 +369,6 @@ namespace OpenRCT2::TrackMetaData
             { 4, 4, 0, 0, -32, 32 },    // TrackElemType::DiagBlockBrakes
     };
     static_assert(std::size(_trackCoordinates) == TrackElemType::Count);
-    
-    /** rct2: 0x0099BA64 */
-    static constexpr uint8_t TrackSequenceProperties[][kMaxSequencesPerPiece] = {
-        { 0 },
-        /* TrackElemType::EndStation */    { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        /* TrackElemType::BeginStation */  { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        /* TrackElemType::MiddleStation */ { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        /* TrackElemType::TowerBase */ { TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_0, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1, TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1, TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2, TRACK_SEQUENCE_FLAG_DIRECTION_2, 0, 0, 0, 0, 0, 0, 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        /* TrackElemType::Maze */   { TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        /* TrackElemType::SpinningTunnel */    { TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        { 0 },
-        /* TrackElemType::FlatTrack1x4A    */ { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, 0, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        /* TrackElemType::FlatTrack2x2     */ { TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1, TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        /* TrackElemType::FlatTrack4x4     */ { TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0, TRACK_SEQUENCE_FLAG_DIRECTION_0, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1, TRACK_SEQUENCE_FLAG_DIRECTION_3, 0, 0, TRACK_SEQUENCE_FLAG_DIRECTION_1, TRACK_SEQUENCE_FLAG_DIRECTION_3, 0, 0, TRACK_SEQUENCE_FLAG_DIRECTION_1, TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_2, TRACK_SEQUENCE_FLAG_DIRECTION_2, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 },
-        /* TrackElemType::FlatTrack2x4     */ { TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0, TRACK_SEQUENCE_FLAG_DIRECTION_0, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1, TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_2, TRACK_SEQUENCE_FLAG_DIRECTION_2, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2, 0, 0, 0, 0, 0, 0, 0, 0 },
-        /* TrackElemType::FlatTrack1x5     */ { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, 0, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        /* TrackElemType::FlatTrack1x1A    */ { TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        /* TrackElemType::FlatTrack1x4B    */ { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_ORIGIN, 0, TRACK_SEQUENCE_FLAG_DIRECTION_1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        /* TrackElemType::FlatTrack1x1B    */ { TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        /* TrackElemType::FlatTrack1x4C    */ { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        /* TrackElemType::FlatTrack3x3     */ { TRACK_SEQUENCE_FLAG_ORIGIN, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_0, TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1, TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1, TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3, TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2, TRACK_SEQUENCE_FLAG_DIRECTION_2, 0, 0, 0, 0, 0, 0, 0 },
-        { 0 }, // TrackElemType::LeftCorkscrewUp
-        { 0 }, // TrackElemType::RightCorkscrewUp
-        { 0 }, // TrackElemType::LeftCorkscrewDown
-        { 0 }, // TrackElemType::RightCorkscrewDown
-        { 0 }, // TrackElemType::LeftMediumHalfLoopUp
-        { 0 }, // TrackElemType::RightMediumHalfLoopUp
-        { 0 }, // TrackElemType::LeftMediumHalfLoopDown
-        { 0 }, // TrackElemType::RightMediumHalfLoopDown
-        { 0 }, // TrackElemType::LeftZeroGRollUp
-        { 0 }, // TrackElemType::RightZeroGRollUp
-        { 0 }, // TrackElemType::LeftZeroGRollDown
-        { 0 }, // TrackElemType::RightZeroGRollDown
-        { 0 }, // TrackElemType::LeftLargeZeroGRollUp
-        { 0 }, // TrackElemType::RightLargeZeroGRollUp
-        { 0 }, // TrackElemType::LeftLargeZeroGRollDown
-        { 0 }, // TrackElemType::RightLargeZeroGRollDown
-    
-        /* LeftFlyerLargeHalfLoopUninvertedUp    */ { 0 },
-        /* RightFlyerLargeHalfLoopUninvertedUp   */ { 0 },
-        /* LeftFlyerLargeHalfLoopInvertedDown    */ { 0 },
-        /* RightFlyerLargeHalfLoopInvertedDown   */ { 0 },
-        /* LeftFlyerLargeHalfLoopInvertedUp      */ { 0 },
-        /* RightFlyerLargeHalfLoopInvertedUp     */ { 0 },
-        /* LeftFlyerLargeHalfLoopUninvertedDown  */ { 0 },
-        /* RightFlyerLargeHalfLoopUninvertedDown */ { 0 },
-        /* FlyerHalfLoopInvertedUp               */ { 0 },
-        /* FlyerHalfLoopUninvertedUp             */ { 0 },
-        { 0 }, // TrackElemType::LeftEighthToDiagUp25          
-        { 0 }, // TrackElemType::RightEighthToDiagUp25        
-        { 0 }, // TrackElemType::LeftEighthToDiagDown25       
-        { 0 }, // TrackElemType::RightEighthToDiagDown25      
-        { 0 }, // TrackElemType::LeftEighthToOrthogonalUp25   
-        { 0 }, // TrackElemType::RightEighthToOrthogonalUp25  
-        { 0 }, // TrackElemType::LeftEighthToOrthogonalDown25 
-        { 0 }, // TrackElemType::RightEighthToOrthogonalDown25 
-        { 0 }, // TrackElemType::DiagUp25ToLeftBankedUp25
-        { 0 }, // TrackElemType::DiagUp25ToRightBankedUp25
-        { 0 }, // TrackElemType::DiagLeftBankedUp25ToUp25
-        { 0 }, // TrackElemType::DiagRightBankedUp25ToUp25
-        { 0 }, // TrackElemType::DiagDown25ToLeftBankedDown25
-        { 0 }, // TrackElemType::DiagDown25ToRightBankedDown25
-        { 0 }, // TrackElemType::DiagLeftBankedDown25ToDown25
-        { 0 }, // TrackElemType::DiagRightBankedDown25ToDown25
-        { 0 }, // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
-        { 0 }, // TrackElemType::DiagRightBankedFlatToRightBankedUp25
-        { 0 }, // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
-        { 0 }, // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
-        { 0 }, // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
-        { 0 }, // TrackElemType::DiagRightBankedFlatToRightBankedDown25
-        { 0 }, // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
-        { 0 }, // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
-        { 0 }, // TrackElemType::DiagFlatToLeftBankedUp25
-        { 0 }, // TrackElemType::DiagFlatToRightBankedUp25
-        { 0 }, // TrackElemType::DiagLeftBankedUp25ToFlat
-        { 0 }, // TrackElemType::DiagRightBankedUp25ToFlat
-        { 0 }, // TrackElemType::DiagFlatToLeftBankedDown25
-        { 0 }, // TrackElemType::DiagFlatToRightBankedDown25
-        { 0 }, // TrackElemType::DiagLeftBankedDown25ToFlat
-        { 0 }, // TrackElemType::DiagRightBankedDown25ToFlat
-        { 0 }, // TrackElemType::DiagUp25LeftBanked
-        { 0 }, // TrackElemType::DiagUp25RightBanked 
-        { 0 }, // TrackElemType::DiagDown25LeftBanked
-        { 0 }, // TrackElemType::DiagDown25RightBanked
-        { 0 }, // TrackElemType::LeftEighthBankToDiagUp25
-        { 0 }, // TrackElemType::RightEighthBankToDiagUp25
-        { 0 }, // TrackElemType::LeftEighthBankToDiagDown25
-        { 0 }, // TrackElemType::RightEighthBankToDiagDown25
-        { 0 }, // TrackElemType::LeftEighthBankToOrthogonalUp25
-        { 0 }, // TrackElemType::RightEighthBankToOrthogonalUp25 
-        { 0 }, // TrackElemType::LeftEighthBankToOrthogonalDown25
-        { 0 }, // TrackElemType::RightEighthBankToOrthogonalDown25
-        /* DiagonalBrakes                        */ { 0 },
-        /* DiagonalBlockBrakes                   */ { 0 },
-    };
-    static_assert(std::size(TrackSequenceProperties) == TrackElemType::Count);
-
-    using WoodenSupportsBySequence = std::array<SequenceWoodenSupport, kMaxSequencesPerPiece>;
-    static constexpr std::array<WoodenSupportsBySequence, TrackElemType::Count> kTrackSequenceWoodenSupports = { {
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // TrackElemType::Flat
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // TrackElemType::EndStation
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // TrackElemType::BeginStation
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // TrackElemType::MiddleStation
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Up25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60Deg } }, // Up60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // FlatToUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToUp60Deg } }, // Up25ToUp60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToUp25Deg } }, // Up60ToUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // Up25ToFlat
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Down25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60Deg } }, // Down60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // FlatToDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToUp25Deg } }, // Down25ToDown60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToUp60Deg } }, // Down60ToDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // Down25ToFlat
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NwSe } }, // LeftQuarterTurn5Tiles
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NwSe } }, // RightQuarterTurn5Tiles
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // FlatToLeftBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // FlatToRightBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // LeftBankToFlat
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // RightBankToFlat
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NwSe } }, // BankedLeftQuarterTurn5Tiles
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Null }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NwSe } }, // BankedRightQuarterTurn5Tiles
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // LeftBankToUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // RightBankToUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // Up25ToLeftBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // Up25ToRightBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // LeftBankToDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // RightBankToDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // Down25ToLeftBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // Down25ToRightBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // LeftBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // RightBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // LeftQuarterTurn5TilesUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // RightQuarterTurn5TilesUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // LeftQuarterTurn5TilesDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // RightQuarterTurn5TilesDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {  WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::NeSw } }, // SBendLeft
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {  WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::NeSw } }, // SBendRight
-        {}, // LeftVerticalLoop
-        {}, // RightVerticalLoop
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // LeftQuarterTurn3Tiles
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner2 }, {}, {}, { WoodenSupportSubType::Corner2 } }, // RightQuarterTurn3Tiles
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // LeftBankedQuarterTurn3Tiles
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // RightBankedQuarterTurn3Tiles
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // LeftQuarterTurn3TilesUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // RightQuarterTurn3TilesUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // LeftQuarterTurn3TilesDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // RightQuarterTurn3TilesDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 } }, // LeftQuarterTurn1Tile
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 } }, // RightQuarterTurn1Tile
-        {}, // LeftTwistDownToUp
-        {}, // RightTwistDownToUp
-        {}, // LeftTwistUpToDown
-        {}, // RightTwistUpToDown
-        {}, // HalfLoopUp
-        {}, // HalfLoopDown
-        {}, // LeftCorkscrewUp
-        {}, // RightCorkscrewUp
-        {}, // LeftCorkscrewDown
-        {}, // RightCorkscrewDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60Deg } }, // FlatToUp60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlat } }, // Up60ToFlat
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlat } }, // FlatToDown60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60Deg } }, // Down60ToFlat
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // TowerBase
-        {}, // TowerSection
-        {}, // FlatCovered
-        {}, // Up25Covered
-        {}, // Up60Covered
-        {}, // FlatToUp25Covered
-        {}, // Up25ToUp60Covered
-        {}, // Up60ToUp25Covered
-        {}, // Up25ToFlatCovered
-        {}, // Down25Covered
-        {}, // Down60Covered
-        {}, // FlatToDown25Covered
-        {}, // Down25ToDown60Covered
-        {}, // Down60ToDown25Covered
-        {}, // Down25ToFlatCovered
-        {}, // LeftQuarterTurn5TilesCovered
-        {}, // RightQuarterTurn5TilesCovered
-        {}, // SBendLeftCovered
-        {}, // SBendRightCovered
-        {}, // LeftQuarterTurn3TilesCovered
-        {}, // RightQuarterTurn3TilesCovered
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 } }, // LeftHalfBankedHelixUpSmall
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 } }, // RightHalfBankedHelixUpSmall
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 } }, // LeftHalfBankedHelixDownSmall
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 } }, // RightHalfBankedHelixDownSmall
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NwSe }, { WoodenSupportSubType::NwSe }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NeSw } }, // LeftHalfBankedHelixUpLarge
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NwSe }, { WoodenSupportSubType::NwSe }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NeSw } }, // RightHalfBankedHelixUpLarge
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NwSe }, { WoodenSupportSubType::NwSe }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NeSw } }, // LeftHalfBankedHelixDownLarge
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NwSe }, { WoodenSupportSubType::NwSe }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NeSw } }, // RightHalfBankedHelixDownLarge
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 } }, // LeftQuarterTurn1TileUp60
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner2 } }, // RightQuarterTurn1TileUp60
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner2 } }, // LeftQuarterTurn1TileDown60
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 } }, // RightQuarterTurn1TileDown60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Brakes
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Booster
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Maze
-        {}, // LeftQuarterBankedHelixLargeUp
-        {}, // RightQuarterBankedHelixLargeUp
-        {}, // LeftQuarterBankedHelixLargeDown
-        {}, // RightQuarterBankedHelixLargeDown
-        {}, // LeftQuarterHelixLargeUp
-        {}, // RightQuarterHelixLargeUp
-        {}, // LeftQuarterHelixLargeDown
-        {}, // RightQuarterHelixLargeDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Up25LeftBanked
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Up25RightBanked
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Waterfall
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Rapids
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // OnRidePhoto
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Down25LeftBanked
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Down25RightBanked
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // Watersplash
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq0 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq1 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq2 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq3 } }, // FlatToUp60LongBase
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq0 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq1 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq2 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq3 } }, // Up60ToFlatLongBase
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Whirlpool
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq0 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq1 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq2 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq3 } }, // Down60ToFlatLongBase
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq0 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq1 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq2 }, SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq3 } }, // FlatToDown60LongBase
-        {}, // CableLiftHill
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // ReverseFreefallSlope
-        {}, // ReverseFreefallVertical
-        {}, // Up90
-        {}, // Down90
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Up60ToUp90
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Down90ToDown60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Up90ToUp60
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // Down60ToDown90
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // BrakeForDrop
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthToDiag
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthToDiag
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // LeftEighthToOrthogonal
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // RightEighthToOrthogonal
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthBankToDiag
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthBankToDiag
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // LeftEighthBankToOrthogonal
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // RightEighthBankToOrthogonal
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp60
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagFlatToUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp25ToUp60
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp60ToUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp25ToFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown60
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagFlatToDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown25ToDown60
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown60ToDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown25ToFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagFlatToUp60
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp60ToFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagFlatToDown60
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown60ToFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagFlatToLeftBank
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagFlatToRightBank
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankToFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBankToFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankToUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBankToUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp25ToLeftBank
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp25ToRightBank
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankToDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBankToDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown25ToLeftBank
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown25ToRightBank
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBank
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // LogFlumeReverser
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // SpinningTunnel
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftBarrelRollUpToDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // RightBarrelRollUpToDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftBarrelRollDownToUp
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // RightBarrelRollDownToUp
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // LeftBankToLeftQuarterTurn3TilesUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner2 }, {}, {}, { WoodenSupportSubType::Corner2 } }, // RightBankToRightQuarterTurn3TilesUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // LeftQuarterTurn3TilesDown25ToLeftBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner2 }, {}, {}, { WoodenSupportSubType::Corner2 } }, // RightQuarterTurn3TilesDown25ToRightBank
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // PoweredLift
-        {}, // LeftLargeHalfLoopUp
-        {}, // RightLargeHalfLoopUp
-        {}, // LeftLargeHalfLoopDown
-        {}, // RightLargeHalfLoopDown
-        {}, // LeftFlyerTwistUp
-        {}, // RightFlyerTwistUp
-        {}, // LeftFlyerTwistDown
-        {}, // RightFlyerTwistDown
-        {}, // FlyerHalfLoopUninvertedUp
-        {}, // FlyerHalfLoopInvertedDown
-        {}, // LeftFlyerCorkscrewUp
-        {}, // RightFlyerCorkscrewUp
-        {}, // LeftFlyerCorkscrewDown
-        {}, // RightFlyerCorkscrewDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat }, { WoodenSupportSubType::NeSw }, {} }, // HeartLineTransferUp
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // HeartLineTransferDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftHeartLineRoll
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // RightHeartLineRoll
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // MinigolfHoleA
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // MinigolfHoleB
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // MinigolfHoleC
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NwSe } }, // MinigolfHoleD
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NwSe } }, // MinigolfHoleE
-        {}, // MultiDimInvertedFlatToDown90QuarterLoop
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // Up90ToInvertedFlatQuarterLoop
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // InvertedFlatToDown90QuarterLoop
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // LeftCurvedLiftHill
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // RightCurvedLiftHill
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftReverser
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // RightReverser
-        {}, // AirThrustTopCap
-        {}, // AirThrustVerticalDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // AirThrustVerticalDownToLevel
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // BlockBrakes
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // LeftBankedQuarterTurn3TileUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner2 }, {}, {}, { WoodenSupportSubType::Corner2 } }, // RightBankedQuarterTurn3TileUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner2 }, {}, {}, { WoodenSupportSubType::Corner2 } }, // LeftBankedQuarterTurn3TileDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::Corner3 }, {}, {}, { WoodenSupportSubType::Corner3 } }, // RightBankedQuarterTurn3TileDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NeSw } }, // LeftBankedQuarterTurn5TileUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NeSw } }, // RightBankedQuarterTurn5TileUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, {}, {}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NeSw } }, // LeftBankedQuarterTurn5TileDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::Corner1 }, {}, {}, { WoodenSupportSubType::Corner3 }, { WoodenSupportSubType::NeSw } }, // RightBankedQuarterTurn5TileDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Up25ToLeftBankedUp25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Up25ToRightBankedUp25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // LeftBankedUp25ToUp25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // RightBankedUp25ToUp25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Down25ToLeftBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // Down25ToRightBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // LeftBankedDown25ToDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg } }, // RightBankedDown25ToDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // LeftBankedFlatToLeftBankedUp25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // RightBankedFlatToRightBankedUp25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // LeftBankedUp25ToLeftBankedFlat
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // RightBankedUp25ToRightBankedFlat
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // LeftBankedFlatToLeftBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // RightBankedFlatToRightBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // LeftBankedDown25ToLeftBankedFlat
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // RightBankedDown25ToRightBankedFlat
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // FlatToLeftBankedUp25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // FlatToRightBankedUp25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // LeftBankedUp25ToFlat
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // RightBankedUp25ToFlat
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // FlatToLeftBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat } }, // FlatToRightBankedDown25
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // LeftBankedDown25ToFlat
-        {  SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg } }, // RightBankedDown25ToFlat
-        {}, // LeftQuarterTurn1TileUp90
-        {}, // RightQuarterTurn1TileUp90
-        {}, // LeftQuarterTurn1TileDown90
-        {}, // RightQuarterTurn1TileDown90
-        {}, // MultiDimUp90ToInvertedFlatQuarterLoop
-        {}, // MultiDimFlatToDown90QuarterLoop
-        {}, // MultiDimInvertedUp90ToFlatQuarterLoop
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // RotationControlToggle
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // FlatTrack1x4A
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // FlatTrack2x2
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // FlatTrack4x4
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // FlatTrack2x4
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // FlatTrack1x5
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // FlatTrack1x1A
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // FlatTrack1x4B
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw } }, // FlatTrack1x1B
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // FlatTrack1x4C
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // FlatTrack3x3
-        {}, // LeftLargeCorkscrewUp
-        {}, // RightLargeCorkscrewUp
-        {}, // LeftLargeCorkscrewDown
-        {}, // RightLargeCorkscrewDown
-        {}, // LeftMediumHalfLoopUp
-        {}, // RightMediumHalfLoopUp
-        {}, // LeftMediumHalfLoopDown
-        {}, // RightMediumHalfLoopDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftZeroGRollUp
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // RightZeroGRollUp
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftZeroGRollDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // RightZeroGRollDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftLargeZeroGRollUp
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // RightLargeZeroGRollUp
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftLargeZeroGRollDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // RightLargeZeroGRollDown
-        {}, // LeftFlyerLargeHalfLoopUninvertedUp
-        {}, // RightFlyerLargeHalfLoopUninvertedUp
-        {}, // LeftFlyerLargeHalfLoopInvertedDown
-        {}, // RightFlyerLargeHalfLoopInvertedDown
-        {}, // LeftFlyerLargeHalfLoopInvertedUp
-        {}, // RightFlyerLargeHalfLoopInvertedUp
-        {}, // LeftFlyerLargeHalfLoopUninvertedDown
-        {}, // RightFlyerLargeHalfLoopUninvertedDown
-        {}, // FlyerHalfLoopInvertedUp
-        {}, // FlyerHalfLoopUninvertedDown
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthToDiagUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthToDiagUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthToDiagDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthToDiagDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftEighthToOrthogonalUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NwSe }, { WoodenSupportSubType::NwSe } }, // RightEighthToOrthogonalUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // LeftEighthToOrthogonalDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // RightEighthToOrthogonalDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp25ToLeftBankedUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp25ToRightBankedUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankedUp25ToUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBankedUp25ToUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown25ToLeftBankedDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown25ToRightBankedDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankedDown25ToDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBankedDown25ToDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankedFlatToLeftBankedUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBankedFlatToRightBankedUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankedUp25ToLeftBankedFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBankedUp25ToRightBankedFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankedFlatToLeftBankedDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBankedFlatToRightBankedDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankedDown25ToLeftBankedFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBankedDown25ToRightBankedFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagFlatToLeftBankedUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagFlatToRightBankedUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankedUp25ToFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBankedUp25ToFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagFlatToLeftBankedDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagFlatToRightBankedDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagLeftBankedDown25ToFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagRightBankedDown25ToFlat
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp25LeftBanked
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagUp25RightBanked
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown25LeftBanked
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagDown25RightBanked
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthBankToDiagUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthBankToDiagUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // LeftEighthBankToDiagDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // RightEighthBankToDiagDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::NeSw } }, // LeftEighthBankToOrthogonalUp25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, { WoodenSupportSubType::NwSe }, { WoodenSupportSubType::NwSe } }, // RightEighthBankToOrthogonalUp25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // LeftEighthBankToOrthogonalDown25
-        { SequenceWoodenSupport{ WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg }, { WoodenSupportSubType::NeSw }, { WoodenSupportSubType::Corner1 }, { WoodenSupportSubType::Corner3 }, {} }, // RightEighthBankToOrthogonalDown25
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagBrakes
-        { SequenceWoodenSupport{}, { WoodenSupportSubType::Corner0 }, { WoodenSupportSubType::Corner2 }, {} }, // DiagBlockBrakes
-    } };
-    
-    constexpr PreviewTrack kTrackBlockEnd { 255, 255, 255, 255, 255, {255, 255}, 255 };
-    
-    static constexpr PreviewTrack TrackBlocks000[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks001[] = {
-        { 0, 0, 0, 0, 0,{ 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks002[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks003[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks004[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks005[] = {
-        { 0, 0, 0, 0, 64, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks006[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks007[] = {
-        { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks008[] = {
-        { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks009[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks010[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks011[] = {
-        { 0, 0, 0, 0, 64, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks012[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks013[] = {
-        { 0, 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks014[] = {
-        { 0, 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks015[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks016[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
-        { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks017[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
-        { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks018[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks019[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks020[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks021[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks022[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
-        { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks023[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
-        { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks024[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks025[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks026[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks027[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks028[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks029[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks030[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks031[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks032[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks033[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks034[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
-        { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
-        { 6, -64, -64, 48, 16, { 0b1111, 0b0110 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks035[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
-        { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
-        { 6, -64, 64, 48, 16, { 0b1111, 0b1001 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks036[] = {
-        { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-        { 1, 0, -32, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
-        { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
-        { 6, -64, -64, 0, 16, { 0b1111, 0b1001 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks037[] = {
-        { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-        { 1, 0, 32, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
-        { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
-        { 6, -64, 64, 0, 16, { 0b1111, 0b0110 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks038[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 2, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        { 3, -64, -32, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks039[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 2, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        { 3, -64, 32, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    // LeftVerticalLoop
-    static constexpr PreviewTrack TrackBlocks040[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
-        { 2, -64, 0, 32, 96, { 0b0010, 0 }, 0 },
-        { 3, -32, 0, 120, 16, { 0b0110, 0 }, 0 },
-        { 4, -32, -32, 120, 0, { 0b0000, 0 }, 0 },
-        { 5, 0, 0, 120, 0, { 0b0000, 0 }, 0 },
-        { 6, 0, -32, 120, 16, { 0b1001, 0 }, 0 },
-        { 7, 32, -32, 32, 96, { 0b1000, 0 }, 0 },
-        { 8, 0, -32, 16, 16, { 0b1111, 0b0011 }, 0 },
-        { 9, -32, -32, 0, 16, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    // RightVerticalLoop
-    static constexpr PreviewTrack TrackBlocks041[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
-        { 2, -64, 0, 32, 96, { 0b0001, 0 }, 0 },
-        { 3, -32, 0, 120, 16, { 0b1001, 0 }, 0 },
-        { 4, -32, 32, 120, 0, { 0b0000, 0 }, 0 },
-        { 5, 0, 0, 120, 0, { 0b0000, 0 }, 0 },
-        { 6, 0, 32, 120, 16, { 0b0110, 0 }, 0 },
-        { 7, 32, 32, 32, 96, { 0b0100, 0 }, 0 },
-        { 8, 0, 32, 16, 16, { 0b1111, 0b0011 }, 0 },
-        { 9, -32, 32, 0, 16, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks042[] = {
-        { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b0111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks043[] = {
-        { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1011, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks044[] = {
-        { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b0111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks045[] = {
-        { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1011, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks046[] = {
-        { 0, 0, 0, 0, 16, { 0b0111, 0b0100 }, 0 },
-        { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 16, 16,{ 0b0111, 0b0110 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks047[] = {
-        { 0, 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
-        { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 16, 16,{ 0b1011, 0b1001 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks048[] = {
-        { 0, 0, 0, 16, 16,{ 0b0111, 0b0011 }, 0 },
-        { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks049[] = {
-        { 0, 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
-        { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks050[] = {
-        { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks051[] = {
-        { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks052[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 16, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks053[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 16, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks054[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -16, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -16, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks055[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -16, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -16, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    // HalfLoopUp
-    static constexpr PreviewTrack TrackBlocks056[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
-        { 2, -64, 0, 32, 96,{ 0b0011, 0 }, 0 },
-        { 3, -32, 0, 120, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    // HalfLoopDown
-    static constexpr PreviewTrack TrackBlocks057[] = {
-        { 0, 0, 0, -32, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -120, 96,{ 0b0011, 0 }, 0 },
-        { 2, 0, 0, -136, 16, { 0b1111, 0b1100 }, 0 },
-        { 3, 32, 0, -152, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks058[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 24, 32, { 0b0111, 0 }, 0 },
-        { 2, -32, -32, 48, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks059[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 24, 32, { 0b1011, 0 }, 0 },
-        { 2, -32, 32, 48, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks060[] = {
-        { 0, 0, 0, -32, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -56, 32, { 0b0111, 0 }, 0 },
-        { 2, -32, -32, -80, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks061[] = {
-        { 0, 0, 0, -32, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -56, 32, { 0b1011, 0 }, 0 },
-        { 2, -32, 32, -80, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks062[] = {
-        { 0, 0, 0, 0, 24, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks063[] = {
-        { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks064[] = {
-        { 0, 0, 0, 0, 24, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks065[] = {
-        { 0, 0, 0, 0, 24, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks066[] = {
-        { 0, 0, 0, 0, 64, { 0b1111, 0 }, 0 },
-        { 1, -32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, 0, -32, 0, 0, { 0b1111, 0 }, 0 },
-        { 5, 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 6, 32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        { 7, 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 8, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks067[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_1 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks068[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks069[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks070[] = {
-        { 0, 0, 0, 0, 64, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks071[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks072[] = {
-        { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks073[] = {
-        { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks074[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks075[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks076[] = {
-        { 0, 0, 0, 0, 64, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks077[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks078[] = {
-        { 0, 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks079[] = {
-        { 0, 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks080[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks081[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
-        { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks082[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
-        { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks083[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 2, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        { 3, -64, -32, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks084[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 2, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        { 3, -64, 32, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks085[] = {
-        { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b0111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks086[] = {
-        { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1011, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks087[] = {
-        { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 4, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 0, 4, { 0b0111, 0 }, 0 },
-        { 4, -32, -64, 8, 0, { 0b1011, 0 }, 0 },
-        { 5, 0, -64, 8, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 6, -32, -96, 8, 4, { 0b0001, 0 }, 0 },
-        { 7, 0, -96, 8, 4, { 0b1011, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks088[] = {
-        { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 4, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 0, 4, { 0b1011, 0 }, 0 },
-        { 4, -32, 64, 8, 0, { 0b0111, 0 }, 0 },
-        { 5, 0, 64, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 6, -32, 96, 8, 4, { 0b0010, 0 }, 0 },
-        { 7, 0, 96, 8, 4, { 0b0111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks089[] = {
-        { 0, 0, 0, 8, 4, { 0b0111, 0 }, 0 },
-        { 1, 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 8, 0, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 8, 0, { 0b0111, 0 }, 0 },
-        { 4, -32, -64, 0, 4, { 0b1011, 0 }, 0 },
-        { 5, 0, -64, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 6, -32, -96, 0, 0, { 0b0001, 0 }, 0 },
-        { 7, 0, -96, 0, 0, { 0b1011, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks090[] = {
-        { 0, 0, 0, 8, 4, { 0b1011, 0 }, 0 },
-        { 1, 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 8, 0, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 8, 0, { 0b1011, 0 }, 0 },
-        { 4, -32, 64, 0, 4, { 0b0111, 0 }, 0 },
-        { 5, 0, 64, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 6, -32, 96, 0, 0, { 0b0010, 0 }, 0 },
-        { 7, 0, 96, 0, 0, { 0b0111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks091[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 0, 4, { 0b0111, 0 }, 0 },
-        { 6, -64, -64, 0, 4, { 0b1111, 0 }, 0 },
-        { 7, -64, -96, 8, 0, { 0b1111, 0 }, 0 },
-        { 8, -32, -96, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 9, -64, -128, 8, 0, { 0b1011, 0 }, 0 },
-        { 10, -32, -128, 8, 0, { 0b1110, 0 }, 0 },
-        { 11, 0, -128, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 12, -32, -160, 8, 4, { 0b1011, 0 }, 0 },
-        { 13, 0, -160, 8, 4, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks092[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 0, 4, { 0b1011, 0 }, 0 },
-        { 6, -64, 64, 0, 4, { 0b1111, 0 }, 0 },
-        { 7, -64, 96, 8, 0, { 0b1111, 0 }, 0 },
-        { 8, -32, 96, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 9, -64, 128, 8, 0, { 0b0111, 0 }, 0 },
-        { 10, -32, 128, 8, 0, { 0b1101, 0 }, 0 },
-        { 11, 0, 128, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 12, -32, 160, 8, 4, { 0b0111, 0 }, 0 },
-        { 13, 0, 160, 8, 4, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks093[] = {
-        { 0, 0, 0, 8, 4, { 0b1111, 0 }, 0 },
-        { 1, 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 8, 4, { 0b0111, 0 }, 0 },
-        { 3, -32, -32, 8, 0, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 8, 0, { 0b0111, 0 }, 0 },
-        { 6, -64, -64, 8, 0, { 0b1111, 0 }, 0 },
-        { 7, -64, -96, 0, 4, { 0b1111, 0 }, 0 },
-        { 8, -32, -96, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 9, -64, -128, 0, 4, { 0b1011, 0 }, 0 },
-        { 10, -32, -128, 0, 0, { 0b1110, 0 }, 0 },
-        { 11, 0, -128, 0, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 12, -32, -160, 0, 0, { 0b1011, 0 }, 0 },
-        { 13, 0, -160, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks094[] = {
-        { 0, 0, 0, 8, 4, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 8, 4, { 0b1011, 0 }, 0 },
-        { 3, -32, 32, 8, 0, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 8, 0, { 0b1011, 0 }, 0 },
-        { 6, -64, 64, 8, 0, { 0b1111, 0 }, 0 },
-        { 7, -64, 96, 0, 4, { 0b1111, 0 }, 0 },
-        { 8, -32, 96, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 9, -64, 128, 0, 4, { 0b0111, 0 }, 0 },
-        { 10, -32, 128, 0, 0, { 0b1101, 0 }, 0 },
-        { 11, 0, 128, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 12, -32, 160, 0, 0, { 0b0111, 0 }, 0 },
-        { 13, 0, 160, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks095[] = {
-        { 0, 0, 0, 0, 64, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks096[] = {
-        { 0, 0, 0, 0, 64, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks097[] = {
-        { 0, 0, 0, 0, 64, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks098[] = {
-        { 0, 0, 0, 0, 64, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks099[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks100[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks101[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks102[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 0, 12, { 0b0111, 0 }, 0 },
-        { 6, -64, -64, 0, 12, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks103[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 0, 12, { 0b1011, 0 }, 0 },
-        { 6, -64, 64, 0, 12, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks104[] = {
-        { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-        { 1, 0, -32, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 12, { 0b0111, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
-        { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks105[] = {
-        { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 12, { 0b1011, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
-        { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks106[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 0, 12, { 0b0111, 0 }, 0 },
-        { 6, -64, -64, 0, 12, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks107[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 0, 12, { 0b1011, 0 }, 0 },
-        { 6, -64, 64, 0, 12, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks108[] = {
-        { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-        { 1, 0, -32, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 12, { 0b0111, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 0, 0, { 0b0111, 0 }, 0 },
-        { 6, -64, -64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks109[] = {
-        { 0, 0, 0, 0, 12, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 12, { 0b1011, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 0, 0, { 0b1011, 0 }, 0 },
-        { 6, -64, 64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks110[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks111[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks112[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks113[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks114[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks115[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks116[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks117[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 4, -128, 0, 0, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks118[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 16, 24, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 40, 48, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks119[] = {
-        { 0, 0, 0, 0, 48, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 40, 48, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 64, 24, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 80, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks120[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks121[] = {
-        { 0, 0, 0, 40, 48, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 16, 24, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks122[] = {
-        { 0, 0, 0, 80, 8, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 64, 24, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 40, 48, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 0, 48, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks123[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
-        { 2, -64, 0, -32, 32, { 0b1111, 0b0011 }, 0 },
-        { 3, -96, 0, -96, 64, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks124[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 32, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 0, 48, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 0, 80, { 0b1111, 0 }, 0 },
-        { 4, -128, 0, 0, 160, { 0b1111, 0 }, 0 },
-        { 5, -192, 0, 0, 208, { 0b1111, 0 }, 0 },
-        { 6, -160, 0, 0, 208, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks125[] = {
-        { 0, 0, 0, 0, 48, { 0b1111, 0 }, 0 },
-        { 1, 32, 0, 0, 48, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks126[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks127[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks128[] = {
-        { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks129[] = {
-        { 0, 0, 0, 0, 32, { 0b1111, 0b0011 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks130[] = {
-        { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks131[] = {
-        { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks132[] = {
-        { 0, 0, 0, 0, 24, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks133[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, -32, 0, 0, { 0b1000, 0 }, 0 },
-        { 3, -64, 0, 0, 0, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 4, -64, -32, 0, 0, { 0b0001, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks134[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, 32, 0, 0, { 0b0100, 0 }, 0 },
-        { 3, -64, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 4, -64, 32, 0, 0, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks135[] = {
-        { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
-        { 2, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, -64, 32, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks136[] = {
-        { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, 0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, -32, 64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks137[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, -32, 0, 0, { 0b1000, 0 }, 0 },
-        { 3, -64, 0, 0, 0, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 4, -64, -32, 0, 0, { 0b0001, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks138[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, 32, 0, 0, { 0b0100, 0 }, 0 },
-        { 3, -64, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 4, -64, 32, 0, 0, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks139[] = {
-        { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b0001, 0 }, 0 },
-        { 2, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, -64, 32, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks140[] = {
-        { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, 0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, -32, 64, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks141[] = {
-        { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks142[] = {
-        { 0, 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 16, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks143[] = {
-        { 0, 0, 0, 0, 64, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 64, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks144[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks145[] = {
-        { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks146[] = {
-        { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks147[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks148[] = {
-        { 0, 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 16, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks149[] = {
-        { 0, 0, 0, 0, 64, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 64, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks150[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks151[] = {
-        { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks152[] = {
-        { 0, 0, 0, 0, 32, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 32, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks153[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks154[] = {
-        { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks155[] = {
-        { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks156[] = {
-        { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks157[] = {
-        { 0, 0, 0, 0, 24, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 24, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks158[] = {
-        { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks159[] = {
-        { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks160[] = {
-        { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks161[] = {
-        { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks162[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks163[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks164[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks165[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks166[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks167[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks168[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks169[] = {
-        { 0, 0, 0, 0, 8, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 8, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks170[] = {
-        { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks171[] = {
-        { 0, 0, 0, 0, 0, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 0, 0, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks172[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks173[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks174[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 0, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks175[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 0, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks176[] = {
-        { 0, 0, 0, -32, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -32, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -32, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks177[] = {
-        { 0, 0, 0, -32, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -32, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -32, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks178[] = {
-        { 0, 0, 0, 0, 0, { 0b0111, 0b0100 }, 0 },
-        { 1, 0, -32, 0, 16, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 16, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 16, 16,{ 0b0111, 0b0110 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks179[] = {
-        { 0, 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
-        { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 16, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 16, 16,{ 0b1011, 0b1001 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks180[] = {
-        { 0, 0, 0, 16, 16,{ 0b0111, 0b0011 }, 0 },
-        { 1, 0, -32, 0, 16, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 16, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 0, 0, { 0b0111, 0b0001 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks181[] = {
-        { 0, 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
-        { 1, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 16, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1011, 0b0010 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks182[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    // LeftLargeHalfLoopUp
-    static constexpr PreviewTrack TrackBlocks183[] = {
-        { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
-        { 2, -64, 0, 32, 56, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 64, 192, { 0b1111, 0 }, 0 },
-        { 4, -128, -32, 120, 96, { 0b1111, 0 }, 0 },
-        { 5, -96, -32, 64, 192, { 0b1111, 0 }, 0 },
-        { 6, -64, -32, 248, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    // RightLargeHalfLoopUp
-    static constexpr PreviewTrack TrackBlocks184[] = {
-        { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
-        { 2, -64, 0, 32, 56, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 64, 192, { 0b1111, 0 }, 0 },
-        { 4, -128, 32, 120, 96, { 0b1111, 0 }, 0 },
-        { 5, -96, 32, 64, 192, { 0b1111, 0 }, 0 },
-        { 6, -64, 32, 248, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    // LeftLargeHalfLoopDown
-    static constexpr PreviewTrack TrackBlocks185[] = {
-        { 0, 0, 0, -32, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
-        { 3, -32, -32, -216, 192, { 0b1111, 0 }, 0 },
-        { 4, 0, -32, -248, 56, { 0b1111, 0 }, 0 },
-        { 5, 32, -32, -264, 40, { 0b1111, 0b1100 }, 0 },
-        { 6, 64, -32, -280, 24, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    // RightLargeHalfLoopDown
-    static constexpr PreviewTrack TrackBlocks186[] = {
-        { 0, 0, 0, -32, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
-        { 3, -32, 32, -216, 192, { 0b1111, 0 }, 0 },
-        { 4, 0, 32, -248, 56, { 0b1111, 0 }, 0 },
-        { 5, 32, 32, -264, 40, { 0b1111, 0b1100 }, 0 },
-        { 6, 64, 32, -280, 24, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks187[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -16, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -16, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks188[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -16, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -16, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks189[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 16, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks190[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 16, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    // FlyerHalfLoopUninvertedUp
-    static constexpr PreviewTrack TrackBlocks191[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
-        { 2, -64, 0, 32, 96,{ 0b0011, 0 }, 0 },
-        { 3, -32, 0, 120, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    // FlyerHalfLoopInvertedDown
-    static constexpr PreviewTrack TrackBlocks192[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -88, 96,{ 0b0011, 0 }, 0 },
-        { 2, 0, 0, -104, 16, { 0b1111, 0b1100 }, 0 },
-        { 3, 32, 0, -120, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks193[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 24, 32, { 0b0111, 0 }, 0 },
-        { 2, -32, -32, 48, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks194[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 24, 32, { 0b1011, 0 }, 0 },
-        { 2, -32, 32, 48, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks195[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -24, 32, { 0b0111, 0 }, 0 },
-        { 2, -32, -32, -48, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks196[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -24, 32, { 0b1011, 0 }, 0 },
-        { 2, -32, 32, -48, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks197[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 32, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 16, 0, { 0b1111, 0 }, 0 },
-        { 3, 0, 0, 32, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks198[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -32, 32, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -16, 0, { 0b1111, 0 }, 0 },
-        { 3, 0, 0, -32, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks199[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, -128, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 5, -160, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks200[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, -128, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 5, -160, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks201[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks202[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks203[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks204[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks205[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks206[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, -32, 0, -40, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 2, -64, 0, -96, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 3, -96, 0, -96, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks207[] = {
-        { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, 32, 0, 56, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 2, 64, 0, 96, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks208[] = {
-        { 0, 0, 0, -32, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, -32, 0, -72, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 2, -64, 0, -128, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 3, -96, 0, -128, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks209[] = {
-        { 0, 0, 0, 0, 0, { 0b0111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 0, 8, { 0b0111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks210[] = {
-        { 0, 0, 0, 0, 0, { 0b1011, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 0, 8, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 0, 8, { 0b1011, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks211[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, -32, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, -64, -32, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 5, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks212[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, -64, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 5, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks213[] = {
-        { 0, 0, 0, 0, 32, { 0b1111, 0 }, 0 },
-        { 1, 32, 0, 0, 32, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, 0, 32, { 0b1111, 0 }, 0 },
-        { 3, -32, 0, 0, 32, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks214[] = {
-        { 0, 0, 0, 0, 48, { 0b1111, 0 }, 0 },
-        { 1, 32, 0, 0, 48, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks215[] = {
-        { 0, 0, 0, 0, 208, { 0b1111, 0 }, 0 },
-        { 1, 32, 0, 0, 208, { 0b1111, 0 }, 0 },
-        { 2, -32, 0, 0, 160, { 0b1111, 0 }, 0 },
-        { 3, -64, 0, 0, 80, { 0b1111, 0 }, 0 },
-        { 4, -96, 0, 0, 48, { 0b1111, 0 }, 0 },
-        { 5, -128, 0, 0, 32, { 0b1111, 0 }, 0 },
-        { 6, -160, 0, 0, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks216[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks217[] = {
-        { 0, 0, 0, 0, 16, { 0b0111, 0b0100 }, 0 },
-        { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 16, 16,{ 0b0111, 0b0110 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks218[] = {
-        { 0, 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
-        { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 16, 16,{ 0b1011, 0b1001 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks219[] = {
-        { 0, 0, 0, 16, 16,{ 0b0111, 0b0011 }, 0 },
-        { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 0, { 0b0010, 0 }, 0 },
-        { 3, -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks220[] = {
-        { 0, 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
-        { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 0, { 0b0001, 0 }, 0 },
-        { 3, -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks221[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        { 1, 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
-        { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
-        { 6, -64, -64, 48, 16, { 0b1111, 0b0110 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks222[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        { 1, 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
-        { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
-        { 6, -64, 64, 48, 16, { 0b1111, 0b1001 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks223[] = {
-        { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-        { 1, 0, -32, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
-        { 3, -32, -32, 24, 16, { 0b1101, 0 }, 0 },
-        { 4, -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
-        { 6, -64, -64, 0, 16, { 0b1111, 0b1001 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks224[] = {
-        { 0, 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
-        { 1, 0, 32, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 2, -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
-        { 3, -32, 32, 24, 16, { 0b1110, 0 }, 0 },
-        { 4, -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 5, -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
-        { 6, -64, 64, 0, 16, { 0b1111, 0b0110 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks225[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks226[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks227[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks228[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks229[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks230[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks231[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks232[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks233[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks234[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks235[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks236[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks237[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks238[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks239[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks240[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks241[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks242[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks243[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks244[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks245[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks246[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks247[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks248[] = {
-        { 0, 0, 0, 0, 8, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks249[] = {
-        { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, 0, 32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks250[] = {
-        { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, 0, -32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks251[] = {
-        { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, 0, 32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks252[] = {
-        { 0, 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, 0, -32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks253[] = {
-        { 0, 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, 32, 0, 56, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 2, 64, 0, 96, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks254[] = {
-        { 0, 0, 0, -32, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, -32, 0, -72, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 2, -64, 0, -128, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 3, -96, 0, -128, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocks255[] = {
-        { 0, 0, 0, 32, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 1, 32, 0, 88, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        { 2, 64, 0, 128, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRotationControlToggle[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlatTrack1x4A[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlatTrack2x2[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, 32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlatTrack4x4[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, 0, 64, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, 0, 96, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, 32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 5, 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 6, 32, 64, 0, 0, { 0b1111, 0 }, 0 },
-        { 7, 32, 96, 0, 0, { 0b1111, 0 }, 0 },
-        { 8, 64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 9, 64, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 10, 64, 64, 0, 0, { 0b1111, 0 }, 0 },
-        { 11, 64, 96, 0, 0, { 0b1111, 0 }, 0 },
-        { 12, 96, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 13, 96, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 14, 96, 64, 0, 0, { 0b1111, 0 }, 0 },
-        { 15, 96, 96, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlatTrack2x4[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, 0, 64, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, 0, 96, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, 32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 5, 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 6, 32, 64, 0, 0, { 0b1111, 0 }, 0 },
-        { 7, 32, 96, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlatTrack1x5[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, 32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, 64, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlatTrack1x1A[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlatTrack1x4B[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlatTrack1x1B[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlatTrack1x4C[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -64, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlatTrack3x3[] = {
-        { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 1, -32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        { 2, -32, 0, 0, 0, { 0b1111, 0 }, 0 },
-        { 3, -32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 4, 0, -32, 0, 0, { 0b1111, 0 }, 0 },
-        { 5, 0, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 6, 32, -32, 0, 0, { 0b1111, 0 }, 0 },
-        { 7, 32, 32, 0, 0, { 0b1111, 0 }, 0 },
-        { 8, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
-        kTrackBlockEnd
-    };
-    
-    
-    static constexpr PreviewTrack TrackBlocksLeftLargeCorkscrewUp[] = {
-        { 0,   0,   0,  0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32,   0,  8, 32, { 0b1111, 0 }, 0 },
-        { 2, -64,   0, 32, 24, { 0b0111, 0 }, 0 },
-        { 3, -32, -32, 32, 24, { 0b1000, 0 }, 0 },
-        { 4, -64, -32, 48, 40, { 0b1111, 0 }, 0 },
-        { 5, -64, -64, 72, 24, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightLargeCorkscrewUp[] = {
-        { 0,   0,   0 ,  0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32,   0,   8, 32, { 0b1111, 0 }, 0 },
-        { 2, -64,   0,  32, 24, { 0b1011, 0 }, 0 },
-        { 3, -32,  32,  32, 24, { 0b0100, 0 }, 0 },
-        { 4, -64,  32,  48, 40, { 0b1111, 0 }, 0 },
-        { 5, -64,  64,  72, 24, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftLargeCorkscrewDown[] = {
-        { 0,   0,   0 ,  -40, 24, { 0b1111, 0 }, 0 },
-        { 1, -32,   0,   -64, 40, { 0b1111, 0 }, 0 },
-        { 2, -32, -32,   -80, 24, { 0b1000, 0 }, 0 },
-        { 3, -64,   0,   -80, 24, { 0b0111, 0 }, 0 },
-        { 4, -64, -32,  -104, 32, { 0b1111, 0 }, 0 },
-        { 5, -64, -64,  -112, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightLargeCorkscrewDown[] = {
-        { 0,   0,   0 ,  -40, 24, { 0b1111, 0 }, 0 },
-        { 1, -32,   0,   -64, 40, { 0b1111, 0 }, 0 },
-        { 2, -32,  32,   -80, 24, { 0b0100, 0 }, 0 },
-        { 3, -64,   0,   -80, 24, { 0b1011, 0 }, 0 },
-        { 4, -64,  32,  -104, 32, { 0b1111, 0 }, 0 },
-        { 5, -64,  64,  -112, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftMediumHalfLoopUp[] = {
-        { 0,   0,   0,  0, 24, { 0b1111, 0 }, 0 },
-        { 1, -32,   0, 16, 48, { 0b1111, 0 }, 0 },
-        { 2, -64,   0, 56,120, { 0b1111, 0 }, 0 },
-        { 3, -64, -32, 56,120, { 0b1111, 0 }, 0 },
-        { 4, -32, -32,168, 24, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightMediumHalfLoopUp[] = {
-        { 0,   0,   0,  0, 24, { 0b1111, 0 }, 0 },
-        { 1, -32,   0, 16, 48, { 0b1111, 0 }, 0 },
-        { 2, -64,   0, 56,120, { 0b1111, 0 }, 0 },
-        { 3, -64,  32, 56,120, { 0b1111, 0 }, 0 },
-        { 4, -32,  32,168, 24, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftMediumHalfLoopDown[] = {
-        { 0,   0,   0,  -48, 24, { 0b1111, 0 }, 0 },
-        { 1, -32,   0, -160,120, { 0b1111, 0 }, 0 },
-        { 2, -32, -32, -160,120, { 0b1111, 0 }, 0 },
-        { 3,   0, -32, -200, 48, { 0b1111, 0 }, 0 },
-        { 4,  32, -32, -216, 24, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightMediumHalfLoopDown[] = {
-        { 0,   0,   0 ,  -48,  24, { 0b1111, 0 }, 0 },
-        { 1, -32,   0,  -160, 120, { 0b1111, 0 }, 0 },
-        { 2, -32,  32,  -160, 120, { 0b1111, 0 }, 0 },
-        { 3,   0,  32,  -200,  48, { 0b1111, 0 }, 0 },
-        { 4,  32,  32,  -216,  24, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftZeroGRollUp[] = {
-        { 0,   0,   0,  0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32,   0,  8, 24, { 0b1111, 0 }, 0 },
-        { 2, -64,   0,  24, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightZeroGRollUp[] = {
-        { 0,   0,   0,  0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32,   0,  8, 24, { 0b1111, 0 }, 0 },
-        { 2, -64,   0,  24, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftZeroGRollDown[] = {
-        { 0,   0,   0, -32, 16, { 0b1111, 0 }, 0 },
-        { 1, -32,   0, -48, 24, { 0b1111, 0 }, 0 },
-        { 2, -64,   0, -56, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightZeroGRollDown[] = {
-        { 0,   0,   0 ,-32, 16, { 0b1111, 0 }, 0 },
-        { 1, -32,   0, -48, 24, { 0b1111, 0 }, 0 },
-        { 2, -64,   0, -56, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    
-    static constexpr PreviewTrack TrackBlocksLeftLargeZeroGRollUp[] = {
-        { 0,   0,   0,  0, 64, { 0b1111, 0 }, 0 },
-        { 1, -32,   0, 56, 48, { 0b1111, 0 }, 0 },
-        { 2, -64,   0, 96, 40, { 0b1111, 0 }, 0 },
-        { 3, -96,   0,120, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightLargeZeroGRollUp[] = {
-        { 0,   0,   0,   0, 64, { 0b1111, 0 }, 0 },
-        { 1, -32,   0,  56, 48, { 0b1111, 0 }, 0 },
-        { 2, -64,   0,  96, 40, { 0b1111, 0 }, 0 },
-        { 3, -96,   0, 120, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftLargeZeroGRollDown[] = {
-        { 0,   0,   0,  -32, 16, { 0b1111, 0 }, 0 },
-        { 1, -32,   0,  -56, 40, { 0b1111, 0 }, 0 },
-        { 2, -64,   0,  -96, 48, { 0b1111, 0 }, 0 },
-        { 3, -96,   0,  -152, 64, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightLargeZeroGRollDown[] = {
-        { 0,   0,   0 , -32, 16, { 0b1111, 0 }, 0 },
-        { 1, -32,   0,  -56, 40, { 0b1111, 0 }, 0 },
-        { 2, -64,   0,  -96, 48, { 0b1111, 0 }, 0 },
-        { 3, -96,   0, -152, 64, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftFlyerLargeHalfLoopUninvertedUp[] = {
-        { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
-        { 2, -64, 0, 32, 56, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 64, 192, { 0b1111, 0 }, 0 },
-        { 4, -128, -32, 120, 96, { 0b1111, 0 }, 0 },
-        { 5, -96, -32, 64, 192, { 0b1111, 0 }, 0 },
-        { 6, -64, -32, 248, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightFlyerLargeHalfLoopUninvertedUp[] = {
-        { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
-        { 2, -64, 0, 32, 56, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 64, 192, { 0b1111, 0 }, 0 },
-        { 4, -128, 32, 120, 96, { 0b1111, 0 }, 0 },
-        { 5, -96, 32, 64, 192, { 0b1111, 0 }, 0 },
-        { 6, -64, 32, 248, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftFlyerLargeHalfLoopInvertedDown[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -184, 192, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -128, 96, { 0b1111, 0 }, 0 },
-        { 3, -32, -32, -184, 192, { 0b1111, 0 }, 0 },
-        { 4, 0, -32, -216, 56, { 0b1111, 0 }, 0 },
-        { 5, 32, -32, -232, 40, { 0b1111, 0b1100 }, 0 },
-        { 6, 64, -32, -248, 24, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightFlyerLargeHalfLoopInvertedDown[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -184, 192, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -128, 96, { 0b1111, 0 }, 0 },
-        { 3, -32, 32, -184, 192, { 0b1111, 0 }, 0 },
-        { 4, 0, 32, -216, 56, { 0b1111, 0 }, 0 },
-        { 5, 32, 32, -232, 40, { 0b1111, 0b1100 }, 0 },
-        { 6, 64, 32, -248, 24, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftFlyerLargeHalfLoopInvertedUp[] = {
-        { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
-        { 2, -64, 0, 32, 56, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 64, 192, { 0b1111, 0 }, 0 },
-        { 4, -128, -32, 120, 96, { 0b1111, 0 }, 0 },
-        { 5, -96, -32, 64, 192, { 0b1111, 0 }, 0 },
-        { 6, -64, -32, 248, 32, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightFlyerLargeHalfLoopInvertedUp[] = {
-        { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
-        { 2, -64, 0, 32, 56, { 0b1111, 0 }, 0 },
-        { 3, -96, 0, 64, 192, { 0b1111, 0 }, 0 },
-        { 4, -128, 32, 120, 96, { 0b1111, 0 }, 0 },
-        { 5, -96, 32, 64, 192, { 0b1111, 0 }, 0 },
-        { 6, -64, 32, 248, 32, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftFlyerLargeHalfLoopUninvertedDown[] = {
-        { 0, 0, 0, -32, 32, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
-        { 3, -32, -32, -216, 192, { 0b1111, 0 }, 0 },
-        { 4, 0, -32, -248, 56, { 0b1111, 0 }, 0 },
-        { 5, 32, -32, -264, 40, { 0b1111, 0b1100 }, 0 },
-        { 6, 64, -32, -280, 24, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightFlyerLargeHalfLoopUninvertedDown[] = {
-        { 0, 0, 0, -32, 32, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
-        { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
-        { 3, -32, 32, -216, 192, { 0b1111, 0 }, 0 },
-        { 4, 0, 32, -248, 56, { 0b1111, 0 }, 0 },
-        { 5, 32, 32, -264, 40, { 0b1111, 0b1100 }, 0 },
-        { 6, 64, 32, -280, 24, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlyerHalfLoopUpInverted[] = {
-        { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
-        { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
-        { 2, -64, 0, 32, 96,{ 0b0011, 0 }, 0 },
-        { 3, -32, 0, 120, 32, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksFlyerHalfLoopDownUpright[] = {
-        { 0, 0, 0, -32, 32, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -120, 96,{ 0b0011, 0 }, 0 },
-        { 2, 0, 0, -136, 16, { 0b1111, 0b1100 }, 0 },
-        { 3, 32, 0, -152, 16, { 0b1111, 0b1100 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftEighthToDiagUp25[] = {
-        { 0, 0, 0,      0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0,   16, 32, { 0b1111, 0 }, 0 },
-        { 2, -32, -32, 32, 16, { 0b1000, 0 }, 0 },
-        { 3, -64, 0,   32, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 4, -64, -32, 32, 24, { 0b0001, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightEighthToDiagUp25[] = {
-        { 0, 0, 0,     0, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0,  16, 32, { 0b1111, 0 }, 0 },
-        { 2, -32, 32, 32, 16, { 0b0100, 0 }, 0 },
-        { 3, -64, 0,  32, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 4, -64, 32, 32, 24, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftEighthToDiagDown25[] = {
-        { 0, 0, 0, -16, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -32, 16, { 0b1111, 0 }, 0 },
-        { 2, -32, -32, -48, 16, { 0b1000, 0 }, 0 },
-        { 3, -64, 0, -48, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 4, -64, -32, -48, 16, { 0b0001, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightEighthToDiagDown25[] = {
-        { 0, 0, 0, -16, 16, { 0b1111, 0 }, 0 },
-        { 1, -32, 0, -32, 16, { 0b1111, 0 }, 0 },
-        { 2, -32, 32, -48, 16, { 0b0100, 0 }, 0 },
-        { 3, -64, 0, -48, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 4, -64, 32, -48, 16, { 0b0010, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftEighthToOrthogonalUp25[] = {
-        { 0, 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-        { 1, -32, 0, 0, 16, { 0b0001, 0 }, 0 },
-        { 2, 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 16, 16, { 0b1111, 0 }, 0 },
-        { 4, -64, 32, 32, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightEighthToOrthogonalUp25[] = {
-        { 0, 0, 0, 0, 16, { 0b1101, 0 }, 0 },
-        { 1, 0, 32, 0, 16, { 0b0100, 0 }, 0 },
-        { 2, -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, 16, 16, { 0b1111, 0 }, 0 },
-        { 4, -32, 64, 32, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksLeftEighthToOrthogonalDown25[] = {
-        { 0, 0, 0, -16, 24, { 0b1101, 0 }, 0 },
-        { 1, -32, 0, -16, 16, { 0b0001, 0 }, 0 },
-        { 2, 0, 32, -16, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32, -32, 32, { 0b1111, 0 }, 0 },
-        { 4, -64, 32, -48, 16, { 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    static constexpr PreviewTrack TrackBlocksRightEighthToOrthogonalDown25[] = {
-        { 0, 0, 0,  -16, 24, { 0b1101, 0 }, 0 },
-        { 1, 0, 32,  -16, 16,{ 0b0100, 0 }, 0 },
-        { 2, -32, 0,  -16, 16,{ 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
-        { 3, -32, 32,  -32, 32,{ 0b1111, 0 }, 0 },
-        { 4, -32, 64,  -48, 16,{ 0b1111, 0 }, 0 },
-        kTrackBlockEnd
-    };
-    
-    
-    // rct2: 0x00994638
-    static constexpr std::array<const PreviewTrack*, TrackElemType::Count> TrackBlocks = {
-        TrackBlocks000,
-        TrackBlocks001,
-        TrackBlocks002,
-        TrackBlocks003,
-        TrackBlocks004,
-        TrackBlocks005,
-        TrackBlocks006,
-        TrackBlocks007,
-        TrackBlocks008,
-        TrackBlocks009,
-        TrackBlocks010,
-        TrackBlocks011,
-        TrackBlocks012,
-        TrackBlocks013,
-        TrackBlocks014,
-        TrackBlocks015,
-        TrackBlocks016,
-        TrackBlocks017,
-        TrackBlocks018,
-        TrackBlocks019,
-        TrackBlocks020,
-        TrackBlocks021,
-        TrackBlocks022,
-        TrackBlocks023,
-        TrackBlocks024,
-        TrackBlocks025,
-        TrackBlocks026,
-        TrackBlocks027,
-        TrackBlocks028,
-        TrackBlocks029,
-        TrackBlocks030,
-        TrackBlocks031,
-        TrackBlocks032,
-        TrackBlocks033,
-        TrackBlocks034,
-        TrackBlocks035,
-        TrackBlocks036,
-        TrackBlocks037,
-        TrackBlocks038,
-        TrackBlocks039,
-        TrackBlocks040,
-        TrackBlocks041,
-        TrackBlocks042,
-        TrackBlocks043,
-        TrackBlocks044,
-        TrackBlocks045,
-        TrackBlocks046,
-        TrackBlocks047,
-        TrackBlocks048,
-        TrackBlocks049,
-        TrackBlocks050,
-        TrackBlocks051,
-        TrackBlocks052,
-        TrackBlocks053,
-        TrackBlocks054,
-        TrackBlocks055,
-        TrackBlocks056,
-        TrackBlocks057,
-        TrackBlocks058,
-        TrackBlocks059,
-        TrackBlocks060,
-        TrackBlocks061,
-        TrackBlocks062,
-        TrackBlocks063,
-        TrackBlocks064,
-        TrackBlocks065,
-        TrackBlocks066,
-        TrackBlocks067,
-        TrackBlocks068,
-        TrackBlocks069,
-        TrackBlocks070,
-        TrackBlocks071,
-        TrackBlocks072,
-        TrackBlocks073,
-        TrackBlocks074,
-        TrackBlocks075,
-        TrackBlocks076,
-        TrackBlocks077,
-        TrackBlocks078,
-        TrackBlocks079,
-        TrackBlocks080,
-        TrackBlocks081,
-        TrackBlocks082,
-        TrackBlocks083,
-        TrackBlocks084,
-        TrackBlocks085,
-        TrackBlocks086,
-        TrackBlocks087,
-        TrackBlocks088,
-        TrackBlocks089,
-        TrackBlocks090,
-        TrackBlocks091,
-        TrackBlocks092,
-        TrackBlocks093,
-        TrackBlocks094,
-        TrackBlocks095,
-        TrackBlocks096,
-        TrackBlocks097,
-        TrackBlocks098,
-        TrackBlocks099,
-        TrackBlocks100,
-        TrackBlocks101,
-        TrackBlocks102,
-        TrackBlocks103,
-        TrackBlocks104,
-        TrackBlocks105,
-        TrackBlocks106,
-        TrackBlocks107,
-        TrackBlocks108,
-        TrackBlocks109,
-        TrackBlocks110,
-        TrackBlocks111,
-        TrackBlocks112,
-        TrackBlocks113,
-        TrackBlocks114,
-        TrackBlocks115,
-        TrackBlocks116,
-        TrackBlocks117,
-        TrackBlocks118,
-        TrackBlocks119,
-        TrackBlocks120,
-        TrackBlocks121,
-        TrackBlocks122,
-        TrackBlocks123,
-        TrackBlocks124,
-        TrackBlocks125,
-        TrackBlocks126,
-        TrackBlocks127,
-        TrackBlocks128,
-        TrackBlocks129,
-        TrackBlocks130,
-        TrackBlocks131,
-        TrackBlocks132,
-        TrackBlocks133,
-        TrackBlocks134,
-        TrackBlocks135,
-        TrackBlocks136,
-        TrackBlocks137,
-        TrackBlocks138,
-        TrackBlocks139,
-        TrackBlocks140,
-        TrackBlocks141,
-        TrackBlocks142,
-        TrackBlocks143,
-        TrackBlocks144,
-        TrackBlocks145,
-        TrackBlocks146,
-        TrackBlocks147,
-        TrackBlocks148,
-        TrackBlocks149,
-        TrackBlocks150,
-        TrackBlocks151,
-        TrackBlocks152,
-        TrackBlocks153,
-        TrackBlocks154,
-        TrackBlocks155,
-        TrackBlocks156,
-        TrackBlocks157,
-        TrackBlocks158,
-        TrackBlocks159,
-        TrackBlocks160,
-        TrackBlocks161,
-        TrackBlocks162,
-        TrackBlocks163,
-        TrackBlocks164,
-        TrackBlocks165,
-        TrackBlocks166,
-        TrackBlocks167,
-        TrackBlocks168,
-        TrackBlocks169,
-        TrackBlocks170,
-        TrackBlocks171,
-        TrackBlocks172,
-        TrackBlocks173,
-        TrackBlocks174,
-        TrackBlocks175,
-        TrackBlocks176,
-        TrackBlocks177,
-        TrackBlocks178,
-        TrackBlocks179,
-        TrackBlocks180,
-        TrackBlocks181,
-        TrackBlocks182,
-        TrackBlocks183,
-        TrackBlocks184,
-        TrackBlocks185,
-        TrackBlocks186,
-        TrackBlocks187,
-        TrackBlocks188,
-        TrackBlocks189,
-        TrackBlocks190,
-        TrackBlocks191,
-        TrackBlocks192,
-        TrackBlocks193,
-        TrackBlocks194,
-        TrackBlocks195,
-        TrackBlocks196,
-        TrackBlocks197,
-        TrackBlocks198,
-        TrackBlocks199,
-        TrackBlocks200,
-        TrackBlocks201,
-        TrackBlocks202,
-        TrackBlocks203,
-        TrackBlocks204,
-        TrackBlocks205,
-        TrackBlocks206,
-        TrackBlocks207,
-        TrackBlocks208,
-        TrackBlocks209,
-        TrackBlocks210,
-        TrackBlocks211,
-        TrackBlocks212,
-        TrackBlocks213,
-        TrackBlocks214,
-        TrackBlocks215,
-        TrackBlocks216,
-        TrackBlocks217,
-        TrackBlocks218,
-        TrackBlocks219,
-        TrackBlocks220,
-        TrackBlocks221,
-        TrackBlocks222,
-        TrackBlocks223,
-        TrackBlocks224,
-        TrackBlocks225,
-        TrackBlocks226,
-        TrackBlocks227,
-        TrackBlocks228,
-        TrackBlocks229,
-        TrackBlocks230,
-        TrackBlocks231,
-        TrackBlocks232,
-        TrackBlocks233,
-        TrackBlocks234,
-        TrackBlocks235,
-        TrackBlocks236,
-        TrackBlocks237,
-        TrackBlocks238,
-        TrackBlocks239,
-        TrackBlocks240,
-        TrackBlocks241,
-        TrackBlocks242,
-        TrackBlocks243,
-        TrackBlocks244,
-        TrackBlocks245,
-        TrackBlocks246,
-        TrackBlocks247,
-        TrackBlocks248,
-        TrackBlocks249,
-        TrackBlocks250,
-        TrackBlocks251,
-        TrackBlocks252,
-        TrackBlocks253,
-        TrackBlocks254,
-        TrackBlocks255,
-        TrackBlocksRotationControlToggle,
-    
-        TrackBlocksFlatTrack1x4A,
-        TrackBlocksFlatTrack2x2,
-        TrackBlocksFlatTrack4x4,
-        TrackBlocksFlatTrack2x4,
-        TrackBlocksFlatTrack1x5,
-        TrackBlocksFlatTrack1x1A,
-        TrackBlocksFlatTrack1x4B,
-        TrackBlocksFlatTrack1x1B,
-        TrackBlocksFlatTrack1x4C,
-        TrackBlocksFlatTrack3x3,
-        TrackBlocksLeftLargeCorkscrewUp,
-        TrackBlocksRightLargeCorkscrewUp,
-        TrackBlocksLeftLargeCorkscrewDown,
-        TrackBlocksRightLargeCorkscrewDown,
-        TrackBlocksLeftMediumHalfLoopUp,
-        TrackBlocksRightMediumHalfLoopUp,
-        TrackBlocksLeftMediumHalfLoopDown,
-        TrackBlocksRightMediumHalfLoopDown,
-        TrackBlocksLeftZeroGRollUp,
-        TrackBlocksRightZeroGRollUp,
-        TrackBlocksLeftZeroGRollDown,
-        TrackBlocksRightZeroGRollDown,
-        TrackBlocksLeftLargeZeroGRollUp,
-        TrackBlocksRightLargeZeroGRollUp,
-        TrackBlocksLeftLargeZeroGRollDown,
-        TrackBlocksRightLargeZeroGRollDown,
-    
-        TrackBlocksLeftFlyerLargeHalfLoopUninvertedUp,    // LeftFlyerLargeHalfLoopUninvertedUp
-        TrackBlocksRightFlyerLargeHalfLoopUninvertedUp,   // RightFlyerLargeHalfLoopUninvertedUp
-        TrackBlocksLeftFlyerLargeHalfLoopInvertedDown,    // LeftFlyerLargeHalfLoopInvertedDown
-        TrackBlocksRightFlyerLargeHalfLoopInvertedDown,   // RightFlyerLargeHalfLoopInvertedDown
-        TrackBlocksLeftFlyerLargeHalfLoopInvertedUp,      // TrackElemType::LeftFlyerLargeHalfLoopInvertedUp
-        TrackBlocksRightFlyerLargeHalfLoopInvertedUp,     // TrackElemType::RightFlyerLargeHalfLoopInvertedUp
-        TrackBlocksLeftFlyerLargeHalfLoopUninvertedDown,  // TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown
-        TrackBlocksRightFlyerLargeHalfLoopUninvertedDown, // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
-        TrackBlocksFlyerHalfLoopUpInverted,    // TrackElemType::FlyerHalfLoopInvertedUp
-        TrackBlocksFlyerHalfLoopDownUpright,   // TrackElemType::FlyerHalfLoopUninvertedDown
-        TrackBlocksLeftEighthToDiagUp25,          // TrackElemType::LeftEighthToDiagUp25          
-        TrackBlocksRightEighthToDiagUp25,         // TrackElemType::RightEighthToDiagUp25        
-        TrackBlocksLeftEighthToDiagDown25,        // TrackElemType::LeftEighthToDiagDown25       
-        TrackBlocksRightEighthToDiagDown25,       // TrackElemType::RightEighthToDiagDown25      
-        TrackBlocksLeftEighthToOrthogonalUp25,    // TrackElemType::LeftEighthToOrthogonalUp25   
-        TrackBlocksRightEighthToOrthogonalUp25,   // TrackElemType::RightEighthToOrthogonalUp25  
-        TrackBlocksLeftEighthToOrthogonalDown25,  // TrackElemType::LeftEighthToOrthogonalDown25 
-        TrackBlocksRightEighthToOrthogonalDown25, // TrackElemType::RightEighthToOrthogonalDown25 
-        TrackBlocks142,                           // TrackElemType::DiagUp25ToLeftBankedUp25
-        TrackBlocks142,                           // TrackElemType::DiagUp25ToRightBankedUp25
-        TrackBlocks142,                           // TrackElemType::DiagLeftBankedUp25ToUp25
-        TrackBlocks142,                           // TrackElemType::DiagRightBankedUp25ToUp25
-        TrackBlocks148,                           // TrackElemType::DiagDown25ToLeftBankedDown25
-        TrackBlocks148,                           // TrackElemType::DiagDown25ToRightBankedDown25
-        TrackBlocks148,                           // TrackElemType::DiagLeftBankedDown25ToDown25
-        TrackBlocks148,                           // TrackElemType::DiagRightBankedDown25ToDown25
-        TrackBlocks144,                           // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
-        TrackBlocks144,                           // TrackElemType::DiagRightBankedFlatToRightBankedUp25
-        TrackBlocks147,                           // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
-        TrackBlocks147,                           // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
-        TrackBlocks150,                           // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
-        TrackBlocks150,                           // TrackElemType::DiagRightBankedFlatToRightBankedDown25
-        TrackBlocks153,                           // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
-        TrackBlocks153,                           // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
-        TrackBlocks144,                           // TrackElemType::DiagFlatToLeftBankedUp25
-        TrackBlocks144,                           // TrackElemType::DiagFlatToRightBankedUp25
-        TrackBlocks147,                           // TrackElemType::DiagLeftBankedUp25ToFlat
-        TrackBlocks147,                           // TrackElemType::DiagRightBankedUp25ToFlat
-        TrackBlocks150,                           // TrackElemType::DiagFlatToLeftBankedDown25
-        TrackBlocks150,                           // TrackElemType::DiagFlatToRightBankedDown25
-        TrackBlocks153,                           // TrackElemType::DiagLeftBankedDown25ToFlat
-        TrackBlocks153,                           // TrackElemType::DiagRightBankedDown25ToFlat
-        TrackBlocks142,                           // TrackElemType::DiagUp25LeftBanked
-        TrackBlocks142,                           // TrackElemType::DiagUp25RightBanked 
-        TrackBlocks148,                           // TrackElemType::DiagDown25LeftBanked
-        TrackBlocks148,                           // TrackElemType::DiagDown25RightBanked
-        TrackBlocksLeftEighthToDiagUp25,          // TrackElemType::LeftEighthBankToDiagUp25
-        TrackBlocksRightEighthToDiagUp25,         // TrackElemType::RightEighthBankToDiagUp25
-        TrackBlocksLeftEighthToDiagDown25,        // TrackElemType::LeftEighthBankToDiagDown25
-        TrackBlocksRightEighthToDiagDown25,       // TrackElemType::RightEighthBankToDiagDown25
-        TrackBlocksLeftEighthToOrthogonalUp25,    // TrackElemType::LeftEighthBankToOrthogonalUp25
-        TrackBlocksRightEighthToOrthogonalUp25,   // TrackElemType::RightEighthBankToOrthogonalUp25 
-        TrackBlocksLeftEighthToOrthogonalDown25,  // TrackElemType::LeftEighthBankToOrthogonalDown25
-        TrackBlocksRightEighthToOrthogonalDown25, // TrackElemType::RightEighthBankToOrthogonalDown25     
-        TrackBlocks141,                           // TrackElemType::DiagBrakes
-        TrackBlocks141,                           // TrackElemType::DiagBlockBrakes
-    };
     
     static constexpr uint8_t TrackPieceLengths[] = {
         32,     // TrackElemType::Flat
@@ -5964,353 +2625,8 @@ namespace OpenRCT2::TrackMetaData
     };
     static_assert(std::size(TrackHeightMarkerPositions) == TrackElemType::Count);
     
-    /** rct2: 0x00999A94 */
-    static constexpr uint8_t TrackSequenceElementAllowedWallEdges[][kMaxSequencesPerPiece] = {
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Flat
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::EndStation
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::BeginStation
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::MiddleStation
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up60
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25ToUp60
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up60ToUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25ToFlat
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down60
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25ToDown60
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down60ToDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25ToFlat
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn5Tiles
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn5Tiles
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToLeftBank
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToRightBank
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankToFlat
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankToFlat
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::BankedLeftQuarterTurn5Tiles
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::BankedRightQuarterTurn5Tiles
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankToUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankToUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25ToLeftBank
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25ToRightBank
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankToDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankToDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25ToLeftBank
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25ToRightBank
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBank
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBank
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn5TilesUp25
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn5TilesUp25
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn5TilesDown25
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn5TilesDown25
-        { 0b1010, 0b0011, 0b1100, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::SBendLeft
-        { 0b1010, 0b1001, 0b0110, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::SBendRight
-        { 0b0010, 0b0010, 0b0011,      0,      0,      0,      0, 0b1100, 0b1000, 0b1000,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftVerticalLoop
-        { 0b1000, 0b1000, 0b1001,      0,      0,      0,      0, 0b0110, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightVerticalLoop
-        { 0b0010, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn3Tiles
-        { 0b1000, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn3Tiles
-        { 0b0010, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedQuarterTurn3Tiles
-        { 0b1000, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedQuarterTurn3Tiles
-        { 0b0010, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn3TilesUp25
-        { 0b1000, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn3TilesUp25
-        { 0b0010, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn3TilesDown25
-        { 0b1000, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn3TilesDown25
-        { 0b0011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn1Tile
-        { 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn1Tile
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftTwistDownToUp
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightTwistDownToUp
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftTwistUpToDown
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightTwistUpToDown
-        { 0b1010, 0b1010, 0b1011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::HalfLoopUp
-        {      0, 0b1011, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::HalfLoopDown
-        { 0b1010, 0b0011, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftCorkscrewUp
-        { 0b1010, 0b1001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightCorkscrewUp
-        { 0b1010, 0b0011, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftCorkscrewDown
-        { 0b1010, 0b1001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightCorkscrewDown
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToUp60
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up60ToFlat
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToDown60
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down60ToFlat
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::TowerBase
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::TowerSection
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatCovered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25Covered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up60Covered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToUp25Covered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25ToUp60Covered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up60ToUp25Covered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25ToFlatCovered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25Covered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down60Covered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToDown25Covered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25ToDown60Covered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down60ToDown25Covered
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25ToFlatCovered
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn5TilesCovered
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn5TilesCovered
-        { 0b1010, 0b0011, 0b1100, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::SBendLeftCovered
-        { 0b1010, 0b1001, 0b0110, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::SBendRightCovered
-        { 0b0010, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn3TilesCovered
-        { 0b1000, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn3TilesCovered
-        { 0b0010, 0b1100, 0b0011, 0b0001, 0b0001, 0b0110, 0b1001, 0b1000,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftHalfBankedHelixUpSmall
-        { 0b1000, 0b0110, 0b1001, 0b0001, 0b0001, 0b1100, 0b0011, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightHalfBankedHelixUpSmall
-        { 0b0010, 0b1100, 0b0011, 0b0001, 0b0001, 0b0110, 0b1001, 0b1000,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftHalfBankedHelixDownSmall
-        { 0b1000, 0b0110, 0b1001, 0b0001, 0b0001, 0b1100, 0b0011, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightHalfBankedHelixDownSmall
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001, 0b0001, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b1000,      0,      0 }, // TrackElemType::LeftHalfBankedHelixUpLarge
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001, 0b0001, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0010,      0,      0 }, // TrackElemType::RightHalfBankedHelixUpLarge
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001, 0b0001, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b1000,      0,      0 }, // TrackElemType::LeftHalfBankedHelixDownLarge
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001, 0b0001, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0010,      0,      0 }, // TrackElemType::RightHalfBankedHelixDownLarge
-        { 0b0011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn1TileUp60
-        { 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn1TileUp60
-        { 0b0011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn1TileDown60
-        { 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn1TileDown60
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Brakes
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Booster
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::InvertedUp90ToFlatQuarterLoopAlias / Maze
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterBankedHelixLargeUp
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterBankedHelixLargeUp
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterBankedHelixLargeDown
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterBankedHelixLargeDown
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterHelixLargeUp
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterHelixLargeUp
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterHelixLargeDown
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterHelixLargeDown
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25LeftBanked
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25RightBanked
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Waterfall
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Rapids
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::OnRidePhoto
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25LeftBanked
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25RightBanked
-        { 0b1010, 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Watersplash
-        { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToUp60LongBase
-        { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up60ToFlatLongBase
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Whirlpool
-        { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down60ToFlatLongBase
-        { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToDown60LongBase
-        { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::CableLiftHill
-        { 0b1010, 0b1010, 0b1010, 0b1010, 0b1010, 0b1011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::ReverseFreefallSlope
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::ReverseFreefallVertical
-        { 0b1111,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up90
-        { 0b1111,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down90
-        { 0b1011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up60ToUp90
-        { 0b1110,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down90ToDown60
-        { 0b1011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up90ToUp60
-        { 0b1110,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down60ToDown90
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::BrakeForDrop
-        { 0b0010, 0b0010, 0b1000, 0b0011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthToDiag
-        { 0b1000, 0b1000, 0b0010, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthToDiag
-        {      0, 0b1000, 0b0110, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthToOrthogonal
-        {      0, 0b0100, 0b1001, 0b0001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthToOrthogonal
-        { 0b0010, 0b0010, 0b1000, 0b0011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthBankToDiag
-        { 0b1000, 0b1000, 0b0010, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthBankToDiag
-        {      0, 0b1000, 0b0110, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthBankToOrthogonal
-        {      0, 0b0100, 0b1001, 0b0001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthBankToOrthogonal
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagFlat
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp60
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagFlatToUp25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp25ToUp60
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp60ToUp25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp25ToFlat
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown60
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagFlatToDown25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown25ToDown60
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown60ToDown25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown25ToFlat
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagFlatToUp60
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp60ToFlat
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagFlatToDown60
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown60ToFlat
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagFlatToLeftBank
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagFlatToRightBank
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBankToFlat
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBankToFlat
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBankToUp25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBankToUp25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp25ToLeftBank
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp25ToRightBank
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBankToDown25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBankToDown25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown25ToLeftBank
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown25ToRightBank
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBank
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBank
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LogFlumeReverser
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::SpinningTunnel
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBarrelRollUpToDown
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBarrelRollUpToDown
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBarrelRollDownToUp
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBarrelRollDownToUp
-        { 0b0010, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25
-        { 0b1000, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankToRightQuarterTurn3TilesUp25
-        { 0b0010, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank
-        { 0b1000, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn3TilesDown25ToRightBank
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::PoweredLift
-        { 0b1010, 0b1010, 0b0010, 0b0011, 0b1001, 0b1000, 0b1000,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftLargeHalfLoopUp
-        { 0b1010, 0b1010, 0b1000, 0b1001, 0b0011, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightLargeHalfLoopUp
-        { 0b0010, 0b0010, 0b0011, 0b1001, 0b1000, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftLargeHalfLoopDown
-        { 0b1000, 0b1000, 0b1001, 0b0011, 0b0010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightLargeHalfLoopDown
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftFlyerTwistUp
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightFlyerTwistUp
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftFlyerTwistDown
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightFlyerTwistDown
-        { 0b1010, 0b1010, 0b1011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlyerHalfLoopUninvertedUp
-        {      0, 0b1011, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlyerHalfLoopInvertedDown
-        { 0b1010, 0b0011, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftFlyerCorkscrewUp
-        { 0b1010, 0b1001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightFlyerCorkscrewUp
-        { 0b1010, 0b0011, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftFlyerCorkscrewDown
-        { 0b1010, 0b1001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightFlyerCorkscrewDown
-        { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::HeartLineTransferUp
-        { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::HeartLineTransferDown
-        { 0b1010, 0b1010, 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftHeartLineRoll
-        { 0b1010, 0b1010, 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightHeartLineRoll
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::MinigolfHoleA
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::MinigolfHoleB
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::MinigolfHoleC
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::MinigolfHoleD
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::MinigolfHoleE
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up90ToInvertedFlatQuarterLoop
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::InvertedFlatToDown90QuarterLoop
-        { 0b0010, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftCurvedLiftHill
-        { 0b1000, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightCurvedLiftHill
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftReverser
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightReverser
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::AirThrustTopCap
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::AirThrustVerticalDown
-        { 0b1010, 0b1010, 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::AirThrustVerticalDownToLevel
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::BlockBrakes
-        { 0b0010, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedQuarterTurn3TileUp25
-        { 0b1000, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedQuarterTurn3TileUp25
-        { 0b0010, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedQuarterTurn3TileDown25
-        { 0b1000, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedQuarterTurn3TileDown25
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedQuarterTurn5TileUp25
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedQuarterTurn5TileUp25
-        { 0b0010, 0b1100, 0b0011,      0, 0b1100, 0b0011, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedQuarterTurn5TileDown25
-        { 0b1000, 0b0110, 0b1001,      0, 0b0110, 0b1001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedQuarterTurn5TileDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25ToLeftBankedUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up25ToRightBankedUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedUp25ToUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedUp25ToUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25ToLeftBankedDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down25ToRightBankedDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedDown25ToDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedDown25ToDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedFlatToLeftBankedUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedFlatToRightBankedUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedUp25ToRightBankedFlat
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedFlatToLeftBankedDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedFlatToRightBankedDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedDown25ToRightBankedFlat
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToLeftBankedUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToRightBankedUp25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedUp25ToFlat
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedUp25ToFlat
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToLeftBankedDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToRightBankedDown25
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftBankedDown25ToFlat
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightBankedDown25ToFlat
-        { 0b1111,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn1TileUp90
-        { 0b1111,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn1TileUp90
-        { 0b1111,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftQuarterTurn1TileDown90
-        { 0b1111,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightQuarterTurn1TileDown90
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::MultiDimFlatToDown90QuarterLoop
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop
-        { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RotationControlToggle
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack1x4A
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack2x2
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack4x4
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack2x4
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack1x5
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack1x1A
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack1x4B
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack1x1B
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack1x4C
-        {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatTrack3x3
-        { 0b1010, 0b0010, 0b0011, 0b1100, 0b0001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftLargeCorkscrewUp
-        { 0b1010, 0b1000, 0b1001, 0b0110, 0b0001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightLargeCorkscrewUp
-        { 0b1010, 0b0010, 0b1100, 0b0011, 0b0001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftLargeCorkscrewDown
-        { 0b1010, 0b1000, 0b0110, 0b1001, 0b0001, 0b0101,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightLargeCorkscrewDown
-        { 0b1010, 0b0010, 0b0011, 0b1001, 0b1000,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftMediumHalfLoopUp
-        { 0b1010, 0b1000, 0b1001, 0b0011, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightMediumHalfLoopUp
-        { 0b0010, 0b0011, 0b1001, 0b1000, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftMediumHalfLoopDown
-        { 0b1000, 0b1001, 0b0011, 0b0010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightMediumHalfLoopDown
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftZeroGRollUp
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightZeroGRollUp
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftZeroGRollDown
-        { 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightZeroGRollDown
-        { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftLargeZeroGRollUp
-        { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightLargeZeroGRollUp
-        { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftLargeZeroGRollDown
-        { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightLargeZeroGRollDown
-    
-        { 0b1010, 0b1010, 0b0010, 0b0011, 0b1001, 0b1000, 0b1000,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp
-        { 0b1010, 0b1010, 0b1000, 0b1001, 0b0011, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightFlyerLargeHalfLoopUninvertedUp
-        { 0b0010, 0b0010, 0b0011, 0b1001, 0b1000, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftFlyerLargeHalfLoopInvertedDown
-        { 0b1000, 0b1000, 0b1001, 0b0011, 0b0010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightFlyerLargeHalfLoopInvertedDown
-        { 0b1010, 0b1010, 0b0010, 0b0011, 0b1001, 0b1000, 0b1000,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftFlyerLargeHalfLoopInvertedUp
-        { 0b1010, 0b1010, 0b1000, 0b1001, 0b0011, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightFlyerLargeHalfLoopInvertedUp
-        { 0b0010, 0b0010, 0b0011, 0b1001, 0b1000, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown
-        { 0b1000, 0b1000, 0b1001, 0b0011, 0b0010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
-        { 0b1010, 0b1010, 0b1011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlyerHalfLoopInvertedUp
-        {      0, 0b1011, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlyerHalfLoopUninvertedDown
-        { 0b0010, 0b0010, 0b1000, 0b0011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthToDiagUp25         
-        { 0b1000, 0b1000, 0b0010, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthToDiagUp25        
-        { 0b0010, 0b0010, 0b1000, 0b0011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthToDiagDown25       
-        { 0b1000, 0b1000, 0b0010, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthToDiagDown25      
-        {      0, 0b1000, 0b0110, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthToOrthogonalUp25   
-        {      0, 0b0100, 0b1001, 0b0001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthToOrthogonalUp25  
-        {      0, 0b1000, 0b0110, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthToOrthogonalDown25 
-        {      0, 0b0100, 0b1001, 0b0001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthToOrthogonalDown25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp25ToLeftBankedUp25              
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp25ToRightBankedUp25               
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBankedUp25ToUp25              
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBankedUp25ToUp25               
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown25ToLeftBankedDown25          
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown25ToRightBankedDown25           
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBankedDown25ToDown25          
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBankedDown25ToDown25           
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25   
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBankedFlatToRightBankedUp25     
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat   
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBankedUp25ToRightBankedFlat     
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25 
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBankedFlatToRightBankedDown25   
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat 
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBankedDown25ToRightBankedFlat   
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagFlatToLeftBankedUp25              
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagFlatToRightBankedUp25               
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBankedUp25ToFlat              
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBankedUp25ToFlat               
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagFlatToLeftBankedDown25            
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagFlatToRightBankedDown25             
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagLeftBankedDown25ToFlat            
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagRightBankedDown25ToFlat             
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp25LeftBanked                    
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagUp25RightBanked                     
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown25LeftBanked                  
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagDown25RightBanked                   
-        { 0b0010, 0b0010, 0b1000, 0b0011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthBankToDiagUp25              
-        { 0b1000, 0b1000, 0b0010, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthBankToDiagUp25               
-        { 0b0010, 0b0010, 0b1000, 0b0011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthBankToDiagDown25            
-        { 0b1000, 0b1000, 0b0010, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthBankToDiagDown25             
-        {      0, 0b1000, 0b0110, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthBankToOrthogonalUp25        
-        {      0, 0b0100, 0b1001, 0b0001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthBankToOrthogonalUp25         
-        {      0, 0b1000, 0b0110, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthBankToOrthogonalDown25      
-        {      0, 0b0100, 0b1001, 0b0001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthBankToOrthogonalDown25
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagBrakes
-        {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagBlockBrakes
-    };
     
     
-    
-    static_assert(std::size(TrackSequenceElementAllowedWallEdges) == TrackElemType::Count);
     
     /** rct2: 0x0099423C */
     static constexpr uint32_t TrackFlags[] = {
@@ -8359,6 +4675,7920 @@ namespace OpenRCT2::TrackMetaData
     };
     static_assert(std::size(RideConfigurationStringIds) == TrackElemType::Count);
 
+    static constexpr SequenceDescriptor kFlatSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kEndStationSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
+            | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kBeginStationSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
+            | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kMiddleStationSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN
+            | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp60Seq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp25ToUp60Seq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToUp60Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp60ToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToUp25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown60Seq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown25ToDown60Seq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToDown60Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown60ToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToDown25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+        .woodenSupports = { WoodenSupportSubType::Null },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq4 = {
+        .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+        .woodenSupports = { WoodenSupportSubType::Null },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq5 = {
+        .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesSeq6 = {
+        .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Null },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq4 = {
+        .clearance = { -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Null },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq5 = {
+        .clearance = { -64, 32, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesSeq6 = {
+        .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kFlatToLeftBankSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToRightBankSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kRightBankToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+        .woodenSupports = { WoodenSupportSubType::Null },
+    };
+
+    static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq4 = {
+        .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+        .woodenSupports = { WoodenSupportSubType::Null },
+    };
+
+    static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq5 = {
+        .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kBankedLeftQuarterTurn5TilesSeq6 = {
+        .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Null },
+    };
+
+    static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq4 = {
+        .clearance = { -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Null },
+    };
+
+    static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq5 = {
+        .clearance = { -64, 32, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kBankedRightQuarterTurn5TilesSeq6 = {
+        .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kRightBankToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp25ToLeftBankSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp25ToRightBankSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kRightBankToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown25ToLeftBankSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown25ToRightBankSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kRightBankSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq1 = {
+        .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq2 = {
+        .clearance = { -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq3 = {
+        .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq4 = {
+        .clearance = { -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq5 = {
+        .clearance = { -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesUp25Seq6 = {
+        .clearance = { -64, -64, 48, 16, { 0b1111, 0b0110 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq1 = {
+        .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq2 = {
+        .clearance = { -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq3 = {
+        .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq4 = {
+        .clearance = { -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq5 = {
+        .clearance = { -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesUp25Seq6 = {
+        .clearance = { -64, 64, 48, 16, { 0b1111, 0b1001 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq0 = {
+        .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq1 = {
+        .clearance = { 0, -32, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq2 = {
+        .clearance = { -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq3 = {
+        .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq4 = {
+        .clearance = { -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq5 = {
+        .clearance = { -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesDown25Seq6 = {
+        .clearance = { -64, -64, 0, 16, { 0b1111, 0b1001 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq0 = {
+        .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq1 = {
+        .clearance = { 0, 32, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq2 = {
+        .clearance = { -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq3 = {
+        .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq4 = {
+        .clearance = { -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq5 = {
+        .clearance = { -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesDown25Seq6 = {
+        .clearance = { -64, 64, 0, 16, { 0b1111, 0b0110 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kSBendLeftSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kSBendLeftSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kSBendLeftSeq2 = {
+        .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
+        .allowedWallEdges = 0b1100,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kSBendLeftSeq3 = {
+        .clearance = { -64, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kSBendRightSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kSBendRightSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kSBendRightSeq2 = {
+        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kSBendRightSeq3 = {
+        .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftVerticalLoopSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftVerticalLoopSeq1 = {
+        .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftVerticalLoopSeq2 = {
+        .clearance = { -64, 0, 32, 96, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftVerticalLoopSeq3 = {
+        .clearance = { -32, 0, 120, 16, { 0b0110, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftVerticalLoopSeq4 = {
+        .clearance = { -32, -32, 120, 0, { 0b0000, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftVerticalLoopSeq5 = {
+        .clearance = { 0, 0, 120, 0, { 0b0000, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftVerticalLoopSeq6 = {
+        .clearance = { 0, -32, 120, 16, { 0b1001, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftVerticalLoopSeq7 = {
+        .clearance = { 32, -32, 32, 96, { 0b1000, 0 }, 0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftVerticalLoopSeq8 = {
+        .clearance = { 0, -32, 16, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kLeftVerticalLoopSeq9 = {
+        .clearance = { -32, -32, 0, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightVerticalLoopSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightVerticalLoopSeq1 = {
+        .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightVerticalLoopSeq2 = {
+        .clearance = { -64, 0, 32, 96, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightVerticalLoopSeq3 = {
+        .clearance = { -32, 0, 120, 16, { 0b1001, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightVerticalLoopSeq4 = {
+        .clearance = { -32, 32, 120, 0, { 0b0000, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightVerticalLoopSeq5 = {
+        .clearance = { 0, 0, 120, 0, { 0b0000, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightVerticalLoopSeq6 = {
+        .clearance = { 0, 32, 120, 16, { 0b0110, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightVerticalLoopSeq7 = {
+        .clearance = { 32, 32, 32, 96, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightVerticalLoopSeq8 = {
+        .clearance = { 0, 32, 16, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightVerticalLoopSeq9 = {
+        .clearance = { -32, 32, 0, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TilesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TilesSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TilesSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TilesSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TilesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TilesSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TilesSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TilesSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b0111, 0b0100 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq1 = {
+        .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq2 = {
+        .clearance = { -32, 0, 16, 0, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesUp25Seq3 = {
+        .clearance = { -32, -32, 16, 16, { 0b0111, 0b0110 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq1 = {
+        .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq2 = {
+        .clearance = { -32, 0, 16, 0, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesUp25Seq3 = {
+        .clearance = { -32, 32, 16, 16, { 0b1011, 0b1001 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq0 = {
+        .clearance = { 0, 0, 16, 16, { 0b0111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq1 = {
+        .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq2 = {
+        .clearance = { -32, 0, 16, 0, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25Seq3 = {
+        .clearance = { -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq0 = {
+        .clearance = { 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq1 = {
+        .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq2 = {
+        .clearance = { -32, 0, 16, 0, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn1TileSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn1TileSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftTwistDownToUpSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftTwistDownToUpSeq1 = {
+        .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftTwistDownToUpSeq2 = {
+        .clearance = { -64, 0, 16, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightTwistDownToUpSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightTwistDownToUpSeq1 = {
+        .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightTwistDownToUpSeq2 = {
+        .clearance = { -64, 0, 16, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftTwistUpToDownSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftTwistUpToDownSeq1 = {
+        .clearance = { -32, 0, -16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftTwistUpToDownSeq2 = {
+        .clearance = { -64, 0, -16, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightTwistUpToDownSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightTwistUpToDownSeq1 = {
+        .clearance = { -32, 0, -16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightTwistUpToDownSeq2 = {
+        .clearance = { -64, 0, -16, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kHalfLoopUpSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kHalfLoopUpSeq1 = {
+        .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kHalfLoopUpSeq2 = {
+        .clearance = { -64, 0, 32, 96, { 0b0011, 0 }, 0 },
+        .allowedWallEdges = 0b1011,
+    };
+
+    static constexpr SequenceDescriptor kHalfLoopUpSeq3 = {
+        .clearance = { -32, 0, 120, 16, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kHalfLoopDownSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kHalfLoopDownSeq1 = {
+        .clearance = { -32, 0, -120, 96, { 0b0011, 0 }, 0 },
+        .allowedWallEdges = 0b1011,
+    };
+
+    static constexpr SequenceDescriptor kHalfLoopDownSeq2 = {
+        .clearance = { 0, 0, -136, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kHalfLoopDownSeq3 = {
+        .clearance = { 32, 0, -152, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftCorkscrewUpSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftCorkscrewUpSeq1 = {
+        .clearance = { -32, 0, 24, 32, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftCorkscrewUpSeq2 = {
+        .clearance = { -32, -32, 48, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightCorkscrewUpSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightCorkscrewUpSeq1 = {
+        .clearance = { -32, 0, 24, 32, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightCorkscrewUpSeq2 = {
+        .clearance = { -32, 32, 48, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftCorkscrewDownSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftCorkscrewDownSeq1 = {
+        .clearance = { -32, 0, -56, 32, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftCorkscrewDownSeq2 = {
+        .clearance = { -32, -32, -80, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightCorkscrewDownSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightCorkscrewDownSeq1 = {
+        .clearance = { -32, 0, -56, 32, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightCorkscrewDownSeq2 = {
+        .clearance = { -32, 32, -80, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kFlatToUp60Seq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp60ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlat },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToDown60Seq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown60ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlat },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kTowerBaseSeq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_ORIGIN,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kTowerBaseSeq1 = {
+        .clearance = { -32, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kTowerBaseSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kTowerBaseSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kTowerBaseSeq4 = {
+        .clearance = { 0, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kTowerBaseSeq5 = {
+        .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kTowerBaseSeq6 = {
+        .clearance = { 32, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kTowerBaseSeq7 = {
+        .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kTowerBaseSeq8 = {
+        .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kTowerSectionSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kTowerSectionSeq1 = {
+        .clearance = { 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_1 },
+    };
+
+    static constexpr SequenceDescriptor kFlatCoveredSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp25CoveredSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp60CoveredSeq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToUp25CoveredSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp25ToUp60CoveredSeq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp60ToUp25CoveredSeq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp25ToFlatCoveredSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown25CoveredSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown60CoveredSeq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToDown25CoveredSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown25ToDown60CoveredSeq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown60ToDown25CoveredSeq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown25ToFlatCoveredSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq4 = {
+        .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq5 = {
+        .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn5TilesCoveredSeq6 = {
+        .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesCoveredSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesCoveredSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesCoveredSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesCoveredSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesCoveredSeq4 = {
+        .clearance = { -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesCoveredSeq5 = {
+        .clearance = { -64, 32, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn5TilesCoveredSeq6 = {
+        .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kSBendLeftCoveredSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kSBendLeftCoveredSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kSBendLeftCoveredSeq2 = {
+        .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kSBendLeftCoveredSeq3 = {
+        .clearance = { -64, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kSBendRightCoveredSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kSBendRightCoveredSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kSBendRightCoveredSeq2 = {
+        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kSBendRightCoveredSeq3 = {
+        .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesCoveredSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesCoveredSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesCoveredSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesCoveredSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesCoveredSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesCoveredSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesCoveredSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesCoveredSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq2 = {
+        .clearance = { -32, 0, 0, 4, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq3 = {
+        .clearance = { -32, -32, 0, 4, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq4 = {
+        .clearance = { -32, -64, 8, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq5 = {
+        .clearance = { 0, -64, 8, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq6 = {
+        .clearance = { -32, -96, 8, 4, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpSmallSeq7 = {
+        .clearance = { 0, -96, 8, 4, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -2,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq2 = {
+        .clearance = { -32, 0, 0, 4, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq3 = {
+        .clearance = { -32, 32, 0, 4, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq4 = {
+        .clearance = { -32, 64, 8, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq5 = {
+        .clearance = { 0, 64, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq6 = {
+        .clearance = { -32, 96, 8, 4, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpSmallSeq7 = {
+        .clearance = { 0, 96, 8, 4, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 2,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq0 = {
+        .clearance = { 0, 0, 8, 4, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq1 = {
+        .clearance = { 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq2 = {
+        .clearance = { -32, 0, 8, 0, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq3 = {
+        .clearance = { -32, -32, 8, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq4 = {
+        .clearance = { -32, -64, 0, 4, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq5 = {
+        .clearance = { 0, -64, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq6 = {
+        .clearance = { -32, -96, 0, 0, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownSmallSeq7 = {
+        .clearance = { 0, -96, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -2,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq0 = {
+        .clearance = { 0, 0, 8, 4, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq1 = {
+        .clearance = { 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq2 = {
+        .clearance = { -32, 0, 8, 0, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq3 = {
+        .clearance = { -32, 32, 8, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq4 = {
+        .clearance = { -32, 64, 0, 4, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq5 = {
+        .clearance = { 0, 64, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq6 = {
+        .clearance = { -32, 96, 0, 0, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownSmallSeq7 = {
+        .clearance = { 0, 96, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 2,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq4 = {
+        .clearance = { -32, -64, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq5 = {
+        .clearance = { -64, -32, 0, 4, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq6 = {
+        .clearance = { -64, -64, 0, 4, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq7 = {
+        .clearance = { -64, -96, 8, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq8 = {
+        .clearance = { -32, -96, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq9 = {
+        .clearance = { -64, -128, 8, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq10 = {
+        .clearance = { -32, -128, 8, 0, { 0b1110, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq11 = {
+        .clearance = { 0, -128, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq12 = {
+        .clearance = { -32, -160, 8, 4, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixUpLargeSeq13 = {
+        .clearance = { 0, -160, 8, 4, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -2,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq4 = {
+        .clearance = { -32, 64, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq5 = {
+        .clearance = { -64, 32, 0, 4, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq6 = {
+        .clearance = { -64, 64, 0, 4, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq7 = {
+        .clearance = { -64, 96, 8, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq8 = {
+        .clearance = { -32, 96, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq9 = {
+        .clearance = { -64, 128, 8, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq10 = {
+        .clearance = { -32, 128, 8, 0, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq11 = {
+        .clearance = { 0, 128, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq12 = {
+        .clearance = { -32, 160, 8, 4, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixUpLargeSeq13 = {
+        .clearance = { 0, 160, 8, 4, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 2,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq0 = {
+        .clearance = { 0, 0, 8, 4, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq1 = {
+        .clearance = { 0, -32, 8, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq2 = {
+        .clearance = { -32, 0, 8, 4, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq3 = {
+        .clearance = { -32, -32, 8, 0, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq4 = {
+        .clearance = { -32, -64, 8, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq5 = {
+        .clearance = { -64, -32, 8, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq6 = {
+        .clearance = { -64, -64, 8, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq7 = {
+        .clearance = { -64, -96, 0, 4, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq8 = {
+        .clearance = { -32, -96, 0, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq9 = {
+        .clearance = { -64, -128, 0, 4, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq10 = {
+        .clearance = { -32, -128, 0, 0, { 0b1110, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq11 = {
+        .clearance = { 0, -128, 0, 0, { 0b0100, 0b0000 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq12 = {
+        .clearance = { -32, -160, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftHalfBankedHelixDownLargeSeq13 = {
+        .clearance = { 0, -160, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -2,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq0 = {
+        .clearance = { 0, 0, 8, 4, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq1 = {
+        .clearance = { 0, 32, 8, 4, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq2 = {
+        .clearance = { -32, 0, 8, 4, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq3 = {
+        .clearance = { -32, 32, 8, 0, { 0b1110, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq4 = {
+        .clearance = { -32, 64, 8, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq5 = {
+        .clearance = { -64, 32, 8, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq6 = {
+        .clearance = { -64, 64, 8, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq7 = {
+        .clearance = { -64, 96, 0, 4, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq8 = {
+        .clearance = { -32, 96, 0, 4, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq9 = {
+        .clearance = { -64, 128, 0, 4, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq10 = {
+        .clearance = { -32, 128, 0, 0, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq11 = {
+        .clearance = { 0, 128, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq12 = {
+        .clearance = { -32, 160, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightHalfBankedHelixDownLargeSeq13 = {
+        .clearance = { 0, 160, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 2,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn1TileUp60Seq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn1TileUp60Seq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn1TileDown60Seq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn1TileDown60Seq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kBrakesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kBoosterSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq1 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq2 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq3 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq4 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq5 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq6 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq7 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq8 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq9 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq10 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq11 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq12 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq13 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq14 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kMazeSeq15 = {
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq4 = {
+        .clearance = { -32, -64, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq5 = {
+        .clearance = { -64, -32, 0, 12, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeUpSeq6 = {
+        .clearance = { -64, -64, 0, 12, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq4 = {
+        .clearance = { -32, 64, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq5 = {
+        .clearance = { -64, 32, 0, 12, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq6 = {
+        .clearance = { -64, 64, 0, 12, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq0 = {
+        .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq1 = {
+        .clearance = { 0, -32, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq2 = {
+        .clearance = { -32, 0, 0, 12, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq4 = {
+        .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq5 = {
+        .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq6 = {
+        .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq0 = {
+        .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq1 = {
+        .clearance = { 0, 32, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq2 = {
+        .clearance = { -32, 0, 0, 12, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq4 = {
+        .clearance = { -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq5 = {
+        .clearance = { -64, 32, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeDownSeq6 = {
+        .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq4 = {
+        .clearance = { -32, -64, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq5 = {
+        .clearance = { -64, -32, 0, 12, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeUpSeq6 = {
+        .clearance = { -64, -64, 0, 12, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq4 = {
+        .clearance = { -32, 64, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq5 = {
+        .clearance = { -64, 32, 0, 12, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeUpSeq6 = {
+        .clearance = { -64, 64, 0, 12, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq0 = {
+        .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq1 = {
+        .clearance = { 0, -32, 0, 12, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq2 = {
+        .clearance = { -32, 0, 0, 12, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq4 = {
+        .clearance = { -32, -64, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq5 = {
+        .clearance = { -64, -32, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterHelixLargeDownSeq6 = {
+        .clearance = { -64, -64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = -1,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq0 = {
+        .clearance = { 0, 0, 0, 12, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq1 = {
+        .clearance = { 0, 32, 0, 12, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq2 = {
+        .clearance = { -32, 0, 0, 12, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq4 = {
+        .clearance = { -32, 64, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq5 = {
+        .clearance = { -64, 32, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterHelixLargeDownSeq6 = {
+        .clearance = { -64, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .metalSupports = { MetalSupportPlace::Centre },
+        .extraSupportRotation = 1,
+    };
+
+    static constexpr SequenceDescriptor kUp25LeftBankedSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp25RightBankedSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kWaterfallSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRapidsSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kOnRidePhotoSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kDown25LeftBankedSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown25RightBankedSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kWatersplashSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kWatersplashSeq1 = {
+        .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kWatersplashSeq2 = {
+        .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kWatersplashSeq3 = {
+        .clearance = { -96, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kWatersplashSeq4 = {
+        .clearance = { -128, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq0 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq1 = {
+        .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq1 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq2 = {
+        .clearance = { -64, 0, 16, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq2 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToUp60LongBaseSeq3 = {
+        .clearance = { -96, 0, 40, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq3 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq0 = {
+        .clearance = { 0, 0, 0, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq0 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq1 = {
+        .clearance = { -32, 0, 40, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq1 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq2 = {
+        .clearance = { -64, 0, 64, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq2 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kUp60ToFlatLongBaseSeq3 = {
+        .clearance = { -96, 0, 80, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq3 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kWhirlpoolSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq0 = {
+        .clearance = { 0, 0, 40, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq0 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq1 = {
+        .clearance = { -32, 0, 16, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq1 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq2 = {
+        .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq2 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kDown60ToFlatLongBaseSeq3 = {
+        .clearance = { -96, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down60DegToFlatLongBaseSeq3 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq0 = {
+        .clearance = { 0, 0, 80, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq0 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq1 = {
+        .clearance = { -32, 0, 64, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq1 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq2 = {
+        .clearance = { -64, 0, 40, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq2 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kFlatToDown60LongBaseSeq3 = {
+        .clearance = { -96, 0, 0, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown60DegLongBaseSeq3 },
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kCableLiftHillSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kCableLiftHillSeq1 = {
+        .clearance = { -32, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kCableLiftHillSeq2 = {
+        .clearance = { -64, 0, -32, 32, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kCableLiftHillSeq3 = {
+        .clearance = { -96, 0, -96, 64, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .metalSupports = { MetalSupportPlace::Centre, true },
+    };
+
+    static constexpr SequenceDescriptor kReverseFreefallSlopeSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kReverseFreefallSlopeSeq1 = {
+        .clearance = { -32, 0, 0, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kReverseFreefallSlopeSeq2 = {
+        .clearance = { -64, 0, 0, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kReverseFreefallSlopeSeq3 = {
+        .clearance = { -96, 0, 0, 80, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kReverseFreefallSlopeSeq4 = {
+        .clearance = { -128, 0, 0, 160, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kReverseFreefallSlopeSeq5 = {
+        .clearance = { -192, 0, 0, 208, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1011,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kReverseFreefallSlopeSeq6 = {
+        .clearance = { -160, 0, 0, 208, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kReverseFreefallVerticalSeq0 = {
+        .clearance = { 0, 0, 0, 48, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kReverseFreefallVerticalSeq1 = {
+        .clearance = { 32, 0, 0, 48, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kUp90Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1111,
+    };
+
+    static constexpr SequenceDescriptor kUp90Seq1 = {
+        .clearance = { 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    };
+
+    static constexpr SequenceDescriptor kDown90Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1111,
+    };
+
+    static constexpr SequenceDescriptor kDown90Seq1 = {
+        .clearance = { 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    };
+
+    static constexpr SequenceDescriptor kUp60ToUp90Seq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1111, 0b1100 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1011,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kUp60ToUp90Seq1 = {
+        .clearance = { 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    };
+
+    static constexpr SequenceDescriptor kDown90ToDown60Seq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1111, 0b0011 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1110,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kUp90ToUp60Seq0 = {
+        .clearance = { 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1011,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kDown60ToDown90Seq0 = {
+        .clearance = { 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1110,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kDown60ToDown90Seq1 = {
+        .clearance = { 32, 0, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    };
+
+    static constexpr SequenceDescriptor kBrakeForDropSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagSeq2 = {
+        .clearance = { -32, -32, 0, 0, { 0b1000, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagSeq3 = {
+        .clearance = { -64, 0, 0, 0, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagSeq4 = {
+        .clearance = { -64, -32, 0, 0, { 0b0001, 0 }, 0 },
+        .metalSupports = { MetalSupportPlace::BottomCorner },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+        .metalSupports = { MetalSupportPlace::Centre },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagSeq2 = {
+        .clearance = { -32, 32, 0, 0, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagSeq3 = {
+        .clearance = { -64, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagSeq4 = {
+        .clearance = { -64, 32, 0, 0, { 0b0010, 0 }, 0 },
+        .metalSupports = { MetalSupportPlace::LeftCorner },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalSeq2 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalSeq4 = {
+        .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0100,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalSeq4 = {
+        .clearance = { -32, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagSeq2 = {
+        .clearance = { -32, -32, 0, 0, { 0b1000, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagSeq3 = {
+        .clearance = { -64, 0, 0, 0, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagSeq4 = {
+        .clearance = { -64, -32, 0, 0, { 0b0001, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagSeq2 = {
+        .clearance = { -32, 32, 0, 0, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagSeq3 = {
+        .clearance = { -64, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagSeq4 = {
+        .clearance = { -64, 32, 0, 0, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalSeq2 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalSeq4 = {
+        .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0100,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalSeq4 = {
+        .clearance = { -32, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60Seq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60Seq1 = {
+        .clearance = { 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60Seq2 = {
+        .clearance = { -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60Seq3 = {
+        .clearance = { -32, 32, 0, 64, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToUp25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToUp25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToUp25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToUp60Seq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToUp60Seq1 = {
+        .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToUp60Seq2 = {
+        .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToUp60Seq3 = {
+        .clearance = { -32, 32, 0, 32, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60ToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60ToUp25Seq1 = {
+        .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60ToUp25Seq2 = {
+        .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60ToUp25Seq3 = {
+        .clearance = { -32, 32, 0, 32, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToFlatSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToFlatSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToFlatSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60Seq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60Seq1 = {
+        .clearance = { 0, 32, 0, 64, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60Seq2 = {
+        .clearance = { -32, 0, 0, 64, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60Seq3 = {
+        .clearance = { -32, 32, 0, 64, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToDown25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToDown25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToDown25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToDown60Seq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToDown60Seq1 = {
+        .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToDown60Seq2 = {
+        .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToDown60Seq3 = {
+        .clearance = { -32, 32, 0, 32, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60ToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60ToDown25Seq1 = {
+        .clearance = { 0, 32, 0, 32, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60ToDown25Seq2 = {
+        .clearance = { -32, 0, 0, 32, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60ToDown25Seq3 = {
+        .clearance = { -32, 32, 0, 32, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToFlatSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToFlatSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToFlatSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToUp60Seq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToUp60Seq1 = {
+        .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToUp60Seq2 = {
+        .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToUp60Seq3 = {
+        .clearance = { -32, 32, 0, 24, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60ToFlatSeq1 = {
+        .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60ToFlatSeq2 = {
+        .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp60ToFlatSeq3 = {
+        .clearance = { -32, 32, 0, 24, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToDown60Seq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToDown60Seq1 = {
+        .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToDown60Seq2 = {
+        .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToDown60Seq3 = {
+        .clearance = { -32, 32, 0, 24, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60ToFlatSeq1 = {
+        .clearance = { 0, 32, 0, 24, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60ToFlatSeq2 = {
+        .clearance = { -32, 0, 0, 24, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown60ToFlatSeq3 = {
+        .clearance = { -32, 32, 0, 24, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToFlatSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToFlatSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToFlatSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToFlatSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToFlatSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToFlatSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToUp25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToUp25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToUp25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToUp25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToUp25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToUp25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToLeftBankSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToLeftBankSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToLeftBankSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToLeftBankSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToRightBankSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToRightBankSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToRightBankSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToRightBankSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToDown25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToDown25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankToDown25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToDown25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToDown25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankToDown25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToLeftBankSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToLeftBankSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToLeftBankSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToLeftBankSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToRightBankSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToRightBankSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToRightBankSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToRightBankSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLogFlumeReverserSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kSpinningTunnelSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .flags = TRACK_SEQUENCE_FLAG_DISALLOW_DOORS,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftBarrelRollUpToDownSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftBarrelRollUpToDownSeq1 = {
+        .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftBarrelRollUpToDownSeq2 = {
+        .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightBarrelRollUpToDownSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightBarrelRollUpToDownSeq1 = {
+        .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightBarrelRollUpToDownSeq2 = {
+        .clearance = { -64, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftBarrelRollDownToUpSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftBarrelRollDownToUpSeq1 = {
+        .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftBarrelRollDownToUpSeq2 = {
+        .clearance = { -64, 0, -32, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightBarrelRollDownToUpSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightBarrelRollDownToUpSeq1 = {
+        .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightBarrelRollDownToUpSeq2 = {
+        .clearance = { -64, 0, -32, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankToLeftQuarterTurn3TilesUp25Seq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b0111, 0b0100 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankToLeftQuarterTurn3TilesUp25Seq1 = {
+        .clearance = { 0, -32, 0, 16, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankToLeftQuarterTurn3TilesUp25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankToLeftQuarterTurn3TilesUp25Seq3 = {
+        .clearance = { -32, -32, 16, 16, { 0b0111, 0b0110 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankToRightQuarterTurn3TilesUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankToRightQuarterTurn3TilesUp25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightBankToRightQuarterTurn3TilesUp25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightBankToRightQuarterTurn3TilesUp25Seq3 = {
+        .clearance = { -32, 32, 16, 16, { 0b1011, 0b1001 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25ToLeftBankSeq0 = {
+        .clearance = { 0, 0, 16, 16, { 0b0111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25ToLeftBankSeq1 = {
+        .clearance = { 0, -32, 0, 16, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25ToLeftBankSeq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn3TilesDown25ToLeftBankSeq3 = {
+        .clearance = { -32, -32, 0, 0, { 0b0111, 0b0001 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25ToRightBankSeq0 = {
+        .clearance = { 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25ToRightBankSeq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25ToRightBankSeq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn3TilesDown25ToRightBankSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1011, 0b0010 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kPoweredLiftSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq1 = {
+        .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq2 = {
+        .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq3 = {
+        .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq4 = {
+        .clearance = { -128, -32, 120, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq5 = {
+        .clearance = { -96, -32, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopUpSeq6 = {
+        .clearance = { -64, -32, 248, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq1 = {
+        .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq2 = {
+        .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq3 = {
+        .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq4 = {
+        .clearance = { -128, 32, 120, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq5 = {
+        .clearance = { -96, 32, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq6 = {
+        .clearance = { -64, 32, 248, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq1 = {
+        .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq2 = {
+        .clearance = { -64, 0, -160, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq3 = {
+        .clearance = { -32, -32, -216, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq4 = {
+        .clearance = { 0, -32, -248, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq5 = {
+        .clearance = { 32, -32, -264, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq6 = {
+        .clearance = { 64, -32, -280, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq1 = {
+        .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq2 = {
+        .clearance = { -64, 0, -160, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq3 = {
+        .clearance = { -32, 32, -216, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq4 = {
+        .clearance = { 0, 32, -248, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq5 = {
+        .clearance = { 32, 32, -264, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq6 = {
+        .clearance = { 64, 32, -280, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerTwistUpSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerTwistUpSeq1 = {
+        .clearance = { -32, 0, -16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerTwistUpSeq2 = {
+        .clearance = { -64, 0, -16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerTwistUpSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerTwistUpSeq1 = {
+        .clearance = { -32, 0, -16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerTwistUpSeq2 = {
+        .clearance = { -64, 0, -16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerTwistDownSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerTwistDownSeq1 = {
+        .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerTwistDownSeq2 = {
+        .clearance = { -64, 0, 16, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerTwistDownSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerTwistDownSeq1 = {
+        .clearance = { -32, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerTwistDownSeq2 = {
+        .clearance = { -64, 0, 16, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq1 = {
+        .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq2 = {
+        .clearance = { -64, 0, 32, 96, { 0b0011, 0 }, 0 },
+        .allowedWallEdges = 0b1011,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq3 = {
+        .clearance = { -32, 0, 120, 16, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq1 = {
+        .clearance = { -32, 0, -88, 96, { 0b0011, 0 }, 0 },
+        .allowedWallEdges = 0b1011,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq2 = {
+        .clearance = { 0, 0, -104, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopInvertedDownSeq3 = {
+        .clearance = { 32, 0, -120, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerCorkscrewUpSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerCorkscrewUpSeq1 = {
+        .clearance = { -32, 0, 24, 32, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerCorkscrewUpSeq2 = {
+        .clearance = { -32, -32, 48, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq1 = {
+        .clearance = { -32, 0, 24, 32, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq2 = {
+        .clearance = { -32, 32, 48, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerCorkscrewDownSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerCorkscrewDownSeq1 = {
+        .clearance = { -32, 0, -24, 32, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerCorkscrewDownSeq2 = {
+        .clearance = { -32, -32, -48, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq1 = {
+        .clearance = { -32, 0, -24, 32, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq2 = {
+        .clearance = { -32, 32, -48, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+    };
+
+    static constexpr SequenceDescriptor kHeartLineTransferUpSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
+    };
+
+    static constexpr SequenceDescriptor kHeartLineTransferUpSeq1 = {
+        .clearance = { -32, 0, 0, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
+    };
+
+    static constexpr SequenceDescriptor kHeartLineTransferUpSeq2 = {
+        .clearance = { -64, 0, 16, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kHeartLineTransferUpSeq3 = {
+        .clearance = { 0, 0, 32, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kHeartLineTransferDownSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kHeartLineTransferDownSeq1 = {
+        .clearance = { -32, 0, -32, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
+    };
+
+    static constexpr SequenceDescriptor kHeartLineTransferDownSeq2 = {
+        .clearance = { -64, 0, -16, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kHeartLineTransferDownSeq3 = {
+        .clearance = { 0, 0, -32, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftHeartLineRollSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftHeartLineRollSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftHeartLineRollSeq2 = {
+        .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftHeartLineRollSeq3 = {
+        .clearance = { -96, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftHeartLineRollSeq4 = {
+        .clearance = { -128, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftHeartLineRollSeq5 = {
+        .clearance = { -160, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightHeartLineRollSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightHeartLineRollSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightHeartLineRollSeq2 = {
+        .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightHeartLineRollSeq3 = {
+        .clearance = { -96, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightHeartLineRollSeq4 = {
+        .clearance = { -128, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightHeartLineRollSeq5 = {
+        .clearance = { -160, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleASeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleASeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleBSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleBSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleCSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleCSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleDSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleDSeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleDSeq2 = {
+        .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleESeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleESeq1 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kMinigolfHoleESeq2 = {
+        .clearance = { -32, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+    };
+
+    static constexpr SequenceDescriptor kMultiDimInvertedFlatToDown90QuarterLoopSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kMultiDimInvertedFlatToDown90QuarterLoopSeq1 = {
+        .clearance = { -32, 0, -40, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kMultiDimInvertedFlatToDown90QuarterLoopSeq2 = {
+        .clearance = { -64, 0, -96, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kMultiDimInvertedFlatToDown90QuarterLoopSeq3 = {
+        .clearance = { -96, 0, -96, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    };
+
+    static constexpr SequenceDescriptor kUp90ToInvertedFlatQuarterLoopSeq0 = {
+        .clearance = { 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kUp90ToInvertedFlatQuarterLoopSeq1 = {
+        .clearance = { 32, 0, 56, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kUp90ToInvertedFlatQuarterLoopSeq2 = {
+        .clearance = { 64, 0, 96, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kInvertedFlatToDown90QuarterLoopSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kInvertedFlatToDown90QuarterLoopSeq1 = {
+        .clearance = { -32, 0, -72, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kInvertedFlatToDown90QuarterLoopSeq2 = {
+        .clearance = { -64, 0, -128, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kInvertedFlatToDown90QuarterLoopSeq3 = {
+        .clearance = { -96, 0, -128, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    };
+
+    static constexpr SequenceDescriptor kLeftCurvedLiftHillSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftCurvedLiftHillSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftCurvedLiftHillSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftCurvedLiftHillSeq3 = {
+        .clearance = { -32, -32, 0, 8, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightCurvedLiftHillSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightCurvedLiftHillSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightCurvedLiftHillSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightCurvedLiftHillSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftReverserSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftReverserSeq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftReverserSeq2 = {
+        .clearance = { -32, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftReverserSeq3 = {
+        .clearance = { -64, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftReverserSeq4 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftReverserSeq5 = {
+        .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightReverserSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightReverserSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightReverserSeq2 = {
+        .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightReverserSeq3 = {
+        .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightReverserSeq4 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightReverserSeq5 = {
+        .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustTopCapSeq0 = {
+        .clearance = { 0, 0, 0, 32, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustTopCapSeq1 = {
+        .clearance = { 32, 0, 0, 32, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustTopCapSeq2 = {
+        .clearance = { -64, 0, 0, 32, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustTopCapSeq3 = {
+        .clearance = { -32, 0, 0, 32, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustVerticalDownSeq0 = {
+        .clearance = { 0, 0, 0, 48, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustVerticalDownSeq1 = {
+        .clearance = { 32, 0, 0, 48, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq0 = {
+        .clearance = { 0, 0, 0, 208, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq1 = {
+        .clearance = { 32, 0, 0, 208, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq2 = {
+        .clearance = { -32, 0, 0, 160, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq3 = {
+        .clearance = { -64, 0, 0, 80, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq4 = {
+        .clearance = { -96, 0, 0, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq5 = {
+        .clearance = { -128, 0, 0, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq6 = {
+        .clearance = { -160, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kBlockBrakesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b0111, 0b0100 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileUp25Seq1 = {
+        .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileUp25Seq2 = {
+        .clearance = { -32, 0, 16, 0, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileUp25Seq3 = {
+        .clearance = { -32, -32, 16, 16, { 0b0111, 0b0110 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1011, 0b1000 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq1 = {
+        .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq2 = {
+        .clearance = { -32, 0, 16, 0, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileUp25Seq3 = {
+        .clearance = { -32, 32, 16, 16, { 0b1011, 0b1001 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq0 = {
+        .clearance = { 0, 0, 16, 16, { 0b0111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq1 = {
+        .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq2 = {
+        .clearance = { -32, 0, 16, 0, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn3TileDown25Seq3 = {
+        .clearance = { -32, -32, 0, 16, { 0b0111, 0b0001 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq0 = {
+        .clearance = { 0, 0, 16, 16, { 0b1011, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq1 = {
+        .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq2 = {
+        .clearance = { -32, 0, 16, 0, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn3TileDown25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b1011, 0b0010 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq1 = {
+        .clearance = { 0, -32, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq2 = {
+        .clearance = { -32, 0, 16, 16, { 0b0111, 0b0100 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq3 = {
+        .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq4 = {
+        .clearance = { -32, -64, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq5 = {
+        .clearance = { -64, -32, 32, 16, { 0b0111, 0b0100 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq6 = {
+        .clearance = { -64, -64, 48, 16, { 0b1111, 0b0110 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileUp25Seq7 = {
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq1 = {
+        .clearance = { 0, 32, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq2 = {
+        .clearance = { -32, 0, 16, 16, { 0b1011, 0b1000 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq3 = {
+        .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq4 = {
+        .clearance = { -32, 64, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq5 = {
+        .clearance = { -64, 32, 32, 16, { 0b1011, 0b1000 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq6 = {
+        .clearance = { -64, 64, 48, 16, { 0b1111, 0b1001 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileUp25Seq7 = {
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq0 = {
+        .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq1 = {
+        .clearance = { 0, -32, 48, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq2 = {
+        .clearance = { -32, 0, 32, 16, { 0b0111, 0b0001 }, 0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq3 = {
+        .clearance = { -32, -32, 24, 16, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq4 = {
+        .clearance = { -32, -64, 16, 0, { 0b1000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq5 = {
+        .clearance = { -64, -32, 16, 16, { 0b0111, 0b0001 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq6 = {
+        .clearance = { -64, -64, 0, 16, { 0b1111, 0b1001 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedQuarterTurn5TileDown25Seq7 = {
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq0 = {
+        .clearance = { 0, 0, 48, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq1 = {
+        .clearance = { 0, 32, 48, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq2 = {
+        .clearance = { -32, 0, 32, 16, { 0b1011, 0b0010 }, 0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq3 = {
+        .clearance = { -32, 32, 24, 16, { 0b1110, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq4 = {
+        .clearance = { -32, 64, 16, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq5 = {
+        .clearance = { -64, 32, 16, 16, { 0b1011, 0b0010 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq6 = {
+        .clearance = { -64, 64, 0, 16, { 0b1111, 0b0110 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedQuarterTurn5TileDown25Seq7 = {
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kUp25ToLeftBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+    };
+
+    static constexpr SequenceDescriptor kUp25ToRightBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedUp25ToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedUp25ToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+    };
+
+    static constexpr SequenceDescriptor kDown25ToLeftBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kDown25ToRightBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedDown25ToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedDown25ToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedFlatToLeftBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedFlatToRightBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedUp25ToLeftBankedFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedUp25ToRightBankedFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedFlatToLeftBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedFlatToRightBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedDown25ToLeftBankedFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedDown25ToRightBankedFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
+    };
+
+    static constexpr SequenceDescriptor kFlatToLeftBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
+    };
+
+    static constexpr SequenceDescriptor kFlatToRightBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToUp25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedUp25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedUp25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25DegToFlat },
+    };
+
+    static constexpr SequenceDescriptor kFlatToLeftBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
+    };
+
+    static constexpr SequenceDescriptor kFlatToRightBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0b0011 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::FlatToDown25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftBankedDown25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
+    };
+
+    static constexpr SequenceDescriptor kRightBankedDown25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25DegToFlat },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn1TileUp90Seq0 = {
+        .clearance = { 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1111,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn1TileUp90Seq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn1TileUp90Seq0 = {
+        .clearance = { 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1111,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn1TileUp90Seq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn1TileDown90Seq0 = {
+        .clearance = { 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1111,
+    };
+
+    static constexpr SequenceDescriptor kLeftQuarterTurn1TileDown90Seq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn1TileDown90Seq0 = {
+        .clearance = { 0, 0, 0, 72, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1111,
+    };
+
+    static constexpr SequenceDescriptor kRightQuarterTurn1TileDown90Seq1 = {
+        .clearance = { 0, -32, 0, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    };
+
+    static constexpr SequenceDescriptor kMultiDimUp90ToInvertedFlatQuarterLoopSeq0 = {
+        .clearance = { 0, 0, 0, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kMultiDimUp90ToInvertedFlatQuarterLoopSeq1 = {
+        .clearance = { 32, 0, 56, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kMultiDimUp90ToInvertedFlatQuarterLoopSeq2 = {
+        .clearance = { 64, 0, 96, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq1 = {
+        .clearance = { -32, 0, -72, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq2 = {
+        .clearance = { -64, 0, -128, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kMultiDimFlatToDown90QuarterLoopSeq3 = {
+        .clearance = { -96, 0, -128, 0, { 0b0000, 0 }, RCT_PREVIEW_TRACK_FLAG_0 | RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+    };
+
+    static constexpr SequenceDescriptor kMultiDimInvertedUp90ToFlatQuarterLoopSeq0 = {
+        .clearance = { 0, 0, 32, 56, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kMultiDimInvertedUp90ToFlatQuarterLoopSeq1 = {
+        .clearance = { 32, 0, 88, 32, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kMultiDimInvertedUp90ToFlatQuarterLoopSeq2 = {
+        .clearance = { 64, 0, 128, 16, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRotationControlToggleSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4ASeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4ASeq1 = {
+        .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4ASeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4ASeq3 = {
+        .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x2Seq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x2Seq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x2Seq2 = {
+        .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x2Seq3 = {
+        .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq2 = {
+        .clearance = { 0, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq3 = {
+        .clearance = { 0, 96, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq4 = {
+        .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq5 = {
+        .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq6 = {
+        .clearance = { 32, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq7 = {
+        .clearance = { 32, 96, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq8 = {
+        .clearance = { 64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq9 = {
+        .clearance = { 64, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq10 = {
+        .clearance = { 64, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq11 = {
+        .clearance = { 64, 96, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq12 = {
+        .clearance = { 96, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq13 = {
+        .clearance = { 96, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq14 = {
+        .clearance = { 96, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack4x4Seq15 = {
+        .clearance = { 96, 96, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x4Seq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x4Seq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x4Seq2 = {
+        .clearance = { 0, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x4Seq3 = {
+        .clearance = { 0, 96, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x4Seq4 = {
+        .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x4Seq5 = {
+        .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x4Seq6 = {
+        .clearance = { 32, 64, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack2x4Seq7 = {
+        .clearance = { 32, 96, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x5Seq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x5Seq1 = {
+        .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x5Seq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x5Seq3 = {
+        .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x5Seq4 = {
+        .clearance = { 64, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x1ASeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4BSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4BSeq1 = {
+        .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4BSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4BSeq3 = {
+        .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x1BSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2
+            | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4CSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4CSeq1 = {
+        .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4CSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack1x4CSeq3 = {
+        .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack3x3Seq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_ORIGIN,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack3x3Seq1 = {
+        .clearance = { -32, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack3x3Seq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack3x3Seq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack3x3Seq4 = {
+        .clearance = { 0, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack3x3Seq5 = {
+        .clearance = { 0, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack3x3Seq6 = {
+        .clearance = { 32, -32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack3x3Seq7 = {
+        .clearance = { 32, 32, 0, 0, { 0b1111, 0 }, 0 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kFlatTrack3x3Seq8 = {
+        .clearance = { 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
+        .flags = TRACK_SEQUENCE_FLAG_DIRECTION_2,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewUpSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewUpSeq1 = {
+        .clearance = { -32, 0, 8, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewUpSeq2 = {
+        .clearance = { -64, 0, 32, 24, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewUpSeq3 = {
+        .clearance = { -32, -32, 32, 24, { 0b1000, 0 }, 0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewUpSeq4 = {
+        .clearance = { -64, -32, 48, 40, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewUpSeq5 = {
+        .clearance = { -64, -64, 72, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq1 = {
+        .clearance = { -32, 0, 8, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq2 = {
+        .clearance = { -64, 0, 32, 24, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq3 = {
+        .clearance = { -32, 32, 32, 24, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq4 = {
+        .clearance = { -64, 32, 48, 40, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq5 = {
+        .clearance = { -64, 64, 72, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq0 = {
+        .clearance = { 0, 0, -40, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq1 = {
+        .clearance = { -32, 0, -64, 40, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq2 = {
+        .clearance = { -32, -32, -80, 24, { 0b1000, 0 }, 0 },
+        .allowedWallEdges = 0b1100,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq3 = {
+        .clearance = { -64, 0, -80, 24, { 0b0111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq4 = {
+        .clearance = { -64, -32, -104, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq5 = {
+        .clearance = { -64, -64, -112, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq0 = {
+        .clearance = { 0, 0, -40, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq1 = {
+        .clearance = { -32, 0, -64, 40, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq2 = {
+        .clearance = { -32, 32, -80, 24, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq3 = {
+        .clearance = { -64, 0, -80, 24, { 0b1011, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq4 = {
+        .clearance = { -64, 32, -104, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+    };
+
+    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq5 = {
+        .clearance = { -64, 64, -112, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+    };
+
+    static constexpr SequenceDescriptor kLeftMediumHalfLoopUpSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftMediumHalfLoopUpSeq1 = {
+        .clearance = { -32, 0, 16, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftMediumHalfLoopUpSeq2 = {
+        .clearance = { -64, 0, 56, 120, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftMediumHalfLoopUpSeq3 = {
+        .clearance = { -64, -32, 56, 120, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kLeftMediumHalfLoopUpSeq4 = {
+        .clearance = { -32, -32, 168, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq1 = {
+        .clearance = { -32, 0, 16, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq2 = {
+        .clearance = { -64, 0, 56, 120, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq3 = {
+        .clearance = { -64, 32, 56, 120, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq4 = {
+        .clearance = { -32, 32, 168, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq0 = {
+        .clearance = { 0, 0, -48, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq1 = {
+        .clearance = { -32, 0, -160, 120, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq2 = {
+        .clearance = { -32, -32, -160, 120, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq3 = {
+        .clearance = { 0, -32, -200, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq4 = {
+        .clearance = { 32, -32, -216, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq0 = {
+        .clearance = { 0, 0, -48, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq1 = {
+        .clearance = { -32, 0, -160, 120, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq2 = {
+        .clearance = { -32, 32, -160, 120, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq3 = {
+        .clearance = { 0, 32, -200, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq4 = {
+        .clearance = { 32, 32, -216, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftZeroGRollUpSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftZeroGRollUpSeq1 = {
+        .clearance = { -32, 0, 8, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftZeroGRollUpSeq2 = {
+        .clearance = { -64, 0, 24, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightZeroGRollUpSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightZeroGRollUpSeq1 = {
+        .clearance = { -32, 0, 8, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightZeroGRollUpSeq2 = {
+        .clearance = { -64, 0, 24, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftZeroGRollDownSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftZeroGRollDownSeq1 = {
+        .clearance = { -32, 0, -48, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftZeroGRollDownSeq2 = {
+        .clearance = { -64, 0, -56, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightZeroGRollDownSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightZeroGRollDownSeq1 = {
+        .clearance = { -32, 0, -48, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightZeroGRollDownSeq2 = {
+        .clearance = { -64, 0, -56, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeZeroGRollUpSeq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeZeroGRollUpSeq1 = {
+        .clearance = { -32, 0, 56, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeZeroGRollUpSeq2 = {
+        .clearance = { -64, 0, 96, 40, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeZeroGRollUpSeq3 = {
+        .clearance = { -96, 0, 120, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightLargeZeroGRollUpSeq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightLargeZeroGRollUpSeq1 = {
+        .clearance = { -32, 0, 56, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightLargeZeroGRollUpSeq2 = {
+        .clearance = { -64, 0, 96, 40, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightLargeZeroGRollUpSeq3 = {
+        .clearance = { -96, 0, 120, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq1 = {
+        .clearance = { -32, 0, -56, 40, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq2 = {
+        .clearance = { -64, 0, -96, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftLargeZeroGRollDownSeq3 = {
+        .clearance = { -96, 0, -152, 64, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightLargeZeroGRollDownSeq0 = {
+        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightLargeZeroGRollDownSeq1 = {
+        .clearance = { -32, 0, -56, 40, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightLargeZeroGRollDownSeq2 = {
+        .clearance = { -64, 0, -96, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightLargeZeroGRollDownSeq3 = {
+        .clearance = { -96, 0, -152, 64, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq1 = {
+        .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq2 = {
+        .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq3 = {
+        .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq4 = {
+        .clearance = { -128, -32, 120, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq5 = {
+        .clearance = { -96, -32, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq6 = {
+        .clearance = { -64, -32, 248, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq1 = {
+        .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq2 = {
+        .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq3 = {
+        .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq4 = {
+        .clearance = { -128, 32, 120, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq5 = {
+        .clearance = { -96, 32, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq6 = {
+        .clearance = { -64, 32, 248, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq1 = {
+        .clearance = { -32, 0, -184, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq2 = {
+        .clearance = { -64, 0, -128, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq3 = {
+        .clearance = { -32, -32, -184, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq4 = {
+        .clearance = { 0, -32, -216, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq5 = {
+        .clearance = { 32, -32, -232, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq6 = {
+        .clearance = { 64, -32, -248, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq1 = {
+        .clearance = { -32, 0, -184, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq2 = {
+        .clearance = { -64, 0, -128, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq3 = {
+        .clearance = { -32, 32, -184, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq4 = {
+        .clearance = { 0, 32, -216, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq5 = {
+        .clearance = { 32, 32, -232, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq6 = {
+        .clearance = { 64, 32, -248, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq1 = {
+        .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq2 = {
+        .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq3 = {
+        .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq4 = {
+        .clearance = { -128, -32, 120, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq5 = {
+        .clearance = { -96, -32, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq6 = {
+        .clearance = { -64, -32, 248, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq0 = {
+        .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq1 = {
+        .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq2 = {
+        .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq3 = {
+        .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq4 = {
+        .clearance = { -128, 32, 120, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq5 = {
+        .clearance = { -96, 32, 64, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq6 = {
+        .clearance = { -64, 32, 248, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq0 = {
+        .clearance = { 0, 0, -32, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq1 = {
+        .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq2 = {
+        .clearance = { -64, 0, -160, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq3 = {
+        .clearance = { -32, -32, -216, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq4 = {
+        .clearance = { 0, -32, -248, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq5 = {
+        .clearance = { 32, -32, -264, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq6 = {
+        .clearance = { 64, -32, -280, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq0 = {
+        .clearance = { 0, 0, -32, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq1 = {
+        .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq2 = {
+        .clearance = { -64, 0, -160, 96, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq3 = {
+        .clearance = { -32, 32, -216, 192, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq4 = {
+        .clearance = { 0, 32, -248, 56, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq5 = {
+        .clearance = { 32, 32, -264, 40, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq6 = {
+        .clearance = { 64, 32, -280, 24, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq1 = {
+        .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq2 = {
+        .clearance = { -64, 0, 32, 96, { 0b0011, 0 }, 0 },
+        .allowedWallEdges = 0b1011,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq3 = {
+        .clearance = { -32, 0, 120, 32, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedDownSeq0 = {
+        .clearance = { 0, 0, -32, 32, { 0b1111, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedDownSeq1 = {
+        .clearance = { -32, 0, -120, 96, { 0b0011, 0 }, 0 },
+        .allowedWallEdges = 0b1011,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedDownSeq2 = {
+        .clearance = { 0, 0, -136, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedDownSeq3 = {
+        .clearance = { 32, 0, -152, 16, { 0b1111, 0b1100 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq1 = {
+        .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq2 = {
+        .clearance = { -32, -32, 32, 16, { 0b1000, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq3 = {
+        .clearance = { -64, 0, 32, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagUp25Seq4 = {
+        .clearance = { -64, -32, 32, 24, { 0b0001, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq1 = {
+        .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq2 = {
+        .clearance = { -32, 32, 32, 16, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq3 = {
+        .clearance = { -64, 0, 32, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagUp25Seq4 = {
+        .clearance = { -64, 32, 32, 24, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq0 = {
+        .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq1 = {
+        .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq2 = {
+        .clearance = { -32, -32, -48, 16, { 0b1000, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq3 = {
+        .clearance = { -64, 0, -48, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToDiagDown25Seq4 = {
+        .clearance = { -64, -32, -48, 16, { 0b0001, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq0 = {
+        .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq1 = {
+        .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq2 = {
+        .clearance = { -32, 32, -48, 16, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq3 = {
+        .clearance = { -64, 0, -48, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToDiagDown25Seq4 = {
+        .clearance = { -64, 32, -48, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq1 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq2 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq3 = {
+        .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq4 = {
+        .clearance = { -64, 32, 32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0100,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq3 = {
+        .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalUp25Seq4 = {
+        .clearance = { -32, 64, 32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq0 = {
+        .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq1 = {
+        .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq2 = {
+        .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq3 = {
+        .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthToOrthogonalDown25Seq4 = {
+        .clearance = { -64, 32, -48, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq0 = {
+        .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq1 = {
+        .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0100,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq2 = {
+        .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq3 = {
+        .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthToOrthogonalDown25Seq4 = {
+        .clearance = { -32, 64, -48, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToLeftBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToLeftBankedUp25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToLeftBankedUp25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToLeftBankedUp25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToRightBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToRightBankedUp25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToRightBankedUp25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25ToRightBankedUp25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToUp25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToUp25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToUp25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToUp25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToUp25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToUp25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToLeftBankedDown25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25ToRightBankedDown25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToDown25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToDown25Seq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedUp25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedUp25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedUp25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedUp25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedUp25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedUp25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToLeftBankedFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToLeftBankedFlatSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToLeftBankedFlatSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToLeftBankedFlatSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToRightBankedFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToRightBankedFlatSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToRightBankedFlatSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToRightBankedFlatSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedFlatToLeftBankedDown25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedFlatToRightBankedDown25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToLeftBankedFlatSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToRightBankedFlatSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankedUp25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankedUp25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankedUp25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankedUp25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankedUp25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankedUp25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankedUp25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToFlatSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToFlatSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedUp25ToFlatSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToFlatSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToFlatSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedUp25ToFlatSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagFlatToRightBankedDown25Seq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagLeftBankedDown25ToFlatSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq0 = {
+        .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq1 = {
+        .clearance = { 0, 32, 0, 8, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq2 = {
+        .clearance = { -32, 0, 0, 8, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagRightBankedDown25ToFlatSeq3 = {
+        .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25LeftBankedSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25LeftBankedSeq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25LeftBankedSeq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25LeftBankedSeq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25RightBankedSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25RightBankedSeq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25RightBankedSeq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagUp25RightBankedSeq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25LeftBankedSeq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25RightBankedSeq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25RightBankedSeq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25RightBankedSeq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagDown25RightBankedSeq3 = {
+        .clearance = { -32, 32, 0, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq1 = {
+        .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq2 = {
+        .clearance = { -32, -32, 32, 16, { 0b1000, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq3 = {
+        .clearance = { -64, 0, 32, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagUp25Seq4 = {
+        .clearance = { -64, -32, 32, 24, { 0b0001, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Up25Deg },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq1 = {
+        .clearance = { -32, 0, 16, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq2 = {
+        .clearance = { -32, 32, 32, 16, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq3 = {
+        .clearance = { -64, 0, 32, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagUp25Seq4 = {
+        .clearance = { -64, 32, 32, 24, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq0 = {
+        .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq1 = {
+        .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq2 = {
+        .clearance = { -32, -32, -48, 16, { 0b1000, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq3 = {
+        .clearance = { -64, 0, -48, 16, { 0b0010, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0011,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToDiagDown25Seq4 = {
+        .clearance = { -64, -32, -48, 16, { 0b0001, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq0 = {
+        .clearance = { 0, 0, -16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq1 = {
+        .clearance = { -32, 0, -32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq2 = {
+        .clearance = { -32, 32, -48, 16, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq3 = {
+        .clearance = { -64, 0, -48, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToDiagDown25Seq4 = {
+        .clearance = { -64, 32, -48, 16, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq1 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq2 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq3 = {
+        .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalUp25Seq4 = {
+        .clearance = { -64, 32, 32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq0 = {
+        .clearance = { 0, 0, 0, 16, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0100,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq3 = {
+        .clearance = { -32, 32, 16, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalUp25Seq4 = {
+        .clearance = { -32, 64, 32, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::NwSe },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq0 = {
+        .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq1 = {
+        .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq2 = {
+        .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq3 = {
+        .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kLeftEighthBankToOrthogonalDown25Seq4 = {
+        .clearance = { -64, 32, -48, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq0 = {
+        .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, 0 },
+        .woodenSupports = { WoodenSupportSubType::NeSw, WoodenSupportTransitionType::Down25Deg },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq1 = {
+        .clearance = { 0, 32, -16, 16, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0100,
+        .woodenSupports = { WoodenSupportSubType::NeSw },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq2 = {
+        .clearance = { -32, 0, -16, 16, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner1 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq3 = {
+        .clearance = { -32, 32, -32, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+        .woodenSupports = { WoodenSupportSubType::Corner3 },
+    };
+
+    static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq4 = {
+        .clearance = { -32, 64, -48, 16, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+    };
+
+    static constexpr SequenceDescriptor kDiagBrakesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagBrakesSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagBrakesSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagBrakesSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagBlockBrakesSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagBlockBrakesSeq1 = {
+        .clearance = { 0, 32, 0, 0, { 0b0100, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b0110,
+        .woodenSupports = { WoodenSupportSubType::Corner0 },
+    };
+
+    static constexpr SequenceDescriptor kDiagBlockBrakesSeq2 = {
+        .clearance = { -32, 0, 0, 0, { 0b0001, 0 }, RCT_PREVIEW_TRACK_FLAG_0 },
+        .allowedWallEdges = 0b1001,
+        .woodenSupports = { WoodenSupportSubType::Corner2 },
+    };
+
+    static constexpr SequenceDescriptor kDiagBlockBrakesSeq3 = {
+        .clearance = { -32, 32, 0, 0, { 0b0010, 0 }, 0 },
+    };
+
+    static constexpr SequenceData kSequenceDescriptorsByElement[] = {
+        /* TrackElemType::Flat */ { 1, { kFlatSeq0 } },
+        /* TrackElemType::EndStation */ { 1, { kEndStationSeq0 } },
+        /* TrackElemType::BeginStation */ { 1, { kBeginStationSeq0 } },
+        /* TrackElemType::MiddleStation */ { 1, { kMiddleStationSeq0 } },
+        /* TrackElemType::Up25 */ { 1, { kUp25Seq0 } },
+        /* TrackElemType::Up60 */ { 1, { kUp60Seq0 } },
+        /* TrackElemType::FlatToUp25 */ { 1, { kFlatToUp25Seq0 } },
+        /* TrackElemType::Up25ToUp60 */ { 1, { kUp25ToUp60Seq0 } },
+        /* TrackElemType::Up60ToUp25 */ { 1, { kUp60ToUp25Seq0 } },
+        /* TrackElemType::Up25ToFlat */ { 1, { kUp25ToFlatSeq0 } },
+        /* TrackElemType::Down25 */ { 1, { kDown25Seq0 } },
+        /* TrackElemType::Down60 */ { 1, { kDown60Seq0 } },
+        /* TrackElemType::FlatToDown25 */ { 1, { kFlatToDown25Seq0 } },
+        /* TrackElemType::Down25ToDown60 */ { 1, { kDown25ToDown60Seq0 } },
+        /* TrackElemType::Down60ToDown25 */ { 1, { kDown60ToDown25Seq0 } },
+        /* TrackElemType::Down25ToFlat */ { 1, { kDown25ToFlatSeq0 } },
+        /* TrackElemType::LeftQuarterTurn5Tiles */
+        { 7,
+          { kLeftQuarterTurn5TilesSeq0, kLeftQuarterTurn5TilesSeq1, kLeftQuarterTurn5TilesSeq2, kLeftQuarterTurn5TilesSeq3,
+            kLeftQuarterTurn5TilesSeq4, kLeftQuarterTurn5TilesSeq5, kLeftQuarterTurn5TilesSeq6 } },
+        /* TrackElemType::RightQuarterTurn5Tiles */
+        { 7,
+          { kRightQuarterTurn5TilesSeq0, kRightQuarterTurn5TilesSeq1, kRightQuarterTurn5TilesSeq2, kRightQuarterTurn5TilesSeq3,
+            kRightQuarterTurn5TilesSeq4, kRightQuarterTurn5TilesSeq5, kRightQuarterTurn5TilesSeq6 } },
+        /* TrackElemType::FlatToLeftBank */ { 1, { kFlatToLeftBankSeq0 } },
+        /* TrackElemType::FlatToRightBank */ { 1, { kFlatToRightBankSeq0 } },
+        /* TrackElemType::LeftBankToFlat */ { 1, { kLeftBankToFlatSeq0 } },
+        /* TrackElemType::RightBankToFlat */ { 1, { kRightBankToFlatSeq0 } },
+        /* TrackElemType::BankedLeftQuarterTurn5Tiles */
+        { 7,
+          { kBankedLeftQuarterTurn5TilesSeq0, kBankedLeftQuarterTurn5TilesSeq1, kBankedLeftQuarterTurn5TilesSeq2,
+            kBankedLeftQuarterTurn5TilesSeq3, kBankedLeftQuarterTurn5TilesSeq4, kBankedLeftQuarterTurn5TilesSeq5,
+            kBankedLeftQuarterTurn5TilesSeq6 } },
+        /* TrackElemType::BankedRightQuarterTurn5Tiles */
+        { 7,
+          { kBankedRightQuarterTurn5TilesSeq0, kBankedRightQuarterTurn5TilesSeq1, kBankedRightQuarterTurn5TilesSeq2,
+            kBankedRightQuarterTurn5TilesSeq3, kBankedRightQuarterTurn5TilesSeq4, kBankedRightQuarterTurn5TilesSeq5,
+            kBankedRightQuarterTurn5TilesSeq6 } },
+        /* TrackElemType::LeftBankToUp25 */ { 1, { kLeftBankToUp25Seq0 } },
+        /* TrackElemType::RightBankToUp25 */ { 1, { kRightBankToUp25Seq0 } },
+        /* TrackElemType::Up25ToLeftBank */ { 1, { kUp25ToLeftBankSeq0 } },
+        /* TrackElemType::Up25ToRightBank */ { 1, { kUp25ToRightBankSeq0 } },
+        /* TrackElemType::LeftBankToDown25 */ { 1, { kLeftBankToDown25Seq0 } },
+        /* TrackElemType::RightBankToDown25 */ { 1, { kRightBankToDown25Seq0 } },
+        /* TrackElemType::Down25ToLeftBank */ { 1, { kDown25ToLeftBankSeq0 } },
+        /* TrackElemType::Down25ToRightBank */ { 1, { kDown25ToRightBankSeq0 } },
+        /* TrackElemType::LeftBank */ { 1, { kLeftBankSeq0 } },
+        /* TrackElemType::RightBank */ { 1, { kRightBankSeq0 } },
+        /* TrackElemType::LeftQuarterTurn5TilesUp25 */
+        { 7,
+          { kLeftQuarterTurn5TilesUp25Seq0, kLeftQuarterTurn5TilesUp25Seq1, kLeftQuarterTurn5TilesUp25Seq2,
+            kLeftQuarterTurn5TilesUp25Seq3, kLeftQuarterTurn5TilesUp25Seq4, kLeftQuarterTurn5TilesUp25Seq5,
+            kLeftQuarterTurn5TilesUp25Seq6 } },
+        /* TrackElemType::RightQuarterTurn5TilesUp25 */
+        { 7,
+          { kRightQuarterTurn5TilesUp25Seq0, kRightQuarterTurn5TilesUp25Seq1, kRightQuarterTurn5TilesUp25Seq2,
+            kRightQuarterTurn5TilesUp25Seq3, kRightQuarterTurn5TilesUp25Seq4, kRightQuarterTurn5TilesUp25Seq5,
+            kRightQuarterTurn5TilesUp25Seq6 } },
+        /* TrackElemType::LeftQuarterTurn5TilesDown25 */
+        { 7,
+          { kLeftQuarterTurn5TilesDown25Seq0, kLeftQuarterTurn5TilesDown25Seq1, kLeftQuarterTurn5TilesDown25Seq2,
+            kLeftQuarterTurn5TilesDown25Seq3, kLeftQuarterTurn5TilesDown25Seq4, kLeftQuarterTurn5TilesDown25Seq5,
+            kLeftQuarterTurn5TilesDown25Seq6 } },
+        /* TrackElemType::RightQuarterTurn5TilesDown25 */
+        { 7,
+          { kRightQuarterTurn5TilesDown25Seq0, kRightQuarterTurn5TilesDown25Seq1, kRightQuarterTurn5TilesDown25Seq2,
+            kRightQuarterTurn5TilesDown25Seq3, kRightQuarterTurn5TilesDown25Seq4, kRightQuarterTurn5TilesDown25Seq5,
+            kRightQuarterTurn5TilesDown25Seq6 } },
+        /* TrackElemType::SBendLeft */ { 4, { kSBendLeftSeq0, kSBendLeftSeq1, kSBendLeftSeq2, kSBendLeftSeq3 } },
+        /* TrackElemType::SBendRight */ { 4, { kSBendRightSeq0, kSBendRightSeq1, kSBendRightSeq2, kSBendRightSeq3 } },
+        /* TrackElemType::LeftVerticalLoop */
+        { 10,
+          { kLeftVerticalLoopSeq0, kLeftVerticalLoopSeq1, kLeftVerticalLoopSeq2, kLeftVerticalLoopSeq3, kLeftVerticalLoopSeq4,
+            kLeftVerticalLoopSeq5, kLeftVerticalLoopSeq6, kLeftVerticalLoopSeq7, kLeftVerticalLoopSeq8,
+            kLeftVerticalLoopSeq9 } },
+        /* TrackElemType::RightVerticalLoop */
+        { 10,
+          { kRightVerticalLoopSeq0, kRightVerticalLoopSeq1, kRightVerticalLoopSeq2, kRightVerticalLoopSeq3,
+            kRightVerticalLoopSeq4, kRightVerticalLoopSeq5, kRightVerticalLoopSeq6, kRightVerticalLoopSeq7,
+            kRightVerticalLoopSeq8, kRightVerticalLoopSeq9 } },
+        /* TrackElemType::LeftQuarterTurn3Tiles */
+        { 4,
+          { kLeftQuarterTurn3TilesSeq0, kLeftQuarterTurn3TilesSeq1, kLeftQuarterTurn3TilesSeq2, kLeftQuarterTurn3TilesSeq3 } },
+        /* TrackElemType::RightQuarterTurn3Tiles */
+        { 4,
+          { kRightQuarterTurn3TilesSeq0, kRightQuarterTurn3TilesSeq1, kRightQuarterTurn3TilesSeq2,
+            kRightQuarterTurn3TilesSeq3 } },
+        /* TrackElemType::LeftBankedQuarterTurn3Tiles */
+        { 4,
+          { kLeftBankedQuarterTurn3TilesSeq0, kLeftBankedQuarterTurn3TilesSeq1, kLeftBankedQuarterTurn3TilesSeq2,
+            kLeftBankedQuarterTurn3TilesSeq3 } },
+        /* TrackElemType::RightBankedQuarterTurn3Tiles */
+        { 4,
+          { kRightBankedQuarterTurn3TilesSeq0, kRightBankedQuarterTurn3TilesSeq1, kRightBankedQuarterTurn3TilesSeq2,
+            kRightBankedQuarterTurn3TilesSeq3 } },
+        /* TrackElemType::LeftQuarterTurn3TilesUp25 */
+        { 4,
+          { kLeftQuarterTurn3TilesUp25Seq0, kLeftQuarterTurn3TilesUp25Seq1, kLeftQuarterTurn3TilesUp25Seq2,
+            kLeftQuarterTurn3TilesUp25Seq3 } },
+        /* TrackElemType::RightQuarterTurn3TilesUp25 */
+        { 4,
+          { kRightQuarterTurn3TilesUp25Seq0, kRightQuarterTurn3TilesUp25Seq1, kRightQuarterTurn3TilesUp25Seq2,
+            kRightQuarterTurn3TilesUp25Seq3 } },
+        /* TrackElemType::LeftQuarterTurn3TilesDown25 */
+        { 4,
+          { kLeftQuarterTurn3TilesDown25Seq0, kLeftQuarterTurn3TilesDown25Seq1, kLeftQuarterTurn3TilesDown25Seq2,
+            kLeftQuarterTurn3TilesDown25Seq3 } },
+        /* TrackElemType::RightQuarterTurn3TilesDown25 */
+        { 4,
+          { kRightQuarterTurn3TilesDown25Seq0, kRightQuarterTurn3TilesDown25Seq1, kRightQuarterTurn3TilesDown25Seq2,
+            kRightQuarterTurn3TilesDown25Seq3 } },
+        /* TrackElemType::LeftQuarterTurn1Tile */ { 1, { kLeftQuarterTurn1TileSeq0 } },
+        /* TrackElemType::RightQuarterTurn1Tile */ { 1, { kRightQuarterTurn1TileSeq0 } },
+        /* TrackElemType::LeftTwistDownToUp */
+        { 3, { kLeftTwistDownToUpSeq0, kLeftTwistDownToUpSeq1, kLeftTwistDownToUpSeq2 } },
+        /* TrackElemType::RightTwistDownToUp */
+        { 3, { kRightTwistDownToUpSeq0, kRightTwistDownToUpSeq1, kRightTwistDownToUpSeq2 } },
+        /* TrackElemType::LeftTwistUpToDown */
+        { 3, { kLeftTwistUpToDownSeq0, kLeftTwistUpToDownSeq1, kLeftTwistUpToDownSeq2 } },
+        /* TrackElemType::RightTwistUpToDown */
+        { 3, { kRightTwistUpToDownSeq0, kRightTwistUpToDownSeq1, kRightTwistUpToDownSeq2 } },
+        /* TrackElemType::HalfLoopUp */ { 4, { kHalfLoopUpSeq0, kHalfLoopUpSeq1, kHalfLoopUpSeq2, kHalfLoopUpSeq3 } },
+        /* TrackElemType::HalfLoopDown */ { 4, { kHalfLoopDownSeq0, kHalfLoopDownSeq1, kHalfLoopDownSeq2, kHalfLoopDownSeq3 } },
+        /* TrackElemType::LeftCorkscrewUp */ { 3, { kLeftCorkscrewUpSeq0, kLeftCorkscrewUpSeq1, kLeftCorkscrewUpSeq2 } },
+        /* TrackElemType::RightCorkscrewUp */ { 3, { kRightCorkscrewUpSeq0, kRightCorkscrewUpSeq1, kRightCorkscrewUpSeq2 } },
+        /* TrackElemType::LeftCorkscrewDown */
+        { 3, { kLeftCorkscrewDownSeq0, kLeftCorkscrewDownSeq1, kLeftCorkscrewDownSeq2 } },
+        /* TrackElemType::RightCorkscrewDown */
+        { 3, { kRightCorkscrewDownSeq0, kRightCorkscrewDownSeq1, kRightCorkscrewDownSeq2 } },
+        /* TrackElemType::FlatToUp60 */ { 1, { kFlatToUp60Seq0 } },
+        /* TrackElemType::Up60ToFlat */ { 1, { kUp60ToFlatSeq0 } },
+        /* TrackElemType::FlatToDown60 */ { 1, { kFlatToDown60Seq0 } },
+        /* TrackElemType::Down60ToFlat */ { 1, { kDown60ToFlatSeq0 } },
+        /* TrackElemType::TowerBase */
+        { 9,
+          { kTowerBaseSeq0, kTowerBaseSeq1, kTowerBaseSeq2, kTowerBaseSeq3, kTowerBaseSeq4, kTowerBaseSeq5, kTowerBaseSeq6,
+            kTowerBaseSeq7, kTowerBaseSeq8 } },
+        /* TrackElemType::TowerSection */ { 2, { kTowerSectionSeq0, kTowerSectionSeq1 } },
+        /* TrackElemType::FlatCovered */ { 1, { kFlatCoveredSeq0 } },
+        /* TrackElemType::Up25Covered */ { 1, { kUp25CoveredSeq0 } },
+        /* TrackElemType::Up60Covered */ { 1, { kUp60CoveredSeq0 } },
+        /* TrackElemType::FlatToUp25Covered */ { 1, { kFlatToUp25CoveredSeq0 } },
+        /* TrackElemType::Up25ToUp60Covered */ { 1, { kUp25ToUp60CoveredSeq0 } },
+        /* TrackElemType::Up60ToUp25Covered */ { 1, { kUp60ToUp25CoveredSeq0 } },
+        /* TrackElemType::Up25ToFlatCovered */ { 1, { kUp25ToFlatCoveredSeq0 } },
+        /* TrackElemType::Down25Covered */ { 1, { kDown25CoveredSeq0 } },
+        /* TrackElemType::Down60Covered */ { 1, { kDown60CoveredSeq0 } },
+        /* TrackElemType::FlatToDown25Covered */ { 1, { kFlatToDown25CoveredSeq0 } },
+        /* TrackElemType::Down25ToDown60Covered */ { 1, { kDown25ToDown60CoveredSeq0 } },
+        /* TrackElemType::Down60ToDown25Covered */ { 1, { kDown60ToDown25CoveredSeq0 } },
+        /* TrackElemType::Down25ToFlatCovered */ { 1, { kDown25ToFlatCoveredSeq0 } },
+        /* TrackElemType::LeftQuarterTurn5TilesCovered */
+        { 7,
+          { kLeftQuarterTurn5TilesCoveredSeq0, kLeftQuarterTurn5TilesCoveredSeq1, kLeftQuarterTurn5TilesCoveredSeq2,
+            kLeftQuarterTurn5TilesCoveredSeq3, kLeftQuarterTurn5TilesCoveredSeq4, kLeftQuarterTurn5TilesCoveredSeq5,
+            kLeftQuarterTurn5TilesCoveredSeq6 } },
+        /* TrackElemType::RightQuarterTurn5TilesCovered */
+        { 7,
+          { kRightQuarterTurn5TilesCoveredSeq0, kRightQuarterTurn5TilesCoveredSeq1, kRightQuarterTurn5TilesCoveredSeq2,
+            kRightQuarterTurn5TilesCoveredSeq3, kRightQuarterTurn5TilesCoveredSeq4, kRightQuarterTurn5TilesCoveredSeq5,
+            kRightQuarterTurn5TilesCoveredSeq6 } },
+        /* TrackElemType::SBendLeftCovered */
+        { 4, { kSBendLeftCoveredSeq0, kSBendLeftCoveredSeq1, kSBendLeftCoveredSeq2, kSBendLeftCoveredSeq3 } },
+        /* TrackElemType::SBendRightCovered */
+        { 4, { kSBendRightCoveredSeq0, kSBendRightCoveredSeq1, kSBendRightCoveredSeq2, kSBendRightCoveredSeq3 } },
+        /* TrackElemType::LeftQuarterTurn3TilesCovered */
+        { 4,
+          { kLeftQuarterTurn3TilesCoveredSeq0, kLeftQuarterTurn3TilesCoveredSeq1, kLeftQuarterTurn3TilesCoveredSeq2,
+            kLeftQuarterTurn3TilesCoveredSeq3 } },
+        /* TrackElemType::RightQuarterTurn3TilesCovered */
+        { 4,
+          { kRightQuarterTurn3TilesCoveredSeq0, kRightQuarterTurn3TilesCoveredSeq1, kRightQuarterTurn3TilesCoveredSeq2,
+            kRightQuarterTurn3TilesCoveredSeq3 } },
+        /* TrackElemType::LeftHalfBankedHelixUpSmall */
+        { 8,
+          { kLeftHalfBankedHelixUpSmallSeq0, kLeftHalfBankedHelixUpSmallSeq1, kLeftHalfBankedHelixUpSmallSeq2,
+            kLeftHalfBankedHelixUpSmallSeq3, kLeftHalfBankedHelixUpSmallSeq4, kLeftHalfBankedHelixUpSmallSeq5,
+            kLeftHalfBankedHelixUpSmallSeq6, kLeftHalfBankedHelixUpSmallSeq7 } },
+        /* TrackElemType::RightHalfBankedHelixUpSmall */
+        { 8,
+          { kRightHalfBankedHelixUpSmallSeq0, kRightHalfBankedHelixUpSmallSeq1, kRightHalfBankedHelixUpSmallSeq2,
+            kRightHalfBankedHelixUpSmallSeq3, kRightHalfBankedHelixUpSmallSeq4, kRightHalfBankedHelixUpSmallSeq5,
+            kRightHalfBankedHelixUpSmallSeq6, kRightHalfBankedHelixUpSmallSeq7 } },
+        /* TrackElemType::LeftHalfBankedHelixDownSmall */
+        { 8,
+          { kLeftHalfBankedHelixDownSmallSeq0, kLeftHalfBankedHelixDownSmallSeq1, kLeftHalfBankedHelixDownSmallSeq2,
+            kLeftHalfBankedHelixDownSmallSeq3, kLeftHalfBankedHelixDownSmallSeq4, kLeftHalfBankedHelixDownSmallSeq5,
+            kLeftHalfBankedHelixDownSmallSeq6, kLeftHalfBankedHelixDownSmallSeq7 } },
+        /* TrackElemType::RightHalfBankedHelixDownSmall */
+        { 8,
+          { kRightHalfBankedHelixDownSmallSeq0, kRightHalfBankedHelixDownSmallSeq1, kRightHalfBankedHelixDownSmallSeq2,
+            kRightHalfBankedHelixDownSmallSeq3, kRightHalfBankedHelixDownSmallSeq4, kRightHalfBankedHelixDownSmallSeq5,
+            kRightHalfBankedHelixDownSmallSeq6, kRightHalfBankedHelixDownSmallSeq7 } },
+        /* TrackElemType::LeftHalfBankedHelixUpLarge */
+        { 14,
+          { kLeftHalfBankedHelixUpLargeSeq0, kLeftHalfBankedHelixUpLargeSeq1, kLeftHalfBankedHelixUpLargeSeq2,
+            kLeftHalfBankedHelixUpLargeSeq3, kLeftHalfBankedHelixUpLargeSeq4, kLeftHalfBankedHelixUpLargeSeq5,
+            kLeftHalfBankedHelixUpLargeSeq6, kLeftHalfBankedHelixUpLargeSeq7, kLeftHalfBankedHelixUpLargeSeq8,
+            kLeftHalfBankedHelixUpLargeSeq9, kLeftHalfBankedHelixUpLargeSeq10, kLeftHalfBankedHelixUpLargeSeq11,
+            kLeftHalfBankedHelixUpLargeSeq12, kLeftHalfBankedHelixUpLargeSeq13 } },
+        /* TrackElemType::RightHalfBankedHelixUpLarge */
+        { 14,
+          { kRightHalfBankedHelixUpLargeSeq0, kRightHalfBankedHelixUpLargeSeq1, kRightHalfBankedHelixUpLargeSeq2,
+            kRightHalfBankedHelixUpLargeSeq3, kRightHalfBankedHelixUpLargeSeq4, kRightHalfBankedHelixUpLargeSeq5,
+            kRightHalfBankedHelixUpLargeSeq6, kRightHalfBankedHelixUpLargeSeq7, kRightHalfBankedHelixUpLargeSeq8,
+            kRightHalfBankedHelixUpLargeSeq9, kRightHalfBankedHelixUpLargeSeq10, kRightHalfBankedHelixUpLargeSeq11,
+            kRightHalfBankedHelixUpLargeSeq12, kRightHalfBankedHelixUpLargeSeq13 } },
+        /* TrackElemType::LeftHalfBankedHelixDownLarge */
+        { 14,
+          { kLeftHalfBankedHelixDownLargeSeq0, kLeftHalfBankedHelixDownLargeSeq1, kLeftHalfBankedHelixDownLargeSeq2,
+            kLeftHalfBankedHelixDownLargeSeq3, kLeftHalfBankedHelixDownLargeSeq4, kLeftHalfBankedHelixDownLargeSeq5,
+            kLeftHalfBankedHelixDownLargeSeq6, kLeftHalfBankedHelixDownLargeSeq7, kLeftHalfBankedHelixDownLargeSeq8,
+            kLeftHalfBankedHelixDownLargeSeq9, kLeftHalfBankedHelixDownLargeSeq10, kLeftHalfBankedHelixDownLargeSeq11,
+            kLeftHalfBankedHelixDownLargeSeq12, kLeftHalfBankedHelixDownLargeSeq13 } },
+        /* TrackElemType::RightHalfBankedHelixDownLarge */
+        { 14,
+          { kRightHalfBankedHelixDownLargeSeq0, kRightHalfBankedHelixDownLargeSeq1, kRightHalfBankedHelixDownLargeSeq2,
+            kRightHalfBankedHelixDownLargeSeq3, kRightHalfBankedHelixDownLargeSeq4, kRightHalfBankedHelixDownLargeSeq5,
+            kRightHalfBankedHelixDownLargeSeq6, kRightHalfBankedHelixDownLargeSeq7, kRightHalfBankedHelixDownLargeSeq8,
+            kRightHalfBankedHelixDownLargeSeq9, kRightHalfBankedHelixDownLargeSeq10, kRightHalfBankedHelixDownLargeSeq11,
+            kRightHalfBankedHelixDownLargeSeq12, kRightHalfBankedHelixDownLargeSeq13 } },
+        /* TrackElemType::LeftQuarterTurn1TileUp60 */ { 1, { kLeftQuarterTurn1TileUp60Seq0 } },
+        /* TrackElemType::RightQuarterTurn1TileUp60 */ { 1, { kRightQuarterTurn1TileUp60Seq0 } },
+        /* TrackElemType::LeftQuarterTurn1TileDown60 */ { 1, { kLeftQuarterTurn1TileDown60Seq0 } },
+        /* TrackElemType::RightQuarterTurn1TileDown60 */ { 1, { kRightQuarterTurn1TileDown60Seq0 } },
+        /* TrackElemType::Brakes */ { 1, { kBrakesSeq0 } },
+        /* TrackElemType::Booster */ { 1, { kBoosterSeq0 } },
+        /* TrackElemType::Maze */
+        { 1,
+          { kMazeSeq0, kMazeSeq1, kMazeSeq2, kMazeSeq3, kMazeSeq4, kMazeSeq5, kMazeSeq6, kMazeSeq7, kMazeSeq8, kMazeSeq9,
+            kMazeSeq10, kMazeSeq11, kMazeSeq12, kMazeSeq13, kMazeSeq14, kMazeSeq15 } },
+        /* TrackElemType::LeftQuarterBankedHelixLargeUp */
+        { 7,
+          { kLeftQuarterBankedHelixLargeUpSeq0, kLeftQuarterBankedHelixLargeUpSeq1, kLeftQuarterBankedHelixLargeUpSeq2,
+            kLeftQuarterBankedHelixLargeUpSeq3, kLeftQuarterBankedHelixLargeUpSeq4, kLeftQuarterBankedHelixLargeUpSeq5,
+            kLeftQuarterBankedHelixLargeUpSeq6 } },
+        /* TrackElemType::RightQuarterBankedHelixLargeUp */
+        { 7,
+          { kRightQuarterBankedHelixLargeUpSeq0, kRightQuarterBankedHelixLargeUpSeq1, kRightQuarterBankedHelixLargeUpSeq2,
+            kRightQuarterBankedHelixLargeUpSeq3, kRightQuarterBankedHelixLargeUpSeq4, kRightQuarterBankedHelixLargeUpSeq5,
+            kRightQuarterBankedHelixLargeUpSeq6 } },
+        /* TrackElemType::LeftQuarterBankedHelixLargeDown */
+        { 7,
+          { kLeftQuarterBankedHelixLargeDownSeq0, kLeftQuarterBankedHelixLargeDownSeq1, kLeftQuarterBankedHelixLargeDownSeq2,
+            kLeftQuarterBankedHelixLargeDownSeq3, kLeftQuarterBankedHelixLargeDownSeq4, kLeftQuarterBankedHelixLargeDownSeq5,
+            kLeftQuarterBankedHelixLargeDownSeq6 } },
+        /* TrackElemType::RightQuarterBankedHelixLargeDown */
+        { 7,
+          { kRightQuarterBankedHelixLargeDownSeq0, kRightQuarterBankedHelixLargeDownSeq1, kRightQuarterBankedHelixLargeDownSeq2,
+            kRightQuarterBankedHelixLargeDownSeq3, kRightQuarterBankedHelixLargeDownSeq4, kRightQuarterBankedHelixLargeDownSeq5,
+            kRightQuarterBankedHelixLargeDownSeq6 } },
+        /* TrackElemType::LeftQuarterHelixLargeUp */
+        { 7,
+          { kLeftQuarterHelixLargeUpSeq0, kLeftQuarterHelixLargeUpSeq1, kLeftQuarterHelixLargeUpSeq2,
+            kLeftQuarterHelixLargeUpSeq3, kLeftQuarterHelixLargeUpSeq4, kLeftQuarterHelixLargeUpSeq5,
+            kLeftQuarterHelixLargeUpSeq6 } },
+        /* TrackElemType::RightQuarterHelixLargeUp */
+        { 7,
+          { kRightQuarterHelixLargeUpSeq0, kRightQuarterHelixLargeUpSeq1, kRightQuarterHelixLargeUpSeq2,
+            kRightQuarterHelixLargeUpSeq3, kRightQuarterHelixLargeUpSeq4, kRightQuarterHelixLargeUpSeq5,
+            kRightQuarterHelixLargeUpSeq6 } },
+        /* TrackElemType::LeftQuarterHelixLargeDown */
+        { 7,
+          { kLeftQuarterHelixLargeDownSeq0, kLeftQuarterHelixLargeDownSeq1, kLeftQuarterHelixLargeDownSeq2,
+            kLeftQuarterHelixLargeDownSeq3, kLeftQuarterHelixLargeDownSeq4, kLeftQuarterHelixLargeDownSeq5,
+            kLeftQuarterHelixLargeDownSeq6 } },
+        /* TrackElemType::RightQuarterHelixLargeDown */
+        { 7,
+          { kRightQuarterHelixLargeDownSeq0, kRightQuarterHelixLargeDownSeq1, kRightQuarterHelixLargeDownSeq2,
+            kRightQuarterHelixLargeDownSeq3, kRightQuarterHelixLargeDownSeq4, kRightQuarterHelixLargeDownSeq5,
+            kRightQuarterHelixLargeDownSeq6 } },
+        /* TrackElemType::Up25LeftBanked */ { 1, { kUp25LeftBankedSeq0 } },
+        /* TrackElemType::Up25RightBanked */ { 1, { kUp25RightBankedSeq0 } },
+        /* TrackElemType::Waterfall */ { 1, { kWaterfallSeq0 } },
+        /* TrackElemType::Rapids */ { 1, { kRapidsSeq0 } },
+        /* TrackElemType::OnRidePhoto */ { 1, { kOnRidePhotoSeq0 } },
+        /* TrackElemType::Down25LeftBanked */ { 1, { kDown25LeftBankedSeq0 } },
+        /* TrackElemType::Down25RightBanked */ { 1, { kDown25RightBankedSeq0 } },
+        /* TrackElemType::Watersplash */
+        { 5, { kWatersplashSeq0, kWatersplashSeq1, kWatersplashSeq2, kWatersplashSeq3, kWatersplashSeq4 } },
+        /* TrackElemType::FlatToUp60LongBase */
+        { 4, { kFlatToUp60LongBaseSeq0, kFlatToUp60LongBaseSeq1, kFlatToUp60LongBaseSeq2, kFlatToUp60LongBaseSeq3 } },
+        /* TrackElemType::Up60ToFlatLongBase */
+        { 4, { kUp60ToFlatLongBaseSeq0, kUp60ToFlatLongBaseSeq1, kUp60ToFlatLongBaseSeq2, kUp60ToFlatLongBaseSeq3 } },
+        /* TrackElemType::Whirlpool */ { 1, { kWhirlpoolSeq0 } },
+        /* TrackElemType::Down60ToFlatLongBase */
+        { 4, { kDown60ToFlatLongBaseSeq0, kDown60ToFlatLongBaseSeq1, kDown60ToFlatLongBaseSeq2, kDown60ToFlatLongBaseSeq3 } },
+        /* TrackElemType::FlatToDown60LongBase */
+        { 4, { kFlatToDown60LongBaseSeq0, kFlatToDown60LongBaseSeq1, kFlatToDown60LongBaseSeq2, kFlatToDown60LongBaseSeq3 } },
+        /* TrackElemType::CableLiftHill */
+        { 4, { kCableLiftHillSeq0, kCableLiftHillSeq1, kCableLiftHillSeq2, kCableLiftHillSeq3 } },
+        /* TrackElemType::ReverseFreefallSlope */
+        { 7,
+          { kReverseFreefallSlopeSeq0, kReverseFreefallSlopeSeq1, kReverseFreefallSlopeSeq2, kReverseFreefallSlopeSeq3,
+            kReverseFreefallSlopeSeq4, kReverseFreefallSlopeSeq5, kReverseFreefallSlopeSeq6 } },
+        /* TrackElemType::ReverseFreefallVertical */ { 2, { kReverseFreefallVerticalSeq0, kReverseFreefallVerticalSeq1 } },
+        /* TrackElemType::Up90 */ { 2, { kUp90Seq0, kUp90Seq1 } },
+        /* TrackElemType::Down90 */ { 2, { kDown90Seq0, kDown90Seq1 } },
+        /* TrackElemType::Up60ToUp90 */ { 2, { kUp60ToUp90Seq0, kUp60ToUp90Seq1 } },
+        /* TrackElemType::Down90ToDown60 */ { 1, { kDown90ToDown60Seq0 } },
+        /* TrackElemType::Up90ToUp60 */ { 1, { kUp90ToUp60Seq0 } },
+        /* TrackElemType::Down60ToDown90 */ { 2, { kDown60ToDown90Seq0, kDown60ToDown90Seq1 } },
+        /* TrackElemType::BrakeForDrop */ { 1, { kBrakeForDropSeq0 } },
+        /* TrackElemType::LeftEighthToDiag */
+        { 5,
+          { kLeftEighthToDiagSeq0, kLeftEighthToDiagSeq1, kLeftEighthToDiagSeq2, kLeftEighthToDiagSeq3,
+            kLeftEighthToDiagSeq4 } },
+        /* TrackElemType::RightEighthToDiag */
+        { 5,
+          { kRightEighthToDiagSeq0, kRightEighthToDiagSeq1, kRightEighthToDiagSeq2, kRightEighthToDiagSeq3,
+            kRightEighthToDiagSeq4 } },
+        /* TrackElemType::LeftEighthToOrthogonal */
+        { 5,
+          { kLeftEighthToOrthogonalSeq0, kLeftEighthToOrthogonalSeq1, kLeftEighthToOrthogonalSeq2, kLeftEighthToOrthogonalSeq3,
+            kLeftEighthToOrthogonalSeq4 } },
+        /* TrackElemType::RightEighthToOrthogonal */
+        { 5,
+          { kRightEighthToOrthogonalSeq0, kRightEighthToOrthogonalSeq1, kRightEighthToOrthogonalSeq2,
+            kRightEighthToOrthogonalSeq3, kRightEighthToOrthogonalSeq4 } },
+        /* TrackElemType::LeftEighthBankToDiag */
+        { 5,
+          { kLeftEighthBankToDiagSeq0, kLeftEighthBankToDiagSeq1, kLeftEighthBankToDiagSeq2, kLeftEighthBankToDiagSeq3,
+            kLeftEighthBankToDiagSeq4 } },
+        /* TrackElemType::RightEighthBankToDiag */
+        { 5,
+          { kRightEighthBankToDiagSeq0, kRightEighthBankToDiagSeq1, kRightEighthBankToDiagSeq2, kRightEighthBankToDiagSeq3,
+            kRightEighthBankToDiagSeq4 } },
+        /* TrackElemType::LeftEighthBankToOrthogonal */
+        { 5,
+          { kLeftEighthBankToOrthogonalSeq0, kLeftEighthBankToOrthogonalSeq1, kLeftEighthBankToOrthogonalSeq2,
+            kLeftEighthBankToOrthogonalSeq3, kLeftEighthBankToOrthogonalSeq4 } },
+        /* TrackElemType::RightEighthBankToOrthogonal */
+        { 5,
+          { kRightEighthBankToOrthogonalSeq0, kRightEighthBankToOrthogonalSeq1, kRightEighthBankToOrthogonalSeq2,
+            kRightEighthBankToOrthogonalSeq3, kRightEighthBankToOrthogonalSeq4 } },
+        /* TrackElemType::DiagFlat */ { 4, { kDiagFlatSeq0, kDiagFlatSeq1, kDiagFlatSeq2, kDiagFlatSeq3 } },
+        /* TrackElemType::DiagUp25 */ { 4, { kDiagUp25Seq0, kDiagUp25Seq1, kDiagUp25Seq2, kDiagUp25Seq3 } },
+        /* TrackElemType::DiagUp60 */ { 4, { kDiagUp60Seq0, kDiagUp60Seq1, kDiagUp60Seq2, kDiagUp60Seq3 } },
+        /* TrackElemType::DiagFlatToUp25 */
+        { 4, { kDiagFlatToUp25Seq0, kDiagFlatToUp25Seq1, kDiagFlatToUp25Seq2, kDiagFlatToUp25Seq3 } },
+        /* TrackElemType::DiagUp25ToUp60 */
+        { 4, { kDiagUp25ToUp60Seq0, kDiagUp25ToUp60Seq1, kDiagUp25ToUp60Seq2, kDiagUp25ToUp60Seq3 } },
+        /* TrackElemType::DiagUp60ToUp25 */
+        { 4, { kDiagUp60ToUp25Seq0, kDiagUp60ToUp25Seq1, kDiagUp60ToUp25Seq2, kDiagUp60ToUp25Seq3 } },
+        /* TrackElemType::DiagUp25ToFlat */
+        { 4, { kDiagUp25ToFlatSeq0, kDiagUp25ToFlatSeq1, kDiagUp25ToFlatSeq2, kDiagUp25ToFlatSeq3 } },
+        /* TrackElemType::DiagDown25 */ { 4, { kDiagDown25Seq0, kDiagDown25Seq1, kDiagDown25Seq2, kDiagDown25Seq3 } },
+        /* TrackElemType::DiagDown60 */ { 4, { kDiagDown60Seq0, kDiagDown60Seq1, kDiagDown60Seq2, kDiagDown60Seq3 } },
+        /* TrackElemType::DiagFlatToDown25 */
+        { 4, { kDiagFlatToDown25Seq0, kDiagFlatToDown25Seq1, kDiagFlatToDown25Seq2, kDiagFlatToDown25Seq3 } },
+        /* TrackElemType::DiagDown25ToDown60 */
+        { 4, { kDiagDown25ToDown60Seq0, kDiagDown25ToDown60Seq1, kDiagDown25ToDown60Seq2, kDiagDown25ToDown60Seq3 } },
+        /* TrackElemType::DiagDown60ToDown25 */
+        { 4, { kDiagDown60ToDown25Seq0, kDiagDown60ToDown25Seq1, kDiagDown60ToDown25Seq2, kDiagDown60ToDown25Seq3 } },
+        /* TrackElemType::DiagDown25ToFlat */
+        { 4, { kDiagDown25ToFlatSeq0, kDiagDown25ToFlatSeq1, kDiagDown25ToFlatSeq2, kDiagDown25ToFlatSeq3 } },
+        /* TrackElemType::DiagFlatToUp60 */
+        { 4, { kDiagFlatToUp60Seq0, kDiagFlatToUp60Seq1, kDiagFlatToUp60Seq2, kDiagFlatToUp60Seq3 } },
+        /* TrackElemType::DiagUp60ToFlat */
+        { 4, { kDiagUp60ToFlatSeq0, kDiagUp60ToFlatSeq1, kDiagUp60ToFlatSeq2, kDiagUp60ToFlatSeq3 } },
+        /* TrackElemType::DiagFlatToDown60 */
+        { 4, { kDiagFlatToDown60Seq0, kDiagFlatToDown60Seq1, kDiagFlatToDown60Seq2, kDiagFlatToDown60Seq3 } },
+        /* TrackElemType::DiagDown60ToFlat */
+        { 4, { kDiagDown60ToFlatSeq0, kDiagDown60ToFlatSeq1, kDiagDown60ToFlatSeq2, kDiagDown60ToFlatSeq3 } },
+        /* TrackElemType::DiagFlatToLeftBank */
+        { 4, { kDiagFlatToLeftBankSeq0, kDiagFlatToLeftBankSeq1, kDiagFlatToLeftBankSeq2, kDiagFlatToLeftBankSeq3 } },
+        /* TrackElemType::DiagFlatToRightBank */
+        { 4, { kDiagFlatToRightBankSeq0, kDiagFlatToRightBankSeq1, kDiagFlatToRightBankSeq2, kDiagFlatToRightBankSeq3 } },
+        /* TrackElemType::DiagLeftBankToFlat */
+        { 4, { kDiagLeftBankToFlatSeq0, kDiagLeftBankToFlatSeq1, kDiagLeftBankToFlatSeq2, kDiagLeftBankToFlatSeq3 } },
+        /* TrackElemType::DiagRightBankToFlat */
+        { 4, { kDiagRightBankToFlatSeq0, kDiagRightBankToFlatSeq1, kDiagRightBankToFlatSeq2, kDiagRightBankToFlatSeq3 } },
+        /* TrackElemType::DiagLeftBankToUp25 */
+        { 4, { kDiagLeftBankToUp25Seq0, kDiagLeftBankToUp25Seq1, kDiagLeftBankToUp25Seq2, kDiagLeftBankToUp25Seq3 } },
+        /* TrackElemType::DiagRightBankToUp25 */
+        { 4, { kDiagRightBankToUp25Seq0, kDiagRightBankToUp25Seq1, kDiagRightBankToUp25Seq2, kDiagRightBankToUp25Seq3 } },
+        /* TrackElemType::DiagUp25ToLeftBank */
+        { 4, { kDiagUp25ToLeftBankSeq0, kDiagUp25ToLeftBankSeq1, kDiagUp25ToLeftBankSeq2, kDiagUp25ToLeftBankSeq3 } },
+        /* TrackElemType::DiagUp25ToRightBank */
+        { 4, { kDiagUp25ToRightBankSeq0, kDiagUp25ToRightBankSeq1, kDiagUp25ToRightBankSeq2, kDiagUp25ToRightBankSeq3 } },
+        /* TrackElemType::DiagLeftBankToDown25 */
+        { 4, { kDiagLeftBankToDown25Seq0, kDiagLeftBankToDown25Seq1, kDiagLeftBankToDown25Seq2, kDiagLeftBankToDown25Seq3 } },
+        /* TrackElemType::DiagRightBankToDown25 */
+        { 4,
+          { kDiagRightBankToDown25Seq0, kDiagRightBankToDown25Seq1, kDiagRightBankToDown25Seq2, kDiagRightBankToDown25Seq3 } },
+        /* TrackElemType::DiagDown25ToLeftBank */
+        { 4, { kDiagDown25ToLeftBankSeq0, kDiagDown25ToLeftBankSeq1, kDiagDown25ToLeftBankSeq2, kDiagDown25ToLeftBankSeq3 } },
+        /* TrackElemType::DiagDown25ToRightBank */
+        { 4,
+          { kDiagDown25ToRightBankSeq0, kDiagDown25ToRightBankSeq1, kDiagDown25ToRightBankSeq2, kDiagDown25ToRightBankSeq3 } },
+        /* TrackElemType::DiagLeftBank */ { 4, { kDiagLeftBankSeq0, kDiagLeftBankSeq1, kDiagLeftBankSeq2, kDiagLeftBankSeq3 } },
+        /* TrackElemType::DiagRightBank */
+        { 4, { kDiagRightBankSeq0, kDiagRightBankSeq1, kDiagRightBankSeq2, kDiagRightBankSeq3 } },
+        /* TrackElemType::LogFlumeReverser */ { 1, { kLogFlumeReverserSeq0 } },
+        /* TrackElemType::SpinningTunnel */ { 1, { kSpinningTunnelSeq0 } },
+        /* TrackElemType::LeftBarrelRollUpToDown */
+        { 3, { kLeftBarrelRollUpToDownSeq0, kLeftBarrelRollUpToDownSeq1, kLeftBarrelRollUpToDownSeq2 } },
+        /* TrackElemType::RightBarrelRollUpToDown */
+        { 3, { kRightBarrelRollUpToDownSeq0, kRightBarrelRollUpToDownSeq1, kRightBarrelRollUpToDownSeq2 } },
+        /* TrackElemType::LeftBarrelRollDownToUp */
+        { 3, { kLeftBarrelRollDownToUpSeq0, kLeftBarrelRollDownToUpSeq1, kLeftBarrelRollDownToUpSeq2 } },
+        /* TrackElemType::RightBarrelRollDownToUp */
+        { 3, { kRightBarrelRollDownToUpSeq0, kRightBarrelRollDownToUpSeq1, kRightBarrelRollDownToUpSeq2 } },
+        /* TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25 */
+        { 4,
+          { kLeftBankToLeftQuarterTurn3TilesUp25Seq0, kLeftBankToLeftQuarterTurn3TilesUp25Seq1,
+            kLeftBankToLeftQuarterTurn3TilesUp25Seq2, kLeftBankToLeftQuarterTurn3TilesUp25Seq3 } },
+        /* TrackElemType::RightBankToRightQuarterTurn3TilesUp25 */
+        { 4,
+          { kRightBankToRightQuarterTurn3TilesUp25Seq0, kRightBankToRightQuarterTurn3TilesUp25Seq1,
+            kRightBankToRightQuarterTurn3TilesUp25Seq2, kRightBankToRightQuarterTurn3TilesUp25Seq3 } },
+        /* TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank */
+        { 4,
+          { kLeftQuarterTurn3TilesDown25ToLeftBankSeq0, kLeftQuarterTurn3TilesDown25ToLeftBankSeq1,
+            kLeftQuarterTurn3TilesDown25ToLeftBankSeq2, kLeftQuarterTurn3TilesDown25ToLeftBankSeq3 } },
+        /* TrackElemType::RightQuarterTurn3TilesDown25ToRightBank */
+        { 4,
+          { kRightQuarterTurn3TilesDown25ToRightBankSeq0, kRightQuarterTurn3TilesDown25ToRightBankSeq1,
+            kRightQuarterTurn3TilesDown25ToRightBankSeq2, kRightQuarterTurn3TilesDown25ToRightBankSeq3 } },
+        /* TrackElemType::PoweredLift */ { 1, { kPoweredLiftSeq0 } },
+        /* TrackElemType::LeftLargeHalfLoopUp */
+        { 7,
+          { kLeftLargeHalfLoopUpSeq0, kLeftLargeHalfLoopUpSeq1, kLeftLargeHalfLoopUpSeq2, kLeftLargeHalfLoopUpSeq3,
+            kLeftLargeHalfLoopUpSeq4, kLeftLargeHalfLoopUpSeq5, kLeftLargeHalfLoopUpSeq6 } },
+        /* TrackElemType::RightLargeHalfLoopUp */
+        { 7,
+          { kRightLargeHalfLoopUpSeq0, kRightLargeHalfLoopUpSeq1, kRightLargeHalfLoopUpSeq2, kRightLargeHalfLoopUpSeq3,
+            kRightLargeHalfLoopUpSeq4, kRightLargeHalfLoopUpSeq5, kRightLargeHalfLoopUpSeq6 } },
+        /* TrackElemType::LeftLargeHalfLoopDown */
+        { 7,
+          { kLeftLargeHalfLoopDownSeq0, kLeftLargeHalfLoopDownSeq1, kLeftLargeHalfLoopDownSeq2, kLeftLargeHalfLoopDownSeq3,
+            kLeftLargeHalfLoopDownSeq4, kLeftLargeHalfLoopDownSeq5, kLeftLargeHalfLoopDownSeq6 } },
+        /* TrackElemType::RightLargeHalfLoopDown */
+        { 7,
+          { kRightLargeHalfLoopDownSeq0, kRightLargeHalfLoopDownSeq1, kRightLargeHalfLoopDownSeq2, kRightLargeHalfLoopDownSeq3,
+            kRightLargeHalfLoopDownSeq4, kRightLargeHalfLoopDownSeq5, kRightLargeHalfLoopDownSeq6 } },
+        /* TrackElemType::LeftFlyerTwistUp */ { 3, { kLeftFlyerTwistUpSeq0, kLeftFlyerTwistUpSeq1, kLeftFlyerTwistUpSeq2 } },
+        /* TrackElemType::RightFlyerTwistUp */
+        { 3, { kRightFlyerTwistUpSeq0, kRightFlyerTwistUpSeq1, kRightFlyerTwistUpSeq2 } },
+        /* TrackElemType::LeftFlyerTwistDown */
+        { 3, { kLeftFlyerTwistDownSeq0, kLeftFlyerTwistDownSeq1, kLeftFlyerTwistDownSeq2 } },
+        /* TrackElemType::RightFlyerTwistDown */
+        { 3, { kRightFlyerTwistDownSeq0, kRightFlyerTwistDownSeq1, kRightFlyerTwistDownSeq2 } },
+        /* TrackElemType::FlyerHalfLoopUninvertedUp */
+        { 4,
+          { kFlyerHalfLoopUninvertedUpSeq0, kFlyerHalfLoopUninvertedUpSeq1, kFlyerHalfLoopUninvertedUpSeq2,
+            kFlyerHalfLoopUninvertedUpSeq3 } },
+        /* TrackElemType::FlyerHalfLoopInvertedDown */
+        { 4,
+          { kFlyerHalfLoopInvertedDownSeq0, kFlyerHalfLoopInvertedDownSeq1, kFlyerHalfLoopInvertedDownSeq2,
+            kFlyerHalfLoopInvertedDownSeq3 } },
+        /* TrackElemType::LeftFlyerCorkscrewUp */
+        { 3, { kLeftFlyerCorkscrewUpSeq0, kLeftFlyerCorkscrewUpSeq1, kLeftFlyerCorkscrewUpSeq2 } },
+        /* TrackElemType::RightFlyerCorkscrewUp */
+        { 3, { kRightFlyerCorkscrewUpSeq0, kRightFlyerCorkscrewUpSeq1, kRightFlyerCorkscrewUpSeq2 } },
+        /* TrackElemType::LeftFlyerCorkscrewDown */
+        { 3, { kLeftFlyerCorkscrewDownSeq0, kLeftFlyerCorkscrewDownSeq1, kLeftFlyerCorkscrewDownSeq2 } },
+        /* TrackElemType::RightFlyerCorkscrewDown */
+        { 3, { kRightFlyerCorkscrewDownSeq0, kRightFlyerCorkscrewDownSeq1, kRightFlyerCorkscrewDownSeq2 } },
+        /* TrackElemType::HeartLineTransferUp */
+        { 4, { kHeartLineTransferUpSeq0, kHeartLineTransferUpSeq1, kHeartLineTransferUpSeq2, kHeartLineTransferUpSeq3 } },
+        /* TrackElemType::HeartLineTransferDown */
+        { 4,
+          { kHeartLineTransferDownSeq0, kHeartLineTransferDownSeq1, kHeartLineTransferDownSeq2, kHeartLineTransferDownSeq3 } },
+        /* TrackElemType::LeftHeartLineRoll */
+        { 6,
+          { kLeftHeartLineRollSeq0, kLeftHeartLineRollSeq1, kLeftHeartLineRollSeq2, kLeftHeartLineRollSeq3,
+            kLeftHeartLineRollSeq4, kLeftHeartLineRollSeq5 } },
+        /* TrackElemType::RightHeartLineRoll */
+        { 6,
+          { kRightHeartLineRollSeq0, kRightHeartLineRollSeq1, kRightHeartLineRollSeq2, kRightHeartLineRollSeq3,
+            kRightHeartLineRollSeq4, kRightHeartLineRollSeq5 } },
+        /* TrackElemType::MinigolfHoleA */ { 2, { kMinigolfHoleASeq0, kMinigolfHoleASeq1 } },
+        /* TrackElemType::MinigolfHoleB */ { 2, { kMinigolfHoleBSeq0, kMinigolfHoleBSeq1 } },
+        /* TrackElemType::MinigolfHoleC */ { 2, { kMinigolfHoleCSeq0, kMinigolfHoleCSeq1 } },
+        /* TrackElemType::MinigolfHoleD */ { 3, { kMinigolfHoleDSeq0, kMinigolfHoleDSeq1, kMinigolfHoleDSeq2 } },
+        /* TrackElemType::MinigolfHoleE */ { 3, { kMinigolfHoleESeq0, kMinigolfHoleESeq1, kMinigolfHoleESeq2 } },
+        /* TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop */
+        { 4,
+          { kMultiDimInvertedFlatToDown90QuarterLoopSeq0, kMultiDimInvertedFlatToDown90QuarterLoopSeq1,
+            kMultiDimInvertedFlatToDown90QuarterLoopSeq2, kMultiDimInvertedFlatToDown90QuarterLoopSeq3 } },
+        /* TrackElemType::Up90ToInvertedFlatQuarterLoop */
+        { 3, { kUp90ToInvertedFlatQuarterLoopSeq0, kUp90ToInvertedFlatQuarterLoopSeq1, kUp90ToInvertedFlatQuarterLoopSeq2 } },
+        /* TrackElemType::InvertedFlatToDown90QuarterLoop */
+        { 4,
+          { kInvertedFlatToDown90QuarterLoopSeq0, kInvertedFlatToDown90QuarterLoopSeq1, kInvertedFlatToDown90QuarterLoopSeq2,
+            kInvertedFlatToDown90QuarterLoopSeq3 } },
+        /* TrackElemType::LeftCurvedLiftHill */
+        { 4, { kLeftCurvedLiftHillSeq0, kLeftCurvedLiftHillSeq1, kLeftCurvedLiftHillSeq2, kLeftCurvedLiftHillSeq3 } },
+        /* TrackElemType::RightCurvedLiftHill */
+        { 4, { kRightCurvedLiftHillSeq0, kRightCurvedLiftHillSeq1, kRightCurvedLiftHillSeq2, kRightCurvedLiftHillSeq3 } },
+        /* TrackElemType::LeftReverser */
+        { 6,
+          { kLeftReverserSeq0, kLeftReverserSeq1, kLeftReverserSeq2, kLeftReverserSeq3, kLeftReverserSeq4,
+            kLeftReverserSeq5 } },
+        /* TrackElemType::RightReverser */
+        { 6,
+          { kRightReverserSeq0, kRightReverserSeq1, kRightReverserSeq2, kRightReverserSeq3, kRightReverserSeq4,
+            kRightReverserSeq5 } },
+        /* TrackElemType::AirThrustTopCap */
+        { 4, { kAirThrustTopCapSeq0, kAirThrustTopCapSeq1, kAirThrustTopCapSeq2, kAirThrustTopCapSeq3 } },
+        /* TrackElemType::AirThrustVerticalDown */ { 2, { kAirThrustVerticalDownSeq0, kAirThrustVerticalDownSeq1 } },
+        /* TrackElemType::AirThrustVerticalDownToLevel */
+        { 7,
+          { kAirThrustVerticalDownToLevelSeq0, kAirThrustVerticalDownToLevelSeq1, kAirThrustVerticalDownToLevelSeq2,
+            kAirThrustVerticalDownToLevelSeq3, kAirThrustVerticalDownToLevelSeq4, kAirThrustVerticalDownToLevelSeq5,
+            kAirThrustVerticalDownToLevelSeq6 } },
+        /* TrackElemType::BlockBrakes */ { 1, { kBlockBrakesSeq0 } },
+        /* TrackElemType::LeftBankedQuarterTurn3TileUp25 */
+        { 4,
+          { kLeftBankedQuarterTurn3TileUp25Seq0, kLeftBankedQuarterTurn3TileUp25Seq1, kLeftBankedQuarterTurn3TileUp25Seq2,
+            kLeftBankedQuarterTurn3TileUp25Seq3 } },
+        /* TrackElemType::RightBankedQuarterTurn3TileUp25 */
+        { 4,
+          { kRightBankedQuarterTurn3TileUp25Seq0, kRightBankedQuarterTurn3TileUp25Seq1, kRightBankedQuarterTurn3TileUp25Seq2,
+            kRightBankedQuarterTurn3TileUp25Seq3 } },
+        /* TrackElemType::LeftBankedQuarterTurn3TileDown25 */
+        { 4,
+          { kLeftBankedQuarterTurn3TileDown25Seq0, kLeftBankedQuarterTurn3TileDown25Seq1, kLeftBankedQuarterTurn3TileDown25Seq2,
+            kLeftBankedQuarterTurn3TileDown25Seq3 } },
+        /* TrackElemType::RightBankedQuarterTurn3TileDown25 */
+        { 4,
+          { kRightBankedQuarterTurn3TileDown25Seq0, kRightBankedQuarterTurn3TileDown25Seq1,
+            kRightBankedQuarterTurn3TileDown25Seq2, kRightBankedQuarterTurn3TileDown25Seq3 } },
+        /* TrackElemType::LeftBankedQuarterTurn5TileUp25 */
+        { 7,
+          { kLeftBankedQuarterTurn5TileUp25Seq0, kLeftBankedQuarterTurn5TileUp25Seq1, kLeftBankedQuarterTurn5TileUp25Seq2,
+            kLeftBankedQuarterTurn5TileUp25Seq3, kLeftBankedQuarterTurn5TileUp25Seq4, kLeftBankedQuarterTurn5TileUp25Seq5,
+            kLeftBankedQuarterTurn5TileUp25Seq6, kLeftBankedQuarterTurn5TileUp25Seq7 } },
+        /* TrackElemType::RightBankedQuarterTurn5TileUp25 */
+        { 7,
+          { kRightBankedQuarterTurn5TileUp25Seq0, kRightBankedQuarterTurn5TileUp25Seq1, kRightBankedQuarterTurn5TileUp25Seq2,
+            kRightBankedQuarterTurn5TileUp25Seq3, kRightBankedQuarterTurn5TileUp25Seq4, kRightBankedQuarterTurn5TileUp25Seq5,
+            kRightBankedQuarterTurn5TileUp25Seq6, kRightBankedQuarterTurn5TileUp25Seq7 } },
+        /* TrackElemType::LeftBankedQuarterTurn5TileDown25 */
+        { 7,
+          { kLeftBankedQuarterTurn5TileDown25Seq0, kLeftBankedQuarterTurn5TileDown25Seq1, kLeftBankedQuarterTurn5TileDown25Seq2,
+            kLeftBankedQuarterTurn5TileDown25Seq3, kLeftBankedQuarterTurn5TileDown25Seq4, kLeftBankedQuarterTurn5TileDown25Seq5,
+            kLeftBankedQuarterTurn5TileDown25Seq6, kLeftBankedQuarterTurn5TileDown25Seq7 } },
+        /* TrackElemType::RightBankedQuarterTurn5TileDown25 */
+        { 7,
+          { kRightBankedQuarterTurn5TileDown25Seq0, kRightBankedQuarterTurn5TileDown25Seq1,
+            kRightBankedQuarterTurn5TileDown25Seq2, kRightBankedQuarterTurn5TileDown25Seq3,
+            kRightBankedQuarterTurn5TileDown25Seq4, kRightBankedQuarterTurn5TileDown25Seq5,
+            kRightBankedQuarterTurn5TileDown25Seq6, kRightBankedQuarterTurn5TileDown25Seq7 } },
+        /* TrackElemType::Up25ToLeftBankedUp25 */ { 1, { kUp25ToLeftBankedUp25Seq0 } },
+        /* TrackElemType::Up25ToRightBankedUp25 */ { 1, { kUp25ToRightBankedUp25Seq0 } },
+        /* TrackElemType::LeftBankedUp25ToUp25 */ { 1, { kLeftBankedUp25ToUp25Seq0 } },
+        /* TrackElemType::RightBankedUp25ToUp25 */ { 1, { kRightBankedUp25ToUp25Seq0 } },
+        /* TrackElemType::Down25ToLeftBankedDown25 */ { 1, { kDown25ToLeftBankedDown25Seq0 } },
+        /* TrackElemType::Down25ToRightBankedDown25 */ { 1, { kDown25ToRightBankedDown25Seq0 } },
+        /* TrackElemType::LeftBankedDown25ToDown25 */ { 1, { kLeftBankedDown25ToDown25Seq0 } },
+        /* TrackElemType::RightBankedDown25ToDown25 */ { 1, { kRightBankedDown25ToDown25Seq0 } },
+        /* TrackElemType::LeftBankedFlatToLeftBankedUp25 */ { 1, { kLeftBankedFlatToLeftBankedUp25Seq0 } },
+        /* TrackElemType::RightBankedFlatToRightBankedUp25 */ { 1, { kRightBankedFlatToRightBankedUp25Seq0 } },
+        /* TrackElemType::LeftBankedUp25ToLeftBankedFlat */ { 1, { kLeftBankedUp25ToLeftBankedFlatSeq0 } },
+        /* TrackElemType::RightBankedUp25ToRightBankedFlat */ { 1, { kRightBankedUp25ToRightBankedFlatSeq0 } },
+        /* TrackElemType::LeftBankedFlatToLeftBankedDown25 */ { 1, { kLeftBankedFlatToLeftBankedDown25Seq0 } },
+        /* TrackElemType::RightBankedFlatToRightBankedDown25 */ { 1, { kRightBankedFlatToRightBankedDown25Seq0 } },
+        /* TrackElemType::LeftBankedDown25ToLeftBankedFlat */ { 1, { kLeftBankedDown25ToLeftBankedFlatSeq0 } },
+        /* TrackElemType::RightBankedDown25ToRightBankedFlat */ { 1, { kRightBankedDown25ToRightBankedFlatSeq0 } },
+        /* TrackElemType::FlatToLeftBankedUp25 */ { 1, { kFlatToLeftBankedUp25Seq0 } },
+        /* TrackElemType::FlatToRightBankedUp25 */ { 1, { kFlatToRightBankedUp25Seq0 } },
+        /* TrackElemType::LeftBankedUp25ToFlat */ { 1, { kLeftBankedUp25ToFlatSeq0 } },
+        /* TrackElemType::RightBankedUp25ToFlat */ { 1, { kRightBankedUp25ToFlatSeq0 } },
+        /* TrackElemType::FlatToLeftBankedDown25 */ { 1, { kFlatToLeftBankedDown25Seq0 } },
+        /* TrackElemType::FlatToRightBankedDown25 */ { 1, { kFlatToRightBankedDown25Seq0 } },
+        /* TrackElemType::LeftBankedDown25ToFlat */ { 1, { kLeftBankedDown25ToFlatSeq0 } },
+        /* TrackElemType::RightBankedDown25ToFlat */ { 1, { kRightBankedDown25ToFlatSeq0 } },
+        /* TrackElemType::LeftQuarterTurn1TileUp90 */ { 2, { kLeftQuarterTurn1TileUp90Seq0, kLeftQuarterTurn1TileUp90Seq1 } },
+        /* TrackElemType::RightQuarterTurn1TileUp90 */
+        { 2, { kRightQuarterTurn1TileUp90Seq0, kRightQuarterTurn1TileUp90Seq1 } },
+        /* TrackElemType::LeftQuarterTurn1TileDown90 */
+        { 2, { kLeftQuarterTurn1TileDown90Seq0, kLeftQuarterTurn1TileDown90Seq1 } },
+        /* TrackElemType::RightQuarterTurn1TileDown90 */
+        { 2, { kRightQuarterTurn1TileDown90Seq0, kRightQuarterTurn1TileDown90Seq1 } },
+        /* TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop */
+        { 3,
+          { kMultiDimUp90ToInvertedFlatQuarterLoopSeq0, kMultiDimUp90ToInvertedFlatQuarterLoopSeq1,
+            kMultiDimUp90ToInvertedFlatQuarterLoopSeq2 } },
+        /* TrackElemType::MultiDimFlatToDown90QuarterLoop */
+        { 4,
+          { kMultiDimFlatToDown90QuarterLoopSeq0, kMultiDimFlatToDown90QuarterLoopSeq1, kMultiDimFlatToDown90QuarterLoopSeq2,
+            kMultiDimFlatToDown90QuarterLoopSeq3 } },
+        /* TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop */
+        { 3,
+          { kMultiDimInvertedUp90ToFlatQuarterLoopSeq0, kMultiDimInvertedUp90ToFlatQuarterLoopSeq1,
+            kMultiDimInvertedUp90ToFlatQuarterLoopSeq2 } },
+        /* TrackElemType::RotationControlToggle */ { 1, { kRotationControlToggleSeq0 } },
+        /* TrackElemType::FlatTrack1x4A */
+        { 4, { kFlatTrack1x4ASeq0, kFlatTrack1x4ASeq1, kFlatTrack1x4ASeq2, kFlatTrack1x4ASeq3 } },
+        /* TrackElemType::FlatTrack2x2 */ { 4, { kFlatTrack2x2Seq0, kFlatTrack2x2Seq1, kFlatTrack2x2Seq2, kFlatTrack2x2Seq3 } },
+        /* TrackElemType::FlatTrack4x4 */
+        { 16,
+          { kFlatTrack4x4Seq0, kFlatTrack4x4Seq1, kFlatTrack4x4Seq2, kFlatTrack4x4Seq3, kFlatTrack4x4Seq4, kFlatTrack4x4Seq5,
+            kFlatTrack4x4Seq6, kFlatTrack4x4Seq7, kFlatTrack4x4Seq8, kFlatTrack4x4Seq9, kFlatTrack4x4Seq10, kFlatTrack4x4Seq11,
+            kFlatTrack4x4Seq12, kFlatTrack4x4Seq13, kFlatTrack4x4Seq14, kFlatTrack4x4Seq15 } },
+        /* TrackElemType::FlatTrack2x4 */
+        { 8,
+          { kFlatTrack2x4Seq0, kFlatTrack2x4Seq1, kFlatTrack2x4Seq2, kFlatTrack2x4Seq3, kFlatTrack2x4Seq4, kFlatTrack2x4Seq5,
+            kFlatTrack2x4Seq6, kFlatTrack2x4Seq7 } },
+        /* TrackElemType::FlatTrack1x5 */
+        { 5, { kFlatTrack1x5Seq0, kFlatTrack1x5Seq1, kFlatTrack1x5Seq2, kFlatTrack1x5Seq3, kFlatTrack1x5Seq4 } },
+        /* TrackElemType::FlatTrack1x1A */ { 1, { kFlatTrack1x1ASeq0 } },
+        /* TrackElemType::FlatTrack1x4B */
+        { 4, { kFlatTrack1x4BSeq0, kFlatTrack1x4BSeq1, kFlatTrack1x4BSeq2, kFlatTrack1x4BSeq3 } },
+        /* TrackElemType::FlatTrack1x1B */ { 1, { kFlatTrack1x1BSeq0 } },
+        /* TrackElemType::FlatTrack1x4C */
+        { 4, { kFlatTrack1x4CSeq0, kFlatTrack1x4CSeq1, kFlatTrack1x4CSeq2, kFlatTrack1x4CSeq3 } },
+        /* TrackElemType::FlatTrack3x3 */
+        { 9,
+          { kFlatTrack3x3Seq0, kFlatTrack3x3Seq1, kFlatTrack3x3Seq2, kFlatTrack3x3Seq3, kFlatTrack3x3Seq4, kFlatTrack3x3Seq5,
+            kFlatTrack3x3Seq6, kFlatTrack3x3Seq7, kFlatTrack3x3Seq8 } },
+        /* TrackElemType::LeftLargeCorkscrewUp */
+        { 6,
+          { kLeftLargeCorkscrewUpSeq0, kLeftLargeCorkscrewUpSeq1, kLeftLargeCorkscrewUpSeq2, kLeftLargeCorkscrewUpSeq3,
+            kLeftLargeCorkscrewUpSeq4, kLeftLargeCorkscrewUpSeq5 } },
+        /* TrackElemType::RightLargeCorkscrewUp */
+        { 6,
+          { kRightLargeCorkscrewUpSeq0, kRightLargeCorkscrewUpSeq1, kRightLargeCorkscrewUpSeq2, kRightLargeCorkscrewUpSeq3,
+            kRightLargeCorkscrewUpSeq4, kRightLargeCorkscrewUpSeq5 } },
+        /* TrackElemType::LeftLargeCorkscrewDown */
+        { 6,
+          { kLeftLargeCorkscrewDownSeq0, kLeftLargeCorkscrewDownSeq1, kLeftLargeCorkscrewDownSeq2, kLeftLargeCorkscrewDownSeq3,
+            kLeftLargeCorkscrewDownSeq4, kLeftLargeCorkscrewDownSeq5 } },
+        /* TrackElemType::RightLargeCorkscrewDown */
+        { 6,
+          { kRightLargeCorkscrewDownSeq0, kRightLargeCorkscrewDownSeq1, kRightLargeCorkscrewDownSeq2,
+            kRightLargeCorkscrewDownSeq3, kRightLargeCorkscrewDownSeq4, kRightLargeCorkscrewDownSeq5 } },
+        /* TrackElemType::LeftMediumHalfLoopUp */
+        { 5,
+          { kLeftMediumHalfLoopUpSeq0, kLeftMediumHalfLoopUpSeq1, kLeftMediumHalfLoopUpSeq2, kLeftMediumHalfLoopUpSeq3,
+            kLeftMediumHalfLoopUpSeq4 } },
+        /* TrackElemType::RightMediumHalfLoopUp */
+        { 5,
+          { kRightMediumHalfLoopUpSeq0, kRightMediumHalfLoopUpSeq1, kRightMediumHalfLoopUpSeq2, kRightMediumHalfLoopUpSeq3,
+            kRightMediumHalfLoopUpSeq4 } },
+        /* TrackElemType::LeftMediumHalfLoopDown */
+        { 5,
+          { kLeftMediumHalfLoopDownSeq0, kLeftMediumHalfLoopDownSeq1, kLeftMediumHalfLoopDownSeq2, kLeftMediumHalfLoopDownSeq3,
+            kLeftMediumHalfLoopDownSeq4 } },
+        /* TrackElemType::RightMediumHalfLoopDown */
+        { 5,
+          { kRightMediumHalfLoopDownSeq0, kRightMediumHalfLoopDownSeq1, kRightMediumHalfLoopDownSeq2,
+            kRightMediumHalfLoopDownSeq3, kRightMediumHalfLoopDownSeq4 } },
+        /* TrackElemType::LeftZeroGRollUp */ { 3, { kLeftZeroGRollUpSeq0, kLeftZeroGRollUpSeq1, kLeftZeroGRollUpSeq2 } },
+        /* TrackElemType::RightZeroGRollUp */ { 3, { kRightZeroGRollUpSeq0, kRightZeroGRollUpSeq1, kRightZeroGRollUpSeq2 } },
+        /* TrackElemType::LeftZeroGRollDown */
+        { 3, { kLeftZeroGRollDownSeq0, kLeftZeroGRollDownSeq1, kLeftZeroGRollDownSeq2 } },
+        /* TrackElemType::RightZeroGRollDown */
+        { 3, { kRightZeroGRollDownSeq0, kRightZeroGRollDownSeq1, kRightZeroGRollDownSeq2 } },
+        /* TrackElemType::LeftLargeZeroGRollUp */
+        { 4, { kLeftLargeZeroGRollUpSeq0, kLeftLargeZeroGRollUpSeq1, kLeftLargeZeroGRollUpSeq2, kLeftLargeZeroGRollUpSeq3 } },
+        /* TrackElemType::RightLargeZeroGRollUp */
+        { 4,
+          { kRightLargeZeroGRollUpSeq0, kRightLargeZeroGRollUpSeq1, kRightLargeZeroGRollUpSeq2, kRightLargeZeroGRollUpSeq3 } },
+        /* TrackElemType::LeftLargeZeroGRollDown */
+        { 4,
+          { kLeftLargeZeroGRollDownSeq0, kLeftLargeZeroGRollDownSeq1, kLeftLargeZeroGRollDownSeq2,
+            kLeftLargeZeroGRollDownSeq3 } },
+        /* TrackElemType::RightLargeZeroGRollDown */
+        { 4,
+          { kRightLargeZeroGRollDownSeq0, kRightLargeZeroGRollDownSeq1, kRightLargeZeroGRollDownSeq2,
+            kRightLargeZeroGRollDownSeq3 } },
+        /* TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp */
+        { 7,
+          { kLeftFlyerLargeHalfLoopUninvertedUpSeq0, kLeftFlyerLargeHalfLoopUninvertedUpSeq1,
+            kLeftFlyerLargeHalfLoopUninvertedUpSeq2, kLeftFlyerLargeHalfLoopUninvertedUpSeq3,
+            kLeftFlyerLargeHalfLoopUninvertedUpSeq4, kLeftFlyerLargeHalfLoopUninvertedUpSeq5,
+            kLeftFlyerLargeHalfLoopUninvertedUpSeq6 } },
+        /* TrackElemType::RightFlyerLargeHalfLoopUninvertedUp */
+        { 7,
+          { kRightFlyerLargeHalfLoopUninvertedUpSeq0, kRightFlyerLargeHalfLoopUninvertedUpSeq1,
+            kRightFlyerLargeHalfLoopUninvertedUpSeq2, kRightFlyerLargeHalfLoopUninvertedUpSeq3,
+            kRightFlyerLargeHalfLoopUninvertedUpSeq4, kRightFlyerLargeHalfLoopUninvertedUpSeq5,
+            kRightFlyerLargeHalfLoopUninvertedUpSeq6 } },
+        /* TrackElemType::LeftFlyerLargeHalfLoopInvertedDown */
+        { 7,
+          { kLeftFlyerLargeHalfLoopInvertedDownSeq0, kLeftFlyerLargeHalfLoopInvertedDownSeq1,
+            kLeftFlyerLargeHalfLoopInvertedDownSeq2, kLeftFlyerLargeHalfLoopInvertedDownSeq3,
+            kLeftFlyerLargeHalfLoopInvertedDownSeq4, kLeftFlyerLargeHalfLoopInvertedDownSeq5,
+            kLeftFlyerLargeHalfLoopInvertedDownSeq6 } },
+        /* TrackElemType::RightFlyerLargeHalfLoopInvertedDown */
+        { 7,
+          { kRightFlyerLargeHalfLoopInvertedDownSeq0, kRightFlyerLargeHalfLoopInvertedDownSeq1,
+            kRightFlyerLargeHalfLoopInvertedDownSeq2, kRightFlyerLargeHalfLoopInvertedDownSeq3,
+            kRightFlyerLargeHalfLoopInvertedDownSeq4, kRightFlyerLargeHalfLoopInvertedDownSeq5,
+            kRightFlyerLargeHalfLoopInvertedDownSeq6 } },
+        /* TrackElemType::LeftFlyerLargeHalfLoopInvertedUp */
+        { 7,
+          { kLeftFlyerLargeHalfLoopInvertedUpSeq0, kLeftFlyerLargeHalfLoopInvertedUpSeq1, kLeftFlyerLargeHalfLoopInvertedUpSeq2,
+            kLeftFlyerLargeHalfLoopInvertedUpSeq3, kLeftFlyerLargeHalfLoopInvertedUpSeq4, kLeftFlyerLargeHalfLoopInvertedUpSeq5,
+            kLeftFlyerLargeHalfLoopInvertedUpSeq6 } },
+        /* TrackElemType::RightFlyerLargeHalfLoopInvertedUp */
+        { 7,
+          { kRightFlyerLargeHalfLoopInvertedUpSeq0, kRightFlyerLargeHalfLoopInvertedUpSeq1,
+            kRightFlyerLargeHalfLoopInvertedUpSeq2, kRightFlyerLargeHalfLoopInvertedUpSeq3,
+            kRightFlyerLargeHalfLoopInvertedUpSeq4, kRightFlyerLargeHalfLoopInvertedUpSeq5,
+            kRightFlyerLargeHalfLoopInvertedUpSeq6 } },
+        /* TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown */
+        { 7,
+          { kLeftFlyerLargeHalfLoopUninvertedDownSeq0, kLeftFlyerLargeHalfLoopUninvertedDownSeq1,
+            kLeftFlyerLargeHalfLoopUninvertedDownSeq2, kLeftFlyerLargeHalfLoopUninvertedDownSeq3,
+            kLeftFlyerLargeHalfLoopUninvertedDownSeq4, kLeftFlyerLargeHalfLoopUninvertedDownSeq5,
+            kLeftFlyerLargeHalfLoopUninvertedDownSeq6 } },
+        /* TrackElemType::RightFlyerLargeHalfLoopUninvertedDown */
+        { 7,
+          { kRightFlyerLargeHalfLoopUninvertedDownSeq0, kRightFlyerLargeHalfLoopUninvertedDownSeq1,
+            kRightFlyerLargeHalfLoopUninvertedDownSeq2, kRightFlyerLargeHalfLoopUninvertedDownSeq3,
+            kRightFlyerLargeHalfLoopUninvertedDownSeq4, kRightFlyerLargeHalfLoopUninvertedDownSeq5,
+            kRightFlyerLargeHalfLoopUninvertedDownSeq6 } },
+        /* TrackElemType::FlyerHalfLoopInvertedUp */
+        { 4,
+          { kFlyerHalfLoopInvertedUpSeq0, kFlyerHalfLoopInvertedUpSeq1, kFlyerHalfLoopInvertedUpSeq2,
+            kFlyerHalfLoopInvertedUpSeq3 } },
+        /* TrackElemType::FlyerHalfLoopUninvertedDown */
+        { 4,
+          { kFlyerHalfLoopUninvertedDownSeq0, kFlyerHalfLoopUninvertedDownSeq1, kFlyerHalfLoopUninvertedDownSeq2,
+            kFlyerHalfLoopUninvertedDownSeq3 } },
+        /* TrackElemType::LeftEighthToDiagUp25 */
+        { 5,
+          { kLeftEighthToDiagUp25Seq0, kLeftEighthToDiagUp25Seq1, kLeftEighthToDiagUp25Seq2, kLeftEighthToDiagUp25Seq3,
+            kLeftEighthToDiagUp25Seq4 } },
+        /* TrackElemType::RightEighthToDiagUp25 */
+        { 5,
+          { kRightEighthToDiagUp25Seq0, kRightEighthToDiagUp25Seq1, kRightEighthToDiagUp25Seq2, kRightEighthToDiagUp25Seq3,
+            kRightEighthToDiagUp25Seq4 } },
+        /* TrackElemType::LeftEighthToDiagDown25 */
+        { 5,
+          { kLeftEighthToDiagDown25Seq0, kLeftEighthToDiagDown25Seq1, kLeftEighthToDiagDown25Seq2, kLeftEighthToDiagDown25Seq3,
+            kLeftEighthToDiagDown25Seq4 } },
+        /* TrackElemType::RightEighthToDiagDown25 */
+        { 5,
+          { kRightEighthToDiagDown25Seq0, kRightEighthToDiagDown25Seq1, kRightEighthToDiagDown25Seq2,
+            kRightEighthToDiagDown25Seq3, kRightEighthToDiagDown25Seq4 } },
+        /* TrackElemType::LeftEighthToOrthogonalUp25 */
+        { 5,
+          { kLeftEighthToOrthogonalUp25Seq0, kLeftEighthToOrthogonalUp25Seq1, kLeftEighthToOrthogonalUp25Seq2,
+            kLeftEighthToOrthogonalUp25Seq3, kLeftEighthToOrthogonalUp25Seq4 } },
+        /* TrackElemType::RightEighthToOrthogonalUp25 */
+        { 5,
+          { kRightEighthToOrthogonalUp25Seq0, kRightEighthToOrthogonalUp25Seq1, kRightEighthToOrthogonalUp25Seq2,
+            kRightEighthToOrthogonalUp25Seq3, kRightEighthToOrthogonalUp25Seq4 } },
+        /* TrackElemType::LeftEighthToOrthogonalDown25 */
+        { 5,
+          { kLeftEighthToOrthogonalDown25Seq0, kLeftEighthToOrthogonalDown25Seq1, kLeftEighthToOrthogonalDown25Seq2,
+            kLeftEighthToOrthogonalDown25Seq3, kLeftEighthToOrthogonalDown25Seq4 } },
+        /* TrackElemType::RightEighthToOrthogonalDown25 */
+        { 5,
+          { kRightEighthToOrthogonalDown25Seq0, kRightEighthToOrthogonalDown25Seq1, kRightEighthToOrthogonalDown25Seq2,
+            kRightEighthToOrthogonalDown25Seq3, kRightEighthToOrthogonalDown25Seq4 } },
+        /* TrackElemType::DiagUp25ToLeftBankedUp25 */
+        { 4,
+          { kDiagUp25ToLeftBankedUp25Seq0, kDiagUp25ToLeftBankedUp25Seq1, kDiagUp25ToLeftBankedUp25Seq2,
+            kDiagUp25ToLeftBankedUp25Seq3 } },
+        /* TrackElemType::DiagUp25ToRightBankedUp25 */
+        { 4,
+          { kDiagUp25ToRightBankedUp25Seq0, kDiagUp25ToRightBankedUp25Seq1, kDiagUp25ToRightBankedUp25Seq2,
+            kDiagUp25ToRightBankedUp25Seq3 } },
+        /* TrackElemType::DiagLeftBankedUp25ToUp25 */
+        { 4,
+          { kDiagLeftBankedUp25ToUp25Seq0, kDiagLeftBankedUp25ToUp25Seq1, kDiagLeftBankedUp25ToUp25Seq2,
+            kDiagLeftBankedUp25ToUp25Seq3 } },
+        /* TrackElemType::DiagRightBankedUp25ToUp25 */
+        { 4,
+          { kDiagRightBankedUp25ToUp25Seq0, kDiagRightBankedUp25ToUp25Seq1, kDiagRightBankedUp25ToUp25Seq2,
+            kDiagRightBankedUp25ToUp25Seq3 } },
+        /* TrackElemType::DiagDown25ToLeftBankedDown25 */
+        { 4,
+          { kDiagDown25ToLeftBankedDown25Seq0, kDiagDown25ToLeftBankedDown25Seq1, kDiagDown25ToLeftBankedDown25Seq2,
+            kDiagDown25ToLeftBankedDown25Seq3 } },
+        /* TrackElemType::DiagDown25ToRightBankedDown25 */
+        { 4,
+          { kDiagDown25ToRightBankedDown25Seq0, kDiagDown25ToRightBankedDown25Seq1, kDiagDown25ToRightBankedDown25Seq2,
+            kDiagDown25ToRightBankedDown25Seq3 } },
+        /* TrackElemType::DiagLeftBankedDown25ToDown25 */
+        { 4,
+          { kDiagLeftBankedDown25ToDown25Seq0, kDiagLeftBankedDown25ToDown25Seq1, kDiagLeftBankedDown25ToDown25Seq2,
+            kDiagLeftBankedDown25ToDown25Seq3 } },
+        /* TrackElemType::DiagRightBankedDown25ToDown25 */
+        { 4,
+          { kDiagRightBankedDown25ToDown25Seq0, kDiagRightBankedDown25ToDown25Seq1, kDiagRightBankedDown25ToDown25Seq2,
+            kDiagRightBankedDown25ToDown25Seq3 } },
+        /* TrackElemType::DiagLeftBankedFlatToLeftBankedUp25 */
+        { 4,
+          { kDiagLeftBankedFlatToLeftBankedUp25Seq0, kDiagLeftBankedFlatToLeftBankedUp25Seq1,
+            kDiagLeftBankedFlatToLeftBankedUp25Seq2, kDiagLeftBankedFlatToLeftBankedUp25Seq3 } },
+        /* TrackElemType::DiagRightBankedFlatToRightBankedUp25 */
+        { 4,
+          { kDiagRightBankedFlatToRightBankedUp25Seq0, kDiagRightBankedFlatToRightBankedUp25Seq1,
+            kDiagRightBankedFlatToRightBankedUp25Seq2, kDiagRightBankedFlatToRightBankedUp25Seq3 } },
+        /* TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat */
+        { 4,
+          { kDiagLeftBankedUp25ToLeftBankedFlatSeq0, kDiagLeftBankedUp25ToLeftBankedFlatSeq1,
+            kDiagLeftBankedUp25ToLeftBankedFlatSeq2, kDiagLeftBankedUp25ToLeftBankedFlatSeq3 } },
+        /* TrackElemType::DiagRightBankedUp25ToRightBankedFlat */
+        { 4,
+          { kDiagRightBankedUp25ToRightBankedFlatSeq0, kDiagRightBankedUp25ToRightBankedFlatSeq1,
+            kDiagRightBankedUp25ToRightBankedFlatSeq2, kDiagRightBankedUp25ToRightBankedFlatSeq3 } },
+        /* TrackElemType::DiagLeftBankedFlatToLeftBankedDown25 */
+        { 4,
+          { kDiagLeftBankedFlatToLeftBankedDown25Seq0, kDiagLeftBankedFlatToLeftBankedDown25Seq1,
+            kDiagLeftBankedFlatToLeftBankedDown25Seq2, kDiagLeftBankedFlatToLeftBankedDown25Seq3 } },
+        /* TrackElemType::DiagRightBankedFlatToRightBankedDown25 */
+        { 4,
+          { kDiagRightBankedFlatToRightBankedDown25Seq0, kDiagRightBankedFlatToRightBankedDown25Seq1,
+            kDiagRightBankedFlatToRightBankedDown25Seq2, kDiagRightBankedFlatToRightBankedDown25Seq3 } },
+        /* TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat */
+        { 4,
+          { kDiagLeftBankedDown25ToLeftBankedFlatSeq0, kDiagLeftBankedDown25ToLeftBankedFlatSeq1,
+            kDiagLeftBankedDown25ToLeftBankedFlatSeq2, kDiagLeftBankedDown25ToLeftBankedFlatSeq3 } },
+        /* TrackElemType::DiagRightBankedDown25ToRightBankedFlat */
+        { 4,
+          { kDiagRightBankedDown25ToRightBankedFlatSeq0, kDiagRightBankedDown25ToRightBankedFlatSeq1,
+            kDiagRightBankedDown25ToRightBankedFlatSeq2, kDiagRightBankedDown25ToRightBankedFlatSeq3 } },
+        /* TrackElemType::DiagFlatToLeftBankedUp25 */
+        { 4,
+          { kDiagFlatToLeftBankedUp25Seq0, kDiagFlatToLeftBankedUp25Seq1, kDiagFlatToLeftBankedUp25Seq2,
+            kDiagFlatToLeftBankedUp25Seq3 } },
+        /* TrackElemType::DiagFlatToRightBankedUp25 */
+        { 4,
+          { kDiagFlatToRightBankedUp25Seq0, kDiagFlatToRightBankedUp25Seq1, kDiagFlatToRightBankedUp25Seq2,
+            kDiagFlatToRightBankedUp25Seq3 } },
+        /* TrackElemType::DiagLeftBankedUp25ToFlat */
+        { 4,
+          { kDiagLeftBankedUp25ToFlatSeq0, kDiagLeftBankedUp25ToFlatSeq1, kDiagLeftBankedUp25ToFlatSeq2,
+            kDiagLeftBankedUp25ToFlatSeq3 } },
+        /* TrackElemType::DiagRightBankedUp25ToFlat */
+        { 4,
+          { kDiagRightBankedUp25ToFlatSeq0, kDiagRightBankedUp25ToFlatSeq1, kDiagRightBankedUp25ToFlatSeq2,
+            kDiagRightBankedUp25ToFlatSeq3 } },
+        /* TrackElemType::DiagFlatToLeftBankedDown25 */
+        { 4,
+          { kDiagFlatToLeftBankedDown25Seq0, kDiagFlatToLeftBankedDown25Seq1, kDiagFlatToLeftBankedDown25Seq2,
+            kDiagFlatToLeftBankedDown25Seq3 } },
+        /* TrackElemType::DiagFlatToRightBankedDown25 */
+        { 4,
+          { kDiagFlatToRightBankedDown25Seq0, kDiagFlatToRightBankedDown25Seq1, kDiagFlatToRightBankedDown25Seq2,
+            kDiagFlatToRightBankedDown25Seq3 } },
+        /* TrackElemType::DiagLeftBankedDown25ToFlat */
+        { 4,
+          { kDiagLeftBankedDown25ToFlatSeq0, kDiagLeftBankedDown25ToFlatSeq1, kDiagLeftBankedDown25ToFlatSeq2,
+            kDiagLeftBankedDown25ToFlatSeq3 } },
+        /* TrackElemType::DiagRightBankedDown25ToFlat */
+        { 4,
+          { kDiagRightBankedDown25ToFlatSeq0, kDiagRightBankedDown25ToFlatSeq1, kDiagRightBankedDown25ToFlatSeq2,
+            kDiagRightBankedDown25ToFlatSeq3 } },
+        /* TrackElemType::DiagUp25LeftBanked */
+        { 4, { kDiagUp25LeftBankedSeq0, kDiagUp25LeftBankedSeq1, kDiagUp25LeftBankedSeq2, kDiagUp25LeftBankedSeq3 } },
+        /* TrackElemType::DiagUp25RightBanked */
+        { 4, { kDiagUp25RightBankedSeq0, kDiagUp25RightBankedSeq1, kDiagUp25RightBankedSeq2, kDiagUp25RightBankedSeq3 } },
+        /* TrackElemType::DiagDown25LeftBanked */
+        { 4, { kDiagDown25LeftBankedSeq0, kDiagDown25LeftBankedSeq1, kDiagDown25LeftBankedSeq2, kDiagDown25LeftBankedSeq3 } },
+        /* TrackElemType::DiagDown25RightBanked */
+        { 4,
+          { kDiagDown25RightBankedSeq0, kDiagDown25RightBankedSeq1, kDiagDown25RightBankedSeq2, kDiagDown25RightBankedSeq3 } },
+        /* TrackElemType::LeftEighthBankToDiagUp25 */
+        { 5,
+          { kLeftEighthBankToDiagUp25Seq0, kLeftEighthBankToDiagUp25Seq1, kLeftEighthBankToDiagUp25Seq2,
+            kLeftEighthBankToDiagUp25Seq3, kLeftEighthBankToDiagUp25Seq4 } },
+        /* TrackElemType::RightEighthBankToDiagUp25 */
+        { 5,
+          { kRightEighthBankToDiagUp25Seq0, kRightEighthBankToDiagUp25Seq1, kRightEighthBankToDiagUp25Seq2,
+            kRightEighthBankToDiagUp25Seq3, kRightEighthBankToDiagUp25Seq4 } },
+        /* TrackElemType::LeftEighthBankToDiagDown25 */
+        { 5,
+          { kLeftEighthBankToDiagDown25Seq0, kLeftEighthBankToDiagDown25Seq1, kLeftEighthBankToDiagDown25Seq2,
+            kLeftEighthBankToDiagDown25Seq3, kLeftEighthBankToDiagDown25Seq4 } },
+        /* TrackElemType::RightEighthBankToDiagDown25 */
+        { 5,
+          { kRightEighthBankToDiagDown25Seq0, kRightEighthBankToDiagDown25Seq1, kRightEighthBankToDiagDown25Seq2,
+            kRightEighthBankToDiagDown25Seq3, kRightEighthBankToDiagDown25Seq4 } },
+        /* TrackElemType::LeftEighthBankToOrthogonalUp25 */
+        { 5,
+          { kLeftEighthBankToOrthogonalUp25Seq0, kLeftEighthBankToOrthogonalUp25Seq1, kLeftEighthBankToOrthogonalUp25Seq2,
+            kLeftEighthBankToOrthogonalUp25Seq3, kLeftEighthBankToOrthogonalUp25Seq4 } },
+        /* TrackElemType::RightEighthBankToOrthogonalUp25 */
+        { 5,
+          { kRightEighthBankToOrthogonalUp25Seq0, kRightEighthBankToOrthogonalUp25Seq1, kRightEighthBankToOrthogonalUp25Seq2,
+            kRightEighthBankToOrthogonalUp25Seq3, kRightEighthBankToOrthogonalUp25Seq4 } },
+        /* TrackElemType::LeftEighthBankToOrthogonalDown25 */
+        { 5,
+          { kLeftEighthBankToOrthogonalDown25Seq0, kLeftEighthBankToOrthogonalDown25Seq1, kLeftEighthBankToOrthogonalDown25Seq2,
+            kLeftEighthBankToOrthogonalDown25Seq3, kLeftEighthBankToOrthogonalDown25Seq4 } },
+        /* TrackElemType::RightEighthBankToOrthogonalDown25 */
+        { 5,
+          { kRightEighthBankToOrthogonalDown25Seq0, kRightEighthBankToOrthogonalDown25Seq1,
+            kRightEighthBankToOrthogonalDown25Seq2, kRightEighthBankToOrthogonalDown25Seq3,
+            kRightEighthBankToOrthogonalDown25Seq4 } },
+        /* TrackElemType::DiagBrakes */ { 4, { kDiagBrakesSeq0, kDiagBrakesSeq1, kDiagBrakesSeq2, kDiagBrakesSeq3 } },
+        /* TrackElemType::DiagBlockBrakes */
+        { 4, { kDiagBlockBrakesSeq0, kDiagBlockBrakesSeq1, kDiagBlockBrakesSeq2, kDiagBlockBrakesSeq3 } },
+    };
+
     static constexpr auto BuildDescriptorTable()
     {
         std::array<TrackElementDescriptor, TrackElemType::Count> res{};
@@ -8368,7 +12598,6 @@ namespace OpenRCT2::TrackMetaData
             TrackElementDescriptor& desc = res[i];
             desc.description = RideConfigurationStringIds[i];
             desc.alternativeType = AlternativeTrackTypes[i];
-            desc.block = const_cast<PreviewTrack*>(TrackBlocks[i]);
             desc.coordinates = _trackCoordinates[i];
             desc.curveChain = gTrackCurveChain[i];
             desc.flags = TrackFlags[i];
@@ -8380,12 +12609,11 @@ namespace OpenRCT2::TrackMetaData
             desc.spinFunction = TrackTypeToSpinFunction[i];
             desc.verticalFactor = GetVerticalFunction(i);
             desc.lateralFactor = GetLateralFunction(i);
+            desc.numSequences = kSequenceDescriptorsByElement[i].numSequences;
 
-            for (uint8_t j = 0; j < kMaxSequencesPerPiece; j++)
+            for (uint8_t sequenceIndex = 0; sequenceIndex < kMaxSequencesPerPiece; sequenceIndex++)
             {
-                desc.sequenceElementAllowedWallEdges[j] = TrackSequenceElementAllowedWallEdges[i][j];
-                desc.sequenceProperties[j] = TrackSequenceProperties[i][j];
-                desc.sequenceWoodenSupports[j] = kTrackSequenceWoodenSupports[i][j];
+                desc.sequences[sequenceIndex] = kSequenceDescriptorsByElement[i].sequences[sequenceIndex];
             }
         }
 
@@ -8401,23 +12629,4 @@ namespace OpenRCT2::TrackMetaData
         return _trackElementDescriptors[type];
     }
 
-    const PreviewTrack* TrackElementDescriptor::GetBlockForSequence(uint8_t sequenceIndex) const
-    {
-        const auto* trackBlock = block;
-        if (trackBlock == nullptr)
-            return nullptr;
-
-        // The sequence index may be higher than the amount of sequences actually present.
-        // We don’t know the amount of sequences present in the block upfront, but there is an end marker consisting of all
-        // 255s.
-        for (auto i = 0; i < sequenceIndex; i++)
-        {
-            trackBlock++;
-
-            if (trackBlock == nullptr || trackBlock->index == 255)
-                return nullptr;
-        }
-
-        return trackBlock;
-    }
 } // namespace OpenRCT2::TrackMetaData

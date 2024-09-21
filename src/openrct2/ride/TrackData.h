@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../paint/support/MetalSupports.h"
 #include "../paint/support/WoodenSupports.h"
 #include "Track.h"
 
@@ -81,13 +82,30 @@ namespace OpenRCT2::TrackMetaData
         WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None;
     };
 
+    struct SequenceMetalSupport
+    {
+        MetalSupportPlace place = MetalSupportPlace::None;
+        uint8_t alternates = false;
+    };
+
+    struct SequenceDescriptor
+    {
+        SequenceClearance clearance{};
+        /** rct2: 0x00999A94 */
+        uint8_t allowedWallEdges{};
+        /** rct2: 0x0099BA64 */
+        uint8_t flags{};
+        SequenceWoodenSupport woodenSupports{};
+        SequenceMetalSupport metalSupports{};
+        int8_t extraSupportRotation = 0;
+    };
+
     using TrackComputeFunction = int32_t (*)(const int16_t);
     struct TrackElementDescriptor
     {
         StringId description;
         TrackCoordinates coordinates;
 
-        PreviewTrack* block;
         uint8_t pieceLength;
         TrackCurveChain curveChain;
         track_type_t alternativeType;
@@ -98,24 +116,14 @@ namespace OpenRCT2::TrackMetaData
         uint32_t heightMarkerPositions;
         uint32_t flags;
 
-        std::array<uint8_t, kMaxSequencesPerPiece> sequenceElementAllowedWallEdges;
-        std::array<uint8_t, kMaxSequencesPerPiece> sequenceProperties;
-        std::array<SequenceWoodenSupport, kMaxSequencesPerPiece> sequenceWoodenSupports;
+        uint8_t numSequences{};
+        std::array<SequenceDescriptor, kMaxSequencesPerPiece> sequences;
 
         TrackDefinition definition;
         SpinFunction spinFunction;
 
         TrackComputeFunction verticalFactor;
         TrackComputeFunction lateralFactor;
-
-        /**
-         * Retrieves the block for the given sequence. This method safely handles
-         * out-of-bounds sequence indices.
-         *
-         * @param sequenceIndex
-         * @return The track block, or nullptr if it doesn’t exist.
-         */
-        const PreviewTrack* GetBlockForSequence(uint8_t sequenceIndex) const;
     };
 
     const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type);
