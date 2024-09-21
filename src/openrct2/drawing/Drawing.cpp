@@ -883,25 +883,20 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     return std::nullopt;
 }
 
-size_t DrawPixelInfo::GetBytesPerRow() const
-{
-    return static_cast<size_t>(width) + pitch;
-}
-
 uint8_t* DrawPixelInfo::GetBitsOffset(const ScreenCoordsXY& pos) const
 {
-    return bits + pos.x + (pos.y * GetBytesPerRow());
+    return bits + pos.x + pos.y * LineStride();
 }
 
 DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
 {
     DrawPixelInfo result = *this;
     result.bits = GetBitsOffset(pos);
-    result.x = static_cast<int16_t>(pos.x);
-    result.y = static_cast<int16_t>(pos.y);
-    result.width = static_cast<int16_t>(size.width);
-    result.height = static_cast<int16_t>(size.height);
-    result.pitch = static_cast<int16_t>(width + pitch - size.width);
+    result.x = pos.x;
+    result.y = pos.y;
+    result.width = size.width;
+    result.height = size.height;
+    result.pitch = width + pitch - size.width;
     return result;
 }
 
@@ -1140,7 +1135,7 @@ void ToggleWindowedMode()
     Config::Save();
 }
 
-void DebugDPI(DrawPixelInfo& dpi)
+void DebugDPI(const DrawPixelInfo& dpi)
 {
     DrawPixelInfo unzoomed = dpi;
     unzoomed.zoom_level = ZoomLevel{ 0 };
@@ -1150,13 +1145,21 @@ void DebugDPI(DrawPixelInfo& dpi)
     unzoomed.SetHeight(dpi.ScreenHeight());
 
     ScreenCoordsXY topLeft = { unzoomed.ScreenX(), unzoomed.ScreenY() };
-    ScreenCoordsXY topRight = { unzoomed.ScreenX() + unzoomed.ScreenWidth() - 1, unzoomed.ScreenY() };
-    ScreenCoordsXY bottomLeft = { unzoomed.ScreenX(), unzoomed.ScreenY() + unzoomed.ScreenHeight() - 1 };
     ScreenCoordsXY bottomRight = { unzoomed.ScreenX() + unzoomed.ScreenWidth() - 1,
                                    unzoomed.ScreenY() + unzoomed.ScreenHeight() - 1 };
-    GfxDrawLine(unzoomed, { topLeft, bottomRight }, PALETTE_INDEX_129);
+    ScreenCoordsXY topRight = { unzoomed.ScreenX() + unzoomed.ScreenWidth() - 1, unzoomed.ScreenY() };
+    ScreenCoordsXY bottomLeft = { unzoomed.ScreenX(), unzoomed.ScreenY() + unzoomed.ScreenHeight() - 1 };
+
+    GfxDrawLine(unzoomed, { topLeft, bottomRight }, PALETTE_INDEX_136);
+    GfxDrawLine(unzoomed, { bottomLeft, topRight }, PALETTE_INDEX_136);
     GfxDrawLine(unzoomed, { topLeft, topRight }, PALETTE_INDEX_129);
     GfxDrawLine(unzoomed, { topRight, bottomRight }, PALETTE_INDEX_129);
     GfxDrawLine(unzoomed, { bottomLeft, bottomRight }, PALETTE_INDEX_129);
     GfxDrawLine(unzoomed, { topLeft, bottomLeft }, PALETTE_INDEX_129);
+
+    GfxDrawLine(unzoomed, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PALETTE_INDEX_136);
+
+    const auto str = std::to_string(dpi.ScreenX());
+    DrawText(
+        unzoomed, ScreenCoordsXY{ unzoomed.ScreenX(), unzoomed.ScreenY() }, { COLOUR_WHITE, FontStyle::Tiny }, str.c_str());
 }

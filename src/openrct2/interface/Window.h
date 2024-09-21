@@ -174,7 +174,6 @@ struct Viewport
     // from its x, y, z
     [[nodiscard]] constexpr bool Contains(const ScreenCoordsXY& vpos) const
     {
-        // TODO (mber), change to compare in screen space coords.
         return (
             vpos.y >= viewPos.y && vpos.y < viewPos.y + ViewHeight() && vpos.x >= viewPos.x
             && vpos.x < viewPos.x + ViewWidth());

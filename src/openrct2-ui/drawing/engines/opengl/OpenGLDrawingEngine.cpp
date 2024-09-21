@@ -1181,7 +1181,7 @@ void OpenGLDrawingContext::HandleTransparency()
 void OpenGLDrawingContext::CalculcateClipping(DrawPixelInfo& dpi)
 {
     auto screenDPI = _engine.GetDPI();
-    auto bytesPerRow = screenDPI->GetBytesPerRow();
+    auto bytesPerRow = screenDPI->LineStride();
     auto bitsOffset = static_cast<size_t>(dpi.bits - screenDPI->bits);
 #    ifndef NDEBUG
     auto bitsSize = static_cast<size_t>(screenDPI->ScreenHeight()) * bytesPerRow;

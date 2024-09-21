@@ -124,7 +124,6 @@ public:
 
     OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
 
-    size_t GetBytesPerRow() const;
     uint8_t* GetBitsOffset(const ScreenCoordsXY& pos) const;
     DrawPixelInfo Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const;
 
@@ -685,6 +684,6 @@ void UpdatePaletteEffects();
 void RefreshVideo();
 void ToggleWindowedMode();
 
-void DebugDPI(DrawPixelInfo& dpi);
+void DebugDPI(const DrawPixelInfo& dpi);
 
 #include "NewDrawing.h"
