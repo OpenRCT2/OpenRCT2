@@ -13,7 +13,7 @@
 - Fix: [#22231] Invalid object version can cause a crash.
 - Fix: [#22653] Missing water tiles in RCT1 and RCT2 scenarios.
 - Fix: [#22654] Misplaced scenario elements in RCT1 and RCT2 scenarios.
-- Fix: [#22655] Fix surface style of Botany Breakers around missing water tiles.
+- Fix: [#22655] Incorrectly set surface style around missing water tiles on Botany Breakers.
 - Fix: [#22734] Support clearance above steep Side-Friction track is too low.
 
 0.4.14 (2024-09-01)
