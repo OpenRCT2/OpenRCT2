@@ -147,33 +147,33 @@ namespace OpenRCT2::Scripting
         { "here_we_are", PeepThoughtType::HereWeAre },
     });
 
-    static const DukEnumMap<PeepActionSpriteType> availableGuestAnimations({
-        { "walking", PeepActionSpriteType::None },
-        { "checkTime", PeepActionSpriteType::CheckTime },
-        { "watchRide", PeepActionSpriteType::WatchRide },
-        { "eatFood", PeepActionSpriteType::EatFood },
-        { "shakeHead", PeepActionSpriteType::ShakeHead },
-        { "emptyPockets", PeepActionSpriteType::EmptyPockets },
-        { "holdMat", PeepActionSpriteType::HoldMat },
-        { "sittingIdle", PeepActionSpriteType::SittingIdle },
-        { "sittingEatFood", PeepActionSpriteType::SittingEatFood },
-        { "sittingLookAroundLeft", PeepActionSpriteType::SittingLookAroundLeft },
-        { "sittingLookAroundRight", PeepActionSpriteType::SittingLookAroundRight },
-        { "hanging", PeepActionSpriteType::Ui },
-        { "wow", PeepActionSpriteType::Wow },
-        { "throwUp", PeepActionSpriteType::ThrowUp },
-        { "jump", PeepActionSpriteType::Jump },
-        { "drowning", PeepActionSpriteType::Drowning },
-        { "joy", PeepActionSpriteType::Joy },
-        { "readMap", PeepActionSpriteType::ReadMap },
-        { "wave", PeepActionSpriteType::Wave },
-        { "wave2", PeepActionSpriteType::Wave2 },
-        { "takePhoto", PeepActionSpriteType::TakePhoto },
-        { "clap", PeepActionSpriteType::Clap },
-        { "disgust", PeepActionSpriteType::Disgust },
-        { "drawPicture", PeepActionSpriteType::DrawPicture },
-        { "beingWatched", PeepActionSpriteType::BeingWatched },
-        { "withdrawMoney", PeepActionSpriteType::WithdrawMoney },
+    static const DukEnumMap<PeepAnimationType> availableGuestAnimations({
+        { "walking", PeepAnimationType::None },
+        { "checkTime", PeepAnimationType::CheckTime },
+        { "watchRide", PeepAnimationType::WatchRide },
+        { "eatFood", PeepAnimationType::EatFood },
+        { "shakeHead", PeepAnimationType::ShakeHead },
+        { "emptyPockets", PeepAnimationType::EmptyPockets },
+        { "holdMat", PeepAnimationType::HoldMat },
+        { "sittingIdle", PeepAnimationType::SittingIdle },
+        { "sittingEatFood", PeepAnimationType::SittingEatFood },
+        { "sittingLookAroundLeft", PeepAnimationType::SittingLookAroundLeft },
+        { "sittingLookAroundRight", PeepAnimationType::SittingLookAroundRight },
+        { "hanging", PeepAnimationType::Ui },
+        { "wow", PeepAnimationType::Wow },
+        { "throwUp", PeepAnimationType::ThrowUp },
+        { "jump", PeepAnimationType::Jump },
+        { "drowning", PeepAnimationType::Drowning },
+        { "joy", PeepAnimationType::Joy },
+        { "readMap", PeepAnimationType::ReadMap },
+        { "wave", PeepAnimationType::Wave },
+        { "wave2", PeepAnimationType::Wave2 },
+        { "takePhoto", PeepAnimationType::TakePhoto },
+        { "clap", PeepAnimationType::Clap },
+        { "disgust", PeepAnimationType::Disgust },
+        { "drawPicture", PeepAnimationType::DrawPicture },
+        { "beingWatched", PeepAnimationType::BeingWatched },
+        { "withdrawMoney", PeepAnimationType::WithdrawMoney },
     });
 
     ScGuest::ScGuest(EntityId id)
@@ -898,7 +898,7 @@ namespace OpenRCT2::Scripting
             for (auto frameOffset : animationGroup.frame_offsets)
             {
                 auto imageId = animationGroup.base_image;
-                if (animationType != PeepActionSpriteType::Ui)
+                if (animationType != PeepAnimationType::Ui)
                     imageId += rotation + frameOffset * 4;
                 else
                     imageId += frameOffset;
@@ -921,8 +921,8 @@ namespace OpenRCT2::Scripting
 
         // Special consideration for sitting peeps
         // TODO: something funky going on in the state machine
-        if (peep->ActionSpriteType == PeepActionSpriteType::None && peep->State == PeepState::Sitting)
-            action = availableGuestAnimations[PeepActionSpriteType::SittingIdle];
+        if (peep->ActionSpriteType == PeepAnimationType::None && peep->State == PeepState::Sitting)
+            action = availableGuestAnimations[PeepAnimationType::SittingIdle];
 
         return std::string(action);
     }

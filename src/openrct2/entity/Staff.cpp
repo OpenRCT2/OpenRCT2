@@ -1710,7 +1710,7 @@ void Staff::Tick128UpdateStaff()
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    ActionSpriteType = PeepActionSpriteType::Invalid;
+    ActionSpriteType = PeepAnimationType::Invalid;
     UpdateCurrentActionSpriteType();
 }
 

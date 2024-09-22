@@ -1301,10 +1301,10 @@ namespace OpenRCT2::RCT1
             dst->SpriteType = RCT1::GetPeepSpriteType(src->SpriteType);
             dst->Action = static_cast<PeepActionType>(src->Action);
             dst->SpecialSprite = src->SpecialSprite;
-            dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->NextActionSpriteType);
+            dst->NextActionSpriteType = static_cast<PeepAnimationType>(src->NextActionSpriteType);
             dst->ActionSpriteImageOffset = src->ActionSpriteImageOffset;
             dst->WalkingFrameNum = src->NoActionFrameNum;
-            dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->ActionSpriteType);
+            dst->ActionSpriteType = static_cast<PeepAnimationType>(src->ActionSpriteType);
             dst->ActionFrame = src->ActionFrame;
 
             const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);

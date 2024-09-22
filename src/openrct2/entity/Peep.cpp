@@ -77,44 +77,44 @@ static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 
 static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height);
 
-static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
-    PeepActionSpriteType::None,
-    PeepActionSpriteType::HoldMat,
-    PeepActionSpriteType::StaffMower,
+static PeepAnimationType PeepSpecialSpriteToSpriteTypeMap[] = {
+    PeepAnimationType::None,
+    PeepAnimationType::HoldMat,
+    PeepAnimationType::StaffMower,
 };
 
-static PeepActionSpriteType PeepActionToSpriteTypeMap[] = {
-    PeepActionSpriteType::CheckTime,
-    PeepActionSpriteType::EatFood,
-    PeepActionSpriteType::ShakeHead,
-    PeepActionSpriteType::EmptyPockets,
-    PeepActionSpriteType::SittingEatFood,
-    PeepActionSpriteType::SittingLookAroundLeft,
-    PeepActionSpriteType::SittingLookAroundRight,
-    PeepActionSpriteType::Wow,
-    PeepActionSpriteType::ThrowUp,
-    PeepActionSpriteType::Jump,
-    PeepActionSpriteType::StaffSweep,
-    PeepActionSpriteType::Drowning,
-    PeepActionSpriteType::StaffAnswerCall,
-    PeepActionSpriteType::StaffAnswerCall2,
-    PeepActionSpriteType::StaffCheckboard,
-    PeepActionSpriteType::StaffFix,
-    PeepActionSpriteType::StaffFix2,
-    PeepActionSpriteType::StaffFixGround,
-    PeepActionSpriteType::StaffFix3,
-    PeepActionSpriteType::StaffWatering,
-    PeepActionSpriteType::Joy,
-    PeepActionSpriteType::ReadMap,
-    PeepActionSpriteType::Wave,
-    PeepActionSpriteType::StaffEmptyBin,
-    PeepActionSpriteType::Wave2,
-    PeepActionSpriteType::TakePhoto,
-    PeepActionSpriteType::Clap,
-    PeepActionSpriteType::Disgust,
-    PeepActionSpriteType::DrawPicture,
-    PeepActionSpriteType::BeingWatched,
-    PeepActionSpriteType::WithdrawMoney,
+static PeepAnimationType PeepActionToSpriteTypeMap[] = {
+    PeepAnimationType::CheckTime,
+    PeepAnimationType::EatFood,
+    PeepAnimationType::ShakeHead,
+    PeepAnimationType::EmptyPockets,
+    PeepAnimationType::SittingEatFood,
+    PeepAnimationType::SittingLookAroundLeft,
+    PeepAnimationType::SittingLookAroundRight,
+    PeepAnimationType::Wow,
+    PeepAnimationType::ThrowUp,
+    PeepAnimationType::Jump,
+    PeepAnimationType::StaffSweep,
+    PeepAnimationType::Drowning,
+    PeepAnimationType::StaffAnswerCall,
+    PeepAnimationType::StaffAnswerCall2,
+    PeepAnimationType::StaffCheckboard,
+    PeepAnimationType::StaffFix,
+    PeepAnimationType::StaffFix2,
+    PeepAnimationType::StaffFixGround,
+    PeepAnimationType::StaffFix3,
+    PeepAnimationType::StaffWatering,
+    PeepAnimationType::Joy,
+    PeepAnimationType::ReadMap,
+    PeepAnimationType::Wave,
+    PeepAnimationType::StaffEmptyBin,
+    PeepAnimationType::Wave2,
+    PeepAnimationType::TakePhoto,
+    PeepAnimationType::Clap,
+    PeepAnimationType::Disgust,
+    PeepAnimationType::DrawPicture,
+    PeepAnimationType::BeingWatched,
+    PeepAnimationType::WithdrawMoney,
 };
 
 const bool gSpriteTypeToSlowWalkMap[] = {
@@ -314,7 +314,7 @@ bool Peep::IsOnPathBlockedByVehicle()
     return FootpathIsBlockedByVehicle(curPos);
 }
 
-PeepActionSpriteType Peep::GetActionSpriteType()
+PeepAnimationType Peep::GetActionSpriteType()
 {
     if (IsActionInterruptable())
     { // PeepActionType::None1 or PeepActionType::None2
@@ -329,7 +329,7 @@ PeepActionSpriteType Peep::GetActionSpriteType()
     Guard::Assert(
         EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle, "Invalid peep action %u",
         EnumValue(Action));
-    return PeepActionSpriteType::None;
+    return PeepAnimationType::None;
 }
 
 /*
@@ -341,7 +341,7 @@ void Peep::UpdateCurrentActionSpriteType()
     {
         return;
     }
-    PeepActionSpriteType newActionSpriteType = GetActionSpriteType();
+    PeepAnimationType newActionSpriteType = GetActionSpriteType();
     if (ActionSpriteType == newActionSpriteType)
     {
         return;
@@ -622,7 +622,7 @@ void Peep::PickupAbort(int32_t old_x)
         Action = PeepActionType::Walking;
         SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
-        ActionSpriteType = PeepActionSpriteType::None;
+        ActionSpriteType = PeepAnimationType::None;
         PathCheckOptimisation = 0;
     }
 
@@ -671,13 +671,13 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
         Action = PeepActionType::Walking;
         SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
-        ActionSpriteType = PeepActionSpriteType::None;
+        ActionSpriteType = PeepAnimationType::None;
         PathCheckOptimisation = 0;
         EntityTweener::Get().Reset();
         auto* guest = As<Guest>();
         if (guest != nullptr)
         {
-            ActionSpriteType = PeepActionSpriteType::Invalid;
+            ActionSpriteType = PeepAnimationType::Invalid;
             guest->HappinessTarget = std::max(guest->HappinessTarget - 10, 0);
             UpdateCurrentActionSpriteType();
         }
@@ -2859,7 +2859,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    PeepActionSpriteType actionSpriteType = ActionSpriteType;
+    PeepAnimationType actionSpriteType = ActionSpriteType;
     uint8_t imageOffset = ActionSpriteImageOffset;
 
     if (Action == PeepActionType::Idle)
@@ -2873,7 +2873,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     uint32_t baseImageId = GetPeepAnimation(SpriteType, actionSpriteType).base_image;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
-    if (actionSpriteType != PeepActionSpriteType::Ui)
+    if (actionSpriteType != PeepAnimationType::Ui)
         baseImageId += (imageDirection >> 3) + imageOffset * 4;
     else
         baseImageId += imageOffset;

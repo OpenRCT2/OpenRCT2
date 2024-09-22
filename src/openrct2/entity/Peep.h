@@ -151,7 +151,7 @@ enum class PeepActionType : uint8_t
     Walking = 255,
 };
 
-enum class PeepActionSpriteType : uint8_t
+enum class PeepAnimationType : uint8_t
 {
     None = 0,
     CheckTime = 1,
@@ -352,10 +352,10 @@ struct Peep : EntityBase
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
     uint8_t SpecialSprite;
-    PeepActionSpriteType ActionSpriteType;
+    PeepAnimationType ActionSpriteType;
     // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again
-    PeepActionSpriteType NextActionSpriteType;
+    PeepAnimationType NextActionSpriteType;
     uint8_t ActionSpriteImageOffset;
     PeepActionType Action;
     uint8_t ActionFrame;
@@ -425,7 +425,7 @@ public: // Peep
     void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextActionSpriteType();
-    [[nodiscard]] PeepActionSpriteType GetActionSpriteType();
+    [[nodiscard]] PeepAnimationType GetActionSpriteType();
 
 private:
     void UpdateFalling();

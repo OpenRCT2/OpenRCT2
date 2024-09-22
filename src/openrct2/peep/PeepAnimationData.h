@@ -23,11 +23,11 @@ namespace OpenRCT2
     struct PeepAnimationGroup
     {
     public:
-        constexpr PeepAnimation& operator[](PeepActionSpriteType n)
+        constexpr PeepAnimation& operator[](PeepAnimationType n)
         {
             return animations[EnumValue(n)];
         }
-        constexpr const PeepAnimation& operator[](PeepActionSpriteType n) const
+        constexpr const PeepAnimation& operator[](PeepAnimationType n) const
         {
             return animations[EnumValue(n)];
         }
@@ -37,7 +37,7 @@ namespace OpenRCT2
     };
 
     const PeepAnimation& GetPeepAnimation(
-        PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None);
+        PeepSpriteType spriteType, PeepAnimationType actionSpriteType = PeepAnimationType::None);
     const SpriteBounds& GetSpriteBounds(
-        PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None);
+        PeepSpriteType spriteType, PeepAnimationType actionSpriteType = PeepAnimationType::None);
 } // namespace OpenRCT2
