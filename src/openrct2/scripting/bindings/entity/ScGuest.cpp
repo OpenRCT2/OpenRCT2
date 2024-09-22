@@ -942,7 +942,7 @@ namespace OpenRCT2::Scripting
 
         auto offset = 0;
         if (peep->IsActionWalking())
-            peep->WalkingFrameNum = offset;
+            peep->WalkingAnimationFrameNum = offset;
         else
             peep->ActionFrame = offset;
 
@@ -960,7 +960,7 @@ namespace OpenRCT2::Scripting
         }
 
         if (peep->IsActionWalking())
-            return peep->WalkingFrameNum;
+            return peep->WalkingAnimationFrameNum;
         else
             return peep->ActionFrame;
     }
@@ -976,7 +976,7 @@ namespace OpenRCT2::Scripting
         offset %= length;
 
         if (peep->IsActionWalking())
-            peep->WalkingFrameNum = offset;
+            peep->WalkingAnimationFrameNum = offset;
         else
             peep->ActionFrame = offset;
 

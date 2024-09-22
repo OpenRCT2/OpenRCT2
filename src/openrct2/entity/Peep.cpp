@@ -509,13 +509,13 @@ std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc,
 
 void Peep::UpdateWalkingAnimation()
 {
-    WalkingFrameNum++;
+    WalkingAnimationFrameNum++;
     const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, AnimationType);
-    if (WalkingFrameNum >= peepAnimation.frame_offsets.size())
+    if (WalkingAnimationFrameNum >= peepAnimation.frame_offsets.size())
     {
-        WalkingFrameNum = 0;
+        WalkingAnimationFrameNum = 0;
     }
-    ActionSpriteImageOffset = peepAnimation.frame_offsets[WalkingFrameNum];
+    ActionSpriteImageOffset = peepAnimation.frame_offsets[WalkingAnimationFrameNum];
 }
 
 void Peep::ThrowUp()
@@ -2819,7 +2819,7 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << PathCheckOptimisation;
     stream << PathfindGoal;
     stream << PathfindHistory;
-    stream << WalkingFrameNum;
+    stream << WalkingAnimationFrameNum;
     stream << PeepFlags;
 }
 

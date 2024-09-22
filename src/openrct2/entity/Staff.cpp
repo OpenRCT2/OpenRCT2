@@ -1700,7 +1700,7 @@ void Staff::Tick128UpdateStaff()
 
     SpriteType = newSpriteType;
     ActionSpriteImageOffset = 0;
-    WalkingFrameNum = 0;
+    WalkingAnimationFrameNum = 0;
     if (Action < PeepActionType::Idle)
         Action = PeepActionType::Walking;
 

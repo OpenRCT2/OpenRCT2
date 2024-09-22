@@ -1663,7 +1663,7 @@ namespace OpenRCT2::RCT2
                                                 src->PathfindHistory[i].direction };
                 }
             }
-            dst->WalkingFrameNum = src->NoActionFrameNum;
+            dst->WalkingAnimationFrameNum = src->NoActionFrameNum;
         }
 
         constexpr EntityType GetEntityTypeFromRCT2Sprite(const RCT12EntityBase* src)

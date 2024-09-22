@@ -1919,7 +1919,7 @@ namespace OpenRCT2
                 cs.ReadWrite(entity.PathfindHistory[i].z);
                 cs.ReadWrite(entity.PathfindHistory[i].direction);
             }
-            cs.ReadWrite(entity.WalkingFrameNum);
+            cs.ReadWrite(entity.WalkingAnimationFrameNum);
 
             if (version <= 1)
             {

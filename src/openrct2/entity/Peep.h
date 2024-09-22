@@ -370,7 +370,7 @@ struct Peep : EntityBase
     uint8_t PathCheckOptimisation; // see peep.checkForPath
     TileCoordsXYZD PathfindGoal;
     std::array<TileCoordsXYZD, 4> PathfindHistory;
-    uint8_t WalkingFrameNum;
+    uint8_t WalkingAnimationFrameNum;
     uint32_t PeepFlags;
 
 public: // Peep

@@ -6739,7 +6739,7 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
 
     SpriteType = new_sprite_type;
     ActionSpriteImageOffset = 0;
-    WalkingFrameNum = 0;
+    WalkingAnimationFrameNum = 0;
 
     if (IsActionInterruptable())
         Action = PeepActionType::Walking;
@@ -7125,7 +7125,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->Action = PeepActionType::Walking;
     peep->SpecialSprite = 0;
     peep->ActionSpriteImageOffset = 0;
-    peep->WalkingFrameNum = 0;
+    peep->WalkingAnimationFrameNum = 0;
     peep->AnimationType = PeepAnimationType::None;
     peep->PeepFlags = 0;
     peep->FavouriteRide = RideId::GetNull();

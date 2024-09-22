@@ -133,7 +133,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->Action = PeepActionType::Walking;
         newPeep->SpecialSprite = 0;
         newPeep->ActionSpriteImageOffset = 0;
-        newPeep->WalkingFrameNum = 0;
+        newPeep->WalkingAnimationFrameNum = 0;
         newPeep->AnimationType = PeepAnimationType::None;
         newPeep->PathCheckOptimisation = 0;
         newPeep->PeepFlags = 0;

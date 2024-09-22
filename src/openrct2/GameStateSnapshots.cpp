@@ -302,7 +302,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             COMPARE_FIELD(Peep, PathfindHistory[i].z);
             COMPARE_FIELD(Peep, PathfindHistory[i].direction);
         }
-        COMPARE_FIELD(Peep, WalkingFrameNum);
+        COMPARE_FIELD(Peep, WalkingAnimationFrameNum);
         COMPARE_FIELD(Peep, PeepFlags);
     }
 
