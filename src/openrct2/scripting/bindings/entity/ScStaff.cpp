@@ -116,22 +116,22 @@ namespace OpenRCT2::Scripting
             if (value == "handyman" && peep->AssignedStaffType != StaffType::Handyman)
             {
                 peep->AssignedStaffType = StaffType::Handyman;
-                peep->SpriteType = PeepAnimationGroup::Handyman;
+                peep->AnimationGroup = PeepAnimationGroup::Handyman;
             }
             else if (value == "mechanic" && peep->AssignedStaffType != StaffType::Mechanic)
             {
                 peep->AssignedStaffType = StaffType::Mechanic;
-                peep->SpriteType = PeepAnimationGroup::Mechanic;
+                peep->AnimationGroup = PeepAnimationGroup::Mechanic;
             }
             else if (value == "security" && peep->AssignedStaffType != StaffType::Security)
             {
                 peep->AssignedStaffType = StaffType::Security;
-                peep->SpriteType = PeepAnimationGroup::Security;
+                peep->AnimationGroup = PeepAnimationGroup::Security;
             }
             else if (value == "entertainer" && peep->AssignedStaffType != StaffType::Entertainer)
             {
                 peep->AssignedStaffType = StaffType::Entertainer;
-                peep->SpriteType = PeepAnimationGroup::EntertainerPanda;
+                peep->AnimationGroup = PeepAnimationGroup::EntertainerPanda;
             }
 
             // Reset state to walking to prevent invalid actions from carrying over
@@ -225,7 +225,7 @@ namespace OpenRCT2::Scripting
 
         auto& availableCostumes = costumesByStaffType(peep->AssignedStaffType);
 
-        auto costume = availableCostumes.find(peep->SpriteType);
+        auto costume = availableCostumes.find(peep->AnimationGroup);
         if (costume != availableCostumes.end())
         {
             return std::string(costume->first);
@@ -250,19 +250,19 @@ namespace OpenRCT2::Scripting
         if (value.type() == DukValue::Type::STRING)
         {
             std::string newCostume = value.as_string();
-            auto newSpriteType = availableCostumes.TryGet(newCostume);
-            if (newSpriteType != std::nullopt)
+            auto newAnimationGroup = availableCostumes.TryGet(newCostume);
+            if (newAnimationGroup != std::nullopt)
             {
-                peep->SpriteType = *newSpriteType;
+                peep->AnimationGroup = *newAnimationGroup;
                 return;
             }
         }
         else if (value.type() == DukValue::Type::NUMBER)
         {
-            auto newSpriteType = PeepAnimationGroup(value.as_uint() + EnumValue(PeepAnimationGroup::EntertainerPanda));
-            if (availableCostumes.find(newSpriteType) != availableCostumes.end())
+            auto newAnimationGroup = PeepAnimationGroup(value.as_uint() + EnumValue(PeepAnimationGroup::EntertainerPanda));
+            if (availableCostumes.find(newAnimationGroup) != availableCostumes.end())
             {
-                peep->SpriteType = newSpriteType;
+                peep->AnimationGroup = newAnimationGroup;
                 return;
             }
         }
@@ -340,7 +340,7 @@ namespace OpenRCT2::Scripting
             return spriteIds;
         }
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, *animationType);
+        auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, *animationType);
         for (auto frameOffset : animationGroup.frame_offsets)
         {
             auto imageId = animationGroup.base_image;
@@ -388,7 +388,7 @@ namespace OpenRCT2::Scripting
         else
             peep->AnimationFrameNum = offset;
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
+        auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
@@ -413,7 +413,7 @@ namespace OpenRCT2::Scripting
 
         auto* peep = GetStaff();
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
+        auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         auto length = animationGroup.frame_offsets.size();
         offset %= length;
 
@@ -434,7 +434,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
+        auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         return static_cast<uint8_t>(animationGroup.frame_offsets.size());
     }
 

@@ -575,7 +575,7 @@ namespace OpenRCT2::Ui::Windows
             if (staff->Is<Staff>() && staff->AssignedStaffType == StaffType::Entertainer)
                 screenCoords.y++;
 
-            int32_t imageIndex = GetPeepAnimation(staff->SpriteType).base_image + 1;
+            int32_t imageIndex = GetPeepAnimation(staff->AnimationGroup).base_image + 1;
 
             int32_t offset = 0;
 
@@ -681,7 +681,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto baseImageId = GetPeepAnimation(staff->SpriteType, PeepAnimationType::Hanging).base_image;
+            auto baseImageId = GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging).base_image;
             baseImageId += picked_peep_frame >> 2;
             gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
         }
@@ -776,7 +776,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < numCostumes; i++)
             {
                 EntertainerCostume costume = _availableCostumes[i];
-                if (staff->SpriteType == EntertainerCostumeToSprite(costume))
+                if (staff->AnimationGroup == EntertainerCostumeToSprite(costume))
                 {
                     checkedIndex = i;
                 }
@@ -831,7 +831,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Button;
 
                     // TODO: retrieve string from object instead
-                    auto costumeType = EnumValue(staff->SpriteType) - EnumValue(PeepAnimationGroup::EntertainerPanda);
+                    auto costumeType = EnumValue(staff->AnimationGroup) - EnumValue(PeepAnimationGroup::EntertainerPanda);
                     if (costumeType >= 0)
                         widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[costumeType];
                     else

@@ -845,7 +845,7 @@ namespace OpenRCT2::Scripting
         }
 
         peep->GiveItem(*shopItem);
-        peep->UpdateSpriteType();
+        peep->UpdateAnimationGroup();
     }
 
     void ScGuest::remove_item(const DukValue& item) const
@@ -856,7 +856,7 @@ namespace OpenRCT2::Scripting
             // Since guests can only have one item of a type and this item matches, remove it.
             auto peep = GetGuest();
             peep->RemoveItem(ShopItemMap[item["type"].as_string()]);
-            peep->UpdateSpriteType();
+            peep->UpdateAnimationGroup();
         }
     }
 
@@ -867,7 +867,7 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             peep->RemoveAllItems();
-            peep->UpdateSpriteType();
+            peep->UpdateAnimationGroup();
         }
     }
 
@@ -894,7 +894,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetPeep();
         if (peep != nullptr)
         {
-            auto& animationGroup = GetPeepAnimation(peep->SpriteType, *animationType);
+            auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, *animationType);
             for (auto frameOffset : animationGroup.frame_offsets)
             {
                 auto imageId = animationGroup.base_image;
@@ -946,7 +946,7 @@ namespace OpenRCT2::Scripting
         else
             peep->AnimationFrameNum = offset;
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
+        auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
@@ -971,7 +971,7 @@ namespace OpenRCT2::Scripting
 
         auto* peep = GetGuest();
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
+        auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         auto length = animationGroup.frame_offsets.size();
         offset %= length;
 
@@ -992,7 +992,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
+        auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         return static_cast<uint8_t>(animationGroup.frame_offsets.size());
     }
 

@@ -539,7 +539,7 @@ void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
         return;
 
     passingPeep->GiveItem(ShopItem::IceCream);
-    passingPeep->UpdateSpriteType();
+    passingPeep->UpdateAnimationGroup();
 }
 
 /**
@@ -826,7 +826,7 @@ void Guest::UpdateConsumptionMotives()
                 }
 
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                UpdateSpriteType();
+                UpdateAnimationGroup();
             }
         }
     }
@@ -984,7 +984,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
 
     if (!(PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN))
     {
-        UpdateSpriteType();
+        UpdateAnimationGroup();
     }
 
     if (State == PeepState::OnRide || State == PeepState::EnteringRide)
@@ -1308,7 +1308,7 @@ void Guest::UpdateSitting()
             return;
         }
 
-        if (SpriteType == PeepAnimationGroup::Umbrella)
+        if (AnimationGroup == PeepAnimationGroup::Umbrella)
         {
             TryGetUpFromSitting();
             return;
@@ -1334,7 +1334,7 @@ void Guest::UpdateSitting()
             TryGetUpFromSitting();
             return;
         }
-        if (SpriteType == PeepAnimationGroup::Balloon || SpriteType == PeepAnimationGroup::Hat)
+        if (AnimationGroup == PeepAnimationGroup::Balloon || AnimationGroup == PeepAnimationGroup::Hat)
         {
             TryGetUpFromSitting();
             return;
@@ -1669,7 +1669,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         Photo4RideRef = ride.id;
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-    UpdateSpriteType();
+    UpdateAnimationGroup();
     if (PeepFlags & PEEP_FLAGS_TRACKING)
     {
         auto ft = Formatter();
@@ -5374,7 +5374,7 @@ void Guest::UpdateWalking()
             }
 
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-            UpdateSpriteType();
+            UpdateAnimationGroup();
 
             const auto loc = GetLocation();
             int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
@@ -5632,7 +5632,7 @@ void Guest::UpdateQueuing()
     PerformNextAction(pathingResult);
     if (!IsActionInterruptable())
         return;
-    if (SpriteType == PeepAnimationGroup::Normal)
+    if (AnimationGroup == PeepAnimationGroup::Normal)
     {
         if (TimeInQueue >= 2000 && (0xFFFF & ScenarioRand()) <= 119)
         {
@@ -5652,7 +5652,7 @@ void Guest::UpdateQueuing()
     {
         if (!(TimeInQueue & 0x3F) && IsActionIdle() && NextAnimationType == PeepAnimationType::WatchRide)
         {
-            switch (SpriteType)
+            switch (AnimationGroup)
             {
                 case PeepAnimationGroup::IceCream:
                 case PeepAnimationGroup::Chips:
@@ -5795,7 +5795,7 @@ void Guest::UpdateWatching()
         SubState++;
 
         TimeToStand = std::clamp(((129 - Energy) * 16 + 50) / 2, 0, 255);
-        UpdateSpriteType();
+        UpdateAnimationGroup();
     }
     else if (SubState == 1)
     {
@@ -5853,7 +5853,7 @@ void Guest::UpdateWatching()
             return;
 
         SetState(PeepState::Walking);
-        UpdateSpriteType();
+        UpdateAnimationGroup();
         // Send peep to the centre of current tile.
 
         auto destination = GetLocation().ToTileCentre();
@@ -5943,7 +5943,7 @@ void Guest::UpdateUsingBin()
                         spaceLeftInBin--;
                     RemoveItem(item);
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                    UpdateSpriteType();
+                    UpdateAnimationGroup();
                     continue;
                 }
 
@@ -5956,7 +5956,7 @@ void Guest::UpdateUsingBin()
                 RemoveItem(item);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
-                UpdateSpriteType();
+                UpdateAnimationGroup();
             }
 
             uint8_t additionStatus = foundElement->GetAdditionStatus();
@@ -6732,12 +6732,12 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
 }
 
 /* Part of 0x0069B8CC rct2: 0x0069BC31 */
-void Guest::SetSpriteType(PeepAnimationGroup new_sprite_type)
+void Guest::SetAnimationGroup(PeepAnimationGroup new_sprite_type)
 {
-    if (SpriteType == new_sprite_type)
+    if (AnimationGroup == new_sprite_type)
         return;
 
-    SpriteType = new_sprite_type;
+    AnimationGroup = new_sprite_type;
     AnimationImageIdOffset = 0;
     WalkingAnimationFrameNum = 0;
 
@@ -6745,8 +6745,8 @@ void Guest::SetSpriteType(PeepAnimationGroup new_sprite_type)
         Action = PeepActionType::Walking;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    Guard::Assert(EnumValue(new_sprite_type) < std::size(gSpriteTypeToSlowWalkMap));
-    if (gSpriteTypeToSlowWalkMap[EnumValue(new_sprite_type)])
+    Guard::Assert(EnumValue(new_sprite_type) < std::size(gAnimationGroupToSlowWalkMap));
+    if (gAnimationGroupToSlowWalkMap[EnumValue(new_sprite_type)])
     {
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
@@ -6814,9 +6814,9 @@ static ItemPref item_order_preference[] = {
  *
  *  rct2: 0x0069B8CC
  */
-void Guest::UpdateSpriteType()
+void Guest::UpdateAnimationGroup()
 {
-    if (SpriteType == PeepAnimationGroup::Balloon && (ScenarioRand() & 0xFFFF) <= 327)
+    if (AnimationGroup == PeepAnimationGroup::Balloon && (ScenarioRand() & 0xFFFF) <= 327)
     {
         bool isBalloonPopped = false;
         if (x != kLocationNull)
@@ -6848,7 +6848,7 @@ void Guest::UpdateSpriteType()
 
                 if (tileElement->IsLastForTile())
                 {
-                    SetSpriteType(PeepAnimationGroup::Umbrella);
+                    SetAnimationGroup(PeepAnimationGroup::Umbrella);
                     return;
                 }
                 tileElement++;
@@ -6860,48 +6860,48 @@ void Guest::UpdateSpriteType()
     {
         if (HasItem(itemPref.item))
         {
-            SetSpriteType(itemPref.sprite_type);
+            SetAnimationGroup(itemPref.sprite_type);
             return;
         }
     }
 
     if (State == PeepState::Watching && StandingFlags & (1 << 1))
     {
-        SetSpriteType(PeepAnimationGroup::Watching);
+        SetAnimationGroup(PeepAnimationGroup::Watching);
         return;
     }
 
     if (Nausea > 170)
     {
-        SetSpriteType(PeepAnimationGroup::VeryNauseous);
+        SetAnimationGroup(PeepAnimationGroup::VeryNauseous);
         return;
     }
 
     if (Nausea > 140)
     {
-        SetSpriteType(PeepAnimationGroup::Nauseous);
+        SetAnimationGroup(PeepAnimationGroup::Nauseous);
         return;
     }
 
     if (Energy <= 64 && Happiness < 128)
     {
-        SetSpriteType(PeepAnimationGroup::HeadDown);
+        SetAnimationGroup(PeepAnimationGroup::HeadDown);
         return;
     }
 
     if (Energy <= 80 && Happiness < 128)
     {
-        SetSpriteType(PeepAnimationGroup::ArmsCrossed);
+        SetAnimationGroup(PeepAnimationGroup::ArmsCrossed);
         return;
     }
 
     if (Toilet > 220)
     {
-        SetSpriteType(PeepAnimationGroup::RequireToilet);
+        SetAnimationGroup(PeepAnimationGroup::RequireToilet);
         return;
     }
 
-    SetSpriteType(PeepAnimationGroup::Normal);
+    SetAnimationGroup(PeepAnimationGroup::Normal);
 }
 
 bool Guest::HeadingForRideOrParkExit() const
@@ -7119,7 +7119,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     auto& gameState = GetGameState();
     Guest* peep = CreateEntity<Guest>();
-    peep->SpriteType = PeepAnimationGroup::Normal;
+    peep->AnimationGroup = PeepAnimationGroup::Normal;
     peep->OutsideOfPark = true;
     peep->State = PeepState::Falling;
     peep->Action = PeepActionType::Walking;
@@ -7131,7 +7131,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->FavouriteRide = RideId::GetNull();
     peep->FavouriteRideRating = 0;
 
-    const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->AnimationType);
+    const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
     peep->SpriteData.Width = spriteBounds->sprite_width;
     peep->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
     peep->SpriteData.HeightMax = spriteBounds->sprite_height_positive;

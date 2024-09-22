@@ -169,7 +169,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
             spriteType = EntertainerCostumeToSprite(_entertainerType);
         }
         newPeep->Name = nullptr;
-        newPeep->SpriteType = spriteType;
+        newPeep->AnimationGroup = spriteType;
 
         const SpriteBounds* spriteBounds = &GetSpriteBounds(spriteType);
         newPeep->SpriteData.Width = spriteBounds->sprite_width;

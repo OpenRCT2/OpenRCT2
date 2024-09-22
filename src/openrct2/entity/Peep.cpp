@@ -77,13 +77,13 @@ static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 
 static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height);
 
-static PeepAnimationType PeepSpecialSpriteToSpriteTypeMap[] = {
+static PeepAnimationType PeepSpecialSpriteToAnimationGroupMap[] = {
     PeepAnimationType::None,
     PeepAnimationType::HoldMat,
     PeepAnimationType::StaffMower,
 };
 
-static PeepAnimationType PeepActionToSpriteTypeMap[] = {
+static PeepAnimationType PeepActionToAnimationGroupMap[] = {
     PeepAnimationType::CheckTime,
     PeepAnimationType::EatFood,
     PeepAnimationType::ShakeHead,
@@ -117,7 +117,7 @@ static PeepAnimationType PeepActionToSpriteTypeMap[] = {
     PeepAnimationType::WithdrawMoney,
 };
 
-const bool gSpriteTypeToSlowWalkMap[] = {
+const bool gAnimationGroupToSlowWalkMap[] = {
     false, false, false, false, false, false, false, false, false, false, false, true, false, false, true,  true,
     true,  true,  true,  false, true,  false, true,  true,  true,  false, false, true, true,  false, false, true,
     true,  true,  true,  true,  true,  true,  false, true,  false, true,  true,  true, true,  true,  true,  true,
@@ -318,17 +318,17 @@ PeepAnimationType Peep::GetAnimationType()
 {
     if (IsActionInterruptable())
     { // PeepActionType::None1 or PeepActionType::None2
-        return PeepSpecialSpriteToSpriteTypeMap[SpecialSprite];
+        return PeepSpecialSpriteToAnimationGroupMap[SpecialSprite];
     }
 
-    if (EnumValue(Action) < std::size(PeepActionToSpriteTypeMap))
+    if (EnumValue(Action) < std::size(PeepActionToAnimationGroupMap))
     {
-        return PeepActionToSpriteTypeMap[EnumValue(Action)];
+        return PeepActionToAnimationGroupMap[EnumValue(Action)];
     }
 
     Guard::Assert(
-        EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle, "Invalid peep action %u",
-        EnumValue(Action));
+        EnumValue(Action) >= std::size(PeepActionToAnimationGroupMap) && Action < PeepActionType::Idle,
+        "Invalid peep action %u", EnumValue(Action));
     return PeepAnimationType::None;
 }
 
@@ -337,7 +337,7 @@ PeepAnimationType Peep::GetAnimationType()
  */
 void Peep::UpdateCurrentAnimationType()
 {
-    if (EnumValue(SpriteType) >= EnumValue(PeepAnimationGroup::Count))
+    if (EnumValue(AnimationGroup) >= EnumValue(PeepAnimationGroup::Count))
     {
         return;
     }
@@ -356,7 +356,7 @@ void Peep::UpdateSpriteBoundingBox()
 {
     Invalidate();
 
-    const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, AnimationType);
+    const SpriteBounds* spriteBounds = &GetSpriteBounds(AnimationGroup, AnimationType);
     SpriteData.Width = spriteBounds->sprite_width;
     SpriteData.HeightMin = spriteBounds->sprite_height_negative;
     SpriteData.HeightMax = spriteBounds->sprite_height_positive;
@@ -451,7 +451,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
 bool Peep::UpdateActionAnimation()
 {
-    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, AnimationType);
+    const PeepAnimation& peepAnimation = GetPeepAnimation(AnimationGroup, AnimationType);
     AnimationFrameNum++;
 
     // If last frame of action
@@ -510,7 +510,7 @@ std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc,
 void Peep::UpdateWalkingAnimation()
 {
     WalkingAnimationFrameNum++;
-    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, AnimationType);
+    const PeepAnimation& peepAnimation = GetPeepAnimation(AnimationGroup, AnimationType);
     if (WalkingAnimationFrameNum >= peepAnimation.frame_offsets.size())
     {
         WalkingAnimationFrameNum = 0;
@@ -1709,7 +1709,7 @@ void Peep::SwitchNextAnimationType()
     {
         Invalidate();
         AnimationType = NextAnimationType;
-        const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, NextAnimationType);
+        const SpriteBounds* spriteBounds = &GetSpriteBounds(AnimationGroup, NextAnimationType);
         SpriteData.Width = spriteBounds->sprite_width;
         SpriteData.HeightMin = spriteBounds->sprite_height_negative;
         SpriteData.HeightMax = spriteBounds->sprite_height_positive;
@@ -2739,11 +2739,11 @@ static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height)
     {
         peep->RemoveItem(ShopItem::Balloon);
 
-        if (peep->SpriteType == PeepAnimationGroup::Balloon && peep->x != kLocationNull)
+        if (peep->AnimationGroup == PeepAnimationGroup::Balloon && peep->x != kLocationNull)
         {
             Balloon::Create({ peep->x, peep->y, spawn_height }, peep->BalloonColour, false);
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-            peep->UpdateSpriteType();
+            peep->UpdateAnimationGroup();
         }
     }
 }
@@ -2790,7 +2790,7 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << NextFlags;
     stream << State;
     stream << SubState;
-    stream << SpriteType;
+    stream << AnimationGroup;
     stream << TshirtColour;
     stream << TrousersColour;
     stream << DestinationX;
@@ -2859,21 +2859,21 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    PeepAnimationType actionSpriteType = AnimationType;
+    PeepAnimationType actionAnimationGroup = AnimationType;
     uint8_t imageOffset = AnimationImageIdOffset;
 
     if (Action == PeepActionType::Idle)
     {
-        actionSpriteType = NextAnimationType;
+        actionAnimationGroup = NextAnimationType;
         imageOffset = 0;
     }
 
     // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
-    uint32_t baseImageId = GetPeepAnimation(SpriteType, actionSpriteType).base_image;
+    uint32_t baseImageId = GetPeepAnimation(AnimationGroup, actionAnimationGroup).base_image;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
-    if (actionSpriteType != PeepAnimationType::Hanging)
+    if (actionAnimationGroup != PeepAnimationType::Hanging)
         baseImageId += (imageDirection >> 3) + imageOffset * 4;
     else
         baseImageId += imageOffset;

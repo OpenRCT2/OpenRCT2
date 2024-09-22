@@ -1613,7 +1613,7 @@ namespace OpenRCT2::RCT2
             dst->NextFlags = src->NextFlags;
             dst->State = static_cast<PeepState>(src->State);
             dst->SubState = src->SubState;
-            dst->SpriteType = static_cast<PeepAnimationGroup>(src->SpriteType);
+            dst->AnimationGroup = static_cast<PeepAnimationGroup>(src->AnimationGroup);
             dst->TshirtColour = src->TshirtColour;
             dst->TrousersColour = src->TrousersColour;
             dst->DestinationX = src->DestinationX;

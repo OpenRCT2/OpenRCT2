@@ -68,7 +68,7 @@ namespace OpenRCT2::RCT1
         return map[colour];
     }
 
-    ::PeepAnimationGroup GetPeepAnimationGroup(RCT1::PeepAnimationGroup rct1SpriteType)
+    ::PeepAnimationGroup GetPeepAnimationGroup(RCT1::PeepAnimationGroup rct1AnimationGroup)
     {
         static constexpr ::PeepAnimationGroup map[] =
         {
@@ -108,12 +108,12 @@ namespace OpenRCT2::RCT1
             ::PeepAnimationGroup::Chicken, // 0x21
             ::PeepAnimationGroup::Lemonade, // 0x22
         };
-        if (EnumValue(rct1SpriteType) >= std::size(map))
+        if (EnumValue(rct1AnimationGroup) >= std::size(map))
         {
-            LOG_WARNING("Unsupported RCT1 peep sprite type: %d.", EnumValue(rct1SpriteType));
+            LOG_WARNING("Unsupported RCT1 peep sprite type: %d.", EnumValue(rct1AnimationGroup));
             return ::PeepAnimationGroup::Normal;
         }
-        return map[EnumValue(rct1SpriteType)];
+        return map[EnumValue(rct1AnimationGroup)];
     }
 
     std::string_view GetTerrainSurfaceObject(uint8_t terrainSurface)

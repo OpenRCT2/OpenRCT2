@@ -1663,7 +1663,7 @@ namespace OpenRCT2
 
             cs.ReadWrite(entity.State);
             cs.ReadWrite(entity.SubState);
-            cs.ReadWrite(entity.SpriteType);
+            cs.ReadWrite(entity.AnimationGroup);
 
             if (version <= 1)
             {

@@ -961,8 +961,9 @@ int32_t Staff::GetHireDate() const
 PeepAnimationGroup EntertainerCostumeToSprite(EntertainerCostume entertainerType)
 {
     uint8_t value = static_cast<uint8_t>(entertainerType);
-    PeepAnimationGroup newSpriteType = static_cast<PeepAnimationGroup>(value + EnumValue(PeepAnimationGroup::EntertainerPanda));
-    return newSpriteType;
+    PeepAnimationGroup newAnimationGroup = static_cast<PeepAnimationGroup>(
+        value + EnumValue(PeepAnimationGroup::EntertainerPanda));
+    return newAnimationGroup;
 }
 
 colour_t StaffGetColour(StaffType staffType)
@@ -1691,21 +1692,21 @@ void Staff::Tick128UpdateStaff()
     if (AssignedStaffType != StaffType::Security)
         return;
 
-    PeepAnimationGroup newSpriteType = PeepAnimationGroup::SecurityAlt;
+    PeepAnimationGroup newAnimationGroup = PeepAnimationGroup::SecurityAlt;
     if (State != PeepState::Patrolling)
-        newSpriteType = PeepAnimationGroup::Security;
+        newAnimationGroup = PeepAnimationGroup::Security;
 
-    if (SpriteType == newSpriteType)
+    if (AnimationGroup == newAnimationGroup)
         return;
 
-    SpriteType = newSpriteType;
+    AnimationGroup = newAnimationGroup;
     AnimationImageIdOffset = 0;
     WalkingAnimationFrameNum = 0;
     if (Action < PeepActionType::Idle)
         Action = PeepActionType::Walking;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    if (gSpriteTypeToSlowWalkMap[EnumValue(newSpriteType)])
+    if (gAnimationGroupToSlowWalkMap[EnumValue(newAnimationGroup)])
     {
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }

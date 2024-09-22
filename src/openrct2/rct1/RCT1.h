@@ -544,16 +544,16 @@ namespace OpenRCT2::RCT1
     struct Peep : RCT12EntityBase
     {
         uint8_t Pad1F[3];
-        StringId NameStringID;     // 0x22
-        uint16_t NextX;            // 0x24
-        uint16_t NextY;            // 0x26
-        uint8_t NextZ;             // 0x28
-        uint8_t NextFlags;         // 0x29
-        uint8_t OutsideOfPark;     // 0x2A
-        uint8_t State;             // 0x2B
-        uint8_t SubState;          // 0x2C
-        PeepAnimationGroup SpriteType; // 0x2D
-        RCT12PeepType PeepType;    // 0x2E
+        StringId NameStringID;             // 0x22
+        uint16_t NextX;                    // 0x24
+        uint16_t NextY;                    // 0x26
+        uint8_t NextZ;                     // 0x28
+        uint8_t NextFlags;                 // 0x29
+        uint8_t OutsideOfPark;             // 0x2A
+        uint8_t State;                     // 0x2B
+        uint8_t SubState;                  // 0x2C
+        PeepAnimationGroup AnimationGroup; // 0x2D
+        RCT12PeepType PeepType;            // 0x2E
         union
         {
             uint8_t StaffType; // 0x2F

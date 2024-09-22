@@ -98,7 +98,7 @@ GameActions::Result StaffSetCostumeAction::Execute() const
     }
 
     auto spriteType = EntertainerCostumeToSprite(_costume);
-    staff->SpriteType = spriteType;
+    staff->AnimationGroup = spriteType;
     staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     if (peep_slow_walking_types[EnumValue(spriteType)])
     {

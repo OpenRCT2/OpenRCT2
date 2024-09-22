@@ -541,7 +541,7 @@ namespace OpenRCT2::RCT2
         uint8_t OutsideOfPark;  // 0x2A
         uint8_t State;          // 0x2B
         uint8_t SubState;       // 0x2C
-        uint8_t SpriteType;     // 0x2D
+        uint8_t AnimationGroup; // 0x2D
         uint8_t PeepType;       // 0x2E
         union
         {

@@ -285,7 +285,7 @@ namespace OpenRCT2::Ui::Windows
                         clipCoords.y += 3;
                     }
 
-                    uint32_t image_id_base = GetPeepAnimation(peep->SpriteType).base_image;
+                    uint32_t image_id_base = GetPeepAnimation(peep->AnimationGroup).base_image;
                     image_id_base += frame_no & 0xFFFFFFFC;
                     image_id_base++;
 

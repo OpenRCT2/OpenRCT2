@@ -322,7 +322,7 @@ struct Peep : EntityBase
         PeepRideSubState RideSubState;
         PeepUsingBinSubState UsingBinSubState;
     };
-    PeepAnimationGroup SpriteType;
+    PeepAnimationGroup AnimationGroup;
     uint8_t TshirtColour;
     uint8_t TrousersColour;
     uint16_t DestinationX; // Location that the peep is trying to get to
@@ -441,7 +441,7 @@ enum
     PATHING_RIDE_ENTRANCE = 1 << 3,
 };
 
-extern const bool gSpriteTypeToSlowWalkMap[48];
+extern const bool gAnimationGroupToSlowWalkMap[48];
 
 int32_t PeepGetStaffCount();
 void PeepUpdateAll();

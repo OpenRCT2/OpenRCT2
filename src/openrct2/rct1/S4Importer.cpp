@@ -1298,7 +1298,7 @@ namespace OpenRCT2::RCT1
         void ImportPeep(::Peep* dst, const RCT1::Peep* src)
         {
             // Peep vs. staff (including which kind)
-            dst->SpriteType = RCT1::GetPeepAnimationGroup(src->SpriteType);
+            dst->AnimationGroup = RCT1::GetPeepAnimationGroup(src->AnimationGroup);
             dst->Action = static_cast<PeepActionType>(src->Action);
             dst->SpecialSprite = src->SpecialSprite;
             dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
@@ -1307,7 +1307,7 @@ namespace OpenRCT2::RCT1
             dst->AnimationType = static_cast<PeepAnimationType>(src->AnimationType);
             dst->AnimationFrameNum = src->AnimationFrameNum;
 
-            const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->AnimationType);
+            const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->AnimationGroup, dst->AnimationType);
             dst->SpriteData.Width = spriteBounds->sprite_width;
             dst->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
             dst->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
