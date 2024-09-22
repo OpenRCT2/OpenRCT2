@@ -158,28 +158,12 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        uint32_t ToggleSeeThrough(uint32_t wflags, uint32_t seeThroughFlag, uint32_t transparencyFlag)
-        {
-            wflags ^= seeThroughFlag;
-            // If see-through is disabled, we also want to disable invisible
-            if (!(wflags & seeThroughFlag))
-            {
-                wflags &= ~transparencyFlag;
-            }
-            SaveInConfig(wflags);
-            return wflags;
-        }
-
         uint32_t ToggleTransparency(uint32_t wflags, uint32_t transparencyFlag, uint32_t seeThroughFlag)
         {
             wflags ^= transparencyFlag;
             if (wflags & transparencyFlag)
             {
                 wflags |= seeThroughFlag;
-            }
-            else
-            {
-                wflags &= ~seeThroughFlag;
             }
             SaveInConfig(wflags);
             return wflags;
@@ -198,22 +182,22 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HIDE_RIDES:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_RIDES, VIEWPORT_FLAG_INVISIBLE_RIDES);
+                    wflags ^= VIEWPORT_FLAG_HIDE_RIDES;
                     break;
                 case WIDX_HIDE_VEHICLES:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_VEHICLES, VIEWPORT_FLAG_INVISIBLE_VEHICLES);
+                    wflags ^= VIEWPORT_FLAG_HIDE_VEHICLES;
                     break;
                 case WIDX_HIDE_SCENERY:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_SCENERY, VIEWPORT_FLAG_INVISIBLE_SCENERY);
+                    wflags ^= VIEWPORT_FLAG_HIDE_SCENERY;
                     break;
                 case WIDX_HIDE_VEGETATION:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_VEGETATION, VIEWPORT_FLAG_INVISIBLE_VEGETATION);
+                    wflags ^= VIEWPORT_FLAG_HIDE_VEGETATION;
                     break;
                 case WIDX_HIDE_PATHS:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_PATHS, VIEWPORT_FLAG_INVISIBLE_PATHS);
+                    wflags ^= VIEWPORT_FLAG_HIDE_PATHS;
                     break;
                 case WIDX_HIDE_SUPPORTS:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_SUPPORTS, VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
+                    wflags ^= VIEWPORT_FLAG_HIDE_SUPPORTS;
                     break;
                 case WIDX_INVISIBLE_RIDES:
                     wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_RIDES, VIEWPORT_FLAG_HIDE_RIDES);
