@@ -1610,7 +1610,7 @@ void Peep::FormatNameTo(Formatter& ft) const
         {
             auto nameId = PeepId;
             if (isStaff)
-                nameId *= EnumValue(staff->AssignedStaffType) + 1;
+                nameId *= 256 * EnumValue(staff->AssignedStaffType) + 1;
 
             auto realNameStringId = GetRealNameStringIDFromPeepID(nameId);
             ft.Add<StringId>(realNameStringId);
