@@ -514,7 +514,7 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
             passingPeep->Action = PeepActionType::Wave2;
             passingPeep->ActionFrame = 0;
             passingPeep->ActionSpriteImageOffset = 0;
-            passingPeep->UpdateCurrentActionSpriteType();
+            passingPeep->UpdateCurrentAnimationType();
         }
     }
 }
@@ -529,7 +529,7 @@ void Guest::MakePassingPeepsSick(Guest* passingPeep)
         passingPeep->Action = PeepActionType::ThrowUp;
         passingPeep->ActionFrame = 0;
         passingPeep->ActionSpriteImageOffset = 0;
-        passingPeep->UpdateCurrentActionSpriteType();
+        passingPeep->UpdateCurrentAnimationType();
     }
 }
 
@@ -577,7 +577,7 @@ void Guest::UpdateEasterEggInteractions()
                 Action = PeepActionType::Joy;
                 ActionFrame = 0;
                 ActionSpriteImageOffset = 0;
-                UpdateCurrentActionSpriteType();
+                UpdateCurrentAnimationType();
             }
         }
     }
@@ -782,7 +782,7 @@ void Guest::UpdateMotivesIdle()
                 Action = PeepActionType::ThrowUp;
                 ActionFrame = 0;
                 ActionSpriteImageOffset = 0;
-                UpdateCurrentActionSpriteType();
+                UpdateCurrentAnimationType();
             }
         }
     }
@@ -1250,7 +1250,7 @@ void Guest::TryGetUpFromSitting()
     // Set destination to the centre of the tile.
     auto destination = GetLocation().ToTileCentre();
     SetDestination(destination, 5);
-    UpdateCurrentActionSpriteType();
+    UpdateCurrentAnimationType();
 }
 
 /**
@@ -1276,8 +1276,8 @@ void Guest::UpdateSitting()
 
         Orientation = ((Var37 + 2) & 3) * 8;
         Action = PeepActionType::Idle;
-        NextActionSpriteType = PeepAnimationType::SittingIdle;
-        SwitchNextActionSpriteType();
+        NextAnimationType = PeepAnimationType::SittingIdle;
+        SwitchNextAnimationType();
 
         SittingSubState = PeepSittingSubState::SatDown;
 
@@ -1304,7 +1304,7 @@ void Guest::UpdateSitting()
             // Set destination to the centre of the tile
             auto destination = GetLocation().ToTileCentre();
             SetDestination(destination, 5);
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
             return;
         }
 
@@ -1324,7 +1324,7 @@ void Guest::UpdateSitting()
             Action = PeepActionType::SittingEatFood;
             ActionFrame = 0;
             ActionSpriteImageOffset = 0;
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
             return;
         }
 
@@ -1352,7 +1352,7 @@ void Guest::UpdateSitting()
         }
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
         return;
     }
 }
@@ -2400,7 +2400,7 @@ void Guest::ReadMap()
         Action = PeepActionType::ReadMap;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 }
 
@@ -3394,7 +3394,7 @@ void Guest::UpdateBuying()
                 ActionFrame = 0;
                 ActionSpriteImageOffset = 0;
 
-                UpdateCurrentActionSpriteType();
+                UpdateCurrentAnimationType();
 
                 ride->no_primary_items_sold++;
             }
@@ -4913,7 +4913,7 @@ void Guest::UpdateRideMazePathfinding()
             Action = PeepActionType::Jump;
             ActionFrame = 0;
             ActionSpriteImageOffset = 0;
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
         }
     }
 
@@ -5314,7 +5314,7 @@ void Guest::UpdateWalking()
             ActionFrame = 0;
             ActionSpriteImageOffset = 0;
 
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
         }
 
         if (PeepFlags & PEEP_FLAGS_PHOTO && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
@@ -5323,7 +5323,7 @@ void Guest::UpdateWalking()
             ActionFrame = 0;
             ActionSpriteImageOffset = 0;
 
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
         }
 
         if (PeepFlags & PEEP_FLAGS_PAINTING && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
@@ -5332,7 +5332,7 @@ void Guest::UpdateWalking()
             ActionFrame = 0;
             ActionSpriteImageOffset = 0;
 
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
         }
     }
 
@@ -5553,8 +5553,8 @@ void Guest::UpdateWaitingAtCrossing()
     }
 
     Action = PeepActionType::Idle;
-    NextActionSpriteType = PeepAnimationType::WatchRide;
-    SwitchNextActionSpriteType();
+    NextAnimationType = PeepAnimationType::WatchRide;
+    SwitchNextAnimationType();
 
     if (HasFoodOrDrink())
     {
@@ -5565,7 +5565,7 @@ void Guest::UpdateWaitingAtCrossing()
             ActionSpriteImageOffset = 0;
         }
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
 
         return;
     }
@@ -5577,7 +5577,7 @@ void Guest::UpdateWaitingAtCrossing()
         ActionSpriteImageOffset = 0;
     }
 
-    UpdateCurrentActionSpriteType();
+    UpdateCurrentAnimationType();
 }
 
 /**
@@ -5640,7 +5640,7 @@ void Guest::UpdateQueuing()
             Action = PeepActionType::EatFood;
             ActionFrame = 0;
             ActionSpriteImageOffset = 0;
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
         }
         if (TimeInQueue >= 3500 && (0xFFFF & ScenarioRand()) <= 93)
         {
@@ -5650,7 +5650,7 @@ void Guest::UpdateQueuing()
     }
     else
     {
-        if (!(TimeInQueue & 0x3F) && IsActionIdle() && NextActionSpriteType == PeepAnimationType::WatchRide)
+        if (!(TimeInQueue & 0x3F) && IsActionIdle() && NextAnimationType == PeepAnimationType::WatchRide)
         {
             switch (SpriteType)
             {
@@ -5680,7 +5680,7 @@ void Guest::UpdateQueuing()
                     Action = PeepActionType::EatFood;
                     ActionFrame = 0;
                     ActionSpriteImageOffset = 0;
-                    UpdateCurrentActionSpriteType();
+                    UpdateCurrentAnimationType();
                     break;
                 default:
                     break;
@@ -5788,9 +5788,9 @@ void Guest::UpdateWatching()
         Orientation = (Var37 & 3) * 8;
 
         Action = PeepActionType::Idle;
-        NextActionSpriteType = PeepAnimationType::WatchRide;
+        NextAnimationType = PeepAnimationType::WatchRide;
 
-        SwitchNextActionSpriteType();
+        SwitchNextAnimationType();
 
         SubState++;
 
@@ -5817,7 +5817,7 @@ void Guest::UpdateWatching()
                     Action = PeepActionType::EatFood;
                     ActionFrame = 0;
                     ActionSpriteImageOffset = 0;
-                    UpdateCurrentActionSpriteType();
+                    UpdateCurrentAnimationType();
                     return;
                 }
             }
@@ -5827,7 +5827,7 @@ void Guest::UpdateWatching()
                 Action = PeepActionType::TakePhoto;
                 ActionFrame = 0;
                 ActionSpriteImageOffset = 0;
-                UpdateCurrentActionSpriteType();
+                UpdateCurrentAnimationType();
                 return;
             }
 
@@ -5838,7 +5838,7 @@ void Guest::UpdateWatching()
                     Action = PeepActionType::Wave;
                     ActionFrame = 0;
                     ActionSpriteImageOffset = 0;
-                    UpdateCurrentActionSpriteType();
+                    UpdateCurrentAnimationType();
                     return;
                 }
             }
@@ -5858,7 +5858,7 @@ void Guest::UpdateWatching()
 
         auto destination = GetLocation().ToTileCentre();
         SetDestination(destination, 5);
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 }
 
@@ -6751,20 +6751,20 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    ActionSpriteType = PeepAnimationType::Invalid;
-    UpdateCurrentActionSpriteType();
+    AnimationType = PeepAnimationType::Invalid;
+    UpdateCurrentAnimationType();
 
     if (State == PeepState::Sitting)
     {
         Action = PeepActionType::Idle;
-        NextActionSpriteType = PeepAnimationType::SittingIdle;
-        SwitchNextActionSpriteType();
+        NextAnimationType = PeepAnimationType::SittingIdle;
+        SwitchNextAnimationType();
     }
     if (State == PeepState::Watching)
     {
         Action = PeepActionType::Idle;
-        NextActionSpriteType = PeepAnimationType::WatchRide;
-        SwitchNextActionSpriteType();
+        NextAnimationType = PeepAnimationType::WatchRide;
+        SwitchNextAnimationType();
     }
 }
 
@@ -6972,7 +6972,7 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
         Action = newAction;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 
     for (int32_t i = 0; i < kPeepMaxThoughts; ++i)
@@ -7126,12 +7126,12 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->SpecialSprite = 0;
     peep->ActionSpriteImageOffset = 0;
     peep->WalkingFrameNum = 0;
-    peep->ActionSpriteType = PeepAnimationType::None;
+    peep->AnimationType = PeepAnimationType::None;
     peep->PeepFlags = 0;
     peep->FavouriteRide = RideId::GetNull();
     peep->FavouriteRideRating = 0;
 
-    const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->ActionSpriteType);
+    const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->AnimationType);
     peep->SpriteData.Width = spriteBounds->sprite_width;
     peep->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
     peep->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
@@ -7467,7 +7467,7 @@ bool Guest::UpdateQueuePosition(PeepActionType previous_action)
         return true;
 
     Action = PeepActionType::Idle;
-    NextActionSpriteType = PeepAnimationType::WatchRide;
+    NextAnimationType = PeepAnimationType::WatchRide;
     if (previous_action != PeepActionType::Idle)
         Invalidate();
     return true;

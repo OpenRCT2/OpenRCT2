@@ -917,11 +917,11 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
-        std::string_view action = availableGuestAnimations[peep->ActionSpriteType];
+        std::string_view action = availableGuestAnimations[peep->AnimationType];
 
         // Special consideration for sitting peeps
         // TODO: something funky going on in the state machine
-        if (peep->ActionSpriteType == PeepAnimationType::None && peep->State == PeepState::Sitting)
+        if (peep->AnimationType == PeepAnimationType::None && peep->State == PeepState::Sitting)
             action = availableGuestAnimations[PeepAnimationType::SittingIdle];
 
         return std::string(action);
@@ -938,7 +938,7 @@ namespace OpenRCT2::Scripting
         }
 
         auto* peep = GetGuest();
-        peep->ActionSpriteType = peep->NextActionSpriteType = *newType;
+        peep->AnimationType = peep->NextAnimationType = *newType;
 
         auto offset = 0;
         if (peep->IsActionWalking())
@@ -946,7 +946,7 @@ namespace OpenRCT2::Scripting
         else
             peep->ActionFrame = offset;
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
         peep->ActionSpriteImageOffset = animationGroup.frame_offsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
@@ -971,7 +971,7 @@ namespace OpenRCT2::Scripting
 
         auto* peep = GetGuest();
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
         auto length = animationGroup.frame_offsets.size();
         offset %= length;
 
@@ -992,7 +992,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
         return static_cast<uint8_t>(animationGroup.frame_offsets.size());
     }
 

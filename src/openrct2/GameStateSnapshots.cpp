@@ -281,8 +281,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, CurrentTrain);
         COMPARE_FIELD(Peep, TimeToSitdown);
         COMPARE_FIELD(Peep, SpecialSprite);
-        COMPARE_FIELD(Peep, ActionSpriteType);
-        COMPARE_FIELD(Peep, NextActionSpriteType);
+        COMPARE_FIELD(Peep, AnimationType);
+        COMPARE_FIELD(Peep, NextAnimationType);
         COMPARE_FIELD(Peep, ActionSpriteImageOffset);
         COMPARE_FIELD(Peep, Action);
         COMPARE_FIELD(Peep, ActionFrame);

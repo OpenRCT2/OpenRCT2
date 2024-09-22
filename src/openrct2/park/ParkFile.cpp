@@ -1787,8 +1787,8 @@ namespace OpenRCT2
             cs.ReadWrite(entity.CurrentTrain);
             cs.ReadWrite(entity.TimeToSitdown);
             cs.ReadWrite(entity.SpecialSprite);
-            cs.ReadWrite(entity.ActionSpriteType);
-            cs.ReadWrite(entity.NextActionSpriteType);
+            cs.ReadWrite(entity.AnimationType);
+            cs.ReadWrite(entity.NextAnimationType);
             cs.ReadWrite(entity.ActionSpriteImageOffset);
             cs.ReadWrite(entity.Action);
             cs.ReadWrite(entity.ActionFrame);

@@ -600,11 +600,11 @@ namespace OpenRCT2::RCT1
             };
         };
         // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-        uint8_t SpecialSprite;    // 0x6D
-        uint8_t ActionSpriteType; // 0x6E
-        // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which reads
+        uint8_t SpecialSprite; // 0x6D
+        uint8_t AnimationType; // 0x6E
+        // Seems to be used like a local variable, as it's always set before calling SwitchNextAnimationType, which reads
         // this again
-        uint8_t NextActionSpriteType;    // 0x6F
+        uint8_t NextAnimationType;       // 0x6F
         uint8_t ActionSpriteImageOffset; // 0x70
         uint8_t Action;                  // 0x71
         uint8_t ActionFrame;             // 0x72

@@ -1629,8 +1629,8 @@ namespace OpenRCT2::RCT2
             dst->CurrentTrain = src->CurrentTrain;
             dst->TimeToSitdown = src->TimeToSitdown;
             dst->SpecialSprite = src->SpecialSprite;
-            dst->ActionSpriteType = static_cast<PeepAnimationType>(src->ActionSpriteType);
-            dst->NextActionSpriteType = static_cast<PeepAnimationType>(src->NextActionSpriteType);
+            dst->AnimationType = static_cast<PeepAnimationType>(src->AnimationType);
+            dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
             dst->ActionSpriteImageOffset = src->ActionSpriteImageOffset;
             dst->Action = static_cast<PeepActionType>(src->Action);
             dst->ActionFrame = src->ActionFrame;

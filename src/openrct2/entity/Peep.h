@@ -352,10 +352,10 @@ struct Peep : EntityBase
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
     uint8_t SpecialSprite;
-    PeepAnimationType ActionSpriteType;
-    // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
+    PeepAnimationType AnimationType;
+    // Seems to be used like a local variable, as it's always set before calling SwitchNextAnimationType, which
     // reads this again
-    PeepAnimationType NextActionSpriteType;
+    PeepAnimationType NextAnimationType;
     uint8_t ActionSpriteImageOffset;
     PeepActionType Action;
     uint8_t ActionFrame;
@@ -383,7 +383,7 @@ public: // Peep
     void ThrowUp();
     void SetState(PeepState new_state);
     void Remove();
-    void UpdateCurrentActionSpriteType();
+    void UpdateCurrentAnimationType();
     void UpdateSpriteBoundingBox();
     void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
@@ -424,8 +424,8 @@ public: // Peep
     void PerformNextAction(uint8_t& pathing_result);
     void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
-    void SwitchNextActionSpriteType();
-    [[nodiscard]] PeepAnimationType GetActionSpriteType();
+    void SwitchNextAnimationType();
+    [[nodiscard]] PeepAnimationType GetAnimationType();
 
 private:
     void UpdateFalling();

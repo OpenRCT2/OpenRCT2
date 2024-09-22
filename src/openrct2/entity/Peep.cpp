@@ -314,7 +314,7 @@ bool Peep::IsOnPathBlockedByVehicle()
     return FootpathIsBlockedByVehicle(curPos);
 }
 
-PeepAnimationType Peep::GetActionSpriteType()
+PeepAnimationType Peep::GetAnimationType()
 {
     if (IsActionInterruptable())
     { // PeepActionType::None1 or PeepActionType::None2
@@ -335,19 +335,19 @@ PeepAnimationType Peep::GetActionSpriteType()
 /*
  *  rct2: 0x00693B58
  */
-void Peep::UpdateCurrentActionSpriteType()
+void Peep::UpdateCurrentAnimationType()
 {
     if (EnumValue(SpriteType) >= EnumValue(PeepSpriteType::Count))
     {
         return;
     }
-    PeepAnimationType newActionSpriteType = GetActionSpriteType();
-    if (ActionSpriteType == newActionSpriteType)
+    PeepAnimationType newAnimationType = GetAnimationType();
+    if (AnimationType == newAnimationType)
     {
         return;
     }
 
-    ActionSpriteType = newActionSpriteType;
+    AnimationType = newAnimationType;
 
     UpdateSpriteBoundingBox();
 }
@@ -356,7 +356,7 @@ void Peep::UpdateSpriteBoundingBox()
 {
     Invalidate();
 
-    const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
+    const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, AnimationType);
     SpriteData.Width = spriteBounds->sprite_width;
     SpriteData.HeightMin = spriteBounds->sprite_height_negative;
     SpriteData.HeightMax = spriteBounds->sprite_height_positive;
@@ -376,7 +376,7 @@ void Peep::SwitchToSpecialSprite(uint8_t special_sprite_id)
     {
         ActionSpriteImageOffset = 0;
     }
-    UpdateCurrentActionSpriteType();
+    UpdateCurrentAnimationType();
 }
 
 void Peep::StateReset()
@@ -435,7 +435,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     {
         ActionSpriteImageOffset = 0;
         Action = PeepActionType::Walking;
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
         return { { x, y } };
     }
 
@@ -451,7 +451,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
 bool Peep::UpdateActionAnimation()
 {
-    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
+    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, AnimationType);
     ActionFrame++;
 
     // If last frame of action
@@ -510,7 +510,7 @@ std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc,
 void Peep::UpdateWalkingAnimation()
 {
     WalkingFrameNum++;
-    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
+    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, AnimationType);
     if (WalkingFrameNum >= peepAnimation.frame_offsets.size())
     {
         WalkingFrameNum = 0;
@@ -622,7 +622,7 @@ void Peep::PickupAbort(int32_t old_x)
         Action = PeepActionType::Walking;
         SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
-        ActionSpriteType = PeepAnimationType::None;
+        AnimationType = PeepAnimationType::None;
         PathCheckOptimisation = 0;
     }
 
@@ -671,15 +671,15 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
         Action = PeepActionType::Walking;
         SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
-        ActionSpriteType = PeepAnimationType::None;
+        AnimationType = PeepAnimationType::None;
         PathCheckOptimisation = 0;
         EntityTweener::Get().Reset();
         auto* guest = As<Guest>();
         if (guest != nullptr)
         {
-            ActionSpriteType = PeepAnimationType::Invalid;
+            AnimationType = PeepAnimationType::Invalid;
             guest->HappinessTarget = std::max(guest->HappinessTarget - 10, 0);
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
         }
     }
 
@@ -819,7 +819,7 @@ void Peep::UpdateFalling()
                         ActionFrame = 0;
                         ActionSpriteImageOffset = 0;
 
-                        UpdateCurrentActionSpriteType();
+                        UpdateCurrentAnimationType();
                         PeepWindowStateUpdate(this);
                         return;
                     }
@@ -1383,7 +1383,7 @@ void PeepApplause()
             peep->Action = PeepActionType::Clap;
             peep->ActionFrame = 0;
             peep->ActionSpriteImageOffset = 0;
-            peep->UpdateCurrentActionSpriteType();
+            peep->UpdateCurrentAnimationType();
         }
     }
 
@@ -1702,14 +1702,14 @@ void PeepSetMapTooltip(Peep* peep)
 /**
  *  rct2: 0x00693BAB
  */
-void Peep::SwitchNextActionSpriteType()
+void Peep::SwitchNextAnimationType()
 {
-    // TBD: Add nextActionSpriteType as function parameter and make peep->NextActionSpriteType obsolete?
-    if (NextActionSpriteType != ActionSpriteType)
+    // TBD: Add nextAnimationType as function parameter and make peep->NextAnimationType obsolete?
+    if (NextAnimationType != AnimationType)
     {
         Invalidate();
-        ActionSpriteType = NextActionSpriteType;
-        const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, NextActionSpriteType);
+        AnimationType = NextAnimationType;
+        const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, NextAnimationType);
         SpriteData.Width = spriteBounds->sprite_width;
         SpriteData.HeightMin = spriteBounds->sprite_height_negative;
         SpriteData.HeightMax = spriteBounds->sprite_height_positive;
@@ -2807,8 +2807,8 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << CurrentCar;
     stream << CurrentSeat;
     stream << SpecialSprite;
-    stream << ActionSpriteType;
-    stream << NextActionSpriteType;
+    stream << AnimationType;
+    stream << NextAnimationType;
     stream << ActionSpriteImageOffset;
     stream << Action;
     stream << ActionFrame;
@@ -2859,12 +2859,12 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    PeepAnimationType actionSpriteType = ActionSpriteType;
+    PeepAnimationType actionSpriteType = AnimationType;
     uint8_t imageOffset = ActionSpriteImageOffset;
 
     if (Action == PeepActionType::Idle)
     {
-        actionSpriteType = NextActionSpriteType;
+        actionSpriteType = NextAnimationType;
         imageOffset = 0;
     }
 

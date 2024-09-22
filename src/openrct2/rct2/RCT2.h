@@ -593,8 +593,8 @@ namespace OpenRCT2::RCT2
             };
         };
         uint8_t SpecialSprite;           // 0x6D
-        uint8_t ActionSpriteType;        // 0x6E
-        uint8_t NextActionSpriteType;    // 0x6F
+        uint8_t AnimationType;           // 0x6E
+        uint8_t NextAnimationType;       // 0x6F
         uint8_t ActionSpriteImageOffset; // 0x70
         uint8_t Action;                  // 0x71
         uint8_t ActionFrame;             // 0x72

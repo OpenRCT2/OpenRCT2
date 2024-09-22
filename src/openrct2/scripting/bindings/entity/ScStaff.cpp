@@ -136,7 +136,7 @@ namespace OpenRCT2::Scripting
 
             // Reset state to walking to prevent invalid actions from carrying over
             peep->Action = PeepActionType::Walking;
-            peep->ActionSpriteType = peep->NextActionSpriteType = PeepAnimationType::None;
+            peep->AnimationType = peep->NextAnimationType = PeepAnimationType::None;
         }
     }
 
@@ -364,7 +364,7 @@ namespace OpenRCT2::Scripting
         }
 
         auto& animationGroups = animationsByStaffType(peep->AssignedStaffType);
-        std::string_view action = animationGroups[peep->ActionSpriteType];
+        std::string_view action = animationGroups[peep->AnimationType];
         return std::string(action);
     }
 
@@ -380,7 +380,7 @@ namespace OpenRCT2::Scripting
             throw DukException() << "Invalid animation for this staff member (" << groupKey << ")";
         }
 
-        peep->ActionSpriteType = peep->NextActionSpriteType = *newType;
+        peep->AnimationType = peep->NextAnimationType = *newType;
 
         auto offset = 0;
         if (peep->IsActionWalking())
@@ -388,7 +388,7 @@ namespace OpenRCT2::Scripting
         else
             peep->ActionFrame = offset;
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
         peep->ActionSpriteImageOffset = animationGroup.frame_offsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
@@ -413,7 +413,7 @@ namespace OpenRCT2::Scripting
 
         auto* peep = GetStaff();
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
         auto length = animationGroup.frame_offsets.size();
         offset %= length;
 
@@ -434,7 +434,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
         return static_cast<uint8_t>(animationGroup.frame_offsets.size());
     }
 
