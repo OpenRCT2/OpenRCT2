@@ -70,7 +70,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
-static uint8_t _unk_F1AEF0;
+static uint8_t _backupActionSpriteImageOffset;
 static TileElement* _peepRideEntranceExitElement;
 
 static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
@@ -411,7 +411,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 {
     PROFILED_FUNCTION();
 
-    _unk_F1AEF0 = ActionSpriteImageOffset;
+    _backupActionSpriteImageOffset = ActionSpriteImageOffset;
     if (Action == PeepActionType::Idle)
     {
         Action = PeepActionType::Walking;
@@ -1790,7 +1790,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         {
             // Guest is in the ride queue.
             guest->RideSubState = PeepRideSubState::AtQueueFront;
-            guest->ActionSpriteImageOffset = _unk_F1AEF0;
+            guest->ActionSpriteImageOffset = _backupActionSpriteImageOffset;
             return true;
         }
 
@@ -1820,7 +1820,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         // Guest has decided to go on the ride.
-        guest->ActionSpriteImageOffset = _unk_F1AEF0;
+        guest->ActionSpriteImageOffset = _backupActionSpriteImageOffset;
         guest->InteractionRideIndex = rideIndex;
 
         auto& station = ride->GetStation(stationNum);
@@ -2399,7 +2399,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
     {
         if (guest->GuestHeadingToRideId == rideIndex)
             guest->GuestHeadingToRideId = RideId::GetNull();
-        guest->ActionSpriteImageOffset = _unk_F1AEF0;
+        guest->ActionSpriteImageOffset = _backupActionSpriteImageOffset;
         guest->SetState(PeepState::Buying);
         guest->CurrentRide = rideIndex;
         guest->SubState = 0;
