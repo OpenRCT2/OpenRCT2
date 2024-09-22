@@ -35,7 +35,7 @@ namespace OpenRCT2::Scripting
         { "drowning", PeepAnimationType::Drowning },
         { "staffAnswerCall", PeepAnimationType::StaffAnswerCall },
         { "staffAnswerCall2", PeepAnimationType::StaffAnswerCall2 },
-        { "staffCheckBoard", PeepAnimationType::StaffCheckboard },
+        { "staffCheckBoard", PeepAnimationType::StaffCheckBoard },
         { "staffFix", PeepAnimationType::StaffFix },
         { "staffFix2", PeepAnimationType::StaffFix2 },
         { "staffFixGround", PeepAnimationType::StaffFixGround },

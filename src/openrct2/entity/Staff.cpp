@@ -2238,7 +2238,7 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
     if (!firstRun)
     {
         Orientation = PeepDirection << 3;
-        Action = PeepActionType::StaffCheckboard;
+        Action = PeepActionType::StaffCheckBoard;
         AnimationFrameNum = 0;
         AnimationImageIdOffset = 0;
 

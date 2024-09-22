@@ -98,7 +98,7 @@ static PeepAnimationType PeepActionToSpriteTypeMap[] = {
     PeepAnimationType::Drowning,
     PeepAnimationType::StaffAnswerCall,
     PeepAnimationType::StaffAnswerCall2,
-    PeepAnimationType::StaffCheckboard,
+    PeepAnimationType::StaffCheckBoard,
     PeepAnimationType::StaffFix,
     PeepAnimationType::StaffFix2,
     PeepAnimationType::StaffFixGround,

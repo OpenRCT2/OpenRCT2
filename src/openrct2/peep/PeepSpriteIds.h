@@ -52,7 +52,7 @@ namespace OpenRCT2
         kMechanicSpriteStateUiId = 11469,
         kMechanicSpriteStateDrowningId = 11481,
         kMechanicSpriteStateStaffAnswerCallId = 11513,
-        kMechanicSpriteStateStaffCheckboardId = 11597,
+        kMechanicSpriteStateStaffCheckBoardId = 11597,
         kMechanicSpriteStateStaffFixId = 11669,
         kMechanicSpriteStateStaffFixGroundId = 11801,
 
