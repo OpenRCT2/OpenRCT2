@@ -129,7 +129,7 @@ enum class PeepActionType : uint8_t
     Drowning = 11,
     StaffAnswerCall = 12,
     StaffAnswerCall2 = 13,
-    StaffCheckboard = 14,
+    StaffCheckBoard = 14,
     StaffFix = 15,
     StaffFix2 = 16,
     StaffFixGround = 17,
@@ -151,7 +151,7 @@ enum class PeepActionType : uint8_t
     Walking = 255,
 };
 
-enum class PeepActionSpriteType : uint8_t
+enum class PeepAnimationType : uint8_t
 {
     None = 0,
     CheckTime = 1,
@@ -164,7 +164,7 @@ enum class PeepActionSpriteType : uint8_t
     SittingEatFood = 8,
     SittingLookAroundLeft = 9,
     SittingLookAroundRight = 10,
-    Ui = 11,
+    Hanging = 11,
     StaffMower = 12,
     Wow = 13,
     ThrowUp = 14,
@@ -173,7 +173,7 @@ enum class PeepActionSpriteType : uint8_t
     Drowning = 17,
     StaffAnswerCall = 18,
     StaffAnswerCall2 = 19,
-    StaffCheckboard = 20,
+    StaffCheckBoard = 20,
     StaffFix = 21,
     StaffFix2 = 22,
     StaffFixGround = 23,
@@ -240,7 +240,7 @@ enum PeepNextFlags
     PEEP_NEXT_FLAG_UNUSED = (1 << 4),
 };
 
-enum class PeepSpriteType : uint8_t
+enum class PeepAnimationGroup : uint8_t
 {
     Normal = 0,
     Handyman = 1,
@@ -322,7 +322,7 @@ struct Peep : EntityBase
         PeepRideSubState RideSubState;
         PeepUsingBinSubState UsingBinSubState;
     };
-    PeepSpriteType SpriteType;
+    PeepAnimationGroup AnimationGroup;
     uint8_t TshirtColour;
     uint8_t TrousersColour;
     uint16_t DestinationX; // Location that the peep is trying to get to
@@ -352,13 +352,13 @@ struct Peep : EntityBase
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
     uint8_t SpecialSprite;
-    PeepActionSpriteType ActionSpriteType;
-    // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
+    PeepAnimationType AnimationType;
+    // Seems to be used like a local variable, as it's always set before calling SwitchNextAnimationType, which
     // reads this again
-    PeepActionSpriteType NextActionSpriteType;
-    uint8_t ActionSpriteImageOffset;
+    PeepAnimationType NextAnimationType;
+    uint8_t AnimationImageIdOffset;
     PeepActionType Action;
-    uint8_t ActionFrame;
+    uint8_t AnimationFrameNum;
     uint8_t StepProgress;
     union
     {
@@ -370,7 +370,7 @@ struct Peep : EntityBase
     uint8_t PathCheckOptimisation; // see peep.checkForPath
     TileCoordsXYZD PathfindGoal;
     std::array<TileCoordsXYZD, 4> PathfindHistory;
-    uint8_t WalkingFrameNum;
+    uint8_t WalkingAnimationFrameNum;
     uint32_t PeepFlags;
 
 public: // Peep
@@ -383,7 +383,7 @@ public: // Peep
     void ThrowUp();
     void SetState(PeepState new_state);
     void Remove();
-    void UpdateCurrentActionSpriteType();
+    void UpdateCurrentAnimationType();
     void UpdateSpriteBoundingBox();
     void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
@@ -424,8 +424,8 @@ public: // Peep
     void PerformNextAction(uint8_t& pathing_result);
     void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
-    void SwitchNextActionSpriteType();
-    [[nodiscard]] PeepActionSpriteType GetActionSpriteType();
+    void SwitchNextAnimationType();
+    [[nodiscard]] PeepAnimationType GetAnimationType();
 
 private:
     void UpdateFalling();
@@ -441,7 +441,7 @@ enum
     PATHING_RIDE_ENTRANCE = 1 << 3,
 };
 
-extern const bool gSpriteTypeToSlowWalkMap[48];
+extern const bool gAnimationGroupToSlowWalkMap[48];
 
 int32_t PeepGetStaffCount();
 void PeepUpdateAll();

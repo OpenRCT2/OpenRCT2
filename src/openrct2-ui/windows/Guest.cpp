@@ -555,7 +555,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            int32_t animationFrame = GetPeepAnimation(peep->SpriteType).base_image + 1;
+            int32_t animationFrame = GetPeepAnimation(peep->AnimationGroup).base_image + 1;
 
             int32_t animationFrameOffset = 0;
 
@@ -945,7 +945,7 @@ namespace OpenRCT2::Ui::Windows
             gPickupPeepImage = ImageId();
 
             auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
-            if (info.SpriteType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::None)
                 return;
 
             gPickupPeepX = screenCoords.x - 1;
@@ -957,7 +957,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto baseImageId = GetPeepAnimation(peep->SpriteType, PeepActionSpriteType::Ui).base_image;
+            auto baseImageId = GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging).base_image;
             baseImageId += picked_peep_frame >> 2;
             gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
         }

@@ -20,14 +20,14 @@ namespace OpenRCT2
         std::span<const uint8_t> frame_offsets;
     };
 
-    struct PeepAnimationGroup
+    struct PeepAnimations
     {
     public:
-        constexpr PeepAnimation& operator[](PeepActionSpriteType n)
+        constexpr PeepAnimation& operator[](PeepAnimationType n)
         {
             return animations[EnumValue(n)];
         }
-        constexpr const PeepAnimation& operator[](PeepActionSpriteType n) const
+        constexpr const PeepAnimation& operator[](PeepAnimationType n) const
         {
             return animations[EnumValue(n)];
         }
@@ -37,7 +37,7 @@ namespace OpenRCT2
     };
 
     const PeepAnimation& GetPeepAnimation(
-        PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None);
+        PeepAnimationGroup spriteType, PeepAnimationType actionAnimationGroup = PeepAnimationType::None);
     const SpriteBounds& GetSpriteBounds(
-        PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None);
+        PeepAnimationGroup spriteType, PeepAnimationType actionAnimationGroup = PeepAnimationType::None);
 } // namespace OpenRCT2

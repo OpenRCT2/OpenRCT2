@@ -456,7 +456,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        GfxDrawSprite(dpi, ImageId(GetEntertainerCostumeSprite(peep->SpriteType)), { staffOrderIcon_x, y });
+                        GfxDrawSprite(dpi, ImageId(GetEntertainerCostumeSprite(peep->AnimationGroup)), { staffOrderIcon_x, y });
                     }
                 }
 
@@ -599,13 +599,13 @@ namespace OpenRCT2::Ui::Windows
         void DrawTabImages(DrawPixelInfo& dpi) const
         {
             const auto& gameState = GetGameState();
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, PeepSpriteType::Handyman, gameState.StaffHandymanColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, PeepSpriteType::Mechanic, gameState.StaffMechanicColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, PeepSpriteType::Security, gameState.StaffSecurityColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, PeepSpriteType::EntertainerElephant);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, PeepAnimationGroup::Handyman, gameState.StaffHandymanColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, PeepAnimationGroup::Mechanic, gameState.StaffMechanicColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, PeepAnimationGroup::Security, gameState.StaffSecurityColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, PeepAnimationGroup::EntertainerElephant);
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepSpriteType type, colour_t colour) const
+        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepAnimationGroup type, colour_t colour) const
         {
             auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
             const auto& widget = widgets[widgetIndex];
@@ -616,7 +616,7 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepSpriteType type) const
+        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepAnimationGroup type) const
         {
             auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
             const auto& widget = widgets[widgetIndex];
@@ -723,33 +723,33 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        static uint32_t GetEntertainerCostumeSprite(PeepSpriteType type)
+        static uint32_t GetEntertainerCostumeSprite(PeepAnimationGroup type)
         {
             switch (type)
             {
-                case PeepSpriteType::EntertainerPanda:
+                case PeepAnimationGroup::EntertainerPanda:
                     return SPR_STAFF_COSTUME_PANDA;
-                case PeepSpriteType::EntertainerTiger:
+                case PeepAnimationGroup::EntertainerTiger:
                     return SPR_STAFF_COSTUME_TIGER;
-                case PeepSpriteType::EntertainerElephant:
+                case PeepAnimationGroup::EntertainerElephant:
                     return SPR_STAFF_COSTUME_ELEPHANT;
-                case PeepSpriteType::EntertainerRoman:
+                case PeepAnimationGroup::EntertainerRoman:
                     return SPR_STAFF_COSTUME_ROMAN;
-                case PeepSpriteType::EntertainerGorilla:
+                case PeepAnimationGroup::EntertainerGorilla:
                     return SPR_STAFF_COSTUME_GORILLA;
-                case PeepSpriteType::EntertainerSnowman:
+                case PeepAnimationGroup::EntertainerSnowman:
                     return SPR_STAFF_COSTUME_SNOWMAN;
-                case PeepSpriteType::EntertainerKnight:
+                case PeepAnimationGroup::EntertainerKnight:
                     return SPR_STAFF_COSTUME_KNIGHT;
-                case PeepSpriteType::EntertainerAstronaut:
+                case PeepAnimationGroup::EntertainerAstronaut:
                     return SPR_STAFF_COSTUME_ASTRONAUT;
-                case PeepSpriteType::EntertainerBandit:
+                case PeepAnimationGroup::EntertainerBandit:
                     return SPR_STAFF_COSTUME_BANDIT;
-                case PeepSpriteType::EntertainerSheriff:
+                case PeepAnimationGroup::EntertainerSheriff:
                     return SPR_STAFF_COSTUME_SHERIFF;
-                case PeepSpriteType::EntertainerPirate:
+                case PeepAnimationGroup::EntertainerPirate:
                     return SPR_STAFF_COSTUME_PIRATE;
-                case PeepSpriteType::Normal:
+                case PeepAnimationGroup::Normal:
                 default:
                     return SPR_PEEP_SMALL_FACE_HAPPY;
             }

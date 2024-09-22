@@ -329,7 +329,7 @@ public:
     bool HasEmptyContainer() const;
     void OnEnterRide(Ride& ride);
     void OnExitRide(Ride& ride);
-    void UpdateSpriteType();
+    void UpdateAnimationGroup();
     bool HeadingForRideOrParkExit() const;
     void StopPurchaseThought(ride_type_t rideType);
     void TryGetUpFromSitting();
@@ -354,7 +354,7 @@ public:
     void CheckCantFindRide();
     void CheckCantFindExit();
     bool DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price);
-    void SetSpriteType(PeepSpriteType new_sprite_type);
+    void SetAnimationGroup(PeepAnimationGroup new_sprite_type);
     void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;
     void UpdateEasterEggInteractions();

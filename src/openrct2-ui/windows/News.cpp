@@ -251,11 +251,11 @@ namespace OpenRCT2::Ui::Windows
 
                             // If normal peep set sprite to normal (no food)
                             // If staff set sprite to staff sprite
-                            auto spriteType = PeepSpriteType::Normal;
+                            auto spriteType = PeepAnimationGroup::Normal;
                             auto* staff = peep->As<Staff>();
                             if (staff != nullptr)
                             {
-                                spriteType = staff->SpriteType;
+                                spriteType = staff->AnimationGroup;
                                 if (staff->AssignedStaffType == StaffType::Entertainer)
                                 {
                                     clipCoords.y += 3;

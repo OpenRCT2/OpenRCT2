@@ -464,7 +464,7 @@ namespace OpenRCT2::Ui::Windows
                     ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery);
 
                 auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-                if (info.SpriteType == ViewportInteractionItem::Terrain)
+                if (info.interactionType == ViewportInteractionItem::Terrain)
                 {
                     _trackPlaceCtrlZ = Floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
 

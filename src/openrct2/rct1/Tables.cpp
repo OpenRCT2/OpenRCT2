@@ -68,52 +68,52 @@ namespace OpenRCT2::RCT1
         return map[colour];
     }
 
-    ::PeepSpriteType GetPeepSpriteType(RCT1::PeepSpriteType rct1SpriteType)
+    ::PeepAnimationGroup GetPeepAnimationGroup(RCT1::PeepAnimationGroup rct1AnimationGroup)
     {
-        static constexpr ::PeepSpriteType map[] =
+        static constexpr ::PeepAnimationGroup map[] =
         {
-            ::PeepSpriteType::Normal, // 0x00
-            ::PeepSpriteType::Handyman, // 0x01
-            ::PeepSpriteType::Mechanic, // 0x02
-            ::PeepSpriteType::Security, // 0x03
-            ::PeepSpriteType::EntertainerPanda, // 0x04
-            ::PeepSpriteType::EntertainerTiger, // 0x05
-            ::PeepSpriteType::EntertainerElephant, // 0x06
-            ::PeepSpriteType::EntertainerRoman, // 0x07
-            ::PeepSpriteType::EntertainerGorilla, // 0x08
-            ::PeepSpriteType::EntertainerSnowman, // 0x09
-            ::PeepSpriteType::EntertainerKnight, // 0x0A
-            ::PeepSpriteType::EntertainerAstronaut, // 0x0B
-            ::PeepSpriteType::IceCream, // 0x0C
-            ::PeepSpriteType::Chips, // 0x0D
-            ::PeepSpriteType::Burger, // 0x0E
-            ::PeepSpriteType::Drink, // 0x0F
-            ::PeepSpriteType::Balloon, // 0x10
-            ::PeepSpriteType::Candyfloss, // 0x11
-            ::PeepSpriteType::Umbrella, // 0x12
-            ::PeepSpriteType::Pizza, // 0x13
-            ::PeepSpriteType::SecurityAlt, // 0x14
-            ::PeepSpriteType::Popcorn, // 0x15
-            ::PeepSpriteType::ArmsCrossed, // 0x16
-            ::PeepSpriteType::HeadDown, // 0x17
-            ::PeepSpriteType::Nauseous, // 0x18
-            ::PeepSpriteType::VeryNauseous, // 0x19
-            ::PeepSpriteType::RequireToilet, // 0x1A
-            ::PeepSpriteType::Hat, // 0x1B
-            ::PeepSpriteType::HotDog, // 0x1C
-            ::PeepSpriteType::Tentacle, // 0x1D
-            ::PeepSpriteType::ToffeeApple, // 0x1E
-            ::PeepSpriteType::Doughnut, // 0x1F
-            ::PeepSpriteType::Coffee, // 0x20
-            ::PeepSpriteType::Chicken, // 0x21
-            ::PeepSpriteType::Lemonade, // 0x22
+            ::PeepAnimationGroup::Normal, // 0x00
+            ::PeepAnimationGroup::Handyman, // 0x01
+            ::PeepAnimationGroup::Mechanic, // 0x02
+            ::PeepAnimationGroup::Security, // 0x03
+            ::PeepAnimationGroup::EntertainerPanda, // 0x04
+            ::PeepAnimationGroup::EntertainerTiger, // 0x05
+            ::PeepAnimationGroup::EntertainerElephant, // 0x06
+            ::PeepAnimationGroup::EntertainerRoman, // 0x07
+            ::PeepAnimationGroup::EntertainerGorilla, // 0x08
+            ::PeepAnimationGroup::EntertainerSnowman, // 0x09
+            ::PeepAnimationGroup::EntertainerKnight, // 0x0A
+            ::PeepAnimationGroup::EntertainerAstronaut, // 0x0B
+            ::PeepAnimationGroup::IceCream, // 0x0C
+            ::PeepAnimationGroup::Chips, // 0x0D
+            ::PeepAnimationGroup::Burger, // 0x0E
+            ::PeepAnimationGroup::Drink, // 0x0F
+            ::PeepAnimationGroup::Balloon, // 0x10
+            ::PeepAnimationGroup::Candyfloss, // 0x11
+            ::PeepAnimationGroup::Umbrella, // 0x12
+            ::PeepAnimationGroup::Pizza, // 0x13
+            ::PeepAnimationGroup::SecurityAlt, // 0x14
+            ::PeepAnimationGroup::Popcorn, // 0x15
+            ::PeepAnimationGroup::ArmsCrossed, // 0x16
+            ::PeepAnimationGroup::HeadDown, // 0x17
+            ::PeepAnimationGroup::Nauseous, // 0x18
+            ::PeepAnimationGroup::VeryNauseous, // 0x19
+            ::PeepAnimationGroup::RequireToilet, // 0x1A
+            ::PeepAnimationGroup::Hat, // 0x1B
+            ::PeepAnimationGroup::HotDog, // 0x1C
+            ::PeepAnimationGroup::Tentacle, // 0x1D
+            ::PeepAnimationGroup::ToffeeApple, // 0x1E
+            ::PeepAnimationGroup::Doughnut, // 0x1F
+            ::PeepAnimationGroup::Coffee, // 0x20
+            ::PeepAnimationGroup::Chicken, // 0x21
+            ::PeepAnimationGroup::Lemonade, // 0x22
         };
-        if (EnumValue(rct1SpriteType) >= std::size(map))
+        if (EnumValue(rct1AnimationGroup) >= std::size(map))
         {
-            LOG_WARNING("Unsupported RCT1 peep sprite type: %d.", EnumValue(rct1SpriteType));
-            return ::PeepSpriteType::Normal;
+            LOG_WARNING("Unsupported RCT1 peep sprite type: %d.", EnumValue(rct1AnimationGroup));
+            return ::PeepAnimationGroup::Normal;
         }
-        return map[EnumValue(rct1SpriteType)];
+        return map[EnumValue(rct1AnimationGroup)];
     }
 
     std::string_view GetTerrainSurfaceObject(uint8_t terrainSurface)

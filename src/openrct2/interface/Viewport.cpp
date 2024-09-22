@@ -69,7 +69,7 @@ InteractionInfo::InteractionInfo(const PaintStruct* ps)
     : Loc(ps->MapPos)
     , Element(ps->Element)
     , Entity(ps->Entity)
-    , SpriteType(ps->InteractionItem)
+    , interactionType(ps->InteractionItem)
 {
 }
 
@@ -1561,7 +1561,7 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
 /**
  * Checks if a PaintStruct sprite type is in the filter mask.
  */
-static bool PSSpriteTypeIsInFilter(PaintStruct* ps, uint16_t filter)
+static bool PSInteractionTypeIsInFilter(PaintStruct* ps, uint16_t filter)
 {
     if (ps->InteractionItem != ViewportInteractionItem::None && ps->InteractionItem != ViewportInteractionItem::Label
         && ps->InteractionItem <= ViewportInteractionItem::Banner)
@@ -1745,7 +1745,8 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
             ps = next_ps;
             if (IsSpriteInteractedWith(session->DPI, ps->image_id, ps->ScreenPos))
             {
-                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::Visible)
+                if (PSInteractionTypeIsInFilter(ps, filter)
+                    && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::Visible)
                 {
                     info = { ps };
                 }
@@ -1759,7 +1760,8 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
         {
             if (IsSpriteInteractedWith(session->DPI, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
             {
-                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::Visible)
+                if (PSInteractionTypeIsInFilter(ps, filter)
+                    && GetPaintStructVisibility(ps, viewFlags) == VisibilityKind::Visible)
                 {
                     info = { ps };
                 }
@@ -1911,7 +1913,7 @@ std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewp
     }
     auto myViewport = window->viewport;
     auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain));
-    if (info.SpriteType == ViewportInteractionItem::None)
+    if (info.interactionType == ViewportInteractionItem::None)
     {
         return std::nullopt;
     }
