@@ -20,7 +20,7 @@ namespace OpenRCT2
         std::span<const uint8_t> frame_offsets;
     };
 
-    struct PeepAnimationGroup
+    struct PeepAnimations
     {
     public:
         constexpr PeepAnimation& operator[](PeepAnimationType n)
