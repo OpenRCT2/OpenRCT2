@@ -328,7 +328,7 @@ namespace OpenRCT2::Ui::Windows
             auto info = GetMapCoordinatesFromPos(
                 screenPos, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
 
-            if (info.SpriteType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::None)
             {
                 if (_waterToolRaiseCost != kMoney64Undefined || _waterToolLowerCost != kMoney64Undefined)
                 {

@@ -1663,7 +1663,7 @@ namespace OpenRCT2
 
             cs.ReadWrite(entity.State);
             cs.ReadWrite(entity.SubState);
-            cs.ReadWrite(entity.SpriteType);
+            cs.ReadWrite(entity.AnimationGroup);
 
             if (version <= 1)
             {
@@ -1787,11 +1787,11 @@ namespace OpenRCT2
             cs.ReadWrite(entity.CurrentTrain);
             cs.ReadWrite(entity.TimeToSitdown);
             cs.ReadWrite(entity.SpecialSprite);
-            cs.ReadWrite(entity.ActionSpriteType);
-            cs.ReadWrite(entity.NextActionSpriteType);
-            cs.ReadWrite(entity.ActionSpriteImageOffset);
+            cs.ReadWrite(entity.AnimationType);
+            cs.ReadWrite(entity.NextAnimationType);
+            cs.ReadWrite(entity.AnimationImageIdOffset);
             cs.ReadWrite(entity.Action);
-            cs.ReadWrite(entity.ActionFrame);
+            cs.ReadWrite(entity.AnimationFrameNum);
             cs.ReadWrite(entity.StepProgress);
 
             if (version <= 1)
@@ -1919,7 +1919,7 @@ namespace OpenRCT2
                 cs.ReadWrite(entity.PathfindHistory[i].z);
                 cs.ReadWrite(entity.PathfindHistory[i].direction);
             }
-            cs.ReadWrite(entity.WalkingFrameNum);
+            cs.ReadWrite(entity.WalkingAnimationFrameNum);
 
             if (version <= 1)
             {

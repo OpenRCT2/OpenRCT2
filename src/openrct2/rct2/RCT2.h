@@ -541,7 +541,7 @@ namespace OpenRCT2::RCT2
         uint8_t OutsideOfPark;  // 0x2A
         uint8_t State;          // 0x2B
         uint8_t SubState;       // 0x2C
-        uint8_t SpriteType;     // 0x2D
+        uint8_t AnimationGroup; // 0x2D
         uint8_t PeepType;       // 0x2E
         union
         {
@@ -592,13 +592,13 @@ namespace OpenRCT2::RCT2
                 uint8_t StandingFlags; // 0x6C
             };
         };
-        uint8_t SpecialSprite;           // 0x6D
-        uint8_t ActionSpriteType;        // 0x6E
-        uint8_t NextActionSpriteType;    // 0x6F
-        uint8_t ActionSpriteImageOffset; // 0x70
-        uint8_t Action;                  // 0x71
-        uint8_t ActionFrame;             // 0x72
-        uint8_t StepProgress;            // 0x73
+        uint8_t SpecialSprite;          // 0x6D
+        uint8_t AnimationType;          // 0x6E
+        uint8_t NextAnimationType;      // 0x6F
+        uint8_t AnimationImageIdOffset; // 0x70
+        uint8_t Action;                 // 0x71
+        uint8_t AnimationFrameNum;      // 0x72
+        uint8_t StepProgress;           // 0x73
         union
         {
             uint16_t MechanicTimeSinceCall;

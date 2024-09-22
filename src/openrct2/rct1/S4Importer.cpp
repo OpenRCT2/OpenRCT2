@@ -1298,16 +1298,16 @@ namespace OpenRCT2::RCT1
         void ImportPeep(::Peep* dst, const RCT1::Peep* src)
         {
             // Peep vs. staff (including which kind)
-            dst->SpriteType = RCT1::GetPeepSpriteType(src->SpriteType);
+            dst->AnimationGroup = RCT1::GetPeepAnimationGroup(src->AnimationGroup);
             dst->Action = static_cast<PeepActionType>(src->Action);
             dst->SpecialSprite = src->SpecialSprite;
-            dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->NextActionSpriteType);
-            dst->ActionSpriteImageOffset = src->ActionSpriteImageOffset;
-            dst->WalkingFrameNum = src->NoActionFrameNum;
-            dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->ActionSpriteType);
-            dst->ActionFrame = src->ActionFrame;
+            dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
+            dst->AnimationImageIdOffset = src->AnimationImageIdOffset;
+            dst->WalkingAnimationFrameNum = src->NoActionFrameNum;
+            dst->AnimationType = static_cast<PeepAnimationType>(src->AnimationType);
+            dst->AnimationFrameNum = src->AnimationFrameNum;
 
-            const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
+            const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->AnimationGroup, dst->AnimationType);
             dst->SpriteData.Width = spriteBounds->sprite_width;
             dst->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
             dst->SpriteData.HeightMax = spriteBounds->sprite_height_positive;

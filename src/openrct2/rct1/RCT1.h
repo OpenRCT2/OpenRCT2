@@ -509,7 +509,7 @@ namespace OpenRCT2::RCT1
         }
     };
 
-    enum class PeepSpriteType : uint8_t
+    enum class PeepAnimationGroup : uint8_t
     {
         Normal = 0,
         Handyman = 1,
@@ -544,16 +544,16 @@ namespace OpenRCT2::RCT1
     struct Peep : RCT12EntityBase
     {
         uint8_t Pad1F[3];
-        StringId NameStringID;     // 0x22
-        uint16_t NextX;            // 0x24
-        uint16_t NextY;            // 0x26
-        uint8_t NextZ;             // 0x28
-        uint8_t NextFlags;         // 0x29
-        uint8_t OutsideOfPark;     // 0x2A
-        uint8_t State;             // 0x2B
-        uint8_t SubState;          // 0x2C
-        PeepSpriteType SpriteType; // 0x2D
-        RCT12PeepType PeepType;    // 0x2E
+        StringId NameStringID;             // 0x22
+        uint16_t NextX;                    // 0x24
+        uint16_t NextY;                    // 0x26
+        uint8_t NextZ;                     // 0x28
+        uint8_t NextFlags;                 // 0x29
+        uint8_t OutsideOfPark;             // 0x2A
+        uint8_t State;                     // 0x2B
+        uint8_t SubState;                  // 0x2C
+        PeepAnimationGroup AnimationGroup; // 0x2D
+        RCT12PeepType PeepType;            // 0x2E
         union
         {
             uint8_t StaffType; // 0x2F
@@ -600,14 +600,14 @@ namespace OpenRCT2::RCT1
             };
         };
         // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-        uint8_t SpecialSprite;    // 0x6D
-        uint8_t ActionSpriteType; // 0x6E
-        // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which reads
+        uint8_t SpecialSprite; // 0x6D
+        uint8_t AnimationType; // 0x6E
+        // Seems to be used like a local variable, as it's always set before calling SwitchNextAnimationType, which reads
         // this again
-        uint8_t NextActionSpriteType;    // 0x6F
-        uint8_t ActionSpriteImageOffset; // 0x70
-        uint8_t Action;                  // 0x71
-        uint8_t ActionFrame;             // 0x72
+        uint8_t NextAnimationType;      // 0x6F
+        uint8_t AnimationImageIdOffset; // 0x70
+        uint8_t Action;                 // 0x71
+        uint8_t AnimationFrameNum;      // 0x72
         uint8_t StepProgress;
         union
         {

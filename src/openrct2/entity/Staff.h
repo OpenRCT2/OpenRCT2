@@ -147,6 +147,6 @@ uint32_t StaffGetAvailableEntertainerCostumes();
 int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList);
 
 money64 GetStaffWage(StaffType type);
-PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType);
+PeepAnimationGroup EntertainerCostumeToSprite(EntertainerCostume entertainerType);
 
 const PatrolArea& GetMergedPatrolArea(const StaffType type);

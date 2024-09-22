@@ -7181,7 +7181,7 @@ Loc6DAEB9:
     // Loc6DB706
     const auto moveInfo = GetMoveInfo();
     trackType = GetTrackType();
-    uint8_t moveInfovehicleSpriteType;
+    uint8_t moveInfovehicleAnimationGroup;
     {
         auto nextVehiclePosition = TrackLocation
             + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + GetRideTypeDescriptor(curRide.type).Heights.VehicleZOffset };
@@ -7224,7 +7224,7 @@ Loc6DAEB9:
         bank_rotation = moveInfo->bank_rotation;
         Pitch = moveInfo->Pitch;
 
-        moveInfovehicleSpriteType = moveInfo->Pitch;
+        moveInfovehicleAnimationGroup = moveInfo->Pitch;
 
         if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && moveInfo->Pitch != 0)
         {
@@ -7289,7 +7289,7 @@ Loc6DAEB9:
         return true;
     }
 
-    acceleration += AccelerationFromPitch[moveInfovehicleSpriteType];
+    acceleration += AccelerationFromPitch[moveInfovehicleAnimationGroup];
     _vehicleUnkF64E10++;
     goto Loc6DAEB9;
 }
@@ -7511,7 +7511,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
         // Loc6DBD42
         track_progress = newTrackProgress;
-        uint8_t moveInfoVehicleSpriteType;
+        uint8_t moveInfoVehicleAnimationGroup;
         {
             const VehicleInfo* moveInfo = GetMoveInfo();
             auto nextVehiclePosition = TrackLocation
@@ -7537,7 +7537,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             Orientation = moveInfo->direction;
             bank_rotation = moveInfo->bank_rotation;
             Pitch = moveInfo->Pitch;
-            moveInfoVehicleSpriteType = moveInfo->Pitch;
+            moveInfoVehicleAnimationGroup = moveInfo->Pitch;
 
             if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && Pitch != 0)
             {
@@ -7598,7 +7598,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
         {
             return true;
         }
-        acceleration += AccelerationFromPitch[moveInfoVehicleSpriteType];
+        acceleration += AccelerationFromPitch[moveInfoVehicleAnimationGroup];
         _vehicleUnkF64E10++;
     }
 }

@@ -1613,7 +1613,7 @@ namespace OpenRCT2::RCT2
             dst->NextFlags = src->NextFlags;
             dst->State = static_cast<PeepState>(src->State);
             dst->SubState = src->SubState;
-            dst->SpriteType = static_cast<PeepSpriteType>(src->SpriteType);
+            dst->AnimationGroup = static_cast<PeepAnimationGroup>(src->AnimationGroup);
             dst->TshirtColour = src->TshirtColour;
             dst->TrousersColour = src->TrousersColour;
             dst->DestinationX = src->DestinationX;
@@ -1629,11 +1629,11 @@ namespace OpenRCT2::RCT2
             dst->CurrentTrain = src->CurrentTrain;
             dst->TimeToSitdown = src->TimeToSitdown;
             dst->SpecialSprite = src->SpecialSprite;
-            dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->ActionSpriteType);
-            dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->NextActionSpriteType);
-            dst->ActionSpriteImageOffset = src->ActionSpriteImageOffset;
+            dst->AnimationType = static_cast<PeepAnimationType>(src->AnimationType);
+            dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
+            dst->AnimationImageIdOffset = src->AnimationImageIdOffset;
             dst->Action = static_cast<PeepActionType>(src->Action);
-            dst->ActionFrame = src->ActionFrame;
+            dst->AnimationFrameNum = src->AnimationFrameNum;
             dst->StepProgress = src->StepProgress;
             dst->PeepDirection = src->Direction;
             dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->InteractionRideIndex);
@@ -1663,7 +1663,7 @@ namespace OpenRCT2::RCT2
                                                 src->PathfindHistory[i].direction };
                 }
             }
-            dst->WalkingFrameNum = src->NoActionFrameNum;
+            dst->WalkingAnimationFrameNum = src->NoActionFrameNum;
         }
 
         constexpr EntityType GetEntityTypeFromRCT2Sprite(const RCT12EntityBase* src)

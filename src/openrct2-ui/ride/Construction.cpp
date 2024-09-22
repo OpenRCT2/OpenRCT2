@@ -117,7 +117,7 @@ namespace OpenRCT2
         gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
         // determine if the mouse is hovering over a station - that's the station to add the entrance to
         auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
-        if (info.SpriteType != ViewportInteractionItem::None)
+        if (info.interactionType != ViewportInteractionItem::None)
         {
             if (info.Element->GetType() == TileElementType::Track)
             {

@@ -33,11 +33,11 @@
 using namespace OpenRCT2;
 
 /* rct2: 0x009929FC */
-static constexpr PeepSpriteType spriteTypes[] = {
-    PeepSpriteType::Handyman,
-    PeepSpriteType::Mechanic,
-    PeepSpriteType::Security,
-    PeepSpriteType::EntertainerPanda,
+static constexpr PeepAnimationGroup spriteTypes[] = {
+    PeepAnimationGroup::Handyman,
+    PeepAnimationGroup::Mechanic,
+    PeepAnimationGroup::Security,
+    PeepAnimationGroup::EntertainerPanda,
 };
 
 StaffHireNewAction::StaffHireNewAction(
@@ -132,9 +132,9 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->WindowInvalidateFlags = 0;
         newPeep->Action = PeepActionType::Walking;
         newPeep->SpecialSprite = 0;
-        newPeep->ActionSpriteImageOffset = 0;
-        newPeep->WalkingFrameNum = 0;
-        newPeep->ActionSpriteType = PeepActionSpriteType::None;
+        newPeep->AnimationImageIdOffset = 0;
+        newPeep->WalkingAnimationFrameNum = 0;
+        newPeep->AnimationType = PeepAnimationType::None;
         newPeep->PathCheckOptimisation = 0;
         newPeep->PeepFlags = 0;
         newPeep->StaffLawnsMown = 0;
@@ -163,13 +163,13 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->PeepId = newStaffId;
         newPeep->AssignedStaffType = static_cast<StaffType>(_staffType);
 
-        PeepSpriteType spriteType = spriteTypes[_staffType];
+        PeepAnimationGroup spriteType = spriteTypes[_staffType];
         if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
         {
             spriteType = EntertainerCostumeToSprite(_entertainerType);
         }
         newPeep->Name = nullptr;
-        newPeep->SpriteType = spriteType;
+        newPeep->AnimationGroup = spriteType;
 
         const SpriteBounds* spriteBounds = &GetSpriteBounds(spriteType);
         newPeep->SpriteData.Width = spriteBounds->sprite_width;

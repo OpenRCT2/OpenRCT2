@@ -2204,7 +2204,7 @@ namespace OpenRCT2::Ui::Windows
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
                 ViewportInteractionItem::Banner);
             auto info = GetMapCoordinatesFromPos(screenCoords, flag);
-            switch (info.SpriteType)
+            switch (info.interactionType)
             {
                 case ViewportInteractionItem::Scenery:
                 {
@@ -2281,7 +2281,7 @@ namespace OpenRCT2::Ui::Windows
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
                 ViewportInteractionItem::Banner, ViewportInteractionItem::PathAddition);
             auto info = GetMapCoordinatesFromPos(screenCoords, flag);
-            switch (info.SpriteType)
+            switch (info.interactionType)
             {
                 case ViewportInteractionItem::Scenery:
                 {
@@ -2374,7 +2374,7 @@ namespace OpenRCT2::Ui::Windows
                             ViewportInteractionItem::LargeScenery);
                         auto info = GetMapCoordinatesFromPos(screenPos, flag);
 
-                        if (info.SpriteType != ViewportInteractionItem::None)
+                        if (info.interactionType != ViewportInteractionItem::None)
                         {
                             gSceneryCtrlPressed = true;
                             gSceneryCtrlPressZ = info.Element->GetBaseZ();
@@ -2551,7 +2551,7 @@ namespace OpenRCT2::Ui::Windows
                 auto info = GetMapCoordinatesFromPos(screenPos, flag);
                 gridPos = info.Loc;
 
-                if (info.SpriteType == ViewportInteractionItem::None)
+                if (info.interactionType == ViewportInteractionItem::None)
                 {
                     gridPos.SetNull();
                     return;
@@ -2644,7 +2644,7 @@ namespace OpenRCT2::Ui::Windows
             auto info = GetMapCoordinatesFromPos(screenPos, flag);
             gridPos = info.Loc;
 
-            if (info.SpriteType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::None)
             {
                 gridPos.SetNull();
                 return;
@@ -2868,7 +2868,7 @@ namespace OpenRCT2::Ui::Windows
             auto info = GetMapCoordinatesFromPos(screenPos, flag);
             gridPos = info.Loc;
 
-            if (info.SpriteType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::None)
             {
                 gridPos.SetNull();
                 return;
