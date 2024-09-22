@@ -619,6 +619,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_FORESTS_PLACE_TREES:
                     _settings.trees ^= true;
+                    Invalidate();
                     break;
 
                 case WIDX_TREE_LAND_RATIO:
@@ -732,6 +733,16 @@ namespace OpenRCT2::Ui::Windows
                 pressed_widgets |= 1uLL << WIDX_FORESTS_PLACE_TREES;
 
             SetPressedTab();
+
+            SetWidgetDisabled(WIDX_TREE_LAND_RATIO, !_settings.trees);
+            SetWidgetDisabled(WIDX_TREE_LAND_RATIO_UP, !_settings.trees);
+            SetWidgetDisabled(WIDX_TREE_LAND_RATIO_DOWN, !_settings.trees);
+            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN, !_settings.trees);
+            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN_UP, !_settings.trees);
+            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN_DOWN, !_settings.trees);
+            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX, !_settings.trees);
+            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_UP, !_settings.trees);
+            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_DOWN, !_settings.trees);
         }
 
         void ForestsDraw(DrawPixelInfo& dpi)
@@ -739,7 +750,10 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            const auto textColour = colours[1];
+            const auto enabledColour = colours[1];
+            const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
+
+            const auto textColour = _settings.trees ? enabledColour : disabledColour;
 
             // Tree to land ratio, label and value
             DrawTextBasic(
