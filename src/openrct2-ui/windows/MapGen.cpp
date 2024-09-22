@@ -282,16 +282,6 @@ namespace OpenRCT2::Ui::Windows
             disabled_widgets = PageDisabledWidgets[newPage];
             pressed_widgets = PressedWidgets[newPage];
 
-            // Enable heightmap widgets if one is loaded
-            if (_settings.algorithm == MapGenAlgorithm::heightmapImage && _heightmapLoaded)
-            {
-                SetWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, true);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, true);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _settings.smooth_height_map);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _settings.smooth_height_map);
-                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _settings.smooth_height_map);
-            }
-
             InitScrollWidgets();
             Invalidate();
         }
@@ -529,6 +519,25 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
             SetWidgetDisabled(WIDX_MAP_SIZE_LINK, _settings.mapSize.x != _settings.mapSize.y);
 
+            bool isHeightMapImage = _settings.algorithm == MapGenAlgorithm::heightmapImage;
+            SetWidgetDisabled(WIDX_MAP_SIZE_Y, isHeightMapImage);
+            SetWidgetDisabled(WIDX_MAP_SIZE_Y_UP, isHeightMapImage);
+            SetWidgetDisabled(WIDX_MAP_SIZE_Y_DOWN, isHeightMapImage);
+            SetWidgetDisabled(WIDX_MAP_SIZE_LINK, isHeightMapImage);
+            SetWidgetDisabled(WIDX_MAP_SIZE_X, isHeightMapImage);
+            SetWidgetDisabled(WIDX_MAP_SIZE_X_UP, isHeightMapImage);
+            SetWidgetDisabled(WIDX_MAP_SIZE_X_DOWN, isHeightMapImage);
+
+            // Enable heightmap widgets if one is loaded
+            if (isHeightMapImage)
+            {
+                SetWidgetEnabled(WIDX_HEIGHTMAP_NORMALIZE, _heightmapLoaded);
+                SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapLoaded);
+                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH, _heightmapLoaded && _settings.smooth_height_map);
+                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapLoaded && _settings.smooth_height_map);
+                SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapLoaded && _settings.smooth_height_map);
+            }
+
             SetPressedTab();
 
             // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
@@ -597,14 +606,21 @@ namespace OpenRCT2::Ui::Windows
             else if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
                 HeightmapDraw(dpi);
 
-            const auto textColour = colours[1];
+            const auto enabledColour = colours[1];
+            const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
+            {
+                auto textColour = IsWidgetDisabled(WIDX_MAP_SIZE_Y) ? disabledColour : enabledColour;
+                DrawTextBasic(
+                    dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
+            }
 
-            DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_SOURCE].top + 1 }, STR_HEIGHTMAP_SOURCE, {},
-                { textColour });
+            {
+                auto textColour = enabledColour;
+                DrawTextBasic(
+                    dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_SOURCE].top + 1 }, STR_HEIGHTMAP_SOURCE, {},
+                    { textColour });
+            }
         }
 
 #pragma endregion
@@ -951,7 +967,9 @@ namespace OpenRCT2::Ui::Windows
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
             // Smooth strength label and value
-            const auto strengthColour = _settings.smooth_height_map ? enabledColour : disabledColour;
+            const bool strengthDisabled = IsWidgetDisabled(WIDX_HEIGHTMAP_STRENGTH) || !_settings.smooth_height_map;
+            const auto strengthColour = strengthDisabled ? disabledColour : enabledColour;
+
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 24, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
                 { strengthColour });
