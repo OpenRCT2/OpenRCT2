@@ -669,7 +669,7 @@ namespace OpenRCT2::Ui::Windows
             gPickupPeepImage = ImageId();
 
             auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
-            if (info.SpriteType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::None)
                 return;
 
             gPickupPeepX = screenCoords.x - 1;

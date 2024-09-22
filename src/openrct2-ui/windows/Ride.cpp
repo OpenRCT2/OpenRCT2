@@ -4205,7 +4205,7 @@ namespace OpenRCT2::Ui::Windows
             auto newColourScheme = static_cast<uint8_t>(_rideColour);
             auto info = GetMapCoordinatesFromPos(screenPos, EnumsToFlags(ViewportInteractionItem::Ride));
 
-            if (info.SpriteType != ViewportInteractionItem::Ride)
+            if (info.interactionType != ViewportInteractionItem::Ride)
                 return;
             if (info.Element->GetType() != TileElementType::Track)
                 return;
@@ -5554,14 +5554,14 @@ namespace OpenRCT2::Ui::Windows
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
                 ViewportInteractionItem::LargeScenery);
             auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-            switch (info.SpriteType)
+            switch (info.interactionType)
             {
                 case ViewportInteractionItem::Scenery:
                 case ViewportInteractionItem::LargeScenery:
                 case ViewportInteractionItem::Wall:
                 case ViewportInteractionItem::Footpath:
                     _collectTrackDesignScenery = !TrackDesignSaveContainsTileElement(info.Element);
-                    TrackDesignSaveSelectTileElement(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
+                    TrackDesignSaveSelectTileElement(info.interactionType, info.Loc, info.Element, _collectTrackDesignScenery);
                     break;
                 default:
                     break;
@@ -5579,13 +5579,13 @@ namespace OpenRCT2::Ui::Windows
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
                 ViewportInteractionItem::LargeScenery);
             auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-            switch (info.SpriteType)
+            switch (info.interactionType)
             {
                 case ViewportInteractionItem::Scenery:
                 case ViewportInteractionItem::LargeScenery:
                 case ViewportInteractionItem::Wall:
                 case ViewportInteractionItem::Footpath:
-                    TrackDesignSaveSelectTileElement(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
+                    TrackDesignSaveSelectTileElement(info.interactionType, info.Loc, info.Element, _collectTrackDesignScenery);
                     break;
                 default:
                     break;

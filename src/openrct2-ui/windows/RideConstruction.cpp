@@ -2928,7 +2928,7 @@ namespace OpenRCT2::Ui::Windows
                     ViewportInteractionItem::Label, ViewportInteractionItem::Banner);
 
                 auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-                if (info.SpriteType != ViewportInteractionItem::None)
+                if (info.interactionType != ViewportInteractionItem::None)
                 {
                     _trackPlaceCtrlZ = info.Element->GetBaseZ();
                     _trackPlaceCtrlState = true;

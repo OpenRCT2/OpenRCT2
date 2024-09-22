@@ -817,7 +817,7 @@ namespace OpenRCT2::Ui::Windows
                         ViewportInteractionItem::LargeScenery);
 
                     auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-                    if (info.SpriteType != ViewportInteractionItem::None)
+                    if (info.interactionType != ViewportInteractionItem::None)
                     {
                         const bool allowInvalidHeights = GetGameState().Cheats.AllowTrackPlaceInvalidHeights;
                         const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
@@ -872,7 +872,7 @@ namespace OpenRCT2::Ui::Windows
                 auto info = GetMapCoordinatesFromPos(
                     screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
 
-                if (info.SpriteType == ViewportInteractionItem::None)
+                if (info.interactionType == ViewportInteractionItem::None)
                     return std::nullopt;
 
                 mapCoords = info.Loc;
@@ -918,14 +918,14 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t FootpathGetSlopeFromInfo(const InteractionInfo& info)
         {
-            if (info.SpriteType == ViewportInteractionItem::None || info.Element == nullptr)
+            if (info.interactionType == ViewportInteractionItem::None || info.Element == nullptr)
             {
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
                 FootpathUpdateProvisional();
                 return kTileSlopeFlat;
             }
 
-            switch (info.SpriteType)
+            switch (info.interactionType)
             {
                 case ViewportInteractionItem::Terrain:
                 {
@@ -959,12 +959,12 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t FootpathGetBaseZFromInfo(const InteractionInfo& info)
         {
-            if (info.SpriteType == ViewportInteractionItem::None || info.Element == nullptr)
+            if (info.interactionType == ViewportInteractionItem::None || info.Element == nullptr)
             {
                 return 0;
             }
 
-            switch (info.SpriteType)
+            switch (info.interactionType)
             {
                 case ViewportInteractionItem::Terrain:
                 {

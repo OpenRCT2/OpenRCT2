@@ -462,7 +462,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto info = GetMapCoordinatesFromPos(
                 screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
-            if (info.SpriteType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::None)
             {
                 if (_landRightsCost != kMoney64Undefined)
                 {

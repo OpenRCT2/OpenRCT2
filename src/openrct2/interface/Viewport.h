@@ -112,7 +112,7 @@ struct InteractionInfo
     CoordsXY Loc;
     TileElement* Element{};
     EntityBase* Entity{};
-    ViewportInteractionItem SpriteType = ViewportInteractionItem::None;
+    ViewportInteractionItem interactionType = ViewportInteractionItem::None;
 };
 
 constexpr int32_t kMaxViewportCount = kWindowLimitMax;

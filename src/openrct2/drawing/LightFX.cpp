@@ -316,7 +316,7 @@ void LightFXPrepareLightList()
                     mapCoord = info.Loc;
                     mapCoord.x += tileOffsetX;
                     mapCoord.y += tileOffsetY;
-                    interactionType = info.SpriteType;
+                    interactionType = info.interactionType;
                     tileElement = info.Element;
                 }
 
