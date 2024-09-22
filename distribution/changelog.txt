@@ -6,6 +6,7 @@
 - Change: [#22596] Land ownership fixes described by .parkpatch files are now only considered on scenarios.
 - Change: [#22724] Staff now have optional ‘real’ names as well.
 - Change: [#22740] Add virtual floor to shifted track design placement.
+- Change: [#22795] Replace Giga Coaster and Twister Roller Coaster booster images.
 - Fix: [#2614] The colour tab of the ride window does not hide invisible cars (original bug).
 - Fix: [#15406] Tunnels on steep Side-Friction track are drawn too low.
 - Fix: [#21959] “Save this before...?” message does not appear when selecting “New Game”.
