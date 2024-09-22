@@ -116,22 +116,22 @@ namespace OpenRCT2::Scripting
             if (value == "handyman" && peep->AssignedStaffType != StaffType::Handyman)
             {
                 peep->AssignedStaffType = StaffType::Handyman;
-                peep->SpriteType = PeepSpriteType::Handyman;
+                peep->SpriteType = PeepAnimationGroup::Handyman;
             }
             else if (value == "mechanic" && peep->AssignedStaffType != StaffType::Mechanic)
             {
                 peep->AssignedStaffType = StaffType::Mechanic;
-                peep->SpriteType = PeepSpriteType::Mechanic;
+                peep->SpriteType = PeepAnimationGroup::Mechanic;
             }
             else if (value == "security" && peep->AssignedStaffType != StaffType::Security)
             {
                 peep->AssignedStaffType = StaffType::Security;
-                peep->SpriteType = PeepSpriteType::Security;
+                peep->SpriteType = PeepAnimationGroup::Security;
             }
             else if (value == "entertainer" && peep->AssignedStaffType != StaffType::Entertainer)
             {
                 peep->AssignedStaffType = StaffType::Entertainer;
-                peep->SpriteType = PeepSpriteType::EntertainerPanda;
+                peep->SpriteType = PeepAnimationGroup::EntertainerPanda;
             }
 
             // Reset state to walking to prevent invalid actions from carrying over
@@ -157,35 +157,35 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    static const DukEnumMap<PeepSpriteType> availableHandymanCostumes({
-        { "handyman", PeepSpriteType::Handyman },
+    static const DukEnumMap<PeepAnimationGroup> availableHandymanCostumes({
+        { "handyman", PeepAnimationGroup::Handyman },
     });
 
-    static const DukEnumMap<PeepSpriteType> availableMechanicCostumes({
-        { "mechanic", PeepSpriteType::Mechanic },
+    static const DukEnumMap<PeepAnimationGroup> availableMechanicCostumes({
+        { "mechanic", PeepAnimationGroup::Mechanic },
     });
 
-    static const DukEnumMap<PeepSpriteType> availableSecurityCostumes({
-        { "security1", PeepSpriteType::Security },
-        { "security2", PeepSpriteType::SecurityAlt },
+    static const DukEnumMap<PeepAnimationGroup> availableSecurityCostumes({
+        { "security1", PeepAnimationGroup::Security },
+        { "security2", PeepAnimationGroup::SecurityAlt },
     });
 
-    static const DukEnumMap<PeepSpriteType> availableEntertainerCostumes({
-        { "none", PeepSpriteType::Normal },
-        { "panda", PeepSpriteType::EntertainerPanda },
-        { "tiger", PeepSpriteType::EntertainerTiger },
-        { "elephant", PeepSpriteType::EntertainerElephant },
-        { "roman", PeepSpriteType::EntertainerRoman },
-        { "gorilla", PeepSpriteType::EntertainerGorilla },
-        { "snowman", PeepSpriteType::EntertainerSnowman },
-        { "knight", PeepSpriteType::EntertainerKnight },
-        { "astronaut", PeepSpriteType::EntertainerAstronaut },
-        { "bandit", PeepSpriteType::EntertainerBandit },
-        { "sheriff", PeepSpriteType::EntertainerSheriff },
-        { "pirate", PeepSpriteType::EntertainerPirate },
+    static const DukEnumMap<PeepAnimationGroup> availableEntertainerCostumes({
+        { "none", PeepAnimationGroup::Normal },
+        { "panda", PeepAnimationGroup::EntertainerPanda },
+        { "tiger", PeepAnimationGroup::EntertainerTiger },
+        { "elephant", PeepAnimationGroup::EntertainerElephant },
+        { "roman", PeepAnimationGroup::EntertainerRoman },
+        { "gorilla", PeepAnimationGroup::EntertainerGorilla },
+        { "snowman", PeepAnimationGroup::EntertainerSnowman },
+        { "knight", PeepAnimationGroup::EntertainerKnight },
+        { "astronaut", PeepAnimationGroup::EntertainerAstronaut },
+        { "bandit", PeepAnimationGroup::EntertainerBandit },
+        { "sheriff", PeepAnimationGroup::EntertainerSheriff },
+        { "pirate", PeepAnimationGroup::EntertainerPirate },
     });
 
-    static const DukEnumMap<PeepSpriteType>& costumesByStaffType(StaffType staffType)
+    static const DukEnumMap<PeepAnimationGroup>& costumesByStaffType(StaffType staffType)
     {
         switch (staffType)
         {
@@ -259,7 +259,7 @@ namespace OpenRCT2::Scripting
         }
         else if (value.type() == DukValue::Type::NUMBER)
         {
-            auto newSpriteType = PeepSpriteType(value.as_uint() + EnumValue(PeepSpriteType::EntertainerPanda));
+            auto newSpriteType = PeepAnimationGroup(value.as_uint() + EnumValue(PeepAnimationGroup::EntertainerPanda));
             if (availableCostumes.find(newSpriteType) != availableCostumes.end())
             {
                 peep->SpriteType = newSpriteType;

@@ -509,7 +509,7 @@ namespace OpenRCT2::RCT1
         }
     };
 
-    enum class PeepSpriteType : uint8_t
+    enum class PeepAnimationGroup : uint8_t
     {
         Normal = 0,
         Handyman = 1,
@@ -552,7 +552,7 @@ namespace OpenRCT2::RCT1
         uint8_t OutsideOfPark;     // 0x2A
         uint8_t State;             // 0x2B
         uint8_t SubState;          // 0x2C
-        PeepSpriteType SpriteType; // 0x2D
+        PeepAnimationGroup SpriteType; // 0x2D
         RCT12PeepType PeepType;    // 0x2E
         union
         {

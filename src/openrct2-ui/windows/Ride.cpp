@@ -1327,7 +1327,7 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_RIDE_PAGE_CUSTOMER)
                     spriteIndex = picked_peep_frame & ~3;
 
-                spriteIndex += GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
+                spriteIndex += GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
 
                 GfxDrawSprite(
                     dpi, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_TEAL),

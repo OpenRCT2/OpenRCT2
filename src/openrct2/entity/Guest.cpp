@@ -1308,7 +1308,7 @@ void Guest::UpdateSitting()
             return;
         }
 
-        if (SpriteType == PeepSpriteType::Umbrella)
+        if (SpriteType == PeepAnimationGroup::Umbrella)
         {
             TryGetUpFromSitting();
             return;
@@ -1334,7 +1334,7 @@ void Guest::UpdateSitting()
             TryGetUpFromSitting();
             return;
         }
-        if (SpriteType == PeepSpriteType::Balloon || SpriteType == PeepSpriteType::Hat)
+        if (SpriteType == PeepAnimationGroup::Balloon || SpriteType == PeepAnimationGroup::Hat)
         {
             TryGetUpFromSitting();
             return;
@@ -5632,7 +5632,7 @@ void Guest::UpdateQueuing()
     PerformNextAction(pathingResult);
     if (!IsActionInterruptable())
         return;
-    if (SpriteType == PeepSpriteType::Normal)
+    if (SpriteType == PeepAnimationGroup::Normal)
     {
         if (TimeInQueue >= 2000 && (0xFFFF & ScenarioRand()) <= 119)
         {
@@ -5654,28 +5654,28 @@ void Guest::UpdateQueuing()
         {
             switch (SpriteType)
             {
-                case PeepSpriteType::IceCream:
-                case PeepSpriteType::Chips:
-                case PeepSpriteType::Burger:
-                case PeepSpriteType::Drink:
-                case PeepSpriteType::Candyfloss:
-                case PeepSpriteType::Pizza:
-                case PeepSpriteType::Popcorn:
-                case PeepSpriteType::HotDog:
-                case PeepSpriteType::Tentacle:
-                case PeepSpriteType::ToffeeApple:
-                case PeepSpriteType::Doughnut:
-                case PeepSpriteType::Coffee:
-                case PeepSpriteType::Chicken:
-                case PeepSpriteType::Lemonade:
-                case PeepSpriteType::Pretzel:
-                case PeepSpriteType::SuJongkwa:
-                case PeepSpriteType::Juice:
-                case PeepSpriteType::FunnelCake:
-                case PeepSpriteType::Noodles:
-                case PeepSpriteType::Sausage:
-                case PeepSpriteType::Soup:
-                case PeepSpriteType::Sandwich:
+                case PeepAnimationGroup::IceCream:
+                case PeepAnimationGroup::Chips:
+                case PeepAnimationGroup::Burger:
+                case PeepAnimationGroup::Drink:
+                case PeepAnimationGroup::Candyfloss:
+                case PeepAnimationGroup::Pizza:
+                case PeepAnimationGroup::Popcorn:
+                case PeepAnimationGroup::HotDog:
+                case PeepAnimationGroup::Tentacle:
+                case PeepAnimationGroup::ToffeeApple:
+                case PeepAnimationGroup::Doughnut:
+                case PeepAnimationGroup::Coffee:
+                case PeepAnimationGroup::Chicken:
+                case PeepAnimationGroup::Lemonade:
+                case PeepAnimationGroup::Pretzel:
+                case PeepAnimationGroup::SuJongkwa:
+                case PeepAnimationGroup::Juice:
+                case PeepAnimationGroup::FunnelCake:
+                case PeepAnimationGroup::Noodles:
+                case PeepAnimationGroup::Sausage:
+                case PeepAnimationGroup::Soup:
+                case PeepAnimationGroup::Sandwich:
                     // Eat food
                     Action = PeepActionType::EatFood;
                     AnimationFrameNum = 0;
@@ -6732,7 +6732,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
 }
 
 /* Part of 0x0069B8CC rct2: 0x0069BC31 */
-void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
+void Guest::SetSpriteType(PeepAnimationGroup new_sprite_type)
 {
     if (SpriteType == new_sprite_type)
         return;
@@ -6771,42 +6771,42 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
 struct ItemPref
 {
     ShopItem item;
-    PeepSpriteType sprite_type;
+    PeepAnimationGroup sprite_type;
 };
 
 // clang-format off
 static ItemPref item_order_preference[] = {
-    { ShopItem::IceCream,         PeepSpriteType::IceCream    },
-    { ShopItem::Chips,            PeepSpriteType::Chips       },
-    { ShopItem::Pizza,            PeepSpriteType::Pizza       },
-    { ShopItem::Burger,           PeepSpriteType::Burger      },
-    { ShopItem::Drink,            PeepSpriteType::Drink       },
-    { ShopItem::Coffee,           PeepSpriteType::Coffee      },
-    { ShopItem::Chicken,          PeepSpriteType::Chicken     },
-    { ShopItem::Lemonade,         PeepSpriteType::Lemonade    },
-    { ShopItem::Candyfloss,       PeepSpriteType::Candyfloss  },
-    { ShopItem::Popcorn,          PeepSpriteType::Popcorn     },
-    { ShopItem::HotDog,           PeepSpriteType::HotDog      },
-    { ShopItem::Tentacle,         PeepSpriteType::Tentacle    },
-    { ShopItem::ToffeeApple,      PeepSpriteType::ToffeeApple },
-    { ShopItem::Doughnut,         PeepSpriteType::Doughnut    },
-    { ShopItem::Pretzel,          PeepSpriteType::Pretzel     },
-    { ShopItem::Cookie,           PeepSpriteType::Pretzel     },
-    { ShopItem::Chocolate,        PeepSpriteType::Coffee      },
-    { ShopItem::IcedTea,          PeepSpriteType::Coffee      },
-    { ShopItem::FunnelCake,       PeepSpriteType::FunnelCake  },
-    { ShopItem::BeefNoodles,      PeepSpriteType::Noodles     },
-    { ShopItem::FriedRiceNoodles, PeepSpriteType::Noodles     },
-    { ShopItem::WontonSoup,       PeepSpriteType::Soup        },
-    { ShopItem::MeatballSoup,     PeepSpriteType::Soup        },
-    { ShopItem::FruitJuice,       PeepSpriteType::Juice       },
-    { ShopItem::SoybeanMilk,      PeepSpriteType::SuJongkwa   },
-    { ShopItem::Sujeonggwa,       PeepSpriteType::SuJongkwa   },
-    { ShopItem::SubSandwich,      PeepSpriteType::Sandwich    },
-    { ShopItem::RoastSausage,     PeepSpriteType::Sausage     },
-    { ShopItem::Balloon,          PeepSpriteType::Balloon     },
-    { ShopItem::Hat,              PeepSpriteType::Hat         },
-    { ShopItem::Sunglasses,       PeepSpriteType::Sunglasses  },
+    { ShopItem::IceCream,         PeepAnimationGroup::IceCream    },
+    { ShopItem::Chips,            PeepAnimationGroup::Chips       },
+    { ShopItem::Pizza,            PeepAnimationGroup::Pizza       },
+    { ShopItem::Burger,           PeepAnimationGroup::Burger      },
+    { ShopItem::Drink,            PeepAnimationGroup::Drink       },
+    { ShopItem::Coffee,           PeepAnimationGroup::Coffee      },
+    { ShopItem::Chicken,          PeepAnimationGroup::Chicken     },
+    { ShopItem::Lemonade,         PeepAnimationGroup::Lemonade    },
+    { ShopItem::Candyfloss,       PeepAnimationGroup::Candyfloss  },
+    { ShopItem::Popcorn,          PeepAnimationGroup::Popcorn     },
+    { ShopItem::HotDog,           PeepAnimationGroup::HotDog      },
+    { ShopItem::Tentacle,         PeepAnimationGroup::Tentacle    },
+    { ShopItem::ToffeeApple,      PeepAnimationGroup::ToffeeApple },
+    { ShopItem::Doughnut,         PeepAnimationGroup::Doughnut    },
+    { ShopItem::Pretzel,          PeepAnimationGroup::Pretzel     },
+    { ShopItem::Cookie,           PeepAnimationGroup::Pretzel     },
+    { ShopItem::Chocolate,        PeepAnimationGroup::Coffee      },
+    { ShopItem::IcedTea,          PeepAnimationGroup::Coffee      },
+    { ShopItem::FunnelCake,       PeepAnimationGroup::FunnelCake  },
+    { ShopItem::BeefNoodles,      PeepAnimationGroup::Noodles     },
+    { ShopItem::FriedRiceNoodles, PeepAnimationGroup::Noodles     },
+    { ShopItem::WontonSoup,       PeepAnimationGroup::Soup        },
+    { ShopItem::MeatballSoup,     PeepAnimationGroup::Soup        },
+    { ShopItem::FruitJuice,       PeepAnimationGroup::Juice       },
+    { ShopItem::SoybeanMilk,      PeepAnimationGroup::SuJongkwa   },
+    { ShopItem::Sujeonggwa,       PeepAnimationGroup::SuJongkwa   },
+    { ShopItem::SubSandwich,      PeepAnimationGroup::Sandwich    },
+    { ShopItem::RoastSausage,     PeepAnimationGroup::Sausage     },
+    { ShopItem::Balloon,          PeepAnimationGroup::Balloon     },
+    { ShopItem::Hat,              PeepAnimationGroup::Hat         },
+    { ShopItem::Sunglasses,       PeepAnimationGroup::Sunglasses  },
 };
 // clang-format on
 
@@ -6816,7 +6816,7 @@ static ItemPref item_order_preference[] = {
  */
 void Guest::UpdateSpriteType()
 {
-    if (SpriteType == PeepSpriteType::Balloon && (ScenarioRand() & 0xFFFF) <= 327)
+    if (SpriteType == PeepAnimationGroup::Balloon && (ScenarioRand() & 0xFFFF) <= 327)
     {
         bool isBalloonPopped = false;
         if (x != kLocationNull)
@@ -6848,7 +6848,7 @@ void Guest::UpdateSpriteType()
 
                 if (tileElement->IsLastForTile())
                 {
-                    SetSpriteType(PeepSpriteType::Umbrella);
+                    SetSpriteType(PeepAnimationGroup::Umbrella);
                     return;
                 }
                 tileElement++;
@@ -6867,41 +6867,41 @@ void Guest::UpdateSpriteType()
 
     if (State == PeepState::Watching && StandingFlags & (1 << 1))
     {
-        SetSpriteType(PeepSpriteType::Watching);
+        SetSpriteType(PeepAnimationGroup::Watching);
         return;
     }
 
     if (Nausea > 170)
     {
-        SetSpriteType(PeepSpriteType::VeryNauseous);
+        SetSpriteType(PeepAnimationGroup::VeryNauseous);
         return;
     }
 
     if (Nausea > 140)
     {
-        SetSpriteType(PeepSpriteType::Nauseous);
+        SetSpriteType(PeepAnimationGroup::Nauseous);
         return;
     }
 
     if (Energy <= 64 && Happiness < 128)
     {
-        SetSpriteType(PeepSpriteType::HeadDown);
+        SetSpriteType(PeepAnimationGroup::HeadDown);
         return;
     }
 
     if (Energy <= 80 && Happiness < 128)
     {
-        SetSpriteType(PeepSpriteType::ArmsCrossed);
+        SetSpriteType(PeepAnimationGroup::ArmsCrossed);
         return;
     }
 
     if (Toilet > 220)
     {
-        SetSpriteType(PeepSpriteType::RequireToilet);
+        SetSpriteType(PeepAnimationGroup::RequireToilet);
         return;
     }
 
-    SetSpriteType(PeepSpriteType::Normal);
+    SetSpriteType(PeepAnimationGroup::Normal);
 }
 
 bool Guest::HeadingForRideOrParkExit() const
@@ -7119,7 +7119,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     auto& gameState = GetGameState();
     Guest* peep = CreateEntity<Guest>();
-    peep->SpriteType = PeepSpriteType::Normal;
+    peep->SpriteType = PeepAnimationGroup::Normal;
     peep->OutsideOfPark = true;
     peep->State = PeepState::Falling;
     peep->Action = PeepActionType::Walking;

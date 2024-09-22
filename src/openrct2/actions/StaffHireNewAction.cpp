@@ -33,11 +33,11 @@
 using namespace OpenRCT2;
 
 /* rct2: 0x009929FC */
-static constexpr PeepSpriteType spriteTypes[] = {
-    PeepSpriteType::Handyman,
-    PeepSpriteType::Mechanic,
-    PeepSpriteType::Security,
-    PeepSpriteType::EntertainerPanda,
+static constexpr PeepAnimationGroup spriteTypes[] = {
+    PeepAnimationGroup::Handyman,
+    PeepAnimationGroup::Mechanic,
+    PeepAnimationGroup::Security,
+    PeepAnimationGroup::EntertainerPanda,
 };
 
 StaffHireNewAction::StaffHireNewAction(
@@ -163,7 +163,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->PeepId = newStaffId;
         newPeep->AssignedStaffType = static_cast<StaffType>(_staffType);
 
-        PeepSpriteType spriteType = spriteTypes[_staffType];
+        PeepAnimationGroup spriteType = spriteTypes[_staffType];
         if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
         {
             spriteType = EntertainerCostumeToSprite(_entertainerType);

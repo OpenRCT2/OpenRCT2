@@ -831,7 +831,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Button;
 
                     // TODO: retrieve string from object instead
-                    auto costumeType = EnumValue(staff->SpriteType) - EnumValue(PeepSpriteType::EntertainerPanda);
+                    auto costumeType = EnumValue(staff->SpriteType) - EnumValue(PeepAnimationGroup::EntertainerPanda);
                     if (costumeType >= 0)
                         widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[costumeType];
                     else

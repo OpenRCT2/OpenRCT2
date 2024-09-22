@@ -1298,7 +1298,7 @@ namespace OpenRCT2::RCT1
         void ImportPeep(::Peep* dst, const RCT1::Peep* src)
         {
             // Peep vs. staff (including which kind)
-            dst->SpriteType = RCT1::GetPeepSpriteType(src->SpriteType);
+            dst->SpriteType = RCT1::GetPeepAnimationGroup(src->SpriteType);
             dst->Action = static_cast<PeepActionType>(src->Action);
             dst->SpecialSprite = src->SpecialSprite;
             dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);

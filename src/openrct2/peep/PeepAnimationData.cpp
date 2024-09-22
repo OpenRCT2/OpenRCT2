@@ -974,12 +974,12 @@ namespace OpenRCT2
         kPeepAnimationsSandwich,
     };
 
-    const PeepAnimation& GetPeepAnimation(PeepSpriteType spriteType, PeepAnimationType actionSpriteType)
+    const PeepAnimation& GetPeepAnimation(PeepAnimationGroup spriteType, PeepAnimationType actionSpriteType)
     {
         return kPeepAnimationEntries[EnumValue(spriteType)][actionSpriteType];
     }
 
-    const SpriteBounds& GetSpriteBounds(PeepSpriteType spriteType, PeepAnimationType actionSpriteType)
+    const SpriteBounds& GetSpriteBounds(PeepAnimationGroup spriteType, PeepAnimationType actionSpriteType)
     {
         return kPeepAnimationEntries[EnumValue(spriteType)][actionSpriteType].bounds;
     }

@@ -37,7 +37,7 @@ namespace OpenRCT2
     };
 
     const PeepAnimation& GetPeepAnimation(
-        PeepSpriteType spriteType, PeepAnimationType actionSpriteType = PeepAnimationType::None);
+        PeepAnimationGroup spriteType, PeepAnimationType actionSpriteType = PeepAnimationType::None);
     const SpriteBounds& GetSpriteBounds(
-        PeepSpriteType spriteType, PeepAnimationType actionSpriteType = PeepAnimationType::None);
+        PeepAnimationGroup spriteType, PeepAnimationType actionSpriteType = PeepAnimationType::None);
 } // namespace OpenRCT2

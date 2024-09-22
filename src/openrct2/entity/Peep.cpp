@@ -337,7 +337,7 @@ PeepAnimationType Peep::GetAnimationType()
  */
 void Peep::UpdateCurrentAnimationType()
 {
-    if (EnumValue(SpriteType) >= EnumValue(PeepSpriteType::Count))
+    if (EnumValue(SpriteType) >= EnumValue(PeepAnimationGroup::Count))
     {
         return;
     }
@@ -2739,7 +2739,7 @@ static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height)
     {
         peep->RemoveItem(ShopItem::Balloon);
 
-        if (peep->SpriteType == PeepSpriteType::Balloon && peep->x != kLocationNull)
+        if (peep->SpriteType == PeepAnimationGroup::Balloon && peep->x != kLocationNull)
         {
             Balloon::Create({ peep->x, peep->y, spawn_height }, peep->BalloonColour, false);
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;

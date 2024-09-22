@@ -240,7 +240,7 @@ enum PeepNextFlags
     PEEP_NEXT_FLAG_UNUSED = (1 << 4),
 };
 
-enum class PeepSpriteType : uint8_t
+enum class PeepAnimationGroup : uint8_t
 {
     Normal = 0,
     Handyman = 1,
@@ -322,7 +322,7 @@ struct Peep : EntityBase
         PeepRideSubState RideSubState;
         PeepUsingBinSubState UsingBinSubState;
     };
-    PeepSpriteType SpriteType;
+    PeepAnimationGroup SpriteType;
     uint8_t TshirtColour;
     uint8_t TrousersColour;
     uint16_t DestinationX; // Location that the peep is trying to get to

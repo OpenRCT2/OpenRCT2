@@ -1265,7 +1265,7 @@ namespace OpenRCT2::Ui::Windows
                     spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
                 GfxDrawSprite(dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
 
-                ImageId peepImage(GetPeepAnimation(PeepSpriteType::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
+                ImageId peepImage(GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
                 if (page == WINDOW_PARK_PAGE_GUESTS)
                     peepImage = peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
 

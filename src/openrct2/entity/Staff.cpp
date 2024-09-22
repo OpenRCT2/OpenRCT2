@@ -958,10 +958,10 @@ int32_t Staff::GetHireDate() const
     return HireDate;
 }
 
-PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)
+PeepAnimationGroup EntertainerCostumeToSprite(EntertainerCostume entertainerType)
 {
     uint8_t value = static_cast<uint8_t>(entertainerType);
-    PeepSpriteType newSpriteType = static_cast<PeepSpriteType>(value + EnumValue(PeepSpriteType::EntertainerPanda));
+    PeepAnimationGroup newSpriteType = static_cast<PeepAnimationGroup>(value + EnumValue(PeepAnimationGroup::EntertainerPanda));
     return newSpriteType;
 }
 
@@ -1691,9 +1691,9 @@ void Staff::Tick128UpdateStaff()
     if (AssignedStaffType != StaffType::Security)
         return;
 
-    PeepSpriteType newSpriteType = PeepSpriteType::SecurityAlt;
+    PeepAnimationGroup newSpriteType = PeepAnimationGroup::SecurityAlt;
     if (State != PeepState::Patrolling)
-        newSpriteType = PeepSpriteType::Security;
+        newSpriteType = PeepAnimationGroup::Security;
 
     if (SpriteType == newSpriteType)
         return;
