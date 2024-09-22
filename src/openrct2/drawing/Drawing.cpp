@@ -46,6 +46,11 @@ const PaletteMap& PaletteMap::GetDefault()
     return defaultMap;
 }
 
+bool PaletteMap::operator==(const PaletteMap& lhs) const
+{
+    return _data == lhs._data && _dataLength == lhs._dataLength && _numMaps == lhs._numMaps && _mapLength == lhs._mapLength;
+}
+
 uint8_t& PaletteMap::operator[](size_t index)
 {
     assert(index < _dataLength);
@@ -1162,4 +1167,9 @@ void DebugDPI(const DrawPixelInfo& dpi)
     const auto str = std::to_string(dpi.ScreenX());
     DrawText(
         unzoomed, ScreenCoordsXY{ unzoomed.ScreenX(), unzoomed.ScreenY() }, { COLOUR_WHITE, FontStyle::Tiny }, str.c_str());
+
+    const auto str2 = std::to_string(dpi.ScreenY());
+    DrawText(
+        unzoomed, ScreenCoordsXY{ unzoomed.ScreenX(), unzoomed.ScreenY() + 6 }, { COLOUR_WHITE, FontStyle::Tiny },
+        str2.c_str());
 }

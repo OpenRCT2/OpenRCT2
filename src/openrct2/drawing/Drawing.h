@@ -452,6 +452,7 @@ public:
     {
     }
 
+    bool operator==(const PaletteMap& lhs) const;
     uint8_t& operator[](size_t index);
     uint8_t operator[](size_t index) const;
     uint8_t Blend(uint8_t src, uint8_t dst) const;

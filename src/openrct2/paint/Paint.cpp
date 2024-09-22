@@ -103,19 +103,19 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
 
 static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const DrawPixelInfo& dpi)
 {
-    int32_t left = imagePos.x + g1.x_offset;
-    int32_t bottom = imagePos.y + g1.y_offset;
+    int32_t left = dpi.zoom_level.ApplyInversedTo(imagePos.x + g1.x_offset);
+    int32_t bottom = dpi.zoom_level.ApplyInversedTo(imagePos.y + g1.y_offset);
 
-    int32_t right = left + g1.width;
-    int32_t top = bottom + g1.height;
+    int32_t right = dpi.zoom_level.ApplyInversedTo(imagePos.x + g1.x_offset + g1.width);
+    int32_t top = dpi.zoom_level.ApplyInversedTo(imagePos.y + g1.y_offset + g1.height);
 
-    if (right <= dpi.WorldX())
+    if (right <= dpi.ScreenX())
         return false;
-    if (top <= dpi.WorldY())
+    if (top <= dpi.ScreenY())
         return false;
-    if (left >= dpi.WorldX() + dpi.WorldWidth())
+    if (left >= dpi.ScreenX() + dpi.ScreenWidth())
         return false;
-    if (bottom >= dpi.WorldY() + dpi.WorldHeight())
+    if (bottom >= dpi.ScreenY() + dpi.ScreenHeight())
         return false;
     return true;
 }

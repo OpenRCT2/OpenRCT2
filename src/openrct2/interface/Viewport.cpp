@@ -1801,24 +1801,23 @@ void ViewportInvalidate(const Viewport* viewport, const ScreenRect& screenRect)
     if (viewport->visibility == VisibilityCache::Covered)
         return;
 
-    auto [topLeft, bottomRight] = screenRect;
-    const auto [viewportRight, viewportBottom] = viewport->viewPos
-        + ScreenCoordsXY{ viewport->ViewWidth(), viewport->ViewHeight() };
+    auto zoom = viewport->zoom;
+    auto viewPos = viewport->viewPos;
+    auto viewportScreenPos = viewport->pos;
 
-    if (bottomRight.x > viewport->viewPos.x && bottomRight.y > viewport->viewPos.y)
+    ScreenRect invalidRect = {
+        { zoom.ApplyInversedTo(screenRect.GetLeft() - viewPos.x), zoom.ApplyInversedTo(screenRect.GetTop() - viewPos.y) },
+        { zoom.ApplyInversedTo(screenRect.GetRight() - viewPos.x), zoom.ApplyInversedTo(screenRect.GetBottom() - viewPos.y) }
+    };
+
+    if (invalidRect.GetTop() >= viewport->height || invalidRect.GetBottom() <= 0 || invalidRect.GetLeft() >= viewport->width
+        || invalidRect.GetRight() <= 0)
     {
-        topLeft = { std::max(topLeft.x, viewport->viewPos.x), std::max(topLeft.y, viewport->viewPos.y) };
-        topLeft -= viewport->viewPos;
-        topLeft = { viewport->zoom.ApplyInversedTo(topLeft.x), viewport->zoom.ApplyInversedTo(topLeft.y) };
-        topLeft += viewport->pos;
-
-        bottomRight = { std::min(bottomRight.x, viewportRight), std::min(bottomRight.y, viewportBottom) };
-        bottomRight -= viewport->viewPos;
-        bottomRight = { viewport->zoom.ApplyInversedTo(bottomRight.x), viewport->zoom.ApplyInversedTo(bottomRight.y) };
-        bottomRight += viewport->pos;
-
-        GfxSetDirtyBlocks({ topLeft, bottomRight });
+        return;
     }
+    invalidRect.Point1 += viewportScreenPos;
+    invalidRect.Point2 += viewportScreenPos;
+    GfxSetDirtyBlocks(invalidRect);
 }
 
 static Viewport* ViewportFindFromPoint(const ScreenCoordsXY& screenCoords)
