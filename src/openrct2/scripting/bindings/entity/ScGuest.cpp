@@ -947,7 +947,7 @@ namespace OpenRCT2::Scripting
             peep->AnimationFrameNum = offset;
 
         auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
-        peep->ActionSpriteImageOffset = animationGroup.frame_offsets[offset];
+        peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
 
@@ -980,7 +980,7 @@ namespace OpenRCT2::Scripting
         else
             peep->AnimationFrameNum = offset;
 
-        peep->ActionSpriteImageOffset = animationGroup.frame_offsets[offset];
+        peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
 

@@ -604,10 +604,10 @@ namespace OpenRCT2::RCT1
         uint8_t AnimationType; // 0x6E
         // Seems to be used like a local variable, as it's always set before calling SwitchNextAnimationType, which reads
         // this again
-        uint8_t NextAnimationType;       // 0x6F
-        uint8_t ActionSpriteImageOffset; // 0x70
-        uint8_t Action;                  // 0x71
-        uint8_t AnimationFrameNum;       // 0x72
+        uint8_t NextAnimationType;      // 0x6F
+        uint8_t AnimationImageIdOffset; // 0x70
+        uint8_t Action;                 // 0x71
+        uint8_t AnimationFrameNum;      // 0x72
         uint8_t StepProgress;
         union
         {

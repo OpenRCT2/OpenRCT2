@@ -513,7 +513,7 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
         {
             passingPeep->Action = PeepActionType::Wave2;
             passingPeep->AnimationFrameNum = 0;
-            passingPeep->ActionSpriteImageOffset = 0;
+            passingPeep->AnimationImageIdOffset = 0;
             passingPeep->UpdateCurrentAnimationType();
         }
     }
@@ -528,7 +528,7 @@ void Guest::MakePassingPeepsSick(Guest* passingPeep)
     {
         passingPeep->Action = PeepActionType::ThrowUp;
         passingPeep->AnimationFrameNum = 0;
-        passingPeep->ActionSpriteImageOffset = 0;
+        passingPeep->AnimationImageIdOffset = 0;
         passingPeep->UpdateCurrentAnimationType();
     }
 }
@@ -576,7 +576,7 @@ void Guest::UpdateEasterEggInteractions()
             {
                 Action = PeepActionType::Joy;
                 AnimationFrameNum = 0;
-                ActionSpriteImageOffset = 0;
+                AnimationImageIdOffset = 0;
                 UpdateCurrentAnimationType();
             }
         }
@@ -781,7 +781,7 @@ void Guest::UpdateMotivesIdle()
             {
                 Action = PeepActionType::ThrowUp;
                 AnimationFrameNum = 0;
-                ActionSpriteImageOffset = 0;
+                AnimationImageIdOffset = 0;
                 UpdateCurrentAnimationType();
             }
         }
@@ -1323,7 +1323,7 @@ void Guest::UpdateSitting()
             }
             Action = PeepActionType::SittingEatFood;
             AnimationFrameNum = 0;
-            ActionSpriteImageOffset = 0;
+            AnimationImageIdOffset = 0;
             UpdateCurrentAnimationType();
             return;
         }
@@ -1351,7 +1351,7 @@ void Guest::UpdateSitting()
             Action = PeepActionType::SittingCheckWatch;
         }
         AnimationFrameNum = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationImageIdOffset = 0;
         UpdateCurrentAnimationType();
         return;
     }
@@ -2399,7 +2399,7 @@ void Guest::ReadMap()
     {
         Action = PeepActionType::ReadMap;
         AnimationFrameNum = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationImageIdOffset = 0;
         UpdateCurrentAnimationType();
     }
 }
@@ -3392,7 +3392,7 @@ void Guest::UpdateBuying()
             {
                 Action = PeepActionType::WithdrawMoney;
                 AnimationFrameNum = 0;
-                ActionSpriteImageOffset = 0;
+                AnimationImageIdOffset = 0;
 
                 UpdateCurrentAnimationType();
 
@@ -4138,11 +4138,11 @@ void Guest::UpdateRideLeaveVehicle()
             return;
     }
 
-    ActionSpriteImageOffset++;
-    if (ActionSpriteImageOffset & 3)
+    AnimationImageIdOffset++;
+    if (AnimationImageIdOffset & 3)
         return;
 
-    ActionSpriteImageOffset = 0;
+    AnimationImageIdOffset = 0;
 
     vehicle->num_peeps--;
     vehicle->ApplyMass(-Mass);
@@ -4912,7 +4912,7 @@ void Guest::UpdateRideMazePathfinding()
         {
             Action = PeepActionType::Jump;
             AnimationFrameNum = 0;
-            ActionSpriteImageOffset = 0;
+            AnimationImageIdOffset = 0;
             UpdateCurrentAnimationType();
         }
     }
@@ -5312,7 +5312,7 @@ void Guest::UpdateWalking()
         {
             Action = PeepActionType::Wave2;
             AnimationFrameNum = 0;
-            ActionSpriteImageOffset = 0;
+            AnimationImageIdOffset = 0;
 
             UpdateCurrentAnimationType();
         }
@@ -5321,7 +5321,7 @@ void Guest::UpdateWalking()
         {
             Action = PeepActionType::TakePhoto;
             AnimationFrameNum = 0;
-            ActionSpriteImageOffset = 0;
+            AnimationImageIdOffset = 0;
 
             UpdateCurrentAnimationType();
         }
@@ -5330,7 +5330,7 @@ void Guest::UpdateWalking()
         {
             Action = PeepActionType::DrawPicture;
             AnimationFrameNum = 0;
-            ActionSpriteImageOffset = 0;
+            AnimationImageIdOffset = 0;
 
             UpdateCurrentAnimationType();
         }
@@ -5562,7 +5562,7 @@ void Guest::UpdateWaitingAtCrossing()
         {
             Action = PeepActionType::EatFood;
             AnimationFrameNum = 0;
-            ActionSpriteImageOffset = 0;
+            AnimationImageIdOffset = 0;
         }
 
         UpdateCurrentAnimationType();
@@ -5574,7 +5574,7 @@ void Guest::UpdateWaitingAtCrossing()
     {
         Action = PeepActionType::Wave2;
         AnimationFrameNum = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationImageIdOffset = 0;
     }
 
     UpdateCurrentAnimationType();
@@ -5639,7 +5639,7 @@ void Guest::UpdateQueuing()
             // Eat Food/Look at watch
             Action = PeepActionType::EatFood;
             AnimationFrameNum = 0;
-            ActionSpriteImageOffset = 0;
+            AnimationImageIdOffset = 0;
             UpdateCurrentAnimationType();
         }
         if (TimeInQueue >= 3500 && (0xFFFF & ScenarioRand()) <= 93)
@@ -5679,7 +5679,7 @@ void Guest::UpdateQueuing()
                     // Eat food
                     Action = PeepActionType::EatFood;
                     AnimationFrameNum = 0;
-                    ActionSpriteImageOffset = 0;
+                    AnimationImageIdOffset = 0;
                     UpdateCurrentAnimationType();
                     break;
                 default:
@@ -5816,7 +5816,7 @@ void Guest::UpdateWatching()
                 {
                     Action = PeepActionType::EatFood;
                     AnimationFrameNum = 0;
-                    ActionSpriteImageOffset = 0;
+                    AnimationImageIdOffset = 0;
                     UpdateCurrentAnimationType();
                     return;
                 }
@@ -5826,7 +5826,7 @@ void Guest::UpdateWatching()
             {
                 Action = PeepActionType::TakePhoto;
                 AnimationFrameNum = 0;
-                ActionSpriteImageOffset = 0;
+                AnimationImageIdOffset = 0;
                 UpdateCurrentAnimationType();
                 return;
             }
@@ -5837,7 +5837,7 @@ void Guest::UpdateWatching()
                 {
                     Action = PeepActionType::Wave;
                     AnimationFrameNum = 0;
-                    ActionSpriteImageOffset = 0;
+                    AnimationImageIdOffset = 0;
                     UpdateCurrentAnimationType();
                     return;
                 }
@@ -6738,7 +6738,7 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
         return;
 
     SpriteType = new_sprite_type;
-    ActionSpriteImageOffset = 0;
+    AnimationImageIdOffset = 0;
     WalkingAnimationFrameNum = 0;
 
     if (IsActionInterruptable())
@@ -6971,7 +6971,7 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
     {
         Action = newAction;
         AnimationFrameNum = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationImageIdOffset = 0;
         UpdateCurrentAnimationType();
     }
 
@@ -7124,7 +7124,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->State = PeepState::Falling;
     peep->Action = PeepActionType::Walking;
     peep->SpecialSprite = 0;
-    peep->ActionSpriteImageOffset = 0;
+    peep->AnimationImageIdOffset = 0;
     peep->WalkingAnimationFrameNum = 0;
     peep->AnimationType = PeepAnimationType::None;
     peep->PeepFlags = 0;

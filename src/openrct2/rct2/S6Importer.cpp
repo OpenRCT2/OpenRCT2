@@ -1631,7 +1631,7 @@ namespace OpenRCT2::RCT2
             dst->SpecialSprite = src->SpecialSprite;
             dst->AnimationType = static_cast<PeepAnimationType>(src->AnimationType);
             dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
-            dst->ActionSpriteImageOffset = src->ActionSpriteImageOffset;
+            dst->AnimationImageIdOffset = src->AnimationImageIdOffset;
             dst->Action = static_cast<PeepActionType>(src->Action);
             dst->AnimationFrameNum = src->AnimationFrameNum;
             dst->StepProgress = src->StepProgress;

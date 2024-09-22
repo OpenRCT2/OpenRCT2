@@ -1302,7 +1302,7 @@ namespace OpenRCT2::RCT1
             dst->Action = static_cast<PeepActionType>(src->Action);
             dst->SpecialSprite = src->SpecialSprite;
             dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
-            dst->ActionSpriteImageOffset = src->ActionSpriteImageOffset;
+            dst->AnimationImageIdOffset = src->AnimationImageIdOffset;
             dst->WalkingAnimationFrameNum = src->NoActionFrameNum;
             dst->AnimationType = static_cast<PeepAnimationType>(src->AnimationType);
             dst->AnimationFrameNum = src->AnimationFrameNum;

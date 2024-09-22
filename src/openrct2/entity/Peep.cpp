@@ -70,7 +70,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
-static uint8_t _backupActionSpriteImageOffset;
+static uint8_t _backupAnimationImageIdOffset;
 static TileElement* _peepRideEntranceExitElement;
 
 static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
@@ -374,7 +374,7 @@ void Peep::SwitchToSpecialSprite(uint8_t special_sprite_id)
 
     if (IsActionInterruptable())
     {
-        ActionSpriteImageOffset = 0;
+        AnimationImageIdOffset = 0;
     }
     UpdateCurrentAnimationType();
 }
@@ -411,7 +411,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 {
     PROFILED_FUNCTION();
 
-    _backupActionSpriteImageOffset = ActionSpriteImageOffset;
+    _backupAnimationImageIdOffset = AnimationImageIdOffset;
     if (Action == PeepActionType::Idle)
     {
         Action = PeepActionType::Walking;
@@ -433,7 +433,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     if (!UpdateActionAnimation())
     {
-        ActionSpriteImageOffset = 0;
+        AnimationImageIdOffset = 0;
         Action = PeepActionType::Walking;
         UpdateCurrentAnimationType();
         return { { x, y } };
@@ -460,7 +460,7 @@ bool Peep::UpdateActionAnimation()
         return false;
     }
 
-    ActionSpriteImageOffset = peepAnimation.frame_offsets[AnimationFrameNum];
+    AnimationImageIdOffset = peepAnimation.frame_offsets[AnimationFrameNum];
     return true;
 }
 
@@ -515,7 +515,7 @@ void Peep::UpdateWalkingAnimation()
     {
         WalkingAnimationFrameNum = 0;
     }
-    ActionSpriteImageOffset = peepAnimation.frame_offsets[WalkingAnimationFrameNum];
+    AnimationImageIdOffset = peepAnimation.frame_offsets[WalkingAnimationFrameNum];
 }
 
 void Peep::ThrowUp()
@@ -621,7 +621,7 @@ void Peep::PickupAbort(int32_t old_x)
         SetState(PeepState::Falling);
         Action = PeepActionType::Walking;
         SpecialSprite = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationImageIdOffset = 0;
         AnimationType = PeepAnimationType::None;
         PathCheckOptimisation = 0;
     }
@@ -670,7 +670,7 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
         SetState(PeepState::Falling);
         Action = PeepActionType::Walking;
         SpecialSprite = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationImageIdOffset = 0;
         AnimationType = PeepAnimationType::None;
         PathCheckOptimisation = 0;
         EntityTweener::Get().Reset();
@@ -817,7 +817,7 @@ void Peep::UpdateFalling()
 
                         Action = PeepActionType::Drowning;
                         AnimationFrameNum = 0;
-                        ActionSpriteImageOffset = 0;
+                        AnimationImageIdOffset = 0;
 
                         UpdateCurrentAnimationType();
                         PeepWindowStateUpdate(this);
@@ -1382,7 +1382,7 @@ void PeepApplause()
         {
             peep->Action = PeepActionType::Clap;
             peep->AnimationFrameNum = 0;
-            peep->ActionSpriteImageOffset = 0;
+            peep->AnimationImageIdOffset = 0;
             peep->UpdateCurrentAnimationType();
         }
     }
@@ -1790,7 +1790,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         {
             // Guest is in the ride queue.
             guest->RideSubState = PeepRideSubState::AtQueueFront;
-            guest->ActionSpriteImageOffset = _backupActionSpriteImageOffset;
+            guest->AnimationImageIdOffset = _backupAnimationImageIdOffset;
             return true;
         }
 
@@ -1820,7 +1820,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         // Guest has decided to go on the ride.
-        guest->ActionSpriteImageOffset = _backupActionSpriteImageOffset;
+        guest->AnimationImageIdOffset = _backupAnimationImageIdOffset;
         guest->InteractionRideIndex = rideIndex;
 
         auto& station = ride->GetStation(stationNum);
@@ -2399,7 +2399,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
     {
         if (guest->GuestHeadingToRideId == rideIndex)
             guest->GuestHeadingToRideId = RideId::GetNull();
-        guest->ActionSpriteImageOffset = _backupActionSpriteImageOffset;
+        guest->AnimationImageIdOffset = _backupAnimationImageIdOffset;
         guest->SetState(PeepState::Buying);
         guest->CurrentRide = rideIndex;
         guest->SubState = 0;
@@ -2809,7 +2809,7 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << SpecialSprite;
     stream << AnimationType;
     stream << NextAnimationType;
-    stream << ActionSpriteImageOffset;
+    stream << AnimationImageIdOffset;
     stream << Action;
     stream << AnimationFrameNum;
     stream << StepProgress;
@@ -2860,7 +2860,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     }
 
     PeepAnimationType actionSpriteType = AnimationType;
-    uint8_t imageOffset = ActionSpriteImageOffset;
+    uint8_t imageOffset = AnimationImageIdOffset;
 
     if (Action == PeepActionType::Idle)
     {

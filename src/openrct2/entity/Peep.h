@@ -356,7 +356,7 @@ struct Peep : EntityBase
     // Seems to be used like a local variable, as it's always set before calling SwitchNextAnimationType, which
     // reads this again
     PeepAnimationType NextAnimationType;
-    uint8_t ActionSpriteImageOffset;
+    uint8_t AnimationImageIdOffset;
     PeepActionType Action;
     uint8_t AnimationFrameNum;
     uint8_t StepProgress;
