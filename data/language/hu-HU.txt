@@ -3739,6 +3739,8 @@ STR_6667    :Fauna
 STR_6668    :Személyzeti csalások
 STR_6669    :Személyzeti csalások megjelenítése
 STR_6670    :Vendégek viselkedése
+STR_6671    :Alkalmazottak „igazi” nevének mutatása
+STR_6672    :Váltás az alkalmazottak „igazi” nevének és az alkalmazottak számának mutatása között
 
 #############
 # Scenarios #
