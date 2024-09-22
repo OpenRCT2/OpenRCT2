@@ -585,19 +585,12 @@ namespace OpenRCT2
                 }
                 break;
             case FormatToken::MonthYear:
-                if constexpr (std::is_integral<T>())
-                {
-                    auto month = DateGetMonth(arg);
-                    auto year = DateGetYear(arg) + 1;
-                    FormatMonthYear(ss, month, year, false);
-                }
-                break;
             case FormatToken::MonthYearSentence:
                 if constexpr (std::is_integral<T>())
                 {
                     auto month = DateGetMonth(arg);
                     auto year = DateGetYear(arg) + 1;
-                    FormatMonthYear(ss, month, year, true);
+                    FormatMonthYear(ss, month, year, token == FormatToken::MonthYearSentence);
                 }
                 break;
             case FormatToken::Month:
