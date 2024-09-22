@@ -159,7 +159,7 @@ namespace OpenRCT2::Scripting
         { "sittingEatFood", PeepAnimationType::SittingEatFood },
         { "sittingLookAroundLeft", PeepAnimationType::SittingLookAroundLeft },
         { "sittingLookAroundRight", PeepAnimationType::SittingLookAroundRight },
-        { "hanging", PeepAnimationType::Ui },
+        { "hanging", PeepAnimationType::Hanging },
         { "wow", PeepAnimationType::Wow },
         { "throwUp", PeepAnimationType::ThrowUp },
         { "jump", PeepAnimationType::Jump },
@@ -898,7 +898,7 @@ namespace OpenRCT2::Scripting
             for (auto frameOffset : animationGroup.frame_offsets)
             {
                 auto imageId = animationGroup.base_image;
-                if (animationType != PeepAnimationType::Ui)
+                if (animationType != PeepAnimationType::Hanging)
                     imageId += rotation + frameOffset * 4;
                 else
                     imageId += frameOffset;

@@ -2873,7 +2873,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     uint32_t baseImageId = GetPeepAnimation(SpriteType, actionSpriteType).base_image;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
-    if (actionSpriteType != PeepAnimationType::Ui)
+    if (actionSpriteType != PeepAnimationType::Hanging)
         baseImageId += (imageDirection >> 3) + imageOffset * 4;
     else
         baseImageId += imageOffset;

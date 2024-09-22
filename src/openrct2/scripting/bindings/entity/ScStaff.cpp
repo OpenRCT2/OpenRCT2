@@ -20,7 +20,7 @@ namespace OpenRCT2::Scripting
     static const DukEnumMap<PeepAnimationType> availableHandymanAnimations({
         { "walking", PeepAnimationType::None },
         { "watchRide", PeepAnimationType::WatchRide },
-        { "hanging", PeepAnimationType::Ui },
+        { "hanging", PeepAnimationType::Hanging },
         { "staffMower", PeepAnimationType::StaffMower },
         { "staffSweep", PeepAnimationType::StaffSweep },
         { "drowning", PeepAnimationType::Drowning },
@@ -31,7 +31,7 @@ namespace OpenRCT2::Scripting
     static const DukEnumMap<PeepAnimationType> availableMechanicAnimations({
         { "walking", PeepAnimationType::None },
         { "watchRide", PeepAnimationType::WatchRide },
-        { "hanging", PeepAnimationType::Ui },
+        { "hanging", PeepAnimationType::Hanging },
         { "drowning", PeepAnimationType::Drowning },
         { "staffAnswerCall", PeepAnimationType::StaffAnswerCall },
         { "staffAnswerCall2", PeepAnimationType::StaffAnswerCall2 },
@@ -45,7 +45,7 @@ namespace OpenRCT2::Scripting
     static const DukEnumMap<PeepAnimationType> availableSecurityAnimations({
         { "walking", PeepAnimationType::None },
         { "watchRide", PeepAnimationType::WatchRide },
-        { "hanging", PeepAnimationType::Ui },
+        { "hanging", PeepAnimationType::Hanging },
         { "drowning", PeepAnimationType::Drowning },
     });
 
@@ -53,7 +53,7 @@ namespace OpenRCT2::Scripting
         { "walking", PeepAnimationType::None },
         { "watchRide", PeepAnimationType::WatchRide },
         { "wave", PeepAnimationType::EatFood }, // NB: this not a typo
-        { "hanging", PeepAnimationType::Ui },
+        { "hanging", PeepAnimationType::Hanging },
         { "drowning", PeepAnimationType::Drowning },
         { "joy", PeepAnimationType::Joy },
         { "wave2", PeepAnimationType::Wave2 },
@@ -344,7 +344,7 @@ namespace OpenRCT2::Scripting
         for (auto frameOffset : animationGroup.frame_offsets)
         {
             auto imageId = animationGroup.base_image;
-            if (animationType != PeepAnimationType::Ui)
+            if (animationType != PeepAnimationType::Hanging)
                 imageId += rotation + frameOffset * 4;
             else
                 imageId += frameOffset;

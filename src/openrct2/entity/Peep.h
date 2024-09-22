@@ -164,7 +164,7 @@ enum class PeepAnimationType : uint8_t
     SittingEatFood = 8,
     SittingLookAroundLeft = 9,
     SittingLookAroundRight = 10,
-    Ui = 11,
+    Hanging = 11,
     StaffMower = 12,
     Wow = 13,
     ThrowUp = 14,

@@ -681,7 +681,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto baseImageId = GetPeepAnimation(staff->SpriteType, PeepAnimationType::Ui).base_image;
+            auto baseImageId = GetPeepAnimation(staff->SpriteType, PeepAnimationType::Hanging).base_image;
             baseImageId += picked_peep_frame >> 2;
             gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
         }
