@@ -1791,7 +1791,7 @@ namespace OpenRCT2
             cs.ReadWrite(entity.NextAnimationType);
             cs.ReadWrite(entity.ActionSpriteImageOffset);
             cs.ReadWrite(entity.Action);
-            cs.ReadWrite(entity.ActionFrame);
+            cs.ReadWrite(entity.AnimationFrameNum);
             cs.ReadWrite(entity.StepProgress);
 
             if (version <= 1)

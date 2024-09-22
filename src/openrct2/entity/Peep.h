@@ -358,7 +358,7 @@ struct Peep : EntityBase
     PeepAnimationType NextAnimationType;
     uint8_t ActionSpriteImageOffset;
     PeepActionType Action;
-    uint8_t ActionFrame;
+    uint8_t AnimationFrameNum;
     uint8_t StepProgress;
     union
     {

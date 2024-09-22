@@ -512,7 +512,7 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
         if (passingPeep->IsActionInterruptable())
         {
             passingPeep->Action = PeepActionType::Wave2;
-            passingPeep->ActionFrame = 0;
+            passingPeep->AnimationFrameNum = 0;
             passingPeep->ActionSpriteImageOffset = 0;
             passingPeep->UpdateCurrentAnimationType();
         }
@@ -527,7 +527,7 @@ void Guest::MakePassingPeepsSick(Guest* passingPeep)
     if (passingPeep->IsActionInterruptable())
     {
         passingPeep->Action = PeepActionType::ThrowUp;
-        passingPeep->ActionFrame = 0;
+        passingPeep->AnimationFrameNum = 0;
         passingPeep->ActionSpriteImageOffset = 0;
         passingPeep->UpdateCurrentAnimationType();
     }
@@ -575,7 +575,7 @@ void Guest::UpdateEasterEggInteractions()
             if (IsActionInterruptable())
             {
                 Action = PeepActionType::Joy;
-                ActionFrame = 0;
+                AnimationFrameNum = 0;
                 ActionSpriteImageOffset = 0;
                 UpdateCurrentAnimationType();
             }
@@ -780,7 +780,7 @@ void Guest::UpdateMotivesIdle()
             if (IsActionInterruptable())
             {
                 Action = PeepActionType::ThrowUp;
-                ActionFrame = 0;
+                AnimationFrameNum = 0;
                 ActionSpriteImageOffset = 0;
                 UpdateCurrentAnimationType();
             }
@@ -1322,7 +1322,7 @@ void Guest::UpdateSitting()
                 return;
             }
             Action = PeepActionType::SittingEatFood;
-            ActionFrame = 0;
+            AnimationFrameNum = 0;
             ActionSpriteImageOffset = 0;
             UpdateCurrentAnimationType();
             return;
@@ -1350,7 +1350,7 @@ void Guest::UpdateSitting()
         {
             Action = PeepActionType::SittingCheckWatch;
         }
-        ActionFrame = 0;
+        AnimationFrameNum = 0;
         ActionSpriteImageOffset = 0;
         UpdateCurrentAnimationType();
         return;
@@ -2398,7 +2398,7 @@ void Guest::ReadMap()
     if (IsActionInterruptable() && !IsOnLevelCrossing())
     {
         Action = PeepActionType::ReadMap;
-        ActionFrame = 0;
+        AnimationFrameNum = 0;
         ActionSpriteImageOffset = 0;
         UpdateCurrentAnimationType();
     }
@@ -3391,7 +3391,7 @@ void Guest::UpdateBuying()
             else
             {
                 Action = PeepActionType::WithdrawMoney;
-                ActionFrame = 0;
+                AnimationFrameNum = 0;
                 ActionSpriteImageOffset = 0;
 
                 UpdateCurrentAnimationType();
@@ -4911,7 +4911,7 @@ void Guest::UpdateRideMazePathfinding()
         if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsRaining() && (ScenarioRand() & 0xFFFF) <= 2427)
         {
             Action = PeepActionType::Jump;
-            ActionFrame = 0;
+            AnimationFrameNum = 0;
             ActionSpriteImageOffset = 0;
             UpdateCurrentAnimationType();
         }
@@ -5311,7 +5311,7 @@ void Guest::UpdateWalking()
         if (PeepFlags & PEEP_FLAGS_WAVING && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
         {
             Action = PeepActionType::Wave2;
-            ActionFrame = 0;
+            AnimationFrameNum = 0;
             ActionSpriteImageOffset = 0;
 
             UpdateCurrentAnimationType();
@@ -5320,7 +5320,7 @@ void Guest::UpdateWalking()
         if (PeepFlags & PEEP_FLAGS_PHOTO && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
         {
             Action = PeepActionType::TakePhoto;
-            ActionFrame = 0;
+            AnimationFrameNum = 0;
             ActionSpriteImageOffset = 0;
 
             UpdateCurrentAnimationType();
@@ -5329,7 +5329,7 @@ void Guest::UpdateWalking()
         if (PeepFlags & PEEP_FLAGS_PAINTING && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
         {
             Action = PeepActionType::DrawPicture;
-            ActionFrame = 0;
+            AnimationFrameNum = 0;
             ActionSpriteImageOffset = 0;
 
             UpdateCurrentAnimationType();
@@ -5561,7 +5561,7 @@ void Guest::UpdateWaitingAtCrossing()
         if ((ScenarioRand() & 0xFFFF) <= 1310)
         {
             Action = PeepActionType::EatFood;
-            ActionFrame = 0;
+            AnimationFrameNum = 0;
             ActionSpriteImageOffset = 0;
         }
 
@@ -5573,7 +5573,7 @@ void Guest::UpdateWaitingAtCrossing()
     if ((ScenarioRand() & 0xFFFF) <= 64)
     {
         Action = PeepActionType::Wave2;
-        ActionFrame = 0;
+        AnimationFrameNum = 0;
         ActionSpriteImageOffset = 0;
     }
 
@@ -5638,7 +5638,7 @@ void Guest::UpdateQueuing()
         {
             // Eat Food/Look at watch
             Action = PeepActionType::EatFood;
-            ActionFrame = 0;
+            AnimationFrameNum = 0;
             ActionSpriteImageOffset = 0;
             UpdateCurrentAnimationType();
         }
@@ -5678,7 +5678,7 @@ void Guest::UpdateQueuing()
                 case PeepSpriteType::Sandwich:
                     // Eat food
                     Action = PeepActionType::EatFood;
-                    ActionFrame = 0;
+                    AnimationFrameNum = 0;
                     ActionSpriteImageOffset = 0;
                     UpdateCurrentAnimationType();
                     break;
@@ -5815,7 +5815,7 @@ void Guest::UpdateWatching()
                 if ((ScenarioRand() & 0xFFFF) <= 1310)
                 {
                     Action = PeepActionType::EatFood;
-                    ActionFrame = 0;
+                    AnimationFrameNum = 0;
                     ActionSpriteImageOffset = 0;
                     UpdateCurrentAnimationType();
                     return;
@@ -5825,7 +5825,7 @@ void Guest::UpdateWatching()
             if ((ScenarioRand() & 0xFFFF) <= 655)
             {
                 Action = PeepActionType::TakePhoto;
-                ActionFrame = 0;
+                AnimationFrameNum = 0;
                 ActionSpriteImageOffset = 0;
                 UpdateCurrentAnimationType();
                 return;
@@ -5836,7 +5836,7 @@ void Guest::UpdateWatching()
                 if ((ScenarioRand() & 0xFFFF) <= 655)
                 {
                     Action = PeepActionType::Wave;
-                    ActionFrame = 0;
+                    AnimationFrameNum = 0;
                     ActionSpriteImageOffset = 0;
                     UpdateCurrentAnimationType();
                     return;
@@ -6970,7 +6970,7 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
     if (newAction != PeepActionType::Walking && IsActionInterruptable())
     {
         Action = newAction;
-        ActionFrame = 0;
+        AnimationFrameNum = 0;
         ActionSpriteImageOffset = 0;
         UpdateCurrentAnimationType();
     }

@@ -104,7 +104,7 @@ GameActions::Result StaffSetCostumeAction::Execute() const
     {
         staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
-    staff->ActionFrame = 0;
+    staff->AnimationFrameNum = 0;
     staff->UpdateCurrentAnimationType();
     staff->Invalidate();
 

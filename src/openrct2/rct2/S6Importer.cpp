@@ -1633,7 +1633,7 @@ namespace OpenRCT2::RCT2
             dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
             dst->ActionSpriteImageOffset = src->ActionSpriteImageOffset;
             dst->Action = static_cast<PeepActionType>(src->Action);
-            dst->ActionFrame = src->ActionFrame;
+            dst->AnimationFrameNum = src->AnimationFrameNum;
             dst->StepProgress = src->StepProgress;
             dst->PeepDirection = src->Direction;
             dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->InteractionRideIndex);

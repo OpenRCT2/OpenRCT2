@@ -386,7 +386,7 @@ namespace OpenRCT2::Scripting
         if (peep->IsActionWalking())
             peep->WalkingAnimationFrameNum = offset;
         else
-            peep->ActionFrame = offset;
+            peep->AnimationFrameNum = offset;
 
         auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->AnimationType);
         peep->ActionSpriteImageOffset = animationGroup.frame_offsets[offset];
@@ -404,7 +404,7 @@ namespace OpenRCT2::Scripting
         if (peep->IsActionWalking())
             return peep->WalkingAnimationFrameNum;
         else
-            return peep->ActionFrame;
+            return peep->AnimationFrameNum;
     }
 
     void ScStaff::animationOffset_set(uint8_t offset)
@@ -420,7 +420,7 @@ namespace OpenRCT2::Scripting
         if (peep->IsActionWalking())
             peep->WalkingAnimationFrameNum = offset;
         else
-            peep->ActionFrame = offset;
+            peep->AnimationFrameNum = offset;
 
         peep->ActionSpriteImageOffset = animationGroup.frame_offsets[offset];
         peep->UpdateSpriteBoundingBox();

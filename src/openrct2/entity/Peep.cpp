@@ -441,7 +441,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     // Should we throw up, and are we at the frame where sick appears?
     auto* guest = As<Guest>();
-    if (Action == PeepActionType::ThrowUp && ActionFrame == 15 && guest != nullptr)
+    if (Action == PeepActionType::ThrowUp && AnimationFrameNum == 15 && guest != nullptr)
     {
         ThrowUp();
     }
@@ -452,15 +452,15 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 bool Peep::UpdateActionAnimation()
 {
     const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, AnimationType);
-    ActionFrame++;
+    AnimationFrameNum++;
 
     // If last frame of action
-    if (ActionFrame >= peepAnimation.frame_offsets.size())
+    if (AnimationFrameNum >= peepAnimation.frame_offsets.size())
     {
         return false;
     }
 
-    ActionSpriteImageOffset = peepAnimation.frame_offsets[ActionFrame];
+    ActionSpriteImageOffset = peepAnimation.frame_offsets[AnimationFrameNum];
     return true;
 }
 
@@ -816,7 +816,7 @@ void Peep::UpdateFalling()
                         }
 
                         Action = PeepActionType::Drowning;
-                        ActionFrame = 0;
+                        AnimationFrameNum = 0;
                         ActionSpriteImageOffset = 0;
 
                         UpdateCurrentAnimationType();
@@ -1381,7 +1381,7 @@ void PeepApplause()
         if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->IsActionInterruptable())
         {
             peep->Action = PeepActionType::Clap;
-            peep->ActionFrame = 0;
+            peep->AnimationFrameNum = 0;
             peep->ActionSpriteImageOffset = 0;
             peep->UpdateCurrentAnimationType();
         }
@@ -2811,7 +2811,7 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << NextAnimationType;
     stream << ActionSpriteImageOffset;
     stream << Action;
-    stream << ActionFrame;
+    stream << AnimationFrameNum;
     stream << StepProgress;
     stream << PeepDirection;
     stream << InteractionRideIndex;

@@ -597,7 +597,7 @@ namespace OpenRCT2::RCT2
         uint8_t NextAnimationType;       // 0x6F
         uint8_t ActionSpriteImageOffset; // 0x70
         uint8_t Action;                  // 0x71
-        uint8_t ActionFrame;             // 0x72
+        uint8_t AnimationFrameNum;       // 0x72
         uint8_t StepProgress;            // 0x73
         union
         {

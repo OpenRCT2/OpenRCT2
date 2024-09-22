@@ -1305,7 +1305,7 @@ namespace OpenRCT2::RCT1
             dst->ActionSpriteImageOffset = src->ActionSpriteImageOffset;
             dst->WalkingAnimationFrameNum = src->NoActionFrameNum;
             dst->AnimationType = static_cast<PeepAnimationType>(src->AnimationType);
-            dst->ActionFrame = src->ActionFrame;
+            dst->AnimationFrameNum = src->AnimationFrameNum;
 
             const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->AnimationType);
             dst->SpriteData.Width = spriteBounds->sprite_width;

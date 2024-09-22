@@ -210,7 +210,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
                         continue;
 
                     peep->Action = PeepActionType::CheckTime;
-                    peep->ActionFrame = 0;
+                    peep->AnimationFrameNum = 0;
                     peep->ActionSpriteImageOffset = 0;
                     peep->UpdateCurrentAnimationType();
                     peep->Invalidate();
