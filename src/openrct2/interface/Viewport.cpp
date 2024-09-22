@@ -1095,9 +1095,9 @@ static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
     if (paletteId != FilterPaletteID::PaletteNull)
     {
         auto x = dpi.ScreenX();
-        auto y = dpi.ScreenX();
-        auto w = dpi.ScreenWidth() - 1;
-        auto h = dpi.ScreenHeight() - 1;
+        auto y = dpi.ScreenY();
+        auto w = dpi.ScreenWidth();
+        auto h = dpi.ScreenHeight();
         GfxFilterRect(dpi, ScreenRect(x, y, x + w, y + h), paletteId);
     }
 }
