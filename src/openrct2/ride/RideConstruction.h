@@ -77,8 +77,6 @@ extern uint8_t gRideEntranceExitPlaceDirection;
 
 void RideEntranceExitPlaceProvisionalGhost();
 void RideEntranceExitRemoveGhost();
-void RideRestoreProvisionalTrackPiece();
-void RideRemoveProvisionalTrackPiece();
 
 void RideConstructionRemoveGhosts();
 
