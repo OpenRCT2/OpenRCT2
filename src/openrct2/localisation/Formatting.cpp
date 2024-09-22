@@ -594,7 +594,7 @@ namespace OpenRCT2
                 if constexpr (std::is_integral<T>())
                 {
                     auto metres = HeightUnitsToMetres(arg);
-                    switch (gConfigGeneral.MeasurementFormat)
+                    switch (Config::Get().general.MeasurementFormat)
                     {
                         default:
                         case MeasurementFormat::Imperial:

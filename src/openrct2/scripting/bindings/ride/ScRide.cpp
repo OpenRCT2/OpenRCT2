@@ -574,19 +574,19 @@ namespace OpenRCT2::Scripting
     double ScRide::totalAirTime_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->total_air_time * 3 / 100.0 : 0;
+        return ride != nullptr ? ride->totalAirTime * 3 / 100.0 : 0;
     }
 
     uint8_t ScRide::drops_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->drops & 0b00111111 : 0;
+        return ride != nullptr ? ride->getNumDrops() : 0;
     }
 
     uint8_t ScRide::poweredLifts_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->drops >> 6 : 0;
+        return ride != nullptr ? ride->getNumPoweredLifts() : 0;
     }
 
     double ScRide::highestDropHeight_get() const
