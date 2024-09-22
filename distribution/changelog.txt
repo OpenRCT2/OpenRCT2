@@ -13,6 +13,7 @@
 - Fix: [#22653] Add several .parkpatch files for missing water tiles in RCT1 and RCT2 scenarios.
 - Fix: [#22654] Improve several .parkpatch files to remove misplaced scenario elements in RCT1 and RCT2 scenarios.
 - Fix: [#22655] Fix surface style of Botany Breakers around missing water tiles.
+- Fix: [#22729] Invisibility settings persist after reloading OpenRCT2.
 - Fix: [#22734] Support clearance above steep Side-Friction track is too low.
 
 0.4.14 (2024-09-01)
