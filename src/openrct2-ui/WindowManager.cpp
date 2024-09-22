@@ -560,7 +560,9 @@ public:
             case INTENT_ACTION_REMOVE_PROVISIONAL_FOOTPATH:
                 FootpathRemoveProvisional();
                 break;
-
+            case INTENT_ACTION_REMOVE_PROVISIONAL_TRACK_PIECE:
+                RideRemoveProvisionalTrackPiece();
+                break;
             default:
                 break;
         }

@@ -57,6 +57,14 @@ using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Ui::Windows
 {
+    bool gDisableErrorWindowSound = false;
+
+    static RideConstructionState _rideConstructionState2;
+
+    static bool WindowRideConstructionUpdateState(
+        int32_t* trackType, int32_t* trackDirection, RideId* rideIndex, int32_t* _liftHillAndAlternativeState,
+        CoordsXYZ* trackPos, int32_t* properties);
+
     static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
     static constexpr int32_t WH = 394;
     static constexpr int32_t WW = 210;
@@ -4640,5 +4648,415 @@ namespace OpenRCT2::Ui::Windows
     {
         auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
         ContextBroadcastIntent(&intent);
+    }
+
+    /**
+     *
+     *  rct2: 0x006CA162
+     */
+    money64 PlaceProvisionalTrackPiece(
+        RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
+        const CoordsXYZ& trackPos)
+    {
+        auto ride = GetRide(rideIndex);
+        if (ride == nullptr)
+            return kMoney64Undefined;
+
+        RideConstructionRemoveGhosts();
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (rtd.HasFlag(RtdFlag::isMaze))
+        {
+            int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
+            auto gameAction = MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
+            gameAction.SetFlags(flags);
+            auto result = GameActions::Execute(&gameAction);
+
+            if (result.Error != GameActions::Status::Ok)
+                return kMoney64Undefined;
+
+            _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
+            _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
+            if (_currentTrackPitchEnd != TrackPitch::None)
+                ViewportSetVisibility(ViewportVisibility::TrackHeights);
+
+            return result.Cost;
+        }
+
+        auto trackPlaceAction = TrackPlaceAction(
+            rideIndex, trackType, ride->type, { trackPos, static_cast<uint8_t>(trackDirection) }, 0, 0, 0,
+            liftHillAndAlternativeState, false);
+        trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+        // This command must not be sent over the network
+        auto res = GameActions::Execute(&trackPlaceAction);
+        if (res.Error != GameActions::Status::Ok)
+            return kMoney64Undefined;
+
+        int16_t zBegin{}, zEnd{};
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        const TrackCoordinates& coords = ted.coordinates;
+        if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        {
+            zBegin = coords.zBegin;
+            zEnd = coords.zEnd;
+        }
+        else
+        {
+            zEnd = zBegin = coords.zBegin;
+        }
+
+        _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + zBegin, static_cast<Direction>(trackDirection) };
+        _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
+
+        const auto resultData = res.GetData<TrackPlaceActionResult>();
+        const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
+                                                                                 : ViewportVisibility::UndergroundViewOff;
+        ViewportSetVisibility(visiblity);
+        if (_currentTrackPitchEnd != TrackPitch::None)
+            ViewportSetVisibility(ViewportVisibility::TrackHeights);
+
+        // Invalidate previous track piece (we may not be changing height!)
+        VirtualFloorInvalidate();
+
+        if (!isToolActive(WindowClass::Scenery))
+        {
+            // Set height to where the next track piece would begin
+            VirtualFloorSetHeight(trackPos.z - zBegin + zEnd);
+        }
+
+        return res.Cost;
+    }
+
+    static std::tuple<bool, track_type_t> WindowRideConstructionUpdateStateGetTrackElement()
+    {
+        auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
+        ContextBroadcastIntent(&intent);
+
+        auto startSlope = _previousTrackPitchEnd;
+        auto endSlope = _currentTrackPitchEnd;
+        auto startBank = _previousTrackRollEnd;
+        auto endBank = _currentTrackRollEnd;
+
+        if (_rideConstructionState == RideConstructionState::Back)
+        {
+            startSlope = _currentTrackPitchEnd;
+            endSlope = _previousTrackPitchEnd;
+            startBank = _currentTrackRollEnd;
+            endBank = _previousTrackRollEnd;
+        }
+
+        auto selectedTrack = _currentlySelectedTrack;
+        if (selectedTrack == TrackElemType::None)
+        {
+            return std::make_tuple(false, 0);
+        }
+
+        bool startsDiagonal = (_currentTrackPieceDirection & (1 << 2)) != 0;
+        if (selectedTrack == TrackCurve::LeftLarge || selectedTrack == TrackCurve::RightLarge)
+        {
+            if (_rideConstructionState == RideConstructionState::Back)
+            {
+                startsDiagonal = !startsDiagonal;
+            }
+        }
+
+        if (!selectedTrack.isTrackType)
+        {
+            auto trackPiece = GetTrackTypeFromCurve(
+                selectedTrack.curve, startsDiagonal, startSlope, endSlope, startBank, endBank);
+            if (trackPiece != TrackElemType::None)
+                return std::make_tuple(true, trackPiece);
+            else
+                return std::make_tuple(false, 0);
+        }
+
+        auto asTrackType = selectedTrack.trackType;
+        switch (asTrackType)
+        {
+            case TrackElemType::EndStation:
+            case TrackElemType::SBendLeft:
+            case TrackElemType::SBendRight:
+                if (startSlope != TrackPitch::None || endSlope != TrackPitch::None)
+                {
+                    return std::make_tuple(false, 0);
+                }
+
+                if (startBank != TrackRoll::None || endBank != TrackRoll::None)
+                {
+                    return std::make_tuple(false, 0);
+                }
+
+                return std::make_tuple(true, asTrackType);
+
+            case TrackElemType::LeftVerticalLoop:
+            case TrackElemType::RightVerticalLoop:
+                if (startBank != TrackRoll::None || endBank != TrackRoll::None)
+                {
+                    return std::make_tuple(false, 0);
+                }
+
+                if (_rideConstructionState == RideConstructionState::Back)
+                {
+                    if (endSlope != TrackPitch::Down25)
+                    {
+                        return std::make_tuple(false, 0);
+                    }
+                }
+                else
+                {
+                    if (startSlope != TrackPitch::Up25)
+                    {
+                        return std::make_tuple(false, 0);
+                    }
+                }
+
+                return std::make_tuple(true, asTrackType);
+
+            default:
+                return std::make_tuple(true, asTrackType);
+        }
+    }
+
+    /**
+     * rct2: 0x006CA2DF
+     *
+     * @param[out] _trackType (dh)
+     * @param[out] _trackDirection (bh)
+     * @param[out] _rideIndex (dl)
+     * @param[out] _liftHillAndInvertedState (liftHillAndInvertedState)
+     * @param[out] _x (ax)
+     * @param[out] _y (cx)
+     * @param[out] _z (di)
+     * @param[out] _properties (edirs16)
+     * @return (CF)
+     */
+    static bool WindowRideConstructionUpdateState(
+        int32_t* _trackType, int32_t* _trackDirection, RideId* _rideIndex, int32_t* _liftHillAndInvertedState,
+        CoordsXYZ* _trackPos, int32_t* _properties)
+    {
+        RideId rideIndex;
+        uint8_t trackDirection;
+        uint16_t x, y, liftHillAndInvertedState, properties;
+
+        auto updated_element = WindowRideConstructionUpdateStateGetTrackElement();
+        if (!std::get<0>(updated_element))
+        {
+            return true;
+        }
+
+        track_type_t trackType = std::get<1>(updated_element);
+        liftHillAndInvertedState = 0;
+        rideIndex = _currentRideIndex;
+        if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
+        {
+            liftHillAndInvertedState |= CONSTRUCTION_LIFT_HILL_SELECTED;
+        }
+
+        if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
+        {
+            liftHillAndInvertedState |= CONSTRUCTION_INVERTED_TRACK_SELECTED;
+        }
+
+        auto ride = GetRide(rideIndex);
+        if (ride == nullptr)
+            return true;
+
+        if (IsTrackEnabled(TrackGroup::slopeSteepLong))
+        {
+            switch (trackType)
+            {
+                case TrackElemType::FlatToUp60:
+                    trackType = TrackElemType::FlatToUp60LongBase;
+                    break;
+
+                case TrackElemType::Up60ToFlat:
+                    trackType = TrackElemType::Up60ToFlatLongBase;
+                    break;
+
+                case TrackElemType::FlatToDown60:
+                    trackType = TrackElemType::FlatToDown60LongBase;
+                    break;
+
+                case TrackElemType::Down60ToFlat:
+                    trackType = TrackElemType::Down60ToFlatLongBase;
+                    break;
+
+                case TrackElemType::DiagFlatToUp60:
+                case TrackElemType::DiagUp60ToFlat:
+                case TrackElemType::DiagFlatToDown60:
+                case TrackElemType::DiagDown60ToFlat:
+                    return true;
+            }
+        }
+
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto trackDrawerDecriptor = getCurrentTrackDrawerDescriptor(rtd);
+        if (trackDrawerDecriptor.HasCoveredPieces() && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
+        {
+            auto availablePieces = trackDrawerDecriptor.Covered.EnabledTrackPieces;
+            const auto& ted = GetTrackElementDescriptor(trackType);
+            auto alternativeType = ted.alternativeType;
+            // this method limits the track element types that can be used
+            if (alternativeType != TrackElemType::None && (availablePieces.get(trackType)))
+            {
+                trackType = alternativeType;
+                if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
+                    liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+            }
+        }
+
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        const TrackCoordinates& trackCoordinates = ted.coordinates;
+
+        x = _currentTrackBegin.x;
+        y = _currentTrackBegin.y;
+        auto z = _currentTrackBegin.z;
+        if (_rideConstructionState == RideConstructionState::Back)
+        {
+            z -= trackCoordinates.zEnd;
+            trackDirection = _currentTrackPieceDirection ^ 0x02;
+            trackDirection -= trackCoordinates.rotationEnd;
+            trackDirection += trackCoordinates.rotationBegin;
+            trackDirection &= 0x03;
+
+            if (trackCoordinates.rotationBegin & (1 << 2))
+            {
+                trackDirection |= 0x04;
+            }
+
+            CoordsXY offsets = { trackCoordinates.x, trackCoordinates.y };
+            CoordsXY coords = { x, y };
+            coords += offsets.Rotate(DirectionReverse(trackDirection));
+            x = static_cast<uint16_t>(coords.x);
+            y = static_cast<uint16_t>(coords.y);
+        }
+        else
+        {
+            z -= trackCoordinates.zBegin;
+            trackDirection = _currentTrackPieceDirection;
+        }
+
+        bool turnOffLiftHill = false;
+        if (!IsTrackEnabled(TrackGroup::liftHillCurve))
+        {
+            if (ted.flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
+            {
+                turnOffLiftHill = true;
+            }
+        }
+
+        if (!(ted.flags & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL))
+        {
+            turnOffLiftHill = true;
+        }
+
+        if (turnOffLiftHill && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+        {
+            liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+            _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+
+            if (trackType == TrackElemType::LeftCurvedLiftHill || trackType == TrackElemType::RightCurvedLiftHill)
+            {
+                liftHillAndInvertedState |= CONSTRUCTION_LIFT_HILL_SELECTED;
+            }
+        }
+
+        if (TrackTypeHasSpeedSetting(trackType))
+        {
+            properties = _currentBrakeSpeed;
+        }
+        else
+        {
+            properties = _currentSeatRotationAngle << 12;
+        }
+
+        if (_trackType != nullptr)
+            *_trackType = trackType;
+        if (_trackDirection != nullptr)
+            *_trackDirection = trackDirection;
+        if (_rideIndex != nullptr)
+            *_rideIndex = rideIndex;
+        if (_liftHillAndInvertedState != nullptr)
+            *_liftHillAndInvertedState = liftHillAndInvertedState;
+        if (_trackPos != nullptr)
+            *_trackPos = { x, y, z };
+        if (_properties != nullptr)
+            *_properties = properties;
+
+        return false;
+    }
+
+    void RideRestoreProvisionalTrackPiece()
+    {
+        if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
+        {
+            RideId rideIndex;
+            int32_t direction, type, liftHillAndAlternativeState;
+            CoordsXYZ trackPos;
+            if (WindowRideConstructionUpdateState(
+                    &type, &direction, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr))
+            {
+                RideConstructionRemoveGhosts();
+            }
+            else
+            {
+                _currentTrackPrice = PlaceProvisionalTrackPiece(
+                    rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
+                WindowRideConstructionUpdateActiveElements();
+            }
+        }
+    }
+
+    void RideRemoveProvisionalTrackPiece()
+    {
+        auto rideIndex = _currentRideIndex;
+        auto ride = GetRide(rideIndex);
+        if (ride == nullptr || !(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
+        {
+            return;
+        }
+
+        int32_t x = _unkF440C5.x;
+        int32_t y = _unkF440C5.y;
+        int32_t z = _unkF440C5.z;
+
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (rtd.HasFlag(RtdFlag::isMaze))
+        {
+            const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
+            const CoordsXYZD quadrants[kNumOrthogonalDirections] = {
+                { x, y, z, 0 },
+                { x, y + 16, z, 1 },
+                { x + 16, y + 16, z, 2 },
+                { x + 16, y, z, 3 },
+            };
+            for (const auto& quadrant : quadrants)
+            {
+                auto gameAction = MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+                gameAction.SetFlags(flags);
+                auto res = GameActions::Execute(&gameAction);
+            }
+        }
+        else
+        {
+            int32_t direction = _unkF440C5.direction;
+            if (!(direction & 4))
+            {
+                x -= CoordsDirectionDelta[direction].x;
+                y -= CoordsDirectionDelta[direction].y;
+            }
+            CoordsXYE next_track;
+            if (TrackBlockGetNextFromZero({ x, y, z }, *ride, direction, &next_track, &z, &direction, true))
+            {
+                auto trackType = next_track.element->AsTrack()->GetTrackType();
+                int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();
+                auto trackRemoveAction = TrackRemoveAction{
+                    trackType, trackSequence, { next_track.x, next_track.y, z, static_cast<Direction>(direction) }
+                };
+                trackRemoveAction.SetFlags(
+                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                GameActions::Execute(&trackRemoveAction);
+            }
+        }
     }
 } // namespace OpenRCT2::Ui::Windows

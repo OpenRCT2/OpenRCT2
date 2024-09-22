@@ -470,78 +470,6 @@ static void WindowRideConstructionUpdateActiveElements()
     ContextBroadcastIntent(&intent);
 }
 
-void RideRestoreProvisionalTrackPiece()
-{
-    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
-    {
-        RideId rideIndex;
-        int32_t direction, type, liftHillAndAlternativeState;
-        CoordsXYZ trackPos;
-        if (WindowRideConstructionUpdateState(&type, &direction, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr))
-        {
-            RideConstructionRemoveGhosts();
-        }
-        else
-        {
-            _currentTrackPrice = PlaceProvisionalTrackPiece(rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
-            WindowRideConstructionUpdateActiveElements();
-        }
-    }
-}
-
-void RideRemoveProvisionalTrackPiece()
-{
-    auto rideIndex = _currentRideIndex;
-    auto ride = GetRide(rideIndex);
-    if (ride == nullptr || !(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
-    {
-        return;
-    }
-
-    int32_t x = _unkF440C5.x;
-    int32_t y = _unkF440C5.y;
-    int32_t z = _unkF440C5.z;
-
-    const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isMaze))
-    {
-        const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
-        const CoordsXYZD quadrants[kNumOrthogonalDirections] = {
-            { x, y, z, 0 },
-            { x, y + 16, z, 1 },
-            { x + 16, y + 16, z, 2 },
-            { x + 16, y, z, 3 },
-        };
-        for (const auto& quadrant : quadrants)
-        {
-            auto gameAction = MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
-            gameAction.SetFlags(flags);
-            auto res = GameActions::Execute(&gameAction);
-        }
-    }
-    else
-    {
-        int32_t direction = _unkF440C5.direction;
-        if (!(direction & 4))
-        {
-            x -= CoordsDirectionDelta[direction].x;
-            y -= CoordsDirectionDelta[direction].y;
-        }
-        CoordsXYE next_track;
-        if (TrackBlockGetNextFromZero({ x, y, z }, *ride, direction, &next_track, &z, &direction, true))
-        {
-            auto trackType = next_track.element->AsTrack()->GetTrackType();
-            int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();
-            auto trackRemoveAction = TrackRemoveAction{ trackType,
-                                                        trackSequence,
-                                                        { next_track.x, next_track.y, z, static_cast<Direction>(direction) } };
-            trackRemoveAction.SetFlags(
-                GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-            GameActions::Execute(&trackRemoveAction);
-        }
-    }
-}
-
 /**
  *
  *  rct2: 0x006C96C0
@@ -555,7 +483,8 @@ void RideConstructionRemoveGhosts()
     }
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
     {
-        RideRemoveProvisionalTrackPiece();
+        auto intent = Intent(INTENT_ACTION_REMOVE_PROVISIONAL_TRACK_PIECE);
+        ContextBroadcastIntent(&intent);
         _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_TRACK;
     }
 }

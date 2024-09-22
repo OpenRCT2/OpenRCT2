@@ -34,6 +34,7 @@ namespace OpenRCT2::Ui::Windows
     extern ScatterToolDensity gWindowSceneryScatterDensity;
     extern uint8_t gWindowSceneryRotation;
     extern bool gWindowSceneryEyedropperEnabled;
+    extern bool gDisableErrorWindowSound;
 
     WindowBase* AboutOpen();
     void WindowCampaignRefreshRides();
@@ -198,6 +199,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* RideConstructionOpen();
     void WindowRideConstructionUpdateActiveElementsImpl();
     void WindowRideConstructionUpdateEnabledTrackPieces();
+    money64 PlaceProvisionalTrackPiece(
+        RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
+        const CoordsXYZ& trackPos);
+    void RideRestoreProvisionalTrackPiece();
+    void RideRemoveProvisionalTrackPiece();
 
     WindowBase* TopToolbarOpen();
 

@@ -447,8 +447,6 @@ extern uint32_t gWindowUpdateTicks;
 
 extern colour_t gCurrentWindowColours[3];
 
-extern bool gDisableErrorWindowSound;
-
 std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w);
 void WindowVisitEach(std::function<void(WindowBase*)> func);
 
@@ -534,12 +532,3 @@ void WindowInitAll();
 
 void WindowFollowSprite(WindowBase& w, EntityId spriteIndex);
 void WindowUnfollowSprite(WindowBase& w);
-
-bool WindowRideConstructionUpdateState(
-    int32_t* trackType, int32_t* trackDirection, RideId* rideIndex, int32_t* _liftHillAndAlternativeState, CoordsXYZ* trackPos,
-    int32_t* properties);
-money64 PlaceProvisionalTrackPiece(
-    RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
-    const CoordsXYZ& trackPos);
-
-extern OpenRCT2::RideConstructionState _rideConstructionState2;
