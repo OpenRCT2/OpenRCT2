@@ -750,15 +750,17 @@ namespace OpenRCT2::Ui::Windows
 
             SetPressedTab();
 
+            const bool isFlatland = _settings.algorithm == MapGenAlgorithm::blank;
+
             SetWidgetDisabled(WIDX_TREE_LAND_RATIO, !_settings.trees);
             SetWidgetDisabled(WIDX_TREE_LAND_RATIO_UP, !_settings.trees);
             SetWidgetDisabled(WIDX_TREE_LAND_RATIO_DOWN, !_settings.trees);
             SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN, !_settings.trees);
             SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN_UP, !_settings.trees);
             SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN_DOWN, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_UP, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_DOWN, !_settings.trees);
+            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX, !_settings.trees || isFlatland);
+            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_UP, !_settings.trees || isFlatland);
+            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_DOWN, !_settings.trees || isFlatland);
         }
 
         void ForestsDraw(DrawPixelInfo& dpi)
@@ -796,16 +798,19 @@ namespace OpenRCT2::Ui::Windows
                 STR_RIDE_LENGTH_ENTRY, ft, { textColour });
 
             // Maximum tree altitude, label and value
+            const bool isFlatland = _settings.algorithm == MapGenAlgorithm::blank;
+            const auto maxTreeTextColour = _settings.trees && !isFlatland ? enabledColour : disabledColour;
+
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 }, STR_MAPGEN_TREE_MAX_ALTITUDE,
-                {}, { textColour });
+                {}, { maxTreeTextColour });
 
             ft = Formatter();
             ft.Add<int16_t>(BaseZToMetres(_settings.maxTreeAltitude));
             DrawTextBasic(
                 dpi,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_ALTITUDE_MAX].left + 1, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 },
-                STR_RIDE_LENGTH_ENTRY, ft, { textColour });
+                STR_RIDE_LENGTH_ENTRY, ft, { maxTreeTextColour });
         }
 
 #pragma endregion
@@ -1188,17 +1193,14 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
 
             // Only allow floor and wall texture options if random terrain is disabled
-            if (!_randomTerrain)
-            {
-                SetWidgetEnabled(WIDX_FLOOR_TEXTURE, true);
-                SetWidgetEnabled(WIDX_WALL_TEXTURE, true);
-            }
-            else
-            {
-                SetWidgetEnabled(WIDX_FLOOR_TEXTURE, false);
-                SetWidgetEnabled(WIDX_WALL_TEXTURE, false);
-            }
+            SetWidgetEnabled(WIDX_FLOOR_TEXTURE, !_randomTerrain);
+            SetWidgetEnabled(WIDX_WALL_TEXTURE, !_randomTerrain);
 
+            // Max land height option is irrelevant for flatland
+            SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH, _settings.algorithm != MapGenAlgorithm::blank);
+
+            // Only offer terrain edge smoothing if we don't use flatland terrain
+            SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.algorithm != MapGenAlgorithm::blank);
             SetPressedTab();
         }
 
@@ -1208,34 +1210,37 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImages(dpi);
             DrawDropdownButtons(dpi, WIDX_FLOOR_TEXTURE, WIDX_WALL_TEXTURE);
 
-            const auto textColour = colours[1];
+            const auto enabledColour = colours[1];
+            const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
             // Floor texture label
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL, {},
-                { textColour });
+                { enabledColour });
 
             // Minimum land height label and value
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_LOW].top + 1 }, STR_MAPGEN_MIN_LAND_HEIGHT, {},
-                { textColour });
+                { enabledColour });
 
             auto ft = Formatter();
             ft.Add<int32_t>(BaseZToMetres(_settings.heightmapLow));
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_LOW].left + 1, widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
-                STR_RIDE_LENGTH_ENTRY, ft, { textColour });
+                STR_RIDE_LENGTH_ENTRY, ft, { enabledColour });
+
+            const auto maxLandColour = IsWidgetDisabled(WIDX_HEIGHTMAP_HIGH) ? disabledColour : enabledColour;
 
             // Maximum land height label and value
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 }, STR_MAPGEN_MAX_LAND_HEIGHT, {},
-                { textColour });
+                { maxLandColour });
 
             ft = Formatter();
             ft.Add<int32_t>(BaseZToMetres(_settings.heightmapHigh));
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_HIGH].left + 1, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
-                STR_RIDE_LENGTH_ENTRY, ft, { textColour });
+                STR_RIDE_LENGTH_ENTRY, ft, { maxLandColour });
         }
 
 #pragma endregion
