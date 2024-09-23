@@ -678,15 +678,7 @@ namespace OpenRCT2::Config
     {
         LOG_VERBOSE("config_find_rct1_path(...)");
 
-        static constexpr u8string_view searchLocations[] = {
-            R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
-            R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
-            R"(C:\GOG Games\RollerCoaster Tycoon Deluxe)",
-            R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon Deluxe)",
-            R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon Deluxe)",
-            R"(C:\Program Files\Hasbro Interactive\RollerCoaster Tycoon)",
-            R"(C:\Program Files (x86)\Hasbro Interactive\RollerCoaster Tycoon)",
-        };
+        std::vector<u8string_view> searchLocations = Platform::GetSearchablePathsRCT1();
 
         for (const auto& location : searchLocations)
         {
@@ -723,19 +715,7 @@ namespace OpenRCT2::Config
     {
         LOG_VERBOSE("config_find_rct2_path(...)");
 
-        static constexpr u8string_view searchLocations[] = {
-            R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon 2)",
-            R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files\Atari\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Atari\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files\Infogrames\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files\Infogrames Interactive\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2)",
-        };
+        std::vector<u8string_view> searchLocations = Platform::GetSearchablePathsRCT2();
 
         for (const auto& location : searchLocations)
         {
