@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/FileSystem.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
@@ -71,7 +72,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SIMPLEX_OCTAVES_DOWN,
 
         WIDX_HEIGHTMAP_GROUP,
-        WIDX_HEIGHTMAP_SELECT,
+        WIDX_HEIGHTMAP_BROWSE,
         WIDX_HEIGHTMAP_NORMALIZE,
         WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP,
         WIDX_HEIGHTMAP_STRENGTH,
@@ -132,11 +133,11 @@ namespace OpenRCT2::Ui::Windows
         MakeSpinnerWidgets({179, 107}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
         MakeSpinnerWidgets({179, 125}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
 
-        MakeWidget        ({  5,  90}, {290, 70}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
-        MakeWidget        ({179, 107}, {109, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_SELECT
-        MakeWidget        ({ 10, 107}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
-        MakeWidget        ({ 10, 125}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
-        MakeSpinnerWidgets({179, 141}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
+        MakeWidget        ({  5,  90}, {290, 86}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
+        MakeWidget        ({223, 107}, { 65, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
+        MakeWidget        ({ 10, 125}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
+        MakeWidget        ({ 10, 141}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
+        MakeSpinnerWidgets({179, 157}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
         kWidgetsEnd,
     };
 
@@ -270,6 +271,7 @@ namespace OpenRCT2::Ui::Windows
         MapGenSettings _settings{};
         bool _randomTerrain = true;
         bool _heightmapLoaded = false;
+        std::string _heightmapFilename{};
 
         void SetPage(int32_t newPage)
         {
@@ -586,7 +588,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // clang-format off
             BaseWidgets[WIDX_HEIGHTMAP_GROUP].type            = state ? WindowWidgetType::Groupbox : WindowWidgetType::Empty;
-            BaseWidgets[WIDX_HEIGHTMAP_SELECT].type           = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            BaseWidgets[WIDX_HEIGHTMAP_BROWSE].type           = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
             BaseWidgets[WIDX_HEIGHTMAP_NORMALIZE].type        = state ? WindowWidgetType::Checkbox : WindowWidgetType::Empty;
             BaseWidgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].type = state ? WindowWidgetType::Checkbox : WindowWidgetType::Empty;
             BaseWidgets[WIDX_HEIGHTMAP_STRENGTH].type         = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
@@ -935,7 +937,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 // Page widgets
-                case WIDX_HEIGHTMAP_SELECT:
+                case WIDX_HEIGHTMAP_BROWSE:
                 {
                     auto intent = Intent(WindowClass::Loadsave);
                     intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
@@ -975,17 +977,27 @@ namespace OpenRCT2::Ui::Windows
             const bool strengthDisabled = IsWidgetDisabled(WIDX_HEIGHTMAP_STRENGTH) || !_settings.smooth_height_map;
             const auto strengthColour = strengthDisabled ? disabledColour : enabledColour;
 
+            // Smooth strength label
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 24, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
                 { strengthColour });
 
+            // Smooth strength value
             auto ft = Formatter();
             ft.Add<uint16_t>(_settings.smooth_strength);
-            DrawTextBasic(
-                dpi,
-                windowPos
-                    + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_STRENGTH].left + 1, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 },
-                STR_COMMA16, ft, { strengthColour });
+            auto pos = ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_STRENGTH].left + 1, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 };
+            DrawTextBasic(dpi, windowPos + pos, STR_COMMA16, ft, { strengthColour });
+
+            // Current heightmap image filename
+            ft = Formatter();
+            if (!_heightmapLoaded)
+                ft.Add<char*>(LanguageGetString(STR_MAPGEN_NONE_SELECTED));
+            else
+                ft.Add<char*>(_heightmapFilename.c_str());
+
+            pos = ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_BROWSE].top + 1 };
+            auto textWidth = widgets[WIDX_HEIGHTMAP_BROWSE].left - 11;
+            DrawTextEllipsised(dpi, windowPos + pos, textWidth, STR_MAPGEN_CURRENT_HEIGHTMAP_FILE, ft);
         }
 
 #pragma endregion
@@ -1507,6 +1519,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // The window needs to be open while using the map
                 _heightmapLoaded = true;
+                _heightmapFilename = fs::u8path(path).filename().string();
                 SetPage(WINDOW_MAPGEN_PAGE_BASE);
             }
         }

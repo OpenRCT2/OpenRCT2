@@ -3776,6 +3776,9 @@ STR_6701    :Enter Base Frequency between {COMMA2DP32} and {COMMA2DP32}
 STR_6702    :Simplex Octaves
 STR_6703    :Enter Octaves between {COMMA16} and {COMMA16}
 STR_6704    :{COMMA2DP32}
+STR_6705    :Browse...
+STR_6706    :{WINDOW_COLOUR_2}Current image file: {BLACK}{STRING}
+STR_6707    :(none selected)
 
 #############
 # Scenarios #
