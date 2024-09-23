@@ -492,6 +492,8 @@ namespace OpenRCT2::Ui::Windows
         {
             if (_settings.algorithm == MapGenAlgorithm::simplexNoise)
                 SimplexTextInput(widgetIndex, value);
+            else if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
+                HeightmapTextInput(widgetIndex, value);
 
             switch (widgetIndex)
             {
@@ -954,11 +956,23 @@ namespace OpenRCT2::Ui::Windows
                     InvalidateWidget(WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
                     InvalidateWidget(WIDX_HEIGHTMAP_STRENGTH);
                     break;
+
                 case WIDX_HEIGHTMAP_NORMALIZE:
                     _settings.normalize_height = !_settings.normalize_height;
                     SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
                     InvalidateWidget(WIDX_HEIGHTMAP_NORMALIZE);
                     break;
+
+                case WIDX_HEIGHTMAP_STRENGTH:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(1);
+                    ft.Add<int16_t>(20);
+                    WindowTextInputOpen(
+                        this, widgetIndex, STR_SMOOTH_STRENGTH, STR_ENTER_SMOOTH_STRENGTH, ft, STR_FORMAT_INTEGER,
+                        _settings.smooth_strength, 2);
+                    break;
+                }
             }
         }
 
@@ -998,6 +1012,16 @@ namespace OpenRCT2::Ui::Windows
             pos = ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_BROWSE].top + 1 };
             auto textWidth = widgets[WIDX_HEIGHTMAP_BROWSE].left - 11;
             DrawTextEllipsised(dpi, windowPos + pos, textWidth, STR_MAPGEN_CURRENT_HEIGHTMAP_FILE, ft);
+        }
+
+        void HeightmapTextInput(WidgetIndex widgetIndex, int32_t value)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_HEIGHTMAP_STRENGTH:
+                    _settings.smooth_strength = std::clamp(value, 1, 20);
+                    break;
+            }
         }
 
 #pragma endregion

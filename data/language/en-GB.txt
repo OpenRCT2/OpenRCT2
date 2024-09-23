@@ -3779,6 +3779,8 @@ STR_6704    :{COMMA2DP32}
 STR_6705    :Browse...
 STR_6706    :{WINDOW_COLOUR_2}Current image file: {BLACK}{STRING}
 STR_6707    :(none selected)
+STR_6708    :Smooth Strength
+STR_6709    :Enter Smooth Strength between {COMMA16} and {COMMA16}
 
 #############
 # Scenarios #
