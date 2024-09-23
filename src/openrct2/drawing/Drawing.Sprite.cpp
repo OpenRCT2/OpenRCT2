@@ -225,6 +225,27 @@ void MaskScalar(
     }
 }
 
+static void MaskMagnify(
+    const ZoomLevel zoom, int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
+    uint8_t* RESTRICT dst, int32_t maskStride, int32_t colourStride, int32_t dstStride, int32_t srcX, int32_t srcY)
+{
+    for (int32_t y = 0; y < height; y++)
+    {
+        auto nextDst = dst + dstStride;
+        for (int32_t x = 0; x < width; x++, dst++)
+        {
+            auto srcMask = maskSrc + (maskStride * zoom.ApplyTo(srcY + y) + zoom.ApplyTo(srcX + x));
+            auto srcColour = colourSrc + (colourStride * zoom.ApplyTo(srcY + y) + zoom.ApplyTo(srcX + x));
+            const uint8_t colour = (*srcColour) & (*srcMask);
+            if (colour != 0)
+            {
+                *dst = colour;
+            }
+        }
+        dst = nextDst;
+    }
+}
+
 static Gx _g1 = {};
 static Gx _g2 = {};
 static Gx _csg = {};
@@ -729,20 +750,21 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
         return;
     }
 
-    if (dpi.zoom_level != ZoomLevel{ 0 })
+    ZoomLevel zoom = dpi.zoom_level;
+    if (dpi.zoom_level > ZoomLevel{ 0 })
     {
-        // TODO: Implement other zoom levels (probably not used though)
-        // assert(false); // TODO (mber) complete work for sofware zooming or revert change.
-        return;
+        assert(false);
     }
 
-    width = std::min(imgMask->width, imgColour->width);
-    height = std::min(imgMask->height, imgColour->height);
+    width = zoom.ApplyInversedTo(std::min(imgMask->width, imgColour->width));
+    height = zoom.ApplyInversedTo(std::min(imgMask->height, imgColour->height));
 
-    auto offsetCoords = scrCoords + ScreenCoordsXY{ imgMask->x_offset, imgMask->y_offset };
+    ScreenCoordsXY offsetCoords = scrCoords + ScreenCoordsXY{ imgMask->x_offset, imgMask->y_offset };
+    offsetCoords.x = dpi.zoom_level.ApplyInversedTo(offsetCoords.x);
+    offsetCoords.y = dpi.zoom_level.ApplyInversedTo(offsetCoords.y);
 
-    left = std::max<int32_t>(dpi.ScreenX(), offsetCoords.x);
-    top = std::max<int32_t>(dpi.ScreenY(), offsetCoords.y);
+    left = std::max(dpi.ScreenX(), offsetCoords.x);
+    top = std::max(dpi.ScreenY(), offsetCoords.y);
     right = std::min(dpi.ScreenX() + dpi.ScreenWidth(), offsetCoords.x + width);
     bottom = std::min(dpi.ScreenY() + dpi.ScreenHeight(), offsetCoords.y + height);
 
@@ -751,12 +773,19 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     if (width < 0 || height < 0)
         return;
 
+    uint8_t* dst = dpi.bits + (left - dpi.ScreenX()) + ((top - dpi.ScreenY()) * dpi.LineStride());
     int32_t skipX = left - offsetCoords.x;
     int32_t skipY = top - offsetCoords.y;
+    if (zoom < ZoomLevel{ 0 })
+    {
+        MaskMagnify(
+            zoom, width, height, imgMask->offset, imgColour->offset, dst, imgMask->width, imgColour->width, dpi.LineStride(),
+            skipX, skipY);
+        return;
+    }
 
     uint8_t const* maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
     uint8_t const* colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
-    uint8_t* dst = dpi.bits + (left - dpi.ScreenX()) + ((top - dpi.ScreenY()) * dpi.LineStride());
 
     int32_t maskWrap = imgMask->width - width;
     int32_t colourWrap = imgColour->width - width;
