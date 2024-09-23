@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../util/Util.h"
+
 template<typename THolderType, typename TEnumType> struct FlagHolder
 {
     THolderType holder{};

@@ -2240,7 +2240,7 @@ namespace OpenRCT2::Ui::Windows
                                 // Reset ghost track if ride construction window is open, prevents a crash
                                 // Will get set to the correct Alternative variable during set_default_next_piece.
                                 // TODO: Rework construction window to prevent the need for this.
-                                _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
+                                _currentTrackAlternative.clearAll();
                                 RideConstructionSetDefaultNextPiece();
                             });
                             GameActions::Execute(&rideSetSetting);
