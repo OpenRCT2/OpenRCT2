@@ -3746,6 +3746,8 @@ STR_6667    :Fauna
 STR_6668    :Trucchi personale
 STR_6669    :Mostra i trucchi sul personale
 STR_6670    :Comportamento visitatori
+STR_6671    :Mostra i “veri” nomi del personale
+STR_6672    :Alterna tra i nomi “veri” del personale e i loro numeri
 
 
 #############
