@@ -240,7 +240,7 @@ namespace OpenRCT2::Ui::Windows
             _currentlySelectedTrack = currentRide->GetRideTypeDescriptor().StartTrackPiece;
             _currentTrackPitchEnd = TrackPitch::None;
             _currentTrackRollEnd = TrackRoll::None;
-            _currentTrackLiftHill = 0;
+            _currentTrackHasLiftHill = false;
             _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
             if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
@@ -424,7 +424,7 @@ namespace OpenRCT2::Ui::Windows
                     disabledWidgets |= 1uLL << WIDX_CHAIN_LIFT | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                 // Disable upward slope if current track piece is not flat
                 if ((_previousTrackPitchEnd != TrackPitch::None || _previousTrackRollEnd != TrackRoll::None)
-                    && !(_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED))
+                    && !(_currentTrackHasLiftHill))
                     disabledWidgets |= (1uLL << WIDX_SLOPE_UP);
             }
             if (_rideConstructionState == RideConstructionState::State0)
@@ -739,7 +739,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN);
             }
-            if ((_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
             {
                 if (_currentTrackPitchEnd != TrackPitch::None && !IsTrackEnabled(TrackGroup::liftHillCurve))
                 {
@@ -1318,9 +1318,8 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_CHAIN_LIFT:
                     RideConstructionInvalidateCurrentTrack();
-                    _currentTrackLiftHill ^= CONSTRUCTION_LIFT_HILL_SELECTED;
-                    if ((_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
-                        && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+                    _currentTrackHasLiftHill = !_currentTrackHasLiftHill;
+                    if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
                         _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
@@ -1405,7 +1404,7 @@ namespace OpenRCT2::Ui::Windows
                     RideConstructionInvalidateCurrentTrack();
                     _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
                     if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
-                        _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+                        _currentTrackHasLiftHill = false;
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
                     break;
@@ -1460,7 +1459,7 @@ namespace OpenRCT2::Ui::Windows
                 case TrackElemType::LeftVerticalLoop:
                 case TrackElemType::RightVerticalLoop:
                     _currentTrackRollEnd = TrackRoll::None;
-                    _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+                    _currentTrackHasLiftHill = false;
                     break;
                 case TrackElemType::BlockBrakes:
                 case TrackElemType::DiagBlockBrakes:
@@ -1734,7 +1733,7 @@ namespace OpenRCT2::Ui::Windows
                 && (_currentTrackPitchEnd == TrackPitch::Up25 || _currentTrackPitchEnd == TrackPitch::Up60)
                 && !gameState.Cheats.EnableAllDrawableTrackPieces)
             {
-                _currentTrackLiftHill |= CONSTRUCTION_LIFT_HILL_SELECTED;
+                _currentTrackHasLiftHill = true;
             }
 
             if ((IsTrackEnabled(TrackGroup::liftHill) && !_currentlySelectedTrack.isTrackType)
@@ -2130,7 +2129,7 @@ namespace OpenRCT2::Ui::Windows
                 pressedWidgets |= (1uLL << widgetIndex);
             }
 
-            if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
+            if (_currentTrackHasLiftHill)
                 pressedWidgets |= (1uLL << WIDX_CHAIN_LIFT);
 
             pressed_widgets = pressedWidgets;
@@ -2469,7 +2468,7 @@ namespace OpenRCT2::Ui::Windows
                     case TrackPitch::Up60:
                         break;
                     default:
-                        _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+                        _currentTrackHasLiftHill = false;
                         break;
                 }
             }
@@ -3662,7 +3661,7 @@ namespace OpenRCT2::Ui::Windows
                     auto savePreviousTrackRollEnd = _previousTrackRollEnd;
                     auto saveCurrentTrackRollEnd = _currentTrackRollEnd;
                     int32_t saveCurrentTrackAlternative = _currentTrackAlternative;
-                    int32_t saveCurrentTrackLiftHill = _currentTrackLiftHill;
+                    auto savedCurrentTrackLiftHill = _currentTrackHasLiftHill;
 
                     RideInitialiseConstructionWindow(*ride);
 
@@ -3673,7 +3672,7 @@ namespace OpenRCT2::Ui::Windows
                     _previousTrackRollEnd = savePreviousTrackRollEnd;
                     _currentTrackRollEnd = saveCurrentTrackRollEnd;
                     _currentTrackAlternative = saveCurrentTrackAlternative;
-                    _currentTrackLiftHill = saveCurrentTrackLiftHill;
+                    _currentTrackHasLiftHill = savedCurrentTrackLiftHill;
 
                     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, state->position.x);
                     break;
@@ -4210,7 +4209,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         if (!WidgetIsDisabled(*w, WIDX_CHAIN_LIFT) && w->widgets[WIDX_CHAIN_LIFT].type != WindowWidgetType::Empty
-            && _currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
+            && _currentTrackHasLiftHill)
         {
             w->OnMouseDown(WIDX_CHAIN_LIFT);
         }
@@ -4585,7 +4584,7 @@ namespace OpenRCT2::Ui::Windows
             auto savedPreviousTrackRollEnd = _previousTrackRollEnd;
             auto savedCurrentTrackRollEnd = _currentTrackRollEnd;
             int32_t savedCurrentTrackAlternative = _currentTrackAlternative;
-            int32_t savedCurrentTrackLiftHill = _currentTrackLiftHill;
+            auto savedCurrentTrackLiftHill = _currentTrackHasLiftHill;
             RideConstructionSetDefaultNextPiece();
             WindowRideConstructionUpdateActiveElements();
             auto ride = GetRide(_currentRideIndex);
@@ -4601,7 +4600,7 @@ namespace OpenRCT2::Ui::Windows
                     _previousTrackRollEnd = savedPreviousTrackRollEnd;
                     _currentTrackRollEnd = savedCurrentTrackRollEnd;
                     _currentTrackAlternative = savedCurrentTrackAlternative;
-                    _currentTrackLiftHill = savedCurrentTrackLiftHill;
+                    _currentTrackHasLiftHill = savedCurrentTrackLiftHill;
                     WindowRideConstructionUpdateActiveElements();
                 }
             }
@@ -4847,7 +4846,7 @@ namespace OpenRCT2::Ui::Windows
         track_type_t trackType = std::get<1>(updated_element);
         liftHillAndInvertedState = 0;
         rideIndex = _currentRideIndex;
-        if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
+        if (_currentTrackHasLiftHill)
         {
             liftHillAndInvertedState |= CONSTRUCTION_LIFT_HILL_SELECTED;
         }
@@ -4953,7 +4952,7 @@ namespace OpenRCT2::Ui::Windows
         if (turnOffLiftHill && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
         {
             liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
-            _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+            _currentTrackHasLiftHill = false;
 
             if (trackType == TrackElemType::LeftCurvedLiftHill || trackType == TrackElemType::RightCurvedLiftHill)
             {

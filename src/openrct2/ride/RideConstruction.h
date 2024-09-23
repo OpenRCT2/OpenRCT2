@@ -55,7 +55,7 @@ extern uint8_t _currentTrackSelectionFlags;
 extern uint32_t _rideConstructionNextArrowPulse;
 extern TrackPitch _currentTrackPitchEnd;
 extern TrackRoll _currentTrackRollEnd;
-extern uint8_t _currentTrackLiftHill;
+extern bool _currentTrackHasLiftHill;
 extern uint8_t _currentTrackAlternative;
 extern track_type_t _selectedTrackType;
 

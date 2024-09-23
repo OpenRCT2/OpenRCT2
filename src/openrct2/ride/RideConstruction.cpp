@@ -66,7 +66,7 @@ uint8_t _currentTrackSelectionFlags;
 uint32_t _rideConstructionNextArrowPulse = 0;
 TrackPitch _currentTrackPitchEnd;
 TrackRoll _currentTrackRollEnd;
-uint8_t _currentTrackLiftHill;
+bool _currentTrackHasLiftHill;
 uint8_t _currentTrackAlternative;
 track_type_t _selectedTrackType;
 
@@ -543,7 +543,7 @@ static void ride_construction_reset_current_piece()
         _currentlySelectedTrack = rtd.StartTrackPiece;
         _currentTrackPitchEnd = TrackPitch::None;
         _currentTrackRollEnd = TrackRoll::None;
-        _currentTrackLiftHill = 0;
+        _currentTrackHasLiftHill = false;
         _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
         if (rtd.HasFlag(RtdFlag::startConstructionInverted))
         {
@@ -630,7 +630,7 @@ void RideConstructionSetDefaultNextPiece()
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
-            _currentTrackLiftHill = tileElement->AsTrack()->HasChain()
+            _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain()
                 && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
                     || GetGameState().Cheats.EnableChainLiftOnAllTrack);
             break;
@@ -680,7 +680,7 @@ void RideConstructionSetDefaultNextPiece()
             _previousTrackPitchEnd = slope;
             if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
             {
-                _currentTrackLiftHill = tileElement->AsTrack()->HasChain();
+                _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain();
             }
             break;
         }
@@ -1045,7 +1045,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     _currentlySelectedTrack = ride.GetRideTypeDescriptor().StartTrackPiece;
     _currentTrackPitchEnd = TrackPitch::None;
     _currentTrackRollEnd = TrackRoll::None;
-    _currentTrackLiftHill = 0;
+    _currentTrackHasLiftHill = false;
     _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
     if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
