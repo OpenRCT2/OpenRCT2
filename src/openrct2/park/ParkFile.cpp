@@ -375,7 +375,7 @@ namespace OpenRCT2
                     });
 
                 // Append guest names object to old park files
-                if (version <= 36)
+                if (version < kPeepNamesObjectsVersion)
                 {
                     AppendRequiredObjects(
                         requiredObjects, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
