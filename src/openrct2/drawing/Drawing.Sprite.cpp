@@ -760,8 +760,8 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     height = zoom.ApplyInversedTo(std::min(imgMask->height, imgColour->height));
 
     ScreenCoordsXY offsetCoords = scrCoords + ScreenCoordsXY{ imgMask->x_offset, imgMask->y_offset };
-    offsetCoords.x = dpi.zoom_level.ApplyInversedTo(offsetCoords.x);
-    offsetCoords.y = dpi.zoom_level.ApplyInversedTo(offsetCoords.y);
+    offsetCoords.x = zoom.ApplyInversedTo(offsetCoords.x);
+    offsetCoords.y = zoom.ApplyInversedTo(offsetCoords.y);
 
     left = std::max(dpi.ScreenX(), offsetCoords.x);
     top = std::max(dpi.ScreenY(), offsetCoords.y);

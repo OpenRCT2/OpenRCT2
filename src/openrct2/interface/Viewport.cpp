@@ -1074,7 +1074,6 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi)
         else
         {
             ViewportPaintColumn(*session);
-            DebugDPI(session->DPI); // TODO. Debug change. Revert. (mber)
         }
     }
     if (useParallelDrawing)
