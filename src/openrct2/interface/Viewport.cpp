@@ -2026,14 +2026,5 @@ void ViewportSetSavedView()
 
 ZoomLevel ZoomLevel::min()
 {
-    // TODO (mber) complete work for sofware zooming or revert change.
     return ZoomLevel{ -2 };
-    // #ifndef DISABLE_OPENGL
-    //     if (drawing_engine_get_type() == DrawingEngine::OpenGL)
-    //     {
-    //         return ZoomLevel{ -2 };
-    //     }
-    // #endif
-    //
-    //     return ZoomLevel{ 0 };
 }

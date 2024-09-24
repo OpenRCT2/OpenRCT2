@@ -607,9 +607,8 @@ uint8_t OpenGLDrawingContext::ComputeOutCode(
 // based on: https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
 bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawPixelInfo& dpi)
 {
-    // TODO (mber) make this work entirely with screen coords.
-    ScreenCoordsXY topLeft = { dpi.WorldX(), dpi.WorldY() };
-    ScreenCoordsXY bottomRight = { dpi.WorldX() + dpi.WorldWidth() - 1, dpi.WorldY() + dpi.WorldHeight() - 1 };
+    ScreenCoordsXY topLeft = { dpi.ScreenX(), dpi.ScreenY() };
+    ScreenCoordsXY bottomRight = { dpi.ScreenX() + dpi.ScreenWidth() - 1, dpi.ScreenY() + dpi.ScreenHeight() - 1 };
     uint8_t outcode1 = ComputeOutCode(line.Point1, topLeft, bottomRight);
     uint8_t outcode2 = ComputeOutCode(line.Point2, topLeft, bottomRight);
 
@@ -672,8 +671,9 @@ bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawP
 
 void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line)
 {
-    // TODO (mber) make this work entirely with screen coords.
-    ScreenLine trimmedLine = line;
+    const ZoomLevel zoom = dpi.zoom_level;
+    ScreenLine trimmedLine = { { zoom.ApplyInversedTo(line.GetX1()), zoom.ApplyInversedTo(line.GetY1()) },
+                               { zoom.ApplyInversedTo(line.GetX2()), zoom.ApplyInversedTo(line.GetY2()) } };
     if (!CohenSutherlandLineClip(trimmedLine, dpi))
         return;
 
@@ -681,10 +681,10 @@ void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const S
 
     DrawLineCommand& command = _commandBuffers.lines.allocate();
 
-    const int32_t x1 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetX1() - dpi.WorldX()) + _clipLeft;
-    const int32_t y1 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetY1() - dpi.WorldY()) + _clipTop;
-    const int32_t x2 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetX2() - dpi.WorldX()) + _clipLeft;
-    const int32_t y2 = dpi.zoom_level.ApplyInversedTo(trimmedLine.GetY2() - dpi.WorldY()) + _clipTop;
+    const int32_t x1 = trimmedLine.GetX1() - dpi.ScreenX() + _clipLeft;
+    const int32_t y1 = trimmedLine.GetY1() - dpi.ScreenY() + _clipTop;
+    const int32_t x2 = trimmedLine.GetX2() - dpi.ScreenX() + _clipLeft;
+    const int32_t y2 = trimmedLine.GetY2() - dpi.ScreenY() + _clipTop;
 
     command.bounds = { x1, y1, x2, y2 };
     command.colour = colour & 0xFF;

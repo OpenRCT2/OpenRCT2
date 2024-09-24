@@ -18,13 +18,10 @@
  */
 static void GfxDrawLineOnBuffer(DrawPixelInfo& dpi, char colour, const ScreenCoordsXY& coords, int32_t no_pixels)
 {
-    ScreenCoordsXY offset{ coords.x - dpi.WorldX(), coords.y - dpi.WorldY() };
+    ScreenCoordsXY offset{ coords.x - dpi.ScreenX(), coords.y - dpi.ScreenY() };
 
-    offset.x = dpi.zoom_level.ApplyInversedTo(offset.x);
-    offset.y = dpi.zoom_level.ApplyInversedTo(offset.y);
-    no_pixels = dpi.zoom_level.ApplyInversedTo(no_pixels);
-    const int32_t width = dpi.zoom_level.ApplyInversedTo(dpi.WorldWidth());
-    const int32_t height = dpi.zoom_level.ApplyInversedTo(dpi.WorldHeight());
+    const int32_t width = dpi.ScreenWidth();
+    const int32_t height = dpi.ScreenHeight();
 
     // Check to make sure point is in the y range
     if (offset.y < 0)
@@ -57,7 +54,7 @@ static void GfxDrawLineOnBuffer(DrawPixelInfo& dpi, char colour, const ScreenCoo
     }
 
     // Get the buffer we are drawing to and move to the first coordinate.
-    uint8_t* bits_pointer = dpi.bits + offset.y * (static_cast<int64_t>(dpi.pitch) + static_cast<int64_t>(width)) + offset.x;
+    uint8_t* bits_pointer = dpi.bits + offset.y * dpi.LineStride() + offset.x;
 
     // Draw the line to the specified colour
     for (; no_pixels > 0; --no_pixels, ++bits_pointer)
@@ -79,28 +76,28 @@ static void GfxDrawLineOnBuffer(DrawPixelInfo& dpi, char colour, const ScreenCoo
 
 void GfxDrawLineSoftware(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour)
 {
-    // TODO: (mber) Rewrite to work with screen DPI coordinates rather than world.
-    int32_t x1 = line.GetX1();
-    int32_t x2 = line.GetX2();
-    int32_t y1 = line.GetY1();
-    int32_t y2 = line.GetY2();
+    const ZoomLevel zoom = dpi.zoom_level;
+    int32_t x1 = zoom.ApplyInversedTo(line.GetX1());
+    int32_t x2 = zoom.ApplyInversedTo(line.GetX2());
+    int32_t y1 = zoom.ApplyInversedTo(line.GetY1());
+    int32_t y2 = zoom.ApplyInversedTo(line.GetY2());
     // Check to make sure the line is within the drawing area
-    if ((x1 < dpi.WorldX()) && (x2 < dpi.WorldX()))
+    if ((x1 < dpi.ScreenX()) && (x2 < dpi.ScreenX()))
     {
         return;
     }
 
-    if ((y1 < dpi.WorldY()) && (y2 < dpi.WorldY()))
+    if ((y1 < dpi.ScreenY()) && (y2 < dpi.ScreenY()))
     {
         return;
     }
 
-    if ((x1 > (dpi.WorldX() + dpi.WorldWidth())) && (x2 > (dpi.WorldX() + dpi.WorldWidth())))
+    if ((x1 > (dpi.ScreenX() + dpi.ScreenWidth())) && (x2 > (dpi.ScreenX() + dpi.ScreenWidth())))
     {
         return;
     }
 
-    if ((y1 > (dpi.WorldY() + dpi.WorldHeight())) && (y2 > (dpi.WorldY() + dpi.WorldHeight())))
+    if ((y1 > (dpi.ScreenY() + dpi.ScreenHeight())) && (y2 > (dpi.ScreenY() + dpi.ScreenHeight())))
     {
         return;
     }
