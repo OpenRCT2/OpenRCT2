@@ -145,7 +145,7 @@ const std::string_view DefaultSelectedObjects[] = {
     "rct2.footpath_railings.space",
     "rct2.footpath_railings.wood",
 
-    // Guest name objects
+    // Peep name objects
     "rct2.peep_names.original",
 };
 
