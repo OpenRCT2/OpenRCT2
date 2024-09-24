@@ -666,18 +666,18 @@ namespace OpenRCT2::Ui::Windows
                 {
                     WindowTextInputRawOpen(
                         this, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, gameState.Park.Name.c_str(),
-                        ParkNameMaxLength);
+                        kParkNameMaxLength);
                     break;
                 }
                 case WIDX_SCENARIO_NAME:
                     WindowTextInputRawOpen(
                         this, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, {},
-                        gameState.ScenarioName.c_str(), ScenarioNameMaxLength);
+                        gameState.ScenarioName.c_str(), kScenarioNameMaxLength);
                     break;
                 case WIDX_DETAILS:
                     WindowTextInputRawOpen(
                         this, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, {},
-                        gameState.ScenarioDetails.c_str(), ScenarioDetailsNameMaxLength);
+                        gameState.ScenarioDetails.c_str(), kScenarioDetailsNameMaxLength);
                     break;
             }
         }
