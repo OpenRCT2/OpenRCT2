@@ -14,22 +14,22 @@
 namespace OpenRCT2::Ui::ShortcutId
 {
     // Interface / general
-    constexpr std::string_view InterfaceCloseTop = "interface.general.close_top";
-    constexpr std::string_view InterfaceCloseAll = "interface.general.close_all";
-    constexpr std::string_view InterfaceRotateConstruction = "interface.general.rotate_construction";
-    constexpr std::string_view InterfaceCancelConstruction = "interface.general.cancel_construction";
-    constexpr std::string_view InterfacePause = "interface.general.pause";
-    constexpr std::string_view InterfaceDecreaseSpeed = "interface.misc.decrease_speed";
-    constexpr std::string_view InterfaceIncreaseSpeed = "interface.misc.increase_speed";
-    constexpr std::string_view InterfaceToggleToolbars = "interface.misc.toggle_toolbars";
-    constexpr std::string_view InterfaceScreenshot = "interface.misc.screenshot";
-    constexpr std::string_view InterfaceGiantScreenshot = "interface.misc.giant_screenshot";
-    constexpr std::string_view InterfaceLoadGame = "interface.misc.load_game";
-    constexpr std::string_view InterfaceSaveGame = "interface.misc.save_game";
-    constexpr std::string_view InterfaceMute = "interface.misc.mute";
-    constexpr std::string_view InterfaceSceneryPicker = "interface.misc.scenery_picker";
-    constexpr std::string_view InterfaceDisableClearance = "interface.misc.disable_clearance";
-    constexpr std::string_view InterfaceMultiplayerChat = "interface.misc.multiplayer_chat";
+    constexpr std::string_view kInterfaceCloseTop = "interface.general.close_top";
+    constexpr std::string_view kInterfaceCloseAll = "interface.general.close_all";
+    constexpr std::string_view kInterfaceRotateConstruction = "interface.general.rotate_construction";
+    constexpr std::string_view kInterfaceCancelConstruction = "interface.general.cancel_construction";
+    constexpr std::string_view kInterfacePause = "interface.general.pause";
+    constexpr std::string_view kInterfaceDecreaseSpeed = "interface.misc.decrease_speed";
+    constexpr std::string_view kInterfaceIncreaseSpeed = "interface.misc.increase_speed";
+    constexpr std::string_view kInterfaceToggleToolbars = "interface.misc.toggle_toolbars";
+    constexpr std::string_view kInterfaceScreenshot = "interface.misc.screenshot";
+    constexpr std::string_view kInterfaceGiantScreenshot = "interface.misc.giant_screenshot";
+    constexpr std::string_view kInterfaceLoadGame = "interface.misc.load_game";
+    constexpr std::string_view kInterfaceSaveGame = "interface.misc.save_game";
+    constexpr std::string_view kInterfaceMute = "interface.misc.mute";
+    constexpr std::string_view kInterfaceSceneryPicker = "interface.misc.scenery_picker";
+    constexpr std::string_view kInterfaceDisableClearance = "interface.misc.disable_clearance";
+    constexpr std::string_view kInterfaceMultiplayerChat = "interface.misc.multiplayer_chat";
 
     // Interface / graphics
     constexpr std::string_view InterfaceScaleToggleWindowMode = "interface.graphics.toggle_window_mode";
