@@ -194,7 +194,7 @@ void InputManager::Process(const InputEvent& e)
         auto& console = GetInGameConsole();
         if (console.IsOpen())
         {
-            if (!shortcutManager.ProcessEventForSpecificShortcut(e, ShortcutId::DebugToggleConsole))
+            if (!shortcutManager.ProcessEventForSpecificShortcut(e, ShortcutId::kDebugToggleConsole))
             {
                 ProcessInGameConsole(e);
             }
@@ -305,10 +305,10 @@ void InputManager::ProcessHoldEvents()
         auto& shortcutManager = GetShortcutManager();
         if (!shortcutManager.IsPendingShortcutChange())
         {
-            ProcessViewScrollEvent(ShortcutId::ViewScrollUp, { 0, -1 });
-            ProcessViewScrollEvent(ShortcutId::ViewScrollDown, { 0, 1 });
-            ProcessViewScrollEvent(ShortcutId::ViewScrollLeft, { -1, 0 });
-            ProcessViewScrollEvent(ShortcutId::ViewScrollRight, { 1, 0 });
+            ProcessViewScrollEvent(ShortcutId::kViewScrollUp, { 0, -1 });
+            ProcessViewScrollEvent(ShortcutId::kViewScrollDown, { 0, 1 });
+            ProcessViewScrollEvent(ShortcutId::kViewScrollLeft, { -1, 0 });
+            ProcessViewScrollEvent(ShortcutId::kViewScrollRight, { 1, 0 });
         }
     }
 }
