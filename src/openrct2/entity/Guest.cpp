@@ -1639,16 +1639,16 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     const auto hasRandomShopColour = ride.HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
 
     if (shopItem == ShopItem::TShirt)
-        TshirtColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
+        TshirtColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Hat)
-        HatColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
+        HatColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Balloon)
-        BalloonColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
+        BalloonColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Umbrella)
-        UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
+        UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();

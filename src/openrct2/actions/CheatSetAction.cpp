@@ -687,12 +687,12 @@ void CheatSetAction::GiveObjectToGuests(int32_t object) const
                 break;
             case OBJECT_BALLOON:
                 peep->GiveItem(ShopItem::Balloon);
-                peep->BalloonColour = ScenarioRandMax(COLOUR_NUM_NORMAL);
+                peep->BalloonColour = ScenarioRandMax(kColourNumNormal);
                 peep->UpdateAnimationGroup();
                 break;
             case OBJECT_UMBRELLA:
                 peep->GiveItem(ShopItem::Umbrella);
-                peep->UmbrellaColour = ScenarioRandMax(COLOUR_NUM_NORMAL);
+                peep->UmbrellaColour = ScenarioRandMax(kColourNumOriginal);
                 peep->UpdateAnimationGroup();
                 break;
         }
