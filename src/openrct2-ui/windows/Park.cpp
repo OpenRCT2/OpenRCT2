@@ -785,7 +785,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < std::size(gameState.GuestsInParkHistory); i++)
             {
                 auto value = gameState.GuestsInParkHistory[i];
-                if (value == GuestsInParkHistoryUndefined)
+                if (value == kGuestsInParkHistoryUndefined)
                     continue;
                 while (value > _guestProps.max)
                     _guestProps.max += 5000;
@@ -1029,7 +1029,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_ENTER_NAME:
                     WindowTextInputOpen(
                         this, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0,
-                        ParkNameMaxLength);
+                        kParkNameMaxLength);
                     break;
             }
         }

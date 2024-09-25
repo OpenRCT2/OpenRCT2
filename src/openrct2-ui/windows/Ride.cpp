@@ -4294,19 +4294,19 @@ namespace OpenRCT2::Ui::Windows
 
                     for (auto i = 0; i < numItems; i++)
                     {
-                        colour_t colour = UtilRand() % COLOUR_NUM_NORMAL;
+                        colour_t colour = UtilRand() % kColourNumNormal;
                         auto vehicleSetBodyColourAction = RideSetAppearanceAction(
                             rideId, RideSetAppearanceType::VehicleColourBody, colour, i);
                         GameActions::Execute(&vehicleSetBodyColourAction);
                         if (allowChangingTrimColour)
                         {
-                            colour = UtilRand() % COLOUR_NUM_NORMAL;
+                            colour = UtilRand() % kColourNumNormal;
                             auto vehicleSetTrimColourAction = RideSetAppearanceAction(
                                 rideId, RideSetAppearanceType::VehicleColourTrim, colour, i);
                             GameActions::Execute(&vehicleSetTrimColourAction);
                             if (allowChangingTertiaryColour)
                             {
-                                colour = UtilRand() % COLOUR_NUM_NORMAL;
+                                colour = UtilRand() % kColourNumNormal;
                                 auto vehicleSetTertiaryColourAction = RideSetAppearanceAction(
                                     rideId, RideSetAppearanceType::VehicleColourTertiary, colour, i);
                                 GameActions::Execute(&vehicleSetTertiaryColourAction);
@@ -4907,7 +4907,7 @@ namespace OpenRCT2::Ui::Windows
                     if ((GetGameState().CurrentTicks % 64) == 0)
                     {
                         spriteColour++;
-                        if (spriteColour >= COLOUR_NUM_NORMAL)
+                        if (spriteColour >= kColourNumNormal)
                         {
                             spriteColour = COLOUR_BLACK;
                         }

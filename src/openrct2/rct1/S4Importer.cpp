@@ -1368,8 +1368,8 @@ namespace OpenRCT2::RCT1
             //                                          index in the array ----^     ^--- bit position in the 8-bit value
             // We do the opposite in this function to recover the x and y values.
 
-            int32_t peepOffset = staffId * Limits::PatrolAreaSize;
-            for (int32_t i = 0; i < Limits::PatrolAreaSize; i++)
+            int32_t peepOffset = staffId * Limits::kPatrolAreaSize;
+            for (int32_t i = 0; i < Limits::kPatrolAreaSize; i++)
             {
                 if (_s4.PatrolAreas[peepOffset + i] == 0)
                 {
@@ -1439,16 +1439,16 @@ namespace OpenRCT2::RCT1
             gameState.Park.Value = CorrectRCT1ParkValue(_s4.ParkValue);
             gameState.CurrentProfit = ToMoney64(_s4.Profit);
 
-            for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
+            for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
                 gameState.CashHistory[i] = ToMoney64(_s4.CashHistory[i]);
                 gameState.Park.ValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
-            for (size_t i = 0; i < Limits::ExpenditureTableMonthCount; i++)
+            for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)
             {
-                for (size_t j = 0; j < Limits::ExpenditureTypeCount; j++)
+                for (size_t j = 0; j < Limits::kExpenditureTypeCount; j++)
                 {
                     gameState.ExpenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
                 }
@@ -1538,7 +1538,7 @@ namespace OpenRCT2::RCT1
                         RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
                         do
                         {
-                            if (srcElement->BaseHeight == Limits::MaxElementHeight)
+                            if (srcElement->BaseHeight == Limits::kMaxElementHeight)
                                 continue;
 
                             // Reserve 8 elements for import

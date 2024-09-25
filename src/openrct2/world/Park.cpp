@@ -581,9 +581,10 @@ namespace OpenRCT2::Park
 
     void ResetHistories(GameState_t& gameState)
     {
-        std::fill(std::begin(gameState.Park.RatingHistory), std::end(gameState.Park.RatingHistory), ParkRatingHistoryUndefined);
         std::fill(
-            std::begin(gameState.GuestsInParkHistory), std::end(gameState.GuestsInParkHistory), GuestsInParkHistoryUndefined);
+            std::begin(gameState.Park.RatingHistory), std::end(gameState.Park.RatingHistory), kParkRatingHistoryUndefined);
+        std::fill(
+            std::begin(gameState.GuestsInParkHistory), std::end(gameState.GuestsInParkHistory), kGuestsInParkHistoryUndefined);
     }
 
     void UpdateHistories(GameState_t& gameState)

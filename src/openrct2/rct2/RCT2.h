@@ -30,7 +30,7 @@ namespace OpenRCT2::RCT2
 
     // clang-format off
     constexpr uint16_t RCT2_OBJECT_ENTRY_COUNT =
-        Limits::MaxRideObjects +
+        Limits::kMaxRideObjects +
         Limits::kMaxSmallSceneryObjects +
         Limits::kMaxLargeSceneryObjects +
         Limits::kMaxWallSceneryObjects +
@@ -46,7 +46,7 @@ namespace OpenRCT2::RCT2
 
     // clang-format off
     constexpr int32_t RCT2ObjectEntryGroupCounts[] = {
-        Limits::MaxRideObjects,
+        Limits::kMaxRideObjects,
         Limits::kMaxSmallSceneryObjects,
         Limits::kMaxLargeSceneryObjects,
         Limits::kMaxWallSceneryObjects,
@@ -612,17 +612,17 @@ namespace OpenRCT2::RCT2
             uint8_t Direction;
         };
         RCT12RideId InteractionRideIndex;
-        uint16_t TimeInQueue;                               // 0x7A
-        uint8_t RidesBeenOn[32];                            // 0x7C
-        uint32_t Id;                                        // 0x9C
-        money32 CashInPocket;                               // 0xA0
-        money32 CashSpent;                                  // 0xA4
-        int32_t ParkEntryTime;                              // 0xA8
-        int8_t RejoinQueueTimeout;                          // 0xAC
-        RCT12RideId PreviousRide;                           // 0xAD
-        uint16_t PreviousRideTimeOut;                       // 0xAE
-        RCT12PeepThought Thoughts[Limits::MaxPeepThoughts]; // 0xB0
-        uint8_t PathCheckOptimisation;                      // 0xC4
+        uint16_t TimeInQueue;                                // 0x7A
+        uint8_t RidesBeenOn[32];                             // 0x7C
+        uint32_t Id;                                         // 0x9C
+        money32 CashInPocket;                                // 0xA0
+        money32 CashSpent;                                   // 0xA4
+        int32_t ParkEntryTime;                               // 0xA8
+        int8_t RejoinQueueTimeout;                           // 0xAC
+        RCT12RideId PreviousRide;                            // 0xAD
+        uint16_t PreviousRideTimeOut;                        // 0xAE
+        RCT12PeepThought Thoughts[Limits::kMaxPeepThoughts]; // 0xB0
+        uint8_t PathCheckOptimisation;                       // 0xC4
         union
         {
             uint8_t StaffId;                  // 0xC5
@@ -790,7 +790,7 @@ namespace OpenRCT2::RCT2
             RCTObjectEntry Objects[RCT2_OBJECT_ENTRY_COUNT];
             struct
             {
-                RCTObjectEntry RideObjects[Limits::MaxRideObjects];
+                RCTObjectEntry RideObjects[Limits::kMaxRideObjects];
                 RCTObjectEntry SceneryObjects[Limits::kMaxSmallSceneryObjects];
                 RCTObjectEntry LargeSceneryObjects[Limits::kMaxLargeSceneryObjects];
                 RCTObjectEntry WallSceneryObjects[Limits::kMaxWallSceneryObjects];
@@ -845,7 +845,7 @@ namespace OpenRCT2::RCT2
         uint16_t GuestsHeadingForPark;
 
         // Ignored in scenario
-        money32 ExpenditureTable[Limits::ExpenditureTableMonthCount][Limits::ExpenditureTypeCount];
+        money32 ExpenditureTable[Limits::kExpenditureTableMonthCount][Limits::kExpenditureTypeCount];
 
         // SC6[8]
         uint16_t LastGuestsInPark;
@@ -891,7 +891,7 @@ namespace OpenRCT2::RCT2
         uint8_t CampaignRideIndex[22];
 
         // Ignored in scenario
-        money32 BalanceHistory[Limits::FinanceGraphSize];
+        money32 BalanceHistory[Limits::kFinanceGraphSize];
 
         // SC6[11]
         money32 CurrentExpenditure;
@@ -901,13 +901,13 @@ namespace OpenRCT2::RCT2
         uint8_t Pad0135833A[2];
 
         // Ignored in scenario
-        money32 WeeklyProfitHistory[Limits::FinanceGraphSize];
+        money32 WeeklyProfitHistory[Limits::kFinanceGraphSize];
 
         // SC6[12]
         money32 ParkValue;
 
         // Ignored in scenario
-        money32 ParkValueHistory[Limits::FinanceGraphSize];
+        money32 ParkValueHistory[Limits::kFinanceGraphSize];
 
         // SC6[13]
         money32 CompletedCompanyValue;
@@ -957,7 +957,7 @@ namespace OpenRCT2::RCT2
         char ScenarioFilename[256];
         uint8_t SavedExpansionPackNames[3256];
         RCT12Banner Banners[Limits::kMaxBanners];
-        char CustomStrings[Limits::MaxUserStrings][Limits::MaxUserStringLength];
+        char CustomStrings[Limits::kMaxUserStrings][Limits::kMaxUserStringLength];
         uint32_t GameTicks1;
         Ride Rides[Limits::kMaxRidesInPark];
         uint16_t SavedAge; // unused
@@ -973,8 +973,8 @@ namespace OpenRCT2::RCT2
         RCT12RideMeasurement RideMeasurements[8];
         uint32_t NextGuestIndex;
         uint16_t GrassAndSceneryTilepos;
-        uint32_t PatrolAreas[(Limits::kMaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
-        StaffMode StaffModes[Limits::kMaxStaff + Limits::StaffTypeCount];
+        uint32_t PatrolAreas[(Limits::kMaxStaff + Limits::kStaffTypeCount) * Limits::kPatrolAreaSize];
+        StaffMode StaffModes[Limits::kMaxStaff + Limits::kStaffTypeCount];
         uint8_t Pad13CA73E;
         uint8_t Pad13CA73F;
         uint8_t Byte13CA740;

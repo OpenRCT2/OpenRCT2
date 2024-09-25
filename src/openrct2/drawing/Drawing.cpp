@@ -996,7 +996,7 @@ void UpdatePaletteEffects()
                 paletteOffset[(i * 4) + 1] = -((0xFF - g1->offset[(i * 3) + 1]) / 2) - 1;
                 paletteOffset[(i * 4) + 2] = -((0xFF - g1->offset[(i * 3) + 2]) / 2) - 1;
             }
-            UpdatePalette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
+            UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
         }
         gClimateLightningFlash++;
     }
@@ -1052,8 +1052,8 @@ void UpdatePaletteEffects()
         if (g1 != nullptr)
         {
             uint8_t* vs = &g1->offset[j * 3];
-            uint8_t* vd = &gGamePalette[PALETTE_OFFSET_WATER_WAVES * 4];
-            int32_t n = PALETTE_LENGTH_WATER_WAVES;
+            uint8_t* vd = &gGamePalette[kPaletteOffsetWaterWaves * 4];
+            int32_t n = kPaletteLengthWaterWaves;
             for (int32_t i = 0; i < n; i++)
             {
                 vd[0] = vs[0];
@@ -1077,8 +1077,8 @@ void UpdatePaletteEffects()
         if (g1 != nullptr)
         {
             uint8_t* vs = &g1->offset[j * 3];
-            uint8_t* vd = &gGamePalette[PALETTE_OFFSET_WATER_SPARKLES * 4];
-            int32_t n = PALETTE_LENGTH_WATER_SPARKLES;
+            uint8_t* vd = &gGamePalette[kPaletteOffsetWaterSparkles * 4];
+            int32_t n = kPaletteLengthWaterSparkles;
             for (int32_t i = 0; i < n; i++)
             {
                 vd[0] = vs[0];
@@ -1115,10 +1115,10 @@ void UpdatePaletteEffects()
             }
         }
 
-        UpdatePalette(gGamePalette, PALETTE_OFFSET_ANIMATED, PALETTE_LENGTH_ANIMATED);
+        UpdatePalette(gGamePalette, kPaletteOffsetAnimated, kPaletteLengthAnimated);
         if (gClimateLightningFlash == 2)
         {
-            UpdatePalette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
+            UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
             gClimateLightningFlash = 0;
         }
     }

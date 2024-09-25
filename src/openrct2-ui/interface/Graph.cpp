@@ -184,7 +184,7 @@ namespace OpenRCT2::Graph
 
     void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint8_t>& p)
     {
-        constexpr uint8_t noValue = ParkRatingHistoryUndefined;
+        constexpr uint8_t noValue = kParkRatingHistoryUndefined;
         const FmtString fmt("{BLACK}{COMMA32}");
         // Since the park rating rating history is divided by 4, we have to fudge the max number here.
         DrawYLabels<uint16_t>(dpi, p.internalBounds, p.min, kParkRatingMax, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
@@ -195,7 +195,7 @@ namespace OpenRCT2::Graph
 
     void DrawGuestGraph(DrawPixelInfo& dpi, const GraphProperties<uint32_t>& p)
     {
-        constexpr uint32_t noValue = GuestsInParkHistoryUndefined;
+        constexpr uint32_t noValue = kGuestsInParkHistoryUndefined;
         const FmtString fmt("{BLACK}{COMMA32}");
         DrawYLabels<uint32_t>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
         DrawMonths<uint32_t, noValue>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);

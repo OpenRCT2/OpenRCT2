@@ -363,9 +363,9 @@ namespace OpenRCT2::RCT2
             gameState.NumGuestsInPark = _s6.GuestsInPark;
             gameState.NumGuestsHeadingForPark = _s6.GuestsHeadingForPark;
 
-            for (size_t i = 0; i < Limits::ExpenditureTableMonthCount; i++)
+            for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)
             {
-                for (size_t j = 0; j < Limits::ExpenditureTypeCount; j++)
+                for (size_t j = 0; j < Limits::kExpenditureTypeCount; j++)
                 {
                     gameState.ExpenditureTable[i][j] = ToMoney64(_s6.ExpenditureTable[i][j]);
                 }
@@ -435,7 +435,7 @@ namespace OpenRCT2::RCT2
 
             gameState.Park.Value = ToMoney64(_s6.ParkValue);
 
-            for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
+            for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
                 gameState.CashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
@@ -1190,7 +1190,7 @@ namespace OpenRCT2::RCT2
                         {
                             do
                             {
-                                if (srcElement->BaseHeight == RCT12::Limits::MaxElementHeight)
+                                if (srcElement->BaseHeight == RCT12::Limits::kMaxElementHeight)
                                 {
                                     continue;
                                 }
@@ -1554,8 +1554,8 @@ namespace OpenRCT2::RCT2
             {
                 return;
             }
-            int32_t peepOffset = staffId * Limits::PatrolAreaSize;
-            for (int32_t i = 0; i < Limits::PatrolAreaSize; i++)
+            int32_t peepOffset = staffId * Limits::kPatrolAreaSize;
+            for (int32_t i = 0; i < Limits::kPatrolAreaSize; i++)
             {
                 if (_s6.PatrolAreas[peepOffset + i] == 0)
                 {

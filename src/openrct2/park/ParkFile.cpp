@@ -1605,7 +1605,7 @@ namespace OpenRCT2
         static std::vector<ObjectEntryIndex> LegacyGetRideTypesBeenOn(const std::array<uint8_t, 16>& srcArray)
         {
             std::vector<ObjectEntryIndex> ridesTypesBeenOn;
-            for (ObjectEntryIndex i = 0; i < RCT2::Limits::MaxRideObjects; i++)
+            for (ObjectEntryIndex i = 0; i < RCT2::Limits::kMaxRideObjects; i++)
             {
                 if (srcArray[i / 8] & (1 << (i % 8)))
                 {

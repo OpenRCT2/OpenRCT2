@@ -626,14 +626,14 @@ namespace OpenRCT2::RCT1
         uint8_t RidesBeenOn[32]; // 0x7C
         // 255 bit bitmap of every ride the peep has been on see
         // WindowPeepRidesUpdate for how to use.
-        uint32_t ID;                                        // 0x9C
-        money32 CashInPocket;                               // 0xA0
-        money32 CashSpent;                                  // 0xA4
-        int32_t ParkEntryTime;                              // 0xA8
-        int8_t RejoinQueueTimeout;                          // 0xAC
-        RCT12RideId PreviousRide;                           // 0xAD
-        uint16_t PreviousRideTimeOut;                       // 0xAE
-        RCT12PeepThought Thoughts[Limits::MaxPeepThoughts]; // 0xB0
+        uint32_t ID;                                         // 0x9C
+        money32 CashInPocket;                                // 0xA0
+        money32 CashSpent;                                   // 0xA4
+        int32_t ParkEntryTime;                               // 0xA8
+        int8_t RejoinQueueTimeout;                           // 0xAC
+        RCT12RideId PreviousRide;                            // 0xAD
+        uint16_t PreviousRideTimeOut;                        // 0xAE
+        RCT12PeepThought Thoughts[Limits::kMaxPeepThoughts]; // 0xB0
         uint8_t PadC4;
         union
         {
@@ -758,7 +758,7 @@ namespace OpenRCT2::RCT1
         uint32_t RideFeature2[128];
         uint16_t GuestsInPark;
         uint16_t Unk198C9E;
-        money32 Expenditure[Limits::ExpenditureTableMonthCount][Limits::ExpenditureTypeCount];
+        money32 Expenditure[Limits::kExpenditureTableMonthCount][Limits::kExpenditureTypeCount];
         uint32_t GuestsInPark2;
         uint8_t Unk199024;
         colour_t HandymanColour;
@@ -801,13 +801,13 @@ namespace OpenRCT2::RCT1
         uint8_t MarketingStatus[20];
         uint8_t MarketingAssoc[20];
         uint8_t Unk199582[2];
-        money32 CashHistory[Limits::FinanceGraphSize];
+        money32 CashHistory[Limits::kFinanceGraphSize];
         money32 TotalExpenditure;
         money32 Profit;
         uint8_t Unk199788[8];
-        money32 WeeklyProfitHistory[Limits::FinanceGraphSize];
+        money32 WeeklyProfitHistory[Limits::kFinanceGraphSize];
         money32 ParkValue;
-        money32 ParkValueHistory[Limits::FinanceGraphSize];
+        money32 ParkValueHistory[Limits::kFinanceGraphSize];
         money32 CompletedCompanyValue;
         uint32_t NumAdmissions;
         money32 AdmissionTotalIncome;
@@ -847,7 +847,7 @@ namespace OpenRCT2::RCT1
         ResearchItem ResearchItemsLL[250];
         uint8_t Unk19A0D9[5118];
         RCT12Banner Banners[Limits::kMaxBanners];
-        char StringTable[Limits::MaxUserStrings][Limits::MaxUserStringLength];
+        char StringTable[Limits::kMaxUserStrings][Limits::kMaxUserStringLength];
         uint32_t GameTimeCounter;
         Ride Rides[Limits::kMaxRidesInPark];
         uint16_t UnkGameTimeCounter;
@@ -865,7 +865,7 @@ namespace OpenRCT2::RCT1
         RCT12RideMeasurement RideMeasurements[8];
         uint32_t NextGuestIndex;
         uint16_t GameCounter5;
-        uint8_t PatrolAreas[(Limits::kMaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
+        uint8_t PatrolAreas[(Limits::kMaxStaff + Limits::kStaffTypeCount) * Limits::kPatrolAreaSize];
         uint8_t StaffModes[Limits::kMaxStaff];
         uint8_t Unk1F431E[4];
         uint8_t Unk1F4322[8];
