@@ -1610,7 +1610,10 @@ void Peep::FormatNameTo(Formatter& ft) const
         {
             auto nameId = PeepId;
             if (isStaff)
+            {
+                // Prevent staff from getting the same names by offsetting the name table based on staff type.
                 nameId *= 256 * EnumValue(staff->AssignedStaffType) + 1;
+            }
 
             auto realNameStringId = GetRealNameStringIDFromPeepID(nameId);
             ft.Add<StringId>(realNameStringId);
