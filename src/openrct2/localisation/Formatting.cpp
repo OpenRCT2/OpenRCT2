@@ -771,11 +771,11 @@ namespace OpenRCT2
                 case FormatToken::Int32:
                 case FormatToken::Comma2dp32:
                 case FormatToken::Sprite:
-                    anyArgs.push_back(ReadFromArgs<int32_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<int32_t>(args));
                     break;
                 case FormatToken::Currency2dp:
                 case FormatToken::Currency:
-                    anyArgs.push_back(ReadFromArgs<int64_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<int64_t>(args));
                     break;
                 case FormatToken::UInt16:
                 case FormatToken::MonthYear:
@@ -783,24 +783,24 @@ namespace OpenRCT2
                 case FormatToken::Velocity:
                 case FormatToken::DurationShort:
                 case FormatToken::DurationLong:
-                    anyArgs.push_back(ReadFromArgs<uint16_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<uint16_t>(args));
                     break;
                 case FormatToken::Comma16:
                 case FormatToken::Length:
                 case FormatToken::Comma1dp16:
-                    anyArgs.push_back(ReadFromArgs<int16_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<int16_t>(args));
                     break;
                 case FormatToken::StringById:
                 {
                     auto stringId = ReadFromArgs<StringId>(args);
-                    anyArgs.push_back(stringId);
+                    anyArgs.emplace_back(stringId);
                     BuildAnyArgListFromLegacyArgBuffer(GetFmtStringById(stringId), anyArgs, args);
                     break;
                 }
                 case FormatToken::String:
                 {
                     auto sz = ReadFromArgs<const char*>(args);
-                    anyArgs.push_back(sz);
+                    anyArgs.emplace_back(sz);
                     break;
                 }
                 case FormatToken::Pop16:
