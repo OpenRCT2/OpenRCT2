@@ -241,10 +241,10 @@ namespace OpenRCT2::Ui::Windows
             _currentTrackPitchEnd = TrackPitch::None;
             _currentTrackRollEnd = TrackRoll::None;
             _currentTrackHasLiftHill = false;
-            _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
+            _currentTrackAlternative.clearAll();
 
             if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
-                _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+                _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
 
             _previousTrackRollEnd = TrackRoll::None;
             _previousTrackPitchEnd = TrackPitch::None;
@@ -1320,7 +1320,7 @@ namespace OpenRCT2::Ui::Windows
                     RideConstructionInvalidateCurrentTrack();
                     _currentTrackHasLiftHill = !_currentTrackHasLiftHill;
                     if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
-                        _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
+                        _currentTrackAlternative.unset(AlternativeTrackFlag::alternativePieces);
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
                     break;
@@ -1396,13 +1396,13 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_U_TRACK:
                     RideConstructionInvalidateCurrentTrack();
-                    _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
+                    _currentTrackAlternative.unset(AlternativeTrackFlag::alternativePieces);
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
                     break;
                 case WIDX_O_TRACK:
                     RideConstructionInvalidateCurrentTrack();
-                    _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
+                    _currentTrackAlternative.set(AlternativeTrackFlag::alternativePieces);
                     if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
                         _currentTrackHasLiftHill = false;
                     _currentTrackPrice = kMoney64Undefined;
@@ -2105,7 +2105,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (trackDrawerDescriptor.HasCoveredPieces())
                 {
-                    if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
+                    if (_currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces))
                     {
                         pressedWidgets |= (1uLL << WIDX_O_TRACK);
                     }
@@ -3660,7 +3660,7 @@ namespace OpenRCT2::Ui::Windows
                     auto saveCurrentTrackPitchEnd = _currentTrackPitchEnd;
                     auto savePreviousTrackRollEnd = _previousTrackRollEnd;
                     auto saveCurrentTrackRollEnd = _currentTrackRollEnd;
-                    int32_t saveCurrentTrackAlternative = _currentTrackAlternative;
+                    auto savedCurrentTrackAlternative = _currentTrackAlternative;
                     auto savedCurrentTrackLiftHill = _currentTrackHasLiftHill;
 
                     RideInitialiseConstructionWindow(*ride);
@@ -3671,7 +3671,7 @@ namespace OpenRCT2::Ui::Windows
                     _currentTrackPitchEnd = saveCurrentTrackPitchEnd;
                     _previousTrackRollEnd = savePreviousTrackRollEnd;
                     _currentTrackRollEnd = saveCurrentTrackRollEnd;
-                    _currentTrackAlternative = saveCurrentTrackAlternative;
+                    _currentTrackAlternative = savedCurrentTrackAlternative;
                     _currentTrackHasLiftHill = savedCurrentTrackLiftHill;
 
                     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, state->position.x);
@@ -4583,7 +4583,7 @@ namespace OpenRCT2::Ui::Windows
             auto savedCurrentTrackPitchEnd = _currentTrackPitchEnd;
             auto savedPreviousTrackRollEnd = _previousTrackRollEnd;
             auto savedCurrentTrackRollEnd = _currentTrackRollEnd;
-            int32_t savedCurrentTrackAlternative = _currentTrackAlternative;
+            auto savedCurrentTrackAlternative = _currentTrackAlternative;
             auto savedCurrentTrackLiftHill = _currentTrackHasLiftHill;
             RideConstructionSetDefaultNextPiece();
             WindowRideConstructionUpdateActiveElements();
@@ -4851,7 +4851,7 @@ namespace OpenRCT2::Ui::Windows
             liftHillAndInvertedState |= CONSTRUCTION_LIFT_HILL_SELECTED;
         }
 
-        if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
+        if (_currentTrackAlternative.has(AlternativeTrackFlag::inverted))
         {
             liftHillAndInvertedState |= CONSTRUCTION_INVERTED_TRACK_SELECTED;
         }
@@ -4890,7 +4890,7 @@ namespace OpenRCT2::Ui::Windows
 
         const auto& rtd = ride->GetRideTypeDescriptor();
         const auto trackDrawerDecriptor = getCurrentTrackDrawerDescriptor(rtd);
-        if (trackDrawerDecriptor.HasCoveredPieces() && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
+        if (trackDrawerDecriptor.HasCoveredPieces() && _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces))
         {
             auto availablePieces = trackDrawerDecriptor.Covered.EnabledTrackPieces;
             const auto& ted = GetTrackElementDescriptor(trackType);

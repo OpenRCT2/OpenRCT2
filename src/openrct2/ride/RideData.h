@@ -528,13 +528,6 @@ struct RideTypeDescriptor
 
 extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
 
-enum
-{
-    RIDE_TYPE_NO_ALTERNATIVES = 0,
-    RIDE_TYPE_ALTERNATIVE_TRACK_PIECES = 1, // Dinghy slide and Water Coaster
-    RIDE_TYPE_ALTERNATIVE_TRACK_TYPE = 2,   // Flying RC, Lay-down RC, Multi-dimension RC
-};
-
 // clang-format off
 constexpr RideComponentName RideComponentNames[] =
 {

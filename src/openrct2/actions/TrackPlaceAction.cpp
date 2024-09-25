@@ -619,7 +619,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             trackElement->SetSeatRotation(_seatRotation);
         }
 
-        if (_trackPlaceFlags & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
+        if (_trackPlaceFlags & CONSTRUCTION_INVERTED_TRACK_SELECTED)
         {
             trackElement->SetInverted(true);
         }

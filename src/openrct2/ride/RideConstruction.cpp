@@ -67,7 +67,7 @@ uint32_t _rideConstructionNextArrowPulse = 0;
 TrackPitch _currentTrackPitchEnd;
 TrackRoll _currentTrackRollEnd;
 bool _currentTrackHasLiftHill;
-uint8_t _currentTrackAlternative;
+OpenRCT2::SelectedAlternative _currentTrackAlternative{};
 track_type_t _selectedTrackType;
 
 TrackRoll _previousTrackRollEnd;
@@ -544,10 +544,10 @@ static void ride_construction_reset_current_piece()
         _currentTrackPitchEnd = TrackPitch::None;
         _currentTrackRollEnd = TrackRoll::None;
         _currentTrackHasLiftHill = false;
-        _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
+        _currentTrackAlternative.clearAll();
         if (rtd.HasFlag(RtdFlag::startConstructionInverted))
         {
-            _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+            _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
         }
         _previousTrackPitchEnd = TrackPitch::None;
         _previousTrackRollEnd = TrackRoll::None;
@@ -599,12 +599,12 @@ void RideConstructionSetDefaultNextPiece()
             }
 
             // Set whether track is covered
-            _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+            _currentTrackAlternative.unset(AlternativeTrackFlag::inverted);
             if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
                 if (tileElement->AsTrack()->IsInverted())
                 {
-                    _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+                    _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
                 }
             }
 
@@ -621,7 +621,7 @@ void RideConstructionSetDefaultNextPiece()
                 if (bank == TrackRoll::UpsideDown)
                 {
                     bank = TrackRoll::None;
-                    _currentTrackAlternative ^= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+                    _currentTrackAlternative.flip(AlternativeTrackFlag::inverted);
                 }
             }
             _currentTrackRollEnd = bank;
@@ -647,12 +647,12 @@ void RideConstructionSetDefaultNextPiece()
             trackType = tileElement->AsTrack()->GetTrackType();
 
             // Set whether track is covered
-            _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+            _currentTrackAlternative.unset(AlternativeTrackFlag::inverted);
             if (rtd.HasFlag(RtdFlag::hasInvertedVariant))
             {
                 if (tileElement->AsTrack()->IsInverted())
                 {
-                    _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+                    _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
                 }
             }
 
@@ -669,7 +669,7 @@ void RideConstructionSetDefaultNextPiece()
                 if (bank == TrackRoll::UpsideDown)
                 {
                     bank = TrackRoll::None;
-                    _currentTrackAlternative ^= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+                    _currentTrackAlternative.flip(AlternativeTrackFlag::inverted);
                 }
             }
             _currentTrackRollEnd = bank;
@@ -1046,10 +1046,10 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     _currentTrackPitchEnd = TrackPitch::None;
     _currentTrackRollEnd = TrackRoll::None;
     _currentTrackHasLiftHill = false;
-    _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
+    _currentTrackAlternative.clearAll();
 
     if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
-        _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+        _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
 
     _previousTrackRollEnd = TrackRoll::None;
     _previousTrackPitchEnd = TrackPitch::None;
@@ -1463,14 +1463,14 @@ ResultWithMessage RideAreAllPossibleEntrancesAndExitsBuilt(const Ride& ride)
 
 TrackDrawerDescriptor getCurrentTrackDrawerDescriptor(const RideTypeDescriptor& rtd)
 {
-    const bool isInverted = _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+    const bool isInverted = _currentTrackAlternative.has(AlternativeTrackFlag::inverted);
     return getTrackDrawerDescriptor(rtd, isInverted);
 }
 
 TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd)
 {
-    const bool isInverted = _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
-    const bool isCovered = _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
+    const bool isInverted = _currentTrackAlternative.has(AlternativeTrackFlag::inverted);
+    const bool isCovered = _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces);
     return getTrackDrawerEntry(rtd, isInverted, isCovered);
 }
 

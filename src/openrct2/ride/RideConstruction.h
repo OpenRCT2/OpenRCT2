@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
+#include "../core/FlagHolder.hpp"
 #include "../world/Location.hpp"
 #include "Station.h"
 #include "Track.h"
@@ -39,7 +40,14 @@ namespace OpenRCT2
         MazeMove,
         MazeFill
     };
-}
+
+    enum class AlternativeTrackFlag : uint8_t
+    {
+        alternativePieces, // Dinghy slide and Water Coaster
+        inverted,          // Flying RC, Lay-down RC, Multi-dimension RC
+    };
+    using SelectedAlternative = FlagHolder<uint8_t, AlternativeTrackFlag>;
+} // namespace OpenRCT2
 
 extern money64 _currentTrackPrice;
 
@@ -56,7 +64,7 @@ extern uint32_t _rideConstructionNextArrowPulse;
 extern TrackPitch _currentTrackPitchEnd;
 extern TrackRoll _currentTrackRollEnd;
 extern bool _currentTrackHasLiftHill;
-extern uint8_t _currentTrackAlternative;
+extern OpenRCT2::SelectedAlternative _currentTrackAlternative;
 extern track_type_t _selectedTrackType;
 
 extern TrackRoll _previousTrackRollEnd;
