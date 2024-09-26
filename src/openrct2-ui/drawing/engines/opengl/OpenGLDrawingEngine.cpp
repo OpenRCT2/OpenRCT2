@@ -82,7 +82,7 @@ private:
 
     static uint8_t ComputeOutCode(ScreenCoordsXY, ScreenCoordsXY, ScreenCoordsXY);
     static bool CohenSutherlandLineClip(ScreenLine&, const DrawPixelInfo&);
-    ScreenRect CalculateClipping(const DrawPixelInfo& dpi);
+    [[nodiscard]] ScreenRect CalculateClipping(const DrawPixelInfo& dpi) const;
 
 public:
     explicit OpenGLDrawingContext(OpenGLDrawingEngine& engine);
@@ -159,8 +159,8 @@ public:
                 auto patternPixel = pattern[patternYPos * 2 + 1];
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
                 {
-                    int32_t pixelX = xPixelOffset % dpi.ScreenWidth();
-                    int32_t pixelY = (xPixelOffset / dpi.ScreenWidth()) % dpi.ScreenHeight();
+                    int32_t pixelX = xPixelOffset % dpi.width;
+                    int32_t pixelY = (xPixelOffset / dpi.width) % dpi.height;
 
                     _drawingContext->DrawLine(dpi, patternPixel, { { pixelX, pixelY }, { pixelX + 1, pixelY + 1 } });
                 }
@@ -429,10 +429,10 @@ private:
 
         DrawPixelInfo* dpi = &_bitsDPI;
         dpi->bits = _bits.get();
-        dpi->SetX(0);
-        dpi->SetY(0);
-        dpi->SetWidth(width);
-        dpi->SetHeight(height);
+        dpi->x = 0;
+        dpi->y = 0;
+        dpi->width = width;
+        dpi->height = height;
         dpi->pitch = _pitch - width;
     }
 
@@ -508,8 +508,7 @@ void OpenGLDrawingContext::StartNewDraw()
 
 void OpenGLDrawingContext::Clear(DrawPixelInfo& dpi, uint8_t paletteIndex)
 {
-    FillRect(
-        dpi, paletteIndex, dpi.ScreenX(), dpi.ScreenY(), dpi.ScreenX() + dpi.ScreenWidth(), dpi.ScreenY() + dpi.ScreenHeight());
+    FillRect(dpi, paletteIndex, dpi.x, dpi.y, dpi.x + dpi.width, dpi.y + dpi.height);
 }
 
 void OpenGLDrawingContext::FillRect(
@@ -517,10 +516,10 @@ void OpenGLDrawingContext::FillRect(
 {
     const ScreenRect clip = CalculateClipping(dpi);
 
-    left += clip.GetLeft() - dpi.ScreenX();
-    top += clip.GetTop() - dpi.ScreenY();
-    right += clip.GetLeft() - dpi.ScreenX();
-    bottom += clip.GetTop() - dpi.ScreenY();
+    left += clip.GetLeft() - dpi.x;
+    top += clip.GetTop() - dpi.y;
+    right += clip.GetLeft() - dpi.x;
+    bottom += clip.GetTop() - dpi.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -552,10 +551,10 @@ void OpenGLDrawingContext::FilterRect(
 {
     const ScreenRect clip = CalculateClipping(dpi);
 
-    left += clip.GetLeft() - dpi.ScreenX();
-    top += clip.GetTop() - dpi.ScreenY();
-    right += clip.GetLeft() - dpi.ScreenX();
-    bottom += clip.GetTop() - dpi.ScreenY();
+    left += clip.GetLeft() - dpi.x;
+    top += clip.GetTop() - dpi.y;
+    right += clip.GetLeft() - dpi.x;
+    bottom += clip.GetTop() - dpi.y;
 
     DrawRectCommand& command = _commandBuffers.transparent.allocate();
 
@@ -593,8 +592,8 @@ uint8_t OpenGLDrawingContext::ComputeOutCode(
 // based on: https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
 bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawPixelInfo& dpi)
 {
-    ScreenCoordsXY topLeft = { dpi.ScreenX(), dpi.ScreenY() };
-    ScreenCoordsXY bottomRight = { dpi.ScreenX() + dpi.ScreenWidth() - 1, dpi.ScreenY() + dpi.ScreenHeight() - 1 };
+    ScreenCoordsXY topLeft = { dpi.x, dpi.y };
+    ScreenCoordsXY bottomRight = { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 };
     uint8_t outcode1 = ComputeOutCode(line.Point1, topLeft, bottomRight);
     uint8_t outcode2 = ComputeOutCode(line.Point2, topLeft, bottomRight);
 
@@ -666,10 +665,10 @@ void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const S
     DrawLineCommand& command = _commandBuffers.lines.allocate();
 
     const ScreenRect clip = CalculateClipping(dpi);
-    const int32_t x1 = trimmedLine.GetX1() - dpi.ScreenX() + clip.GetLeft();
-    const int32_t y1 = trimmedLine.GetY1() - dpi.ScreenY() + clip.GetTop();
-    const int32_t x2 = trimmedLine.GetX2() - dpi.ScreenX() + clip.GetLeft();
-    const int32_t y2 = trimmedLine.GetY2() - dpi.ScreenY() + clip.GetTop();
+    const int32_t x1 = trimmedLine.GetX1() - dpi.x + clip.GetLeft();
+    const int32_t y1 = trimmedLine.GetY1() - dpi.y + clip.GetTop();
+    const int32_t x2 = trimmedLine.GetX2() - dpi.x + clip.GetLeft();
+    const int32_t y2 = trimmedLine.GetY2() - dpi.y + clip.GetTop();
 
     command.bounds = { x1, y1, x2, y2 };
     command.colour = colour & 0xFF;
@@ -690,10 +689,10 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
         {
             DrawPixelInfo zoomedDPI;
             zoomedDPI.bits = dpi.bits;
-            zoomedDPI.SetX(dpi.ScreenX());
-            zoomedDPI.SetY(dpi.ScreenY());
-            zoomedDPI.SetHeight(dpi.ScreenHeight());
-            zoomedDPI.SetWidth(dpi.ScreenWidth());
+            zoomedDPI.x = dpi.x;
+            zoomedDPI.y = dpi.y;
+            zoomedDPI.height = dpi.height;
+            zoomedDPI.width = dpi.width;
             zoomedDPI.pitch = dpi.pitch;
             zoomedDPI.zoom_level = dpi.zoom_level - 1;
             DrawSprite(zoomedDPI, imageId.WithIndex(imageId.GetIndex() - g1Element->zoomed_offset), x >> 1, y >> 1);
@@ -749,10 +748,10 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
     bottom = dpi.zoom_level.ApplyInversedTo(bottom);
 
     const ScreenRect clip = CalculateClipping(dpi);
-    left += clip.GetLeft() - dpi.ScreenX();
-    top += clip.GetTop() - dpi.ScreenY();
-    right += clip.GetLeft() - dpi.ScreenX();
-    bottom += clip.GetTop() - dpi.ScreenY();
+    left += clip.GetLeft() - dpi.x;
+    top += clip.GetTop() - dpi.y;
+    right += clip.GetLeft() - dpi.x;
+    bottom += clip.GetTop() - dpi.y;
 
     const auto texture = _textureCache->GetOrLoadImageTexture(imageId);
 
@@ -858,10 +857,10 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     bottom = dpi.zoom_level.ApplyInversedTo(bottom);
 
     const ScreenRect clip = CalculateClipping(dpi);
-    left += clip.GetLeft() - dpi.ScreenX();
-    top += clip.GetTop() - dpi.ScreenY();
-    right += clip.GetLeft() - dpi.ScreenX();
-    bottom += clip.GetTop() - dpi.ScreenY();
+    left += clip.GetLeft() - dpi.x;
+    top += clip.GetTop() - dpi.y;
+    right += clip.GetLeft() - dpi.x;
+    bottom += clip.GetTop() - dpi.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -907,10 +906,10 @@ void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId ima
     }
 
     const ScreenRect clip = CalculateClipping(dpi);
-    left += clip.GetLeft() - dpi.ScreenX();
-    top += clip.GetTop() - dpi.ScreenY();
-    right += clip.GetLeft() - dpi.ScreenX();
-    bottom += clip.GetTop() - dpi.ScreenY();
+    left += clip.GetLeft() - dpi.x;
+    top += clip.GetTop() - dpi.y;
+    right += clip.GetLeft() - dpi.x;
+    bottom += clip.GetTop() - dpi.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -956,10 +955,10 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
     bottom = dpi.zoom_level.ApplyInversedTo(bottom);
 
     const ScreenRect clip = CalculateClipping(dpi);
-    left += clip.GetLeft() - dpi.ScreenX();
-    top += clip.GetTop() - dpi.ScreenY();
-    right += clip.GetLeft() - dpi.ScreenX();
-    bottom += clip.GetTop() - dpi.ScreenY();
+    left += clip.GetLeft() - dpi.x;
+    top += clip.GetTop() - dpi.y;
+    right += clip.GetLeft() - dpi.x;
+    bottom += clip.GetTop() - dpi.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -1009,10 +1008,10 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     }
 
     const ScreenRect clip = CalculateClipping(dpi);
-    left += clip.GetLeft() - dpi.ScreenX();
-    top += clip.GetTop() - dpi.ScreenY();
-    right += clip.GetLeft() - dpi.ScreenX();
-    bottom += clip.GetTop() - dpi.ScreenY();
+    left += clip.GetLeft() - dpi.x;
+    top += clip.GetTop() - dpi.y;
+    right += clip.GetLeft() - dpi.x;
+    bottom += clip.GetTop() - dpi.y;
 
     if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
     {
@@ -1143,7 +1142,7 @@ void OpenGLDrawingContext::HandleTransparency()
     _commandBuffers.transparent.clear();
 }
 
-ScreenRect OpenGLDrawingContext::CalculateClipping(const DrawPixelInfo& dpi)
+ScreenRect OpenGLDrawingContext::CalculateClipping(const DrawPixelInfo& dpi) const
 {
     // mber: Calculating the screen coordinates by dividing the difference between pointers like this is a dirty hack.
     //       It's also quite slow. In future the drawing code needs to be refactored to avoid this somehow.
@@ -1151,14 +1150,14 @@ ScreenRect OpenGLDrawingContext::CalculateClipping(const DrawPixelInfo& dpi)
     const int32_t bytesPerRow = screenDPI->LineStride();
     const int32_t bitsOffset = static_cast<int32_t>(dpi.bits - screenDPI->bits);
 #    ifndef NDEBUG
-    const ssize_t bitsSize = static_cast<ssize_t>(screenDPI->ScreenHeight()) * static_cast<ssize_t>(bytesPerRow);
+    const ssize_t bitsSize = static_cast<ssize_t>(screenDPI->height) * static_cast<ssize_t>(bytesPerRow);
     assert(static_cast<ssize_t>(bitsOffset) < bitsSize && static_cast<ssize_t>(bitsOffset) >= 0);
 #    endif
 
     const int32_t left = bitsOffset % bytesPerRow;
     const int32_t top = bitsOffset / bytesPerRow;
-    const int32_t right = left + dpi.ScreenWidth();
-    const int32_t bottom = top + dpi.ScreenHeight();
+    const int32_t right = left + dpi.width;
+    const int32_t bottom = top + dpi.height;
 
     return { { left, top }, { right, bottom } };
 }

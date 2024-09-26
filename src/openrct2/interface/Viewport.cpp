@@ -907,13 +907,13 @@ void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport)
     if (viewport->flags & VIEWPORT_FLAG_RENDERING_INHIBITED)
         return;
 
-    if (dpi.ScreenX() + dpi.ScreenWidth() <= viewport->pos.x)
+    if (dpi.x + dpi.width <= viewport->pos.x)
         return;
-    if (dpi.ScreenY() + dpi.ScreenHeight() <= viewport->pos.y)
+    if (dpi.y + dpi.height <= viewport->pos.y)
         return;
-    if (dpi.ScreenX() >= viewport->pos.x + viewport->width)
+    if (dpi.x >= viewport->pos.x + viewport->width)
         return;
-    if (dpi.ScreenY() >= viewport->pos.y + viewport->height)
+    if (dpi.y >= viewport->pos.y + viewport->height)
         return;
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
@@ -983,23 +983,21 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi)
 {
     PROFILED_FUNCTION();
 
-    const int32_t offsetX = dpi.ScreenX() - viewport->pos.x;
-    const int32_t offsetY = dpi.ScreenY() - viewport->pos.y;
+    const int32_t offsetX = dpi.x - viewport->pos.x;
+    const int32_t offsetY = dpi.y - viewport->pos.y;
     const int32_t worldX = viewport->zoom.ApplyInversedTo(viewport->viewPos.x) + std::max(0, offsetX);
     const int32_t worldY = viewport->zoom.ApplyInversedTo(viewport->viewPos.y) + std::max(0, offsetY);
-    const int32_t width = std::min(viewport->pos.x + viewport->width, dpi.ScreenX() + dpi.ScreenWidth())
-        - std::max(viewport->pos.x, dpi.ScreenX());
-    const int32_t height = std::min(viewport->pos.y + viewport->height, dpi.ScreenY() + dpi.ScreenHeight())
-        - std::max(viewport->pos.y, dpi.ScreenY());
+    const int32_t width = std::min(viewport->pos.x + viewport->width, dpi.x + dpi.width) - std::max(viewport->pos.x, dpi.x);
+    const int32_t height = std::min(viewport->pos.y + viewport->height, dpi.y + dpi.height) - std::max(viewport->pos.y, dpi.y);
 
     DrawPixelInfo worldDpi;
     worldDpi.DrawingEngine = dpi.DrawingEngine;
     worldDpi.bits = dpi.bits + std::max(0, -offsetX) + std::max(0, -offsetY) * dpi.LineStride();
-    worldDpi.SetX(worldX);
-    worldDpi.SetY(worldY);
-    worldDpi.SetWidth(width);
-    worldDpi.SetHeight(height);
-    worldDpi.pitch = dpi.LineStride() - worldDpi.ScreenWidth();
+    worldDpi.x = worldX;
+    worldDpi.y = worldY;
+    worldDpi.width = width;
+    worldDpi.height = height;
+    worldDpi.pitch = dpi.LineStride() - worldDpi.width;
     worldDpi.zoom_level = viewport->zoom;
 
     _paintColumns.clear();
@@ -1021,8 +1019,8 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi)
     }
 
     const int32_t columnWidth = worldDpi.zoom_level.ApplyInversedTo(kCoordsXYStep);
-    const int32_t rightBorder = worldDpi.ScreenX() + worldDpi.ScreenWidth();
-    const int32_t alignedX = Floor2(worldDpi.ScreenX(), columnWidth);
+    const int32_t rightBorder = worldDpi.x + worldDpi.width;
+    const int32_t alignedX = Floor2(worldDpi.x, columnWidth);
 
     // Generate and sort columns.
     for (int32_t x = alignedX; x < rightBorder; x += columnWidth)
@@ -1031,23 +1029,23 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi)
         _paintColumns.push_back(session);
 
         DrawPixelInfo& columnDpi = session->DPI;
-        if (x >= columnDpi.ScreenX())
+        if (x >= columnDpi.x)
         {
-            const int32_t leftPitch = x - columnDpi.ScreenX();
-            columnDpi.SetWidth(columnDpi.ScreenWidth() - leftPitch);
+            const int32_t leftPitch = x - columnDpi.x;
+            columnDpi.width = columnDpi.width - leftPitch;
             columnDpi.bits += leftPitch;
             columnDpi.pitch += leftPitch;
-            columnDpi.SetX(x);
+            columnDpi.x = x;
         }
 
-        int32_t paintRight = columnDpi.ScreenX() + columnDpi.ScreenWidth();
+        int32_t paintRight = columnDpi.x + columnDpi.width;
         if (paintRight >= x + columnWidth)
         {
             const int32_t rightPitch = paintRight - x - columnWidth;
             paintRight -= rightPitch;
             columnDpi.pitch += rightPitch;
         }
-        columnDpi.SetWidth(paintRight - columnDpi.ScreenX());
+        columnDpi.width = paintRight - columnDpi.x;
 
         if (useMultithreading)
         {
@@ -1093,10 +1091,10 @@ static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
     auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
     if (paletteId != FilterPaletteID::PaletteNull)
     {
-        auto x = dpi.ScreenX();
-        auto y = dpi.ScreenY();
-        auto w = dpi.ScreenWidth();
-        auto h = dpi.ScreenHeight();
+        auto x = dpi.x;
+        auto y = dpi.y;
+        auto w = dpi.width;
+        auto h = dpi.height;
         GfxFilterRect(dpi, ScreenRect(x, y, x + w, y + h), paletteId);
     }
 }
@@ -1761,10 +1759,10 @@ InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenC
         }
         DrawPixelInfo dpi;
         dpi.zoom_level = viewport->zoom;
-        dpi.SetX(viewport->zoom.ApplyInversedTo(viewLoc.x));
-        dpi.SetY(viewport->zoom.ApplyInversedTo(viewLoc.y));
-        dpi.SetHeight(1);
-        dpi.SetWidth(1);
+        dpi.x = viewport->zoom.ApplyInversedTo(viewLoc.x);
+        dpi.y = viewport->zoom.ApplyInversedTo(viewLoc.y);
+        dpi.height = 1;
+        dpi.width = 1;
 
         PaintSession* session = PaintSessionAlloc(dpi, viewport->flags, viewport->rotation);
         PaintSessionGenerate(*session);

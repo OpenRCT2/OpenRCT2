@@ -761,11 +761,11 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.y = 0;
             for (int32_t i = 0; i < GetColourSchemeTabCount(); i++)
             {
-                if (screenCoords.y > dpi.ScreenY() + dpi.ScreenHeight())
+                if (screenCoords.y > dpi.y + dpi.height)
                 {
                     break;
                 }
-                if (screenCoords.y + _row_height >= dpi.ScreenY())
+                if (screenCoords.y + _row_height >= dpi.y)
                 {
                     if (i + 1 < GetColourSchemeTabCount())
                     {

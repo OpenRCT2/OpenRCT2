@@ -1323,11 +1323,9 @@ namespace OpenRCT2::Ui::Windows
             if (widget->IsVisible())
             {
                 // Check if widget is outside the draw region
-                if (w.windowPos.x + widget->left < dpi.ScreenX() + dpi.ScreenWidth()
-                    && w.windowPos.x + widget->right >= dpi.ScreenX())
+                if (w.windowPos.x + widget->left < dpi.x + dpi.width && w.windowPos.x + widget->right >= dpi.x)
                 {
-                    if (w.windowPos.y + widget->top < dpi.ScreenY() + dpi.ScreenHeight()
-                        && w.windowPos.y + widget->bottom >= dpi.ScreenY())
+                    if (w.windowPos.y + widget->top < dpi.y + dpi.height && w.windowPos.y + widget->bottom >= dpi.y)
                     {
                         w.OnDrawWidget(widgetIndex, dpi);
                     }

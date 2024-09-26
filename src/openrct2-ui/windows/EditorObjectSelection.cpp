@@ -725,8 +725,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < _listItems.size(); i++)
             {
                 const auto& listItem = _listItems[i];
-                if (screenCoords.y + kScrollableRowHeight >= dpi.ScreenY()
-                    && screenCoords.y <= dpi.ScreenY() + dpi.ScreenHeight())
+                if (screenCoords.y + kScrollableRowHeight >= dpi.y && screenCoords.y <= dpi.y + dpi.height)
                 {
                     // Draw checkbox
                     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))

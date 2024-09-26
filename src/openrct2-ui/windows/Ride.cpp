@@ -1285,8 +1285,8 @@ namespace OpenRCT2::Ui::Windows
                     clipDPI.zoom_level = ZoomLevel{ 1 };
                     screenCoords.x *= 2;
                     screenCoords.y *= 2;
-                    clipDPI.SetX(clipDPI.ScreenX() * 2);
-                    clipDPI.SetY(clipDPI.ScreenY() * 2);
+                    clipDPI.x *= 2;
+                    clipDPI.y *= 2;
                 }
 
                 // For any suspended rides, move image higher in the vehicle tab on the rides window
@@ -2976,10 +2976,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* rideEntry = ride->GetRideEntry();
 
             // Background
-            GfxFillRect(
-                dpi,
-                { { dpi.ScreenX(), dpi.ScreenY() }, { dpi.ScreenX() + dpi.ScreenWidth(), dpi.ScreenY() + dpi.ScreenHeight() } },
-                PALETTE_INDEX_12);
+            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, PALETTE_INDEX_12);
 
             Widget* widget = &widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
             int32_t startX = std::max(2, (widget->width() - ((ride->NumTrains - 1) * 36)) / 2 - 25);
@@ -4973,11 +4970,7 @@ namespace OpenRCT2::Ui::Windows
             auto vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
             // Background colour
-            GfxFillRect(
-                dpi,
-                { { dpi.ScreenX(), dpi.ScreenY() },
-                  { dpi.ScreenX() + dpi.ScreenWidth() - 1, dpi.ScreenY() + dpi.ScreenHeight() - 1 } },
-                PALETTE_INDEX_12);
+            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, PALETTE_INDEX_12);
 
             // ?
             auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
@@ -5333,7 +5326,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < musicObj->GetTrackCount(); i++)
             {
                 // Skip invisible items
-                if (y + kScrollableRowHeight < dpi.ScreenY() || y > dpi.ScreenY() + dpi.ScreenHeight())
+                if (y + kScrollableRowHeight < dpi.y || y > dpi.y + dpi.height)
                 {
                     y += kScrollableRowHeight;
                     continue;
@@ -6138,12 +6131,12 @@ namespace OpenRCT2::Ui::Windows
             const uint8_t darkColour = ColourMapA[COLOUR_SATURATED_GREEN].mid_dark;
 
             int32_t time = 0;
-            for (int32_t x = 0; x < dpi.ScreenX() + dpi.ScreenWidth(); x += 80)
+            for (int32_t x = 0; x < dpi.x + dpi.width; x += 80)
             {
-                if (x + 80 >= dpi.ScreenX())
+                if (x + 80 >= dpi.x)
                 {
-                    auto coord1 = ScreenCoordsXY{ x, dpi.ScreenY() };
-                    auto coord2 = ScreenCoordsXY{ x, dpi.ScreenY() + dpi.ScreenHeight() - 1 };
+                    auto coord1 = ScreenCoordsXY{ x, dpi.y };
+                    auto coord2 = ScreenCoordsXY{ x, dpi.y + dpi.height - 1 };
                     GfxFillRect(dpi, { coord1, coord2 }, lightColour);
                     GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 16, 0 }, coord2 + ScreenCoordsXY{ 16, 0 } }, darkColour);
                     GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 32, 0 }, coord2 + ScreenCoordsXY{ 32, 0 } }, darkColour);
@@ -6170,7 +6163,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Minor / major line
                 int32_t colour = yUnit == 0 ? lightColour : darkColour;
-                GfxFillRect(dpi, { { dpi.ScreenX(), y }, { dpi.ScreenX() + dpi.ScreenWidth() - 1, y } }, colour);
+                GfxFillRect(dpi, { { dpi.x, y }, { dpi.x + dpi.width - 1, y } }, colour);
 
                 int16_t scaled_yUnit = yUnit;
                 // Scale modifier
@@ -6185,23 +6178,23 @@ namespace OpenRCT2::Ui::Windows
 
             // Time marks
             time = 0;
-            for (int32_t x = 0; x < dpi.ScreenX() + dpi.ScreenWidth(); x += 80)
+            for (int32_t x = 0; x < dpi.x + dpi.width; x += 80)
             {
                 auto ft = Formatter();
                 ft.Add<int32_t>(time);
-                if (x + 80 >= dpi.ScreenX())
+                if (x + 80 >= dpi.x)
                     DrawTextBasic(dpi, { x + 2, 1 }, STR_RIDE_STATS_TIME, ft, { FontStyle::Small });
                 time += 5;
             }
 
             // Plot
-            int32_t x = dpi.ScreenX();
+            int32_t x = dpi.x;
             int32_t firstPoint, secondPoint;
             // Uses the force limits (used to draw extreme G's in red on measurement tab) to determine if line should be drawn
             // red.
             int32_t intensityThresholdPositive = 0;
             int32_t intensityThresholdNegative = 0;
-            for (int32_t graphWidth = 0; graphWidth < dpi.ScreenWidth(); graphWidth++, x++)
+            for (int32_t graphWidth = 0; graphWidth < dpi.width; graphWidth++, x++)
             {
                 if (x < 0 || x >= measurement->num_items - 1)
                     continue;

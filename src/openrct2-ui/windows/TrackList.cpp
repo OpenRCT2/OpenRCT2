@@ -710,8 +710,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (auto i : _filteredTrackIds)
             {
-                if (screenCoords.y + kScrollableRowHeight >= dpi.ScreenY()
-                    && screenCoords.y < dpi.ScreenY() + dpi.ScreenHeight())
+                if (screenCoords.y + kScrollableRowHeight >= dpi.y && screenCoords.y < dpi.y + dpi.height)
                 {
                     StringId stringId;
                     if (listIndex == static_cast<size_t>(selected_list_item))

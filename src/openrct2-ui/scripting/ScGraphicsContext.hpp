@@ -141,12 +141,12 @@ namespace OpenRCT2::Scripting
 
         int32_t width_get() const
         {
-            return _dpi.ScreenWidth();
+            return _dpi.width;
         }
 
         int32_t height_get() const
         {
-            return _dpi.ScreenHeight();
+            return _dpi.height;
         }
 
         DukValue getImage(uint32_t id)

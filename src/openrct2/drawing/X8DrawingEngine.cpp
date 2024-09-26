@@ -94,7 +94,7 @@ void X8WeatherDrawer::Restore(DrawPixelInfo& dpi)
 {
     if (_weatherPixelsCount > 0)
     {
-        uint32_t numPixels = dpi.LineStride() * dpi.ScreenHeight();
+        uint32_t numPixels = dpi.LineStride() * dpi.height;
         uint8_t* bits = dpi.bits;
         for (uint32_t i = 0; i < _weatherPixelsCount; i++)
         {
@@ -331,10 +331,10 @@ void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pi
 
     DrawPixelInfo* dpi = &_bitsDPI;
     dpi->bits = _bits;
-    dpi->SetX(0);
-    dpi->SetY(0);
-    dpi->SetWidth(width);
-    dpi->SetHeight(height);
+    dpi->x = 0;
+    dpi->y = 0;
+    dpi->width = width;
+    dpi->height = height;
     dpi->pitch = _pitch - width;
 
     ConfigureDirtyGrid();
@@ -463,8 +463,8 @@ X8DrawingContext::X8DrawingContext(X8DrawingEngine* engine)
 
 void X8DrawingContext::Clear(DrawPixelInfo& dpi, uint8_t paletteIndex)
 {
-    int32_t w = dpi.ScreenWidth();
-    int32_t h = dpi.ScreenHeight();
+    int32_t w = dpi.width;
+    int32_t h = dpi.height;
     uint8_t* ptr = dpi.bits;
 
     for (int32_t y = 0; y < h; y++)
@@ -529,41 +529,41 @@ void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t lef
         return;
     if (top > bottom)
         return;
-    if (dpi.ScreenX() > right)
+    if (dpi.x > right)
         return;
-    if (left >= dpi.ScreenX() + dpi.ScreenWidth())
+    if (left >= dpi.x + dpi.width)
         return;
-    if (bottom < dpi.ScreenY())
+    if (bottom < dpi.y)
         return;
-    if (top >= dpi.ScreenY() + dpi.ScreenHeight())
+    if (top >= dpi.y + dpi.height)
         return;
 
     uint16_t crossPattern = 0;
 
-    int32_t startX = left - dpi.ScreenX();
+    int32_t startX = left - dpi.x;
     if (startX < 0)
     {
         crossPattern ^= startX;
         startX = 0;
     }
 
-    int32_t endX = right - dpi.ScreenX() + 1;
-    if (endX > dpi.ScreenWidth())
+    int32_t endX = right - dpi.x + 1;
+    if (endX > dpi.width)
     {
-        endX = dpi.ScreenWidth();
+        endX = dpi.width;
     }
 
-    int32_t startY = top - dpi.ScreenY();
+    int32_t startY = top - dpi.y;
     if (startY < 0)
     {
         crossPattern ^= startY;
         startY = 0;
     }
 
-    int32_t endY = bottom - dpi.ScreenY() + 1;
-    if (endY > dpi.ScreenHeight())
+    int32_t endY = bottom - dpi.y + 1;
+    if (endY > dpi.height)
     {
-        endY = dpi.ScreenHeight();
+        endY = dpi.height;
     }
 
     int32_t width = endX - startX;
@@ -603,11 +603,11 @@ void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t lef
 
         // The pattern loops every 15 lines this is which
         // part the pattern is on.
-        int32_t patternY = (startY + dpi.ScreenY()) % 16;
+        int32_t patternY = (startY + dpi.y) % 16;
 
         // The pattern loops every 15 pixels this is which
         // part the pattern is on.
-        int32_t startPatternX = (startX + dpi.ScreenX()) % 16;
+        int32_t startPatternX = (startX + dpi.x) % 16;
         int32_t patternX = startPatternX;
 
         const uint16_t* patternsrc = Patterns[colour >> 28]; // or possibly uint8_t)[esi*4] ?
@@ -649,37 +649,37 @@ void X8DrawingContext::FilterRect(
         return;
     if (top > bottom)
         return;
-    if (dpi.ScreenX() > right)
+    if (dpi.x > right)
         return;
-    if (left >= dpi.ScreenX() + dpi.ScreenWidth())
+    if (left >= dpi.x + dpi.width)
         return;
-    if (bottom < dpi.ScreenY())
+    if (bottom < dpi.y)
         return;
-    if (top >= dpi.ScreenY() + dpi.ScreenHeight())
+    if (top >= dpi.y + dpi.height)
         return;
 
-    int32_t startX = left - dpi.ScreenX();
+    int32_t startX = left - dpi.x;
     if (startX < 0)
     {
         startX = 0;
     }
 
-    int32_t endX = right - dpi.ScreenX() + 1;
-    if (endX > dpi.ScreenWidth())
+    int32_t endX = right - dpi.x + 1;
+    if (endX > dpi.width)
     {
-        endX = dpi.ScreenWidth();
+        endX = dpi.width;
     }
 
-    int32_t startY = top - dpi.ScreenY();
+    int32_t startY = top - dpi.y;
     if (startY < 0)
     {
         startY = 0;
     }
 
-    int32_t endY = bottom - dpi.ScreenY() + 1;
-    if (endY > dpi.ScreenHeight())
+    int32_t endY = bottom - dpi.y + 1;
+    if (endY > dpi.height)
     {
-        endY = dpi.ScreenHeight();
+        endY = dpi.height;
     }
 
     int32_t width = endX - startX;
@@ -750,14 +750,14 @@ static void DrawTTFBitmapInternal(
     int32_t width = surfaceWidth;
     int32_t height = surface->h;
 
-    const int32_t overflowX = (dpi.ScreenX() + dpi.ScreenWidth()) - (x + width);
-    const int32_t overflowY = (dpi.ScreenY() + dpi.ScreenHeight()) - (y + height);
+    const int32_t overflowX = (dpi.x + dpi.width) - (x + width);
+    const int32_t overflowY = (dpi.y + dpi.height) - (y + height);
     if (overflowX < 0)
         width += overflowX;
     if (overflowY < 0)
         height += overflowY;
-    int32_t skipX = x - dpi.ScreenX();
-    int32_t skipY = y - dpi.ScreenY();
+    int32_t skipX = x - dpi.x;
+    int32_t skipY = y - dpi.y;
 
     auto src = static_cast<const uint8_t*>(surface->pixels);
     uint8_t* dst = dpi.bits;

@@ -126,13 +126,13 @@ static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const G1Ele
     }
     else
     {
-        if (zoom.ApplyInversedTo(right) <= dpi.ScreenX())
+        if (zoom.ApplyInversedTo(right) <= dpi.x)
             return false;
-        if (zoom.ApplyInversedTo(top) <= dpi.ScreenY())
+        if (zoom.ApplyInversedTo(top) <= dpi.y)
             return false;
-        if (zoom.ApplyInversedTo(left) >= dpi.ScreenX() + dpi.ScreenWidth())
+        if (zoom.ApplyInversedTo(left) >= dpi.x + dpi.width)
             return false;
-        if (zoom.ApplyInversedTo(bottom) >= dpi.ScreenY() + dpi.ScreenHeight())
+        if (zoom.ApplyInversedTo(bottom) >= dpi.y + dpi.height)
             return false;
     }
     return true;

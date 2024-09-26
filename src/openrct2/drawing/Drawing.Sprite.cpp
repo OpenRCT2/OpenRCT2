@@ -548,10 +548,10 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     {
         DrawPixelInfo zoomed_dpi = dpi;
         zoomed_dpi.bits = dpi.bits;
-        zoomed_dpi.SetX(dpi.ScreenX());
-        zoomed_dpi.SetY(dpi.ScreenY());
-        zoomed_dpi.SetHeight(dpi.ScreenHeight());
-        zoomed_dpi.SetWidth(dpi.ScreenWidth());
+        zoomed_dpi.x = dpi.x;
+        zoomed_dpi.y = dpi.y;
+        zoomed_dpi.height = dpi.height;
+        zoomed_dpi.width = dpi.width;
         zoomed_dpi.pitch = dpi.pitch;
         zoomed_dpi.zoom_level = zoomLevel - 1;
 
@@ -577,16 +577,14 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
         ScreenCoordsXY spriteBottomLeft{ zoomLevel.ApplyInversedTo(coords.x + g1->x_offset + g1->width),
                                          zoomLevel.ApplyInversedTo(coords.y + g1->y_offset + g1->height) };
 
-        const int32_t width = std::min(spriteBottomLeft.x, dpi.ScreenX() + dpi.ScreenWidth())
-            - std::max(spriteTopLeft.x, dpi.ScreenX());
-        const int32_t height = std::min(spriteBottomLeft.y, dpi.ScreenY() + dpi.ScreenHeight())
-            - std::max(spriteTopLeft.y, dpi.ScreenY());
+        const int32_t width = std::min(spriteBottomLeft.x, dpi.x + dpi.width) - std::max(spriteTopLeft.x, dpi.x);
+        const int32_t height = std::min(spriteBottomLeft.y, dpi.y + dpi.height) - std::max(spriteTopLeft.y, dpi.y);
 
         if (width <= 0 || height <= 0)
             return;
 
-        const int32_t offsetX = dpi.ScreenX() - spriteTopLeft.x;
-        const int32_t offsetY = dpi.ScreenY() - spriteTopLeft.y;
+        const int32_t offsetX = dpi.x - spriteTopLeft.x;
+        const int32_t offsetY = dpi.y - spriteTopLeft.y;
         const int32_t srcX = std::max(0, offsetX);
         const int32_t srcY = std::max(0, offsetY);
         uint8_t* dst = dpi.bits + std::max(0, -offsetX) + std::max(0, -offsetY) * dpi.LineStride();
@@ -763,17 +761,17 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     offsetCoords.x = zoom.ApplyInversedTo(offsetCoords.x);
     offsetCoords.y = zoom.ApplyInversedTo(offsetCoords.y);
 
-    left = std::max(dpi.ScreenX(), offsetCoords.x);
-    top = std::max(dpi.ScreenY(), offsetCoords.y);
-    right = std::min(dpi.ScreenX() + dpi.ScreenWidth(), offsetCoords.x + width);
-    bottom = std::min(dpi.ScreenY() + dpi.ScreenHeight(), offsetCoords.y + height);
+    left = std::max(dpi.x, offsetCoords.x);
+    top = std::max(dpi.y, offsetCoords.y);
+    right = std::min(dpi.x + dpi.width, offsetCoords.x + width);
+    bottom = std::min(dpi.y + dpi.height, offsetCoords.y + height);
 
     width = right - left;
     height = bottom - top;
     if (width < 0 || height < 0)
         return;
 
-    uint8_t* dst = dpi.bits + (left - dpi.ScreenX()) + ((top - dpi.ScreenY()) * dpi.LineStride());
+    uint8_t* dst = dpi.bits + (left - dpi.x) + ((top - dpi.y) * dpi.LineStride());
     int32_t skipX = left - offsetCoords.x;
     int32_t skipY = top - offsetCoords.y;
     if (zoom < ZoomLevel{ 0 })

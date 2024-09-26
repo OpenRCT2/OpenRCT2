@@ -799,41 +799,41 @@ bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoord
     dst = src;
     dst.zoom_level = ZoomLevel{ 0 };
 
-    if (coords.x > dst.ScreenX())
+    if (coords.x > dst.x)
     {
-        uint16_t clippedFromLeft = coords.x - dst.ScreenX();
-        dst.SetWidth(dst.ScreenWidth() - clippedFromLeft);
-        dst.SetX(coords.x);
+        uint16_t clippedFromLeft = coords.x - dst.x;
+        dst.width -= clippedFromLeft;
+        dst.x = coords.x;
         dst.pitch += clippedFromLeft;
         dst.bits += clippedFromLeft;
     }
 
-    int32_t stickOutWidth = dst.ScreenX() + dst.ScreenWidth() - right;
+    int32_t stickOutWidth = dst.x + dst.width - right;
     if (stickOutWidth > 0)
     {
-        dst.SetWidth(dst.ScreenWidth() - stickOutWidth);
+        dst.width -= stickOutWidth;
         dst.pitch += stickOutWidth;
     }
 
-    if (coords.y > dst.ScreenY())
+    if (coords.y > dst.y)
     {
-        uint16_t clippedFromTop = coords.y - dst.ScreenY();
-        dst.SetHeight(dst.ScreenHeight() - clippedFromTop);
-        dst.SetY(coords.y);
+        uint16_t clippedFromTop = coords.y - dst.y;
+        dst.height -= clippedFromTop;
+        dst.y = coords.y;
         uint32_t bitsPlus = dst.LineStride() * clippedFromTop;
         dst.bits += bitsPlus;
     }
 
-    int32_t bp = dst.ScreenY() + dst.ScreenHeight() - bottom;
+    int32_t bp = dst.y + dst.height - bottom;
     if (bp > 0)
     {
-        dst.SetHeight(dst.ScreenHeight() - bp);
+        dst.height -= bp;
     }
 
-    if (dst.ScreenWidth() > 0 && dst.ScreenHeight() > 0)
+    if (dst.width > 0 && dst.height > 0)
     {
-        dst.SetX(dst.ScreenX() - coords.x);
-        dst.SetY(dst.ScreenY() - coords.y);
+        dst.x -= coords.x;
+        dst.y -= coords.y;
         return true;
     }
 
@@ -1140,36 +1140,25 @@ void ToggleWindowedMode()
     Config::Save();
 }
 
-void DebugDPI(const DrawPixelInfo& dpi)
+void DebugDPI(DrawPixelInfo& dpi)
 {
-    DrawPixelInfo unzoomed = dpi;
-    unzoomed.zoom_level = ZoomLevel{ 0 };
-    unzoomed.SetX(dpi.ScreenX());
-    unzoomed.SetY(dpi.ScreenY());
-    unzoomed.SetWidth(dpi.ScreenWidth());
-    unzoomed.SetHeight(dpi.ScreenHeight());
+    ScreenCoordsXY topLeft = { dpi.x, dpi.y };
+    ScreenCoordsXY bottomRight = { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 };
+    ScreenCoordsXY topRight = { dpi.x + dpi.width - 1, dpi.y };
+    ScreenCoordsXY bottomLeft = { dpi.x, dpi.y + dpi.height - 1 };
 
-    ScreenCoordsXY topLeft = { unzoomed.ScreenX(), unzoomed.ScreenY() };
-    ScreenCoordsXY bottomRight = { unzoomed.ScreenX() + unzoomed.ScreenWidth() - 1,
-                                   unzoomed.ScreenY() + unzoomed.ScreenHeight() - 1 };
-    ScreenCoordsXY topRight = { unzoomed.ScreenX() + unzoomed.ScreenWidth() - 1, unzoomed.ScreenY() };
-    ScreenCoordsXY bottomLeft = { unzoomed.ScreenX(), unzoomed.ScreenY() + unzoomed.ScreenHeight() - 1 };
+    GfxDrawLine(dpi, { topLeft, bottomRight }, PALETTE_INDEX_136);
+    GfxDrawLine(dpi, { bottomLeft, topRight }, PALETTE_INDEX_136);
+    GfxDrawLine(dpi, { topLeft, topRight }, PALETTE_INDEX_129);
+    GfxDrawLine(dpi, { topRight, bottomRight }, PALETTE_INDEX_129);
+    GfxDrawLine(dpi, { bottomLeft, bottomRight }, PALETTE_INDEX_129);
+    GfxDrawLine(dpi, { topLeft, bottomLeft }, PALETTE_INDEX_129);
 
-    GfxDrawLine(unzoomed, { topLeft, bottomRight }, PALETTE_INDEX_136);
-    GfxDrawLine(unzoomed, { bottomLeft, topRight }, PALETTE_INDEX_136);
-    GfxDrawLine(unzoomed, { topLeft, topRight }, PALETTE_INDEX_129);
-    GfxDrawLine(unzoomed, { topRight, bottomRight }, PALETTE_INDEX_129);
-    GfxDrawLine(unzoomed, { bottomLeft, bottomRight }, PALETTE_INDEX_129);
-    GfxDrawLine(unzoomed, { topLeft, bottomLeft }, PALETTE_INDEX_129);
+    GfxDrawLine(dpi, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PALETTE_INDEX_136);
 
-    GfxDrawLine(unzoomed, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PALETTE_INDEX_136);
+    const auto str = std::to_string(dpi.x);
+    DrawText(dpi, ScreenCoordsXY{ dpi.x, dpi.y }, { COLOUR_WHITE, FontStyle::Tiny }, str.c_str());
 
-    const auto str = std::to_string(dpi.ScreenX());
-    DrawText(
-        unzoomed, ScreenCoordsXY{ unzoomed.ScreenX(), unzoomed.ScreenY() }, { COLOUR_WHITE, FontStyle::Tiny }, str.c_str());
-
-    const auto str2 = std::to_string(dpi.ScreenY());
-    DrawText(
-        unzoomed, ScreenCoordsXY{ unzoomed.ScreenX(), unzoomed.ScreenY() + 6 }, { COLOUR_WHITE, FontStyle::Tiny },
-        str2.c_str());
+    const auto str2 = std::to_string(dpi.y);
+    DrawText(dpi, ScreenCoordsXY{ dpi.x, dpi.y + 6 }, { COLOUR_WHITE, FontStyle::Tiny }, str2.c_str());
 }

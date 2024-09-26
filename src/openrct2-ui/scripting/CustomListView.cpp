@@ -552,20 +552,18 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
 void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollArea* scroll) const
 {
     auto paletteIndex = ColourMapA[w->colours[1].colour].mid_light;
-    GfxFillRect(
-        dpi, { { dpi.ScreenX(), dpi.ScreenY() }, { dpi.ScreenX() + dpi.ScreenWidth(), dpi.ScreenY() + dpi.ScreenHeight() } },
-        paletteIndex);
+    GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, paletteIndex);
 
     int32_t y = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
     for (size_t i = 0; i < Items.size(); i++)
     {
-        if (y > dpi.ScreenY() + dpi.ScreenHeight())
+        if (y > dpi.y + dpi.height)
         {
             // Past the scroll view area
             break;
         }
 
-        if (y + kListRowHeight >= dpi.ScreenY())
+        if (y + kListRowHeight >= dpi.y)
         {
             const auto& itemIndex = static_cast<int32_t>(SortedItems[i]);
             const auto& item = Items[itemIndex];
@@ -585,19 +583,19 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollArea* 
                 if (isSelected)
                 {
                     GfxFilterRect(
-                        dpi, { { dpi.ScreenX(), y }, { dpi.ScreenX() + dpi.ScreenWidth(), y + (kListRowHeight - 1) } },
+                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (kListRowHeight - 1) } },
                         FilterPaletteID::PaletteDarken2);
                 }
                 else if (isHighlighted)
                 {
                     GfxFilterRect(
-                        dpi, { { dpi.ScreenX(), y }, { dpi.ScreenX() + dpi.ScreenWidth(), y + (kListRowHeight - 1) } },
+                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (kListRowHeight - 1) } },
                         FilterPaletteID::PaletteDarken2);
                 }
                 else if (isStriped)
                 {
                     GfxFillRect(
-                        dpi, { { dpi.ScreenX(), y }, { dpi.ScreenX() + dpi.ScreenWidth(), y + (kListRowHeight - 1) } },
+                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (kListRowHeight - 1) } },
                         ColourMapA[w->colours[1].colour].lighter | 0x1000000);
                 }
 
@@ -643,7 +641,7 @@ void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollArea* 
         y = scroll->contentOffsetY;
 
         auto bgColour = ColourMapA[w->colours[1].colour].mid_light;
-        GfxFillRect(dpi, { { dpi.ScreenX(), y }, { dpi.ScreenX() + dpi.ScreenWidth(), y + 12 } }, bgColour);
+        GfxFillRect(dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + 12 } }, bgColour);
 
         int32_t x = 0;
         for (int32_t j = 0; j < static_cast<int32_t>(Columns.size()); j++)

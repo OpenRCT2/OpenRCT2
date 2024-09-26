@@ -18,10 +18,10 @@
  */
 static void GfxDrawLineOnBuffer(DrawPixelInfo& dpi, char colour, const ScreenCoordsXY& coords, int32_t no_pixels)
 {
-    ScreenCoordsXY offset{ coords.x - dpi.ScreenX(), coords.y - dpi.ScreenY() };
+    ScreenCoordsXY offset{ coords.x - dpi.x, coords.y - dpi.y };
 
-    const int32_t width = dpi.ScreenWidth();
-    const int32_t height = dpi.ScreenHeight();
+    const int32_t width = dpi.width;
+    const int32_t height = dpi.height;
 
     // Check to make sure point is in the y range
     if (offset.y < 0)
@@ -82,22 +82,22 @@ void GfxDrawLineSoftware(DrawPixelInfo& dpi, const ScreenLine& line, int32_t col
     int32_t y1 = zoom.ApplyInversedTo(line.GetY1());
     int32_t y2 = zoom.ApplyInversedTo(line.GetY2());
     // Check to make sure the line is within the drawing area
-    if ((x1 < dpi.ScreenX()) && (x2 < dpi.ScreenX()))
+    if ((x1 < dpi.x) && (x2 < dpi.x))
     {
         return;
     }
 
-    if ((y1 < dpi.ScreenY()) && (y2 < dpi.ScreenY()))
+    if ((y1 < dpi.y) && (y2 < dpi.y))
     {
         return;
     }
 
-    if ((x1 > (dpi.ScreenX() + dpi.ScreenWidth())) && (x2 > (dpi.ScreenX() + dpi.ScreenWidth())))
+    if ((x1 > (dpi.x + dpi.width)) && (x2 > (dpi.x + dpi.width)))
     {
         return;
     }
 
-    if ((y1 > (dpi.ScreenY() + dpi.ScreenHeight())) && (y2 > (dpi.ScreenY() + dpi.ScreenHeight())))
+    if ((y1 > (dpi.y + dpi.height)) && (y2 > (dpi.y + dpi.height)))
     {
         return;
     }

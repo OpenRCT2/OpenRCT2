@@ -91,7 +91,7 @@ void OpenGLFramebuffer::BindRead() const
 
 void OpenGLFramebuffer::GetPixels(DrawPixelInfo& dpi) const
 {
-    assert(dpi.ScreenWidth() == _width && dpi.ScreenHeight() == _height);
+    assert(dpi.width == _width && dpi.height == _height);
 
     auto pixels = std::make_unique<uint8_t[]>(_width * _height);
     glBindTexture(GL_TEXTURE_2D, _texture);

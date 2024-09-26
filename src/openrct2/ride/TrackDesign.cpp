@@ -2117,10 +2117,10 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_ENTITIES;
 
     DrawPixelInfo dpi;
-    dpi.SetX(0);
-    dpi.SetY(0);
-    dpi.SetWidth(370);
-    dpi.SetHeight(217);
+    dpi.x = 0;
+    dpi.y = 0;
+    dpi.width = 370;
+    dpi.height = 217;
     dpi.pitch = 0;
     dpi.bits = pixels;
 

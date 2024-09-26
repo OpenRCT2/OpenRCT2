@@ -108,14 +108,10 @@ struct Gx
 struct DrawPixelInfo
 {
     uint8_t* bits{};
-
-private:
     int32_t x{};
     int32_t y{};
     int32_t width{};
     int32_t height{};
-
-public:
     int32_t pitch{}; // note: this is actually (pitch - width)
     ZoomLevel zoom_level{};
 
@@ -127,60 +123,26 @@ public:
     uint8_t* GetBitsOffset(const ScreenCoordsXY& pos) const;
     DrawPixelInfo Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const;
 
-    constexpr int32_t WorldX() const
+    [[nodiscard]] constexpr int32_t WorldX() const
     {
         return zoom_level.ApplyTo(x);
     }
-    constexpr int32_t WorldY() const
+    [[nodiscard]] constexpr int32_t WorldY() const
     {
         return zoom_level.ApplyTo(y);
     }
-    constexpr int32_t WorldWidth() const
+    [[nodiscard]] constexpr int32_t WorldWidth() const
     {
         return zoom_level.ApplyTo(width);
     }
-    constexpr int32_t WorldHeight() const
+    [[nodiscard]] constexpr int32_t WorldHeight() const
     {
         return zoom_level.ApplyTo(height);
     }
 
-    constexpr int32_t ScreenX() const
-    {
-        return x;
-    }
-    constexpr int32_t ScreenY() const
-    {
-        return y;
-    }
-    constexpr int32_t ScreenWidth() const
-    {
-        return width;
-    }
-    constexpr int32_t ScreenHeight() const
-    {
-        return height;
-    }
-
-    constexpr int32_t LineStride() const
+    [[nodiscard]] constexpr int32_t LineStride() const
     {
         return width + pitch;
-    }
-
-    void SetX(const int32_t value)
-    {
-        x = value;
-    }
-    void SetY(const int32_t value)
-    {
-        y = value;
-    }
-    void SetWidth(const int32_t value)
-    {
-        width = value;
-    }
-    void SetHeight(const int32_t value)
-    {
-        height = value;
     }
 };
 
@@ -685,6 +647,6 @@ void UpdatePaletteEffects();
 void RefreshVideo();
 void ToggleWindowedMode();
 
-void DebugDPI(const DrawPixelInfo& dpi);
+void DebugDPI(DrawPixelInfo& dpi);
 
 #include "NewDrawing.h"

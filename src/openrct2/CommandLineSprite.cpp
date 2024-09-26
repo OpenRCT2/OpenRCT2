@@ -195,10 +195,10 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
 
     DrawPixelInfo dpi;
     dpi.bits = pixels;
-    dpi.SetX(0);
-    dpi.SetY(0);
-    dpi.SetWidth(spriteElement.width);
-    dpi.SetHeight(spriteElement.height);
+    dpi.x = 0;
+    dpi.y = 0;
+    dpi.width = spriteElement.width;
+    dpi.height = spriteElement.height;
     dpi.pitch = 0;
     dpi.zoom_level = ZoomLevel{ 0 };
 
@@ -211,8 +211,8 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
     try
     {
         Image image;
-        image.Width = dpi.ScreenWidth();
-        image.Height = dpi.ScreenHeight();
+        image.Width = dpi.width;
+        image.Height = dpi.height;
         image.Depth = 8;
         image.Stride = dpi.LineStride();
         image.Palette = std::make_unique<GamePalette>(StandardPalette);
