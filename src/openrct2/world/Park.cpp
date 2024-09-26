@@ -605,7 +605,7 @@ namespace OpenRCT2::Park
 
         // Update park rating, guests in park and current cash history
         constexpr auto ratingHistorySize = std::extent_v<decltype(ParkData::RatingHistory)>;
-        HistoryPushRecord<uint8_t, ratingHistorySize>(gameState.Park.RatingHistory, gameState.Park.Rating / 4);
+        HistoryPushRecord<uint16_t, ratingHistorySize>(gameState.Park.RatingHistory, gameState.Park.Rating);
         constexpr auto numGuestsHistorySize = std::extent_v<decltype(GameState_t::GuestsInParkHistory)>;
         HistoryPushRecord<uint32_t, numGuestsHistorySize>(gameState.GuestsInParkHistory, gameState.NumGuestsInPark);
 
