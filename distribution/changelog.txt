@@ -8,6 +8,7 @@
 - Change: [#22740] Add virtual floor to shifted track design placement.
 - Change: [#22795] Replace Giga Coaster and Twister Roller Coaster booster images.
 - Fix: [#2614] The colour tab of the ride window does not hide invisible cars (original bug).
+- Fix: [#7672] Wide path status is set to all 'wide' paths, instead of only a quarter, impeding pathfinding.
 - Fix: [#15406] Tunnels on steep Side-Friction track are drawn too low.
 - Fix: [#21959] “Save this before...?” message does not appear when selecting “New Game”.
 - Fix: [#22231] Invalid object version can cause a crash.

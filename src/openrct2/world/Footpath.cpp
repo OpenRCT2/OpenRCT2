@@ -1596,8 +1596,8 @@ void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos)
     // FootpathClearWide(x, y);
     // y -= 0x20;
 
-    // Check if tile coords are being passed? Why does that even happen?
-    // TODO: Needs adjusting for higher coords (NSF) before this is merged.
+    // Only consider approx. 1/4 of tiles for wide path status
+    // (NB: the other 3/4 do get cleared above!)
     if (!(footpathPos.x & 0xE0) || (!(footpathPos.y & 0xE0)))
         return;
 
