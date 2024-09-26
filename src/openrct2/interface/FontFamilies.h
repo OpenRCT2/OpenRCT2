@@ -25,16 +25,10 @@ extern TTFontFamily const TTFFamilyJapanese;
 extern TTFontFamily const TTFFamilyKorean;
 extern TTFontFamily const TTFFamilySansSerif;
 
-constexpr TTFontFamily const* Family(TTFontFamily const* x)
-{
-    return x;
-}
+#    define FAMILY(x) x
 
 #else // NO_TTF
 
-constexpr auto Famil(auto x)
-{
-    return kFamilyOpenRCT2Sprite;
-}
+#    define Family(x) kFamilyOpenRCT2Sprite
 
 #endif // NO_TTF
