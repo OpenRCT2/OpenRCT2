@@ -9,7 +9,7 @@
 
 #pragma once
 
-#define FAMILY_OPENRCT2_SPRITE nullptr
+constexpr auto kFamilyOpenRCT2Sprite = nullptr;
 
 #ifndef NO_TTF
 
@@ -25,10 +25,16 @@ extern TTFontFamily const TTFFamilyJapanese;
 extern TTFontFamily const TTFFamilyKorean;
 extern TTFontFamily const TTFFamilySansSerif;
 
-#    define FAMILY(x) x
+constexpr TTFontFamily const* Family(TTFontFamily const* x)
+{
+    return x;
+}
 
 #else // NO_TTF
 
-#    define FAMILY(x) FAMILY_OPENRCT2_SPRITE
+constexpr auto Famil(auto x)
+{
+    return kFamilyOpenRCT2Sprite;
+}
 
 #endif // NO_TTF
