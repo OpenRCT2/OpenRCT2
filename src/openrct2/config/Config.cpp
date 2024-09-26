@@ -715,7 +715,7 @@ namespace OpenRCT2::Config
     {
         LOG_VERBOSE("config_find_rct2_path(...)");
 
-        std::vector<u8string_view> searchLocations = Platform::GetSearchablePathsRCT2();
+        static std::vector<u8string_view> searchLocations = Platform::GetSearchablePathsRCT2();
 
         for (const auto& location : searchLocations)
         {
