@@ -97,6 +97,7 @@ void EntityTweener::Tween(float alpha)
         if (posA == posB)
             continue;
 
+        ent->Invalidate();
         EntitySetCoordinates(
             { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
               static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
@@ -114,6 +115,7 @@ void EntityTweener::Restore()
         if (ent == nullptr)
             continue;
 
+        ent->Invalidate();
         EntitySetCoordinates(PostPos[i], ent);
         ent->Invalidate();
     }

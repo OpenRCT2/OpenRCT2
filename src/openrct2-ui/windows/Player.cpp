@@ -412,8 +412,6 @@ namespace OpenRCT2::Ui::Windows
                 viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
                 viewport->width = viewportWidget->width();
                 viewport->height = viewportWidget->height();
-                viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
-                viewport->view_height = viewport->zoom.ApplyTo(viewport->height);
             }
 
             // Only enable kick button for other players

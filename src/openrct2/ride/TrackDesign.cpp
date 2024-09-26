@@ -2112,14 +2112,11 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     Viewport view;
     view.width = 370;
     view.height = 217;
-    view.view_width = size_x;
-    view.view_height = size_y;
     view.pos = { 0, 0 };
     view.zoom = zoom_level;
     view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_ENTITIES;
 
     DrawPixelInfo dpi;
-    dpi.zoom_level = zoom_level;
     dpi.x = 0;
     dpi.y = 0;
     dpi.width = 370;
@@ -2135,7 +2132,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     {
         view.viewPos = Translate3DTo2DWithZ(i, centre) - offset;
         view.rotation = i;
-        ViewportRender(dpi, &view, { {}, ScreenCoordsXY{ size_x, size_y } });
+        ViewportRender(dpi, &view);
 
         dpi.bits += kTrackPreviewImageSize;
     }

@@ -1668,9 +1668,9 @@ void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
     {
         // Speed up scrolling horizontally when at the edge of the map
         // so that the speed is consistent with vertical edge scrolling.
-        int32_t x = mainWindow->savedViewPos.x + viewport->view_width / 2 + dx;
-        int32_t y = mainWindow->savedViewPos.y + viewport->view_height / 2;
-        int32_t y_dy = mainWindow->savedViewPos.y + viewport->view_height / 2 + dy;
+        int32_t x = mainWindow->savedViewPos.x + viewport->ViewWidth() / 2 + dx;
+        int32_t y = mainWindow->savedViewPos.y + viewport->ViewHeight() / 2;
+        int32_t y_dy = mainWindow->savedViewPos.y + viewport->ViewHeight() / 2 + dy;
 
         auto mapCoord = ViewportPosToMapPos({ x, y }, 0, viewport->rotation);
         auto mapCoord_dy = ViewportPosToMapPos({ x, y_dy }, 0, viewport->rotation);

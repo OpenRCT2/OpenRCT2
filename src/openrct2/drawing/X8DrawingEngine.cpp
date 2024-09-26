@@ -52,7 +52,7 @@ void X8WeatherDrawer::Draw(
     uint8_t patternStartXOffset = xStart % patternXSpace;
     uint8_t patternStartYOffset = yStart % patternYSpace;
 
-    uint32_t pixelOffset = (dpi.pitch + dpi.width) * y + x;
+    uint32_t pixelOffset = dpi.LineStride() * y + x;
     uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
     uint8_t* screenBits = dpi.bits;
@@ -84,7 +84,7 @@ void X8WeatherDrawer::Draw(
             }
         }
 
-        pixelOffset += dpi.pitch + dpi.width;
+        pixelOffset += dpi.LineStride();
         patternYPos++;
         patternYPos %= patternYSpace;
     }
@@ -94,7 +94,7 @@ void X8WeatherDrawer::Restore(DrawPixelInfo& dpi)
 {
     if (_weatherPixelsCount > 0)
     {
-        uint32_t numPixels = (dpi.width + dpi.pitch) * dpi.height;
+        uint32_t numPixels = dpi.LineStride() * dpi.height;
         uint8_t* bits = dpi.bits;
         for (uint32_t i = 0; i < _weatherPixelsCount; i++)
         {
@@ -237,7 +237,7 @@ void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t heig
     width += lmargin + rmargin;
     height += tmargin + bmargin;
 
-    int32_t stride = _bitsDPI.width + _bitsDPI.pitch;
+    int32_t stride = _bitsDPI.LineStride();
     uint8_t* to = _bitsDPI.bits + y * stride + x;
     uint8_t* from = _bitsDPI.bits + (y - dy) * stride + x - dx;
 
@@ -463,8 +463,8 @@ X8DrawingContext::X8DrawingContext(X8DrawingEngine* engine)
 
 void X8DrawingContext::Clear(DrawPixelInfo& dpi, uint8_t paletteIndex)
 {
-    int32_t w = dpi.zoom_level.ApplyInversedTo(dpi.width);
-    int32_t h = dpi.zoom_level.ApplyInversedTo(dpi.height);
+    int32_t w = dpi.width;
+    int32_t h = dpi.height;
     uint8_t* ptr = dpi.bits;
 
     for (int32_t y = 0; y < h; y++)
@@ -524,6 +524,7 @@ static constexpr const uint16_t* Patterns[] = {
 
 void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
+    assert(dpi.zoom_level == ZoomLevel{ 0 });
     if (left > right)
         return;
     if (top > bottom)
@@ -571,10 +572,10 @@ void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t lef
     if (colour & 0x1000000)
     {
         // Cross hatching
-        uint8_t* dst = (startY * (dpi.width + dpi.pitch)) + startX + dpi.bits;
+        uint8_t* dst = startY * dpi.LineStride() + startX + dpi.bits;
         for (int32_t i = 0; i < height; i++)
         {
-            uint8_t* nextdst = dst + dpi.width + dpi.pitch;
+            uint8_t* nextdst = dst + dpi.LineStride();
             uint32_t p = Numerics::ror32(crossPattern, 1);
             p = (p & 0xFFFF0000) | width;
 
@@ -598,7 +599,7 @@ void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t lef
     }
     else if (colour & 0x4000000)
     {
-        uint8_t* dst = startY * (dpi.width + dpi.pitch) + startX + dpi.bits;
+        uint8_t* dst = startY * dpi.LineStride() + startX + dpi.bits;
 
         // The pattern loops every 15 lines this is which
         // part the pattern is on.
@@ -613,7 +614,7 @@ void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t lef
 
         for (int32_t numLines = height; numLines > 0; numLines--)
         {
-            uint8_t* nextdst = dst + dpi.width + dpi.pitch;
+            uint8_t* nextdst = dst + dpi.LineStride();
             uint16_t pattern = patternsrc[patternY];
 
             for (int32_t numPixels = width; numPixels > 0; numPixels--)
@@ -632,11 +633,11 @@ void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t lef
     }
     else
     {
-        uint8_t* dst = startY * (dpi.width + dpi.pitch) + startX + dpi.bits;
+        uint8_t* dst = startY * dpi.LineStride() + startX + dpi.bits;
         for (int32_t i = 0; i < height; i++)
         {
             std::fill_n(dst, width, colour & 0xFF);
-            dst += dpi.width + dpi.pitch;
+            dst += dpi.LineStride();
         }
     }
 }
@@ -684,24 +685,18 @@ void X8DrawingContext::FilterRect(
     int32_t width = endX - startX;
     int32_t height = endY - startY;
 
-    // 0x2000000
-    // 00678B7E   00678C83
-    // Location in screen buffer?
-    uint8_t* dst = dpi.bits
-        + static_cast<uint32_t>(
-                       dpi.zoom_level.ApplyInversedTo(startY) * (dpi.zoom_level.ApplyInversedTo(dpi.width) + dpi.pitch)
-                       + dpi.zoom_level.ApplyInversedTo(startX));
+    uint8_t* dst = dpi.bits + (startY * dpi.LineStride() + startX);
 
     // Find colour in colour table?
     auto paletteMap = GetPaletteMapForColour(EnumValue(palette));
     if (paletteMap.has_value())
     {
         const auto& paletteEntries = paletteMap.value();
-        const int32_t scaled_width = dpi.zoom_level.ApplyInversedTo(width);
-        const int32_t step = dpi.zoom_level.ApplyInversedTo(dpi.width) + dpi.pitch;
+        const int32_t scaled_width = width;
+        const int32_t step = dpi.LineStride();
 
         // Fill the rectangle with the colours from the colour table
-        auto c = dpi.zoom_level.ApplyInversedTo(height);
+        auto c = height;
         for (int32_t i = 0; i < c; i++)
         {
             uint8_t* nextdst = dst + step * i;
@@ -750,6 +745,7 @@ template<bool TUseHinting>
 static void DrawTTFBitmapInternal(
     DrawPixelInfo& dpi, uint8_t colour, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
+    assert(dpi.zoom_level == ZoomLevel{ 0 });
     const int32_t surfaceWidth = surface->w;
     int32_t width = surfaceWidth;
     int32_t height = surface->h;
@@ -780,10 +776,10 @@ static void DrawTTFBitmapInternal(
     }
 
     dst += skipX;
-    dst += skipY * (dpi.width + dpi.pitch);
+    dst += skipY * dpi.LineStride();
 
     const int32_t srcScanSkip = surfaceWidth - width;
-    const int32_t dstScanSkip = dpi.width + dpi.pitch - width;
+    const int32_t dstScanSkip = dpi.LineStride() - width;
     for (int32_t yy = 0; yy < height; yy++)
     {
         for (int32_t xx = 0; xx < width; xx++)

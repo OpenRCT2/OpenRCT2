@@ -48,7 +48,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            ViewportRender(dpi, viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
+            ViewportRender(dpi, viewport);
         }
 
     private:

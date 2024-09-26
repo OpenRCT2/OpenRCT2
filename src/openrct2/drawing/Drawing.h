@@ -115,22 +115,35 @@ struct DrawPixelInfo
     int32_t pitch{}; // note: this is actually (pitch - width)
     ZoomLevel zoom_level{};
 
-    /**
-     * As x and y are based on 1:1 units, zooming in will cause a reduction in precision when mapping zoomed-in
-     * pixels to 1:1 pixels. When x, y are not a multiple of the zoom level, the remainder will be non-zero.
-     * The drawing of sprites will need to be offset by this amount.
-     */
-    uint8_t remX{};
-    uint8_t remY{};
-
     // Last position of drawn text.
     ScreenCoordsXY lastStringPos{};
 
     OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
 
-    size_t GetBytesPerRow() const;
     uint8_t* GetBitsOffset(const ScreenCoordsXY& pos) const;
     DrawPixelInfo Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const;
+
+    [[nodiscard]] constexpr int32_t WorldX() const
+    {
+        return zoom_level.ApplyTo(x);
+    }
+    [[nodiscard]] constexpr int32_t WorldY() const
+    {
+        return zoom_level.ApplyTo(y);
+    }
+    [[nodiscard]] constexpr int32_t WorldWidth() const
+    {
+        return zoom_level.ApplyTo(width);
+    }
+    [[nodiscard]] constexpr int32_t WorldHeight() const
+    {
+        return zoom_level.ApplyTo(height);
+    }
+
+    [[nodiscard]] constexpr int32_t LineStride() const
+    {
+        return width + pitch;
+    }
 };
 
 struct TextDrawInfo
@@ -401,6 +414,7 @@ public:
     {
     }
 
+    bool operator==(const PaletteMap& lhs) const;
     uint8_t& operator[](size_t index);
     uint8_t operator[](size_t index) const;
     uint8_t Blend(uint8_t src, uint8_t dst) const;
@@ -632,5 +646,7 @@ void UpdatePaletteEffects();
 
 void RefreshVideo();
 void ToggleWindowedMode();
+
+void DebugDPI(DrawPixelInfo& dpi);
 
 #include "NewDrawing.h"

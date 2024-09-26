@@ -299,10 +299,12 @@ void LightFXPrepareLightList()
                 {
                     // based on GetMapCoordinatesFromPosWindow
                     DrawPixelInfo dpi;
-                    dpi.x = entry->ViewCoords.x + offsetPattern[0 + pat * 2] / mapFrontDiv;
-                    dpi.y = entry->ViewCoords.y + offsetPattern[1 + pat * 2] / mapFrontDiv;
-                    dpi.height = 1;
                     dpi.zoom_level = _current_view_zoom_front;
+                    dpi.x = _current_view_zoom_front.ApplyInversedTo(
+                        entry->ViewCoords.x + offsetPattern[0 + pat * 2] / mapFrontDiv);
+                    dpi.y = _current_view_zoom_front.ApplyInversedTo(
+                        entry->ViewCoords.y + offsetPattern[1 + pat * 2] / mapFrontDiv);
+                    dpi.height = 1;
                     dpi.width = 1;
 
                     PaintSession* session = PaintSessionAlloc(dpi, w->viewport->flags, w->viewport->rotation);

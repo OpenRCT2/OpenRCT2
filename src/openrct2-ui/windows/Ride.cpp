@@ -1283,8 +1283,6 @@ namespace OpenRCT2::Ui::Windows
                 if (rideEntry->flags & RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF)
                 {
                     clipDPI.zoom_level = ZoomLevel{ 1 };
-                    clipDPI.width *= 2;
-                    clipDPI.height *= 2;
                     screenCoords.x *= 2;
                     screenCoords.y *= 2;
                     clipDPI.x *= 2;

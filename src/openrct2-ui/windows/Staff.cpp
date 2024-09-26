@@ -627,8 +627,6 @@ namespace OpenRCT2::Ui::Windows
                 {
                     viewport->width = newWidth;
                     viewport->height = newHeight;
-                    viewport->view_width = viewport->zoom.ApplyTo(newWidth);
-                    viewport->view_height = viewport->zoom.ApplyTo(newHeight);
                 }
             }
 

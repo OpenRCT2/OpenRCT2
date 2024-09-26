@@ -140,7 +140,7 @@ void ViewportUpdatePosition(WindowBase* window);
 void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep);
 void ViewportRotateSingle(WindowBase* window, int32_t direction);
 void ViewportRotateAll(int32_t direction);
-void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect);
+void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport);
 
 CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t rotation);
 
