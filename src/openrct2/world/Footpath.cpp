@@ -1596,6 +1596,11 @@ void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos)
     // FootpathClearWide(x, y);
     // y -= 0x20;
 
+    // Only consider approx. 1/8 of tiles for wide path status
+    // (NB: the other 7/8 do get cleared above!)
+    if (!(footpathPos.x & 0xE0) || (!(footpathPos.y & 0xE0)))
+        return;
+
     TileElement* tileElement = MapGetFirstElementAt(footpathPos);
     if (tileElement == nullptr)
         return;
