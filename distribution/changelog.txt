@@ -1,7 +1,8 @@
 0.4.15 (in development)
 ------------------------------------------------------------------------
-- Feature: [#15642] Track design placement can now use contruction modifier keys (ctrl/shift).
+- Feature: [#15642] Track design placement can now use construction modifier keys (ctrl/shift).
 - Feature: [#21521] [Plugin] Add hook 'park.guest.softcap.calculate' called before calculating the soft guest cap.
+- Feature: [#22774] Add 2x and 4x zoom levels to software renderer (previously limited to OpenGL).
 - Improved: [#22777] Add long flat-to-steep track pieces to the Wooden and Classic Wooden Roller Coasters.
 - Change: [#22596] Land ownership fixes described by .parkpatch files are now only considered on scenarios.
 - Change: [#22724] Staff now have optional ‘real’ names as well.
@@ -11,11 +12,13 @@
 - Fix: [#15406] Tunnels on steep Side-Friction track are drawn too low.
 - Fix: [#21959] “Save this before...?” message does not appear when selecting “New Game”.
 - Fix: [#22231] Invalid object version can cause a crash.
+- Fix: [#22562] Bottom row of pixels is not always drawn by the OpenGL renderer when zoomed in.
 - Fix: [#22653] Missing water tiles in RCT1 and RCT2 scenarios.
 - Fix: [#22654] Misplaced scenario elements in RCT1 and RCT2 scenarios.
 - Fix: [#22655] Incorrectly set surface style around missing water tiles on Botany Breakers.
 - Fix: [#22729] Invisibility settings persist after reloading OpenRCT2.
 - Fix: [#22734] Support clearance above steep Side-Friction track is too low.
+- Fix: [#22774] Fix entities leaving stale pixels on the screen when the framerate is uncapped.
 
 0.4.14 (2024-09-01)
 ------------------------------------------------------------------------
