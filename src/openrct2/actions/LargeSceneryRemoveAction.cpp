@@ -54,10 +54,9 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
     const uint32_t flags = GetFlags();
 
-    int32_t z = TileElementHeight(_loc);
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
-    res.Position.z = z;
+    res.Position.z = _loc.z;
     res.Expenditure = ExpenditureType::Landscaping;
     res.Cost = 0;
 
@@ -139,10 +138,9 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
 {
     auto res = GameActions::Result();
 
-    int32_t z = TileElementHeight(_loc);
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
-    res.Position.z = z;
+    res.Position.z = _loc.z;
     res.Expenditure = ExpenditureType::Landscaping;
     res.Cost = 0;
 
