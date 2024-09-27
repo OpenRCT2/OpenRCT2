@@ -1322,6 +1322,7 @@ namespace OpenRCT2
 
             if (ShouldDraw())
             {
+                UpdateEntitiesSpatialIndex();
                 Draw();
             }
         }
@@ -1357,6 +1358,8 @@ namespace OpenRCT2
             {
                 const float alpha = std::min(_ticksAccumulator / kGameUpdateTimeMS, 1.0f);
                 tweener.Tween(alpha);
+
+                UpdateEntitiesSpatialIndex();
 
                 Draw();
             }
