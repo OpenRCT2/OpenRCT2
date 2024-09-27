@@ -1594,14 +1594,14 @@ static GameActions::Result TrackDesignPlaceRide(
                 // di
                 int16_t tempZ = newCoords.z - trackCoordinates->zBegin;
 
-                int32_t liftHillAndAlternativeState = 0;
+                SelectedLiftAndInverted liftHillAndAlternativeState{};
                 if (track.HasFlag(TrackDesignTrackElementFlag::hasChain))
                 {
-                    liftHillAndAlternativeState |= 1;
+                    liftHillAndAlternativeState.set(LiftHillAndInverted::liftHill);
                 }
                 if (track.HasFlag(TrackDesignTrackElementFlag::isInverted))
                 {
-                    liftHillAndAlternativeState |= 2;
+                    liftHillAndAlternativeState.set(LiftHillAndInverted::inverted);
                 }
 
                 uint8_t flags = GAME_COMMAND_FLAG_APPLY;
