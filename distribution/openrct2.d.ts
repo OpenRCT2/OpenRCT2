@@ -1950,6 +1950,17 @@ declare global {
 
     interface LargeSceneryObject extends SceneryObject {
 
+        readonly tiles: LargeSceneryObjectTile[];
+    }
+
+    interface LargeSceneryObjectTile {
+
+        readonly offset: CoordsXYZ;
+        readonly zClearance: number;
+        readonly hasSupports: boolean;
+        readonly allowSupportsAbove: boolean;
+        readonly corners: number;
+        readonly walls: number;
     }
 
     interface WallObject extends SceneryObject {
