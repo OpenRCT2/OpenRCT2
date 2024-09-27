@@ -46,26 +46,27 @@ static std::vector<EntityId> _freeIdList;
 
 static bool _entityFlashingList[MAX_ENTITIES];
 
-constexpr const uint32_t SPATIAL_INDEX_SIZE = (kMaximumMapSizeTechnical * kMaximumMapSizeTechnical) + 1;
-constexpr uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
+static constexpr const uint32_t kSpatialIndexSize = (kMaximumMapSizeTechnical * kMaximumMapSizeTechnical) + 1;
+static constexpr uint32_t kSpatialIndexNullBucket = kSpatialIndexSize - 1;
+
 static constexpr uint32_t kInvalidSpatialIndex = 0xFFFFFFFFu;
 static constexpr uint32_t kSpatialIndexDirtyMask = 1u << 31;
 
-static std::array<std::vector<EntityId>, SPATIAL_INDEX_SIZE> gEntitySpatialIndex;
+static std::array<std::vector<EntityId>, kSpatialIndexSize> gEntitySpatialIndex;
 
 static void FreeEntity(EntityBase& entity);
 
 static constexpr uint32_t ComputeSpatialIndex(const CoordsXY& loc)
 {
     if (loc.IsNull())
-        return SPATIAL_INDEX_LOCATION_NULL;
+        return kSpatialIndexNullBucket;
 
     // NOTE: The input coordinate is rotated and can have negative components.
     const auto tileX = std::abs(loc.x) / kCoordsXYStep;
     const auto tileY = std::abs(loc.y) / kCoordsXYStep;
 
     if (tileX >= kMaximumMapSizeTechnical || tileY >= kMaximumMapSizeTechnical)
-        return SPATIAL_INDEX_LOCATION_NULL;
+        return kSpatialIndexNullBucket;
 
     return tileX * kMaximumMapSizeTechnical + tileY;
 }
