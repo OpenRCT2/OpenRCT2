@@ -48,12 +48,14 @@ static bool _entityFlashingList[MAX_ENTITIES];
 
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (kMaximumMapSizeTechnical * kMaximumMapSizeTechnical) + 1;
 constexpr uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
+static constexpr uint32_t kInvalidSpatialIndex = 0xFFFFFFFFu;
+static constexpr uint32_t kSpatialIndexDirtyMask = 1u << 31;
 
 static std::array<std::vector<EntityId>, SPATIAL_INDEX_SIZE> gEntitySpatialIndex;
 
 static void FreeEntity(EntityBase& entity);
 
-static constexpr size_t GetSpatialIndexOffset(const CoordsXY& loc)
+static constexpr uint32_t ComputeSpatialIndex(const CoordsXY& loc)
 {
     if (loc.IsNull())
         return SPATIAL_INDEX_LOCATION_NULL;
@@ -66,6 +68,11 @@ static constexpr size_t GetSpatialIndexOffset(const CoordsXY& loc)
         return SPATIAL_INDEX_LOCATION_NULL;
 
     return tileX * kMaximumMapSizeTechnical + tileY;
+}
+
+static constexpr uint32_t GetSpatialIndex(EntityBase* entity)
+{
+    return entity->SpatialIndex & ~kSpatialIndexDirtyMask;
 }
 
 constexpr bool EntityTypeIsMiscEntity(const EntityType type)
@@ -121,7 +128,7 @@ EntityBase* GetEntity(EntityId entityIndex)
 
 const std::vector<EntityId>& GetEntityTileList(const CoordsXY& spritePos)
 {
-    return gEntitySpatialIndex[GetSpatialIndexOffset(spritePos)];
+    return gEntitySpatialIndex[ComputeSpatialIndex(spritePos)];
 }
 
 static void ResetEntityLists()
@@ -204,10 +211,10 @@ void ResetEntitySpatialIndices()
     }
     for (EntityId::UnderlyingType i = 0; i < MAX_ENTITIES; i++)
     {
-        auto* spr = GetEntity(EntityId::FromUnderlying(i));
-        if (spr != nullptr && spr->Type != EntityType::Null)
+        auto* entity = GetEntity(EntityId::FromUnderlying(i));
+        if (entity != nullptr && entity->Type != EntityType::Null)
         {
-            EntitySpatialInsert(spr, { spr->x, spr->y });
+            EntitySpatialInsert(entity, { entity->x, entity->y });
         }
     }
 }
@@ -312,6 +319,7 @@ static void PrepareNewEntity(EntityBase* base, const EntityType type)
     base->SpriteData.HeightMin = 0x14;
     base->SpriteData.HeightMax = 0x8;
     base->SpriteData.SpriteRect = {};
+    base->SpatialIndex = kInvalidSpatialIndex;
 
     EntitySpatialInsert(base, { kLocationNull, 0 });
 }
@@ -405,15 +413,19 @@ void UpdateMoneyEffect()
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order
 static void EntitySpatialInsert(EntityBase* entity, const CoordsXY& newLoc)
 {
-    size_t newIndex = GetSpatialIndexOffset(newLoc);
+    const auto newIndex = ComputeSpatialIndex(newLoc);
+
     auto& spatialVector = gEntitySpatialIndex[newIndex];
     auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), entity->Id);
     spatialVector.insert(index, entity->Id);
+
+    entity->SpatialIndex = newIndex;
 }
 
 static void EntitySpatialRemove(EntityBase* entity)
 {
-    size_t currentIndex = GetSpatialIndexOffset({ entity->x, entity->y });
+    const auto currentIndex = GetSpatialIndex(entity);
+
     auto& spatialVector = gEntitySpatialIndex[currentIndex];
     auto index = BinaryFind(std::begin(spatialVector), std::end(spatialVector), entity->Id);
     if (index != std::end(spatialVector))
@@ -425,17 +437,28 @@ static void EntitySpatialRemove(EntityBase* entity)
         LOG_WARNING("Bad sprite spatial index. Rebuilding the spatial index...");
         ResetEntitySpatialIndices();
     }
+
+    entity->SpatialIndex = kInvalidSpatialIndex;
 }
 
-static void EntitySpatialMove(EntityBase* entity, const CoordsXY& newLoc)
+void UpdateEntitiesSpatialIndex()
 {
-    size_t newIndex = GetSpatialIndexOffset(newLoc);
-    size_t currentIndex = GetSpatialIndexOffset({ entity->x, entity->y });
-    if (newIndex == currentIndex)
-        return;
+    // TODO: This is not optimal, we should only iterate active entities.
+    for (EntityId::UnderlyingType i = 0; i < MAX_ENTITIES; i++)
+    {
+        auto* entity = GetEntity(EntityId::FromUnderlying(i));
+        if (entity == nullptr || entity->Type == EntityType::Null)
+            continue;
 
-    EntitySpatialRemove(entity);
-    EntitySpatialInsert(entity, newLoc);
+        if (entity->SpatialIndex & kSpatialIndexDirtyMask)
+        {
+            if (entity->SpatialIndex != kInvalidSpatialIndex)
+            {
+                EntitySpatialRemove(entity);
+            }
+            EntitySpatialInsert(entity, { entity->x, entity->y });
+        }
+    }
 }
 
 void EntityBase::MoveTo(const CoordsXYZ& newLocation)
@@ -452,7 +475,12 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
         loc.x = kLocationNull;
     }
 
-    EntitySpatialMove(this, loc);
+    // EntitySpatialMove(this, loc);
+    const auto newSpatialIndex = ComputeSpatialIndex(loc);
+    if (newSpatialIndex != GetSpatialIndex(this))
+    {
+        SpatialIndex |= kSpatialIndexDirtyMask;
+    }
 
     if (loc.x == kLocationNull)
     {
