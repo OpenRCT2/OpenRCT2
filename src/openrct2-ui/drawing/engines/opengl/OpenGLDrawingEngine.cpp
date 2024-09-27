@@ -1150,8 +1150,8 @@ ScreenRect OpenGLDrawingContext::CalculateClipping(const DrawPixelInfo& dpi) con
     const int32_t bytesPerRow = screenDPI->LineStride();
     const int32_t bitsOffset = static_cast<int32_t>(dpi.bits - screenDPI->bits);
 #    ifndef NDEBUG
-    const ssize_t bitsSize = static_cast<ssize_t>(screenDPI->height) * static_cast<ssize_t>(bytesPerRow);
-    assert(static_cast<ssize_t>(bitsOffset) < bitsSize && static_cast<ssize_t>(bitsOffset) >= 0);
+    const ptrdiff_t bitsSize = static_cast<ptrdiff_t>(screenDPI->height) * static_cast<ptrdiff_t>(bytesPerRow);
+    assert(static_cast<ptrdiff_t>(bitsOffset) < bitsSize && static_cast<ptrdiff_t>(bitsOffset) >= 0);
 #    endif
 
     const int32_t left = bitsOffset % bytesPerRow;
