@@ -478,7 +478,6 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
         loc.x = kLocationNull;
     }
 
-    // EntitySpatialMove(this, loc);
     const auto newSpatialIndex = ComputeSpatialIndex(loc);
     if (newSpatialIndex != GetSpatialIndex(this))
     {
