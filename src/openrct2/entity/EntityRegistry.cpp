@@ -443,20 +443,22 @@ static void EntitySpatialRemove(EntityBase* entity)
 
 void UpdateEntitiesSpatialIndex()
 {
-    // TODO: This is not optimal, we should only iterate active entities.
-    for (EntityId::UnderlyingType i = 0; i < MAX_ENTITIES; i++)
+    for (auto& entityList : gEntityLists)
     {
-        auto* entity = GetEntity(EntityId::FromUnderlying(i));
-        if (entity == nullptr || entity->Type == EntityType::Null)
-            continue;
-
-        if (entity->SpatialIndex & kSpatialIndexDirtyMask)
+        for (auto& entityId : entityList)
         {
-            if (entity->SpatialIndex != kInvalidSpatialIndex)
+            auto* entity = GetEntity(entityId);
+            if (entity == nullptr || entity->Type == EntityType::Null)
+                continue;
+
+            if (entity->SpatialIndex & kSpatialIndexDirtyMask)
             {
-                EntitySpatialRemove(entity);
+                if (entity->SpatialIndex != kInvalidSpatialIndex)
+                {
+                    EntitySpatialRemove(entity);
+                }
+                EntitySpatialInsert(entity, { entity->x, entity->y });
             }
-            EntitySpatialInsert(entity, { entity->x, entity->y });
         }
     }
 }
