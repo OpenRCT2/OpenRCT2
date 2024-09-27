@@ -9,7 +9,7 @@
 
 #pragma once
 
-constexpr auto kFamilyOpenRCT2Sprite = nullptr;
+constexpr std::nullptr_t kFamilyOpenRCT2Sprite = nullptr;
 
 #ifndef NO_TTF
 
