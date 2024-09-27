@@ -332,6 +332,8 @@ namespace OpenRCT2
         // Update windows
         // WindowDispatchUpdateAll();
 
+        UpdateEntitiesSpatialIndex();
+
         // Start autosave timer after update
         if (gLastAutoSaveUpdate == kAutosavePause)
         {
