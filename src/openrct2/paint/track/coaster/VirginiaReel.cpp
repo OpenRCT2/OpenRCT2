@@ -203,20 +203,14 @@ static void PaintVirginiaReelTrack25DegUp(
     }
 
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
-    PaintStruct* ps;
 
     if (direction & 1)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
-    }
-
-    if (direction == 1 || direction == 2)
-    {
-        session.WoodenSupportsPrependTo = ps;
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
     }
 
     DrawSupportForSequenceA<TrackElemType::Up25>(
@@ -253,7 +247,6 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
     }
 
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
-    PaintStruct* ps;
     switch (direction)
     {
         case 0:
@@ -261,12 +254,10 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
 
             break;
         case 1:
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
-            session.WoodenSupportsPrependTo = ps;
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
             break;
         case 2:
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
-            session.WoodenSupportsPrependTo = ps;
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             break;
         case 3:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
@@ -293,20 +284,14 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
     }
 
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
-    PaintStruct* ps;
 
     if (direction & 1)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
-    }
-
-    if (direction == 1 || direction == 2)
-    {
-        session.WoodenSupportsPrependTo = ps;
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
     }
 
     DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(

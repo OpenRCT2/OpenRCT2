@@ -9641,6 +9641,46 @@
         "palette": "keep"
     },
     {
+        "path": "track/wooden/23567.png",
+        "x": -32,
+        "y": 2
+    },
+    {
+        "path": "track/wooden/23568.png",
+        "x": -1,
+        "y": 2
+    },
+    {
+        "path": "track/wooden/23569.png",
+        "x": -32,
+        "y": 2
+    },
+    {
+        "path": "track/wooden/23570.png",
+        "x": 0,
+        "y": 2
+    },
+    {
+        "path": "track/wooden/23807.png",
+        "x": -32,
+        "y": -3
+    },
+    {
+        "path": "track/wooden/23812.png",
+        "x": -32,
+        "y": -3
+    },
+    {
+        "path": "track/wooden/23914.png",
+        "x": -38,
+        "y": -4
+    },
+    {
+        "path": "track/wooden/23919.png",
+        "x": -26,
+        "y": -4
+    },
+    {
         "path": "track/wooden/left_bank_front_swne.png",
         "x": -2,
         "y": -7
@@ -27381,6 +27421,50 @@
         "palette": "keep"
     },
     {
+        "path": "support/wooden/truss/03478_front.png",
+        "x": -32,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "support/wooden/truss/03479_front.png",
+        "x": 0,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "support/wooden/truss/03482_front.png",
+        "x": -32,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "support/wooden/truss/03483_front.png",
+        "x": 0,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "support/wooden/truss/03494_front.png",
+        "x": -32,
+        "y": -8
+    },
+    {
+        "path": "support/wooden/truss/03495_front.png",
+        "x": -32,
+        "y": -7
+    },
+    {
+        "path": "support/wooden/truss/03498_front.png",
+        "x": -32,
+        "y": -19
+    },
+    {
+        "path": "support/wooden/truss/03499_front.png",
+        "x": -32,
+        "y": -19
+    },
+    {
         "path": "support/flat_to_steep_1_1.png",
         "x": -32,
         "y": -5
@@ -27541,6 +27625,46 @@
         "y": -17
     },
     {
+        "path": "support/steep_to_flat_1_2_front.png",
+        "x": -32,
+        "y": -38
+    },
+    {
+        "path": "support/steep_to_flat_1_3_front.png",
+        "x": -32,
+        "y": -38
+    },
+    {
+        "path": "support/steep_to_flat_2_2_front.png",
+        "x": -32,
+        "y": -15
+    },
+    {
+        "path": "support/steep_to_flat_2_3_front.png",
+        "x": -32,
+        "y": -15
+    },
+    {
+        "path": "support/wooden/mine/03694_front.png",
+        "x": -24,
+        "y": -20
+    },
+    {
+        "path": "support/wooden/mine/03695_front.png",
+        "x": -24,
+        "y": -20
+    },
+    {
+        "path": "support/wooden/mine/03698_front.png",
+        "x": -26,
+        "y": -20
+    },
+    {
+        "path": "support/wooden/mine/03699_front.png",
+        "x": -25,
+        "y": -20
+    },
+    {
         "path": "support/wooden/mine/flat_to_steep_1_1.png",
         "x": -24,
         "y": -1
@@ -27699,6 +27823,26 @@
         "path": "support/wooden/mine/steep_to_flat_4_4.png",
         "x": -24,
         "y": -15
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_1_2_front.png",
+        "x": -24,
+        "y": -33
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_1_3_front.png",
+        "x": -24,
+        "y": -33
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_2_2_front.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_2_3_front.png",
+        "x": -24,
+        "y": -12
     },
     {
         "path": "track/rmc/preview_track.png",

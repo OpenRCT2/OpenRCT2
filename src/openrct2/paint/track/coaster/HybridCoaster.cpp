@@ -127,14 +127,14 @@ namespace OpenRCT2::HybridRC
     {
         const CoordsXYZ boundBoxOffsets[4] = {
             { 0, 6, height },
-            { 28, 4, height - 16 },
-            { 28, 4, height - 16 },
+            { 4, 27, height },
+            { 4, 27, height },
             { 0, 6, height },
         };
         static const CoordsXYZ boundBoxLengths[4] = {
             { 32, 20, 3 },
-            { 2, 24, 93 },
-            { 2, 24, 93 },
+            { 24, 1, 88 },
+            { 24, 1, 88 },
             { 32, 20, 3 },
         };
         static constexpr uint32_t imageIds[2][4] = {
@@ -152,16 +152,11 @@ namespace OpenRCT2::HybridRC
             },
         };
 
-        auto* ps = PaintAddImageAsParentRotated(
+        PaintAddImageAsParentRotated(
             session, direction, GetTrackColour(session).WithIndex(imageIds[trackElement.HasChain() ? 0 : 1][direction]),
             { 0, 0, height },
             { { boundBoxOffsets[direction].x, boundBoxOffsets[direction].y, boundBoxOffsets[direction].z },
               { boundBoxLengths[direction].x, boundBoxLengths[direction].y, boundBoxLengths[direction].z } });
-
-        if (direction == 1 || direction == 2)
-        {
-            session.WoodenSupportsPrependTo = ps;
-        }
 
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
@@ -223,20 +218,20 @@ namespace OpenRCT2::HybridRC
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_STEEP + 1),
-                        { 0, 0, height }, { { 0, 3, height + 3 }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_STEEP + 2),
-                        { 0, 0, height }, { { 0, 28, height }, { 32, 2, 43 } });
+                        { 0, 0, height }, { { 4, 27, height }, { 24, 1, 56 } });
                     break;
                 case 2:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_STEEP + 3),
-                        { 0, 0, height }, { { 0, 3, height + 3 }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_STEEP + 4),
-                        { 0, 0, height }, { { 0, 28, height }, { 32, 2, 43 } });
+                        { 0, 0, height }, { { 4, 27, height }, { 24, 1, 56 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -255,20 +250,20 @@ namespace OpenRCT2::HybridRC
                         { { 0, 6, height + 2 }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_STEEP + 1), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_STEEP + 2), { 0, 0, height },
-                        { { 0, 28, height }, { 32, 2, 43 } });
+                        { { 4, 27, height }, { 24, 1, 56 } });
                     break;
                 case 2:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_STEEP + 3), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_STEEP + 4), { 0, 0, height },
-                        { { 0, 28, height }, { 32, 2, 43 } });
+                        { { 4, 27, height }, { 24, 1, 56 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -306,20 +301,20 @@ namespace OpenRCT2::HybridRC
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_STEEP + 7),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 4, 5, height }, { 24, 1, 56 } });
                     PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_STEEP + 8),
-                        { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
+                        { 0, 0, height }, { { 4, 27, height }, { 24, 1, 56 } });
                     break;
                 case 2:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_STEEP + 9),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 4, 5, height }, { 24, 1, 56 } });
                     PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_LIFT_TRACK_STEEP + 10),
-                        { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
+                        { 0, 0, height }, { { 4, 27, height }, { 24, 1, 56 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -338,21 +333,20 @@ namespace OpenRCT2::HybridRC
                         { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_STEEP + 7), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
+                        { { 4, 5, height }, { 24, 1, 56 } });
                     PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_STEEP + 8), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 66 } });
+                        { { 4, 27, height }, { 24, 1, 56 } });
                     break;
                 case 2:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_STEEP + 9), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
-
+                        { { 4, 5, height }, { 24, 1, 56 } });
                     PaintAddImageAsParentRotated(
                         session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_STEEP + 10), { 0, 0, height },
-                        { { 0, 27, height }, { 32, 1, 66 } });
+                        { { 4, 27, height }, { 24, 1, 56 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -11079,14 +11073,14 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                        PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_FLAT_TO_STEEP + 7),
-                            { 0, 0, height }, { { 28, 4, height - 16 }, { 2, 24, 56 } });
+                            { 0, 0, height }, { { 4, 27, height }, { 24, 1, 72 } });
                         break;
                     case 2:
-                        session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                        PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_FLAT_TO_STEEP + 11),
-                            { 0, 0, height }, { { 28, 4, height - 16 }, { 2, 24, 56 } });
+                            { 0, 0, height }, { { 4, 27, height }, { 24, 1, 72 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11127,14 +11121,14 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 1:
-                        session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                        PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_FLAT_TO_STEEP + 20),
-                            { 0, 0, height }, { { 28, 4, height - 16 }, { 2, 24, 56 } });
+                            { 0, 0, height }, { { 4, 27, height }, { 24, 1, 72 } });
                         break;
                     case 2:
-                        session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                        PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session).WithIndex(SPR_G2_HYBRID_TRACK_FLAT_TO_STEEP + 24),
-                            { 0, 0, height }, { { 28, 4, height - 16 }, { 2, 24, 56 } });
+                            { 0, 0, height }, { { 4, 27, height }, { 24, 1, 72 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(

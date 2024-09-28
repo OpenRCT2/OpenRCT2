@@ -2530,19 +2530,18 @@ static void SideFrictionRCTrack60DegUp(
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_A), { 0, 0, height },
-                { { 0, 2, height }, { 32, 27, 2 } });
-
+                { { 4, 5, height }, { 24, 1, 88 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_B), { 0, 0, height },
-                { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                { { 4, 27, height }, { 24, 1, 88 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_A), { 0, 0, height },
-                { { 0, 2, height }, { 32, 27, 2 } });
+                { { 4, 5, height }, { 24, 1, 88 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_B), { 0, 0, height },
-                { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                { { 4, 27, height }, { 24, 1, 88 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -2592,18 +2591,18 @@ static void SideFrictionRCTrack25DegUpTo60DegUp(
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_A),
-                { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
+                { 0, 0, height }, { { 4, 5, height }, { 24, 1, 56 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_B),
-                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 40 } });
+                { 0, 0, height }, { { 4, 27, height }, { 24, 1, 56 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_A),
-                { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
+                { 0, 0, height }, { { 4, 5, height }, { 24, 1, 56 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_B),
-                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 40 } });
+                { 0, 0, height }, { { 4, 27, height }, { 24, 1, 56 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -2653,18 +2652,18 @@ static void SideFrictionRCTrack60DegUpTo25DegUp(
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_A),
-                { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
+                { 0, 0, height }, { { 4, 5, height }, { 24, 1, 56 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_B),
-                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 36 } });
+                { 0, 0, height }, { { 4, 27, height }, { 24, 1, 56 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_A),
-                { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
+                { 0, 0, height }, { { 4, 5, height }, { 24, 1, 56 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_B),
-                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 36 } });
+                { 0, 0, height }, { { 4, 27, height }, { 24, 1, 56 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(

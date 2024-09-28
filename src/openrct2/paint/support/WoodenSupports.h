@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../core/EnumUtils.hpp"
 #include "../../drawing/ImageId.hpp"
 #include "../../world/Location.hpp"
 
@@ -83,6 +84,8 @@ enum class WoodenSupportTransitionType : uint8_t
     FlatToDown60DegLongBaseSeq1 = 40,
     FlatToDown60DegLongBaseSeq0 = 41,
 };
+
+constexpr uint8_t kWoodenSupportTransitionTypeUninvertedCount = EnumValue(WoodenSupportTransitionType::Down25DegToFlat);
 
 struct FootpathPaintInfo;
 struct PaintSession;

@@ -145,8 +145,8 @@ static constexpr std::array<std::array<ImageIndex, 2>, kNumOrthogonalDirections>
 
 static constexpr std::array<std::array<BoundBoxXYZ, 2>, kNumOrthogonalDirections> kGoKartsUp60BoundBoxes = { {
     { { { { 0, 2, 0 }, { 32, 28, 1 } }, { { 0, 2, 86 }, { 32, 28, 1 } } } },
-    { { { { 0, 0, 0 }, { 0, 0, 0 } }, { { 4, 28, 0 }, { 24, 2, 77 } } } },
-    { { { { 0, 0, 0 }, { 0, 0, 0 } }, { { 28, 4, 0 }, { 2, 24, 77 } } } },
+    { { { { 0, 0, 0 }, { 0, 0, 0 } }, { { 27, 4, 0 }, { 1, 24, 88 } } } },
+    { { { { 0, 0, 0 }, { 0, 0, 0 } }, { { 4, 27, 0 }, { 24, 1, 88 } } } },
     { { { { 2, 0, 0 }, { 28, 32, 1 } }, { { 2, 0, 86 }, { 28, 32, 1 } } } },
 } };
 
@@ -158,8 +158,8 @@ static constexpr std::array<std::array<ImageIndex, 2>, kNumOrthogonalDirections>
 
 static constexpr std::array<std::array<BoundBoxXYZ, 2>, kNumOrthogonalDirections> kGoKartsUp25ToUp60BoundBoxes = { {
     { { { { 0, 2, 0 }, { 32, 28, 0 } }, { { 0, 2, 54 }, { 32, 28, 1 } } } },
-    { { { { 6, 0, 0 }, { 20, 32, 3 } }, { { 4, 28, 0 }, { 24, 2, 56 } } } },
-    { { { { 0, 6, 0 }, { 32, 20, 3 } }, { { 28, 4, 0 }, { 2, 24, 56 } } } },
+    { { { { 5, 4, 0 }, { 1, 24, 56 } }, { { 27, 4, 0 }, { 1, 24, 56 } } } },
+    { { { { 4, 5, 0 }, { 24, 1, 56 } }, { { 4, 27, 0 }, { 24, 1, 56 } } } },
     { { { { 2, 0, 0 }, { 28, 32, 0 } }, { { 2, 0, 54 }, { 28, 32, 1 } } } },
 } };
 
@@ -177,12 +177,12 @@ static constexpr std::array<std::array<std::array<ImageIndex, 2>, 4>, kNumOrthog
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 6,  SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 7,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 8,  SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 9,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 10, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 11,
-        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 12, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 13,
-        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 14, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 15,
+        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 13, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 12,
+        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 15, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 14,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 16, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 17,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 18, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 19,
-        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 20, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 21,
-        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 22, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 23,
+        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 21, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 20,
+        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 23, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 22,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 24, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 25,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 26, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 27,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 28, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 29,
@@ -200,14 +200,14 @@ static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, 4>, kNumOrtho
         { {
             { { { { 2, 0, 0 }, { 28, 32, 1 } }, { { 2, 0, 30 }, { 28, 32, 1 } } } },
             { { { { 2, 0, 0 }, { 28, 32, 1 } }, { { 2, 0, 38 }, { 28, 32, 1 } } } },
-            { { { { 2, 0, 0 }, { 28, 32, 1 } }, { { 2, 0, 46 }, { 28, 32, 1 } } } },
-            { { { { 0, 0, 0 }, { 0, 0, 0 } }, { { 4, 28, -16 }, { 24, 2, 56 } } } },
+            { { { { 5, 4, 0 }, { 1, 24, 72 } }, { { 27, 4, 0 }, { 1, 24, 72 } } } },
+            { { { { 5, 4, 0 }, { 1, 24, 72 } }, { { 27, 4, 0 }, { 1, 24, 72 } } } },
         } },
         { {
             { { { { 0, 2, 0 }, { 32, 28, 1 } }, { { 0, 2, 30 }, { 32, 28, 1 } } } },
             { { { { 0, 2, 0 }, { 32, 28, 1 } }, { { 0, 2, 38 }, { 32, 28, 1 } } } },
-            { { { { 0, 2, 0 }, { 32, 28, 1 } }, { { 0, 2, 46 }, { 32, 28, 1 } } } },
-            { { { { 0, 0, 0 }, { 0, 0, 0 } }, { { 28, 4, -16 }, { 2, 24, 56 } } } },
+            { { { { 4, 5, 0 }, { 24, 1, 72 } }, { { 4, 27, 0 }, { 24, 1, 72 } } } },
+            { { { { 4, 5, 0 }, { 24, 1, 72 } }, { { 4, 27, 0 }, { 24, 1, 72 } } } },
         } },
         { {
             { { { { 2, 0, 0 }, { 28, 32, 1 } }, { { 2, 0, 30 }, { 28, 32, 1 } } } },
@@ -223,11 +223,11 @@ static constexpr std::array<std::array<std::array<ImageIndex, 2>, 4>, kNumOrthog
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 34, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 35,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 36, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 37,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 38, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 39,
-        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 40, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 41,
+        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 41, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 40,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 42, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 43,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 44, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 45,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 46, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 47,
-        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 48, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 49,
+        SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 49, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 48,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 50, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 51,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 52, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 53,
         SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 54, SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 55,
@@ -246,14 +246,14 @@ static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, 4>, kNumOrtho
             { { { { 0, 2, 0 }, { 32, 28, 1 } }, { { 0, 2, 30 }, { 32, 28, 1 } } } },
         } },
         { {
-            { { { { 0, 0, 0 }, { 0, 0, 0 } }, { { 4, 28, -16 }, { 24, 2, 56 } } } },
-            { { { { 2, 0, 0 }, { 28, 32, 1 } }, { { 2, 0, 70 }, { 28, 32, 1 } } } },
+            { { { { 5, 4, 0 }, { 1, 24, 72 } }, { { 27, 4, 0 }, { 1, 24, 72 } } } },
+            { { { { 5, 4, 0 }, { 1, 24, 72 } }, { { 27, 4, 0 }, { 1, 24, 72 } } } },
             { { { { 2, 0, 0 }, { 28, 32, 1 } }, { { 2, 0, 46 }, { 28, 32, 1 } } } },
             { { { { 2, 0, 0 }, { 28, 32, 1 } }, { { 2, 0, 30 }, { 28, 32, 1 } } } },
         } },
         { {
-            { { { { 0, 0, 0 }, { 0, 0, 0 } }, { { 28, 4, -16 }, { 2, 24, 56 } } } },
-            { { { { 0, 2, 0 }, { 32, 28, 1 } }, { { 0, 2, 70 }, { 32, 28, 1 } } } },
+            { { { { 4, 5, 0 }, { 24, 1, 72 } }, { { 4, 27, 0 }, { 24, 1, 72 } } } },
+            { { { { 4, 5, 0 }, { 24, 1, 72 } }, { { 4, 27, 0 }, { 24, 1, 72 } } } },
             { { { { 0, 2, 0 }, { 32, 28, 1 } }, { { 0, 2, 46 }, { 32, 28, 1 } } } },
             { { { { 0, 2, 0 }, { 32, 28, 1 } }, { { 0, 2, 30 }, { 32, 28, 1 } } } },
         } },
@@ -1376,16 +1376,15 @@ static void PaintGoKartsTrack25DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
-    PaintStruct* ps;
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up[direction][1]);
@@ -1397,8 +1396,6 @@ static void PaintGoKartsTrack25DegUp(
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
-
-    session.WoodenSupportsPrependTo = ps;
 
     DrawSupportForSequenceA<TrackElemType::Up25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -1429,16 +1426,15 @@ static void PaintGoKartsTrackFlatTo25DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
-    PaintStruct* ps;
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_flat_to_25_deg_up[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_flat_to_25_deg_up[direction][1]);
@@ -1450,8 +1446,6 @@ static void PaintGoKartsTrackFlatTo25DegUp(
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
-
-    session.WoodenSupportsPrependTo = ps;
 
     DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -1482,16 +1476,15 @@ static void PaintGoKartsTrack25DegUpToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     ImageId imageId;
-    PaintStruct* ps;
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up_to_flat[direction][0]);
     if (direction == 0 || direction == 2)
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
     }
     else
     {
-        ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
     imageId = session.TrackColours.WithIndex(go_karts_track_pieces_25_deg_up_to_flat[direction][1]);
@@ -1503,8 +1496,6 @@ static void PaintGoKartsTrack25DegUpToFlat(
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 32, 11 } });
     }
-
-    session.WoodenSupportsPrependTo = ps;
 
     DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -1751,7 +1742,7 @@ static void TrackUp60(
     PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsUp60Sprites[direction][0]), height, { 0, 0, 0 },
         kGoKartsUp60BoundBoxes[direction][0]);
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentHeight(
+    PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsUp60Sprites[direction][1]), height, { 0, 0, 0 },
         kGoKartsUp60BoundBoxes[direction][1]);
 
@@ -1777,7 +1768,7 @@ static void TrackUp25ToUp60(
     PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsUp25ToUp60Sprites[direction][0]), height, { 0, 0, 0 },
         kGoKartsUp25ToUp60BoundBoxes[direction][0]);
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentHeight(
+    PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsUp25ToUp60Sprites[direction][1]), height, { 0, 0, 0 },
         kGoKartsUp25ToUp60BoundBoxes[direction][1]);
 
@@ -1803,7 +1794,7 @@ static void TrackUp60ToUp25(
     PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsUp60ToUp25Sprites[direction][0]), height, { 0, 0, 0 },
         kGoKartsUp25ToUp60BoundBoxes[direction][0]);
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentHeight(
+    PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsUp60ToUp25Sprites[direction][1]), height, { 0, 0, 0 },
         kGoKartsUp25ToUp60BoundBoxes[direction][1]);
 
@@ -1850,7 +1841,7 @@ static void TrackFlatToUp60LongBase(
     PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsFlatToUp60LongBaseSprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsFlatToUp60LongBaseBoundBoxes[direction][trackSequence][0]);
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentHeight(
+    PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsFlatToUp60LongBaseSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsFlatToUp60LongBaseBoundBoxes[direction][trackSequence][1]);
 
@@ -1876,7 +1867,7 @@ static void TrackUp60ToFlatLongBase(
     PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsUp60ToFlatLongBaseSprites[direction][trackSequence][0]), height,
         { 0, 0, 0 }, kGoKartsUp60ToFlatLongBaseBoundBoxes[direction][trackSequence][0]);
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentHeight(
+    PaintAddImageAsParentHeight(
         session, session.TrackColours.WithIndex(kGoKartsUp60ToFlatLongBaseSprites[direction][trackSequence][1]), height,
         { 0, 0, 0 }, kGoKartsUp60ToFlatLongBaseBoundBoxes[direction][trackSequence][1]);
 
