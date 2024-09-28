@@ -898,9 +898,6 @@ constexpr uint16_t kTurnMask2Elements = 0x00E0;
 constexpr uint16_t kTurnMask3Elements = 0x0700;
 constexpr uint16_t kTurnMask4PlusElements = 0xF800;
 
-constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
-constexpr uint32_t CONSTRUCTION_INVERTED_TRACK_SELECTED = 1 << 1;
-
 Ride* GetRide(RideId index);
 
 struct RideManager

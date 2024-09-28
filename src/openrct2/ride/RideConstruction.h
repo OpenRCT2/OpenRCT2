@@ -47,6 +47,13 @@ namespace OpenRCT2
         inverted,          // Flying RC, Lay-down RC, Multi-dimension RC
     };
     using SelectedAlternative = FlagHolder<uint8_t, AlternativeTrackFlag>;
+
+    enum class LiftHillAndInverted : uint8_t
+    {
+        liftHill,
+        inverted,
+    };
+    using SelectedLiftAndInverted = FlagHolder<uint32_t, LiftHillAndInverted>;
 } // namespace OpenRCT2
 
 extern money64 _currentTrackPrice;

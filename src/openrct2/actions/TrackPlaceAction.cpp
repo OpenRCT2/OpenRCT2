@@ -29,7 +29,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 TrackPlaceAction::TrackPlaceAction(
     RideId rideIndex, int32_t trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
-    int32_t seatRotation, int32_t liftHillAndAlternativeState, bool fromTrackDesign)
+    int32_t seatRotation, SelectedLiftAndInverted liftHillAndAlternativeState, bool fromTrackDesign)
     : _rideIndex(rideIndex)
     , _trackType(trackType)
     , _rideType(rideType)
@@ -52,7 +52,7 @@ void TrackPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit("brakeSpeed", _brakeSpeed);
     visitor.Visit("colour", _colour);
     visitor.Visit("seatRotation", _seatRotation);
-    visitor.Visit("trackPlaceFlags", _trackPlaceFlags);
+    visitor.Visit("trackPlaceFlags", _trackPlaceFlags.holder);
     visitor.Visit("isFromTrackDesign", _fromTrackDesign);
 }
 
@@ -66,7 +66,7 @@ void TrackPlaceAction::Serialise(DataSerialiser& stream)
     GameAction::Serialise(stream);
 
     stream << DS_TAG(_rideIndex) << DS_TAG(_trackType) << DS_TAG(_rideType) << DS_TAG(_origin) << DS_TAG(_brakeSpeed)
-           << DS_TAG(_colour) << DS_TAG(_seatRotation) << DS_TAG(_trackPlaceFlags);
+           << DS_TAG(_colour) << DS_TAG(_seatRotation) << DS_TAG(_trackPlaceFlags.holder);
 }
 
 GameActions::Result TrackPlaceAction::Query() const
@@ -161,7 +161,7 @@ GameActions::Result TrackPlaceAction::Query() const
             }
         }
         // Backwards steep lift hills are allowed, even on roller coasters that do not support forwards steep lift hills.
-        if ((_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED) && !rtd.SupportsTrackGroup(TrackGroup::liftHillSteep)
+        if (_trackPlaceFlags.has(LiftHillAndInverted::liftHill) && !rtd.SupportsTrackGroup(TrackGroup::liftHillSteep)
             && !gameState.Cheats.EnableChainLiftOnAllTrack)
         {
             const auto& ted = GetTrackElementDescriptor(_trackType);
@@ -578,7 +578,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         trackElement->SetClearanceZ(clearanceZ);
         trackElement->SetDirection(_origin.direction);
-        trackElement->SetHasChain(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED);
+        trackElement->SetHasChain(_trackPlaceFlags.has(LiftHillAndInverted::liftHill));
         trackElement->SetSequenceIndex(blockIndex);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetTrackType(_trackType);
@@ -619,7 +619,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             trackElement->SetSeatRotation(_seatRotation);
         }
 
-        if (_trackPlaceFlags & CONSTRUCTION_INVERTED_TRACK_SELECTED)
+        if (_trackPlaceFlags.has(LiftHillAndInverted::inverted))
         {
             trackElement->SetInverted(true);
         }
@@ -722,7 +722,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             case TrackElemType::Up60ToFlat:
             case TrackElemType::DiagUp25ToFlat:
             case TrackElemType::DiagUp60ToFlat:
-                if (!(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED))
+                if (!_trackPlaceFlags.has(LiftHillAndInverted::liftHill))
                     break;
                 [[fallthrough]];
             case TrackElemType::CableLiftHill:
