@@ -5370,8 +5370,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
     // No up stops (coaster types)
     if (carEntry->flags & CAR_ENTRY_FLAG_NO_UPSTOP_WHEELS)
     {
-        auto trackType = GetTrackType();
-        if (!TrackElementIsCovered(trackType))
+        if (!IsOnCoveredTrack())
         {
             auto gForces = GetGForces();
             gForces.LateralG = std::abs(gForces.LateralG);
@@ -5399,8 +5398,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
     else if (carEntry->flags & CAR_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH)
     {
         // No up stops bobsleigh type
-        auto trackType = GetTrackType();
-        if (!TrackElementIsCovered(trackType))
+        if (!IsOnCoveredTrack())
         {
             auto gForces = GetGForces();
 
@@ -6444,7 +6442,7 @@ void Vehicle::UpdateHandleWaterSplash() const
         {
             if (IsHead())
             {
-                if (TrackElementIsCovered(trackType))
+                if (IsOnCoveredTrack())
                 {
                     Vehicle* nextVehicle = GetEntity<Vehicle>(next_vehicle_on_ride);
                     if (nextVehicle == nullptr)
@@ -6453,7 +6451,7 @@ void Vehicle::UpdateHandleWaterSplash() const
                     Vehicle* nextNextVehicle = GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
                     if (nextNextVehicle == nullptr)
                         return;
-                    if (!TrackElementIsCovered(nextNextVehicle->GetTrackType()))
+                    if (!nextNextVehicle->IsOnCoveredTrack())
                     {
                         if (track_progress == 4)
                         {
@@ -8701,7 +8699,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     {
         if (vehicle->IsHead())
         {
-            if (TrackElementIsCovered(vehicle->GetTrackType()))
+            if (vehicle->IsOnCoveredTrack())
             {
                 if (vehicle->velocity > 2.0_mph)
                 {
@@ -9027,4 +9025,9 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << target_seat_rotation;
     stream << BoatLocation;
     stream << BlockBrakeSpeed;
+}
+
+bool Vehicle::IsOnCoveredTrack() const
+{
+    return TrackElementIsCovered(GetTrackType());
 }

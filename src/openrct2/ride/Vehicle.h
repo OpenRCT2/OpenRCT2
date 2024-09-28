@@ -242,6 +242,7 @@ struct Vehicle : EntityBase
     {
         return TrackTypeAndDirection >> 2;
     }
+    bool IsOnCoveredTrack() const;
     uint8_t GetTrackDirection() const
     {
         return TrackTypeAndDirection & VehicleTrackDirectionMask;

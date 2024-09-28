@@ -3904,7 +3904,7 @@ static void vehicle_visual_splash5_effect(PaintSession& session, int32_t z, cons
     {
         return;
     }
-    if (!TrackElementIsCovered(vehicle->GetTrackType()))
+    if (!vehicle->IsOnCoveredTrack())
     {
         return;
     }
