@@ -31,6 +31,6 @@ extern TTFontFamily const TTFFamilySansSerif;
 
 #else // NO_TTF
 
-#    define Family(x) kFamilyOpenRCT2Sprite
+#    define FAMILY(x) kFamilyOpenRCT2Sprite
 
 #endif // NO_TTF
