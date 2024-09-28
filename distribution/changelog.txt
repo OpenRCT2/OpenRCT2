@@ -3,6 +3,7 @@
 - Feature: [#15642] Track design placement can now use contruction modifier keys (ctrl/shift).
 - Feature: [#21521] [Plugin] Add hook 'park.guest.softcap.calculate' called before calculating the soft guest cap.
 - Improved: [#22777] Add long flat-to-steep track pieces to the Wooden and Classic Wooden Roller Coasters.
+- Change: [#22494] Themes window now displays colours and checkboxes vertically.
 - Change: [#22596] Land ownership fixes described by .parkpatch files are now only considered on scenarios.
 - Change: [#22724] Staff now have optional ‘real’ names as well.
 - Change: [#22740] Add virtual floor to shifted track design placement.
@@ -74,7 +75,6 @@
 - Change: [#22251] Hide author info in the scenery window unless debug tools are active.
 - Change: [#22283] Let heavy snow and blizzard increase chance of brakes failure.
 - Change: [#22309] The scenario editor now supports loading landscapes from .sea save files.
-- Change: [#22494] Themes window now displays colours and checkboxes vertically.
 - Fix: [#17390] Glitchy animations for the ride type tabs in the object selection window.
 - Fix: [#19210] The load/save window executes the loading code twice, resulting in a slowdown.
 - Fix: [#21175] Terraform tool hotkeys don't work when toolbars are hidden.
