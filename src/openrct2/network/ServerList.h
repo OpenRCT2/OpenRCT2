@@ -80,4 +80,6 @@ public:
         : StatusText(statusText)
     {
     }
+
+    const char* what() const noexcept override;
 };
