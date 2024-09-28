@@ -76,22 +76,48 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds0 = { {
     { 3505, 3506, 3507, 3508 }, // ?
     { 3509, 3510, 3511, 3512 }, // ?
     { 3513, 3513, 3513, 3513 }, // Large scenery
-    { SPR_G2_SUPPORT_WOODEN_TRUSS, SPR_G2_SUPPORT_WOODEN_TRUSS + 1, SPR_G2_SUPPORT_WOODEN_TRUSS + 2,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 3 }, // Flat to steep large 1
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 4, SPR_G2_SUPPORT_WOODEN_TRUSS + 5, SPR_G2_SUPPORT_WOODEN_TRUSS + 6,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 7 }, // Flat to steep large 2
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 8, SPR_G2_SUPPORT_WOODEN_TRUSS + 9, SPR_G2_SUPPORT_WOODEN_TRUSS + 10,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 11 }, // Flat to steep large 3
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 12, SPR_G2_SUPPORT_WOODEN_TRUSS + 13, SPR_G2_SUPPORT_WOODEN_TRUSS + 14,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 15 }, // Flat to steep large 4
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 16, SPR_G2_SUPPORT_WOODEN_TRUSS + 17, SPR_G2_SUPPORT_WOODEN_TRUSS + 18,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 19 }, // Steep to flat large 1
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 20, SPR_G2_SUPPORT_WOODEN_TRUSS + 21, SPR_G2_SUPPORT_WOODEN_TRUSS + 22,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 23 }, // Steep to flat large 2
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 24, SPR_G2_SUPPORT_WOODEN_TRUSS + 25, SPR_G2_SUPPORT_WOODEN_TRUSS + 26,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 27 }, // Steep to flat large 3
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 28, SPR_G2_SUPPORT_WOODEN_TRUSS + 29, SPR_G2_SUPPORT_WOODEN_TRUSS + 30,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 31 }, // Steep to flat large 4
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 1,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 2, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 3 }, // Flat to steep large 1
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 4, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 5,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 6, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 7 }, // Flat to steep large 2
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 8, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 9,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 10, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 11 }, // Flat to steep large 3
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 12, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 13,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 14, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 15 }, // Flat to steep large 4
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 16, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 17,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 18, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 19 }, // Steep to flat large 1
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 20, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 21,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 22, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 23 }, // Steep to flat large 2
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 24, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 25,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 26, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 27 }, // Steep to flat large 3
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 28, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 29,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 30, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 31 }, // Steep to flat large 4
+} };
+
+static constexpr ImagesByTransitionTypeArray WoodenCurveSupportFrontImageIds0 = { {
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to gentle
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Gentle to flat
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Gentle slope
+    { ImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_TRUSS_25_60_SENW_FRONT, SPR_G2_SUPPORT_WOODEN_TRUSS_25_60_SWNE_FRONT,
+      ImageIndexUndefined }, // Gentle to steep
+    { ImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_TRUSS_60_25_SWNE_FRONT, SPR_G2_SUPPORT_WOODEN_TRUSS_60_25_SENW_FRONT,
+      ImageIndexUndefined },                                                                // Steep to gentle
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep slope
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Slope
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to steep small
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep to flat small
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // ?
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // ?
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // ?
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Large scenery
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to steep large 1
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to steep large 2
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to steep large 3
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to steep large 4
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep to flat large 1
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep to flat large 2
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep to flat large 3
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep to flat large 4
 } };
 
 static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
@@ -108,22 +134,46 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
     { 3721, 3722, 3723, 3724 }, // ?
     { 3725, 3726, 3727, 3728 }, // ?
     { 3729, 3729, 3729, 3729 }, // Large scenery
-    { SPR_G2_SUPPORT_WOODEN_MINE, SPR_G2_SUPPORT_WOODEN_MINE + 1, SPR_G2_SUPPORT_WOODEN_MINE + 2,
-      SPR_G2_SUPPORT_WOODEN_MINE + 3 }, // Flat to steep large 1
-    { SPR_G2_SUPPORT_WOODEN_MINE + 4, SPR_G2_SUPPORT_WOODEN_MINE + 5, SPR_G2_SUPPORT_WOODEN_MINE + 6,
-      SPR_G2_SUPPORT_WOODEN_MINE + 7 }, // Flat to steep large 2
-    { SPR_G2_SUPPORT_WOODEN_MINE + 8, SPR_G2_SUPPORT_WOODEN_MINE + 9, SPR_G2_SUPPORT_WOODEN_MINE + 10,
-      SPR_G2_SUPPORT_WOODEN_MINE + 11 }, // Flat to steep large 3
-    { SPR_G2_SUPPORT_WOODEN_MINE + 12, SPR_G2_SUPPORT_WOODEN_MINE + 13, SPR_G2_SUPPORT_WOODEN_MINE + 14,
-      SPR_G2_SUPPORT_WOODEN_MINE + 15 }, // Flat to steep large 4
-    { SPR_G2_SUPPORT_WOODEN_MINE + 16, SPR_G2_SUPPORT_WOODEN_MINE + 17, SPR_G2_SUPPORT_WOODEN_MINE + 18,
-      SPR_G2_SUPPORT_WOODEN_MINE + 19 }, // Steep to flat large 1
-    { SPR_G2_SUPPORT_WOODEN_MINE + 20, SPR_G2_SUPPORT_WOODEN_MINE + 21, SPR_G2_SUPPORT_WOODEN_MINE + 22,
-      SPR_G2_SUPPORT_WOODEN_MINE + 23 }, // Steep to flat large 2
-    { SPR_G2_SUPPORT_WOODEN_MINE + 24, SPR_G2_SUPPORT_WOODEN_MINE + 25, SPR_G2_SUPPORT_WOODEN_MINE + 26,
-      SPR_G2_SUPPORT_WOODEN_MINE + 27 }, // Steep to flat large 3
-    { SPR_G2_SUPPORT_WOODEN_MINE + 28, SPR_G2_SUPPORT_WOODEN_MINE + 29, SPR_G2_SUPPORT_WOODEN_MINE + 30,
-      SPR_G2_SUPPORT_WOODEN_MINE + 31 }, // Steep to flat large 4
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 1,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 2, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 3 }, // Flat to steep large 1
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 4, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 5,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 6, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 7 }, // Flat to steep large 2
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 8, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 9,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 10, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 11 }, // Flat to steep large 3
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 12, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 13,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 14, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 15 }, // Flat to steep large 4
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 16, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 17,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 18, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 19 }, // Steep to flat large 1
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 20, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 21,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 22, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 23 }, // Steep to flat large 2
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 24, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 25,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 26, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 27 }, // Steep to flat large 3
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 28, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 29,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 30, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 31 }, // Steep to flat large 4
+} };
+
+static constexpr ImagesByTransitionTypeArray WoodenCurveSupportFrontImageIds1 = { {
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to gentle
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Gentle to flat
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Gentle slope
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Gentle to steep
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep to gentle
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep slope
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Slope
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to steep small
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep to flat small
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // ?
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // ?
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // ?
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Large scenery
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to steep large 1
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to steep large 2
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to steep large 3
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Flat to steep large 4
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep to flat large 1
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep to flat large 2
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep to flat large 3
+    { ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined, ImageIndexUndefined }, // Steep to flat large 4
 } };
 
 // clang-format off
@@ -147,6 +197,28 @@ static constexpr const ImagesByTransitionTypeArray::const_pointer WoodenCurveSup
         nullptr,                            // WoodenSupportSubType::Corner2
         nullptr,                            // WoodenSupportSubType::Corner3
     }, 
+};
+
+// clang-format off
+static constexpr const ImagesByTransitionTypeArray::const_pointer WoodenCurveSupportFrontImageIds[kNumWoodenSupportTypes][kNumWoodenSupportSubTypes] = {
+    // WoodenSupportType::Truss
+    {
+        WoodenCurveSupportFrontImageIds0.data(), // WoodenSupportSubType::NeSw
+        WoodenCurveSupportFrontImageIds0.data(), // WoodenSupportSubType::NwSe
+        nullptr,                                 // WoodenSupportSubType::Corner0
+        nullptr,                                 // WoodenSupportSubType::Corner1
+        nullptr,                                 // WoodenSupportSubType::Corner2
+        nullptr,                                 // WoodenSupportSubType::Corner3
+    },
+    // WoodenSupportType::Mine
+    {
+        WoodenCurveSupportFrontImageIds1.data(), // WoodenSupportSubType::NeSw
+        WoodenCurveSupportFrontImageIds1.data(), // WoodenSupportSubType::NwSe
+        nullptr,                                 // WoodenSupportSubType::Corner0
+        nullptr,                                 // WoodenSupportSubType::Corner1
+        nullptr,                                 // WoodenSupportSubType::Corner2
+        nullptr,                                 // WoodenSupportSubType::Corner3
+    },
 };
 
 struct SlopedSupportsDescriptor {
@@ -358,8 +430,8 @@ static void PaintRepeatedWoodenSupports(
  * Draw special pieces, e.g. curved supports.
  */
 static void PaintSlopeTransitions(
-    const SlopedSupportsDescriptor& supportsDesc, ImageIndex imageIndex, PaintSession& session, const ImageId& imageTemplate,
-    uint16_t baseHeight)
+    const SlopedSupportsDescriptor& supportsDesc, ImageIndex imageIndex, ImageIndex frontImageIndex, PaintSession& session,
+    const ImageId& imageTemplate, uint16_t baseHeight)
 {
     auto imageId = imageTemplate.WithIndex(imageIndex);
 
@@ -376,6 +448,16 @@ static void PaintSlopeTransitions(
         if (paintStruct != nullptr)
         {
             session.WoodenSupportsPrependTo->Children = paintStruct;
+        }
+    }
+
+    if (session.WoodenSupportsFrontPrependTo != nullptr && frontImageIndex != ImageIndexUndefined)
+    {
+        auto frontImageId = imageTemplate.WithIndex(frontImageIndex);
+        auto* frontPaintStruct = PaintAddImageAsOrphan(session, frontImageId, { 0, 0, baseHeight }, boundBox);
+        if (frontPaintStruct != nullptr)
+        {
+            session.WoodenSupportsFrontPrependTo->Children = frontPaintStruct;
         }
     }
 }
@@ -397,7 +479,15 @@ static bool WoodenABPaintSlopeTransitions(
     if (imageIds == nullptr || imageIds[EnumValue(transitionType)][direction] == 0)
         return false;
 
-    PaintSlopeTransitions(supportsDesc, imageIds[EnumValue(transitionType)][direction], session, imageTemplate, baseHeight);
+    ImageIndex frontImageIndex = ImageIndexUndefined;
+    if (session.WoodenSupportsFrontPrependTo != nullptr)
+    {
+        const auto* frontImageIds = WoodenCurveSupportFrontImageIds[EnumValue(supportType)][EnumValue(subType)];
+        frontImageIndex = frontImageIds[EnumValue(transitionType)][direction];
+    }
+
+    PaintSlopeTransitions(
+        supportsDesc, imageIds[EnumValue(transitionType)][direction], frontImageIndex, session, imageTemplate, baseHeight);
 
     return true;
 }
@@ -632,7 +722,8 @@ bool PathBoxSupportsPaintSetup(
     {
         ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + slopeRotation;
 
-        PaintSlopeTransitions(kSlopedPathSupportsDescriptor, imageIndex, session, imageTemplate, baseHeight);
+        PaintSlopeTransitions(
+            kSlopedPathSupportsDescriptor, imageIndex, ImageIndexUndefined, session, imageTemplate, baseHeight);
         hasSupports = true;
     }
 

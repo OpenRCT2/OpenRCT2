@@ -187,6 +187,7 @@ struct PaintSessionCore
     const TileElement* TrackElementOnSameHeight;
     const TileElement* SelectedElement;
     PaintStruct* WoodenSupportsPrependTo;
+    PaintStruct* WoodenSupportsFrontPrependTo;
     CoordsXY SpritePosition;
     CoordsXY MapPosition;
     uint32_t ViewFlags;

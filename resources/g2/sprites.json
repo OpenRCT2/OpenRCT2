@@ -14514,6 +14514,30 @@
         "palette": "keep"
     },
     {
+        "path": "support/wooden/truss/25_60_swne_front.png",
+        "x": 0,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "support/wooden/truss/25_60_senw_front.png",
+        "x": -32,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "support/wooden/truss/60_25_swne_front.png",
+        "x": -32,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "support/wooden/truss/60_25_senw_front.png",
+        "x": 0,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
         "path": "support/flat_to_steep_1_1.png",
         "x": -32,
         "y": -5
