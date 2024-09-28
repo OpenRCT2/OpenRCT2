@@ -61,7 +61,8 @@ constexpr SupportsIdDescriptor GetWoodenSupportIds(WoodenSupportType supportType
     return WoodenSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
 }
 
-using ImagesByTransitionTypeArray = std::array<std::array<ImageIndex, kNumOrthogonalDirections>, 21>;
+using ImagesByTransitionTypeArray = std::array<
+    std::array<ImageIndex, kNumOrthogonalDirections>, kWoodenSupportTransitionTypeUninvertedCount>;
 
 static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds0 = { {
     { 3465, 3466, 3467, 3468 }, // Flat to gentle
@@ -77,23 +78,56 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds0 = { {
     { 3505, 3506, 3507, 3508 }, // ?
     { 3509, 3510, 3511, 3512 }, // ?
     { 3513, 3513, 3513, 3513 }, // Large scenery
-    { SPR_G2_SUPPORT_WOODEN_TRUSS, SPR_G2_SUPPORT_WOODEN_TRUSS + 1, SPR_G2_SUPPORT_WOODEN_TRUSS + 2,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 3 }, // Flat to steep large 1
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 4, SPR_G2_SUPPORT_WOODEN_TRUSS + 5, SPR_G2_SUPPORT_WOODEN_TRUSS + 6,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 7 }, // Flat to steep large 2
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 8, SPR_G2_SUPPORT_WOODEN_TRUSS + 9, SPR_G2_SUPPORT_WOODEN_TRUSS + 10,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 11 }, // Flat to steep large 3
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 12, SPR_G2_SUPPORT_WOODEN_TRUSS + 13, SPR_G2_SUPPORT_WOODEN_TRUSS + 14,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 15 }, // Flat to steep large 4
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 16, SPR_G2_SUPPORT_WOODEN_TRUSS + 17, SPR_G2_SUPPORT_WOODEN_TRUSS + 18,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 19 }, // Steep to flat large 1
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 20, SPR_G2_SUPPORT_WOODEN_TRUSS + 21, SPR_G2_SUPPORT_WOODEN_TRUSS + 22,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 23 }, // Steep to flat large 2
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 24, SPR_G2_SUPPORT_WOODEN_TRUSS + 25, SPR_G2_SUPPORT_WOODEN_TRUSS + 26,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 27 }, // Steep to flat large 3
-    { SPR_G2_SUPPORT_WOODEN_TRUSS + 28, SPR_G2_SUPPORT_WOODEN_TRUSS + 29, SPR_G2_SUPPORT_WOODEN_TRUSS + 30,
-      SPR_G2_SUPPORT_WOODEN_TRUSS + 31 }, // Steep to flat large 4
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 1,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 2, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 3 }, // Flat to steep large 1
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 4, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 5,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 6, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 7 }, // Flat to steep large 2
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 8, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 9,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 10, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 11 }, // Flat to steep large 3
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 12, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 13,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 14, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 15 }, // Flat to steep large 4
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 16, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 17,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 18, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 19 }, // Steep to flat large 1
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 20, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 21,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 22, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 23 }, // Steep to flat large 2
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 24, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 25,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 26, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 27 }, // Steep to flat large 3
+    { SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 28, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 29,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 30, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 31 }, // Steep to flat large 4
 } };
+static_assert(std::size(WoodenCurveSupportImageIds0) == kWoodenSupportTransitionTypeUninvertedCount);
+
+static constexpr ImagesByTransitionTypeArray WoodenCurveSupportFrontImageIds0 = { {
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Flat to gentle
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Gentle to flat
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Gentle slope
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_TRUSS_3478_FRONT, SPR_G2_SUPPORT_WOODEN_TRUSS_3479_FRONT,
+      kImageIndexUndefined }, // Gentle to steep
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_TRUSS_3482_FRONT, SPR_G2_SUPPORT_WOODEN_TRUSS_3483_FRONT,
+      kImageIndexUndefined },                                                                   // Steep to gentle
+    { kImageIndexUndefined, 3486, 3487, kImageIndexUndefined },                                 // Steep slope
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Slope
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_TRUSS_3494_FRONT, SPR_G2_SUPPORT_WOODEN_TRUSS_3495_FRONT,
+      kImageIndexUndefined }, // Flat to steep small
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_TRUSS_3498_FRONT, SPR_G2_SUPPORT_WOODEN_TRUSS_3499_FRONT,
+      kImageIndexUndefined },                                                                   // Steep to flat small
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // ?
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // ?
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // ?
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Large scenery
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Flat to steep large 1
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Flat to steep large 2
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Flat to steep large 3
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 13, SPR_G2_SUPPORT_WOODEN_TRUSS_FLAT_TO_STEEP + 14,
+      kImageIndexUndefined }, // Flat to steep large 4
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_TRUSS_STEEP_TO_FLAT_1_2_FRONT,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_STEEP_TO_FLAT_1_3_FRONT, kImageIndexUndefined }, // Steep to flat large 1
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_TRUSS_STEEP_TO_FLAT_2_2_FRONT,
+      SPR_G2_SUPPORT_WOODEN_TRUSS_STEEP_TO_FLAT_2_3_FRONT, kImageIndexUndefined },              // Steep to flat large 2
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Steep to flat large 3
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Steep to flat large 4
+} };
+static_assert(std::size(WoodenCurveSupportFrontImageIds0) == kWoodenSupportTransitionTypeUninvertedCount);
 
 static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
     { 3681, 3682, 3683, 3684 }, // Flat to gentle
@@ -109,23 +143,54 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
     { 3721, 3722, 3723, 3724 }, // ?
     { 3725, 3726, 3727, 3728 }, // ?
     { 3729, 3729, 3729, 3729 }, // Large scenery
-    { SPR_G2_SUPPORT_WOODEN_MINE, SPR_G2_SUPPORT_WOODEN_MINE + 1, SPR_G2_SUPPORT_WOODEN_MINE + 2,
-      SPR_G2_SUPPORT_WOODEN_MINE + 3 }, // Flat to steep large 1
-    { SPR_G2_SUPPORT_WOODEN_MINE + 4, SPR_G2_SUPPORT_WOODEN_MINE + 5, SPR_G2_SUPPORT_WOODEN_MINE + 6,
-      SPR_G2_SUPPORT_WOODEN_MINE + 7 }, // Flat to steep large 2
-    { SPR_G2_SUPPORT_WOODEN_MINE + 8, SPR_G2_SUPPORT_WOODEN_MINE + 9, SPR_G2_SUPPORT_WOODEN_MINE + 10,
-      SPR_G2_SUPPORT_WOODEN_MINE + 11 }, // Flat to steep large 3
-    { SPR_G2_SUPPORT_WOODEN_MINE + 12, SPR_G2_SUPPORT_WOODEN_MINE + 13, SPR_G2_SUPPORT_WOODEN_MINE + 14,
-      SPR_G2_SUPPORT_WOODEN_MINE + 15 }, // Flat to steep large 4
-    { SPR_G2_SUPPORT_WOODEN_MINE + 16, SPR_G2_SUPPORT_WOODEN_MINE + 17, SPR_G2_SUPPORT_WOODEN_MINE + 18,
-      SPR_G2_SUPPORT_WOODEN_MINE + 19 }, // Steep to flat large 1
-    { SPR_G2_SUPPORT_WOODEN_MINE + 20, SPR_G2_SUPPORT_WOODEN_MINE + 21, SPR_G2_SUPPORT_WOODEN_MINE + 22,
-      SPR_G2_SUPPORT_WOODEN_MINE + 23 }, // Steep to flat large 2
-    { SPR_G2_SUPPORT_WOODEN_MINE + 24, SPR_G2_SUPPORT_WOODEN_MINE + 25, SPR_G2_SUPPORT_WOODEN_MINE + 26,
-      SPR_G2_SUPPORT_WOODEN_MINE + 27 }, // Steep to flat large 3
-    { SPR_G2_SUPPORT_WOODEN_MINE + 28, SPR_G2_SUPPORT_WOODEN_MINE + 29, SPR_G2_SUPPORT_WOODEN_MINE + 30,
-      SPR_G2_SUPPORT_WOODEN_MINE + 31 }, // Steep to flat large 4
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 1,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 2, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 3 }, // Flat to steep large 1
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 4, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 5,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 6, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 7 }, // Flat to steep large 2
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 8, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 9,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 10, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 11 }, // Flat to steep large 3
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 12, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 13,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 14, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 15 }, // Flat to steep large 4
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 16, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 17,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 18, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 19 }, // Steep to flat large 1
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 20, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 21,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 22, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 23 }, // Steep to flat large 2
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 24, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 25,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 26, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 27 }, // Steep to flat large 3
+    { SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 28, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 29,
+      SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 30, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 31 }, // Steep to flat large 4
 } };
+static_assert(std::size(WoodenCurveSupportImageIds1) == kWoodenSupportTransitionTypeUninvertedCount);
+
+static constexpr ImagesByTransitionTypeArray WoodenCurveSupportFrontImageIds1 = { {
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Flat to gentle
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Gentle to flat
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Gentle slope
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_MINE_3694_FRONT, SPR_G2_SUPPORT_WOODEN_MINE_3695_FRONT,
+      kImageIndexUndefined }, // Gentle to steep
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_MINE_3698_FRONT, SPR_G2_SUPPORT_WOODEN_MINE_3699_FRONT,
+      kImageIndexUndefined },                                                                   // Steep to gentle
+    { kImageIndexUndefined, 3702, 3703, kImageIndexUndefined },                                 // Steep slope
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Slope
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Flat to steep small
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Steep to flat small
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // ?
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // ?
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // ?
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Large scenery
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Flat to steep large 1
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Flat to steep large 2
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Flat to steep large 3
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 13, SPR_G2_SUPPORT_WOODEN_MINE_FLAT_TO_STEEP + 14,
+      kImageIndexUndefined }, // Flat to steep large 4
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_MINE_STEEP_TO_FLAT_1_2_FRONT,
+      SPR_G2_SUPPORT_WOODEN_MINE_STEEP_TO_FLAT_1_3_FRONT, kImageIndexUndefined }, // Steep to flat large 1
+    { kImageIndexUndefined, SPR_G2_SUPPORT_WOODEN_MINE_STEEP_TO_FLAT_2_2_FRONT,
+      SPR_G2_SUPPORT_WOODEN_MINE_STEEP_TO_FLAT_2_3_FRONT, kImageIndexUndefined },               // Steep to flat large 2
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Steep to flat large 3
+    { kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined, kImageIndexUndefined }, // Steep to flat large 4
+} };
+static_assert(std::size(WoodenCurveSupportFrontImageIds1) == kWoodenSupportTransitionTypeUninvertedCount);
 
 // clang-format off
 /* 0x0097B224 */
@@ -150,9 +215,31 @@ static constexpr const ImagesByTransitionTypeArray::const_pointer WoodenCurveSup
     }, 
 };
 
+// clang-format off
+static constexpr const ImagesByTransitionTypeArray::const_pointer WoodenCurveSupportFrontImageIds[kNumWoodenSupportTypes][kNumWoodenSupportSubTypes] = {
+    // WoodenSupportType::Truss
+    {
+        WoodenCurveSupportFrontImageIds0.data(), // WoodenSupportSubType::NeSw
+        WoodenCurveSupportFrontImageIds0.data(), // WoodenSupportSubType::NwSe
+        nullptr,                                 // WoodenSupportSubType::Corner0
+        nullptr,                                 // WoodenSupportSubType::Corner1
+        nullptr,                                 // WoodenSupportSubType::Corner2
+        nullptr,                                 // WoodenSupportSubType::Corner3
+    },
+    // WoodenSupportType::Mine
+    {
+        WoodenCurveSupportFrontImageIds1.data(), // WoodenSupportSubType::NeSw
+        WoodenCurveSupportFrontImageIds1.data(), // WoodenSupportSubType::NwSe
+        nullptr,                                 // WoodenSupportSubType::Corner0
+        nullptr,                                 // WoodenSupportSubType::Corner1
+        nullptr,                                 // WoodenSupportSubType::Corner2
+        nullptr,                                 // WoodenSupportSubType::Corner3
+    },
+};
+
 struct SlopedSupportsDescriptor {
     BoundBoxXYZ BoundingBox;
-    bool AsOrphan;
+    bool hasFrontSprite;
 };
 
 /* 0x0097B23C */
@@ -170,28 +257,28 @@ static constexpr SlopedSupportsDescriptor SupportsDescriptors[] = {
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Gentle to steep
-    {{{10, 0,  0}, {10, 32, 44}}, true},
-    {{{0,  10, 0}, {32, 10, 44}}, true},
+    {{{29, 0,  0}, {1, 28, 64}},   true},
+    {{{0, 29,  0}, {28, 1, 64}},   true},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep to gentle
-    {{{10, 0,  0}, {10, 32, 44}}, true},
-    {{{0,  10, 0}, {32, 10, 44}}, true},
+    {{{29, 0,  0}, {1, 28, 64}},   true},
+    {{{0, 29,  0}, {28, 1, 64}},   true},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep slope
-    {{{10, 0,  2}, {10, 32, 76}}, true},
-    {{{0,  10, 2}, {32, 10, 76}}, true},
+    {{{29, 0,  0}, {1, 28, 96}},   true},
+    {{{0, 29,  0}, {28, 1, 96}},   true},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  4}},  false}, // Slope
     {{{0,  0,  0}, {1,  1,  4}},  false},
     {{{0,  0,  0}, {1,  1,  4}},  false},
     {{{0,  0,  0}, {1,  1,  4}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to steep small
-    {{{0,  0,  0}, {1,  1,  8}},  false},
-    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{29, 0,  0}, {1, 28, 56}},   true},
+    {{{0, 29,  0}, {28, 1, 56}},   true},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep to flat small
-    {{{0,  0,  0}, {1,  1,  8}},  false},
-    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{29, 0,  0}, {1, 28, 56}},   true},
+    {{{0, 29,  0}, {28, 1, 56}},   true},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false}, // ?
     {{{0,  0,  0}, {1,  1,  8}},  false},
@@ -222,16 +309,16 @@ static constexpr SlopedSupportsDescriptor SupportsDescriptors[] = {
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to steep large 4
-    {{{10, 0,  2}, {10, 32, 52}}, true},
-    {{{0,  10, 2}, {32, 10, 52}}, true},
+    {{{29, 0,  0}, {1, 28, 80}},   true},
+    {{{0, 29,  0}, {28, 1, 80}},   true},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep to flat large 1
-    {{{10, 0,  2}, {10, 32, 76}}, true},
-    {{{0,  10, 2}, {32, 10, 76}}, true},
+    {{{29, 0,  0}, {1, 28, 80}},   true},
+    {{{0, 29,  0}, {28, 1, 80}},   true},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep to flat large 2
-    {{{0,  0,  0}, {1,  1,  8}},  false},
-    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{29, 0,  0}, {1, 28, 72}},   true},
+    {{{0, 29,  0}, {28, 1, 72}},   true},
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep to flat large 3
     {{{0,  0,  0}, {1,  1,  8}},  false},
@@ -242,6 +329,7 @@ static constexpr SlopedSupportsDescriptor SupportsDescriptors[] = {
     {{{0,  0,  0}, {1,  1,  8}},  false},
     {{{0,  0,  0}, {1,  1,  8}},  false},
 };
+static_assert(std::size(SupportsDescriptors) == kWoodenSupportTransitionTypeUninvertedCount * 4);
 
 /* 0x0098D8D4 */
 static constexpr SlopedSupportsDescriptor kSlopedPathSupportsDescriptor = {{{0, 0, 0}, {1, 1, 4}}, false};
@@ -327,7 +415,7 @@ static WoodenSupportSubType rotatedWoodenSupportSubTypes[kNumWoodenSupportSubTyp
  */
 static void PaintRepeatedWoodenSupports(
     const SupportsIdDescriptor supportImages, const ImageId& imageTemplate, int16_t heightSteps, PaintSession& session,
-    uint16_t& baseHeight, bool& hasSupports)
+    uint16_t& baseHeight, bool& hasSupports, const int32_t boundBoxOffset, const int32_t boundBoxLength)
 {
     while (heightSteps > 0)
     {
@@ -337,7 +425,9 @@ static void PaintRepeatedWoodenSupports(
             // Half support
             auto imageId = imageTemplate.WithIndex(supportImages.Half);
             uint8_t boundBoxHeight = (heightSteps == 1) ? 7 : 12;
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
+            PaintAddImageAsParent(
+                session, imageId, { 0, 0, baseHeight },
+                { { boundBoxOffset, boundBoxOffset, baseHeight }, { boundBoxLength, boundBoxLength, boundBoxHeight } });
             baseHeight += 16;
             heightSteps -= 1;
         }
@@ -346,7 +436,9 @@ static void PaintRepeatedWoodenSupports(
             // Full support
             auto imageId = imageTemplate.WithIndex(supportImages.Full);
             uint8_t boundBoxHeight = (heightSteps == 2) ? 23 : 28;
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
+            PaintAddImageAsParent(
+                session, imageId, { 0, 0, baseHeight },
+                { { boundBoxOffset, boundBoxOffset, baseHeight }, { boundBoxLength, boundBoxLength, boundBoxHeight } });
             baseHeight += 32;
             heightSteps -= 2;
         }
@@ -359,46 +451,45 @@ static void PaintRepeatedWoodenSupports(
  * Draw special pieces, e.g. curved supports.
  */
 static void PaintSlopeTransitions(
-    const SlopedSupportsDescriptor& supportsDesc, ImageIndex imageIndex, PaintSession& session, const ImageId& imageTemplate,
-    uint16_t baseHeight)
+    const SlopedSupportsDescriptor& supportsDesc, ImageIndex imageIndex, ImageIndex frontImageIndex, PaintSession& session,
+    const ImageId& imageTemplate, uint16_t baseHeight)
 {
-    auto imageId = imageTemplate.WithIndex(imageIndex);
-
-    auto boundBox = supportsDesc.BoundingBox;
-    boundBox.offset.z += baseHeight;
-
-    if (supportsDesc.AsOrphan == false || session.WoodenSupportsPrependTo == nullptr)
+    if (!supportsDesc.hasFrontSprite)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, boundBox);
+        auto imageId = imageTemplate.WithIndex(imageIndex);
+        PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight }, { 1, 1, 1 } });
     }
     else
     {
-        auto* paintStruct = PaintAddImageAsOrphan(session, imageId, { 0, 0, baseHeight }, boundBox);
-        if (paintStruct != nullptr)
-        {
-            session.WoodenSupportsPrependTo->Children = paintStruct;
-        }
+        auto imageId = imageTemplate.WithIndex(imageIndex);
+        PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 1, 1, baseHeight }, { 1, 1, 1 } });
+
+        auto frontImageId = imageTemplate.WithIndex(frontImageIndex);
+        auto boundingBox = supportsDesc.BoundingBox;
+        boundingBox.offset.z += baseHeight;
+        PaintAddImageAsParent(session, frontImageId, { 0, 0, baseHeight }, boundingBox);
     }
 }
 
 static bool WoodenABPaintSlopeTransitions(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType,
-    WoodenSupportTransitionType transitionType, Direction direction, const ImageId& imageTemplate, uint16_t baseHeight)
+    WoodenSupportTransitionType transitionType, const SlopedSupportsDescriptor& supportsDesc, Direction direction,
+    const ImageId& imageTemplate, uint16_t baseHeight)
 {
-    if (EnumValue(transitionType) >= 21)
-    {
-        transitionType = static_cast<WoodenSupportTransitionType>(EnumValue(transitionType) - 21);
-        direction = DirectionReverse(direction);
-    }
-
-    const uint16_t supportsDescriptorIndex = (EnumValue(transitionType) * kNumOrthogonalDirections) + direction;
-    const SlopedSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
     const auto* imageIds = WoodenCurveSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
 
     if (imageIds == nullptr || imageIds[EnumValue(transitionType)][direction] == 0)
         return false;
 
-    PaintSlopeTransitions(supportsDesc, imageIds[EnumValue(transitionType)][direction], session, imageTemplate, baseHeight);
+    ImageIndex frontImageIndex = kImageIndexUndefined;
+    if (supportsDesc.hasFrontSprite)
+    {
+        const auto* frontImageIds = WoodenCurveSupportFrontImageIds[EnumValue(supportType)][EnumValue(subType)];
+        frontImageIndex = frontImageIds[EnumValue(transitionType)][direction];
+    }
+
+    PaintSlopeTransitions(
+        supportsDesc, imageIds[EnumValue(transitionType)][direction], frontImageIndex, session, imageTemplate, baseHeight);
 
     return true;
 }
@@ -406,7 +497,7 @@ static bool WoodenABPaintSlopeTransitions(
 template<uint8_t zOffset, bool doHeightStepsCheck>
 static inline bool WoodenSupportsPaintSetupCommon(
     PaintSession& session, const SupportsIdDescriptor& supportImages, int32_t height, ImageId& imageTemplate, bool& hasSupports,
-    uint16_t& baseHeight)
+    uint16_t& baseHeight, const bool rearFacingSteep)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -435,6 +526,9 @@ static inline bool WoodenSupportsPaintSetupCommon(
     hasSupports = false;
     bool drawFlatPiece = false;
 
+    const int32_t boundBoxOffset = rearFacingSteep ? 1 : 0;
+    const int32_t boundBoxLength = rearFacingSteep ? 30 : 32;
+
     // Draw base support (usually shaped to the slope)
     auto slope = session.Support.slope;
     if (slope & kTileSlopeAboveTrackOrScenery)
@@ -460,10 +554,12 @@ static inline bool WoodenSupportsPaintSetupCommon(
         {
             auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileSlopeMask]);
 
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
+            PaintAddImageAsParent(
+                session, imageId, { 0, 0, baseHeight },
+                { { boundBoxOffset, boundBoxOffset, baseHeight + 2 }, { boundBoxLength, boundBoxLength, 11 } });
             PaintAddImageAsParent(
                 session, imageId.WithIndexOffset(4), { 0, 0, baseHeight + 16 },
-                { { 0, 0, baseHeight + 16 + 2 }, { 32, 32, zOffset } });
+                { { boundBoxOffset, boundBoxOffset, baseHeight + 16 + 2 }, { boundBoxLength, boundBoxLength, zOffset } });
 
             hasSupports = true;
         }
@@ -487,7 +583,9 @@ static inline bool WoodenSupportsPaintSetupCommon(
         else
         {
             auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileSlopeMask]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, zOffset } });
+            PaintAddImageAsParent(
+                session, imageId, { 0, 0, baseHeight },
+                { { boundBoxOffset, boundBoxOffset, baseHeight + 2 }, { boundBoxLength, boundBoxLength, zOffset } });
             hasSupports = true;
         }
 
@@ -506,12 +604,15 @@ static inline bool WoodenSupportsPaintSetupCommon(
         if (shouldDraw)
         {
             auto imageId = imageTemplate.WithIndex(supportImages.Flat);
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
+            PaintAddImageAsParent(
+                session, imageId, { 0, 0, baseHeight - 2 },
+                { { boundBoxOffset, boundBoxOffset, baseHeight - 2 }, { boundBoxLength, boundBoxLength, 0 } });
             hasSupports = true;
         }
     }
 
-    PaintRepeatedWoodenSupports(supportImages, imageTemplate, heightSteps, session, baseHeight, hasSupports);
+    PaintRepeatedWoodenSupports(
+        supportImages, imageTemplate, heightSteps, session, baseHeight, hasSupports, boundBoxOffset, boundBoxLength);
     return true;
 }
 
@@ -526,8 +627,23 @@ inline bool WoodenABSupportsPaintSetupCommon(
     bool hasSupports = false;
     auto supportIds = GetWoodenSupportIds(supportType, subType);
 
+    size_t supportsDescriptorIndex = 0;
+    bool rearFacingSteep = false;
+    if (transitionType != WoodenSupportTransitionType::None)
+    {
+        if (EnumValue(transitionType) >= kWoodenSupportTransitionTypeUninvertedCount)
+        {
+            transitionType = static_cast<WoodenSupportTransitionType>(
+                EnumValue(transitionType) - kWoodenSupportTransitionTypeUninvertedCount);
+            direction = DirectionReverse(direction);
+        }
+        supportsDescriptorIndex = (EnumValue(transitionType) * kNumOrthogonalDirections) + direction;
+        const SlopedSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
+        rearFacingSteep = supportsDesc.hasFrontSprite;
+    }
+
     if (!WoodenSupportsPaintSetupCommon<zOffset, doHeightStepsCheck>(
-            session, supportIds, height, imageTemplate, hasSupports, baseHeight))
+            session, supportIds, height, imageTemplate, hasSupports, baseHeight, rearFacingSteep))
     {
         return false;
     }
@@ -535,7 +651,8 @@ inline bool WoodenABSupportsPaintSetupCommon(
     if (transitionType != WoodenSupportTransitionType::None)
     {
         hasSupports = WoodenABPaintSlopeTransitions(
-            session, supportType, subType, transitionType, direction, imageTemplate, baseHeight);
+            session, supportType, subType, transitionType, SupportsDescriptors[supportsDescriptorIndex], direction,
+            imageTemplate, baseHeight);
     }
 
     return hasSupports;
@@ -624,7 +741,7 @@ bool PathBoxSupportsPaintSetup(
         .Slope = pathPaintInfo.BridgeImageId + supportOrientationOffset,
     };
 
-    if (!WoodenSupportsPaintSetupCommon<11, false>(session, supportIds, height, imageTemplate, hasSupports, baseHeight))
+    if (!WoodenSupportsPaintSetupCommon<11, false>(session, supportIds, height, imageTemplate, hasSupports, baseHeight, false))
     {
         return false;
     }
@@ -633,7 +750,8 @@ bool PathBoxSupportsPaintSetup(
     {
         ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + slopeRotation;
 
-        PaintSlopeTransitions(kSlopedPathSupportsDescriptor, imageIndex, session, imageTemplate, baseHeight);
+        PaintSlopeTransitions(
+            kSlopedPathSupportsDescriptor, imageIndex, kImageIndexUndefined, session, imageTemplate, baseHeight);
         hasSupports = true;
     }
 

@@ -25,7 +25,7 @@ struct VehicleBoundBox
     uint8_t length_z;
 };
 
-extern const VehicleBoundBox VehicleBoundboxes[16][224];
+extern const VehicleBoundBox VehicleBoundboxes[16][232];
 
 void VehicleVisualDefault(
     PaintSession& session, int32_t imageDirection, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry);

@@ -242,20 +242,20 @@ static void HeartlineTwisterRCTrack60DegUp(
                     { { 0, 27, height }, { 32, 1, 98 } });
                 break;
             case 1:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21403), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 77 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21407), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 4, 27, height }, { 24, 1, 77 } });
                 break;
             case 2:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21404), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 77 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21408), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 4, 27, height }, { 24, 1, 77 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -280,20 +280,20 @@ static void HeartlineTwisterRCTrack60DegUp(
                     { { 0, 27, height }, { 32, 1, 98 } });
                 break;
             case 1:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21347), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 88 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21351), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 4, 27, height }, { 24, 1, 88 } });
                 break;
             case 2:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21348), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 88 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21352), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 98 } });
+                    { { 4, 27, height }, { 24, 1, 88 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -436,20 +436,20 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
                     { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 1:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21387), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 56 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21391), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 4, 27, height }, { 24, 1, 56 } });
                 break;
             case 2:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21388), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 56 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21392), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 4, 27, height }, { 24, 1, 56 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -474,20 +474,20 @@ static void HeartlineTwisterRCTrack25DegUpTo60DegUp(
                     { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 1:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21331), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 56 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21335), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 4, 27, height }, { 24, 1, 56 } });
                 break;
             case 2:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21332), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 56 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21336), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 4, 27, height }, { 24, 1, 56 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -533,20 +533,20 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
                     { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 1:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21395), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 56 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21399), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 4, 27, height }, { 24, 1, 56 } });
                 break;
             case 2:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21396), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 56 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21400), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 4, 27, height }, { 24, 1, 56 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -571,20 +571,20 @@ static void HeartlineTwisterRCTrack60DegUpTo25DegUp(
                     { { 0, 27, height }, { 32, 1, 66 } });
                 break;
             case 1:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21339), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 56 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21343), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 4, 27, height }, { 24, 1, 56 } });
                 break;
             case 2:
-                session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21340), { 0, 0, height },
-                    { { 0, 6, height }, { 32, 20, 2 } });
+                    { { 4, 5, height }, { 24, 1, 56 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21344), { 0, 0, height },
-                    { { 0, 27, height }, { 32, 1, 66 } });
+                    { { 4, 27, height }, { 24, 1, 56 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(

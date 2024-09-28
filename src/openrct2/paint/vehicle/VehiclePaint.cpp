@@ -32,7 +32,7 @@ using namespace OpenRCT2::Entity::Yaw;
 #pragma region VehicleBoundboxes
 
 // 0x0098E52C:
-const VehicleBoundBox VehicleBoundboxes[16][224] = {
+const VehicleBoundBox VehicleBoundboxes[16][232] = {
     {
         // 0x0099123C:
         { -5, -2, -22, 10, 4, 14 },   { -3, -3, -22, 6, 6, 14 },    { -3, -3, -22, 6, 6, 14 },    { -3, -3, -22, 6, 6, 14 },
@@ -91,6 +91,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, -22, 20, 12, 14 }, { -6, -10, -22, 12, 20, 14 }, { -10, -6, -22, 20, 12, 14 }, { -6, -10, 11, 12, 20, 14 },
         { -10, -6, 11, 20, 12, 14 },  { -6, -10, -22, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },  { -6, -10, 11, 12, 20, 14 },
         { -10, -6, 11, 20, 12, 14 },  { -6, -10, -22, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },  { -6, -10, 11, 12, 20, 14 },
+        { -10, -6, -22, 16, 12, 14 }, { -8, -8, -22, 16, 16, 14 },  { -6, -11, -27, 3, 16, 19 },  { -8, -8, -22, 16, 16, 14 },
+        { -11, -6, -27, 16, 5, 19 },  { -8, -8, -22, 16, 16, 14 },  { -6, -10, -22, 12, 16, 14 }, { -8, -8, -22, 16, 16, 14 },
     },
     {
         // 0x0099027C:
@@ -150,6 +152,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, -28, 20, 12, 14 }, { -6, -10, -28, 12, 20, 14 }, { -10, -6, -28, 20, 12, 14 }, { -6, -10, 11, 12, 20, 14 },
         { -10, -6, 11, 20, 12, 14 },  { -6, -10, -28, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },  { -6, -10, 11, 12, 20, 14 },
         { -10, -6, 11, 20, 12, 14 },  { -6, -10, -28, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },  { -6, -10, 11, 12, 20, 14 },
+        { -10, -6, -28, 16, 12, 14 }, { -8, -8, -28, 16, 16, 14 },  { -6, -11, -33, 3, 16, 19 },  { -8, -8, -28, 16, 16, 14 },
+        { -11, -6, -33, 16, 5, 19 },  { -8, -8, -28, 16, 16, 14 },  { -6, -10, -28, 12, 16, 14 }, { -8, -8, -28, 16, 16, 14 },
     },
     {
         // 0x009907BC:
@@ -209,6 +213,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 }, { -10, -6, -23, 20, 12, 14 }, { -6, -10, 11, 12, 20, 14 },
         { -10, -6, 11, 20, 12, 14 },  { -6, -10, -23, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },  { -6, -10, 11, 12, 20, 14 },
         { -10, -6, 11, 20, 12, 14 },  { -6, -10, -23, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },  { -6, -10, 11, 12, 20, 14 },
+        { -10, -6, -23, 16, 12, 14 }, { -8, -8, -23, 16, 16, 14 },  { -6, -11, -28, 3, 16, 19 },  { -8, -8, -23, 16, 16, 14 },
+        { -11, -6, -28, 16, 5, 19 },  { -8, -8, -23, 16, 16, 14 },  { -6, -10, -23, 12, 16, 14 }, { -8, -8, -23, 16, 16, 14 },
     },
     {
         // 0x009921FC:
@@ -268,6 +274,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, -28, 20, 12, 14 }, { -6, -10, -28, 12, 20, 14 }, { -10, -6, -28, 20, 12, 14 },  { -6, -10, 11, 12, 20, 14 },
         { -10, -6, 11, 20, 12, 14 },  { -6, -10, -28, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },   { -6, -10, 11, 12, 20, 14 },
         { -10, -6, 11, 20, 12, 14 },  { -6, -10, -28, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },   { -6, -10, 11, 12, 20, 14 },
+        { -10, -6, -28, 16, 12, 14 }, { -8, -8, -28, 16, 16, 14 },  { -6, -11, -33, 3, 16, 19 },   { -8, -8, -28, 16, 16, 14 },
+        { -11, -6, -33, 16, 5, 19 },  { -8, -8, -28, 16, 16, 14 },  { -6, -10, -28, 12, 16, 14 },  { -8, -8, -28, 16, 16, 14 },
     },
     {
         // 0x00991CBC:
@@ -327,6 +335,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, -28, 20, 12, 14 }, { -6, -10, -28, 12, 20, 14 }, { -10, -6, -28, 20, 12, 14 },  { -6, -10, 11, 12, 20, 14 },
         { -10, -6, 11, 20, 12, 14 },  { -6, -10, -28, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },   { -6, -10, 11, 12, 20, 14 },
         { -10, -6, 11, 20, 12, 14 },  { -6, -10, -28, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },   { -6, -10, 11, 12, 20, 14 },
+        { -10, -6, -28, 16, 12, 14 }, { -8, -8, -28, 16, 16, 14 },  { -6, -11, -33, 3, 16, 19 },   { -8, -8, -28, 16, 16, 14 },
+        { -11, -6, -33, 16, 5, 19 },  { -8, -8, -28, 16, 16, 14 },  { -6, -10, -28, 12, 16, 14 },  { -8, -8, -28, 16, 16, 14 },
     },
     {
         // 0x0098F52C
@@ -386,6 +396,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, 1, 20, 12, 14 },   { -6, -10, 1, 12, 20, 14 },   { -10, -6, 1, 20, 12, 14 },   { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
+        { -10, -6, 1, 20, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -3, 1, 12, 6, 7 },      { -8, -8, 1, 16, 16, 14 },
+        { -3, -6, 1, 6, 12, 7 },      { -8, -8, 1, 16, 16, 14 },    { -6, -10, 1, 12, 20, 14 },   { 0, 0, 1, 8, 8, 14 },
     },
     {
         // 0x0098EFEC:
@@ -445,6 +457,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, 1, 20, 12, 14 },   { -6, -10, 1, 12, 20, 14 },   { -10, -6, 1, 20, 12, 14 },   { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
+        { -10, -6, 1, 20, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -3, 1, 12, 6, 7 },      { -8, -8, 1, 16, 16, 14 },
+        { -3, -6, 1, 6, 12, 7 },      { -8, -8, 1, 16, 16, 14 },    { -6, -10, 1, 12, 20, 14 },   { 0, 0, 1, 8, 8, 14 },
     },
     {
         // 0x0098EAAC:
@@ -504,6 +518,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, 1, 20, 12, 14 },   { -6, -10, 1, 12, 20, 14 },   { -10, -6, 1, 20, 12, 14 },   { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
+        { -8, -6, 1, 16, 12, 14 },    { -8, -8, 1, 16, 16, 14 },    { -6, -3, 1, 12, 6, 7 },      { -8, -8, 1, 16, 16, 14 },
+        { -3, -6, 1, 6, 12, 7 },      { -8, -8, 1, 16, 16, 14 },    { -6, -8, 1, 12, 16, 14 },    { 0, 0, 1, 8, 8, 14 },
     },
     {
         // 0x0098E56C:
@@ -563,6 +579,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, 1, 20, 12, 14 },   { -6, -10, 1, 12, 20, 14 },   { -10, -6, 1, 20, 12, 14 },   { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
+        { -3, -6, 1, 6, 12, 7 },      { -8, -8, 1, 16, 16, 7 },     { -6, -3, 1, 12, 6, 7 },      { -8, -8, 1, 16, 16, 7 },
+        { -3, -6, 1, 6, 12, 7 },      { -8, -8, 1, 16, 16, 7 },     { -6, -3, 1, 12, 6, 7 },      { 0, 0, 1, 8, 8, 7 },
     },
     {
         // 0x00990CFC:
@@ -577,8 +595,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -12, -6, 1, 24, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -12, 1, 12, 24, 14 },   { -8, -8, 1, 16, 16, 14 },
         { -18, -6, 1, 24, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -14, 1, 12, 24, 14 },   { 0, 0, 1, 8, 8, 14 },
         { -12, -6, 5, 24, 12, 14 },   { -11, -6, 1, 22, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -11, 1, 12, 22, 14 },
-        { -6, -12, 5, 12, 24, 14 },   { -6, -11, 1, 12, 22, 14 },   { -8, -8, 1, 16, 16, 14 },    { -11, -6, 1, 22, 12, 14 },
-        { -18, -6, 5, 24, 12, 14 },   { -11, -6, 1, 22, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -11, 1, 12, 22, 14 },
+        { -6, -8, 5, 12, 6, 14 },     { -6, -11, 1, 12, 22, 14 },   { -8, -8, 1, 16, 16, 14 },    { -11, -6, 1, 22, 12, 14 },
+        { -8, -6, 5, 6, 12, 14 },     { -11, -6, 1, 22, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -11, 1, 12, 22, 14 },
         { -6, -14, 5, 12, 24, 14 },   { -6, -11, 1, 12, 22, 14 },   { -8, -8, 1, 16, 16, 14 },    { -11, -6, 1, 22, 12, 14 },
         { 0, -6, -10, 14, 12, 24 },   { -6, -17, -10, 3, 14, 24 },  { -17, -6, -10, 14, 5, 24 },  { -6, 0, -10, 12, 14, 24 },
         { 0, -6, -7, 10, 12, 14 },    { 0, -6, -7, 10, 12, 14 },    { 0, -6, -7, 10, 12, 14 },    { 0, -6, -7, 10, 12, 14 },
@@ -622,6 +640,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, 1, 20, 12, 14 },   { -6, -10, 1, 12, 20, 14 },   { -10, -6, 1, 20, 12, 14 },   { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
+        { -12, -6, 1, 24, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -3, 1, 12, 6, 7 },      { -8, -8, 1, 16, 16, 14 },
+        { -3, -6, 1, 6, 12, 7 },      { -8, -8, 1, 16, 16, 14 },    { -6, -14, 1, 12, 24, 14 },   { 0, 0, 1, 8, 8, 14 },
     },
     {
         // 0x0098FA6C:
@@ -681,6 +701,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, 1, 20, 12, 14 },   { -6, -10, 1, 12, 20, 14 },   { -10, -6, 1, 20, 12, 14 },   { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
+        { -14, -6, 1, 28, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -3, 1, 12, 6, 7 },      { -8, -8, 1, 16, 16, 14 },
+        { -3, -6, 1, 6, 12, 7 },      { -8, -8, 1, 16, 16, 14 },    { -6, -14, 1, 12, 28, 14 },   { 0, 0, 1, 8, 8, 14 },
     },
     {
         // 0x0099177C:
@@ -695,8 +717,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -14, -6, 1, 28, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -14, 1, 12, 28, 14 },   { -8, -8, 1, 16, 16, 14 },
         { -18, -6, 1, 28, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -14, 1, 12, 28, 14 },   { 0, 0, 1, 8, 8, 14 },
         { -14, -6, 5, 28, 12, 14 },   { -11, -6, 1, 22, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -11, 1, 12, 22, 14 },
-        { -6, -14, 5, 12, 28, 14 },   { -6, -11, 1, 12, 22, 14 },   { -8, -8, 1, 16, 16, 14 },    { -11, -6, 1, 22, 12, 14 },
-        { -18, -6, 5, 28, 12, 14 },   { -11, -6, 1, 22, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -11, 1, 12, 22, 14 },
+        { -6, -16, 5, 12, 6, 14 },    { -6, -11, 1, 12, 22, 14 },   { -8, -8, 1, 16, 16, 14 },    { -11, -6, 1, 22, 12, 14 },
+        { -16, -6, 5, 6, 12, 14 },    { -11, -6, 1, 22, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -11, 1, 12, 22, 14 },
         { -6, -14, 5, 12, 28, 14 },   { -6, -11, 1, 12, 22, 14 },   { -8, -8, 1, 16, 16, 14 },    { -11, -6, 1, 22, 12, 14 },
         { -14, -6, -10, 28, 12, 24 }, { -6, -17, -10, 3, 28, 24 },  { -17, -6, -10, 28, 5, 24 },  { -6, -14, -10, 12, 28, 24 },
         { 0, -6, -7, 10, 12, 14 },    { 0, -6, -7, 10, 12, 14 },    { 0, -6, -7, 10, 12, 14 },    { 0, -6, -7, 10, 12, 14 },
@@ -740,6 +762,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, 1, 20, 12, 14 },   { -6, -10, 1, 12, 20, 14 },   { -10, -6, 1, 20, 12, 14 },   { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
         { -10, -6, -23, 20, 12, 14 }, { -6, -10, 1, 12, 20, 14 },   { -10, -6, -23, 20, 12, 14 }, { -6, -10, -23, 12, 20, 14 },
+        { -14, -6, 1, 28, 12, 14 },   { -8, -8, 1, 16, 16, 14 },    { -6, -3, 1, 12, 6, 7 },      { -8, -8, 1, 16, 16, 14 },
+        { -3, -6, 1, 6, 12, 7 },      { -8, -8, 1, 16, 16, 14 },    { -6, -14, 1, 12, 28, 14 },   { 0, 0, 1, 8, 8, 14 },
     },
     {
         // 0x009900FC:
@@ -799,6 +823,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, -28, 20, 12, 14 }, { -6, -10, -28, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },  { -6, -10, -28, 12, 20, 14 },
         { -10, -6, -28, 20, 12, 14 }, { -6, -10, -28, 12, 20, 14 }, { -10, -6, 11, 20, 12, 14 },  { -6, -10, -28, 12, 20, 14 },
         { -10, -6, -28, 20, 12, 14 }, { -6, -10, 11, 12, 20, 14 },  { -10, -6, 11, 20, 12, 14 },  { -6, -10, 11, 12, 20, 14 },
+        { -6, -6, -4, 12, 12, 1 },    { -6, -6, -4, 12, 12, 1 },    { -6, -6, -4, 12, 12, 1 },    { -6, -6, -4, 12, 12, 1 },
+        { -6, -6, -4, 12, 12, 1 },    { -6, -6, -4, 12, 12, 1 },    { -6, -6, -4, 12, 12, 1 },    { -6, -6, -4, 12, 12, 1 },
     },
     {
         // 0x009901BC:
@@ -858,6 +884,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, 11, 20, 12, 14 },  { -6, -10, 11, 12, 20, 14 },  { -10, -6, -28, 20, 12, 14 }, { -6, -10, 11, 12, 20, 14 },
         { -10, -6, -28, 20, 12, 14 }, { -6, -10, -28, 12, 20, 14 }, { -10, -6, -28, 20, 12, 14 }, { -6, -10, -28, 12, 20, 14 },
         { -10, -6, -28, 20, 12, 14 }, { -6, -10, 11, 12, 20, 14 },  { -10, -6, -28, 20, 12, 14 }, { -6, -10, -28, 12, 20, 14 },
+        { -8, -6, -28, 16, 12, 14 },  { -8, -6, -28, 16, 12, 14 },  { -8, -8, -28, 16, 16, 14 },  { -6, -8, -28, 12, 16, 14 },
+        { -6, -8, -28, 12, 16, 14 },  { -6, -8, -28, 12, 16, 14 },  { -8, -8, -28, 16, 16, 14 },  { -8, -6, -28, 16, 12, 14 },
     },
     {
         // 0x0098FFAC:
@@ -917,6 +945,8 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
         { -10, -6, 5, 20, 12, 7 },    { -6, -10, 5, 12, 20, 7 },    { -10, -6, 5, 20, 12, 7 },    { -6, -10, 5, 12, 20, 7 },
         { -10, -6, 5, 20, 12, 7 },    { -6, -10, 5, 12, 20, 7 },    { -10, -6, 5, 20, 12, 7 },    { -6, -10, 5, 12, 20, 7 },
         { -8, -8, -28, 16, 16, 14 },  { -8, -8, -28, 16, 16, 14 },  { -8, -8, -28, 16, 16, 14 },  { -8, -8, -28, 16, 16, 14 },
+        { -3, -6, -10, 6, 12, 1 },    { -8, -8, -2, 16, 16, 1 },    { -6, -3, -2, 12, 6, 1 },     { -8, -8, -2, 16, 16, 1 },
+        { -3, -6, -2, 6, 12, 1 },     { -8, -8, -2, 16, 16, 1 },    { -6, -3, -10, 12, 6, 1 },    { 0, 0, -2, 8, 8, 1 },
     },
     {
         // 0x0099273C:
@@ -953,6 +983,8 @@ const uint8_t PitchInvertTable[] = {
 
 // Opposite Bank values for reversed cars
 const uint8_t BankInvertTable[] = { 0, 3, 4, 1, 2, 10, 11, 12, 13, 14, 5, 6, 7, 8, 9, 15, 18, 19, 16, 17 };
+
+constexpr size_t kVehicleBoundboxesPitch42Index = 224;
 
 #pragma endregion
 
@@ -1888,7 +1920,7 @@ static void VehiclePitchUp42Unbanked(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42, imageDirection, 0);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -1903,7 +1935,7 @@ static void VehiclePitchUp42BankedLeft22(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked22))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked22, imageDirection, 0);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -1918,7 +1950,7 @@ static void VehiclePitchUp42BankedLeft45(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked45))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked45, imageDirection, 0);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -1933,7 +1965,7 @@ static void VehiclePitchUp42BankedRight22(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked22))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked22, imageDirection, 1);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -1948,7 +1980,7 @@ static void VehiclePitchUp42BankedRight45(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked45))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked45, imageDirection, 1);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -1963,7 +1995,7 @@ static void VehiclePitchUp42BankedLeft67(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked67))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked67, imageDirection, 0);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -1978,7 +2010,7 @@ static void VehiclePitchUp42BankedLeft90(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked90))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked90, imageDirection, 0);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -1993,7 +2025,7 @@ static void VehiclePitchUp42BankedRight67(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked67))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked67, imageDirection, 1);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2008,7 +2040,7 @@ static void VehiclePitchUp42BankedRight90(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked90))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked90, imageDirection, 1);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2643,7 +2675,7 @@ static void VehiclePitchDown42Unbanked(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42))
     {
-        int32_t boundingBoxNum = ((YawTo8(imageDirection)) ^ 4) + 32;
+        int32_t boundingBoxNum = ((YawTo8(imageDirection)) ^ 4) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42, imageDirection, 1);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2658,7 +2690,7 @@ static void VehiclePitchDown42BankedLeft22(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked22))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked22, imageDirection, 2);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2673,7 +2705,7 @@ static void VehiclePitchDown42BankedLeft45(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked45))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked45, imageDirection, 2);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2688,7 +2720,7 @@ static void VehiclePitchDown42BankedRight22(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked22))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked22, imageDirection, 3);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2703,7 +2735,7 @@ static void VehiclePitchDown42BankedRight45(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked45))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked45, imageDirection, 3);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2718,7 +2750,7 @@ static void VehiclePitchDown42BankedLeft67(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked67))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked67, imageDirection, 2);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2733,7 +2765,7 @@ static void VehiclePitchDown42BankedLeft90(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked90))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked90, imageDirection, 2);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2748,7 +2780,7 @@ static void VehiclePitchDown42BankedRight67(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked67))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked67, imageDirection, 3);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2763,7 +2795,7 @@ static void VehiclePitchDown42BankedRight90(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes42Banked90))
     {
-        int32_t boundingBoxNum = (YawTo8(imageDirection)) + 32;
+        int32_t boundingBoxNum = (YawTo8(imageDirection)) + kVehicleBoundboxesPitch42Index;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes42Banked90, imageDirection, 3);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }

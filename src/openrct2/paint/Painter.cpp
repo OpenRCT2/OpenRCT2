@@ -177,7 +177,6 @@ PaintSession* Painter::CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags, uin
     session->LastAttachedPS = nullptr;
     session->PSStringHead = nullptr;
     session->LastPSString = nullptr;
-    session->WoodenSupportsPrependTo = nullptr;
     session->CurrentlyDrawnEntity = nullptr;
     session->CurrentlyDrawnTileElement = nullptr;
     session->Surface = nullptr;
