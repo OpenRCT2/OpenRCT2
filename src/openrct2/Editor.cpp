@@ -437,7 +437,7 @@ namespace OpenRCT2::Editor
 
         if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::PeepNames))
         {
-            return { ObjectType::PeepNames, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED }; // TODO: string id
+            return { ObjectType::PeepNames, STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED };
         }
 
         if (!isTrackDesignerManager)

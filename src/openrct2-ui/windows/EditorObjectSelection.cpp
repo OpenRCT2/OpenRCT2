@@ -183,7 +183,7 @@ namespace OpenRCT2::Ui::Windows
         { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,    SPR_TAB_PARK,            kEntrancesObjectSubTabs },
         { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,  SPR_G2_TAB_LAND,         kTerrainObjectSubTabs },
         { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,           SPR_TAB_MUSIC_0,         {} },
-        { STR_GUESTS,                                     ObjectType::PeepNames,       SPR_TAB_GUESTS_0,        {} }, // TODO: dedicated string id
+        { STR_OBJECT_SELECTION_PEEP_NAMES,                ObjectType::PeepNames,       SPR_TAB_GUESTS_0,        {} },
     };
     // clang-format on
 
