@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstddef>
+
 constexpr std::nullptr_t kFamilyOpenRCT2Sprite = nullptr;
 
 #ifndef NO_TTF
