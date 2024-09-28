@@ -374,7 +374,6 @@ namespace OpenRCT2
                         }
                     });
 
-                // Append guest names object to old park files
                 if (version < kPeepNamesObjectsVersion)
                 {
                     AppendRequiredObjects(
