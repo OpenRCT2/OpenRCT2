@@ -37,6 +37,7 @@ enum class FormatToken
     StringById,
     String,
     MonthYear,
+    MonthYearSentence,
     Month,
     Velocity,
     DurationShort,
