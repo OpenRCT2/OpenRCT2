@@ -5288,7 +5288,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Do we have a preview image to draw?
             auto musicObj = ride->GetMusicObject();
-            bool hasPreview = musicObj->HasPreview();
+            bool hasPreview = musicObj != nullptr && musicObj->HasPreview();
             if (!hasPreview)
                 return;
 
@@ -5321,6 +5321,9 @@ namespace OpenRCT2::Ui::Windows
             GfxClear(dpi, paletteIndex);
 
             auto* musicObj = ride->GetMusicObject();
+            if (musicObj == nullptr)
+                return;
+
             auto y = 0;
 
             for (size_t i = 0; i < musicObj->GetTrackCount(); i++)
