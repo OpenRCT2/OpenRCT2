@@ -1,6 +1,6 @@
 0.4.17 (in development)
 ------------------------------------------------------------------------
-- Fix: [#22619] Splash Boats steep supports are drawn incorrectly.
+- Fix: [#22619] Splash Boats and Side-Friction Roller Coaster steep supports are drawn incorrectly.
 
 0.4.16 (2024-11-03)
 ------------------------------------------------------------------------
