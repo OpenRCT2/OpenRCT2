@@ -298,7 +298,7 @@ namespace OpenRCT2
                 auto realNameIndex = id - kRealNameStart;
                 ss << peepNamesObj->GetGivenNameAt(realNameIndex);
                 ss << ' ';
-                ss << peepNamesObj->GetSurnameAt(realNameIndex);
+                ss << peepNamesObj->GetSurnameAt(realNameIndex >> 10);
             }
         }
     }
