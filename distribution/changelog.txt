@@ -16,6 +16,7 @@
 - Fix: [#15406] Tunnels on steep Side-Friction track are drawn too low.
 - Fix: [#21959] “Save this before...?” message does not appear when selecting “New Game”.
 - Fix: [#22072] Objective date string and staff tenure date string cannot be reused on agglutinative languages.
+- Fix: [#22133] Ride time is incorrect for extremely slow speeds.
 - Fix: [#22231] Invalid object version can cause a crash.
 - Fix: [#22562] Bottom row of pixels is not always drawn by the OpenGL renderer when zoomed in.
 - Fix: [#22653] Missing water tiles in RCT1 and RCT2 scenarios.
