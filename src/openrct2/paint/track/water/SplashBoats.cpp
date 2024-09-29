@@ -513,7 +513,8 @@ static void PaintSplashBoatsTrack60DegUp(
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 98 } });
+    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+        session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 78 } });
 
     DrawSupportForSequenceA<TrackElemType::Up60>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -589,7 +590,8 @@ static void PaintSplashBoatsTrack25DegUpTo60DegUp(
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
+    session.WoodenSupportsFrontPrependTo = PaintAddImageAsParentRotated(
+        session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
 
     DrawSupportForSequenceA<TrackElemType::Up25ToUp60>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -615,7 +617,8 @@ static void PaintSplashBoatsTrack60DegUpTo25DegUp(
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
+    session.WoodenSupportsFrontPrependTo = PaintAddImageAsParentRotated(
+        session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
 
     DrawSupportForSequenceA<TrackElemType::Up60ToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
