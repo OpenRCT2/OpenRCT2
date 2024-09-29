@@ -21,8 +21,8 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = OpenRCT2::AlpineRC::GetTrackPaintFunction,
         .supportType = MetalSupportType::Fork,
-        .EnabledTrackPieces = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeLong, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf},
-        .ExtraTrackPieces =  {TrackGroup::helixUpBankedHalf},
+        .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf},
+        .extraTrackGroups =  {TrackGroup::helixUpBankedHalf},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports,

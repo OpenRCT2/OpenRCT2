@@ -22,8 +22,8 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionSteeplechase,
         .supportType = MetalSupportType::Stick,
-        .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::blockBrakes},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::blockBrakes},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 

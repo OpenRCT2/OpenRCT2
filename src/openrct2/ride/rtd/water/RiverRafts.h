@@ -22,8 +22,8 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionSplashBoats,
         .supportType = WoodenSupportType::Truss,
-        .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::sBend, TrackGroup::curve},
-        .ExtraTrackPieces = {TrackGroup::slope, TrackGroup::slopeSteepDown, TrackGroup::onridePhoto},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::sBend, TrackGroup::curve},
+        .extraTrackGroups = {TrackGroup::slope, TrackGroup::slopeSteepDown, TrackGroup::onridePhoto},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,

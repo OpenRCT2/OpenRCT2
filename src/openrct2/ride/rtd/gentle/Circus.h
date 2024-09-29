@@ -21,8 +21,8 @@ constexpr RideTypeDescriptor CircusRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionCircus,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,

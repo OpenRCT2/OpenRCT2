@@ -21,8 +21,8 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4B,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionSwingingInverterShip,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasSinglePieceStation,

@@ -8,6 +8,8 @@
  *****************************************************************************/
 #pragma once
 
+#include "../util/Util.h"
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -273,11 +275,14 @@ namespace OpenRCT2
         {
         }
 
-        constexpr BitSet(const std::initializer_list<size_t>& indices)
+        template<typename T> constexpr BitSet(const std::initializer_list<T>& indices)
         {
             for (auto idx : indices)
             {
-                set(idx, true);
+                if constexpr (std::is_enum_v<T>)
+                    set(EnumValue(idx), true);
+                else
+                    set(idx, true);
             }
         }
 

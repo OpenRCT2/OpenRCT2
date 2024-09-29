@@ -23,8 +23,8 @@ constexpr RideTypeDescriptor MazeRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::Maze,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionMaze,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourSupports, RtdFlag::hasSinglePieceStation, RtdFlag::noTestMode, RtdFlag::noVehicles,

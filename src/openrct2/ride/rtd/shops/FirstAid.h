@@ -20,8 +20,8 @@ constexpr RideTypeDescriptor FirstAidRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionFacility,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,

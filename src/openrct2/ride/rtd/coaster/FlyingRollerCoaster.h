@@ -23,14 +23,14 @@ constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionFlyingRC,
         .supportType = MetalSupportType::TubesInverted,
-        .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::quarterLoopUninvertedUp, TrackGroup::flyingLargeHalfLoopUninvertedUp, TrackGroup::slopeVertical, TrackGroup::slopeCurveBanked, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
-        .ExtraTrackPieces = {TrackGroup::booster, TrackGroup::slopeSteepLong, TrackGroup::flyingLargeHalfLoopUninvertedDown, TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::stationEnd, TrackGroup::verticalLoop, TrackGroup::poweredLift},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::quarterLoopUninvertedUp, TrackGroup::flyingLargeHalfLoopUninvertedUp, TrackGroup::slopeVertical, TrackGroup::slopeCurveBanked, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
+        .extraTrackGroups = {TrackGroup::booster, TrackGroup::slopeSteepLong, TrackGroup::flyingLargeHalfLoopUninvertedDown, TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::stationEnd, TrackGroup::verticalLoop, TrackGroup::poweredLift},
     }),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionFlyingRCInverted,
         .supportType = MetalSupportType::TubesInverted,
-        .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::inlineTwistInverted, TrackGroup::flyingHalfLoopInvertedDown, TrackGroup::quarterLoopInvertedDown, TrackGroup::flyingLargeHalfLoopInvertedDown, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
-        .ExtraTrackPieces = {TrackGroup::flyingLargeHalfLoopInvertedUp, TrackGroup::flyingHalfLoopInvertedUp},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::inlineTwistInverted, TrackGroup::flyingHalfLoopInvertedDown, TrackGroup::quarterLoopInvertedDown, TrackGroup::flyingLargeHalfLoopInvertedDown, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
+        .extraTrackGroups = {TrackGroup::flyingLargeHalfLoopInvertedUp, TrackGroup::flyingHalfLoopInvertedUp},
     }),
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant, 
@@ -101,13 +101,13 @@ constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .Drawer = nullptr,
-        .EnabledTrackPieces = {  },
-        .ExtraTrackPieces = {  },
+        .enabledTrackGroups = {  },
+        .extraTrackGroups = {  },
     }),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = nullptr,
-        .EnabledTrackPieces = {  },
-        .ExtraTrackPieces = {  },
+        .enabledTrackGroups = {  },
+        .extraTrackGroups = {  },
     }),
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster |
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::startConstructionInverted),

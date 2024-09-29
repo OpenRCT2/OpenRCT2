@@ -273,7 +273,7 @@ int32_t ScTrackSegment::getTrackGroup() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
 
-    return ted.definition.group;
+    return EnumValue(ted.definition.group);
 }
 
 std::string ScTrackSegment::getTrackCurvature() const
