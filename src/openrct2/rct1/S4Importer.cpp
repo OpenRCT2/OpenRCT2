@@ -47,6 +47,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../park/Legacy.h"
 #include "../peep/PeepAnimationData.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct12/CSStringConverter.h"
