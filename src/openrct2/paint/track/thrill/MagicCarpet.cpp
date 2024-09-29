@@ -255,12 +255,13 @@ static void PaintMagicCarpet(
     PaintUtilSetGeneralSupportHeight(session, height + 176);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMagicCarpet(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMagicCarpet(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
         case TrackElemType::FlatTrack1x4A:
             return PaintMagicCarpet;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

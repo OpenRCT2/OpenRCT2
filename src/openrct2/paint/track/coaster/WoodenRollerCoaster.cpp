@@ -525,7 +525,7 @@ static void WoodenRCTrackStation(
         { SPR_WOODEN_RC_STATION_NW_SE, SPR_WOODEN_RC_STATION_RAILS_NW_SE },
     };
 
-    int32_t trackType = trackElement.GetTrackType();
+    auto trackType = trackElement.GetTrackType();
     if (trackType == TrackElemType::EndStation)
     {
         const auto brakeImg = trackElement.IsBrakeClosed() ? _wooden_rc_station_block_brakes_image_ids[direction][1]
@@ -16616,7 +16616,7 @@ static void WoodenRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-template<bool isClassic> TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRC(int32_t trackType)
+template<bool isClassic> TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -16914,16 +16914,17 @@ template<bool isClassic> TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClas
             return WoodenRCTrackDiagBrakes<isClassic>;
         case TrackElemType::DiagBlockBrakes:
             return WoodenRCTrackDiagBlockBrakes<isClassic>;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenRC(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<false>(trackType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRCFallback(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRCFallback(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<true>(trackType);
 }

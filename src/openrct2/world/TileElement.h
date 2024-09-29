@@ -31,7 +31,10 @@ class FootpathObject;
 class FootpathSurfaceObject;
 class FootpathRailingsObject;
 enum class RideColourScheme : uint8_t;
-using track_type_t = uint16_t;
+namespace OpenRCT2
+{
+    enum class TrackElemType : uint16_t;
+}
 
 constexpr uint8_t MAX_ELEMENT_HEIGHT = 255;
 constexpr uint8_t OWNER_MASK = 0b00001111;
@@ -285,7 +288,7 @@ struct TrackElement : TileElementBase
     static constexpr TileElementType ElementType = TileElementType::Track;
 
 private:
-    track_type_t TrackType;
+    OpenRCT2::TrackElemType TrackType;
     union
     {
         struct
@@ -313,8 +316,8 @@ private:
     ride_type_t RideType;
 
 public:
-    track_type_t GetTrackType() const;
-    void SetTrackType(track_type_t newEntryIndex);
+    OpenRCT2::TrackElemType GetTrackType() const;
+    void SetTrackType(OpenRCT2::TrackElemType newEntryIndex);
 
     ride_type_t GetRideType() const;
     void SetRideType(const ride_type_t rideType);

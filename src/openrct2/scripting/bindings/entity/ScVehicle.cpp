@@ -390,7 +390,7 @@ namespace OpenRCT2::Scripting
             dukCoords.Set("y", vehicle->TrackLocation.y);
             dukCoords.Set("z", vehicle->TrackLocation.z);
             dukCoords.Set("direction", vehicle->GetTrackDirection());
-            dukCoords.Set("trackType", vehicle->GetTrackType());
+            dukCoords.Set("trackType", EnumValue(vehicle->GetTrackType()));
             return dukCoords.Take();
         }
         return ToDuk(ctx, nullptr);
@@ -406,7 +406,7 @@ namespace OpenRCT2::Scripting
             auto z = AsOrDefault(value["z"], 0);
             vehicle->TrackLocation = CoordsXYZ(x, y, z);
             vehicle->SetTrackDirection(AsOrDefault(value["direction"], 0));
-            vehicle->SetTrackType(AsOrDefault(value["trackType"], 0));
+            vehicle->SetTrackType(static_cast<TrackElemType>(AsOrDefault(value["trackType"], 0)));
         }
     }
 

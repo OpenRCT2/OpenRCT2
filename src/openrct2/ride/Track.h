@@ -22,7 +22,10 @@ constexpr int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultB
 
 constexpr uint8_t kMaximumTrackSpeed = 30;
 
-using track_type_t = uint16_t;
+namespace OpenRCT2
+{
+    enum class TrackElemType : uint16_t;
+}
 
 struct ResultWithMessage;
 
@@ -260,379 +263,368 @@ enum
     TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND = (1 << 16),
 };
 
-namespace OpenRCT2::TrackElemType
+namespace OpenRCT2
 {
-    constexpr track_type_t Flat = 0;
-    constexpr track_type_t EndStation = 1;
-    constexpr track_type_t BeginStation = 2;
-    constexpr track_type_t MiddleStation = 3;
-    constexpr track_type_t Up25 = 4;
-    constexpr track_type_t Up60 = 5;
-    constexpr track_type_t FlatToUp25 = 6;
-    constexpr track_type_t Up25ToUp60 = 7;
-    constexpr track_type_t Up60ToUp25 = 8;
-    constexpr track_type_t Up25ToFlat = 9;
-    constexpr track_type_t Down25 = 10;
-    constexpr track_type_t Down60 = 11;
-    constexpr track_type_t FlatToDown25 = 12;
-    constexpr track_type_t Down25ToDown60 = 13;
-    constexpr track_type_t Down60ToDown25 = 14;
-    constexpr track_type_t Down25ToFlat = 15;
-    constexpr track_type_t LeftQuarterTurn5Tiles = 16;
-    constexpr track_type_t RightQuarterTurn5Tiles = 17;
-    constexpr track_type_t FlatToLeftBank = 18;
-    constexpr track_type_t FlatToRightBank = 19;
-    constexpr track_type_t LeftBankToFlat = 20;
-    constexpr track_type_t RightBankToFlat = 21;
-    constexpr track_type_t BankedLeftQuarterTurn5Tiles = 22;
-    constexpr track_type_t BankedRightQuarterTurn5Tiles = 23;
-    constexpr track_type_t LeftBankToUp25 = 24;
-    constexpr track_type_t RightBankToUp25 = 25;
-    constexpr track_type_t Up25ToLeftBank = 26;
-    constexpr track_type_t Up25ToRightBank = 27;
-    constexpr track_type_t LeftBankToDown25 = 28;
-    constexpr track_type_t RightBankToDown25 = 29;
-    constexpr track_type_t Down25ToLeftBank = 30;
-    constexpr track_type_t Down25ToRightBank = 31;
-    constexpr track_type_t LeftBank = 32;
-    constexpr track_type_t RightBank = 33;
-    constexpr track_type_t LeftQuarterTurn5TilesUp25 = 34;
-    constexpr track_type_t RightQuarterTurn5TilesUp25 = 35;
-    constexpr track_type_t LeftQuarterTurn5TilesDown25 = 36;
-    constexpr track_type_t RightQuarterTurn5TilesDown25 = 37;
-    constexpr track_type_t SBendLeft = 38;
-    constexpr track_type_t SBendRight = 39;
-    constexpr track_type_t LeftVerticalLoop = 40;
-    constexpr track_type_t RightVerticalLoop = 41;
-    constexpr track_type_t LeftQuarterTurn3Tiles = 42;
-    constexpr track_type_t RightQuarterTurn3Tiles = 43;
-    constexpr track_type_t LeftBankedQuarterTurn3Tiles = 44;
-    constexpr track_type_t RightBankedQuarterTurn3Tiles = 45;
-    constexpr track_type_t LeftQuarterTurn3TilesUp25 = 46;
-    constexpr track_type_t RightQuarterTurn3TilesUp25 = 47;
-    constexpr track_type_t LeftQuarterTurn3TilesDown25 = 48;
-    constexpr track_type_t RightQuarterTurn3TilesDown25 = 49;
-    constexpr track_type_t LeftQuarterTurn1Tile = 50;
-    constexpr track_type_t RightQuarterTurn1Tile = 51;
-    constexpr track_type_t LeftTwistDownToUp = 52;
-    constexpr track_type_t RightTwistDownToUp = 53;
-    constexpr track_type_t LeftTwistUpToDown = 54;
-    constexpr track_type_t RightTwistUpToDown = 55;
-    constexpr track_type_t HalfLoopUp = 56;
-    constexpr track_type_t HalfLoopDown = 57;
-    constexpr track_type_t LeftCorkscrewUp = 58;
-    constexpr track_type_t RightCorkscrewUp = 59;
-    constexpr track_type_t LeftCorkscrewDown = 60;
-    constexpr track_type_t RightCorkscrewDown = 61;
-    constexpr track_type_t FlatToUp60 = 62;
-    constexpr track_type_t Up60ToFlat = 63;
-    constexpr track_type_t FlatToDown60 = 64;
-    constexpr track_type_t Down60ToFlat = 65;
-    constexpr track_type_t TowerBase = 66;
-    constexpr track_type_t TowerSection = 67;
-    constexpr track_type_t FlatCovered = 68;
-    constexpr track_type_t Up25Covered = 69;
-    constexpr track_type_t Up60Covered = 70;
-    constexpr track_type_t FlatToUp25Covered = 71;
-    constexpr track_type_t Up25ToUp60Covered = 72;
-    constexpr track_type_t Up60ToUp25Covered = 73;
-    constexpr track_type_t Up25ToFlatCovered = 74;
-    constexpr track_type_t Down25Covered = 75;
-    constexpr track_type_t Down60Covered = 76;
-    constexpr track_type_t FlatToDown25Covered = 77;
-    constexpr track_type_t Down25ToDown60Covered = 78;
-    constexpr track_type_t Down60ToDown25Covered = 79;
-    constexpr track_type_t Down25ToFlatCovered = 80;
-    constexpr track_type_t LeftQuarterTurn5TilesCovered = 81;
-    constexpr track_type_t RightQuarterTurn5TilesCovered = 82;
-    constexpr track_type_t SBendLeftCovered = 83;
-    constexpr track_type_t SBendRightCovered = 84;
-    constexpr track_type_t LeftQuarterTurn3TilesCovered = 85;
-    constexpr track_type_t RightQuarterTurn3TilesCovered = 86;
-    constexpr track_type_t LeftHalfBankedHelixUpSmall = 87;
-    constexpr track_type_t RightHalfBankedHelixUpSmall = 88;
-    constexpr track_type_t LeftHalfBankedHelixDownSmall = 89;
-    constexpr track_type_t RightHalfBankedHelixDownSmall = 90;
-    constexpr track_type_t LeftHalfBankedHelixUpLarge = 91;
-    constexpr track_type_t RightHalfBankedHelixUpLarge = 92;
-    constexpr track_type_t LeftHalfBankedHelixDownLarge = 93;
-    constexpr track_type_t RightHalfBankedHelixDownLarge = 94;
-    constexpr track_type_t LeftQuarterTurn1TileUp60 = 95;
-    constexpr track_type_t RightQuarterTurn1TileUp60 = 96;
-    constexpr track_type_t LeftQuarterTurn1TileDown60 = 97;
-    constexpr track_type_t RightQuarterTurn1TileDown60 = 98;
-    constexpr track_type_t Brakes = 99;
-    constexpr track_type_t RotationControlToggleAlias = 100;
-    constexpr track_type_t Booster = 100;
-    constexpr track_type_t Maze = 101;
-    constexpr track_type_t LeftQuarterBankedHelixLargeUp = 102;
-    constexpr track_type_t RightQuarterBankedHelixLargeUp = 103;
-    constexpr track_type_t LeftQuarterBankedHelixLargeDown = 104;
-    constexpr track_type_t RightQuarterBankedHelixLargeDown = 105;
-    constexpr track_type_t LeftQuarterHelixLargeUp = 106;
-    constexpr track_type_t RightQuarterHelixLargeUp = 107;
-    constexpr track_type_t LeftQuarterHelixLargeDown = 108;
-    constexpr track_type_t RightQuarterHelixLargeDown = 109;
-    constexpr track_type_t Up25LeftBanked = 110;
-    constexpr track_type_t Up25RightBanked = 111;
-    constexpr track_type_t Waterfall = 112;
-    constexpr track_type_t Rapids = 113;
-    constexpr track_type_t OnRidePhoto = 114;
-    constexpr track_type_t Down25LeftBanked = 115;
-    constexpr track_type_t Down25RightBanked = 116;
-    constexpr track_type_t Watersplash = 117;
-    constexpr track_type_t FlatToUp60LongBase = 118;
-    constexpr track_type_t Up60ToFlatLongBase = 119;
-    constexpr track_type_t Whirlpool = 120;
-    constexpr track_type_t Down60ToFlatLongBase = 121;
-    constexpr track_type_t FlatToDown60LongBase = 122;
-    constexpr track_type_t CableLiftHill = 123;
-    constexpr track_type_t ReverseFreefallSlope = 124;
-    constexpr track_type_t ReverseFreefallVertical = 125;
-    constexpr track_type_t Up90 = 126;
-    constexpr track_type_t Down90 = 127;
-    constexpr track_type_t Up60ToUp90 = 128;
-    constexpr track_type_t Down90ToDown60 = 129;
-    constexpr track_type_t Up90ToUp60 = 130;
-    constexpr track_type_t Down60ToDown90 = 131;
-    constexpr track_type_t BrakeForDrop = 132;
-    constexpr track_type_t LeftEighthToDiag = 133;
-    constexpr track_type_t RightEighthToDiag = 134;
-    constexpr track_type_t LeftEighthToOrthogonal = 135;
-    constexpr track_type_t RightEighthToOrthogonal = 136;
-    constexpr track_type_t LeftEighthBankToDiag = 137;
-    constexpr track_type_t RightEighthBankToDiag = 138;
-    constexpr track_type_t LeftEighthBankToOrthogonal = 139;
-    constexpr track_type_t RightEighthBankToOrthogonal = 140;
-    constexpr track_type_t DiagFlat = 141;
-    constexpr track_type_t DiagUp25 = 142;
-    constexpr track_type_t DiagUp60 = 143;
-    constexpr track_type_t DiagFlatToUp25 = 144;
-    constexpr track_type_t DiagUp25ToUp60 = 145;
-    constexpr track_type_t DiagUp60ToUp25 = 146;
-    constexpr track_type_t DiagUp25ToFlat = 147;
-    constexpr track_type_t DiagDown25 = 148;
-    constexpr track_type_t DiagDown60 = 149;
-    constexpr track_type_t DiagFlatToDown25 = 150;
-    constexpr track_type_t DiagDown25ToDown60 = 151;
-    constexpr track_type_t DiagDown60ToDown25 = 152;
-    constexpr track_type_t DiagDown25ToFlat = 153;
-    constexpr track_type_t DiagFlatToUp60 = 154;
-    constexpr track_type_t DiagUp60ToFlat = 155;
-    constexpr track_type_t DiagFlatToDown60 = 156;
-    constexpr track_type_t DiagDown60ToFlat = 157;
-    constexpr track_type_t DiagFlatToLeftBank = 158;
-    constexpr track_type_t DiagFlatToRightBank = 159;
-    constexpr track_type_t DiagLeftBankToFlat = 160;
-    constexpr track_type_t DiagRightBankToFlat = 161;
-    constexpr track_type_t DiagLeftBankToUp25 = 162;
-    constexpr track_type_t DiagRightBankToUp25 = 163;
-    constexpr track_type_t DiagUp25ToLeftBank = 164;
-    constexpr track_type_t DiagUp25ToRightBank = 165;
-    constexpr track_type_t DiagLeftBankToDown25 = 166;
-    constexpr track_type_t DiagRightBankToDown25 = 167;
-    constexpr track_type_t DiagDown25ToLeftBank = 168;
-    constexpr track_type_t DiagDown25ToRightBank = 169;
-    constexpr track_type_t DiagLeftBank = 170;
-    constexpr track_type_t DiagRightBank = 171;
-    constexpr track_type_t LogFlumeReverser = 172;
-    constexpr track_type_t SpinningTunnel = 173;
-    constexpr track_type_t LeftBarrelRollUpToDown = 174;
-    constexpr track_type_t RightBarrelRollUpToDown = 175;
-    constexpr track_type_t LeftBarrelRollDownToUp = 176;
-    constexpr track_type_t RightBarrelRollDownToUp = 177;
-    constexpr track_type_t LeftBankToLeftQuarterTurn3TilesUp25 = 178;
-    constexpr track_type_t RightBankToRightQuarterTurn3TilesUp25 = 179;
-    constexpr track_type_t LeftQuarterTurn3TilesDown25ToLeftBank = 180;
-    constexpr track_type_t RightQuarterTurn3TilesDown25ToRightBank = 181;
-    constexpr track_type_t PoweredLift = 182;
-    constexpr track_type_t LeftLargeHalfLoopUp = 183;
-    constexpr track_type_t RightLargeHalfLoopUp = 184;
-    constexpr track_type_t LeftLargeHalfLoopDown = 185;
-    constexpr track_type_t RightLargeHalfLoopDown = 186;
-    constexpr track_type_t LeftFlyerTwistUp = 187;
-    constexpr track_type_t RightFlyerTwistUp = 188;
-    constexpr track_type_t LeftFlyerTwistDown = 189;
-    constexpr track_type_t RightFlyerTwistDown = 190;
-    constexpr track_type_t FlyerHalfLoopUninvertedUp = 191;
-    constexpr track_type_t FlyerHalfLoopInvertedDown = 192;
-    constexpr track_type_t LeftFlyerCorkscrewUp = 193;
-    constexpr track_type_t RightFlyerCorkscrewUp = 194;
-    constexpr track_type_t LeftFlyerCorkscrewDown = 195;
-    constexpr track_type_t RightFlyerCorkscrewDown = 196;
-    constexpr track_type_t HeartLineTransferUp = 197;
-    constexpr track_type_t HeartLineTransferDown = 198;
-    constexpr track_type_t LeftHeartLineRoll = 199;
-    constexpr track_type_t RightHeartLineRoll = 200;
-    constexpr track_type_t MinigolfHoleA = 201;
-    constexpr track_type_t MinigolfHoleB = 202;
-    constexpr track_type_t MinigolfHoleC = 203;
-    constexpr track_type_t MinigolfHoleD = 204;
-    constexpr track_type_t MinigolfHoleE = 205;
-    constexpr track_type_t MultiDimInvertedFlatToDown90QuarterLoop = 206;
-    constexpr track_type_t Up90ToInvertedFlatQuarterLoop = 207;
-    constexpr track_type_t InvertedFlatToDown90QuarterLoop = 208;
-    constexpr track_type_t LeftCurvedLiftHill = 209;
-    constexpr track_type_t RightCurvedLiftHill = 210;
-    constexpr track_type_t LeftReverser = 211;
-    constexpr track_type_t RightReverser = 212;
-    constexpr track_type_t AirThrustTopCap = 213;
-    constexpr track_type_t AirThrustVerticalDown = 214;
-    constexpr track_type_t AirThrustVerticalDownToLevel = 215;
-    constexpr track_type_t BlockBrakes = 216;
-    constexpr track_type_t LeftBankedQuarterTurn3TileUp25 = 217;
-    constexpr track_type_t RightBankedQuarterTurn3TileUp25 = 218;
-    constexpr track_type_t LeftBankedQuarterTurn3TileDown25 = 219;
-    constexpr track_type_t RightBankedQuarterTurn3TileDown25 = 220;
-    constexpr track_type_t LeftBankedQuarterTurn5TileUp25 = 221;
-    constexpr track_type_t RightBankedQuarterTurn5TileUp25 = 222;
-    constexpr track_type_t LeftBankedQuarterTurn5TileDown25 = 223;
-    constexpr track_type_t RightBankedQuarterTurn5TileDown25 = 224;
-    constexpr track_type_t Up25ToLeftBankedUp25 = 225;
-    constexpr track_type_t Up25ToRightBankedUp25 = 226;
-    constexpr track_type_t LeftBankedUp25ToUp25 = 227;
-    constexpr track_type_t RightBankedUp25ToUp25 = 228;
-    constexpr track_type_t Down25ToLeftBankedDown25 = 229;
-    constexpr track_type_t Down25ToRightBankedDown25 = 230;
-    constexpr track_type_t LeftBankedDown25ToDown25 = 231;
-    constexpr track_type_t RightBankedDown25ToDown25 = 232;
-    constexpr track_type_t LeftBankedFlatToLeftBankedUp25 = 233;
-    constexpr track_type_t RightBankedFlatToRightBankedUp25 = 234;
-    constexpr track_type_t LeftBankedUp25ToLeftBankedFlat = 235;
-    constexpr track_type_t RightBankedUp25ToRightBankedFlat = 236;
-    constexpr track_type_t LeftBankedFlatToLeftBankedDown25 = 237;
-    constexpr track_type_t RightBankedFlatToRightBankedDown25 = 238;
-    constexpr track_type_t LeftBankedDown25ToLeftBankedFlat = 239;
-    constexpr track_type_t RightBankedDown25ToRightBankedFlat = 240;
-    constexpr track_type_t FlatToLeftBankedUp25 = 241;
-    constexpr track_type_t FlatToRightBankedUp25 = 242;
-    constexpr track_type_t LeftBankedUp25ToFlat = 243;
-    constexpr track_type_t RightBankedUp25ToFlat = 244;
-    constexpr track_type_t FlatToLeftBankedDown25 = 245;
-    constexpr track_type_t FlatToRightBankedDown25 = 246;
-    constexpr track_type_t LeftBankedDown25ToFlat = 247;
-    constexpr track_type_t RightBankedDown25ToFlat = 248;
-    constexpr track_type_t LeftQuarterTurn1TileUp90 = 249;
-    constexpr track_type_t RightQuarterTurn1TileUp90 = 250;
-    constexpr track_type_t LeftQuarterTurn1TileDown90 = 251;
-    constexpr track_type_t RightQuarterTurn1TileDown90 = 252;
-    constexpr track_type_t MultiDimUp90ToInvertedFlatQuarterLoop = 253;
-    constexpr track_type_t MultiDimFlatToDown90QuarterLoop = 254;
-    constexpr track_type_t MultiDimInvertedUp90ToFlatQuarterLoop = 255;
-    constexpr track_type_t RotationControlToggle = 256;
+    enum class TrackElemType : uint16_t
+    {
+        Flat = 0,
+        EndStation = 1,
+        BeginStation = 2,
+        MiddleStation = 3,
+        Up25 = 4,
+        Up60 = 5,
+        FlatToUp25 = 6,
+        Up25ToUp60 = 7,
+        Up60ToUp25 = 8,
+        Up25ToFlat = 9,
+        Down25 = 10,
+        Down60 = 11,
+        FlatToDown25 = 12,
+        Down25ToDown60 = 13,
+        Down60ToDown25 = 14,
+        Down25ToFlat = 15,
+        LeftQuarterTurn5Tiles = 16,
+        RightQuarterTurn5Tiles = 17,
+        FlatToLeftBank = 18,
+        FlatToRightBank = 19,
+        LeftBankToFlat = 20,
+        RightBankToFlat = 21,
+        BankedLeftQuarterTurn5Tiles = 22,
+        BankedRightQuarterTurn5Tiles = 23,
+        LeftBankToUp25 = 24,
+        RightBankToUp25 = 25,
+        Up25ToLeftBank = 26,
+        Up25ToRightBank = 27,
+        LeftBankToDown25 = 28,
+        RightBankToDown25 = 29,
+        Down25ToLeftBank = 30,
+        Down25ToRightBank = 31,
+        LeftBank = 32,
+        RightBank = 33,
+        LeftQuarterTurn5TilesUp25 = 34,
+        RightQuarterTurn5TilesUp25 = 35,
+        LeftQuarterTurn5TilesDown25 = 36,
+        RightQuarterTurn5TilesDown25 = 37,
+        SBendLeft = 38,
+        SBendRight = 39,
+        LeftVerticalLoop = 40,
+        RightVerticalLoop = 41,
+        LeftQuarterTurn3Tiles = 42,
+        RightQuarterTurn3Tiles = 43,
+        LeftBankedQuarterTurn3Tiles = 44,
+        RightBankedQuarterTurn3Tiles = 45,
+        LeftQuarterTurn3TilesUp25 = 46,
+        RightQuarterTurn3TilesUp25 = 47,
+        LeftQuarterTurn3TilesDown25 = 48,
+        RightQuarterTurn3TilesDown25 = 49,
+        LeftQuarterTurn1Tile = 50,
+        RightQuarterTurn1Tile = 51,
+        LeftTwistDownToUp = 52,
+        RightTwistDownToUp = 53,
+        LeftTwistUpToDown = 54,
+        RightTwistUpToDown = 55,
+        HalfLoopUp = 56,
+        HalfLoopDown = 57,
+        LeftCorkscrewUp = 58,
+        RightCorkscrewUp = 59,
+        LeftCorkscrewDown = 60,
+        RightCorkscrewDown = 61,
+        FlatToUp60 = 62,
+        Up60ToFlat = 63,
+        FlatToDown60 = 64,
+        Down60ToFlat = 65,
+        TowerBase = 66,
+        TowerSection = 67,
+        FlatCovered = 68,
+        Up25Covered = 69,
+        Up60Covered = 70,
+        FlatToUp25Covered = 71,
+        Up25ToUp60Covered = 72,
+        Up60ToUp25Covered = 73,
+        Up25ToFlatCovered = 74,
+        Down25Covered = 75,
+        Down60Covered = 76,
+        FlatToDown25Covered = 77,
+        Down25ToDown60Covered = 78,
+        Down60ToDown25Covered = 79,
+        Down25ToFlatCovered = 80,
+        LeftQuarterTurn5TilesCovered = 81,
+        RightQuarterTurn5TilesCovered = 82,
+        SBendLeftCovered = 83,
+        SBendRightCovered = 84,
+        LeftQuarterTurn3TilesCovered = 85,
+        RightQuarterTurn3TilesCovered = 86,
+        LeftHalfBankedHelixUpSmall = 87,
+        RightHalfBankedHelixUpSmall = 88,
+        LeftHalfBankedHelixDownSmall = 89,
+        RightHalfBankedHelixDownSmall = 90,
+        LeftHalfBankedHelixUpLarge = 91,
+        RightHalfBankedHelixUpLarge = 92,
+        LeftHalfBankedHelixDownLarge = 93,
+        RightHalfBankedHelixDownLarge = 94,
+        LeftQuarterTurn1TileUp60 = 95,
+        RightQuarterTurn1TileUp60 = 96,
+        LeftQuarterTurn1TileDown60 = 97,
+        RightQuarterTurn1TileDown60 = 98,
+        Brakes = 99,
+        Booster = 100,
+        Maze = 101,
+        LeftQuarterBankedHelixLargeUp = 102,
+        RightQuarterBankedHelixLargeUp = 103,
+        LeftQuarterBankedHelixLargeDown = 104,
+        RightQuarterBankedHelixLargeDown = 105,
+        LeftQuarterHelixLargeUp = 106,
+        RightQuarterHelixLargeUp = 107,
+        LeftQuarterHelixLargeDown = 108,
+        RightQuarterHelixLargeDown = 109,
+        Up25LeftBanked = 110,
+        Up25RightBanked = 111,
+        Waterfall = 112,
+        Rapids = 113,
+        OnRidePhoto = 114,
+        Down25LeftBanked = 115,
+        Down25RightBanked = 116,
+        Watersplash = 117,
+        FlatToUp60LongBase = 118,
+        Up60ToFlatLongBase = 119,
+        Whirlpool = 120,
+        Down60ToFlatLongBase = 121,
+        FlatToDown60LongBase = 122,
+        CableLiftHill = 123,
+        ReverseFreefallSlope = 124,
+        ReverseFreefallVertical = 125,
+        Up90 = 126,
+        Down90 = 127,
+        Up60ToUp90 = 128,
+        Down90ToDown60 = 129,
+        Up90ToUp60 = 130,
+        Down60ToDown90 = 131,
+        BrakeForDrop = 132,
+        LeftEighthToDiag = 133,
+        RightEighthToDiag = 134,
+        LeftEighthToOrthogonal = 135,
+        RightEighthToOrthogonal = 136,
+        LeftEighthBankToDiag = 137,
+        RightEighthBankToDiag = 138,
+        LeftEighthBankToOrthogonal = 139,
+        RightEighthBankToOrthogonal = 140,
+        DiagFlat = 141,
+        DiagUp25 = 142,
+        DiagUp60 = 143,
+        DiagFlatToUp25 = 144,
+        DiagUp25ToUp60 = 145,
+        DiagUp60ToUp25 = 146,
+        DiagUp25ToFlat = 147,
+        DiagDown25 = 148,
+        DiagDown60 = 149,
+        DiagFlatToDown25 = 150,
+        DiagDown25ToDown60 = 151,
+        DiagDown60ToDown25 = 152,
+        DiagDown25ToFlat = 153,
+        DiagFlatToUp60 = 154,
+        DiagUp60ToFlat = 155,
+        DiagFlatToDown60 = 156,
+        DiagDown60ToFlat = 157,
+        DiagFlatToLeftBank = 158,
+        DiagFlatToRightBank = 159,
+        DiagLeftBankToFlat = 160,
+        DiagRightBankToFlat = 161,
+        DiagLeftBankToUp25 = 162,
+        DiagRightBankToUp25 = 163,
+        DiagUp25ToLeftBank = 164,
+        DiagUp25ToRightBank = 165,
+        DiagLeftBankToDown25 = 166,
+        DiagRightBankToDown25 = 167,
+        DiagDown25ToLeftBank = 168,
+        DiagDown25ToRightBank = 169,
+        DiagLeftBank = 170,
+        DiagRightBank = 171,
+        LogFlumeReverser = 172,
+        SpinningTunnel = 173,
+        LeftBarrelRollUpToDown = 174,
+        RightBarrelRollUpToDown = 175,
+        LeftBarrelRollDownToUp = 176,
+        RightBarrelRollDownToUp = 177,
+        LeftBankToLeftQuarterTurn3TilesUp25 = 178,
+        RightBankToRightQuarterTurn3TilesUp25 = 179,
+        LeftQuarterTurn3TilesDown25ToLeftBank = 180,
+        RightQuarterTurn3TilesDown25ToRightBank = 181,
+        PoweredLift = 182,
+        LeftLargeHalfLoopUp = 183,
+        RightLargeHalfLoopUp = 184,
+        LeftLargeHalfLoopDown = 185,
+        RightLargeHalfLoopDown = 186,
+        LeftFlyerTwistUp = 187,
+        RightFlyerTwistUp = 188,
+        LeftFlyerTwistDown = 189,
+        RightFlyerTwistDown = 190,
+        FlyerHalfLoopUninvertedUp = 191,
+        FlyerHalfLoopInvertedDown = 192,
+        LeftFlyerCorkscrewUp = 193,
+        RightFlyerCorkscrewUp = 194,
+        LeftFlyerCorkscrewDown = 195,
+        RightFlyerCorkscrewDown = 196,
+        HeartLineTransferUp = 197,
+        HeartLineTransferDown = 198,
+        LeftHeartLineRoll = 199,
+        RightHeartLineRoll = 200,
+        MinigolfHoleA = 201,
+        MinigolfHoleB = 202,
+        MinigolfHoleC = 203,
+        MinigolfHoleD = 204,
+        MinigolfHoleE = 205,
+        MultiDimInvertedFlatToDown90QuarterLoop = 206,
+        Up90ToInvertedFlatQuarterLoop = 207,
+        InvertedFlatToDown90QuarterLoop = 208,
+        LeftCurvedLiftHill = 209,
+        RightCurvedLiftHill = 210,
+        LeftReverser = 211,
+        RightReverser = 212,
+        AirThrustTopCap = 213,
+        AirThrustVerticalDown = 214,
+        AirThrustVerticalDownToLevel = 215,
+        BlockBrakes = 216,
+        LeftBankedQuarterTurn3TileUp25 = 217,
+        RightBankedQuarterTurn3TileUp25 = 218,
+        LeftBankedQuarterTurn3TileDown25 = 219,
+        RightBankedQuarterTurn3TileDown25 = 220,
+        LeftBankedQuarterTurn5TileUp25 = 221,
+        RightBankedQuarterTurn5TileUp25 = 222,
+        LeftBankedQuarterTurn5TileDown25 = 223,
+        RightBankedQuarterTurn5TileDown25 = 224,
+        Up25ToLeftBankedUp25 = 225,
+        Up25ToRightBankedUp25 = 226,
+        LeftBankedUp25ToUp25 = 227,
+        RightBankedUp25ToUp25 = 228,
+        Down25ToLeftBankedDown25 = 229,
+        Down25ToRightBankedDown25 = 230,
+        LeftBankedDown25ToDown25 = 231,
+        RightBankedDown25ToDown25 = 232,
+        LeftBankedFlatToLeftBankedUp25 = 233,
+        RightBankedFlatToRightBankedUp25 = 234,
+        LeftBankedUp25ToLeftBankedFlat = 235,
+        RightBankedUp25ToRightBankedFlat = 236,
+        LeftBankedFlatToLeftBankedDown25 = 237,
+        RightBankedFlatToRightBankedDown25 = 238,
+        LeftBankedDown25ToLeftBankedFlat = 239,
+        RightBankedDown25ToRightBankedFlat = 240,
+        FlatToLeftBankedUp25 = 241,
+        FlatToRightBankedUp25 = 242,
+        LeftBankedUp25ToFlat = 243,
+        RightBankedUp25ToFlat = 244,
+        FlatToLeftBankedDown25 = 245,
+        FlatToRightBankedDown25 = 246,
+        LeftBankedDown25ToFlat = 247,
+        RightBankedDown25ToFlat = 248,
+        LeftQuarterTurn1TileUp90 = 249,
+        RightQuarterTurn1TileUp90 = 250,
+        LeftQuarterTurn1TileDown90 = 251,
+        RightQuarterTurn1TileDown90 = 252,
+        MultiDimUp90ToInvertedFlatQuarterLoop = 253,
+        MultiDimFlatToDown90QuarterLoop = 254,
+        MultiDimInvertedUp90ToFlatQuarterLoop = 255,
 
-    constexpr track_type_t FlatTrack1x4A = 257;
-    constexpr track_type_t FlatTrack2x2 = 258;
-    constexpr track_type_t FlatTrack4x4 = 259;
-    constexpr track_type_t FlatTrack2x4 = 260;
-    constexpr track_type_t FlatTrack1x5 = 261;
-    constexpr track_type_t FlatTrack1x1A = 262;
-    constexpr track_type_t FlatTrack1x4B = 263;
-    constexpr track_type_t FlatTrack1x1B = 264;
-    constexpr track_type_t FlatTrack1x4C = 265;
-    constexpr track_type_t FlatTrack3x3 = 266;
+        // Elements that shared an ID with another piece in RCT1/2.
+        RotationControlToggle = 256,
+        FlatTrack1x4A = 257,
+        FlatTrack2x2 = 258,
+        FlatTrack4x4 = 259,
+        FlatTrack2x4 = 260,
+        FlatTrack1x5 = 261,
+        FlatTrack1x1A = 262,
+        FlatTrack1x4B = 263,
+        FlatTrack1x1B = 264,
+        FlatTrack1x4C = 265,
+        FlatTrack3x3 = 266,
 
-    // SV6/TD6 element aliases
-    constexpr track_type_t InvertedUp90ToFlatQuarterLoopAlias = 101;
-    constexpr track_type_t FlatTrack1x4A_Alias = 95;
-    constexpr track_type_t FlatTrack2x2_Alias = 110;
-    constexpr track_type_t FlatTrack4x4_Alias = 111;
-    constexpr track_type_t FlatTrack2x4_Alias = 115;
-    constexpr track_type_t FlatTrack1x5_Alias = 116;
-    constexpr track_type_t FlatTrack1x1A_Alias = 118;
-    constexpr track_type_t FlatTrack1x4B_Alias = 119;
-    constexpr track_type_t FlatTrack1x1B_Alias = 121;
-    constexpr track_type_t FlatTrack1x4C_Alias = 122;
-    constexpr track_type_t FlatTrack3x3_Alias = 123;
+        // Highest track element ID that has a TD6 alias
+        HighestAlias = 266,
 
-    // Highest track element ID that has a TD6 alias
-    constexpr track_type_t HighestAlias = 266;
+        // Track Elements specific to OpenRCT2
+        LeftLargeCorkscrewUp = 267,
+        RightLargeCorkscrewUp = 268,
+        LeftLargeCorkscrewDown = 269,
+        RightLargeCorkscrewDown = 270,
+        LeftMediumHalfLoopUp = 271,
+        RightMediumHalfLoopUp = 272,
+        LeftMediumHalfLoopDown = 273,
+        RightMediumHalfLoopDown = 274,
+        LeftZeroGRollUp = 275,
+        RightZeroGRollUp = 276,
+        LeftZeroGRollDown = 277,
+        RightZeroGRollDown = 278,
+        LeftLargeZeroGRollUp = 279,
+        RightLargeZeroGRollUp = 280,
+        LeftLargeZeroGRollDown = 281,
+        RightLargeZeroGRollDown = 282,
 
-    // Track Elements specific to OpenRCT2
-    constexpr track_type_t LeftLargeCorkscrewUp = 267;
-    constexpr track_type_t RightLargeCorkscrewUp = 268;
-    constexpr track_type_t LeftLargeCorkscrewDown = 269;
-    constexpr track_type_t RightLargeCorkscrewDown = 270;
-    constexpr track_type_t LeftMediumHalfLoopUp = 271;
-    constexpr track_type_t RightMediumHalfLoopUp = 272;
-    constexpr track_type_t LeftMediumHalfLoopDown = 273;
-    constexpr track_type_t RightMediumHalfLoopDown = 274;
-    constexpr track_type_t LeftZeroGRollUp = 275;
-    constexpr track_type_t RightZeroGRollUp = 276;
-    constexpr track_type_t LeftZeroGRollDown = 277;
-    constexpr track_type_t RightZeroGRollDown = 278;
-    constexpr track_type_t LeftLargeZeroGRollUp = 279;
-    constexpr track_type_t RightLargeZeroGRollUp = 280;
-    constexpr track_type_t LeftLargeZeroGRollDown = 281;
-    constexpr track_type_t RightLargeZeroGRollDown = 282;
+        LeftFlyerLargeHalfLoopUninvertedUp = 283,
+        RightFlyerLargeHalfLoopUninvertedUp = 284,
+        LeftFlyerLargeHalfLoopInvertedDown = 285,
+        RightFlyerLargeHalfLoopInvertedDown = 286,
+        LeftFlyerLargeHalfLoopInvertedUp = 287,
+        RightFlyerLargeHalfLoopInvertedUp = 288,
+        LeftFlyerLargeHalfLoopUninvertedDown = 289,
+        RightFlyerLargeHalfLoopUninvertedDown = 290,
 
-    constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedUp = 283;
-    constexpr track_type_t RightFlyerLargeHalfLoopUninvertedUp = 284;
-    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedDown = 285;
-    constexpr track_type_t RightFlyerLargeHalfLoopInvertedDown = 286;
-    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedUp = 287;
-    constexpr track_type_t RightFlyerLargeHalfLoopInvertedUp = 288;
-    constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedDown = 289;
-    constexpr track_type_t RightFlyerLargeHalfLoopUninvertedDown = 290;
+        FlyerHalfLoopInvertedUp = 291,
+        FlyerHalfLoopUninvertedDown = 292,
 
-    constexpr track_type_t FlyerHalfLoopInvertedUp = 291;
-    constexpr track_type_t FlyerHalfLoopUninvertedDown = 292;
+        LeftEighthToDiagUp25 = 293,
+        RightEighthToDiagUp25 = 294,
+        LeftEighthToDiagDown25 = 295,
+        RightEighthToDiagDown25 = 296,
+        LeftEighthToOrthogonalUp25 = 297,
+        RightEighthToOrthogonalUp25 = 298,
+        LeftEighthToOrthogonalDown25 = 299,
+        RightEighthToOrthogonalDown25 = 300,
 
-    constexpr track_type_t LeftEighthToDiagUp25 = 293;
-    constexpr track_type_t RightEighthToDiagUp25 = 294;
-    constexpr track_type_t LeftEighthToDiagDown25 = 295;
-    constexpr track_type_t RightEighthToDiagDown25 = 296;
-    constexpr track_type_t LeftEighthToOrthogonalUp25 = 297;
-    constexpr track_type_t RightEighthToOrthogonalUp25 = 298;
-    constexpr track_type_t LeftEighthToOrthogonalDown25 = 299;
-    constexpr track_type_t RightEighthToOrthogonalDown25 = 300;
+        DiagUp25ToLeftBankedUp25 = 301,
+        DiagUp25ToRightBankedUp25 = 302,
+        DiagLeftBankedUp25ToUp25 = 303,
+        DiagRightBankedUp25ToUp25 = 304,
+        DiagDown25ToLeftBankedDown25 = 305,
+        DiagDown25ToRightBankedDown25 = 306,
+        DiagLeftBankedDown25ToDown25 = 307,
+        DiagRightBankedDown25ToDown25 = 308,
+        DiagLeftBankedFlatToLeftBankedUp25 = 309,
+        DiagRightBankedFlatToRightBankedUp25 = 310,
+        DiagLeftBankedUp25ToLeftBankedFlat = 311,
+        DiagRightBankedUp25ToRightBankedFlat = 312,
+        DiagLeftBankedFlatToLeftBankedDown25 = 313,
+        DiagRightBankedFlatToRightBankedDown25 = 314,
+        DiagLeftBankedDown25ToLeftBankedFlat = 315,
+        DiagRightBankedDown25ToRightBankedFlat = 316,
+        DiagFlatToLeftBankedUp25 = 317,
+        DiagFlatToRightBankedUp25 = 318,
+        DiagLeftBankedUp25ToFlat = 319,
+        DiagRightBankedUp25ToFlat = 320,
+        DiagFlatToLeftBankedDown25 = 321,
+        DiagFlatToRightBankedDown25 = 322,
+        DiagLeftBankedDown25ToFlat = 323,
+        DiagRightBankedDown25ToFlat = 324,
+        DiagUp25LeftBanked = 325,
+        DiagUp25RightBanked = 326,
+        DiagDown25LeftBanked = 327,
+        DiagDown25RightBanked = 328,
 
-    constexpr track_type_t DiagUp25ToLeftBankedUp25 = 301;
-    constexpr track_type_t DiagUp25ToRightBankedUp25 = 302;
-    constexpr track_type_t DiagLeftBankedUp25ToUp25 = 303;
-    constexpr track_type_t DiagRightBankedUp25ToUp25 = 304;
-    constexpr track_type_t DiagDown25ToLeftBankedDown25 = 305;
-    constexpr track_type_t DiagDown25ToRightBankedDown25 = 306;
-    constexpr track_type_t DiagLeftBankedDown25ToDown25 = 307;
-    constexpr track_type_t DiagRightBankedDown25ToDown25 = 308;
-    constexpr track_type_t DiagLeftBankedFlatToLeftBankedUp25 = 309;
-    constexpr track_type_t DiagRightBankedFlatToRightBankedUp25 = 310;
-    constexpr track_type_t DiagLeftBankedUp25ToLeftBankedFlat = 311;
-    constexpr track_type_t DiagRightBankedUp25ToRightBankedFlat = 312;
-    constexpr track_type_t DiagLeftBankedFlatToLeftBankedDown25 = 313;
-    constexpr track_type_t DiagRightBankedFlatToRightBankedDown25 = 314;
-    constexpr track_type_t DiagLeftBankedDown25ToLeftBankedFlat = 315;
-    constexpr track_type_t DiagRightBankedDown25ToRightBankedFlat = 316;
-    constexpr track_type_t DiagFlatToLeftBankedUp25 = 317;
-    constexpr track_type_t DiagFlatToRightBankedUp25 = 318;
-    constexpr track_type_t DiagLeftBankedUp25ToFlat = 319;
-    constexpr track_type_t DiagRightBankedUp25ToFlat = 320;
-    constexpr track_type_t DiagFlatToLeftBankedDown25 = 321;
-    constexpr track_type_t DiagFlatToRightBankedDown25 = 322;
-    constexpr track_type_t DiagLeftBankedDown25ToFlat = 323;
-    constexpr track_type_t DiagRightBankedDown25ToFlat = 324;
-    constexpr track_type_t DiagUp25LeftBanked = 325;
-    constexpr track_type_t DiagUp25RightBanked = 326;
-    constexpr track_type_t DiagDown25LeftBanked = 327;
-    constexpr track_type_t DiagDown25RightBanked = 328;
+        LeftEighthBankToDiagUp25 = 329,
+        RightEighthBankToDiagUp25 = 330,
+        LeftEighthBankToDiagDown25 = 331,
+        RightEighthBankToDiagDown25 = 332,
+        LeftEighthBankToOrthogonalUp25 = 333,
+        RightEighthBankToOrthogonalUp25 = 334,
+        LeftEighthBankToOrthogonalDown25 = 335,
+        RightEighthBankToOrthogonalDown25 = 336,
 
-    constexpr track_type_t LeftEighthBankToDiagUp25 = 329;
-    constexpr track_type_t RightEighthBankToDiagUp25 = 330;
-    constexpr track_type_t LeftEighthBankToDiagDown25 = 331;
-    constexpr track_type_t RightEighthBankToDiagDown25 = 332;
-    constexpr track_type_t LeftEighthBankToOrthogonalUp25 = 333;
-    constexpr track_type_t RightEighthBankToOrthogonalUp25 = 334;
-    constexpr track_type_t LeftEighthBankToOrthogonalDown25 = 335;
-    constexpr track_type_t RightEighthBankToOrthogonalDown25 = 336;
+        DiagBrakes = 337,
+        DiagBlockBrakes = 338,
+        Down25Brakes = 339,
 
-    constexpr track_type_t DiagBrakes = 337;
-    constexpr track_type_t DiagBlockBrakes = 338;
-    constexpr track_type_t Down25Brakes = 339;
-
-    constexpr track_type_t Count = 340;
-    constexpr track_type_t None = 65535;
-
-}; // namespace OpenRCT2::TrackElemType
+        Count = 340,
+        None = 65535,
+    };
+}
 
 enum
 {
@@ -665,10 +657,10 @@ struct TrackCircuitIterator
 
 struct TypeOrCurve
 {
-    bool isTrackType = true; // true if a track_type_t is selected, false if a TrackCurve is selected;
+    bool isTrackType = true; // true if a OpenRCT2::TrackElemType is selected, false if a TrackCurve is selected;
     union
     {
-        track_type_t trackType = OpenRCT2::TrackElemType::None;
+        OpenRCT2::TrackElemType trackType = OpenRCT2::TrackElemType::None;
         TrackCurve curve;
     };
 
@@ -678,7 +670,7 @@ struct TypeOrCurve
         curve = TrackCurve::None;
     }
 
-    constexpr bool operator==(track_type_t rhs)
+    constexpr bool operator==(OpenRCT2::TrackElemType rhs)
     {
         return isTrackType && (trackType == rhs);
     }
@@ -688,13 +680,13 @@ struct TypeOrCurve
         return !isTrackType && (curve == rhs);
     }
 
-    constexpr TypeOrCurve(track_type_t _type) noexcept
+    constexpr TypeOrCurve(OpenRCT2::TrackElemType _type) noexcept
     {
         isTrackType = true;
         trackType = _type;
     }
 
-    constexpr TypeOrCurve& operator=(track_type_t rhs) noexcept
+    constexpr TypeOrCurve& operator=(OpenRCT2::TrackElemType rhs) noexcept
     {
         isTrackType = true;
         trackType = rhs;
@@ -715,8 +707,8 @@ struct TypeOrCurve
     }
 };
 
-PitchAndRoll TrackPitchAndRollStart(track_type_t trackType);
-PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType);
+PitchAndRoll TrackPitchAndRollStart(OpenRCT2::TrackElemType trackType);
+PitchAndRoll TrackPitchAndRollEnd(OpenRCT2::TrackElemType trackType);
 
 int32_t TrackIsConnectedByShape(TileElement* a, TileElement* b);
 
@@ -728,15 +720,16 @@ bool TrackCircuitIteratorsMatch(const TrackCircuitIterator* firstIt, const Track
 void TrackGetBack(const CoordsXYE& input, CoordsXYE* output);
 void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);
 
-bool TrackElementIsCovered(track_type_t trackElementType);
-track_type_t UncoverTrackElement(track_type_t trackElementType);
-bool TrackTypeIsStation(track_type_t trackType);
-bool TrackTypeIsBrakes(track_type_t trackType);
-bool TrackTypeIsBlockBrakes(track_type_t trackType);
-bool TrackTypeIsBooster(track_type_t trackType);
+bool TrackElementIsCovered(OpenRCT2::TrackElemType trackElementType);
+OpenRCT2::TrackElemType UncoverTrackElement(OpenRCT2::TrackElemType trackElementType);
+bool TrackTypeIsStation(OpenRCT2::TrackElemType trackType);
+bool TrackTypeIsBrakes(OpenRCT2::TrackElemType trackType);
+bool TrackTypeIsBlockBrakes(OpenRCT2::TrackElemType trackType);
+bool TrackTypeIsBooster(OpenRCT2::TrackElemType trackType);
 
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
-    const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
+    const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, TileElement** output_element,
+    uint16_t flags);
 
 TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank);
 TrackRoll TrackGetActualBank2(int32_t rideType, bool isInverted, TrackRoll bank);
@@ -745,6 +738,6 @@ TrackRoll TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement)
 ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
 ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
 
-bool TrackTypeHasSpeedSetting(track_type_t trackType);
-bool TrackTypeIsHelix(track_type_t trackType);
+bool TrackTypeHasSpeedSetting(OpenRCT2::TrackElemType trackType);
+bool TrackTypeIsHelix(OpenRCT2::TrackElemType trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);

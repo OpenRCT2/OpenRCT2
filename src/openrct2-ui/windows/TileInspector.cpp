@@ -1248,12 +1248,12 @@ static uint64_t PageDisabledWidgets[] = {
 
                         // Track
                         ft = Formatter();
-                        ft.Add<track_type_t>(trackElement->GetTrackType());
+                        ft.Add<uint16_t>(trackElement->GetTrackType());
                         DrawTextBasic(
                             dpi, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_TRACK_PIECE_ID, ft, { colours[1] });
 
                         ft = Formatter();
-                        ft.Add<track_type_t>(trackElement->GetSequenceIndex());
+                        ft.Add<uint16_t>(trackElement->GetSequenceIndex());
                         DrawTextBasic(
                             dpi, screenCoords + ScreenCoordsXY{ 0, 44 }, STR_TILE_INSPECTOR_TRACK_SEQUENCE, ft, { colours[1] });
                         if (trackElement->IsStation())

@@ -187,7 +187,7 @@ static void MazePaintSetup(
 /**
  * rct2: 0x008A81E8
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMaze(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMaze(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::Maze)
     {

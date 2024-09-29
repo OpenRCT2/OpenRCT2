@@ -144,7 +144,7 @@ static void PaintLiftTowerSection(
 /**
  * rct2: 0x0076C5BC
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLift(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLift(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -153,7 +153,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLift(int32_t trackType)
 
         case TrackElemType::TowerSection:
             return PaintLiftTowerSection;
+        default:
+            return nullptr;
     }
-
-    return nullptr;
 }
