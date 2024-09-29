@@ -7,6 +7,7 @@
 - Feature: [#22758] The table of ‘real’ peep names can now be changed using Peep Names objects.
 - Improved: [#22470] Android: automatically detect RCT2 installs in /sdcard/rct2.
 - Improved: [#22777] Add long flat-to-steep track pieces to the Wooden and Classic Wooden Roller Coasters.
+- Improved: [#22815] Add long flat-to-steep track pieces to the Mine Train Coaster.
 - Change: [#22494] Themes window now displays colours and checkboxes vertically.
 - Change: [#22596] Land ownership fixes described by .parkpatch files are now only considered on scenarios.
 - Change: [#22724] Staff now have optional ‘real’ names as well.
