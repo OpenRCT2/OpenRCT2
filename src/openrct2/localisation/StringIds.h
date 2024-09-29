@@ -1694,6 +1694,8 @@ enum : StringId
 
     STR_DATE_FORMAT_MY_SENTENCE = 6674,
 
+    STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED = 6676,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

@@ -280,6 +280,16 @@ namespace OpenRCT2::Platform
             }
         }
     }
+
+    std::vector<std::string_view> GetSearchablePathsRCT1()
+    {
+        return {};
+    }
+
+    std::vector<std::string_view> GetSearchablePathsRCT2()
+    {
+        return {};
+    }
 }
 
 #endif

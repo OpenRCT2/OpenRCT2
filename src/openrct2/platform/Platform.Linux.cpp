@@ -333,6 +333,16 @@ namespace OpenRCT2::Platform
         return u8"Rollercoaster Tycoon 2";
     }
 
+    std::vector<std::string_view> GetSearchablePathsRCT1()
+    {
+        return {};
+    }
+
+    std::vector<std::string_view> GetSearchablePathsRCT2()
+    {
+        return {};
+    }
+
 #    ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {

@@ -192,6 +192,16 @@ namespace OpenRCT2::Platform
             AndroidClassLoader::_classLoader, AndroidClassLoader::_findClassMethod,
             env->NewStringUTF(std::string(name).c_str())));
     }
+
+    std::vector<std::string_view> GetSearchablePathsRCT1()
+    {
+        return { "/sdcard/rct1" };
+    }
+
+    std::vector<std::string_view> GetSearchablePathsRCT2()
+    {
+        return { "/sdcard/rct2" };
+    }
 } // namespace OpenRCT2::Platform
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved)

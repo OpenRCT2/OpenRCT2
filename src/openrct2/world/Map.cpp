@@ -760,6 +760,9 @@ void MapUpdatePathWideFlags()
         return;
     }
 
+    const int32_t kPracticalMapSizeBigX = GetGameState().MapSize.x * kCoordsXYStep;
+    const int32_t kPracticalMapSizeBigY = GetGameState().MapSize.y * kCoordsXYStep;
+
     // Presumably update_path_wide_flags is too computationally expensive to call for every
     // tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
     // progress. A maximum of 128 calls is done per update.
@@ -770,11 +773,11 @@ void MapUpdatePathWideFlags()
 
         // Next x, y tile
         loopPosition.x += kCoordsXYStep;
-        if (loopPosition.x >= MAXIMUM_MAP_SIZE_BIG)
+        if (loopPosition.x >= kPracticalMapSizeBigX)
         {
             loopPosition.x = 0;
             loopPosition.y += kCoordsXYStep;
-            if (loopPosition.y >= MAXIMUM_MAP_SIZE_BIG)
+            if (loopPosition.y >= kPracticalMapSizeBigY)
             {
                 loopPosition.y = 0;
             }

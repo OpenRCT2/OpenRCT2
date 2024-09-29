@@ -3746,6 +3746,8 @@ STR_6672    :Toggle between showing ‘real’ names of staff and staff numbers
 STR_6673    :Transparent
 # Used as part of a sentence (see https://github.com/OpenRCT2/OpenRCT2/issues/22072).
 STR_6674    :{MONTH}, Year {COMMA16}
+STR_6675    :Peep Names
+STR_6676    :At least one peep names object must be selected
 
 #############
 # Scenarios #
