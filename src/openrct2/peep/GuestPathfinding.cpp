@@ -33,21 +33,24 @@ RideId gPeepPathFindQueueRideIndex;
 
 namespace OpenRCT2::PathFinding
 {
-    static int8_t _peepPathFindNumJunctions;
-    static int8_t _peepPathFindMaxJunctions;
-    static int32_t _peepPathFindTilesChecked;
+    struct PathFindingState
+    {
+        int8_t junctionCount;
+        int8_t maxJunctions;
+        int32_t countTilesChecked;
+
+        /* A junction history for the peep pathfinding heuristic search
+         * The magic number 16 is the largest value returned by
+         * PeepPathfindGetMaxNumberJunctions() which should eventually
+         * be declared properly. */
+        struct
+        {
+            TileCoordsXYZ location;
+            Direction direction;
+        } history[16];
+    };
 
     static int32_t GuestSurfacePathFinding(Peep& peep);
-
-    /* A junction history for the peep pathfinding heuristic search
-     * The magic number 16 is the largest value returned by
-     * PeepPathfindGetMaxNumberJunctions() which should eventually
-     * be declared properly. */
-    static struct
-    {
-        TileCoordsXYZ location;
-        Direction direction;
-    } _peepPathFindHistory[16];
 
     enum class PathSearchResult
     {
@@ -704,9 +707,10 @@ namespace OpenRCT2::PathFinding
      *  rct2: 0x0069A997
      */
     static void PeepPathfindHeuristicSearch(
-        TileCoordsXYZ loc, const TileCoordsXYZ& goal, const Peep& peep, TileElement* currentTileElement,
-        const bool inPatrolArea, uint8_t numSteps, uint16_t* endScore, Direction testEdge, uint8_t* endJunctions,
-        TileCoordsXYZ junctionList[16], uint8_t directionList[16], TileCoordsXYZ* endXYZ, uint8_t* endSteps)
+        PathFindingState& state, TileCoordsXYZ loc, const TileCoordsXYZ& goal, const Peep& peep,
+        TileElement* currentTileElement, const bool inPatrolArea, uint8_t numSteps, uint16_t* endScore, Direction testEdge,
+        uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16], TileCoordsXYZ* endXYZ,
+        uint8_t* endSteps)
     {
         PathSearchResult searchResult = PathSearchResult::Failed;
 
@@ -721,12 +725,12 @@ namespace OpenRCT2::PathFinding
         loc += TileDirectionDelta[testEdge];
 
         ++numSteps;
-        _peepPathFindTilesChecked--;
+        state.countTilesChecked--;
 
         /* If this is where the search started this is a search loop and the
          * current search path ends here.
          * Return without updating the parameters (best result so far). */
-        if (_peepPathFindHistory[0].location == loc)
+        if (state.history[0].location == loc)
         {
             LogPathfinding(&peep, "Return from %d,%d,%d; Steps: %u; At start", loc.x >> 5, loc.y >> 5, loc.z, numSteps);
             return;
@@ -910,14 +914,14 @@ namespace OpenRCT2::PathFinding
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
-                    *endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+                    *endJunctions = state.maxJunctions - state.junctionCount;
                     for (uint8_t junctInd = 0; junctInd < *endJunctions; junctInd++)
                     {
-                        uint8_t histIdx = _peepPathFindMaxJunctions - junctInd;
-                        junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
-                        junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
-                        junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
-                        directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
+                        uint8_t histIdx = state.maxJunctions - junctInd;
+                        junctionList[junctInd].x = state.history[histIdx].location.x;
+                        junctionList[junctInd].y = state.history[histIdx].location.y;
+                        junctionList[junctInd].z = state.history[histIdx].location.z;
+                        directionList[junctInd] = state.history[histIdx].direction;
                     }
                 }
                 LogPathfinding(
@@ -961,14 +965,14 @@ namespace OpenRCT2::PathFinding
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
-                    *endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+                    *endJunctions = state.maxJunctions - state.junctionCount;
                     for (uint8_t junctInd = 0; junctInd < *endJunctions; junctInd++)
                     {
-                        uint8_t histIdx = _peepPathFindMaxJunctions - junctInd;
-                        junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
-                        junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
-                        junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
-                        directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
+                        uint8_t histIdx = state.maxJunctions - junctInd;
+                        junctionList[junctInd].x = state.history[histIdx].location.x;
+                        junctionList[junctInd].y = state.history[histIdx].location.y;
+                        junctionList[junctInd].z = state.history[histIdx].location.z;
+                        directionList[junctInd] = state.history[histIdx].direction;
                     }
                 }
                 LogPathfinding(
@@ -1004,7 +1008,7 @@ namespace OpenRCT2::PathFinding
 
             /* Check if either of the search limits has been reached:
              * - max number of steps or max tiles checked. */
-            if (numSteps >= 200 || _peepPathFindTilesChecked <= 0)
+            if (numSteps >= 200 || state.countTilesChecked <= 0)
             {
                 /* The current search ends here.
                  * The path continues, so the goal could still be reachable from here.
@@ -1018,14 +1022,14 @@ namespace OpenRCT2::PathFinding
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
-                    *endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+                    *endJunctions = state.maxJunctions - state.junctionCount;
                     for (uint8_t junctInd = 0; junctInd < *endJunctions; junctInd++)
                     {
-                        uint8_t histIdx = _peepPathFindMaxJunctions - junctInd;
-                        junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
-                        junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
-                        junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
-                        directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
+                        uint8_t histIdx = state.maxJunctions - junctInd;
+                        junctionList[junctInd].x = state.history[histIdx].location.x;
+                        junctionList[junctInd].y = state.history[histIdx].location.y;
+                        junctionList[junctInd].z = state.history[histIdx].location.z;
+                        directionList[junctInd] = state.history[histIdx].direction;
                     }
                 }
                 LogPathfinding(
@@ -1083,10 +1087,9 @@ namespace OpenRCT2::PathFinding
                         /* Check the _peepPathFindHistory to see if this junction has been
                          * previously passed through in the current search path.
                          * i.e. this is a loop in the current search path. */
-                        for (int32_t junctionNum = _peepPathFindNumJunctions + 1; junctionNum <= _peepPathFindMaxJunctions;
-                             junctionNum++)
+                        for (int32_t junctionNum = state.junctionCount + 1; junctionNum <= state.maxJunctions; junctionNum++)
                         {
-                            if (_peepPathFindHistory[junctionNum].location == loc)
+                            if (state.history[junctionNum].location == loc)
                             {
                                 pathLoop = true;
                                 break;
@@ -1107,7 +1110,7 @@ namespace OpenRCT2::PathFinding
                      * be reachable from here.
                      * If the search result is better than the best so far (in the parameters),
                      * then update the parameters with this search before continuing to the next map element. */
-                    if (_peepPathFindNumJunctions <= 0)
+                    if (state.junctionCount <= 0)
                     {
                         if (newScore < *endScore || (newScore == *endScore && numSteps < *endSteps))
                         {
@@ -1117,12 +1120,12 @@ namespace OpenRCT2::PathFinding
                             // Update the end x,y,z
                             *endXYZ = loc;
                             // Update the telemetry
-                            *endJunctions = _peepPathFindMaxJunctions; // - _peepPathFindNumJunctions;
+                            *endJunctions = state.maxJunctions; // - _peepPathFindNumJunctions;
                             for (uint8_t junctInd = 0; junctInd < *endJunctions; junctInd++)
                             {
-                                uint8_t histIdx = _peepPathFindMaxJunctions - junctInd;
-                                junctionList[junctInd] = _peepPathFindHistory[histIdx].location;
-                                directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
+                                uint8_t histIdx = state.maxJunctions - junctInd;
+                                junctionList[junctInd] = state.history[histIdx].location;
+                                directionList[junctInd] = state.history[histIdx].direction;
                             }
                         }
                         LogPathfinding(
@@ -1133,10 +1136,10 @@ namespace OpenRCT2::PathFinding
 
                     /* This junction was NOT previously visited in the current
                      * search path, so add the junction to the history. */
-                    _peepPathFindHistory[_peepPathFindNumJunctions].location = loc;
+                    state.history[state.junctionCount].location = loc;
                     // .direction take is added below.
 
-                    _peepPathFindNumJunctions--;
+                    state.junctionCount--;
                 }
             }
 
@@ -1145,7 +1148,7 @@ namespace OpenRCT2::PathFinding
             do
             {
                 edges &= ~(1 << nextTestEdge);
-                uint8_t savedNumJunctions = _peepPathFindNumJunctions;
+                uint8_t savedNumJunctions = state.junctionCount;
 
                 uint8_t height = loc.z;
                 if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == nextTestEdge)
@@ -1177,13 +1180,13 @@ namespace OpenRCT2::PathFinding
                 if (isThinJunction)
                 {
                     /* Add the current test_edge to the history. */
-                    _peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = nextTestEdge;
+                    state.history[state.junctionCount + 1].direction = nextTestEdge;
                 }
 
                 PeepPathfindHeuristicSearch(
-                    { loc.x, loc.y, height }, goal, peep, tileElement, nextInPatrolArea, numSteps, endScore, nextTestEdge,
-                    endJunctions, junctionList, directionList, endXYZ, endSteps);
-                _peepPathFindNumJunctions = savedNumJunctions;
+                    state, { loc.x, loc.y, height }, goal, peep, tileElement, nextInPatrolArea, numSteps, endScore,
+                    nextTestEdge, endJunctions, junctionList, directionList, endXYZ, endSteps);
+                state.junctionCount = savedNumJunctions;
 
                 LogPathfinding(
                     &peep, "Returned to %d,%d,%d; Steps: %u; edge: %d; Score: %d", loc.x >> 5, loc.y >> 5, loc.z, numSteps,
@@ -1218,8 +1221,10 @@ namespace OpenRCT2::PathFinding
     {
         PROFILED_FUNCTION();
 
+        PathFindingState state{};
+
         // The max number of thin junctions searched - a per-search-path limit.
-        _peepPathFindMaxJunctions = PeepPathfindGetMaxNumberJunctions(peep);
+        state.maxJunctions = PeepPathfindGetMaxNumberJunctions(peep);
 
         /* The max number of tiles to check - a whole-search limit.
          * Mainly to limit the performance impact of the path finding. */
@@ -1388,12 +1393,12 @@ namespace OpenRCT2::PathFinding
                 /* Divide the maxTilesChecked global search limit
                  * between the remaining edges to ensure the search
                  * covers all of the remaining edges. */
-                _peepPathFindTilesChecked = maxTilesChecked / numEdges;
-                _peepPathFindNumJunctions = _peepPathFindMaxJunctions;
+                state.countTilesChecked = maxTilesChecked / numEdges;
+                state.junctionCount = state.maxJunctions;
 
                 // Initialise _peepPathFindHistory.
 
-                for (auto& entry : _peepPathFindHistory)
+                for (auto& entry : state.history)
                 {
                     entry.location.SetNull();
                     entry.direction = INVALID_DIRECTION;
@@ -1402,8 +1407,8 @@ namespace OpenRCT2::PathFinding
                 /* The pathfinding will only use elements
                  * 1.._peepPathFindMaxJunctions, so the starting point
                  * is placed in element 0 */
-                _peepPathFindHistory[0].location = loc;
-                _peepPathFindHistory[0].direction = 0xF;
+                state.history[0].location = loc;
+                state.history[0].direction = 0xF;
 
                 uint16_t score = 0xFFFF;
                 /* Variable endXYZ contains the end location of the
@@ -1440,8 +1445,8 @@ namespace OpenRCT2::PathFinding
                     &peep, "Pathfind searching in direction: %d from %d,%d,%d", testEdge, loc.x >> 5, loc.y >> 5, loc.z);
 
                 PeepPathfindHeuristicSearch(
-                    { loc.x, loc.y, height }, goal, peep, firstTileElement, inPatrolArea, 0, &score, testEdge, &endJunctions,
-                    endJunctionList, endDirectionList, &endXYZ, &endSteps);
+                    state, { loc.x, loc.y, height }, goal, peep, firstTileElement, inPatrolArea, 0, &score, testEdge,
+                    &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 
                 if constexpr (kLogPathfinding)
                 {
