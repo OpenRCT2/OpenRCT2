@@ -4,7 +4,7 @@
 - Feature: [#15642] Track design placement can now use construction modifier keys (ctrl/shift).
 - Feature: [#21521] [Plugin] Add hook 'park.guest.softcap.calculate' called before calculating the soft guest cap.
 - Feature: [#22694] Park graphs have tooltips and can be resized like finance graphs.
-- Improved: [#22470]: Android: automatically detect RCT2 installs in /sdcard/rct2.
+- Improved: [#22470] Android: automatically detect RCT2 installs in /sdcard/rct2.
 - Improved: [#22777] Add long flat-to-steep track pieces to the Wooden and Classic Wooden Roller Coasters.
 - Change: [#22494] Themes window now displays colours and checkboxes vertically.
 - Change: [#22596] Land ownership fixes described by .parkpatch files are now only considered on scenarios.
