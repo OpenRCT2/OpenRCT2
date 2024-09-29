@@ -31,6 +31,7 @@ int32_t MphToDmps(int32_t mph);
 int32_t BaseZToMetres(int16_t baseZ);
 uint8_t MetresToBaseZ(int16_t metres);
 int32_t HeightUnitsToMetres(int32_t heightUnit);
+int32_t ToHumanReadableSpeed(int32_t baseSpeed);
 
 inline int32_t UtilBitScanForward(uint32_t source)
 {

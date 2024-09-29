@@ -166,8 +166,7 @@ struct Ride
     // bit 6: log reverser, waterfall
     // bit 7: whirlpool
     uint8_t special_track_elements{};
-    // Divide this value by 29127 to get the human-readable max speed
-    // (in RCT2, display_speed = (max_speed * 9) >> 18)
+    // Use ToHumanReadableSpeed if converting to display
     int32_t max_speed{};
     int32_t average_speed{};
     uint8_t current_test_segment{};

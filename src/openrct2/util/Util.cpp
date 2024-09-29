@@ -72,6 +72,13 @@ int32_t HeightUnitsToMetres(int32_t heightUnit)
     return (heightUnit * 3) >> 2;
 }
 
+int32_t ToHumanReadableSpeed(int32_t baseSpeed)
+{
+    // Divide this value by 29127 to get the human-readable max speed
+    // (in RCT2, display_speed = (max_speed * 9) >> 18)
+    return (baseSpeed * 9) >> 18;
+}
+
 /* Case insensitive logical compare */
 // Example:
 // - Guest 10

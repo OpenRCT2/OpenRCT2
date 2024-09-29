@@ -575,13 +575,13 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // Maximum speed
                         ft = Formatter();
-                        ft.Add<uint16_t>(((_loadedTrackDesign->statistics.maxSpeed << 16) * 9) >> 18);
+                        ft.Add<uint16_t>(ToHumanReadableSpeed(_loadedTrackDesign->statistics.maxSpeed << 16));
                         DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
                         screenPos.y += kListRowHeight;
 
                         // Average speed
                         ft = Formatter();
-                        ft.Add<uint16_t>(((_loadedTrackDesign->statistics.averageSpeed << 16) * 9) >> 18);
+                        ft.Add<uint16_t>(ToHumanReadableSpeed(_loadedTrackDesign->statistics.averageSpeed << 16));
                         DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
                         screenPos.y += kListRowHeight;
                     }

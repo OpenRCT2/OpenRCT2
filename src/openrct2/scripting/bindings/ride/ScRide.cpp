@@ -532,13 +532,13 @@ namespace OpenRCT2::Scripting
     double ScRide::maxSpeed_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? (ride->max_speed * 9) / (1 << 18) : 0;
+        return ride != nullptr ? ToHumanReadableSpeed(ride->max_speed) : 0;
     }
 
     double ScRide::averageSpeed_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? (ride->average_speed * 9) / (1 << 18) : 0;
+        return ride != nullptr ? ToHumanReadableSpeed(ride->average_speed) : 0;
     }
 
     int32_t ScRide::rideTime_get() const

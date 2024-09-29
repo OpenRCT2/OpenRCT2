@@ -137,8 +137,7 @@ namespace OpenRCT2::RCT2
         // bit 7: whirlpool
         uint8_t SpecialTrackElements; // 0x0D5
         uint8_t Pad0D6[2];            // 0x0D6
-        // Divide this value by 29127 to get the human-readable max speed
-        // (in RCT2, display_speed = (max_speed * 9) >> 18)
+        // Use ToHumanReadableSpeed if converting to display
         int32_t MaxSpeed;                            // 0x0D8
         int32_t AverageSpeed;                        // 0x0DC
         uint8_t CurrentTestSegment;                  // 0x0E0

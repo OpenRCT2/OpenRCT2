@@ -2510,7 +2510,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             ft.Add<StringId>(stringId);
-            uint16_t speedInMph = (abs(vehicle->velocity) * 9) >> 18;
+            uint16_t speedInMph = ToHumanReadableSpeed(abs(vehicle->velocity));
             ft.Add<uint16_t>(speedInMph);
             const RideComponentName stationName = GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station);
             ft.Add<StringId>(ride->num_stations > 1 ? stationName.number : stationName.singular);
@@ -5730,13 +5730,13 @@ namespace OpenRCT2::Ui::Windows
                         {
                             // Max speed
                             ft = Formatter();
-                            ft.Add<int32_t>((ride->max_speed * 9) >> 18);
+                            ft.Add<int32_t>(ToHumanReadableSpeed(ride->max_speed));
                             DrawTextBasic(dpi, screenCoords, STR_MAX_SPEED, ft);
                             screenCoords.y += kListRowHeight;
 
                             // Average speed
                             ft = Formatter();
-                            ft.Add<int32_t>((ride->average_speed * 9) >> 18);
+                            ft.Add<int32_t>(ToHumanReadableSpeed(ride->average_speed));
                             DrawTextBasic(dpi, screenCoords, STR_AVERAGE_SPEED, ft);
                             screenCoords.y += kListRowHeight;
 
