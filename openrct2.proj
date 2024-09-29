@@ -73,6 +73,7 @@
       <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
     </PropertyGroup>
     <Delete Files="@(CleanItems)" />
+    <Delete Files="$(DependenciesCheckFile)" />
     <RemoveDir Directories="$(TargetDir)data" />
     <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties)" />
   </Target>
