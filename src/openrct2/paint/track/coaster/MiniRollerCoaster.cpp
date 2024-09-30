@@ -1811,7 +1811,8 @@ static void MiniRCTrackRightQuarterTurn525DegUp(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 14, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 14, height,
+                session.SupportColours);
             switch (direction)
             {
                 case 0:
@@ -2782,8 +2783,8 @@ static void MiniRCTrackLeftHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, (direction == 2) ? 15 : 12, height,
-                session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), (direction == 2) ? 15 : 12,
+                height, session.SupportColours);
             switch (direction)
             {
                 case 2:
