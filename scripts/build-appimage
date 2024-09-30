@@ -15,5 +15,9 @@ pushd bin
     $linuxdeploy --appimage-extract-and-run --appdir install/ --output appimage --desktop-file install/usr/share/applications/openrct2.desktop
 popd
 mkdir -p artifacts
-mv bin/OpenRCT2*.AppImage artifacts
+# If APPIMAGE_FILE_NAME is set, use it as the filename, otherwise use the default
+if [ -z "$APPIMAGE_FILE_NAME" ]; then
+    APPIMAGE_FILE_NAME=OpenRCT2-$OPENRCT2_VERSION-linux-x86_64.AppImage
+fi
+mv bin/OpenRCT2-x86_64.AppImage artifacts/$APPIMAGE_FILE_NAME
 rm $linuxdeploy
