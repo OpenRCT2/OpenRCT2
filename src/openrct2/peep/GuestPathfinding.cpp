@@ -28,9 +28,6 @@
 #include <cassert>
 #include <cstring>
 
-bool gPeepPathFindIgnoreForeignQueues;
-RideId gPeepPathFindQueueRideIndex;
-
 namespace OpenRCT2::PathFinding
 {
     // The search limits the maximum junctions by certain conditions.
@@ -49,7 +46,9 @@ namespace OpenRCT2::PathFinding
         int8_t junctionCount;
         int8_t maxJunctions;
         int32_t countTilesChecked;
-
+        // TODO: Move them, those are query parameters not really state, but for now its easier to pass it down.
+        bool ignoreForeignQueues;
+        RideId queueRideIndex;
         // A junction history for the peep path finding heuristic search.
         struct
         {
@@ -877,9 +876,9 @@ namespace OpenRCT2::PathFinding
                     else
                     { // numEdges == 2
                         if (tileElement->AsPath()->IsQueue()
-                            && tileElement->AsPath()->GetRideIndex() != gPeepPathFindQueueRideIndex)
+                            && tileElement->AsPath()->GetRideIndex() != state.queueRideIndex)
                         {
-                            if (gPeepPathFindIgnoreForeignQueues && !tileElement->AsPath()->GetRideIndex().IsNull())
+                            if (state.ignoreForeignQueues && !tileElement->AsPath()->GetRideIndex().IsNull())
                             {
                                 // Path is a queue we aren't interested in
                                 /* The rideIndex will be useful for
@@ -1226,11 +1225,15 @@ namespace OpenRCT2::PathFinding
      *
      *  rct2: 0x0069A5F0
      */
-    Direction ChooseDirection(const TileCoordsXYZ& loc, const TileCoordsXYZ& goal, Peep& peep)
+    Direction ChooseDirection(
+        const TileCoordsXYZ& loc, const TileCoordsXYZ& goal, Peep& peep, bool ignoreForeignQueues, RideId queueRideIndex)
     {
         PROFILED_FUNCTION();
 
         PathFindingState state{};
+
+        state.ignoreForeignQueues = ignoreForeignQueues;
+        state.queueRideIndex = queueRideIndex;
 
         // The max number of thin junctions searched - a per-search-path limit.
         state.maxJunctions = PeepPathfindGetMaxNumberJunctions(peep);
@@ -1590,11 +1593,8 @@ namespace OpenRCT2::PathFinding
         if (!chosenEntrance.has_value())
             return GuestPathfindAimless(peep, edges);
 
-        gPeepPathFindIgnoreForeignQueues = true;
-        gPeepPathFindQueueRideIndex = RideId::GetNull();
-
         const auto goalPos = TileCoordsXYZ(chosenEntrance.value());
-        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep);
+        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep, true, RideId::GetNull());
 
         if (chosenDirection == INVALID_DIRECTION)
             return GuestPathfindAimless(peep, edges);
@@ -1647,11 +1647,8 @@ namespace OpenRCT2::PathFinding
             return PeepMoveOneTile(direction, peep);
         }
 
-        gPeepPathFindIgnoreForeignQueues = true;
-        gPeepPathFindQueueRideIndex = RideId::GetNull();
-
         const auto goalPos = TileCoordsXYZ(peepSpawnLoc);
-        direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep);
+        direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep, true, RideId::GetNull());
         if (direction == INVALID_DIRECTION)
             return GuestPathfindAimless(peep, edges);
 
@@ -1687,10 +1684,7 @@ namespace OpenRCT2::PathFinding
             entranceGoal = TileCoordsXYZ(*chosenEntrance);
         }
 
-        gPeepPathFindIgnoreForeignQueues = true;
-        gPeepPathFindQueueRideIndex = RideId::GetNull();
-
-        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, entranceGoal, peep);
+        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, entranceGoal, peep, true, RideId::GetNull());
         if (chosenDirection == INVALID_DIRECTION)
             return GuestPathfindAimless(peep, edges);
 
@@ -2049,9 +2043,6 @@ namespace OpenRCT2::PathFinding
             return GuestPathfindAimless(peep, edges);
         }
 
-        // The ride is open.
-        gPeepPathFindQueueRideIndex = rideIndex;
-
         /* Find the ride's closest entrance station to the peep.
          * At the same time, count how many entrance stations there are and
          * which stations are entrance stations. */
@@ -2110,9 +2101,7 @@ namespace OpenRCT2::PathFinding
 
         GetRideQueueEnd(loc);
 
-        gPeepPathFindIgnoreForeignQueues = true;
-
-        direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, loc, peep);
+        direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, loc, peep, true, rideIndex);
 
         if (direction == INVALID_DIRECTION)
         {

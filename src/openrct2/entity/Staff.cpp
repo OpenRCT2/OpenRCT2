@@ -713,11 +713,8 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
             }
         }
 
-        gPeepPathFindIgnoreForeignQueues = false;
-        gPeepPathFindQueueRideIndex = RideId::GetNull();
-
         const auto goalPos = TileCoordsXYZ{ location };
-        Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, goalPos, *this);
+        Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, goalPos, *this, false, RideId::GetNull());
         if (pathfindDirection == INVALID_DIRECTION)
         {
             /* Heuristic search failed for all directions.
