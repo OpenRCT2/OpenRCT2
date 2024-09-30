@@ -435,11 +435,6 @@ namespace OpenRCT2::Editor
             return { ObjectType::TerrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED };
         }
 
-        if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::PeepNames))
-        {
-            return { ObjectType::PeepNames, STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED };
-        }
-
         if (!isTrackDesignerManager)
         {
             if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::ParkEntrance))
@@ -450,6 +445,11 @@ namespace OpenRCT2::Editor
             if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::Water))
             {
                 return { ObjectType::Water, STR_WATER_TYPE_MUST_BE_SELECTED };
+            }
+
+            if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::PeepNames))
+            {
+                return { ObjectType::PeepNames, STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED };
             }
         }
 
