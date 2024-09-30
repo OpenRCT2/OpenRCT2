@@ -183,7 +183,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
             }
 
             /* test_element is a path */
-            if (!PathFinding::IsValidPathZAndDirection(test_element, adjacPos.z / kCoordsZStep, adjac_dir))
+            if (!FootpathIsZAndDirectionValid(test_element, adjacPos.z / kCoordsZStep, adjac_dir))
                 continue;
 
             /* test_element is a connected path */

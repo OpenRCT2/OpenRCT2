@@ -359,7 +359,7 @@ namespace OpenRCT2::PathFinding
                 continue;
             if (nextTileElement->GetType() != TileElementType::Path)
                 continue;
-            if (!IsValidPathZAndDirection(nextTileElement, loc.z, chosenDirection))
+            if (!FootpathIsZAndDirectionValid(nextTileElement, loc.z, chosenDirection))
                 continue;
             if (nextTileElement->AsPath()->IsWide())
                 return PathSearchResult::Wide;
@@ -453,7 +453,7 @@ namespace OpenRCT2::PathFinding
                     break;
                 case TileElementType::Path:
                 {
-                    if (!IsValidPathZAndDirection(tileElement, loc.z, chosenDirection))
+                    if (!FootpathIsZAndDirectionValid(tileElement, loc.z, chosenDirection))
                         continue;
                     if (tileElement->AsPath()->IsWide())
                         return PathSearchResult::Wide;
@@ -845,7 +845,7 @@ namespace OpenRCT2::PathFinding
                      * queue path.
                      * Otherwise, peeps walk on path tiles to get to the goal. */
 
-                    if (!IsValidPathZAndDirection(tileElement, loc.z, testEdge))
+                    if (!FootpathIsZAndDirectionValid(tileElement, loc.z, testEdge))
                         continue;
 
                     // Path may be sloped, so set z to path base height.
@@ -2132,33 +2132,6 @@ namespace OpenRCT2::PathFinding
         LogPathfinding(&peep, "Completed CalculateNextDestination - direction chosen: %d.", direction);
 
         return PeepMoveOneTile(direction, peep);
-    }
-
-    bool IsValidPathZAndDirection(TileElement* tileElement, int32_t currentZ, int32_t currentDirection)
-    {
-        if (tileElement->AsPath()->IsSloped())
-        {
-            int32_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
-            if (slopeDirection == currentDirection)
-            {
-                if (currentZ != tileElement->BaseHeight)
-                    return false;
-            }
-            else
-            {
-                slopeDirection = DirectionReverse(slopeDirection);
-                if (slopeDirection != currentDirection)
-                    return false;
-                if (currentZ != tileElement->BaseHeight + 2)
-                    return false;
-            }
-        }
-        else
-        {
-            if (currentZ != tileElement->BaseHeight)
-                return false;
-        }
-        return true;
     }
 
 } // namespace OpenRCT2::PathFinding

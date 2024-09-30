@@ -2328,3 +2328,30 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
 
     return ride->GetRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings);
 }
+
+bool FootpathIsZAndDirectionValid(TileElement* tileElement, int32_t currentZ, int32_t currentDirection)
+{
+    if (tileElement->AsPath()->IsSloped())
+    {
+        int32_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
+        if (slopeDirection == currentDirection)
+        {
+            if (currentZ != tileElement->BaseHeight)
+                return false;
+        }
+        else
+        {
+            slopeDirection = DirectionReverse(slopeDirection);
+            if (slopeDirection != currentDirection)
+                return false;
+            if (currentZ != tileElement->BaseHeight + 2)
+                return false;
+        }
+    }
+    else
+    {
+        if (currentZ != tileElement->BaseHeight)
+            return false;
+    }
+    return true;
+}

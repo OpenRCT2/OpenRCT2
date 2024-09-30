@@ -186,3 +186,4 @@ const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex);
 
 void FootpathQueueChainReset();
 void FootpathQueueChainPush(RideId rideIndex);
+bool FootpathIsZAndDirectionValid(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);

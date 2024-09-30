@@ -43,6 +43,4 @@ namespace OpenRCT2::PathFinding
 
     int32_t GuestPathFindParkEntranceLeaving(Peep& peep, uint8_t edges);
 
-    bool IsValidPathZAndDirection(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
-
 }; // namespace OpenRCT2::PathFinding
