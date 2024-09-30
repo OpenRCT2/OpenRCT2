@@ -33,21 +33,29 @@ RideId gPeepPathFindQueueRideIndex;
 
 namespace OpenRCT2::PathFinding
 {
+    // The search limits the maximum junctions by certain conditions.
+    static constexpr uint8_t kMaxJunctionsStaff = 8;
+    static constexpr uint8_t kMaxJunctionsGuest = 5;
+    static constexpr uint8_t kMaxJunctionsGuestWithMap = 7;
+    static constexpr uint8_t kMaxJunctionsGuestLeavingPark = 7;
+    static constexpr uint8_t kMaxJunctionsGuestLeavingParkLost = 8;
+
+    // Maximum amount of junctions.
+    static constexpr uint8_t kMaxJunctions = std::max({ kMaxJunctionsStaff, kMaxJunctionsGuest, kMaxJunctionsGuestWithMap,
+                                                        kMaxJunctionsGuestLeavingPark, kMaxJunctionsGuestLeavingParkLost });
+
     struct PathFindingState
     {
         int8_t junctionCount;
         int8_t maxJunctions;
         int32_t countTilesChecked;
 
-        /* A junction history for the peep pathfinding heuristic search
-         * The magic number 16 is the largest value returned by
-         * PeepPathfindGetMaxNumberJunctions() which should eventually
-         * be declared properly. */
+        // A junction history for the peep path finding heuristic search.
         struct
         {
             TileCoordsXYZ location;
             Direction direction;
-        } history[16];
+        } history[kMaxJunctions + 1];
     };
 
     static int32_t GuestSurfacePathFinding(Peep& peep);
@@ -553,24 +561,25 @@ namespace OpenRCT2::PathFinding
     static uint8_t PeepPathfindGetMaxNumberJunctions(Peep& peep)
     {
         if (peep.Is<Staff>())
-            return 8;
+            return kMaxJunctionsStaff;
 
         auto* guest = peep.As<Guest>();
         if (guest == nullptr)
-            return 8;
+            return kMaxJunctionsStaff;
 
-        if (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK && guest->GuestIsLostCountdown < 90)
+        bool isLeavingPark = (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK) != 0;
+        if (isLeavingPark && guest->GuestIsLostCountdown < 90)
         {
-            return 8;
+            return kMaxJunctionsGuestLeavingParkLost;
         }
 
+        if (isLeavingPark)
+            return kMaxJunctionsGuestLeavingPark;
+
         if (guest->HasItem(ShopItem::Map))
-            return 7;
+            return kMaxJunctionsGuestWithMap;
 
-        if (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
-            return 7;
-
-        return 5;
+        return kMaxJunctionsGuest;
     }
 
     /**
