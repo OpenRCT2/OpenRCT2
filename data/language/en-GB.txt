@@ -1910,8 +1910,8 @@ STR_2670    :Scroll
 STR_2680    :All research complete
 STR_2684    :Large group of guests arrive
 STR_2685    :Simplex Noise Parameters
-STR_2686    :Low:
-STR_2687    :High:
+STR_2686    :Min. land height:
+STR_2687    :Max. land height:
 STR_2688    :Base Frequency:
 STR_2689    :Octaves:
 STR_2690    :Map Generation
@@ -3166,9 +3166,9 @@ STR_6041    :{BLACK}No mechanics are hired!
 STR_6042    :Load height map
 STR_6043    :Select height map
 STR_6044    :Smooth height map
-STR_6045    :Strength
+STR_6045    :Strength:
 STR_6046    :Normalise height map
-STR_6047    :Smooth tiles
+STR_6047    :Smooth tile edges
 STR_6048    :Height map error
 STR_6049    :Error reading PNG
 STR_6050    :Error reading bitmap
@@ -3748,6 +3748,39 @@ STR_6673    :Transparent
 STR_6674    :{MONTH}, Year {COMMA16}
 STR_6675    :Peep Names
 STR_6676    :At least one peep names object must be selected
+STR_6677    :Add beaches around water bodies
+STR_6678    :Heightmap source:
+STR_6679    :Flatland
+STR_6680    :Simplex noise
+STR_6681    :Heightmap file
+STR_6682    :Map Generator - Generator
+STR_6683    :Map Generator - Terrain
+STR_6684    :Map Generator - Water
+STR_6685    :Map Generator - Forests
+STR_6686    :Tree to land ratio:
+STR_6687    :Min. tree altitude:
+STR_6688    :Max. tree altitude:
+STR_6689    :{UINT16}%
+STR_6690    :Minimum land height
+STR_6691    :Enter min. land height between {COMMA16} and {COMMA16}
+STR_6692    :Maximum land height
+STR_6693    :Enter max. land height between {COMMA16} and {COMMA16}
+STR_6694    :Minimum tree altitude
+STR_6695    :Enter min. tree altitude between {COMMA16} and {COMMA16}
+STR_6696    :Maximum tree altitude
+STR_6697    :Enter max. tree altitude between {COMMA16} and {COMMA16}
+STR_6698    :Tree to land ratio
+STR_6699    :Enter tree to land ratio between {COMMA16} and {COMMA16}
+STR_6700    :Simplex Base Frequency
+STR_6701    :Enter Base Frequency between {COMMA2DP32} and {COMMA2DP32}
+STR_6702    :Simplex Octaves
+STR_6703    :Enter Octaves between {COMMA16} and {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Browse...
+STR_6706    :{WINDOW_COLOUR_2}Current image file: {BLACK}{STRING}
+STR_6707    :(none selected)
+STR_6708    :Smooth Strength
+STR_6709    :Enter Smooth Strength between {COMMA16} and {COMMA16}
 
 #############
 # Scenarios #

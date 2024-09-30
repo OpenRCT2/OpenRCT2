@@ -1173,7 +1173,7 @@ namespace OpenRCT2::Ui::Windows
         gDropdownItems[i++].Format = STR_EXTRA_VIEWPORT;
         if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && GetGameState().EditorStep == EditorStep::LandscapeEditor)
         {
-            gDropdownItems[i++].Format = STR_MAPGEN_WINDOW_TITLE;
+            gDropdownItems[i++].Format = STR_MAPGEN_MENU_ITEM;
         }
 
 #ifdef ENABLE_SCRIPTING
