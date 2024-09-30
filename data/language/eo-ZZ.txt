@@ -3741,6 +3741,10 @@ STR_6669    :Montri trompojn de dungitaro
 STR_6670    :Konduto de gastoj
 STR_6671    :Montri ‘faktajn’ nomojn de dungitaro
 STR_6672    :Baskuligi inter montrado de ‘faktaj’ dungitonomoj kaj dungitonumeroj
+STR_6673    :Travidebla
+STR_6674    :{MONTH}, Jaro {COMMA16}
+STR_6675    :Nomoj de Gastoj
+STR_6676    :Almenaŭ unu objecto de gastonomo elektendas
 
 #############
 # Scenarios #
