@@ -184,7 +184,7 @@ STR_0604    :Riders ride single file on a narrow monorail track, as they race th
 STR_0605    :Riders toboggan down a meandering steel track, braking to control their speed
 STR_0606    :An older-style wooden roller coaster with a fast and rough ride, with plenty of air-time, some lateral G’s, and designed to feel ‘out-of-control’
 STR_0607    :An intense, older-style steel looping roller coaster where the riders ride in a standing position
-STR_0608    :Roller coaster trains are accelerated by linear synchronous motors, speeding through tight twists and turns.
+STR_0608    :Roller coaster trains are accelerated by linear synchronous motors, speeding through tight twists and turns
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
