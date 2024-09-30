@@ -142,11 +142,23 @@ jobs:
           mv artifacts/openrct2-portable-*.zip artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-portable-$PLATFORM.zip
           mv artifacts/openrct2-installer-*.exe artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-installer-$PLATFORM.exe
           mv artifacts/openrct2-symbols-*.zip artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-symbols-$PLATFORM.zip
-      - name: Upload artifacts (CI)
+      - name: Upload portable artifact (CI)
         uses: actions/upload-artifact@v4
         with:
-          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-${{ matrix.platform }}
-          path: artifacts
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-portable-${{ matrix.platform }}
+          path: artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-portable-${{ matrix.platform }}.zip
+          if-no-files-found: error
+      - name: Upload installer artifact (CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-installer-${{ matrix.platform }}
+          path: artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
+          if-no-files-found: error
+      - name: Upload symbols artifact (CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-symbols-${{ matrix.platform }}
+          path: artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-symbols-${{ matrix.platform }}.zip
           if-no-files-found: error
       - name: Run Tests
         if: matrix.platform != 'arm64'
