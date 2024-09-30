@@ -140,14 +140,14 @@ namespace OpenRCT2::PathFinding
     }
 #pragma endregion
 
-    static TileElement* GetBannerOnPath(TileElement* pathElement)
+    static const TileElement* GetBannerOnPath(const TileElement* pathElement)
     {
         // This is an improved version of original.
         // That only checked for one fence in the way.
         if (pathElement->IsLastForTile())
             return nullptr;
 
-        TileElement* bannerElement = pathElement + 1;
+        const TileElement* bannerElement = pathElement + 1;
         do
         {
             // Path on top, so no banners
@@ -165,11 +165,11 @@ namespace OpenRCT2::PathFinding
         return nullptr;
     }
 
-    static int32_t BannerClearPathEdges(bool ignoreBanners, PathElement* pathElement, int32_t edges)
+    static int32_t BannerClearPathEdges(bool ignoreBanners, const PathElement* pathElement, int32_t edges)
     {
         if (ignoreBanners)
             return edges;
-        TileElement* bannerElement = GetBannerOnPath(reinterpret_cast<TileElement*>(pathElement));
+        const TileElement* bannerElement = GetBannerOnPath(reinterpret_cast<const TileElement*>(pathElement));
         if (bannerElement != nullptr)
         {
             do
@@ -183,7 +183,7 @@ namespace OpenRCT2::PathFinding
     /**
      * Gets the connected edges of a path that are permitted (i.e. no 'no entry' signs)
      */
-    static int32_t PathGetPermittedEdges(bool ignoreBanners, PathElement* pathElement)
+    static int32_t PathGetPermittedEdges(bool ignoreBanners, const PathElement* pathElement)
     {
         return BannerClearPathEdges(ignoreBanners, pathElement, pathElement->GetEdgesAndCorners()) & 0x0F;
     }
@@ -358,12 +358,13 @@ namespace OpenRCT2::PathFinding
                 continue;
             if (nextTileElement->GetType() != TileElementType::Path)
                 continue;
-            if (!FootpathIsZAndDirectionValid(nextTileElement, loc.z, chosenDirection))
+            const auto* nextPathElement = nextTileElement->AsPath();
+            if (!FootpathIsZAndDirectionValid(*nextPathElement, loc.z, chosenDirection))
                 continue;
-            if (nextTileElement->AsPath()->IsWide())
+            if (nextPathElement->IsWide())
                 return PathSearchResult::Wide;
             // Only queue tiles that are connected to a ride are returned as ride queues.
-            if (nextTileElement->AsPath()->IsQueue() && !nextTileElement->AsPath()->GetRideIndex().IsNull())
+            if (nextPathElement->IsQueue() && !nextPathElement->GetRideIndex().IsNull())
                 return PathSearchResult::RideQueue;
 
             return PathSearchResult::Other;
@@ -452,12 +453,13 @@ namespace OpenRCT2::PathFinding
                     break;
                 case TileElementType::Path:
                 {
-                    if (!FootpathIsZAndDirectionValid(tileElement, loc.z, chosenDirection))
+                    const auto* pathElement = tileElement->AsPath();
+                    if (!FootpathIsZAndDirectionValid(*pathElement, loc.z, chosenDirection))
                         continue;
                     if (tileElement->AsPath()->IsWide())
                         return PathSearchResult::Wide;
 
-                    uint8_t edges = PathGetPermittedEdges(ignoreBanners, tileElement->AsPath());
+                    uint8_t edges = PathGetPermittedEdges(ignoreBanners, pathElement);
                     edges &= ~(1 << DirectionReverse(chosenDirection));
                     loc.z = tileElement->BaseHeight;
 
@@ -840,17 +842,17 @@ namespace OpenRCT2::PathFinding
                     break;
                 case TileElementType::Path:
                 {
+                    const auto* pathElement = tileElement->AsPath();
                     /* For peeps heading for a ride with a queue, the goal is the last
                      * queue path.
                      * Otherwise, peeps walk on path tiles to get to the goal. */
-
-                    if (!FootpathIsZAndDirectionValid(tileElement, loc.z, testEdge))
+                    if (!FootpathIsZAndDirectionValid(*pathElement, loc.z, testEdge))
                         continue;
 
                     // Path may be sloped, so set z to path base height.
                     loc.z = tileElement->BaseHeight;
 
-                    if (tileElement->AsPath()->IsWide())
+                    if (pathElement->IsWide())
                     {
                         /* Check if staff can ignore this wide flag. */
                         if (staff == nullptr || !staff->CanIgnoreWideFlag(loc.ToCoordsXYZ(), tileElement))
@@ -863,7 +865,7 @@ namespace OpenRCT2::PathFinding
 
                     searchResult = PathSearchResult::Thin;
 
-                    uint8_t numEdges = std::popcount(tileElement->AsPath()->GetEdges());
+                    uint8_t numEdges = std::popcount(pathElement->GetEdges());
 
                     if (numEdges < 2)
                     {
@@ -875,15 +877,14 @@ namespace OpenRCT2::PathFinding
                     }
                     else
                     { // numEdges == 2
-                        if (tileElement->AsPath()->IsQueue()
-                            && tileElement->AsPath()->GetRideIndex() != state.queueRideIndex)
+                        if (pathElement->IsQueue() && pathElement->GetRideIndex() != state.queueRideIndex)
                         {
-                            if (state.ignoreForeignQueues && !tileElement->AsPath()->GetRideIndex().IsNull())
+                            if (state.ignoreForeignQueues && !pathElement->GetRideIndex().IsNull())
                             {
                                 // Path is a queue we aren't interested in
                                 /* The rideIndex will be useful for
                                  * adding transport rides later. */
-                                rideIndex = tileElement->AsPath()->GetRideIndex();
+                                rideIndex = pathElement->GetRideIndex();
                                 searchResult = PathSearchResult::RideQueue;
                             }
                         }

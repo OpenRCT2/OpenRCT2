@@ -183,7 +183,8 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
             }
 
             /* test_element is a path */
-            if (!FootpathIsZAndDirectionValid(test_element, adjacPos.z / kCoordsZStep, adjac_dir))
+            const auto* adjacentPathElement = test_element->AsPath();
+            if (!FootpathIsZAndDirectionValid(*adjacentPathElement, adjacPos.z / kCoordsZStep, adjac_dir))
                 continue;
 
             /* test_element is a connected path */
@@ -193,7 +194,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
                 pathcount++;
             }
 
-            if (test_element->AsPath()->IsWide())
+            if (adjacentPathElement->IsWide())
             {
                 if (!widefound)
                 {
@@ -714,7 +715,8 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         }
 
         const auto goalPos = TileCoordsXYZ{ location };
-        Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, goalPos, *this, false, RideId::GetNull());
+        Direction pathfindDirection = PathFinding::ChooseDirection(
+            TileCoordsXYZ{ NextLoc }, goalPos, *this, false, RideId::GetNull());
         if (pathfindDirection == INVALID_DIRECTION)
         {
             /* Heuristic search failed for all directions.
