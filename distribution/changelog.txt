@@ -29,6 +29,7 @@
 - Fix: [#22729] Invisibility settings persist after reloading OpenRCT2.
 - Fix: [#22734] Support clearance above steep Side-Friction track is too low.
 - Fix: [#22774] Fix entities leaving stale pixels on the screen when the framerate is uncapped.
+- Fix: [#22805] Fix deadzone when panning the view in positive axis directions.
 - Fix: [#22857] Side-Friction Roller Coaster train clips through slopes.
 - Fix: [objects#346] Invalid refund price for Brick Base Block scenery item.
 
