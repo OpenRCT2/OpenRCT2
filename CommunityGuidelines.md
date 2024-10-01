@@ -32,6 +32,7 @@ On top of the community rules, the development and moderation team has to keep t
 - Any contributor PR requires at least two code reviews, either by developers or trusted community members (at least one developer).
 - Any developer PR requires at least one code review, by another developer.
 - Any PR requires one playtest review, if applicable.
+- Any developer may self-request a review on a PR. This will expire 1 day after the PR gets another developer review.
 
 ### Guidelines regarding public relations and community management
 
