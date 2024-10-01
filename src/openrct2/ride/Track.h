@@ -48,7 +48,7 @@ enum class TrackPitch : uint8_t
 };
 
 // Vehicle sprite groups required by track groups are defined in ride_entry_get_supported_track_pieces
-enum TrackGroup : uint8_t
+enum class TrackGroup : uint8_t
 {
     flat = 0,
     straight,
@@ -60,7 +60,7 @@ enum TrackGroup : uint8_t
     verticalLoop,
     slope,
     slopeSteepDown,
-    slopeLong,
+    flatToSteepSlope,
     slopeCurve,
     slopeCurveSteep,
     sBend,

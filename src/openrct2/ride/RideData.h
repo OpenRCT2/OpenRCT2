@@ -267,7 +267,7 @@ struct UpkeepCostsDescriptor
     money64 CostPerStation;
 };
 
-using RideTrackGroup = OpenRCT2::BitSet<EnumValue(TrackGroup::count)>;
+using RideTrackGroups = OpenRCT2::BitSet<EnumValue(TrackGroup::count)>;
 using UpdateRideApproachVehicleWaypointsFunction = void (*)(Guest&, const CoordsXY&, int16_t&);
 using RideMusicUpdateFunction = void (*)(Ride&);
 using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride&, CoordsXYZD&);
@@ -291,15 +291,15 @@ struct TrackDrawerEntry
     TRACK_PAINT_FUNCTION_GETTER Drawer = nullptr;
     SupportType supportType{};
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
-    RideTrackGroup EnabledTrackPieces{};
+    RideTrackGroups enabledTrackGroups{};
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
-    RideTrackGroup ExtraTrackPieces{};
+    RideTrackGroups extraTrackGroups{};
 
     ImageIndex icon = kSpriteIdNull;
     StringId tooltip = STR_NONE;
 
-    void GetAvailableTrackPieces(RideTrackGroup& res) const;
+    void GetAvailableTrackGroups(RideTrackGroups& res) const;
     bool SupportsTrackGroup(const TrackGroup trackGroup) const;
 };
 
@@ -651,8 +651,8 @@ constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
 }
 
 bool IsTrackEnabled(TrackGroup trackGroup);
-void UpdateEnabledRidePieces(TrackDrawerDescriptor trackDrawerDescriptor);
-void UpdateDisabledRidePieces(const RideTrackGroup& res);
+void UpdateEnabledRideGroups(TrackDrawerDescriptor trackDrawerDescriptor);
+void UpdateDisabledRideGroups(const RideTrackGroups& res);
 
 TrackDrawerDescriptor getTrackDrawerDescriptor(const RideTypeDescriptor& rtd, bool isInverted);
 TrackDrawerEntry getTrackDrawerEntry(const RideTypeDescriptor& rtd, bool isInverted = false, bool isCovered = false);
