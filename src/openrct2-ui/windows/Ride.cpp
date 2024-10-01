@@ -5850,7 +5850,7 @@ namespace OpenRCT2::Ui::Windows
 
                             // Total 'air' time
                             ft = Formatter();
-                            ft.Add<fixed32_2dp>(ride->totalAirTime * 3);
+                            ft.Add<fixed32_2dp>(ToHumanReadableAirTime(ride->totalAirTime));
                             DrawTextBasic(dpi, screenCoords, STR_TOTAL_AIR_TIME, ft);
                             screenCoords.y += kListRowHeight;
                         }

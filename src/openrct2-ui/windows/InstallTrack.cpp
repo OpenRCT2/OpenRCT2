@@ -305,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 if (td.statistics.totalAirTime != 0)
                 {
-                    int32_t airTime = td.statistics.totalAirTime * 3;
+                    int32_t airTime = ToHumanReadableAirTime(td.statistics.totalAirTime);
                     auto ft = Formatter();
                     ft.Add<int32_t>(airTime);
                     DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);

@@ -769,7 +769,7 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
             {
                 if (RideEntryHasCategory(*rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
                 {
-                    if ((ride.GetTotalLength() >> 16) >= MinimumLength)
+                    if (ToHumanReadableRideLength(ride.GetTotalLength()) >= MinimumLength)
                     {
                         type_already_counted[ride.subtype] = true;
                         rcs++;

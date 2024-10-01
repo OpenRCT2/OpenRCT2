@@ -150,7 +150,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     appearance.stationObjectIdentifier = TrackDesignGetStationObjectIdentifier(ride);
     statistics.maxSpeed = static_cast<int8_t>(ride.max_speed / 65536);
     statistics.averageSpeed = static_cast<int8_t>(ride.average_speed / 65536);
-    statistics.rideLength = ride.GetTotalLength() / 65536;
+    statistics.rideLength = ToHumanReadableRideLength(ride.GetTotalLength());
     statistics.maxPositiveVerticalG = ride.max_positive_vertical_g;
     statistics.maxNegativeVerticalG = ride.max_negative_vertical_g;
     statistics.maxLateralG = ride.max_lateral_g;

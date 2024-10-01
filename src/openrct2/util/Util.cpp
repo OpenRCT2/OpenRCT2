@@ -65,6 +65,7 @@ int32_t BaseZToMetres(int16_t baseZ)
 uint8_t MetresToBaseZ(int16_t metres)
 {
     return ((metres / 1.5) + 7) * 2;
+}
 
 int32_t HeightUnitsToMetres(int32_t heightUnit)
 {
@@ -77,6 +78,16 @@ int32_t ToHumanReadableSpeed(int32_t baseSpeed)
     // Divide this value by 29127 to get the human-readable max speed
     // (in RCT2, display_speed = (max_speed * 9) >> 18)
     return (baseSpeed * 9) >> 18;
+}
+
+uint16_t ToHumanReadableAirTime(uint16_t airTime)
+{
+    return airTime * 3;
+}
+
+int32_t ToHumanReadableRideLength(int32_t rideLength)
+{
+    return rideLength >> 16;
 }
 
 /* Case insensitive logical compare */

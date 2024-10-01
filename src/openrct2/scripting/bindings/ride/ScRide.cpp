@@ -550,7 +550,7 @@ namespace OpenRCT2::Scripting
     double ScRide::rideLength_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->GetTotalLength() / (1 << 16) : 0;
+        return ride != nullptr ? ToHumanReadableRideLength(ride->GetTotalLength()) : 0;
     }
 
     double ScRide::maxPositiveVerticalGs_get() const
@@ -574,7 +574,7 @@ namespace OpenRCT2::Scripting
     double ScRide::totalAirTime_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->totalAirTime * 3 / 100.0 : 0;
+        return ride != nullptr ? ToHumanReadableAirTime(ride->totalAirTime) / 100.0 : 0;
     }
 
     uint8_t ScRide::drops_get() const

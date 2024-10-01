@@ -1197,7 +1197,7 @@ static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride)
     auto trackCost = ride.GetRideTypeDescriptor().UpkeepCosts.CostPerTrackPiece;
     upkeep += trackCost * ride.getNumPoweredLifts();
 
-    uint32_t totalLength = ride.GetTotalLength() >> 16;
+    uint32_t totalLength = ToHumanReadableRideLength(ride.GetTotalLength());
 
     // The data originally here was 20's and 0's. The 20's all represented
     // rides that had tracks. The 0's were fixed rides like crooked house or
@@ -1833,7 +1833,7 @@ static void RideRatingsAdd(RatingTuple& ratings, int32_t excitement, int32_t int
 
 static void RideRatingsApplyBonusLength(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    RideRatingsAdd(ratings, (std::min(ride.GetTotalLength() >> 16, modifier.threshold) * modifier.excitement) >> 16, 0, 0);
+    RideRatingsAdd(ratings, (std::min(ToHumanReadableRideLength(ride.GetTotalLength()), modifier.threshold) * modifier.excitement) >> 16, 0, 0);
 }
 
 static void RideRatingsApplyBonusSynchronisation(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
@@ -1936,7 +1936,7 @@ static void RideRatingsApplyBonusGoKartRace(RatingTuple& ratings, const Ride& ri
 
 static void RideRatingsApplyBonusTowerRide(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    int32_t lengthFactor = (ride.GetTotalLength() >> 16);
+    int32_t lengthFactor = ToHumanReadableRideLength(ride.GetTotalLength());
     RideRatingsAdd(
         ratings, (lengthFactor * modifier.excitement) >> 16, (lengthFactor * modifier.intensity) >> 16,
         (lengthFactor * modifier.nausea) >> 16);
@@ -1944,7 +1944,7 @@ static void RideRatingsApplyBonusTowerRide(RatingTuple& ratings, const Ride& rid
 
 static void RideRatingsApplyBonusRotoDrop(RatingTuple& ratings, const Ride& ride)
 {
-    int32_t lengthFactor = ((ride.GetTotalLength() >> 16) * 209715) >> 16;
+    int32_t lengthFactor = (ToHumanReadableRideLength(ride.GetTotalLength()) * 209715) >> 16;
     RideRatingsAdd(ratings, lengthFactor, lengthFactor * 2, lengthFactor * 2);
 }
 
@@ -2062,7 +2062,7 @@ static void RideRatingsApplyBonusOperationOptionFreefall(RatingTuple& ratings, c
 static void RideRatingsApplyBonusLaunchedFreefallSpecial(
     RatingTuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
 {
-    int32_t excitement = ((ride.GetTotalLength() >> 16) * 32768) >> 16;
+    int32_t excitement = (ToHumanReadableRideLength(ride.GetTotalLength()) * 32768) >> 16;
     RideRatingsAdd(ratings, excitement, 0, 0);
 
 #ifdef ORIGINAL_RATINGS
@@ -2078,7 +2078,7 @@ static void RideRatingsApplyBonusLaunchedFreefallSpecial(
         // Fix #3282: When the ride mode is in downward launch mode, the intensity and
         //            nausea were fixed regardless of how high the ride is. The following
         //            calculation is based on roto-drop which is a similar mechanic.
-        int32_t lengthFactor = ((ride.GetTotalLength() >> 16) * 209715) >> 16;
+        int32_t lengthFactor = (ToHumanReadableRideLength(ride.GetTotalLength()) * 209715) >> 16;
         RideRatingsAdd(ratings, lengthFactor, lengthFactor * 2, lengthFactor * 2);
     }
 #endif
