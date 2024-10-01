@@ -8580,7 +8580,9 @@ bool Vehicle::UpdateTrackMotionUpdateCar(
         if (car->remaining_distance < 0x368A)
         {
             // Location found
-            return UpdateTrackMotionLoc6DBF3E(car, outStation, spriteId);
+            bool mustReturn = UpdateTrackMotionLoc6DBF3E(car, outStation, spriteId);
+            if (mustReturn)
+                return _vehicleMotionTrackFlags;
         }
         if (car->UpdateTrackMotionForwards(&carEntry, curRide, rideEntry))
         {
