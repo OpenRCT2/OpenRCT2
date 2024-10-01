@@ -214,12 +214,12 @@ if(MACOS_BUNDLE)
     set(MACOSX_DEPLOYMENT_TARGET "${CMAKE_OSX_DEPLOYMENT_TARGET}")
     set(PRODUCT_NAME "${OUTPUT_NAME}")
 
-    # copy data
+    # Copy data
     file(COPY ${SOURCE_DATA_DIR}/language DESTINATION "${BUNDLE_RESOURCE_DIR}")
     file(COPY ${SOURCE_DATA_DIR}/scenario_patches DESTINATION "${BUNDLE_RESOURCE_DIR}")
     file(COPY ${SOURCE_DATA_DIR}/shaders DESTINATION "${BUNDLE_RESOURCE_DIR}")
 
-    # download objects and sequences
+    # Download objects and sequences
     set(OBJECTS_DIR ${CMAKE_BINARY_DIR}/object)
     set(TITLE_SEQUENCE_DIR ${CMAKE_BINARY_DIR}/sequence)
     download_openrct2_zip(
@@ -236,7 +236,8 @@ if(MACOS_BUNDLE)
         SHA1 ${TITLE_SEQUENCE_SHA1}
     )
 
-    # download opensfx and openmsx
+    # Download opensfx and openmsx
+    set(ASSET_PACK_DIR ${CMAKE_BINARY_DIR}/assetpack)
     download_openrct2_zip(
         ZIP_VERSION ${OPENSFX_VERSION}
         DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
@@ -250,8 +251,10 @@ if(MACOS_BUNDLE)
         SHA1 ${OPENMSX_SHA1}
     )
 
+    # Copy downloaded data
     file(COPY ${OBJECTS_DIR} DESTINATION "${BUNDLE_RESOURCE_DIR}")
     file(COPY ${TITLE_SEQUENCE_DIR} DESTINATION "${BUNDLE_RESOURCE_DIR}")
+    file(COPY ${ASSET_PACK_DIR} DESTINATION "${BUNDLE_RESOURCE_DIR}")
 
     # Create as a bundle
     set_target_properties(${PROJECT_NAME} PROPERTIES
