@@ -1833,7 +1833,9 @@ static void RideRatingsAdd(RatingTuple& ratings, int32_t excitement, int32_t int
 
 static void RideRatingsApplyBonusLength(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    RideRatingsAdd(ratings, (std::min(ToHumanReadableRideLength(ride.GetTotalLength()), modifier.threshold) * modifier.excitement) >> 16, 0, 0);
+    RideRatingsAdd(
+        ratings, (std::min(ToHumanReadableRideLength(ride.GetTotalLength()), modifier.threshold) * modifier.excitement) >> 16,
+        0, 0);
 }
 
 static void RideRatingsApplyBonusSynchronisation(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
