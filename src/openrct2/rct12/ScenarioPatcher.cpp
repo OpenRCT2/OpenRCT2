@@ -27,6 +27,7 @@
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/TileElementType.h"
 
 #ifdef DISABLE_NETWORK

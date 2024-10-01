@@ -29,6 +29,7 @@
 #include "Footpath.h"
 #include "Map.h"
 #include "Scenery.h"
+#include "tile_element/EntranceElement.h"
 
 using namespace OpenRCT2;
 

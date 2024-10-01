@@ -14,6 +14,7 @@
 #include "../ride/Station.h"
 #include "../world/Entrance.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/EntranceElement.h"
 
 using namespace OpenRCT2;
 

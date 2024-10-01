@@ -29,6 +29,7 @@
 #include "../../world/Footpath.h"
 #include "../../world/Park.h"
 #include "../../world/TileInspector.h"
+#include "../../world/tile_element/EntranceElement.h"
 #include "../support/WoodenSupports.h"
 #include "Paint.TileElement.h"
 #include "Segment.h"

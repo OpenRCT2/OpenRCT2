@@ -17,6 +17,7 @@
 #include "../ride/Station.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
+#include "../world/tile_element/EntranceElement.h"
 
 using namespace OpenRCT2;
 

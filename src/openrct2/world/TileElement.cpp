@@ -18,6 +18,7 @@
 #include "Banner.h"
 #include "Location.hpp"
 #include "Scenery.h"
+#include "tile_element/EntranceElement.h"
 #include "tile_element/Slope.h"
 
 using namespace OpenRCT2;
@@ -158,4 +159,14 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
             LOG_ERROR("Tried to rotate QuarterTile invalid amount.");
             return QuarterTile{ 0 };
     }
+}
+
+const EntranceElement* TileElementBase::AsEntrance() const
+{
+    return as<EntranceElement>();
+}
+
+EntranceElement* TileElementBase::AsEntrance()
+{
+    return as<EntranceElement>();
 }

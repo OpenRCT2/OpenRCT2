@@ -56,6 +56,7 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/EntranceElement.h"
 #include "PatrolArea.h"
 #include "Staff.h"
 

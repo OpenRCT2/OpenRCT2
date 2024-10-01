@@ -26,6 +26,7 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/tile_element/EntranceElement.h>
 
 namespace OpenRCT2::Ui::Windows
 {

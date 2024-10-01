@@ -33,12 +33,13 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../util/Util.h"
-#include "../world/tile_element/Slope.h"
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Surface.h"
 #include "TileElement.h"
+#include "tile_element/EntranceElement.h"
+#include "tile_element/Slope.h"
 
 #include <bit>
 #include <iterator>

@@ -47,7 +47,6 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/TilePointerIndex.hpp"
-#include "../world/tile_element/Slope.h"
 #include "Banner.h"
 #include "Climate.h"
 #include "Entrance.h"
@@ -59,6 +58,8 @@
 #include "TileElementsView.h"
 #include "TileInspector.h"
 #include "Wall.h"
+#include "tile_element/EntranceElement.h"
+#include "tile_element/Slope.h"
 
 #include <iterator>
 #include <memory>

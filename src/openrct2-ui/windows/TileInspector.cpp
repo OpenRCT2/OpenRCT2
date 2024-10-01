@@ -41,6 +41,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/TileInspector.h>
+#include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/Slope.h>
 
 namespace OpenRCT2::Ui::Windows

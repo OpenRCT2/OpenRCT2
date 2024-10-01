@@ -77,6 +77,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TilePointerIndex.hpp"
+#include "../world/tile_element/EntranceElement.h"
 
 #include <cassert>
 

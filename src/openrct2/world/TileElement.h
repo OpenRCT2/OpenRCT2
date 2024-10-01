@@ -35,6 +35,7 @@ using track_type_t = uint16_t;
 
 constexpr uint8_t MAX_ELEMENT_HEIGHT = 255;
 constexpr uint8_t OWNER_MASK = 0b00001111;
+constexpr uint8_t kTileElementSize = 16;
 
 #pragma pack(push, 1)
 
@@ -148,14 +149,8 @@ struct TileElementBase
     {
         return as<WallElement>();
     }
-    const EntranceElement* AsEntrance() const
-    {
-        return as<EntranceElement>();
-    }
-    EntranceElement* AsEntrance()
-    {
-        return as<EntranceElement>();
-    }
+    const EntranceElement* AsEntrance() const;
+    EntranceElement* AsEntrance();
     const BannerElement* AsBanner() const
     {
         return as<BannerElement>();
@@ -548,55 +543,6 @@ public:
 };
 static_assert(sizeof(WallElement) == 16);
 
-struct EntranceElement : TileElementBase
-{
-    static constexpr TileElementType ElementType = TileElementType::Entrance;
-
-private:
-    uint8_t entranceType;        // 5
-    uint8_t SequenceIndex;       // 6. Only uses the lower nibble.
-    StationIndex stationIndex;   // 7
-    ObjectEntryIndex PathType;   // 8
-    RideId rideIndex;            // A
-    uint8_t flags2;              // C
-    ObjectEntryIndex entryIndex; // D
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t Pad0F[1];
-#pragma clang diagnostic pop
-
-public:
-    uint8_t GetEntranceType() const;
-    void SetEntranceType(uint8_t newType);
-
-    RideId GetRideIndex() const;
-    void SetRideIndex(RideId newRideIndex);
-
-    StationIndex GetStationIndex() const;
-    void SetStationIndex(StationIndex newStationIndex);
-
-    uint8_t GetSequenceIndex() const;
-    void SetSequenceIndex(uint8_t newSequenceIndex);
-
-    bool HasLegacyPathEntry() const;
-
-    ObjectEntryIndex GetLegacyPathEntryIndex() const;
-    const FootpathObject* GetLegacyPathEntry() const;
-    void SetLegacyPathEntryIndex(ObjectEntryIndex newPathType);
-
-    ObjectEntryIndex GetSurfaceEntryIndex() const;
-    const FootpathSurfaceObject* GetSurfaceEntry() const;
-    void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
-
-    const PathSurfaceDescriptor* GetPathSurfaceDescriptor() const;
-
-    int32_t GetDirections() const;
-
-    ObjectEntryIndex getEntryIndex() const;
-    void setEntryIndex(ObjectEntryIndex newIndex);
-};
-static_assert(sizeof(EntranceElement) == 16);
-
 struct BannerElement : TileElementBase
 {
     static constexpr TileElementType ElementType = TileElementType::Banner;
@@ -683,13 +629,6 @@ enum
     TILE_ELEMENT_FLAG_GHOST = (1 << 4),
     TILE_ELEMENT_FLAG_INVISIBLE = (1 << 5),
     TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
-};
-
-enum
-{
-    ENTRANCE_TYPE_RIDE_ENTRANCE,
-    ENTRANCE_TYPE_RIDE_EXIT,
-    ENTRANCE_TYPE_PARK_ENTRANCE
 };
 
 enum
