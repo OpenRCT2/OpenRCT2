@@ -16,5 +16,14 @@ BUILDDIR=build_dir
 export DEB_CFLAGS_MAINT_APPEND   = -Wno-stringop-overflow -Wno-maybe-uninitialized -Wno-error=null-dereference
 export DEB_CXXFLAGS_MAINT_APPEND = -Wno-stringop-overflow -Wno-maybe-uninitialized -Wno-error=null-dereference
 
+# https://manpages.debian.org/testing/dpkg-dev/dpkg-architecture.1.en.html#Usage_in_debian/rules
+DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
+# Set the number of jobs for armhf to avoid OOMing on older GCC versions (affects builds for Ubuntu 22.04)
+ifneq (,$(filter armhf,$(DEB_BUILD_GNU_TYPE)))
+    export DEB_BUILD_OPTIONS = parallel=2
+endif
+
 %:
 	dh $@
