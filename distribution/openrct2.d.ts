@@ -3808,6 +3808,12 @@ declare global {
         readonly guestGenerationProbability: number;
 
         /**
+         * Spawns a new guest at the edge of the map.
+         * Note: The "guest.generation" hook will be called before this function returns.
+         */
+        generateGuest(): Guest;
+
+        /**
          * The average amount of cash guests will spawn with.
          */
         readonly guestInitialCash: number;
