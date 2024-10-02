@@ -23,13 +23,13 @@ struct LargeSceneryText;
 
 struct LargeSceneryTile
 {
-    uint8_t index; // Purely to save having to look this up all the time
     CoordsXYZ offset;
-    uint8_t z_clearance;
+    int32_t zClearance; // BigZ
     bool hasSupports;
     bool allowSupportsAbove;
     uint8_t corners; // occupied corners of the tile
     uint8_t walls;   // sides that walls can be placed on
+    uint8_t index;   // Purely to save having to look this up all the time
 };
 
 struct LargeSceneryTextGlyph

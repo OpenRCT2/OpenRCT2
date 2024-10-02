@@ -933,7 +933,7 @@ namespace OpenRCT2::Scripting
 
         int32_t zClearance_get() const
         {
-            return _tile.z_clearance;
+            return _tile.zClearance;
         }
 
         bool hasSupports_get() const
