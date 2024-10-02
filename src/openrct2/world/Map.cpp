@@ -1712,15 +1712,14 @@ bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, u
     auto* sceneryEntry = tileElement->GetEntry();
 
     // Iterate through each tile of the large scenery element
-    sequence = 0;
-    for (auto tile = sceneryEntry->tiles.begin(); tile != sceneryEntry->tiles.end(); ++tile, sequence++)
+    for (auto& tile : sceneryEntry->tiles)
     {
-        CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+        CoordsXY offsetPos{ tile.x_offset, tile.y_offset };
         auto rotatedOffsetPos = offsetPos.Rotate(signPos.direction);
 
         auto tmpSignPos = CoordsXYZD{ sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                                      sceneryOrigin->z + tile->z_offset, signPos.direction };
-        tileElement = MapGetLargeScenerySegment(tmpSignPos, sequence);
+                                      sceneryOrigin->z + tile.z_offset, signPos.direction };
+        tileElement = MapGetLargeScenerySegment(tmpSignPos, tile.index);
         if (tileElement != nullptr)
         {
             tileElement->SetPrimaryColour(mainColour);

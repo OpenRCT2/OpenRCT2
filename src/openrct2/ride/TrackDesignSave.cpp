@@ -291,18 +291,17 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
         }
 
         // Iterate through each tile of the large scenery element
-        sequence = 0;
-        for (auto tile = sceneryTiles.begin(); tile != sceneryTiles.end(); tile++, sequence++)
+        for (auto& tile : sceneryTiles)
         {
-            CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+            CoordsXY offsetPos{ tile.x_offset, tile.y_offset };
             auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                                  sceneryOrigin->z + tile->z_offset };
-            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, sequence);
+                                  sceneryOrigin->z + tile.z_offset };
+            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, tile.index);
             if (largeElement != nullptr)
             {
-                if (sequence == 0)
+                if (tile.index == 0)
                 {
                     auto item = TrackDesignSaveCreateLargeSceneryDesc(*obj, tileLoc, *largeElement);
                     _trackSavedTileElementsDesc.push_back(std::move(item));
@@ -508,18 +507,17 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
         }
 
         // Iterate through each tile of the large scenery element
-        sequence = 0;
-        for (auto tile = sceneryTiles.begin(); tile != sceneryTiles.end(); tile++, sequence++)
+        for (auto& tile : sceneryTiles)
         {
-            CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+            CoordsXY offsetPos{ tile.x_offset, tile.y_offset };
             auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                                  sceneryOrigin->z + tile->z_offset };
-            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, sequence);
+                                  sceneryOrigin->z + tile.z_offset };
+            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, tile.index);
             if (largeElement != nullptr)
             {
-                if (sequence == 0)
+                if (tile.index == 0)
                 {
                     auto item = TrackDesignSaveCreateLargeSceneryDesc(*obj, tileLoc, *largeElement);
                     TrackDesignSavePopTileElementDesc(item);

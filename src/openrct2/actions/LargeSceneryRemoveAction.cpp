@@ -85,12 +85,10 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
     auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedOffsets;
 
     bool calculate_cost = true;
-    for (int32_t i = 0; i < sceneryEntry->tiles.size(); i++)
+    for (auto& tile : sceneryEntry->tiles)
     {
-        auto currentTileRotatedOffset = CoordsXYZ{
-            CoordsXY{ sceneryEntry->tiles[i].x_offset, sceneryEntry->tiles[i].y_offset }.Rotate(_loc.direction),
-            sceneryEntry->tiles[i].z_offset
-        };
+        auto currentTileRotatedOffset = CoordsXYZ{ CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(_loc.direction),
+                                                   tile.z_offset };
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + currentTileRotatedOffset;
 
@@ -170,12 +168,9 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
 
     auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedFirstTile;
 
-    for (int32_t i = 0; sceneryEntry->tiles.size(); i++)
+    for (auto& tile : sceneryEntry->tiles)
     {
-        auto rotatedCurrentTile = CoordsXYZ{
-            CoordsXY{ sceneryEntry->tiles[i].x_offset, sceneryEntry->tiles[i].y_offset }.Rotate(_loc.direction),
-            sceneryEntry->tiles[i].z_offset
-        };
+        auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(_loc.direction), tile.z_offset };
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + rotatedCurrentTile;
 
@@ -187,7 +182,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
             }
         }
 
-        auto* sceneryElement = FindLargeSceneryElement(currentTile, i);
+        auto* sceneryElement = FindLargeSceneryElement(currentTile, tile.index);
         if (sceneryElement == nullptr)
         {
             LOG_ERROR("Tile not found when trying to remove element!");

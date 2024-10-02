@@ -177,6 +177,11 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* s
         stream->Seek(-2, OpenRCT2::STREAM_SEEK_CURRENT);
         tiles.push_back(ReadLegacyTile());
     }
+    uint8_t index = 0;
+    for (auto& tile : tiles)
+    {
+        tile.index = index++;
+    }
     return tiles;
 }
 
@@ -230,7 +235,6 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
 std::vector<LargeSceneryTile> LargeSceneryObject::ReadJsonTiles(json_t& jTiles)
 {
     std::vector<LargeSceneryTile> tiles;
-
     for (auto& jTile : jTiles)
     {
         if (jTile.is_object())
@@ -256,6 +260,8 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadJsonTiles(json_t& jTiles)
 
             auto walls = Json::GetNumber<int16_t>(jTile["walls"]);
             tile.flags |= (walls & 0xFF) << 8;
+
+            tile.index = static_cast<uint8_t>(tiles.size());
 
             tiles.push_back(std::move(tile));
         }

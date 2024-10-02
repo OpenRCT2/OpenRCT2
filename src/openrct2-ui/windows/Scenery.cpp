@@ -2774,9 +2774,9 @@ namespace OpenRCT2::Ui::Windows
             if (sceneryEntry)
             {
                 int16_t maxClearZ = 0;
-                for (int32_t i = 0; i < sceneryEntry->tiles.size(); ++i)
+                for (auto& tile : sceneryEntry->tiles)
                 {
-                    maxClearZ = std::max<int16_t>(maxClearZ, sceneryEntry->tiles[i].z_clearance);
+                    maxClearZ = std::max<int16_t>(maxClearZ, tile.z_clearance);
                 }
                 maxPossibleHeight = std::max(0, maxPossibleHeight - maxClearZ);
             }

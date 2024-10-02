@@ -2162,17 +2162,17 @@ namespace OpenRCT2::Scripting
         const auto direction = largeScenery->GetDirection();
         const auto sequenceIndex = largeScenery->GetSequenceIndex();
         const auto& tiles = largeEntry->tiles;
-        const auto& tile = tiles[sequenceIndex];
+        const auto& initialTile = tiles[sequenceIndex];
         const auto rotatedFirstTile = CoordsXYZ{
-            CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(direction),
-            tile.z_offset,
+            CoordsXY{ initialTile.x_offset, initialTile.y_offset }.Rotate(direction),
+            initialTile.z_offset,
         };
 
         const auto firstTile = CoordsXYZ{ loc, largeScenery->GetBaseZ() } - rotatedFirstTile;
-        for (int32_t i = 0; i < tiles.size(); i++)
+        for (auto& tile : tiles)
         {
-            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tiles[i].x_offset, tiles[i].y_offset }.Rotate(direction),
-                                                       tiles[i].z_offset };
+            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(direction),
+                                                       tile.z_offset };
 
             const auto currentTile = firstTile + rotatedCurrentTile;
 
@@ -2192,7 +2192,7 @@ namespace OpenRCT2::Scripting
                         continue;
                     if (tileElement->AsLargeScenery()->GetEntryIndex() != largeScenery->GetEntryIndex())
                         continue;
-                    if (tileElement->AsLargeScenery()->GetSequenceIndex() != i)
+                    if (tileElement->AsLargeScenery()->GetSequenceIndex() != tile.index)
                         continue;
 
                     return tileElement->AsLargeScenery();
