@@ -6,6 +6,7 @@
 - Feature: [#22694] Park graphs have tooltips and can be resized like finance graphs.
 - Feature: [#22758] The table of ‘real’ peep names can now be changed using Peep Names objects.
 - Feature: [#22842] [Plugin] Expose large scenery object tiles to the plugin API.
+- Feature: [#22883] [Plugin] Add plugin API for spawning guests.
 - Improved: [#22470] Android: automatically detect RCT2 installs in /sdcard/rct2.
 - Improved: [#22735] The map generator has a redesigned interface that is much more user friendly.
 - Improved: [#22777] Add long flat-to-steep track pieces to the Wooden and Classic Wooden Roller Coasters.
