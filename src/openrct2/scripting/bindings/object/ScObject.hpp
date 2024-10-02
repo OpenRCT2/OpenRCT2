@@ -927,7 +927,7 @@ namespace OpenRCT2::Scripting
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
-            auto start = CoordsXYZ(_tile.x_offset, _tile.y_offset, _tile.z_offset);
+            auto start = _tile.offset;
             return ToDuk(ctx, start);
         }
 
