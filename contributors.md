@@ -246,6 +246,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Mike Harvey (harvito)
 * Robert Yan (lewyche)
 * Tom Matalenas (tmatale)
+* Christian Niebauer (chrislikescisco)
 
 ## Toolchain
 * (Balletie) - macOS
