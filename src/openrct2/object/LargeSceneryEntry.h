@@ -14,8 +14,8 @@
 #include "../world/Location.hpp"
 #include "ObjectTypes.h"
 
-#include <string_view>
 #include <span>
+#include <string_view>
 
 enum class CursorID : uint8_t;
 
@@ -23,6 +23,7 @@ struct LargeSceneryText;
 
 struct LargeSceneryTile
 {
+    uint8_t index; // Purely to save having to look this up all the time
     int16_t x_offset;
     int16_t y_offset;
     int16_t z_offset;
