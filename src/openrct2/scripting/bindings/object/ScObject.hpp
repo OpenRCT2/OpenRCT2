@@ -938,22 +938,22 @@ namespace OpenRCT2::Scripting
 
         bool hasSupports_get() const
         {
-            return !(_tile.flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS);
+            return !(_tile.flags2 & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS);
         }
 
         bool allowSupportsAbove_get() const
         {
-            return _tile.flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE;
+            return _tile.flags2 & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE;
         }
 
         uint8_t corners_get() const
         {
-            return (_tile.flags >> 12) & 0xF;
+            return _tile.corners & 0xF;
         }
 
         uint8_t walls_get() const
         {
-            return (_tile.flags >> 8) & 0xF;
+            return _tile.walls & 0xF;
         }
     };
 
