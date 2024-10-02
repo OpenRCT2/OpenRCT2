@@ -63,7 +63,7 @@ static void PaintLargeScenerySupports(
 {
     PROFILED_FUNCTION();
 
-    if (tile.flags2 & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS)
+    if (!tile.hasSupports)
         return;
 
     auto transitionType = WoodenSupportTransitionType::None;
@@ -78,7 +78,7 @@ static void PaintLargeScenerySupports(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, supportHeight, imageTemplate, transitionType);
 
     int32_t clearanceHeight = Ceil2(tileElement.GetClearanceZ() + 15, 16);
-    if (tile.flags2 & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)
+    if (tile.allowSupportsAbove)
     {
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);
     }

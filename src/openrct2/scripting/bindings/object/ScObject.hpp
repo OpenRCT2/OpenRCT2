@@ -938,12 +938,12 @@ namespace OpenRCT2::Scripting
 
         bool hasSupports_get() const
         {
-            return !(_tile.flags2 & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS);
+            return _tile.hasSupports;
         }
 
         bool allowSupportsAbove_get() const
         {
-            return _tile.flags2 & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE;
+            return _tile.allowSupportsAbove;
         }
 
         uint8_t corners_get() const

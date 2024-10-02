@@ -26,16 +26,10 @@ struct LargeSceneryTile
     uint8_t index; // Purely to save having to look this up all the time
     CoordsXYZ offset;
     uint8_t z_clearance;
-    // CCCC WWWW 0SS0 0000
-    uint16_t flags2;
+    bool hasSupports;
+    bool allowSupportsAbove;
     uint8_t corners; // occupied corners of the tile
     uint8_t walls;   // sides that walls can be placed on
-};
-
-enum
-{
-    LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS = 0x20,
-    LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE = 0x40,
 };
 
 struct LargeSceneryTextGlyph
