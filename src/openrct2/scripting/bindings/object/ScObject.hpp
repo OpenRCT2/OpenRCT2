@@ -979,9 +979,9 @@ namespace OpenRCT2::Scripting
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                for (auto* tile = entry->tiles; tile->x_offset != -1; ++tile)
+                for (auto& tile : entry->tiles)
                 {
-                    result.push_back(std::make_shared<ScLargeSceneryObjectTile>(*tile));
+                    result.push_back(std::make_shared<ScLargeSceneryObjectTile>(tile));
                 }
             }
             return result;

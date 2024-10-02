@@ -117,7 +117,7 @@ void LargeSceneryObject::Load()
     _baseImageId = LoadImages();
     _legacyType.image = _baseImageId;
 
-    _legacyType.tiles = _tiles.data();
+    _legacyType.tiles = _tiles;
 
     if (_legacyType.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
@@ -177,7 +177,6 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* s
         stream->Seek(-2, OpenRCT2::STREAM_SEEK_CURRENT);
         tiles.push_back(ReadLegacyTile());
     }
-    tiles.push_back({ -1, -1, -1, 255, 0xFFFF });
     return tiles;
 }
 
@@ -261,10 +260,6 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadJsonTiles(json_t& jTiles)
             tiles.push_back(std::move(tile));
         }
     }
-
-    // HACK Add end of tiles marker
-    //      We should remove this later by improving the code base to use tiles array length
-    tiles.push_back({ -1, -1, -1, 0xFF, 0xFFFF });
 
     return tiles;
 }

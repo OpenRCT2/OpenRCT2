@@ -15,6 +15,7 @@
 #include "ObjectTypes.h"
 
 #include <string_view>
+#include <span>
 
 enum class CursorID : uint8_t;
 
@@ -74,7 +75,7 @@ struct LargeSceneryEntry
     uint16_t flags;
     money64 price;
     money64 removal_price;
-    LargeSceneryTile* tiles;
+    std::span<const LargeSceneryTile> tiles;
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
     LargeSceneryText* text;
