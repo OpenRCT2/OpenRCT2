@@ -1678,20 +1678,18 @@ SmallSceneryElement* MapGetSmallSceneryElementAt(const CoordsXYZ& sceneryCoords,
 std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
     const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement)
 {
-    LargeSceneryTile* tile;
-
     auto tileElement = MapGetLargeScenerySegment(sceneryPos, sequence);
     if (tileElement == nullptr)
         return std::nullopt;
 
     auto* sceneryEntry = tileElement->GetEntry();
-    tile = &sceneryEntry->tiles[sequence];
+    auto& tile = sceneryEntry->tiles[sequence];
 
-    CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+    CoordsXY offsetPos{ tile.x_offset, tile.y_offset };
     auto rotatedOffsetPos = offsetPos.Rotate(sceneryPos.direction);
 
     auto origin = CoordsXYZ{ sceneryPos.x - rotatedOffsetPos.x, sceneryPos.y - rotatedOffsetPos.y,
-                             sceneryPos.z - tile->z_offset };
+                             sceneryPos.z - tile.z_offset };
     if (outElement != nullptr)
         *outElement = tileElement;
     return origin;
@@ -1704,7 +1702,6 @@ std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
 bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
     LargeSceneryElement* tileElement;
-    LargeSceneryTile *sceneryTiles, *tile;
 
     auto sceneryOrigin = MapLargeSceneryGetOrigin(signPos, sequence, &tileElement);
     if (!sceneryOrigin)
@@ -1713,11 +1710,10 @@ bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, u
     }
 
     auto* sceneryEntry = tileElement->GetEntry();
-    sceneryTiles = sceneryEntry->tiles;
 
     // Iterate through each tile of the large scenery element
     sequence = 0;
-    for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+    for (auto tile = sceneryEntry->tiles.begin(); tile != sceneryEntry->tiles.end(); ++tile, sequence++)
     {
         CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
         auto rotatedOffsetPos = offsetPos.Rotate(signPos.direction);

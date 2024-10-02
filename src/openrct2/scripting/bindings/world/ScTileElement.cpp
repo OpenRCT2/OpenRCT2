@@ -2161,7 +2161,7 @@ namespace OpenRCT2::Scripting
         const auto* const largeEntry = largeScenery->GetEntry();
         const auto direction = largeScenery->GetDirection();
         const auto sequenceIndex = largeScenery->GetSequenceIndex();
-        const auto* tiles = largeEntry->tiles;
+        const auto& tiles = largeEntry->tiles;
         const auto& tile = tiles[sequenceIndex];
         const auto rotatedFirstTile = CoordsXYZ{
             CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(direction),
@@ -2169,7 +2169,7 @@ namespace OpenRCT2::Scripting
         };
 
         const auto firstTile = CoordsXYZ{ loc, largeScenery->GetBaseZ() } - rotatedFirstTile;
-        for (int32_t i = 0; tiles[i].x_offset != -1; i++)
+        for (int32_t i = 0; i < tiles.size(); i++)
         {
             const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tiles[i].x_offset, tiles[i].y_offset }.Rotate(direction),
                                                        tiles[i].z_offset };

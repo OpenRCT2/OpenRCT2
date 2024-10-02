@@ -192,7 +192,7 @@ static void PaintLargeScenery3DText(
 {
     PROFILED_FUNCTION();
 
-    if (sceneryEntry.tiles[1].x_offset != -1)
+    if (sceneryEntry.tiles.size() != 1)
     {
         auto sequenceDirection = (tileElement.GetSequenceIndex() - 1) & 3;
         if (sequenceDirection != direction)

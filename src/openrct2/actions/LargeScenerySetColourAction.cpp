@@ -124,7 +124,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
     auto baseTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedBaseCoordsOffset;
 
     auto i = 0;
-    for (auto tile = sceneryEntry->tiles; tile->x_offset != -1; ++tile, ++i)
+    for (auto tile = sceneryEntry->tiles.begin(); tile != sceneryEntry->tiles.end(); ++tile, ++i)
     {
         // Work out the current tile coordinates
         auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction), tile->z_offset };

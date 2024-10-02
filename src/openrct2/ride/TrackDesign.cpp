@@ -760,23 +760,23 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
             {
                 auto* sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-                for (LargeSceneryTile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++)
+                for (auto& tile : sceneryEntry->tiles)
                 {
-                    if (x1 > tile->x_offset)
+                    if (x1 > tile.x_offset)
                     {
-                        x1 = tile->x_offset;
+                        x1 = tile.x_offset;
                     }
-                    if (x2 < tile->x_offset)
+                    if (x2 < tile.x_offset)
                     {
-                        x2 = tile->x_offset;
+                        x2 = tile.x_offset;
                     }
-                    if (y1 > tile->y_offset)
+                    if (y1 > tile.y_offset)
                     {
-                        y1 = tile->y_offset;
+                        y1 = tile.y_offset;
                     }
-                    if (y2 < tile->y_offset)
+                    if (y2 < tile.y_offset)
                     {
-                        y2 = tile->y_offset;
+                        y2 = tile.y_offset;
                     }
                 }
 

@@ -85,7 +85,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
     auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedOffsets;
 
     bool calculate_cost = true;
-    for (int32_t i = 0; sceneryEntry->tiles[i].x_offset != -1; i++)
+    for (int32_t i = 0; i < sceneryEntry->tiles.size(); i++)
     {
         auto currentTileRotatedOffset = CoordsXYZ{
             CoordsXY{ sceneryEntry->tiles[i].x_offset, sceneryEntry->tiles[i].y_offset }.Rotate(_loc.direction),
@@ -170,7 +170,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
 
     auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedFirstTile;
 
-    for (int32_t i = 0; sceneryEntry->tiles[i].x_offset != -1; i++)
+    for (int32_t i = 0; sceneryEntry->tiles.size(); i++)
     {
         auto rotatedCurrentTile = CoordsXYZ{
             CoordsXY{ sceneryEntry->tiles[i].x_offset, sceneryEntry->tiles[i].y_offset }.Rotate(_loc.direction),

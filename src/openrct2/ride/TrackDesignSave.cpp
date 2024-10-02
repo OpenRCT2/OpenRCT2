@@ -148,11 +148,8 @@ bool TrackDesignSaveContainsTileElement(const TileElement* tileElement)
     return false;
 }
 
-static int32_t TrackDesignSaveGetTotalElementCount(TileElement* tileElement)
+static size_t TrackDesignSaveGetTotalElementCount(TileElement* tileElement)
 {
-    int32_t elementCount;
-    LargeSceneryTile* tile;
-
     switch (tileElement->GetType())
     {
         case TileElementType::Path:
@@ -163,14 +160,7 @@ static int32_t TrackDesignSaveGetTotalElementCount(TileElement* tileElement)
         case TileElementType::LargeScenery:
         {
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            tile = sceneryEntry->tiles;
-            elementCount = 0;
-            do
-            {
-                tile++;
-                elementCount++;
-            } while (tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)));
-            return elementCount;
+            return sceneryEntry->tiles.size();
         }
         default:
             return 0;
@@ -287,7 +277,7 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
     {
         auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
-        auto sceneryTiles = sceneryEntry->tiles;
+        auto& sceneryTiles = sceneryEntry->tiles;
 
         int32_t z = tileElement->BaseHeight;
         auto direction = tileElement->GetDirection();
@@ -302,7 +292,7 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
 
         // Iterate through each tile of the large scenery element
         sequence = 0;
-        for (auto tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+        for (auto tile = sceneryTiles.begin(); tile != sceneryTiles.end(); tile++, sequence++)
         {
             CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
             auto rotatedOffsetPos = offsetPos.Rotate(direction);
@@ -519,7 +509,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
 
         // Iterate through each tile of the large scenery element
         sequence = 0;
-        for (auto tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+        for (auto tile = sceneryTiles.begin(); tile != sceneryTiles.end(); tile++, sequence++)
         {
             CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
             auto rotatedOffsetPos = offsetPos.Rotate(direction);
