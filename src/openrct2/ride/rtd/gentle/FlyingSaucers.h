@@ -21,8 +21,8 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionFlyingSaucers,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional,

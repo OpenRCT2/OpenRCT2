@@ -22,8 +22,8 @@ constexpr RideTypeDescriptor SpinningWildMouseRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionWildMouse,
         .supportType = MetalSupportType::Tubes,
-        .EnabledTrackPieces = {TrackGroup::straight,TrackGroup::stationEnd,TrackGroup::liftHill,  TrackGroup::slope,TrackGroup::slopeLong,TrackGroup::curveVerySmall,TrackGroup::curveSmall, TrackGroup::brakes,TrackGroup::blockBrakes,TrackGroup::rotationControlToggle},
-        .ExtraTrackPieces = {TrackGroup::liftHillSteep, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve},
+        .enabledTrackGroups = {TrackGroup::straight,TrackGroup::stationEnd,TrackGroup::liftHill,  TrackGroup::slope,TrackGroup::flatToSteepSlope,TrackGroup::curveVerySmall,TrackGroup::curveSmall, TrackGroup::brakes,TrackGroup::blockBrakes,TrackGroup::rotationControlToggle},
+        .extraTrackGroups = {TrackGroup::liftHillSteep, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |

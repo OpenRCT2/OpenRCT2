@@ -199,6 +199,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 ContextOpenWindow(WindowClass::Map);
+                ContextOpenWindow(WindowClass::Mapgen);
             }
         }
 

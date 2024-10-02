@@ -308,6 +308,11 @@
         "y": 2
     },
     {
+        "path": "icons/map_gen_terrain_tab.png",
+        "x": 1,
+        "y": 10
+    },
+    {
         "path": "icons/map_gen_button.png"
     },
     {
@@ -7266,6 +7271,198 @@
         "palette": "keep"
     },
     {
+        "path": "track/minetrain/flat_to_steep_up_1_1.png",
+        "x": -25,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_1_2.png",
+        "x": -25,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_1_3.png",
+        "x": -25,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_1_4.png",
+        "x": -24,
+        "y": -47,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_2_1.png",
+        "x": -25,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_2_2.png",
+        "x": -26,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_2_3.png",
+        "x": -25,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_2_4.png",
+        "x": -20,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_3_1.png",
+        "x": -27,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_3_2.png",
+        "x": -28,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_3_3.png",
+        "x": -23,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_3_4.png",
+        "x": -25,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_4_1.png",
+        "x": -33,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_4_2.png",
+        "x": -26,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_4_3.png",
+        "x": -26,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_4_4.png",
+        "x": -27,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_1_1.png",
+        "x": -27,
+        "y": -42,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_1_2.png",
+        "x": -26,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_1_3.png",
+        "x": -28,
+        "y": -17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_1_4.png",
+        "x": -26,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_2_1.png",
+        "x": -26,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_2_2.png",
+        "x": -20,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_2_3.png",
+        "x": -22,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_2_4.png",
+        "x": -25,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_3_1.png",
+        "x": -14,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_3_2.png",
+        "x": -14,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_3_3.png",
+        "x": -20,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_3_4.png",
+        "x": -24,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_4_1.png",
+        "x": -23,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_4_2.png",
+        "x": -21,
+        "y": -28,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_4_3.png",
+        "x": -25,
+        "y": -17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_4_4.png",
+        "x": -24,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
         "path": "track/standup/brake_horizontal.png",
         "x": -32,
         "y": 1,
@@ -9739,6 +9936,166 @@
         "path": "support/steep_to_flat_4_4.png",
         "x": -32,
         "y": -17
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_1_1.png",
+        "x": -24,
+        "y": -1
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_1_2.png",
+        "x": -24,
+        "y": 2
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_1_3.png",
+        "x": -24,
+        "y": 2
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_1_4.png",
+        "x": -24,
+        "y": -1
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_2_1.png",
+        "x": -24,
+        "y": -14
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_2_2.png",
+        "x": -24,
+        "y": -1
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_2_3.png",
+        "x": -24,
+        "y": -1
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_2_4.png",
+        "x": -24,
+        "y": -14
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_3_1.png",
+        "x": -24,
+        "y": -23
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_3_2.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_3_3.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_3_4.png",
+        "x": -24,
+        "y": -22
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_4_1.png",
+        "x": -24,
+        "y": -52
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_4_2.png",
+        "x": -24,
+        "y": -36
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_4_3.png",
+        "x": -24,
+        "y": -36
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_4_4.png",
+        "x": -24,
+        "y": -52
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_1_1.png",
+        "x": -24,
+        "y": -49
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_1_2.png",
+        "x": -24,
+        "y": -33
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_1_3.png",
+        "x": -24,
+        "y": -33
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_1_4.png",
+        "x": -24,
+        "y": -49
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_2_1.png",
+        "x": -24,
+        "y": -28
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_2_2.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_2_3.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_2_4.png",
+        "x": -24,
+        "y": -28
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_3_1.png",
+        "x": -24,
+        "y": -26
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_3_2.png",
+        "x": -24,
+        "y": -13
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_3_3.png",
+        "x": -24,
+        "y": -13
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_3_4.png",
+        "x": -24,
+        "y": -26
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_4_1.png",
+        "x": -24,
+        "y": -15
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_4_2.png",
+        "x": -24,
+        "y": -10
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_4_3.png",
+        "x": -24,
+        "y": -10
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_4_4.png",
+        "x": -24,
+        "y": -15
     },
     {
         "path": "track/rmc/preview_track.png",

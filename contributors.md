@@ -307,7 +307,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Martijn Kroese (MK98) - Diagonal brakes project
 * Peter van den Berg (Recurious) - Diagonal brakes project
 * Joshua Jacobs - OpenGraphics Spooky Theme
-* (mixiate) - Wooden Rollercoaster flat to steep track pieces
+* (mixiate) - Wooden and Mine Train Rollercoaster flat-to-steep track pieces
 
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)

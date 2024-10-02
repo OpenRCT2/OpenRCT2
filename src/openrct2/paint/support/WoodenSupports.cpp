@@ -77,22 +77,22 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds0 = { {
     { 3505, 3506, 3507, 3508 }, // ?
     { 3509, 3510, 3511, 3512 }, // ?
     { 3513, 3513, 3513, 3513 }, // Large scenery
-    { SPR_G2_SUPPORT_BEGIN, SPR_G2_SUPPORT_BEGIN + 1, SPR_G2_SUPPORT_BEGIN + 2,
-      SPR_G2_SUPPORT_BEGIN + 3 }, // Flat to steep large 1
-    { SPR_G2_SUPPORT_BEGIN + 4, SPR_G2_SUPPORT_BEGIN + 5, SPR_G2_SUPPORT_BEGIN + 6,
-      SPR_G2_SUPPORT_BEGIN + 7 }, // Flat to steep large 2
-    { SPR_G2_SUPPORT_BEGIN + 8, SPR_G2_SUPPORT_BEGIN + 9, SPR_G2_SUPPORT_BEGIN + 10,
-      SPR_G2_SUPPORT_BEGIN + 11 }, // Flat to steep large 3
-    { SPR_G2_SUPPORT_BEGIN + 12, SPR_G2_SUPPORT_BEGIN + 13, SPR_G2_SUPPORT_BEGIN + 14,
-      SPR_G2_SUPPORT_BEGIN + 15 }, // Flat to steep large 4
-    { SPR_G2_SUPPORT_BEGIN + 16, SPR_G2_SUPPORT_BEGIN + 17, SPR_G2_SUPPORT_BEGIN + 18,
-      SPR_G2_SUPPORT_BEGIN + 19 }, // Steep to flat large 1
-    { SPR_G2_SUPPORT_BEGIN + 20, SPR_G2_SUPPORT_BEGIN + 21, SPR_G2_SUPPORT_BEGIN + 22,
-      SPR_G2_SUPPORT_BEGIN + 23 }, // Steep to flat large 2
-    { SPR_G2_SUPPORT_BEGIN + 24, SPR_G2_SUPPORT_BEGIN + 25, SPR_G2_SUPPORT_BEGIN + 26,
-      SPR_G2_SUPPORT_BEGIN + 27 }, // Steep to flat large 3
-    { SPR_G2_SUPPORT_BEGIN + 28, SPR_G2_SUPPORT_BEGIN + 29, SPR_G2_SUPPORT_BEGIN + 30,
-      SPR_G2_SUPPORT_BEGIN + 31 }, // Steep to flat large 4
+    { SPR_G2_SUPPORT_WOODEN_TRUSS, SPR_G2_SUPPORT_WOODEN_TRUSS + 1, SPR_G2_SUPPORT_WOODEN_TRUSS + 2,
+      SPR_G2_SUPPORT_WOODEN_TRUSS + 3 }, // Flat to steep large 1
+    { SPR_G2_SUPPORT_WOODEN_TRUSS + 4, SPR_G2_SUPPORT_WOODEN_TRUSS + 5, SPR_G2_SUPPORT_WOODEN_TRUSS + 6,
+      SPR_G2_SUPPORT_WOODEN_TRUSS + 7 }, // Flat to steep large 2
+    { SPR_G2_SUPPORT_WOODEN_TRUSS + 8, SPR_G2_SUPPORT_WOODEN_TRUSS + 9, SPR_G2_SUPPORT_WOODEN_TRUSS + 10,
+      SPR_G2_SUPPORT_WOODEN_TRUSS + 11 }, // Flat to steep large 3
+    { SPR_G2_SUPPORT_WOODEN_TRUSS + 12, SPR_G2_SUPPORT_WOODEN_TRUSS + 13, SPR_G2_SUPPORT_WOODEN_TRUSS + 14,
+      SPR_G2_SUPPORT_WOODEN_TRUSS + 15 }, // Flat to steep large 4
+    { SPR_G2_SUPPORT_WOODEN_TRUSS + 16, SPR_G2_SUPPORT_WOODEN_TRUSS + 17, SPR_G2_SUPPORT_WOODEN_TRUSS + 18,
+      SPR_G2_SUPPORT_WOODEN_TRUSS + 19 }, // Steep to flat large 1
+    { SPR_G2_SUPPORT_WOODEN_TRUSS + 20, SPR_G2_SUPPORT_WOODEN_TRUSS + 21, SPR_G2_SUPPORT_WOODEN_TRUSS + 22,
+      SPR_G2_SUPPORT_WOODEN_TRUSS + 23 }, // Steep to flat large 2
+    { SPR_G2_SUPPORT_WOODEN_TRUSS + 24, SPR_G2_SUPPORT_WOODEN_TRUSS + 25, SPR_G2_SUPPORT_WOODEN_TRUSS + 26,
+      SPR_G2_SUPPORT_WOODEN_TRUSS + 27 }, // Steep to flat large 3
+    { SPR_G2_SUPPORT_WOODEN_TRUSS + 28, SPR_G2_SUPPORT_WOODEN_TRUSS + 29, SPR_G2_SUPPORT_WOODEN_TRUSS + 30,
+      SPR_G2_SUPPORT_WOODEN_TRUSS + 31 }, // Steep to flat large 4
 } };
 
 static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
@@ -109,14 +109,22 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
     { 3721, 3722, 3723, 3724 }, // ?
     { 3725, 3726, 3727, 3728 }, // ?
     { 3729, 3729, 3729, 3729 }, // Large scenery
-    { 0, 0, 0, 0 },             // Flat to steep large 1
-    { 0, 0, 0, 0 },             // Flat to steep large 2
-    { 0, 0, 0, 0 },             // Flat to steep large 3
-    { 0, 0, 0, 0 },             // Flat to steep large 4
-    { 0, 0, 0, 0 },             // Steep to flat large 1
-    { 0, 0, 0, 0 },             // Steep to flat large 2
-    { 0, 0, 0, 0 },             // Steep to flat large 3
-    { 0, 0, 0, 0 },             // Steep to flat large 4
+    { SPR_G2_SUPPORT_WOODEN_MINE, SPR_G2_SUPPORT_WOODEN_MINE + 1, SPR_G2_SUPPORT_WOODEN_MINE + 2,
+      SPR_G2_SUPPORT_WOODEN_MINE + 3 }, // Flat to steep large 1
+    { SPR_G2_SUPPORT_WOODEN_MINE + 4, SPR_G2_SUPPORT_WOODEN_MINE + 5, SPR_G2_SUPPORT_WOODEN_MINE + 6,
+      SPR_G2_SUPPORT_WOODEN_MINE + 7 }, // Flat to steep large 2
+    { SPR_G2_SUPPORT_WOODEN_MINE + 8, SPR_G2_SUPPORT_WOODEN_MINE + 9, SPR_G2_SUPPORT_WOODEN_MINE + 10,
+      SPR_G2_SUPPORT_WOODEN_MINE + 11 }, // Flat to steep large 3
+    { SPR_G2_SUPPORT_WOODEN_MINE + 12, SPR_G2_SUPPORT_WOODEN_MINE + 13, SPR_G2_SUPPORT_WOODEN_MINE + 14,
+      SPR_G2_SUPPORT_WOODEN_MINE + 15 }, // Flat to steep large 4
+    { SPR_G2_SUPPORT_WOODEN_MINE + 16, SPR_G2_SUPPORT_WOODEN_MINE + 17, SPR_G2_SUPPORT_WOODEN_MINE + 18,
+      SPR_G2_SUPPORT_WOODEN_MINE + 19 }, // Steep to flat large 1
+    { SPR_G2_SUPPORT_WOODEN_MINE + 20, SPR_G2_SUPPORT_WOODEN_MINE + 21, SPR_G2_SUPPORT_WOODEN_MINE + 22,
+      SPR_G2_SUPPORT_WOODEN_MINE + 23 }, // Steep to flat large 2
+    { SPR_G2_SUPPORT_WOODEN_MINE + 24, SPR_G2_SUPPORT_WOODEN_MINE + 25, SPR_G2_SUPPORT_WOODEN_MINE + 26,
+      SPR_G2_SUPPORT_WOODEN_MINE + 27 }, // Steep to flat large 3
+    { SPR_G2_SUPPORT_WOODEN_MINE + 28, SPR_G2_SUPPORT_WOODEN_MINE + 29, SPR_G2_SUPPORT_WOODEN_MINE + 30,
+      SPR_G2_SUPPORT_WOODEN_MINE + 31 }, // Steep to flat large 4
 } };
 
 // clang-format off

@@ -586,8 +586,14 @@ static void InputViewportDragContinue()
             // As the user moved the mouse, don't interpret it as right click in any case.
             _ticksSinceDragStart = std::nullopt;
 
-            differentialCoords.x = (viewport->zoom + 1).ApplyTo(differentialCoords.x);
-            differentialCoords.y = (viewport->zoom + 1).ApplyTo(differentialCoords.y);
+            // applying the zoom only with negative values avoids a "deadzone" effect where small positive value round to zero.
+            const bool posX = differentialCoords.x > 0;
+            const bool posY = differentialCoords.y > 0;
+            differentialCoords.x = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
+            differentialCoords.y = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
+            differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
+            differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
+
             if (Config::Get().general.InvertViewportDrag)
             {
                 w->savedViewPos -= differentialCoords;

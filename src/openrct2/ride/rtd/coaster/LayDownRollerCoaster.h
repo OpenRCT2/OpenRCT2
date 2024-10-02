@@ -23,16 +23,16 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
         {
             .Drawer = GetTrackPaintFunctionCorkscrewRC,
             .supportType = MetalSupportType::TubesInverted,
-            .EnabledTrackPieces = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::corkscrewUninverted, TrackGroup::slopeSteepLong, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes },
-            .ExtraTrackPieces = { TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::booster },
+            .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::corkscrewUninverted, TrackGroup::slopeSteepLong, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes },
+            .extraTrackGroups = { TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::booster },
         }
     ),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor(
         {
             .Drawer = GetTrackPaintFunctionLayDownRCInverted,
             .supportType = MetalSupportType::TubesInverted,
-            .EnabledTrackPieces = { TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistInverted, TrackGroup::flyingHalfLoopInvertedDown, TrackGroup::corkscrewInverted },
-            .ExtraTrackPieces = { TrackGroup::flyingHalfLoopInvertedUp, TrackGroup::stationEnd, TrackGroup::liftHill },
+            .enabledTrackGroups = { TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistInverted, TrackGroup::flyingHalfLoopInvertedDown, TrackGroup::corkscrewInverted },
+            .extraTrackGroups = { TrackGroup::flyingHalfLoopInvertedUp, TrackGroup::stationEnd, TrackGroup::liftHill },
         }
     ),
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
@@ -100,13 +100,13 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .Drawer = nullptr,
-        .EnabledTrackPieces = {  },
-        .ExtraTrackPieces = {  },
+        .enabledTrackGroups = {  },
+        .extraTrackGroups = {  },
     }),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = nullptr,
-        .EnabledTrackPieces = {  },
-        .ExtraTrackPieces = {  },
+        .enabledTrackGroups = {  },
+        .extraTrackGroups = {  },
     }),
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | 
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation),

@@ -1950,6 +1950,39 @@ declare global {
 
     interface LargeSceneryObject extends SceneryObject {
 
+        readonly tiles: LargeSceneryObjectTile[];
+    }
+
+    interface LargeSceneryObjectTile {
+        /**
+         * The offset from tile index 0's location to this tile
+         */
+        readonly offset: CoordsXYZ;
+
+        /**
+         * The clearance height for this tile
+         */
+        readonly zClearance: number;
+
+        /**
+         * Set if the tile will draw supports
+         */
+        readonly hasSupports: boolean;
+
+        /**
+         * Set if the tile allows for drawing supports above this tile
+         */
+        readonly allowSupportsAbove: boolean;
+
+        /**
+         * A tile can be split into 4 sub tiles this defines what of those 4 are occupied by this tile
+         */
+        readonly corners: number;
+
+        /**
+         * Indicates if an edge can have walls built on it
+         */
+        readonly walls: number;
     }
 
     interface WallObject extends SceneryObject {
@@ -2658,7 +2691,7 @@ declare global {
         "waiting_to_depart" |
         "waiting_to_start";
 
-    type CrashParticleType =  "corner" | "rod" | "wheel" | "panel" | "seat";
+    type CrashParticleType = "corner" | "rod" | "wheel" | "panel" | "seat";
 
     /**
      * Override properties for launch data. All properties except colour are randomly
@@ -4478,28 +4511,28 @@ declare global {
         ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
         LabelWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
 
-    type IconName = 
+    type IconName =
         "arrow_down" | "arrow_up" | "award" | "awards" | "chain_lift" | "chat" | "cheats" | "closed" | "construction" |
         "copy" | "demolish" | "empty" | "eyedropper" | "fast_forward" | "finance" | "floppy_disk" | "game_speed_indicator" |
-        "game_speed_indicator_double" | "glassy_recolourable" | "graph" | "guest_inventory" | "guests" | 
-        "hearing" | "hide_full" | "hide_partial" | "hide_scenery" | "hide_supports" | "hide_vegetation" | "hide_vehicles" | 
-        "kiosks_and_facilities" | "large_scenery" | "legacy_paths" | "link_chain" | "locate" | "logo" | "logo_text" | "map" | 
-        "map_east" | "map_east_pressed" | "map_gen_land" | "map_gen_noise" | "map_gen_trees" | "map_north" | "map_north_pressed" | 
-        "map_south" | "map_south_pressed" | "map_west" | "map_west_pressed" | "mechanic" | "mirror_arrow" | 
-        "mountain_tool_even" | "mountain_tool_odd" | "multiplayer" | "multiplayer_desync" | "multiplayer_sync" | 
-        "multiplayer_toolbar" | "multiplayer_toolbar_pressed" | "music" | "mute" | "mute_pressed" | "news_messages" | 
+        "game_speed_indicator_double" | "glassy_recolourable" | "graph" | "guest_inventory" | "guests" |
+        "hearing" | "hide_full" | "hide_partial" | "hide_scenery" | "hide_supports" | "hide_vegetation" | "hide_vehicles" |
+        "kiosks_and_facilities" | "large_scenery" | "legacy_paths" | "link_chain" | "locate" | "logo" | "logo_text" | "map" |
+        "map_east" | "map_east_pressed" | "map_gen_land" | "map_gen_noise" | "map_gen_trees" | "map_north" | "map_north_pressed" |
+        "map_south" | "map_south_pressed" | "map_west" | "map_west_pressed" | "mechanic" | "mirror_arrow" |
+        "mountain_tool_even" | "mountain_tool_odd" | "multiplayer" | "multiplayer_desync" | "multiplayer_sync" |
+        "multiplayer_toolbar" | "multiplayer_toolbar_pressed" | "music" | "mute" | "mute_pressed" | "news_messages" |
         "new_ride" | "next" | "no_entry" | "open" | "paintbrush" | "palette_invisible" | "palette_invisible_pressed" | "park" |
-        "paste" | "path_railings" | "path_surfaces" | "paths" | "patrol" | "pause" | "pickup" | "placeholder" | "previous" | 
-        "question" | "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_on_pressed" | "rct1_open_off" | 
-        "rct1_open_off_pressed" | "rct1_open_on" | "rct1_open_on_pressed" | "rct1_simulate_off" | "rct1_simulate_off_pressed" | 
-        "rct1_simulate_on" | "rct1_simulate_on_pressed" | "rct1_test_off" | "rct1_test_off_pressed" | "rct1_test_on" | 
-        "rct1_test_on_pressed" | "reload" | "rename" | "research" | "ride" | "ride_stations" | "rides_gentle" | 
-        "rides_rollercoasters" | "rides_shop" | "rides_thrill" | "rides_transport" | "rides_water" | "rotate_arrow" | "scenery" | 
-        "scenery_cluster" | "scenery_paths" | "scenery_paths_items" | "scenery_scatter_high" | "scenery_scatter_low" | 
-        "scenery_scatter_medium" | "scenery_signage" | "scenery_statues" | "scenery_trees" | "scenery_urban" | "scenery_walls" | 
-        "search" | "selection_edge_ne" | "selection_edge_nw" | "selection_edge_se" | "selection_edge_sw" | "server_password" | 
-        "shops_and_stalls" | "sideways_tab" | "sideways_tab_active" | "simulate" | "small_scenery" | "sort" | "stats" | "testing" | 
-        "terrain_edges" | "title_play" | "title_restart" | "title_skip" | "title_stop" | "unmute" | "unmute_pressed" | "view" | 
+        "paste" | "path_railings" | "path_surfaces" | "paths" | "patrol" | "pause" | "pickup" | "placeholder" | "previous" |
+        "question" | "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_on_pressed" | "rct1_open_off" |
+        "rct1_open_off_pressed" | "rct1_open_on" | "rct1_open_on_pressed" | "rct1_simulate_off" | "rct1_simulate_off_pressed" |
+        "rct1_simulate_on" | "rct1_simulate_on_pressed" | "rct1_test_off" | "rct1_test_off_pressed" | "rct1_test_on" |
+        "rct1_test_on_pressed" | "reload" | "rename" | "research" | "ride" | "ride_stations" | "rides_gentle" |
+        "rides_rollercoasters" | "rides_shop" | "rides_thrill" | "rides_transport" | "rides_water" | "rotate_arrow" | "scenery" |
+        "scenery_cluster" | "scenery_paths" | "scenery_paths_items" | "scenery_scatter_high" | "scenery_scatter_low" |
+        "scenery_scatter_medium" | "scenery_signage" | "scenery_statues" | "scenery_trees" | "scenery_urban" | "scenery_walls" |
+        "search" | "selection_edge_ne" | "selection_edge_nw" | "selection_edge_se" | "selection_edge_sw" | "server_password" |
+        "shops_and_stalls" | "sideways_tab" | "sideways_tab_active" | "simulate" | "small_scenery" | "sort" | "stats" | "testing" |
+        "terrain_edges" | "title_play" | "title_restart" | "title_skip" | "title_stop" | "unmute" | "unmute_pressed" | "view" |
         "water" | "zoom_in" | "zoom_in_background" | "zoom_out" | "zoom_out_background";
 
     interface WidgetBase {

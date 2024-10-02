@@ -48,7 +48,7 @@ enum class TrackPitch : uint8_t
 };
 
 // Vehicle sprite groups required by track groups are defined in ride_entry_get_supported_track_pieces
-enum TrackGroup : uint8_t
+enum class TrackGroup : uint8_t
 {
     flat = 0,
     straight,
@@ -60,7 +60,7 @@ enum TrackGroup : uint8_t
     verticalLoop,
     slope,
     slopeSteepDown,
-    slopeLong,
+    flatToSteepSlope,
     slopeCurve,
     slopeCurveSteep,
     sBend,
@@ -745,16 +745,3 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
 bool TrackTypeIsHelix(track_type_t trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
-
-/**
- * If new pieces get added to existing ride types, this could cause existing parks to change appearance,
- * since the formerly unrendered pieces were not explicitly set invisible.
- * To avoid this, this function will return true if the piece is question was added after the park was created,
- * so that import code can properly set the visibility.
- *
- * @param rideType The OpenRCT2 ride type
- * @param trackType The OpenRCT2 track type
- * @param parkFileVersion The current park file version. Pass -1 when converting S4 or S6.
- * @return
- */
-bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, int32_t parkFileVersion = -1);

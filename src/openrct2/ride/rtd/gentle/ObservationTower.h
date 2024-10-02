@@ -22,8 +22,8 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::TowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionObservationTower,
-        .EnabledTrackPieces = {TrackGroup::tower},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {TrackGroup::tower},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,

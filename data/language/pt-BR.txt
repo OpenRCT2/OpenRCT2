@@ -3743,6 +3743,8 @@ STR_6671    :Exibir nomes ‘reais’ para os funcionários
 STR_6672    :Alternar entre exibir nomes ‘reais’ para os funcionários e números de funcionários
 STR_6673    :Transparente
 STR_6674    :{MONTH}, Ano {COMMA16}
+STR_6675    :Nomes das Pessoinhas
+STR_6676    :Pelo menos um objeto de nomes de pessoinhas deve ser selecionado
 
 #############
 # Scenarios #

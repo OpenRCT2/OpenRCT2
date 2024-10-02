@@ -23,8 +23,8 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionCarRide,
         .supportType = MetalSupportType::Boxed,
-        .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::rapids},
-        .ExtraTrackPieces = {TrackGroup::spinningTunnel},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::rapids},
+        .extraTrackGroups = {TrackGroup::spinningTunnel},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::canSynchroniseWithAdjacentStations,

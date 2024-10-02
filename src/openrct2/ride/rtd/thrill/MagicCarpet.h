@@ -21,8 +21,8 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionMagicCarpet,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasSinglePieceStation,

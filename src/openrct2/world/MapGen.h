@@ -12,33 +12,42 @@
 #include "../core/StringTypes.h"
 #include "Location.hpp"
 
+enum class MapGenAlgorithm : uint8_t
+{
+    blank,
+    simplexNoise,
+    heightmapImage,
+};
+
 struct MapGenSettings
 {
     // Base
-    TileCoordsXY mapSize;
-    int32_t height;
-    int32_t water_level;
-    int32_t floor;
-    int32_t wall;
+    MapGenAlgorithm algorithm = MapGenAlgorithm::blank;
+    TileCoordsXY mapSize{ 150, 150 };
+    int32_t waterLevel = 6;
+    int32_t landTexture = 0;
+    int32_t edgeTexture = 0;
+    int32_t heightmapLow = 14;
+    int32_t heightmapHigh = 60;
+    bool smoothTileEdges = true;
 
     // Features (e.g. tree, rivers, lakes etc.)
-    int32_t trees;
+    bool trees = true;
+    int32_t treeToLandRatio = 25;
+    int32_t minTreeAltitude = 10;
+    int32_t maxTreeAltitude = 50;
+    bool beaches = true;
 
     // Simplex Noise Parameters
-    int32_t simplex_low;
-    int32_t simplex_high;
-    float simplex_base_freq;
-    int32_t simplex_octaves;
+    int32_t simplex_base_freq = 175;
+    int32_t simplex_octaves = 6;
 
     // Height map settings
-    bool smooth;
-    bool smooth_height_map;
-    uint32_t smooth_strength;
-    bool normalize_height;
+    bool smooth_height_map = true;
+    uint32_t smooth_strength = 1;
+    bool normalize_height = true;
 };
 
-void MapGenGenerateBlank(MapGenSettings* settings);
 void MapGenGenerate(MapGenSettings* settings);
-bool MapGenLoadHeightmap(const utf8* path);
-void MapGenUnloadHeightmap();
-void MapGenGenerateFromHeightmap(MapGenSettings* settings);
+bool MapGenLoadHeightmapImage(const utf8* path);
+void MapGenUnloadHeightmapImage();

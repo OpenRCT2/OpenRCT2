@@ -67,6 +67,7 @@ namespace OpenRCT2::Ui::Windows
     money64 PlaceProvisionalTrackPiece(
         RideId rideIndex, int32_t trackType, int32_t trackDirection, SelectedLiftAndInverted liftHillAndAlternativeState,
         const CoordsXYZ& trackPos);
+    static std::pair<bool, track_type_t> WindowRideConstructionUpdateStateGetTrackElement();
 
     static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
     static constexpr int32_t WH = 394;
@@ -527,7 +528,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case TrackPitch::Down60:
                     disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
-                    if (!IsTrackEnabled(TrackGroup::slopeLong)
+                    if (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
                         && !(
                             IsTrackEnabled(TrackGroup::slopeSteepLong)
                             && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
@@ -540,7 +541,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case TrackPitch::Up60:
                     disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
-                    if (!IsTrackEnabled(TrackGroup::slopeLong)
+                    if (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
                         && !(
                             IsTrackEnabled(TrackGroup::slopeSteepLong)
                             && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
@@ -555,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
             }
             if (_previousTrackPitchEnd == TrackPitch::None)
             {
-                if (!IsTrackEnabled(TrackGroup::slopeLong) && !IsTrackEnabled(TrackGroup::slopeSteepLong))
+                if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::slopeSteepLong))
                 {
                     disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                 }
@@ -1559,6 +1560,35 @@ namespace OpenRCT2::Ui::Windows
             currentRide->FormatNameTo(ft);
         }
 
+        static void OnDrawUpdateCoveredPieces(const TrackDrawerDescriptor& trackDrawerDescriptor, Widget* widgets)
+        {
+            widgets[WIDX_U_TRACK].type = WindowWidgetType::Empty;
+            widgets[WIDX_O_TRACK].type = WindowWidgetType::Empty;
+
+            if (!trackDrawerDescriptor.HasCoveredPieces())
+                return;
+
+            auto trackElementResult = WindowRideConstructionUpdateStateGetTrackElement();
+            if (!std::get<0>(trackElementResult))
+                return;
+
+            auto selectedTrackType = std::get<1>(trackElementResult);
+            const auto& ted = GetTrackElementDescriptor(selectedTrackType);
+            auto availableGroups = trackDrawerDescriptor.Covered.enabledTrackGroups;
+
+            if (!availableGroups.get(EnumValue(ted.definition.group)))
+                return;
+
+            widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
+            widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
+            widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
+
+            widgets[WIDX_U_TRACK].image = ImageId(trackDrawerDescriptor.Regular.icon);
+            widgets[WIDX_O_TRACK].image = ImageId(trackDrawerDescriptor.Covered.icon);
+            widgets[WIDX_U_TRACK].tooltip = trackDrawerDescriptor.Regular.tooltip;
+            widgets[WIDX_O_TRACK].tooltip = trackDrawerDescriptor.Covered.tooltip;
+        }
+
         void OnDraw(DrawPixelInfo& dpi) override
         {
             DrawPixelInfo clipdpi;
@@ -1898,34 +1928,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::FlatBtn;
                     widgets[WIDX_BANK_RIGHT].type = WindowWidgetType::FlatBtn;
                 }
-                if (trackDrawerDescriptor.HasCoveredPieces())
-                {
-                    widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
-                    widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
-                    widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
-
-                    widgets[WIDX_U_TRACK].image = ImageId(trackDrawerDescriptor.Regular.icon);
-                    widgets[WIDX_O_TRACK].image = ImageId(trackDrawerDescriptor.Covered.icon);
-                    widgets[WIDX_U_TRACK].tooltip = trackDrawerDescriptor.Regular.tooltip;
-                    widgets[WIDX_O_TRACK].tooltip = trackDrawerDescriptor.Covered.tooltip;
-
-                    // TODO: Read these from the TrackDrawerEntry
-                    if (currentRide->type == RIDE_TYPE_WATER_COASTER)
-                    {
-                        const bool hasCoveredCurve = _currentlySelectedTrack == TrackCurve::None
-                            || _currentlySelectedTrack == TrackCurve::Left || _currentlySelectedTrack == TrackCurve::Right;
-                        const bool isSBend = _currentlySelectedTrack == TrackElemType::SBendLeft
-                            || _currentlySelectedTrack == TrackElemType::SBendRight;
-
-                        const bool hasCoveredVersion = (hasCoveredCurve || isSBend) && _currentTrackPitchEnd == TrackPitch::None
-                            && _currentTrackRollEnd == TrackRoll::None;
-                        if (!hasCoveredVersion)
-                        {
-                            widgets[WIDX_U_TRACK].type = WindowWidgetType::Empty;
-                            widgets[WIDX_O_TRACK].type = WindowWidgetType::Empty;
-                        }
-                    }
-                }
+                OnDrawUpdateCoveredPieces(trackDrawerDescriptor, widgets);
             }
             else
             {
@@ -2722,20 +2725,20 @@ namespace OpenRCT2::Ui::Windows
 
     static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType)
     {
-        RideTrackGroup disabledPieces{};
+        RideTrackGroups disabledGroups{};
         const auto& rtd = GetRideTypeDescriptor(rideType);
         if (rtd.HasFlag(RtdFlag::hasTrack))
         {
             // Set all pieces as “disabled”. When looping over the ride entries,
             // pieces will be re-enabled as soon as a single entry supports it.
-            disabledPieces.flip();
+            disabledGroups.flip();
 
             auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
             auto& rideEntries = objManager.GetAllRideEntries(rideType);
             // If there are no vehicles for this ride type, enable all the track pieces.
             if (rideEntries.size() == 0)
             {
-                disabledPieces.reset();
+                disabledGroups.reset();
             }
 
             for (auto rideEntryIndex : rideEntries)
@@ -2748,17 +2751,17 @@ namespace OpenRCT2::Ui::Windows
                 if (currentRideEntry->Cars[0].PaintStyle != VEHICLE_VISUAL_DEFAULT || rideType == RIDE_TYPE_CHAIRLIFT
                     || (currentRideEntry->Cars[0].flags & CAR_ENTRY_FLAG_SLIDE_SWING))
                 {
-                    disabledPieces.reset();
+                    disabledGroups.reset();
                     break;
                 }
 
                 // Any pieces that this ride entry supports must be taken out of the array.
                 auto supportedPieces = RideEntryGetSupportedTrackPieces(*currentRideEntry);
-                disabledPieces &= supportedPieces.flip();
+                disabledGroups &= supportedPieces.flip();
             }
         }
 
-        UpdateDisabledRidePieces(disabledPieces);
+        UpdateDisabledRideGroups(disabledGroups);
     }
 
     /**
@@ -3091,7 +3094,7 @@ namespace OpenRCT2::Ui::Windows
             return;
 
         auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(ride->GetRideTypeDescriptor());
-        UpdateEnabledRidePieces(trackDrawerDescriptor);
+        UpdateEnabledRideGroups(trackDrawerDescriptor);
     }
 
     /**
@@ -4733,11 +4736,8 @@ namespace OpenRCT2::Ui::Windows
         return res.Cost;
     }
 
-    static std::tuple<bool, track_type_t> WindowRideConstructionUpdateStateGetTrackElement()
+    static std::pair<bool, track_type_t> WindowRideConstructionUpdateStateGetTrackElement()
     {
-        auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
-        ContextBroadcastIntent(&intent);
-
         auto startSlope = _previousTrackPitchEnd;
         auto endSlope = _currentTrackPitchEnd;
         auto startBank = _previousTrackRollEnd;
@@ -4754,7 +4754,7 @@ namespace OpenRCT2::Ui::Windows
         auto selectedTrack = _currentlySelectedTrack;
         if (selectedTrack == TrackElemType::None)
         {
-            return std::make_tuple(false, 0);
+            return std::make_pair(false, 0);
         }
 
         bool startsDiagonal = (_currentTrackPieceDirection & (1 << 2)) != 0;
@@ -4771,9 +4771,9 @@ namespace OpenRCT2::Ui::Windows
             auto trackPiece = GetTrackTypeFromCurve(
                 selectedTrack.curve, startsDiagonal, startSlope, endSlope, startBank, endBank);
             if (trackPiece != TrackElemType::None)
-                return std::make_tuple(true, trackPiece);
+                return std::make_pair(true, trackPiece);
             else
-                return std::make_tuple(false, 0);
+                return std::make_pair(false, 0);
         }
 
         auto asTrackType = selectedTrack.trackType;
@@ -4784,42 +4784,42 @@ namespace OpenRCT2::Ui::Windows
             case TrackElemType::SBendRight:
                 if (startSlope != TrackPitch::None || endSlope != TrackPitch::None)
                 {
-                    return std::make_tuple(false, 0);
+                    return std::make_pair(false, 0);
                 }
 
                 if (startBank != TrackRoll::None || endBank != TrackRoll::None)
                 {
-                    return std::make_tuple(false, 0);
+                    return std::make_pair(false, 0);
                 }
 
-                return std::make_tuple(true, asTrackType);
+                return std::make_pair(true, asTrackType);
 
             case TrackElemType::LeftVerticalLoop:
             case TrackElemType::RightVerticalLoop:
                 if (startBank != TrackRoll::None || endBank != TrackRoll::None)
                 {
-                    return std::make_tuple(false, 0);
+                    return std::make_pair(false, 0);
                 }
 
                 if (_rideConstructionState == RideConstructionState::Back)
                 {
                     if (endSlope != TrackPitch::Down25)
                     {
-                        return std::make_tuple(false, 0);
+                        return std::make_pair(false, 0);
                     }
                 }
                 else
                 {
                     if (startSlope != TrackPitch::Up25)
                     {
-                        return std::make_tuple(false, 0);
+                        return std::make_pair(false, 0);
                     }
                 }
 
-                return std::make_tuple(true, asTrackType);
+                return std::make_pair(true, asTrackType);
 
             default:
-                return std::make_tuple(true, asTrackType);
+                return std::make_pair(true, asTrackType);
         }
     }
 
@@ -4845,6 +4845,8 @@ namespace OpenRCT2::Ui::Windows
         uint16_t x, y, properties;
         SelectedLiftAndInverted liftHillAndInvertedState{};
 
+        auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
+        ContextBroadcastIntent(&intent);
         auto updated_element = WindowRideConstructionUpdateStateGetTrackElement();
         if (!std::get<0>(updated_element))
         {
@@ -4896,16 +4898,17 @@ namespace OpenRCT2::Ui::Windows
         }
 
         const auto& rtd = ride->GetRideTypeDescriptor();
-        const auto trackDrawerDecriptor = getCurrentTrackDrawerDescriptor(rtd);
-        if (trackDrawerDecriptor.HasCoveredPieces() && _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces))
+        const auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
+        if (trackDrawerDescriptor.HasCoveredPieces() && _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces))
         {
-            auto availablePieces = trackDrawerDecriptor.Covered.EnabledTrackPieces;
+            auto availableGroups = trackDrawerDescriptor.Covered.enabledTrackGroups;
             const auto& ted = GetTrackElementDescriptor(trackType);
-            auto alternativeType = ted.alternativeType;
+
+            auto coveredVariant = ted.alternativeType;
             // this method limits the track element types that can be used
-            if (alternativeType != TrackElemType::None && (availablePieces.get(trackType)))
+            if (coveredVariant != TrackElemType::None && (availableGroups.get(EnumValue(ted.definition.group))))
             {
-                trackType = alternativeType;
+                trackType = coveredVariant;
                 if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
                     liftHillAndInvertedState.unset(LiftHillAndInverted::liftHill);
             }
