@@ -389,7 +389,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         }
     }
 
-    auto boxlengthZ = std::min<uint8_t>(tile->z_clearance, 128) - 3;
+    auto boxlengthZ = std::min(tile->zClearance, 128) - 3;
     auto bbIndex = 16;
     if (tile->walls) // ODD
     {

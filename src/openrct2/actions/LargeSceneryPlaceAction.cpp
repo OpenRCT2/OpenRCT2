@@ -136,7 +136,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         curTile.y += _loc.y;
 
         int32_t zLow = tile.offset.z + maxHeight;
-        int32_t zHigh = tile.z_clearance + zLow;
+        int32_t zHigh = tile.zClearance + zLow;
 
         QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
@@ -273,7 +273,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         curTile.y += _loc.y;
 
         int32_t zLow = tile.offset.z + maxHeight;
-        int32_t zHigh = tile.z_clearance + zLow;
+        int32_t zHigh = tile.zClearance + zLow;
 
         QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
