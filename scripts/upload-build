@@ -24,7 +24,7 @@ sha1=$4
 branch=$5
 
 if [ -n "$branch" ]; then
-    versionextra=-$branch-$(git rev-parse --short $sha1)
+    versionextra=-$branch-${sha1::10}
 fi
 filename=OpenRCT2-$version$versionextra-$flavour
 
