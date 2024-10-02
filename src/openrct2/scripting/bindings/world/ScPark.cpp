@@ -22,6 +22,7 @@
 #    include "../../../world/Park.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
+#    include "../entity/ScGuest.hpp"
 #    include "ScParkMessage.hpp"
 
 namespace OpenRCT2::Scripting
@@ -146,6 +147,13 @@ namespace OpenRCT2::Scripting
     int32_t ScPark::guestGenerationProbability_get() const
     {
         return GetGameState().GuestGenerationProbability;
+    }
+
+    DukValue ScPark::generateGuest()
+    {
+        ThrowIfGameStateNotMutable();
+        auto guest = Park::GenerateGuest();
+        return GetObjectAsDukValue(_context, std::make_shared<ScGuest>(guest->Id));
     }
 
     money64 ScPark::guestInitialCash_get() const
@@ -428,6 +436,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScPark::guests_get, nullptr, "guests");
         dukglue_register_property(ctx, &ScPark::suggestedGuestMaximum_get, nullptr, "suggestedGuestMaximum");
         dukglue_register_property(ctx, &ScPark::guestGenerationProbability_get, nullptr, "guestGenerationProbability");
+        dukglue_register_method(ctx, &ScPark::generateGuest, "generateGuest");
         dukglue_register_property(ctx, &ScPark::guestInitialCash_get, nullptr, "guestInitialCash");
         dukglue_register_property(ctx, &ScPark::guestInitialHappiness_get, nullptr, "guestInitialHappiness");
         dukglue_register_property(ctx, &ScPark::guestInitialHunger_get, nullptr, "guestInitialHunger");

@@ -1910,8 +1910,8 @@ STR_2670    :Scroll
 STR_2680    :Todas as pesquisas completadas
 STR_2684    :Um grande grupo de visitantes está chegando (250 visitantes)
 STR_2685    :Parâmetros de ruído simples
-STR_2686    :Baixo:
-STR_2687    :Alto:
+STR_2686    :Altura mín. terreno:
+STR_2687    :Altura máx. terreno:
 STR_2688    :Frequência base:
 STR_2689    :Oitavas:
 STR_2690    :Gerador de Mapa
@@ -3165,9 +3165,9 @@ STR_6041    :{BLACK}Não há mecânicos contratados!
 STR_6042    :Carregar altura do mapa
 STR_6043    :Selecionar altura do mapa
 STR_6044    :Suavizar altura do mapa
-STR_6045    :Força
+STR_6045    :Intensidade:
 STR_6046    :Normalizar altura do mapa
-STR_6047    :Suavizar azulejos
+STR_6047    :Suavizar bordas dos azulejos
 STR_6048    :Erro de altura de mapa
 STR_6049    :Erro ao ler PNG
 STR_6050    :Erro ao ler bitmap
@@ -3741,6 +3741,43 @@ STR_6669    :Mostrar trapaças de funcionários
 STR_6670    :Comportamento dos visitantes
 STR_6671    :Exibir nomes ‘reais’ para os funcionários
 STR_6672    :Alternar entre exibir nomes ‘reais’ para os funcionários e números de funcionários
+STR_6673    :Transparente
+STR_6674    :{MONTH}, Ano {COMMA16}
+STR_6675    :Nomes das Pessoinhas
+STR_6676    :Pelo menos um objeto de nomes de pessoinhas deve ser selecionado
+STR_6677    :Adicionar praias ao redor de corpos d'água
+STR_6678    :Fonte de mapa de altura:
+STR_6679    :Planície
+STR_6680    :Ruído simplex
+STR_6681    :Arquivo de mapa de altura
+STR_6682    :Gerador de Mapa - Gerador
+STR_6683    :Gerador de Mapa - Terreno
+STR_6684    :Gerador de Mapa - Água
+STR_6685    :Gerador de Mapa - Florestas
+STR_6686    :Proporção árvore-terreno:
+STR_6687    :Altura mín. árvores:
+STR_6688    :Altura máx. árvores:
+STR_6689    :{UINT16}%
+STR_6690    :Altura mínima do terreno
+STR_6691    :Digite uma altura mín. do terreno entre {COMMA16} e {COMMA16}
+STR_6692    :Altura máxima do terreno
+STR_6693    :Digite uma altura máx. do terreno entre {COMMA16} e {COMMA16}
+STR_6694    :Altura mínima das árvores
+STR_6695    :Digite uma altura mín. das árvores entre  {COMMA16} e {COMMA16}
+STR_6696    :Altura máxima das árvores
+STR_6697    :Digite uma altura máx. das árvores entre  {COMMA16} e {COMMA16}
+STR_6698    :Proporção árvore-terreno
+STR_6699    :Digite uma proporção de árvores para terreno entre {COMMA16} e {COMMA16}
+STR_6700    :Frequência fundamental do Simplex
+STR_6701    :Digite a frequência fundamental entre {COMMA2DP32} e {COMMA2DP32}
+STR_6702    :Oitavas do Simplex
+STR_6703    :Digite oitavas entre {COMMA16} e {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Navegar...
+STR_6706    :{WINDOW_COLOUR_2}Arquivo de imagem atual: {BLACK}{STRING}
+STR_6707    :(nenhum selecionado)
+STR_6708    :Intensidade da Suavização
+STR_6709    :Digite a intensidade da suavização entre {COMMA16} e {COMMA16}
 
 #############
 # Scenarios #

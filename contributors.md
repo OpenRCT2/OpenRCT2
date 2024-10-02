@@ -122,6 +122,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Arnold Zhou (mrmagic2020) - Various plugin additions, new game option, misc.
 * John Dolph (johnwdolph) - Ride music UI, misc.
 * Harry Hopkinson (Harry-Hopkinson) - Added Cheat for guests ignoring price of rides and stalls.
+* Kendall Frey (kendfrey) - Add plugin API for spawning guests
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)
@@ -306,7 +307,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Martijn Kroese (MK98) - Diagonal brakes project
 * Peter van den Berg (Recurious) - Diagonal brakes project
 * Joshua Jacobs - OpenGraphics Spooky Theme
-* (mixiate) - Wooden Rollercoaster flat to steep track pieces
+* (mixiate) - Wooden and Mine Train Rollercoaster flat-to-steep track pieces
 
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)

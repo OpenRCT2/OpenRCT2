@@ -4,7 +4,13 @@
 - Feature: [#15642] Track design placement can now use construction modifier keys (ctrl/shift).
 - Feature: [#21521] [Plugin] Add hook 'park.guest.softcap.calculate' called before calculating the soft guest cap.
 - Feature: [#22694] Park graphs have tooltips and can be resized like finance graphs.
+- Feature: [#22758] The table of ‘real’ peep names can now be changed using Peep Names objects.
+- Feature: [#22842] [Plugin] Expose large scenery object tiles to the plugin API.
+- Feature: [#22883] [Plugin] Add plugin API for spawning guests.
+- Improved: [#22470] Android: automatically detect RCT2 installs in /sdcard/rct2.
+- Improved: [#22735] The map generator has a redesigned interface that is much more user friendly.
 - Improved: [#22777] Add long flat-to-steep track pieces to the Wooden and Classic Wooden Roller Coasters.
+- Improved: [#22815] Add long flat-to-steep track pieces to the Mine Train Coaster.
 - Change: [#22494] Themes window now displays colours and checkboxes vertically.
 - Change: [#22596] Land ownership fixes described by .parkpatch files are now only considered on scenarios.
 - Change: [#22724] Staff now have optional ‘real’ names as well.
@@ -15,7 +21,9 @@
 - Fix: [#15406] Tunnels on steep Side-Friction track are drawn too low.
 - Fix: [#21959] “Save this before...?” message does not appear when selecting “New Game”.
 - Fix: [#22072] Objective date string and staff tenure date string cannot be reused on agglutinative languages.
+- Fix: [#22133] Ride time is incorrect for extremely slow speeds.
 - Fix: [#22231] Invalid object version can cause a crash.
+- Fix: [#22479] Crash when a ride has no valid music object.
 - Fix: [#22562] Bottom row of pixels is not always drawn by the OpenGL renderer when zoomed in.
 - Fix: [#22653] Missing water tiles in RCT1 and RCT2 scenarios.
 - Fix: [#22654] Misplaced scenario elements in RCT1 and RCT2 scenarios.
@@ -23,6 +31,10 @@
 - Fix: [#22729] Invisibility settings persist after reloading OpenRCT2.
 - Fix: [#22734] Support clearance above steep Side-Friction track is too low.
 - Fix: [#22774] Fix entities leaving stale pixels on the screen when the framerate is uncapped.
+- Fix: [#22805] Fix deadzone when panning the view in positive axis directions.
+- Fix: [#22857] Side-Friction Roller Coaster train clips through slopes.
+- Fix: [#22880] macOS builds lack asset packs and scenario patches.
+- Fix: [objects#346] Invalid refund price for Brick Base Block scenery item.
 
 0.4.14 (2024-09-01)
 ------------------------------------------------------------------------

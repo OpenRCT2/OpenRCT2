@@ -392,45 +392,45 @@ bool RideTypeDescriptor::SupportsRideMode(RideMode rideMode) const
     return RideModes & EnumToFlag(rideMode);
 }
 
-static RideTrackGroup _enabledRidePieces = {};
-static RideTrackGroup _disabledRidePieces = {};
+static RideTrackGroups _enabledRideGroups = {};
+static RideTrackGroups _disabledRideGroups = {};
 
 bool IsTrackEnabled(TrackGroup trackGroup)
 {
-    return _enabledRidePieces.get(EnumValue(trackGroup));
+    return _enabledRideGroups.get(EnumValue(trackGroup));
 }
 
-void UpdateEnabledRidePieces(TrackDrawerDescriptor trackDrawerDescriptor)
+void UpdateEnabledRideGroups(TrackDrawerDescriptor trackDrawerDescriptor)
 {
-    trackDrawerDescriptor.Regular.GetAvailableTrackPieces(_enabledRidePieces);
+    trackDrawerDescriptor.Regular.GetAvailableTrackGroups(_enabledRideGroups);
 
     if (!GetGameState().Cheats.EnableAllDrawableTrackPieces)
     {
-        _enabledRidePieces &= ~_disabledRidePieces;
+        _enabledRideGroups &= ~_disabledRideGroups;
     }
 }
 
-void UpdateDisabledRidePieces(const RideTrackGroup& res)
+void UpdateDisabledRideGroups(const RideTrackGroups& res)
 {
-    _disabledRidePieces = res;
+    _disabledRideGroups = res;
 }
 
-void TrackDrawerEntry::GetAvailableTrackPieces(RideTrackGroup& res) const
+void TrackDrawerEntry::GetAvailableTrackGroups(RideTrackGroups& res) const
 {
-    res = EnabledTrackPieces;
+    res = enabledTrackGroups;
     if (GetGameState().Cheats.EnableAllDrawableTrackPieces)
-        res |= ExtraTrackPieces;
+        res |= extraTrackGroups;
 }
 
 bool TrackDrawerEntry::SupportsTrackGroup(const TrackGroup trackGroup) const
 {
-    return EnabledTrackPieces.get(EnumValue(trackGroup))
-        || (GetGameState().Cheats.EnableAllDrawableTrackPieces && ExtraTrackPieces.get(EnumValue(trackGroup)));
+    return enabledTrackGroups.get(EnumValue(trackGroup))
+        || (GetGameState().Cheats.EnableAllDrawableTrackPieces && extraTrackGroups.get(EnumValue(trackGroup)));
 }
 
 bool TrackDrawerDescriptor::HasCoveredPieces() const
 {
-    return Covered.EnabledTrackPieces.count() > 0;
+    return Covered.enabledTrackGroups.count() > 0;
 }
 
 TrackDrawerDescriptor getTrackDrawerDescriptor(const RideTypeDescriptor& rtd, bool isInverted)

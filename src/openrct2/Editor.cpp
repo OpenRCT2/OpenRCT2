@@ -446,6 +446,11 @@ namespace OpenRCT2::Editor
             {
                 return { ObjectType::Water, STR_WATER_TYPE_MUST_BE_SELECTED };
             }
+
+            if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::PeepNames))
+            {
+                return { ObjectType::PeepNames, STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED };
+            }
         }
 
         return { ObjectType::None, STR_NONE };

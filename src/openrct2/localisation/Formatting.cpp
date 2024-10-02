@@ -9,10 +9,12 @@
 
 #include "Formatting.h"
 
+#include "../Context.h"
 #include "../Diagnostic.h"
 #include "../config/Config.h"
 #include "../core/String.hpp"
-#include "../peep/RealNames.h"
+#include "../object/ObjectManager.h"
+#include "../object/PeepNamesObject.h"
 #include "../util/Util.h"
 #include "Currency.h"
 #include "FormatCodes.h"
@@ -289,11 +291,15 @@ namespace OpenRCT2
     {
         if (IsRealNameStringId(id))
         {
-            auto realNameIndex = id - kRealNameStart;
-            ss << real_names[realNameIndex % std::size(real_names)];
-            ss << ' ';
-            ss << real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)];
-            ss << '.';
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* peepNamesObj = static_cast<PeepNamesObject*>(objManager.GetLoadedObject(ObjectType::PeepNames, 0));
+            if (peepNamesObj != nullptr)
+            {
+                auto realNameIndex = id - kRealNameStart;
+                ss << peepNamesObj->GetGivenNameAt(realNameIndex);
+                ss << ' ';
+                ss << peepNamesObj->GetSurnameAt(realNameIndex >> 10);
+            }
         }
     }
 

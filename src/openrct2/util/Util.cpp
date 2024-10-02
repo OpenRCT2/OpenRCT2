@@ -39,6 +39,11 @@ int32_t MetresToFeet(int32_t metres)
     return (metres * 840) / 256;
 }
 
+int32_t FeetToMetres(int32_t feet)
+{
+    return feet * 256 / 840;
+}
+
 int32_t MphToKmph(int32_t mph)
 {
     // 1 mph = 1.60934 kmph
@@ -50,6 +55,16 @@ int32_t MphToDmps(int32_t mph)
 {
     // 1 mph = 4.4704 decimeters/s
     return (mph * 73243) >> 14;
+}
+
+int32_t BaseZToMetres(int16_t baseZ)
+{
+    return (baseZ / 2 - 7) * 1.5;
+}
+
+uint8_t MetresToBaseZ(int16_t metres)
+{
+    return ((metres / 1.5) + 7) * 2;
 }
 
 /* Case insensitive logical compare */
