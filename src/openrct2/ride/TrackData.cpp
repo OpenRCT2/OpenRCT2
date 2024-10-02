@@ -3320,9 +3320,9 @@ namespace OpenRCT2::TrackMetaData
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Up25,             TrackPitch::Up25,           TrackRoll::Right,       TrackRoll::Right,     16    }, // TrackElemType::RightEighthBankToOrthogonalUp25 
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::Left,        TrackRoll::Left,     -16    }, // TrackElemType::LeftEighthBankToOrthogonalDown25
         { TrackGroup::slopeCurveLargeBanked,             TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::Right,       TrackRoll::Right,    -16    }, // TrackElemType::RightEighthBankToOrthogonalDown25
-        { TrackGroup::diagBrakes,                        TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::DiagBrakes
-        { TrackGroup::diagBlockBrakes,                   TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0   }, // TrackElemType::DiagBlockBrakes
-        { TrackGroup::brakes,                              TrackPitch::Down25, TrackPitch::Down25, TrackRoll::None,        TrackRoll::None,       0 }, // TrackElemType::Down25Brakes
+        { TrackGroup::diagBrakes,                        TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,       0    }, // TrackElemType::DiagBrakes
+        { TrackGroup::diagBlockBrakes,                   TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,       0    }, // TrackElemType::DiagBlockBrakes
+        { TrackGroup::inclinedBrakes,                    TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::None,        TrackRoll::None,       0    }, // TrackElemType::Down25Brakes
     };
     static_assert(std::size(TrackDefinitions) == TrackElemType::Count);
 

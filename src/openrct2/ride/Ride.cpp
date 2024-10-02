@@ -4923,6 +4923,7 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
         {},                                                        // TrackGroup::slopeCurveLargeBanked
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBrakes
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBlockBrakes
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4 },  // TrackGroup::inclinedBrakes
     };
     static_assert(std::size(trackPieceRequiredSprites) == EnumValue(TrackGroup::count));
 

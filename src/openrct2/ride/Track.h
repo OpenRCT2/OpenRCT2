@@ -140,6 +140,7 @@ enum class TrackGroup : uint8_t
 
     diagBrakes,
     diagBlockBrakes,
+    inclinedBrakes,
 
     count,
 };
