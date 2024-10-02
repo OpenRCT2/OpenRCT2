@@ -332,12 +332,13 @@ GameActions::Result TrackPlaceAction::Query() const
                     STR_CAN_ONLY_BUILD_THIS_ON_WATER);
             }
 
-            if (waterHeight != baseZ)
+            if (waterHeight == baseZ)
             {
                 return GameActions::Result(
                     GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                     STR_CAN_ONLY_BUILD_THIS_ON_WATER);
             }
+
             waterHeight -= LAND_HEIGHT_STEP;
             if (waterHeight == surfaceElement->GetBaseZ())
             {
