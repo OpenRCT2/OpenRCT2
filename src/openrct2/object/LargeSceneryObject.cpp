@@ -158,6 +158,12 @@ void LargeSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t 
     GfxDrawSprite(dpi, image, screenCoords);
 }
 
+enum
+{
+    LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS = 0x20,
+    LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE = 0x40,
+};
+
 std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* stream)
 {
     auto tiles = std::vector<LargeSceneryTile>();
@@ -171,7 +177,8 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* s
         uint16_t flags = stream->ReadValue<uint16_t>();
         tile.walls = (flags >> 8) & 0xF;
         tile.corners = (flags >> 12) & 0xF;
-        tile.flags2 = flags;
+        tile.allowSupportsAbove = flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE;
+        tile.hasSupports = !(flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS);
         return tile;
     };
 
@@ -248,14 +255,8 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadJsonTiles(json_t& jTiles)
             tile.offset.z = Json::GetNumber<int16_t>(jTile["z"]);
             tile.z_clearance = Json::GetNumber<int8_t>(jTile["clearance"]);
 
-            // clang-format off
-            tile.flags2 = Json::GetFlags<uint16_t>(
-                jTile,
-                {
-                    {"hasSupports",         LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS,            Json::FlagType::Inverted},
-                    {"allowSupportsAbove",  LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE,   Json::FlagType::Normal}
-                });
-            // clang-format on
+            tile.hasSupports = Json::GetBoolean(jTile["hasSupports"], true);
+            tile.allowSupportsAbove = Json::GetBoolean(jTile["allowSupportsAbove"]);
 
             // All corners are by default occupied
             tile.corners = Json::GetNumber<uint16_t>(jTile["corners"], 0xF);
