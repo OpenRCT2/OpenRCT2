@@ -1967,7 +1967,7 @@ namespace OpenRCT2::Ui::Windows
 
                     for (auto& tile : sceneryEntry->tiles)
                     {
-                        CoordsXY tileLocation = { tile.x_offset, tile.y_offset };
+                        CoordsXY tileLocation = { tile.offset };
                         auto rotatedTileCoords = tileLocation.Rotate(direction);
 
                         rotatedTileCoords.x += mapTile.x;

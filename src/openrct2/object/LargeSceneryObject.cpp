@@ -164,9 +164,9 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* s
 
     auto ReadLegacyTile = [&stream]() {
         LargeSceneryTile tile{};
-        tile.x_offset = stream->ReadValue<int16_t>();
-        tile.y_offset = stream->ReadValue<int16_t>();
-        tile.z_offset = stream->ReadValue<int16_t>();
+        tile.offset.x = stream->ReadValue<int16_t>();
+        tile.offset.y = stream->ReadValue<int16_t>();
+        tile.offset.z = stream->ReadValue<int16_t>();
         tile.z_clearance = stream->ReadValue<uint8_t>();
         tile.flags = stream->ReadValue<uint16_t>();
         return tile;
@@ -240,9 +240,9 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadJsonTiles(json_t& jTiles)
         if (jTile.is_object())
         {
             LargeSceneryTile tile = {};
-            tile.x_offset = Json::GetNumber<int16_t>(jTile["x"]);
-            tile.y_offset = Json::GetNumber<int16_t>(jTile["y"]);
-            tile.z_offset = Json::GetNumber<int16_t>(jTile["z"]);
+            tile.offset.x = Json::GetNumber<int16_t>(jTile["x"]);
+            tile.offset.y = Json::GetNumber<int16_t>(jTile["y"]);
+            tile.offset.z = Json::GetNumber<int16_t>(jTile["z"]);
             tile.z_clearance = Json::GetNumber<int8_t>(jTile["clearance"]);
 
             // clang-format off

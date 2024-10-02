@@ -77,18 +77,15 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_UNKNOWN_OBJECT_TYPE);
     }
 
-    auto rotatedOffsets = CoordsXYZ{
-        CoordsXY{ sceneryEntry->tiles[_tileIndex].x_offset, sceneryEntry->tiles[_tileIndex].y_offset }.Rotate(_loc.direction),
-        sceneryEntry->tiles[_tileIndex].z_offset
-    };
+    auto rotatedOffsets = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.Rotate(_loc.direction),
+                                     sceneryEntry->tiles[_tileIndex].offset.z };
 
     auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedOffsets;
 
     bool calculate_cost = true;
     for (auto& tile : sceneryEntry->tiles)
     {
-        auto currentTileRotatedOffset = CoordsXYZ{ CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(_loc.direction),
-                                                   tile.z_offset };
+        auto currentTileRotatedOffset = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(_loc.direction), tile.offset.z };
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + currentTileRotatedOffset;
 
@@ -161,16 +158,14 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
 
     tileElement->RemoveBannerEntry();
 
-    auto rotatedFirstTile = CoordsXYZ{
-        CoordsXY{ sceneryEntry->tiles[_tileIndex].x_offset, sceneryEntry->tiles[_tileIndex].y_offset }.Rotate(_loc.direction),
-        sceneryEntry->tiles[_tileIndex].z_offset
-    };
+    auto rotatedFirstTile = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.Rotate(_loc.direction),
+                                       sceneryEntry->tiles[_tileIndex].offset.z };
 
     auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedFirstTile;
 
     for (auto& tile : sceneryEntry->tiles)
     {
-        auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(_loc.direction), tile.z_offset };
+        auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(_loc.direction), tile.offset.z };
 
         auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + rotatedCurrentTile;
 

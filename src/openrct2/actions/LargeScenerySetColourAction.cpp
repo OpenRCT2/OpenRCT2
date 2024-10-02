@@ -116,17 +116,15 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
     // Work out the base tile coordinates (Tile with index 0)
-    auto rotatedBaseCoordsOffset = CoordsXYZ{
-        CoordsXY{ sceneryEntry->tiles[_tileIndex].x_offset, sceneryEntry->tiles[_tileIndex].y_offset }.Rotate(_loc.direction),
-        sceneryEntry->tiles[_tileIndex].z_offset
-    };
+    auto rotatedBaseCoordsOffset = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.Rotate(_loc.direction),
+                                              sceneryEntry->tiles[_tileIndex].offset.z };
 
     auto baseTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedBaseCoordsOffset;
 
     for (auto& tile : sceneryEntry->tiles)
     {
         // Work out the current tile coordinates
-        auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(_loc.direction), tile.z_offset };
+        auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(_loc.direction), tile.offset.z };
         auto currentTile = CoordsXYZ{ baseTile.x, baseTile.y, baseTile.z } + rotatedTileCoords;
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)

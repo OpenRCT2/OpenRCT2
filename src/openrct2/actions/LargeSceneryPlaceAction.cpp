@@ -130,12 +130,12 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     for (auto& tile : sceneryEntry->tiles)
     {
-        auto curTile = CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(_loc.direction);
+        auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
         curTile.x += _loc.x;
         curTile.y += _loc.y;
 
-        int32_t zLow = tile.z_offset + maxHeight;
+        int32_t zLow = tile.offset.z + maxHeight;
         int32_t zHigh = tile.z_clearance + zLow;
 
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile.flags >> 12), 0 }.Rotate(_loc.direction);
@@ -267,12 +267,12 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
 
     for (auto& tile : sceneryEntry->tiles)
     {
-        auto curTile = CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(_loc.direction);
+        auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
         curTile.x += _loc.x;
         curTile.y += _loc.y;
 
-        int32_t zLow = tile.z_offset + maxHeight;
+        int32_t zLow = tile.offset.z + maxHeight;
         int32_t zHigh = tile.z_clearance + zLow;
 
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile.flags >> 12), 0 }.Rotate(_loc.direction);
@@ -336,7 +336,7 @@ bool LargeSceneryPlaceAction::CheckMapCapacity(std::span<const LargeSceneryTile>
 {
     for (auto& tile : tiles)
     {
-        auto curTile = CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(_loc.direction);
+        auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
         curTile.x += _loc.x;
         curTile.y += _loc.y;
@@ -353,7 +353,7 @@ int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(std::span<const LargeScener
     int16_t maxHeight = -1;
     for (auto& tile : tiles)
     {
-        auto curTile = CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(_loc.direction);
+        auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
         curTile.x += _loc.x;
         curTile.y += _loc.y;

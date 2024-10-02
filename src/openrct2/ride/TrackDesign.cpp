@@ -762,21 +762,21 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
                 for (auto& tile : sceneryEntry->tiles)
                 {
-                    if (x1 > tile.x_offset)
+                    if (x1 > tile.offset.x)
                     {
-                        x1 = tile.x_offset;
+                        x1 = tile.offset.x;
                     }
-                    if (x2 < tile.x_offset)
+                    if (x2 < tile.offset.x)
                     {
-                        x2 = tile.x_offset;
+                        x2 = tile.offset.x;
                     }
-                    if (y1 > tile.y_offset)
+                    if (y1 > tile.offset.y)
                     {
-                        y1 = tile.y_offset;
+                        y1 = tile.offset.y;
                     }
-                    if (y2 < tile.y_offset)
+                    if (y2 < tile.offset.y)
                     {
-                        y2 = tile.y_offset;
+                        y2 = tile.offset.y;
                     }
                 }
 

@@ -24,9 +24,7 @@ struct LargeSceneryText;
 struct LargeSceneryTile
 {
     uint8_t index; // Purely to save having to look this up all the time
-    int16_t x_offset;
-    int16_t y_offset;
-    int16_t z_offset;
+    CoordsXYZ offset;
     uint8_t z_clearance;
     // CCCC WWWW 0SS0 0000
     uint16_t flags;

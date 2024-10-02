@@ -1685,11 +1685,11 @@ std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
     auto* sceneryEntry = tileElement->GetEntry();
     auto& tile = sceneryEntry->tiles[sequence];
 
-    CoordsXY offsetPos{ tile.x_offset, tile.y_offset };
+    CoordsXY offsetPos{ tile.offset };
     auto rotatedOffsetPos = offsetPos.Rotate(sceneryPos.direction);
 
     auto origin = CoordsXYZ{ sceneryPos.x - rotatedOffsetPos.x, sceneryPos.y - rotatedOffsetPos.y,
-                             sceneryPos.z - tile.z_offset };
+                             sceneryPos.z - tile.offset.z };
     if (outElement != nullptr)
         *outElement = tileElement;
     return origin;
@@ -1714,11 +1714,11 @@ bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, u
     // Iterate through each tile of the large scenery element
     for (auto& tile : sceneryEntry->tiles)
     {
-        CoordsXY offsetPos{ tile.x_offset, tile.y_offset };
+        CoordsXY offsetPos{ tile.offset };
         auto rotatedOffsetPos = offsetPos.Rotate(signPos.direction);
 
         auto tmpSignPos = CoordsXYZD{ sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                                      sceneryOrigin->z + tile.z_offset, signPos.direction };
+                                      sceneryOrigin->z + tile.offset.z, signPos.direction };
         tileElement = MapGetLargeScenerySegment(tmpSignPos, tile.index);
         if (tileElement != nullptr)
         {

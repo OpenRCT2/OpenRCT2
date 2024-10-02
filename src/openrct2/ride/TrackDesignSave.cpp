@@ -293,11 +293,11 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
         // Iterate through each tile of the large scenery element
         for (auto& tile : sceneryTiles)
         {
-            CoordsXY offsetPos{ tile.x_offset, tile.y_offset };
+            CoordsXY offsetPos{ tile.offset };
             auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                                  sceneryOrigin->z + tile.z_offset };
+                                  sceneryOrigin->z + tile.offset.z };
             auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, tile.index);
             if (largeElement != nullptr)
             {
@@ -509,11 +509,11 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
         // Iterate through each tile of the large scenery element
         for (auto& tile : sceneryTiles)
         {
-            CoordsXY offsetPos{ tile.x_offset, tile.y_offset };
+            CoordsXY offsetPos{ tile.offset };
             auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                                  sceneryOrigin->z + tile.z_offset };
+                                  sceneryOrigin->z + tile.offset.z };
             auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, tile.index);
             if (largeElement != nullptr)
             {
