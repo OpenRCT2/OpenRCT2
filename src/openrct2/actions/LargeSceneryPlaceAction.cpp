@@ -138,7 +138,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         int32_t zLow = tile.offset.z + maxHeight;
         int32_t zHigh = tile.z_clearance + zLow;
 
-        QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile.flags >> 12), 0 }.Rotate(_loc.direction);
+        QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
         auto canBuild = MapCanConstructWithClearAt(
             { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
@@ -275,7 +275,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         int32_t zLow = tile.offset.z + maxHeight;
         int32_t zHigh = tile.z_clearance + zLow;
 
-        QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile.flags >> 12), 0 }.Rotate(_loc.direction);
+        QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
         auto canBuild = MapCanConstructWithClearAt(
             { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);

@@ -63,7 +63,7 @@ static void PaintLargeScenerySupports(
 {
     PROFILED_FUNCTION();
 
-    if (tile.flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS)
+    if (tile.flags2 & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS)
         return;
 
     auto transitionType = WoodenSupportTransitionType::None;
@@ -78,7 +78,7 @@ static void PaintLargeScenerySupports(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, supportHeight, imageTemplate, transitionType);
 
     int32_t clearanceHeight = Ceil2(tileElement.GetClearanceZ() + 15, 16);
-    if (tile.flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)
+    if (tile.flags2 & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)
     {
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);
     }
@@ -390,13 +390,10 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     }
 
     auto boxlengthZ = std::min<uint8_t>(tile->z_clearance, 128) - 3;
-    auto flags = tile->flags;
     auto bbIndex = 16;
-    if (flags & 0xF00)
+    if (tile->walls) // ODD
     {
-        flags &= 0xF000;
-        flags = Numerics::rol16(flags, direction);
-        bbIndex = (flags & 0xF) | (flags >> 12);
+        bbIndex = Numerics::rol4(tile->corners, direction);
     }
     const CoordsXYZ& bbOffset = { LargeSceneryBoundBoxes[bbIndex].offset, height };
     const CoordsXYZ& bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };

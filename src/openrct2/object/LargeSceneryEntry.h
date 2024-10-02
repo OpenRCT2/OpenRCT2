@@ -27,7 +27,9 @@ struct LargeSceneryTile
     CoordsXYZ offset;
     uint8_t z_clearance;
     // CCCC WWWW 0SS0 0000
-    uint16_t flags;
+    uint16_t flags2;
+    uint8_t corners; // occupied corners of the tile
+    uint8_t walls;   // sides that walls can be placed on
 };
 
 enum

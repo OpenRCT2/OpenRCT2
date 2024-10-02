@@ -168,7 +168,10 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* s
         tile.offset.y = stream->ReadValue<int16_t>();
         tile.offset.z = stream->ReadValue<int16_t>();
         tile.z_clearance = stream->ReadValue<uint8_t>();
-        tile.flags = stream->ReadValue<uint16_t>();
+        uint16_t flags = stream->ReadValue<uint16_t>();
+        tile.walls = (flags >> 8) & 0xF;
+        tile.corners = (flags >> 12) & 0xF;
+        tile.flags2 = flags;
         return tile;
     };
 
@@ -246,7 +249,7 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadJsonTiles(json_t& jTiles)
             tile.z_clearance = Json::GetNumber<int8_t>(jTile["clearance"]);
 
             // clang-format off
-            tile.flags = Json::GetFlags<uint16_t>(
+            tile.flags2 = Json::GetFlags<uint16_t>(
                 jTile,
                 {
                     {"hasSupports",         LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS,            Json::FlagType::Inverted},
@@ -255,11 +258,9 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadJsonTiles(json_t& jTiles)
             // clang-format on
 
             // All corners are by default occupied
-            uint16_t corners = Json::GetNumber<uint16_t>(jTile["corners"], 0xF);
-            tile.flags |= (corners & 0xFF) << 12;
+            tile.corners = Json::GetNumber<uint16_t>(jTile["corners"], 0xF);
 
-            auto walls = Json::GetNumber<int16_t>(jTile["walls"]);
-            tile.flags |= (walls & 0xFF) << 8;
+            tile.walls = Json::GetNumber<int16_t>(jTile["walls"]);
 
             tile.index = static_cast<uint8_t>(tiles.size());
 
