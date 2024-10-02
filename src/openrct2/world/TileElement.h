@@ -24,7 +24,6 @@ struct WallSceneryEntry;
 struct PathAdditionEntry;
 struct BannerSceneryEntry;
 struct FootpathEntry;
-class LargeSceneryObject;
 class TerrainSurfaceObject;
 class TerrainEdgeObject;
 class FootpathObject;
@@ -435,7 +434,6 @@ public:
     ObjectEntryIndex GetEntryIndex() const;
     void SetEntryIndex(ObjectEntryIndex newIndex);
     const LargeSceneryEntry* GetEntry() const;
-    const LargeSceneryObject* GetObject() const;
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newIndex);

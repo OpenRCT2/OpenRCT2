@@ -18,7 +18,7 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/StringIds.h"
-#include "../../object/LargeSceneryObject.h"
+#include "../../object/LargeSceneryEntry.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/Ride.h"
 #include "../../ride/TrackDesign.h"
@@ -340,17 +340,15 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         return;
 
     auto sequenceNum = tileElement.GetSequenceIndex();
-    const auto* object = tileElement.GetObject();
-    if (object == nullptr)
-        return;
 
     const auto* sceneryEntry = tileElement.GetEntry();
     if (sceneryEntry == nullptr)
         return;
 
-    const auto* tile = object->GetTileForSequence(sequenceNum);
-    if (tile == nullptr)
+    if (sequenceNum >= sceneryEntry->tiles.size())
         return;
+
+    auto& tile = sceneryEntry->tiles[sequenceNum];
 
     session.InteractionType = ViewportInteractionItem::LargeScenery;
 
@@ -388,11 +386,11 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         }
     }
 
-    auto boxlengthZ = std::min(tile->zClearance, 128) - 3;
+    auto boxlengthZ = std::min(tile.zClearance, 128) - 3;
     auto bbIndex = 16;
-    if (tile->walls) // ODD
+    if (tile.walls) // ODD
     {
-        bbIndex = Numerics::rol4(tile->corners, direction);
+        bbIndex = Numerics::rol4(tile.corners, direction);
     }
     const CoordsXYZ& bbOffset = { LargeSceneryBoundBoxes[bbIndex].offset, height };
     const CoordsXYZ& bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };
@@ -404,7 +402,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     {
         if (sceneryEntry->flags & LARGE_SCENERY_FLAG_3D_TEXT)
         {
-            PaintLargeScenery3DText(session, *sceneryEntry, *tile, tileElement, direction, height, isGhost);
+            PaintLargeScenery3DText(session, *sceneryEntry, tile, tileElement, direction, height, isGhost);
         }
         else if (session.DPI.zoom_level <= ZoomLevel{ 0 })
         {
@@ -416,5 +414,5 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         }
     }
     PaintLargeScenerySupports(
-        session, direction, height, tileElement, isGhost ? imageTemplate : ImageId(0, COLOUR_BLACK), *tile);
+        session, direction, height, tileElement, isGhost ? imageTemplate : ImageId(0, COLOUR_BLACK), tile);
 }
