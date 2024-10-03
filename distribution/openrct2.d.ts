@@ -2225,12 +2225,12 @@ declare global {
         /**
          * The number of drops.
          */
-        readonly drops: number;
+        readonly numDrops: number;
 
         /**
-         * The number of powered lifts.
+         * The number of lift hills.
          */
-        readonly poweredLifts: number;
+        readonly numLiftHills: number;
 
         /**
          * Highest drop height in height units. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.

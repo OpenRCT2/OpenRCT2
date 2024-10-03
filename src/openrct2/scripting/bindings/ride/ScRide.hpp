@@ -180,9 +180,9 @@ namespace OpenRCT2::Scripting
 
         double totalAirTime_get() const;
 
-        uint8_t drops_get() const;
+        uint8_t numDrops_get() const;
 
-        uint8_t poweredLifts_get() const;
+        uint8_t numLiftHills_get() const;
 
         double highestDropHeight_get() const;
 
