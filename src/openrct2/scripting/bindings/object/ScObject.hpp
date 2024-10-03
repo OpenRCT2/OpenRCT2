@@ -948,12 +948,12 @@ namespace OpenRCT2::Scripting
 
         uint8_t corners_get() const
         {
-            return _tile.corners & 0xF;
+            return _tile.corners;
         }
 
         uint8_t walls_get() const
         {
-            return _tile.walls & 0xF;
+            return _tile.walls;
         }
     };
 

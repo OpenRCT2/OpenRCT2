@@ -389,7 +389,12 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
 
     auto boxlengthZ = std::min(tile.zClearance, 128) - 3;
     auto bbIndex = 16;
-    if (tile.walls) // ODD
+    // This matches vanilla but its odd that its a branch on walls
+    // and then operates on corners. I guess its because if you
+    // have no walls then you must be occupying the whole tile
+    // and all the connecting tiles so using an even bigger boundbox
+    // makes sense.
+    if (tile.walls)
     {
         bbIndex = Numerics::rol4(tile.corners, direction);
     }
