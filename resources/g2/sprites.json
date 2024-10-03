@@ -25894,5 +25894,49 @@
         "path": "icons/medium-curve-right.png",
         "x": 1,
         "y": 6
+    },
+    {
+        "path": "track/rmc/brake_gentle_1.png",
+        "x": -34,
+        "y": -28
+    },
+    {
+        "path": "track/rmc/brake_gentle_2.png",
+        "x": -34,
+        "y": -12
+    },
+    {
+        "path": "track/rmc/brake_gentle_3.png",
+        "x": -34,
+        "y": -12
+    },
+    {
+        "path": "track/rmc/brake_gentle_4.png",
+        "x": -34,
+        "y": -28
+    },
+    {
+        "path": "track/raptor/brake_gentle_1.png",
+        "x": -18,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/brake_gentle_2.png",
+        "x": -18,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/brake_gentle_3.png",
+        "x": -19,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/brake_gentle_4.png",
+        "x": -19,
+        "y": -14,
+        "palette": "keep"
     }
 ]
