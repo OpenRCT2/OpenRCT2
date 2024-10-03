@@ -28,6 +28,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
+#include "../world/Wall.h"
 #include "../world/tile_element/Slope.h"
 #include "GameAction.h"
 #include "SmallSceneryRemoveAction.h"

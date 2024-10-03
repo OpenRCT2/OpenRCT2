@@ -200,9 +200,6 @@ void MapExtendBoundarySurfaceX();
 void MapExtendBoundarySurfaceY();
 
 bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour);
-void WallRemoveAt(const CoordsXYRangedZ& wallPos);
-void WallRemoveAtZ(const CoordsXYZ& wallPos);
-void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction);
 
 void MapInvalidateTile(const CoordsXYRangedZ& tilePos);
 void MapInvalidateTileZoom1(const CoordsXYRangedZ& tilePos);

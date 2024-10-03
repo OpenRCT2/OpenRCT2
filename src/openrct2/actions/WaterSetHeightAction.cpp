@@ -16,6 +16,7 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/Park.h"
 #include "../world/Surface.h"
+#include "../world/Wall.h"
 
 using namespace OpenRCT2;
 

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "TileElement.h"
+#include "Location.hpp"
 
 enum EDGE_SLOPE
 {
@@ -20,5 +20,9 @@ enum EDGE_SLOPE
     EDGE_SLOPE_UPWARDS_ELEVATED = EDGE_SLOPE_UPWARDS | EDGE_SLOPE_ELEVATED,
     EDGE_SLOPE_DOWNWARDS_ELEVATED = EDGE_SLOPE_DOWNWARDS | EDGE_SLOPE_ELEVATED,
 };
+
+void WallRemoveAt(const CoordsXYRangedZ& wallPos);
+void WallRemoveAtZ(const CoordsXYZ& wallPos);
+void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction);
 
 uint8_t GetWallSlopeFromEdgeSlope(uint8_t Slope, uint8_t Edge);

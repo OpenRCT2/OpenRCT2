@@ -15,6 +15,7 @@
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
 #include "../world/ConstructionClearance.h"
+#include "../world/Wall.h"
 
 using namespace OpenRCT2;
 
