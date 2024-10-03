@@ -164,6 +164,28 @@ namespace OpenRCT2::Scripting
 
         uint8_t satisfaction_get() const;
 
+        double maxSpeed_get() const;
+
+        double averageSpeed_get() const;
+
+        int32_t rideTime_get() const;
+
+        double rideLength_get() const;
+
+        double maxPositiveVerticalGs_get() const;
+
+        double maxNegativeVerticalGs_get() const;
+
+        double maxLateralGs_get() const;
+
+        double totalAirTime_get() const;
+
+        uint8_t numDrops_get() const;
+
+        uint8_t numLiftHills_get() const;
+
+        double highestDropHeight_get() const;
+
         Ride* GetRide() const;
 
     public:

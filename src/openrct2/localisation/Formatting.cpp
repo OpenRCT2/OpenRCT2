@@ -590,6 +590,23 @@ namespace OpenRCT2
                     }
                 }
                 break;
+            case FormatToken::Height:
+                if constexpr (std::is_integral<T>())
+                {
+                    auto metres = HeightUnitsToMetres(arg);
+                    switch (Config::Get().general.MeasurementFormat)
+                    {
+                        default:
+                        case MeasurementFormat::Imperial:
+                            FormatStringID(ss, STR_UNIT_SUFFIX_FEET, MetresToFeet(metres));
+                            break;
+                        case MeasurementFormat::Metric:
+                        case MeasurementFormat::SI:
+                            FormatStringID(ss, STR_UNIT_SUFFIX_METRES, metres);
+                            break;
+                    }
+                }
+                break;
             case FormatToken::MonthYear:
             case FormatToken::MonthYearSentence:
                 if constexpr (std::is_integral<T>())
@@ -795,6 +812,7 @@ namespace OpenRCT2
                     break;
                 case FormatToken::Comma16:
                 case FormatToken::Length:
+                case FormatToken::Height:
                 case FormatToken::Comma1dp16:
                     anyArgs.emplace_back(ReadFromArgs<int16_t>(args));
                     break;

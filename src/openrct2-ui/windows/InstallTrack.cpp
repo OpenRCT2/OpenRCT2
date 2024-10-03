@@ -253,7 +253,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // Maximum speed
                     {
-                        uint16_t speed = ((td.statistics.maxSpeed << 16) * 9) >> 18;
+                        uint16_t speed = ToHumanReadableSpeed(td.statistics.maxSpeed << 16);
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
@@ -261,7 +261,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     // Average speed
                     {
-                        uint16_t speed = ((td.statistics.averageSpeed << 16) * 9) >> 18;
+                        uint16_t speed = ToHumanReadableSpeed(td.statistics.averageSpeed << 16);
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
@@ -305,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 if (td.statistics.totalAirTime != 0)
                 {
-                    int32_t airTime = td.statistics.totalAirTime * 3;
+                    int32_t airTime = ToHumanReadableAirTime(td.statistics.totalAirTime);
                     auto ft = Formatter();
                     ft.Add<int32_t>(airTime);
                     DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);

@@ -30,6 +30,10 @@ int32_t MphToKmph(int32_t mph);
 int32_t MphToDmps(int32_t mph);
 int32_t BaseZToMetres(int16_t baseZ);
 uint8_t MetresToBaseZ(int16_t metres);
+int32_t HeightUnitsToMetres(int32_t heightUnit);
+int32_t ToHumanReadableSpeed(int32_t baseSpeed);
+uint16_t ToHumanReadableAirTime(uint16_t airTime);
+int32_t ToHumanReadableRideLength(int32_t rideLength);
 
 inline int32_t UtilBitScanForward(uint32_t source)
 {
