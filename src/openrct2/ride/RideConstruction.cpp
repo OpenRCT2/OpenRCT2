@@ -40,6 +40,7 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/EntranceElement.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"

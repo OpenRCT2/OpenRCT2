@@ -22,6 +22,7 @@
 #include "../util/Util.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
+#include "../world/tile_element/EntranceElement.h"
 
 #include <bit>
 #include <bitset>

@@ -53,6 +53,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
+#include <openrct2/world/tile_element/EntranceElement.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui::Windows;

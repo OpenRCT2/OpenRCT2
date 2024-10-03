@@ -25,6 +25,7 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "Surface.h"
+#include "tile_element/EntranceElement.h"
 #include "tile_element/Slope.h"
 
 #include <optional>

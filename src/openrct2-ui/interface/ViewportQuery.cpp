@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/TileElement.h>
+#include <openrct2/world/tile_element/EntranceElement.h>
 
 namespace OpenRCT2::Ui
 {

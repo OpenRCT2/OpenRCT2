@@ -39,6 +39,7 @@
 #include "Entrance.h"
 #include "Map.h"
 #include "Surface.h"
+#include "tile_element/EntranceElement.h"
 
 #include <limits>
 #include <type_traits>
