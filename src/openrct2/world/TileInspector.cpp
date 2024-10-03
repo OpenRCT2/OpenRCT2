@@ -17,16 +17,17 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../windows/TileInspectorGlobals.h"
-#include "../world/MapAnimation.h"
 #include "Banner.h"
 #include "Footpath.h"
 #include "Location.hpp"
 #include "Map.h"
+#include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
 #include "Surface.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/Slope.h"
+#include "tile_element/WallElement.h"
 
 #include <optional>
 

@@ -27,11 +27,12 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
-#include "../world/TileElementsView.h"
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
+#include "TileElementsView.h"
+#include "tile_element/WallElement.h"
 
 #include <cstring>
 #include <iterator>

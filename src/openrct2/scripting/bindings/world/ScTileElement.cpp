@@ -23,6 +23,7 @@
 #    include "../../../world/Scenery.h"
 #    include "../../../world/Surface.h"
 #    include "../../../world/tile_element/EntranceElement.h"
+#    include "../../../world/tile_element/WallElement.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 

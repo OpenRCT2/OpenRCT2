@@ -31,6 +31,7 @@
 #include "world/Footpath.h"
 #include "world/Scenery.h"
 #include "world/tile_element/EntranceElement.h"
+#include "world/tile_element/WallElement.h"
 
 #include <iterator>
 #include <vector>

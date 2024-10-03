@@ -624,6 +624,7 @@
     <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
     <ClInclude Include="world\TilePointerIndex.hpp" />
+    <ClInclude Include="world\tile_element\WallElement.h" />
     <ClInclude Include="world\Wall.h" />
   </ItemGroup>
   <ItemGroup>
@@ -1105,6 +1106,7 @@
     <ClCompile Include="world\SurfaceData.cpp" />
     <ClCompile Include="world\TileElement.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
+    <ClCompile Include="world\tile_element\WallElement.cpp" />
     <ClCompile Include="world\Wall.cpp" />
     <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>

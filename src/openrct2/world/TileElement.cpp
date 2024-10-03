@@ -20,6 +20,7 @@
 #include "Scenery.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/Slope.h"
+#include "tile_element/WallElement.h"
 
 using namespace OpenRCT2;
 

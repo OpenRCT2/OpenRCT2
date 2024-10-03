@@ -456,51 +456,6 @@ public:
 };
 static_assert(sizeof(LargeSceneryElement) == 16);
 
-struct WallElement : TileElementBase
-{
-    static constexpr TileElementType ElementType = TileElementType::Wall;
-
-private:
-    ObjectEntryIndex entryIndex; // 05
-    colour_t colour_1;           // 07
-    colour_t colour_2;           // 08
-    colour_t colour_3;           // 09
-    BannerIndex banner_index;    // 0A
-    uint8_t animation;           // 0C 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t Pad0D[3];
-#pragma clang diagnostic pop
-
-public:
-    uint16_t GetEntryIndex() const;
-    void SetEntryIndex(uint16_t newIndex);
-    const WallSceneryEntry* GetEntry() const;
-
-    uint8_t GetSlope() const;
-    void SetSlope(uint8_t newslope);
-
-    colour_t GetPrimaryColour() const;
-    void SetPrimaryColour(colour_t newColour);
-    colour_t GetSecondaryColour() const;
-    void SetSecondaryColour(colour_t newColour);
-    colour_t GetTertiaryColour() const;
-    void SetTertiaryColour(colour_t newColour);
-
-    uint8_t GetAnimationFrame() const;
-    void SetAnimationFrame(uint8_t frameNum);
-
-    Banner* GetBanner() const;
-    BannerIndex GetBannerIndex() const;
-    void SetBannerIndex(BannerIndex newIndex);
-
-    bool IsAcrossTrack() const;
-    void SetAcrossTrack(bool acrossTrack);
-    bool AnimationIsBackwards() const;
-    void SetAnimationIsBackwards(bool isBackwards);
-};
-static_assert(sizeof(WallElement) == 16);
-
 struct BannerElement : TileElementBase
 {
     static constexpr TileElementType ElementType = TileElementType::Banner;

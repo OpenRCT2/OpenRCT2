@@ -18,7 +18,7 @@
 #include "../management/Finance.h"
 #include "../world/Location.hpp"
 #include "../world/TileElementsView.h"
-#include "../world/Wall.h"
+#include "../world/tile_element/WallElement.h"
 
 using namespace OpenRCT2;
 
