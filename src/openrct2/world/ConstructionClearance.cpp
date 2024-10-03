@@ -19,6 +19,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "Park.h"
+#include "QuarterTile.h"
 #include "Scenery.h"
 #include "Surface.h"
 #include "tile_element/EntranceElement.h"

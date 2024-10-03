@@ -24,6 +24,7 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
+#include "../world/QuarterTile.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"

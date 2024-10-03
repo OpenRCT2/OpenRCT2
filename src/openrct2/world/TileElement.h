@@ -531,44 +531,6 @@ static_assert(sizeof(BannerElement) == 16);
 
 #pragma pack(pop)
 
-class QuarterTile
-{
-private:
-    uint8_t _val{ 0 };
-
-public:
-    constexpr QuarterTile(uint8_t tileQuarter, uint8_t zQuarter)
-        : _val(tileQuarter | (zQuarter << 4))
-    {
-    }
-
-    QuarterTile(uint8_t tileAndZQuarter)
-        : _val(tileAndZQuarter)
-    {
-    }
-
-    // Rotate both of the values amount. Returns new RValue QuarterTile
-    const QuarterTile Rotate(uint8_t amount) const;
-
-    uint8_t GetBaseQuarterOccupied() const
-    {
-        return _val & 0xF;
-    }
-
-    uint8_t GetZQuarterOccupied() const
-    {
-        return (_val >> 4) & 0xF;
-    }
-};
-
-enum
-{
-    TILE_ELEMENT_QUADRANT_SW,
-    TILE_ELEMENT_QUADRANT_NW,
-    TILE_ELEMENT_QUADRANT_NE,
-    TILE_ELEMENT_QUADRANT_SE
-};
-
 enum
 {
     SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER = (1 << 6),

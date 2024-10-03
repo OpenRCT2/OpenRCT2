@@ -614,6 +614,7 @@
     <ClInclude Include="world\MapGen.h" />
     <ClInclude Include="world\MapHelpers.h" />
     <ClInclude Include="world\Park.h" />
+    <ClInclude Include="world\QuarterTile.h" />
     <ClInclude Include="world\Scenery.h" />
     <ClInclude Include="world\ScenerySelection.h" />
     <ClInclude Include="world\SmallScenery.h" />
@@ -1097,6 +1098,7 @@
     <ClCompile Include="world\MapGen.cpp" />
     <ClCompile Include="world\MapHelpers.cpp" />
     <ClCompile Include="world\Park.cpp" />
+    <ClCompile Include="world\QuarterTile.cpp" />
     <ClCompile Include="world\Scenery.cpp" />
     <ClCompile Include="world\SmallScenery.cpp" />
     <ClCompile Include="world\Surface.cpp" />
