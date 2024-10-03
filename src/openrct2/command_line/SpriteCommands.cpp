@@ -14,9 +14,9 @@
 
 using namespace OpenRCT2;
 
-#define SZ_DEFAULT "default"
-#define SZ_CLOSEST "closest"
-#define SZ_DITHERING "dithering"
+constexpr const char* SZ_DEFAULT = "default";
+constexpr const char* SZ_CLOSEST = "closest";
+constexpr const char* SZ_DITHERING = "dithering";
 
 using ImportMode = OpenRCT2::Drawing::ImportMode;
 
