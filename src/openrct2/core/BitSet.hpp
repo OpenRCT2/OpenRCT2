@@ -130,7 +130,7 @@ namespace OpenRCT2
                 using value_type = typename StorageBlockType<ComputeBlockSize<TBitSize>()>::value_type;
             };
         } // namespace BitSet
-    }     // namespace Detail
+    } // namespace Detail
 
     template<size_t TBitSize> class BitSet
     {

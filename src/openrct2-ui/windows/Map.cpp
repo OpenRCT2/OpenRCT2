@@ -207,7 +207,7 @@ namespace OpenRCT2::Ui::Windows
         constexpr uint16_t FlashGuests = (1 << 1);
         constexpr uint16_t FlashStaff = (1 << 3);
         constexpr uint16_t SwitchColour = (1 << 15); // Every couple ticks the colour switches
-    }                                                // namespace MapFlashingFlags
+    } // namespace MapFlashingFlags
 
     class MapWindow final : public Window
     {
