@@ -175,7 +175,7 @@ jobs:
             upload-build artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-portable-$PLATFORM.zip "windows-portable-$PLATFORM.zip" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
             upload-build artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-installer-$PLATFORM.exe "windows-installer-$PLATFORM.exe" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
             upload-build artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-symbols-$PLATFORM.zip "windows-symbols-$PLATFORM.zip" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-            upload-backtrace-symbols artifacts/openrct2-symbols-*.zip
+            upload-backtrace-symbols artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-symbols-*.zip
           else
               echo 'Not going to push build'
           fi
