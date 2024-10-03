@@ -101,64 +101,22 @@ struct TileElementBase
             return GetType() == TType::ElementType ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
-    const SurfaceElement* AsSurface() const
-    {
-        return as<SurfaceElement>();
-    }
-    SurfaceElement* AsSurface()
-    {
-        return as<SurfaceElement>();
-    }
-    const PathElement* AsPath() const
-    {
-        return as<PathElement>();
-    }
-    PathElement* AsPath()
-    {
-        return as<PathElement>();
-    }
-    const TrackElement* AsTrack() const
-    {
-        return as<TrackElement>();
-    }
-    TrackElement* AsTrack()
-    {
-        return as<TrackElement>();
-    }
-    const SmallSceneryElement* AsSmallScenery() const
-    {
-        return as<SmallSceneryElement>();
-    }
-    SmallSceneryElement* AsSmallScenery()
-    {
-        return as<SmallSceneryElement>();
-    }
-    const LargeSceneryElement* AsLargeScenery() const
-    {
-        return as<LargeSceneryElement>();
-    }
-    LargeSceneryElement* AsLargeScenery()
-    {
-        return as<LargeSceneryElement>();
-    }
-    const WallElement* AsWall() const
-    {
-        return as<WallElement>();
-    }
-    WallElement* AsWall()
-    {
-        return as<WallElement>();
-    }
+    const SurfaceElement* AsSurface() const;
+    SurfaceElement* AsSurface();
+    const PathElement* AsPath() const;
+    PathElement* AsPath();
+    const TrackElement* AsTrack() const;
+    TrackElement* AsTrack();
+    const SmallSceneryElement* AsSmallScenery() const;
+    SmallSceneryElement* AsSmallScenery();
+    const LargeSceneryElement* AsLargeScenery() const;
+    LargeSceneryElement* AsLargeScenery();
+    const WallElement* AsWall() const;
+    WallElement* AsWall();
     const EntranceElement* AsEntrance() const;
     EntranceElement* AsEntrance();
-    const BannerElement* AsBanner() const
-    {
-        return as<BannerElement>();
-    }
-    BannerElement* AsBanner()
-    {
-        return as<BannerElement>();
-    }
+    const BannerElement* AsBanner() const;
+    BannerElement* AsBanner();
 };
 
 /**
