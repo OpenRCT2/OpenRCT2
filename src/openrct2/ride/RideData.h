@@ -524,6 +524,8 @@ struct RideTypeDescriptor
     bool SupportsTrackGroup(const TrackGroup trackGroup) const;
     ResearchCategory GetResearchCategory() const;
     bool SupportsRideMode(RideMode rideMode) const;
+    int32_t GetLegacyBoosterSpeed(int32_t absoluteSpeed) const;
+    int32_t GetUnifiedBoosterSpeed(int32_t relativeSpeed) const;
 };
 
 extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
