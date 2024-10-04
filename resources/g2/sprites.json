@@ -25938,5 +25938,53 @@
         "x": -19,
         "y": -14,
         "palette": "keep"
+    },
+    {
+        "path": "track/rmc/brake_gentle_diag_1.png",
+        "x": -32,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/brake_gentle_diag_2.png",
+        "x": -24,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/brake_gentle_diag_3.png",
+        "x": -32,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/brake_gentle_diag_4.png",
+        "x": -24,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/brake_gentle_diag_1.png",
+        "x": -32,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/brake_gentle_diag_2.png",
+        "x": -3,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/brake_gentle_diag_3.png",
+        "x": -32,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/brake_gentle_diag_4.png",
+        "x": -3,
+        "y": -22,
+        "palette": "keep"
     }
 ]
