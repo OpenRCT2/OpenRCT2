@@ -1249,7 +1249,7 @@ namespace OpenRCT2::TrackMetaData
         {   true,   TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::LeftLarge,         TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::LeftEighthBankToOrthogonalUp25         }, // TrackElemType::LeftEighthBankToOrthogonalUp25
         {   true,   TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::RightLarge,        TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::RightEighthBankToOrthogonalUp25        }, // TrackElemType::RightEighthBankToOrthogonalUp25 
         {   true,   TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::LeftLarge,         TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::LeftEighthBankToOrthogonalDown25       }, // TrackElemType::LeftEighthBankToOrthogonalDown25
-        {   true,   TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::RightLarge,        TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::RightEighthBankToOrthogonalDown25      }, // TrackElemType::RightEighthBankToOrthogonalDown25
+        {   true,   TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::RightLarge,        TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::RightEighthBankToOrthogonalDown25      }, // TrackElemType::RightEighthBankToOrthogonalDown25     
     };
     
     /** rct2: 0x00993D1C */
