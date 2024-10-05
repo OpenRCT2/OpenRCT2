@@ -357,18 +357,18 @@ namespace OpenRCT2::TrackMetaData
         { 4, 4, 0, 16, -32, 32 },  // TrackElemType::DiagUp25RightBanked 
         { 4, 4, 16, 0, -32, 32 },  // TrackElemType::DiagDown25LeftBanked
         { 4, 4, 16, 0, -32, 32 },  // TrackElemType::DiagDown25RightBanked
-        { 0, 7, 0, 48, -64, -32 }, // TrackElemType::LeftEighthBankToDiagUp25
-        { 0, 4, 0, 48, -64, 32 },  // TrackElemType::RightEighthBankToDiagUp25
-        { 0, 7, 0,-48, -64, -32 }, // TrackElemType::LeftEighthBankToDiagDown25
-        { 0, 4, 0,-48, -64, 32 },  // TrackElemType::RightEighthBankToDiagDown25
-        { 4, 0, 0, 48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalUp25
-        { 4, 1, 0, 48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalUp25 
-        { 4, 0, 0,-48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalDown25
-        { 4, 1, 0,-48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalDown25     
-        { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBrakes
-        { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBlockBrakes
-		{ 0, 0, 16, 0, 0, 0 },     // TrackElemType::Down25Brakes
-        { 4, 4, 16, 0, -32, 32 }   // TrackElemType::DiagDown25Brakes
+            { 0, 7, 0, 48, -64, -32 }, // TrackElemType::LeftEighthBankToDiagUp25
+            { 0, 4, 0, 48, -64, 32 },  // TrackElemType::RightEighthBankToDiagUp25
+            { 0, 7, 0,-48, -64, -32 }, // TrackElemType::LeftEighthBankToDiagDown25
+            { 0, 4, 0,-48, -64, 32 },  // TrackElemType::RightEighthBankToDiagDown25
+            { 4, 0, 0, 48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalUp25
+            { 4, 1, 0, 48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalUp25 
+            { 4, 0, 0,-48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalDown25
+            { 4, 1, 0,-48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalDown25     
+            { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBrakes
+            { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBlockBrakes
+		    { 0, 0, 16, 0, 0, 0 },     // TrackElemType::Down25Brakes
+            { 4, 4, 16, 0, -32, 32 }   // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(_trackCoordinates) == TrackElemType::Count);
     
