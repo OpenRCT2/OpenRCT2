@@ -22,6 +22,7 @@ using namespace OpenRCT2::Scripting;
 void ScObjectManager::Register(duk_context* ctx)
 {
     dukglue_register_property(ctx, &ScObjectManager::installedObjects_get, nullptr, "installedObjects");
+    dukglue_register_method(ctx, &ScObjectManager::installedObject_get, "getInstalledObject");
     dukglue_register_method(ctx, &ScObjectManager::load, "load");
     dukglue_register_method(ctx, &ScObjectManager::unload, "unload");
     dukglue_register_method(ctx, &ScObjectManager::getObject, "getObject");
@@ -42,6 +43,14 @@ std::vector<std::shared_ptr<ScInstalledObject>> ScObjectManager::installedObject
     }
 
     return result;
+}
+
+std::shared_ptr<ScInstalledObject> ScObjectManager::installedObject_get(const std::string& identifier) const
+{
+    auto context = GetContext();
+    auto& objectRepository = context->GetObjectRepository();
+    auto object = objectRepository.FindObject(identifier);
+    return object != nullptr ? std::make_shared<ScInstalledObject>(object->Id) : nullptr;
 }
 
 DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
