@@ -368,7 +368,7 @@ namespace OpenRCT2::TrackMetaData
             { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBrakes
             { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBlockBrakes
 		    { 0, 0, 16, 0, 0, 0 },     // TrackElemType::Down25Brakes
-            { 4, 4, 16, 0, -32, 32 }   // TrackElemType::DiagDown25Brakes
+            { 4, 4, 16, 0, -32, 32 },  // TrackElemType::DiagDown25Brakes
     };
     static_assert(std::size(_trackCoordinates) == TrackElemType::Count);
     
@@ -2982,7 +2982,7 @@ namespace OpenRCT2::TrackMetaData
         /* TrackElemType::DiagBlockBrakes                        */   0,
         /* TrackElemType::Down25Brakes                           */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
         /* TrackElemType::DiagDown25Brakes                       */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
-};
+    };
     static_assert(std::size(TrackFlags) == TrackElemType::Count);
     // clang-format on
 
@@ -12607,7 +12607,7 @@ namespace OpenRCT2::TrackMetaData
         /* TrackElemType::Down25Brakes */
         { 1, { kDown25Seq0 } },
         /* TrackElemType::DiagDown25Brakes */
-        { 4, { kDiagDown25Seq0, kDiagDown25Seq1, kDiagDown25Seq2, kDiagDown25Seq3 } }
+        { 4, { kDiagDown25Seq0, kDiagDown25Seq1, kDiagDown25Seq2, kDiagDown25Seq3 } },
     };
 
     static constexpr auto BuildDescriptorTable()
