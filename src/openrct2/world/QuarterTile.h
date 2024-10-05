@@ -22,7 +22,7 @@ public:
     {
     }
 
-    QuarterTile(uint8_t tileAndZQuarter)
+    constexpr QuarterTile(uint8_t tileAndZQuarter)
         : _val(tileAndZQuarter)
     {
     }
