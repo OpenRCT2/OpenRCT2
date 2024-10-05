@@ -7,8 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Map.h"
-#include "TileElement.h"
+#include "../Map.h"
+#include "../TileElement.h"
+#include "EntranceElement.h"
 
 TileElementType TileElementBase::GetType() const
 {
@@ -125,4 +126,72 @@ void TileElementBase::SetOwner(uint8_t newOwner)
 {
     Owner &= ~OWNER_MASK;
     Owner |= (newOwner & OWNER_MASK);
+}
+
+const SurfaceElement* TileElementBase::AsSurface() const
+{
+    return as<SurfaceElement>();
+}
+SurfaceElement* TileElementBase::AsSurface()
+{
+    return as<SurfaceElement>();
+}
+const PathElement* TileElementBase::AsPath() const
+{
+    return as<PathElement>();
+}
+PathElement* TileElementBase::AsPath()
+{
+    return as<PathElement>();
+}
+const TrackElement* TileElementBase::AsTrack() const
+{
+    return as<TrackElement>();
+}
+TrackElement* TileElementBase::AsTrack()
+{
+    return as<TrackElement>();
+}
+const SmallSceneryElement* TileElementBase::AsSmallScenery() const
+{
+    return as<SmallSceneryElement>();
+}
+SmallSceneryElement* TileElementBase::AsSmallScenery()
+{
+    return as<SmallSceneryElement>();
+}
+const LargeSceneryElement* TileElementBase::AsLargeScenery() const
+{
+    return as<LargeSceneryElement>();
+}
+LargeSceneryElement* TileElementBase::AsLargeScenery()
+{
+    return as<LargeSceneryElement>();
+}
+const WallElement* TileElementBase::AsWall() const
+{
+    return as<WallElement>();
+}
+WallElement* TileElementBase::AsWall()
+{
+    return as<WallElement>();
+}
+
+const EntranceElement* TileElementBase::AsEntrance() const
+{
+    return as<EntranceElement>();
+}
+
+EntranceElement* TileElementBase::AsEntrance()
+{
+    return as<EntranceElement>();
+}
+
+const BannerElement* TileElementBase::AsBanner() const
+{
+    return as<BannerElement>();
+}
+BannerElement* TileElementBase::AsBanner()
+{
+    return as<BannerElement>();
 }

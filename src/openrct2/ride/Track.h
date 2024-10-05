@@ -11,6 +11,7 @@
 
 #include "../object/Object.h"
 #include "../world/Map.h"
+#include "../world/QuarterTile.h"
 #include "../world/TileElement.h"
 
 #include <optional>

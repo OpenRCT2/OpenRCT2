@@ -21,6 +21,7 @@
 #include "../world/Banner.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
+#include "../world/QuarterTile.h"
 #include "../world/Surface.h"
 #include "../world/tile_element/Slope.h"
 

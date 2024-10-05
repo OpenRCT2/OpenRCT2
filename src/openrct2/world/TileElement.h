@@ -101,64 +101,22 @@ struct TileElementBase
             return GetType() == TType::ElementType ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
-    const SurfaceElement* AsSurface() const
-    {
-        return as<SurfaceElement>();
-    }
-    SurfaceElement* AsSurface()
-    {
-        return as<SurfaceElement>();
-    }
-    const PathElement* AsPath() const
-    {
-        return as<PathElement>();
-    }
-    PathElement* AsPath()
-    {
-        return as<PathElement>();
-    }
-    const TrackElement* AsTrack() const
-    {
-        return as<TrackElement>();
-    }
-    TrackElement* AsTrack()
-    {
-        return as<TrackElement>();
-    }
-    const SmallSceneryElement* AsSmallScenery() const
-    {
-        return as<SmallSceneryElement>();
-    }
-    SmallSceneryElement* AsSmallScenery()
-    {
-        return as<SmallSceneryElement>();
-    }
-    const LargeSceneryElement* AsLargeScenery() const
-    {
-        return as<LargeSceneryElement>();
-    }
-    LargeSceneryElement* AsLargeScenery()
-    {
-        return as<LargeSceneryElement>();
-    }
-    const WallElement* AsWall() const
-    {
-        return as<WallElement>();
-    }
-    WallElement* AsWall()
-    {
-        return as<WallElement>();
-    }
+    const SurfaceElement* AsSurface() const;
+    SurfaceElement* AsSurface();
+    const PathElement* AsPath() const;
+    PathElement* AsPath();
+    const TrackElement* AsTrack() const;
+    TrackElement* AsTrack();
+    const SmallSceneryElement* AsSmallScenery() const;
+    SmallSceneryElement* AsSmallScenery();
+    const LargeSceneryElement* AsLargeScenery() const;
+    LargeSceneryElement* AsLargeScenery();
+    const WallElement* AsWall() const;
+    WallElement* AsWall();
     const EntranceElement* AsEntrance() const;
     EntranceElement* AsEntrance();
-    const BannerElement* AsBanner() const
-    {
-        return as<BannerElement>();
-    }
-    BannerElement* AsBanner()
-    {
-        return as<BannerElement>();
-    }
+    const BannerElement* AsBanner() const;
+    BannerElement* AsBanner();
 };
 
 /**
@@ -572,44 +530,6 @@ public:
 static_assert(sizeof(BannerElement) == 16);
 
 #pragma pack(pop)
-
-class QuarterTile
-{
-private:
-    uint8_t _val{ 0 };
-
-public:
-    constexpr QuarterTile(uint8_t tileQuarter, uint8_t zQuarter)
-        : _val(tileQuarter | (zQuarter << 4))
-    {
-    }
-
-    QuarterTile(uint8_t tileAndZQuarter)
-        : _val(tileAndZQuarter)
-    {
-    }
-
-    // Rotate both of the values amount. Returns new RValue QuarterTile
-    const QuarterTile Rotate(uint8_t amount) const;
-
-    uint8_t GetBaseQuarterOccupied() const
-    {
-        return _val & 0xF;
-    }
-
-    uint8_t GetZQuarterOccupied() const
-    {
-        return (_val >> 4) & 0xF;
-    }
-};
-
-enum
-{
-    TILE_ELEMENT_QUADRANT_SW,
-    TILE_ELEMENT_QUADRANT_NW,
-    TILE_ELEMENT_QUADRANT_NE,
-    TILE_ELEMENT_QUADRANT_SE
-};
 
 enum
 {

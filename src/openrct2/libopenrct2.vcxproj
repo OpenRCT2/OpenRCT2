@@ -614,6 +614,7 @@
     <ClInclude Include="world\MapGen.h" />
     <ClInclude Include="world\MapHelpers.h" />
     <ClInclude Include="world\Park.h" />
+    <ClInclude Include="world\QuarterTile.h" />
     <ClInclude Include="world\Scenery.h" />
     <ClInclude Include="world\ScenerySelection.h" />
     <ClInclude Include="world\SmallScenery.h" />
@@ -1085,6 +1086,7 @@
     <ClCompile Include="Version.cpp" />
     <ClCompile Include="windows\Intent.cpp" />
     <ClCompile Include="world\tile_element\EntranceElement.cpp" />
+    <ClCompile Include="world\tile_element\TileElementBase.cpp" />
     <ClCompile Include="world\Banner.cpp" />
     <ClCompile Include="world\Climate.cpp" />
     <ClCompile Include="world\ConstructionClearance.cpp" />
@@ -1096,12 +1098,12 @@
     <ClCompile Include="world\MapGen.cpp" />
     <ClCompile Include="world\MapHelpers.cpp" />
     <ClCompile Include="world\Park.cpp" />
+    <ClCompile Include="world\QuarterTile.cpp" />
     <ClCompile Include="world\Scenery.cpp" />
     <ClCompile Include="world\SmallScenery.cpp" />
     <ClCompile Include="world\Surface.cpp" />
     <ClCompile Include="world\SurfaceData.cpp" />
     <ClCompile Include="world\TileElement.cpp" />
-    <ClCompile Include="world/TileElementBase.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
     <ClCompile Include="world\Wall.cpp" />
     <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
