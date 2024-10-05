@@ -1216,10 +1216,10 @@ void Ride::ValidateStations()
             }
             // update all the blocks with StationIndex
             const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-            const auto& firstBlock = ted.sequences[0].clearance;
             for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ firstBlock.x, firstBlock.y }.Rotate(direction), 0 };
+                const auto& block = ted.sequences[i].clearance;
+                CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ block.x, block.y }.Rotate(direction), 0 };
 
                 bool trackFound = false;
                 tileElement = MapGetFirstElementAt(blockLocation);
