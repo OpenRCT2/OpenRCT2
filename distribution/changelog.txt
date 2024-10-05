@@ -7,7 +7,7 @@
 - Feature: [#15642] Track design placement can now use construction modifier keys (ctrl/shift).
 - Feature: [#20539] [Plugin] Add API for getting a ride’s statistics.
 - Feature: [#21521] [Plugin] Add hook 'park.guest.softcap.calculate' called before calculating the soft guest cap.
-- Feature: [#22383] Add downward-inclined brakes to hybrid coaster and single rail coaster.
+- Feature: [#22383, #22905] Add downward-inclined brakes to hybrid coaster and single rail coaster.
 - Feature: [#22694] Park graphs have tooltips and can be resized like finance graphs.
 - Feature: [#22758] The table of ‘real’ peep names can now be changed using Peep Names objects.
 - Feature: [#22842] [Plugin] Expose large scenery object tiles to the plugin API.
