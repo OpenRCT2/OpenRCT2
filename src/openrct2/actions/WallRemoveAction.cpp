@@ -85,7 +85,7 @@ GameActions::Result WallRemoveAction::Execute() const
 
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
-    res.Position.z = TileElementHeight(res.Position);
+    res.Position.z = _loc.z;
 
     wallElement->RemoveBannerEntry();
     MapInvalidateTileZoom1({ _loc, wallElement->GetBaseZ(), (wallElement->GetBaseZ()) + 72 });

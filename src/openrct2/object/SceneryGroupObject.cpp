@@ -30,12 +30,13 @@ using namespace OpenRCT2;
 
 // Example entry: "$DAT:09F55406|00STBEN "
 // 5 for $DAT:, 8 for the checksum, 1 for the vertical bar, 8 for the .DAT name.
-static constexpr uint8_t DatEntryPrefixLength = 5;
-static constexpr uint8_t DatEntryFlagsLength = 8;
-static constexpr uint8_t DatEntrySeparatorLength = 1;
-static constexpr uint8_t DatEntryLength = DatEntryPrefixLength + DatEntryFlagsLength + DatEntrySeparatorLength + kDatNameLength;
-static constexpr uint8_t DatEntryFlagsStart = DatEntryPrefixLength;
-static constexpr uint8_t DatEntryNameStart = DatEntryPrefixLength + DatEntryFlagsLength + DatEntrySeparatorLength;
+static constexpr uint8_t kDatEntryPrefixLength = 5;
+static constexpr uint8_t kDatEntryFlagsLength = 8;
+static constexpr uint8_t kDatEntrySeparatorLength = 1;
+static constexpr uint8_t kDatEntryLength = kDatEntryPrefixLength + kDatEntryFlagsLength + kDatEntrySeparatorLength
+    + kDatNameLength;
+static constexpr uint8_t kDatEntryFlagsStart = kDatEntryPrefixLength;
+static constexpr uint8_t kDatEntryNameStart = kDatEntryPrefixLength + kDatEntryFlagsLength + kDatEntrySeparatorLength;
 
 void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
@@ -209,7 +210,7 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
         auto entryName = Json::GetString(jEntry);
         if (String::StartsWith(entryName, "$DAT:"))
         {
-            if (entryName.length() != DatEntryLength)
+            if (entryName.length() != kDatEntryLength)
             {
                 std::string errorMessage = "Malformed DAT entry in scenery group: " + entryName;
                 context->LogError(ObjectError::InvalidProperty, errorMessage.c_str());
@@ -219,8 +220,8 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
             try
             {
                 RCTObjectEntry entry = {};
-                entry.flags = std::stoul(entryName.substr(DatEntryFlagsStart, DatEntryFlagsLength), nullptr, 16);
-                std::memcpy(entry.name, entryName.c_str() + DatEntryNameStart, kDatNameLength);
+                entry.flags = std::stoul(entryName.substr(kDatEntryFlagsStart, kDatEntryFlagsLength), nullptr, 16);
+                std::memcpy(entry.name, entryName.c_str() + kDatEntryNameStart, kDatNameLength);
                 entry.checksum = 0;
                 entries.emplace_back(entry);
             }

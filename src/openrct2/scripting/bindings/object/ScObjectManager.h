@@ -26,6 +26,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx);
 
         std::vector<std::shared_ptr<ScInstalledObject>> installedObjects_get() const;
+        std::shared_ptr<ScInstalledObject> installedObject_get(const std::string& identifier) const;
 
         DukValue load(const DukValue& p1, const DukValue& p2);
         void unload(const DukValue& p1, const DukValue& p2);

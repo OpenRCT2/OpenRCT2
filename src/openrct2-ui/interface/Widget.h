@@ -165,7 +165,7 @@ namespace OpenRCT2::Ui
         const int16_t xPos = origin.x + size.width - 11;
         const int16_t yPos = origin.y + 1;
         const uint16_t width = 11;
-        const uint16_t height = 10;
+        const uint16_t height = size.height - 2;
 
         return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
     }

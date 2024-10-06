@@ -58,6 +58,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/Slope.h"
 #include "Ride.h"
 #include "RideData.h"
@@ -150,7 +151,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     appearance.stationObjectIdentifier = TrackDesignGetStationObjectIdentifier(ride);
     statistics.maxSpeed = static_cast<int8_t>(ride.max_speed / 65536);
     statistics.averageSpeed = static_cast<int8_t>(ride.average_speed / 65536);
-    statistics.rideLength = ride.GetTotalLength() / 65536;
+    statistics.rideLength = ToHumanReadableRideLength(ride.GetTotalLength());
     statistics.maxPositiveVerticalG = ride.max_positive_vertical_g;
     statistics.maxNegativeVerticalG = ride.max_negative_vertical_g;
     statistics.maxLateralG = ride.max_lateral_g;
@@ -204,13 +205,12 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
     const auto& ted = GetTrackElementDescriptor(trackElement.element->AsTrack()->GetTrackType());
     const TrackCoordinates* trackCoordinates = &ted.coordinates;
-    const auto* trackBlock = ted.block;
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
     // start.
     TileElement* initialMap = trackElement.element;
 
-    CoordsXYZ startPos = { trackElement.x, trackElement.y, z + trackCoordinates->zBegin - trackBlock->z };
+    CoordsXYZ startPos = { trackElement.x, trackElement.y, z + trackCoordinates->zBegin - ted.sequences[0].clearance.z };
     tds.origin = startPos;
 
     do
@@ -1565,9 +1565,10 @@ static GameActions::Result TrackDesignPlaceRide(
         switch (tds.placeOperation)
         {
             case TrackPlaceOperation::drawOutlines:
-                for (const PreviewTrack* trackBlock = ted.block; trackBlock->index != 0xFF; trackBlock++)
+                for (uint8_t i = 0; i < ted.numSequences; i++)
                 {
-                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
+                    const auto& trackBlock = ted.sequences[i].clearance;
+                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(rotation);
                     TrackDesignUpdatePreviewBounds(tds, { tile, newCoords.z });
                     TrackDesignAddSelectedTile(tile);
                 }
@@ -1575,8 +1576,7 @@ static GameActions::Result TrackDesignPlaceRide(
             case TrackPlaceOperation::removeGhost:
             {
                 const TrackCoordinates* trackCoordinates = &ted.coordinates;
-                const PreviewTrack* trackBlock = ted.block;
-                int32_t tempZ = newCoords.z - trackCoordinates->zBegin + trackBlock->z;
+                int32_t tempZ = newCoords.z - trackCoordinates->zBegin + ted.sequences[0].clearance.z;
                 auto trackRemoveAction = TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
@@ -1595,14 +1595,14 @@ static GameActions::Result TrackDesignPlaceRide(
                 // di
                 int16_t tempZ = newCoords.z - trackCoordinates->zBegin;
 
-                int32_t liftHillAndAlternativeState = 0;
+                SelectedLiftAndInverted liftHillAndAlternativeState{};
                 if (track.HasFlag(TrackDesignTrackElementFlag::hasChain))
                 {
-                    liftHillAndAlternativeState |= 1;
+                    liftHillAndAlternativeState.set(LiftHillAndInverted::liftHill);
                 }
                 if (track.HasFlag(TrackDesignTrackElementFlag::isInverted))
                 {
-                    liftHillAndAlternativeState |= 2;
+                    liftHillAndAlternativeState.set(LiftHillAndInverted::inverted);
                 }
 
                 uint8_t flags = GAME_COMMAND_FLAG_APPLY;
@@ -1644,9 +1644,10 @@ static GameActions::Result TrackDesignPlaceRide(
             case TrackPlaceOperation::getPlaceZ:
             {
                 int32_t tempZ = newCoords.z - ted.coordinates.zBegin;
-                for (const PreviewTrack* trackBlock = ted.block; trackBlock->index != 0xFF; trackBlock++)
+                for (uint8_t i = 0; i < ted.numSequences; i++)
                 {
-                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
+                    const auto& trackBlock = ted.sequences[i].clearance;
+                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(rotation);
                     if (!MapIsLocationValid(tile))
                     {
                         continue;
@@ -1675,7 +1676,7 @@ static GameActions::Result TrackDesignPlaceRide(
                     {
                         surfaceZ = waterZ;
                     }
-                    int32_t heightDifference = tempZ + tds.placeZ + trackBlock->z - surfaceZ;
+                    int32_t heightDifference = tempZ + tds.placeZ + trackBlock.z - surfaceZ;
                     if (heightDifference < 0)
                     {
                         tds.placeZ -= heightDifference;
@@ -2112,14 +2113,11 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     Viewport view;
     view.width = 370;
     view.height = 217;
-    view.view_width = size_x;
-    view.view_height = size_y;
     view.pos = { 0, 0 };
     view.zoom = zoom_level;
     view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_ENTITIES;
 
     DrawPixelInfo dpi;
-    dpi.zoom_level = zoom_level;
     dpi.x = 0;
     dpi.y = 0;
     dpi.width = 370;
@@ -2135,7 +2133,7 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     {
         view.viewPos = Translate3DTo2DWithZ(i, centre) - offset;
         view.rotation = i;
-        ViewportRender(dpi, &view, { {}, ScreenCoordsXY{ size_x, size_y } });
+        ViewportRender(dpi, &view);
 
         dpi.bits += kTrackPreviewImageSize;
     }
@@ -2152,7 +2150,8 @@ static void TrackDesignPreviewClearMap()
 {
     auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
-    GetGameState().MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
+    auto& gameState = GetGameState();
+    gameState.MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 
     // Reserve ~8 elements per tile
     std::vector<TileElement> tileElements;
@@ -2171,7 +2170,8 @@ static void TrackDesignPreviewClearMap()
         element->AsSurface()->SetOwnership(OWNERSHIP_OWNED);
         element->AsSurface()->SetParkFences(0);
     }
-    SetTileElements(std::move(tileElements));
+
+    SetTileElements(gameState, std::move(tileElements));
 }
 
 bool TrackDesignAreEntranceAndExitPlaced()

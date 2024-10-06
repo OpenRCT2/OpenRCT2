@@ -42,7 +42,7 @@ TEST_F(FmtStringTests, iteration)
         actual += String::StdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
     }
 
-    ASSERT_EQ("[29:{BLACK}][1:Guests: ][8:{INT32}]", actual);
+    ASSERT_EQ("[31:{BLACK}][1:Guests: ][8:{INT32}]", actual);
 }
 
 TEST_F(FmtStringTests, iteration_escaped)

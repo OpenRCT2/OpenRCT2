@@ -29,6 +29,7 @@
 #include "Footpath.h"
 #include "Map.h"
 #include "Scenery.h"
+#include "tile_element/EntranceElement.h"
 
 using namespace OpenRCT2;
 
@@ -210,9 +211,9 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
                         continue;
 
                     peep->Action = PeepActionType::CheckTime;
-                    peep->ActionFrame = 0;
-                    peep->ActionSpriteImageOffset = 0;
-                    peep->UpdateCurrentActionSpriteType();
+                    peep->AnimationFrameNum = 0;
+                    peep->AnimationImageIdOffset = 0;
+                    peep->UpdateCurrentAnimationType();
                     peep->Invalidate();
                     break;
                 }
@@ -601,7 +602,7 @@ const std::vector<MapAnimation>& GetMapAnimations()
     return _mapAnimations;
 }
 
-static void ClearMapAnimations()
+void ClearMapAnimations()
 {
     _mapAnimations.clear();
 }

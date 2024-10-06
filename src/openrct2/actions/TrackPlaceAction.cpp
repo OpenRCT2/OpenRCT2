@@ -20,6 +20,7 @@
 #include "../util/Math.hpp"
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
+#include "../world/QuarterTile.h"
 #include "../world/Surface.h"
 #include "../world/tile_element/Slope.h"
 #include "RideSetSettingAction.h"
@@ -29,7 +30,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 TrackPlaceAction::TrackPlaceAction(
     RideId rideIndex, int32_t trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
-    int32_t seatRotation, int32_t liftHillAndAlternativeState, bool fromTrackDesign)
+    int32_t seatRotation, SelectedLiftAndInverted liftHillAndAlternativeState, bool fromTrackDesign)
     : _rideIndex(rideIndex)
     , _trackType(trackType)
     , _rideType(rideType)
@@ -52,7 +53,7 @@ void TrackPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit("brakeSpeed", _brakeSpeed);
     visitor.Visit("colour", _colour);
     visitor.Visit("seatRotation", _seatRotation);
-    visitor.Visit("trackPlaceFlags", _trackPlaceFlags);
+    visitor.Visit("trackPlaceFlags", _trackPlaceFlags.holder);
     visitor.Visit("isFromTrackDesign", _fromTrackDesign);
 }
 
@@ -66,7 +67,7 @@ void TrackPlaceAction::Serialise(DataSerialiser& stream)
     GameAction::Serialise(stream);
 
     stream << DS_TAG(_rideIndex) << DS_TAG(_trackType) << DS_TAG(_rideType) << DS_TAG(_origin) << DS_TAG(_brakeSpeed)
-           << DS_TAG(_colour) << DS_TAG(_seatRotation) << DS_TAG(_trackPlaceFlags);
+           << DS_TAG(_colour) << DS_TAG(_seatRotation) << DS_TAG(_trackPlaceFlags.holder);
 }
 
 GameActions::Result TrackPlaceAction::Query() const
@@ -93,7 +94,8 @@ GameActions::Result TrackPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
-    if (_rideType != ride->type && !GetGameState().Cheats.AllowArbitraryRideTypeChanges)
+    auto& gameState = GetGameState();
+    if (_rideType != ride->type && !gameState.Cheats.AllowArbitraryRideTypeChanges)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
@@ -131,7 +133,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
     if (!(GetActionFlags() & GameActions::Flags::AllowWhilePaused))
     {
-        if (GameIsPaused() && !GetGameState().Cheats.BuildInPauseMode)
+        if (GameIsPaused() && !gameState.Cheats.BuildInPauseMode)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -160,8 +162,8 @@ GameActions::Result TrackPlaceAction::Query() const
             }
         }
         // Backwards steep lift hills are allowed, even on roller coasters that do not support forwards steep lift hills.
-        if ((_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED) && !rtd.SupportsTrackGroup(TrackGroup::liftHillSteep)
-            && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+        if (_trackPlaceFlags.has(LiftHillAndInverted::liftHill) && !rtd.SupportsTrackGroup(TrackGroup::liftHillSteep)
+            && !gameState.Cheats.EnableChainLiftOnAllTrack)
         {
             const auto& ted = GetTrackElementDescriptor(_trackType);
             if (ted.flags & TRACK_ELEM_FLAG_IS_STEEP_UP)
@@ -174,12 +176,12 @@ GameActions::Result TrackPlaceAction::Query() const
     }
 
     const auto& ted = GetTrackElementDescriptor(_trackType);
-    const PreviewTrack* trackBlock = ted.block;
     uint32_t numElements = 0;
     // First check if any of the track pieces are outside the park
-    for (; trackBlock->index != 0xFF; trackBlock++)
+    for (uint8_t i = 0; i < ted.numSequences; i++)
     {
-        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), 0 };
+        const auto& trackBlock = ted.sequences[i].clearance;
+        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), 0 };
         auto tileCoords = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
         if (!LocationValid(tileCoords))
@@ -187,7 +189,7 @@ GameActions::Result TrackPlaceAction::Query() const
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
-        if (!MapIsLocationOwned(tileCoords) && !GetGameState().Cheats.SandboxMode)
+        if (!MapIsLocationOwned(tileCoords) && !gameState.Cheats.SandboxMode)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -203,7 +205,7 @@ GameActions::Result TrackPlaceAction::Query() const
             STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    if (!GetGameState().Cheats.AllowTrackPlaceInvalidHeights)
+    if (!gameState.Cheats.AllowTrackPlaceInvalidHeights)
     {
         if (ted.flags & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
         {
@@ -224,16 +226,16 @@ GameActions::Result TrackPlaceAction::Query() const
     }
 
     // If that is not the case, then perform the remaining checks
-    trackBlock = ted.block;
     auto clearanceHeight = rideEntry->Clearance;
 
     money64 costs = 0;
     money64 supportCosts = 0;
-    for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
+    for (int32_t blockIndex = 0; blockIndex < ted.numSequences; blockIndex++)
     {
-        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
+        const auto& trackBlock = ted.sequences[blockIndex].clearance;
+        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), trackBlock.z };
         auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
-        auto quarterTile = trackBlock->quarterTile.Rotate(_origin.direction);
+        auto quarterTile = trackBlock.quarterTile.Rotate(_origin.direction);
 
         if (mapLoc.z < 16)
         {
@@ -243,8 +245,8 @@ GameActions::Result TrackPlaceAction::Query() const
 
         int32_t baseZ = Floor2(mapLoc.z, kCoordsZStep);
 
-        int32_t clearanceZ = trackBlock->clearanceZ;
-        if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
+        int32_t clearanceZ = trackBlock.clearanceZ;
+        if (trackBlock.flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;
         }
@@ -306,7 +308,7 @@ GameActions::Result TrackPlaceAction::Query() const
             }
         }
 
-        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER && !GetGameState().Cheats.DisableClearanceChecks)
+        if (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER && !gameState.Cheats.DisableClearanceChecks)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
@@ -351,8 +353,8 @@ GameActions::Result TrackPlaceAction::Query() const
             }
         }
 
-        int32_t entranceDirections = std::get<0>(ted.sequenceProperties);
-        if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && trackBlock->index == 0)
+        int32_t entranceDirections = ted.sequences[0].flags;
+        if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && blockIndex == 0)
         {
             const auto addElementResult = TrackAddStationElement(
                 { mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign);
@@ -372,7 +374,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        if (!GetGameState().Cheats.DisableSupportLimits)
+        if (!gameState.Cheats.DisableSupportLimits)
         {
             int32_t ride_height = clearanceZ - surfaceElement->GetBaseZ();
             if (ride_height >= 0)
@@ -446,24 +448,24 @@ GameActions::Result TrackPlaceAction::Execute() const
     const auto& rtd = ride->GetRideTypeDescriptor();
 
     const auto& ted = GetTrackElementDescriptor(_trackType);
-    const auto& wallEdges = ted.sequenceElementAllowedWallEdges;
 
     money64 costs = 0;
     money64 supportCosts = 0;
-    const PreviewTrack* trackBlock = ted.block;
+    const auto& block0 = ted.sequences[0].clearance;
     auto clearanceHeight = rideEntry->Clearance;
     CoordsXYZ originLocation = CoordsXYZ{ _origin.x, _origin.y, _origin.z }
-        + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
-    for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
+        + CoordsXYZ{ CoordsXY{ block0.x, block0.y }.Rotate(_origin.direction), block0.z };
+    for (int32_t blockIndex = 0; blockIndex < ted.numSequences; blockIndex++)
     {
-        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
+        const auto& trackBlock = ted.sequences[blockIndex].clearance;
+        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), trackBlock.z };
         auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
-        auto quarterTile = trackBlock->quarterTile.Rotate(_origin.direction);
+        auto quarterTile = trackBlock.quarterTile.Rotate(_origin.direction);
 
         int32_t baseZ = Floor2(mapLoc.z, kCoordsZStep);
-        int32_t clearanceZ = trackBlock->clearanceZ;
-        if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
+        int32_t clearanceZ = trackBlock.clearanceZ;
+        if (trackBlock.flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;
         }
@@ -497,7 +499,8 @@ GameActions::Result TrackPlaceAction::Execute() const
             }
         }
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !GetGameState().Cheats.DisableClearanceChecks)
+        auto& gameState = GetGameState();
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.Cheats.DisableClearanceChecks)
         {
             FootpathRemoveLitter(mapLoc);
             if (rtd.HasFlag(RtdFlag::noWallsAroundTrack))
@@ -507,7 +510,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             else
             {
                 // Remove walls in the directions this track intersects
-                uint8_t intersectingDirections = wallEdges[blockIndex];
+                uint8_t intersectingDirections = ted.sequences[blockIndex].allowedWallEdges;
                 intersectingDirections ^= 0x0F;
                 intersectingDirections = Numerics::rol4(intersectingDirections, _origin.direction);
                 for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
@@ -556,7 +559,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         {
             if (!(GetFlags() & GAME_COMMAND_FLAG_NO_SPEND))
             {
-                entranceDirections = std::get<0>(ted.sequenceProperties);
+                entranceDirections = ted.sequences[0].flags;
             }
         }
 
@@ -576,8 +579,8 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         trackElement->SetClearanceZ(clearanceZ);
         trackElement->SetDirection(_origin.direction);
-        trackElement->SetHasChain(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED);
-        trackElement->SetSequenceIndex(trackBlock->index);
+        trackElement->SetHasChain(_trackPlaceFlags.has(LiftHillAndInverted::liftHill));
+        trackElement->SetSequenceIndex(blockIndex);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetTrackType(_trackType);
         trackElement->SetRideType(_rideType);
@@ -617,19 +620,19 @@ GameActions::Result TrackPlaceAction::Execute() const
             trackElement->SetSeatRotation(_seatRotation);
         }
 
-        if (_trackPlaceFlags & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
+        if (_trackPlaceFlags.has(LiftHillAndInverted::inverted))
         {
             trackElement->SetInverted(true);
         }
         trackElement->SetColourScheme(static_cast<RideColourScheme>(_colour));
 
-        entranceDirections = std::get<0>(ted.sequenceProperties);
+        entranceDirections = ted.sequences[0].flags;
         if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
         {
             uint32_t availableDirections = entranceDirections & 0x0F;
             if (availableDirections != 0)
             {
-                if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !GetGameState().Cheats.DisableClearanceChecks)
+                if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.Cheats.DisableClearanceChecks)
                 {
                     for (int32_t chosenDirection = UtilBitScanForward(availableDirections); chosenDirection != -1;
                          chosenDirection = UtilBitScanForward(availableDirections))
@@ -651,7 +654,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         // However, ghost tiles from track designs need to modify station data to display properly
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) || _fromTrackDesign))
         {
-            if (trackBlock->index == 0)
+            if (blockIndex == 0)
             {
                 TrackAddStationElement({ mapLoc, _origin.direction }, _rideIndex, GAME_COMMAND_FLAG_APPLY, _fromTrackDesign);
             }
@@ -671,7 +674,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             }
         }
 
-        if (!GetGameState().Cheats.DisableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        if (!gameState.Cheats.DisableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             FootpathConnectEdges(mapLoc, tileElement, GetFlags());
         }
@@ -720,7 +723,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             case TrackElemType::Up60ToFlat:
             case TrackElemType::DiagUp25ToFlat:
             case TrackElemType::DiagUp60ToFlat:
-                if (!(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED))
+                if (!_trackPlaceFlags.has(LiftHillAndInverted::liftHill))
                     break;
                 [[fallthrough]];
             case TrackElemType::CableLiftHill:
@@ -742,9 +745,10 @@ GameActions::Result TrackPlaceAction::Execute() const
 bool TrackPlaceAction::CheckMapCapacity(int16_t numTiles) const
 {
     const auto& ted = GetTrackElementDescriptor(_trackType);
-    for (const PreviewTrack* trackBlock = ted.block; trackBlock->index != 0xFF; trackBlock++)
+    for (uint8_t i = 0; i < ted.numSequences; i++)
     {
-        auto rotatedTrack = CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction);
+        const auto& trackBlock = ted.sequences[i].clearance;
+        auto rotatedTrack = CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction);
 
         auto tileCoords = CoordsXY{ _origin.x, _origin.y } + rotatedTrack;
         if (!MapCheckCapacityAndReorganise(tileCoords, numTiles))

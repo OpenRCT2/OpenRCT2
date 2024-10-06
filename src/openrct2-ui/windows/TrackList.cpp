@@ -35,34 +35,34 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
     static constexpr int32_t WINDOW_PADDING = 5;
 
+    enum
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_BACK,
+        WIDX_FILTER_STRING,
+        WIDX_FILTER_CLEAR,
+        WIDX_TRACK_LIST,
+        WIDX_TRACK_PREVIEW,
+        WIDX_ROTATE,
+        WIDX_TOGGLE_SCENERY,
+    };
+
+    validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
+
     // clang-format off
-enum {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_BACK,
-    WIDX_FILTER_STRING,
-    WIDX_FILTER_CLEAR,
-    WIDX_TRACK_LIST,
-    WIDX_TRACK_PREVIEW,
-    WIDX_ROTATE,
-    WIDX_TOGGLE_SCENERY,
-};
-
-validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
-
-static Widget _trackListWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_SELECT_OTHER_RIDE                                       ),
-    MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,     WindowColour::Secondary                                                              ),
-    MakeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::Primary  , STR_OBJECT_SEARCH_CLEAR                                     ),
-    MakeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary  , SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
-    MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                                ),
-    MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
-    MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             ),
-    kWidgetsEnd,
-};
-
+    static Widget _trackListWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader,  WindowColour::Primary, STR_SELECT_OTHER_RIDE                                       ),
+        MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                            ),
+        MakeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::Primary, STR_OBJECT_SEARCH_CLEAR                                     ),
+        MakeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary, SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
+        MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                              ),
+        MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
+        MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary, ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             ),
+        kWidgetsEnd,
+    };
     // clang-format on
 
     constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;
@@ -575,13 +575,13 @@ static Widget _trackListWidgets[] = {
                     {
                         // Maximum speed
                         ft = Formatter();
-                        ft.Add<uint16_t>(((_loadedTrackDesign->statistics.maxSpeed << 16) * 9) >> 18);
+                        ft.Add<uint16_t>(ToHumanReadableSpeed(_loadedTrackDesign->statistics.maxSpeed << 16));
                         DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
                         screenPos.y += kListRowHeight;
 
                         // Average speed
                         ft = Formatter();
-                        ft.Add<uint16_t>(((_loadedTrackDesign->statistics.averageSpeed << 16) * 9) >> 18);
+                        ft.Add<uint16_t>(ToHumanReadableSpeed(_loadedTrackDesign->statistics.averageSpeed << 16));
                         DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
                         screenPos.y += kListRowHeight;
                     }
@@ -618,7 +618,7 @@ static Widget _trackListWidgets[] = {
                     {
                         // Total air time
                         ft = Formatter();
-                        ft.Add<int32_t>(_loadedTrackDesign->statistics.totalAirTime * 3);
+                        ft.Add<int32_t>(ToHumanReadableAirTime(_loadedTrackDesign->statistics.totalAirTime));
                         DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
                         screenPos.y += kListRowHeight;
                     }

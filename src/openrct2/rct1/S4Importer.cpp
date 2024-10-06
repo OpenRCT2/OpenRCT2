@@ -47,6 +47,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../park/Legacy.h"
 #include "../peep/PeepAnimationData.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct12/CSStringConverter.h"
@@ -71,6 +72,7 @@
 #include "../world/Surface.h"
 #include "../world/TilePointerIndex.hpp"
 #include "../world/Wall.h"
+#include "../world/tile_element/EntranceElement.h"
 #include "RCT1.h"
 #include "Tables.h"
 
@@ -182,18 +184,21 @@ namespace OpenRCT2::RCT1
             ImportRides();
             ImportRideMeasurements();
             ImportEntities();
-            ImportTileElements();
-            ImportPeepSpawns();
+            ImportTileElements(gameState);
+            ImportPeepSpawns(gameState);
             ImportFinance(gameState);
             ImportResearch(gameState);
-            ImportParkName();
+            ImportParkName(gameState);
             ImportParkFlags(gameState);
             ImportClimate(gameState);
             ImportScenarioNameDetails(gameState);
             ImportScenarioObjective(gameState);
-            ImportSavedView();
+            ImportSavedView(gameState);
 
-            RCT12::FetchAndApplyScenarioPatch(_s4Path, _isScenario);
+            if (_isScenario)
+            {
+                RCT12::FetchAndApplyScenarioPatch(_s4Path);
+            }
             FixNextGuestNumber(gameState);
             CountBlockSections();
             SetDefaultNames();
@@ -324,7 +329,7 @@ namespace OpenRCT2::RCT1
 
             uint16_t mapSize = _s4.MapSize == 0 ? Limits::kMaxMapSize : _s4.MapSize;
 
-            gScenarioFileName = GetRCT1ScenarioName();
+            gameState.ScenarioFileName = GetRCT1ScenarioName();
 
             // Do map initialisation, same kind of stuff done when loading scenario editor
             gameStateInitAll(gameState, { mapSize, mapSize });
@@ -1295,16 +1300,16 @@ namespace OpenRCT2::RCT1
         void ImportPeep(::Peep* dst, const RCT1::Peep* src)
         {
             // Peep vs. staff (including which kind)
-            dst->SpriteType = RCT1::GetPeepSpriteType(src->SpriteType);
+            dst->AnimationGroup = RCT1::GetPeepAnimationGroup(src->AnimationGroup);
             dst->Action = static_cast<PeepActionType>(src->Action);
             dst->SpecialSprite = src->SpecialSprite;
-            dst->NextActionSpriteType = static_cast<PeepActionSpriteType>(src->NextActionSpriteType);
-            dst->ActionSpriteImageOffset = src->ActionSpriteImageOffset;
-            dst->WalkingFrameNum = src->NoActionFrameNum;
-            dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->ActionSpriteType);
-            dst->ActionFrame = src->ActionFrame;
+            dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
+            dst->AnimationImageIdOffset = src->AnimationImageIdOffset;
+            dst->WalkingAnimationFrameNum = src->NoActionFrameNum;
+            dst->AnimationType = static_cast<PeepAnimationType>(src->AnimationType);
+            dst->AnimationFrameNum = src->AnimationFrameNum;
 
-            const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
+            const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->AnimationGroup, dst->AnimationType);
             dst->SpriteData.Width = spriteBounds->sprite_width;
             dst->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
             dst->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
@@ -1365,8 +1370,8 @@ namespace OpenRCT2::RCT1
             //                                          index in the array ----^     ^--- bit position in the 8-bit value
             // We do the opposite in this function to recover the x and y values.
 
-            int32_t peepOffset = staffId * Limits::PatrolAreaSize;
-            for (int32_t i = 0; i < Limits::PatrolAreaSize; i++)
+            int32_t peepOffset = staffId * Limits::kPatrolAreaSize;
+            for (int32_t i = 0; i < Limits::kPatrolAreaSize; i++)
             {
                 if (_s4.PatrolAreas[peepOffset + i] == 0)
                 {
@@ -1405,9 +1410,8 @@ namespace OpenRCT2::RCT1
             dst->z = src->z;
         }
 
-        void ImportPeepSpawns()
+        void ImportPeepSpawns(GameState_t& gameState)
         {
-            auto& gameState = GetGameState();
             gameState.PeepSpawns.clear();
             for (size_t i = 0; i < Limits::kMaxPeepSpawns; i++)
             {
@@ -1437,16 +1441,16 @@ namespace OpenRCT2::RCT1
             gameState.Park.Value = CorrectRCT1ParkValue(_s4.ParkValue);
             gameState.CurrentProfit = ToMoney64(_s4.Profit);
 
-            for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
+            for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
                 gameState.CashHistory[i] = ToMoney64(_s4.CashHistory[i]);
                 gameState.Park.ValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
-            for (size_t i = 0; i < Limits::ExpenditureTableMonthCount; i++)
+            for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)
             {
-                for (size_t j = 0; j < Limits::ExpenditureTypeCount; j++)
+                for (size_t j = 0; j < Limits::kExpenditureTypeCount; j++)
                 {
                     gameState.ExpenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
                 }
@@ -1481,21 +1485,6 @@ namespace OpenRCT2::RCT1
             }
         }
 
-        void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const RCT12::EntryList& entryList)
-        {
-            AppendRequiredObjects(objectList, objectType, entryList.GetEntries());
-        }
-
-        void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const std::vector<std::string>& objectNames)
-        {
-            for (const auto& objectName : objectNames)
-            {
-                auto descriptor = ObjectEntryDescriptor(objectName);
-                descriptor.Type = objectType;
-                objectList.Add(descriptor);
-            }
-        }
-
         ObjectList GetRequiredObjects()
         {
             ObjectList result;
@@ -1513,11 +1502,12 @@ namespace OpenRCT2::RCT1
             AppendRequiredObjects(result, ObjectType::TerrainEdge, _terrainEdgeEntries);
             AppendRequiredObjects(result, ObjectType::FootpathSurface, _footpathSurfaceEntries);
             AppendRequiredObjects(result, ObjectType::FootpathRailings, _footpathRailingsEntries);
+            AppendRequiredObjects(result, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
             RCT12AddDefaultObjects(result);
             return result;
         }
 
-        void ImportTileElements()
+        void ImportTileElements(GameState_t& gameState)
         {
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
@@ -1536,7 +1526,7 @@ namespace OpenRCT2::RCT1
                         RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
                         do
                         {
-                            if (srcElement->BaseHeight == Limits::MaxElementHeight)
+                            if (srcElement->BaseHeight == Limits::kMaxElementHeight)
                                 continue;
 
                             // Reserve 8 elements for import
@@ -1565,8 +1555,8 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            SetTileElements(std::move(tileElements));
-            FixEntrancePositions();
+            SetTileElements(gameState, std::move(tileElements));
+            FixEntrancePositions(gameState);
         }
 
         size_t ImportTileElement(TileElement* dst, const RCT12TileElement* src)
@@ -2121,7 +2111,7 @@ namespace OpenRCT2::RCT1
             }
         }
 
-        void ImportParkName()
+        void ImportParkName(GameState_t& gameState)
         {
             std::string parkName = std::string(_s4.ScenarioName);
             if (IsUserStringID(static_cast<StringId>(_s4.ParkNameStringIndex)))
@@ -2133,7 +2123,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            auto& park = GetGameState().Park;
+            auto& park = gameState.Park;
             park.Name = std::move(parkName);
         }
 
@@ -2148,7 +2138,13 @@ namespace OpenRCT2::RCT1
             gameState.Park.Rating = _s4.ParkRating;
 
             Park::ResetHistories(gameState);
-            std::copy(std::begin(_s4.ParkRatingHistory), std::end(_s4.ParkRatingHistory), gameState.Park.RatingHistory);
+            for (size_t i = 0; i < std::size(_s4.ParkRatingHistory); i++)
+            {
+                if (_s4.ParkRatingHistory[i] != RCT12ParkHistoryUndefined)
+                {
+                    gameState.Park.RatingHistory[i] = _s4.ParkRatingHistory[i] * RCT12ParkRatingHistoryFactor;
+                }
+            }
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
             {
                 if (_s4.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)
@@ -2371,9 +2367,8 @@ namespace OpenRCT2::RCT1
                 gameState.ScenarioObjective.RideId = GetBuildTheBestRideId();
         }
 
-        void ImportSavedView()
+        void ImportSavedView(GameState_t& gameState)
         {
-            auto& gameState = GetGameState();
             gameState.SavedView = ScreenCoordsXY{ _s4.ViewX, _s4.ViewY };
             gameState.SavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s4.ViewZoom) };
             gameState.SavedViewRotation = _s4.ViewRotation;
@@ -2440,9 +2435,8 @@ namespace OpenRCT2::RCT1
             dst->position.y = src->y;
         }
 
-        void FixEntrancePositions()
+        void FixEntrancePositions(GameState_t& gameState)
         {
-            auto& gameState = GetGameState();
             gameState.Park.Entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);

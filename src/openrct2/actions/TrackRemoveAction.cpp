@@ -141,18 +141,19 @@ GameActions::Result TrackRemoveAction::Query() const
     }
     const auto& ted = GetTrackElementDescriptor(trackType);
     auto sequenceIndex = tileElement->AsTrack()->GetSequenceIndex();
-    const PreviewTrack* trackBlock = ted.GetBlockForSequence(sequenceIndex);
-    if (trackBlock == nullptr)
+    if (sequenceIndex >= ted.numSequences)
     {
         LOG_ERROR("Track block %d not found for track type %d.", sequenceIndex, trackType);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_BLOCK_NOT_FOUND);
     }
+    const auto& currentTrackBlock = ted.sequences[sequenceIndex].clearance;
 
     auto startLoc = _origin;
     startLoc.direction = tileElement->GetDirection();
 
-    auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+    auto rotatedTrack = CoordsXYZ{ CoordsXY{ currentTrackBlock.x, currentTrackBlock.y }.Rotate(startLoc.direction),
+                                   currentTrackBlock.z };
     startLoc.x -= rotatedTrack.x;
     startLoc.y -= rotatedTrack.y;
     startLoc.z -= rotatedTrack.z;
@@ -162,10 +163,10 @@ GameActions::Result TrackRemoveAction::Query() const
 
     money64 supportCosts = 0;
 
-    trackBlock = ted.block;
-    for (; trackBlock->index != 255; trackBlock++)
+    for (uint8_t i = 0; i < ted.numSequences; i++)
     {
-        rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+        const auto& trackBlock = ted.sequences[i].clearance;
+        rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(startLoc.direction), trackBlock.z };
         auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrack;
 
         if (!LocationValid(mapLoc))
@@ -191,7 +192,7 @@ GameActions::Result TrackRemoveAction::Query() const
             if (tileElement->GetDirection() != _origin.direction)
                 continue;
 
-            if (tileElement->AsTrack()->GetSequenceIndex() != trackBlock->index)
+            if (tileElement->AsTrack()->GetSequenceIndex() != i)
                 continue;
 
             if (tileElement->AsTrack()->GetTrackType() != trackType)
@@ -208,12 +209,12 @@ GameActions::Result TrackRemoveAction::Query() const
         {
             LOG_ERROR(
                 "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
-                _origin.direction, trackBlock->index);
+                _origin.direction, i);
             return GameActions::Result(
                 GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
         }
 
-        int32_t entranceDirections = std::get<0>(ted.sequenceProperties);
+        int32_t entranceDirections = ted.sequences[0].flags;
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, 0);
@@ -320,8 +321,7 @@ GameActions::Result TrackRemoveAction::Execute() const
     }
     const auto& ted = GetTrackElementDescriptor(trackType);
     auto sequenceIndex = tileElement->AsTrack()->GetSequenceIndex();
-    const PreviewTrack* trackBlock = ted.GetBlockForSequence(sequenceIndex);
-    if (trackBlock == nullptr)
+    if (sequenceIndex >= ted.numSequences)
     {
         LOG_ERROR("Track block %d not found for track type %d.", sequenceIndex, trackType);
         return GameActions::Result(
@@ -331,7 +331,9 @@ GameActions::Result TrackRemoveAction::Execute() const
     auto startLoc = _origin;
     startLoc.direction = tileElement->GetDirection();
 
-    auto rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+    const auto& currentTrackBlock = ted.sequences[sequenceIndex].clearance;
+    auto rotatedTrackLoc = CoordsXYZ{ CoordsXY{ currentTrackBlock.x, currentTrackBlock.y }.Rotate(startLoc.direction),
+                                      currentTrackBlock.z };
     startLoc.x -= rotatedTrackLoc.x;
     startLoc.y -= rotatedTrackLoc.y;
     startLoc.z -= rotatedTrackLoc.z;
@@ -341,10 +343,11 @@ GameActions::Result TrackRemoveAction::Execute() const
 
     money64 supportCosts = 0;
 
-    trackBlock = ted.block;
-    for (; trackBlock->index != 255; trackBlock++)
+    for (uint8_t i = 0; i < ted.numSequences; i++)
     {
-        rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+        const auto& trackBlock = ted.sequences[i].clearance;
+
+        rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(startLoc.direction), trackBlock.z };
         auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrackLoc;
 
         MapInvalidateTileFull(mapLoc);
@@ -365,7 +368,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             if (tileElement->GetDirection() != _origin.direction)
                 continue;
 
-            if (tileElement->AsTrack()->GetSequenceIndex() != trackBlock->index)
+            if (tileElement->AsTrack()->GetSequenceIndex() != i)
                 continue;
 
             if (tileElement->AsTrack()->GetTrackType() != trackType)
@@ -382,12 +385,12 @@ GameActions::Result TrackRemoveAction::Execute() const
         {
             LOG_ERROR(
                 "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
-                _origin.direction, trackBlock->index);
+                _origin.direction, i);
             return GameActions::Result(
                 GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
         }
 
-        int32_t entranceDirections = std::get<0>(ted.sequenceProperties);
+        int32_t entranceDirections = ted.sequences[0].flags;
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, 0);

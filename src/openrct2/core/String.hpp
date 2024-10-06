@@ -9,34 +9,13 @@
 
 #pragma once
 
+#include "StringTypes.h"
+
 #include <cstdarg>
 #include <cstddef>
-#include <cstdint>
 #include <optional>
-#include <string>
 #include <string_view>
 #include <vector>
-
-using utf8 = char;
-using utf8string = utf8*;
-using const_utf8string = const utf8*;
-using u8string = std::basic_string<utf8>;
-using u8string_view = std::basic_string_view<utf8>;
-
-using codepoint_t = uint32_t;
-
-namespace OpenRCT2
-{
-    enum CodePage : int32_t
-    {
-        CP_932 = 932,   // ANSI/OEM Japanese; Japanese (Shift-JIS)
-        CP_936 = 936,   // ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312)
-        CP_949 = 949,   // ANSI/OEM Korean (Unified Hangul Code)
-        CP_950 = 950,   // ANSI/OEM Traditional Chinese (Taiwan; Hong Kong SAR, PRC); Chinese Traditional (Big5)
-        CP_1252 = 1252, // ANSI Latin 1; Western European (Windows)
-        UTF8 = 65001,   // Unicode (UTF-8)
-    };
-}
 
 namespace OpenRCT2::String
 {
@@ -205,80 +184,3 @@ namespace OpenRCT2::String
     // Escapes special characters in a string to the percentage equivalent that can be used in URLs.
     std::string URLEncode(std::string_view value);
 } // namespace OpenRCT2::String
-
-class CodepointView
-{
-private:
-    std::string_view _str;
-
-public:
-    class iterator
-    {
-    private:
-        std::string_view _str;
-        size_t _index;
-
-    public:
-        iterator(std::string_view str, size_t index)
-            : _str(str)
-            , _index(index)
-        {
-        }
-
-        bool operator==(const iterator& rhs) const
-        {
-            return _index == rhs._index;
-        }
-        bool operator!=(const iterator& rhs) const
-        {
-            return _index != rhs._index;
-        }
-        char32_t operator*() const
-        {
-            return GetNextCodepoint(&_str[_index], nullptr);
-        }
-        iterator& operator++()
-        {
-            if (_index < _str.size())
-            {
-                const utf8* nextch;
-                GetNextCodepoint(&_str[_index], &nextch);
-                _index = std::min<size_t>(nextch - _str.data(), _str.size());
-            }
-            return *this;
-        }
-        iterator operator++(int)
-        {
-            auto result = *this;
-            if (_index < _str.size())
-            {
-                const utf8* nextch;
-                GetNextCodepoint(&_str[_index], &nextch);
-                _index = std::min<size_t>(nextch - _str.data(), _str.size());
-            }
-            return result;
-        }
-
-        size_t GetIndex() const
-        {
-            return _index;
-        }
-
-        static char32_t GetNextCodepoint(const char* ch, const char** next);
-    };
-
-    CodepointView(std::string_view str)
-        : _str(OpenRCT2::String::UTF8Truncate(str, str.size()))
-    {
-    }
-
-    iterator begin() const
-    {
-        return iterator(_str, 0);
-    }
-
-    iterator end() const
-    {
-        return iterator(_str, _str.size());
-    }
-};

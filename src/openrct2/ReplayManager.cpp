@@ -238,7 +238,8 @@ namespace OpenRCT2
             if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
                 return false;
 
-            const auto currentTicks = GetGameState().CurrentTicks;
+            auto& gameState = GetGameState();
+            const auto currentTicks = gameState.CurrentTicks;
 
             auto replayData = std::make_unique<ReplayRecordData>();
             replayData->magic = kReplayMagic;
@@ -257,7 +258,6 @@ namespace OpenRCT2
             auto& objManager = context->GetObjectManager();
             auto objects = objManager.GetPackableObjects();
 
-            auto& gameState = GetGameState();
             auto exporter = std::make_unique<ParkFileExporter>();
             exporter->ExportObjectsList = objects;
             exporter->Export(gameState, replayData->parkData);

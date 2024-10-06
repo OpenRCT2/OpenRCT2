@@ -529,6 +529,72 @@ namespace OpenRCT2::Scripting
         return ride != nullptr ? ride->satisfaction * 5 : 0;
     }
 
+    double ScRide::maxSpeed_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ToHumanReadableSpeed(ride->max_speed) : 0;
+    }
+
+    double ScRide::averageSpeed_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ToHumanReadableSpeed(ride->average_speed) : 0;
+    }
+
+    int32_t ScRide::rideTime_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->GetTotalTime() : 0;
+    }
+
+    double ScRide::rideLength_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ToHumanReadableRideLength(ride->GetTotalLength()) : 0;
+    }
+
+    double ScRide::maxPositiveVerticalGs_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->max_positive_vertical_g / 100.0 : 0;
+    }
+
+    double ScRide::maxNegativeVerticalGs_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->max_negative_vertical_g / 100.0 : 0;
+    }
+
+    double ScRide::maxLateralGs_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->max_lateral_g / 100.0 : 0;
+    }
+
+    double ScRide::totalAirTime_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ToHumanReadableAirTime(ride->totalAirTime) / 100.0 : 0;
+    }
+
+    uint8_t ScRide::numDrops_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->getNumDrops() : 0;
+    }
+
+    uint8_t ScRide::numLiftHills_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->getNumPoweredLifts() : 0;
+    }
+
+    double ScRide::highestDropHeight_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->highest_drop_height : 0;
+    }
+
     void ScRide::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScRide::id_get, nullptr, "id");
@@ -564,6 +630,17 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRide::maxLiftHillSpeed_get, nullptr, "maxLiftHillSpeed");
         dukglue_register_property(ctx, &ScRide::minLiftHillSpeed_get, nullptr, "minLiftHillSpeed");
         dukglue_register_property(ctx, &ScRide::satisfaction_get, nullptr, "satisfaction");
+        dukglue_register_property(ctx, &ScRide::maxSpeed_get, nullptr, "maxSpeed");
+        dukglue_register_property(ctx, &ScRide::averageSpeed_get, nullptr, "averageSpeed");
+        dukglue_register_property(ctx, &ScRide::rideTime_get, nullptr, "rideTime");
+        dukglue_register_property(ctx, &ScRide::rideLength_get, nullptr, "rideLength");
+        dukglue_register_property(ctx, &ScRide::maxPositiveVerticalGs_get, nullptr, "maxPositiveVerticalGs");
+        dukglue_register_property(ctx, &ScRide::maxNegativeVerticalGs_get, nullptr, "maxNegativeVerticalGs");
+        dukglue_register_property(ctx, &ScRide::maxLateralGs_get, nullptr, "maxLateralGs");
+        dukglue_register_property(ctx, &ScRide::totalAirTime_get, nullptr, "totalAirTime");
+        dukglue_register_property(ctx, &ScRide::numDrops_get, nullptr, "numDrops");
+        dukglue_register_property(ctx, &ScRide::numLiftHills_get, nullptr, "numLiftHills");
+        dukglue_register_property(ctx, &ScRide::highestDropHeight_get, nullptr, "highestDropHeight");
     }
 
 } // namespace OpenRCT2::Scripting

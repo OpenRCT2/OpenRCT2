@@ -263,8 +263,6 @@ void LightFXPrepareLightList()
                 break;
         }
 
-        int32_t mapFrontDiv = _current_view_zoom_front.ApplyTo(1);
-
         // clang-format off
         static int16_t offsetPattern[26] = {
             0, 0,
@@ -299,10 +297,10 @@ void LightFXPrepareLightList()
                 {
                     // based on GetMapCoordinatesFromPosWindow
                     DrawPixelInfo dpi;
-                    dpi.x = entry->ViewCoords.x + offsetPattern[0 + pat * 2] / mapFrontDiv;
-                    dpi.y = entry->ViewCoords.y + offsetPattern[1 + pat * 2] / mapFrontDiv;
-                    dpi.height = 1;
                     dpi.zoom_level = _current_view_zoom_front;
+                    dpi.x = _current_view_zoom_front.ApplyInversedTo(entry->ViewCoords.x + offsetPattern[0 + pat * 2]);
+                    dpi.y = _current_view_zoom_front.ApplyInversedTo(entry->ViewCoords.y + offsetPattern[1 + pat * 2]);
+                    dpi.height = 1;
                     dpi.width = 1;
 
                     PaintSession* session = PaintSessionAlloc(dpi, w->viewport->flags, w->viewport->rotation);
@@ -316,7 +314,7 @@ void LightFXPrepareLightList()
                     mapCoord = info.Loc;
                     mapCoord.x += tileOffsetX;
                     mapCoord.y += tileOffsetY;
-                    interactionType = info.SpriteType;
+                    interactionType = info.interactionType;
                     tileElement = info.Element;
                 }
 
@@ -384,19 +382,18 @@ void LightFXPrepareLightList()
             entry->LightIntensity = static_cast<uint8_t>(
                 std::min<uint32_t>(0xFF, (entry->LightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100)));
         }
-        entry->LightIntensity = static_cast<uint8_t>(
-            std::max<uint32_t>(0x00, entry->LightIntensity - static_cast<int8_t>(_current_view_zoom_front) * 5));
 
         if (_current_view_zoom_front > ZoomLevel{ 0 })
         {
-            if (GetLightTypeSize(entry->Type) < static_cast<int8_t>(_current_view_zoom_front))
+            const int8_t zoomNumber = static_cast<int8_t>(_current_view_zoom_front);
+            entry->LightIntensity -= 5 * zoomNumber;
+            if (GetLightTypeSize(entry->Type) < zoomNumber)
             {
                 entry->Type = LightType::None;
                 continue;
             }
 
-            entry->Type = SetLightTypeSize(
-                entry->Type, GetLightTypeSize(entry->Type) - static_cast<int8_t>(_current_view_zoom_front));
+            entry->Type = SetLightTypeSize(entry->Type, GetLightTypeSize(entry->Type) - zoomNumber);
         }
     }
 }
@@ -838,7 +835,7 @@ void LightFxAddShopLights(const CoordsXY& mapPosition, const uint8_t direction, 
 
 void LightFXApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
 
     float night = static_cast<float>(pow(gDayNightCycle, 1.5));
 

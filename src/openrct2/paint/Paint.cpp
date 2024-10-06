@@ -109,14 +109,32 @@ static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const G1Ele
     int32_t right = left + g1.width;
     int32_t top = bottom + g1.height;
 
-    if (right <= dpi.x)
-        return false;
-    if (top <= dpi.y)
-        return false;
-    if (left >= dpi.x + dpi.width)
-        return false;
-    if (bottom >= dpi.y + dpi.height)
-        return false;
+    // mber: It is possible to use only the bottom else block here if you change <= and >= to simply < and >.
+    // However, since this is used to cull paint structs, I'd prefer to keep the condition strict and calculate
+    // the culling differently for minifying and magnifying.
+    auto zoom = dpi.zoom_level;
+    if (zoom > ZoomLevel{ 0 })
+    {
+        if (right <= dpi.WorldX())
+            return false;
+        if (top <= dpi.WorldY())
+            return false;
+        if (left >= dpi.WorldX() + dpi.WorldWidth())
+            return false;
+        if (bottom >= dpi.WorldY() + dpi.WorldHeight())
+            return false;
+    }
+    else
+    {
+        if (zoom.ApplyInversedTo(right) <= dpi.x)
+            return false;
+        if (zoom.ApplyInversedTo(top) <= dpi.y)
+            return false;
+        if (zoom.ApplyInversedTo(left) >= dpi.x + dpi.width)
+            return false;
+        if (zoom.ApplyInversedTo(bottom) >= dpi.y + dpi.height)
+            return false;
+    }
     return true;
 }
 
@@ -200,7 +218,7 @@ static PaintStruct* CreateNormalPaintStruct(
 template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& session)
 {
     // Optimised modified version of ViewportPosToMapPos
-    ScreenCoordsXY screenCoord = { Floor2(session.DPI.x, 32), Floor2((session.DPI.y - 16), 32) };
+    ScreenCoordsXY screenCoord = { Floor2(session.DPI.WorldX(), 32), Floor2((session.DPI.WorldY() - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
 
@@ -210,7 +228,7 @@ template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& sessio
     }
     mapTile = mapTile.ToTileStart();
 
-    uint16_t numVerticalTiles = (session.DPI.height + 2128) >> 5;
+    uint16_t numVerticalTiles = (session.DPI.WorldHeight() + 2128) >> 5;
 
     // Adjacent tiles to also check due to overlapping of sprites
     constexpr CoordsXY adjacentTiles[] = {

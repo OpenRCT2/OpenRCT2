@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../localisation/CurrencyTypes.h"
 #include "ConfigTypes.h"
 
@@ -102,6 +102,7 @@ namespace OpenRCT2::Config
         bool ScenarioHideMegaPark;
         bool SteamOverlayPause;
         bool ShowRealNamesOfGuests;
+        bool ShowRealNamesOfStaff;
         bool AllowEarlyCompletion;
         u8string AssetPackOrder;
         u8string EnabledAssetPacks;

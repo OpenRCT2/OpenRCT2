@@ -11,10 +11,10 @@ namespace OpenRCT2
     struct GameState_t;
 
     // Current version that is saved.
-    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 36;
+    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 40;
 
     // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t PARK_FILE_MIN_VERSION = 33;
+    constexpr uint32_t PARK_FILE_MIN_VERSION = 40;
 
     // The minimum version that is backwards compatible with the current version.
     // If this is increased beyond 0, uncomment the checks in ParkFile.cpp and Context.cpp!
@@ -23,6 +23,14 @@ namespace OpenRCT2
     constexpr uint32_t PARK_FILE_MAGIC = 0x4B524150; // PARK
 
     struct IStream;
+
+    // As uint16_t, in order to allow comparison with int32_t
+    constexpr uint16_t kLogFlumeSteepSlopeVersion = 16;
+    constexpr uint16_t kBlockBrakeImprovementsVersion = 27;
+    constexpr uint16_t kGigaCoasterInversions = 31;
+    constexpr uint16_t kWoodenFlatToSteepVersion = 37;
+    constexpr uint16_t k16BitParkHistoryVersion = 38;
+    constexpr uint16_t kPeepNamesObjectsVersion = 39;
 } // namespace OpenRCT2
 
 class ParkFileExporter

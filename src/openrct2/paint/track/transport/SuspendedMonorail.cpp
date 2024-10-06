@@ -552,8 +552,7 @@ static void SuspendedMonorailTrackSBendLeft(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
             if (direction == 0 || direction == 3)
             {
@@ -592,17 +591,7 @@ static void SuspendedMonorailTrackSBendLeft(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 42, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 42, session.SupportColours);
-                    break;
-            }
+            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -637,17 +626,7 @@ static void SuspendedMonorailTrackSBendLeft(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 42, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 42, session.SupportColours);
-                    break;
-            }
+            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -684,8 +663,7 @@ static void SuspendedMonorailTrackSBendLeft(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+            DrawSBendLeftSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
             switch (direction)
             {
@@ -741,8 +719,7 @@ static void SuspendedMonorailTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
             if (direction == 0 || direction == 3)
             {
@@ -781,17 +758,7 @@ static void SuspendedMonorailTrackSBendRight(
                         PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 0:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 42, session.SupportColours);
-                    break;
-                case 1:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 42, session.SupportColours);
-                    break;
-            }
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -826,17 +793,7 @@ static void SuspendedMonorailTrackSBendRight(
                         PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            switch (direction)
-            {
-                case 2:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 42, session.SupportColours);
-                    break;
-                case 3:
-                    MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 42, session.SupportColours);
-                    break;
-            }
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -873,8 +830,7 @@ static void SuspendedMonorailTrackSBendRight(
                         PaintSegment::bottomLeftSide),
                     direction),
                 0xFFFF, 0);
-            MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+            DrawSBendRightSupports(session, supportType.metal, trackSequence, direction, height + 42, 0, 0);
 
             switch (direction)
             {

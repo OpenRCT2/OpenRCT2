@@ -11,6 +11,7 @@
 
 #include "../object/Object.h"
 #include "../world/Map.h"
+#include "../world/QuarterTile.h"
 #include "../world/TileElement.h"
 
 #include <optional>
@@ -48,7 +49,7 @@ enum class TrackPitch : uint8_t
 };
 
 // Vehicle sprite groups required by track groups are defined in ride_entry_get_supported_track_pieces
-enum TrackGroup : uint8_t
+enum class TrackGroup : uint8_t
 {
     flat = 0,
     straight,
@@ -60,7 +61,7 @@ enum TrackGroup : uint8_t
     verticalLoop,
     slope,
     slopeSteepDown,
-    slopeLong,
+    flatToSteepSlope,
     slopeCurve,
     slopeCurveSteep,
     sBend,
@@ -140,6 +141,7 @@ enum TrackGroup : uint8_t
 
     diagBrakes,
     diagBlockBrakes,
+    inclinedBrakes,
 
     count,
 };
@@ -168,16 +170,14 @@ constexpr bool operator!=(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
     return !(vb1 == vb2);
 }
 
-/* size 0x0A */
-struct PreviewTrack
+struct SequenceClearance
 {
-    uint8_t index; // 0x00
-    int16_t x;     // 0x01
-    int16_t y;     // 0x03
-    int16_t z;     // 0x05
-    uint8_t clearanceZ;
-    QuarterTile quarterTile;
-    uint8_t flags;
+    int16_t x{};
+    int16_t y{};
+    int16_t z{};
+    uint8_t clearanceZ{};
+    QuarterTile quarterTile = { 0, 0 };
+    uint8_t flags{};
 };
 
 /* size 0x0A */
@@ -627,8 +627,9 @@ namespace OpenRCT2::TrackElemType
 
     constexpr track_type_t DiagBrakes = 337;
     constexpr track_type_t DiagBlockBrakes = 338;
+    constexpr track_type_t Down25Brakes = 339;
 
-    constexpr track_type_t Count = 339;
+    constexpr track_type_t Count = 340;
     constexpr track_type_t None = 65535;
 
 }; // namespace OpenRCT2::TrackElemType
@@ -747,16 +748,3 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
 bool TrackTypeIsHelix(track_type_t trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
-
-/**
- * If new pieces get added to existing ride types, this could cause existing parks to change appearance,
- * since the formerly unrendered pieces were not explicitly set invisible.
- * To avoid this, this function will return true if the piece is question was added after the park was created,
- * so that import code can properly set the visibility.
- *
- * @param rideType The OpenRCT2 ride type
- * @param trackType The OpenRCT2 track type
- * @param parkFileVersion The current park file version. Pass -1 when converting S4 or S6.
- * @return
- */
-bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, int32_t parkFileVersion = -1);

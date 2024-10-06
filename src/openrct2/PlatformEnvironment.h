@@ -10,10 +10,9 @@
 #pragma once
 
 #include "Diagnostic.h"
-#include "core/String.hpp"
+#include "core/StringTypes.h"
 
 #include <memory>
-#include <string>
 
 namespace OpenRCT2
 {

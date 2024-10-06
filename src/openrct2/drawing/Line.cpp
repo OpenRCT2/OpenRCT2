@@ -20,11 +20,8 @@ static void GfxDrawLineOnBuffer(DrawPixelInfo& dpi, char colour, const ScreenCoo
 {
     ScreenCoordsXY offset{ coords.x - dpi.x, coords.y - dpi.y };
 
-    offset.x = dpi.zoom_level.ApplyInversedTo(offset.x);
-    offset.y = dpi.zoom_level.ApplyInversedTo(offset.y);
-    no_pixels = dpi.zoom_level.ApplyInversedTo(no_pixels);
-    const int32_t width = dpi.zoom_level.ApplyInversedTo(dpi.width);
-    const int32_t height = dpi.zoom_level.ApplyInversedTo(dpi.height);
+    const int32_t width = dpi.width;
+    const int32_t height = dpi.height;
 
     // Check to make sure point is in the y range
     if (offset.y < 0)
@@ -57,7 +54,7 @@ static void GfxDrawLineOnBuffer(DrawPixelInfo& dpi, char colour, const ScreenCoo
     }
 
     // Get the buffer we are drawing to and move to the first coordinate.
-    uint8_t* bits_pointer = dpi.bits + offset.y * (static_cast<int64_t>(dpi.pitch) + static_cast<int64_t>(width)) + offset.x;
+    uint8_t* bits_pointer = dpi.bits + offset.y * dpi.LineStride() + offset.x;
 
     // Draw the line to the specified colour
     for (; no_pixels > 0; --no_pixels, ++bits_pointer)
@@ -79,10 +76,11 @@ static void GfxDrawLineOnBuffer(DrawPixelInfo& dpi, char colour, const ScreenCoo
 
 void GfxDrawLineSoftware(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour)
 {
-    int32_t x1 = line.GetX1();
-    int32_t x2 = line.GetX2();
-    int32_t y1 = line.GetY1();
-    int32_t y2 = line.GetY2();
+    const ZoomLevel zoom = dpi.zoom_level;
+    int32_t x1 = zoom.ApplyInversedTo(line.GetX1());
+    int32_t x2 = zoom.ApplyInversedTo(line.GetX2());
+    int32_t y1 = zoom.ApplyInversedTo(line.GetY1());
+    int32_t y2 = zoom.ApplyInversedTo(line.GetY2());
     // Check to make sure the line is within the drawing area
     if ((x1 < dpi.x) && (x2 < dpi.x))
     {

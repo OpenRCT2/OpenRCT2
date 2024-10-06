@@ -29,31 +29,32 @@ namespace OpenRCT2::Ui::Windows
 
     constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;
 
-    // clang-format off
-enum WindowNewCampaignWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_RIDE_LABEL,
-    WIDX_RIDE_DROPDOWN,
-    WIDX_RIDE_DROPDOWN_BUTTON,
-    WIDX_WEEKS_LABEL,
-    WIDX_WEEKS_SPINNER,
-    WIDX_WEEKS_INCREASE_BUTTON,
-    WIDX_WEEKS_DECREASE_BUTTON,
-    WIDX_START_BUTTON
-};
+    enum WindowNewCampaignWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_RIDE_LABEL,
+        WIDX_RIDE_DROPDOWN,
+        WIDX_RIDE_DROPDOWN_BUTTON,
+        WIDX_WEEKS_LABEL,
+        WIDX_WEEKS_SPINNER,
+        WIDX_WEEKS_INCREASE_BUTTON,
+        WIDX_WEEKS_DECREASE_BUTTON,
+        WIDX_START_BUTTON
+    };
 
-static Widget window_new_campaign_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
-    MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
-    MakeWidget        ({330, 25}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
-    MakeWidget        ({ 14, 41}, {126, 14}, WindowWidgetType::Label,    WindowColour::Primary, STR_LENGTH_OF_TIME                         ), // weeks label
-    MakeSpinnerWidgets({120, 41}, {100, 14}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_EMPTY                                  ), // weeks (3 widgets)
-    MakeWidget        ({ 14, 89}, {322, 14}, WindowWidgetType::Button,   WindowColour::Primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
-    kWidgetsEnd,
-};
+    // clang-format off
+    static Widget window_new_campaign_widgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
+        MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
+        MakeWidget        ({330, 25}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
+        MakeWidget        ({ 14, 41}, {126, 14}, WindowWidgetType::Label,    WindowColour::Primary, STR_LENGTH_OF_TIME                         ), // weeks label
+        MakeSpinnerWidgets({120, 41}, {100, 14}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_EMPTY                                  ), // weeks (3 widgets)
+        MakeWidget        ({ 14, 89}, {322, 14}, WindowWidgetType::Button,   WindowColour::Primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class NewCampaignWindow final : public Window

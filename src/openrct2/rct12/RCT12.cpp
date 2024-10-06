@@ -9,6 +9,7 @@
 
 #include "RCT12.h"
 
+#include "../core/CodepointView.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Formatting.h"
 #include "../object/ObjectList.h"
@@ -816,7 +817,7 @@ void RCT12AddDefaultObjects(ObjectList& objectList)
     }
 }
 
-static void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const std::vector<std::string>& objectNames)
+void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const std::vector<std::string>& objectNames)
 {
     for (const auto& objectName : objectNames)
     {

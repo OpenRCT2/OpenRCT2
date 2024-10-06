@@ -1420,7 +1420,7 @@ enum : StringId
     STR_ERROR_READING_PNG = 6049,
     STR_ERROR_READING_BITMAP = 6050,
 
-    STR_ERROR_HEIHGT_MAP_TOO_BIG = 6052,
+    STR_ERROR_HEIGHT_MAP_TOO_BIG = 6052,
     STR_ERROR_CANNOT_NORMALIZE = 6053,
     STR_ERROR_24_BIT_BITMAP = 6054,
 
@@ -1691,6 +1691,10 @@ enum : StringId
     STR_STRING_M_PERCENT = 6651,
 
     STR_CHEAT_IGNORE_PRICE = 6659,
+
+    STR_DATE_FORMAT_MY_SENTENCE = 6674,
+
+    STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED = 6676,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

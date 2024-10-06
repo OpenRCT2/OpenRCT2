@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2-ui/ProvisionalElements.h"
+
 #include <limits>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
@@ -46,15 +48,28 @@
 #include <openrct2/util/Math.hpp>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Entrance.h>
-#include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/tile_element/EntranceElement.h>
 
 constexpr int8_t kDefaultSpeedIncrement = 2;
 constexpr int8_t kDefaultMinimumSpeed = 2;
 
 using namespace OpenRCT2::TrackMetaData;
+
 namespace OpenRCT2::Ui::Windows
 {
+    bool gDisableErrorWindowSound = false;
+
+    static RideConstructionState _rideConstructionState2;
+
+    static bool WindowRideConstructionUpdateState(
+        int32_t* trackType, int32_t* trackDirection, RideId* rideIndex, SelectedLiftAndInverted* _liftHillAndAlternativeState,
+        CoordsXYZ* trackPos, int32_t* properties);
+    money64 PlaceProvisionalTrackPiece(
+        RideId rideIndex, int32_t trackType, int32_t trackDirection, SelectedLiftAndInverted liftHillAndAlternativeState,
+        const CoordsXYZ& trackPos);
+    static std::pair<bool, track_type_t> WindowRideConstructionUpdateStateGetTrackElement();
+
     static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
     static constexpr int32_t WH = 394;
     static constexpr int32_t WW = 210;
@@ -119,45 +134,45 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
 
     // clang-format off
-static Widget _rideConstructionWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget        ({  3,  17}, {     GW,  57}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
-    MakeWidget        ({  3,  76}, {     GW,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
-    MakeWidget        ({  3, 120}, {     GW,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_ROLL_BANKING                                                                    ),
-    MakeWidget        ({  6,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL),  STR_RIDE_CONSTRUCTION_LEFT_CURVE_VERY_SMALL_TIP     ),
-    MakeWidget        ({ 28,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_G2_ICON_MEDIUM_CURVE_LEFT),           STR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL_TIP          ),
-    MakeWidget        ({ 50,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE),        STR_RIDE_CONSTRUCTION_LEFT_CURVE_TIP                ),
-    MakeWidget        ({ 72,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE),  STR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE_TIP          ),
-    MakeWidget        ({ 94,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_STRAIGHT),          STR_RIDE_CONSTRUCTION_STRAIGHT_TIP                  ),
-    MakeWidget        ({116,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE), STR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE_TIP         ),
-    MakeWidget        ({138,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE),       STR_RIDE_CONSTRUCTION_RIGHT_CURVE_TIP               ),
-    MakeWidget        ({160,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_G2_ICON_MEDIUM_CURVE_RIGHT),          STR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL_TIP         ),
-    MakeWidget        ({182,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL), STR_RIDE_CONSTRUCTION_RIGHT_CURVE_VERY_SMALL_TIP    ),
-    MakeWidget        ({  6,  55}, { GW - 6,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_YELLOW_STRING,                                STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP),
-    MakeWidget        ({ 45,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP),  STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP          ),
-    MakeWidget        ({ 69,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN),        STR_RIDE_CONSTRUCTION_SLOPE_DOWN_TIP                ),
-    MakeWidget        ({ 93,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL),       STR_RIDE_CONSTRUCTION_LEVEL_TIP                     ),
-    MakeWidget        ({117,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP),          STR_RIDE_CONSTRUCTION_SLOPE_UP_TIP                  ),
-    MakeWidget        ({141,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP),    STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP            ),
-    MakeWidget        ({178,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_CHAIN_LIFT),                          STR_RIDE_CONSTRUCTION_CHAIN_LIFT_TIP                ),
-    MakeWidget        ({ 69, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK),         STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP       ),
-    MakeWidget        ({ 93, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK),           STR_RIDE_CONSTRUCTION_NO_ROLL_TIP                   ),
-    MakeWidget        ({117, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_BANK),        STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP      ),
-    MakeWidget        ({  3, 164}, {     GW, 170}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                                       STR_RIDE_CONSTRUCTION_CONSTRUCT_SELECTED_SECTION_TIP),
-    MakeWidget        ({ 82, 338}, {     46,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_DEMOLISH_CURRENT_SECTION),            STR_RIDE_CONSTRUCTION_REMOVE_HIGHLIGHTED_SECTION_TIP),
-    MakeWidget        ({ 52, 338}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_PREVIOUS),                            STR_RIDE_CONSTRUCTION_MOVE_TO_PREVIOUS_SECTION_TIP  ),
-    MakeWidget        ({134, 338}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_NEXT),                                STR_RIDE_CONSTRUCTION_MOVE_TO_NEXT_SECTION_TIP      ),
-    MakeWidget        ({  3, 362}, {     GW,  28}, WindowWidgetType::Groupbox, WindowColour::Primary                                                                                                          ),
-    MakeWidget        ({ 31, 372}, {     70,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_ENTRANCE,                   STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                  ),
-    MakeWidget        ({109, 372}, {     70,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_EXIT,                       STR_RIDE_CONSTRUCTION_EXIT_TIP                      ),
-    MakeWidget        ({ 94, 338}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW),                        STR_ROTATE_90_TIP                                   ),
-    MakeWidget        ({ 41, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP       ),
-    MakeWidget        ({144, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP   ),
-    MakeWidget        ({118, 120}, {     89,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SEAT_ROT                                                                        ),
-    MakeSpinnerWidgets({123, 138}, {     58,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary, 0,                                                STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
-    MakeWidget        ({161, 338}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_G2_SIMULATE),                         STR_SIMULATE_RIDE_TIP                               ),
-    kWidgetsEnd,
-};
+    static Widget _rideConstructionWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget        ({  3,  17}, {     GW,  57}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
+        MakeWidget        ({  3,  76}, {     GW,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
+        MakeWidget        ({  3, 120}, {     GW,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_ROLL_BANKING                                                                    ),
+        MakeWidget        ({  6,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL),  STR_RIDE_CONSTRUCTION_LEFT_CURVE_VERY_SMALL_TIP     ),
+        MakeWidget        ({ 28,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_G2_ICON_MEDIUM_CURVE_LEFT),           STR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL_TIP          ),
+        MakeWidget        ({ 50,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE),        STR_RIDE_CONSTRUCTION_LEFT_CURVE_TIP                ),
+        MakeWidget        ({ 72,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE),  STR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE_TIP          ),
+        MakeWidget        ({ 94,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_STRAIGHT),          STR_RIDE_CONSTRUCTION_STRAIGHT_TIP                  ),
+        MakeWidget        ({116,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE), STR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE_TIP         ),
+        MakeWidget        ({138,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE),       STR_RIDE_CONSTRUCTION_RIGHT_CURVE_TIP               ),
+        MakeWidget        ({160,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_G2_ICON_MEDIUM_CURVE_RIGHT),          STR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL_TIP         ),
+        MakeWidget        ({182,  29}, {     22,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL), STR_RIDE_CONSTRUCTION_RIGHT_CURVE_VERY_SMALL_TIP    ),
+        MakeWidget        ({  6,  55}, { GW - 6,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_YELLOW_STRING,                                STR_RIDE_CONSTRUCTION_OTHER_TRACK_CONFIGURATIONS_TIP),
+        MakeWidget        ({ 45,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP),  STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP          ),
+        MakeWidget        ({ 69,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN),        STR_RIDE_CONSTRUCTION_SLOPE_DOWN_TIP                ),
+        MakeWidget        ({ 93,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL),       STR_RIDE_CONSTRUCTION_LEVEL_TIP                     ),
+        MakeWidget        ({117,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP),          STR_RIDE_CONSTRUCTION_SLOPE_UP_TIP                  ),
+        MakeWidget        ({141,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP),    STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP            ),
+        MakeWidget        ({178,  88}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_CHAIN_LIFT),                          STR_RIDE_CONSTRUCTION_CHAIN_LIFT_TIP                ),
+        MakeWidget        ({ 69, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_LEFT_BANK),         STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP       ),
+        MakeWidget        ({ 93, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_NO_BANK),           STR_RIDE_CONSTRUCTION_NO_ROLL_TIP                   ),
+        MakeWidget        ({117, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_RIGHT_BANK),        STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP      ),
+        MakeWidget        ({  3, 164}, {     GW, 170}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                                       STR_RIDE_CONSTRUCTION_CONSTRUCT_SELECTED_SECTION_TIP),
+        MakeWidget        ({ 82, 338}, {     46,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_DEMOLISH_CURRENT_SECTION),            STR_RIDE_CONSTRUCTION_REMOVE_HIGHLIGHTED_SECTION_TIP),
+        MakeWidget        ({ 52, 338}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_PREVIOUS),                            STR_RIDE_CONSTRUCTION_MOVE_TO_PREVIOUS_SECTION_TIP  ),
+        MakeWidget        ({134, 338}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_NEXT),                                STR_RIDE_CONSTRUCTION_MOVE_TO_NEXT_SECTION_TIP      ),
+        MakeWidget        ({  3, 362}, {     GW,  28}, WindowWidgetType::Groupbox, WindowColour::Primary                                                                                                          ),
+        MakeWidget        ({ 31, 372}, {     70,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_ENTRANCE,                   STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                  ),
+        MakeWidget        ({109, 372}, {     70,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_EXIT,                       STR_RIDE_CONSTRUCTION_EXIT_TIP                      ),
+        MakeWidget        ({ 94, 338}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW),                        STR_ROTATE_90_TIP                                   ),
+        MakeWidget        ({ 41, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP       ),
+        MakeWidget        ({144, 132}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK),    STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP   ),
+        MakeWidget        ({118, 120}, {     89,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SEAT_ROT                                                                        ),
+        MakeSpinnerWidgets({123, 138}, {     58,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary, 0,                                                STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
+        MakeWidget        ({161, 338}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_G2_SIMULATE),                         STR_SIMULATE_RIDE_TIP                               ),
+        kWidgetsEnd,
+    };
     // clang-format on
 
 #pragma endregion
@@ -230,11 +245,11 @@ static Widget _rideConstructionWidgets[] = {
             _currentlySelectedTrack = currentRide->GetRideTypeDescriptor().StartTrackPiece;
             _currentTrackPitchEnd = TrackPitch::None;
             _currentTrackRollEnd = TrackRoll::None;
-            _currentTrackLiftHill = 0;
-            _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
+            _currentTrackHasLiftHill = false;
+            _currentTrackAlternative.clearAll();
 
             if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::startConstructionInverted))
-                _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
+                _currentTrackAlternative.set(AlternativeTrackFlag::inverted);
 
             _previousTrackRollEnd = TrackRoll::None;
             _previousTrackPitchEnd = TrackPitch::None;
@@ -414,7 +429,7 @@ static Widget _rideConstructionWidgets[] = {
                     disabledWidgets |= 1uLL << WIDX_CHAIN_LIFT | (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
                 // Disable upward slope if current track piece is not flat
                 if ((_previousTrackPitchEnd != TrackPitch::None || _previousTrackRollEnd != TrackRoll::None)
-                    && !(_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED))
+                    && !(_currentTrackHasLiftHill))
                     disabledWidgets |= (1uLL << WIDX_SLOPE_UP);
             }
             if (_rideConstructionState == RideConstructionState::State0)
@@ -514,7 +529,7 @@ static Widget _rideConstructionWidgets[] = {
                     break;
                 case TrackPitch::Down60:
                     disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
-                    if (!IsTrackEnabled(TrackGroup::slopeLong)
+                    if (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
                         && !(
                             IsTrackEnabled(TrackGroup::slopeSteepLong)
                             && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
@@ -527,7 +542,7 @@ static Widget _rideConstructionWidgets[] = {
                     break;
                 case TrackPitch::Up60:
                     disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
-                    if (!IsTrackEnabled(TrackGroup::slopeLong)
+                    if (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
                         && !(
                             IsTrackEnabled(TrackGroup::slopeSteepLong)
                             && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
@@ -542,7 +557,7 @@ static Widget _rideConstructionWidgets[] = {
             }
             if (_previousTrackPitchEnd == TrackPitch::None)
             {
-                if (!IsTrackEnabled(TrackGroup::slopeLong) && !IsTrackEnabled(TrackGroup::slopeSteepLong))
+                if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::slopeSteepLong))
                 {
                     disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                 }
@@ -729,7 +744,7 @@ static Widget _rideConstructionWidgets[] = {
             {
                 disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN);
             }
-            if ((_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
             {
                 if (_currentTrackPitchEnd != TrackPitch::None && !IsTrackEnabled(TrackGroup::liftHillCurve))
                 {
@@ -1017,7 +1032,7 @@ static Widget _rideConstructionWidgets[] = {
                 {
                     Construct();
                     // Force any footpath construction to recheck the area.
-                    gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
+                    FootpathRecheckProvisional();
                     break;
                 }
                 case WIDX_DEMOLISH:
@@ -1308,10 +1323,9 @@ static Widget _rideConstructionWidgets[] = {
                     break;
                 case WIDX_CHAIN_LIFT:
                     RideConstructionInvalidateCurrentTrack();
-                    _currentTrackLiftHill ^= CONSTRUCTION_LIFT_HILL_SELECTED;
-                    if ((_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
-                        && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
-                        _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
+                    _currentTrackHasLiftHill = !_currentTrackHasLiftHill;
+                    if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+                        _currentTrackAlternative.unset(AlternativeTrackFlag::alternativePieces);
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
                     break;
@@ -1387,15 +1401,15 @@ static Widget _rideConstructionWidgets[] = {
                     break;
                 case WIDX_U_TRACK:
                     RideConstructionInvalidateCurrentTrack();
-                    _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
+                    _currentTrackAlternative.unset(AlternativeTrackFlag::alternativePieces);
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
                     break;
                 case WIDX_O_TRACK:
                     RideConstructionInvalidateCurrentTrack();
-                    _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
+                    _currentTrackAlternative.set(AlternativeTrackFlag::alternativePieces);
                     if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
-                        _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+                        _currentTrackHasLiftHill = false;
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
                     break;
@@ -1450,7 +1464,7 @@ static Widget _rideConstructionWidgets[] = {
                 case TrackElemType::LeftVerticalLoop:
                 case TrackElemType::RightVerticalLoop:
                     _currentTrackRollEnd = TrackRoll::None;
-                    _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+                    _currentTrackHasLiftHill = false;
                     break;
                 case TrackElemType::BlockBrakes:
                 case TrackElemType::DiagBlockBrakes:
@@ -1547,6 +1561,35 @@ static Widget _rideConstructionWidgets[] = {
             currentRide->FormatNameTo(ft);
         }
 
+        static void OnDrawUpdateCoveredPieces(const TrackDrawerDescriptor& trackDrawerDescriptor, Widget* widgets)
+        {
+            widgets[WIDX_U_TRACK].type = WindowWidgetType::Empty;
+            widgets[WIDX_O_TRACK].type = WindowWidgetType::Empty;
+
+            if (!trackDrawerDescriptor.HasCoveredPieces())
+                return;
+
+            auto trackElementResult = WindowRideConstructionUpdateStateGetTrackElement();
+            if (!std::get<0>(trackElementResult))
+                return;
+
+            auto selectedTrackType = std::get<1>(trackElementResult);
+            const auto& ted = GetTrackElementDescriptor(selectedTrackType);
+            auto availableGroups = trackDrawerDescriptor.Covered.enabledTrackGroups;
+
+            if (!availableGroups.get(EnumValue(ted.definition.group)))
+                return;
+
+            widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
+            widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
+            widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
+
+            widgets[WIDX_U_TRACK].image = ImageId(trackDrawerDescriptor.Regular.icon);
+            widgets[WIDX_O_TRACK].image = ImageId(trackDrawerDescriptor.Covered.icon);
+            widgets[WIDX_U_TRACK].tooltip = trackDrawerDescriptor.Regular.tooltip;
+            widgets[WIDX_O_TRACK].tooltip = trackDrawerDescriptor.Covered.tooltip;
+        }
+
         void OnDraw(DrawPixelInfo& dpi) override
         {
             DrawPixelInfo clipdpi;
@@ -1560,7 +1603,8 @@ static Widget _rideConstructionWidgets[] = {
                 return;
 
             RideId rideIndex;
-            int32_t trackType, trackDirection, liftHillAndInvertedState;
+            int32_t trackType, trackDirection;
+            SelectedLiftAndInverted liftHillAndInvertedState{};
             if (WindowRideConstructionUpdateState(
                     &trackType, &trackDirection, &rideIndex, &liftHillAndInvertedState, nullptr, nullptr))
                 return;
@@ -1719,15 +1763,16 @@ static Widget _rideConstructionWidgets[] = {
                 widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
             }
 
+            const auto& gameState = GetGameState();
             if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                 && (_currentTrackPitchEnd == TrackPitch::Up25 || _currentTrackPitchEnd == TrackPitch::Up60)
-                && !GetGameState().Cheats.EnableAllDrawableTrackPieces)
+                && !gameState.Cheats.EnableAllDrawableTrackPieces)
             {
-                _currentTrackLiftHill |= CONSTRUCTION_LIFT_HILL_SELECTED;
+                _currentTrackHasLiftHill = true;
             }
 
             if ((IsTrackEnabled(TrackGroup::liftHill) && !_currentlySelectedTrack.isTrackType)
-                || (GetGameState().Cheats.EnableChainLiftOnAllTrack
+                || (gameState.Cheats.EnableChainLiftOnAllTrack
                     && currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack)))
             {
                 widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::FlatBtn;
@@ -1884,34 +1929,7 @@ static Widget _rideConstructionWidgets[] = {
                     widgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::FlatBtn;
                     widgets[WIDX_BANK_RIGHT].type = WindowWidgetType::FlatBtn;
                 }
-                if (trackDrawerDescriptor.HasCoveredPieces())
-                {
-                    widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
-                    widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
-                    widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
-
-                    widgets[WIDX_U_TRACK].image = ImageId(trackDrawerDescriptor.Regular.icon);
-                    widgets[WIDX_O_TRACK].image = ImageId(trackDrawerDescriptor.Covered.icon);
-                    widgets[WIDX_U_TRACK].tooltip = trackDrawerDescriptor.Regular.tooltip;
-                    widgets[WIDX_O_TRACK].tooltip = trackDrawerDescriptor.Covered.tooltip;
-
-                    // TODO: Read these from the TrackDrawerEntry
-                    if (currentRide->type == RIDE_TYPE_WATER_COASTER)
-                    {
-                        const bool hasCoveredCurve = _currentlySelectedTrack == TrackCurve::None
-                            || _currentlySelectedTrack == TrackCurve::Left || _currentlySelectedTrack == TrackCurve::Right;
-                        const bool isSBend = _currentlySelectedTrack == TrackElemType::SBendLeft
-                            || _currentlySelectedTrack == TrackElemType::SBendRight;
-
-                        const bool hasCoveredVersion = (hasCoveredCurve || isSBend) && _currentTrackPitchEnd == TrackPitch::None
-                            && _currentTrackRollEnd == TrackRoll::None;
-                        if (!hasCoveredVersion)
-                        {
-                            widgets[WIDX_U_TRACK].type = WindowWidgetType::Empty;
-                            widgets[WIDX_O_TRACK].type = WindowWidgetType::Empty;
-                        }
-                    }
-                }
+                OnDrawUpdateCoveredPieces(trackDrawerDescriptor, widgets);
             }
             else
             {
@@ -2095,7 +2113,7 @@ static Widget _rideConstructionWidgets[] = {
             {
                 if (trackDrawerDescriptor.HasCoveredPieces())
                 {
-                    if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
+                    if (_currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces))
                     {
                         pressedWidgets |= (1uLL << WIDX_O_TRACK);
                     }
@@ -2119,7 +2137,7 @@ static Widget _rideConstructionWidgets[] = {
                 pressedWidgets |= (1uLL << widgetIndex);
             }
 
-            if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
+            if (_currentTrackHasLiftHill)
                 pressedWidgets |= (1uLL << WIDX_CHAIN_LIFT);
 
             pressed_widgets = pressedWidgets;
@@ -2189,19 +2207,15 @@ static Widget _rideConstructionWidgets[] = {
                 return;
             }
 
-            const PreviewTrack* trackBlock;
-
             const auto& ted = GetTrackElementDescriptor(trackType);
-            trackBlock = ted.block;
             trackDirection &= 3;
             gMapSelectionTiles.clear();
-            while (trackBlock->index != 255)
+            for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                CoordsXY offsets = { trackBlock->x, trackBlock->y };
+                CoordsXY offsets = { ted.sequences[i].clearance.x, ted.sequences[i].clearance.y };
                 CoordsXY currentTileCoords = tileCoords + offsets.Rotate(trackDirection);
 
                 gMapSelectionTiles.push_back(currentTileCoords);
-                trackBlock++;
             }
         }
 
@@ -2209,7 +2223,8 @@ static Widget _rideConstructionWidgets[] = {
         void Construct()
         {
             RideId rideIndex;
-            int32_t trackType, trackDirection, liftHillAndAlternativeState, properties;
+            int32_t trackType, trackDirection, properties;
+            SelectedLiftAndInverted liftHillAndAlternativeState{};
             CoordsXYZ trackPos{};
 
             _currentTrackPrice = kMoney64Undefined;
@@ -2355,8 +2370,7 @@ static Widget _rideConstructionWidgets[] = {
                 }
 
                 const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-                const PreviewTrack* trackBlock = ted.block;
-                newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
+                newCoords->z = (tileElement->GetBaseZ()) - ted.sequences[0].clearance.z;
                 _gotoStartPlacementMode = true;
             }
 
@@ -2463,7 +2477,7 @@ static Widget _rideConstructionWidgets[] = {
                     case TrackPitch::Up60:
                         break;
                     default:
-                        _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+                        _currentTrackHasLiftHill = false;
                         break;
                 }
             }
@@ -2582,8 +2596,8 @@ static Widget _rideConstructionWidgets[] = {
         }
 
         void DrawTrackPiece(
-            DrawPixelInfo& dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
-            int32_t widgetWidth, int32_t widgetHeight)
+            DrawPixelInfo& dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection,
+            SelectedLiftAndInverted liftHillAndInvertedState, int32_t widgetWidth, int32_t widgetHeight)
         {
             auto currentRide = GetRide(rideIndex);
             if (currentRide == nullptr)
@@ -2592,12 +2606,9 @@ static Widget _rideConstructionWidgets[] = {
             }
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto* trackBlock = ted.block;
-            while ((trackBlock + 1)->index != 0xFF)
-                trackBlock++;
-
-            CoordsXYZ mapCoords{ trackBlock->x, trackBlock->y, trackBlock->z };
-            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_1)
+            const auto trackBlock = ted.sequences[ted.numSequences - 1].clearance;
+            CoordsXYZ mapCoords{ trackBlock.x, trackBlock.y, trackBlock.z };
+            if (trackBlock.flags & RCT_PREVIEW_TRACK_FLAG_1)
             {
                 mapCoords.x = 0;
                 mapCoords.y = 0;
@@ -2621,8 +2632,8 @@ static Widget _rideConstructionWidgets[] = {
         }
 
         void DrawTrackPieceHelper(
-            DrawPixelInfo& dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
-            const CoordsXY& originCoords, int32_t originZ)
+            DrawPixelInfo& dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection,
+            SelectedLiftAndInverted liftHillAndInvertedState, const CoordsXY& originCoords, int32_t originZ)
         {
             TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             TileElement tempTrackTileElement{};
@@ -2636,7 +2647,7 @@ static Widget _rideConstructionWidgets[] = {
                 return;
             }
 
-            auto& gameState = OpenRCT2::GetGameState();
+            auto& gameState = GetGameState();
             auto preserveMapSize = gameState.MapSize;
 
             gameState.MapSize = { kMaximumMapSizeTechnical, kMaximumMapSizeTechnical };
@@ -2644,30 +2655,31 @@ static Widget _rideConstructionWidgets[] = {
             // Setup non changing parts of the temporary track tile element
             tempTrackTileElement.SetType(TileElementType::Track);
             tempTrackTileElement.SetDirection(trackDirection);
-            tempTrackTileElement.AsTrack()->SetHasChain((liftHillAndInvertedState & CONSTRUCTION_LIFT_HILL_SELECTED) != 0);
+            tempTrackTileElement.AsTrack()->SetHasChain(liftHillAndInvertedState.has(LiftHillAndInverted::liftHill));
             tempTrackTileElement.SetLastForTile(true);
             tempTrackTileElement.AsTrack()->SetTrackType(trackType);
             tempTrackTileElement.AsTrack()->SetRideType(currentRide->type);
             tempTrackTileElement.AsTrack()->SetHasCableLift(false);
-            tempTrackTileElement.AsTrack()->SetInverted((liftHillAndInvertedState & CONSTRUCTION_INVERTED_TRACK_SELECTED) != 0);
+            tempTrackTileElement.AsTrack()->SetInverted(liftHillAndInvertedState.has(LiftHillAndInverted::inverted));
             tempTrackTileElement.AsTrack()->SetColourScheme(RideColourScheme::main);
             // Skipping seat rotation, should not be necessary for a temporary piece.
             tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
             const auto& ted = GetTrackElementDescriptor(trackType);
-            const auto* trackBlock = ted.block;
             const auto* rideEntry = currentRide->GetRideEntry();
             auto clearanceHeight = (rideEntry != nullptr) ? rideEntry->Clearance
                                                           : currentRide->GetRideTypeDescriptor().Heights.ClearanceHeight;
 
-            while (trackBlock->index != 255)
+            for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                auto quarterTile = trackBlock->quarterTile.Rotate(trackDirection);
-                CoordsXY offsets = { trackBlock->x, trackBlock->y };
+                const auto& trackBlock = ted.sequences[i].clearance;
+
+                auto quarterTile = trackBlock.quarterTile.Rotate(trackDirection);
+                CoordsXY offsets = { trackBlock.x, trackBlock.y };
                 CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
-                int32_t baseZ = originZ + trackBlock->z;
-                int32_t clearanceZ = trackBlock->clearanceZ + clearanceHeight + baseZ + (4 * kCoordsZStep);
+                int32_t baseZ = originZ + trackBlock.z;
+                int32_t clearanceZ = trackBlock.clearanceZ + clearanceHeight + baseZ + (4 * kCoordsZStep);
 
                 auto centreTileCoords = TileCoordsXY{ coords };
                 auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];
@@ -2691,7 +2703,7 @@ static Widget _rideConstructionWidgets[] = {
                 tempTrackTileElement.SetOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());
                 tempTrackTileElement.SetBaseZ(baseZ);
                 tempTrackTileElement.SetClearanceZ(clearanceZ);
-                tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
+                tempTrackTileElement.AsTrack()->SetSequenceIndex(i);
 
                 // Draw this map tile
                 TileElementPaintSetup(*session, coords, true);
@@ -2702,8 +2714,6 @@ static Widget _rideConstructionWidgets[] = {
                 MapSetTileElement(westTileCoords, backupTileElementArrays[2]);
                 MapSetTileElement(northTileCoords, backupTileElementArrays[3]);
                 MapSetTileElement(southTileCoords, backupTileElementArrays[4]);
-
-                trackBlock++;
             }
 
             gameState.MapSize = preserveMapSize;
@@ -2716,20 +2726,20 @@ static Widget _rideConstructionWidgets[] = {
 
     static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType)
     {
-        RideTrackGroup disabledPieces{};
+        RideTrackGroups disabledGroups{};
         const auto& rtd = GetRideTypeDescriptor(rideType);
         if (rtd.HasFlag(RtdFlag::hasTrack))
         {
             // Set all pieces as “disabled”. When looping over the ride entries,
             // pieces will be re-enabled as soon as a single entry supports it.
-            disabledPieces.flip();
+            disabledGroups.flip();
 
             auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
             auto& rideEntries = objManager.GetAllRideEntries(rideType);
             // If there are no vehicles for this ride type, enable all the track pieces.
             if (rideEntries.size() == 0)
             {
-                disabledPieces.reset();
+                disabledGroups.reset();
             }
 
             for (auto rideEntryIndex : rideEntries)
@@ -2742,17 +2752,17 @@ static Widget _rideConstructionWidgets[] = {
                 if (currentRideEntry->Cars[0].PaintStyle != VEHICLE_VISUAL_DEFAULT || rideType == RIDE_TYPE_CHAIRLIFT
                     || (currentRideEntry->Cars[0].flags & CAR_ENTRY_FLAG_SLIDE_SWING))
                 {
-                    disabledPieces.reset();
+                    disabledGroups.reset();
                     break;
                 }
 
                 // Any pieces that this ride entry supports must be taken out of the array.
                 auto supportedPieces = RideEntryGetSupportedTrackPieces(*currentRideEntry);
-                disabledPieces &= supportedPieces.flip();
+                disabledGroups &= supportedPieces.flip();
             }
         }
 
-        UpdateDisabledRidePieces(disabledPieces);
+        UpdateDisabledRideGroups(disabledGroups);
     }
 
     /**
@@ -2934,7 +2944,7 @@ static Widget _rideConstructionWidgets[] = {
                     ViewportInteractionItem::Label, ViewportInteractionItem::Banner);
 
                 auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
-                if (info.SpriteType != ViewportInteractionItem::None)
+                if (info.interactionType != ViewportInteractionItem::None)
                 {
                     _trackPlaceCtrlZ = info.Element->GetBaseZ();
                     _trackPlaceCtrlState = true;
@@ -3085,7 +3095,7 @@ static Widget _rideConstructionWidgets[] = {
             return;
 
         auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(ride->GetRideTypeDescriptor());
-        UpdateEnabledRidePieces(trackDrawerDescriptor);
+        UpdateEnabledRideGroups(trackDrawerDescriptor);
     }
 
     /**
@@ -3095,7 +3105,8 @@ static Widget _rideConstructionWidgets[] = {
     void UpdateGhostTrackAndArrow()
     {
         RideId rideIndex;
-        int32_t direction, type, liftHillAndAlternativeState;
+        int32_t direction, type;
+        SelectedLiftAndInverted liftHillAndAlternativeState{};
         CoordsXYZ trackPos{};
 
         if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED)
@@ -3225,7 +3236,6 @@ static Widget _rideConstructionWidgets[] = {
     void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
     {
         int32_t z;
-        const PreviewTrack* trackBlock;
 
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -3252,7 +3262,8 @@ static Widget _rideConstructionWidgets[] = {
         gMapSelectionTiles.push_back(*mapCoords);
 
         RideId rideIndex;
-        int32_t trackType, trackDirection, liftHillAndAlternativeState;
+        int32_t trackType, trackDirection;
+        SelectedLiftAndInverted liftHillAndAlternativeState{};
         if (WindowRideConstructionUpdateState(
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr))
         {
@@ -3303,13 +3314,11 @@ static Widget _rideConstructionWidgets[] = {
         }
         // Loc6CC91B:
         const auto& ted = GetTrackElementDescriptor(trackType);
-        trackBlock = ted.block;
         int32_t bx = 0;
-        do
+        for (uint8_t i = 0; i < ted.numSequences; i++)
         {
-            bx = std::min<int32_t>(bx, trackBlock->z);
-            trackBlock++;
-        } while (trackBlock->index != 255);
+            bx = std::min<int32_t>(bx, ted.sequences[i].clearance.z);
+        }
         z -= bx;
 
         gMapSelectArrowPosition.z = z;
@@ -3539,13 +3548,11 @@ static Widget _rideConstructionWidgets[] = {
         if (_trackPlaceZ == 0)
         {
             const auto& ted = GetTrackElementDescriptor(_currentTrackPieceType);
-            const PreviewTrack* trackBlock = ted.block;
             int32_t bx = 0;
-            do
+            for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                bx = std::min<int32_t>(bx, trackBlock->z);
-                trackBlock++;
-            } while (trackBlock->index != 255);
+                bx = std::min<int32_t>(bx, ted.sequences[i].clearance.z);
+            }
             z -= bx;
 
             // FIX not sure exactly why it starts trial and error place from a lower Z, but it causes issues with disable
@@ -3664,8 +3671,8 @@ static Widget _rideConstructionWidgets[] = {
                     auto saveCurrentTrackPitchEnd = _currentTrackPitchEnd;
                     auto savePreviousTrackRollEnd = _previousTrackRollEnd;
                     auto saveCurrentTrackRollEnd = _currentTrackRollEnd;
-                    int32_t saveCurrentTrackAlternative = _currentTrackAlternative;
-                    int32_t saveCurrentTrackLiftHill = _currentTrackLiftHill;
+                    auto savedCurrentTrackAlternative = _currentTrackAlternative;
+                    auto savedCurrentTrackLiftHill = _currentTrackHasLiftHill;
 
                     RideInitialiseConstructionWindow(*ride);
 
@@ -3675,8 +3682,8 @@ static Widget _rideConstructionWidgets[] = {
                     _currentTrackPitchEnd = saveCurrentTrackPitchEnd;
                     _previousTrackRollEnd = savePreviousTrackRollEnd;
                     _currentTrackRollEnd = saveCurrentTrackRollEnd;
-                    _currentTrackAlternative = saveCurrentTrackAlternative;
-                    _currentTrackLiftHill = saveCurrentTrackLiftHill;
+                    _currentTrackAlternative = savedCurrentTrackAlternative;
+                    _currentTrackHasLiftHill = savedCurrentTrackLiftHill;
 
                     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, state->position.x);
                     break;
@@ -4213,7 +4220,7 @@ static Widget _rideConstructionWidgets[] = {
         }
 
         if (!WidgetIsDisabled(*w, WIDX_CHAIN_LIFT) && w->widgets[WIDX_CHAIN_LIFT].type != WindowWidgetType::Empty
-            && _currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
+            && _currentTrackHasLiftHill)
         {
             w->OnMouseDown(WIDX_CHAIN_LIFT);
         }
@@ -4587,8 +4594,8 @@ static Widget _rideConstructionWidgets[] = {
             auto savedCurrentTrackPitchEnd = _currentTrackPitchEnd;
             auto savedPreviousTrackRollEnd = _previousTrackRollEnd;
             auto savedCurrentTrackRollEnd = _currentTrackRollEnd;
-            int32_t savedCurrentTrackAlternative = _currentTrackAlternative;
-            int32_t savedCurrentTrackLiftHill = _currentTrackLiftHill;
+            auto savedCurrentTrackAlternative = _currentTrackAlternative;
+            auto savedCurrentTrackLiftHill = _currentTrackHasLiftHill;
             RideConstructionSetDefaultNextPiece();
             WindowRideConstructionUpdateActiveElements();
             auto ride = GetRide(_currentRideIndex);
@@ -4604,7 +4611,7 @@ static Widget _rideConstructionWidgets[] = {
                     _previousTrackRollEnd = savedPreviousTrackRollEnd;
                     _currentTrackRollEnd = savedCurrentTrackRollEnd;
                     _currentTrackAlternative = savedCurrentTrackAlternative;
-                    _currentTrackLiftHill = savedCurrentTrackLiftHill;
+                    _currentTrackHasLiftHill = savedCurrentTrackLiftHill;
                     WindowRideConstructionUpdateActiveElements();
                 }
             }
@@ -4651,5 +4658,416 @@ static Widget _rideConstructionWidgets[] = {
     {
         auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
         ContextBroadcastIntent(&intent);
+    }
+
+    /**
+     *
+     *  rct2: 0x006CA162
+     */
+    money64 PlaceProvisionalTrackPiece(
+        RideId rideIndex, int32_t trackType, int32_t trackDirection, SelectedLiftAndInverted liftHillAndAlternativeState,
+        const CoordsXYZ& trackPos)
+    {
+        auto ride = GetRide(rideIndex);
+        if (ride == nullptr)
+            return kMoney64Undefined;
+
+        RideConstructionRemoveGhosts();
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (rtd.HasFlag(RtdFlag::isMaze))
+        {
+            int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
+            auto gameAction = MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
+            gameAction.SetFlags(flags);
+            auto result = GameActions::Execute(&gameAction);
+
+            if (result.Error != GameActions::Status::Ok)
+                return kMoney64Undefined;
+
+            _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
+            _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
+            if (_currentTrackPitchEnd != TrackPitch::None)
+                ViewportSetVisibility(ViewportVisibility::TrackHeights);
+
+            return result.Cost;
+        }
+
+        auto trackPlaceAction = TrackPlaceAction(
+            rideIndex, trackType, ride->type, { trackPos, static_cast<uint8_t>(trackDirection) }, 0, 0, 0,
+            liftHillAndAlternativeState, false);
+        trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+        // This command must not be sent over the network
+        auto res = GameActions::Execute(&trackPlaceAction);
+        if (res.Error != GameActions::Status::Ok)
+            return kMoney64Undefined;
+
+        int16_t zBegin{}, zEnd{};
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        const TrackCoordinates& coords = ted.coordinates;
+        if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        {
+            zBegin = coords.zBegin;
+            zEnd = coords.zEnd;
+        }
+        else
+        {
+            zEnd = zBegin = coords.zBegin;
+        }
+
+        _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + zBegin, static_cast<Direction>(trackDirection) };
+        _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
+
+        const auto resultData = res.GetData<TrackPlaceActionResult>();
+        const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
+                                                                                 : ViewportVisibility::UndergroundViewOff;
+        ViewportSetVisibility(visiblity);
+        if (_currentTrackPitchEnd != TrackPitch::None)
+            ViewportSetVisibility(ViewportVisibility::TrackHeights);
+
+        // Invalidate previous track piece (we may not be changing height!)
+        VirtualFloorInvalidate();
+
+        if (!isToolActive(WindowClass::Scenery))
+        {
+            // Set height to where the next track piece would begin
+            VirtualFloorSetHeight(trackPos.z - zBegin + zEnd);
+        }
+
+        return res.Cost;
+    }
+
+    static std::pair<bool, track_type_t> WindowRideConstructionUpdateStateGetTrackElement()
+    {
+        auto startSlope = _previousTrackPitchEnd;
+        auto endSlope = _currentTrackPitchEnd;
+        auto startBank = _previousTrackRollEnd;
+        auto endBank = _currentTrackRollEnd;
+
+        if (_rideConstructionState == RideConstructionState::Back)
+        {
+            startSlope = _currentTrackPitchEnd;
+            endSlope = _previousTrackPitchEnd;
+            startBank = _currentTrackRollEnd;
+            endBank = _previousTrackRollEnd;
+        }
+
+        auto selectedTrack = _currentlySelectedTrack;
+        if (selectedTrack == TrackElemType::None)
+        {
+            return std::make_pair(false, 0);
+        }
+
+        bool startsDiagonal = (_currentTrackPieceDirection & (1 << 2)) != 0;
+        if (selectedTrack == TrackCurve::LeftLarge || selectedTrack == TrackCurve::RightLarge)
+        {
+            if (_rideConstructionState == RideConstructionState::Back)
+            {
+                startsDiagonal = !startsDiagonal;
+            }
+        }
+
+        if (!selectedTrack.isTrackType)
+        {
+            auto trackPiece = GetTrackTypeFromCurve(
+                selectedTrack.curve, startsDiagonal, startSlope, endSlope, startBank, endBank);
+            if (trackPiece != TrackElemType::None)
+                return std::make_pair(true, trackPiece);
+            else
+                return std::make_pair(false, 0);
+        }
+
+        auto asTrackType = selectedTrack.trackType;
+        switch (asTrackType)
+        {
+            case TrackElemType::EndStation:
+            case TrackElemType::SBendLeft:
+            case TrackElemType::SBendRight:
+                if (startSlope != TrackPitch::None || endSlope != TrackPitch::None)
+                {
+                    return std::make_pair(false, 0);
+                }
+
+                if (startBank != TrackRoll::None || endBank != TrackRoll::None)
+                {
+                    return std::make_pair(false, 0);
+                }
+
+                return std::make_pair(true, asTrackType);
+
+            case TrackElemType::LeftVerticalLoop:
+            case TrackElemType::RightVerticalLoop:
+                if (startBank != TrackRoll::None || endBank != TrackRoll::None)
+                {
+                    return std::make_pair(false, 0);
+                }
+
+                if (_rideConstructionState == RideConstructionState::Back)
+                {
+                    if (endSlope != TrackPitch::Down25)
+                    {
+                        return std::make_pair(false, 0);
+                    }
+                }
+                else
+                {
+                    if (startSlope != TrackPitch::Up25)
+                    {
+                        return std::make_pair(false, 0);
+                    }
+                }
+
+                return std::make_pair(true, asTrackType);
+
+            default:
+                return std::make_pair(true, asTrackType);
+        }
+    }
+
+    /**
+     * rct2: 0x006CA2DF
+     *
+     * @param[out] _trackType (dh)
+     * @param[out] _trackDirection (bh)
+     * @param[out] _rideIndex (dl)
+     * @param[out] _liftHillAndInvertedState (liftHillAndInvertedState)
+     * @param[out] _x (ax)
+     * @param[out] _y (cx)
+     * @param[out] _z (di)
+     * @param[out] _properties (edirs16)
+     * @return (CF)
+     */
+    static bool WindowRideConstructionUpdateState(
+        int32_t* _trackType, int32_t* _trackDirection, RideId* _rideIndex, SelectedLiftAndInverted* _liftHillAndInvertedState,
+        CoordsXYZ* _trackPos, int32_t* _properties)
+    {
+        RideId rideIndex;
+        uint8_t trackDirection;
+        uint16_t x, y, properties;
+        SelectedLiftAndInverted liftHillAndInvertedState{};
+
+        auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
+        ContextBroadcastIntent(&intent);
+        auto updated_element = WindowRideConstructionUpdateStateGetTrackElement();
+        if (!std::get<0>(updated_element))
+        {
+            return true;
+        }
+
+        track_type_t trackType = std::get<1>(updated_element);
+        rideIndex = _currentRideIndex;
+        if (_currentTrackHasLiftHill)
+        {
+            liftHillAndInvertedState.set(LiftHillAndInverted::liftHill);
+        }
+
+        if (_currentTrackAlternative.has(AlternativeTrackFlag::inverted))
+        {
+            liftHillAndInvertedState.set(LiftHillAndInverted::inverted);
+        }
+
+        auto ride = GetRide(rideIndex);
+        if (ride == nullptr)
+            return true;
+
+        if (IsTrackEnabled(TrackGroup::slopeSteepLong))
+        {
+            switch (trackType)
+            {
+                case TrackElemType::FlatToUp60:
+                    trackType = TrackElemType::FlatToUp60LongBase;
+                    break;
+
+                case TrackElemType::Up60ToFlat:
+                    trackType = TrackElemType::Up60ToFlatLongBase;
+                    break;
+
+                case TrackElemType::FlatToDown60:
+                    trackType = TrackElemType::FlatToDown60LongBase;
+                    break;
+
+                case TrackElemType::Down60ToFlat:
+                    trackType = TrackElemType::Down60ToFlatLongBase;
+                    break;
+
+                case TrackElemType::DiagFlatToUp60:
+                case TrackElemType::DiagUp60ToFlat:
+                case TrackElemType::DiagFlatToDown60:
+                case TrackElemType::DiagDown60ToFlat:
+                    return true;
+            }
+        }
+
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto trackDrawerDescriptor = getCurrentTrackDrawerDescriptor(rtd);
+        if (trackDrawerDescriptor.HasCoveredPieces() && _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces))
+        {
+            auto availableGroups = trackDrawerDescriptor.Covered.enabledTrackGroups;
+            const auto& ted = GetTrackElementDescriptor(trackType);
+
+            auto coveredVariant = ted.alternativeType;
+            // this method limits the track element types that can be used
+            if (coveredVariant != TrackElemType::None && (availableGroups.get(EnumValue(ted.definition.group))))
+            {
+                trackType = coveredVariant;
+                if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
+                    liftHillAndInvertedState.unset(LiftHillAndInverted::liftHill);
+            }
+        }
+
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        const TrackCoordinates& trackCoordinates = ted.coordinates;
+
+        x = _currentTrackBegin.x;
+        y = _currentTrackBegin.y;
+        auto z = _currentTrackBegin.z;
+        if (_rideConstructionState == RideConstructionState::Back)
+        {
+            z -= trackCoordinates.zEnd;
+            trackDirection = _currentTrackPieceDirection ^ 0x02;
+            trackDirection -= trackCoordinates.rotationEnd;
+            trackDirection += trackCoordinates.rotationBegin;
+            trackDirection &= 0x03;
+
+            if (trackCoordinates.rotationBegin & (1 << 2))
+            {
+                trackDirection |= 0x04;
+            }
+
+            CoordsXY offsets = { trackCoordinates.x, trackCoordinates.y };
+            CoordsXY coords = { x, y };
+            coords += offsets.Rotate(DirectionReverse(trackDirection));
+            x = static_cast<uint16_t>(coords.x);
+            y = static_cast<uint16_t>(coords.y);
+        }
+        else
+        {
+            z -= trackCoordinates.zBegin;
+            trackDirection = _currentTrackPieceDirection;
+        }
+
+        bool turnOffLiftHill = false;
+        if (!IsTrackEnabled(TrackGroup::liftHillCurve))
+        {
+            if (ted.flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
+            {
+                turnOffLiftHill = true;
+            }
+        }
+
+        if (!(ted.flags & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL))
+        {
+            turnOffLiftHill = true;
+        }
+
+        if (turnOffLiftHill && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+        {
+            liftHillAndInvertedState.unset(LiftHillAndInverted::liftHill);
+            _currentTrackHasLiftHill = false;
+
+            if (trackType == TrackElemType::LeftCurvedLiftHill || trackType == TrackElemType::RightCurvedLiftHill)
+            {
+                liftHillAndInvertedState.set(LiftHillAndInverted::liftHill);
+            }
+        }
+
+        if (TrackTypeHasSpeedSetting(trackType))
+        {
+            properties = _currentBrakeSpeed;
+        }
+        else
+        {
+            properties = _currentSeatRotationAngle << 12;
+        }
+
+        if (_trackType != nullptr)
+            *_trackType = trackType;
+        if (_trackDirection != nullptr)
+            *_trackDirection = trackDirection;
+        if (_rideIndex != nullptr)
+            *_rideIndex = rideIndex;
+        if (_liftHillAndInvertedState != nullptr)
+            *_liftHillAndInvertedState = liftHillAndInvertedState;
+        if (_trackPos != nullptr)
+            *_trackPos = { x, y, z };
+        if (_properties != nullptr)
+            *_properties = properties;
+
+        return false;
+    }
+
+    void RideRestoreProvisionalTrackPiece()
+    {
+        if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
+        {
+            RideId rideIndex;
+            int32_t direction, type;
+            SelectedLiftAndInverted liftHillAndAlternativeState{};
+            CoordsXYZ trackPos;
+            if (WindowRideConstructionUpdateState(
+                    &type, &direction, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr))
+            {
+                RideConstructionRemoveGhosts();
+            }
+            else
+            {
+                _currentTrackPrice = PlaceProvisionalTrackPiece(
+                    rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
+                WindowRideConstructionUpdateActiveElements();
+            }
+        }
+    }
+
+    void RideRemoveProvisionalTrackPiece()
+    {
+        auto rideIndex = _currentRideIndex;
+        auto ride = GetRide(rideIndex);
+        if (ride == nullptr || !(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
+        {
+            return;
+        }
+
+        int32_t x = _unkF440C5.x;
+        int32_t y = _unkF440C5.y;
+        int32_t z = _unkF440C5.z;
+
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (rtd.HasFlag(RtdFlag::isMaze))
+        {
+            const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
+            const CoordsXYZD quadrants[kNumOrthogonalDirections] = {
+                { x, y, z, 0 },
+                { x, y + 16, z, 1 },
+                { x + 16, y + 16, z, 2 },
+                { x + 16, y, z, 3 },
+            };
+            for (const auto& quadrant : quadrants)
+            {
+                auto gameAction = MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+                gameAction.SetFlags(flags);
+                auto res = GameActions::Execute(&gameAction);
+            }
+        }
+        else
+        {
+            int32_t direction = _unkF440C5.direction;
+            if (!(direction & 4))
+            {
+                x -= CoordsDirectionDelta[direction].x;
+                y -= CoordsDirectionDelta[direction].y;
+            }
+            CoordsXYE next_track;
+            if (TrackBlockGetNextFromZero({ x, y, z }, *ride, direction, &next_track, &z, &direction, true))
+            {
+                auto trackType = next_track.element->AsTrack()->GetTrackType();
+                int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();
+                auto trackRemoveAction = TrackRemoveAction{
+                    trackType, trackSequence, { next_track.x, next_track.y, z, static_cast<Direction>(direction) }
+                };
+                trackRemoveAction.SetFlags(
+                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                GameActions::Execute(&trackRemoveAction);
+            }
+        }
     }
 } // namespace OpenRCT2::Ui::Windows

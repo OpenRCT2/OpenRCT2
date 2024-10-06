@@ -308,6 +308,11 @@
         "y": 2
     },
     {
+        "path": "icons/map_gen_terrain_tab.png",
+        "x": 1,
+        "y": 10
+    },
+    {
         "path": "icons/map_gen_button.png"
     },
     {
@@ -2704,7 +2709,7 @@
     {
         "path": "track/lattice_triangle/booster_2.png",
         "x": -22,
-        "y": -4
+        "y": -5
     },
     {
         "path": "track/lattice_triangle/brake_horizontal_background_open.png",
@@ -6608,6 +6613,582 @@
         "palette": "keep"
     },
     {
+        "path": "track/wooden/flat_to_steep_up_1_1.png",
+        "x": -33,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_1_2.png",
+        "x": -32,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_1_3.png",
+        "x": -33,
+        "y": -40,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_1_4.png",
+        "x": -33,
+        "y": -65,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_1.png",
+        "x": -33,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_2.png",
+        "x": -33,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_3.png",
+        "x": -33,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_4.png",
+        "x": -33,
+        "y": -48,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_1.png",
+        "x": -32,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_2.png",
+        "x": -32,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_3.png",
+        "x": -20,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_4.png",
+        "x": -34,
+        "y": -48,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_4_1.png",
+        "x": -33,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_4_2.png",
+        "x": -33,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_4_3.png",
+        "x": -33,
+        "y": -40,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_4_4.png",
+        "x": -34,
+        "y": -65,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_1_1.png",
+        "x": -36,
+        "y": -59,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_1_2.png",
+        "x": -33,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_1_3.png",
+        "x": -33,
+        "y": -34,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_1_4.png",
+        "x": -33,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_1.png",
+        "x": -36,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_2.png",
+        "x": -33,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_3.png",
+        "x": -33,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_4.png",
+        "x": -33,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_1.png",
+        "x": -33,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_2.png",
+        "x": -32,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_3.png",
+        "x": -32,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_4.png",
+        "x": -33,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_4_1.png",
+        "x": -33,
+        "y": -59,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_4_2.png",
+        "x": -33,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_4_3.png",
+        "x": -33,
+        "y": -35,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_4_4.png",
+        "x": -33,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_1_1_rails.png",
+        "x": -33,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_1_2_rails.png",
+        "x": -33,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_1_3_rails.png",
+        "x": -33,
+        "y": -40,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_1_4_rails.png",
+        "x": -33,
+        "y": -65,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_1_rails.png",
+        "x": -33,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_2_rails.png",
+        "x": -33,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_3_rails.png",
+        "x": -33,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_4_rails.png",
+        "x": -33,
+        "y": -48,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_1_rails.png",
+        "x": -32,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_2_rails.png",
+        "x": -32,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_3_rails.png",
+        "x": -20,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_4_rails.png",
+        "x": -35,
+        "y": -48,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_4_1_rails.png",
+        "x": -33,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_4_2_rails.png",
+        "x": -33,
+        "y": -35,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_4_3_rails.png",
+        "x": -33,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_4_4_rails.png",
+        "x": -35,
+        "y": -65,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_1_1_rails.png",
+        "x": -36,
+        "y": -59,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_1_2_rails.png",
+        "x": -33,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_1_3_rails.png",
+        "x": -33,
+        "y": -34,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_1_4_rails.png",
+        "x": -33,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_1_rails.png",
+        "x": -36,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_2_rails.png",
+        "x": -33,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_3_rails.png",
+        "x": -33,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_4_rails.png",
+        "x": -33,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_1_rails.png",
+        "x": -33,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_2_rails.png",
+        "x": -33,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_3_rails.png",
+        "x": -33,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_4_rails.png",
+        "x": -33,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_4_1_rails.png",
+        "x": -33,
+        "y": -63,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_4_2_rails.png",
+        "x": -33,
+        "y": -48,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_4_3_rails.png",
+        "x": -33,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_4_4_rails.png",
+        "x": -33,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_1_front.png",
+        "x": -30,
+        "y": 5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_2_front.png",
+        "x": -30,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_3_front.png",
+        "x": -33,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_4_front.png",
+        "x": -32,
+        "y": -31,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_1_front.png",
+        "x": 4,
+        "y": 5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_2_front.png",
+        "x": 1,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_3_front.png",
+        "x": 0,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_4_front.png",
+        "x": -2,
+        "y": -31,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_1_front.png",
+        "x": -33,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_2_front.png",
+        "x": -29,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_3_front.png",
+        "x": -33,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_4_front.png",
+        "x": -28,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_1_front.png",
+        "x": 0,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_2_front.png",
+        "x": 0,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_3_front.png",
+        "x": 3,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_4_front.png",
+        "x": 4,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_1_front_rails.png",
+        "x": -33,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_2_front_rails.png",
+        "x": -33,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_3_front_rails.png",
+        "x": -33,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_2_4_front_rails.png",
+        "x": -33,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_1_front_rails.png",
+        "x": -7,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_2_front_rails.png",
+        "x": -21,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_3_front_rails.png",
+        "x": -10,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/flat_to_steep_up_3_4_front_rails.png",
+        "x": -2,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_1_front_rails.png",
+        "x": -36,
+        "y": -31,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_2_front_rails.png",
+        "x": -33,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_3_front_rails.png",
+        "x": -33,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_2_4_front_rails.png",
+        "x": -33,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_1_front_rails.png",
+        "x": -8,
+        "y": -31,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_2_front_rails.png",
+        "x": -10,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_3_front_rails.png",
+        "x": -11,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/wooden/steep_to_flat_up_3_4_front_rails.png",
+        "x": -1,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
         "path": "track/bm_invert/booster_1.png",
         "x": -25,
         "y": -5
@@ -6687,6 +7268,198 @@
         "path": "track/minetrain/blockbrake_vertical_open.png",
         "x": -17,
         "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_1_1.png",
+        "x": -25,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_1_2.png",
+        "x": -25,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_1_3.png",
+        "x": -25,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_1_4.png",
+        "x": -24,
+        "y": -47,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_2_1.png",
+        "x": -25,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_2_2.png",
+        "x": -26,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_2_3.png",
+        "x": -25,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_2_4.png",
+        "x": -20,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_3_1.png",
+        "x": -27,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_3_2.png",
+        "x": -28,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_3_3.png",
+        "x": -23,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_3_4.png",
+        "x": -25,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_4_1.png",
+        "x": -33,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_4_2.png",
+        "x": -26,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_4_3.png",
+        "x": -26,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/flat_to_steep_up_4_4.png",
+        "x": -27,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_1_1.png",
+        "x": -27,
+        "y": -42,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_1_2.png",
+        "x": -26,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_1_3.png",
+        "x": -28,
+        "y": -17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_1_4.png",
+        "x": -26,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_2_1.png",
+        "x": -26,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_2_2.png",
+        "x": -20,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_2_3.png",
+        "x": -22,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_2_4.png",
+        "x": -25,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_3_1.png",
+        "x": -14,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_3_2.png",
+        "x": -14,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_3_3.png",
+        "x": -20,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_3_4.png",
+        "x": -24,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_4_1.png",
+        "x": -23,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_4_2.png",
+        "x": -21,
+        "y": -28,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_4_3.png",
+        "x": -25,
+        "y": -17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/minetrain/steep_to_flat_up_4_4.png",
+        "x": -24,
+        "y": -6,
         "palette": "keep"
     },
     {
@@ -9163,6 +9936,166 @@
         "path": "support/steep_to_flat_4_4.png",
         "x": -32,
         "y": -17
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_1_1.png",
+        "x": -24,
+        "y": -1
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_1_2.png",
+        "x": -24,
+        "y": 2
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_1_3.png",
+        "x": -24,
+        "y": 2
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_1_4.png",
+        "x": -24,
+        "y": -1
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_2_1.png",
+        "x": -24,
+        "y": -14
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_2_2.png",
+        "x": -24,
+        "y": -1
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_2_3.png",
+        "x": -24,
+        "y": -1
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_2_4.png",
+        "x": -24,
+        "y": -14
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_3_1.png",
+        "x": -24,
+        "y": -23
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_3_2.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_3_3.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_3_4.png",
+        "x": -24,
+        "y": -22
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_4_1.png",
+        "x": -24,
+        "y": -52
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_4_2.png",
+        "x": -24,
+        "y": -36
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_4_3.png",
+        "x": -24,
+        "y": -36
+    },
+    {
+        "path": "support/wooden/mine/flat_to_steep_4_4.png",
+        "x": -24,
+        "y": -52
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_1_1.png",
+        "x": -24,
+        "y": -49
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_1_2.png",
+        "x": -24,
+        "y": -33
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_1_3.png",
+        "x": -24,
+        "y": -33
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_1_4.png",
+        "x": -24,
+        "y": -49
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_2_1.png",
+        "x": -24,
+        "y": -28
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_2_2.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_2_3.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_2_4.png",
+        "x": -24,
+        "y": -28
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_3_1.png",
+        "x": -24,
+        "y": -26
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_3_2.png",
+        "x": -24,
+        "y": -13
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_3_3.png",
+        "x": -24,
+        "y": -13
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_3_4.png",
+        "x": -24,
+        "y": -26
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_4_1.png",
+        "x": -24,
+        "y": -15
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_4_2.png",
+        "x": -24,
+        "y": -10
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_4_3.png",
+        "x": -24,
+        "y": -10
+    },
+    {
+        "path": "support/wooden/mine/steep_to_flat_4_4.png",
+        "x": -24,
+        "y": -15
     },
     {
         "path": "track/rmc/preview_track.png",
@@ -24961,5 +25894,49 @@
         "path": "icons/medium-curve-right.png",
         "x": 1,
         "y": 6
+    },
+    {
+        "path": "track/rmc/brake_gentle_1.png",
+        "x": -34,
+        "y": -28
+    },
+    {
+        "path": "track/rmc/brake_gentle_2.png",
+        "x": -34,
+        "y": -12
+    },
+    {
+        "path": "track/rmc/brake_gentle_3.png",
+        "x": -34,
+        "y": -12
+    },
+    {
+        "path": "track/rmc/brake_gentle_4.png",
+        "x": -34,
+        "y": -28
+    },
+    {
+        "path": "track/raptor/brake_gentle_1.png",
+        "x": -18,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/brake_gentle_2.png",
+        "x": -18,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/brake_gentle_3.png",
+        "x": -19,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/brake_gentle_4.png",
+        "x": -19,
+        "y": -14,
+        "palette": "keep"
     }
 ]

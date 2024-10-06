@@ -184,6 +184,7 @@
     <ClInclude Include="core\CallingConventions.h" />
     <ClInclude Include="core\ChecksumStream.h" />
     <ClInclude Include="core\CircularBuffer.h" />
+    <ClInclude Include="core\CodepointView.hpp" />
     <ClInclude Include="core\Collections.hpp" />
     <ClInclude Include="core\Console.hpp" />
     <ClInclude Include="core\Crypt.h" />
@@ -221,10 +222,12 @@
     <ClInclude Include="core\Range.hpp" />
     <ClInclude Include="core\RTL.h" />
     <ClInclude Include="core\FixedVector.h" />
+    <ClInclude Include="core\FlagHolder.hpp" />
     <ClInclude Include="core\Speed.hpp" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
+    <ClInclude Include="core\StringTypes.h" />
     <ClInclude Include="core\Timer.hpp" />
     <ClInclude Include="core\UTF8.h" />
     <ClInclude Include="core\UnicodeChar.h" />
@@ -326,6 +329,7 @@
     <ClInclude Include="object\FootpathEntry.h" />
     <ClInclude Include="object\PathAdditionEntry.h" />
     <ClInclude Include="object\PathAdditionObject.h" />
+    <ClInclude Include="object\PeepNamesObject.h" />
     <ClInclude Include="object\FootpathObject.h" />
     <ClInclude Include="object\FootpathRailingsObject.h" />
     <ClInclude Include="object\FootpathSurfaceObject.h" />
@@ -386,7 +390,6 @@
     <ClInclude Include="peep\PeepAnimationData.h" />
     <ClInclude Include="peep\PeepSpriteIds.h" />
     <ClInclude Include="peep\PeepThoughts.h" />
-    <ClInclude Include="peep\RealNames.h" />
     <ClInclude Include="peep\RideUseSystem.h" />
     <ClInclude Include="PlatformEnvironment.h" />
     <ClInclude Include="platform\Crash.h" />
@@ -596,6 +599,7 @@
     <ClInclude Include="Version.h" />
     <ClInclude Include="windows\Intent.h" />
     <ClInclude Include="windows\TileInspectorGlobals.h" />
+    <ClInclude Include="world\tile_element\EntranceElement.h" />
     <ClInclude Include="world\tile_element\TileElementType.h" />
     <ClInclude Include="world\tile_element\Slope.h" />
     <ClInclude Include="world\Banner.h" />
@@ -610,6 +614,7 @@
     <ClInclude Include="world\MapGen.h" />
     <ClInclude Include="world\MapHelpers.h" />
     <ClInclude Include="world\Park.h" />
+    <ClInclude Include="world\QuarterTile.h" />
     <ClInclude Include="world\Scenery.h" />
     <ClInclude Include="world\ScenerySelection.h" />
     <ClInclude Include="world\SmallScenery.h" />
@@ -860,6 +865,7 @@
     <ClCompile Include="object\ObjectManager.cpp" />
     <ClCompile Include="object\ObjectRepository.cpp" />
     <ClCompile Include="object\ObjectTypes.cpp" />
+    <ClCompile Include="object\PeepNamesObject.cpp" />
     <ClCompile Include="object\ResourceTable.cpp" />
     <ClCompile Include="object\RideObject.cpp" />
     <ClCompile Include="object\SceneryGroupObject.cpp" />
@@ -898,6 +904,7 @@
     <ClCompile Include="paint\track\coaster\CompactInvertedCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\CorkscrewRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\FlyingRollerCoaster.cpp" />
+    <ClCompile Include="paint\track\coaster\FlyingRollerCoasterInverted.cpp" />
     <ClCompile Include="paint\track\coaster\LatticeTriangleTrack.cpp" />
     <ClCompile Include="paint\track\coaster\HeartlineTwisterCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\HybridCoaster.cpp" />
@@ -983,7 +990,6 @@
     <ClCompile Include="peep\GuestPathfinding.cpp" />
     <ClCompile Include="peep\PeepAnimationData.cpp" />
     <ClCompile Include="peep\PeepThoughts.cpp" />
-    <ClCompile Include="peep\RealNames.cpp" />
     <ClCompile Include="peep\RideUseSystem.cpp" />
     <ClCompile Include="PlatformEnvironment.cpp" />
     <ClCompile Include="platform\Crash.cpp" />
@@ -1079,8 +1085,8 @@
     <ClCompile Include="util\Util.cpp" />
     <ClCompile Include="Version.cpp" />
     <ClCompile Include="windows\Intent.cpp" />
-    <ClCompile Include="windows\_legacy.cpp" />
     <ClCompile Include="world\tile_element\EntranceElement.cpp" />
+    <ClCompile Include="world\tile_element\TileElementBase.cpp" />
     <ClCompile Include="world\Banner.cpp" />
     <ClCompile Include="world\Climate.cpp" />
     <ClCompile Include="world\ConstructionClearance.cpp" />
@@ -1092,12 +1098,12 @@
     <ClCompile Include="world\MapGen.cpp" />
     <ClCompile Include="world\MapHelpers.cpp" />
     <ClCompile Include="world\Park.cpp" />
+    <ClCompile Include="world\QuarterTile.cpp" />
     <ClCompile Include="world\Scenery.cpp" />
     <ClCompile Include="world\SmallScenery.cpp" />
     <ClCompile Include="world\Surface.cpp" />
     <ClCompile Include="world\SurfaceData.cpp" />
     <ClCompile Include="world\TileElement.cpp" />
-    <ClCompile Include="world/TileElementBase.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
     <ClCompile Include="world\Wall.cpp" />
     <ClCompile Include="..\thirdparty\duktape\duktape.cpp">

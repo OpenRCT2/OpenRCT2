@@ -13,7 +13,7 @@
 
 #    include "../../../Context.h"
 #    include "../../../GameState.h"
-#    include "../../../core/String.hpp"
+#    include "../../../core/StringTypes.h"
 #    include "../../../scenario/Scenario.h"
 #    include "../../../world/Park.h"
 #    include "../../Duktape.hpp"
@@ -231,13 +231,13 @@ namespace OpenRCT2::Scripting
 
         std::string filename_get()
         {
-            return gScenarioFileName;
+            return GetGameState().ScenarioFileName;
         }
 
         void filename_set(const std::string& value)
         {
             ThrowIfGameStateNotMutable();
-            gScenarioFileName = value;
+            GetGameState().ScenarioFileName = value;
         }
 
         std::shared_ptr<ScScenarioObjective> objective_get() const

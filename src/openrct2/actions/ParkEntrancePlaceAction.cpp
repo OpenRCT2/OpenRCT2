@@ -21,6 +21,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/EntranceElement.h"
 
 using namespace OpenRCT2;
 

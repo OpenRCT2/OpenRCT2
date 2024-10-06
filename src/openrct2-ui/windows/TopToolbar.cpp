@@ -33,6 +33,7 @@
 #include <openrct2/actions/PauseToggleAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
@@ -267,8 +268,6 @@ namespace OpenRCT2::Ui::Windows
     };
     // clang-format on
 
-    static void ScenarioSelectCallback(const utf8* path);
-
     class TopToolbar final : public Window
     {
     private:
@@ -447,9 +446,9 @@ namespace OpenRCT2::Ui::Windows
                     {
                         case DDIDX_NEW_GAME:
                         {
-                            auto intent = Intent(WindowClass::ScenarioSelect);
-                            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(ScenarioSelectCallback));
-                            ContextOpenIntent(&intent);
+                            auto loadOrQuitAction = LoadOrQuitAction(
+                                LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeNewGame);
+                            GameActions::Execute(&loadOrQuitAction);
                             break;
                         }
                         case DDIDX_LOAD_GAME:
@@ -991,15 +990,6 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    static void ScenarioSelectCallback(const utf8* path)
-    {
-        WindowCloseByClass(WindowClass::EditorObjectSelection);
-        GameNotifyMapChange();
-        GetContext()->LoadParkFromFile(path, false, true);
-        GameLoadScripts();
-        GameNotifyMapChanged();
-    }
-
     /**
      * Creates the main game top toolbar window.
      *  rct2: 0x0066B485 (part of 0x0066B3E8)
@@ -1183,7 +1173,7 @@ namespace OpenRCT2::Ui::Windows
         gDropdownItems[i++].Format = STR_EXTRA_VIEWPORT;
         if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && GetGameState().EditorStep == EditorStep::LandscapeEditor)
         {
-            gDropdownItems[i++].Format = STR_MAPGEN_WINDOW_TITLE;
+            gDropdownItems[i++].Format = STR_MAPGEN_MENU_ITEM;
         }
 
 #ifdef ENABLE_SCRIPTING
@@ -1457,15 +1447,16 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::SetDisabled(DDIDX_ENABLE_SANDBOX_MODE, true);
         }
 
-        if (GetGameState().Cheats.SandboxMode)
+        auto& gameState = GetGameState();
+        if (gameState.Cheats.SandboxMode)
         {
             Dropdown::SetChecked(DDIDX_ENABLE_SANDBOX_MODE, true);
         }
-        if (GetGameState().Cheats.DisableClearanceChecks)
+        if (gameState.Cheats.DisableClearanceChecks)
         {
             Dropdown::SetChecked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
         }
-        if (GetGameState().Cheats.DisableSupportLimits)
+        if (gameState.Cheats.DisableSupportLimits)
         {
             Dropdown::SetChecked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
         }

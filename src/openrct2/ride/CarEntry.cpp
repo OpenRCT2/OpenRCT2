@@ -138,3 +138,8 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
     carEntry.sprite_height_negative = spriteHeightNegative;
     carEntry.sprite_height_positive = spriteHeightPositive;
 }
+
+bool CarEntry::isVisible() const
+{
+    return TabRotationMask != 0;
+}

@@ -9,12 +9,11 @@
 
 #pragma once
 
-#include "core/String.hpp"
+#include "core/StringTypes.h"
 #include "object/Object.h"
 #include "object/ObjectList.h"
 
 #include <memory>
-#include <string>
 #include <vector>
 
 struct IObjectManager;
@@ -82,6 +81,11 @@ public:
         : MissingObjects(std::move(missingObjects))
     {
     }
+
+    const char* what() const noexcept override
+    {
+        return "Missing objects";
+    }
 };
 
 class UnsupportedRideTypeException : public std::exception
@@ -92,6 +96,11 @@ public:
     explicit UnsupportedRideTypeException(ObjectEntryIndex type)
         : Type(type)
     {
+    }
+
+    const char* what() const noexcept override
+    {
+        return "Invalid ride type";
     }
 };
 
@@ -105,5 +114,10 @@ public:
         : MinVersion(minVersion)
         , TargetVersion(targetVersion)
     {
+    }
+
+    const char* what() const noexcept override
+    {
+        return "Unexpected version";
     }
 };

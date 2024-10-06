@@ -38,7 +38,6 @@
 #include "../peep/GuestPathfinding.h"
 #include "../peep/PeepAnimationData.h"
 #include "../peep/PeepSpriteIds.h"
-#include "../peep/RealNames.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -57,6 +56,7 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/EntranceElement.h"
 #include "PatrolArea.h"
 #include "Staff.h"
 
@@ -70,54 +70,54 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
-static uint8_t _unk_F1AEF0;
+static uint8_t _backupAnimationImageIdOffset;
 static TileElement* _peepRideEntranceExitElement;
 
 static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 
 static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height);
 
-static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
-    PeepActionSpriteType::None,
-    PeepActionSpriteType::HoldMat,
-    PeepActionSpriteType::StaffMower,
+static PeepAnimationType PeepSpecialSpriteToAnimationGroupMap[] = {
+    PeepAnimationType::None,
+    PeepAnimationType::HoldMat,
+    PeepAnimationType::StaffMower,
 };
 
-static PeepActionSpriteType PeepActionToSpriteTypeMap[] = {
-    PeepActionSpriteType::CheckTime,
-    PeepActionSpriteType::EatFood,
-    PeepActionSpriteType::ShakeHead,
-    PeepActionSpriteType::EmptyPockets,
-    PeepActionSpriteType::SittingEatFood,
-    PeepActionSpriteType::SittingLookAroundLeft,
-    PeepActionSpriteType::SittingLookAroundRight,
-    PeepActionSpriteType::Wow,
-    PeepActionSpriteType::ThrowUp,
-    PeepActionSpriteType::Jump,
-    PeepActionSpriteType::StaffSweep,
-    PeepActionSpriteType::Drowning,
-    PeepActionSpriteType::StaffAnswerCall,
-    PeepActionSpriteType::StaffAnswerCall2,
-    PeepActionSpriteType::StaffCheckboard,
-    PeepActionSpriteType::StaffFix,
-    PeepActionSpriteType::StaffFix2,
-    PeepActionSpriteType::StaffFixGround,
-    PeepActionSpriteType::StaffFix3,
-    PeepActionSpriteType::StaffWatering,
-    PeepActionSpriteType::Joy,
-    PeepActionSpriteType::ReadMap,
-    PeepActionSpriteType::Wave,
-    PeepActionSpriteType::StaffEmptyBin,
-    PeepActionSpriteType::Wave2,
-    PeepActionSpriteType::TakePhoto,
-    PeepActionSpriteType::Clap,
-    PeepActionSpriteType::Disgust,
-    PeepActionSpriteType::DrawPicture,
-    PeepActionSpriteType::BeingWatched,
-    PeepActionSpriteType::WithdrawMoney,
+static PeepAnimationType PeepActionToAnimationGroupMap[] = {
+    PeepAnimationType::CheckTime,
+    PeepAnimationType::EatFood,
+    PeepAnimationType::ShakeHead,
+    PeepAnimationType::EmptyPockets,
+    PeepAnimationType::SittingEatFood,
+    PeepAnimationType::SittingLookAroundLeft,
+    PeepAnimationType::SittingLookAroundRight,
+    PeepAnimationType::Wow,
+    PeepAnimationType::ThrowUp,
+    PeepAnimationType::Jump,
+    PeepAnimationType::StaffSweep,
+    PeepAnimationType::Drowning,
+    PeepAnimationType::StaffAnswerCall,
+    PeepAnimationType::StaffAnswerCall2,
+    PeepAnimationType::StaffCheckBoard,
+    PeepAnimationType::StaffFix,
+    PeepAnimationType::StaffFix2,
+    PeepAnimationType::StaffFixGround,
+    PeepAnimationType::StaffFix3,
+    PeepAnimationType::StaffWatering,
+    PeepAnimationType::Joy,
+    PeepAnimationType::ReadMap,
+    PeepAnimationType::Wave,
+    PeepAnimationType::StaffEmptyBin,
+    PeepAnimationType::Wave2,
+    PeepAnimationType::TakePhoto,
+    PeepAnimationType::Clap,
+    PeepAnimationType::Disgust,
+    PeepAnimationType::DrawPicture,
+    PeepAnimationType::BeingWatched,
+    PeepAnimationType::WithdrawMoney,
 };
 
-const bool gSpriteTypeToSlowWalkMap[] = {
+const bool gAnimationGroupToSlowWalkMap[] = {
     false, false, false, false, false, false, false, false, false, false, false, true, false, false, true,  true,
     true,  true,  true,  false, true,  false, true,  true,  true,  false, false, true, true,  false, false, true,
     true,  true,  true,  true,  true,  true,  false, true,  false, true,  true,  true, true,  true,  true,  true,
@@ -200,7 +200,7 @@ void PeepUpdateAll()
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
-    const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
+    const auto currentTicks = GetGameState().CurrentTicks;
 
     constexpr auto kTicks128Mask = 128u - 1u;
     const auto currentTicksMasked = currentTicks & kTicks128Mask;
@@ -314,40 +314,40 @@ bool Peep::IsOnPathBlockedByVehicle()
     return FootpathIsBlockedByVehicle(curPos);
 }
 
-PeepActionSpriteType Peep::GetActionSpriteType()
+PeepAnimationType Peep::GetAnimationType()
 {
     if (IsActionInterruptable())
     { // PeepActionType::None1 or PeepActionType::None2
-        return PeepSpecialSpriteToSpriteTypeMap[SpecialSprite];
+        return PeepSpecialSpriteToAnimationGroupMap[SpecialSprite];
     }
 
-    if (EnumValue(Action) < std::size(PeepActionToSpriteTypeMap))
+    if (EnumValue(Action) < std::size(PeepActionToAnimationGroupMap))
     {
-        return PeepActionToSpriteTypeMap[EnumValue(Action)];
+        return PeepActionToAnimationGroupMap[EnumValue(Action)];
     }
 
     Guard::Assert(
-        EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle, "Invalid peep action %u",
-        EnumValue(Action));
-    return PeepActionSpriteType::None;
+        EnumValue(Action) >= std::size(PeepActionToAnimationGroupMap) && Action < PeepActionType::Idle,
+        "Invalid peep action %u", EnumValue(Action));
+    return PeepAnimationType::None;
 }
 
 /*
  *  rct2: 0x00693B58
  */
-void Peep::UpdateCurrentActionSpriteType()
+void Peep::UpdateCurrentAnimationType()
 {
-    if (EnumValue(SpriteType) >= EnumValue(PeepSpriteType::Count))
+    if (EnumValue(AnimationGroup) >= EnumValue(PeepAnimationGroup::Count))
     {
         return;
     }
-    PeepActionSpriteType newActionSpriteType = GetActionSpriteType();
-    if (ActionSpriteType == newActionSpriteType)
+    PeepAnimationType newAnimationType = GetAnimationType();
+    if (AnimationType == newAnimationType)
     {
         return;
     }
 
-    ActionSpriteType = newActionSpriteType;
+    AnimationType = newAnimationType;
 
     UpdateSpriteBoundingBox();
 }
@@ -356,7 +356,7 @@ void Peep::UpdateSpriteBoundingBox()
 {
     Invalidate();
 
-    const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
+    const SpriteBounds* spriteBounds = &GetSpriteBounds(AnimationGroup, AnimationType);
     SpriteData.Width = spriteBounds->sprite_width;
     SpriteData.HeightMin = spriteBounds->sprite_height_negative;
     SpriteData.HeightMax = spriteBounds->sprite_height_positive;
@@ -374,9 +374,9 @@ void Peep::SwitchToSpecialSprite(uint8_t special_sprite_id)
 
     if (IsActionInterruptable())
     {
-        ActionSpriteImageOffset = 0;
+        AnimationImageIdOffset = 0;
     }
-    UpdateCurrentActionSpriteType();
+    UpdateCurrentAnimationType();
 }
 
 void Peep::StateReset()
@@ -411,7 +411,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 {
     PROFILED_FUNCTION();
 
-    _unk_F1AEF0 = ActionSpriteImageOffset;
+    _backupAnimationImageIdOffset = AnimationImageIdOffset;
     if (Action == PeepActionType::Idle)
     {
         Action = PeepActionType::Walking;
@@ -433,15 +433,15 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     if (!UpdateActionAnimation())
     {
-        ActionSpriteImageOffset = 0;
+        AnimationImageIdOffset = 0;
         Action = PeepActionType::Walking;
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
         return { { x, y } };
     }
 
     // Should we throw up, and are we at the frame where sick appears?
     auto* guest = As<Guest>();
-    if (Action == PeepActionType::ThrowUp && ActionFrame == 15 && guest != nullptr)
+    if (Action == PeepActionType::ThrowUp && AnimationFrameNum == 15 && guest != nullptr)
     {
         ThrowUp();
     }
@@ -451,16 +451,16 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
 bool Peep::UpdateActionAnimation()
 {
-    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
-    ActionFrame++;
+    const PeepAnimation& peepAnimation = GetPeepAnimation(AnimationGroup, AnimationType);
+    AnimationFrameNum++;
 
     // If last frame of action
-    if (ActionFrame >= peepAnimation.frame_offsets.size())
+    if (AnimationFrameNum >= peepAnimation.frame_offsets.size())
     {
         return false;
     }
 
-    ActionSpriteImageOffset = peepAnimation.frame_offsets[ActionFrame];
+    AnimationImageIdOffset = peepAnimation.frame_offsets[AnimationFrameNum];
     return true;
 }
 
@@ -509,13 +509,13 @@ std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc,
 
 void Peep::UpdateWalkingAnimation()
 {
-    WalkingFrameNum++;
-    const PeepAnimation& peepAnimation = GetPeepAnimation(SpriteType, ActionSpriteType);
-    if (WalkingFrameNum >= peepAnimation.frame_offsets.size())
+    WalkingAnimationFrameNum++;
+    const PeepAnimation& peepAnimation = GetPeepAnimation(AnimationGroup, AnimationType);
+    if (WalkingAnimationFrameNum >= peepAnimation.frame_offsets.size())
     {
-        WalkingFrameNum = 0;
+        WalkingAnimationFrameNum = 0;
     }
-    ActionSpriteImageOffset = peepAnimation.frame_offsets[WalkingFrameNum];
+    AnimationImageIdOffset = peepAnimation.frame_offsets[WalkingAnimationFrameNum];
 }
 
 void Peep::ThrowUp()
@@ -621,8 +621,8 @@ void Peep::PickupAbort(int32_t old_x)
         SetState(PeepState::Falling);
         Action = PeepActionType::Walking;
         SpecialSprite = 0;
-        ActionSpriteImageOffset = 0;
-        ActionSpriteType = PeepActionSpriteType::None;
+        AnimationImageIdOffset = 0;
+        AnimationType = PeepAnimationType::None;
         PathCheckOptimisation = 0;
     }
 
@@ -670,16 +670,16 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
         SetState(PeepState::Falling);
         Action = PeepActionType::Walking;
         SpecialSprite = 0;
-        ActionSpriteImageOffset = 0;
-        ActionSpriteType = PeepActionSpriteType::None;
+        AnimationImageIdOffset = 0;
+        AnimationType = PeepAnimationType::None;
         PathCheckOptimisation = 0;
         EntityTweener::Get().Reset();
         auto* guest = As<Guest>();
         if (guest != nullptr)
         {
-            ActionSpriteType = PeepActionSpriteType::Invalid;
+            AnimationType = PeepAnimationType::Invalid;
             guest->HappinessTarget = std::max(guest->HappinessTarget - 10, 0);
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
         }
     }
 
@@ -816,10 +816,10 @@ void Peep::UpdateFalling()
                         }
 
                         Action = PeepActionType::Drowning;
-                        ActionFrame = 0;
-                        ActionSpriteImageOffset = 0;
+                        AnimationFrameNum = 0;
+                        AnimationImageIdOffset = 0;
 
-                        UpdateCurrentActionSpriteType();
+                        UpdateCurrentAnimationType();
                         PeepWindowStateUpdate(this);
                         return;
                     }
@@ -898,7 +898,7 @@ void Peep::SetState(PeepState new_state)
  */
 void Peep::UpdatePicked()
 {
-    if (OpenRCT2::GetGameState().CurrentTicks & 0x1F)
+    if (GetGameState().CurrentTicks & 0x1F)
         return;
     SubState++;
     auto* guest = As<Guest>();
@@ -1313,11 +1313,11 @@ void PeepUpdateCrowdNoise()
             continue;
         if (viewport->viewPos.x > peep->SpriteData.SpriteRect.GetRight())
             continue;
-        if (viewport->viewPos.x + viewport->view_width < peep->SpriteData.SpriteRect.GetLeft())
+        if (viewport->viewPos.x + viewport->ViewWidth() < peep->SpriteData.SpriteRect.GetLeft())
             continue;
         if (viewport->viewPos.y > peep->SpriteData.SpriteRect.GetBottom())
             continue;
-        if (viewport->viewPos.y + viewport->view_height < peep->SpriteData.SpriteRect.GetTop())
+        if (viewport->viewPos.y + viewport->ViewHeight() < peep->SpriteData.SpriteRect.GetTop())
             continue;
 
         visiblePeeps += peep->State == PeepState::Queuing ? 1 : 2;
@@ -1381,9 +1381,9 @@ void PeepApplause()
         if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->IsActionInterruptable())
         {
             peep->Action = PeepActionType::Clap;
-            peep->ActionFrame = 0;
-            peep->ActionSpriteImageOffset = 0;
-            peep->UpdateCurrentActionSpriteType();
+            peep->AnimationFrameNum = 0;
+            peep->AnimationImageIdOffset = 0;
+            peep->UpdateCurrentAnimationType();
         }
     }
 
@@ -1599,8 +1599,26 @@ void Peep::FormatNameTo(Formatter& ft) const
 {
     if (Name == nullptr)
     {
+        auto& gameState = GetGameState();
+        const bool showGuestNames = gameState.Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        const bool showStaffNames = gameState.Park.Flags & PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+
         auto* staff = As<Staff>();
-        if (staff != nullptr)
+        const bool isStaff = staff != nullptr;
+
+        if ((!isStaff && showGuestNames) || (isStaff && showStaffNames))
+        {
+            auto nameId = PeepId;
+            if (isStaff)
+            {
+                // Prevent staff from getting the same names by offsetting the name table based on staff type.
+                nameId *= 256 * EnumValue(staff->AssignedStaffType) + 1;
+            }
+
+            auto realNameStringId = GetRealNameStringIDFromPeepID(nameId);
+            ft.Add<StringId>(realNameStringId);
+        }
+        else if (isStaff)
         {
             auto staffNameIndex = static_cast<uint8_t>(staff->AssignedStaffType);
             if (staffNameIndex >= std::size(_staffNames))
@@ -1610,11 +1628,6 @@ void Peep::FormatNameTo(Formatter& ft) const
 
             ft.Add<StringId>(_staffNames[staffNameIndex]);
             ft.Add<uint32_t>(PeepId);
-        }
-        else if (GetGameState().Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
-        {
-            auto realNameStringId = GetRealNameStringIDFromPeepID(PeepId);
-            ft.Add<StringId>(realNameStringId);
         }
         else
         {
@@ -1696,14 +1709,14 @@ void PeepSetMapTooltip(Peep* peep)
 /**
  *  rct2: 0x00693BAB
  */
-void Peep::SwitchNextActionSpriteType()
+void Peep::SwitchNextAnimationType()
 {
-    // TBD: Add nextActionSpriteType as function parameter and make peep->NextActionSpriteType obsolete?
-    if (NextActionSpriteType != ActionSpriteType)
+    // TBD: Add nextAnimationType as function parameter and make peep->NextAnimationType obsolete?
+    if (NextAnimationType != AnimationType)
     {
         Invalidate();
-        ActionSpriteType = NextActionSpriteType;
-        const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, NextActionSpriteType);
+        AnimationType = NextAnimationType;
+        const SpriteBounds* spriteBounds = &GetSpriteBounds(AnimationGroup, NextAnimationType);
         SpriteData.Width = spriteBounds->sprite_width;
         SpriteData.HeightMin = spriteBounds->sprite_height_negative;
         SpriteData.HeightMax = spriteBounds->sprite_height_positive;
@@ -1784,7 +1797,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         {
             // Guest is in the ride queue.
             guest->RideSubState = PeepRideSubState::AtQueueFront;
-            guest->ActionSpriteImageOffset = _unk_F1AEF0;
+            guest->AnimationImageIdOffset = _backupAnimationImageIdOffset;
             return true;
         }
 
@@ -1814,7 +1827,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         // Guest has decided to go on the ride.
-        guest->ActionSpriteImageOffset = _unk_F1AEF0;
+        guest->AnimationImageIdOffset = _backupAnimationImageIdOffset;
         guest->InteractionRideIndex = rideIndex;
 
         auto& station = ride->GetStation(stationNum);
@@ -2393,7 +2406,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
     {
         if (guest->GuestHeadingToRideId == rideIndex)
             guest->GuestHeadingToRideId = RideId::GetNull();
-        guest->ActionSpriteImageOffset = _unk_F1AEF0;
+        guest->AnimationImageIdOffset = _backupAnimationImageIdOffset;
         guest->SetState(PeepState::Buying);
         guest->CurrentRide = rideIndex;
         guest->SubState = 0;
@@ -2654,19 +2667,20 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
  *
  *  rct2: 0x0069926C
  */
-void PeepUpdateNames(bool realNames)
+void PeepUpdateNames()
 {
     auto& gameState = GetGameState();
-    if (realNames)
-    {
+    auto& config = Config::Get().general;
+
+    if (config.ShowRealNamesOfGuests)
         gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        // Peep names are now dynamic
-    }
     else
-    {
         gameState.Park.Flags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        // Peep names are now dynamic
-    }
+
+    if (config.ShowRealNamesOfStaff)
+        gameState.Park.Flags |= PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+    else
+        gameState.Park.Flags &= ~PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
 
     auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
     ContextBroadcastIntent(&intent);
@@ -2732,11 +2746,11 @@ static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height)
     {
         peep->RemoveItem(ShopItem::Balloon);
 
-        if (peep->SpriteType == PeepSpriteType::Balloon && peep->x != kLocationNull)
+        if (peep->AnimationGroup == PeepAnimationGroup::Balloon && peep->x != kLocationNull)
         {
             Balloon::Create({ peep->x, peep->y, spawn_height }, peep->BalloonColour, false);
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-            peep->UpdateSpriteType();
+            peep->UpdateAnimationGroup();
         }
     }
 }
@@ -2783,7 +2797,7 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << NextFlags;
     stream << State;
     stream << SubState;
-    stream << SpriteType;
+    stream << AnimationGroup;
     stream << TshirtColour;
     stream << TrousersColour;
     stream << DestinationX;
@@ -2800,11 +2814,11 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << CurrentCar;
     stream << CurrentSeat;
     stream << SpecialSprite;
-    stream << ActionSpriteType;
-    stream << NextActionSpriteType;
-    stream << ActionSpriteImageOffset;
+    stream << AnimationType;
+    stream << NextAnimationType;
+    stream << AnimationImageIdOffset;
     stream << Action;
-    stream << ActionFrame;
+    stream << AnimationFrameNum;
     stream << StepProgress;
     stream << PeepDirection;
     stream << InteractionRideIndex;
@@ -2812,7 +2826,7 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << PathCheckOptimisation;
     stream << PathfindGoal;
     stream << PathfindHistory;
-    stream << WalkingFrameNum;
+    stream << WalkingAnimationFrameNum;
     stream << PeepFlags;
 }
 
@@ -2852,21 +2866,21 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    PeepActionSpriteType actionSpriteType = ActionSpriteType;
-    uint8_t imageOffset = ActionSpriteImageOffset;
+    PeepAnimationType actionAnimationGroup = AnimationType;
+    uint8_t imageOffset = AnimationImageIdOffset;
 
     if (Action == PeepActionType::Idle)
     {
-        actionSpriteType = NextActionSpriteType;
+        actionAnimationGroup = NextAnimationType;
         imageOffset = 0;
     }
 
     // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
-    uint32_t baseImageId = GetPeepAnimation(SpriteType, actionSpriteType).base_image;
+    uint32_t baseImageId = GetPeepAnimation(AnimationGroup, actionAnimationGroup).base_image;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
-    if (actionSpriteType != PeepActionSpriteType::Ui)
+    if (actionAnimationGroup != PeepAnimationType::Hanging)
         baseImageId += (imageDirection >> 3) + imageOffset * 4;
     else
         baseImageId += imageOffset;

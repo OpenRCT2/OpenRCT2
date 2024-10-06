@@ -11,10 +11,10 @@
 
 #include "../config/ConfigTypes.h"
 #include "../core/DateTime.h"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 
 #include <ctime>
-#include <string>
+#include <vector>
 
 #ifdef _WIN32
 #    define PATH_SEPARATOR u8"\\"
@@ -127,6 +127,9 @@ namespace OpenRCT2::Platform
 
     bool SSE41Available();
     bool AVX2Available();
+
+    std::vector<std::string_view> GetSearchablePathsRCT1();
+    std::vector<std::string_view> GetSearchablePathsRCT2();
 } // namespace OpenRCT2::Platform
 
 #ifdef __ANDROID__

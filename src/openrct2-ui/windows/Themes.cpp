@@ -17,6 +17,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
@@ -54,6 +55,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_THEMES_FEATURES_TAB,
         WIDX_THEMES_HEADER_WINDOW,
         WIDX_THEMES_HEADER_PALETTE,
+        WIDX_THEMES_HEADER_TRANSPARENCY,
         WIDX_THEMES_PRESETS,
         WIDX_THEMES_PRESETS_DROPDOWN,
         WIDX_THEMES_DUPLICATE_BUTTON,
@@ -71,158 +73,163 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 320;
     static constexpr int32_t WH = 107;
 
+    const uint16_t kWindowHeaderWidth = 152;
+
     // clang-format off
-static Widget _themesWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {320,  64}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                                     ), // tab content panel
-    MakeTab   ({  3, 17},                                                                                                        STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab
-    MakeTab   ({ 34, 17},                                                                                                        STR_THEMES_TAB_MAIN_TIP            ), // main ui tab
-    MakeTab   ({ 65, 17},                                                                                                        STR_THEMES_TAB_PARK_TIP            ), // park tab
-    MakeTab   ({ 96, 17},                                                                                                        STR_THEMES_TAB_TOOLS_TIP           ), // tools tab
-    MakeTab   ({127, 17},                                                                                                        STR_THEMES_TAB_RIDES_AND_GUESTS_TIP), // rides and peeps tab
-    MakeTab   ({158, 17},                                                                                                        STR_THEMES_TAB_EDITORS_TIP         ), // editors tab
-    MakeTab   ({189, 17},                                                                                                        STR_THEMES_TAB_MISC_TIP            ), // misc tab
-    MakeTab   ({220, 17},                                                                                                        STR_THEMES_TAB_PROMPTS_TIP         ), // prompts tab
-    MakeTab   ({251, 17},                                                                                                        STR_THEMES_TAB_FEATURES_TIP        ), // features tab
-    MakeWidget({  5, 46}, {214,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
-    MakeWidget({219, 46}, { 97,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
-    MakeWidget({125, 60}, {175,  12}, WindowWidgetType::DropdownMenu,     WindowColour::Secondary                                                                                     ), // Preset colour schemes
-    MakeWidget({288, 61}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                                 ),
-    MakeWidget({ 10, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_THEMES_ACTION_DUPLICATE,                    STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
-    MakeWidget({110, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP       ), // Delete button
-    MakeWidget({210, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,                        STR_THEMES_ACTION_RENAME_TIP       ), // Rename button
-    MakeWidget({  0,  0}, {  1,   1}, WindowWidgetType::ColourBtn,    WindowColour::Secondary                                                                                     ), // colour button mask
-    MakeWidget({  3, 60}, {314,  44}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                                    ), // staff list
-    MakeWidget({ 10, 54}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                               ), // rct1 ride lights
-    MakeWidget({ 10, 69}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                               ), // rct1 park lights
-    MakeWidget({ 10, 84}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                     ), // rct1 scenario font
-    MakeWidget({ 10, 99}, {290,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                              ), // rct1 bottom toolbar
-    kWidgetsEnd,
-};
+    static Widget _themesWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({  0, 43}, {320,  64},               WindowWidgetType::Resize,       WindowColour::Secondary                                                                                ), // tab content panel
+        MakeTab   ({  3, 17},                                                                                    STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
+        MakeTab   ({ 34, 17},                                                                                    STR_THEMES_TAB_MAIN_TIP                                                       ), // main ui tab
+        MakeTab   ({ 65, 17},                                                                                    STR_THEMES_TAB_PARK_TIP                                                       ), // park tab
+        MakeTab   ({ 96, 17},                                                                                    STR_THEMES_TAB_TOOLS_TIP                                                      ), // tools tab
+        MakeTab   ({127, 17},                                                                                    STR_THEMES_TAB_RIDES_AND_GUESTS_TIP                                           ), // rides and peeps tab
+        MakeTab   ({158, 17},                                                                                    STR_THEMES_TAB_EDITORS_TIP                                                    ), // editors tab
+        MakeTab   ({189, 17},                                                                                    STR_THEMES_TAB_MISC_TIP                                                       ), // misc tab
+        MakeTab   ({220, 17},                                                                                    STR_THEMES_TAB_PROMPTS_TIP                                                    ), // prompts tab
+        MakeTab   ({251, 17},                                                                                    STR_THEMES_TAB_FEATURES_TIP                                                   ), // features tab
+        MakeWidget({  5, 46}, {kWindowHeaderWidth, 15}, WindowWidgetType::TableHeader,  WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                      ), // Window header
+        MakeWidget({157, 46}, { 79,                15}, WindowWidgetType::TableHeader,  WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                     ), // Palette header
+        MakeWidget({236, 46}, { 80,                15}, WindowWidgetType::TableHeader,  WindowColour::Secondary, STR_THEMES_HEADER_TRANSPARENCY                                                ), // Transparency header
+        MakeWidget({125, 60}, {175,                12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                ), // Preset colour schemes
+        MakeWidget({288, 61}, { 11,                10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                            ),
+        MakeWidget({ 10, 82}, { 91,                12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_THEMES_ACTION_DUPLICATE,                   STR_THEMES_ACTION_DUPLICATE_TIP), // Duplicate button
+        MakeWidget({110, 82}, { 91,                12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,                       STR_THEMES_ACTION_DELETE_TIP   ), // Delete button
+        MakeWidget({210, 82}, { 91,                12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,                       STR_THEMES_ACTION_RENAME_TIP   ), // Rename button
+        MakeWidget({  0,  0}, {  1,                 1}, WindowWidgetType::ColourBtn,    WindowColour::Secondary                                                                                ), // colour button mask
+        MakeWidget({  3, 60}, {314,                44}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                               ), // staff list
+        MakeWidget({ 10, 54}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                          ), // rct1 ride lights
+        MakeWidget({ 10, 69}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                          ), // rct1 park lights
+        MakeWidget({ 10, 84}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                ), // rct1 scenario font
+        MakeWidget({ 10, 99}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                         ), // rct1 bottom toolbar
+        kWidgetsEnd,
+    };
+    // clang-format on
 
 #pragma region Tabs
 
-static int32_t window_themes_tab_animation_loops[] = {
-    32,
-    32,
-    1,
-    1,
-    64,
-    32,
-    8,
-    14,
-    38,
-};
-static int32_t window_themes_tab_animation_divisor[] = {
-    4,
-    4,
-    1,
-    1,
-    4,
-    2,
-    2,
-    2,
-    2,
-};
-static int32_t window_themes_tab_sprites[] = {
-    SPR_TAB_PAINT_0,
-    SPR_TAB_KIOSKS_AND_FACILITIES_0,
-    SPR_TAB_PARK_ENTRANCE,
-    SPR_G2_TAB_LAND,
-    SPR_TAB_RIDE_0,
-    SPR_TAB_WRENCH_0,
-    SPR_TAB_GEARS_0,
-    SPR_TAB_STAFF_OPTIONS_0,
-    SPR_TAB_FINANCES_MARKETING_0,
-};
+    // clang-format off
+    static int32_t window_themes_tab_animation_loops[] = {
+        32,
+        32,
+        1,
+        1,
+        64,
+        32,
+        8,
+        14,
+        38,
+    };
+    static int32_t window_themes_tab_animation_divisor[] = {
+        4,
+        4,
+        1,
+        1,
+        4,
+        2,
+        2,
+        2,
+        2,
+    };
+    static int32_t window_themes_tab_sprites[] = {
+        SPR_TAB_PAINT_0,
+        SPR_TAB_KIOSKS_AND_FACILITIES_0,
+        SPR_TAB_PARK_ENTRANCE,
+        SPR_G2_TAB_LAND,
+        SPR_TAB_RIDE_0,
+        SPR_TAB_WRENCH_0,
+        SPR_TAB_GEARS_0,
+        SPR_TAB_STAFF_OPTIONS_0,
+        SPR_TAB_FINANCES_MARKETING_0,
+    };
 
-static WindowClass window_themes_tab_1_classes[] = {
-    WindowClass::TopToolbar,
-    WindowClass::BottomToolbar,
-    WindowClass::EditorScenarioBottomToolbar,
-    WindowClass::EditorTrackBottomToolbar,
-    WindowClass::TitleMenu,
-    WindowClass::TitleExit,
-    WindowClass::TitleOptions,
-    WindowClass::ScenarioSelect,
-};
+    static WindowClass window_themes_tab_1_classes[] = {
+        WindowClass::TopToolbar,
+        WindowClass::BottomToolbar,
+        WindowClass::EditorScenarioBottomToolbar,
+        WindowClass::EditorTrackBottomToolbar,
+        WindowClass::TitleMenu,
+        WindowClass::TitleExit,
+        WindowClass::TitleOptions,
+        WindowClass::ScenarioSelect,
+    };
 
-static WindowClass window_themes_tab_2_classes[] = {
-    WindowClass::ParkInformation,
-    WindowClass::EditorParkEntrance,
-    WindowClass::Finances,
-    WindowClass::NewCampaign,
-    WindowClass::Research,
-    WindowClass::Map,
-    WindowClass::Viewport,
-    WindowClass::RecentNews,
-};
+    static WindowClass window_themes_tab_2_classes[] = {
+        WindowClass::ParkInformation,
+        WindowClass::EditorParkEntrance,
+        WindowClass::Finances,
+        WindowClass::NewCampaign,
+        WindowClass::Research,
+        WindowClass::Map,
+        WindowClass::Viewport,
+        WindowClass::RecentNews,
+    };
 
-static WindowClass window_themes_tab_3_classes[] = {
-    WindowClass::Land,
-    WindowClass::Water,
-    WindowClass::ClearScenery,
-    WindowClass::LandRights,
-    WindowClass::Scenery,
-    WindowClass::SceneryScatter,
-    WindowClass::Footpath,
-    WindowClass::RideConstruction,
-    WindowClass::TrackDesignPlace,
-    WindowClass::ConstructRide,
-    WindowClass::TrackDesignList,
-    WindowClass::PatrolArea,
-};
+    static WindowClass window_themes_tab_3_classes[] = {
+        WindowClass::Land,
+        WindowClass::Water,
+        WindowClass::ClearScenery,
+        WindowClass::LandRights,
+        WindowClass::Scenery,
+        WindowClass::SceneryScatter,
+        WindowClass::Footpath,
+        WindowClass::RideConstruction,
+        WindowClass::TrackDesignPlace,
+        WindowClass::ConstructRide,
+        WindowClass::TrackDesignList,
+        WindowClass::PatrolArea,
+    };
 
-static WindowClass window_themes_tab_4_classes[] = {
-    WindowClass::Ride,
-    WindowClass::RideList,
-    WindowClass::Peep,
-    WindowClass::GuestList,
-    WindowClass::Staff,
-    WindowClass::StaffList,
-    WindowClass::Banner,
-};
+    static WindowClass window_themes_tab_4_classes[] = {
+        WindowClass::Ride,
+        WindowClass::RideList,
+        WindowClass::Peep,
+        WindowClass::GuestList,
+        WindowClass::Staff,
+        WindowClass::StaffList,
+        WindowClass::Banner,
+    };
 
-static WindowClass window_themes_tab_5_classes[] = {
-    WindowClass::EditorObjectSelection,
-    WindowClass::EditorInventionList,
-    WindowClass::EditorScenarioOptions,
-    WindowClass::EditorObjectiveOptions,
-    WindowClass::Mapgen,
-    WindowClass::ManageTrackDesign,
-    WindowClass::InstallTrack,
-};
+    static WindowClass window_themes_tab_5_classes[] = {
+        WindowClass::EditorObjectSelection,
+        WindowClass::EditorInventionList,
+        WindowClass::EditorScenarioOptions,
+        WindowClass::EditorObjectiveOptions,
+        WindowClass::Mapgen,
+        WindowClass::ManageTrackDesign,
+        WindowClass::InstallTrack,
+    };
 
-static WindowClass window_themes_tab_6_classes[] = {
-    WindowClass::Cheats,
-    WindowClass::TileInspector,
-    WindowClass::ViewClipping,
-    WindowClass::Transparency,
-    WindowClass::Themes,
-    WindowClass::Options,
-    WindowClass::KeyboardShortcutList,
-    WindowClass::ChangeKeyboardShortcut,
-    WindowClass::AssetPacks,
-    WindowClass::Loadsave,
-    WindowClass::About,
-    WindowClass::Changelog,
-    WindowClass::ServerList,
-    WindowClass::Multiplayer,
-    WindowClass::Player,
-    WindowClass::Chat,
-    WindowClass::Console,
-};
+    static WindowClass window_themes_tab_6_classes[] = {
+        WindowClass::Cheats,
+        WindowClass::TileInspector,
+        WindowClass::ViewClipping,
+        WindowClass::Transparency,
+        WindowClass::Themes,
+        WindowClass::Options,
+        WindowClass::KeyboardShortcutList,
+        WindowClass::ChangeKeyboardShortcut,
+        WindowClass::AssetPacks,
+        WindowClass::Loadsave,
+        WindowClass::About,
+        WindowClass::Changelog,
+        WindowClass::ServerList,
+        WindowClass::Multiplayer,
+        WindowClass::Player,
+        WindowClass::Chat,
+        WindowClass::Console,
+    };
 
-static WindowClass window_themes_tab_7_classes[] = {
-    WindowClass::Error,
-    WindowClass::SavePrompt,
-    WindowClass::DemolishRidePrompt,
-    WindowClass::FirePrompt,
-    WindowClass::TrackDeletePrompt,
-    WindowClass::LoadsaveOverwritePrompt,
-    WindowClass::ProgressWindow,
-    WindowClass::NetworkStatus,
-};
+    static WindowClass window_themes_tab_7_classes[] = {
+        WindowClass::Error,
+        WindowClass::SavePrompt,
+        WindowClass::DemolishRidePrompt,
+        WindowClass::FirePrompt,
+        WindowClass::TrackDeletePrompt,
+        WindowClass::LoadsaveOverwritePrompt,
+        WindowClass::ProgressWindow,
+        WindowClass::NetworkStatus,
+    };
 
     static WindowClass* window_themes_tab_classes[] = {
         nullptr,
@@ -242,12 +249,14 @@ static WindowClass window_themes_tab_7_classes[] = {
     {
     private:
         uint8_t _selected_tab = 0;
-        int16_t _colour_index_1 = -1;
-        int8_t _colour_index_2 = -1;
-        const uint8_t _row_height = 32;
-        const uint8_t _button_offset_x = 220;
+        int16_t _classIndex = -1;
+        int8_t _buttonIndex = -1;
+        const uint8_t _max_row_height = 56;
+        const uint8_t _button_offset_x = 185;
         const uint8_t _button_offset_y = 3;
-        const uint8_t _check_offset_y = 3 + 12 + 2;
+        const uint8_t _check_offset_y = 3;
+        const uint16_t _check_offset_x = 265;
+        const uint8_t _button_size = 12;
 
     public:
 #pragma region Window Override Events
@@ -260,8 +269,8 @@ static WindowClass window_themes_tab_7_classes[] = {
 
             WindowInitScrollWidgets(*this);
             list_information_type = 0;
-            _colour_index_1 = -1;
-            _colour_index_2 = -1;
+            _classIndex = -1;
+            _buttonIndex = -1;
             min_width = 320;
             min_height = 107;
             max_width = 320;
@@ -379,8 +388,8 @@ static WindowClass window_themes_tab_7_classes[] = {
 
             if (WindowFindByClass(WindowClass::Dropdown) == nullptr)
             {
-                _colour_index_1 = -1;
-                _colour_index_2 = -1;
+                _classIndex = -1;
+                _buttonIndex = -1;
             }
 
             ResizeFrameWithPage();
@@ -391,6 +400,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             {
                 widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::Empty;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Empty;
@@ -407,6 +417,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             {
                 widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::Empty;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Checkbox;
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Checkbox;
@@ -430,6 +441,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             {
                 widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::TableHeader;
                 widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::TableHeader;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WindowWidgetType::TableHeader;
                 widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Scroll;
                 widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Empty;
                 widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Empty;
@@ -616,14 +628,14 @@ static WindowClass window_themes_tab_7_classes[] = {
                     if (selectedIndex != -1)
                     {
                         ColourWithFlags newColour = { ColourDropDownIndexToColour(selectedIndex) };
-                        WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
-                        auto oldColour = ThemeGetColour(wc, _colour_index_2);
+                        WindowClass wc = GetWindowClassTabIndex(_classIndex);
+                        auto oldColour = ThemeGetColour(wc, _buttonIndex);
                         newColour.flags = oldColour.flags;
-                        ThemeSetColour(wc, _colour_index_2, newColour);
+                        ThemeSetColour(wc, _buttonIndex, newColour);
                         ColourSchemeUpdateAll();
                         WindowInvalidateAll();
-                        _colour_index_1 = -1;
-                        _colour_index_2 = -1;
+                        _classIndex = -1;
+                        _buttonIndex = -1;
                     }
                     break;
                 case WIDX_THEMES_PRESETS_DROPDOWN:
@@ -676,7 +688,7 @@ static WindowClass window_themes_tab_7_classes[] = {
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS || _selected_tab == WINDOW_THEMES_TAB_FEATURES)
                 return {};
 
-            int32_t scrollHeight = GetColourSchemeTabCount() * _row_height;
+            int32_t scrollHeight = GetTotalColoursUpTo(GetColourSchemeTabCount()) * (_button_size + 2);
             int32_t i = scrollHeight - widgets[WIDX_THEMES_LIST].bottom + widgets[WIDX_THEMES_LIST].top + 21;
             if (i < 0)
                 i = 0;
@@ -691,18 +703,23 @@ static WindowClass window_themes_tab_7_classes[] = {
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (screenCoords.y / _row_height < GetColourSchemeTabCount())
+            if (screenCoords.y / _max_row_height < GetColourSchemeTabCount())
             {
-                int32_t y2 = screenCoords.y % _row_height;
-                _colour_index_1 = screenCoords.y / _row_height;
-                _colour_index_2 = ((screenCoords.x - _button_offset_x) / 12);
+                _classIndex = GetClassIndex(screenCoords.y);
 
-                WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
+                WindowClass wc = GetWindowClassTabIndex(_classIndex);
                 int32_t numColours = ThemeDescGetNumColours(wc);
-                if (_colour_index_2 < numColours)
+
+                numColours = AddGap(numColours, _classIndex);
+
+                // position of y relative to the current class
+                int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_classIndex + 1) - numColours) * (_button_size + 2);
+                _buttonIndex = (y2 / _button_size);
+
+                if (_buttonIndex < numColours)
                 {
-                    if (screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + 12 * 6
-                        && y2 >= _button_offset_y && y2 < _button_offset_y + 11)
+                    if (screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + (_button_size + 2)
+                        && y2 >= _button_offset_y && y2 < _button_offset_y + (_button_size + 2) * 6)
                     {
                         if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                         {
@@ -711,22 +728,23 @@ static WindowClass window_themes_tab_7_classes[] = {
                         else
                         {
                             widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::ColourBtn;
-                            widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + _colour_index_2 * 12
-                                + widgets[WIDX_THEMES_LIST].left;
-                            widgets[WIDX_THEMES_COLOURBTN_MASK].top = _colour_index_1 * _row_height + _button_offset_y
-                                - scrolls[0].contentOffsetY + widgets[WIDX_THEMES_LIST].top;
+                            widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + widgets[WIDX_THEMES_LIST].left
+                                + _button_size;
+                            widgets[WIDX_THEMES_COLOURBTN_MASK].top = GetTotalColoursUpTo(_classIndex) * (_button_size + 2)
+                                - _button_offset_y - 4 + _button_size * _buttonIndex - scrolls[0].contentOffsetY
+                                + widgets[WIDX_THEMES_LIST].top;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].right = widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].bottom = widgets[WIDX_THEMES_COLOURBTN_MASK].top + 12;
 
-                            auto colour = ThemeGetColour(wc, _colour_index_2);
+                            auto colour = ThemeGetColour(wc, _buttonIndex);
                             WindowDropdownShowColour(
                                 this, &(widgets[WIDX_THEMES_COLOURBTN_MASK]), colours[1], colour.colour, true);
                             WidgetInvalidate(*this, WIDX_THEMES_LIST);
                         }
                     }
                     else if (
-                        screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + 12 * 6 - 1
-                        && y2 >= _check_offset_y && y2 < _check_offset_y + 11)
+                        screenCoords.x >= _check_offset_x && screenCoords.x < _check_offset_x + _button_size
+                        && y2 >= _check_offset_y && y2 < _check_offset_y + _button_size * 6 - 1)
                     {
                         if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                         {
@@ -734,9 +752,9 @@ static WindowClass window_themes_tab_7_classes[] = {
                         }
                         else
                         {
-                            auto colour = ThemeGetColour(wc, _colour_index_2);
+                            auto colour = ThemeGetColour(wc, _buttonIndex);
                             colour.setFlag(ColourFlag::translucent, !colour.hasFlag(ColourFlag::translucent));
-                            ThemeSetColour(wc, _colour_index_2, colour);
+                            ThemeSetColour(wc, _buttonIndex, colour);
                             ColourSchemeUpdateAll();
                             WindowInvalidateAll();
                         }
@@ -759,18 +777,35 @@ static WindowClass window_themes_tab_7_classes[] = {
             screenCoords.y = 0;
             for (int32_t i = 0; i < GetColourSchemeTabCount(); i++)
             {
+                WindowClass wc = GetWindowClassTabIndex(i);
+                int32_t numColours = ThemeDescGetNumColours(wc);
+
+                // If the window description wraps, make sure the row is high enough.
+                bool emptyRow = false;
+
+                int32_t newNumColours = AddGap(numColours, i);
+
+                if (newNumColours != numColours)
+                {
+                    numColours = newNumColours;
+                    emptyRow = true;
+                }
+
                 if (screenCoords.y > dpi.y + dpi.height)
                 {
                     break;
                 }
-                if (screenCoords.y + _row_height >= dpi.y)
+                if (screenCoords.y + _max_row_height >= dpi.y)
                 {
                     if (i + 1 < GetColourSchemeTabCount())
                     {
                         auto colour = colours[1];
 
-                        auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + _row_height - 2 };
-                        auto rightBottom = ScreenCoordsXY{ widgets[WIDX_THEMES_LIST].right, screenCoords.y + _row_height - 2 };
+                        int8_t colorOffset = (_button_size + 2) * (4 - numColours);
+
+                        auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + _max_row_height - colorOffset + 1 };
+                        auto rightBottom = ScreenCoordsXY{ widgets[WIDX_THEMES_LIST].right,
+                                                           screenCoords.y + _max_row_height - colorOffset + 1 };
                         auto yPixelOffset = ScreenCoordsXY{ 0, 1 };
 
                         if (colour.hasFlag(ColourFlag::translucent))
@@ -790,19 +825,26 @@ static WindowClass window_themes_tab_7_classes[] = {
                         }
                     }
 
-                    WindowClass wc = GetWindowClassTabIndex(i);
-                    int32_t numColours = ThemeDescGetNumColours(wc);
                     for (uint8_t j = 0; j < numColours; j++)
                     {
-                        DrawTextBasic(dpi, { 2, screenCoords.y + 4 }, ThemeDescGetName(wc), {}, { colours[1] });
+                        DrawTextWrapped(
+                            dpi, { 2, screenCoords.y + 4 }, kWindowHeaderWidth, ThemeDescGetName(wc), {}, { colours[1] });
+
+                        // Don't draw the empty row
+                        if (emptyRow && j == 1)
+                        {
+                            break;
+                        }
 
                         auto colour = ThemeGetColour(wc, j);
-                        const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
+                        const bool isPressed = (i == _classIndex && j == _buttonIndex);
                         auto image = ImageId(isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour.colour);
-                        GfxDrawSprite(dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
+                        GfxDrawSprite(
+                            dpi, image, { _button_offset_x, screenCoords.y + _button_offset_y + _button_size * j + 1 });
 
-                        ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
-                        ScreenCoordsXY bottomRight{ _button_offset_x + 12 * j + 9, screenCoords.y + _check_offset_y + 10 };
+                        ScreenCoordsXY topLeft{ _check_offset_x, screenCoords.y + _check_offset_y + _button_size * j };
+                        ScreenCoordsXY bottomRight{ _check_offset_x + 10,
+                                                    screenCoords.y + _check_offset_y + 11 + _button_size * j };
                         GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                         if (colour.hasFlag(ColourFlag::translucent))
                         {
@@ -812,7 +854,7 @@ static WindowClass window_themes_tab_7_classes[] = {
                     }
                 }
 
-                screenCoords.y += _row_height;
+                screenCoords.y += ((_button_size + 2) * numColours);
             }
         }
 
@@ -827,6 +869,65 @@ static WindowClass window_themes_tab_7_classes[] = {
         {
             WindowClass* classes = window_themes_tab_classes[_selected_tab];
             return classes[index];
+        }
+
+        // If the window description wraps, make sure the row is high enough.
+        int32_t AddGap(int32_t numColours, int8_t index)
+        {
+            if (numColours == 1 && GetTextWidth(index) >= kWindowHeaderWidth)
+            {
+                numColours++;
+            }
+            return numColours;
+        }
+
+        int8_t GetClassIndex(int32_t y)
+        {
+            int8_t numRows = 0;
+            for (int32_t i = 0; i < GetColourSchemeTabCount(); ++i)
+            {
+                int32_t numColours = ThemeDescGetNumColours(GetWindowClassTabIndex(i));
+
+                numColours = AddGap(numColours, i);
+
+                numRows += numColours;
+
+                if ((numRows * (_button_size + 2)) >= y)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        int32_t GetTextWidth(int8_t index)
+        {
+            WindowClass wc = GetWindowClassTabIndex(index);
+            Formatter ft{};
+
+            const void* args{};
+            StringId format = ThemeDescGetName(wc);
+
+            std::string str = FormatStringIDLegacy(format, args);
+
+            return GfxGetStringWidth(str, FontStyle::Medium);
+        }
+
+        int8_t GetTotalColoursUpTo(int8_t index)
+        {
+            int8_t numRows = 0;
+            for (int32_t i = 0; i < index; ++i)
+            {
+                uint8_t numColours = ThemeDescGetNumColours(GetWindowClassTabIndex(i));
+
+                if (numColours == 1 && GetTextWidth(i) >= kWindowHeaderWidth)
+                {
+                    numColours++;
+                }
+
+                numRows += numColours;
+            }
+            return numRows;
         }
 
         int32_t GetColourSchemeTabCount()

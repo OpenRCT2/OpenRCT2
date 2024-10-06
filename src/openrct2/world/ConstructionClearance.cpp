@@ -18,10 +18,12 @@
 #include "../openrct2/Cheats.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
-#include "../world/tile_element/Slope.h"
 #include "Park.h"
+#include "QuarterTile.h"
 #include "Scenery.h"
 #include "Surface.h"
+#include "tile_element/EntranceElement.h"
+#include "tile_element/Slope.h"
 
 using namespace OpenRCT2;
 

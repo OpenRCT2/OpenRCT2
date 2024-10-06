@@ -33,29 +33,29 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 113;
     static constexpr int32_t WH = 96;
 
+    enum WindowSignWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_VIEWPORT,
+        WIDX_SIGN_TEXT,
+        WIDX_SIGN_DEMOLISH,
+        WIDX_MAIN_COLOUR,
+        WIDX_TEXT_COLOUR
+    };
+
     // clang-format off
-enum WindowSignWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_VIEWPORT,
-    WIDX_SIGN_TEXT,
-    WIDX_SIGN_DEMOLISH,
-    WIDX_MAIN_COLOUR,
-    WIDX_TEXT_COLOUR
-};
-
-// 0x9AEE00
-static Widget _signWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary                                                        ), // Viewport
-    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
-    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
-    MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kWidgetContentEmpty,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
-    MakeWidget({     17, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kWidgetContentEmpty,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
-    kWidgetsEnd,
-};
-
+    // 0x9AEE00
+    static Widget _signWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary                                                        ), // Viewport
+        MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
+        MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
+        MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kWidgetContentEmpty,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
+        MakeWidget({     17, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kWidgetContentEmpty,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class SignWindow final : public Window

@@ -9,7 +9,10 @@
 
 #pragma once
 
+#include "../ride/RideConstruction.h"
 #include "GameAction.h"
+
+using namespace OpenRCT2;
 
 struct TrackPlaceActionResult
 {
@@ -26,14 +29,14 @@ private:
     int32_t _brakeSpeed{};
     int32_t _colour{};
     int32_t _seatRotation{};
-    int32_t _trackPlaceFlags{};
+    SelectedLiftAndInverted _trackPlaceFlags{};
     bool _fromTrackDesign{};
 
 public:
     TrackPlaceAction() = default;
     TrackPlaceAction(
         RideId rideIndex, int32_t trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
-        int32_t seatRotation, int32_t liftHillAndAlternativeState, bool fromTrackDesign);
+        int32_t seatRotation, SelectedLiftAndInverted liftHillAndAlternativeState, bool fromTrackDesign);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

@@ -21,7 +21,7 @@ using namespace OpenRCT2;
 // clang-format off
 static constexpr CommandLineOptionDefinition NoOptions[]
 {
-    OptionTableEnd
+    kOptionTableEnd
 };
 
 static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator *argEnumerator);
@@ -30,7 +30,7 @@ const CommandLineCommand CommandLine::ParkInfoCommands[]{
     // Main commands
     DefineCommand("objects", "<savefile>", NoOptions, HandleObjectsInfo),
 
-    CommandTableEnd
+    kCommandTableEnd
 };
 // clang-format on
 

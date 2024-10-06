@@ -586,8 +586,14 @@ static void InputViewportDragContinue()
             // As the user moved the mouse, don't interpret it as right click in any case.
             _ticksSinceDragStart = std::nullopt;
 
-            differentialCoords.x = (viewport->zoom + 1).ApplyTo(differentialCoords.x);
-            differentialCoords.y = (viewport->zoom + 1).ApplyTo(differentialCoords.y);
+            // applying the zoom only with negative values avoids a "deadzone" effect where small positive value round to zero.
+            const bool posX = differentialCoords.x > 0;
+            const bool posY = differentialCoords.y > 0;
+            differentialCoords.x = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
+            differentialCoords.y = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
+            differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
+            differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
+
             if (Config::Get().general.InvertViewportDrag)
             {
                 w->savedViewPos -= differentialCoords;
@@ -1668,9 +1674,9 @@ void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
     {
         // Speed up scrolling horizontally when at the edge of the map
         // so that the speed is consistent with vertical edge scrolling.
-        int32_t x = mainWindow->savedViewPos.x + viewport->view_width / 2 + dx;
-        int32_t y = mainWindow->savedViewPos.y + viewport->view_height / 2;
-        int32_t y_dy = mainWindow->savedViewPos.y + viewport->view_height / 2 + dy;
+        int32_t x = mainWindow->savedViewPos.x + viewport->ViewWidth() / 2 + dx;
+        int32_t y = mainWindow->savedViewPos.y + viewport->ViewHeight() / 2;
+        int32_t y_dy = mainWindow->savedViewPos.y + viewport->ViewHeight() / 2 + dy;
 
         auto mapCoord = ViewportPosToMapPos({ x, y }, 0, viewport->rotation);
         auto mapCoord_dy = ViewportPosToMapPos({ x, y_dy }, 0, viewport->rotation);

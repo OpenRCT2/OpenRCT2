@@ -726,8 +726,8 @@ namespace OpenRCT2::Ui
         scroll_dpi.width = cr - cl;
         scroll_dpi.height = cb - ct;
         scroll_dpi.bits += cl - dpi.x;
-        scroll_dpi.bits += (ct - dpi.y) * (dpi.width + dpi.pitch);
-        scroll_dpi.pitch = (dpi.width + dpi.pitch) - scroll_dpi.width;
+        scroll_dpi.bits += (ct - dpi.y) * dpi.LineStride();
+        scroll_dpi.pitch = dpi.LineStride() - scroll_dpi.width;
 
         // Draw the scroll contents
         if (scroll_dpi.width > 0 && scroll_dpi.height > 0)

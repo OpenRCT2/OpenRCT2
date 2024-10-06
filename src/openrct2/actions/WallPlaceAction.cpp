@@ -448,7 +448,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
     int32_t z;
     if (sequence == 0)
     {
-        if (std::get<0>(ted.sequenceProperties) & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
+        if (ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
         {
             return false;
         }
@@ -460,9 +460,8 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
                 direction = DirectionReverse(trackElement->GetDirection());
                 if (direction == _edge)
                 {
-                    const PreviewTrack* trackBlock = ted.GetBlockForSequence(sequence);
                     z = ted.coordinates.zBegin;
-                    z = trackElement->BaseHeight + ((z - trackBlock->z) * 8);
+                    z = trackElement->BaseHeight + ((z - ted.sequences[sequence].clearance.z) * 8);
                     if (z == z0)
                     {
                         return true;
@@ -472,8 +471,8 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         }
     }
 
-    const PreviewTrack* trackBlock = &ted.block[sequence + 1];
-    if (trackBlock->index != 0xFF)
+    bool isLastInSequence = (sequence + 1) == ted.numSequences;
+    if (!isLastInSequence)
     {
         return false;
     }
@@ -495,9 +494,8 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    trackBlock = ted.GetBlockForSequence(sequence);
     z = ted.coordinates.zEnd;
-    z = trackElement->BaseHeight + ((z - trackBlock->z) * 8);
+    z = trackElement->BaseHeight + ((z - ted.sequences[sequence].clearance.z) * kCoordsZStep);
     return z == z0;
 }
 
@@ -605,7 +603,7 @@ bool WallPlaceAction::TrackIsAllowedWallEdges(
     if (!GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::noWallsAroundTrack))
     {
         const auto& ted = GetTrackElementDescriptor(trackType);
-        if (ted.sequenceElementAllowedWallEdges[trackSequence] & (1 << direction))
+        if (ted.sequences[trackSequence].allowedWallEdges & (1 << direction))
         {
             return true;
         }

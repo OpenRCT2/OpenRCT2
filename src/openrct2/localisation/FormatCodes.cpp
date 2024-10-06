@@ -38,6 +38,7 @@ static const EnumMap<FormatToken> FormatTokenMap = {
     { "STRINGID",             FormatToken::StringById,          },
     { "STRING",               FormatToken::String,              },
     { "MONTHYEAR",            FormatToken::MonthYear,           },
+    { "MONTHYEAR_SENTENCE",   FormatToken::MonthYearSentence,   },
     { "MONTH",                FormatToken::Month,               },
     { "VELOCITY",             FormatToken::Velocity,            },
     { "POP16",                FormatToken::Pop16,               },
@@ -45,6 +46,7 @@ static const EnumMap<FormatToken> FormatTokenMap = {
     { "DURATION",             FormatToken::DurationShort,       },
     { "REALTIME",             FormatToken::DurationLong,        },
     { "LENGTH",               FormatToken::Length,              },
+    { "HEIGHT",               FormatToken::Height,              },
     { "SPRITE",               FormatToken::Sprite,              },
     { "BLACK",                FormatToken::ColourBlack,         },
     { "GREY",                 FormatToken::ColourGrey,          },
@@ -98,11 +100,13 @@ bool FormatTokenTakesArgument(FormatToken token)
         case FormatToken::StringById:
         case FormatToken::String:
         case FormatToken::MonthYear:
+        case FormatToken::MonthYearSentence:
         case FormatToken::Month:
         case FormatToken::Velocity:
         case FormatToken::DurationShort:
         case FormatToken::DurationLong:
         case FormatToken::Length:
+        case FormatToken::Height:
         case FormatToken::Sprite:
             return true;
         default:

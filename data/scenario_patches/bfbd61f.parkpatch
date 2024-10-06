@@ -1,0 +1,21 @@
+{
+    "scenario_name": "Hydro Hills",
+    "sha256": "bfbd61f6d22cdc5f2e017935f4e9e5969dece159218a08c695bfd727382cc717",
+    "water": [
+        {
+            "height": 288,
+            "coordinates": [
+                [ 81, 8 ], [ 82, 7 ], [ 82, 8 ], [ 82, 9 ], [ 83, 8 ], [ 83, 9 ]
+            ]
+        }
+    ],
+    "elements_to_delete": [
+        {
+            "element_index": 1,
+            "coordinates": [
+                [ 82, 7 ], [ 82, 8 ],
+                [ 83, 9 ]
+            ]
+        }
+    ]
+}

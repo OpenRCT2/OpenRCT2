@@ -46,6 +46,11 @@ const PaletteMap& PaletteMap::GetDefault()
     return defaultMap;
 }
 
+bool PaletteMap::operator==(const PaletteMap& lhs) const
+{
+    return _data == lhs._data && _dataLength == lhs._dataLength && _numMaps == lhs._numMaps && _mapLength == lhs._mapLength;
+}
+
 uint8_t& PaletteMap::operator[](size_t index)
 {
     assert(index < _dataLength);
@@ -787,6 +792,7 @@ void GfxInvalidateScreen()
  */
 bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
+    assert(src.zoom_level == ZoomLevel{ 0 });
     int32_t right = coords.x + width;
     int32_t bottom = coords.y + height;
 
@@ -814,7 +820,7 @@ bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoord
         uint16_t clippedFromTop = coords.y - dst.y;
         dst.height -= clippedFromTop;
         dst.y = coords.y;
-        uint32_t bitsPlus = (dst.pitch + dst.width) * clippedFromTop;
+        uint32_t bitsPlus = dst.LineStride() * clippedFromTop;
         dst.bits += bitsPlus;
     }
 
@@ -882,25 +888,20 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     return std::nullopt;
 }
 
-size_t DrawPixelInfo::GetBytesPerRow() const
-{
-    return static_cast<size_t>(width) + pitch;
-}
-
 uint8_t* DrawPixelInfo::GetBitsOffset(const ScreenCoordsXY& pos) const
 {
-    return bits + pos.x + (pos.y * GetBytesPerRow());
+    return bits + pos.x + pos.y * LineStride();
 }
 
 DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
 {
     DrawPixelInfo result = *this;
     result.bits = GetBitsOffset(pos);
-    result.x = static_cast<int16_t>(pos.x);
-    result.y = static_cast<int16_t>(pos.y);
-    result.width = static_cast<int16_t>(size.width);
-    result.height = static_cast<int16_t>(size.height);
-    result.pitch = static_cast<int16_t>(width + pitch - size.width);
+    result.x = pos.x;
+    result.y = pos.y;
+    result.width = size.width;
+    result.height = size.height;
+    result.pitch = width + pitch - size.width;
     return result;
 }
 
@@ -996,7 +997,7 @@ void UpdatePaletteEffects()
                 paletteOffset[(i * 4) + 1] = -((0xFF - g1->offset[(i * 3) + 1]) / 2) - 1;
                 paletteOffset[(i * 4) + 2] = -((0xFF - g1->offset[(i * 3) + 2]) / 2) - 1;
             }
-            UpdatePalette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
+            UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
         }
         gClimateLightningFlash++;
     }
@@ -1052,8 +1053,8 @@ void UpdatePaletteEffects()
         if (g1 != nullptr)
         {
             uint8_t* vs = &g1->offset[j * 3];
-            uint8_t* vd = &gGamePalette[PALETTE_OFFSET_WATER_WAVES * 4];
-            int32_t n = PALETTE_LENGTH_WATER_WAVES;
+            uint8_t* vd = &gGamePalette[kPaletteOffsetWaterWaves * 4];
+            int32_t n = kPaletteLengthWaterWaves;
             for (int32_t i = 0; i < n; i++)
             {
                 vd[0] = vs[0];
@@ -1077,8 +1078,8 @@ void UpdatePaletteEffects()
         if (g1 != nullptr)
         {
             uint8_t* vs = &g1->offset[j * 3];
-            uint8_t* vd = &gGamePalette[PALETTE_OFFSET_WATER_SPARKLES * 4];
-            int32_t n = PALETTE_LENGTH_WATER_SPARKLES;
+            uint8_t* vd = &gGamePalette[kPaletteOffsetWaterSparkles * 4];
+            int32_t n = kPaletteLengthWaterSparkles;
             for (int32_t i = 0; i < n; i++)
             {
                 vd[0] = vs[0];
@@ -1115,10 +1116,10 @@ void UpdatePaletteEffects()
             }
         }
 
-        UpdatePalette(gGamePalette, PALETTE_OFFSET_ANIMATED, PALETTE_LENGTH_ANIMATED);
+        UpdatePalette(gGamePalette, kPaletteOffsetAnimated, kPaletteLengthAnimated);
         if (gClimateLightningFlash == 2)
         {
-            UpdatePalette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
+            UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
             gClimateLightningFlash = 0;
         }
     }
@@ -1137,4 +1138,27 @@ void ToggleWindowedMode()
     ContextSetFullscreenMode(targetMode);
     Config::Get().general.FullscreenMode = targetMode;
     Config::Save();
+}
+
+void DebugDPI(DrawPixelInfo& dpi)
+{
+    ScreenCoordsXY topLeft = { dpi.x, dpi.y };
+    ScreenCoordsXY bottomRight = { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 };
+    ScreenCoordsXY topRight = { dpi.x + dpi.width - 1, dpi.y };
+    ScreenCoordsXY bottomLeft = { dpi.x, dpi.y + dpi.height - 1 };
+
+    GfxDrawLine(dpi, { topLeft, bottomRight }, PALETTE_INDEX_136);
+    GfxDrawLine(dpi, { bottomLeft, topRight }, PALETTE_INDEX_136);
+    GfxDrawLine(dpi, { topLeft, topRight }, PALETTE_INDEX_129);
+    GfxDrawLine(dpi, { topRight, bottomRight }, PALETTE_INDEX_129);
+    GfxDrawLine(dpi, { bottomLeft, bottomRight }, PALETTE_INDEX_129);
+    GfxDrawLine(dpi, { topLeft, bottomLeft }, PALETTE_INDEX_129);
+
+    GfxDrawLine(dpi, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PALETTE_INDEX_136);
+
+    const auto str = std::to_string(dpi.x);
+    DrawText(dpi, ScreenCoordsXY{ dpi.x, dpi.y }, { COLOUR_WHITE, FontStyle::Tiny }, str.c_str());
+
+    const auto str2 = std::to_string(dpi.y);
+    DrawText(dpi, ScreenCoordsXY{ dpi.x, dpi.y + 6 }, { COLOUR_WHITE, FontStyle::Tiny }, str2.c_str());
 }

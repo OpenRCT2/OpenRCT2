@@ -18,13 +18,6 @@ class FootpathRailingsObject;
 struct PathElement;
 struct TileElement;
 
-enum
-{
-    PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0),
-    PROVISIONAL_PATH_FLAG_1 = (1 << 1),
-    PROVISIONAL_PATH_FLAG_2 = (1 << 2),
-};
-
 constexpr auto kFootpathMaxHeight = 248 * kCoordsZStep;
 constexpr auto kFootpathMinHeight = 2 * kCoordsZStep;
 constexpr auto kPathHeightStep = 2 * kCoordsZStep;
@@ -76,17 +69,6 @@ struct FootpathSelection
     {
         return IsQueueSelected ? QueueSurface : NormalSurface;
     }
-};
-
-struct ProvisionalFootpath
-{
-    ObjectEntryIndex Type;
-    CoordsXYZ Position;
-    uint8_t Slope;
-    uint8_t Flags;
-    ObjectEntryIndex SurfaceIndex;
-    ObjectEntryIndex RailingsIndex;
-    PathConstructFlags ConstructFlags;
 };
 
 // Masks for values stored in TileElement.type
@@ -173,7 +155,6 @@ enum
 };
 
 extern FootpathSelection gFootpathSelection;
-extern ProvisionalFootpath gProvisionalFootpath;
 extern uint16_t gFootpathSelectedId;
 extern CoordsXYZ gFootpathConstructFromPosition;
 extern uint8_t gFootpathConstructSlope;
@@ -186,11 +167,6 @@ extern const std::array<CoordsXY, kNumOrthogonalDirections * 2> BenchUseOffsets;
 
 PathElement* MapGetFootpathElement(const CoordsXYZ& coords);
 void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);
-money64 FootpathProvisionalSet(
-    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
-    PathConstructFlags constructFlags);
-void FootpathProvisionalRemove();
-void FootpathProvisionalUpdate();
 void FootpathRemoveLitter(const CoordsXYZ& footpathPos);
 void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags);
 void FootpathUpdateQueueChains();
@@ -210,3 +186,4 @@ const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex);
 
 void FootpathQueueChainReset();
 void FootpathQueueChainPush(RideId rideIndex);
+bool FootpathIsZAndDirectionValid(const PathElement& tileElement, int32_t currentZ, int32_t currentDirection);

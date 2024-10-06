@@ -9,12 +9,10 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../localisation/StringIdType.h"
 
 #include <memory>
-#include <string>
-#include <string_view>
 
 struct ILanguagePack
 {

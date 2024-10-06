@@ -18,6 +18,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/TileElementsView.h>
+#include <openrct2/world/tile_element/EntranceElement.h>
 
 using namespace OpenRCT2;
 

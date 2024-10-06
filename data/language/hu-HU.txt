@@ -1910,8 +1910,8 @@ STR_2670    :Scroll
 STR_2680    :Minden kutatás kész
 STR_2684    :Egy nagy csoport vendég érkezik
 STR_2685    :Szimplex zajparaméterek
-STR_2686    :Alacsony:
-STR_2687    :Magas:
+STR_2686    :Min. területmagasság:
+STR_2687    :Max. területmagasság:
 STR_2688    :Alapfrekvencia
 STR_2689    :Oktávok:
 STR_2690    :Térképgenerálás
@@ -3165,9 +3165,9 @@ STR_6041    :{BLACK}Nem vettél fel gépészt!
 STR_6042    :Magasságtérkép betöltése
 STR_6043    :Magasságtérkép választása
 STR_6044    :Magasságtérkép simítása
-STR_6045    :Erősség
+STR_6045    :Erősség:
 STR_6046    :Magasságtérkép normalizálása
-STR_6047    :Mezők simítása
+STR_6047    :Mezők széleinek simítása
 STR_6048    :Magasságtérkép hiba
 STR_6049    :PNG olvasási hiba
 STR_6050    :Bitmap olvasási hiba
@@ -3739,6 +3739,45 @@ STR_6667    :Fauna
 STR_6668    :Személyzeti csalások
 STR_6669    :Személyzeti csalások megjelenítése
 STR_6670    :Vendégek viselkedése
+STR_6671    :Alkalmazottak „igazi” nevének mutatása
+STR_6672    :Váltás az alkalmazottak „igazi” nevének és az alkalmazottak számának mutatása között
+STR_6673    :Átlátszó
+STR_6674    :{COMMA16}. év {MONTH}
+STR_6675    :Vendég nevek
+STR_6676    :Legalább egy vendégneves objektumot ki kell választani
+STR_6677    :Partok létrehozása vízfelületek körül
+STR_6678    :Magasságtérkép forrása:
+STR_6679    :Síkság
+STR_6680    :Szimplex zaj
+STR_6681    :Magasságtérkép fájl
+STR_6682    :Térképgenerátor - Generátor
+STR_6683    :Térképgenerátor - Domborzat
+STR_6684    :Térképgenerátor - Víz
+STR_6685    :Térképgenerátor - Erdők
+STR_6686    :Fák és földterület aránya:
+STR_6687    :Min. fa magasság:
+STR_6688    :Max. fa magasság:
+STR_6689    :{UINT16}%
+STR_6690    :Minimális földterületmagasság
+STR_6691    :Add meg a min. földterületmagasságot {COMMA16} és {COMMA16} között
+STR_6692    :Maximális földterületmagasság
+STR_6693    :Add meg a max. földterületmagasságot {COMMA16} és {COMMA16} között
+STR_6694    :Minimális fa magasság
+STR_6695    :Add meg a min. fa magasságot {COMMA16} és {COMMA16} között
+STR_6696    :Maximális fa magasság
+STR_6697    :Add meg a max. fa magasságot {COMMA16} és {COMMA16} között
+STR_6698    :Fák és földterület aránya
+STR_6699    :Add meg a fák és földterület arányát {COMMA16} és {COMMA16} között
+STR_6700    :Szimplex alapfrekvencia
+STR_6701    :Add meg az alapfrekvenciát {COMMA2DP32} és {COMMA2DP32} között
+STR_6702    :Szimplex oktávok
+STR_6703    :Add meg az oktávokat {COMMA16} és {COMMA16} között
+STR_6704    :{COMMA2DP32}
+STR_6705    :Tallózás...
+STR_6706    :{WINDOW_COLOUR_2}Jelenlegi képfájl: {BLACK}{STRING}
+STR_6707    :(nincs kiválasztva)
+STR_6708    :Simítási erősség
+STR_6709    :Add meg a simítási erősséget {COMMA16} és {COMMA16} között
 
 #############
 # Scenarios #

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "String.hpp"
+#include "StringTypes.h"
 
 uint32_t UTF8GetNext(const utf8* char_ptr, const utf8** nextchar_ptr);
 bool UTF8IsCodepointStart(const utf8* text);

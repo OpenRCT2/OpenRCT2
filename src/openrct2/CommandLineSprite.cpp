@@ -207,14 +207,14 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
     GfxSpriteToBuffer(dpi, args);
 
     auto const pixels8 = dpi.bits;
-    auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
+    auto const pixelsLen = dpi.LineStride() * dpi.WorldHeight();
     try
     {
         Image image;
         image.Width = dpi.width;
         image.Height = dpi.height;
         image.Depth = 8;
-        image.Stride = dpi.width + dpi.pitch;
+        image.Stride = dpi.LineStride();
         image.Palette = std::make_unique<GamePalette>(StandardPalette);
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(outPath, image, IMAGE_FORMAT::PNG);

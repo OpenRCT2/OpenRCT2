@@ -3,7 +3,6 @@
     "sha256": "d48bbfe4833347dfbf5befe63eb3795df3bce36cdc9152048ee7851e36d45ad9",
     "land_ownership": {
         "available": {
-            "cannot_downgrade": true,
             "coordinates": [
                 [ 13, 95 ],
                 [ 80, 31 ],

@@ -14,13 +14,13 @@
 
 constexpr auto MAX_ENTRANCE_FEE = 999.00_GBP;
 
-constexpr uint8_t ParkRatingHistoryUndefined = std::numeric_limits<uint8_t>::max();
-constexpr uint32_t GuestsInParkHistoryUndefined = std::numeric_limits<uint32_t>::max();
+constexpr uint16_t kParkRatingHistoryUndefined = std::numeric_limits<uint16_t>::max();
+constexpr uint32_t kGuestsInParkHistoryUndefined = std::numeric_limits<uint32_t>::max();
 constexpr uint8_t kParkRatingHistorySize = 32;
 constexpr uint8_t kGuestsInParkHistorySize = 32;
-constexpr uint8_t ParkNameMaxLength = 128;
-constexpr uint8_t ScenarioNameMaxLength = 128;
-constexpr uint16_t ScenarioDetailsNameMaxLength = 256;
+constexpr uint8_t kParkNameMaxLength = 128;
+constexpr uint8_t kScenarioNameMaxLength = 128;
+constexpr uint16_t kScenarioDetailsNameMaxLength = 256;
 
 enum : uint32_t
 {
@@ -34,6 +34,7 @@ enum : uint32_t
     PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
     PARK_FLAGS_ANTI_CHEAT_DEPRECATED = (1 << 8), // Not used anymore, used for cheat detection
     PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 9),
+    PARK_FLAGS_SHOW_REAL_STAFF_NAMES = (1 << 10),
     PARK_FLAGS_NO_MONEY = (1 << 11),
     PARK_FLAGS_DIFFICULT_GUEST_GENERATION = (1 << 12),
     PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
@@ -60,7 +61,7 @@ namespace OpenRCT2
             std::string Name;
             uint64_t Flags;
             uint16_t Rating;
-            uint8_t RatingHistory[kParkRatingHistorySize];
+            uint16_t RatingHistory[kParkRatingHistorySize];
             int16_t RatingCasualtyPenalty;
             money64 EntranceFee;
             std::vector<CoordsXYZD> Entrances;

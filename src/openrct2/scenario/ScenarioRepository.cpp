@@ -130,12 +130,12 @@ private:
 public:
     explicit ScenarioFileIndex(const IPlatformEnvironment& env)
         : FileIndex(
-            "scenario index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_SCENARIOS), std::string(PATTERN),
-            std::vector<std::string>({
-                env.GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO),
-                env.GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO),
-                env.GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO),
-            }))
+              "scenario index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_SCENARIOS), std::string(PATTERN),
+              std::vector<std::string>({
+                  env.GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO),
+                  env.GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO),
+                  env.GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO),
+              }))
     {
     }
 
@@ -204,134 +204,36 @@ private:
         LOG_VERBOSE("GetScenarioInfo(%s, %d, ...)", path.c_str(), timestamp);
         try
         {
+            auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+            std::unique_ptr<IParkImporter> importer;
             std::string extension = Path::GetExtension(path);
+
             if (String::IEquals(extension, ".park"))
+                importer = ParkImporter::CreateParkFile(objRepository);
+            else if (String::IEquals(extension, ".sc4"))
+                importer = ParkImporter::CreateS4();
+            else
+                importer = ParkImporter::CreateS6(objRepository);
+
+            if (importer)
             {
-                // OpenRCT2 park
-                bool result = false;
-                try
+                importer->LoadScenario(path, true);
+                if (importer->GetDetails(entry))
                 {
-                    auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
-                    auto importer = ParkImporter::CreateParkFile(objRepository);
-                    importer->LoadScenario(path, true);
-                    if (importer->GetDetails(entry))
-                    {
-                        entry->Path = path;
-                        entry->Timestamp = timestamp;
-                        result = true;
-                    }
+                    entry->Path = path;
+                    entry->Timestamp = timestamp;
+                    return true;
                 }
-                catch (const std::exception&)
-                {
-                }
-                return result;
-            }
-
-            if (String::IEquals(extension, ".sc4"))
-            {
-                // RCT1 scenario
-                bool result = false;
-                try
-                {
-                    auto s4Importer = ParkImporter::CreateS4();
-                    s4Importer->LoadScenario(path, true);
-                    if (s4Importer->GetDetails(entry))
-                    {
-                        entry->Path = path;
-                        entry->Timestamp = timestamp;
-                        result = true;
-                    }
-                }
-                catch (const std::exception&)
-                {
-                }
-                return result;
-            }
-
-            // RCT2 or RCTC scenario
-            auto stream = GetStreamFromRCT2Scenario(path);
-            auto chunkReader = SawyerChunkReader(stream.get());
-
-            const auto header = chunkReader.ReadChunkAs<RCT2::S6Header>();
-            if (header.Type == S6_TYPE_SCENARIO)
-            {
-                auto info = chunkReader.ReadChunkAs<RCT2::S6Info>();
-                // If the name or the details contain a colour code, they might be in UTF-8 already.
-                // This is caused by a bug that was in OpenRCT2 for 3 years.
-                if (!IsLikelyUTF8(info.Name) && !IsLikelyUTF8(info.Details))
-                {
-                    RCT2StringToUTF8Self(info.Name, sizeof(info.Name));
-                    RCT2StringToUTF8Self(info.Details, sizeof(info.Details));
-                }
-
-                *entry = CreateNewScenarioEntry(path, timestamp, &info);
-                return true;
             }
 
             LOG_VERBOSE("%s is not a scenario", path.c_str());
+            return false;
         }
         catch (const std::exception&)
         {
             Console::Error::WriteLine("Unable to read scenario: '%s'", path.c_str());
         }
         return false;
-    }
-
-    static ScenarioIndexEntry CreateNewScenarioEntry(const std::string& path, uint64_t timestamp, RCT2::S6Info* s6Info)
-    {
-        ScenarioIndexEntry entry = {};
-
-        // Set new entry
-        entry.Path = path;
-        entry.Timestamp = timestamp;
-        entry.Category = s6Info->Category;
-        entry.ObjectiveType = s6Info->ObjectiveType;
-        entry.ObjectiveArg1 = s6Info->ObjectiveArg1;
-        entry.ObjectiveArg2 = s6Info->ObjectiveArg2;
-        entry.ObjectiveArg3 = s6Info->ObjectiveArg3;
-        entry.Highscore = nullptr;
-        if (String::IsNullOrEmpty(s6Info->Name))
-        {
-            // If the scenario doesn't have a name, set it to the filename
-            String::Set(entry.Name, sizeof(entry.Name), Path::GetFileNameWithoutExtension(entry.Path).c_str());
-        }
-        else
-        {
-            String::Set(entry.Name, sizeof(entry.Name), s6Info->Name);
-            // Normalise the name to make the scenario as recognisable as possible.
-            ScenarioSources::NormaliseName(entry.Name, sizeof(entry.Name), entry.Name);
-        }
-
-        // entry.name will be translated later so keep the untranslated name here
-        String::Set(entry.InternalName, sizeof(entry.InternalName), entry.Name);
-
-        String::Set(entry.Details, sizeof(entry.Details), s6Info->Details);
-
-        // Look up and store information regarding the origins of this scenario.
-        SourceDescriptor desc;
-        if (ScenarioSources::TryGetByName(entry.Name, &desc))
-        {
-            entry.ScenarioId = desc.id;
-            entry.SourceIndex = desc.index;
-            entry.SourceGame = ScenarioSource{ desc.source };
-            entry.Category = desc.category;
-        }
-        else
-        {
-            entry.ScenarioId = SC_UNIDENTIFIED;
-            entry.SourceIndex = -1;
-            if (entry.Category == SCENARIO_CATEGORY_REAL)
-            {
-                entry.SourceGame = ScenarioSource::Real;
-            }
-            else
-            {
-                entry.SourceGame = ScenarioSource::Other;
-            }
-        }
-
-        ScenarioTranslate(&entry);
-        return entry;
     }
 };
 
@@ -460,7 +362,8 @@ public:
                 // Get scenario using RCTC style name of RCT2 scenario
                 scenario = GetByFilename((scenarioBaseName + ".sea").c_str());
             }
-            // gScenarioFileName .Park scenarios is the full file path instead of just <scenarioName.park>, so need to convert
+            // GameState_t::ScenarioFileName .Park scenarios is the full file path instead of just <scenarioName.park>, so need
+            // to convert
             else if (String::IEquals(scenarioExtension, ".park"))
             {
                 scenario = GetByFilename((scenarioBaseName + ".park").c_str());
@@ -812,20 +715,4 @@ bool ScenarioRepositoryTryRecordHighscore(const utf8* scenarioFileName, money64 
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, name);
-}
-
-void ScenarioTranslate(ScenarioIndexEntry* scenarioEntry)
-{
-    StringId localisedStringIds[3];
-    if (LanguageGetLocalisedScenarioStrings(scenarioEntry->Name, localisedStringIds))
-    {
-        if (localisedStringIds[0] != STR_NONE)
-        {
-            String::Set(scenarioEntry->Name, sizeof(scenarioEntry->Name), LanguageGetString(localisedStringIds[0]));
-        }
-        if (localisedStringIds[2] != STR_NONE)
-        {
-            String::Set(scenarioEntry->Details, sizeof(scenarioEntry->Details), LanguageGetString(localisedStringIds[2]));
-        }
-    }
 }

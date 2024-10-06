@@ -19,7 +19,7 @@
 #include "../actions/LargeSceneryRemoveAction.h"
 #include "../actions/SmallSceneryRemoveAction.h"
 #include "../actions/WallRemoveAction.h"
-#include "../core/String.hpp"
+#include "../core/CodepointView.hpp"
 #include "../entity/Fountain.h"
 #include "../network/network.h"
 #include "../object/BannerSceneryEntry.h"
@@ -176,13 +176,14 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    if (OpenRCT2::GetGameState().Cheats.DisablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+    auto& gameState = GetGameState();
+    if (gameState.Cheats.DisablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
     {
         return;
     }
 
-    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED)
-        || WeatherIsDry(OpenRCT2::GetGameState().ClimateCurrent.Weather) || GetAge() < 5)
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gameState.ClimateCurrent.Weather)
+        || GetAge() < 5)
     {
         IncreaseAge(sceneryPos);
         return;
@@ -311,7 +312,8 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         return true;
     }
 
-    if (!OpenRCT2::GetGameState().Cheats.IgnoreResearchStatus)
+    auto& gameState = GetGameState();
+    if (!gameState.Cheats.IgnoreResearchStatus)
     {
         if (!SceneryIsInvented(item))
         {
@@ -319,7 +321,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         }
     }
 
-    if (!OpenRCT2::GetGameState().Cheats.SandboxMode && !(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!gameState.Cheats.SandboxMode && !(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         if (IsSceneryItemRestricted(item))
         {

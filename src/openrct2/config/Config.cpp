@@ -237,6 +237,7 @@ namespace OpenRCT2::Config
             model->RenderWeatherGloom = reader->GetBoolean("render_weather_gloom", true);
             model->ShowGuestPurchases = reader->GetBoolean("show_guest_purchases", false);
             model->ShowRealNamesOfGuests = reader->GetBoolean("show_real_names_of_guests", true);
+            model->ShowRealNamesOfStaff = reader->GetBoolean("show_real_names_of_staff", false);
             model->AllowEarlyCompletion = reader->GetBoolean("allow_early_completion", false);
             model->AssetPackOrder = reader->GetString("asset_pack_order", "");
             model->EnabledAssetPacks = reader->GetString("enabled_asset_packs", "");
@@ -248,7 +249,7 @@ namespace OpenRCT2::Config
             model->InvisibleTrees = reader->GetBoolean("invisible_trees", false);
             model->InvisibleScenery = reader->GetBoolean("invisible_scenery", false);
             model->InvisiblePaths = reader->GetBoolean("invisible_paths", false);
-            model->InvisibleSupports = reader->GetBoolean("invisible_supports", false);
+            model->InvisibleSupports = reader->GetBoolean("invisible_supports", true);
 
             model->LastVersionCheckTime = reader->GetInt64("last_version_check_time", 0);
         }
@@ -323,6 +324,7 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("render_weather_gloom", model->RenderWeatherGloom);
         writer->WriteBoolean("show_guest_purchases", model->ShowGuestPurchases);
         writer->WriteBoolean("show_real_names_of_guests", model->ShowRealNamesOfGuests);
+        writer->WriteBoolean("show_real_names_of_staff", model->ShowRealNamesOfStaff);
         writer->WriteBoolean("allow_early_completion", model->AllowEarlyCompletion);
         writer->WriteString("asset_pack_order", model->AssetPackOrder);
         writer->WriteString("enabled_asset_packs", model->EnabledAssetPacks);
@@ -676,15 +678,7 @@ namespace OpenRCT2::Config
     {
         LOG_VERBOSE("config_find_rct1_path(...)");
 
-        static constexpr u8string_view searchLocations[] = {
-            R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
-            R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
-            R"(C:\GOG Games\RollerCoaster Tycoon Deluxe)",
-            R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon Deluxe)",
-            R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon Deluxe)",
-            R"(C:\Program Files\Hasbro Interactive\RollerCoaster Tycoon)",
-            R"(C:\Program Files (x86)\Hasbro Interactive\RollerCoaster Tycoon)",
-        };
+        static std::vector<u8string_view> searchLocations = Platform::GetSearchablePathsRCT1();
 
         for (const auto& location : searchLocations)
         {
@@ -721,19 +715,7 @@ namespace OpenRCT2::Config
     {
         LOG_VERBOSE("config_find_rct2_path(...)");
 
-        static constexpr u8string_view searchLocations[] = {
-            R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon 2)",
-            R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files\Atari\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Atari\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files\Infogrames\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files\Infogrames Interactive\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2)",
-        };
+        static std::vector<u8string_view> searchLocations = Platform::GetSearchablePathsRCT2();
 
         for (const auto& location : searchLocations)
         {

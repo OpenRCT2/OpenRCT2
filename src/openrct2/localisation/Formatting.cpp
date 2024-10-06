@@ -9,9 +9,12 @@
 
 #include "Formatting.h"
 
+#include "../Context.h"
 #include "../Diagnostic.h"
 #include "../config/Config.h"
-#include "../peep/RealNames.h"
+#include "../core/String.hpp"
+#include "../object/ObjectManager.h"
+#include "../object/PeepNamesObject.h"
 #include "../util/Util.h"
 #include "Currency.h"
 #include "FormatCodes.h"
@@ -24,7 +27,7 @@
 
 namespace OpenRCT2
 {
-    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year);
+    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year, bool inSentence);
 
     static std::optional<int32_t> ParseNumericToken(std::string_view s)
     {
@@ -288,11 +291,15 @@ namespace OpenRCT2
     {
         if (IsRealNameStringId(id))
         {
-            auto realNameIndex = id - kRealNameStart;
-            ss << real_names[realNameIndex % std::size(real_names)];
-            ss << ' ';
-            ss << real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)];
-            ss << '.';
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* peepNamesObj = static_cast<PeepNamesObject*>(objManager.GetLoadedObject(ObjectType::PeepNames, 0));
+            if (peepNamesObj != nullptr)
+            {
+                auto realNameIndex = id - kRealNameStart;
+                ss << peepNamesObj->GetGivenNameAt(realNameIndex);
+                ss << ' ';
+                ss << peepNamesObj->GetSurnameAt(realNameIndex >> 10);
+            }
         }
     }
 
@@ -583,12 +590,30 @@ namespace OpenRCT2
                     }
                 }
                 break;
+            case FormatToken::Height:
+                if constexpr (std::is_integral<T>())
+                {
+                    auto metres = HeightUnitsToMetres(arg);
+                    switch (Config::Get().general.MeasurementFormat)
+                    {
+                        default:
+                        case MeasurementFormat::Imperial:
+                            FormatStringID(ss, STR_UNIT_SUFFIX_FEET, MetresToFeet(metres));
+                            break;
+                        case MeasurementFormat::Metric:
+                        case MeasurementFormat::SI:
+                            FormatStringID(ss, STR_UNIT_SUFFIX_METRES, metres);
+                            break;
+                    }
+                }
+                break;
             case FormatToken::MonthYear:
+            case FormatToken::MonthYearSentence:
                 if constexpr (std::is_integral<T>())
                 {
                     auto month = DateGetMonth(arg);
                     auto year = DateGetYear(arg) + 1;
-                    FormatMonthYear(ss, month, year);
+                    FormatMonthYear(ss, month, year, token == FormatToken::MonthYearSentence);
                 }
                 break;
             case FormatToken::Month:
@@ -770,36 +795,38 @@ namespace OpenRCT2
                 case FormatToken::Int32:
                 case FormatToken::Comma2dp32:
                 case FormatToken::Sprite:
-                    anyArgs.push_back(ReadFromArgs<int32_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<int32_t>(args));
                     break;
                 case FormatToken::Currency2dp:
                 case FormatToken::Currency:
-                    anyArgs.push_back(ReadFromArgs<int64_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<int64_t>(args));
                     break;
                 case FormatToken::UInt16:
                 case FormatToken::MonthYear:
+                case FormatToken::MonthYearSentence:
                 case FormatToken::Month:
                 case FormatToken::Velocity:
                 case FormatToken::DurationShort:
                 case FormatToken::DurationLong:
-                    anyArgs.push_back(ReadFromArgs<uint16_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<uint16_t>(args));
                     break;
                 case FormatToken::Comma16:
                 case FormatToken::Length:
+                case FormatToken::Height:
                 case FormatToken::Comma1dp16:
-                    anyArgs.push_back(ReadFromArgs<int16_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<int16_t>(args));
                     break;
                 case FormatToken::StringById:
                 {
                     auto stringId = ReadFromArgs<StringId>(args);
-                    anyArgs.push_back(stringId);
+                    anyArgs.emplace_back(stringId);
                     BuildAnyArgListFromLegacyArgBuffer(GetFmtStringById(stringId), anyArgs, args);
                     break;
                 }
                 case FormatToken::String:
                 {
                     auto sz = ReadFromArgs<const char*>(args);
-                    anyArgs.push_back(sz);
+                    anyArgs.emplace_back(sz);
                     break;
                 }
                 case FormatToken::Pop16:
@@ -814,12 +841,13 @@ namespace OpenRCT2
         }
     }
 
-    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year)
+    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year, bool inSentence)
     {
         thread_local std::vector<FormatArg_t> tempArgs;
         tempArgs.clear();
 
-        auto fmt = GetFmtStringById(STR_DATE_FORMAT_MY);
+        auto stringId = inSentence ? STR_DATE_FORMAT_MY_SENTENCE : STR_DATE_FORMAT_MY;
+        auto fmt = GetFmtStringById(stringId);
         Formatter ft;
         ft.Add<uint16_t>(month);
         ft.Add<uint16_t>(year);

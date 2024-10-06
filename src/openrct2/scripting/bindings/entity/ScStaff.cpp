@@ -17,46 +17,46 @@
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<PeepActionSpriteType> availableHandymanAnimations({
-        { "walking", PeepActionSpriteType::None },
-        { "watchRide", PeepActionSpriteType::WatchRide },
-        { "hanging", PeepActionSpriteType::Ui },
-        { "staffMower", PeepActionSpriteType::StaffMower },
-        { "staffSweep", PeepActionSpriteType::StaffSweep },
-        { "drowning", PeepActionSpriteType::Drowning },
-        { "staffWatering", PeepActionSpriteType::StaffWatering },
-        { "staffEmptyBin", PeepActionSpriteType::StaffEmptyBin },
+    static const DukEnumMap<PeepAnimationType> availableHandymanAnimations({
+        { "walking", PeepAnimationType::None },
+        { "watchRide", PeepAnimationType::WatchRide },
+        { "hanging", PeepAnimationType::Hanging },
+        { "staffMower", PeepAnimationType::StaffMower },
+        { "staffSweep", PeepAnimationType::StaffSweep },
+        { "drowning", PeepAnimationType::Drowning },
+        { "staffWatering", PeepAnimationType::StaffWatering },
+        { "staffEmptyBin", PeepAnimationType::StaffEmptyBin },
     });
 
-    static const DukEnumMap<PeepActionSpriteType> availableMechanicAnimations({
-        { "walking", PeepActionSpriteType::None },
-        { "watchRide", PeepActionSpriteType::WatchRide },
-        { "hanging", PeepActionSpriteType::Ui },
-        { "drowning", PeepActionSpriteType::Drowning },
-        { "staffAnswerCall", PeepActionSpriteType::StaffAnswerCall },
-        { "staffAnswerCall2", PeepActionSpriteType::StaffAnswerCall2 },
-        { "staffCheckBoard", PeepActionSpriteType::StaffCheckboard },
-        { "staffFix", PeepActionSpriteType::StaffFix },
-        { "staffFix2", PeepActionSpriteType::StaffFix2 },
-        { "staffFixGround", PeepActionSpriteType::StaffFixGround },
-        { "staffFix3", PeepActionSpriteType::StaffFix3 },
+    static const DukEnumMap<PeepAnimationType> availableMechanicAnimations({
+        { "walking", PeepAnimationType::None },
+        { "watchRide", PeepAnimationType::WatchRide },
+        { "hanging", PeepAnimationType::Hanging },
+        { "drowning", PeepAnimationType::Drowning },
+        { "staffAnswerCall", PeepAnimationType::StaffAnswerCall },
+        { "staffAnswerCall2", PeepAnimationType::StaffAnswerCall2 },
+        { "staffCheckBoard", PeepAnimationType::StaffCheckBoard },
+        { "staffFix", PeepAnimationType::StaffFix },
+        { "staffFix2", PeepAnimationType::StaffFix2 },
+        { "staffFixGround", PeepAnimationType::StaffFixGround },
+        { "staffFix3", PeepAnimationType::StaffFix3 },
     });
 
-    static const DukEnumMap<PeepActionSpriteType> availableSecurityAnimations({
-        { "walking", PeepActionSpriteType::None },
-        { "watchRide", PeepActionSpriteType::WatchRide },
-        { "hanging", PeepActionSpriteType::Ui },
-        { "drowning", PeepActionSpriteType::Drowning },
+    static const DukEnumMap<PeepAnimationType> availableSecurityAnimations({
+        { "walking", PeepAnimationType::None },
+        { "watchRide", PeepAnimationType::WatchRide },
+        { "hanging", PeepAnimationType::Hanging },
+        { "drowning", PeepAnimationType::Drowning },
     });
 
-    static const DukEnumMap<PeepActionSpriteType> availableEntertainerAnimations({
-        { "walking", PeepActionSpriteType::None },
-        { "watchRide", PeepActionSpriteType::WatchRide },
-        { "wave", PeepActionSpriteType::EatFood }, // NB: this not a typo
-        { "hanging", PeepActionSpriteType::Ui },
-        { "drowning", PeepActionSpriteType::Drowning },
-        { "joy", PeepActionSpriteType::Joy },
-        { "wave2", PeepActionSpriteType::Wave2 },
+    static const DukEnumMap<PeepAnimationType> availableEntertainerAnimations({
+        { "walking", PeepAnimationType::None },
+        { "watchRide", PeepAnimationType::WatchRide },
+        { "wave", PeepAnimationType::EatFood }, // NB: this not a typo
+        { "hanging", PeepAnimationType::Hanging },
+        { "drowning", PeepAnimationType::Drowning },
+        { "joy", PeepAnimationType::Joy },
+        { "wave2", PeepAnimationType::Wave2 },
     });
 
     ScStaff::ScStaff(EntityId Id)
@@ -116,27 +116,27 @@ namespace OpenRCT2::Scripting
             if (value == "handyman" && peep->AssignedStaffType != StaffType::Handyman)
             {
                 peep->AssignedStaffType = StaffType::Handyman;
-                peep->SpriteType = PeepSpriteType::Handyman;
+                peep->AnimationGroup = PeepAnimationGroup::Handyman;
             }
             else if (value == "mechanic" && peep->AssignedStaffType != StaffType::Mechanic)
             {
                 peep->AssignedStaffType = StaffType::Mechanic;
-                peep->SpriteType = PeepSpriteType::Mechanic;
+                peep->AnimationGroup = PeepAnimationGroup::Mechanic;
             }
             else if (value == "security" && peep->AssignedStaffType != StaffType::Security)
             {
                 peep->AssignedStaffType = StaffType::Security;
-                peep->SpriteType = PeepSpriteType::Security;
+                peep->AnimationGroup = PeepAnimationGroup::Security;
             }
             else if (value == "entertainer" && peep->AssignedStaffType != StaffType::Entertainer)
             {
                 peep->AssignedStaffType = StaffType::Entertainer;
-                peep->SpriteType = PeepSpriteType::EntertainerPanda;
+                peep->AnimationGroup = PeepAnimationGroup::EntertainerPanda;
             }
 
             // Reset state to walking to prevent invalid actions from carrying over
             peep->Action = PeepActionType::Walking;
-            peep->ActionSpriteType = peep->NextActionSpriteType = PeepActionSpriteType::None;
+            peep->AnimationType = peep->NextAnimationType = PeepAnimationType::None;
         }
     }
 
@@ -157,35 +157,35 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    static const DukEnumMap<PeepSpriteType> availableHandymanCostumes({
-        { "handyman", PeepSpriteType::Handyman },
+    static const DukEnumMap<PeepAnimationGroup> availableHandymanCostumes({
+        { "handyman", PeepAnimationGroup::Handyman },
     });
 
-    static const DukEnumMap<PeepSpriteType> availableMechanicCostumes({
-        { "mechanic", PeepSpriteType::Mechanic },
+    static const DukEnumMap<PeepAnimationGroup> availableMechanicCostumes({
+        { "mechanic", PeepAnimationGroup::Mechanic },
     });
 
-    static const DukEnumMap<PeepSpriteType> availableSecurityCostumes({
-        { "security1", PeepSpriteType::Security },
-        { "security2", PeepSpriteType::SecurityAlt },
+    static const DukEnumMap<PeepAnimationGroup> availableSecurityCostumes({
+        { "security1", PeepAnimationGroup::Security },
+        { "security2", PeepAnimationGroup::SecurityAlt },
     });
 
-    static const DukEnumMap<PeepSpriteType> availableEntertainerCostumes({
-        { "none", PeepSpriteType::Normal },
-        { "panda", PeepSpriteType::EntertainerPanda },
-        { "tiger", PeepSpriteType::EntertainerTiger },
-        { "elephant", PeepSpriteType::EntertainerElephant },
-        { "roman", PeepSpriteType::EntertainerRoman },
-        { "gorilla", PeepSpriteType::EntertainerGorilla },
-        { "snowman", PeepSpriteType::EntertainerSnowman },
-        { "knight", PeepSpriteType::EntertainerKnight },
-        { "astronaut", PeepSpriteType::EntertainerAstronaut },
-        { "bandit", PeepSpriteType::EntertainerBandit },
-        { "sheriff", PeepSpriteType::EntertainerSheriff },
-        { "pirate", PeepSpriteType::EntertainerPirate },
+    static const DukEnumMap<PeepAnimationGroup> availableEntertainerCostumes({
+        { "none", PeepAnimationGroup::Normal },
+        { "panda", PeepAnimationGroup::EntertainerPanda },
+        { "tiger", PeepAnimationGroup::EntertainerTiger },
+        { "elephant", PeepAnimationGroup::EntertainerElephant },
+        { "roman", PeepAnimationGroup::EntertainerRoman },
+        { "gorilla", PeepAnimationGroup::EntertainerGorilla },
+        { "snowman", PeepAnimationGroup::EntertainerSnowman },
+        { "knight", PeepAnimationGroup::EntertainerKnight },
+        { "astronaut", PeepAnimationGroup::EntertainerAstronaut },
+        { "bandit", PeepAnimationGroup::EntertainerBandit },
+        { "sheriff", PeepAnimationGroup::EntertainerSheriff },
+        { "pirate", PeepAnimationGroup::EntertainerPirate },
     });
 
-    static const DukEnumMap<PeepSpriteType>& costumesByStaffType(StaffType staffType)
+    static const DukEnumMap<PeepAnimationGroup>& costumesByStaffType(StaffType staffType)
     {
         switch (staffType)
         {
@@ -225,7 +225,7 @@ namespace OpenRCT2::Scripting
 
         auto& availableCostumes = costumesByStaffType(peep->AssignedStaffType);
 
-        auto costume = availableCostumes.find(peep->SpriteType);
+        auto costume = availableCostumes.find(peep->AnimationGroup);
         if (costume != availableCostumes.end())
         {
             return std::string(costume->first);
@@ -250,19 +250,19 @@ namespace OpenRCT2::Scripting
         if (value.type() == DukValue::Type::STRING)
         {
             std::string newCostume = value.as_string();
-            auto newSpriteType = availableCostumes.TryGet(newCostume);
-            if (newSpriteType != std::nullopt)
+            auto newAnimationGroup = availableCostumes.TryGet(newCostume);
+            if (newAnimationGroup != std::nullopt)
             {
-                peep->SpriteType = *newSpriteType;
+                peep->AnimationGroup = *newAnimationGroup;
                 return;
             }
         }
         else if (value.type() == DukValue::Type::NUMBER)
         {
-            auto newSpriteType = PeepSpriteType(value.as_uint() + EnumValue(PeepSpriteType::EntertainerPanda));
-            if (availableCostumes.find(newSpriteType) != availableCostumes.end())
+            auto newAnimationGroup = PeepAnimationGroup(value.as_uint() + EnumValue(PeepAnimationGroup::EntertainerPanda));
+            if (availableCostumes.find(newAnimationGroup) != availableCostumes.end())
             {
-                peep->SpriteType = newSpriteType;
+                peep->AnimationGroup = newAnimationGroup;
                 return;
             }
         }
@@ -291,7 +291,7 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    const DukEnumMap<PeepActionSpriteType>& ScStaff::animationsByStaffType(StaffType staffType) const
+    const DukEnumMap<PeepAnimationType>& ScStaff::animationsByStaffType(StaffType staffType) const
     {
         switch (staffType)
         {
@@ -340,11 +340,11 @@ namespace OpenRCT2::Scripting
             return spriteIds;
         }
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, *animationType);
+        auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, *animationType);
         for (auto frameOffset : animationGroup.frame_offsets)
         {
             auto imageId = animationGroup.base_image;
-            if (animationType != PeepActionSpriteType::Ui)
+            if (animationType != PeepAnimationType::Hanging)
                 imageId += rotation + frameOffset * 4;
             else
                 imageId += frameOffset;
@@ -364,7 +364,7 @@ namespace OpenRCT2::Scripting
         }
 
         auto& animationGroups = animationsByStaffType(peep->AssignedStaffType);
-        std::string_view action = animationGroups[peep->ActionSpriteType];
+        std::string_view action = animationGroups[peep->AnimationType];
         return std::string(action);
     }
 
@@ -380,16 +380,16 @@ namespace OpenRCT2::Scripting
             throw DukException() << "Invalid animation for this staff member (" << groupKey << ")";
         }
 
-        peep->ActionSpriteType = peep->NextActionSpriteType = *newType;
+        peep->AnimationType = peep->NextAnimationType = *newType;
 
         auto offset = 0;
         if (peep->IsActionWalking())
-            peep->WalkingFrameNum = offset;
+            peep->WalkingAnimationFrameNum = offset;
         else
-            peep->ActionFrame = offset;
+            peep->AnimationFrameNum = offset;
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
-        peep->ActionSpriteImageOffset = animationGroup.frame_offsets[offset];
+        auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
+        peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
 
@@ -402,9 +402,9 @@ namespace OpenRCT2::Scripting
         }
 
         if (peep->IsActionWalking())
-            return peep->WalkingFrameNum;
+            return peep->WalkingAnimationFrameNum;
         else
-            return peep->ActionFrame;
+            return peep->AnimationFrameNum;
     }
 
     void ScStaff::animationOffset_set(uint8_t offset)
@@ -413,16 +413,16 @@ namespace OpenRCT2::Scripting
 
         auto* peep = GetStaff();
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         auto length = animationGroup.frame_offsets.size();
         offset %= length;
 
         if (peep->IsActionWalking())
-            peep->WalkingFrameNum = offset;
+            peep->WalkingAnimationFrameNum = offset;
         else
-            peep->ActionFrame = offset;
+            peep->AnimationFrameNum = offset;
 
-        peep->ActionSpriteImageOffset = animationGroup.frame_offsets[offset];
+        peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
         peep->UpdateSpriteBoundingBox();
     }
 
@@ -434,7 +434,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        auto& animationGroup = GetPeepAnimation(peep->SpriteType, peep->ActionSpriteType);
+        auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         return static_cast<uint8_t>(animationGroup.frame_offsets.size());
     }
 

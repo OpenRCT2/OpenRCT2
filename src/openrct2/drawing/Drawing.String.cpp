@@ -9,6 +9,7 @@
 
 #include "../Context.h"
 #include "../config/Config.h"
+#include "../core/CodepointView.hpp"
 #include "../core/String.hpp"
 #include "../core/UTF8.h"
 #include "../core/UnicodeChar.h"

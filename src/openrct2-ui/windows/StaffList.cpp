@@ -74,21 +74,21 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t MAX_WH = 450;
 
     // clang-format off
-static Widget _staffListWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {    WW, WH - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                 ), // tab content panel
-    MakeTab   ({  3, 17},                                                                             STR_STAFF_HANDYMEN_TAB_TIP    ), // handymen tab
-    MakeTab   ({ 34, 17},                                                                             STR_STAFF_MECHANICS_TAB_TIP   ), // mechanics tab
-    MakeTab   ({ 65, 17},                                                                             STR_STAFF_SECURITY_TAB_TIP    ), // security guards tab
-    MakeTab   ({ 96, 17},                                                                             STR_STAFF_ENTERTAINERS_TAB_TIP), // entertainers tab
-    MakeWidget({  3, 72}, {WW - 6,     195}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                ), // staff list
-    MakeWidget({130, 58}, {    12,      12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, STR_NONE,        STR_UNIFORM_COLOUR_TIP        ), // uniform colour picker
-    MakeWidget({165, 17}, {   145,      13}, WindowWidgetType::Button,    WindowColour::Primary  , STR_NONE,        STR_HIRE_STAFF_TIP            ), // hire button
-    MakeWidget({243, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH),    STR_QUICK_FIRE_STAFF          ), // quick fire staff
-    MakeWidget({267, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PATROL_BTN),  STR_SHOW_PATROL_AREA_TIP      ), // show staff patrol area tool
-    MakeWidget({291, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_MAP),         STR_SHOW_STAFF_ON_MAP_TIP     ), // show staff on map button
-    kWidgetsEnd,
-};
+    static Widget _staffListWidgets[] = {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({  0, 43}, {    WW, WH - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                     ), // tab content panel
+        MakeTab   ({  3, 17},                                                                          STR_STAFF_HANDYMEN_TAB_TIP                         ), // handymen tab
+        MakeTab   ({ 34, 17},                                                                          STR_STAFF_MECHANICS_TAB_TIP                        ), // mechanics tab
+        MakeTab   ({ 65, 17},                                                                          STR_STAFF_SECURITY_TAB_TIP                         ), // security guards tab
+        MakeTab   ({ 96, 17},                                                                          STR_STAFF_ENTERTAINERS_TAB_TIP                     ), // entertainers tab
+        MakeWidget({  3, 72}, {WW - 6,     195}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                    ), // staff list
+        MakeWidget({130, 58}, {    12,      12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, STR_NONE,        STR_UNIFORM_COLOUR_TIP            ), // uniform colour picker
+        MakeWidget({165, 17}, {   145,      13}, WindowWidgetType::Button,    WindowColour::Primary  , STR_NONE,        STR_HIRE_STAFF_TIP                ), // hire button
+        MakeWidget({243, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH),    STR_QUICK_FIRE_STAFF     ), // quick fire staff
+        MakeWidget({267, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PATROL_BTN),  STR_SHOW_PATROL_AREA_TIP ), // show staff patrol area tool
+        MakeWidget({291, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_MAP),         STR_SHOW_STAFF_ON_MAP_TIP), // show staff on map button
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class StaffListWindow final : public Window
@@ -456,7 +456,7 @@ static Widget _staffListWidgets[] = {
                     }
                     else
                     {
-                        GfxDrawSprite(dpi, ImageId(GetEntertainerCostumeSprite(peep->SpriteType)), { staffOrderIcon_x, y });
+                        GfxDrawSprite(dpi, ImageId(GetEntertainerCostumeSprite(peep->AnimationGroup)), { staffOrderIcon_x, y });
                     }
                 }
 
@@ -599,13 +599,13 @@ static Widget _staffListWidgets[] = {
         void DrawTabImages(DrawPixelInfo& dpi) const
         {
             const auto& gameState = GetGameState();
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, PeepSpriteType::Handyman, gameState.StaffHandymanColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, PeepSpriteType::Mechanic, gameState.StaffMechanicColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, PeepSpriteType::Security, gameState.StaffSecurityColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, PeepSpriteType::EntertainerElephant);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, PeepAnimationGroup::Handyman, gameState.StaffHandymanColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, PeepAnimationGroup::Mechanic, gameState.StaffMechanicColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, PeepAnimationGroup::Security, gameState.StaffSecurityColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, PeepAnimationGroup::EntertainerElephant);
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepSpriteType type, colour_t colour) const
+        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepAnimationGroup type, colour_t colour) const
         {
             auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
             const auto& widget = widgets[widgetIndex];
@@ -616,7 +616,7 @@ static Widget _staffListWidgets[] = {
                 windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepSpriteType type) const
+        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepAnimationGroup type) const
         {
             auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
             const auto& widget = widgets[widgetIndex];
@@ -723,33 +723,33 @@ static Widget _staffListWidgets[] = {
             }
         }
 
-        static uint32_t GetEntertainerCostumeSprite(PeepSpriteType type)
+        static uint32_t GetEntertainerCostumeSprite(PeepAnimationGroup type)
         {
             switch (type)
             {
-                case PeepSpriteType::EntertainerPanda:
+                case PeepAnimationGroup::EntertainerPanda:
                     return SPR_STAFF_COSTUME_PANDA;
-                case PeepSpriteType::EntertainerTiger:
+                case PeepAnimationGroup::EntertainerTiger:
                     return SPR_STAFF_COSTUME_TIGER;
-                case PeepSpriteType::EntertainerElephant:
+                case PeepAnimationGroup::EntertainerElephant:
                     return SPR_STAFF_COSTUME_ELEPHANT;
-                case PeepSpriteType::EntertainerRoman:
+                case PeepAnimationGroup::EntertainerRoman:
                     return SPR_STAFF_COSTUME_ROMAN;
-                case PeepSpriteType::EntertainerGorilla:
+                case PeepAnimationGroup::EntertainerGorilla:
                     return SPR_STAFF_COSTUME_GORILLA;
-                case PeepSpriteType::EntertainerSnowman:
+                case PeepAnimationGroup::EntertainerSnowman:
                     return SPR_STAFF_COSTUME_SNOWMAN;
-                case PeepSpriteType::EntertainerKnight:
+                case PeepAnimationGroup::EntertainerKnight:
                     return SPR_STAFF_COSTUME_KNIGHT;
-                case PeepSpriteType::EntertainerAstronaut:
+                case PeepAnimationGroup::EntertainerAstronaut:
                     return SPR_STAFF_COSTUME_ASTRONAUT;
-                case PeepSpriteType::EntertainerBandit:
+                case PeepAnimationGroup::EntertainerBandit:
                     return SPR_STAFF_COSTUME_BANDIT;
-                case PeepSpriteType::EntertainerSheriff:
+                case PeepAnimationGroup::EntertainerSheriff:
                     return SPR_STAFF_COSTUME_SHERIFF;
-                case PeepSpriteType::EntertainerPirate:
+                case PeepAnimationGroup::EntertainerPirate:
                     return SPR_STAFF_COSTUME_PIRATE;
-                case PeepSpriteType::Normal:
+                case PeepAnimationGroup::Normal:
                 default:
                     return SPR_PEEP_SMALL_FACE_HAPPY;
             }

@@ -15,3 +15,6 @@ using StringId = uint16_t;
 
 constexpr StringId STR_NONE = 0xFFFF;
 constexpr StringId STR_EMPTY = 0;
+
+constexpr uint16_t kRealNameStart = 0xA000;
+constexpr uint16_t kRealNameEnd = 0xDFFF;

@@ -13,6 +13,7 @@
 #include "ride/VehicleSounds.h"
 #include "windows/Window.h"
 
+#include <openrct2-ui/ProvisionalElements.h>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/input/MouseInput.h>
@@ -534,14 +535,6 @@ public:
                 OpenRCT2::Audio::UpdateVehicleSounds();
                 break;
 
-            case INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL:
-                TrackPlaceClearProvisionalTemporarily();
-                break;
-
-            case INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL:
-                TrackPlaceRestoreProvisional();
-                break;
-
             case INTENT_ACTION_SET_MAP_TOOLTIP:
             {
                 auto ft = static_cast<Formatter*>(intent.GetPointerExtra(INTENT_EXTRA_FORMATTER));
@@ -558,6 +551,18 @@ public:
                 break;
             }
 
+            case INTENT_ACTION_REMOVE_PROVISIONAL_ELEMENTS:
+                ProvisionalElementsRemove();
+                break;
+            case INTENT_ACTION_RESTORE_PROVISIONAL_ELEMENTS:
+                ProvisionalElementsRestore();
+                break;
+            case INTENT_ACTION_REMOVE_PROVISIONAL_FOOTPATH:
+                FootpathRemoveProvisional();
+                break;
+            case INTENT_ACTION_REMOVE_PROVISIONAL_TRACK_PIECE:
+                RideRemoveProvisionalTrackPiece();
+                break;
             default:
                 break;
         }
@@ -609,20 +614,14 @@ public:
         if (mainWindow != nullptr)
         {
             auto viewport = WindowGetViewport(mainWindow);
-            auto zoomDifference = zoom - viewport->zoom;
 
             mainWindow->viewport_target_sprite = EntityId::GetNull();
             mainWindow->savedViewPos = viewPos;
             viewport->zoom = zoom;
             viewport->rotation = rotation;
 
-            if (zoomDifference != ZoomLevel{ 0 })
-            {
-                viewport->view_width = zoomDifference.ApplyTo(viewport->view_width);
-                viewport->view_height = zoomDifference.ApplyTo(viewport->view_height);
-            }
-            mainWindow->savedViewPos.x -= viewport->view_width >> 1;
-            mainWindow->savedViewPos.y -= viewport->view_height >> 1;
+            mainWindow->savedViewPos.x -= viewport->ViewWidth() / 2;
+            mainWindow->savedViewPos.y -= viewport->ViewHeight() / 2;
 
             // Make sure the viewport has correct coordinates set.
             ViewportUpdatePosition(mainWindow);

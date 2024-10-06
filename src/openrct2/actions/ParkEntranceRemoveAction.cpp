@@ -15,6 +15,7 @@
 #include "../management/Finance.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
+#include "../world/tile_element/EntranceElement.h"
 
 using namespace OpenRCT2;
 

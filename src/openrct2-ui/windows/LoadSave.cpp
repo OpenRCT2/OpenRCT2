@@ -67,20 +67,20 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-static Widget window_loadsave_widgets[] =
-{
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({               0,  WH - 1}, { WW,   1}, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
-    MakeWidget({               4,      36}, { 84,  14}, WindowWidgetType::Button,      WindowColour::Primary,   STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // WIDX_DEFAULT
-    MakeWidget({              88,      36}, { 84,  14}, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_UP                                  ), // WIDX_UP
-    MakeWidget({             172,      36}, { 87,  14}, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // WIDX_NEW_FOLDER
-    MakeWidget({             259,      36}, { 87,  14}, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FILE                            ), // WIDX_NEW_FILE
-    MakeWidget({               4,      55}, {170,  14}, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_NAME
-    MakeWidget({(WW - 5) / 2 + 1,      55}, {170,  14}, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_DATE
-    MakeWidget({               4,      68}, {342, 303}, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                            ), // WIDX_SCROLL
-    MakeWidget({               4, WH - 24}, {197,  19}, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // WIDX_BROWSE
-    kWidgetsEnd,
-};
+    static Widget window_loadsave_widgets[] =
+    {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({               0,  WH - 1}, { WW,   1}, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
+        MakeWidget({               4,      36}, { 84,  14}, WindowWidgetType::Button,      WindowColour::Primary,   STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // WIDX_DEFAULT
+        MakeWidget({              88,      36}, { 84,  14}, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_UP                                  ), // WIDX_UP
+        MakeWidget({             172,      36}, { 87,  14}, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // WIDX_NEW_FOLDER
+        MakeWidget({             259,      36}, { 87,  14}, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FILE                            ), // WIDX_NEW_FILE
+        MakeWidget({               4,      55}, {170,  14}, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_NAME
+        MakeWidget({(WW - 5) / 2 + 1,      55}, {170,  14}, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_DATE
+        MakeWidget({               4,      68}, {342, 303}, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                            ), // WIDX_SCROLL
+        MakeWidget({               4, WH - 24}, {197,  19}, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // WIDX_BROWSE
+        kWidgetsEnd,
+    };
     // clang-format on
 
 #pragma endregion
@@ -326,7 +326,7 @@ static Widget window_loadsave_widgets[] =
 
             case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
                 SetAndSaveConfigPath(Config::Get().general.LastSaveLandscapeDirectory, pathBuffer);
-                gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
+                gameState.ScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
                 if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2))
                 {
                     gCurrentLoadedPath = pathBuffer;
@@ -347,7 +347,7 @@ static Widget window_loadsave_widgets[] =
                 int32_t parkFlagsBackup = gameState.Park.Flags;
                 gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                 gameState.EditorStep = EditorStep::Invalid;
-                gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
+                gameState.ScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
                 int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
                 gameState.Park.Flags = parkFlagsBackup;
 
@@ -461,7 +461,7 @@ static Widget window_loadsave_widgets[] =
             }
             else
             {
-                auto buffer = OpenRCT2::GetGameState().Park.Name;
+                auto buffer = GetGameState().Park.Name;
                 if (buffer.empty())
                 {
                     buffer = LanguageGetString(STR_UNNAMED_PARK);

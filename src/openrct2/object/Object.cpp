@@ -405,12 +405,13 @@ ObjectVersion VersionTuple(std::string_view version)
         size_t highestIndex = std::min(nums.size(), VersionNumFields);
         for (size_t i = 0; i < highestIndex; i++)
         {
-            auto value = stoi(nums.at(i));
+            auto value = stoll(nums.at(i));
             constexpr auto maxValue = std::numeric_limits<uint16_t>().max();
             if (value > maxValue)
             {
                 LOG_WARNING(
-                    "Version value too high in version string '%s', version value will be capped to %i.", version, maxValue);
+                    "Version value too high in version string '%.*s', version value will be capped to %i.",
+                    static_cast<int>(version.size()), version.data(), maxValue);
                 value = maxValue;
             }
             versions[i] = value;
@@ -418,7 +419,7 @@ ObjectVersion VersionTuple(std::string_view version)
     }
     catch (const std::exception&)
     {
-        LOG_WARNING("Malformed version string '%s', expected X.Y.Z", version);
+        LOG_WARNING("Malformed version string '%.*s', expected X.Y.Z", static_cast<int>(version.size()), version.data());
     }
 
     return std::make_tuple(versions[0], versions[1], versions[2]);

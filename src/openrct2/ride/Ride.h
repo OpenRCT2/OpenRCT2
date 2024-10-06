@@ -166,8 +166,7 @@ struct Ride
     // bit 6: log reverser, waterfall
     // bit 7: whirlpool
     uint8_t special_track_elements{};
-    // Divide this value by 29127 to get the human-readable max speed
-    // (in RCT2, display_speed = (max_speed * 9) >> 18)
+    // Use ToHumanReadableSpeed if converting to display
     int32_t max_speed{};
     int32_t average_speed{};
     uint8_t current_test_segment{};
@@ -897,9 +896,6 @@ constexpr uint16_t kTurnMask1Element = 0x001F;
 constexpr uint16_t kTurnMask2Elements = 0x00E0;
 constexpr uint16_t kTurnMask3Elements = 0x0700;
 constexpr uint16_t kTurnMask4PlusElements = 0xF800;
-
-constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
-constexpr uint32_t CONSTRUCTION_INVERTED_TRACK_SELECTED = 1 << 1;
 
 Ride* GetRide(RideId index);
 

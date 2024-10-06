@@ -105,7 +105,7 @@ void OpenGLFramebuffer::GetPixels(DrawPixelInfo& dpi) const
     {
         std::copy_n(src, _width, dst);
         src -= _width;
-        dst += dpi.width + dpi.pitch;
+        dst += dpi.LineStride();
     }
 }
 

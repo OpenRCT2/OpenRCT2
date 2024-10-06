@@ -43,6 +43,7 @@
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/Slope.h"
 #include "PatrolArea.h"
 #include "Peep.h"
@@ -183,7 +184,8 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
             }
 
             /* test_element is a path */
-            if (!PathFinding::IsValidPathZAndDirection(test_element, adjacPos.z / kCoordsZStep, adjac_dir))
+            const auto* adjacentPathElement = test_element->AsPath();
+            if (!FootpathIsZAndDirectionValid(*adjacentPathElement, adjacPos.z / kCoordsZStep, adjac_dir))
                 continue;
 
             /* test_element is a connected path */
@@ -193,7 +195,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
                 pathcount++;
             }
 
-            if (test_element->AsPath()->IsWide())
+            if (adjacentPathElement->IsWide())
             {
                 if (!widefound)
                 {
@@ -713,11 +715,9 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
             }
         }
 
-        gPeepPathFindIgnoreForeignQueues = false;
-        gPeepPathFindQueueRideIndex = RideId::GetNull();
-
         const auto goalPos = TileCoordsXYZ{ location };
-        Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, goalPos, *this);
+        Direction pathfindDirection = PathFinding::ChooseDirection(
+            TileCoordsXYZ{ NextLoc }, goalPos, *this, false, RideId::GetNull());
         if (pathfindDirection == INVALID_DIRECTION)
         {
             /* Heuristic search failed for all directions.
@@ -915,10 +915,10 @@ bool Staff::DoEntertainerPathFinding()
     if (((ScenarioRand() & 0xFFFF) <= 0x4000) && IsActionInterruptable())
     {
         Action = (ScenarioRand() & 1) ? PeepActionType::Wave2 : PeepActionType::Joy;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
         EntertainerUpdateNearbyPeeps();
     }
 
@@ -958,11 +958,12 @@ int32_t Staff::GetHireDate() const
     return HireDate;
 }
 
-PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)
+PeepAnimationGroup EntertainerCostumeToSprite(EntertainerCostume entertainerType)
 {
     uint8_t value = static_cast<uint8_t>(entertainerType);
-    PeepSpriteType newSpriteType = static_cast<PeepSpriteType>(value + EnumValue(PeepSpriteType::EntertainerPanda));
-    return newSpriteType;
+    PeepAnimationGroup newAnimationGroup = static_cast<PeepAnimationGroup>(
+        value + EnumValue(PeepAnimationGroup::EntertainerPanda));
+    return newAnimationGroup;
 }
 
 colour_t StaffGetColour(StaffType staffType)
@@ -1113,9 +1114,9 @@ void Staff::UpdateWatering()
 
         Orientation = (Var37 & 3) << 3;
         Action = PeepActionType::StaffWatering;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
+        UpdateCurrentAnimationType();
 
         SubState = 1;
     }
@@ -1177,9 +1178,9 @@ void Staff::UpdateEmptyingBin()
 
         Orientation = (Var37 & 3) << 3;
         Action = PeepActionType::StaffEmptyBin;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
+        UpdateCurrentAnimationType();
 
         SubState = 1;
     }
@@ -1194,7 +1195,7 @@ void Staff::UpdateEmptyingBin()
         UpdateAction();
         Invalidate();
 
-        if (ActionFrame != 11)
+        if (AnimationFrameNum != 11)
             return;
 
         TileElement* tile_element = MapGetFirstElementAt(NextLoc);
@@ -1248,7 +1249,7 @@ void Staff::UpdateSweeping()
     if (!CheckForPath())
         return;
 
-    if (Action == PeepActionType::StaffSweep && ActionFrame == 8)
+    if (Action == PeepActionType::StaffSweep && AnimationFrameNum == 8)
     {
         // Remove sick at this location
         Litter::RemoveAt(GetLocation());
@@ -1266,9 +1267,9 @@ void Staff::UpdateSweeping()
     if (Var37 != 2)
     {
         Action = PeepActionType::StaffSweep;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
+        UpdateCurrentAnimationType();
         return;
     }
     StateReset();
@@ -1394,10 +1395,10 @@ void Staff::UpdateAnswering()
     if (SubState == 0)
     {
         Action = PeepActionType::StaffAnswerCall;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
 
         SubState = 1;
         PeepWindowStateUpdate(this);
@@ -1691,27 +1692,27 @@ void Staff::Tick128UpdateStaff()
     if (AssignedStaffType != StaffType::Security)
         return;
 
-    PeepSpriteType newSpriteType = PeepSpriteType::SecurityAlt;
+    PeepAnimationGroup newAnimationGroup = PeepAnimationGroup::SecurityAlt;
     if (State != PeepState::Patrolling)
-        newSpriteType = PeepSpriteType::Security;
+        newAnimationGroup = PeepAnimationGroup::Security;
 
-    if (SpriteType == newSpriteType)
+    if (AnimationGroup == newAnimationGroup)
         return;
 
-    SpriteType = newSpriteType;
-    ActionSpriteImageOffset = 0;
-    WalkingFrameNum = 0;
+    AnimationGroup = newAnimationGroup;
+    AnimationImageIdOffset = 0;
+    WalkingAnimationFrameNum = 0;
     if (Action < PeepActionType::Idle)
         Action = PeepActionType::Walking;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    if (gSpriteTypeToSlowWalkMap[EnumValue(newSpriteType)])
+    if (gAnimationGroupToSlowWalkMap[EnumValue(newAnimationGroup)])
     {
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    ActionSpriteType = PeepActionSpriteType::Invalid;
-    UpdateCurrentActionSpriteType();
+    AnimationType = PeepAnimationType::Invalid;
+    UpdateCurrentAnimationType();
 }
 
 bool Staff::IsMechanic() const
@@ -2092,9 +2093,9 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
         Orientation = PeepDirection << 3;
 
         Action = (ScenarioRand() & 1) ? PeepActionType::StaffFix2 : PeepActionType::StaffFix;
-        ActionSpriteImageOffset = 0;
-        ActionFrame = 0;
-        UpdateCurrentActionSpriteType();
+        AnimationImageIdOffset = 0;
+        AnimationFrameNum = 0;
+        UpdateCurrentAnimationType();
     }
 
     if (IsActionWalking())
@@ -2106,7 +2107,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
     Invalidate();
 
     uint8_t actionFrame = (Action == PeepActionType::StaffFix) ? 0x25 : 0x50;
-    if (ActionFrame != actionFrame)
+    if (AnimationFrameNum != actionFrame)
     {
         return false;
     }
@@ -2133,10 +2134,10 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
     {
         Orientation = PeepDirection << 3;
         Action = PeepActionType::StaffFix3;
-        ActionSpriteImageOffset = 0;
-        ActionFrame = 0;
+        AnimationImageIdOffset = 0;
+        AnimationFrameNum = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 
     if (IsActionWalking())
@@ -2147,7 +2148,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
     UpdateAction();
     Invalidate();
 
-    if (ActionFrame != 0x65)
+    if (AnimationFrameNum != 0x65)
     {
         return false;
     }
@@ -2238,11 +2239,11 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
     if (!firstRun)
     {
         Orientation = PeepDirection << 3;
-        Action = PeepActionType::StaffCheckboard;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        Action = PeepActionType::StaffCheckBoard;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 
     if (IsActionWalking())
@@ -2354,10 +2355,10 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride& ride)
         Orientation = PeepDirection << 3;
 
         Action = PeepActionType::StaffFix;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 
     if (IsActionWalking())
@@ -2382,10 +2383,10 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
         Orientation = PeepDirection << 3;
 
         Action = PeepActionType::StaffFixGround;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 
     if (IsActionWalking())
@@ -2396,13 +2397,14 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
     UpdateAction();
     Invalidate();
 
-    if (ActionFrame == 0x28)
+    if (AnimationFrameNum == 0x28)
     {
         ride.mechanic_status = RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES;
         ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     }
 
-    if (ActionFrame == 0x13 || ActionFrame == 0x19 || ActionFrame == 0x1F || ActionFrame == 0x25 || ActionFrame == 0x2B)
+    if (AnimationFrameNum == 0x13 || AnimationFrameNum == 0x19 || AnimationFrameNum == 0x1F || AnimationFrameNum == 0x25
+        || AnimationFrameNum == 0x2B)
     {
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::MechanicFix, GetLocation());
     }
@@ -2472,10 +2474,10 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
 
         Orientation = PeepDirection << 3;
         Action = PeepActionType::StaffAnswerCall2;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 
     if (!IsActionWalking())

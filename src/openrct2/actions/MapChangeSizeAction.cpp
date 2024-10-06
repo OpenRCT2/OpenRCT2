@@ -59,7 +59,7 @@ GameActions::Result MapChangeSizeAction::Query() const
 
 GameActions::Result MapChangeSizeAction::Execute() const
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     // Expand map
     while (_targetSize.x > gameState.MapSize.x)
     {

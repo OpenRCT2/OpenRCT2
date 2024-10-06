@@ -31,6 +31,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  get_artifact_name:
+    name: Get version info
+    runs-on: ubuntu-latest
+    outputs:
+      name: ${{ steps.ghd.outputs.describe }}
+      short-sha: ${{ steps.ghd.outputs.short-sha }}
+      distance: ${{ steps.ghd.outputs.distance }}
+      tag: ${{ steps.ghd.outputs.tag }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Git describe
+        id: ghd
+        uses: proudust/gh-describe@v2
   lint-commit:
     name: Lint Commit Message
     if: github.event_name == 'pull_request'
@@ -49,7 +63,7 @@ jobs:
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
-    container: openrct2/openrct2-build:4-format
+    container: openrct2/openrct2-build:17-format
     defaults:
       run:
         shell: sh
@@ -72,6 +86,7 @@ jobs:
   g2dat:
     name: g2.dat
     runs-on: ubuntu-latest
+    needs: get_artifact_name
     steps:
       - name: Checkout OpenRCT2
         uses: actions/checkout@v4
@@ -89,12 +104,12 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: g2.dat
+          name: g2-${{ needs.get_artifact_name.outputs.name }}.dat
           path: g2.dat
   windows:
     name: Windows
     runs-on: windows-latest
-    needs: check-code-formatting
+    needs: [check-code-formatting, get_artifact_name]
     strategy:
       fail-fast: false
       matrix:
@@ -112,11 +127,6 @@ jobs:
           fi
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Git describe for shallow checkout
-        id: ghd
-        uses: proudust/gh-describe@v2
-      - name: Update GA environment
-        run: echo "OPENRCT2_DESCRIBE=${{ steps.ghd.outputs.describe }}" >> $GITHUB_ENV
       - name: Install MSVC problem matcher
         uses: ammaraskar/msvc-problem-matcher@master
       - name: Build OpenRCT2
@@ -127,11 +137,28 @@ jobs:
           build-portable
           build-symbols
           build-installer -i
-      - name: Upload artifacts (CI)
+      - name: Rename artifacts
+        run: |
+          mv artifacts/openrct2-portable-*.zip artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-portable-$PLATFORM.zip
+          mv artifacts/openrct2-installer-*.exe artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-installer-$PLATFORM.exe
+          mv artifacts/openrct2-symbols-*.zip artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-symbols-$PLATFORM.zip
+      - name: Upload portable artifact (CI)
         uses: actions/upload-artifact@v4
         with:
-          name: OpenRCT2-${{ runner.os }}-${{ matrix.platform }}
-          path: artifacts
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-portable-${{ matrix.platform }}
+          path: artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-portable-${{ matrix.platform }}.zip
+          if-no-files-found: error
+      - name: Upload installer artifact (CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-installer-${{ matrix.platform }}
+          path: artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
+          if-no-files-found: error
+      - name: Upload symbols artifact (CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-symbols-${{ matrix.platform }}
+          path: artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-symbols-${{ matrix.platform }}.zip
           if-no-files-found: error
       - name: Run Tests
         if: matrix.platform != 'arm64'
@@ -145,17 +172,17 @@ jobs:
         run: |
           . scripts/setenv
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/openrct2-portable-*.zip "windows-portable-$PLATFORM.zip" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-            upload-build artifacts/openrct2-installer-*.exe "windows-installer-$PLATFORM.exe" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-            upload-build artifacts/openrct2-symbols-*.zip "windows-symbols-$PLATFORM.zip" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-            upload-backtrace-symbols artifacts/openrct2-symbols-*.zip
+            upload-build artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-portable-$PLATFORM.zip "windows-portable-$PLATFORM.zip" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-installer-$PLATFORM.exe "windows-installer-$PLATFORM.exe" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-symbols-$PLATFORM.zip "windows-symbols-$PLATFORM.zip" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-backtrace-symbols artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-windows-symbols-*.zip
           else
               echo 'Not going to push build'
           fi
   windows-mingw:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
-    needs: check-code-formatting
+    needs: [check-code-formatting, get_artifact_name]
     container: openrct2/openrct2-build:14-mingw
     strategy:
       fail-fast: false
@@ -185,28 +212,28 @@ jobs:
         if: matrix.platform == 'NT5.1'
         uses: actions/upload-artifact@v4
         with:
-          name: OpenRCT2-Windows-${{ matrix.platform }}
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-Windows-mingw-${{ matrix.platform }}
           path: bin/openrct2.exe
           if-no-files-found: error
   macos-cmake:
     name: macOS (${{ matrix.arch }}) using CMake
-    runs-on: macos-12
+    runs-on: macos-14
     needs: check-code-formatting
     strategy:
       fail-fast: false
       matrix:
         arch: [x64, arm64]
         include:
-          - arch: x64
-            cache_key: macos-x64
+          - arch: arm64
+            cache_key: macos-arm64
             # Note: only build/run tests on the native architecture of the CI agent
             # GitHub macos-12 agents are all Intel, but as of 2024-04-25 new images, e.g. macos-14 (current macos-latest) are arm64
             # See https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
-            build_flags: -DARCH="x86_64" -DWITH_TESTS=on
+            build_flags: -DARCH="arm64" -DWITH_TESTS=on
             run_tests: true
-          - arch: arm64
-            cache_key: macos-arm64
-            build_flags: -DARCH="arm64"
+          - arch: x64
+            cache_key: macos-x64
+            build_flags: -DARCH="x86_64"
             run_tests: false
     steps:
       - name: Checkout
@@ -223,7 +250,8 @@ jobs:
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
         run: |
-          HOMEBREW_NO_ANALYTICS=1 brew install ninja pkg-config
+          # NB: GitHub comes with `pkg-config` preinstalled on macOS images
+          HOMEBREW_NO_ANALYTICS=1 brew install ninja
           . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=on ${{ matrix.build_flags }}
       - name: Build artifacts
         run: |
@@ -249,8 +277,8 @@ jobs:
         if: ${{matrix.run_tests}}
   macos-universal:
     name: macOS universal app bundle
-    runs-on: macos-12
-    needs: macos-cmake
+    runs-on: macos-14
+    needs: [macos-cmake, get_artifact_name]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -278,25 +306,25 @@ jobs:
           mv macos_universal/OpenRCT2-universal.app artifacts/OpenRCT2.app
           echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
           cd artifacts
-          zip -rqy openrct2-macos.zip OpenRCT2.app
+          zip -rqy OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-macos-universal.zip OpenRCT2.app
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v4
         with:
-          name: OpenRCT2-${{ runner.os }}-universal
-          path: artifacts/openrct2-macos.zip
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-universal
+          path: artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-macos-universal.zip
           if-no-files-found: error
       - name: Upload artifacts (openrct2.org)
         run: |
           . scripts/setenv
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/openrct2-macos.zip macos-universal.zip $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-macos-universal.zip macos-universal.zip $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
             echo 'Not going to push build'
           fi
   linux-portable:
     name: ${{ matrix.distro }} Linux (${{ matrix.release }}, ${{ matrix.platform }}, portable)
     runs-on: ubuntu-latest
-    needs: check-code-formatting
+    needs: [check-code-formatting, get_artifact_name]
     container: ${{ matrix.image }}
     strategy:
       fail-fast: false
@@ -305,19 +333,14 @@ jobs:
           # Use `-fno-var-tracking-assignments` to reduce amount of produced debug information. This is necessary due to 100MiB limit of GitHub / openrct2.org API.
           - platform: x86_64
             distro: Ubuntu
-            release: jammy
-            image: openrct2/openrct2-build:14-jammy
+            release: noble
+            image: openrct2/openrct2-build:16-noble
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
           - platform: x86_64
             distro: Debian
-            release: bullseye
-            image: openrct2/openrct2-build:14-bullseye
+            release: bookworm
+            image: openrct2/openrct2-build:16-bookworm
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
-          - platform: i686
-            distro: Ubuntu
-            release: jammy
-            image: openrct2/openrct2-build:14-jammy32
-            build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g -gz" -DWITH_TESTS=off
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -330,32 +353,33 @@ jobs:
       - name: Install GCC problem matcher
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON ${{ matrix.build_flags }}
+        run: |
+          . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON ${{ matrix.build_flags }}
+          strip bin/install/usr/bin/libopenrct2.so
       - name: Build artifacts
-        run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}.tar.gz bin/install/usr
+        run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-${{ matrix.release }}-${{ matrix.platform }}.tar.gz bin/install/usr
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v4
         with:
-          name: OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-${{ matrix.release }}-${{ matrix.platform }}
           path: artifacts
           if-no-files-found: error
       - name: Run Tests
         run: . scripts/setenv -q && run-tests
-        
       - name: Upload artifacts (openrct2.org)
         run: |
           # Build identification code: https://github.com/Limetric/OpenRCT2.org/blob/e5b738f3dadcc5a3b78e8dfd434756ff31eaa1d3/src/misc/releaseAsset.js#L94-L116
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}.tar.gz linux-${{ matrix.platform }}-${{ matrix.distro }}.tar.gz $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-${{ matrix.release }}-${{ matrix.platform }}.tar.gz linux-${{ matrix.platform }}-${{ matrix.distro }}.tar.gz $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
             echo 'Not going to push build'
           fi
   linux-appimage:
     name: Ubuntu Linux (AppImage, x86_64)
     runs-on: ubuntu-latest
-    needs: check-code-formatting
-    container: openrct2/openrct2-build:14-jammy
+    needs: [check-code-formatting, get_artifact_name]
+    container: openrct2/openrct2-build:16-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -366,13 +390,17 @@ jobs:
       - name: Get pre-reqs
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
-        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
+        run: |
+          . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
+          strip bin/install/usr/bin/openrct2
       - name: Build AppImage
+        env:
+          APPIMAGE_FILE_NAME: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-linux-x86_64.AppImage
         run: . scripts/setenv -q && build-appimage
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v4
         with:
-          name: OpenRCT2-AppImage
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-AppImage
           path: artifacts
           if-no-files-found: error
       - name: Upload artifacts (openrct2.org)
@@ -380,7 +408,7 @@ jobs:
           # Build identification code: https://github.com/Limetric/OpenRCT2.org/blob/e5b738f3dadcc5a3b78e8dfd434756ff31eaa1d3/src/misc/releaseAsset.js#L94-L116
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/OpenRCT2-x86_64.AppImage linux.AppImage $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-linux-x86_64.AppImage linux.AppImage $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
             echo 'Not going to push build'
           fi
@@ -410,10 +438,10 @@ jobs:
             echo 'Image not pushed'
           fi
   linux-clang:
-    name: Ubuntu Linux (jammy, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
+    name: Ubuntu Linux (noble, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:14-jammy
+    container: openrct2/openrct2-build:16-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -428,8 +456,8 @@ jobs:
   linux-clang-tests:
     name: Ubuntu Linux (debug) using clang, coverage enabled
     runs-on: ubuntu-latest
-    needs: check-code-formatting
-    container: openrct2/openrct2-build:14-jammy
+    needs: [check-code-formatting, get_artifact_name]
+    container: openrct2/openrct2-build:16-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -460,7 +488,7 @@ jobs:
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v4
         with:
-          name: OpenRCT2-${{ runner.os }}-coverage
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-${{ runner.os }}-coverage
           path: |
             bin/*profdata*
             bin/coverage.json*
@@ -469,7 +497,7 @@ jobs:
   android:
     name: Android
     runs-on: ubuntu-latest
-    needs: check-code-formatting
+    needs: [check-code-formatting, get_artifact_name]
     container: openrct2/openrct2-build:14-android
     steps:
       - name: Checkout
@@ -484,21 +512,53 @@ jobs:
         run: |
           . scripts/setenv
           pushd src/openrct2-android
-            ./gradlew app:assembleRelease
+          ./gradlew app:assembleRelease
           popd
           mkdir -p artifacts
-          mv src/openrct2-android/app/build/outputs/apk/release/app-release.apk artifacts/openrct2-arm.apk
+          mv src/openrct2-android/app/build/outputs/apk/release/app-release.apk artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-android-arm.apk
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v4
         with:
-          name: OpenRCT2-Android
+          name: OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-Android
           path: artifacts
           if-no-files-found: error
       - name: Upload artifacts (openrct2.org)
         run: |
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/openrct2-arm.apk android-arm.apk $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-android-arm.apk android-arm.apk $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
             echo 'Not going to push build'
           fi
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: [get_artifact_name, linux-portable, android, linux-appimage, macos-universal, windows]
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - name: Concatenate sha1 files
+        run: |
+          ls -lR
+          pushd ${{ github.workspace }}
+          sha1sum OpenRCT2-* > openrct2-${{ needs.get_artifact_name.outputs.name }}-sha1sums.txt
+          popd
+      - name: Create release notes
+        run: |
+          echo "SHA1 checksums:" >> release_notes.txt
+          echo "\`\`\`" >> release_notes.txt
+          cat openrct2-${{ needs.get_artifact_name.outputs.name }}-sha1sums.txt >> release_notes.txt
+          echo "\`\`\`" >> release_notes.txt
+          echo "" >> release_notes.txt
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: |
+            openrct2-${{ needs.get_artifact_name.outputs.name }}-sha1sums.txt
+            OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-*
+          body_path: release_notes.txt
+          tag_name: ${{ needs.get_artifact_name.outputs.tag }}

@@ -20,22 +20,22 @@ using namespace OpenRCT2;
 
 /** rct2: 0x00982134 */
 constexpr bool peep_slow_walking_types[] = {
-    false, // PeepSpriteType::Normal
-    false, // PeepSpriteType::Handyman
-    false, // PeepSpriteType::Mechanic
-    false, // PeepSpriteType::Security
-    false, // PeepSpriteType::EntertainerPanda
-    false, // PeepSpriteType::EntertainerTiger
-    false, // PeepSpriteType::EntertainerElephant
-    false, // PeepSpriteType::EntertainerRoman
-    false, // PeepSpriteType::EntertainerGorilla
-    false, // PeepSpriteType::EntertainerSnowman
-    false, // PeepSpriteType::EntertainerKnight
-    true,  // PeepSpriteType::EntertainerAstronaut
-    false, // PeepSpriteType::EntertainerBandit
-    false, // PeepSpriteType::EntertainerSheriff
-    true,  // PeepSpriteType::EntertainerPirate
-    true,  // PeepSpriteType::Balloon
+    false, // PeepAnimationGroup::Normal
+    false, // PeepAnimationGroup::Handyman
+    false, // PeepAnimationGroup::Mechanic
+    false, // PeepAnimationGroup::Security
+    false, // PeepAnimationGroup::EntertainerPanda
+    false, // PeepAnimationGroup::EntertainerTiger
+    false, // PeepAnimationGroup::EntertainerElephant
+    false, // PeepAnimationGroup::EntertainerRoman
+    false, // PeepAnimationGroup::EntertainerGorilla
+    false, // PeepAnimationGroup::EntertainerSnowman
+    false, // PeepAnimationGroup::EntertainerKnight
+    true,  // PeepAnimationGroup::EntertainerAstronaut
+    false, // PeepAnimationGroup::EntertainerBandit
+    false, // PeepAnimationGroup::EntertainerSheriff
+    true,  // PeepAnimationGroup::EntertainerPirate
+    true,  // PeepAnimationGroup::Balloon
 };
 
 StaffSetCostumeAction::StaffSetCostumeAction(EntityId spriteIndex, EntertainerCostume costume)
@@ -98,14 +98,14 @@ GameActions::Result StaffSetCostumeAction::Execute() const
     }
 
     auto spriteType = EntertainerCostumeToSprite(_costume);
-    staff->SpriteType = spriteType;
+    staff->AnimationGroup = spriteType;
     staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     if (peep_slow_walking_types[EnumValue(spriteType)])
     {
         staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
-    staff->ActionFrame = 0;
-    staff->UpdateCurrentActionSpriteType();
+    staff->AnimationFrameNum = 0;
+    staff->UpdateCurrentAnimationType();
     staff->Invalidate();
 
     WindowInvalidateByNumber(WindowClass::Peep, _spriteIndex);

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 
 #include <cstdint>
 #include <string_view>
@@ -187,29 +187,29 @@ enum : PaletteIndex
     PALETTE_INDEX_254 = 254, // Primary remap 11
 };
 
-constexpr size_t PALETTE_COUNT = 256;
+constexpr size_t kPaletteCount = 256;
 
-constexpr uint8_t PALETTE_OFFSET_DYNAMIC = PALETTE_INDEX_10;
-constexpr uint8_t PALETTE_LENGTH_DYNAMIC = 236;
+constexpr uint8_t kPaletteOffsetDynamic = PALETTE_INDEX_10;
+constexpr uint8_t kPaletteLengthDynamic = 236;
 
-constexpr uint8_t PALETTE_OFFSET_WATER_WAVES = PALETTE_INDEX_230;
-constexpr uint8_t PALETTE_OFFSET_WATER_SPARKLES = PALETTE_INDEX_235;
-constexpr uint8_t PALETTE_LENGTH_WATER_WAVES = 5;
-constexpr uint8_t PALETTE_LENGTH_WATER_SPARKLES = 5;
+constexpr uint8_t kPaletteOffsetWaterWaves = PALETTE_INDEX_230;
+constexpr uint8_t kPaletteOffsetWaterSparkles = PALETTE_INDEX_235;
+constexpr uint8_t kPaletteLengthWaterWaves = 5;
+constexpr uint8_t kPaletteLengthWaterSparkles = 5;
 
-constexpr uint8_t PALETTE_OFFSET_TRACK_RAILS = PALETTE_INDEX_240;
-constexpr uint8_t PALETTE_LENGTH_TRACK_RAILS = 3;
+constexpr uint8_t kPaletteOffsetTrackRails = PALETTE_INDEX_240;
+constexpr uint8_t kPaletteLengthTrackRails = 3;
 
-constexpr uint8_t PALETTE_OFFSET_REMAP_PRIMARY = PALETTE_INDEX_243;
-constexpr uint8_t PALETTE_OFFSET_REMAP_SECONDARY = PALETTE_INDEX_202;
-constexpr uint8_t PALETTE_OFFSET_REMAP_TERTIARY = PALETTE_INDEX_46;
-constexpr uint8_t PALETTE_LENGTH_REMAP = 12;
+constexpr uint8_t kPaletteOffsetRemapPrimary = PALETTE_INDEX_243;
+constexpr uint8_t kPaletteOffsetRemapSecondary = PALETTE_INDEX_202;
+constexpr uint8_t kPaletteOffsetRemapTertiary = PALETTE_INDEX_46;
+constexpr uint8_t kPaletteLengthRemap = 12;
 
-constexpr uint8_t PALETTE_OFFSET_ANIMATED = PALETTE_INDEX_230;
-constexpr uint8_t PALETTE_LENGTH_ANIMATED = 16;
+constexpr uint8_t kPaletteOffsetAnimated = PALETTE_INDEX_230;
+constexpr uint8_t kPaletteLengthAnimated = 16;
 
-constexpr uint8_t COLOUR_NUM_ORIGINAL = 32;
-constexpr uint8_t COLOUR_NUM_NORMAL = 54;
+constexpr uint8_t kColourNumOriginal = 32;
+constexpr uint8_t kColourNumNormal = 54;
 
 static constexpr uint8_t kLegacyColourFlagTranslucent = (1 << 7);
 
@@ -269,5 +269,5 @@ namespace OpenRCT2::Colour
 uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
 #endif
 
-typedef uint8_t BlendColourMapType[PALETTE_COUNT][PALETTE_COUNT];
+typedef uint8_t BlendColourMapType[kPaletteCount][kPaletteCount];
 BlendColourMapType* GetBlendColourMap();

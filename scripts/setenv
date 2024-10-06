@@ -6,7 +6,7 @@ set -e
 # It should be dot sourced into your environment
 if [[ "$GITHUB_ACTIONS" != "true" ]]; then
     export OPENRCT2_BUILD_SERVER=$(hostname)
-    export OPENRCT2_VERSION=0.4.14
+    export OPENRCT2_VERSION=$(grep 'OPENRCT2_VERSION:' openrct2/.github/workflows/ci.yml | sed 's/.*OPENRCT2_VERSION: *//;s/".*//')
     GITHUB_REF=$(git rev-parse --symbolic-full-name HEAD)
     GITHUB_SHA=$(git rev-parse HEAD)
 fi
@@ -41,7 +41,7 @@ fi
 
 # Get the short SHA1
 export OPENRCT2_SHA1=$GITHUB_SHA
-export OPENRCT2_SHA1_SHORT=${OPENRCT2_SHA1::7}
+export OPENRCT2_SHA1_SHORT=${OPENRCT2_SHA1::10}
 unset OPENRCT2_VERSION_EXTRA
 if [[ "$OPENRCT2_TAG" != "true" ]]; then
     export OPENRCT2_VERSION_EXTRA=$OPENRCT2_BRANCH-$OPENRCT2_SHA1_SHORT

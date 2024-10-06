@@ -27,8 +27,7 @@ namespace OpenRCT2::Audio
     constexpr size_t kMaxVehicleSounds = 14;
     constexpr size_t kMaxDefaultMusic = 46;
     constexpr uint16_t kSoundIdNull = 0xFFFF;
-
-#define AUDIO_PLAY_AT_CENTRE 0x8000
+    constexpr int32_t kAudioPlayAtCentre = 0x8000;
 
     struct IAudioChannel;
     struct IAudioSource;
@@ -210,7 +209,7 @@ namespace OpenRCT2::Audio
      * Plays the specified sound.
      * @param soundId The sound effect to play.
      * @param volume The volume at which the sound effect should be played.
-     * @param pan The pan at which the sound effect should be played. If set to anything other than AUDIO_PLAY_AT_CENTRE, plays
+     * @param pan The pan at which the sound effect should be played. If set to anything other than kAudioPlayAtCentre, plays
      * the sound at a position relative to the centre of the viewport.
      */
     void Play(SoundId soundId, int32_t volume, int32_t pan);

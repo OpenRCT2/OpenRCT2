@@ -1828,7 +1828,7 @@ STR_2482    :Profito: po {CURRENCY} por semajno,  Parkvaloro: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Profito semajna: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Profito semajna: {RED}{CURRENCY2DP}
 STR_2487    :Montri ‘faktajn’ nomojn de gastoj
-STR_2488    :Baskuligi inter montrado de ‘faktaj’ nomoj de gastoj, kaj gastnumeroj
+STR_2488    :Baskuligi inter montrado de ‘faktaj’ gastonomoj kaj gastonumeroj
 STR_2489    :Klavarokomandojn…
 STR_2490    :Klavarokomandojn
 STR_2491    :Restarigi klavojn
@@ -1910,8 +1910,8 @@ STR_2670    :Ruluma baskulo
 STR_2680    :Ĉiom da esplorado estas kompleta
 STR_2684    :Granda amaso da gastoj alvenas
 STR_2685    :Parametroj de simplaĵa bruo
-STR_2686    :Malalta:
-STR_2687    :Alta:
+STR_2686    :Min. alteco de tero:
+STR_2687    :Maks. alteco de tero:
 STR_2688    :Baza Frekvenco:
 STR_2689    :Oktavoj:
 STR_2690    :Generado de Mapo
@@ -3165,9 +3165,9 @@ STR_6041    :{BLACK}Neniuj mekanikistoj estas dungitaj!
 STR_6042    :Ŝargi altmapon
 STR_6043    :Elekti altmapon
 STR_6044    :Glatigi altmapon
-STR_6045    :Forteco
+STR_6045    :Forteco:
 STR_6046    :Normigi altmapon
-STR_6047    :Glatigi blokojn
+STR_6047    :Glatigi randojn de blokoj
 STR_6048    :Eraro de altmapo
 STR_6049    :Eraro legante PNG
 STR_6050    :Eraro legante rastrumon
@@ -3175,7 +3175,7 @@ STR_6052    :La altmapo estas tro granda, kaj estos fortranĉita
 STR_6053    :La altmapo ne eblas esti normaligita
 STR_6054    :Nur 24-bitoj-rastrumoj estas subtenataj
 STR_6055    :Altmapo-Dosiero de OpenRCT2
-STR_6056    :{Silentigi
+STR_6056    :Silentigi
 STR_6057    :Montri apartan butonon por la Silentigo-Opcio en la ilobreto
 STR_6058    :Silentigi
 STR_6059    :»
@@ -3739,6 +3739,45 @@ STR_6667    :Faŭno
 STR_6668    :Trompoj de dungitaro
 STR_6669    :Montri trompojn de dungitaro
 STR_6670    :Konduto de gastoj
+STR_6671    :Montri ‘faktajn’ nomojn de dungitaro
+STR_6672    :Baskuligi inter montrado de ‘faktaj’ dungitonomoj kaj dungitonumeroj
+STR_6673    :Travidebla
+STR_6674    :{MONTH}, Jaro {COMMA16}
+STR_6675    :Nomoj de Gastoj
+STR_6676    :Almenaŭ unu objecto de gastonomo elektendas
+STR_6677    :Aldoni strandojn ĉirkaŭ amasoj de akvo
+STR_6678    :Fonto de altmapo:
+STR_6679    :Ebenaĵo
+STR_6680    :Simplaĵa bruo
+STR_6681    :Dosiero de altmapo
+STR_6682    :Mapogenerilo - Generilo
+STR_6683    :Mapogenerilo - Tereno
+STR_6684    :Mapogenerilo - Akvo
+STR_6685    :Mapogenerilo - Arbaroj
+STR_6686    :Proporcio de arbo al tero:
+STR_6687    :Min. alteco de arboj:
+STR_6688    :Maks. alteco de arboj:
+STR_6689    :{UINT16}%
+STR_6690    :Minimuma alteco de tero
+STR_6691    :Entajpu minimuman altecon de tero inter {COMMA16} kaj {COMMA16}
+STR_6692    :Maksimuma alteco de tero
+STR_6693    :Entajpu maksimuman altecon de tero inter {COMMA16} kaj {COMMA16}
+STR_6694    :Minimuma alteco de arboj
+STR_6695    :Entajpu minimuman altecon de arboj inter {COMMA16} kaj {COMMA16}
+STR_6696    :Maksimuma alteco de arboj
+STR_6697    :Entajpu maksimuman altecon de arboj inter {COMMA16} akj {COMMA16}
+STR_6698    :Proporcio de arbo al tero
+STR_6699    :Entajpu proporcion de arbo al tero inter {COMMA16} kaj {COMMA16}
+STR_6700    :Baza frekvenco de simplaĵo
+STR_6701    :Entajpu bazan frekvencon inter {COMMA2DP32} kaj {COMMA2DP32}
+STR_6702    :Oktavoj de simplaĵo
+STR_6703    :Entajpu oktavojn inter {COMMA16} kaj {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Foliumi...
+STR_6706    :{WINDOW_COLOUR_2}Nuna bildodosiero: {BLACK}{STRING}
+STR_6707    :(neniu elektita)
+STR_6708    :Glata forteco
+STR_6709    :Entajpu glatan fortecon inter {COMMA16} kaj {COMMA16}
 
 #############
 # Scenarios #

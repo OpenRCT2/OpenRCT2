@@ -34,6 +34,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
+#include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/Slope.h>
 #include <vector>
 
@@ -206,7 +207,7 @@ namespace OpenRCT2::Ui::Windows
         constexpr uint16_t FlashGuests = (1 << 1);
         constexpr uint16_t FlashStaff = (1 << 3);
         constexpr uint16_t SwitchColour = (1 << 15); // Every couple ticks the colour switches
-    }                                                // namespace MapFlashingFlags
+    } // namespace MapFlashingFlags
 
     class MapWindow final : public Window
     {
@@ -725,8 +726,8 @@ namespace OpenRCT2::Ui::Windows
 
             // calculate centre view point of viewport and transform it to minimap coordinates
 
-            cx = ((mainWindow->viewport->view_width >> 1) + mainWindow->viewport->viewPos.x) >> 5;
-            dx = ((mainWindow->viewport->view_height >> 1) + mainWindow->viewport->viewPos.y) >> 4;
+            cx = ((mainWindow->viewport->ViewWidth() / 2) + mainWindow->viewport->viewPos.x) / kCoordsXYStep;
+            dx = ((mainWindow->viewport->ViewHeight() / 2) + mainWindow->viewport->viewPos.y) / kCoordsXYHalfTile;
             cx += offset.x * getPracticalMapSize();
             dx += offset.y * getPracticalMapSize();
 
@@ -1043,8 +1044,9 @@ namespace OpenRCT2::Ui::Windows
             mapOffset.y *= getPracticalMapSize();
 
             auto leftTop = widgetOffset + mapOffset
-                + ScreenCoordsXY{ (mainViewport->viewPos.x >> 5), (mainViewport->viewPos.y >> 4) };
-            auto rightBottom = leftTop + ScreenCoordsXY{ mainViewport->view_width >> 5, mainViewport->view_height >> 4 };
+                + ScreenCoordsXY{ (mainViewport->viewPos.x / kCoordsXYStep), (mainViewport->viewPos.y / kCoordsXYHalfTile) };
+            auto rightBottom = leftTop
+                + ScreenCoordsXY{ mainViewport->ViewWidth() / kCoordsXYStep, mainViewport->ViewHeight() / kCoordsXYHalfTile };
             auto rightTop = ScreenCoordsXY{ rightBottom.x, leftTop.y };
             auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 

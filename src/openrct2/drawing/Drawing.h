@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/CallingConventions.h"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
@@ -115,22 +115,35 @@ struct DrawPixelInfo
     int32_t pitch{}; // note: this is actually (pitch - width)
     ZoomLevel zoom_level{};
 
-    /**
-     * As x and y are based on 1:1 units, zooming in will cause a reduction in precision when mapping zoomed-in
-     * pixels to 1:1 pixels. When x, y are not a multiple of the zoom level, the remainder will be non-zero.
-     * The drawing of sprites will need to be offset by this amount.
-     */
-    uint8_t remX{};
-    uint8_t remY{};
-
     // Last position of drawn text.
     ScreenCoordsXY lastStringPos{};
 
     OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
 
-    size_t GetBytesPerRow() const;
     uint8_t* GetBitsOffset(const ScreenCoordsXY& pos) const;
     DrawPixelInfo Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const;
+
+    [[nodiscard]] constexpr int32_t WorldX() const
+    {
+        return zoom_level.ApplyTo(x);
+    }
+    [[nodiscard]] constexpr int32_t WorldY() const
+    {
+        return zoom_level.ApplyTo(y);
+    }
+    [[nodiscard]] constexpr int32_t WorldWidth() const
+    {
+        return zoom_level.ApplyTo(width);
+    }
+    [[nodiscard]] constexpr int32_t WorldHeight() const
+    {
+        return zoom_level.ApplyTo(height);
+    }
+
+    [[nodiscard]] constexpr int32_t LineStride() const
+    {
+        return width + pitch;
+    }
 };
 
 struct TextDrawInfo
@@ -211,6 +224,10 @@ enum
     INSET_RECT_FLAG_BORDER_INSET = (1 << 5),      // 0x20
     INSET_RECT_FLAG_FILL_DONT_LIGHTEN = (1 << 6), // 0x40
     INSET_RECT_FLAG_FILL_MID_LIGHT = (1 << 7),    // 0x80
+
+    INSET_RECT_F_30 = (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE),
+    INSET_RECT_F_60 = (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN),
+    INSET_RECT_F_E0 = (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT),
 };
 
 enum class FilterPaletteID : int32_t
@@ -401,6 +418,7 @@ public:
     {
     }
 
+    bool operator==(const PaletteMap& lhs) const;
     uint8_t& operator[](size_t index);
     uint8_t operator[](size_t index) const;
     uint8_t Blend(uint8_t src, uint8_t dst) const;
@@ -506,10 +524,6 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
 }
 
 constexpr uint8_t kPaletteTotalOffsets = 192;
-
-#define INSET_RECT_F_30 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE)
-#define INSET_RECT_F_60 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN)
-#define INSET_RECT_F_E0 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT)
 
 constexpr int8_t kMaxScrollingTextModes = 38;
 
@@ -632,5 +646,7 @@ void UpdatePaletteEffects();
 
 void RefreshVideo();
 void ToggleWindowedMode();
+
+void DebugDPI(DrawPixelInfo& dpi);
 
 #include "NewDrawing.h"

@@ -1829,7 +1829,7 @@ STR_2482    :Winst: {CURRENCY} per week,  parkwaarde: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Wekelijkse winst: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Wekelijkse winst: {RED}{CURRENCY2DP}
 STR_2487    :‘Echte’ namen van bezoekers tonen
-STR_2488    :Wissel tussen het tonen van ‘echte’ namen van bezoekers en bezoekernummers
+STR_2488    :Wissel tussen het tonen van ‘echte’ namen van bezoekers en bezoekernummers.
 STR_2489    :Sneltoetsen…
 STR_2490    :Sneltoetsen
 STR_2491    :Toetsen herstellen
@@ -1911,8 +1911,8 @@ STR_2670    :Scroll
 STR_2680    :Alle onderzoeken zijn voltooid
 STR_2684    :Er arriveert een grote groep bezoekers
 STR_2685    :Parameters voor Simplex noise
-STR_2686    :Minimum:
-STR_2687    :Maximum:
+STR_2686    :Minimumlandhoogte:
+STR_2687    :Maximumlandhoogte:
 STR_2688    :Basisfrequentie:
 STR_2689    :Octaven:
 STR_2690    :Kaartgenerator
@@ -2603,8 +2603,8 @@ STR_5357    :{BLACK}Misselijkheidstol.:
 STR_5358    :{BLACK}WC:
 STR_5359    :Bez. verwijderen
 STR_5360    :Verwijdert alle bezoekers van de kaart
-STR_5361    :Geef alle bez.:
-STR_5362    :{BLACK}Zet de voorkeursintensiteit van alle bez. op:
+STR_5361    :Inventaris
+STR_5362    :{BLACK}Voorkeursintensiteit
 STR_5363    :Meer dan 1
 STR_5364    :Minder dan 15
 STR_5365    :{BLACK}Snelh. werknemers:
@@ -2634,7 +2634,7 @@ STR_5457    :Ondersteuningslimieten uitschakelen
 STR_5458    :Met de klok mee draaien
 STR_5459    :Tegen de klok in draaien
 STR_5460    :Beeld tegen de klok in draaien
-STR_5461    :Bezoekersparameters aanpassen
+STR_5461    :Parameters aanpassen voor alle bezoekers
 STR_5462    :{CURRENCY}
 STR_5463    :Doel: Plezier hebben!
 STR_5464    :Algemeen
@@ -3164,7 +3164,7 @@ STR_6041    :{BLACK}Er zijn geen monteurs ingehuurd!
 STR_6042    :Hoogtekaart laden
 STR_6043    :Hoogtekaart selecteren
 STR_6044    :Hoogtekaart verzachten
-STR_6045    :Sterkte
+STR_6045    :SterkteL
 STR_6046    :Hoogtekaart normaliseren
 STR_6047    :Landschap verzachten
 STR_6048    :Fout bij het verwerken van hoogtekaart
@@ -3728,6 +3728,55 @@ STR_6657    :Niet in bezit
 STR_6658    :Land dat niet bij het park hoort en ook niet te koop is.
 STR_6659    :Bezoekers negeren prijzen
 STR_6660    :Als deze optie is ingeschakeld zijn bezoekers bereid om elke prijs te betalen voor attracties en kraampjes.
+STR_6661    :Alles willek.
+STR_6662    :Geeft elk voertuig een willekeurige kleur.
+STR_6663    :Datumcheats
+STR_6664    :Datumcheats tonen
+STR_6665    :Natuur- en weercheats
+STR_6666    :Natuur- en weercheats tonen
+STR_6667    :Fauna
+STR_6668    :Werknemerscheats
+STR_6669    :Werknemerscheats tonen
+STR_6670    :Gedrag bezoekers
+STR_6671    :‘Echte’ namen van werknemers tonen
+STR_6672    :Wissel tussen het tonen van ‘echte’ namen van werknemers en werknemersnummers.
+STR_6673    :Doorschijnend
+STR_6674    :{MONTH}, jaar {COMMA16}
+STR_6675    :Bezoekersnamen
+STR_6676    :Er moet tenminste één object voor bezoekersnamen zijn geselecteerd.
+STR_6677    :Stranden toevoegen aan meer- en rivieroevers
+STR_6678    :Bronbestand:
+STR_6679    :Vlak land
+STR_6680    :Simplex-ruis
+STR_6681    :Hoogtekaart
+STR_6682    :Mapgenerator - Generator
+STR_6683    :Mapgenerator - Terrein
+STR_6684    :Mapgenerator - Water
+STR_6685    :Mapgenerator - Bossen
+STR_6686    :Ratio bomen/land:
+STR_6687    :Minimale boomhoogte:
+STR_6688    :Maximale boomhoogte:
+STR_6689    :{UINT16}%
+STR_6690    :Minimumlandhoogte
+STR_6691    :Voeg een minimumhoogte in tussen {COMMA16} en {COMMA16}
+STR_6692    :Maximumlandhoogte
+STR_6693    :Voeg een maximumhoogte in tussenn {COMMA16} en {COMMA16}
+STR_6694    :Minimale boomhoogte
+STR_6695    :Voeg een minimumhoogte in tussen {COMMA16} en {COMMA16}
+STR_6696    :Maximale boomhoogte
+STR_6697    :Voeg een maximumhoogte in tussenn {COMMA16} en {COMMA16}
+STR_6698    :Ratio bomen/land
+STR_6699    :Voer een ratio in tussen {COMMA16} en {COMMA16}
+STR_6700    :Basisfrequentie simplex-ruis
+STR_6701    :Voer een basisfrequentie in tussen {COMMA2DP32} en {COMMA2DP32}
+STR_6702    :Simplex-octaven
+STR_6703    :Voeg een aantal octaven in tussen {COMMA16} and {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Bladeren…
+STR_6706    :{WINDOW_COLOUR_2}Geselecteerd bestand: {BLACK}{STRING}
+STR_6707    :(n.v.t.)
+STR_6708    :Afrondsterkte
+STR_6709    :Voer een afrondsterkte in tussen {COMMA16} en {COMMA16}
 
 #############
 # Scenarios #

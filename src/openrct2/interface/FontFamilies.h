@@ -9,7 +9,9 @@
 
 #pragma once
 
-#define FAMILY_OPENRCT2_SPRITE nullptr
+#include <cstddef>
+
+constexpr std::nullptr_t kFamilyOpenRCT2Sprite = nullptr;
 
 #ifndef NO_TTF
 
@@ -29,6 +31,6 @@ extern TTFontFamily const TTFFamilySansSerif;
 
 #else // NO_TTF
 
-#    define FAMILY(x) FAMILY_OPENRCT2_SPRITE
+#    define FAMILY(x) kFamilyOpenRCT2Sprite
 
 #endif // NO_TTF

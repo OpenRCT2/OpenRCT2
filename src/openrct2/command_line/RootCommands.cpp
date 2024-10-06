@@ -87,7 +87,7 @@ static constexpr CommandLineOptionDefinition StandardOptions[]
 #ifdef USE_BREAKPAD
     { CMDLINE_TYPE_SWITCH,  &_silentBreakpad,  NAC, "silent-breakpad",   "make breakpad crash reporting silent"                       },
 #endif // USE_BREAKPAD
-    OptionTableEnd
+    kOptionTableEnd
 };
 
 static exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator);
@@ -146,7 +146,7 @@ const CommandLineCommand CommandLine::RootCommands[]
     DefineSubCommand("sprite",          CommandLine::SpriteCommands           ),
     DefineSubCommand("simulate",        CommandLine::SimulateCommands         ),
     DefineSubCommand("parkinfo",        CommandLine::ParkInfoCommands         ),
-    CommandTableEnd
+    kCommandTableEnd
 };
 
 const CommandLineExample CommandLine::RootExamples[]
@@ -160,7 +160,7 @@ const CommandLineExample CommandLine::RootExamples[]
 #ifndef DISABLE_NETWORK
     { "host ./my_park.sv6 --port 11753 --headless",   "run a headless server for a saved park" },
 #endif
-    ExampleTableEnd
+    kExampleTableEnd
 };
 // clang-format on
 

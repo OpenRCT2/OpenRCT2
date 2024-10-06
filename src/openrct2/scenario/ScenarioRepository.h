@@ -11,7 +11,7 @@
 #pragma once
 
 #include "../core/DateTime.h"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../scenario/Scenario.h"
 
 #include <memory>
@@ -97,4 +97,3 @@ void ScenarioRepositoryScan();
 [[nodiscard]] size_t ScenarioRepositoryGetCount();
 [[nodiscard]] const ScenarioIndexEntry* ScenarioRepositoryGetByIndex(size_t index);
 [[nodiscard]] bool ScenarioRepositoryTryRecordHighscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name);
-void ScenarioTranslate(ScenarioIndexEntry* scenarioEntry);

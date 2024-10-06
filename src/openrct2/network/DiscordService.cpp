@@ -66,7 +66,7 @@ DiscordService::~DiscordService()
 
 static std::string GetParkName()
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     return gameState.Park.Name;
 }
 

@@ -19,42 +19,41 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    // clang-format off
-enum WindowViewportWidgetIdx
-{
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_CONTENT_PANEL,
-    WIDX_VIEWPORT,
-    WIDX_ZOOM_IN,
-    WIDX_ZOOM_OUT,
-    WIDX_LOCATE,
-    WIDX_ROTATE,
-};
+    enum WindowViewportWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_CONTENT_PANEL,
+        WIDX_VIEWPORT,
+        WIDX_ZOOM_IN,
+        WIDX_ZOOM_OUT,
+        WIDX_LOCATE,
+        WIDX_ROTATE,
+    };
 
 #pragma region MEASUREMENTS
 
-static constexpr StringId WINDOW_TITLE = STR_VIEWPORT_NO;
-static constexpr int32_t WW = 200;
-static constexpr int32_t WH = 200;
+    static constexpr StringId WINDOW_TITLE = STR_VIEWPORT_NO;
+    static constexpr int32_t WW = 200;
+    static constexpr int32_t WH = 200;
 
-static constexpr ScreenSize VIEWPORT_BUTTON = {24, 24};
+    static constexpr ScreenSize VIEWPORT_BUTTON = { 24, 24 };
 
 #pragma endregion
 
-static Widget _viewportWidgets[] =
-{
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
-    MakeWidget({      3, 17}, {WW - 26, WH - 3}, WindowWidgetType::Viewport, WindowColour::Primary                                           ), // viewport
-    MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
-    MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
-    MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
-    MakeWidget({WW - 25, 89}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP), // rotate
-    kWidgetsEnd,
-};
-
+    // clang-format off
+    static Widget _viewportWidgets[] =
+    {
+        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
+        MakeWidget({      3, 17}, {WW - 26, WH - 3}, WindowWidgetType::Viewport, WindowColour::Primary                                           ), // viewport
+        MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
+        MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
+        MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
+        MakeWidget({WW - 25, 89}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP), // rotate
+        kWidgetsEnd,
+    };
     // clang-format on
 
     class ViewportWindow final : public Window
@@ -92,9 +91,9 @@ static Widget _viewportWidgets[] =
             if (mainWindow != nullptr)
             {
                 Viewport* mainViewport = mainWindow->viewport;
-                int32_t x = mainViewport->viewPos.x + (mainViewport->view_width / 2);
-                int32_t y = mainViewport->viewPos.y + (mainViewport->view_height / 2);
-                savedViewPos = { x - (viewport->view_width / 2), y - (viewport->view_height / 2) };
+                int32_t x = mainViewport->viewPos.x + (mainViewport->ViewWidth() / 2);
+                int32_t y = mainViewport->viewPos.y + (mainViewport->ViewHeight() / 2);
+                savedViewPos = { x - (viewport->ViewWidth() / 2), y - (viewport->ViewHeight() / 2) };
             }
 
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
@@ -220,8 +219,6 @@ static Widget _viewportWidgets[] =
                 viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 };
                 viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
                 viewport->height = widgets[WIDX_VIEWPORT].height() - 1;
-                viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
-                viewport->view_height = viewport->zoom.ApplyTo(viewport->height);
             }
         }
     };

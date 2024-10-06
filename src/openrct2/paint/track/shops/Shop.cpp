@@ -17,18 +17,20 @@
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
+#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+
 static void PaintShop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool hasSupports = WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
-        GetShopSupportColourScheme(session, trackElement));
+    bool hasSupports = DrawSupportForSequenceA<TrackElemType::FlatTrack1x1A>(
+        session, supportType.wooden, trackSequence, direction, height, GetShopSupportColourScheme(session, trackElement));
 
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -60,7 +62,7 @@ static void PaintShop(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 
     if (direction == 1 || direction == 2)
-        PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionShop(int32_t trackType)

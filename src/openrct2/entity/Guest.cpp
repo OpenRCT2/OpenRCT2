@@ -60,6 +60,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/EntranceElement.h"
 #include "Peep.h"
 #include "Staff.h"
 
@@ -512,9 +513,9 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
         if (passingPeep->IsActionInterruptable())
         {
             passingPeep->Action = PeepActionType::Wave2;
-            passingPeep->ActionFrame = 0;
-            passingPeep->ActionSpriteImageOffset = 0;
-            passingPeep->UpdateCurrentActionSpriteType();
+            passingPeep->AnimationFrameNum = 0;
+            passingPeep->AnimationImageIdOffset = 0;
+            passingPeep->UpdateCurrentAnimationType();
         }
     }
 }
@@ -527,9 +528,9 @@ void Guest::MakePassingPeepsSick(Guest* passingPeep)
     if (passingPeep->IsActionInterruptable())
     {
         passingPeep->Action = PeepActionType::ThrowUp;
-        passingPeep->ActionFrame = 0;
-        passingPeep->ActionSpriteImageOffset = 0;
-        passingPeep->UpdateCurrentActionSpriteType();
+        passingPeep->AnimationFrameNum = 0;
+        passingPeep->AnimationImageIdOffset = 0;
+        passingPeep->UpdateCurrentAnimationType();
     }
 }
 
@@ -539,7 +540,7 @@ void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
         return;
 
     passingPeep->GiveItem(ShopItem::IceCream);
-    passingPeep->UpdateSpriteType();
+    passingPeep->UpdateAnimationGroup();
 }
 
 /**
@@ -575,9 +576,9 @@ void Guest::UpdateEasterEggInteractions()
             if (IsActionInterruptable())
             {
                 Action = PeepActionType::Joy;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
-                UpdateCurrentActionSpriteType();
+                AnimationFrameNum = 0;
+                AnimationImageIdOffset = 0;
+                UpdateCurrentAnimationType();
             }
         }
     }
@@ -780,9 +781,9 @@ void Guest::UpdateMotivesIdle()
             if (IsActionInterruptable())
             {
                 Action = PeepActionType::ThrowUp;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
-                UpdateCurrentActionSpriteType();
+                AnimationFrameNum = 0;
+                AnimationImageIdOffset = 0;
+                UpdateCurrentAnimationType();
             }
         }
     }
@@ -826,7 +827,7 @@ void Guest::UpdateConsumptionMotives()
                 }
 
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                UpdateSpriteType();
+                UpdateAnimationGroup();
             }
         }
     }
@@ -984,7 +985,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
 
     if (!(PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN))
     {
-        UpdateSpriteType();
+        UpdateAnimationGroup();
     }
 
     if (State == PeepState::OnRide || State == PeepState::EnteringRide)
@@ -1250,7 +1251,7 @@ void Guest::TryGetUpFromSitting()
     // Set destination to the centre of the tile.
     auto destination = GetLocation().ToTileCentre();
     SetDestination(destination, 5);
-    UpdateCurrentActionSpriteType();
+    UpdateCurrentAnimationType();
 }
 
 /**
@@ -1276,8 +1277,8 @@ void Guest::UpdateSitting()
 
         Orientation = ((Var37 + 2) & 3) * 8;
         Action = PeepActionType::Idle;
-        NextActionSpriteType = PeepActionSpriteType::SittingIdle;
-        SwitchNextActionSpriteType();
+        NextAnimationType = PeepAnimationType::SittingIdle;
+        SwitchNextAnimationType();
 
         SittingSubState = PeepSittingSubState::SatDown;
 
@@ -1304,11 +1305,11 @@ void Guest::UpdateSitting()
             // Set destination to the centre of the tile
             auto destination = GetLocation().ToTileCentre();
             SetDestination(destination, 5);
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
             return;
         }
 
-        if (SpriteType == PeepSpriteType::Umbrella)
+        if (AnimationGroup == PeepAnimationGroup::Umbrella)
         {
             TryGetUpFromSitting();
             return;
@@ -1322,9 +1323,9 @@ void Guest::UpdateSitting()
                 return;
             }
             Action = PeepActionType::SittingEatFood;
-            ActionFrame = 0;
-            ActionSpriteImageOffset = 0;
-            UpdateCurrentActionSpriteType();
+            AnimationFrameNum = 0;
+            AnimationImageIdOffset = 0;
+            UpdateCurrentAnimationType();
             return;
         }
 
@@ -1334,7 +1335,7 @@ void Guest::UpdateSitting()
             TryGetUpFromSitting();
             return;
         }
-        if (SpriteType == PeepSpriteType::Balloon || SpriteType == PeepSpriteType::Hat)
+        if (AnimationGroup == PeepAnimationGroup::Balloon || AnimationGroup == PeepAnimationGroup::Hat)
         {
             TryGetUpFromSitting();
             return;
@@ -1350,9 +1351,9 @@ void Guest::UpdateSitting()
         {
             Action = PeepActionType::SittingCheckWatch;
         }
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
+        UpdateCurrentAnimationType();
         return;
     }
 }
@@ -1550,7 +1551,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 
     if (!hasVoucher)
     {
-        if (price != 0 && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+        if (price != 0 && !(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
         {
             if (CashInPocket == 0)
             {
@@ -1597,7 +1598,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
             itemValue -= price;
             itemValue = std::max(0.80_GBP, itemValue);
 
-            if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 if (itemValue >= static_cast<money64>(ScenarioRand() & 0x07))
                 {
@@ -1639,16 +1640,16 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     const auto hasRandomShopColour = ride.HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
 
     if (shopItem == ShopItem::TShirt)
-        TshirtColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
+        TshirtColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Hat)
-        HatColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
+        HatColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Balloon)
-        BalloonColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
+        BalloonColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Umbrella)
-        UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
+        UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
@@ -1669,7 +1670,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         Photo4RideRef = ride.id;
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-    UpdateSpriteType();
+    UpdateAnimationGroup();
     if (PeepFlags & PEEP_FLAGS_TRACKING)
     {
         auto ft = Formatter();
@@ -2398,9 +2399,9 @@ void Guest::ReadMap()
     if (IsActionInterruptable() && !IsOnLevelCrossing())
     {
         Action = PeepActionType::ReadMap;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
+        UpdateCurrentAnimationType();
     }
 }
 
@@ -3391,10 +3392,10 @@ void Guest::UpdateBuying()
             else
             {
                 Action = PeepActionType::WithdrawMoney;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
+                AnimationFrameNum = 0;
+                AnimationImageIdOffset = 0;
 
-                UpdateCurrentActionSpriteType();
+                UpdateCurrentAnimationType();
 
                 ride->no_primary_items_sold++;
             }
@@ -4138,11 +4139,11 @@ void Guest::UpdateRideLeaveVehicle()
             return;
     }
 
-    ActionSpriteImageOffset++;
-    if (ActionSpriteImageOffset & 3)
+    AnimationImageIdOffset++;
+    if (AnimationImageIdOffset & 3)
         return;
 
-    ActionSpriteImageOffset = 0;
+    AnimationImageIdOffset = 0;
 
     vehicle->num_peeps--;
     vehicle->ApplyMass(-Mass);
@@ -4911,9 +4912,9 @@ void Guest::UpdateRideMazePathfinding()
         if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsRaining() && (ScenarioRand() & 0xFFFF) <= 2427)
         {
             Action = PeepActionType::Jump;
-            ActionFrame = 0;
-            ActionSpriteImageOffset = 0;
-            UpdateCurrentActionSpriteType();
+            AnimationFrameNum = 0;
+            AnimationImageIdOffset = 0;
+            UpdateCurrentAnimationType();
         }
     }
 
@@ -5311,28 +5312,28 @@ void Guest::UpdateWalking()
         if (PeepFlags & PEEP_FLAGS_WAVING && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
         {
             Action = PeepActionType::Wave2;
-            ActionFrame = 0;
-            ActionSpriteImageOffset = 0;
+            AnimationFrameNum = 0;
+            AnimationImageIdOffset = 0;
 
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
         }
 
         if (PeepFlags & PEEP_FLAGS_PHOTO && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
         {
             Action = PeepActionType::TakePhoto;
-            ActionFrame = 0;
-            ActionSpriteImageOffset = 0;
+            AnimationFrameNum = 0;
+            AnimationImageIdOffset = 0;
 
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
         }
 
         if (PeepFlags & PEEP_FLAGS_PAINTING && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
         {
             Action = PeepActionType::DrawPicture;
-            ActionFrame = 0;
-            ActionSpriteImageOffset = 0;
+            AnimationFrameNum = 0;
+            AnimationImageIdOffset = 0;
 
-            UpdateCurrentActionSpriteType();
+            UpdateCurrentAnimationType();
         }
     }
 
@@ -5374,7 +5375,7 @@ void Guest::UpdateWalking()
             }
 
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-            UpdateSpriteType();
+            UpdateAnimationGroup();
 
             const auto loc = GetLocation();
             int32_t litterX = loc.x + (ScenarioRand() & 0x7) - 3;
@@ -5553,19 +5554,19 @@ void Guest::UpdateWaitingAtCrossing()
     }
 
     Action = PeepActionType::Idle;
-    NextActionSpriteType = PeepActionSpriteType::WatchRide;
-    SwitchNextActionSpriteType();
+    NextAnimationType = PeepAnimationType::WatchRide;
+    SwitchNextAnimationType();
 
     if (HasFoodOrDrink())
     {
         if ((ScenarioRand() & 0xFFFF) <= 1310)
         {
             Action = PeepActionType::EatFood;
-            ActionFrame = 0;
-            ActionSpriteImageOffset = 0;
+            AnimationFrameNum = 0;
+            AnimationImageIdOffset = 0;
         }
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
 
         return;
     }
@@ -5573,11 +5574,11 @@ void Guest::UpdateWaitingAtCrossing()
     if ((ScenarioRand() & 0xFFFF) <= 64)
     {
         Action = PeepActionType::Wave2;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
     }
 
-    UpdateCurrentActionSpriteType();
+    UpdateCurrentAnimationType();
 }
 
 /**
@@ -5632,15 +5633,15 @@ void Guest::UpdateQueuing()
     PerformNextAction(pathingResult);
     if (!IsActionInterruptable())
         return;
-    if (SpriteType == PeepSpriteType::Normal)
+    if (AnimationGroup == PeepAnimationGroup::Normal)
     {
         if (TimeInQueue >= 2000 && (0xFFFF & ScenarioRand()) <= 119)
         {
             // Eat Food/Look at watch
             Action = PeepActionType::EatFood;
-            ActionFrame = 0;
-            ActionSpriteImageOffset = 0;
-            UpdateCurrentActionSpriteType();
+            AnimationFrameNum = 0;
+            AnimationImageIdOffset = 0;
+            UpdateCurrentAnimationType();
         }
         if (TimeInQueue >= 3500 && (0xFFFF & ScenarioRand()) <= 93)
         {
@@ -5650,37 +5651,37 @@ void Guest::UpdateQueuing()
     }
     else
     {
-        if (!(TimeInQueue & 0x3F) && IsActionIdle() && NextActionSpriteType == PeepActionSpriteType::WatchRide)
+        if (!(TimeInQueue & 0x3F) && IsActionIdle() && NextAnimationType == PeepAnimationType::WatchRide)
         {
-            switch (SpriteType)
+            switch (AnimationGroup)
             {
-                case PeepSpriteType::IceCream:
-                case PeepSpriteType::Chips:
-                case PeepSpriteType::Burger:
-                case PeepSpriteType::Drink:
-                case PeepSpriteType::Candyfloss:
-                case PeepSpriteType::Pizza:
-                case PeepSpriteType::Popcorn:
-                case PeepSpriteType::HotDog:
-                case PeepSpriteType::Tentacle:
-                case PeepSpriteType::ToffeeApple:
-                case PeepSpriteType::Doughnut:
-                case PeepSpriteType::Coffee:
-                case PeepSpriteType::Chicken:
-                case PeepSpriteType::Lemonade:
-                case PeepSpriteType::Pretzel:
-                case PeepSpriteType::SuJongkwa:
-                case PeepSpriteType::Juice:
-                case PeepSpriteType::FunnelCake:
-                case PeepSpriteType::Noodles:
-                case PeepSpriteType::Sausage:
-                case PeepSpriteType::Soup:
-                case PeepSpriteType::Sandwich:
+                case PeepAnimationGroup::IceCream:
+                case PeepAnimationGroup::Chips:
+                case PeepAnimationGroup::Burger:
+                case PeepAnimationGroup::Drink:
+                case PeepAnimationGroup::Candyfloss:
+                case PeepAnimationGroup::Pizza:
+                case PeepAnimationGroup::Popcorn:
+                case PeepAnimationGroup::HotDog:
+                case PeepAnimationGroup::Tentacle:
+                case PeepAnimationGroup::ToffeeApple:
+                case PeepAnimationGroup::Doughnut:
+                case PeepAnimationGroup::Coffee:
+                case PeepAnimationGroup::Chicken:
+                case PeepAnimationGroup::Lemonade:
+                case PeepAnimationGroup::Pretzel:
+                case PeepAnimationGroup::SuJongkwa:
+                case PeepAnimationGroup::Juice:
+                case PeepAnimationGroup::FunnelCake:
+                case PeepAnimationGroup::Noodles:
+                case PeepAnimationGroup::Sausage:
+                case PeepAnimationGroup::Soup:
+                case PeepAnimationGroup::Sandwich:
                     // Eat food
                     Action = PeepActionType::EatFood;
-                    ActionFrame = 0;
-                    ActionSpriteImageOffset = 0;
-                    UpdateCurrentActionSpriteType();
+                    AnimationFrameNum = 0;
+                    AnimationImageIdOffset = 0;
+                    UpdateCurrentAnimationType();
                     break;
                 default:
                     break;
@@ -5788,14 +5789,14 @@ void Guest::UpdateWatching()
         Orientation = (Var37 & 3) * 8;
 
         Action = PeepActionType::Idle;
-        NextActionSpriteType = PeepActionSpriteType::WatchRide;
+        NextAnimationType = PeepAnimationType::WatchRide;
 
-        SwitchNextActionSpriteType();
+        SwitchNextAnimationType();
 
         SubState++;
 
         TimeToStand = std::clamp(((129 - Energy) * 16 + 50) / 2, 0, 255);
-        UpdateSpriteType();
+        UpdateAnimationGroup();
     }
     else if (SubState == 1)
     {
@@ -5815,9 +5816,9 @@ void Guest::UpdateWatching()
                 if ((ScenarioRand() & 0xFFFF) <= 1310)
                 {
                     Action = PeepActionType::EatFood;
-                    ActionFrame = 0;
-                    ActionSpriteImageOffset = 0;
-                    UpdateCurrentActionSpriteType();
+                    AnimationFrameNum = 0;
+                    AnimationImageIdOffset = 0;
+                    UpdateCurrentAnimationType();
                     return;
                 }
             }
@@ -5825,9 +5826,9 @@ void Guest::UpdateWatching()
             if ((ScenarioRand() & 0xFFFF) <= 655)
             {
                 Action = PeepActionType::TakePhoto;
-                ActionFrame = 0;
-                ActionSpriteImageOffset = 0;
-                UpdateCurrentActionSpriteType();
+                AnimationFrameNum = 0;
+                AnimationImageIdOffset = 0;
+                UpdateCurrentAnimationType();
                 return;
             }
 
@@ -5836,9 +5837,9 @@ void Guest::UpdateWatching()
                 if ((ScenarioRand() & 0xFFFF) <= 655)
                 {
                     Action = PeepActionType::Wave;
-                    ActionFrame = 0;
-                    ActionSpriteImageOffset = 0;
-                    UpdateCurrentActionSpriteType();
+                    AnimationFrameNum = 0;
+                    AnimationImageIdOffset = 0;
+                    UpdateCurrentAnimationType();
                     return;
                 }
             }
@@ -5853,12 +5854,12 @@ void Guest::UpdateWatching()
             return;
 
         SetState(PeepState::Walking);
-        UpdateSpriteType();
+        UpdateAnimationGroup();
         // Send peep to the centre of current tile.
 
         auto destination = GetLocation().ToTileCentre();
         SetDestination(destination, 5);
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 }
 
@@ -5943,7 +5944,7 @@ void Guest::UpdateUsingBin()
                         spaceLeftInBin--;
                     RemoveItem(item);
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                    UpdateSpriteType();
+                    UpdateAnimationGroup();
                     continue;
                 }
 
@@ -5956,7 +5957,7 @@ void Guest::UpdateUsingBin()
                 RemoveItem(item);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
-                UpdateSpriteType();
+                UpdateAnimationGroup();
             }
 
             uint8_t additionStatus = foundElement->GetAdditionStatus();
@@ -6732,81 +6733,81 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
 }
 
 /* Part of 0x0069B8CC rct2: 0x0069BC31 */
-void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
+void Guest::SetAnimationGroup(PeepAnimationGroup new_sprite_type)
 {
-    if (SpriteType == new_sprite_type)
+    if (AnimationGroup == new_sprite_type)
         return;
 
-    SpriteType = new_sprite_type;
-    ActionSpriteImageOffset = 0;
-    WalkingFrameNum = 0;
+    AnimationGroup = new_sprite_type;
+    AnimationImageIdOffset = 0;
+    WalkingAnimationFrameNum = 0;
 
     if (IsActionInterruptable())
         Action = PeepActionType::Walking;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    Guard::Assert(EnumValue(new_sprite_type) < std::size(gSpriteTypeToSlowWalkMap));
-    if (gSpriteTypeToSlowWalkMap[EnumValue(new_sprite_type)])
+    Guard::Assert(EnumValue(new_sprite_type) < std::size(gAnimationGroupToSlowWalkMap));
+    if (gAnimationGroupToSlowWalkMap[EnumValue(new_sprite_type)])
     {
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    ActionSpriteType = PeepActionSpriteType::Invalid;
-    UpdateCurrentActionSpriteType();
+    AnimationType = PeepAnimationType::Invalid;
+    UpdateCurrentAnimationType();
 
     if (State == PeepState::Sitting)
     {
         Action = PeepActionType::Idle;
-        NextActionSpriteType = PeepActionSpriteType::SittingIdle;
-        SwitchNextActionSpriteType();
+        NextAnimationType = PeepAnimationType::SittingIdle;
+        SwitchNextAnimationType();
     }
     if (State == PeepState::Watching)
     {
         Action = PeepActionType::Idle;
-        NextActionSpriteType = PeepActionSpriteType::WatchRide;
-        SwitchNextActionSpriteType();
+        NextAnimationType = PeepAnimationType::WatchRide;
+        SwitchNextAnimationType();
     }
 }
 
 struct ItemPref
 {
     ShopItem item;
-    PeepSpriteType sprite_type;
+    PeepAnimationGroup sprite_type;
 };
 
 // clang-format off
 static ItemPref item_order_preference[] = {
-    { ShopItem::IceCream,         PeepSpriteType::IceCream    },
-    { ShopItem::Chips,            PeepSpriteType::Chips       },
-    { ShopItem::Pizza,            PeepSpriteType::Pizza       },
-    { ShopItem::Burger,           PeepSpriteType::Burger      },
-    { ShopItem::Drink,            PeepSpriteType::Drink       },
-    { ShopItem::Coffee,           PeepSpriteType::Coffee      },
-    { ShopItem::Chicken,          PeepSpriteType::Chicken     },
-    { ShopItem::Lemonade,         PeepSpriteType::Lemonade    },
-    { ShopItem::Candyfloss,       PeepSpriteType::Candyfloss  },
-    { ShopItem::Popcorn,          PeepSpriteType::Popcorn     },
-    { ShopItem::HotDog,           PeepSpriteType::HotDog      },
-    { ShopItem::Tentacle,         PeepSpriteType::Tentacle    },
-    { ShopItem::ToffeeApple,      PeepSpriteType::ToffeeApple },
-    { ShopItem::Doughnut,         PeepSpriteType::Doughnut    },
-    { ShopItem::Pretzel,          PeepSpriteType::Pretzel     },
-    { ShopItem::Cookie,           PeepSpriteType::Pretzel     },
-    { ShopItem::Chocolate,        PeepSpriteType::Coffee      },
-    { ShopItem::IcedTea,          PeepSpriteType::Coffee      },
-    { ShopItem::FunnelCake,       PeepSpriteType::FunnelCake  },
-    { ShopItem::BeefNoodles,      PeepSpriteType::Noodles     },
-    { ShopItem::FriedRiceNoodles, PeepSpriteType::Noodles     },
-    { ShopItem::WontonSoup,       PeepSpriteType::Soup        },
-    { ShopItem::MeatballSoup,     PeepSpriteType::Soup        },
-    { ShopItem::FruitJuice,       PeepSpriteType::Juice       },
-    { ShopItem::SoybeanMilk,      PeepSpriteType::SuJongkwa   },
-    { ShopItem::Sujeonggwa,       PeepSpriteType::SuJongkwa   },
-    { ShopItem::SubSandwich,      PeepSpriteType::Sandwich    },
-    { ShopItem::RoastSausage,     PeepSpriteType::Sausage     },
-    { ShopItem::Balloon,          PeepSpriteType::Balloon     },
-    { ShopItem::Hat,              PeepSpriteType::Hat         },
-    { ShopItem::Sunglasses,       PeepSpriteType::Sunglasses  },
+    { ShopItem::IceCream,         PeepAnimationGroup::IceCream    },
+    { ShopItem::Chips,            PeepAnimationGroup::Chips       },
+    { ShopItem::Pizza,            PeepAnimationGroup::Pizza       },
+    { ShopItem::Burger,           PeepAnimationGroup::Burger      },
+    { ShopItem::Drink,            PeepAnimationGroup::Drink       },
+    { ShopItem::Coffee,           PeepAnimationGroup::Coffee      },
+    { ShopItem::Chicken,          PeepAnimationGroup::Chicken     },
+    { ShopItem::Lemonade,         PeepAnimationGroup::Lemonade    },
+    { ShopItem::Candyfloss,       PeepAnimationGroup::Candyfloss  },
+    { ShopItem::Popcorn,          PeepAnimationGroup::Popcorn     },
+    { ShopItem::HotDog,           PeepAnimationGroup::HotDog      },
+    { ShopItem::Tentacle,         PeepAnimationGroup::Tentacle    },
+    { ShopItem::ToffeeApple,      PeepAnimationGroup::ToffeeApple },
+    { ShopItem::Doughnut,         PeepAnimationGroup::Doughnut    },
+    { ShopItem::Pretzel,          PeepAnimationGroup::Pretzel     },
+    { ShopItem::Cookie,           PeepAnimationGroup::Pretzel     },
+    { ShopItem::Chocolate,        PeepAnimationGroup::Coffee      },
+    { ShopItem::IcedTea,          PeepAnimationGroup::Coffee      },
+    { ShopItem::FunnelCake,       PeepAnimationGroup::FunnelCake  },
+    { ShopItem::BeefNoodles,      PeepAnimationGroup::Noodles     },
+    { ShopItem::FriedRiceNoodles, PeepAnimationGroup::Noodles     },
+    { ShopItem::WontonSoup,       PeepAnimationGroup::Soup        },
+    { ShopItem::MeatballSoup,     PeepAnimationGroup::Soup        },
+    { ShopItem::FruitJuice,       PeepAnimationGroup::Juice       },
+    { ShopItem::SoybeanMilk,      PeepAnimationGroup::SuJongkwa   },
+    { ShopItem::Sujeonggwa,       PeepAnimationGroup::SuJongkwa   },
+    { ShopItem::SubSandwich,      PeepAnimationGroup::Sandwich    },
+    { ShopItem::RoastSausage,     PeepAnimationGroup::Sausage     },
+    { ShopItem::Balloon,          PeepAnimationGroup::Balloon     },
+    { ShopItem::Hat,              PeepAnimationGroup::Hat         },
+    { ShopItem::Sunglasses,       PeepAnimationGroup::Sunglasses  },
 };
 // clang-format on
 
@@ -6814,9 +6815,9 @@ static ItemPref item_order_preference[] = {
  *
  *  rct2: 0x0069B8CC
  */
-void Guest::UpdateSpriteType()
+void Guest::UpdateAnimationGroup()
 {
-    if (SpriteType == PeepSpriteType::Balloon && (ScenarioRand() & 0xFFFF) <= 327)
+    if (AnimationGroup == PeepAnimationGroup::Balloon && (ScenarioRand() & 0xFFFF) <= 327)
     {
         bool isBalloonPopped = false;
         if (x != kLocationNull)
@@ -6848,7 +6849,7 @@ void Guest::UpdateSpriteType()
 
                 if (tileElement->IsLastForTile())
                 {
-                    SetSpriteType(PeepSpriteType::Umbrella);
+                    SetAnimationGroup(PeepAnimationGroup::Umbrella);
                     return;
                 }
                 tileElement++;
@@ -6860,48 +6861,48 @@ void Guest::UpdateSpriteType()
     {
         if (HasItem(itemPref.item))
         {
-            SetSpriteType(itemPref.sprite_type);
+            SetAnimationGroup(itemPref.sprite_type);
             return;
         }
     }
 
     if (State == PeepState::Watching && StandingFlags & (1 << 1))
     {
-        SetSpriteType(PeepSpriteType::Watching);
+        SetAnimationGroup(PeepAnimationGroup::Watching);
         return;
     }
 
     if (Nausea > 170)
     {
-        SetSpriteType(PeepSpriteType::VeryNauseous);
+        SetAnimationGroup(PeepAnimationGroup::VeryNauseous);
         return;
     }
 
     if (Nausea > 140)
     {
-        SetSpriteType(PeepSpriteType::Nauseous);
+        SetAnimationGroup(PeepAnimationGroup::Nauseous);
         return;
     }
 
     if (Energy <= 64 && Happiness < 128)
     {
-        SetSpriteType(PeepSpriteType::HeadDown);
+        SetAnimationGroup(PeepAnimationGroup::HeadDown);
         return;
     }
 
     if (Energy <= 80 && Happiness < 128)
     {
-        SetSpriteType(PeepSpriteType::ArmsCrossed);
+        SetAnimationGroup(PeepAnimationGroup::ArmsCrossed);
         return;
     }
 
     if (Toilet > 220)
     {
-        SetSpriteType(PeepSpriteType::RequireToilet);
+        SetAnimationGroup(PeepAnimationGroup::RequireToilet);
         return;
     }
 
-    SetSpriteType(PeepSpriteType::Normal);
+    SetAnimationGroup(PeepAnimationGroup::Normal);
 }
 
 bool Guest::HeadingForRideOrParkExit() const
@@ -6970,9 +6971,9 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
     if (newAction != PeepActionType::Walking && IsActionInterruptable())
     {
         Action = newAction;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
+        UpdateCurrentAnimationType();
     }
 
     for (int32_t i = 0; i < kPeepMaxThoughts; ++i)
@@ -7119,19 +7120,19 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     auto& gameState = GetGameState();
     Guest* peep = CreateEntity<Guest>();
-    peep->SpriteType = PeepSpriteType::Normal;
+    peep->AnimationGroup = PeepAnimationGroup::Normal;
     peep->OutsideOfPark = true;
     peep->State = PeepState::Falling;
     peep->Action = PeepActionType::Walking;
     peep->SpecialSprite = 0;
-    peep->ActionSpriteImageOffset = 0;
-    peep->WalkingFrameNum = 0;
-    peep->ActionSpriteType = PeepActionSpriteType::None;
+    peep->AnimationImageIdOffset = 0;
+    peep->WalkingAnimationFrameNum = 0;
+    peep->AnimationType = PeepAnimationType::None;
     peep->PeepFlags = 0;
     peep->FavouriteRide = RideId::GetNull();
     peep->FavouriteRideRating = 0;
 
-    const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->ActionSpriteType);
+    const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
     peep->SpriteData.Width = spriteBounds->sprite_width;
     peep->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
     peep->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
@@ -7467,7 +7468,7 @@ bool Guest::UpdateQueuePosition(PeepActionType previous_action)
         return true;
 
     Action = PeepActionType::Idle;
-    NextActionSpriteType = PeepActionSpriteType::WatchRide;
+    NextAnimationType = PeepAnimationType::WatchRide;
     if (previous_action != PeepActionType::Idle)
         Invalidate();
     return true;

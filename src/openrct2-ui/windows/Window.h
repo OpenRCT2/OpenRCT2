@@ -34,6 +34,7 @@ namespace OpenRCT2::Ui::Windows
     extern ScatterToolDensity gWindowSceneryScatterDensity;
     extern uint8_t gWindowSceneryRotation;
     extern bool gWindowSceneryEyedropperEnabled;
+    extern bool gDisableErrorWindowSound;
 
     WindowBase* AboutOpen();
     void WindowCampaignRefreshRides();
@@ -198,6 +199,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* RideConstructionOpen();
     void WindowRideConstructionUpdateActiveElementsImpl();
     void WindowRideConstructionUpdateEnabledTrackPieces();
+    void RideRestoreProvisionalTrackPiece();
+    void RideRemoveProvisionalTrackPiece();
 
     WindowBase* TopToolbarOpen();
 

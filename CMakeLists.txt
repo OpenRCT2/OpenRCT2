@@ -4,6 +4,10 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
 
+if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "12")
+	message(FATAL_ERROR "GCC 12+ required. Older GCC are known to fail compilation")
+endif()
+
 # Note: Searching for CCache must be before project() so project() can use CCache too
 # if it is available
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -64,9 +68,9 @@ set(TITLE_SEQUENCE_VERSION "0.4.14")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "6c04781b959b468e1f65ec2d2f21f5aaa5e5724d")
 
-set(OBJECTS_VERSION "1.4.7")
+set(OBJECTS_VERSION "1.4.8")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "322de669d4b277fceff0d3f123fbc54785dceb4d")
+set(OBJECTS_SHA1 "405aef518945e617b2750be9128796daa70dba19")
 
 set(OPENSFX_VERSION "1.0.5")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
@@ -76,9 +80,9 @@ set(OPENMSX_VERSION "1.6")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
 set(OPENMSX_SHA1 "ba170fa6d777b309c15420f4b6eb3fa25082a9d1")
 
-set(REPLAYS_VERSION "0.0.79")
+set(REPLAYS_VERSION "0.0.80")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "34457077DBA9448A08FF6AC95E5CB92D65252E0C")
+set(REPLAYS_SHA1 "76C977E1B5CA5A87798E98D489247C766F129D89")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -129,9 +133,9 @@ if (MACOS_USE_DEPENDENCIES)
     # if we're building on macOS, then we need the dependencies
     include(cmake/download.cmake)
     
-    set(MACOS_DYLIBS_VERSION "36")
+    set(MACOS_DYLIBS_VERSION "37")
     set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-universal-macos-dylibs.zip")
-    set(MACOS_DYLIBS_SHA1 "1a41c1afed40e0f63daf0b6612c50e8cb8cda495")
+    set(MACOS_DYLIBS_SHA1 "6d633a881fc243e960e29d9c371915a7cdeeb880")
     set(MACOS_DYLIBS_DIR "${ROOT_DIR}/lib/macos")
     set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
 

@@ -30,6 +30,7 @@
 #include "windows/Intent.h"
 #include "world/Footpath.h"
 #include "world/Scenery.h"
+#include "world/tile_element/EntranceElement.h"
 
 #include <iterator>
 #include <vector>
@@ -483,7 +484,7 @@ void ResetSelectedObjectCountAndSize()
 
 void FinishObjectSelection()
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
         SetEveryRideTypeInvented();
@@ -609,6 +610,10 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
     {
         // Replace old palette with newly selected palette immediately.
         ReplaceSelectedWaterPalette(item);
+    }
+    else if (objectType == ObjectType::PeepNames)
+    {
+        PeepUpdateNames();
     }
 
     if (isMasterObject != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))

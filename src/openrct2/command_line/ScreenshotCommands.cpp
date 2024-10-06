@@ -27,7 +27,7 @@ static constexpr CommandLineOptionDefinition ScreenshotOptionsDef[]
     { CMDLINE_TYPE_SWITCH,  &_options.remove_litter, NAC, "remove-litter", "remove litter for the screenshot" },
     { CMDLINE_TYPE_SWITCH,  &_options.tidy_up_park,  NAC, "tidy-up-park",  "clear grass, water plants, fix vandalism and remove litter" },
     { CMDLINE_TYPE_SWITCH,  &_options.transparent,   NAC, "transparent",   "make the background transparent" },
-    OptionTableEnd
+    kOptionTableEnd
 };
 
 static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator);
@@ -37,7 +37,7 @@ const CommandLineCommand CommandLine::ScreenshotCommands[]
     // Main commands
     DefineCommand("", "<file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]", ScreenshotOptionsDef, HandleScreenshot),
     DefineCommand("", "<file> <output_image> giant <zoom> <rotation>",                      ScreenshotOptionsDef, HandleScreenshot),
-    CommandTableEnd
+    kCommandTableEnd
 };
 // clang-format on
 

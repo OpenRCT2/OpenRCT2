@@ -25,6 +25,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/EntranceElement.h"
 
 using namespace OpenRCT2;
 

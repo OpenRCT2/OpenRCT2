@@ -47,7 +47,6 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/TilePointerIndex.hpp"
-#include "../world/tile_element/Slope.h"
 #include "Banner.h"
 #include "Climate.h"
 #include "Entrance.h"
@@ -59,6 +58,8 @@
 #include "TileElementsView.h"
 #include "TileInspector.h"
 #include "Wall.h"
+#include "tile_element/EntranceElement.h"
+#include "tile_element/Slope.h"
 
 #include <iterator>
 #include <memory>
@@ -113,7 +114,7 @@ void StashMap()
     auto& gameState = GetGameState();
     _tileIndexStash = std::move(_tileIndex);
     _tileElementsStash = std::move(gameState.TileElements);
-    _mapSizeStash = GetGameState().MapSize;
+    _mapSizeStash = gameState.MapSize;
     _tileElementsInUseStash = _tileElementsInUse;
 }
 
@@ -122,18 +123,18 @@ void UnstashMap()
     auto& gameState = GetGameState();
     _tileIndex = std::move(_tileIndexStash);
     gameState.TileElements = std::move(_tileElementsStash);
-    GetGameState().MapSize = _mapSizeStash;
+    gameState.MapSize = _mapSizeStash;
     _tileElementsInUse = _tileElementsInUseStash;
 }
 
 CoordsXY GetMapSizeUnits()
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     return { (gameState.MapSize.x - 1) * kCoordsXYStep, (gameState.MapSize.y - 1) * kCoordsXYStep };
 }
 CoordsXY GetMapSizeMinus2()
 {
-    auto& gameState = OpenRCT2::GetGameState();
+    auto& gameState = GetGameState();
     return { (gameState.MapSize.x * kCoordsXYStep) + (8 * kCoordsXYStep - 2),
              (gameState.MapSize.y * kCoordsXYStep) + (8 * kCoordsXYStep - 2) };
 }
@@ -147,9 +148,8 @@ const std::vector<TileElement>& GetTileElements()
     return GetGameState().TileElements;
 }
 
-void SetTileElements(std::vector<TileElement>&& tileElements)
+void SetTileElements(GameState_t& gameState, std::vector<TileElement>&& tileElements)
 {
-    auto& gameState = GetGameState();
     gameState.TileElements = std::move(tileElements);
     _tileIndex = TilePointerIndex<TileElement>(
         kMaximumMapSizeTechnical, gameState.TileElements.data(), gameState.TileElements.size());
@@ -211,7 +211,7 @@ std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
     return newElements;
 }
 
-static void ReorganiseTileElements(size_t capacity)
+static void ReorganiseTileElements(GameState_t& gameState, size_t capacity)
 {
     ContextSetCurrentCursor(CursorID::ZZZ);
 
@@ -236,12 +236,19 @@ static void ReorganiseTileElements(size_t capacity)
         }
     }
 
-    SetTileElements(std::move(newElements));
+    SetTileElements(gameState, std::move(newElements));
+}
+
+static void ReorganiseTileElements(size_t capacity)
+{
+    auto& gameState = GetGameState();
+    ReorganiseTileElements(gameState, capacity);
 }
 
 void ReorganiseTileElements()
 {
-    ReorganiseTileElements(GetGameState().TileElements.size());
+    auto& gameState = GetGameState();
+    ReorganiseTileElements(gameState, gameState.TileElements.size());
 }
 
 static bool MapCheckFreeElementsAndReorganise(size_t numElementsOnTile, size_t numNewElements)
@@ -454,15 +461,15 @@ BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t positio
 void MapInit(const TileCoordsXY& size)
 {
     auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
-    SetTileElements(std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
     auto& gameState = GetGameState();
+    SetTileElements(gameState, std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
     gameState.GrassSceneryTileLoopPosition = 0;
     gameState.WidePathTileLoopPosition = {};
     gameState.MapSize = size;
     MapRemoveOutOfRangeElements();
-    MapAnimationAutoCreate();
+    ClearMapAnimations();
 
     auto intent = Intent(INTENT_ACTION_MAP);
     ContextBroadcastIntent(&intent);
@@ -754,6 +761,9 @@ void MapUpdatePathWideFlags()
         return;
     }
 
+    const int32_t kPracticalMapSizeBigX = GetGameState().MapSize.x * kCoordsXYStep;
+    const int32_t kPracticalMapSizeBigY = GetGameState().MapSize.y * kCoordsXYStep;
+
     // Presumably update_path_wide_flags is too computationally expensive to call for every
     // tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
     // progress. A maximum of 128 calls is done per update.
@@ -764,11 +774,11 @@ void MapUpdatePathWideFlags()
 
         // Next x, y tile
         loopPosition.x += kCoordsXYStep;
-        if (loopPosition.x >= MAXIMUM_MAP_SIZE_BIG)
+        if (loopPosition.x >= kPracticalMapSizeBigX)
         {
             loopPosition.x = 0;
             loopPosition.y += kCoordsXYStep;
-            if (loopPosition.y >= MAXIMUM_MAP_SIZE_BIG)
+            if (loopPosition.y >= kPracticalMapSizeBigY)
             {
                 loopPosition.y = 0;
             }
@@ -1290,54 +1300,6 @@ void MapUpdateTiles()
     }
 }
 
-void MapRemoveProvisionalElements()
-{
-    PROFILED_FUNCTION();
-
-    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
-    {
-        FootpathProvisionalRemove();
-        gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
-    }
-    if (WindowFindByClass(WindowClass::RideConstruction) != nullptr)
-    {
-        RideRemoveProvisionalTrackPiece();
-        RideEntranceExitRemoveGhost();
-    }
-    // This is in non performant so only make network games suffer for it
-    // non networked games do not need this as its to prevent desyncs.
-    if ((NetworkGetMode() != NETWORK_MODE_NONE) && WindowFindByClass(WindowClass::TrackDesignPlace) != nullptr)
-    {
-        auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL);
-        ContextBroadcastIntent(&intent);
-    }
-}
-
-void MapRestoreProvisionalElements()
-{
-    PROFILED_FUNCTION();
-
-    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
-    {
-        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
-        FootpathProvisionalSet(
-            gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
-            gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
-    }
-    if (WindowFindByClass(WindowClass::RideConstruction) != nullptr)
-    {
-        RideRestoreProvisionalTrackPiece();
-        RideEntranceExitPlaceProvisionalGhost();
-    }
-    // This is in non performant so only make network games suffer for it
-    // non networked games do not need this as its to prevent desyncs.
-    if ((NetworkGetMode() != NETWORK_MODE_NONE) && WindowFindByClass(WindowClass::TrackDesignPlace) != nullptr)
-    {
-        auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL);
-        ContextBroadcastIntent(&intent);
-    }
-}
-
 /**
  * Removes elements that are out of the map size range and crops the park perimeter.
  *  rct2: 0x0068ADBC
@@ -1351,8 +1313,9 @@ void MapRemoveOutOfRangeElements()
     // NOTE: This is only a workaround for non-networked games.
     // Map resize has to become its own Game Action to properly solve this issue.
     //
-    bool buildState = GetGameState().Cheats.BuildInPauseMode;
-    GetGameState().Cheats.BuildInPauseMode = true;
+    auto& gameState = GetGameState();
+    bool buildState = gameState.Cheats.BuildInPauseMode;
+    gameState.Cheats.BuildInPauseMode = true;
 
     for (int32_t y = MAXIMUM_MAP_SIZE_BIG - kCoordsXYStep; y >= 0; y -= kCoordsXYStep)
     {
@@ -1373,7 +1336,7 @@ void MapRemoveOutOfRangeElements()
     }
 
     // Reset cheat state
-    GetGameState().Cheats.BuildInPauseMode = buildState;
+    gameState.Cheats.BuildInPauseMode = buildState;
 }
 
 static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile, SurfaceElement& destTile)
@@ -1455,7 +1418,7 @@ void MapExtendBoundarySurfaceX()
  * Clears the provided element properly from a certain tile, and updates
  * the pointer (when needed) passed to this function to point to the next element.
  */
-static void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
+void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
 {
     TileElement* element = *elementPtr;
     switch (element->GetType())
@@ -2200,16 +2163,13 @@ uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos)
     return destOwnership;
 }
 
-void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade)
+void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership)
 {
     for (const auto& tile : tiles)
     {
         auto surfaceElement = MapGetSurfaceElementAt(tile);
         if (surfaceElement != nullptr)
         {
-            if (doNotDowngrade && surfaceElement->GetOwnership() == OWNERSHIP_OWNED)
-                continue;
-
             surfaceElement->SetOwnership(ownership);
             Park::UpdateFencesAroundTile(tile.ToCoordsXY());
         }
@@ -2293,7 +2253,8 @@ void ShiftMap(const TileCoordsXY& amount)
             }
         }
     }
-    SetTileElements(std::move(newElements));
+
+    SetTileElements(gameState, std::move(newElements));
     MapRemoveOutOfRangeElements();
 
     for (auto& spawn : gameState.PeepSpawns)

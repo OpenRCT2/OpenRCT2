@@ -234,7 +234,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         std::memcpy(&valB, &spriteCmp.field, sizeof(struc::field));                                                            \
         uintptr_t offset = reinterpret_cast<uintptr_t>(&spriteBase.field) - reinterpret_cast<uintptr_t>(&spriteBase);          \
         changeData.diffs.push_back(                                                                                            \
-            GameStateSpriteChange::Diff{ static_cast<size_t>(offset), sizeof(struc::field), #struc, #field, valA, valB });     \
+            GameStateSpriteChange::Diff { static_cast<size_t>(offset), sizeof(struc::field), #struc, #field, valA, valB });    \
     }
 
     void CompareSpriteDataCommon(
@@ -265,7 +265,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, NextFlags);
         COMPARE_FIELD(Peep, State);
         COMPARE_FIELD(Peep, SubState);
-        COMPARE_FIELD(Peep, SpriteType);
+        COMPARE_FIELD(Peep, AnimationGroup);
         COMPARE_FIELD(Peep, TshirtColour);
         COMPARE_FIELD(Peep, TrousersColour);
         COMPARE_FIELD(Peep, DestinationX);
@@ -281,11 +281,11 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, CurrentTrain);
         COMPARE_FIELD(Peep, TimeToSitdown);
         COMPARE_FIELD(Peep, SpecialSprite);
-        COMPARE_FIELD(Peep, ActionSpriteType);
-        COMPARE_FIELD(Peep, NextActionSpriteType);
-        COMPARE_FIELD(Peep, ActionSpriteImageOffset);
+        COMPARE_FIELD(Peep, AnimationType);
+        COMPARE_FIELD(Peep, NextAnimationType);
+        COMPARE_FIELD(Peep, AnimationImageIdOffset);
         COMPARE_FIELD(Peep, Action);
-        COMPARE_FIELD(Peep, ActionFrame);
+        COMPARE_FIELD(Peep, AnimationFrameNum);
         COMPARE_FIELD(Peep, StepProgress);
         COMPARE_FIELD(Peep, MazeLastEdge);
         COMPARE_FIELD(Peep, InteractionRideIndex);
@@ -302,7 +302,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             COMPARE_FIELD(Peep, PathfindHistory[i].z);
             COMPARE_FIELD(Peep, PathfindHistory[i].direction);
         }
-        COMPARE_FIELD(Peep, WalkingFrameNum);
+        COMPARE_FIELD(Peep, WalkingAnimationFrameNum);
         COMPARE_FIELD(Peep, PeepFlags);
     }
 

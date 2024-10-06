@@ -28,48 +28,52 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH_QUIT = 38;
     static constexpr int32_t WW_QUIT = 177;
 
+    enum WindowSavePromptWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_LABEL,
+        WIDX_SAVE,
+        WIDX_DONT_SAVE,
+        WIDX_CANCEL
+    };
+
     // clang-format off
-enum WindowSavePromptWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_LABEL,
-    WIDX_SAVE,
-    WIDX_DONT_SAVE,
-    WIDX_CANCEL
-};
-
-static Widget _savePromptWidgets[] = {
-    WINDOW_SHIM_WHITE(STR_NONE, WW_SAVE, WH_SAVE),
-    MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, STR_EMPTY                ), // question/label
-    MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
-    MakeWidget({ 91, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
-    MakeWidget({174, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_CANCEL   ), // cancel
-    kWidgetsEnd,
-};
-
-enum WindowQuitPromptWidgetIdx {
-    WQIDX_BACKGROUND,
-    WQIDX_TITLE,
-    WQIDX_CLOSE,
-    WQIDX_OK,
-    WQIDX_CANCEL
-};
-
-static Widget _quitPromptWidgets[] = {
-    WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
-    MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
-    MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL), // cancel
-    kWidgetsEnd,
-};
-
-static constexpr StringId window_save_prompt_labels[][2] = {
-    { STR_LOAD_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_LOADING },
-    { STR_QUIT_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_QUITTING },
-    { STR_QUIT_GAME_2_PROMPT_TITLE, STR_SAVE_BEFORE_QUITTING_2 },
-    { STR_NEW_GAME,                 STR_SAVE_BEFORE_QUITTING },
-};
+    static Widget _savePromptWidgets[] = {
+        WINDOW_SHIM_WHITE(STR_NONE, WW_SAVE, WH_SAVE),
+        MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, STR_EMPTY                ), // question/label
+        MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
+        MakeWidget({ 91, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
+        MakeWidget({174, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_CANCEL   ), // cancel
+        kWidgetsEnd,
+    };
     // clang-format on
+
+    enum WindowQuitPromptWidgetIdx
+    {
+        WQIDX_BACKGROUND,
+        WQIDX_TITLE,
+        WQIDX_CLOSE,
+        WQIDX_OK,
+        WQIDX_CANCEL
+    };
+
+    // clang-format off
+    static Widget _quitPromptWidgets[] = {
+        WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
+        MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
+        MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL), // cancel
+        kWidgetsEnd,
+    };
+    // clang-format on
+
+    static constexpr StringId window_save_prompt_labels[][2] = {
+        { STR_LOAD_GAME_PROMPT_TITLE, STR_SAVE_BEFORE_LOADING },
+        { STR_QUIT_GAME_PROMPT_TITLE, STR_SAVE_BEFORE_QUITTING },
+        { STR_QUIT_GAME_2_PROMPT_TITLE, STR_SAVE_BEFORE_QUITTING_2 },
+        { STR_NEW_GAME, STR_SAVE_BEFORE_QUITTING },
+    };
 
     static void WindowSavePromptCallback(int32_t result, const utf8* path)
     {

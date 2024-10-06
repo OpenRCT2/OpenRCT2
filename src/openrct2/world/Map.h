@@ -111,9 +111,14 @@ extern uint32_t gLandRemainingConstructionSales;
 
 extern bool gMapLandRightsUpdateSuccess;
 
+namespace OpenRCT2
+{
+    struct GameState_t;
+}
+
 void ReorganiseTileElements();
 const std::vector<TileElement>& GetTileElements();
-void SetTileElements(std::vector<TileElement>&& tileElements);
+void SetTileElements(OpenRCT2::GameState_t& gameState, std::vector<TileElement>&& tileElements);
 void StashMap();
 void UnstashMap();
 std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts();
@@ -141,8 +146,6 @@ EntranceElement* MapGetRideExitElementAt(const CoordsXYZ& exitCoords, bool ghost
 uint8_t MapGetHighestLandHeight(const MapRange& range);
 uint8_t MapGetLowestLandHeight(const MapRange& range);
 bool MapCoordIsConnected(const TileCoordsXYZ& loc, uint8_t faceDirection);
-void MapRemoveProvisionalElements();
-void MapRestoreProvisionalElements();
 void MapUpdatePathWideFlags();
 bool MapIsLocationValid(const CoordsXY& coords);
 bool MapIsEdge(const CoordsXY& coords);
@@ -214,6 +217,7 @@ int32_t MapGetCornerHeight(int32_t z, int32_t slope, int32_t direction);
 int32_t TileElementGetCornerHeight(const SurfaceElement* surfaceElement, int32_t direction);
 
 void MapClearAllElements();
+void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr);
 
 LargeSceneryElement* MapGetLargeScenerySegment(const CoordsXYZD& sceneryPos, int32_t sequence);
 std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
@@ -232,6 +236,6 @@ bool MapIsLocationAtEdge(const CoordsXY& loc);
 
 uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos);
 
-void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade = false);
+void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership);
 MapRange ClampRangeWithinMap(const MapRange& range);
 void ShiftMap(const TileCoordsXY& amount);

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "String.hpp"
+#include "StringTypes.h"
 
 #include <functional>
 #include <string>

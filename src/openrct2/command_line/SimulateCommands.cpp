@@ -26,7 +26,8 @@ using namespace OpenRCT2;
 static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator);
 
 const CommandLineCommand CommandLine::SimulateCommands[]{ // Main commands
-                                                          DefineCommand("", "<ticks>", nullptr, HandleSimulate), CommandTableEnd
+                                                          DefineCommand("", "<ticks>", nullptr, HandleSimulate),
+                                                          kCommandTableEnd
 };
 
 static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)

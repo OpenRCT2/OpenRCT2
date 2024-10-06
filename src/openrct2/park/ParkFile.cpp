@@ -23,6 +23,7 @@
 #include "../core/File.h"
 #include "../core/OrcaStream.hpp"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"
@@ -64,8 +65,6 @@
 #include <optional>
 #include <string_view>
 #include <vector>
-
-constexpr uint32_t BlockBrakeImprovementsVersion = 27;
 
 using namespace OpenRCT2;
 
@@ -374,6 +373,13 @@ namespace OpenRCT2
                             }
                         }
                     });
+
+                if (version < kPeepNamesObjectsVersion)
+                {
+                    AppendRequiredObjects(
+                        requiredObjects, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
+                }
+
                 RequiredObjects = std::move(requiredObjects);
             }
             else
@@ -457,7 +463,7 @@ namespace OpenRCT2
 
                 if (os.GetHeader().TargetVersion >= 1)
                 {
-                    cs.ReadWrite(gScenarioFileName);
+                    cs.ReadWrite(gameState.ScenarioFileName);
                 }
             });
         }
@@ -911,10 +917,52 @@ namespace OpenRCT2
                         return true;
                     });
 
-                    cs.ReadWriteArray(gameState.Park.RatingHistory, [&cs](uint8_t& value) {
-                        cs.ReadWrite(value);
-                        return true;
-                    });
+                    if (version < k16BitParkHistoryVersion)
+                    {
+                        if (cs.GetMode() == OrcaStream::Mode::READING)
+                        {
+                            uint8_t smallHistory[kParkRatingHistorySize];
+                            cs.ReadWriteArray(smallHistory, [&cs](uint8_t& value) {
+                                cs.ReadWrite(value);
+                                return true;
+                            });
+                            for (int i = 0; i < kParkRatingHistorySize; i++)
+                            {
+                                if (smallHistory[i] == RCT12ParkHistoryUndefined)
+                                    gameState.Park.RatingHistory[i] = kParkRatingHistoryUndefined;
+                                else
+                                {
+                                    gameState.Park.RatingHistory[i] = static_cast<uint16_t>(
+                                        smallHistory[i] * RCT12ParkRatingHistoryFactor);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            uint8_t smallHistory[kParkRatingHistorySize];
+                            for (int i = 0; i < kParkRatingHistorySize; i++)
+                            {
+                                if (gameState.Park.RatingHistory[i] == kParkRatingHistoryUndefined)
+                                    smallHistory[i] = RCT12ParkHistoryUndefined;
+                                else
+                                {
+                                    smallHistory[i] = static_cast<uint8_t>(
+                                        gameState.Park.RatingHistory[i] / RCT12ParkRatingHistoryFactor);
+                                }
+                            }
+                            cs.ReadWriteArray(smallHistory, [&cs](uint8_t& value) {
+                                cs.ReadWrite(value);
+                                return true;
+                            });
+                        }
+                    }
+                    else
+                    {
+                        cs.ReadWriteArray(gameState.Park.RatingHistory, [&cs](uint16_t& value) {
+                            cs.ReadWrite(value);
+                            return true;
+                        });
+                    }
 
                     cs.ReadWriteArray(gameState.GuestsInParkHistory, [&cs](uint32_t& value) {
                         cs.ReadWrite(value);
@@ -1071,7 +1119,7 @@ namespace OpenRCT2
                         std::vector<TileElement> tileElements;
                         tileElements.resize(numElements);
                         cs.Read(tileElements.data(), tileElements.size() * sizeof(TileElement));
-                        SetTileElements(std::move(tileElements));
+                        SetTileElements(gameState, std::move(tileElements));
                         {
                             TileElementIterator it;
                             TileElementIteratorBegin(&it);
@@ -1103,7 +1151,7 @@ namespace OpenRCT2
                                     {
                                         it.element->SetInvisible(true);
                                     }
-                                    if (os.GetHeader().TargetVersion < BlockBrakeImprovementsVersion)
+                                    if (os.GetHeader().TargetVersion < kBlockBrakeImprovementsVersion)
                                     {
                                         if (trackType == TrackElemType::Brakes)
                                             trackElement->SetBrakeClosed(true);
@@ -1606,7 +1654,7 @@ namespace OpenRCT2
         static std::vector<ObjectEntryIndex> LegacyGetRideTypesBeenOn(const std::array<uint8_t, 16>& srcArray)
         {
             std::vector<ObjectEntryIndex> ridesTypesBeenOn;
-            for (ObjectEntryIndex i = 0; i < RCT2::Limits::MaxRideObjects; i++)
+            for (ObjectEntryIndex i = 0; i < RCT2::Limits::kMaxRideObjects; i++)
             {
                 if (srcArray[i / 8] & (1 << (i % 8)))
                 {
@@ -1664,7 +1712,7 @@ namespace OpenRCT2
 
             cs.ReadWrite(entity.State);
             cs.ReadWrite(entity.SubState);
-            cs.ReadWrite(entity.SpriteType);
+            cs.ReadWrite(entity.AnimationGroup);
 
             if (version <= 1)
             {
@@ -1788,11 +1836,11 @@ namespace OpenRCT2
             cs.ReadWrite(entity.CurrentTrain);
             cs.ReadWrite(entity.TimeToSitdown);
             cs.ReadWrite(entity.SpecialSprite);
-            cs.ReadWrite(entity.ActionSpriteType);
-            cs.ReadWrite(entity.NextActionSpriteType);
-            cs.ReadWrite(entity.ActionSpriteImageOffset);
+            cs.ReadWrite(entity.AnimationType);
+            cs.ReadWrite(entity.NextAnimationType);
+            cs.ReadWrite(entity.AnimationImageIdOffset);
             cs.ReadWrite(entity.Action);
-            cs.ReadWrite(entity.ActionFrame);
+            cs.ReadWrite(entity.AnimationFrameNum);
             cs.ReadWrite(entity.StepProgress);
 
             if (version <= 1)
@@ -1920,7 +1968,7 @@ namespace OpenRCT2
                 cs.ReadWrite(entity.PathfindHistory[i].z);
                 cs.ReadWrite(entity.PathfindHistory[i].direction);
             }
-            cs.ReadWrite(entity.WalkingFrameNum);
+            cs.ReadWrite(entity.WalkingAnimationFrameNum);
 
             if (version <= 1)
             {
@@ -2101,7 +2149,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.scream_sound_id);
         cs.ReadWrite(entity.TrackSubposition);
         cs.ReadWrite(entity.NumLaps);
-        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion < BlockBrakeImprovementsVersion)
+        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion < kBlockBrakeImprovementsVersion)
         {
             uint8_t brakeSpeed;
             cs.ReadWrite(brakeSpeed);
@@ -2131,7 +2179,7 @@ namespace OpenRCT2
                 entity.SetFlag(VehicleFlags::Crashed);
             }
         }
-        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion < BlockBrakeImprovementsVersion)
+        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion < kBlockBrakeImprovementsVersion)
         {
             entity.BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
         }

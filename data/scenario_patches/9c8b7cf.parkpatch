@@ -14,7 +14,6 @@
             ]
         },
         "construction_rights_owned": {
-            "cannot_downgrade": true,
             "coordinates": [
                 [ 86, 69 ], [ 86, 70 ]
             ]

@@ -39,158 +39,162 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId WINDOW_TITLE = STR_STRINGID;
     static constexpr int32_t WH = 224;
 
-    static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 45, 15 };
-    static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 5, 5 };
+    static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 45, 20 };
+    static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 25, 10 };
     static constexpr uint8_t kGraphNumYLabels = 6;
 
-    // clang-format off
-enum WindowParkPage {
-    WINDOW_PARK_PAGE_ENTRANCE,
-    WINDOW_PARK_PAGE_RATING,
-    WINDOW_PARK_PAGE_GUESTS,
-    WINDOW_PARK_PAGE_PRICE,
-    WINDOW_PARK_PAGE_STATS,
-    WINDOW_PARK_PAGE_OBJECTIVE,
-    WINDOW_PARK_PAGE_AWARDS,
-    WINDOW_PARK_PAGE_COUNT,
-};
+    enum WindowParkPage
+    {
+        WINDOW_PARK_PAGE_ENTRANCE,
+        WINDOW_PARK_PAGE_RATING,
+        WINDOW_PARK_PAGE_GUESTS,
+        WINDOW_PARK_PAGE_PRICE,
+        WINDOW_PARK_PAGE_STATS,
+        WINDOW_PARK_PAGE_OBJECTIVE,
+        WINDOW_PARK_PAGE_AWARDS,
+        WINDOW_PARK_PAGE_COUNT,
+    };
 
-enum WindowParkWidgetIdx {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_PAGE_BACKGROUND,
-    WIDX_TAB_1,
-    WIDX_TAB_2,
-    WIDX_TAB_3,
-    WIDX_TAB_4,
-    WIDX_TAB_5,
-    WIDX_TAB_6,
-    WIDX_TAB_7,
+    enum WindowParkWidgetIdx
+    {
+        WIDX_BACKGROUND,
+        WIDX_TITLE,
+        WIDX_CLOSE,
+        WIDX_PAGE_BACKGROUND,
+        WIDX_TAB_1,
+        WIDX_TAB_2,
+        WIDX_TAB_3,
+        WIDX_TAB_4,
+        WIDX_TAB_5,
+        WIDX_TAB_6,
+        WIDX_TAB_7,
 
-    WIDX_VIEWPORT = 11,
-    WIDX_STATUS,
-    WIDX_OPEN_OR_CLOSE,
-    WIDX_BUY_LAND_RIGHTS,
-    WIDX_LOCATE,
-    WIDX_RENAME,
-    WIDX_CLOSE_LIGHT,
-    WIDX_OPEN_LIGHT,
+        WIDX_VIEWPORT = 11,
+        WIDX_STATUS,
+        WIDX_OPEN_OR_CLOSE,
+        WIDX_BUY_LAND_RIGHTS,
+        WIDX_LOCATE,
+        WIDX_RENAME,
+        WIDX_CLOSE_LIGHT,
+        WIDX_OPEN_LIGHT,
 
-    WIDX_PRICE_LABEL = 11,
-    WIDX_PRICE,
-    WIDX_INCREASE_PRICE,
-    WIDX_DECREASE_PRICE,
+        WIDX_PRICE_LABEL = 11,
+        WIDX_PRICE,
+        WIDX_INCREASE_PRICE,
+        WIDX_DECREASE_PRICE,
 
-    WIDX_ENTER_NAME = 11
-};
+        WIDX_ENTER_NAME = 11
+    };
 
 #pragma region Widgets
 
-#define MAIN_PARK_WIDGETS(WW) \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({  0, 43}, {WW, 131}, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */ \
-    MakeTab   ({  3, 17}, STR_PARK_ENTRANCE_TAB_TIP                     ), /* tab 1 */ \
-    MakeTab   ({ 34, 17}, STR_PARK_RATING_TAB_TIP                       ), /* tab 2 */ \
-    MakeTab   ({ 65, 17}, STR_PARK_GUESTS_TAB_TIP                       ), /* tab 3 */ \
-    MakeTab   ({ 96, 17}, STR_PARK_PRICE_TAB_TIP                        ), /* tab 4 */ \
-    MakeTab   ({127, 17}, STR_PARK_STATS_TAB_TIP                        ), /* tab 5 */ \
-    MakeTab   ({158, 17}, STR_PARK_OBJECTIVE_TAB_TIP                    ), /* tab 6 */ \
-    MakeTab   ({189, 17}, STR_PARK_AWARDS_TAB_TIP                       )  /* tab 7 */
+#define MAIN_PARK_WIDGETS(WW)                                                                                                  \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
+        MakeWidget({ 0, 43 }, { WW, 131 }, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */         \
+        MakeTab({ 3, 17 }, STR_PARK_ENTRANCE_TAB_TIP),                                         /* tab 1 */                     \
+        MakeTab({ 34, 17 }, STR_PARK_RATING_TAB_TIP),                                          /* tab 2 */                     \
+        MakeTab({ 65, 17 }, STR_PARK_GUESTS_TAB_TIP),                                          /* tab 3 */                     \
+        MakeTab({ 96, 17 }, STR_PARK_PRICE_TAB_TIP),                                           /* tab 4 */                     \
+        MakeTab({ 127, 17 }, STR_PARK_STATS_TAB_TIP),                                          /* tab 5 */                     \
+        MakeTab({ 158, 17 }, STR_PARK_OBJECTIVE_TAB_TIP),                                      /* tab 6 */                     \
+        MakeTab({ 189, 17 }, STR_PARK_AWARDS_TAB_TIP)                                          /* tab 7 */
 
-static Widget _entranceWidgets[] = {
-    MAIN_PARK_WIDGETS(230),
-    MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
-    MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
-    MakeWidget({205,  49}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
-    MakeWidget({205,  73}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS),        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
-    MakeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
-    MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
-    MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
-    MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       ),
-    kWidgetsEnd,
-};
+    // clang-format off
+    static Widget _entranceWidgets[] = {
+        MAIN_PARK_WIDGETS(230),
+        MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
+        MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
+        MakeWidget({205,  49}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
+        MakeWidget({205,  73}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS),        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
+        MakeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
+        MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
+        MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
+        MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       ),
+        kWidgetsEnd,
+    };
 
-static Widget _ratingWidgets[] = {
-    MAIN_PARK_WIDGETS(255),
-    kWidgetsEnd,
-};
+    static Widget _ratingWidgets[] = {
+        MAIN_PARK_WIDGETS(255),
+        kWidgetsEnd,
+    };
 
-static Widget _guestsWidgets[] = {
-    MAIN_PARK_WIDGETS(255),
-    kWidgetsEnd,
-};
+    static Widget _guestsWidgets[] = {
+        MAIN_PARK_WIDGETS(255),
+        kWidgetsEnd,
+    };
 
-static Widget _priceWidgets[] = {
-    MAIN_PARK_WIDGETS(230),
-    MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
-    MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
-    kWidgetsEnd,
-};
+    static Widget _priceWidgets[] = {
+        MAIN_PARK_WIDGETS(230),
+        MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
+        MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
+        kWidgetsEnd,
+    };
 
-static Widget _statsWidgets[] = {
-    MAIN_PARK_WIDGETS(230),
-    kWidgetsEnd,
-};
+    static Widget _statsWidgets[] = {
+        MAIN_PARK_WIDGETS(230),
+        kWidgetsEnd,
+    };
 
-static Widget _objectiveWidgets[] = {
-    MAIN_PARK_WIDGETS(230),
-    MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
-    kWidgetsEnd,
-};
+    static Widget _objectiveWidgets[] = {
+        MAIN_PARK_WIDGETS(230),
+        MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
+        kWidgetsEnd,
+    };
 
-static Widget _awardsWidgets[] = {
-    MAIN_PARK_WIDGETS(230),
-    kWidgetsEnd,
-};
+    static Widget _awardsWidgets[] = {
+        MAIN_PARK_WIDGETS(230),
+        kWidgetsEnd,
+    };
 
-static std::array<Widget*, WINDOW_PARK_PAGE_COUNT> _pagedWidgets = {
-    _entranceWidgets,
-    _ratingWidgets,
-    _guestsWidgets,
-    _priceWidgets,
-    _statsWidgets,
-    _objectiveWidgets,
-    _awardsWidgets,
-};
+    static std::array<Widget*, WINDOW_PARK_PAGE_COUNT> _pagedWidgets = {
+        _entranceWidgets,
+        _ratingWidgets,
+        _guestsWidgets,
+        _priceWidgets,
+        _statsWidgets,
+        _objectiveWidgets,
+        _awardsWidgets,
+    };
+    // clang-format on
 
 #pragma endregion
 
-static std::array<uint32_t, WINDOW_PARK_PAGE_COUNT> _pagedHoldDownWidgets = {
-    0,
-    0,
-    0,
-    (1uLL << WIDX_INCREASE_PRICE) |
-    (1uLL << WIDX_DECREASE_PRICE),
-    0,
-    0,
-    0,
-};
+    // clang-format off
+    static std::array<uint32_t, WINDOW_PARK_PAGE_COUNT> _pagedHoldDownWidgets = {
+        0,
+        0,
+        0,
+        (1uLL << WIDX_INCREASE_PRICE) |
+        (1uLL << WIDX_DECREASE_PRICE),
+        0,
+        0,
+        0,
+    };
 
-struct WindowParkAward {
-    StringId text;
-    uint32_t sprite;
-};
+    struct WindowParkAward {
+        StringId text;
+        uint32_t sprite;
+    };
 
-static constexpr WindowParkAward _parkAwards[] = {
-    { STR_AWARD_MOST_UNTIDY,                SPR_AWARD_MOST_UNTIDY },
-    { STR_AWARD_MOST_TIDY,                  SPR_AWARD_MOST_TIDY },
-    { STR_AWARD_BEST_ROLLERCOASTERS,        SPR_AWARD_BEST_ROLLERCOASTERS },
-    { STR_AWARD_BEST_VALUE,                 SPR_AWARD_BEST_VALUE },
-    { STR_AWARD_MOST_BEAUTIFUL,             SPR_AWARD_MOST_BEAUTIFUL },
-    { STR_AWARD_WORST_VALUE,                SPR_AWARD_WORST_VALUE },
-    { STR_AWARD_SAFEST,                     SPR_AWARD_SAFEST },
-    { STR_AWARD_BEST_STAFF,                 SPR_AWARD_BEST_STAFF },
-    { STR_AWARD_BEST_FOOD,                  SPR_AWARD_BEST_FOOD },
-    { STR_AWARD_WORST_FOOD,                 SPR_AWARD_WORST_FOOD },
-    { STR_AWARD_BEST_TOILETS,               SPR_AWARD_BEST_TOILETS },
-    { STR_AWARD_MOST_DISAPPOINTING,         SPR_AWARD_MOST_DISAPPOINTING },
-    { STR_AWARD_BEST_WATER_RIDES,           SPR_AWARD_BEST_WATER_RIDES },
-    { STR_AWARD_BEST_CUSTOM_DESIGNED_RIDES, SPR_AWARD_BEST_CUSTOM_DESIGNED_RIDES },
-    { STR_AWARD_MOST_DAZZLING_RIDE_COLOURS, SPR_AWARD_MOST_DAZZLING_RIDE_COLOURS },
-    { STR_AWARD_MOST_CONFUSING_LAYOUT,      SPR_AWARD_MOST_CONFUSING_LAYOUT },
-    { STR_AWARD_BEST_GENTLE_RIDES,          SPR_AWARD_BEST_GENTLE_RIDES },
-};
+    static constexpr WindowParkAward _parkAwards[] = {
+        { STR_AWARD_MOST_UNTIDY,                SPR_AWARD_MOST_UNTIDY },
+        { STR_AWARD_MOST_TIDY,                  SPR_AWARD_MOST_TIDY },
+        { STR_AWARD_BEST_ROLLERCOASTERS,        SPR_AWARD_BEST_ROLLERCOASTERS },
+        { STR_AWARD_BEST_VALUE,                 SPR_AWARD_BEST_VALUE },
+        { STR_AWARD_MOST_BEAUTIFUL,             SPR_AWARD_MOST_BEAUTIFUL },
+        { STR_AWARD_WORST_VALUE,                SPR_AWARD_WORST_VALUE },
+        { STR_AWARD_SAFEST,                     SPR_AWARD_SAFEST },
+        { STR_AWARD_BEST_STAFF,                 SPR_AWARD_BEST_STAFF },
+        { STR_AWARD_BEST_FOOD,                  SPR_AWARD_BEST_FOOD },
+        { STR_AWARD_WORST_FOOD,                 SPR_AWARD_WORST_FOOD },
+        { STR_AWARD_BEST_TOILETS,               SPR_AWARD_BEST_TOILETS },
+        { STR_AWARD_MOST_DISAPPOINTING,         SPR_AWARD_MOST_DISAPPOINTING },
+        { STR_AWARD_BEST_WATER_RIDES,           SPR_AWARD_BEST_WATER_RIDES },
+        { STR_AWARD_BEST_CUSTOM_DESIGNED_RIDES, SPR_AWARD_BEST_CUSTOM_DESIGNED_RIDES },
+        { STR_AWARD_MOST_DAZZLING_RIDE_COLOURS, SPR_AWARD_MOST_DAZZLING_RIDE_COLOURS },
+        { STR_AWARD_MOST_CONFUSING_LAYOUT,      SPR_AWARD_MOST_CONFUSING_LAYOUT },
+        { STR_AWARD_BEST_GENTLE_RIDES,          SPR_AWARD_BEST_GENTLE_RIDES },
+    };
     // clang-format on
 
     class ParkWindow final : public Window
@@ -199,7 +203,7 @@ static constexpr WindowParkAward _parkAwards[] = {
         int32_t _numberOfRides = -1;
         uint8_t _peepAnimationFrame = 0;
 
-        Graph::GraphProperties<uint8_t> _ratingProps{};
+        Graph::GraphProperties<uint16_t> _ratingProps{};
         Graph::GraphProperties<uint32_t> _guestProps{};
 
         ScreenRect _ratingGraphBounds;
@@ -417,7 +421,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
         void PrepareWindowTitleText()
         {
-            auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
+            auto parkName = GetGameState().Park.Name.c_str();
 
             auto ft = Formatter::Common();
             ft.Add<StringId>(STR_STRING);
@@ -437,7 +441,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                     break;
                 case WIDX_RENAME:
                 {
-                    auto& park = OpenRCT2::GetGameState().Park;
+                    auto& park = GetGameState().Park;
                     WindowTextInputRawOpen(
                         this, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), kUserStringMaxLength);
                     break;
@@ -526,7 +530,7 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Set open / close park button state
             {
-                auto parkName = OpenRCT2::GetGameState().Park.Name.c_str();
+                auto parkName = gameState.Park.Name.c_str();
 
                 auto ft = Formatter::Common();
                 ft.Add<StringId>(STR_STRING);
@@ -547,7 +551,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
 
             // Only allow purchase of land when there is money
-            if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
+            if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
                 widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::Empty;
             else
                 widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
@@ -681,13 +685,18 @@ static constexpr WindowParkAward _parkAwards[] = {
 #pragma region Rating page
         void OnResizeRating()
         {
-            WindowSetResize(*this, 255, 182, 255, 182);
+            flags |= WF_RESIZABLE;
+            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
         }
 
         void OnUpdateRating()
         {
             frame_no++;
             WidgetInvalidate(*this, WIDX_TAB_2);
+            if (_ratingProps.UpdateHoverIndex())
+            {
+                InvalidateWidget(WIDX_BACKGROUND);
+            }
         }
 
         void OnPrepareDrawRating()
@@ -706,14 +715,14 @@ static constexpr WindowParkAward _parkAwards[] = {
             AnchorBorderWidgets();
 
             _ratingProps.min = 0;
-            _ratingProps.max = 250;
+            _ratingProps.max = 1000;
             _ratingProps.series = GetGameState().Park.RatingHistory;
             const Widget* background = &widgets[WIDX_PAGE_BACKGROUND];
             _ratingGraphBounds = { windowPos + ScreenCoordsXY{ background->left + 4, background->top + 15 },
                                    windowPos + ScreenCoordsXY{ background->right - 4, background->bottom - 4 } };
 
             char buffer[64]{};
-            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", Graph::kParkRatingMax);
+            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", _ratingProps.max);
             int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
             const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
@@ -736,6 +745,13 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Graph border
             GfxFillRectInset(dpi, _ratingGraphBounds, colours[1], INSET_RECT_F_30);
+            // hide resize widget on graph area
+            constexpr ScreenCoordsXY offset{ 1, 1 };
+            constexpr ScreenCoordsXY bigOffset{ 5, 5 };
+            GfxFillRectInset(
+                dpi, { _ratingGraphBounds.Point2 - bigOffset, _ratingGraphBounds.Point2 - offset }, colours[1],
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+
             Graph::DrawRatingGraph(dpi, _ratingProps);
         }
 
@@ -744,7 +760,8 @@ static constexpr WindowParkAward _parkAwards[] = {
 #pragma region Guests page
         void OnResizeGuests()
         {
-            WindowSetResize(*this, 255, 182, 255, 182);
+            flags |= WF_RESIZABLE;
+            WindowSetResize(*this, 268, 174 + 9, 2000, 2000);
         }
 
         void OnUpdateGuests()
@@ -752,6 +769,10 @@ static constexpr WindowParkAward _parkAwards[] = {
             frame_no++;
             _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
             WidgetInvalidate(*this, WIDX_TAB_3);
+            if (_guestProps.UpdateHoverIndex())
+            {
+                InvalidateWidget(WIDX_BACKGROUND);
+            }
         }
 
         void OnPrepareDrawGuests()
@@ -781,7 +802,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             for (size_t i = 0; i < std::size(gameState.GuestsInParkHistory); i++)
             {
                 auto value = gameState.GuestsInParkHistory[i];
-                if (value == GuestsInParkHistoryUndefined)
+                if (value == kGuestsInParkHistoryUndefined)
                     continue;
                 while (value > _guestProps.max)
                     _guestProps.max += 5000;
@@ -811,6 +832,13 @@ static constexpr WindowParkAward _parkAwards[] = {
 
             // Graph border
             GfxFillRectInset(dpi, _guestGraphBounds, colours[1], INSET_RECT_F_30);
+            // hide resize widget on graph area
+            constexpr ScreenCoordsXY offset{ 1, 1 };
+            constexpr ScreenCoordsXY bigOffset{ 5, 5 };
+            GfxFillRectInset(
+                dpi, { _guestGraphBounds.Point2 - bigOffset, _guestGraphBounds.Point2 - offset }, colours[1],
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+
             Graph::DrawGuestGraph(dpi, _guestProps);
         }
 
@@ -1025,7 +1053,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                 case WIDX_ENTER_NAME:
                     WindowTextInputOpen(
                         this, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0,
-                        ParkNameMaxLength);
+                        kParkNameMaxLength);
                     break;
             }
         }
@@ -1173,7 +1201,7 @@ static constexpr WindowParkAward _parkAwards[] = {
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-            auto& currentAwards = OpenRCT2::GetGameState().CurrentAwards;
+            auto& currentAwards = GetGameState().CurrentAwards;
 
             for (const auto& award : currentAwards)
             {
@@ -1261,7 +1289,7 @@ static constexpr WindowParkAward _parkAwards[] = {
                     spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
                 GfxDrawSprite(dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
 
-                ImageId peepImage(GetPeepAnimation(PeepSpriteType::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
+                ImageId peepImage(GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
                 if (page == WINDOW_PARK_PAGE_GUESTS)
                     peepImage = peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
 

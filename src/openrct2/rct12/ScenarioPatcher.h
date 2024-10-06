@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 
 namespace OpenRCT2::RCT12
 {
-    void FetchAndApplyScenarioPatch(u8string_view scenarioPath, bool isScenario);
-    void ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenarioSHA, bool isScenario);
+    void FetchAndApplyScenarioPatch(u8string_view scenarioPath);
+    void ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenarioSHA);
     /*SetDryRun should be used only for testing*/
     void SetDryRun(bool enable);
 } // namespace OpenRCT2::RCT12

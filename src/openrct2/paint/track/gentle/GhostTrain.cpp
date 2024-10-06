@@ -21,6 +21,8 @@
 
 using namespace OpenRCT2;
 
+static constexpr TunnelGroup kTunnelGroupIncline = TunnelGroup::Standard;
+
 void TrackPaintUtilLeftQuarterTurn1TileTunnel(
     PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, TunnelType startTunnel,
     int8_t endOffset, TunnelType endTunnel);
@@ -230,16 +232,16 @@ static void PaintGhostTrainTrack25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::SlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TunnelGroup::Standard, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::SlopeStart);
             break;
     }
 
@@ -284,10 +286,10 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
             PaintUtilPushTunnelLeft(session, height, doorImage);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, TunnelGroup::Standard, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
             break;
         case 3:
             PaintUtilPushTunnelRight(session, height, doorImage);
@@ -335,7 +337,7 @@ static void PaintGhostTrainTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TunnelGroup::Standard, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
         case 1:
             PaintUtilPushTunnelRight(session, height + 8, DoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
@@ -344,7 +346,7 @@ static void PaintGhostTrainTrack25DegUpToFlat(
             PaintUtilPushTunnelLeft(session, height + 8, DoorOpeningOutwardsToImage[trackElement.GetDoorBState()]);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TunnelGroup::Standard, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
     }
 }
@@ -368,7 +370,7 @@ static void PaintGhostTrainTrackFlatTo25DegDown(
     switch ((direction + 2) % 4)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, TunnelGroup::Standard, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
         case 1:
             PaintUtilPushTunnelRight(session, height + 8, DoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
@@ -377,7 +379,7 @@ static void PaintGhostTrainTrackFlatTo25DegDown(
             PaintUtilPushTunnelLeft(session, height + 8, DoorOpeningInwardsToImage[trackElement.GetDoorAState()]);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, TunnelGroup::Standard, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
     }
 }
@@ -410,7 +412,7 @@ static void PaintGhostTrainStation(
     imageId = session.TrackColours.WithIndex(GhostTrainTrackPiecesFlat[direction]);
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 3 } });
 
-    PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
+    TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
 

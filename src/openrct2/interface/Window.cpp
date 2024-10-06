@@ -833,8 +833,8 @@ void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords)
             if (!(w.flags & WF_NO_SCROLLING))
             {
                 w.savedViewPos = screenCoords
-                    - ScreenCoordsXY{ static_cast<int32_t>(w.viewport->view_width * window_scroll_locations[i][0]),
-                                      static_cast<int32_t>(w.viewport->view_height * window_scroll_locations[i][1]) };
+                    - ScreenCoordsXY{ static_cast<int32_t>(w.viewport->ViewWidth() * window_scroll_locations[i][0]),
+                                      static_cast<int32_t>(w.viewport->ViewHeight() * window_scroll_locations[i][1]) };
                 w.flags |= WF_SCROLLING_TO_LOCATION;
             }
         }
@@ -934,20 +934,16 @@ void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor)
     while (v->zoom > zoomLevel)
     {
         v->zoom--;
-        w.savedViewPos.x += v->view_width / 4;
-        w.savedViewPos.y += v->view_height / 4;
-        v->view_width /= 2;
-        v->view_height /= 2;
+        w.savedViewPos.x += v->ViewWidth() / 4;
+        w.savedViewPos.y += v->ViewHeight() / 4;
     }
 
     // Zoom out
     while (v->zoom < zoomLevel)
     {
         v->zoom++;
-        w.savedViewPos.x -= v->view_width / 2;
-        w.savedViewPos.y -= v->view_height / 2;
-        v->view_width *= 2;
-        v->view_height *= 2;
+        w.savedViewPos.x -= v->ViewWidth() / 2;
+        w.savedViewPos.y -= v->ViewHeight() / 2;
     }
 
     // Zooming to cursor? Centre around the tile we were hovering over just now.
@@ -1048,6 +1044,7 @@ static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int3
 
 static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
+    assert(dpi.zoom_level == ZoomLevel{ 0 });
     // Copy dpi so we can crop it
     DrawPixelInfo copy = dpi;
 
@@ -1081,7 +1078,7 @@ static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, in
         copy.height -= overflow;
         if (copy.height <= 0)
             return;
-        copy.bits += (copy.width + copy.pitch) * overflow;
+        copy.bits += copy.LineStride() * overflow;
     }
 
     // Clamp height to bottom
@@ -1257,8 +1254,6 @@ void WindowResizeGuiScenarioEditor(int32_t width, int32_t height)
         mainWind->height = height;
         viewport->width = width;
         viewport->height = height;
-        viewport->view_width = viewport->zoom.ApplyTo(width);
-        viewport->view_height = viewport->zoom.ApplyTo(height);
         if (mainWind->widgets != nullptr && mainWind->widgets[WC_MAIN_WINDOW__0].type == WindowWidgetType::Viewport)
         {
             mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
