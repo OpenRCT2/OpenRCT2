@@ -12,7 +12,7 @@
 #include <string>
 
 #define OPENRCT2_NAME "OpenRCT2"
-#define OPENRCT2_VERSION "0.4.14"
+#define OPENRCT2_VERSION "0.4.15"
 
 #if defined(__amd64__) || defined(_M_AMD64)
 #    define OPENRCT2_ARCHITECTURE "x86-64"
