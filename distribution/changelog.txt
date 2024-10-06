@@ -1,4 +1,4 @@
-0.4.15 (in development)
+0.4.15 (2024-10-06)
 ------------------------------------------------------------------------
 - Feature: [#775] Add 2x and 4x zoom levels to software renderer (previously limited to OpenGL).
 - Feature: [#15642] Track design placement can now use construction modifier keys (ctrl/shift).
