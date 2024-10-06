@@ -530,3 +530,35 @@ jobs:
           else
             echo 'Not going to push build'
           fi
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: [get_artifact_name, linux-portable, android, linux-appimage, macos-universal, windows]
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - name: Concatenate sha1 files
+        run: |
+          ls -lR
+          pushd ${{ github.workspace }}
+          sha1sum OpenRCT2-* > openrct2-${{ needs.get_artifact_name.outputs.name }}-sha1sums.txt
+          popd
+      - name: Create release notes
+        run: |
+          echo "SHA1 checksums:" >> release_notes.txt
+          echo "\`\`\`" >> release_notes.txt
+          cat openrct2-${{ needs.get_artifact_name.outputs.name }}-sha1sums.txt >> release_notes.txt
+          echo "\`\`\`" >> release_notes.txt
+          echo "" >> release_notes.txt
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: |
+            openrct2-${{ needs.get_artifact_name.outputs.name }}-sha1sums.txt
+            OpenRCT2-${{ needs.get_artifact_name.outputs.name }}-*
+          body_path: release_notes.txt
+          tag_name: ${{ needs.get_artifact_name.outputs.tag }}
