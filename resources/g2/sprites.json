@@ -8795,6 +8795,286 @@
         "palette": "keep"
     },
     {
+        "path": "track/corkscrew/large_half_loop_left_1_1.png",
+        "x": -24,
+        "y": -29
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_1_2.png",
+        "x": -20,
+        "y": -42
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_1_3.png",
+        "x": -32,
+        "y": -69
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_1_4.png",
+        "x": -32,
+        "y": -84
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_1_5.png",
+        "x": -18,
+        "y": -68
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_1_6.png",
+        "x": -11,
+        "y": -177
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_1_7.png",
+        "x": -23,
+        "y": -14
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_2_1.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_2_2.png",
+        "x": -6,
+        "y": -8
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_2_3.png",
+        "x": -9,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_2_4.png",
+        "x": -9,
+        "y": -116
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_2_5.png",
+        "x": -32,
+        "y": -136
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_2_6.png",
+        "x": -28,
+        "y": -195
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_2_7.png",
+        "x": -25,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_3_1.png",
+        "x": -25,
+        "y": -4
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_3_2.png",
+        "x": -31,
+        "y": -9
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_3_3.png",
+        "x": -28,
+        "y": -37
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_3_4.png",
+        "x": -10,
+        "y": -59
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_3_5.png",
+        "x": -11,
+        "y": -117
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_3_6.png",
+        "x": -23,
+        "y": -196
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_3_7.png",
+        "x": -26,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_4_1.png",
+        "x": -24,
+        "y": -17
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_4_2.png",
+        "x": -32,
+        "y": -21
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_4_3.png",
+        "x": -32,
+        "y": -55
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_4_4.png",
+        "x": -32,
+        "y": -82
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_4_5.png",
+        "x": 12,
+        "y": -60
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_4_6.png",
+        "x": -19,
+        "y": -181
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_4_7.png",
+        "x": -21,
+        "y": -16
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_1_1.png",
+        "x": -24,
+        "y": -18
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_1_2.png",
+        "x": -20,
+        "y": -21
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_1_3.png",
+        "x": -14,
+        "y": -55
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_1_4.png",
+        "x": 0,
+        "y": -82
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_1_5.png",
+        "x": -32,
+        "y": -60
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_1_6.png",
+        "x": -21,
+        "y": -181
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_1_7.png",
+        "x": -25,
+        "y": -16
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_2_1.png",
+        "x": -24,
+        "y": -4
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_2_2.png",
+        "x": -12,
+        "y": -9
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_2_3.png",
+        "x": -6,
+        "y": -37
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_2_4.png",
+        "x": -28,
+        "y": -59
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_2_5.png",
+        "x": -26,
+        "y": -117
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_2_6.png",
+        "x": -20,
+        "y": -196
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_2_7.png",
+        "x": -23,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_3_1.png",
+        "x": -26,
+        "y": -6
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_3_2.png",
+        "x": -28,
+        "y": -8
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_3_3.png",
+        "x": -29,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_3_4.png",
+        "x": -32,
+        "y": -116
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_3_5.png",
+        "x": 12,
+        "y": -136
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_3_6.png",
+        "x": 0,
+        "y": -195
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_3_7.png",
+        "x": -19,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_4_1.png",
+        "x": -27,
+        "y": -29
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_4_2.png",
+        "x": -28,
+        "y": -41
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_4_3.png",
+        "x": -23,
+        "y": -69
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_4_4.png",
+        "x": -10,
+        "y": -84
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_4_5.png",
+        "x": -11,
+        "y": -68
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_4_6.png",
+        "x": -31,
+        "y": -177
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_4_7.png",
+        "x": -28,
+        "y": -14
+    },
+    {
         "path": "track/lim/barrel_roll_left_1_1.png",
         "x": -22,
         "y": 9,
