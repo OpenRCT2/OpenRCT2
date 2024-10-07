@@ -8303,6 +8303,258 @@
         "palette": "keep"
     },
     {
+        "path": "track/corkscrew/large_corkscrew_left_1_1.png",
+        "x": -24,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_1_2.png",
+        "x": -23,
+        "y": -71,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_1_3.png",
+        "x": -28,
+        "y": -36,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_1_4.png",
+        "x": -25,
+        "y": -48,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_1_5.png",
+        "x": -24,
+        "y": -33,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_2_1.png",
+        "x": -24,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_2_2.png",
+        "x": -32,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_2_3.png",
+        "x": -25,
+        "y": -50,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_2_4.png",
+        "x": -20,
+        "y": -58,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_2_5.png",
+        "x": -15,
+        "y": -33,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_3_1.png",
+        "x": -16,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_3_2.png",
+        "x": -17,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_3_3.png",
+        "x": 13,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_3_4.png",
+        "x": -19,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_3_5.png",
+        "x": -26,
+        "y": -31,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_4_1.png",
+        "x": -26,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_4_2.png",
+        "x": -25,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_4_3.png",
+        "x": -16,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_4_4.png",
+        "x": -37,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_4_5.png",
+        "x": -24,
+        "y": -26,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_1_1.png",
+        "x": -24,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_1_2.png",
+        "x": -25,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_1_3.png",
+        "x": -24,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_1_4.png",
+        "x": -30,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_1_5.png",
+        "x": -32,
+        "y": -26,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_2_1.png",
+        "x": -24,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_2_2.png",
+        "x": -16,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_2_3.png",
+        "x": -24,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_2_4.png",
+        "x": -16,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_2_5.png",
+        "x": -24,
+        "y": -31,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_3_1.png",
+        "x": -35,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_3_2.png",
+        "x": -16,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_3_3.png",
+        "x": -27,
+        "y": -50,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_3_4.png",
+        "x": -32,
+        "y": -58,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_3_5.png",
+        "x": -24,
+        "y": -33,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_4_1.png",
+        "x": -23,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_4_2.png",
+        "x": -11,
+        "y": -71,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_4_3.png",
+        "x": 13,
+        "y": -36,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_4_4.png",
+        "x": -14,
+        "y": -48,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_4_5.png",
+        "x": -21,
+        "y": -33,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_left_4_4_2.png",
+        "x": -37,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_corkscrew_right_1_4_2.png",
+        "x": -20,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
         "path": "track/lim/barrel_roll_left_1_1.png",
         "x": -22,
         "y": 9,
