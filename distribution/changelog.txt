@@ -1,5 +1,6 @@
 0.4.16 (in development)
 ------------------------------------------------------------------------
+- Fix: [#22918] Zooming with keyboard moves the view off centre.
 - Fix: [#22921] Wooden RollerCoaster flat to steep railings appear in front of track in front of them.
 
 0.4.15 (2024-10-06)

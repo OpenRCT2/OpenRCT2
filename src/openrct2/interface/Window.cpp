@@ -934,16 +934,16 @@ void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor)
     while (v->zoom > zoomLevel)
     {
         v->zoom--;
-        w.savedViewPos.x += v->ViewWidth() / 4;
-        w.savedViewPos.y += v->ViewHeight() / 4;
+        w.savedViewPos.x += v->ViewWidth() / 2;
+        w.savedViewPos.y += v->ViewHeight() / 2;
     }
 
     // Zoom out
     while (v->zoom < zoomLevel)
     {
         v->zoom++;
-        w.savedViewPos.x -= v->ViewWidth() / 2;
-        w.savedViewPos.y -= v->ViewHeight() / 2;
+        w.savedViewPos.x -= v->ViewWidth() / 4;
+        w.savedViewPos.y -= v->ViewHeight() / 4;
     }
 
     // Zooming to cursor? Centre around the tile we were hovering over just now.
