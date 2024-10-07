@@ -7852,7 +7852,7 @@ Loc6DC462:
                 direction = outDirection;
             }
 
-            if (PitchAndRollStart(HasFlag(VehicleFlags::CarIsInverted), tileElement) != TrackPitchAndRollEnd(GetTrackType()))
+            if (PitchAndRollStart(false, tileElement) != TrackPitchAndRollEnd(GetTrackType()))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
@@ -7864,18 +7864,6 @@ Loc6DC462:
                 acceleration += AccelerationFromPitch[Pitch];
                 _vehicleUnkF64E10++;
                 goto Loc6DCA9A;
-            }
-
-            {
-                int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
-                ClearFlag(VehicleFlags::CarIsInverted);
-                if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::hasInvertedVariant))
-                {
-                    if (tileElement->AsTrack()->IsInverted())
-                    {
-                        SetFlag(VehicleFlags::CarIsInverted);
-                    }
-                }
             }
 
             TrackLocation = trackPos;
@@ -8070,7 +8058,7 @@ Loc6DCA9A:
             tileElement = trackBeginEnd.begin_element;
         }
 
-        if (PitchAndRollStart(HasFlag(VehicleFlags::CarIsInverted), tileElement) != TrackPitchAndRollEnd(GetTrackType()))
+        if (PitchAndRollStart(false, tileElement) != TrackPitchAndRollEnd(GetTrackType()))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
             _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
@@ -8083,18 +8071,6 @@ Loc6DCA9A:
             acceleration = AccelerationFromPitch[Pitch];
             _vehicleUnkF64E10++;
             goto Loc6DC462;
-        }
-
-        {
-            int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
-            ClearFlag(VehicleFlags::CarIsInverted);
-            if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::hasInvertedVariant))
-            {
-                if (tileElement->AsTrack()->IsInverted())
-                {
-                    SetFlag(VehicleFlags::CarIsInverted);
-                }
-            }
         }
 
         TrackLocation = trackPos;
