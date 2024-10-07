@@ -8303,6 +8303,126 @@
         "palette": "keep"
     },
     {
+        "path": "track/corkscrew/steep_to_vertical_up_1.png",
+        "x": -25,
+        "y": -51
+    },
+    {
+        "path": "track/corkscrew/steep_to_vertical_up_2.png",
+        "x": -25,
+        "y": -51
+    },
+    {
+        "path": "track/corkscrew/steep_to_vertical_up_3.png",
+        "x": -13,
+        "y": -51
+    },
+    {
+        "path": "track/corkscrew/steep_to_vertical_up_4.png",
+        "x": -13,
+        "y": -51
+    },
+    {
+        "path": "track/corkscrew/vertical_to_steep_up_1.png",
+        "x": -9,
+        "y": -59
+    },
+    {
+        "path": "track/corkscrew/vertical_to_steep_up_2.png",
+        "x": -9,
+        "y": -44
+    },
+    {
+        "path": "track/corkscrew/vertical_to_steep_up_3.png",
+        "x": -26,
+        "y": -44
+    },
+    {
+        "path": "track/corkscrew/vertical_to_steep_up_4.png",
+        "x": -26,
+        "y": -59
+    },
+    {
+        "path": "track/corkscrew/vertical_1.png",
+        "x": -9,
+        "y": -27
+    },
+    {
+        "path": "track/corkscrew/vertical_2.png",
+        "x": -9,
+        "y": -27
+    },
+    {
+        "path": "track/corkscrew/vertical_3.png",
+        "x": -13,
+        "y": -27
+    },
+    {
+        "path": "track/corkscrew/vertical_4.png",
+        "x": -13,
+        "y": -27
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_left_up_1.png",
+        "x": -14,
+        "y": -91
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_left_up_2_1.png",
+        "x": -9,
+        "y": -91
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_left_up_2_2.png",
+        "x": -9,
+        "y": -88
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_left_up_3.png",
+        "x": -14,
+        "y": -91
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_left_up_4_1.png",
+        "x": -13,
+        "y": -62
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_left_up_4_2.png",
+        "x": -13,
+        "y": -91
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_right_up_1_1.png",
+        "x": -9,
+        "y": -62
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_right_up_1_2.png",
+        "x": -9,
+        "y": -91
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_right_up_2.png",
+        "x": -14,
+        "y": -91
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_right_up_3_1.png",
+        "x": -13,
+        "y": -91
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_right_up_3_2.png",
+        "x": -13,
+        "y": -88
+    },
+    {
+        "path": "track/corkscrew/vertical_twist_right_up_4.png",
+        "x": -14,
+        "y": -91
+    },
+    {
         "path": "track/corkscrew/large_corkscrew_left_1_1.png",
         "x": -24,
         "y": -11,

@@ -11046,6 +11046,295 @@ static void LayDownRCTrackHalfLoopUninvertedDown(
     return;
 }
 
+static void CorkscrewRCTrack90DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 8),
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 9),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 10),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 11),
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
+                    break;
+            }
+            PaintUtilSetVerticalTunnel(session, height + 32);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+            break;
+        case 1:
+            break;
+    }
+}
+
+static void CorkscrewRCTrack90DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    CorkscrewRCTrack90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+static void CorkscrewRCTrack60DegUpTo90DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 0),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 1),
+                        { 0, 0, height }, { { 24, 6, height }, { 2, 20, 55 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 2),
+                        { 0, 0, height }, { { 24, 6, height }, { 2, 20, 55 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 3),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    break;
+            }
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            }
+            PaintUtilSetVerticalTunnel(session, height + 56);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 1:
+            break;
+    }
+}
+
+static void CorkscrewRCTrack90DegDownTo60DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    CorkscrewRCTrack60DegUpTo90DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
+static void CorkscrewRCTrack90DegUpTo60DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (direction)
+    {
+        case 0:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 4), { 0, 0, height },
+                { { 0, 6, height + 2 }, { 6, 20, 3 } });
+            break;
+        case 1:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 5), { 0, 0, height },
+                { { 39, 6, height + 8 }, { 2, 20, 31 } });
+            break;
+        case 2:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 6), { 0, 0, height },
+                { { 39, 6, height + 8 }, { 2, 20, 31 } });
+            break;
+        case 3:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 7), { 0, 0, height },
+                { { 0, 6, height + 2 }, { 6, 20, 3 } });
+            break;
+    }
+    switch (direction)
+    {
+        case 1:
+            PaintUtilPushTunnelRight(session, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
+            break;
+        case 2:
+            PaintUtilPushTunnelLeft(session, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
+            break;
+    }
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 80);
+}
+
+static void CorkscrewRCTrack60DegDownTo90DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 6),
+                        { 0, 0, height }, { { 0, 27, height }, { 32, 1, 80 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 7),
+                        { 0, 0, height }, { { 0, 6, height + 2 }, { 6, 20, 3 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 4),
+                        { 0, 0, height }, { { 0, 6, height + 2 }, { 6, 20, 3 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 5),
+                        { 0, 0, height }, { { 0, 27, height }, { 32, 1, 80 } });
+                    break;
+            }
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            break;
+        case 1:
+            break;
+    }
+}
+
+static void CorkscrewRCTrackLeftQuarterTurn190DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 0),
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 63 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 1),
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 63 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 2),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 3),
+                        { 0, 0, height }, { { 24, 24, height + 8 }, { 2, 2, 63 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 4),
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 63 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 5),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                    break;
+            }
+            PaintUtilSetVerticalTunnel(session, height + 96);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            break;
+        case 1:
+            break;
+    }
+}
+
+static void CorkscrewRCTrackRightQuarterTurn190DegUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 6),
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 63 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 7),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 8),
+                        { 0, 0, height }, { { 24, 24, height + 8 }, { 2, 2, 63 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 9),
+                        { 0, 0, height }, { { 6, 4, height + 8 }, { 20, 2, 63 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 10),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL_TWIST + 11),
+                        { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 63 } });
+                    break;
+            }
+            PaintUtilSetVerticalTunnel(session, height + 96);
+            PaintUtilSetSegmentSupportHeight(
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 96);
+            break;
+        case 1:
+            break;
+    }
+}
+
+static void CorkscrewRCTrackLeftQuarterTurn190DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    CorkscrewRCTrackRightQuarterTurn190DegUp(
+        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
+}
+
+static void CorkscrewRCTrackRightQuarterTurn190DegDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    CorkscrewRCTrackLeftQuarterTurn190DegUp(
+        session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
+}
+
 static void CorkscrewRCTrackLeftLargeCorkscrewUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -12680,6 +12969,30 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType tr
             return LayDownRCTrackHalfLoopUninvertedDown;
 
         // Added by OpenRCT2
+
+        // Vertical slopes
+        case TrackElemType::Up90:
+            return CorkscrewRCTrack90DegUp;
+        case TrackElemType::Down90:
+            return CorkscrewRCTrack90DegDown;
+        case TrackElemType::Up60ToUp90:
+            return CorkscrewRCTrack60DegUpTo90DegUp;
+        case TrackElemType::Down90ToDown60:
+            return CorkscrewRCTrack90DegDownTo60DegDown;
+        case TrackElemType::Up90ToUp60:
+            return CorkscrewRCTrack90DegUpTo60DegUp;
+        case TrackElemType::Down60ToDown90:
+            return CorkscrewRCTrack60DegDownTo90DegDown;
+
+        // Vertical turns
+        case TrackElemType::LeftQuarterTurn1TileUp90:
+            return CorkscrewRCTrackLeftQuarterTurn190DegUp;
+        case TrackElemType::RightQuarterTurn1TileUp90:
+            return CorkscrewRCTrackRightQuarterTurn190DegUp;
+        case TrackElemType::LeftQuarterTurn1TileDown90:
+            return CorkscrewRCTrackLeftQuarterTurn190DegDown;
+        case TrackElemType::RightQuarterTurn1TileDown90:
+            return CorkscrewRCTrackRightQuarterTurn190DegDown;
 
         // Large corkscrews
         case TrackElemType::LeftLargeCorkscrewUp:
