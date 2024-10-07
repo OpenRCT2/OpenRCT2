@@ -8003,16 +8003,6 @@ Loc6DC462:
     bank_rotation = moveInfo->bank_rotation;
     Pitch = moveInfo->Pitch;
 
-    if (rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
-    {
-        if (Pitch != 0)
-        {
-            SwingSprite = 0;
-            SwingPosition = 0;
-            SwingSpeed = 0;
-        }
-    }
-
     if (this == _vehicleFrontVehicle)
     {
         if (_vehicleVelocityF64E08 >= 0)
@@ -8101,16 +8091,6 @@ Loc6DCA9A:
     bank_rotation = moveInfo->bank_rotation;
     Pitch = moveInfo->Pitch;
 
-    if (rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
-    {
-        if (Pitch != 0)
-        {
-            SwingSprite = 0;
-            SwingPosition = 0;
-            SwingSpeed = 0;
-        }
-    }
-
     if (this == _vehicleFrontVehicle)
     {
         if (_vehicleVelocityF64E08 >= 0)
@@ -8129,10 +8109,7 @@ Loc6DCA9A:
                     Vehicle* vEDI = gCurrentVehicle;
                     if (abs(vEDI->velocity - vEBP->velocity) > 14.0_mph)
                     {
-                        if (!(carEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
-                        {
-                            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
-                        }
+                        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
                     }
                     vEDI->velocity = vEBP->velocity >> 1;
                     vEBP->velocity = vEDI->velocity >> 1;
@@ -8248,17 +8225,6 @@ int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& 
     newAcceleration -= velocity >> 12;
     newAcceleration -= GetAccelerationDecrease2(velocity, totalMass);
 
-    if (!(carEntry.flags & CAR_ENTRY_FLAG_POWERED))
-    {
-        return newAcceleration;
-    }
-    if (carEntry.flags & CAR_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY)
-    {
-        if (speed * 0x4000 < velocity)
-        {
-            return newAcceleration;
-        }
-    }
     {
         int32_t poweredAcceleration = speed << 14;
         int32_t quarterForce = (speed * totalMass) >> 2;
@@ -8270,33 +8236,6 @@ int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& 
         poweredAcceleration *= powered_acceleration << 1;
         if (quarterForce != 0)
             poweredAcceleration /= quarterForce;
-
-        if (carEntry.flags & CAR_ENTRY_FLAG_WATER_RIDE)
-        {
-            if (poweredAcceleration < 0)
-            {
-                poweredAcceleration >>= 4;
-            }
-
-            if (carEntry.flags & CAR_ENTRY_FLAG_SPINNING)
-            {
-                spin_speed = std::clamp(spin_speed, VEHICLE_MIN_SPIN_SPEED_WATER_RIDE, VEHICLE_MAX_SPIN_SPEED_WATER_RIDE);
-            }
-
-            if (Pitch != 0)
-            {
-                poweredAcceleration = std::max(0, poweredAcceleration);
-                if (carEntry.flags & CAR_ENTRY_FLAG_SPINNING)
-                {
-                    if (Pitch == 2)
-                    {
-                        spin_speed = 0;
-                    }
-                }
-                newAcceleration += poweredAcceleration;
-                return newAcceleration;
-            }
-        }
 
         if (abs(velocity) > 1.0_mph)
         {
