@@ -25,6 +25,7 @@
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/WallElement.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;

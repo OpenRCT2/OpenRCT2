@@ -49,7 +49,6 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Surface.h>
-#include <openrct2/world/Wall.h>
 #include <string>
 
 namespace OpenRCT2::Ui::Windows

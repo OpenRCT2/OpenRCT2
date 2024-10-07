@@ -38,6 +38,7 @@
 #include "../util/Math.hpp"
 #include "../world/Climate.h"
 #include "../world/Map.h"
+#include "../world/tile_element/WallElement.h"
 #include "Colour.h"
 #include "Window.h"
 #include "Window_internal.h"

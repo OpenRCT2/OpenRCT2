@@ -43,6 +43,7 @@
 #include <openrct2/world/TileInspector.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/Slope.h>
+#include <openrct2/world/tile_element/WallElement.h>
 
 namespace OpenRCT2::Ui::Windows
 {

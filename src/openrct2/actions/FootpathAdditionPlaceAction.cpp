@@ -23,7 +23,6 @@
 #include "../world/Location.hpp"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Wall.h"
 
 using namespace OpenRCT2;
 

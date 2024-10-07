@@ -73,6 +73,7 @@
 #include "../world/TilePointerIndex.hpp"
 #include "../world/Wall.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/WallElement.h"
 #include "RCT1.h"
 #include "Tables.h"
 

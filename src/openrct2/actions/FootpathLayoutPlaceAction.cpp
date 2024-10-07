@@ -23,7 +23,6 @@
 #include "../world/Park.h"
 #include "../world/QuarterTile.h"
 #include "../world/Surface.h"
-#include "../world/Wall.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/Slope.h"
 

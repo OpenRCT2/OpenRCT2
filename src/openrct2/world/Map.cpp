@@ -57,7 +57,6 @@
 #include "Surface.h"
 #include "TileElementsView.h"
 #include "TileInspector.h"
-#include "Wall.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/Slope.h"
 

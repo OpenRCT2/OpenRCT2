@@ -36,7 +36,6 @@
 #include "Footpath.h"
 #include "Map.h"
 #include "Park.h"
-#include "Wall.h"
 
 uint8_t gSceneryQuadrant;
 

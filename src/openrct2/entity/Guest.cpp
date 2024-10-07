@@ -61,6 +61,7 @@
 #include "../world/Surface.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/WallElement.h"
 #include "Peep.h"
 #include "Staff.h"
 

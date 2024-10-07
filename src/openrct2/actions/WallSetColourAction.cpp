@@ -20,6 +20,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/WallElement.h"
 
 using namespace OpenRCT2;
 

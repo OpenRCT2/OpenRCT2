@@ -23,6 +23,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/QuarterTile.h"
 #include "../world/Surface.h"
+#include "../world/Wall.h"
 #include "../world/tile_element/Slope.h"
 
 using namespace OpenRCT2;

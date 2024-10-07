@@ -24,12 +24,12 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
-#include "../world/Wall.h"
 #include "Banner.h"
 #include "Footpath.h"
 #include "Map.h"
 #include "Scenery.h"
 #include "tile_element/EntranceElement.h"
+#include "tile_element/WallElement.h"
 
 using namespace OpenRCT2;
 
