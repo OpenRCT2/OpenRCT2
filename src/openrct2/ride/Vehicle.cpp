@@ -7839,10 +7839,6 @@ Loc6DC462:
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                     _vehicleVelocityF64E0C -= remaining_distance + 1;
                     remaining_distance = -1;
-                    if (remaining_distance >= 0)
-                    {
-                        Loc6DCDE4(curRide);
-                    }
                     acceleration += AccelerationFromPitch[Pitch];
                     _vehicleUnkF64E10++;
                     goto Loc6DCA9A;
@@ -8045,10 +8041,6 @@ Loc6DCA9A:
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
                 remaining_distance = -1;
-                if (remaining_distance >= 0)
-                {
-                    Loc6DCDE4(curRide);
-                }
                 acceleration += AccelerationFromPitch[Pitch];
                 _vehicleUnkF64E10++;
                 goto Loc6DCA9A;
@@ -8063,11 +8055,6 @@ Loc6DCA9A:
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
             _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
             remaining_distance = 0x368A;
-            if (remaining_distance < 0x368A)
-            {
-                Loc6DCDE4(curRide);
-                return;
-            }
             acceleration = AccelerationFromPitch[Pitch];
             _vehicleUnkF64E10++;
             goto Loc6DC462;
@@ -8151,11 +8138,6 @@ Loc6DCA9A:
                     vEBP->velocity = vEDI->velocity >> 1;
                 }
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
-                if (remaining_distance < 0x368A)
-                {
-                    Loc6DCDE4(curRide);
-                    return;
-                }
                 acceleration = AccelerationFromPitch[Pitch];
                 _vehicleUnkF64E10++;
                 goto Loc6DC462;
