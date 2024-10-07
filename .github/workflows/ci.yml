@@ -538,6 +538,11 @@ jobs:
     needs: [get_artifact_name, linux-portable, android, linux-appimage, macos-universal, windows]
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            distribution/changelog.txt
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
