@@ -35,7 +35,8 @@ jobs:
     name: Get version info
     runs-on: ubuntu-latest
     outputs:
-      name: ${{ steps.ghd.outputs.describe }}
+      name: ${{ steps.artifact-name.outputs.name }}
+      describe: ${{ steps.ghd.outputs.describe }}
       short-sha: ${{ steps.ghd.outputs.short-sha }}
       distance: ${{ steps.ghd.outputs.distance }}
       tag: ${{ steps.ghd.outputs.tag }}
@@ -46,14 +47,32 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      # We cannot use proudust/gh-describe, as it reports incorrect (too short) short-sha
       - name: Git describe
         id: ghd
-        uses: proudust/gh-describe@v2
+        run: |
+          TAG=$(git describe --abbrev=0 --tags)
+          DESCRIBE=$(git describe --tags)
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          DISTANCE=$(git rev-list --count $TAG..HEAD)
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "describe=$DESCRIBE" >> $GITHUB_OUTPUT
+          echo "short-sha=$SHORT_SHA" >> $GITHUB_OUTPUT
+          echo "distance=$DISTANCE" >> $GITHUB_OUTPUT
       - name: Set env
         id: setenv
         run: |
           . scripts/setenv -q
           echo "push=$OPENRCT2_PUSH" >> $GITHUB_OUTPUT
+      # Name is very similar to "describe", but skips the "v" prefix
+      - name: Get artifact name
+        id: artifact-name
+        run: |
+          if [ ${{ steps.ghd.outputs.distance }} -eq 0 ]; then
+            echo "name=${{ env.OPENRCT2_VERSION }}" >> $GITHUB_OUTPUT
+          else
+            echo "name=${{ env.OPENRCT2_VERSION }}-${{ steps.ghd.outputs.distance }}-${{ steps.ghd.outputs.short-sha }}" >> $GITHUB_OUTPUT
+          fi
   lint-commit:
     name: Lint Commit Message
     if: github.event_name == 'pull_request'
