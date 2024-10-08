@@ -8543,6 +8543,616 @@
         "y": -91
     },
     {
+        "path": "track/corkscrew/gentle_up_to_gentle_up_left_bank_1.png",
+        "x": -24,
+        "y": -19
+    },
+    {
+        "path": "track/corkscrew/gentle_up_to_gentle_up_left_bank_2_1.png",
+        "x": -10,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_to_gentle_up_left_bank_2_2.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_to_gentle_up_left_bank_3.png",
+        "x": -23,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/gentle_up_to_gentle_up_left_bank_4.png",
+        "x": -24,
+        "y": -24
+    },
+    {
+        "path": "track/corkscrew/gentle_up_to_gentle_up_right_bank_1.png",
+        "x": -24,
+        "y": -24
+    },
+    {
+        "path": "track/corkscrew/gentle_up_to_gentle_up_right_bank_2.png",
+        "x": -24,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/gentle_up_to_gentle_up_right_bank_3_1.png",
+        "x": -8,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_to_gentle_up_right_bank_3_2.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_to_gentle_up_right_bank_4.png",
+        "x": -23,
+        "y": -19
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_gentle_up_1.png",
+        "x": -20,
+        "y": -19
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_gentle_up_2_1.png",
+        "x": -22,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_gentle_up_2_2.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_gentle_up_3.png",
+        "x": -24,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_gentle_up_4.png",
+        "x": -24,
+        "y": -19
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_gentle_up_1.png",
+        "x": -24,
+        "y": -19
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_gentle_up_2.png",
+        "x": -20,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_gentle_up_3_1.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_gentle_up_3_2.png",
+        "x": 0,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_gentle_up_4.png",
+        "x": -24,
+        "y": -19
+    },
+    {
+        "path": "track/corkscrew/left_bank_to_gentle_up_left_bank_1.png",
+        "x": -22,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/left_bank_to_gentle_up_left_bank_2.png",
+        "x": -23,
+        "y": -4
+    },
+    {
+        "path": "track/corkscrew/left_bank_to_gentle_up_left_bank_3.png",
+        "x": -23,
+        "y": -9
+    },
+    {
+        "path": "track/corkscrew/left_bank_to_gentle_up_left_bank_4.png",
+        "x": -24,
+        "y": -16
+    },
+    {
+        "path": "track/corkscrew/right_bank_to_gentle_up_right_bank_1.png",
+        "x": -23,
+        "y": -16
+    },
+    {
+        "path": "track/corkscrew/right_bank_to_gentle_up_right_bank_2.png",
+        "x": -22,
+        "y": -9
+    },
+    {
+        "path": "track/corkscrew/right_bank_to_gentle_up_right_bank_3.png",
+        "x": -24,
+        "y": -4
+    },
+    {
+        "path": "track/corkscrew/right_bank_to_gentle_up_right_bank_4.png",
+        "x": -23,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_left_bank_1.png",
+        "x": -20,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_left_bank_2.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_left_bank_3.png",
+        "x": -23,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_left_bank_4.png",
+        "x": -22,
+        "y": -17
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_right_bank_1.png",
+        "x": -24,
+        "y": -17
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_right_bank_2.png",
+        "x": -20,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_right_bank_3.png",
+        "x": -22,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_right_bank_4.png",
+        "x": -23,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_1.png",
+        "x": -20,
+        "y": -19
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_2.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_3.png",
+        "x": -23,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_4.png",
+        "x": -24,
+        "y": -24
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_1.png",
+        "x": -24,
+        "y": -24
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_2.png",
+        "x": -20,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_3.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_4.png",
+        "x": -23,
+        "y": -19
+    },
+    {
+        "path": "track/corkscrew/flat_to_gentle_up_left_bank_1.png",
+        "x": -24,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/flat_to_gentle_up_left_bank_2_1.png",
+        "x": -24,
+        "y": -4
+    },
+    {
+        "path": "track/corkscrew/flat_to_gentle_up_left_bank_2_2.png",
+        "x": -24,
+        "y": 3
+    },
+    {
+        "path": "track/corkscrew/flat_to_gentle_up_left_bank_3.png",
+        "x": -23,
+        "y": -4
+    },
+    {
+        "path": "track/corkscrew/flat_to_gentle_up_left_bank_4.png",
+        "x": -24,
+        "y": -16
+    },
+    {
+        "path": "track/corkscrew/flat_to_gentle_up_right_bank_1.png",
+        "x": -24,
+        "y": -16
+    },
+    {
+        "path": "track/corkscrew/flat_to_gentle_up_right_bank_2.png",
+        "x": -24,
+        "y": -4
+    },
+    {
+        "path": "track/corkscrew/flat_to_gentle_up_right_bank_3_1.png",
+        "x": -10,
+        "y": -4
+    },
+    {
+        "path": "track/corkscrew/flat_to_gentle_up_right_bank_3_2.png",
+        "x": -24,
+        "y": 3
+    },
+    {
+        "path": "track/corkscrew/flat_to_gentle_up_right_bank_4.png",
+        "x": -23,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_flat_1.png",
+        "x": -20,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_flat_2_1.png",
+        "x": -22,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_flat_2_2.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_flat_3.png",
+        "x": -24,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/gentle_up_left_bank_to_flat_4.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_flat_1.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_flat_2.png",
+        "x": -20,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_flat_3_1.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_flat_3_2.png",
+        "x": -2,
+        "y": -5
+    },
+    {
+        "path": "track/corkscrew/gentle_up_right_bank_to_flat_4.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/small_turn_left_bank_gentle_up_1_1.png",
+        "x": -26,
+        "y": -34
+    },
+    {
+        "path": "track/corkscrew/small_turn_left_bank_gentle_up_1_2.png",
+        "x": -17,
+        "y": -27
+    },
+    {
+        "path": "track/corkscrew/small_turn_left_bank_gentle_up_2_1.png",
+        "x": -17,
+        "y": -13
+    },
+    {
+        "path": "track/corkscrew/small_turn_left_bank_gentle_up_2_2.png",
+        "x": -38,
+        "y": -22
+    },
+    {
+        "path": "track/corkscrew/small_turn_left_bank_gentle_up_3_1.png",
+        "x": -23,
+        "y": -14
+    },
+    {
+        "path": "track/corkscrew/small_turn_left_bank_gentle_up_3_2.png",
+        "x": -26,
+        "y": -32
+    },
+    {
+        "path": "track/corkscrew/small_turn_left_bank_gentle_up_4_1.png",
+        "x": -26,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/small_turn_left_bank_gentle_up_4_2.png",
+        "x": -28,
+        "y": -15
+    },
+    {
+        "path": "track/corkscrew/small_turn_right_bank_gentle_up_1_1.png",
+        "x": -29,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/small_turn_right_bank_gentle_up_1_2.png",
+        "x": -26,
+        "y": -15
+    },
+    {
+        "path": "track/corkscrew/small_turn_right_bank_gentle_up_2_1.png",
+        "x": -17,
+        "y": -14
+    },
+    {
+        "path": "track/corkscrew/small_turn_right_bank_gentle_up_2_2.png",
+        "x": -29,
+        "y": -19
+    },
+    {
+        "path": "track/corkscrew/small_turn_right_bank_gentle_up_3_1.png",
+        "x": -38,
+        "y": -13
+    },
+    {
+        "path": "track/corkscrew/small_turn_right_bank_gentle_up_3_2.png",
+        "x": -16,
+        "y": -22
+    },
+    {
+        "path": "track/corkscrew/small_turn_right_bank_gentle_up_4_1.png",
+        "x": -9,
+        "y": -27
+    },
+    {
+        "path": "track/corkscrew/small_turn_right_bank_gentle_up_4_2.png",
+        "x": -23,
+        "y": -27
+    },
+    {
+        "path": "track/corkscrew/small_turn_left_bank_gentle_up_4_3.png",
+        "x": -16,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/small_turn_right_bank_gentle_up_1_3.png",
+        "x": -16,
+        "y": -10
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_1_1.png",
+        "x": -20,
+        "y": -15
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_1_2.png",
+        "x": -30,
+        "y": -13
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_1_3.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_1_4.png",
+        "x": -32,
+        "y": -10
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_1_5.png",
+        "x": -24,
+        "y": -24
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_2_1.png",
+        "x": -24,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_2_2.png",
+        "x": 0,
+        "y": -19
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_2_3.png",
+        "x": 0,
+        "y": -2
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_2_4.png",
+        "x": -13,
+        "y": -24
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_2_5.png",
+        "x": -17,
+        "y": -18
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_3_1.png",
+        "x": -26,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_3_2.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_3_3.png",
+        "x": -30,
+        "y": -10
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_3_4.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_3_5.png",
+        "x": -24,
+        "y": -9
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_4_1.png",
+        "x": -31,
+        "y": -22
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_4_2.png",
+        "x": -32,
+        "y": -13
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_4_3.png",
+        "x": -19,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_4_4.png",
+        "x": -23,
+        "y": -10
+    },
+    {
+        "path": "track/corkscrew/medium_turn_left_bank_gentle_up_4_5.png",
+        "x": -23,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_1_1.png",
+        "x": -24,
+        "y": -22
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_1_2.png",
+        "x": -16,
+        "y": -13
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_1_3.png",
+        "x": -9,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_1_4.png",
+        "x": -19,
+        "y": -10
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_1_5.png",
+        "x": -25,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_2_1.png",
+        "x": -20,
+        "y": -12
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_2_2.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_2_3.png",
+        "x": 16,
+        "y": -10
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_2_4.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_2_5.png",
+        "x": -24,
+        "y": -9
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_3_1.png",
+        "x": -32,
+        "y": -11
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_3_2.png",
+        "x": -32,
+        "y": -19
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_3_3.png",
+        "x": -26,
+        "y": -2
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_3_4.png",
+        "x": -22,
+        "y": -24
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_3_5.png",
+        "x": -23,
+        "y": -18
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_4_1.png",
+        "x": -17,
+        "y": -15
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_4_2.png",
+        "x": 5,
+        "y": -13
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_4_3.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_4_4.png",
+        "x": 2,
+        "y": -10
+    },
+    {
+        "path": "track/corkscrew/medium_turn_right_bank_gentle_up_4_5.png",
+        "x": -23,
+        "y": -24
+    },
+    {
         "path": "track/corkscrew/large_corkscrew_left_1_1.png",
         "x": -24,
         "y": -11,
