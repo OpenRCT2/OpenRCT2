@@ -10749,6 +10749,16 @@
         "y": -17
     },
     {
+        "path": "track/corkscrew/quarter_loop_up_1_2_2.png",
+        "x": 0,
+        "y": -36
+    },
+    {
+        "path": "track/corkscrew/quarter_loop_up_4_2_2.png",
+        "x": -45,
+        "y": -36
+    },
+    {
         "path": "track/corkscrew/medium_half_loop_left_1_1.png",
         "x": -24,
         "y": -33,

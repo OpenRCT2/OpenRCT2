@@ -17297,11 +17297,14 @@ static void CorkscrewRCTrack90DegToInvertedFlatQuarterLoopUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_QUARTER_LOOP + 1),
                         { 0, 0, height }, { { -8, 6, height }, { 2, 20, 31 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_QUARTER_LOOP + 12),
+                        { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 20, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_QUARTER_LOOP + 4),
-                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 3, 20, 63 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -17312,6 +17315,9 @@ static void CorkscrewRCTrack90DegToInvertedFlatQuarterLoopUp(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_QUARTER_LOOP + 10),
                         { 0, 0, height }, { { -8, 6, height }, { 2, 20, 31 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_QUARTER_LOOP + 13),
+                        { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 20, 1 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
