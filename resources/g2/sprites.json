@@ -9153,6 +9153,390 @@
         "y": -24
     },
     {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_1_1.png",
+        "x": -24,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_1_2.png",
+        "x": -32,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_1_3.png",
+        "x": 10,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_1_4.png",
+        "x": -19,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_2_1.png",
+        "x": -24,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_2_2.png",
+        "x": -32,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_2_3.png",
+        "x": -24,
+        "y": 13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_2_4.png",
+        "x": -32,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_3_1.png",
+        "x": -5,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_3_2.png",
+        "x": 8,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_3_3.png",
+        "x": -32,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_3_4.png",
+        "x": -14,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_4_1.png",
+        "x": -25,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_4_2.png",
+        "x": -26,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_4_3.png",
+        "x": 0,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_diag_gentle_up_4_4.png",
+        "x": 0,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_1_1.png",
+        "x": -24,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_1_2.png",
+        "x": -18,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_1_3.png",
+        "x": -13,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_1_4.png",
+        "x": -32,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_2_1.png",
+        "x": -24,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_2_2.png",
+        "x": -33,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_2_3.png",
+        "x": 2,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_2_4.png",
+        "x": -12,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_3_1.png",
+        "x": -7,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_3_2.png",
+        "x": -8,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_3_3.png",
+        "x": 0,
+        "y": 13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_3_4.png",
+        "x": 0,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_4_1.png",
+        "x": -19,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_4_2.png",
+        "x": -10,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_4_3.png",
+        "x": -32,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_diag_gentle_up_4_4.png",
+        "x": -14,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_1_1.png",
+        "x": 0,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_1_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_1_3.png",
+        "x": -32,
+        "y": -17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_1_4.png",
+        "x": -32,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_2_1.png",
+        "x": -14,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_2_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_2_3.png",
+        "x": -14,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_2_4.png",
+        "x": -16,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_3_1.png",
+        "x": -32,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_3_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_3_3.png",
+        "x": -17,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_3_4.png",
+        "x": -24,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_4_1.png",
+        "x": -16,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_4_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_4_3.png",
+        "x": -25,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_left_to_orthogonal_gentle_up_4_4.png",
+        "x": -24,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_1_1.png",
+        "x": 0,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_1_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_1_3.png",
+        "x": -32,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_1_4.png",
+        "x": -31,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_2_1.png",
+        "x": 7,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_2_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_2_3.png",
+        "x": -16,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_2_4.png",
+        "x": -24,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_3_1.png",
+        "x": -32,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_3_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_3_3.png",
+        "x": -11,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_3_4.png",
+        "x": -24,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_4_1.png",
+        "x": -14,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_4_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_4_3.png",
+        "x": -11,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/large_turn_right_to_orthogonal_gentle_up_4_4.png",
+        "x": -28,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
         "path": "track/corkscrew/large_corkscrew_left_1_1.png",
         "x": -24,
         "y": -11,
