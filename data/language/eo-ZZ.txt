@@ -3765,7 +3765,7 @@ STR_6693    :Entajpu maksimuman altecon de tero inter {COMMA16} kaj {COMMA16}
 STR_6694    :Minimuma alteco de arboj
 STR_6695    :Entajpu minimuman altecon de arboj inter {COMMA16} kaj {COMMA16}
 STR_6696    :Maksimuma alteco de arboj
-STR_6697    :Entajpu maksimuman altecon de arboj inter {COMMA16} akj {COMMA16}
+STR_6697    :Entajpu maksimuman altecon de arboj inter {COMMA16} kaj {COMMA16}
 STR_6698    :Proporcio de arbo al tero
 STR_6699    :Entajpu proporcion de arbo al tero inter {COMMA16} kaj {COMMA16}
 STR_6700    :Baza frekvenco de simplaĵo

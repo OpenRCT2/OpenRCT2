@@ -3164,7 +3164,7 @@ STR_6041    :{BLACK}Er zijn geen monteurs ingehuurd!
 STR_6042    :Hoogtekaart laden
 STR_6043    :Hoogtekaart selecteren
 STR_6044    :Hoogtekaart verzachten
-STR_6045    :SterkteL
+STR_6045    :Sterkte:
 STR_6046    :Hoogtekaart normaliseren
 STR_6047    :Landschap verzachten
 STR_6048    :Fout bij het verwerken van hoogtekaart
