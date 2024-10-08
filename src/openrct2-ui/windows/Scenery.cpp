@@ -2442,7 +2442,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenPos = sourceScreenPos;
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
-                std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
+                std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 1);
             bool can_raise_item = false;
 
             const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(sceneryIndex);
@@ -2672,7 +2672,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenPos = sourceScreenPos;
             uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(
-                std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 32);
+                std::numeric_limits<decltype(TileElement::BaseHeight)>::max() - 1);
 
             auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(sceneryIndex);
             if (wallEntry != nullptr)
