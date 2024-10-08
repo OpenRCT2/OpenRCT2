@@ -11137,6 +11137,294 @@
         "y": -14
     },
     {
+        "path": "track/corkscrew/barrel_roll_left_1_1.png",
+        "x": -24,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_1_2.png",
+        "x": -15,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_1_3.png",
+        "x": -22,
+        "y": -17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_1_4.png",
+        "x": -21,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_1_5.png",
+        "x": -14,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_1_6.png",
+        "x": -13,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_2_1.png",
+        "x": -24,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_2_2.png",
+        "x": -25,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_2_3.png",
+        "x": -28,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_2_4.png",
+        "x": -28,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_2_5.png",
+        "x": -30,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_2_6.png",
+        "x": -32,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_3_1.png",
+        "x": -30,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_3_2.png",
+        "x": -31,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_3_3.png",
+        "x": -25,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_3_4.png",
+        "x": -28,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_3_5.png",
+        "x": -3,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_3_6.png",
+        "x": -25,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_4_1.png",
+        "x": -17,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_4_2.png",
+        "x": -7,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_4_3.png",
+        "x": -13,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_4_4.png",
+        "x": -10,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_4_5.png",
+        "x": -22,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_left_4_6.png",
+        "x": -24,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_1_1.png",
+        "x": -25,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_1_2.png",
+        "x": -15,
+        "y": 15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_1_3.png",
+        "x": -28,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_1_4.png",
+        "x": -27,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_1_5.png",
+        "x": -22,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_1_6.png",
+        "x": -24,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_2_1.png",
+        "x": -24,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_2_2.png",
+        "x": -17,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_2_3.png",
+        "x": -8,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_2_4.png",
+        "x": -1,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_2_5.png",
+        "x": -8,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_2_6.png",
+        "x": -7,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_3_1.png",
+        "x": -4,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_3_2.png",
+        "x": -4,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_3_3.png",
+        "x": 2,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_3_4.png",
+        "x": 0,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_3_5.png",
+        "x": -10,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_3_6.png",
+        "x": -24,
+        "y": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_4_1.png",
+        "x": -11,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_4_2.png",
+        "x": -21,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_4_3.png",
+        "x": -28,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_4_4.png",
+        "x": -29,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_4_5.png",
+        "x": -23,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/barrel_roll_right_4_6.png",
+        "x": -24,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
         "path": "track/lim/barrel_roll_left_1_1.png",
         "x": -22,
         "y": 9,
