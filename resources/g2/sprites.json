@@ -11183,7 +11183,7 @@
     },
     {
         "path": "track/corkscrew/large_half_loop_left_4_7.png",
-        "x": -21,
+        "x": -32,
         "y": -16
     },
     {
@@ -11325,6 +11325,46 @@
         "path": "track/corkscrew/large_half_loop_right_4_7.png",
         "x": -28,
         "y": -14
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_1_6_2.png",
+        "x": -11,
+        "y": -177
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_2_2_2.png",
+        "x": -6,
+        "y": -8
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_2_3_2.png",
+        "x": -19,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_left_3_3_2.png",
+        "x": -28,
+        "y": -37
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_2_3_2.png",
+        "x": -32,
+        "y": -37
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_3_2_2.png",
+        "x": -28,
+        "y": -8
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_3_3_2.png",
+        "x": -29,
+        "y": -25
+    },
+    {
+        "path": "track/corkscrew/large_half_loop_right_4_6_2.png",
+        "x": -31,
+        "y": -177
     },
     {
         "path": "track/corkscrew/barrel_roll_left_1_1.png",
