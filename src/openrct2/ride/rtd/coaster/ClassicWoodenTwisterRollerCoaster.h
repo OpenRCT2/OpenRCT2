@@ -15,15 +15,15 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
+constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
 {
    .Category = RIDE_CATEGORY_ROLLERCOASTER,
    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
    .TrackPaintFunctions = TrackDrawerDescriptor({
-       .Drawer = GetTrackPaintFunctionClassicWoodenRC,
+       .Drawer = GetTrackPaintFunctionClassicWoodenTwisterRC,
        .supportType = WoodenSupportType::Truss,
-       .enabledTrackGroups = {TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::waterSplash, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeSteepLong, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge},
-       .extraTrackGroups = {TrackGroup::booster, TrackGroup::slopeCurveSteep},
+       .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeSteepLong, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::slopeCurveSteep },
+       .extraTrackGroups = { TrackGroup::verticalLoop, TrackGroup::waterSplash },
    }),
    .InvertedTrackPaintFunctions = {},
    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
@@ -33,9 +33,9 @@ constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
    .DefaultMode = RideMode::ContinuousCircuit,
    .BoosterSettings = { 0, 68 },
    .LegacyBoosterSettings = { 0, 68 },
-   .Naming = { STR_RIDE_NAME_CLASSIC_WOODEN_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CLASSIC_WOODEN_ROLLER_COASTER },
+   .Naming = { STR_RIDE_NAME_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER },
    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-   .EnumName = "RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER",
+   .EnumName = "RIDE_TYPE_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER",
    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
    .Heights = { 24, 24, 8, 11, },
    .MaxMass = 19,
@@ -47,14 +47,17 @@ constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
    .DefaultMusic = MUSIC_OBJECT_WILD_WEST,
    .PhotoItem = ShopItem::Photo3,
    .BonusValue = 105,
-   .ColourPresets = TRACK_COLOUR_PRESETS(
-       { COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN},
-       { COLOUR_WHITE, COLOUR_LIGHT_BROWN, COLOUR_WHITE },
-       { COLOUR_LIGHT_BROWN, COLOUR_BLACK, COLOUR_LIGHT_BROWN },
-   ),
+    .ColourPresets = TRACK_COLOUR_PRESETS(
+        { COLOUR_BORDEAUX_RED, COLOUR_BLACK, COLOUR_WHITE },
+        { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },
+        { COLOUR_YELLOW, COLOUR_DARK_BROWN, COLOUR_DARK_BROWN },
+        { COLOUR_TEAL, COLOUR_BORDEAUX_RED, COLOUR_WHITE },
+        { COLOUR_LIGHT_BLUE, COLOUR_BLACK, COLOUR_BLACK },
+        { COLOUR_LIGHT_BLUE, COLOUR_BLACK, COLOUR_DARK_BROWN },
+    ),
    .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CLASSIC_WOODEN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_CLASSIC_WOODEN_ROLLER_COASTER_SUPPORTS },
    .ColourKey = RideColourKey::Ride,
-   .Name = "classic_wooden_rc",
+   .Name = "classic_wooden_twister_rc",
     .RatingsData = 
     {
         RatingsCalculationType::Normal,

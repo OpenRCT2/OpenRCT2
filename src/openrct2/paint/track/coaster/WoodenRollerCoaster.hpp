@@ -20,6 +20,16 @@
 
 #include <cstdint>
 
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+
+struct StraightWoodenTrack
+{
+    ImageIndex track;
+    ImageIndex handrail;
+    ImageIndex frontTrack = ImageIndexUndefined;
+    ImageIndex frontHandrail = ImageIndexUndefined;
+};
+
 struct SpriteBoundBox2
 {
     ImageIndex ImageIdA;
@@ -80,6 +90,56 @@ void WoodenRCTrackPaintBb(PaintSession& session, const SpriteBoundBox2* bb, int1
             session, railsImageId, { bb->offset.x, bb->offset.y, height + bb->offset.z },
             { { bb->BoundBox.offset, height + bb->BoundBox.offset.z }, bb->BoundBox.length });
     }
+}
+
+template<bool isClassic, std::array<StraightWoodenTrack, kNumOrthogonalDirections> imageIds>
+static void WoodenRCTrackStraightBankTrack(PaintSession& session, uint8_t direction, int32_t height)
+{
+    WoodenRCTrackPaint<isClassic>(
+        session, direction, imageIds[direction].track, imageIds[direction].handrail, { 0, 0, height },
+        { { 0, 3, height }, { 32, 25, 2 } });
+    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+    {
+        WoodenRCTrackPaint<isClassic>(
+            session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail, { 0, 0, height },
+            { { 0, 26, height + 5 }, { 32, 1, 9 } });
+    }
+}
+
+/** rct2: 0x008AC658, 0x008AC668, 0x008AC738 */
+template<bool isClassic, std::array<StraightWoodenTrack, kNumOrthogonalDirections> imageIds>
+void WoodenRCTrackFlatToBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    WoodenRCTrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
+    WoodenASupportsPaintSetupRotated(
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+}
+
+/** rct2: 0x008AC6D8, 0x008AC6E8 */
+template<bool isClassic, std::array<StraightWoodenTrack, kNumOrthogonalDirections> imageIds>
+static void WoodenRCTrack25DegUpToBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    WoodenRCTrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
+    WoodenASupportsPaintSetupRotated(
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        WoodenSupportTransitionType::Up25DegToFlat);
+    if (direction == 0 || direction == 3)
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
+    }
+    else
+    {
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+    }
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRCFallback(OpenRCT2::TrackElemType trackType);

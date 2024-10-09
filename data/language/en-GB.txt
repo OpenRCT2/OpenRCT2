@@ -100,6 +100,7 @@ STR_0095    :Alpine Coaster
 STR_0096    :Classic Wooden Roller Coaster
 STR_0097    :Classic Stand-up Roller Coaster
 STR_0098    :LSM Launched Roller Coaster
+STR_0099    :Classic Wooden Twister Roller Coaster
 STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
@@ -185,6 +186,7 @@ STR_0605    :Riders toboggan down a meandering steel track, braking to control t
 STR_0606    :An older-style wooden roller coaster with a fast and rough ride, with plenty of air-time, some lateral G’s, and designed to feel ‘out-of-control’
 STR_0607    :An intense, older-style steel looping roller coaster where the riders ride in a standing position
 STR_0608    :Roller coaster trains are accelerated by linear synchronous motors, speeding through tight twists and turns
+STR_0609    :An older-style wooden roller coaster with a fast and rough ride featuring articulated trains, plenty of air-time and twisting track
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}

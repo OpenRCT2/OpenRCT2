@@ -36,6 +36,7 @@
 #include "rtd/coaster/ClassicMiniRollerCoaster.h"
 #include "rtd/coaster/ClassicStandUpRollerCoaster.h"
 #include "rtd/coaster/ClassicWoodenRollerCoaster.h"
+#include "rtd/coaster/ClassicWoodenTwisterRollerCoaster.h"
 #include "rtd/coaster/CompactInvertedCoaster.h"
 #include "rtd/coaster/CorkscrewRollerCoaster.h"
 #include "rtd/coaster/FlyingRollerCoaster.h"
@@ -354,6 +355,7 @@ constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER      */ ClassicWoodenRollerCoasterRTD,
     /* RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER    */ ClassicStandUpRollerCoasterRTD,
     /* RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER        */ LSMLaunchedRollerCoasterRTD,
+    /* RIDE_TYPE_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER */ ClassicWoodenTwisterRollerCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(RtdFlag flag) const

@@ -22,11 +22,11 @@
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
-#include "WoodenRollerCoaster.h"
+#include "WoodenRollerCoaster.hpp"
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+// static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
 enum
 {
