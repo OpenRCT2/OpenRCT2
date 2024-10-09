@@ -335,12 +335,18 @@ namespace OpenRCT2::Platform
 
     std::vector<std::string_view> GetSearchablePathsRCT1()
     {
-        return {};
+        return {
+            // game-data-packager uses this path when installing game files
+            R"(/usr/share/games/roller-coaster-tycoon)",
+        };
     }
 
     std::vector<std::string_view> GetSearchablePathsRCT2()
     {
-        return {};
+        return {
+            // game-data-packager uses this path when installing game files
+            R"(/usr/share/games/roller-coaster-tycoon2)",
+        };
     }
 
 #    ifndef NO_TTF
