@@ -15131,7 +15131,7 @@ static void CorkscrewRCTrackDiagFlatToLeftBankedUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 45)),
-                        { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                        { -16, -16, height }, { { -16, -16, height + 34 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -15256,7 +15256,7 @@ static void CorkscrewRCTrackDiagFlatToRightBankedUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_GENTLE_LARGE_CURVE_BANKED + 52)),
-                        { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                        { -16, -16, height }, { { -16, -16, height + 34 }, { 32, 32, 0 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
