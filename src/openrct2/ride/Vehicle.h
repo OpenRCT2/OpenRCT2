@@ -379,6 +379,14 @@ private:
 
     void Loc6DCE02(const Ride& curRide);
     void Loc6DCDE4(const Ride& curRide);
+
+    enum class UpdateMiniGolfFlagsStatus
+    {
+        carryOn,
+        restart,
+        stop,
+    };
+    UpdateMiniGolfFlagsStatus UpdateTrackMotionMiniGolfFlagsStatus(const Ride& curRide);
 };
 static_assert(sizeof(Vehicle) <= 512);
 
