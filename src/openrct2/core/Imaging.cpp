@@ -178,7 +178,7 @@ namespace OpenRCT2::Imaging
 
             png_text text_ptr[1];
             text_ptr[0].key = const_cast<char*>("Software");
-            text_ptr[0].text = const_cast<char*>(gVersionInfoFull);
+            text_ptr[0].text = const_cast<char*>(gVersionInfoFull.c_str());
             text_ptr[0].compression = PNG_TEXT_COMPRESSION_zTXt;
 
             auto info_ptr = png_create_info_struct(png_ptr);

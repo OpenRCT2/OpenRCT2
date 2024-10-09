@@ -68,7 +68,7 @@ namespace OpenRCT2::Guard
             return;
 
         Console::Error::WriteLine(ASSERTION_MESSAGE);
-        Console::Error::WriteLine("Version: %s", gVersionInfoFull);
+        Console::Error::WriteLine("Version: %s", gVersionInfoFull.c_str());
 
         // This is never freed, but acceptable considering we are about to crash out
         std::string formattedMessage;
@@ -97,7 +97,8 @@ namespace OpenRCT2::Guard
                 // Show message box if we are not building for testing
                 auto buffer = CreateDialogAssertMessage(formattedMessage);
                 int32_t result = MessageBoxW(
-                    nullptr, buffer.c_str(), L"" OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
+                    nullptr, buffer.c_str(), (L"" + std::wstring(OPENRCT2_NAME, OPENRCT2_NAME + strlen(OPENRCT2_NAME))).c_str(),
+                    MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
                 if (result == IDABORT)
                 {
                     ForceCrash();
