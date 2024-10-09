@@ -10,7 +10,7 @@
 #include "LargeScenery.h"
 
 #include "../Context.h"
-#include "../object/LargeSceneryObject.h"
+#include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectManager.h"
 #include "../world/Banner.h"
@@ -91,11 +91,6 @@ ObjectEntryIndex LargeSceneryElement::GetEntryIndex() const
 const LargeSceneryEntry* LargeSceneryElement::GetEntry() const
 {
     return OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(GetEntryIndex());
-}
-
-const LargeSceneryObject* LargeSceneryElement::GetObject() const
-{
-    return static_cast<const LargeSceneryObject*>(ObjectEntryGetObject(ObjectType::LargeScenery, GetEntryIndex()));
 }
 
 uint8_t LargeSceneryElement::GetSequenceIndex() const
