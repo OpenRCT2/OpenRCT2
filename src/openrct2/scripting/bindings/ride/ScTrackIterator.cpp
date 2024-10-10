@@ -14,6 +14,7 @@
 #    include "../../../Context.h"
 #    include "../../../ride/Ride.h"
 #    include "../../../ride/TrackData.h"
+#    include "../../../world/tile_element/TrackElement.h"
 #    include "../../ScriptEngine.h"
 #    include "ScTrackSegment.h"
 

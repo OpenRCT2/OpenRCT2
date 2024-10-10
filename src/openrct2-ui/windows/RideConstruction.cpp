@@ -50,6 +50,7 @@
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
+#include <openrct2/world/tile_element/TrackElement.h>
 
 constexpr int8_t kDefaultSpeedIncrement = 2;
 constexpr int8_t kDefaultMinimumSpeed = 2;

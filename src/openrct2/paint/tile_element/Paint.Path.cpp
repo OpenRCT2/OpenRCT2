@@ -34,6 +34,7 @@
 #include "../../world/Surface.h"
 #include "../../world/TileInspector.h"
 #include "../../world/tile_element/Slope.h"
+#include "../../world/tile_element/TrackElement.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
 #include "../support/MetalSupports.h"

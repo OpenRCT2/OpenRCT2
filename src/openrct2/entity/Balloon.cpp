@@ -17,6 +17,7 @@
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
+#include "../world/tile_element/TrackElement.h"
 #include "EntityRegistry.h"
 
 template<> bool EntityBase::Is<Balloon>() const

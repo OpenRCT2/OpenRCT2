@@ -57,8 +57,10 @@
 #include "Surface.h"
 #include "TileElementsView.h"
 #include "TileInspector.h"
+#include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/Slope.h"
+#include "tile_element/TrackElement.h"
 
 #include <iterator>
 #include <memory>

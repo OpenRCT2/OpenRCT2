@@ -15,6 +15,7 @@
 #include "../../../world/Map.h"
 #include "../../../world/Surface.h"
 #include "../../../world/tile_element/Slope.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.SessionFlags.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"

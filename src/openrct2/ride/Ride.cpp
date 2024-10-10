@@ -63,6 +63,7 @@
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "CableLift.h"
 #include "RideAudio.h"
 #include "RideConstruction.h"

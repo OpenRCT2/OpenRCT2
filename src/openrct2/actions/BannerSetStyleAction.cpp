@@ -15,6 +15,7 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
+#include "../world/tile_element/BannerElement.h"
 #include "GameAction.h"
 
 using namespace OpenRCT2;

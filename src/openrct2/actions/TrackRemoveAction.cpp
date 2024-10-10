@@ -19,6 +19,7 @@
 #include "../util/Util.h"
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/TrackElement.h"
 #include "RideSetSettingAction.h"
 
 using namespace OpenRCT2;
