@@ -387,6 +387,8 @@ private:
         stop,
     };
     UpdateMiniGolfFlagsStatus UpdateTrackMotionMiniGolfFlagsStatus(const Ride& curRide);
+    void UpdateTrackMotionPreUpdate(
+        Vehicle& car, const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry);
 };
 static_assert(sizeof(Vehicle) <= 512);
 
