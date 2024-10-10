@@ -2423,7 +2423,9 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
-    else if (rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER && parkFileVersion < kExtendedCorkscrewCoasterVersion)
+    else if (
+        (rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER || rideType == RIDE_TYPE_HYPERCOASTER)
+        && parkFileVersion < kExtendedCorkscrewCoasterVersion)
     {
         switch (trackType)
         {
