@@ -29,6 +29,7 @@
 #include "Map.h"
 #include "Scenery.h"
 #include "tile_element/EntranceElement.h"
+#include "tile_element/TrackElement.h"
 #include "tile_element/WallElement.h"
 
 using namespace OpenRCT2;

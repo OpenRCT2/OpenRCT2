@@ -38,8 +38,10 @@
 #include "MapAnimation.h"
 #include "Surface.h"
 #include "TileElement.h"
+#include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/Slope.h"
+#include "tile_element/TrackElement.h"
 
 #include <bit>
 #include <iterator>

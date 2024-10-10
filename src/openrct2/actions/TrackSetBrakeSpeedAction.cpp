@@ -11,6 +11,7 @@
 
 #include "../Diagnostic.h"
 #include "../management/Finance.h"
+#include "../world/tile_element/TrackElement.h"
 
 using namespace OpenRCT2;
 

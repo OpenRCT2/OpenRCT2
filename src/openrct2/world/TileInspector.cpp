@@ -25,8 +25,10 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "Surface.h"
+#include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/Slope.h"
+#include "tile_element/TrackElement.h"
 #include "tile_element/WallElement.h"
 
 #include <optional>

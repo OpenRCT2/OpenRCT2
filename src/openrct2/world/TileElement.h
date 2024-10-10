@@ -283,107 +283,6 @@ public:
 };
 static_assert(sizeof(PathElement) == 16);
 
-struct TrackElement : TileElementBase
-{
-    static constexpr TileElementType ElementType = TileElementType::Track;
-
-private:
-    OpenRCT2::TrackElemType TrackType;
-    union
-    {
-        struct
-        {
-            uint8_t Sequence;
-            uint8_t ColourScheme;
-            union
-            {
-                // - Bits 3 and 4 are never set
-                // - Bits 1 and 2 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
-                // - If any of the bits 1-4 are set, the game counts it as a photo being taken.
-                uint8_t OnridePhotoBits;
-                // Contains the brake/booster speed, divided by 2.
-                uint8_t BrakeBoosterSpeed;
-            };
-            StationIndex stationIndex;
-        } URide;
-        struct
-        {
-            uint16_t MazeEntry; // 6
-        } UMaze;
-    };
-    uint8_t Flags2;
-    RideId RideIndex;
-    ride_type_t RideType;
-
-public:
-    OpenRCT2::TrackElemType GetTrackType() const;
-    void SetTrackType(OpenRCT2::TrackElemType newEntryIndex);
-
-    ride_type_t GetRideType() const;
-    void SetRideType(const ride_type_t rideType);
-
-    uint8_t GetSequenceIndex() const;
-    void SetSequenceIndex(uint8_t newSequenceIndex);
-
-    RideId GetRideIndex() const;
-    void SetRideIndex(RideId newRideIndex);
-
-    uint8_t GetColourScheme() const;
-    void SetColourScheme(RideColourScheme newColourScheme);
-
-    StationIndex GetStationIndex() const;
-    void SetStationIndex(StationIndex newStationIndex);
-
-    bool HasChain() const;
-    void SetHasChain(bool on);
-
-    bool HasCableLift() const;
-    void SetHasCableLift(bool on);
-
-    bool IsInverted() const;
-    void SetInverted(bool inverted);
-
-    bool IsBrakeClosed() const;
-    void SetBrakeClosed(bool isClosed);
-
-    bool IsIndestructible() const;
-    void SetIsIndestructible(bool isIndestructible);
-
-    uint8_t GetBrakeBoosterSpeed() const;
-    void SetBrakeBoosterSpeed(uint8_t speed);
-
-    bool HasGreenLight() const;
-    void SetHasGreenLight(bool on);
-
-    uint8_t GetSeatRotation() const;
-    void SetSeatRotation(uint8_t newSeatRotation);
-
-    uint16_t GetMazeEntry() const;
-    void SetMazeEntry(uint16_t newMazeEntry);
-    void MazeEntryAdd(uint16_t addVal);
-    void MazeEntrySubtract(uint16_t subVal);
-
-    bool IsTakingPhoto() const;
-    void SetPhotoTimeout();
-    void SetPhotoTimeout(uint8_t newValue);
-    void DecrementPhotoTimeout();
-    uint8_t GetPhotoTimeout() const;
-
-    bool IsHighlighted() const;
-    void SetHighlight(bool on);
-
-    // Used by ghost train, RCT1 feature, will be reintroduced at some point.
-    // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
-    uint8_t GetDoorAState() const;
-    uint8_t GetDoorBState() const;
-    void SetDoorAState(uint8_t newState);
-    void SetDoorBState(uint8_t newState);
-
-    bool IsStation() const;
-    bool IsBlockStart() const;
-};
-static_assert(sizeof(TrackElement) == 16);
-
 struct SmallSceneryElement : TileElementBase
 {
     static constexpr TileElementType ElementType = TileElementType::SmallScenery;
@@ -459,34 +358,6 @@ public:
 };
 static_assert(sizeof(LargeSceneryElement) == 16);
 
-struct BannerElement : TileElementBase
-{
-    static constexpr TileElementType ElementType = TileElementType::Banner;
-
-private:
-    BannerIndex index;    // 5
-    uint8_t position;     // 7
-    uint8_t AllowedEdges; // 8
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t Pad09[7];
-#pragma clang diagnostic pop
-public:
-    Banner* GetBanner() const;
-    const BannerSceneryEntry* GetEntry() const;
-
-    BannerIndex GetIndex() const;
-    void SetIndex(BannerIndex newIndex);
-
-    uint8_t GetPosition() const;
-    void SetPosition(uint8_t newPosition);
-
-    uint8_t GetAllowedEdges() const;
-    void SetAllowedEdges(uint8_t newEdges);
-    void ResetAllowedEdges();
-};
-static_assert(sizeof(BannerElement) == 16);
-
 #pragma pack(pop)
 
 enum
@@ -525,12 +396,5 @@ constexpr uint8_t kTileElementQuadrantMask = 0b11000000;
 constexpr uint8_t kTileElementTypeMask = 0b00111100;
 constexpr uint8_t kTileElementDirectionMask = 0b00000011;
 constexpr uint8_t kTileElementOccupiedQuadrantsMask = 0b00001111;
-
-enum
-{
-    LANDSCAPE_DOOR_CLOSED = 0,
-    LANDSCAPE_DOOR_HALF_OPEN = 2,
-    LANDSCAPE_DOOR_OPEN = 3,
-};
 
 bool TileElementIsUnderground(TileElement* tileElement);

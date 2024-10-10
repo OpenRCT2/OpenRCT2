@@ -30,6 +30,7 @@
 #include "windows/Intent.h"
 #include "world/Footpath.h"
 #include "world/Scenery.h"
+#include "world/tile_element/BannerElement.h"
 #include "world/tile_element/EntranceElement.h"
 #include "world/tile_element/WallElement.h"
 

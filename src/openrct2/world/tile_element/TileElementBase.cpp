@@ -9,7 +9,9 @@
 
 #include "../Map.h"
 #include "../TileElement.h"
+#include "BannerElement.h"
 #include "EntranceElement.h"
+#include "TrackElement.h"
 #include "WallElement.h"
 
 TileElementType TileElementBase::GetType() const

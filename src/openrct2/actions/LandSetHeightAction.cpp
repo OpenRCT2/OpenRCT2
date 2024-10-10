@@ -25,6 +25,7 @@
 #include "../world/TileElementsView.h"
 #include "../world/Wall.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/TrackElement.h"
 
 using namespace OpenRCT2;
 

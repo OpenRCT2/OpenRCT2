@@ -599,9 +599,6 @@
     <ClInclude Include="Version.h" />
     <ClInclude Include="windows\Intent.h" />
     <ClInclude Include="windows\TileInspectorGlobals.h" />
-    <ClInclude Include="world\tile_element\EntranceElement.h" />
-    <ClInclude Include="world\tile_element\TileElementType.h" />
-    <ClInclude Include="world\tile_element\Slope.h" />
     <ClInclude Include="world\Banner.h" />
     <ClInclude Include="world\Climate.h" />
     <ClInclude Include="world\ConstructionClearance.h" />
@@ -624,6 +621,11 @@
     <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
     <ClInclude Include="world\TilePointerIndex.hpp" />
+    <ClInclude Include="world\tile_element\BannerElement.h" />
+    <ClInclude Include="world\tile_element\EntranceElement.h" />
+    <ClInclude Include="world\tile_element\Slope.h" />
+    <ClInclude Include="world\tile_element\TileElementType.h" />
+    <ClInclude Include="world\tile_element\TrackElement.h" />
     <ClInclude Include="world\tile_element\WallElement.h" />
     <ClInclude Include="world\Wall.h" />
   </ItemGroup>
@@ -1086,8 +1088,6 @@
     <ClCompile Include="util\Util.cpp" />
     <ClCompile Include="Version.cpp" />
     <ClCompile Include="windows\Intent.cpp" />
-    <ClCompile Include="world\tile_element\EntranceElement.cpp" />
-    <ClCompile Include="world\tile_element\TileElementBase.cpp" />
     <ClCompile Include="world\Banner.cpp" />
     <ClCompile Include="world\Climate.cpp" />
     <ClCompile Include="world\ConstructionClearance.cpp" />
@@ -1106,6 +1106,10 @@
     <ClCompile Include="world\SurfaceData.cpp" />
     <ClCompile Include="world\TileElement.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
+    <ClCompile Include="world\tile_element\BannerElement.cpp" />
+    <ClCompile Include="world\tile_element\EntranceElement.cpp" />
+    <ClCompile Include="world\tile_element\TileElementBase.cpp" />
+    <ClCompile Include="world\tile_element\TrackElement.cpp" />
     <ClCompile Include="world\tile_element\WallElement.cpp" />
     <ClCompile Include="world\Wall.cpp" />
     <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
