@@ -196,16 +196,13 @@ jobs:
         with:
           paths: "artifacts/test-**.xml"
         if: matrix.platform != 'arm64'
-      - name: Upload artifacts (openrct2.org)
+      - name: Upload symbols (backtrace.io)
         run: |
           . scripts/setenv
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-portable-$PLATFORM.zip "windows-portable-$PLATFORM.zip" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-            upload-build artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-$PLATFORM.exe "windows-installer-$PLATFORM.exe" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-            upload-build artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-symbols-$PLATFORM.zip "windows-symbols-$PLATFORM.zip" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
             upload-backtrace-symbols artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-symbols-*.zip
           else
-              echo 'Not going to push build'
+            echo 'Not going to push build'
           fi
   windows-mingw:
     name: Windows (${{ matrix.platform_name }}) using mingw
@@ -341,14 +338,6 @@ jobs:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-universal
           path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-macos-universal.zip
           if-no-files-found: error
-      - name: Upload artifacts (openrct2.org)
-        run: |
-          . scripts/setenv
-          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-macos-universal.zip macos-universal.zip $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-          else
-            echo 'Not going to push build'
-          fi
   linux-portable:
     name: ${{ matrix.distro }} Linux (${{ matrix.release }}, ${{ matrix.platform }}, portable)
     runs-on: ubuntu-latest
@@ -394,15 +383,6 @@ jobs:
           if-no-files-found: error
       - name: Run Tests
         run: . scripts/setenv -q && run-tests
-      - name: Upload artifacts (openrct2.org)
-        run: |
-          # Build identification code: https://github.com/Limetric/OpenRCT2.org/blob/e5b738f3dadcc5a3b78e8dfd434756ff31eaa1d3/src/misc/releaseAsset.js#L94-L116
-          . scripts/setenv -q
-          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-${{ matrix.release }}-${{ matrix.platform }}.tar.gz linux-${{ matrix.platform }}-${{ matrix.distro }}.tar.gz $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-          else
-            echo 'Not going to push build'
-          fi
   linux-appimage:
     name: Ubuntu Linux (AppImage, x86_64)
     runs-on: ubuntu-latest
@@ -433,15 +413,6 @@ jobs:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-AppImage
           path: artifacts
           if-no-files-found: error
-      - name: Upload artifacts (openrct2.org)
-        run: |
-          # Build identification code: https://github.com/Limetric/OpenRCT2.org/blob/e5b738f3dadcc5a3b78e8dfd434756ff31eaa1d3/src/misc/releaseAsset.js#L94-L116
-          . scripts/setenv -q
-          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-linux-x86_64.AppImage linux.AppImage $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-          else
-            echo 'Not going to push build'
-          fi
   linux-docker:
     name: Ubuntu Linux (Docker)
     needs: check-code-formatting
@@ -552,14 +523,6 @@ jobs:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-Android
           path: artifacts
           if-no-files-found: error
-      - name: Upload artifacts (openrct2.org)
-        run: |
-          . scripts/setenv -q
-          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-android-arm.apk android-arm.apk $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-          else
-            echo 'Not going to push build'
-          fi
   release:
     name: Release
     runs-on: ubuntu-latest
