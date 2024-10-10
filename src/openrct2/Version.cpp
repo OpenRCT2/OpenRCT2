@@ -22,36 +22,37 @@ using namespace OpenRCT2;
 #    include OPENRCT2_BUILD_INFO_HEADER
 #endif
 
-const char gVersionInfoTag[] =
+const std::string gVersionInfoTag =
 #ifdef OPENRCT2_VERSION_TAG
     OPENRCT2_VERSION_TAG
 #else
-    "v" OPENRCT2_VERSION
+    "v" + std::string(OPENRCT2_VERSION)
 #endif
     ;
 
-const char gVersionInfoFull[] = OPENRCT2_NAME ", "
+const std::string gVersionInfoFull = std::string(OPENRCT2_NAME) + ", "
 #ifdef OPENRCT2_VERSION_TAG
-    OPENRCT2_VERSION_TAG
+    + OPENRCT2_VERSION_TAG
 #else
-                                              "v" OPENRCT2_VERSION
+    + "v" + std::string(OPENRCT2_VERSION)
 #endif
+
 #if defined(OPENRCT2_BRANCH) || defined(OPENRCT2_COMMIT_SHA1_SHORT) || !defined(NDEBUG)
-                                              " ("
+    + " ("
 #    if defined(OPENRCT2_BRANCH) && defined(OPENRCT2_COMMIT_SHA1_SHORT)
-    OPENRCT2_COMMIT_SHA1_SHORT " on " OPENRCT2_BRANCH
+    + OPENRCT2_COMMIT_SHA1_SHORT + " on " + OPENRCT2_BRANCH
 #    elif defined(OPENRCT2_COMMIT_SHA1_SHORT)
-    OPENRCT2_COMMIT_SHA1_SHORT
+    + OPENRCT2_COMMIT_SHA1_SHORT
 #    elif defined(OPENRCT2_BRANCH)
-    OPENRCT2_BRANCH
+    + OPENRCT2_BRANCH
 #    endif
 #    ifndef NDEBUG
-                                              ", DEBUG"
+    + ", DEBUG"
 #    endif
-                                              ")"
+    + ")"
 #endif
 #ifdef OPENRCT2_BUILD_SERVER
-                                              " provided by " OPENRCT2_BUILD_SERVER
+    + " provided by " + OPENRCT2_BUILD_SERVER
 #endif
     ;
 
