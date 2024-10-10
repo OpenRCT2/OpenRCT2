@@ -25,7 +25,7 @@
 #    endif
 #    include <curl/curl.h>
 
-#    define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
+static const std::string OPENRCT2_USER_AGENT = "OpenRCT2/" + std::string(OPENRCT2_VERSION);
 
 namespace OpenRCT2::Http
 {
@@ -120,7 +120,7 @@ namespace OpenRCT2::Http
         curl_easy_setopt(curl, CURLOPT_HEADERDATA, static_cast<void*>(&res));
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
-        curl_easy_setopt(curl, CURLOPT_USERAGENT, OPENRCT2_USER_AGENT);
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, OPENRCT2_USER_AGENT.c_str());
 
         curl_slist* chunk = nullptr;
         std::shared_ptr<void> __(nullptr, [chunk](...) { curl_slist_free_all(chunk); });

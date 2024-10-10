@@ -36,7 +36,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Write name and version information
             const auto whiteOutline = ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true);
-            DrawText(dpi, windowPos, { whiteOutline }, gVersionInfoFull);
+            DrawText(dpi, windowPos, { whiteOutline }, gVersionInfoFull.c_str());
             width = GfxGetStringWidth(gVersionInfoFull, FontStyle::Medium);
 
             // Write platform information

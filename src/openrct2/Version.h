@@ -11,8 +11,8 @@
 
 #include <string>
 
-#define OPENRCT2_NAME "OpenRCT2"
-#define OPENRCT2_VERSION "0.4.15"
+constexpr auto OPENRCT2_NAME = "OpenRCT2";
+constexpr auto OPENRCT2_VERSION = "0.4.15";
 
 #if defined(__amd64__) || defined(_M_AMD64)
 #    define OPENRCT2_ARCHITECTURE "x86-64"
@@ -72,8 +72,8 @@
 #    error Unknown platform!
 #endif
 
-extern const char gVersionInfoFull[];
-extern const char gVersionInfoTag[];
+extern const std::string gVersionInfoFull;
+extern const std::string gVersionInfoTag;
 struct NewVersionInfo
 {
     std::string tag;
