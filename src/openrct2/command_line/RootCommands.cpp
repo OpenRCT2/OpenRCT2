@@ -71,9 +71,9 @@ static constexpr CommandLineOptionDefinition StandardOptions[]
     { CMDLINE_TYPE_SWITCH,  &_version,          'v', "version",            "show version information and exit"                          },
     { CMDLINE_TYPE_SWITCH,  &_noInstall,        'n', "no-install",         "do not install scenario if passed"                          },
     { CMDLINE_TYPE_SWITCH,  &_all,              'a', "all",                "show help for all commands"                                 },
-    { CMDLINE_TYPE_SWITCH,  &_about,            NAC, "about",              "show information about " OPENRCT2_NAME                      },
+    { CMDLINE_TYPE_SWITCH,  &_about,            NAC, "about",              "show information about OpenRCT2"                      },
     { CMDLINE_TYPE_SWITCH,  &_verbose,          NAC, "verbose",            "log verbose messages"                                       },
-    { CMDLINE_TYPE_SWITCH,  &_headless,         NAC, "headless",           "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
+    { CMDLINE_TYPE_SWITCH,  &_headless,         NAC, "headless",           "run OpenRCT2 headless" IMPLIES_SILENT_BREAKPAD     },
     { CMDLINE_TYPE_SWITCH,  &_silentReplays,    NAC, "silent-replays",     "use unobtrusive replays"                                    },
 #ifndef DISABLE_NETWORK
     { CMDLINE_TYPE_INTEGER, &_port,             NAC, "port",               "port to use for hosting or joining a server"                },
