@@ -1003,10 +1003,14 @@ namespace OpenRCT2::RCT2
             dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.CurrentRide);
             dst.State = src.State;
             if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(RideTypeDescriptors))
+            {
                 dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
                     src.ProximityTrackType, _s6.Rides[src.CurrentRide].Type, IsFlatRide(src.CurrentRide));
+            }
             else
-                dst.ProximityTrackType = 0xFF;
+            {
+                dst.ProximityTrackType = TrackElemType::None;
+            }
             dst.ProximityBaseHeight = src.ProximityBaseHeight;
             dst.ProximityTotal = src.ProximityTotal;
             for (size_t i = 0; i < std::size(src.ProximityScores); i++)
@@ -1325,9 +1329,11 @@ namespace OpenRCT2::RCT2
                     auto src2 = src->AsTrack();
 
                     auto rideType = _s6.Rides[src2->GetRideIndex()].Type;
-                    track_type_t trackType = static_cast<track_type_t>(src2->GetTrackType());
+                    auto oldTrackType = src2->GetTrackType();
+                    OpenRCT2::TrackElemType trackType = RCT2TrackTypeToOpenRCT2(
+                        oldTrackType, rideType, IsFlatRide(src2->GetRideIndex()));
 
-                    dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, rideType, IsFlatRide(src2->GetRideIndex())));
+                    dst2->SetTrackType(trackType);
                     dst2->SetRideType(rideType);
                     dst2->SetSequenceIndex(src2->GetSequenceIndex());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
@@ -1893,26 +1899,25 @@ namespace OpenRCT2::RCT2
         {
             dst->BoatLocation.SetNull();
             dst->SetTrackDirection(src->GetTrackDirection());
-            dst->SetTrackType(src->GetTrackType());
+            // Skipping OriginalRideClass::WildMouse - this is handled specifically.
+            auto originalClass = IsFlatRide(src->Ride) ? OriginalRideClass::FlatRide : OriginalRideClass::Regular;
+            auto convertedType = RCT2TrackTypeToOpenRCT2(src->GetTrackType(), originalClass);
+            dst->SetTrackType(convertedType);
             // RotationControlToggle and Booster are saved as the same track piece ID
             // Which one the vehicle is using must be determined
-            if (IsFlatRide(src->Ride))
-            {
-                dst->SetTrackType(RCT12FlatTrackTypeToOpenRCT2(src->GetTrackType()));
-            }
-            else if (src->GetTrackType() == TrackElemType::RotationControlToggleAlias)
+            if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::RotationControlToggleAlias)
             {
                 // Merging hacks mean the track type that's appropriate for the ride type is not necessarily the track type the
                 // ride is on. It's possible to create unwanted behavior if a user layers spinning control track on top of
                 // booster track but this is unlikely since only two rides have spinning control track - by default they load as
-                // booster
+                // booster.
                 TileElement* tileElement2 = MapGetTrackElementAtOfTypeSeq(
                     dst->TrackLocation, TrackElemType::RotationControlToggle, 0);
 
                 if (tileElement2 != nullptr)
                     dst->SetTrackType(TrackElemType::RotationControlToggle);
             }
-            else if (src->GetTrackType() == TrackElemType::BlockBrakes)
+            else if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::BlockBrakes)
             {
                 dst->brake_speed = kRCT2DefaultBlockBrakeSpeed;
             }
@@ -1921,7 +1926,7 @@ namespace OpenRCT2::RCT2
         {
             dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.ToCoordsXY();
             dst->SetTrackDirection(0);
-            dst->SetTrackType(0);
+            dst->SetTrackType(OpenRCT2::TrackElemType::Flat);
         }
 
         dst->next_vehicle_on_train = EntityId::FromUnderlying(src->NextVehicleOnTrain);

@@ -59,7 +59,7 @@ namespace OpenRCT2
             && state != RideConstructionState::Back)
             return list;
 
-        for (track_type_t trackType : DropdownOrder)
+        for (OpenRCT2::TrackElemType trackType : DropdownOrder)
         {
             const auto& ted = GetTrackElementDescriptor(trackType);
             if (!IsTrackEnabled(ted.definition.group))

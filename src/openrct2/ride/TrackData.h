@@ -35,7 +35,7 @@ namespace OpenRCT2::TrackMetaData
         TrackCurve trackCurve;
         TrackPitch slopeEnd;
         TrackRoll rollEnd;
-        track_type_t trackElement;
+        OpenRCT2::TrackElemType trackElement;
     };
 
     enum class SpinFunction : uint8_t
@@ -65,7 +65,7 @@ namespace OpenRCT2::TrackMetaData
         uint8_t bottom;
     };
 
-    constexpr DodgemsTrackSize GetDodgemsTrackSize(track_type_t type)
+    constexpr DodgemsTrackSize GetDodgemsTrackSize(OpenRCT2::TrackElemType type)
     {
         if (type == OpenRCT2::TrackElemType::FlatTrack2x2)
             return { 4, 4, 59, 59 };
@@ -108,11 +108,11 @@ namespace OpenRCT2::TrackMetaData
 
         uint8_t pieceLength;
         TrackCurveChain curveChain;
-        track_type_t alternativeType;
+        OpenRCT2::TrackElemType alternativeType;
         // Price Modifier should be used as in the following calculation:
         // (RideTrackPrice * TED::PriceModifier) / 65536
         uint32_t priceModifier;
-        track_type_t mirrorElement;
+        OpenRCT2::TrackElemType mirrorElement;
         uint32_t heightMarkerPositions;
         uint32_t flags;
 
@@ -126,5 +126,5 @@ namespace OpenRCT2::TrackMetaData
         TrackComputeFunction lateralFactor;
     };
 
-    const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type);
+    const TrackElementDescriptor& GetTrackElementDescriptor(OpenRCT2::TrackElemType type);
 } // namespace OpenRCT2::TrackMetaData

@@ -1386,7 +1386,7 @@ static void InvertedHairpinRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedHairpinRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedHairpinRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1448,6 +1448,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedHairpinRC(int32_t trackType)
             return InvertedHairpinRCTrackBrakes;
         case TrackElemType::BlockBrakes:
             return InvertedHairpinRCTrackBlockBrakes;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

@@ -34,10 +34,10 @@ namespace OpenRCT2::Scripting
     class ScTrackSegment
     {
     private:
-        track_type_t _type;
+        OpenRCT2::TrackElemType _type;
 
     public:
-        ScTrackSegment(track_type_t type);
+        ScTrackSegment(OpenRCT2::TrackElemType type);
 
         static void Register(duk_context* ctx);
 

@@ -2266,7 +2266,7 @@ void UpdateFootpathsFromMapping(
     pathToRailingsMap[entryIndex] = railingIndex;
 }
 
-bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, int32_t parkFileVersion)
+bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
 {
     // Lots of Log Flumes exist where the downward slopes are simulated by using other track
     // types like the Splash Boats, but not actually made invisible, because they never needed
@@ -2384,6 +2384,8 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, 
             case TrackElemType::LeftEighthBankToOrthogonalDown25:
             case TrackElemType::RightEighthBankToOrthogonalDown25:
                 return true;
+            default:
+                break;
         }
     }
     else if (
@@ -2398,6 +2400,8 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, 
             case TrackElemType::FlatToDown60LongBase:
             case TrackElemType::Down60ToFlatLongBase:
                 return true;
+            default:
+                break;
         }
     }
 

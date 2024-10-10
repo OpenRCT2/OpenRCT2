@@ -9799,7 +9799,7 @@ static void CompactInvertedRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -10029,6 +10029,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRC(int32_t trackType)
             return CompactInvertedRCTrackDiagBrakes;
         case TrackElemType::DiagBlockBrakes:
             return CompactInvertedRCTrackDiagBlockBrakes;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

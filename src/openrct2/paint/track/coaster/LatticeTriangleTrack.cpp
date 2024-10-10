@@ -18420,7 +18420,7 @@ static void LatticeTriangleTrackDiagBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -18909,6 +18909,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(int32_t trackType
         case TrackElemType::DiagBlockBrakes:
         case TrackElemType::DiagBrakes:
             return LatticeTriangleTrackDiagBrakes;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

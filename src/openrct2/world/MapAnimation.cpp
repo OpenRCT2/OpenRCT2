@@ -704,6 +704,8 @@ void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el)
                 case TrackElemType::SpinningTunnel:
                     MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, loc);
                     break;
+                default:
+                    break;
             }
             break;
         }

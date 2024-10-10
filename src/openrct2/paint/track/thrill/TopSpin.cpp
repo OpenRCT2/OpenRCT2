@@ -250,7 +250,7 @@ static void PaintTopSpin(
     PaintUtilSetGeneralSupportHeight(session, height + 112);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionTopspin(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionTopspin(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

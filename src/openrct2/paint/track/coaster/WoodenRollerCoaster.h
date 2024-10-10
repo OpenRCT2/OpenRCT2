@@ -80,4 +80,4 @@ template<bool isClassic> void WoodenRCTrackPaintBb(PaintSession& session, const 
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRCFallback(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRCFallback(OpenRCT2::TrackElemType trackType);

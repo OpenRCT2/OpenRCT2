@@ -278,8 +278,6 @@ namespace OpenRCT2::RCT2
 
         uint8_t GetMinCarsPerTrain() const;
         uint8_t GetMaxCarsPerTrain() const;
-        void SetMinCarsPerTrain(uint8_t newValue);
-        void SetMaxCarsPerTrain(uint8_t newValue);
     };
     static_assert(sizeof(Ride) == 0x260);
 
@@ -506,19 +504,19 @@ namespace OpenRCT2::RCT2
         uint8_t SeatRotation;       // 0xD8
         uint8_t TargetSeatRotation; // 0xD9
 
-        uint16_t GetTrackType() const
+        OpenRCT2::RCT12::TrackElemType GetTrackType() const
         {
-            return TrackTypeAndDirection >> 2;
+            return static_cast<OpenRCT2::RCT12::TrackElemType>(TrackTypeAndDirection >> 2);
         }
         uint8_t GetTrackDirection() const
         {
             return TrackTypeAndDirection & RCT12VehicleTrackDirectionMask;
         }
-        void SetTrackType(uint16_t trackType)
+        void SetTrackType(OpenRCT2::RCT12::TrackElemType trackType)
         {
             // set the upper 14 bits to 0
             TrackTypeAndDirection &= ~RCT12VehicleTrackTypeMask;
-            TrackTypeAndDirection |= trackType << 2;
+            TrackTypeAndDirection |= EnumValue(trackType) << 2;
         }
         void SetTrackDirection(uint8_t trackDirection)
         {
@@ -728,7 +726,7 @@ namespace OpenRCT2::RCT2
         uint16_t ProximityStartZ;
         uint8_t CurrentRide;
         uint8_t State;
-        uint8_t ProximityTrackType;
+        OpenRCT2::RCT12::TrackElemType ProximityTrackType;
         uint8_t ProximityBaseHeight;
         uint16_t ProximityTotal;
         uint16_t ProximityScores[26];
@@ -1013,11 +1011,21 @@ namespace OpenRCT2::RCT2
 #pragma pack(pop)
 
     ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const RideObjectEntry& rideEntry);
-    bool RCT2TrackTypeIsBooster(ride_type_t rideType, uint16_t trackType);
     bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
     uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);
-    track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType, bool convertFlat);
-    RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType);
+
+    enum class OriginalRideClass
+    {
+        Regular,
+        WildMouse,
+        FlatRide,
+    };
+
+    OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(
+        OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType, bool isFlatRide);
+    OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(
+        OpenRCT2::RCT12::TrackElemType origTrackType, OriginalRideClass originalClass);
+    OpenRCT2::RCT12::TrackElemType OpenRCT2TrackTypeToRCT2(OpenRCT2::TrackElemType origTrackType);
 
     struct FootpathMapping
     {

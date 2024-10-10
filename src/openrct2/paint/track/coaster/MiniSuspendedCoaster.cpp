@@ -2242,7 +2242,7 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniSuspendedRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniSuspendedRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -2298,6 +2298,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniSuspendedRC(int32_t trackType)
             return MiniSuspendedRCTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
             return MiniSuspendedRCTrackDiag25DegDownToFlat;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

@@ -298,7 +298,7 @@ static void PaintSwingingShip(
     PaintUtilSetGeneralSupportHeight(session, height + 112);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingShip(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingShip(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack1x5)
     {

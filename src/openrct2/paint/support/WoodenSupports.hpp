@@ -11,7 +11,7 @@
 
 #include "../../ride/TrackData.h"
 
-template<track_type_t trackType>
+template<OpenRCT2::TrackElemType trackType>
 bool DrawSupportForSequenceA(
     PaintSession& session, WoodenSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
     ImageId imageTemplate)
@@ -26,7 +26,7 @@ bool DrawSupportForSequenceA(
         session, supportType, desc.subType, direction, height, imageTemplate, desc.transitionType);
 }
 
-template<track_type_t trackType>
+template<OpenRCT2::TrackElemType trackType>
 bool DrawSupportForSequenceB(
     PaintSession& session, WoodenSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
     ImageId imageTemplate)

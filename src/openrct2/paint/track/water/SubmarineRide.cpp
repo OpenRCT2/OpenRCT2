@@ -180,7 +180,7 @@ static void SubmarineRidePaintTrackRightQuarterTurn1Tile(
 /**
  * rct2: 0x008995D4
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSubmarineRide(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSubmarineRide(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -201,7 +201,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSubmarineRide(int32_t trackType)
             return SubmarineRidePaintTrackLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
             return SubmarineRidePaintTrackRightQuarterTurn1Tile;
+        default:
+            return nullptr;
     }
-
-    return nullptr;
 }

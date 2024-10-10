@@ -498,9 +498,9 @@ namespace OpenRCT2::RCT1
         uint8_t RideSubtype;     // 0xD6
         uint8_t ColoursExtended; // 0xD7
 
-        uint16_t GetTrackType() const
+        OpenRCT2::RCT12::TrackElemType GetTrackType() const
         {
-            return TrackTypeAndDirection >> 2;
+            return static_cast<OpenRCT2::RCT12::TrackElemType>(TrackTypeAndDirection >> 2);
         }
 
         uint8_t GetTrackDirection() const
@@ -1292,5 +1292,5 @@ namespace OpenRCT2::RCT1
         RCT1_PATH_SUPPORT_TYPE_BAMBOO,
     };
 
-    track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType);
+    OpenRCT2::TrackElemType RCT1TrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType);
 } // namespace OpenRCT2::RCT1

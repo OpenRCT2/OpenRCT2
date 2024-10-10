@@ -413,7 +413,7 @@ GameActions::Result WallPlaceAction::Execute() const
 bool WallPlaceAction::WallCheckObstructionWithTrack(
     const WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const
 {
-    track_type_t trackType = trackElement->GetTrackType();
+    OpenRCT2::TrackElemType trackType = trackElement->GetTrackType();
 
     using namespace OpenRCT2::TrackMetaData;
     const auto& ted = GetTrackElementDescriptor(trackType);
@@ -599,7 +599,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
 }
 
 bool WallPlaceAction::TrackIsAllowedWallEdges(
-    ride_type_t rideType, track_type_t trackType, uint8_t trackSequence, uint8_t direction)
+    ride_type_t rideType, OpenRCT2::TrackElemType trackType, uint8_t trackSequence, uint8_t direction)
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::noWallsAroundTrack))
     {

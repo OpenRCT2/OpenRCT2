@@ -957,7 +957,7 @@ namespace OpenRCT2::Ui::Windows
             if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 // Get price of ride
-                int32_t startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
+                auto startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
                 money64 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
                 const auto& ted = GetTrackElementDescriptor(startPieceId);
                 price *= ted.priceModifier;

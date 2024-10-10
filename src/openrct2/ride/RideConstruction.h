@@ -18,8 +18,6 @@
 #include <cstdint>
 #include <optional>
 
-using track_type_t = uint16_t;
-
 struct TileElement;
 struct CoordsXYE;
 struct RideTypeDescriptor;
@@ -65,14 +63,14 @@ extern RideId _currentRideIndex;
 extern CoordsXYZ _currentTrackBegin;
 
 extern uint8_t _currentTrackPieceDirection;
-extern track_type_t _currentTrackPieceType;
+extern OpenRCT2::TrackElemType _currentTrackPieceType;
 extern uint8_t _currentTrackSelectionFlags;
 extern uint32_t _rideConstructionNextArrowPulse;
 extern TrackPitch _currentTrackPitchEnd;
 extern TrackRoll _currentTrackRollEnd;
 extern bool _currentTrackHasLiftHill;
 extern OpenRCT2::SelectedAlternative _currentTrackAlternative;
-extern track_type_t _selectedTrackType;
+extern OpenRCT2::TrackElemType _selectedTrackType;
 
 extern TrackRoll _previousTrackRollEnd;
 extern TrackPitch _previousTrackPitchEnd;
@@ -111,5 +109,5 @@ void RideConstructionStart(Ride& ride);
 
 TrackDrawerDescriptor getCurrentTrackDrawerDescriptor(const RideTypeDescriptor& rtd);
 TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd);
-track_type_t GetTrackTypeFromCurve(
+OpenRCT2::TrackElemType GetTrackTypeFromCurve(
     TrackCurve curve, bool startsDiagonal, TrackPitch startSlope, TrackPitch endSlope, TrackRoll startBank, TrackRoll endBank);

@@ -13,6 +13,7 @@
 #include "../actions/GameActionResult.h"
 #include "../object/Object.h"
 #include "../ride/RideColour.h"
+#include "../ride/Track.h"
 #include "../world/Map.h"
 #include "RideRatings.h"
 #include "VehicleColour.h"
@@ -99,7 +100,7 @@ enum class TrackDesignTrackElementFlag : uint8_t
 
 struct TrackDesignTrackElement
 {
-    track_type_t type = 0;
+    OpenRCT2::TrackElemType type = OpenRCT2::TrackElemType::Flat;
     uint8_t flags = 0;
     uint8_t colourScheme = 0;
     ::StationIndex stationIndex = StationIndex::FromUnderlying(0);

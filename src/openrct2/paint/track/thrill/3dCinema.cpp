@@ -121,7 +121,7 @@ static void Paint3dCinema(
     PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunction3dCinema(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunction3dCinema(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

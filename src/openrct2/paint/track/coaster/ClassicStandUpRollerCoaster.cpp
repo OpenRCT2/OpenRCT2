@@ -1386,7 +1386,7 @@ static void classicStandUpRCTrackDiagRightBankTo25DegDown(
     classicStandUpRCTrackDiag25DegUpToLeftBank(session, ride, trackSequence, direction, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemType trackType)
 {
     if (!IsCsgLoaded())
     {
@@ -1469,7 +1469,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
             return classicStandUpRCTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
             return classicStandUpRCTrackDiagRightBank;
+        default:
+            return GetTrackPaintFunctionStandUpRC(trackType);
     }
-
-    return GetTrackPaintFunctionStandUpRC(trackType);
 }

@@ -275,7 +275,7 @@ using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideM
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
 using RideLocationFunction = CoordsXY (*)(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
 using RideUpdateFunction = void (*)(Ride& ride);
-using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const track_type_t trackType);
+using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const OpenRCT2::TrackElemType trackType);
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 
@@ -454,7 +454,7 @@ struct RideTypeDescriptor
 {
     uint8_t Category{};
     /** rct2: 0x0097CC68 */
-    track_type_t StartTrackPiece{};
+    OpenRCT2::TrackElemType StartTrackPiece{};
     TrackDrawerDescriptor TrackPaintFunctions{};
     TrackDrawerDescriptor InvertedTrackPaintFunctions{};
     uint64_t Flags{};

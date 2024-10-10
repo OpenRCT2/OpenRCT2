@@ -19,7 +19,7 @@
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::TrackMetaData;
 
-ScTrackSegment::ScTrackSegment(track_type_t type)
+ScTrackSegment::ScTrackSegment(OpenRCT2::TrackElemType type)
     : _type(type)
 {
 }
@@ -72,7 +72,7 @@ void ScTrackSegment::Register(duk_context* ctx)
 
 int32_t ScTrackSegment::type_get() const
 {
-    return _type;
+    return EnumValue(_type);
 }
 
 std::string ScTrackSegment::description_get() const
@@ -184,7 +184,7 @@ std::vector<DukValue> ScTrackSegment::getSubpositions(uint8_t trackSubposition, 
 {
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
     const uint16_t size = getSubpositionLength(trackSubposition, direction);
-    const uint16_t typeAndDirection = (_type << 2) | (direction & 3);
+    const uint16_t typeAndDirection = (EnumValue(_type) << 2) | (direction & 3);
 
     std::vector<DukValue> result;
 
@@ -220,7 +220,7 @@ DukValue ScTrackSegment::nextCurveElement_get() const
 
     auto nextInChain = ted.curveChain.next;
     if (nextInChain.isTrackType)
-        return ToDuk<int32_t>(ctx, nextInChain.trackType);
+        return ToDuk<int32_t>(ctx, EnumValue(nextInChain.trackType));
 
     return _trackCurveToString(ctx, nextInChain.curve);
 }
@@ -232,7 +232,7 @@ DukValue ScTrackSegment::previousCurveElement_get() const
 
     auto previousInChain = ted.curveChain.previous;
     if (previousInChain.isTrackType)
-        return ToDuk<int32_t>(ctx, previousInChain.trackType);
+        return ToDuk<int32_t>(ctx, EnumValue(previousInChain.trackType));
 
     return _trackCurveToString(ctx, previousInChain.curve);
 }
@@ -243,7 +243,7 @@ DukValue ScTrackSegment::getMirrorElement() const
     const auto& ted = GetTrackElementDescriptor(_type);
     if (ted.mirrorElement == TrackElemType::None)
         return ToDuk(ctx, nullptr);
-    return ToDuk<int32_t>(ctx, ted.mirrorElement);
+    return ToDuk<int32_t>(ctx, EnumValue(ted.mirrorElement));
 }
 
 DukValue ScTrackSegment::getAlternativeElement() const
@@ -252,7 +252,7 @@ DukValue ScTrackSegment::getAlternativeElement() const
     const auto& ted = GetTrackElementDescriptor(_type);
     if (ted.alternativeType == TrackElemType::None)
         return ToDuk(ctx, nullptr);
-    return ToDuk<int32_t>(ctx, ted.alternativeType);
+    return ToDuk<int32_t>(ctx, EnumValue(ted.alternativeType));
 }
 
 int32_t ScTrackSegment::getPriceModifier() const

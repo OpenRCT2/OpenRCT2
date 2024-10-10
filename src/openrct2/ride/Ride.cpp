@@ -2994,7 +2994,7 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
  */
 static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement)
 {
-    int32_t trackType = -1;
+    auto trackType = TrackElemType::None;
     auto returnPos = startElement;
     int32_t startX = returnPos.x;
     int32_t startY = returnPos.y;
@@ -3002,7 +3002,7 @@ static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement
     while (TrackBlockGetPrevious(returnPos, &trackBeginEnd))
     {
         // If previous track is back to the starting x, y, then break loop (otherwise possible infinite loop)
-        if (trackType != -1 && startX == trackBeginEnd.begin_x && startY == trackBeginEnd.begin_y)
+        if (trackType != TrackElemType::None && startX == trackBeginEnd.begin_x && startY == trackBeginEnd.begin_y)
             break;
 
         auto trackCoords = CoordsXYZ{ trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
@@ -3113,6 +3113,8 @@ static void RideOpenBlockBrakes(const CoordsXYE& startElement)
             case TrackElemType::Up25ToFlat:
             case TrackElemType::Up60ToFlat:
                 SetBrakeClosedMultiTile(*currentElement.element->AsTrack(), { currentElement.x, currentElement.y }, false);
+                break;
+            default:
                 break;
         }
     } while (TrackBlockGetNext(&currentElement, &currentElement, nullptr, nullptr)
@@ -3587,6 +3589,8 @@ static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
             case TrackElemType::BlockBrakes:
                 *outXYElement = { trackPos, reinterpret_cast<TileElement*>(trackElement) };
                 return;
+            default:
+                break;
         }
     }
 
@@ -4971,7 +4975,7 @@ static std::optional<int32_t> RideGetSmallestStationLength(const Ride& ride)
 static int32_t RideGetTrackLength(const Ride& ride)
 {
     TileElement* tileElement = nullptr;
-    track_type_t trackType;
+    OpenRCT2::TrackElemType trackType;
     CoordsXYZ trackStart;
     bool foundTrack = false;
 

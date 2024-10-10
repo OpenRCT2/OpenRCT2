@@ -7326,7 +7326,7 @@ static void MineTrainRCTrack60DegDownToFlatLongBase(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -7528,6 +7528,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(int32_t trackType)
             return MineTrainRCTrackFlatTo60DegDownLongBase;
         case TrackElemType::Down60ToFlatLongBase:
             return MineTrainRCTrack60DegDownToFlatLongBase;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

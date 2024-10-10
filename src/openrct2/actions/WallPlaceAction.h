@@ -63,5 +63,6 @@ private:
      * Gets whether the given track type can have a wall placed on the edge of the given direction.
      * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
      */
-    static bool TrackIsAllowedWallEdges(ride_type_t rideType, track_type_t trackType, uint8_t trackSequence, uint8_t direction);
+    static bool TrackIsAllowedWallEdges(
+        ride_type_t rideType, OpenRCT2::TrackElemType trackType, uint8_t trackSequence, uint8_t direction);
 };

@@ -142,7 +142,7 @@ static void PaintBoatHireTrackRightQuarterTurn1Tile(
 /**
  * rct2: 0x008B0D60
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionBoatHire(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionBoatHire(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -158,7 +158,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionBoatHire(int32_t trackType)
             return PaintBoatHireTrackLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
             return PaintBoatHireTrackRightQuarterTurn1Tile;
+        default:
+            return nullptr;
     }
-
-    return nullptr;
 }

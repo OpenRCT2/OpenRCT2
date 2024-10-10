@@ -9097,7 +9097,7 @@ static void FlyingRCTrackFlyerHalfLoopDown(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRCInverted(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRCInverted(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -9377,7 +9377,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRCInverted(int32_t trackType)
             return InvertedFlyingRCTrackDiagBrakes;
         case TrackElemType::DiagBlockBrakes:
             return InvertedFlyingRCTrackDiagBlockBrakes;
-    }
 
-    return GetTrackPaintFunctionFlyingRC(trackType);
+        default:
+            return GetTrackPaintFunctionFlyingRC(trackType);
+    }
 }

@@ -1233,7 +1233,7 @@ static void PaintSplashBoatsTrackOnRidePhoto(
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSplashBoats(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSplashBoats(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1281,7 +1281,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSplashBoats(int32_t trackType)
         // Added by OpenRCT2
         case TrackElemType::OnRidePhoto:
             return PaintSplashBoatsTrackOnRidePhoto;
+        default:
+            return nullptr;
     }
-
-    return nullptr;
 }

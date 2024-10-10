@@ -4788,7 +4788,7 @@ static void SuspendedSwingingRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedSwingingRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedSwingingRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -4896,6 +4896,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedSwingingRC(int32_t trackType)
             return SuspendedSwingingRCTrackDiag25DegDownToFlat;
         case TrackElemType::BlockBrakes:
             return SuspendedSwingingRCTrackBlockBrakes;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

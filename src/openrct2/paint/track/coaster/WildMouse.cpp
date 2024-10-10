@@ -205,7 +205,7 @@ static void WildMouseTrackStation(
         SPR_STATION_BASE_B_NW_SE,
     };
 
-    int32_t trackType = trackElement.GetTrackType();
+    auto trackType = trackElement.GetTrackType();
     PaintAddImageAsParentRotated(
         session, direction, GetStationColourScheme(session, trackElement).WithIndex(baseImageIds[direction]),
         { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
@@ -946,7 +946,7 @@ static void WildMouseTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWildMouse(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWildMouse(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1010,6 +1010,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWildMouse(int32_t trackType)
             return WildMouseTrackRotationControlToggle;
         case TrackElemType::BlockBrakes:
             return WildMouseTrackBlockBrakes;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

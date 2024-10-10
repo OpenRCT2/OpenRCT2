@@ -15,14 +15,18 @@
 #include <optional>
 #include <string_view>
 
-namespace OpenRCT2::RCT2
+namespace OpenRCT2
 {
-    struct FootpathMapping;
-}
+    enum class TrackElemType : uint16_t;
+
+    namespace RCT2
+    {
+        struct FootpathMapping;
+    }
+} // namespace OpenRCT2
 struct ObjectEntryDescriptor;
 class ObjectList;
 using ride_type_t = uint16_t;
-using track_type_t = uint16_t;
 
 std::string_view MapToNewObjectIdentifier(std::string_view s);
 std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
@@ -43,4 +47,4 @@ void UpdateFootpathsFromMapping(
  * @param parkFileVersion The current park file version. Pass -1 when converting S4 or S6.
  * @return
  */
-bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, int32_t parkFileVersion = -1);
+bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);

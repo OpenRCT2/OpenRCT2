@@ -11045,7 +11045,7 @@ static void LayDownRCTrackHalfLoopUninvertedDown(
     return;
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -11283,7 +11283,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(int32_t trackType)
         case TrackElemType::RightTwistUpToDown:
             return CorkscrewRCTrackRightTwistUpToDown;
 
-        // From Lay-down
+            // From Lay-down
         case TrackElemType::LeftFlyerTwistUp:
             return LayDownRCTrackLeftFlyerTwistUp;
         case TrackElemType::RightFlyerTwistUp:
@@ -11296,6 +11296,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(int32_t trackType)
             return LayDownRCTrackRightFlyerCorkscrewUp;
         case TrackElemType::FlyerHalfLoopUninvertedDown:
             return LayDownRCTrackHalfLoopUninvertedDown;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

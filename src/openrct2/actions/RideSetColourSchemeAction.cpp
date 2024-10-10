@@ -21,7 +21,7 @@
 using namespace OpenRCT2;
 
 RideSetColourSchemeAction::RideSetColourSchemeAction(
-    const CoordsXYZD& location, track_type_t trackType, uint16_t newColourScheme)
+    const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, uint16_t newColourScheme)
     : _loc(location)
     , _trackType(trackType)
     , _newColourScheme(newColourScheme)
