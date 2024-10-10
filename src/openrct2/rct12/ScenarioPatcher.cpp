@@ -29,6 +29,7 @@
 #include "../world/Surface.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/TileElementType.h"
+#include "../world/tile_element/TrackElement.h"
 
 #ifdef DISABLE_NETWORK
 #    include <picosha2.hpp>

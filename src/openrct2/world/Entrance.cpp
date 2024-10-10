@@ -31,6 +31,7 @@
 #include "MapAnimation.h"
 #include "Park.h"
 #include "tile_element/EntranceElement.h"
+#include "tile_element/TrackElement.h"
 
 using namespace OpenRCT2;
 

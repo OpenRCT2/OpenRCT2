@@ -29,6 +29,7 @@
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../world/Map.h"
+#include "../world/tile_element/TrackElement.h"
 #include "RideData.h"
 #include "Station.h"
 #include "TrackData.h"

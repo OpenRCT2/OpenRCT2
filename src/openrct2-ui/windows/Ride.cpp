@@ -65,6 +65,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
+#include <openrct2/world/tile_element/TrackElement.h>
 #include <optional>
 #include <string>
 #include <string_view>

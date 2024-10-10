@@ -57,6 +57,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "PatrolArea.h"
 #include "Staff.h"
 

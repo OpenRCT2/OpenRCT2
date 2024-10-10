@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Paint.TileElement.h"

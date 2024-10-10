@@ -47,6 +47,7 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/TrackElement.h"
 #include "../world/tile_element/WallElement.h"
 #include "CableLift.h"
 #include "Ride.h"

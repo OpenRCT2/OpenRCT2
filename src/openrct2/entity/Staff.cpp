@@ -45,6 +45,7 @@
 #include "../world/Surface.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/TrackElement.h"
 #include "PatrolArea.h"
 #include "Peep.h"
 
