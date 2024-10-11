@@ -352,7 +352,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
     }
 
     auto loc = state.Proximity;
-    track_type_t trackType = state.ProximityTrackType;
+    OpenRCT2::TrackElemType trackType = state.ProximityTrackType;
 
     TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
@@ -458,7 +458,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
     }
 
     auto loc = state.Proximity;
-    track_type_t trackType = state.ProximityTrackType;
+    OpenRCT2::TrackElemType trackType = state.ProximityTrackType;
 
     TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
@@ -862,6 +862,8 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
         case TrackElemType::LeftReverser:
         case TrackElemType::RightReverser:
             state.AmountOfReversers++;
+            break;
+        default:
             break;
     }
 }

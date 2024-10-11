@@ -475,9 +475,9 @@ static void InvokeVehicleCrashHook(const EntityId vehicleId, const std::string_v
 #endif
 
 static bool vehicle_move_info_valid(
-    VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction, int32_t offset)
+    VehicleTrackSubposition trackSubposition, OpenRCT2::TrackElemType type, uint8_t direction, int32_t offset)
 {
-    uint16_t typeAndDirection = (type << 2) | (direction & 3);
+    uint16_t typeAndDirection = (EnumValue(type) << 2) | (direction & 3);
 
     if (trackSubposition >= VehicleTrackSubposition{ std::size(gTrackVehicleInfo) })
     {
@@ -530,9 +530,9 @@ static bool vehicle_move_info_valid(
 }
 
 static const VehicleInfo* vehicle_get_move_info(
-    VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction, int32_t offset)
+    VehicleTrackSubposition trackSubposition, OpenRCT2::TrackElemType type, uint8_t direction, int32_t offset)
 {
-    uint16_t typeAndDirection = (type << 2) | (direction & 3);
+    uint16_t typeAndDirection = (EnumValue(type) << 2) | (direction & 3);
 
     if (!vehicle_move_info_valid(trackSubposition, type, direction, offset))
     {
@@ -547,9 +547,9 @@ const VehicleInfo* Vehicle::GetMoveInfo() const
     return vehicle_get_move_info(TrackSubposition, GetTrackType(), GetTrackDirection(), track_progress);
 }
 
-uint16_t VehicleGetMoveInfoSize(VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction)
+uint16_t VehicleGetMoveInfoSize(VehicleTrackSubposition trackSubposition, OpenRCT2::TrackElemType type, uint8_t direction)
 {
-    uint16_t typeAndDirection = (type << 2) | (direction & 3);
+    uint16_t typeAndDirection = (EnumValue(type) << 2) | (direction & 3);
 
     if (!vehicle_move_info_valid(trackSubposition, type, direction, 0))
     {
@@ -778,7 +778,7 @@ bool Vehicle::OpenRestraints()
     return restraintsOpen;
 }
 
-void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const track_type_t trackType)
+void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::TrackElemType trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
     uint16_t trackFlags = ted.flags;
@@ -789,7 +789,7 @@ void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const track_type_
     }
 }
 
-void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const track_type_t trackType)
+void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::TrackElemType trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
     uint16_t trackFlags = ted.flags;
@@ -800,7 +800,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const track_type
     }
 }
 
-void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const track_type_t trackType)
+void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const OpenRCT2::TrackElemType trackType)
 {
     if (trackType >= TrackElemType::FlatCovered && trackType <= TrackElemType::RightQuarterTurn3TilesCovered)
     {
@@ -935,6 +935,8 @@ void Vehicle::UpdateMeasurements()
                 {
                     curRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
                 }
+            default:
+                break;
         }
 
         const auto& ted = GetTrackElementDescriptor(trackElemType);
@@ -2427,7 +2429,7 @@ void Vehicle::UpdateTravellingBoatHireSetup()
     var_35 = 0;
     // No longer on a track so reset to 0 for import/export
     SetTrackDirection(0);
-    SetTrackType(0);
+    SetTrackType(TrackElemType::Flat);
     SetState(Vehicle::Status::TravellingBoat);
     remaining_distance += 27924;
 
@@ -5300,7 +5302,7 @@ int32_t Vehicle::UpdateMotionDodgems()
  *  rct2: 0x006DD365
  */
 static bool wouldCollideWithDodgemsTrackEdge(
-    const CoordsXY& coords, const CoordsXY& trackLocation, uint32_t trackType, uint16_t dodgemsCarRadius)
+    const CoordsXY& coords, const CoordsXY& trackLocation, TrackElemType trackType, uint16_t dodgemsCarRadius)
 {
     int16_t rideLeft = trackLocation.x + GetDodgemsTrackSize(trackType).left;
     int16_t rideRight = trackLocation.x + GetDodgemsTrackSize(trackType).right;
@@ -5532,6 +5534,8 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
                 }
             }
             break;
+        default:
+            break;
     }
 }
 
@@ -5632,8 +5636,7 @@ static void block_brakes_open_previous_section(
 
 int32_t Vehicle::GetSwingAmount() const
 {
-    auto trackType = GetTrackType();
-    switch (trackType)
+    switch (GetTrackType())
     {
         case TrackElemType::LeftQuarterTurn5Tiles:
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
@@ -5740,8 +5743,9 @@ int32_t Vehicle::GetSwingAmount() const
         case TrackElemType::RightEighthBankToOrthogonal:
             // Loc6D67F6
             return -15;
+        default:
+            return 0;
     }
-    return 0;
 }
 
 static uint8_t GetSwingSprite(int16_t swingPosition)
@@ -5836,6 +5840,8 @@ void Vehicle::UpdateSwingingCar()
             case TrackElemType::RightBankedQuarterTurn3Tiles:
                 dx = 819;
                 cx = -10831;
+                break;
+            default:
                 break;
         }
 
@@ -6875,7 +6881,8 @@ void Vehicle::PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackEle
  *
  *  rct2: 0x006DB08C
  */
-bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Ride& curRide, const RideObjectEntry& rideEntry)
+bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
+    TrackElemType trackType, const Ride& curRide, const RideObjectEntry& rideEntry)
 {
     CoordsXYZD location = {};
 
@@ -7295,7 +7302,8 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
     }
 }
 
-static PitchAndRoll PitchAndRollEnd(const Ride& curRide, bool useInvertedSprites, uint16_t trackType, TileElement* tileElement)
+static PitchAndRoll PitchAndRollEnd(
+    const Ride& curRide, bool useInvertedSprites, TrackElemType trackType, TileElement* tileElement)
 {
     bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
     const auto& ted = GetTrackElementDescriptor(trackType);
@@ -7306,7 +7314,7 @@ static PitchAndRoll PitchAndRollEnd(const Ride& curRide, bool useInvertedSprites
  *
  *  rct2: 0x006DBAA6
  */
-bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ride& curRide, uint16_t* progress)
+bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, const Ride& curRide, uint16_t* progress)
 {
     auto pitchAndRollStart = TrackPitchAndRollStart(trackType);
     TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
@@ -8304,7 +8312,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
  *
  *  rct2: 0x006DC1E4
  */
-static uint8_t modified_speed(uint16_t trackType, VehicleTrackSubposition trackSubposition, uint8_t speed)
+static uint8_t modified_speed(TrackElemType trackType, VehicleTrackSubposition trackSubposition, uint8_t speed)
 {
     enum
     {

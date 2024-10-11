@@ -692,7 +692,7 @@ template<> struct DataSerializerTraitsT<TrackDesignTrackElement>
     static void log(OpenRCT2::IStream* stream, const TrackDesignTrackElement& val)
     {
         char msg[128] = {};
-        snprintf(msg, sizeof(msg), "TrackDesignTrackElement(type = %d, flags = %d)", val.type, val.flags);
+        snprintf(msg, sizeof(msg), "TrackDesignTrackElement(type = %d, flags = %d)", EnumValue(val.type), val.flags);
         stream->Write(msg, strlen(msg));
     }
 };

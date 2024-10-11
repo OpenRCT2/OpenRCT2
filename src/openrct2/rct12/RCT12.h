@@ -23,12 +23,288 @@
 
 class ObjectList;
 
-using track_type_t = uint16_t;
-using RCT12TrackType = uint8_t;
+namespace OpenRCT2
+{
+    enum class TrackElemType : uint16_t;
+}
 namespace OpenRCT2::RCT12
 {
     class EntryList;
-}
+
+    enum class TrackElemType : uint8_t
+    {
+        Flat = 0,
+        EndStation = 1,
+        BeginStation = 2,
+        MiddleStation = 3,
+        Up25 = 4,
+        Up60 = 5,
+        FlatToUp25 = 6,
+        Up25ToUp60 = 7,
+        Up60ToUp25 = 8,
+        Up25ToFlat = 9,
+        Down25 = 10,
+        Down60 = 11,
+        FlatToDown25 = 12,
+        Down25ToDown60 = 13,
+        Down60ToDown25 = 14,
+        Down25ToFlat = 15,
+        LeftQuarterTurn5Tiles = 16,
+        RightQuarterTurn5Tiles = 17,
+        FlatToLeftBank = 18,
+        FlatToRightBank = 19,
+        LeftBankToFlat = 20,
+        RightBankToFlat = 21,
+        BankedLeftQuarterTurn5Tiles = 22,
+        BankedRightQuarterTurn5Tiles = 23,
+        LeftBankToUp25 = 24,
+        RightBankToUp25 = 25,
+        Up25ToLeftBank = 26,
+        Up25ToRightBank = 27,
+        LeftBankToDown25 = 28,
+        RightBankToDown25 = 29,
+        Down25ToLeftBank = 30,
+        Down25ToRightBank = 31,
+        LeftBank = 32,
+        RightBank = 33,
+        LeftQuarterTurn5TilesUp25 = 34,
+        RightQuarterTurn5TilesUp25 = 35,
+        LeftQuarterTurn5TilesDown25 = 36,
+        RightQuarterTurn5TilesDown25 = 37,
+        SBendLeft = 38,
+        SBendRight = 39,
+        LeftVerticalLoop = 40,
+        RightVerticalLoop = 41,
+        LeftQuarterTurn3Tiles = 42,
+        RightQuarterTurn3Tiles = 43,
+        LeftBankedQuarterTurn3Tiles = 44,
+        RightBankedQuarterTurn3Tiles = 45,
+        LeftQuarterTurn3TilesUp25 = 46,
+        RightQuarterTurn3TilesUp25 = 47,
+        LeftQuarterTurn3TilesDown25 = 48,
+        RightQuarterTurn3TilesDown25 = 49,
+        LeftQuarterTurn1Tile = 50,
+        RightQuarterTurn1Tile = 51,
+        LeftTwistDownToUp = 52,
+        RightTwistDownToUp = 53,
+        LeftTwistUpToDown = 54,
+        RightTwistUpToDown = 55,
+        HalfLoopUp = 56,
+        HalfLoopDown = 57,
+        LeftCorkscrewUp = 58,
+        RightCorkscrewUp = 59,
+        LeftCorkscrewDown = 60,
+        RightCorkscrewDown = 61,
+        FlatToUp60 = 62,
+        Up60ToFlat = 63,
+        FlatToDown60 = 64,
+        Down60ToFlat = 65,
+        TowerBase = 66,
+        TowerSection = 67,
+        FlatCovered = 68,
+        Up25Covered = 69,
+        Up60Covered = 70,
+        FlatToUp25Covered = 71,
+        Up25ToUp60Covered = 72,
+        Up60ToUp25Covered = 73,
+        Up25ToFlatCovered = 74,
+        Down25Covered = 75,
+        Down60Covered = 76,
+        FlatToDown25Covered = 77,
+        Down25ToDown60Covered = 78,
+        Down60ToDown25Covered = 79,
+        Down25ToFlatCovered = 80,
+        LeftQuarterTurn5TilesCovered = 81,
+        RightQuarterTurn5TilesCovered = 82,
+        SBendLeftCovered = 83,
+        SBendRightCovered = 84,
+        LeftQuarterTurn3TilesCovered = 85,
+        RightQuarterTurn3TilesCovered = 86,
+        LeftHalfBankedHelixUpSmall = 87,
+        RightHalfBankedHelixUpSmall = 88,
+        LeftHalfBankedHelixDownSmall = 89,
+        RightHalfBankedHelixDownSmall = 90,
+        LeftHalfBankedHelixUpLarge = 91,
+        RightHalfBankedHelixUpLarge = 92,
+        LeftHalfBankedHelixDownLarge = 93,
+        RightHalfBankedHelixDownLarge = 94,
+        LeftQuarterTurn1TileUp60 = 95,
+        RightQuarterTurn1TileUp60 = 96,
+        LeftQuarterTurn1TileDown60 = 97,
+        RightQuarterTurn1TileDown60 = 98,
+        Brakes = 99,
+        Booster = 100,
+        Maze = 101,
+        LeftQuarterBankedHelixLargeUp = 102,
+        RightQuarterBankedHelixLargeUp = 103,
+        LeftQuarterBankedHelixLargeDown = 104,
+        RightQuarterBankedHelixLargeDown = 105,
+        LeftQuarterHelixLargeUp = 106,
+        RightQuarterHelixLargeUp = 107,
+        LeftQuarterHelixLargeDown = 108,
+        RightQuarterHelixLargeDown = 109,
+        Up25LeftBanked = 110,
+        Up25RightBanked = 111,
+        Waterfall = 112,
+        Rapids = 113,
+        OnRidePhoto = 114,
+        Down25LeftBanked = 115,
+        Down25RightBanked = 116,
+        Watersplash = 117,
+        FlatToUp60LongBase = 118,
+        Up60ToFlatLongBase = 119,
+        Whirlpool = 120,
+        Down60ToFlatLongBase = 121,
+        FlatToDown60LongBase = 122,
+        CableLiftHill = 123,
+        ReverseFreefallSlope = 124,
+        ReverseFreefallVertical = 125,
+        Up90 = 126,
+        Down90 = 127,
+        Up60ToUp90 = 128,
+        Down90ToDown60 = 129,
+        Up90ToUp60 = 130,
+        Down60ToDown90 = 131,
+        BrakeForDrop = 132,
+        LeftEighthToDiag = 133,
+        RightEighthToDiag = 134,
+        LeftEighthToOrthogonal = 135,
+        RightEighthToOrthogonal = 136,
+        LeftEighthBankToDiag = 137,
+        RightEighthBankToDiag = 138,
+        LeftEighthBankToOrthogonal = 139,
+        RightEighthBankToOrthogonal = 140,
+        DiagFlat = 141,
+        DiagUp25 = 142,
+        DiagUp60 = 143,
+        DiagFlatToUp25 = 144,
+        DiagUp25ToUp60 = 145,
+        DiagUp60ToUp25 = 146,
+        DiagUp25ToFlat = 147,
+        DiagDown25 = 148,
+        DiagDown60 = 149,
+        DiagFlatToDown25 = 150,
+        DiagDown25ToDown60 = 151,
+        DiagDown60ToDown25 = 152,
+        DiagDown25ToFlat = 153,
+        DiagFlatToUp60 = 154,
+        DiagUp60ToFlat = 155,
+        DiagFlatToDown60 = 156,
+        DiagDown60ToFlat = 157,
+        DiagFlatToLeftBank = 158,
+        DiagFlatToRightBank = 159,
+        DiagLeftBankToFlat = 160,
+        DiagRightBankToFlat = 161,
+        DiagLeftBankToUp25 = 162,
+        DiagRightBankToUp25 = 163,
+        DiagUp25ToLeftBank = 164,
+        DiagUp25ToRightBank = 165,
+        DiagLeftBankToDown25 = 166,
+        DiagRightBankToDown25 = 167,
+        DiagDown25ToLeftBank = 168,
+        DiagDown25ToRightBank = 169,
+        DiagLeftBank = 170,
+        DiagRightBank = 171,
+        LogFlumeReverser = 172,
+        SpinningTunnel = 173,
+        LeftBarrelRollUpToDown = 174,
+        RightBarrelRollUpToDown = 175,
+        LeftBarrelRollDownToUp = 176,
+        RightBarrelRollDownToUp = 177,
+        LeftBankToLeftQuarterTurn3TilesUp25 = 178,
+        RightBankToRightQuarterTurn3TilesUp25 = 179,
+        LeftQuarterTurn3TilesDown25ToLeftBank = 180,
+        RightQuarterTurn3TilesDown25ToRightBank = 181,
+        PoweredLift = 182,
+        LeftLargeHalfLoopUp = 183,
+        RightLargeHalfLoopUp = 184,
+        LeftLargeHalfLoopDown = 185,
+        RightLargeHalfLoopDown = 186,
+        LeftFlyerTwistUp = 187,
+        RightFlyerTwistUp = 188,
+        LeftFlyerTwistDown = 189,
+        RightFlyerTwistDown = 190,
+        FlyerHalfLoopUninvertedUp = 191,
+        FlyerHalfLoopInvertedDown = 192,
+        LeftFlyerCorkscrewUp = 193,
+        RightFlyerCorkscrewUp = 194,
+        LeftFlyerCorkscrewDown = 195,
+        RightFlyerCorkscrewDown = 196,
+        HeartLineTransferUp = 197,
+        HeartLineTransferDown = 198,
+        LeftHeartLineRoll = 199,
+        RightHeartLineRoll = 200,
+        MinigolfHoleA = 201,
+        MinigolfHoleB = 202,
+        MinigolfHoleC = 203,
+        MinigolfHoleD = 204,
+        MinigolfHoleE = 205,
+        MultiDimInvertedFlatToDown90QuarterLoop = 206,
+        Up90ToInvertedFlatQuarterLoop = 207,
+        InvertedFlatToDown90QuarterLoop = 208,
+        LeftCurvedLiftHill = 209,
+        RightCurvedLiftHill = 210,
+        LeftReverser = 211,
+        RightReverser = 212,
+        AirThrustTopCap = 213,
+        AirThrustVerticalDown = 214,
+        AirThrustVerticalDownToLevel = 215,
+        BlockBrakes = 216,
+        LeftBankedQuarterTurn3TileUp25 = 217,
+        RightBankedQuarterTurn3TileUp25 = 218,
+        LeftBankedQuarterTurn3TileDown25 = 219,
+        RightBankedQuarterTurn3TileDown25 = 220,
+        LeftBankedQuarterTurn5TileUp25 = 221,
+        RightBankedQuarterTurn5TileUp25 = 222,
+        LeftBankedQuarterTurn5TileDown25 = 223,
+        RightBankedQuarterTurn5TileDown25 = 224,
+        Up25ToLeftBankedUp25 = 225,
+        Up25ToRightBankedUp25 = 226,
+        LeftBankedUp25ToUp25 = 227,
+        RightBankedUp25ToUp25 = 228,
+        Down25ToLeftBankedDown25 = 229,
+        Down25ToRightBankedDown25 = 230,
+        LeftBankedDown25ToDown25 = 231,
+        RightBankedDown25ToDown25 = 232,
+        LeftBankedFlatToLeftBankedUp25 = 233,
+        RightBankedFlatToRightBankedUp25 = 234,
+        LeftBankedUp25ToLeftBankedFlat = 235,
+        RightBankedUp25ToRightBankedFlat = 236,
+        LeftBankedFlatToLeftBankedDown25 = 237,
+        RightBankedFlatToRightBankedDown25 = 238,
+        LeftBankedDown25ToLeftBankedFlat = 239,
+        RightBankedDown25ToRightBankedFlat = 240,
+        FlatToLeftBankedUp25 = 241,
+        FlatToRightBankedUp25 = 242,
+        LeftBankedUp25ToFlat = 243,
+        RightBankedUp25ToFlat = 244,
+        FlatToLeftBankedDown25 = 245,
+        FlatToRightBankedDown25 = 246,
+        LeftBankedDown25ToFlat = 247,
+        RightBankedDown25ToFlat = 248,
+        LeftQuarterTurn1TileUp90 = 249,
+        RightQuarterTurn1TileUp90 = 250,
+        LeftQuarterTurn1TileDown90 = 251,
+        RightQuarterTurn1TileDown90 = 252,
+        MultiDimUp90ToInvertedFlatQuarterLoop = 253,
+        MultiDimFlatToDown90QuarterLoop = 254,
+        MultiDimInvertedUp90ToFlatQuarterLoop = 255,
+
+        // SV6/TD6 element aliases
+        RotationControlToggleAlias = 100,
+        InvertedUp90ToFlatQuarterLoopAlias = 101,
+        FlatTrack1x4A_Alias = 95,
+        FlatTrack2x2_Alias = 110,
+        FlatTrack4x4_Alias = 111,
+        FlatTrack2x4_Alias = 115,
+        FlatTrack1x5_Alias = 116,
+        FlatTrack1x1A_Alias = 118,
+        FlatTrack1x4B_Alias = 119,
+        FlatTrack1x1B_Alias = 121,
+        FlatTrack1x4C_Alias = 122,
+        FlatTrack3x3_Alias = 123,
+    };
+} // namespace OpenRCT2::RCT12
 
 constexpr uint8_t RCT2_STRING_FORMAT_ARG_START = 123;
 constexpr uint8_t RCT2_STRING_FORMAT_ARG_END = 141;
@@ -264,8 +540,8 @@ static_assert(sizeof(TD46MazeElement) == 0x04);
 /* Track Element entry  size: 0x02 */
 struct TD46TrackElement
 {
-    uint8_t Type;  // 0x00
-    uint8_t Flags; // 0x01
+    OpenRCT2::RCT12::TrackElemType Type; // 0x00
+    uint8_t Flags;                       // 0x01
 };
 static_assert(sizeof(TD46TrackElement) == 0x02);
 
@@ -508,7 +784,7 @@ static_assert(sizeof(RCT12PathElement) == 8);
 struct RCT12TrackElement : RCT12TileElementBase
 {
 private:
-    uint8_t TrackType; // 4
+    OpenRCT2::RCT12::TrackElemType TrackType; // 4
     union
     {
         struct
@@ -531,7 +807,7 @@ private:
     };
     uint8_t RideIndex; // 7
 public:
-    uint8_t GetTrackType() const;
+    OpenRCT2::RCT12::TrackElemType GetTrackType() const;
     uint8_t GetSequenceIndex() const;
     uint8_t GetRideIndex() const;
     RideColourScheme GetColourScheme() const;
@@ -908,8 +1184,8 @@ RideId RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
 bool IsLikelyUTF8(std::string_view s);
 std::string RCT12RemoveFormattingUTF8(std::string_view s);
 std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);
-track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType);
-RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType);
+OpenRCT2::TrackElemType RCT12FlatTrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType);
+OpenRCT2::RCT12::TrackElemType OpenRCT2FlatTrackTypeToRCT12(OpenRCT2::TrackElemType origTrackType);
 std::string_view GetStationIdentifierFromStyle(uint8_t style);
 uint8_t GetStationStyleFromIdentifier(u8string_view identifier);
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
@@ -967,4 +1243,6 @@ namespace OpenRCT2::RCT12
      * Handles single and multi-byte strings.
      */
     size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen);
+    bool TrackTypeHasSpeedSetting(OpenRCT2::RCT12::TrackElemType trackType);
+    bool TrackTypeIsStation(OpenRCT2::RCT12::TrackElemType trackType);
 } // namespace OpenRCT2::RCT12

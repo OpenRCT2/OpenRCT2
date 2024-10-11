@@ -10550,7 +10550,7 @@ static void LoopingRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLoopingRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLoopingRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -10831,6 +10831,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLoopingRC(int32_t trackType)
         case TrackElemType::DiagBrakes:
         case TrackElemType::DiagBlockBrakes:
             return LoopingRCTrackDiagBrakes;
+
+        default:
+            return GetTrackPaintFunctionLimLaunchedRC(trackType);
     }
-    return GetTrackPaintFunctionLimLaunchedRC(trackType);
 }

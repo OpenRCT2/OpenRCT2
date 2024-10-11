@@ -207,7 +207,7 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
     }
 }
 
-static track_type_t toTrackType(const u8string_view trackTypeString)
+static OpenRCT2::TrackElemType toTrackType(const u8string_view trackTypeString)
 {
     if (trackTypeString == "flat")
         return OpenRCT2::TrackElemType::Flat;

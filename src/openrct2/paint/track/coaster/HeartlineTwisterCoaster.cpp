@@ -1672,7 +1672,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1714,6 +1714,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(int32_t trackType)
             return HeartlineTwisterRCTrackLeftHeartlineRoll;
         case TrackElemType::RightHeartLineRoll:
             return HeartlineTwisterRCTrackRightHeartlineRoll;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

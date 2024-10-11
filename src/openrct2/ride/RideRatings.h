@@ -15,7 +15,10 @@
 #include "RideTypes.h"
 
 using ride_rating = fixed16_2dp;
-using track_type_t = uint16_t;
+namespace OpenRCT2
+{
+    enum class TrackElemType : uint16_t;
+}
 
 // Convenience function for writing ride ratings. The result is a 16 bit signed
 // integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
@@ -49,7 +52,7 @@ struct RideRatingUpdateState
     CoordsXYZ ProximityStart;
     RideId CurrentRide;
     uint8_t State;
-    track_type_t ProximityTrackType;
+    OpenRCT2::TrackElemType ProximityTrackType;
     uint8_t ProximityBaseHeight;
     uint16_t ProximityTotal;
     uint16_t ProximityScores[26];

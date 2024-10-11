@@ -41,13 +41,13 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
-PitchAndRoll TrackPitchAndRollStart(track_type_t trackType)
+PitchAndRoll TrackPitchAndRollStart(OpenRCT2::TrackElemType trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
     return { ted.definition.pitchStart, ted.definition.rollStart };
 }
 
-PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType)
+PitchAndRoll TrackPitchAndRollEnd(OpenRCT2::TrackElemType trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
     return { ted.definition.pitchEnd, ted.definition.rollEnd };
@@ -217,7 +217,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
             stationElement = find_station_element(loc, rideIndex);
             if (stationElement != nullptr)
             {
-                track_type_t targetTrackType;
+                OpenRCT2::TrackElemType targetTrackType;
                 if (stationFrontLoc == loc)
                 {
                     auto stationIndex = RideGetFirstEmptyStationStart(*ride);
@@ -352,7 +352,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
             stationElement = find_station_element(currentLoc, rideIndex);
             if (stationElement != nullptr)
             {
-                track_type_t targetTrackType;
+                OpenRCT2::TrackElemType targetTrackType;
                 if ((currentLoc == stationFrontLoc) || (currentLoc + CoordsDirectionDelta[currentLoc.direction] == removeLoc))
                 {
                     auto stationIndex = RideGetFirstEmptyStationStart(*ride);
@@ -563,6 +563,8 @@ bool TrackElement::IsBlockStart() const
                 return true;
             }
             break;
+        default:
+            break;
     }
     return false;
 }
@@ -615,7 +617,7 @@ bool TrackElement::IsStation() const
     return TrackTypeIsStation(GetTrackType());
 }
 
-bool TrackTypeIsStation(track_type_t trackType)
+bool TrackTypeIsStation(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -628,7 +630,7 @@ bool TrackTypeIsStation(track_type_t trackType)
     }
 }
 
-bool TrackTypeIsBrakes(track_type_t trackType)
+bool TrackTypeIsBrakes(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -641,17 +643,17 @@ bool TrackTypeIsBrakes(track_type_t trackType)
     }
 }
 
-bool TrackTypeIsBlockBrakes(track_type_t trackType)
+bool TrackTypeIsBlockBrakes(OpenRCT2::TrackElemType trackType)
 {
     return (trackType == TrackElemType::BlockBrakes) || (trackType == TrackElemType::DiagBlockBrakes);
 }
 
-bool TrackTypeIsBooster(track_type_t trackType)
+bool TrackTypeIsBooster(OpenRCT2::TrackElemType trackType)
 {
     return trackType == TrackElemType::Booster;
 }
 
-bool TrackElementIsCovered(track_type_t trackElementType)
+bool TrackElementIsCovered(OpenRCT2::TrackElemType trackElementType)
 {
     switch (trackElementType)
     {
@@ -680,7 +682,7 @@ bool TrackElementIsCovered(track_type_t trackElementType)
     }
 }
 
-track_type_t UncoverTrackElement(track_type_t trackElementType)
+OpenRCT2::TrackElemType UncoverTrackElement(OpenRCT2::TrackElemType trackElementType)
 {
     switch (trackElementType)
     {
@@ -727,12 +729,12 @@ track_type_t UncoverTrackElement(track_type_t trackElementType)
     }
 }
 
-bool TrackTypeHasSpeedSetting(track_type_t trackType)
+bool TrackTypeHasSpeedSetting(OpenRCT2::TrackElemType trackType)
 {
     return TrackTypeIsBooster(trackType) || TrackTypeIsBrakes(trackType) || TrackTypeIsBlockBrakes(trackType);
 }
 
-bool TrackTypeIsHelix(track_type_t trackType)
+bool TrackTypeIsHelix(OpenRCT2::TrackElemType trackType)
 {
     if (trackType >= TrackElemType::LeftHalfBankedHelixUpSmall && trackType <= TrackElemType::RightHalfBankedHelixDownLarge)
         return true;
@@ -829,12 +831,12 @@ void TrackElement::MazeEntrySubtract(uint16_t subVal)
     UMaze.MazeEntry &= ~subVal;
 }
 
-track_type_t TrackElement::GetTrackType() const
+OpenRCT2::TrackElemType TrackElement::GetTrackType() const
 {
     return TrackType;
 }
 
-void TrackElement::SetTrackType(uint16_t newType)
+void TrackElement::SetTrackType(OpenRCT2::TrackElemType newType)
 {
     TrackType = newType;
 }

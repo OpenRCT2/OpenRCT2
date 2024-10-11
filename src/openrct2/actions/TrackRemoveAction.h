@@ -14,13 +14,13 @@
 class TrackRemoveAction final : public GameActionBase<GameCommand::RemoveTrack>
 {
 private:
-    track_type_t _trackType{};
+    OpenRCT2::TrackElemType _trackType{};
     int32_t _sequence{};
     CoordsXYZD _origin;
 
 public:
     TrackRemoveAction() = default;
-    TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin);
+    TrackRemoveAction(OpenRCT2::TrackElemType trackType, int32_t sequence, const CoordsXYZD& origin);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
