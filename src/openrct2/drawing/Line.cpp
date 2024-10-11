@@ -139,7 +139,7 @@ void GfxDrawLineSoftware(DrawPixelInfo& dpi, const ScreenLine& line, int32_t col
     else
         y_step = -1;
 
-    for (int32_t x = x1, x_start = x1, no_pixels = 1; x < x2; ++x, ++no_pixels)
+    for (int32_t x = x1, x_start = x1, length = 1; x < x2; ++x, ++length)
     {
         // Vertical lines are drawn 1 pixel at a time
         if (steep)
@@ -150,11 +150,11 @@ void GfxDrawLineSoftware(DrawPixelInfo& dpi, const ScreenLine& line, int32_t col
         {
             // Non vertical lines are drawn with as many pixels in a horizontal line as possible
             if (!steep)
-                GfxDrawLineOnBuffer(dpi, colour, { x_start, y }, no_pixels);
+                GfxDrawLineOnBuffer(dpi, colour, { x_start, y }, length);
 
             // Reset non vertical line vars
             x_start = x + 1;
-            no_pixels = 0; // NB: will be incremented in next iteration
+            length = 0; // NB: will be incremented in next iteration
             y += y_step;
             error += delta_x;
         }
@@ -162,7 +162,7 @@ void GfxDrawLineSoftware(DrawPixelInfo& dpi, const ScreenLine& line, int32_t col
         // Catch the case of the last line
         if (x + 1 == x2 && !steep)
         {
-            GfxDrawLineOnBuffer(dpi, colour, { x_start, y }, no_pixels);
+            GfxDrawLineOnBuffer(dpi, colour, { x_start, y }, length);
         }
     }
 }
