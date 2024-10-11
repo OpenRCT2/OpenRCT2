@@ -337,7 +337,7 @@ namespace OpenRCT2::Platform
     {
         return {
             // game-data-packager uses this path when installing game files
-            R"(/usr/share/games/roller-coaster-tycoon)",
+            "/usr/share/games/roller-coaster-tycoon",
         };
     }
 
@@ -345,7 +345,7 @@ namespace OpenRCT2::Platform
     {
         return {
             // game-data-packager uses this path when installing game files
-            R"(/usr/share/games/roller-coaster-tycoon2)",
+            "/usr/share/games/roller-coaster-tycoon2",
         };
     }
 
