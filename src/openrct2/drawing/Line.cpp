@@ -154,7 +154,7 @@ void GfxDrawLineSoftware(DrawPixelInfo& dpi, const ScreenLine& line, int32_t col
 
             // Reset non vertical line vars
             x_start = x + 1;
-            no_pixels = 1;
+            no_pixels = 0; // NB: will be incremented in next iteration
             y += y_step;
             error += delta_x;
         }
