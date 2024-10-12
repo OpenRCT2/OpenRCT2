@@ -20,18 +20,6 @@ template<> bool EntityBase::Is<EntityBase>() const
     return true;
 }
 
-CoordsXYZ EntityBase::GetLocation() const
-{
-    return { x, y, z };
-}
-
-void EntityBase::SetLocation(const CoordsXYZ& newLocation)
-{
-    x = newLocation.x;
-    y = newLocation.y;
-    z = newLocation.z;
-}
-
 void EntityBase::Invalidate()
 {
     if (x == kLocationNull)

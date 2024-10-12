@@ -66,6 +66,7 @@ void UpdateMoneyEffect();
 void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity);
 void EntityRemove(EntityBase* entity);
 uint16_t RemoveFloatingEntities();
+void UpdateEntitiesSpatialIndex();
 
 #pragma pack(push, 1)
 struct EntitiesChecksum
