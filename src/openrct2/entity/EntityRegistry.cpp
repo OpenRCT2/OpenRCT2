@@ -464,6 +464,19 @@ void UpdateEntitiesSpatialIndex()
     }
 }
 
+CoordsXYZ EntityBase::GetLocation() const
+{
+    return { x, y, z };
+}
+
+void EntityBase::SetLocation(const CoordsXYZ& newLocation)
+{
+    x = newLocation.x;
+    y = newLocation.y;
+    z = newLocation.z;
+    SpatialIndex |= kSpatialIndexDirtyMask;
+}
+
 void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 {
     if (x != kLocationNull)
@@ -478,17 +491,9 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
         loc.x = kLocationNull;
     }
 
-    const auto newSpatialIndex = ComputeSpatialIndex(loc);
-    if (newSpatialIndex != GetSpatialIndex(this))
-    {
-        SpatialIndex |= kSpatialIndexDirtyMask;
-    }
-
     if (loc.x == kLocationNull)
     {
-        x = loc.x;
-        y = loc.y;
-        z = loc.z;
+        SetLocation(loc);
     }
     else
     {
