@@ -8415,6 +8415,78 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
     return curAcceleration + poweredAcceleration;
 }
 
+void Vehicle::UpdateTrackMotionPreUpdate(
+    Vehicle& car, const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry)
+{
+    // Swinging cars
+    if (carEntry->flags & CAR_ENTRY_FLAG_SWINGING)
+    {
+        car.UpdateSwingingCar();
+    }
+    // Spinning cars
+    if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING)
+    {
+        car.UpdateSpinningCar();
+    }
+    // Rider sprites?? animation??
+    if ((carEntry->flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION) || (carEntry->flags & CAR_ENTRY_FLAG_RIDER_ANIMATION))
+    {
+        car.UpdateAdditionalAnimation();
+    }
+    car.acceleration = AccelerationFromPitch[car.Pitch];
+    _vehicleUnkF64E10 = 1;
+
+    if (!car.HasFlag(VehicleFlags::MoveSingleCar))
+    {
+        car.remaining_distance += _vehicleVelocityF64E0C;
+    }
+
+    car.sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
+    _vehicleCurPosition.x = car.x;
+    _vehicleCurPosition.y = car.y;
+    _vehicleCurPosition.z = car.z;
+    car.Invalidate();
+
+    while (true)
+    {
+        if (car.remaining_distance < 0)
+        {
+            // Backward loop
+            if (car.UpdateTrackMotionBackwards(carEntry, curRide, rideEntry))
+            {
+                break;
+            }
+
+            if (car.remaining_distance < 0x368A)
+            {
+                break;
+            }
+            car.acceleration += AccelerationFromPitch[car.Pitch];
+            _vehicleUnkF64E10++;
+            continue;
+        }
+        if (car.remaining_distance < 0x368A)
+        {
+            // Location found
+            return;
+        }
+        if (car.UpdateTrackMotionForwards(carEntry, curRide, rideEntry))
+        {
+            break;
+        }
+
+        if (car.remaining_distance >= 0)
+        {
+            break;
+        }
+        car.acceleration = AccelerationFromPitch[car.Pitch];
+        _vehicleUnkF64E10++;
+        continue;
+    }
+    // Loc6DBF20
+    car.MoveTo(_vehicleCurPosition);
+}
+
 /**
  *
  *  rct2: 0x006DAB4C
@@ -8465,80 +8537,11 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
             break;
         }
         carEntry = car->Entry();
-        if (carEntry == nullptr)
+        if (carEntry != nullptr)
         {
-            goto Loc6DBF3E;
+            UpdateTrackMotionPreUpdate(*car, *curRide, *rideEntry, carEntry);
         }
 
-        // Swinging cars
-        if (carEntry->flags & CAR_ENTRY_FLAG_SWINGING)
-        {
-            car->UpdateSwingingCar();
-        }
-        // Spinning cars
-        if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING)
-        {
-            car->UpdateSpinningCar();
-        }
-        // Rider sprites?? animation??
-        if ((carEntry->flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION) || (carEntry->flags & CAR_ENTRY_FLAG_RIDER_ANIMATION))
-        {
-            car->UpdateAdditionalAnimation();
-        }
-        car->acceleration = AccelerationFromPitch[car->Pitch];
-        _vehicleUnkF64E10 = 1;
-
-        if (!car->HasFlag(VehicleFlags::MoveSingleCar))
-        {
-            car->remaining_distance += _vehicleVelocityF64E0C;
-        }
-
-        car->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        _vehicleCurPosition.x = car->x;
-        _vehicleCurPosition.y = car->y;
-        _vehicleCurPosition.z = car->z;
-        car->Invalidate();
-
-        while (true)
-        {
-            if (car->remaining_distance < 0)
-            {
-                // Backward loop
-                if (car->UpdateTrackMotionBackwards(carEntry, *curRide, *rideEntry))
-                {
-                    break;
-                }
-
-                if (car->remaining_distance < 0x368A)
-                {
-                    break;
-                }
-                car->acceleration += AccelerationFromPitch[car->Pitch];
-                _vehicleUnkF64E10++;
-                continue;
-            }
-            if (car->remaining_distance < 0x368A)
-            {
-                // Location found
-                goto Loc6DBF3E;
-            }
-            if (car->UpdateTrackMotionForwards(carEntry, *curRide, *rideEntry))
-            {
-                break;
-            }
-
-            if (car->remaining_distance >= 0)
-            {
-                break;
-            }
-            car->acceleration = AccelerationFromPitch[car->Pitch];
-            _vehicleUnkF64E10++;
-            continue;
-        }
-        // Loc6DBF20
-        car->MoveTo(_vehicleCurPosition);
-
-    Loc6DBF3E:
         car->Sub6DBF3E();
 
         // Loc6DC0F7
