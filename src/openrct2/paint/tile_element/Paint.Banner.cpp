@@ -23,6 +23,7 @@
 #include "../../world/Banner.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
+#include "../../world/tile_element/BannerElement.h"
 #include "Paint.TileElement.h"
 
 using namespace OpenRCT2;

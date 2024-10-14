@@ -19,6 +19,7 @@
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Park.h"
+#include "../world/tile_element/BannerElement.h"
 #include "BannerRemoveAction.h"
 
 using namespace OpenRCT2;

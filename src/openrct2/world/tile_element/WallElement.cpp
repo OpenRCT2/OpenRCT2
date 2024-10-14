@@ -10,6 +10,7 @@
 
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/WallSceneryEntry.h"
+#include "../Banner.h"
 
 uint8_t WallElement::GetSlope() const
 {

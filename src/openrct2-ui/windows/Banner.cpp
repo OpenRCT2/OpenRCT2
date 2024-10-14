@@ -23,6 +23,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/world/tile_element/BannerElement.h>
 
 namespace OpenRCT2::Ui::Windows
 {

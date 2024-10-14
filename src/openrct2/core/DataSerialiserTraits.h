@@ -16,6 +16,7 @@
 #include "../object/Object.h"
 #include "../ride/RideColour.h"
 #include "../ride/TrackDesign.h"
+#include "../world/Banner.h"
 #include "../world/Location.hpp"
 #include "../world/TileElement.h"
 #include "DataSerialiserTag.h"

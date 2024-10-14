@@ -24,6 +24,7 @@
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/TrackElement.h"
 #include "RideSetSettingAction.h"
 
 using namespace OpenRCT2;
