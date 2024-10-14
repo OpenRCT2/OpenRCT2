@@ -11,6 +11,8 @@
 
 #include "../TileElement.h"
 
+struct BannerSceneryEntry;
+
 #pragma pack(push, 1)
 struct BannerElement : TileElementBase
 {

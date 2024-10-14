@@ -12,7 +12,6 @@
 #include "../Identifiers.h"
 #include "../ride/RideTypes.h"
 #include "../ride/Station.h"
-#include "Banner.h"
 #include "Footpath.h"
 #include "tile_element/TileElementType.h"
 
@@ -22,7 +21,6 @@ struct LargeSceneryEntry;
 struct SmallSceneryEntry;
 struct WallSceneryEntry;
 struct PathAdditionEntry;
-struct BannerSceneryEntry;
 struct FootpathEntry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
