@@ -2532,7 +2532,7 @@ static void SideFrictionRCTrack60DegUp(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_A), { 0, 0, height },
                 { { 0, 2, height }, { 32, 27, 2 } });
 
-            PaintAddImageAsParentRotated(
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_B), { 0, 0, height },
                 { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
@@ -2540,7 +2540,7 @@ static void SideFrictionRCTrack60DegUp(
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_A), { 0, 0, height },
                 { { 0, 2, height }, { 32, 27, 2 } });
-            PaintAddImageAsParentRotated(
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_B), { 0, 0, height },
                 { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
@@ -2590,18 +2590,18 @@ static void SideFrictionRCTrack25DegUpTo60DegUp(
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
-            PaintAddImageAsParentRotated(
+            session.WoodenSupportsFrontPrependTo = PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 40 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
-            PaintAddImageAsParentRotated(
+            session.WoodenSupportsFrontPrependTo = PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 40 } });
             break;
@@ -2651,18 +2651,18 @@ static void SideFrictionRCTrack60DegUpTo25DegUp(
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
             break;
         case 1:
-            PaintAddImageAsParentRotated(
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
-            PaintAddImageAsParentRotated(
+            session.WoodenSupportsFrontPrependTo = PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 36 } });
             break;
         case 2:
-            PaintAddImageAsParentRotated(
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_A),
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
-            PaintAddImageAsParentRotated(
+            session.WoodenSupportsFrontPrependTo = PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_B),
                 { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 36 } });
             break;
