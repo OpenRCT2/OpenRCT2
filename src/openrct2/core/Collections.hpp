@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "Memory.hpp"
 #include "String.hpp"
 
 #include <initializer_list>
@@ -76,24 +75,6 @@ namespace OpenRCT2::Collections
     {
         return IndexOf(
             collection, item, [ignoreCase](const char* a, const char* b) { return String::Equals(a, b, ignoreCase); });
-    }
-
-    template<typename TCollection> static typename TCollection::value_type* ToArray(const TCollection& collection)
-    {
-        size_t count = collection.size();
-        if (count == 0)
-        {
-            return nullptr;
-        }
-
-        auto* items = Memory::AllocateArray<typename TCollection::value_type>(count);
-        size_t i = 0;
-        for (const auto& item : collection)
-        {
-            items[i] = item;
-            i++;
-        }
-        return items;
     }
 
 #pragma endregion
