@@ -48,8 +48,6 @@ namespace OpenRCT2
         MemoryStream& operator=(MemoryStream&& mv) noexcept;
 
         const void* GetData() const override;
-        void* GetDataCopy() const;
-        void* TakeData();
 
         ///////////////////////////////////////////////////////////////////////////
         // ISteam methods
