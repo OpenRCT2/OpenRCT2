@@ -42,44 +42,45 @@ static void PaintSpaceRingsStructure(
     PaintSession& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height, ImageId stationColour)
 {
     uint32_t vehicleIndex = (segment - direction) & 0x3;
-
-    if (ride.num_stations == 0 || vehicleIndex < ride.NumTrains)
+    const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
+    if (rideEntry == nullptr || (ride.num_stations != 0 && vehicleIndex >= ride.NumTrains))
     {
-        const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
+        session.CurrentlyDrawnEntity = nullptr;
+        session.InteractionType = ViewportInteractionItem::Ride;
+        return;
+    }
 
-        int32_t frameNum = direction;
+    int32_t frameNum = direction;
+    uint32_t baseImageId = rideEntry->Cars[0].base_image_id;
+    auto vehicle = GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    {
+        session.InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnEntity = vehicle;
+        frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
+    }
 
-        uint32_t baseImageId = rideEntry->Cars[0].base_image_id;
-        auto vehicle = GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
-        if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (ride.vehicleColourSettings != VehicleColourSettings::perTrain)
+    {
+        vehicleIndex = 0;
+    }
+
+    if (stationColour == TrackStationColour)
+    {
+        stationColour = ImageId(0, ride.vehicle_colours[vehicleIndex].Body, ride.vehicle_colours[vehicleIndex].Trim);
+    }
+
+    auto imageId = stationColour.WithIndex(baseImageId + frameNum);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
+
+    if (vehicle != nullptr && vehicle->num_peeps > 0)
+    {
+        auto* rider = GetEntity<Guest>(vehicle->peep[0]);
+        if (rider != nullptr)
         {
-            session.InteractionType = ViewportInteractionItem::Entity;
-            session.CurrentlyDrawnEntity = vehicle;
-            frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
-        }
-
-        if (ride.vehicleColourSettings != VehicleColourSettings::perTrain)
-        {
-            vehicleIndex = 0;
-        }
-
-        if (stationColour == TrackStationColour)
-        {
-            stationColour = ImageId(0, ride.vehicle_colours[vehicleIndex].Body, ride.vehicle_colours[vehicleIndex].Trim);
-        }
-
-        auto imageId = stationColour.WithIndex(baseImageId + frameNum);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
-
-        if (vehicle != nullptr && vehicle->num_peeps > 0)
-        {
-            auto* rider = GetEntity<Guest>(vehicle->peep[0]);
-            if (rider != nullptr)
-            {
-                stationColour = ImageId(0, rider->TshirtColour, rider->TrousersColour);
-                imageId = stationColour.WithIndex(baseImageId + 352 + frameNum);
-                PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
-            }
+            stationColour = ImageId(0, rider->TshirtColour, rider->TrousersColour);
+            imageId = stationColour.WithIndex(baseImageId + 352 + frameNum);
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
         }
     }
 
