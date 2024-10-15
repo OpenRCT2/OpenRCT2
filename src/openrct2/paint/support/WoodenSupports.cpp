@@ -13,7 +13,6 @@
 #include "../../ride/TrackData.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
-#include "../../world/Surface.h"
 #include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"

@@ -18,6 +18,7 @@
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "../world/Scenery.h"
+#include "../world/tile_element/LargeSceneryElement.h"
 #include "../world/tile_element/WallElement.h"
 
 using namespace OpenRCT2;

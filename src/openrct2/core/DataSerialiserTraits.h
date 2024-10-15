@@ -18,7 +18,7 @@
 #include "../ride/TrackDesign.h"
 #include "../world/Banner.h"
 #include "../world/Location.hpp"
-#include "../world/TileElement.h"
+#include "../world/tile_element/TileElement.h"
 #include "DataSerialiserTag.h"
 #include "Endianness.h"
 #include "MemoryStream.h"

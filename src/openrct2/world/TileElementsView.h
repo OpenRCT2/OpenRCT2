@@ -11,7 +11,6 @@
 
 #include "Location.hpp"
 #include "Map.h"
-#include "TileElement.h"
 
 #include <iterator>
 

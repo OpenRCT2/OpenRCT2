@@ -21,8 +21,7 @@
 #include "../ride/TrackDesign.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
-#include "../world/Surface.h"
-#include "../world/TileElement.h"
+#include "../world/tile_element/SmallSceneryElement.h"
 
 using namespace OpenRCT2;
 

@@ -14,9 +14,10 @@
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../world/ConstructionClearance.h"
+#include "../world/Footpath.h"
 #include "../world/Park.h"
-#include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/SurfaceElement.h"
 
 using namespace OpenRCT2;
 

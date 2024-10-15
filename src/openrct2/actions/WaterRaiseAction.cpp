@@ -13,6 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
 #include "../ride/RideConstruction.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "WaterSetHeightAction.h"
 
 using namespace OpenRCT2;

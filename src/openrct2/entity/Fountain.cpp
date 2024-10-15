@@ -20,6 +20,7 @@
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Scenery.h"
+#include "../world/tile_element/PathElement.h"
 #include "EntityRegistry.h"
 
 using namespace OpenRCT2;

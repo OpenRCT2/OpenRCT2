@@ -10,6 +10,7 @@
 #include "Wall.h"
 
 #include "Map.h"
+#include "tile_element/TileElement.h"
 #include "tile_element/WallElement.h"
 
 /**

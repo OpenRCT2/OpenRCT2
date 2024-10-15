@@ -27,11 +27,12 @@
 #include "../world/Park.h"
 #include "../world/QuarterTile.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
 #include "../world/TileElementsView.h"
 #include "../world/Wall.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SurfaceElement.h"
 
 #include <algorithm>
 

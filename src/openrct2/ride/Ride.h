@@ -40,6 +40,8 @@ struct Staff;
 struct Vehicle;
 struct RideObjectEntry;
 struct ResultWithMessage;
+struct TileElement;
+struct TrackElement;
 
 constexpr uint8_t kRideAdjacencyCheckDistance = 5;
 

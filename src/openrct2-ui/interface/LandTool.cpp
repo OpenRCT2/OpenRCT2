@@ -20,7 +20,6 @@
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Map.h>
-#include <openrct2/world/Surface.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui::Windows;

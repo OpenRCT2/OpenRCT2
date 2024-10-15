@@ -33,6 +33,7 @@
 #include "Scenery.h"
 #include "TileElementsView.h"
 #include "tile_element/BannerElement.h"
+#include "tile_element/TileElement.h"
 #include "tile_element/TrackElement.h"
 #include "tile_element/WallElement.h"
 

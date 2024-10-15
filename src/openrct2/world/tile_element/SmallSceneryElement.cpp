@@ -7,24 +7,23 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "SmallScenery.h"
+#include "SmallSceneryElement.h"
 
-#include "../Cheats.h"
-#include "../Context.h"
-#include "../Game.h"
-#include "../OpenRCT2.h"
-#include "../management/Finance.h"
-#include "../network/network.h"
-#include "../object/ObjectEntryManager.h"
-#include "../object/ObjectManager.h"
-#include "../object/SmallSceneryEntry.h"
-#include "../ride/TrackDesign.h"
-#include "Footpath.h"
-#include "Map.h"
-#include "MapAnimation.h"
-#include "Park.h"
-#include "Scenery.h"
-#include "Surface.h"
+#include "../../Cheats.h"
+#include "../../Context.h"
+#include "../../Game.h"
+#include "../../OpenRCT2.h"
+#include "../../management/Finance.h"
+#include "../../network/network.h"
+#include "../../object/ObjectEntryManager.h"
+#include "../../object/ObjectManager.h"
+#include "../../object/SmallSceneryEntry.h"
+#include "../../ride/TrackDesign.h"
+#include "../Footpath.h"
+#include "../Map.h"
+#include "../MapAnimation.h"
+#include "../Park.h"
+#include "../Scenery.h"
 
 #include <cassert>
 

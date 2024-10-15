@@ -29,6 +29,7 @@
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "AudioChannel.h"
 #include "AudioContext.h"
 #include "AudioMixer.h"

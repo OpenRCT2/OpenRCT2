@@ -7,16 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Surface.h"
+#include "SurfaceElement.h"
 
-#include "../Context.h"
-#include "../object/ObjectManager.h"
-#include "../object/TerrainEdgeObject.h"
-#include "../object/TerrainSurfaceObject.h"
-#include "../scenario/Scenario.h"
-#include "Location.hpp"
-#include "Map.h"
-#include "tile_element/Slope.h"
+#include "../../Context.h"
+#include "../../object/ObjectManager.h"
+#include "../../object/TerrainEdgeObject.h"
+#include "../../object/TerrainSurfaceObject.h"
+#include "../../scenario/Scenario.h"
+#include "../Map.h"
+#include "Slope.h"
+#include "TileElement.h"
 
 ObjectEntryIndex SurfaceElement::GetSurfaceObjectIndex() const
 {
@@ -67,7 +67,7 @@ bool SurfaceElement::CanGrassGrow() const
     auto obj = objMgr.GetLoadedObject(ObjectType::TerrainSurface, surfaceStyle);
     if (obj != nullptr)
     {
-        auto surfaceObject = static_cast<TerrainSurfaceObject*>(obj);
+        const auto* surfaceObject = static_cast<TerrainSurfaceObject*>(obj);
         if (surfaceObject->Flags & TERRAIN_SURFACE_FLAGS::CAN_GROW)
         {
             return true;

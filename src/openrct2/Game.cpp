@@ -70,7 +70,7 @@
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
-#include "world/Surface.h"
+#include "world/tile_element/SurfaceElement.h"
 
 #include <cstdio>
 #include <iterator>

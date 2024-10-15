@@ -9,10 +9,10 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../object/Object.h"
 #include "../world/Map.h"
 #include "../world/QuarterTile.h"
-#include "../world/TileElement.h"
 
 #include <optional>
 
@@ -28,6 +28,7 @@ namespace OpenRCT2
 }
 
 struct ResultWithMessage;
+struct TileElement;
 
 enum class TrackRoll : uint8_t
 {

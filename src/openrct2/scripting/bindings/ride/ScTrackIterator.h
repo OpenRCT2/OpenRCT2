@@ -12,7 +12,6 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../../../Identifiers.h"
-#    include "../../../world/TileElement.h"
 #    include "../../Duktape.hpp"
 
 #    include <cstdint>
