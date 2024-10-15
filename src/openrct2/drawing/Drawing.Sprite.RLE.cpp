@@ -15,8 +15,7 @@
 template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     auto& paletteMap = args.PalMap;
-    auto lineOffsets = reinterpret_cast<const uint16_t*>(args.SourceImage.offset);
-    auto src0 = args.SourceImage.offset;
+    auto imgData = args.SourceImage.offset;
     auto dst = args.DestinationBits;
     auto srcX = args.SrcX;
     auto srcY = args.SrcY;
@@ -29,7 +28,9 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESpriteMagnify(DrawPix
     {
         uint8_t* nextDst = dst + dstLineWidth;
         const int32_t rowNum = zoom.ApplyTo(srcY + y);
-        const uint8_t* data8 = src0 + lineOffsets[rowNum];
+        uint16_t lineOffset;
+        std::memcpy(&lineOffset, &imgData[rowNum * sizeof(uint16_t)], sizeof(uint16_t));
+        const uint8_t* data8 = imgData + lineOffset;
 
         bool lastDataForLine = false;
         int32_t numPixels = 0;
