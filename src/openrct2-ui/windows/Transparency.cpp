@@ -27,7 +27,6 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Surface.h>
 
 namespace OpenRCT2::Ui::Windows
 {

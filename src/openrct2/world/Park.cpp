@@ -38,8 +38,8 @@
 #include "../windows/Intent.h"
 #include "Entrance.h"
 #include "Map.h"
-#include "Surface.h"
 #include "tile_element/EntranceElement.h"
+#include "tile_element/SurfaceElement.h"
 
 #include <limits>
 #include <type_traits>

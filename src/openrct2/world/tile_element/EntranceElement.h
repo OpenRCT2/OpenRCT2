@@ -10,7 +10,11 @@
 #pragma once
 
 #include "../../Identifiers.h"
-#include "../TileElement.h"
+#include "../../object/FootpathObject.h"
+#include "../../object/FootpathRailingsObject.h"
+#include "../../object/FootpathSurfaceObject.h"
+#include "../../object/ObjectTypes.h"
+#include "TileElementBase.h"
 
 #include <cstdint>
 
@@ -20,6 +24,18 @@ enum
     ENTRANCE_TYPE_RIDE_EXIT,
     ENTRANCE_TYPE_PARK_ENTRANCE
 };
+
+enum
+{
+    ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 0),
+};
+
+namespace OpenRCT2::EntranceSequence
+{
+    constexpr uint8_t Centre = 0;
+    constexpr uint8_t Left = 1;
+    constexpr uint8_t Right = 2;
+}; // namespace OpenRCT2::EntranceSequence
 
 #pragma pack(push, 1)
 struct EntranceElement;

@@ -20,6 +20,7 @@
 #include "../world/Location.hpp"
 #include "../world/Park.h"
 #include "../world/tile_element/BannerElement.h"
+#include "../world/tile_element/PathElement.h"
 #include "BannerRemoveAction.h"
 
 using namespace OpenRCT2;

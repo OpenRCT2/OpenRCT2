@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Game.h"
+#include "../core/Money.hpp"
 #include "../world/Map.h"
 
 #include <string>

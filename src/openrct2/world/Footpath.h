@@ -71,41 +71,6 @@ struct FootpathSelection
     }
 };
 
-// Masks for values stored in TileElement.type
-enum
-{
-    FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE = (1 << 0),
-    FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE = (1 << 1),
-    FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK = (1 << 6) | (1 << 7),
-};
-
-// Masks and flags for values stored in TileElement.properties.path.type
-enum
-{
-    FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK = (1 << 0) | (1 << 1),
-    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED = (1 << 2),
-    FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER = (1 << 3),
-    FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
-};
-
-// Masks and flags for values stored in TileElement.properties.path.edges
-enum
-{
-    FOOTPATH_PROPERTIES_EDGES_EDGES_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
-    FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
-};
-
-enum
-{
-    FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED = 1 << 0,
-    FOOTPATH_ELEMENT_FLAGS2_HAS_QUEUE_BANNER = (1 << 1),
-    FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST = (1 << 2),
-    FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE = (1 << 3),
-    FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN = (1 << 4),
-    FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 5),
-    FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS = (1 << 6),
-};
-
 enum
 {
     RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),

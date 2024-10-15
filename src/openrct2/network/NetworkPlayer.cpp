@@ -11,6 +11,7 @@
 
 #    include "NetworkPlayer.h"
 
+#    include "../core/Money.hpp"
 #    include "../interface/Window.h"
 #    include "NetworkPacket.h"
 

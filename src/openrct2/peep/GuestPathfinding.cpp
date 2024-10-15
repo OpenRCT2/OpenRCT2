@@ -24,6 +24,8 @@
 #include "../world/Footpath.h"
 #include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 
 #include <bit>
@@ -1823,7 +1825,7 @@ namespace OpenRCT2::PathFinding
             break;
         }
 
-        if (loc.z == MAX_ELEMENT_HEIGHT)
+        if (loc.z == kMaxTileElementHeight)
             return;
 
         tileElement = lastPathElement;

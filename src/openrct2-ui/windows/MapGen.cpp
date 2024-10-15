@@ -26,7 +26,6 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapGen.h>
-#include <openrct2/world/Surface.h>
 
 namespace OpenRCT2::Ui::Windows
 {

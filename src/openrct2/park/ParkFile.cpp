@@ -56,6 +56,8 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "Legacy.h"
 

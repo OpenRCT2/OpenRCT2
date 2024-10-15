@@ -9,10 +9,12 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "Location.hpp"
-#include "TileElement.h"
 
+#include <array>
 #include <initializer_list>
+#include <optional>
 #include <vector>
 
 constexpr uint8_t kMinimumLandHeight = 2;
@@ -45,6 +47,21 @@ constexpr uint32_t MAX_TILE_ELEMENTS_WITH_SPARE_ROOM = 0x1000000;
 constexpr uint32_t MAX_TILE_ELEMENTS = MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - 512;
 
 using PeepSpawn = CoordsXYZD;
+struct BannerElement;
+struct EntranceElement;
+struct LargeSceneryElement;
+struct PathElement;
+struct SmallSceneryElement;
+struct SurfaceElement;
+struct TileElement;
+struct TrackElement;
+struct WallElement;
+enum class TileElementType : uint8_t;
+
+namespace OpenRCT2
+{
+    enum class TrackElemType : uint16_t;
+}
 
 struct CoordsXYE : public CoordsXY
 {

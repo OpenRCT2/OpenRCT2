@@ -8,6 +8,7 @@
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../sprites.h"
+#include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"

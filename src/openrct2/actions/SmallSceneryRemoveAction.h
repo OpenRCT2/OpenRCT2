@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../world/TileElement.h"
 #include "GameAction.h"
 
 class SmallSceneryRemoveAction final : public GameActionBase<GameCommand::RemoveScenery>

@@ -9,7 +9,16 @@
 
 #pragma once
 
-#include "../TileElement.h"
+#include "../../Identifiers.h"
+#include "TileElementBase.h"
+
+using ride_type_t = uint16_t;
+enum class RideColourScheme : uint8_t;
+
+namespace OpenRCT2
+{
+    enum class TrackElemType : uint16_t;
+}
 
 enum
 {

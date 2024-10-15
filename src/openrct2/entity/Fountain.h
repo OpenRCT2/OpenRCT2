@@ -13,6 +13,7 @@
 #include "EntityBase.h"
 
 class DataSerialiser;
+struct PaintSession;
 
 enum class JumpingFountainType : uint8_t
 {

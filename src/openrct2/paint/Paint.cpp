@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../core/Money.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Currency.h"

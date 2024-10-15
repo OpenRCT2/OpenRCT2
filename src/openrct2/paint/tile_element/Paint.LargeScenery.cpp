@@ -27,6 +27,7 @@
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
+#include "../../world/tile_element/LargeSceneryElement.h"
 #include "../Boundbox.h"
 #include "../support/WoodenSupports.h"
 #include "Paint.TileElement.h"

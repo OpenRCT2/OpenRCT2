@@ -306,6 +306,11 @@ namespace OpenRCT2::RCT12
     };
 } // namespace OpenRCT2::RCT12
 
+enum
+{
+    MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT = (1 << 7),
+};
+
 constexpr uint8_t RCT2_STRING_FORMAT_ARG_START = 123;
 constexpr uint8_t RCT2_STRING_FORMAT_ARG_END = 141;
 constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_START = 142;

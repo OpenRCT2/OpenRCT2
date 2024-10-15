@@ -9,33 +9,19 @@
 
 #include "TileElement.h"
 
-#include "../Diagnostic.h"
-#include "../core/Guard.hpp"
-#include "../interface/Window.h"
-#include "../object/LargeSceneryEntry.h"
-#include "../object/WallSceneryEntry.h"
-#include "../ride/Track.h"
-#include "Banner.h"
-#include "Location.hpp"
-#include "Scenery.h"
-#include "tile_element/BannerElement.h"
-#include "tile_element/EntranceElement.h"
-#include "tile_element/Slope.h"
-#include "tile_element/TrackElement.h"
-#include "tile_element/WallElement.h"
+#include "../../Diagnostic.h"
+#include "../../core/Guard.hpp"
+#include "../../interface/Window.h"
+#include "../../interface/WindowClasses.h"
+#include "../Map.h"
+#include "BannerElement.h"
+#include "EntranceElement.h"
+#include "LargeSceneryElement.h"
+#include "PathElement.h"
+#include "TrackElement.h"
+#include "WallElement.h"
 
 using namespace OpenRCT2;
-
-bool TileElementIsUnderground(TileElement* tileElement)
-{
-    do
-    {
-        tileElement++;
-        if ((tileElement - 1)->IsLastForTile())
-            return false;
-    } while (tileElement->GetType() != TileElementType::Surface);
-    return true;
-}
 
 BannerIndex TileElement::GetBannerIndex() const
 {
@@ -119,4 +105,15 @@ void TileElement::ClearAs(TileElementType newType)
     Owner = 0;
     std::fill_n(Pad05, sizeof(Pad05), 0x00);
     std::fill_n(Pad08, sizeof(Pad08), 0x00);
+}
+
+bool TileElementIsUnderground(TileElement* tileElement)
+{
+    do
+    {
+        tileElement++;
+        if ((tileElement - 1)->IsLastForTile())
+            return false;
+    } while (tileElement->GetType() != TileElementType::Surface);
+    return true;
 }

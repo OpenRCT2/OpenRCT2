@@ -10,7 +10,11 @@
 #pragma once
 
 #include "../../Identifiers.h"
-#include "../TileElement.h"
+#include "../../interface/Colour.h"
+#include "../../object/ObjectTypes.h"
+#include "../../object/WallSceneryEntry.h"
+#include "../Banner.h"
+#include "TileElementBase.h"
 
 #include <cstdint>
 

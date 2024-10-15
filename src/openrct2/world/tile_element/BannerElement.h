@@ -9,7 +9,8 @@
 
 #pragma once
 
-#include "../TileElement.h"
+#include "../Banner.h"
+#include "TileElementBase.h"
 
 struct BannerSceneryEntry;
 

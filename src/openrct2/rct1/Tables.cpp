@@ -15,7 +15,6 @@
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
-#include "../world/Surface.h"
 #include "RCT1.h"
 
 #include <iterator>

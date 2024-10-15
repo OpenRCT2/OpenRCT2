@@ -15,6 +15,7 @@
 #include "../management/Finance.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../world/Scenery.h"
+#include "../world/tile_element/LargeSceneryElement.h"
 
 using namespace OpenRCT2;
 

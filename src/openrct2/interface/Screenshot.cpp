@@ -32,7 +32,7 @@
 #include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
-#include "../world/Surface.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "Viewport.h"
 
 #include <cctype>

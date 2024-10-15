@@ -7,14 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "LargeScenery.h"
+#include "LargeSceneryElement.h"
 
-#include "../Context.h"
-#include "../object/LargeSceneryObject.h"
-#include "../object/ObjectEntryManager.h"
-#include "../object/ObjectManager.h"
-#include "../world/Banner.h"
-#include "TileElement.h"
+#include "../../object/LargeSceneryObject.h"
+#include "../../object/ObjectEntryManager.h"
+#include "../../object/ObjectManager.h"
+#include "../Banner.h"
 
 #include <cassert>
 

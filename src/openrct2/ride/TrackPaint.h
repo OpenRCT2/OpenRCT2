@@ -16,6 +16,7 @@
 #include "../world/Map.h"
 
 class StationObject;
+struct Ride;
 
 constexpr uint8_t kTrackMap2x2[][4] = {
     { 0, 1, 2, 3 },

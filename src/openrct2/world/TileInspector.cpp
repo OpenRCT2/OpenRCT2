@@ -24,10 +24,13 @@
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
-#include "Surface.h"
 #include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"
+#include "tile_element/LargeSceneryElement.h"
+#include "tile_element/PathElement.h"
 #include "tile_element/Slope.h"
+#include "tile_element/SmallSceneryElement.h"
+#include "tile_element/SurfaceElement.h"
 #include "tile_element/TrackElement.h"
 #include "tile_element/WallElement.h"
 
@@ -429,7 +432,7 @@ namespace OpenRCT2::TileInspector
         {
             return GameActions::Result(GameActions::Status::TooLow, STR_CANT_LOWER_ELEMENT_HERE, STR_TOO_LOW);
         }
-        if (newBaseHeight > MAX_ELEMENT_HEIGHT)
+        if (newBaseHeight > kMaxTileElementHeight)
         {
             return GameActions::Result(GameActions::Status::TooHigh, STR_CANT_RAISE_ELEMENT_HERE, STR_TOO_HIGH);
         }
@@ -437,7 +440,7 @@ namespace OpenRCT2::TileInspector
         {
             return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_LOWER_ELEMENT_HERE, STR_NO_CLEARANCE);
         }
-        if (newClearanceHeight > MAX_ELEMENT_HEIGHT)
+        if (newClearanceHeight > kMaxTileElementHeight)
         {
             return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_RAISE_ELEMENT_HERE, STR_NO_CLEARANCE);
         }

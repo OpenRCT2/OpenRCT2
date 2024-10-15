@@ -11,21 +11,8 @@
 
 #include "../Identifiers.h"
 #include "Location.hpp"
-#include "Map.h"
 
-struct TileElement;
-
-enum
-{
-    ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 0),
-};
-
-namespace OpenRCT2::EntranceSequence
-{
-    constexpr uint8_t Centre = 0;
-    constexpr uint8_t Left = 1;
-    constexpr uint8_t Right = 2;
-}; // namespace OpenRCT2::EntranceSequence
+struct CoordsXYE;
 
 constexpr uint8_t ParkEntranceHeight = 12 * kCoordsZStep;
 constexpr uint8_t RideEntranceHeight = 7 * kCoordsZStep;

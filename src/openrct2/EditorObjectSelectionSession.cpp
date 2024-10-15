@@ -28,10 +28,13 @@
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "windows/Intent.h"
-#include "world/Footpath.h"
-#include "world/Scenery.h"
 #include "world/tile_element/BannerElement.h"
 #include "world/tile_element/EntranceElement.h"
+#include "world/tile_element/LargeSceneryElement.h"
+#include "world/tile_element/PathElement.h"
+#include "world/tile_element/SmallSceneryElement.h"
+#include "world/tile_element/SurfaceElement.h"
+#include "world/tile_element/TileElement.h"
 #include "world/tile_element/WallElement.h"
 
 #include <iterator>

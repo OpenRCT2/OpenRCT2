@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../world/Footpath.h"
 #include "GameAction.h"
 
 class FootpathLayoutPlaceAction final : public GameActionBase<GameCommand::PlacePathLayout>

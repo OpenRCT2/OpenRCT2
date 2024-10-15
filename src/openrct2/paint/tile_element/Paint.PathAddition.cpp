@@ -14,6 +14,7 @@
 #include "../../interface/Viewport.h"
 #include "../../object/PathAdditionEntry.h"
 #include "../../profiling/Profiling.h"
+#include "../../world/tile_element/PathElement.h"
 #include "Paint.TileElement.h"
 
 using namespace OpenRCT2;

@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../../drawing/ImageId.hpp"
-#include "../../world/TileElement.h"
 #include "../Paint.h"
 
 #include <cstdint>
