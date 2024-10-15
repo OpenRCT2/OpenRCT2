@@ -14,7 +14,10 @@
 #    include "../platform/Platform.h"
 #    include "IStream.hpp"
 
+#    include <cstdint>
+#    include <cstring>
 #    include <iomanip>
+#    include <limits>
 #    include <sstream>
 #    include <stdexcept>
 #    include <string>
