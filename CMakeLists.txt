@@ -110,6 +110,8 @@ option(DISABLE_HTTP "Disable HTTP support.")
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(ENABLE_SCRIPTING "Enable script / plugin support." ON)
+option(ENABLE_ASAN "Enable the AddressSanitizer.")
+option(ENABLE_UBSAN "Enable the UndefinedBehaviourSanitizer.")
 
 option(DISABLE_GUI "Don't build GUI. (Headless only.)")
 
@@ -395,6 +397,14 @@ if (DISABLE_TTF)
 endif ()
 if (ENABLE_SCRIPTING)
     target_compile_options(libopenrct2 PUBLIC -DENABLE_SCRIPTING)
+endif ()
+if (ENABLE_ASAN)
+    target_compile_options(libopenrct2 PUBLIC -fsanitize=address)
+    target_link_options(libopenrct2 PUBLIC -fsanitize=address)
+endif ()
+if (ENABLE_UBSAN)
+    target_compile_options(libopenrct2 PUBLIC -fsanitize=undefined)
+    target_link_options(libopenrct2 PUBLIC -fsanitize=undefined)
 endif ()
 
 
