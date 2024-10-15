@@ -3341,8 +3341,8 @@ STR_6250    :{WINDOW_COLOUR_1}¿Seguro quieres demoler {STRINGID} y ganar {CURRE
 STR_6251    :La atracción aún no está vacía
 STR_6255    :URL inválida.
 STR_6256    :Efectos al renderizar
-STR_6257    :Translúcido
-STR_6258    :Transparente
+STR_6257    :Vítreo (translúcido)
+STR_6258    :Claro (transparente)
 STR_6259    :Deshabilitado
 STR_6260    :Mostrar casillas bloqueadas
 STR_6261    :Mostrar senderos anchos
@@ -3745,6 +3745,8 @@ STR_6669    :Mostrar trucos de empleados
 STR_6670    :Comportamiento de los visitantes
 STR_6671    :Mostrar nombres ‘reales’ de empleados
 STR_6672    :Alternar entre mostrar nombres ‘reales’ y números de empleados
+STR_6673    :Translúcido
+STR_6674    :{MONTH}, Año {COMMA16}
 
 ##############
 # Escenarios #
