@@ -9,8 +9,7 @@
 
 #pragma once
 
-#include "../object/Object.h"
-#include "Memory.hpp"
+#include "StringTypes.h"
 
 #include <istream>
 #include <memory>
@@ -204,7 +203,6 @@ namespace OpenRCT2
             Write(buffer, sizeof(T) * count);
         }
 
-        utf8* ReadString();
         std::string ReadStdString();
         void WriteString(const utf8* str);
         void WriteString(const std::string_view string);

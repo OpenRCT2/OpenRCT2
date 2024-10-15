@@ -13,6 +13,7 @@
 
 #    include "../Diagnostic.h"
 #    include "../core/Crypt.h"
+#    include "../core/Guard.hpp"
 #    include "../core/IStream.hpp"
 #    include "../core/String.hpp"
 

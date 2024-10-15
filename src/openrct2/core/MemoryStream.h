@@ -11,6 +11,7 @@
 
 #include "IStream.hpp"
 
+#include <cstring>
 #include <vector>
 
 namespace OpenRCT2

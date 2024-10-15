@@ -12,6 +12,7 @@
 #    include "../Diagnostic.h"
 #    include "../platform/Platform.h"
 #    include "IStream.hpp"
+#    include "Memory.hpp"
 #    include "MemoryStream.h"
 #    include "Zip.h"
 

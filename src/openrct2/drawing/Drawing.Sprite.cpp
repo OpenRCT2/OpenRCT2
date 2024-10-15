@@ -15,6 +15,7 @@
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
 #include "../core/FileStream.h"
+#include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../platform/Platform.h"

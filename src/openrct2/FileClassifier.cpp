@@ -12,6 +12,7 @@
 #include "Diagnostic.h"
 #include "core/Console.hpp"
 #include "core/FileStream.h"
+#include "core/Memory.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "park/ParkFile.h"
