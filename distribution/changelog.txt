@@ -1,5 +1,6 @@
 0.4.16 (in development)
 ------------------------------------------------------------------------
+- Improved: [#22967] Add medium and large half loops to the Wooden and Classic Wooden Roller Coasters.
 - Fix: [#22918] Zooming with keyboard moves the view off centre.
 - Fix: [#22921] Wooden RollerCoaster flat to steep railings appear in front of track in front of them.
 - Fix: [#22962] Fuzzy horizontal-to-vertical line transitions in charts.
