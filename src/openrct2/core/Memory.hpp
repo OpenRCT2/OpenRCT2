@@ -34,13 +34,6 @@ namespace OpenRCT2::Memory
         return result;
     }
 
-    template<typename T> static T* AllocateArray(size_t count)
-    {
-        T* result = static_cast<T*>(malloc(count * sizeof(T)));
-        Guard::ArgumentNotNull(result, "Failed to allocate array of %zu * %s (%zu bytes)", count, typeid(T).name(), sizeof(T));
-        return result;
-    }
-
     template<typename T> static T* Reallocate(T* ptr, size_t size)
     {
         T* result;
@@ -56,33 +49,9 @@ namespace OpenRCT2::Memory
         return result;
     }
 
-    template<typename T> static T* ReallocateArray(T* ptr, size_t count)
-    {
-        T* result;
-        if (ptr == nullptr)
-        {
-            result = static_cast<T*>(malloc(count * sizeof(T)));
-        }
-        else
-        {
-            result = static_cast<T*>(realloc(reinterpret_cast<void*>(ptr), count * sizeof(T)));
-        }
-        Guard::ArgumentNotNull(
-            result, "Failed to reallocate array at %x (%s) to have %zu entries", ptr, typeid(T).name(), count);
-        return result;
-    }
-
     template<typename T> static void Free(T* ptr)
     {
         free(const_cast<void*>(reinterpret_cast<const void*>(ptr)));
     }
 
-    template<typename T> static void FreeArray(T* ptr, size_t count)
-    {
-        for (size_t i = 0; i < count; i++)
-        {
-            ptr[i].~T();
-        }
-        Free(ptr);
-    }
 } // namespace OpenRCT2::Memory
