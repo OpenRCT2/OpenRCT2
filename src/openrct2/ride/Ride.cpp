@@ -1981,7 +1981,7 @@ void DefaultMusicUpdate(Ride& ride)
     if (ride.music_tune_id == TUNE_ID_NULL)
     {
         auto& objManager = GetContext()->GetObjectManager();
-        auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride.music));
+        auto musicObj = objManager.GetLoadedObject<MusicObject>(ride.music);
         if (musicObj != nullptr)
         {
             auto numTracks = musicObj->GetTrackCount();
@@ -5543,13 +5543,13 @@ int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType)
 const StationObject* Ride::GetStationObject() const
 {
     auto& objManager = GetContext()->GetObjectManager();
-    return static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, entrance_style));
+    return objManager.GetLoadedObject<StationObject>(entrance_style);
 }
 
 const MusicObject* Ride::GetMusicObject() const
 {
     auto& objManager = GetContext()->GetObjectManager();
-    return static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, music));
+    return objManager.GetLoadedObject<MusicObject>(music);
 }
 
 // Normally, a station has at most one entrance and one exit, which are at the same height

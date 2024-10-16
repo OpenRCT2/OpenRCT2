@@ -15,6 +15,8 @@ class TerrainEdgeObject final : public Object
 {
 private:
 public:
+    static constexpr ObjectType objectType = ObjectType::TerrainEdge;
+
     StringId NameStringId{};
     uint32_t IconImageId{};
     uint32_t BaseImageId{};

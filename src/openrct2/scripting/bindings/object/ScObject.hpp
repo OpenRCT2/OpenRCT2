@@ -158,14 +158,12 @@ namespace OpenRCT2::Scripting
     class ScRideObjectVehicle
     {
     private:
-        ObjectType _objectType{};
         ObjectEntryIndex _objectIndex{};
         size_t _vehicleIndex{};
 
     public:
-        ScRideObjectVehicle(ObjectType objectType, ObjectEntryIndex objectIndex, size_t vehicleIndex)
-            : _objectType(objectType)
-            , _objectIndex(objectIndex)
+        ScRideObjectVehicle(ObjectEntryIndex objectIndex, size_t vehicleIndex)
+            : _objectIndex(objectIndex)
             , _vehicleIndex(vehicleIndex)
         {
         }
@@ -491,7 +489,7 @@ namespace OpenRCT2::Scripting
         const RideObject* GetObject() const
         {
             auto& objManager = GetContext()->GetObjectManager();
-            return static_cast<RideObject*>(objManager.GetLoadedObject(_objectType, _objectIndex));
+            return objManager.GetLoadedObject<RideObject>(_objectIndex);
         }
 
         const CarEntry* GetEntry() const
@@ -707,7 +705,7 @@ namespace OpenRCT2::Scripting
             {
                 for (size_t i = 0; i < std::size(entry->Cars); i++)
                 {
-                    result.push_back(std::make_shared<ScRideObjectVehicle>(static_cast<ObjectType>(_type), _index, i));
+                    result.push_back(std::make_shared<ScRideObjectVehicle>(_index, i));
                 }
             }
             return result;

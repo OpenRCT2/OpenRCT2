@@ -22,6 +22,8 @@ private:
     std::vector<std::string> _surnames;
 
 public:
+    static constexpr ObjectType objectType = ObjectType::PeepNames;
+
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;

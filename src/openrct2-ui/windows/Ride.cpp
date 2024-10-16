@@ -2113,7 +2113,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (ObjectEntryIndex i = 0; i < kMaxStationObjects; i++)
             {
-                auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, i));
+                auto stationObj = objManager.GetLoadedObject<StationObject>(i);
                 if (stationObj != nullptr)
                 {
                     auto name = stationObj->NameStringId;
@@ -5055,7 +5055,7 @@ namespace OpenRCT2::Ui::Windows
         static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicObjectIndex));
+            auto musicObj = objManager.GetLoadedObject<MusicObject>(musicObjectIndex);
 
             return LanguageGetString(musicObj->NameStringId);
         }
@@ -5080,7 +5080,7 @@ namespace OpenRCT2::Ui::Windows
             auto& objManager = GetContext()->GetObjectManager();
             for (ObjectEntryIndex i = 0; i < kMaxMusicObjects; i++)
             {
-                auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, i));
+                auto musicObj = objManager.GetLoadedObject<MusicObject>(i);
                 if (musicObj != nullptr)
                 {
                     // Hide custom music if the WAV file does not exist
@@ -5119,7 +5119,7 @@ namespace OpenRCT2::Ui::Windows
             auto numItems = musicOrder.size();
             for (size_t i = 0; i < numItems; i++)
             {
-                auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicOrder[i]));
+                auto musicObj = objManager.GetLoadedObject<MusicObject>(musicOrder[i]);
                 gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItems[i].Args = musicObj->NameStringId;
             }

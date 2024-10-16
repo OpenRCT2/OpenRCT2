@@ -1862,7 +1862,7 @@ static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
 {
     bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode);
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto footpathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, index));
+    auto footpathObj = objManager.GetLoadedObject<FootpathObject>(index);
     if (footpathObj != nullptr)
     {
         auto pathEntry = reinterpret_cast<FootpathEntry*>(footpathObj->GetLegacyData());

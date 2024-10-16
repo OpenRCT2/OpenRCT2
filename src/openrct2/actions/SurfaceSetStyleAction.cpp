@@ -67,7 +67,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
     if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
     {
-        const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _edgeStyle));
+        const auto edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_edgeStyle);
 
         if (edgeObj == nullptr)
         {

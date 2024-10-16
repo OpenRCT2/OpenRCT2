@@ -715,7 +715,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (ObjectEntryIndex i = 0; i < kMaxPathObjects; i++)
             {
-                auto* pathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, i));
+                auto* pathObj = objManager.GetLoadedObject<FootpathObject>(i);
                 if (pathObj == nullptr)
                 {
                     continue;
