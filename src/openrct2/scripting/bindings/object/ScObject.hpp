@@ -925,33 +925,33 @@ namespace OpenRCT2::Scripting
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
-            auto start = CoordsXYZ(_tile.x_offset, _tile.y_offset, _tile.z_offset);
+            auto start = _tile.offset;
             return ToDuk(ctx, start);
         }
 
         int32_t zClearance_get() const
         {
-            return _tile.z_clearance;
+            return _tile.zClearance;
         }
 
         bool hasSupports_get() const
         {
-            return !(_tile.flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS);
+            return _tile.hasSupports;
         }
 
         bool allowSupportsAbove_get() const
         {
-            return _tile.flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE;
+            return _tile.allowSupportsAbove;
         }
 
         uint8_t corners_get() const
         {
-            return (_tile.flags >> 12) & 0xF;
+            return _tile.corners;
         }
 
         uint8_t walls_get() const
         {
-            return (_tile.flags >> 8) & 0xF;
+            return _tile.walls;
         }
     };
 
@@ -977,9 +977,9 @@ namespace OpenRCT2::Scripting
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                for (auto* tile = entry->tiles; tile->x_offset != -1; ++tile)
+                for (auto& tile : entry->tiles)
                 {
-                    result.push_back(std::make_shared<ScLargeSceneryObjectTile>(*tile));
+                    result.push_back(std::make_shared<ScLargeSceneryObjectTile>(tile));
                 }
             }
             return result;

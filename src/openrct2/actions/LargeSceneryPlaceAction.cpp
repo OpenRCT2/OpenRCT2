@@ -108,7 +108,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
-    uint32_t totalNumTiles = GetTotalNumTiles(sceneryEntry->tiles);
+    const auto totalNumTiles = sceneryEntry->tiles.size();
     int16_t maxHeight = GetMaxSurfaceHeight(sceneryEntry->tiles);
 
     if (_loc.z != 0)
@@ -128,18 +128,17 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
         }
     }
 
-    uint8_t tileNum = 0;
-    for (LargeSceneryTile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
+    for (auto& tile : sceneryEntry->tiles)
     {
-        auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
+        auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
         curTile.x += _loc.x;
         curTile.y += _loc.y;
 
-        int32_t zLow = tile->z_offset + maxHeight;
-        int32_t zHigh = tile->z_clearance + zLow;
+        int32_t zLow = tile.offset.z + maxHeight;
+        int32_t zHigh = tile.zClearance + zLow;
 
-        QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
+        QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
         auto canBuild = MapCanConstructWithClearAt(
             { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
@@ -222,7 +221,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
-    if (sceneryEntry->tiles == nullptr)
+    if (sceneryEntry->tiles.empty())
     {
         LOG_ERROR("Invalid large scenery object, sceneryType = %u", _sceneryType);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -266,18 +265,17 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         resultData.bannerId = banner->id;
     }
 
-    uint8_t tileNum = 0;
-    for (LargeSceneryTile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++, tileNum++)
+    for (auto& tile : sceneryEntry->tiles)
     {
-        auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
+        auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
         curTile.x += _loc.x;
         curTile.y += _loc.y;
 
-        int32_t zLow = tile->z_offset + maxHeight;
-        int32_t zHigh = tile->z_clearance + zLow;
+        int32_t zLow = tile.offset.z + maxHeight;
+        int32_t zHigh = tile.zClearance + zLow;
 
-        QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
+        QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
         const auto isTree = (sceneryEntry->flags & LARGE_SCENERY_FLAG_IS_TREE) != 0;
         auto canBuild = MapCanConstructWithClearAt(
             { curTile, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CreateCrossingMode::none, isTree);
@@ -310,7 +308,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         Guard::Assert(newSceneryElement != nullptr);
         newSceneryElement->SetClearanceZ(zHigh);
 
-        SetNewLargeSceneryElement(*newSceneryElement, tileNum);
+        SetNewLargeSceneryElement(*newSceneryElement, tile.index);
         if (banner != nullptr)
         {
             newSceneryElement->SetBannerIndex(banner->id);
@@ -319,7 +317,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         MapAnimationCreate(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow });
         MapInvalidateTileFull(curTile);
 
-        if (tileNum == 0)
+        if (tile.index == 0)
         {
             resultData.firstTileHeight = zLow;
         }
@@ -334,21 +332,11 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     return res;
 }
 
-int16_t LargeSceneryPlaceAction::GetTotalNumTiles(LargeSceneryTile* tiles) const
+bool LargeSceneryPlaceAction::CheckMapCapacity(std::span<const LargeSceneryTile> tiles, size_t numTiles) const
 {
-    uint32_t totalNumTiles = 0;
-    for (LargeSceneryTile* tile = tiles; tile->x_offset != -1; tile++)
+    for (auto& tile : tiles)
     {
-        totalNumTiles++;
-    }
-    return totalNumTiles;
-}
-
-bool LargeSceneryPlaceAction::CheckMapCapacity(LargeSceneryTile* tiles, int16_t numTiles) const
-{
-    for (LargeSceneryTile* tile = tiles; tile->x_offset != -1; tile++)
-    {
-        auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
+        auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
         curTile.x += _loc.x;
         curTile.y += _loc.y;
@@ -360,12 +348,12 @@ bool LargeSceneryPlaceAction::CheckMapCapacity(LargeSceneryTile* tiles, int16_t 
     return true;
 }
 
-int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(LargeSceneryTile* tiles) const
+int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(std::span<const LargeSceneryTile> tiles) const
 {
     int16_t maxHeight = -1;
-    for (LargeSceneryTile* tile = tiles; tile->x_offset != -1; tile++)
+    for (auto& tile : tiles)
     {
-        auto curTile = CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction);
+        auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
         curTile.x += _loc.x;
         curTile.y += _loc.y;

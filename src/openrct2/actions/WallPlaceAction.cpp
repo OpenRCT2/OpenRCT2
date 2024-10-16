@@ -569,8 +569,8 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 auto sequence = largeSceneryElement->GetSequenceIndex();
                 const LargeSceneryTile& tile = sceneryEntry->tiles[sequence];
 
-                int32_t direction = ((_edge - tileElement->GetDirection()) & kTileElementDirectionMask) + 8;
-                if (!(tile.flags & (1 << direction)))
+                int32_t direction = ((_edge - tileElement->GetDirection()) & kTileElementDirectionMask);
+                if (!(tile.walls & (1 << direction)))
                 {
                     MapGetObstructionErrorText(tileElement, res);
                     return res;

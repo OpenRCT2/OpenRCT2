@@ -14,6 +14,7 @@
 #include "../world/Location.hpp"
 #include "ObjectTypes.h"
 
+#include <span>
 #include <string_view>
 
 enum class CursorID : uint8_t;
@@ -22,18 +23,13 @@ struct LargeSceneryText;
 
 struct LargeSceneryTile
 {
-    int16_t x_offset;
-    int16_t y_offset;
-    int16_t z_offset;
-    uint8_t z_clearance;
-    // CCCC WWWW 0SS0 0000
-    uint16_t flags;
-};
-
-enum
-{
-    LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS = 0x20,
-    LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE = 0x40,
+    CoordsXYZ offset;
+    int32_t zClearance; // BigZ
+    bool hasSupports;
+    bool allowSupportsAbove;
+    uint8_t corners; // occupied corners of the tile
+    uint8_t walls;   // sides that walls can be placed on
+    uint8_t index;   // Purely to save having to look this up all the time
 };
 
 struct LargeSceneryTextGlyph
@@ -74,7 +70,7 @@ struct LargeSceneryEntry
     uint16_t flags;
     money64 price;
     money64 removal_price;
-    LargeSceneryTile* tiles;
+    std::span<const LargeSceneryTile> tiles;
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
     LargeSceneryText* text;
