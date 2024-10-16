@@ -30,6 +30,10 @@ public:
     {
         return &_legacyType;
     }
+    const RideObjectEntry& GetEntry() const
+    {
+        return _legacyType;
+    }
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;

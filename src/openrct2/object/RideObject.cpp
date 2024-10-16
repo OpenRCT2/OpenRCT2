@@ -265,8 +265,6 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 
 void RideObject::Load()
 {
-    _legacyType.obj = this;
-
     GetStringTable().Sort();
     _legacyType.naming.Name = LanguageAllocateObjectString(GetName());
     _legacyType.naming.Description = LanguageAllocateObjectString(GetDescription());

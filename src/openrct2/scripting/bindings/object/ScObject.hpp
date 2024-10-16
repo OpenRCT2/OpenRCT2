@@ -488,7 +488,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        Object* GetObject() const
+        const RideObject* GetObject() const
         {
             auto& objManager = GetContext()->GetObjectManager();
             return static_cast<RideObject*>(objManager.GetLoadedObject(_objectType, _objectIndex));
@@ -499,7 +499,7 @@ namespace OpenRCT2::Scripting
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                auto rideEntry = static_cast<RideObjectEntry*>(obj->GetLegacyData());
+                auto rideEntry = &obj->GetEntry();
                 if (rideEntry != nullptr && _vehicleIndex < std::size(rideEntry->Cars))
                 {
                     return rideEntry->GetCar(_vehicleIndex);
@@ -567,7 +567,7 @@ namespace OpenRCT2::Scripting
 
         uint32_t firstImageId_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->images_offset;
@@ -577,7 +577,7 @@ namespace OpenRCT2::Scripting
 
         uint32_t flags_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->flags;
@@ -588,7 +588,7 @@ namespace OpenRCT2::Scripting
         std::vector<uint8_t> rideType_get() const
         {
             std::vector<uint8_t> result;
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 for (auto rideType : entry->ride_type)
@@ -601,7 +601,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t minCarsInTrain_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->min_cars_in_train;
@@ -611,7 +611,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t maxCarsInTrain_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->max_cars_in_train;
@@ -621,7 +621,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t carsPerFlatRide_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->cars_per_flat_ride;
@@ -631,7 +631,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t zeroCars_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->zero_cars;
@@ -641,7 +641,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t tabVehicle_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->TabCar;
@@ -651,7 +651,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t defaultVehicle_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->DefaultCar;
@@ -661,7 +661,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t frontVehicle_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->FrontCar;
@@ -671,7 +671,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t secondVehicle_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->SecondCar;
@@ -681,7 +681,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t rearVehicle_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->RearCar;
@@ -691,7 +691,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t thirdVehicle_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->ThirdCar;
@@ -702,7 +702,7 @@ namespace OpenRCT2::Scripting
         std::vector<std::shared_ptr<ScRideObjectVehicle>> vehicles_get() const
         {
             std::vector<std::shared_ptr<ScRideObjectVehicle>> result;
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 for (size_t i = 0; i < std::size(entry->Cars); i++)
@@ -715,7 +715,7 @@ namespace OpenRCT2::Scripting
 
         int8_t excitementMultiplier_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->excitement_multiplier;
@@ -725,7 +725,7 @@ namespace OpenRCT2::Scripting
 
         int8_t intensityMultiplier_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->intensity_multiplier;
@@ -735,7 +735,7 @@ namespace OpenRCT2::Scripting
 
         int8_t nauseaMultiplier_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->nausea_multiplier;
@@ -745,7 +745,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t maxHeight_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return entry->max_height;
@@ -755,7 +755,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t shopItem_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return EnumValue(entry->shop_item[0]);
@@ -765,7 +765,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t shopItemSecondary_get() const
         {
-            auto entry = GetLegacyData();
+            auto entry = GetEntry();
             if (entry != nullptr)
             {
                 return EnumValue(entry->shop_item[1]);
@@ -779,12 +779,12 @@ namespace OpenRCT2::Scripting
             return static_cast<RideObject*>(ScObject::GetObject());
         }
 
-        const RideObjectEntry* GetLegacyData() const
+        const RideObjectEntry* GetEntry() const
         {
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                return static_cast<RideObjectEntry*>(obj->GetLegacyData());
+                return &obj->GetEntry();
             }
             return nullptr;
         }

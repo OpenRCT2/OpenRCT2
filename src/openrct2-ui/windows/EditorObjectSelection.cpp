@@ -1275,19 +1275,19 @@ namespace OpenRCT2::Ui::Windows
             if (GetSelectedObjectType() == ObjectType::Ride)
             {
                 auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
-                const auto* rideEntry = reinterpret_cast<RideObjectEntry*>(rideObject->GetLegacyData());
-                if (rideEntry->shop_item[0] != ShopItem::None)
+                const auto& rideEntry = rideObject->GetEntry();
+                if (rideEntry.shop_item[0] != ShopItem::None)
                 {
                     std::string sells = "";
-                    for (size_t i = 0; i < std::size(rideEntry->shop_item); i++)
+                    for (size_t i = 0; i < std::size(rideEntry.shop_item); i++)
                     {
-                        if (rideEntry->shop_item[i] == ShopItem::None)
+                        if (rideEntry.shop_item[i] == ShopItem::None)
                             continue;
 
                         if (!sells.empty())
                             sells += ", ";
 
-                        sells += LanguageGetString(GetShopItemDescriptor(rideEntry->shop_item[i]).Naming.Plural);
+                        sells += LanguageGetString(GetShopItemDescriptor(rideEntry.shop_item[i]).Naming.Plural);
                     }
                     auto ft = Formatter();
                     ft.Add<const char*>(sells.c_str());

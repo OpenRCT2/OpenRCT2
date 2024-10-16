@@ -218,12 +218,9 @@ namespace OpenRCT2::RCT2
                 auto rawObject = ObjectRepositoryLoadObject(&td->trackAndVehicle.vehicleObject.Entry);
                 if (rawObject != nullptr)
                 {
-                    const auto* rideEntry = static_cast<const RideObjectEntry*>(
-                        static_cast<RideObject*>(rawObject.get())->GetLegacyData());
-                    if (rideEntry != nullptr)
-                    {
-                        td->trackAndVehicle.rtdIndex = RCT2RideTypeToOpenRCT2RideType(td->trackAndVehicle.rtdIndex, *rideEntry);
-                    }
+                    const auto& rideEntry = static_cast<RideObject*>(rawObject.get())->GetEntry();
+
+                    td->trackAndVehicle.rtdIndex = RCT2RideTypeToOpenRCT2RideType(td->trackAndVehicle.rtdIndex, rideEntry);
                     rawObject->Unload();
                 }
             }

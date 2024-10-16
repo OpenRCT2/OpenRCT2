@@ -740,11 +740,9 @@ private:
             if (rideObject == nullptr)
                 continue;
 
-            const auto* entry = static_cast<RideObjectEntry*>(rideObject->GetLegacyData());
-            if (entry == nullptr)
-                continue;
+            const auto& entry = rideObject->GetEntry();
 
-            for (auto rideType : entry->ride_type)
+            for (auto rideType : entry.ride_type)
             {
                 if (rideType < _rideTypeToObjectMap.size())
                 {

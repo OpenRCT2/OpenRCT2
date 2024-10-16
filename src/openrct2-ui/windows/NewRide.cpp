@@ -682,22 +682,23 @@ namespace OpenRCT2::Ui::Windows
                     continue;
 
                 // Ride entries
-                const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
+                auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+                auto rideObj = static_cast<const RideObject*>(objMgr.GetLoadedObject(ObjectType::Ride, rideEntryIndex));
 
                 // Skip if the vehicle isn't the preferred vehicle for this generic track type
                 if (!Config::Get().interface.ListRideVehiclesSeparately
                     && !GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately)
-                    && highestVehiclePriority > rideEntry->BuildMenuPriority)
+                    && highestVehiclePriority > rideObj->GetEntry().BuildMenuPriority)
                 {
                     continue;
                 }
 
-                if (!IsFiltered(*rideEntry))
+                if (!IsFiltered(*rideObj))
                 {
                     continue;
                 }
 
-                highestVehiclePriority = rideEntry->BuildMenuPriority;
+                highestVehiclePriority = rideObj->GetEntry().BuildMenuPriority;
 
                 // Determines how and where to draw a button for this ride type/vehicle.
                 if (Config::Get().interface.ListRideVehiclesSeparately
@@ -729,7 +730,7 @@ namespace OpenRCT2::Ui::Windows
                 else if (allowDrawingOverLastButton)
                 {
                     // Non-separate, draw over previous
-                    if (rideType == rideEntry->ride_type[0])
+                    if (rideType == rideObj->GetEntry().ride_type[0])
                     {
                         nextListItem--;
                         nextListItem->Type = rideType;
@@ -742,13 +743,13 @@ namespace OpenRCT2::Ui::Windows
             return nextListItem;
         }
 
-        bool IsFiltered(const RideObjectEntry& rideEntry)
+        bool IsFiltered(const RideObject& rideObject)
         {
             if (_filter.empty())
                 return true;
 
-            return IsFilterInRideType(rideEntry) || IsFilterInRideName(rideEntry) || IsFilterInIdentifier(rideEntry)
-                || IsFilterInAuthors(rideEntry) || IsFilterInFilename(rideEntry);
+            return IsFilterInRideType(rideObject.GetEntry()) || IsFilterInRideName(rideObject.GetEntry())
+                || IsFilterInIdentifier(rideObject) || IsFilterInAuthors(rideObject) || IsFilterInFilename(rideObject);
         }
 
         bool IsFilterInRideType(const RideObjectEntry& rideEntry)
@@ -763,30 +764,27 @@ namespace OpenRCT2::Ui::Windows
             return String::Contains(u8string_view(LanguageGetString(rideName)), _filter, true);
         }
 
-        bool IsFilterInAuthors(const RideObjectEntry& rideEntry)
+        bool IsFilterInAuthors(const RideObject& rideObject)
         {
-            auto rideObject = static_cast<RideObject*>(rideEntry.obj);
-            auto authors = rideObject->GetAuthors();
+            auto& authors = rideObject.GetAuthors();
 
-            for (auto author : authors)
+            for (auto& author : authors)
                 if (String::Contains(author, _filter, true))
                     return true;
 
             return false;
         }
 
-        bool IsFilterInIdentifier(const RideObjectEntry& rideEntry)
+        bool IsFilterInIdentifier(const RideObject& rideObject)
         {
-            auto rideObject = static_cast<RideObject*>(rideEntry.obj);
-            auto objectName = rideObject->GetObjectEntry().GetName();
+            auto objectName = rideObject.GetObjectEntry().GetName();
 
             return String::Contains(objectName, _filter, true);
         }
 
-        bool IsFilterInFilename(const RideObjectEntry& rideEntry)
+        bool IsFilterInFilename(const RideObject& rideObject)
         {
-            auto rideObject = static_cast<RideObject*>(rideEntry.obj);
-            auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObject->GetObjectEntry()));
+            auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObject.GetObjectEntry()));
 
             return String::Contains(repoItem->Path, _filter, true);
         }
@@ -919,8 +917,10 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawRideInformation(DrawPixelInfo& dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
         {
-            const auto* rideEntry = GetRideEntryByIndex(item.EntryIndex);
-            RideNaming rideNaming = GetRideNaming(item.Type, *rideEntry);
+            auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+            auto rideObj = static_cast<const RideObject*>(objMgr.GetLoadedObject(ObjectType::Ride, item.EntryIndex));
+            const auto& rideEntry = rideObj->GetEntry();
+            RideNaming rideNaming = GetRideNaming(item.Type, rideEntry);
             auto ft = Formatter();
 
             UpdateVehicleAvailability(item.Type);
@@ -935,7 +935,7 @@ namespace OpenRCT2::Ui::Windows
                 if (Config::Get().interface.ListRideVehiclesSeparately)
                 {
                     ft = Formatter();
-                    ft.Add<StringId>(rideEntry->naming.Name);
+                    ft.Add<StringId>(rideEntry.naming.Name);
                     DrawTextEllipsised(
                         dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_NEW_RIDE_VEHICLE_NAME, ft);
                 }
@@ -976,8 +976,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw object author(s) if debugging tools are active
             if (Config::Get().general.DebuggingTools)
             {
-                auto rideObject = static_cast<RideObject*>(rideEntry->obj);
-                auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObject->GetObjectEntry()));
+                auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObj->GetObjectEntry()));
 
                 StringId authorStringId = repoItem->Authors.size() > 1 ? STR_AUTHORS_STRING : STR_AUTHOR_STRING;
 
