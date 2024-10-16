@@ -25,6 +25,8 @@ private:
     std::vector<ObjectEntryDescriptor> _items;
 
 public:
+    static constexpr ObjectType objectType = ObjectType::SceneryGroup;
+
     void* GetLegacyData() override
     {
         return &_legacyType;

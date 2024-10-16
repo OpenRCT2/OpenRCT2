@@ -292,7 +292,7 @@ namespace OpenRCT2
         if (IsRealNameStringId(id))
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto* peepNamesObj = static_cast<PeepNamesObject*>(objManager.GetLoadedObject(ObjectType::PeepNames, 0));
+            auto* peepNamesObj = objManager.GetLoadedObject<PeepNamesObject>(0);
             if (peepNamesObj != nullptr)
             {
                 auto realNameIndex = id - kRealNameStart;

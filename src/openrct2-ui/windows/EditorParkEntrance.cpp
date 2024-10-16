@@ -79,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
             for (ObjectEntryIndex objectIndex = 0; objectIndex < kMaxParkEntranceObjects; objectIndex++)
             {
                 auto& objManager = GetContext()->GetObjectManager();
-                auto* object = static_cast<EntranceObject*>(objManager.GetLoadedObject(ObjectType::ParkEntrance, objectIndex));
+                auto* object = objManager.GetLoadedObject<EntranceObject>(objectIndex);
                 if (object != nullptr)
                 {
                     const auto* legacyData = reinterpret_cast<const EntranceEntry*>(object->GetLegacyData());

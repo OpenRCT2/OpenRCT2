@@ -170,7 +170,7 @@ namespace OpenRCT2::RideAudio
     {
         auto& objManager = GetContext()->GetObjectManager();
         auto ride = GetRide(instance.RideId);
-        auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
+        auto musicObj = objManager.GetLoadedObject<MusicObject>(ride->music);
         if (musicObj != nullptr)
         {
             auto shouldLoop = musicObj->GetTrackCount() == 1;
@@ -276,7 +276,7 @@ namespace OpenRCT2::RideAudio
     std::pair<size_t, size_t> RideMusicGetTrackOffsetLength_Default(const Ride& ride)
     {
         auto& objManager = GetContext()->GetObjectManager();
-        auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride.music));
+        auto musicObj = objManager.GetLoadedObject<MusicObject>(ride.music);
         if (musicObj != nullptr)
         {
             auto numTracks = musicObj->GetTrackCount();

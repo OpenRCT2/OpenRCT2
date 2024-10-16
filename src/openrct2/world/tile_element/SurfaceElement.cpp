@@ -26,7 +26,7 @@ ObjectEntryIndex SurfaceElement::GetSurfaceObjectIndex() const
 TerrainSurfaceObject* SurfaceElement::GetSurfaceObject() const
 {
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, GetSurfaceObjectIndex()));
+    return objManager.GetLoadedObject<TerrainSurfaceObject>(GetSurfaceObjectIndex());
 }
 
 ObjectEntryIndex SurfaceElement::GetEdgeObjectIndex() const
@@ -37,7 +37,7 @@ ObjectEntryIndex SurfaceElement::GetEdgeObjectIndex() const
 TerrainEdgeObject* SurfaceElement::GetEdgeObject() const
 {
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, GetEdgeObjectIndex()));
+    return objManager.GetLoadedObject<TerrainEdgeObject>(GetEdgeObjectIndex());
 }
 
 void SurfaceElement::SetSurfaceObjectIndex(ObjectEntryIndex newStyle)

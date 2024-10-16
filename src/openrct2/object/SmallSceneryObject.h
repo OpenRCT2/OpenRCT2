@@ -22,6 +22,8 @@ private:
     std::vector<uint8_t> _frameOffsets;
 
 public:
+    static constexpr ObjectType objectType = ObjectType::SmallScenery;
+
     void* GetLegacyData() override
     {
         return &_legacyType;

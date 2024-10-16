@@ -638,7 +638,7 @@ namespace OpenRCT2::Ui::Windows
         ImageIndex GetRideImage(RideSelection rideSelection)
         {
             auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-            auto obj = static_cast<RideObject*>(objMgr.GetLoadedObject(ObjectType::Ride, rideSelection.EntryIndex));
+            auto obj = objMgr.GetLoadedObject<RideObject>(rideSelection.EntryIndex);
             return obj == nullptr ? ImageIndexUndefined : obj->GetPreviewImage(rideSelection.Type);
         }
 
@@ -683,7 +683,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Ride entries
                 auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-                auto rideObj = static_cast<const RideObject*>(objMgr.GetLoadedObject(ObjectType::Ride, rideEntryIndex));
+                auto* rideObj = objMgr.GetLoadedObject<RideObject>(rideEntryIndex);
 
                 // Skip if the vehicle isn't the preferred vehicle for this generic track type
                 if (!Config::Get().interface.ListRideVehiclesSeparately
@@ -918,7 +918,7 @@ namespace OpenRCT2::Ui::Windows
         void DrawRideInformation(DrawPixelInfo& dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
         {
             auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-            auto rideObj = static_cast<const RideObject*>(objMgr.GetLoadedObject(ObjectType::Ride, item.EntryIndex));
+            const auto* rideObj = objMgr.GetLoadedObject<RideObject>(item.EntryIndex);
             const auto& rideEntry = rideObj->GetEntry();
             RideNaming rideNaming = GetRideNaming(item.Type, rideEntry);
             auto ft = Formatter();

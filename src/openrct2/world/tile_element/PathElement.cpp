@@ -254,7 +254,7 @@ ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
 const FootpathSurfaceObject* PathElement::GetSurfaceEntry() const
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<FootpathSurfaceObject*>(objMgr.GetLoadedObject(ObjectType::FootpathSurface, GetSurfaceEntryIndex()));
+    return objMgr.GetLoadedObject<FootpathSurfaceObject>(GetSurfaceEntryIndex());
 }
 
 void PathElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
@@ -274,7 +274,7 @@ ObjectEntryIndex PathElement::GetRailingsEntryIndex() const
 const FootpathRailingsObject* PathElement::GetRailingsEntry() const
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<FootpathRailingsObject*>(objMgr.GetLoadedObject(ObjectType::FootpathRailings, GetRailingsEntryIndex()));
+    return objMgr.GetLoadedObject<FootpathRailingsObject>(GetRailingsEntryIndex());
 }
 
 void PathElement::SetRailingsEntryIndex(ObjectEntryIndex newEntryIndex)
