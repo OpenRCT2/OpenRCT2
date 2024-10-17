@@ -255,7 +255,7 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadJsonTiles(json_t& jTiles)
             tile.offset.z = Json::GetNumber<int16_t>(jTile["z"]);
             tile.zClearance = Json::GetNumber<int8_t>(jTile["clearance"]);
 
-            tile.hasSupports = Json::GetBoolean(jTile["hasSupports"], true);
+            tile.hasSupports = Json::GetBoolean(jTile["hasSupports"]);
             tile.allowSupportsAbove = Json::GetBoolean(jTile["allowSupportsAbove"]);
 
             // All corners are by default occupied
