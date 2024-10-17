@@ -6,6 +6,7 @@
 - Fix: [#22918] Zooming with keyboard moves the view off centre.
 - Fix: [#22921] Wooden RollerCoaster flat to steep railings appear in front of track in front of them.
 - Fix: [#22962] Fuzzy horizontal-to-vertical line transitions in charts.
+- Fix: [#23009] Scenarios from RCT Classic (.sea files) are not included in the scenario index.
 
 0.4.15 (2024-10-06)
 ------------------------------------------------------------------------
