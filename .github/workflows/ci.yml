@@ -379,7 +379,7 @@ jobs:
     name: Ubuntu Linux (AppImage, x86_64)
     runs-on: ubuntu-latest
     needs: [check-code-formatting, get_artifact_name]
-    container: openrct2/openrct2-build:16-noble
+    container: openrct2/openrct2-build:14-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -387,11 +387,13 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1.2.13
         with:
           key: linux-appimage
+      - name: Install Clang 15
+        run: apt install -y clang-15
       - name: Get pre-reqs
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
         run: |
-          . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
+          . scripts/setenv -q && build -DCMAKE_C_COMPILER=clang-15 -DCMAKE_CXX_COMPILER=clang++-15 -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
           strip bin/install/usr/bin/openrct2
       - name: Build AppImage
         env:
