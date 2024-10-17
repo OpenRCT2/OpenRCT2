@@ -388,7 +388,7 @@ jobs:
         with:
           key: linux-appimage
       - name: Install Clang 15
-        run: apt install -y clang-15
+        run: apt update && apt install -y clang-15
       - name: Get pre-reqs
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
