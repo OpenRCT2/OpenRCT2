@@ -209,15 +209,24 @@ private:
             std::string extension = Path::GetExtension(path);
 
             if (String::IEquals(extension, ".park"))
+            {
                 importer = ParkImporter::CreateParkFile(objRepository);
+                importer->LoadScenario(path, true);
+            }
             else if (String::IEquals(extension, ".sc4"))
+            {
                 importer = ParkImporter::CreateS4();
+                importer->LoadScenario(path, true);
+            }
             else
+            {
                 importer = ParkImporter::CreateS6(objRepository);
+                auto stream = GetStreamFromRCT2Scenario(path);
+                importer->LoadFromStream(stream.get(), true);
+            }
 
             if (importer)
             {
-                importer->LoadScenario(path, true);
                 if (importer->GetDetails(entry))
                 {
                     entry->Path = path;
