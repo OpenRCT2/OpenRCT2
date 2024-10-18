@@ -262,7 +262,7 @@ endif()
 # Only valid for Clang for now:
 # - GCC 8 does not support -Wno-pragma-once-outside-header
 # - Other compilers status unknown
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+if (ENABLE_HEADERS_CHECK AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     add_library(${PROJECT_NAME}-headers-check OBJECT ${OPENRCT2_CORE_HEADERS})
     set_target_properties(${PROJECT_NAME}-headers-check PROPERTIES LINKER_LANGUAGE CXX)
     set_source_files_properties(${OPENRCT2_CORE_HEADERS} PROPERTIES LANGUAGE CXX)
