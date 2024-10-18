@@ -15,6 +15,7 @@
 #include "core/Json.hpp"
 
 #include <chrono>
+#include <sstream>
 
 using namespace OpenRCT2;
 
@@ -22,38 +23,48 @@ using namespace OpenRCT2;
 #    include OPENRCT2_BUILD_INFO_HEADER
 #endif
 
-const char gVersionInfoTag[] =
-#ifdef OPENRCT2_VERSION_TAG
-    OPENRCT2_VERSION_TAG
-#else
-    "v" OPENRCT2_VERSION
-#endif
-    ;
+const std::string gVersionInfoTag = []() -> std::string {
+    std::stringstream ss;
 
-const char gVersionInfoFull[] = OPENRCT2_NAME ", "
 #ifdef OPENRCT2_VERSION_TAG
-    OPENRCT2_VERSION_TAG
+    return OPENRCT2_VERSION_TAG;
 #else
-                                              "v" OPENRCT2_VERSION
+    ss << "v" << OPENRCT2_VERSION;
+    return ss.str();
 #endif
+}();
+
+const std::string gVersionInfoFull = []() -> std::string {
+    std::stringstream ss;
+    ss << OPENRCT2_NAME << ", ";
+
+#ifdef OPENRCT2_VERSION_TAG
+    ss << OPENRCT2_VERSION_TAG;
+#else
+    ss << "v" << OPENRCT2_VERSION;
+#endif
+
 #if defined(OPENRCT2_BRANCH) || defined(OPENRCT2_COMMIT_SHA1_SHORT) || !defined(NDEBUG)
-                                              " ("
+    ss << " (";
 #    if defined(OPENRCT2_BRANCH) && defined(OPENRCT2_COMMIT_SHA1_SHORT)
-    OPENRCT2_COMMIT_SHA1_SHORT " on " OPENRCT2_BRANCH
+    ss << OPENRCT2_COMMIT_SHA1_SHORT << " on " << OPENRCT2_BRANCH;
 #    elif defined(OPENRCT2_COMMIT_SHA1_SHORT)
-    OPENRCT2_COMMIT_SHA1_SHORT
+    ss << OPENRCT2_COMMIT_SHA1_SHORT;
 #    elif defined(OPENRCT2_BRANCH)
-    OPENRCT2_BRANCH
+    ss << OPENRCT2_BRANCH;
 #    endif
 #    ifndef NDEBUG
-                                              ", DEBUG"
+    ss << ", DEBUG";
 #    endif
-                                              ")"
+    ss << ")";
 #endif
+
 #ifdef OPENRCT2_BUILD_SERVER
-                                              " provided by " OPENRCT2_BUILD_SERVER
+    ss << " provided by " << OPENRCT2_BUILD_SERVER;
 #endif
-    ;
+
+    return ss.str();
+}();
 
 NewVersionInfo GetLatestVersion()
 {
