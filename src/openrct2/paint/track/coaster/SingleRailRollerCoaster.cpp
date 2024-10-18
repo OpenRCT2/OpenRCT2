@@ -18531,6 +18531,105 @@ namespace OpenRCT2::SingleRailRC
         PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
+    static void TrackDiag25DegDownBrakes(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement, SupportType supportType)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_GENTLE_DIAG_BRAKE + 1)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_GENTLE_DIAG_BRAKE + 2)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::topRightSide),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_GENTLE_DIAG_BRAKE)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
+                            PaintSegment::bottomRightSide),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        MetalBSupportsPaintSetup(
+                            session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height, session.SupportColours);
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction, session.TrackColours.WithIndex((SPR_G2_SINGLE_RAIL_GENTLE_DIAG_BRAKE + 3)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        MetalBSupportsPaintSetup(
+                            session, supportType.metal, MetalSupportPlace::TopCorner, 8, height, session.SupportColours);
+                        break;
+                    case 2:
+                        MetalBSupportsPaintSetup(
+                            session, supportType.metal, MetalSupportPlace::RightCorner, 8, height, session.SupportColours);
+                        break;
+                    case 3:
+                        MetalBSupportsPaintSetup(
+                            session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height, session.SupportColours);
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session,
+                    PaintUtilRotateSegments(
+                        EnumsToFlags(
+                            PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
+                            PaintSegment::bottomLeftSide),
+                        direction),
+                    0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 56);
+                break;
+        }
+    }
+
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
     {
         switch (trackType)
@@ -19014,6 +19113,8 @@ namespace OpenRCT2::SingleRailRC
                 return TrackRightEighthBankToOrthogonalDown25;
             case TrackElemType::Down25Brakes:
                 return Track25DegDownBrakes;
+            case TrackElemType::DiagDown25Brakes:
+                return TrackDiag25DegDownBrakes;
             default:
                 return nullptr;
         }

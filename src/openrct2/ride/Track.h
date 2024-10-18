@@ -600,8 +600,9 @@ namespace OpenRCT2
         DiagBrakes = 337,
         DiagBlockBrakes = 338,
         Down25Brakes = 339,
+        DiagDown25Brakes = 340,
 
-        Count = 340,
+        Count = 341,
         None = 65535,
     };
 }
