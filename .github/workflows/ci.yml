@@ -582,6 +582,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: ${{ needs.build_variables.outputs.push }}
         with:
+          repository: OpenRCT2/OpenRCT2-binaries
+          token: ${{ secrets.OPENRCT2_BINARIES_CI_UPLOAD }}
           files: |
             openrct2-${{ needs.build_variables.outputs.name }}-sha1sums.txt
             OpenRCT2-${{ needs.build_variables.outputs.name }}-*
