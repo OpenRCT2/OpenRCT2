@@ -418,7 +418,7 @@ jobs:
   linux-docker:
     name: Ubuntu Linux (Docker)
     needs: check-code-formatting
-    if: github.repository == 'OpenRCT2/OpenRCT2'
+    if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout image
