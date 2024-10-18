@@ -111,7 +111,9 @@ static bool OnCrash(
         wprintf(L"%ls\n", DumpFailedMessage);
         if (!gOpenRCT2SilentBreakpad)
         {
-            MessageBoxW(nullptr, DumpFailedMessage, L"" OPENRCT2_NAME, MB_OK | MB_ICONERROR);
+            MessageBoxW(
+                nullptr, DumpFailedMessage, (L"" + std::wstring(OPENRCT2_NAME, OPENRCT2_NAME + strlen(OPENRCT2_NAME))).c_str(),
+                MB_OK | MB_ICONERROR);
         }
         return succeeded;
     }
@@ -169,7 +171,7 @@ static bool OnCrash(
     wprintf(L"Dump Path: %s\n", dumpPath);
     wprintf(L"Dump File Path: %s\n", dumpFilePath);
     wprintf(L"Dump Id: %s\n", miniDumpId);
-    wprintf(L"Version: %s\n", WSZ(OPENRCT2_VERSION));
+    wprintf(L"Version: %s\n", (L"" + std::wstring(OPENRCT2_VERSION, OPENRCT2_VERSION + strlen(OPENRCT2_VERSION))).c_str());
     wprintf(L"Commit: %s\n", _wszCommitSha1Short);
 
     bool savedGameDumped = false;
@@ -253,10 +255,14 @@ static bool OnCrash(
                                              L"We would like to upload the crash dump for automated analysis, do you agree?\n"
                                              L"The automated analysis is done by courtesy of https://backtrace.io/";
     wchar_t message[MAX_PATH * 2];
-    swprintf_s(message, MessageFormat, dumpFilePath, WSZ(OPENRCT2_VERSION), _wszCommitSha1Short);
+    swprintf_s(
+        message, MessageFormat, dumpFilePath,
+        (L"" + std::wstring(OPENRCT2_VERSION, OPENRCT2_VERSION + strlen(OPENRCT2_VERSION))).c_str(), _wszCommitSha1Short);
 
     // Cannot use platform_show_messagebox here, it tries to set parent window already dead.
-    int answer = MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_YESNO | MB_ICONERROR);
+    int answer = MessageBoxW(
+        nullptr, message, (L"" + std::wstring(OPENRCT2_NAME, OPENRCT2_NAME + strlen(OPENRCT2_NAME))).c_str(),
+        MB_YESNO | MB_ICONERROR);
     if (answer == IDYES)
     {
         int error;
@@ -273,11 +279,15 @@ static bool OnCrash(
                                             L"Error code = %d\n"
                                             L"Response = %s";
             swprintf_s(message, MessageFormat2, dumpFilePath, error, response.c_str());
-            MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
+            MessageBoxW(
+                nullptr, message, (L"" + std::wstring(OPENRCT2_NAME, OPENRCT2_NAME + strlen(OPENRCT2_NAME))).c_str(),
+                MB_OK | MB_ICONERROR);
         }
         else
         {
-            MessageBoxW(nullptr, L"Dump uploaded successfully.", WSZ(OPENRCT2_NAME), MB_OK | MB_ICONINFORMATION);
+            MessageBoxW(
+                nullptr, L"Dump uploaded successfully.",
+                (L"" + std::wstring(OPENRCT2_NAME, OPENRCT2_NAME + strlen(OPENRCT2_NAME))).c_str(), MB_OK | MB_ICONINFORMATION);
         }
     }
     HRESULT coInitializeResult = CoInitialize(nullptr);
