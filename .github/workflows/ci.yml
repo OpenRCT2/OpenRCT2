@@ -51,10 +51,14 @@ jobs:
       - name: Git describe
         id: ghd
         run: |
-          TAG=$(git describe --abbrev=0 --tags)
-          DESCRIBE=$(git describe --tags)
+          TAG=$(git describe --abbrev=0)
+          DESCRIBE=$(git describe)
           SHORT_SHA=$(git rev-parse --short HEAD)
           DISTANCE=$(git rev-list --count $TAG..HEAD)
+          echo "tag=$TAG"
+          echo "describe=$DESCRIBE"
+          echo "short-sha=$SHORT_SHA"
+          echo "distance=$DISTANCE"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "describe=$DESCRIBE" >> $GITHUB_OUTPUT
           echo "short-sha=$SHORT_SHA" >> $GITHUB_OUTPUT
@@ -62,16 +66,19 @@ jobs:
       - name: Set env
         id: setenv
         run: |
-          . scripts/setenv -q
+          . scripts/setenv
+          echo "push=$OPENRCT2_PUSH"
           echo "push=$OPENRCT2_PUSH" >> $GITHUB_OUTPUT
       # Name is very similar to "describe", but skips the "v" prefix
       - name: Get artifact name
         id: artifact-name
         run: |
           if [ ${{ steps.ghd.outputs.distance }} -eq 0 ]; then
+            echo "name=${{ env.OPENRCT2_VERSION }}"
             echo "name=${{ env.OPENRCT2_VERSION }}" >> $GITHUB_OUTPUT
           else
-            echo "name=${{ env.OPENRCT2_VERSION }}-${{ steps.ghd.outputs.distance }}-${{ steps.ghd.outputs.short-sha }}" >> $GITHUB_OUTPUT
+            echo "name=${{ env.OPENRCT2_VERSION }}-${{ steps.ghd.outputs.distance }}-g${{ steps.ghd.outputs.short-sha }}"
+            echo "name=${{ env.OPENRCT2_VERSION }}-${{ steps.ghd.outputs.distance }}-g${{ steps.ghd.outputs.short-sha }}" >> $GITHUB_OUTPUT
           fi
   lint-commit:
     name: Lint Commit Message
