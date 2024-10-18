@@ -267,6 +267,11 @@ namespace OpenRCT2::Ui::Windows
         char pathBuffer[MAX_PATH];
         SafeStrCpy(pathBuffer, path, sizeof(pathBuffer));
 
+        // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
+        // no windows are open (besides the toolbars and LoadSave window).
+        WindowCloseByClass(WindowClass::RideConstruction);
+        WindowCloseAllExceptClass(WindowClass::Loadsave);
+
         auto& gameState = GetGameState();
 
         switch (_type & 0x0F)
