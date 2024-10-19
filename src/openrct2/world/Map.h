@@ -183,13 +183,13 @@ TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, 
 
 template<typename T = TileElement> T* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc)
 {
-    auto* element = MapGetFirstTileElementWithBaseHeightBetween(loc, T::ElementType);
+    auto* element = MapGetFirstTileElementWithBaseHeightBetween(loc, T::kElementType);
     return element != nullptr ? element->template as<T>() : nullptr;
 }
 
 template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
 {
-    auto* element = TileElementInsert(loc, occupiedQuadrants, T::ElementType);
+    auto* element = TileElementInsert(loc, occupiedQuadrants, T::kElementType);
     return (element != nullptr) ? element->template as<T>() : nullptr;
 }
 

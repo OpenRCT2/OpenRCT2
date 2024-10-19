@@ -59,7 +59,7 @@ enum
 #pragma pack(push, 1)
 struct PathElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Path;
+    static constexpr TileElementType kElementType = TileElementType::Path;
 
 private:
     ObjectEntryIndex SurfaceIndex;  // 5

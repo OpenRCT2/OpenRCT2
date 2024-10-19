@@ -17,7 +17,7 @@ struct BannerSceneryEntry;
 #pragma pack(push, 1)
 struct BannerElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Banner;
+    static constexpr TileElementType kElementType = TileElementType::Banner;
 
 private:
     BannerIndex index;    // 5

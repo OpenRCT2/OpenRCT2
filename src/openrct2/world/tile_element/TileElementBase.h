@@ -89,7 +89,7 @@ struct TileElementBase
         if constexpr (std::is_same_v<TType, TileElement>)
             return reinterpret_cast<const TileElement*>(this);
         else
-            return GetType() == TType::ElementType ? reinterpret_cast<const TType*>(this) : nullptr;
+            return GetType() == TType::kElementType ? reinterpret_cast<const TType*>(this) : nullptr;
     }
 
     template<typename TType> TType* as()
@@ -97,7 +97,7 @@ struct TileElementBase
         if constexpr (std::is_same_v<TType, TileElement>)
             return reinterpret_cast<TileElement*>(this);
         else
-            return GetType() == TType::ElementType ? reinterpret_cast<TType*>(this) : nullptr;
+            return GetType() == TType::kElementType ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
     const SurfaceElement* AsSurface() const;
