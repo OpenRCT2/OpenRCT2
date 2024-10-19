@@ -622,7 +622,11 @@ static void GameLoadOrQuitNoSavePromptCallback(int32_t result, const utf8* path)
 
 static void NewGameWindowCallback(const utf8* path)
 {
-    WindowCloseByClass(WindowClass::EditorObjectSelection);
+    // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
+    // no windows are open (besides the toolbars and LoadSave window).
+    WindowCloseByClass(WindowClass::RideConstruction);
+    WindowCloseAllExceptClass(WindowClass::Loadsave);
+
     GameNotifyMapChange();
     GetContext()->LoadParkFromFile(path, false, true);
     GameLoadScripts();
