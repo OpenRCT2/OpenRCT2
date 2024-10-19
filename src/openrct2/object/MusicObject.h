@@ -53,7 +53,7 @@ private:
     uint32_t _previewImageId{};
 
 public:
-    static constexpr ObjectType objectType = ObjectType::Music;
+    static constexpr ObjectType kObjectType = ObjectType::Music;
 
     StringId NameStringId{};
 

@@ -26,7 +26,7 @@ private:
     std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[OpenRCT2::RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
 
 public:
-    static constexpr ObjectType objectType = ObjectType::Ride;
+    static constexpr ObjectType kObjectType = ObjectType::Ride;
 
     void* GetLegacyData() override
     {

@@ -28,7 +28,7 @@ struct IObjectManager
     virtual Object* GetLoadedObject(ObjectType objectType, size_t index) = 0;
     template<typename TClass> TClass* GetLoadedObject(size_t index)
     {
-        return static_cast<TClass*>(GetLoadedObject(TClass::objectType, index));
+        return static_cast<TClass*>(GetLoadedObject(TClass::kObjectType, index));
     }
     virtual Object* GetLoadedObject(const ObjectEntryDescriptor& entry) = 0;
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(std::string_view identifier) = 0;
