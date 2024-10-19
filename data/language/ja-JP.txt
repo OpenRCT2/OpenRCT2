@@ -94,15 +94,20 @@ STR_0089    :ミニジェットコースター
 STR_0090    :鉱山ライド
 STR_0091    :Unknown Ride (59)
 STR_0092    :リニアモーターコースター
-STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
-STR_0513    :A looping roller coaster where the riders ride in a standing position
+STR_0093    :ハイブリッドコースター
+STR_0094    :シングルレール・ジェットコースター
+STR_0095    :アルパインコースター
+STR_0096    :クラシック木製ジェットコースター
+STR_0097    :クラシック・スタンドアップ・ジェットコースター
+STR_0512    :スパイラルリフトヒルと滑らかで曲がりくねった落下を持つコンパクトなジェットコースター
+STR_0513    :ライダーが立った状態で乗るループ型ジェットコースター
 STR_0514    :コースターのコースにぶら下がった車両は、コーナーにさしかかるとコースサイドに振り出されま
-STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
+STR_0515    :トラックの下に支えられた車両を持つスチール製ジェットコースターで、多くの複雑で曲がりくねったトラック要素があります
 STR_0516    :まだ大きなライドに挑戦する勇気がない人々のための、穏やかなローラーコースターです。
 STR_0517    :狭い軌間の線路に沿って移動するミニチュア電車に乗客を乗せる。
 STR_0518    :モノレールトラックを移動する電車。
 STR_0519    :乗客はう特別にデザインされた車両に乗り、コーナーで制限なく振られる。
-STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
+STR_0520    :ゲストが水上バイクを運転または漕ぐことができるドックプラットフォーム
 STR_0521    :小さなネズミ型の車両がヘアピンコーナーと急な落下を横断して不安定に身を乗り出す。強烈度が高いはずです。
 STR_0522    :単線のコースタートラックに沿って走る、馬の形をした車両に乗客を乗せる。
 STR_0523    :乗客は、軌道の付いたルートを動力付きの車両でゆっくりと移動します
@@ -114,14 +119,14 @@ STR_0528    :ねじれた半円（あるいは完全に覆われた）パイプ�
 STR_0529    :古い鉄道を模して作られた金属のコースタートラックを鉱山電車テーマのローラーコースターが疾走する。
 STR_0530    :車両は鋼のケーブルに吊られてライドの端からもう一方の端まで行き、そして戻ってくる。
 STR_0531    :コークスクリューやループを伴う金属製トラックの小型ローラーコースター。
-STR_0532    :Maze is constructed from 6-foot tall hedges or walls, and guests wander around the maze leaving only when they find the exit
+STR_0532    :迷路は6フィートの高さの生け垣や壁で構成されており、ゲストは出口を見つけるまで迷路の中を歩き回ります
 STR_0533    :内部に階段を、外部に螺旋滑り台とマットを有する木造の建築物。
 STR_0534    :乗客が自分で運転するガソリンエンジンのゴーカート。
 STR_0535    :丸太の形のボードが溝に沿って移動し、急斜面で乗客を水浸しにする。
 STR_0536    :滝の水しぶきや急流部分を通る広い溝に沿って流れる円形のボート。
-STR_0537    :Self-drive electric dodgem cars
-STR_0538    :Large swinging pirate ship
-STR_0539    :Ship is attached to an arm with a counterweight at the opposite end, and swings through a complete 360 degrees
+STR_0537    :自動運転の電動ドッジカー
+STR_0538    :大きな振り子式海賊船
+STR_0539    :船は反対側にカウンターウェイトのあるアームに取り付けられており、360度完全に振り子のように揺れます
 STR_0540    :食べ物を売ります店です。
 STR_0542    :飲み物を売ります店です。
 STR_0544    :お土産を売ります店です。
@@ -134,11 +139,11 @@ STR_0551    :ジオデシック・ドームの中で3D映画が放映されて�
 STR_0552    :星の形を形成して回転するゴンドラにさらに回転アームが接続。
 STR_0553    :同心上の旋回リングが乗客をあらゆる方向に振り回す。
 STR_0554    :リニア誘導モーターで加速された車両が垂直トラックを上昇し、それから乗り場まで自由落下する
-STR_0555    :Guests ride in a lift up or down a vertical tower to get from one level to another
+STR_0555    :ゲストは垂直のタワーのリフトに乗って、ある階から別の階へ移動します
 STR_0556    :究極の自由落下体験のために、完全な垂直軌道を降下するとても広幅の車両を持つコースターです。
 STR_0557    :お金が無くなったゲストが使うキャッシュ機です。
-STR_0558    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
-STR_0559    :Large themed building containing scary corridors and spooky rooms
+STR_0558    :ライダーは、3本の長い回転アームの端を回るペアの座席に乗ります
+STR_0559    :怖い廊下や不気味な部屋がある大きなテーマビル
 STR_0560    :気分が悪くなったピープや怪我をしたピープを救護するための施設。
 STR_0561    :サーカステントの中でサーカス用動物とピエロがショーを行う。
 STR_0562    :特別なエフェクトと景観を有する多段トラックを移動するエンジン付き車両。
@@ -160,24 +165,30 @@ STR_0580    :300フィート以上のリフトアップとドロップが可能�
 STR_0581    :座席のリングが穏やかに回転しながら塔の最上部まで持ち上げられ、それから自由落下し、磁器ブレーキにより最下部でゆっくり停止する。
 STR_0582    :自分で運転するホバークラフトです。
 STR_0583    :その家の中は通路も部屋も曲がりくねっており、訪れた人々の方向感覚を狂わせる。
-STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
+STR_0584    :特別な自転車がスチールのモノレールトラックの上を走り、ライダーのペダル漕ぎによって推進されます
 STR_0585    :トラックに吊り下げられた席に座り、乗客は休む間もなくループやツイストを体験する。
 STR_0586    :ボート型の車両がねじれたカーブや急降下を含むトラックを滑走し、穏やかな川のセクションに着水する。
 STR_0587    :車両は空圧により勢いよく発車して垂直トラックを駆け上がり、トップに達して別方向を垂直落下して乗り場に帰還する。
 STR_0588    :連結していない個々の車両が、ヘアピンターンと急降下のあるジグザグのトラックを滑走する。
 STR_0589    :４本のアームにより周期的に上下する、空飛ぶじゅうたんをテーマにした車。
 STR_0590    :ミニ潜水艦に乗って水中のコースを走る。
-STR_0591    :Raft-shaped boats gently meander around a river track
+STR_0591    :いかだの形をしたボートが川のコースを穏やかに漂います
 STR_0593    :ポッドを吊した回転ホイールが、回転を始めた後に支持アームによって上に傾けられる。
 STR_0598    :乗り場から一気に加速される車両が、トラックを垂直に上昇して、もう一方の垂直トラックを戻る。
 STR_0599    :コンパクトなローラーコースターで個別の車両を持ち、スムーズなひねり急降下があります
 STR_0600    :動力を持つ鉱山の列車が、スムースなツイスト・トラック・レイアウトに沿って走る。
 STR_0602    :ローラーコースター車両はリニア誘導モーター(LIM)で加速され、ツイストや回転のあるコースを疾走する。
+STR_0603    :スチールトラックを持つ木製スタイルのジェットコースターで、急な落下や反転が可能です。
+STR_0604    :ライダーは狭いモノレールトラックに1列に並んで乗り、急な反転や方向転換をしながらレースします
+STR_0605    :ライダーは曲がりくねったスチールトラックをトボガンで滑り降り、ブレーキを使ってスピードを調整します
+STR_0606    :古いスタイルの木製ジェットコースターで、速くて揺れる乗り心地が特徴で、たくさんのエアタイムや横Gを感じられ、「制御を失った」ようなデザインになっています
+STR_0607    :激しい古いスタイルのスチール製ループ型ジェットコースターで、ライダーは立った状態で乗ります
 STR_0767    :来客{INT32}
 STR_0768    :清掃員{INT32}
 STR_0769    :整備士{INT32}
 STR_0770    :警備員{INT32}
 STR_0771    :エンターテイナー{INT32}
+STR_0777    :名前のない公園
 STR_0778    :バナー
 STR_0779    :1日
 STR_0780    :2日
@@ -237,7 +248,6 @@ STR_0833    :ゲームをポーズする
 STR_0834    :ディスクとゲームオプション
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-# The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :OpenRCT2について
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
@@ -1878,7 +1888,7 @@ STR_2568    :Execute
 STR_2569    :Snapshot
 STR_2570    :Insert
 STR_2571    :Delete
-STR_2572    :ヘルプ
+STR_2572    :Help
 STR_2618    :Menu
 STR_2621    :NumPad 0
 STR_2622    :NumPad 1
@@ -1897,20 +1907,20 @@ STR_2635    :NumPad .
 STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :Scroll
-STR_2680    :All research complete
-STR_2684    :Large group of guests arrive
-STR_2685    :Simplex Noise Parameters
-STR_2686    :Low:
-STR_2687    :High:
-STR_2688    :Base Frequency:
-STR_2689    :Octaves:
-STR_2690    :Map Generation
+STR_2680    :すべての研究の完了
+STR_2684    :大量のゲストが到着する
+STR_2685    :シンプルノイズのパラメータ
+STR_2686    :最小土地高さ：
+STR_2687    :最大土地高さ：
+STR_2688    :基準周波数：
+STR_2689    :オクターブ：
+STR_2690    :マップジェネレーション
 STR_2691    :ベースの高さ:
-STR_2692    :Water level:
-STR_2693    :Terrain:
-STR_2694    :Generate
-STR_2695    :Random terrain
-STR_2696    :Place trees
+STR_2692    :水高さ：
+STR_2693    :地形：
+STR_2694    :生成する
+STR_2695    :地形をランダム化する
+STR_2696    :木を配置する
 STR_2700    :自動セーブ頻度:
 STR_2701    :毎1分
 STR_2702    :毎5分
@@ -2072,20 +2082,20 @@ STR_2992    :バナーのテキト
 STR_2993    :テキトを入力してください:
 STR_2994    :看板の文字を変更
 STR_2995    :この看板を除去する
-STR_2996    :{BLACK}ABC
-STR_2997    :{GREY}ABC
-STR_2998    :{WHITE}ABC
-STR_2999    :{RED}ABC
-STR_3000    :{GREEN}ABC
-STR_3001    :{YELLOW}ABC
-STR_3002    :{TOPAZ}ABC
-STR_3003    :{CELADON}ABC
-STR_3004    :{BABYBLUE}ABC
-STR_3005    :{PALELAVENDER}ABC
-STR_3006    :{PALEGOLD}ABC
-STR_3007    :{LIGHTPINK}ABC
-STR_3008    :{PEARLAQUA}ABC
-STR_3009    :{PALESILVER}ABC
+STR_2996    :{BLACK}あいう
+STR_2997    :{GREY}あいう
+STR_2998    :{WHITE}あいう
+STR_2999    :{RED}あいう
+STR_3000    :{GREEN}あいう
+STR_3001    :{YELLOW}あいう
+STR_3002    :{TOPAZ}あいう
+STR_3003    :{CELADON}あいう
+STR_3004    :{BABYBLUE}あいう
+STR_3005    :{PALELAVENDER}あいう
+STR_3006    :{PALEGOLD}あいう
+STR_3007    :{LIGHTPINK}あいう
+STR_3008    :{PEARLAQUA}あいう
+STR_3009    :{PALESILVER}あいう
 STR_3010    :ファイルをロードすることができません…
 STR_3011    :ファイルには無効なデータが含まれています
 STR_3045    :音楽のスタイルの選定
@@ -2109,7 +2119,7 @@ STR_3066    :名手のパーク
 STR_3067    :現実のパーク
 STR_3068    :外のパーク
 STR_3069    :トップの部分
-STR_3070    :Slope to Level
+STR_3070    :傾斜から水平
 STR_3071    :{WINDOW_COLOUR_2}パーク中で同一価格
 STR_3072    :この価格を園内全体に使用するかどうかを選択
 STR_3073    :{RED}警告:遊園地のランクが700以下に下がりました!{NEWLINE} 4週間以内にランクを上げることができなかった場合、遊園地は閉鎖されてしまいます
@@ -2171,7 +2181,7 @@ STR_3141    :ケーブルリフトヒルでは各乗物の複数周回路は不�
 STR_3142    :{WINDOW_COLOUR_2}収容能力: {BLACK}{STRINGID}
 STR_3143    :マップ上の人々を表示
 STR_3144    :マップ上の乗物と売店を表示
-STR_3160    :Select the number of circuits per ride
+STR_3160    :乗り物ごとの周回数を選択する
 STR_3162    :充分なメモリーを割り当てられません
 STR_3163    :新規データをインストール中: 
 STR_3164    :{BLACK}{COMMA16} 選択(最高{COMMA16})
@@ -2399,7 +2409,7 @@ STR_5122    :RCT1のようにライドタイプ選定
 STR_5123    :ライドを新品にする
 STR_5125    :全て解体できる
 STR_5126    :ランダムのタイトル音楽
-STR_5127    :While dragging, paint landscape instead of changing elevation
+STR_5127    :ドラッグ中に、標高を変更するのではなく風景を塗る
 STR_5128    :選択範囲
 STR_5129    :{COMMA16}と{COMMA16}の間に選択範囲を入力して下さい。
 STR_5130    :マップサイズ
@@ -2409,11 +2419,11 @@ STR_5133    :パーク敷地のもっと小量の調整
 STR_5134    :パーク敷地のもっと大量の調整
 STR_5135    :パーク敷地や土地利用権を購入する
 STR_5136    :パーク敷地
-STR_5137    :Unlock operating limits
+STR_5137    :運営制限を解除する
 STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
-STR_5140    :Disable brakes failure
-STR_5141    :Disable all breakdowns
+STR_5140    :ブレーキの故障を無効にする
+STR_5141    :すべての故障を無効にする
 STR_5142    :通常スピード
 STR_5143    :クイックスピード
 STR_5144    :高速スピード
@@ -2427,8 +2437,8 @@ STR_5151    :,
 STR_5152    :.
 STR_5153    :テーマを変更する
 STR_5154    :ハードウェア表示
-STR_5155    :Allow testing of unfinished tracks
-STR_5156    :Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
+STR_5155    :未完成のトラックのテストを許可する
+STR_5156    :トラックが未完成でもほとんどの乗り物タイプのテストを許可し、ブロックセクションモードには適用されません
 STR_5158    :メニューに戻る
 STR_5159    :OpenRCT2終了
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID} {POP16}{COMMA16}年
@@ -2521,7 +2531,7 @@ STR_5261    :フィルター
 STR_5262    :ワッキーワールド
 STR_5263    :タイムツイスター
 STR_5264    :カスタム
-STR_5265    :Select which content sources are visible
+STR_5265    :どのコンテンツソースを表示するか選択する
 STR_5266    :表示
 STR_5267    :文化と単位
 STR_5268    :音楽
@@ -2535,15 +2545,15 @@ STR_5276    :オブジェクトの名を入力して下さい。
 STR_5277    :クリア
 STR_5278    :サンドボックスモード
 STR_5279    :サンドボックスモードを切る
-STR_5280    :Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
-STR_5281    :Features
+STR_5280    :マップウィンドウを通じて土地所有設定の編集を許可し、通常はシナリオエディターに制限される他のオプションも許可する
+STR_5281    :機能
 STR_5282    :RCT1のライド「稼動／閉鎖」信号機
 STR_5283    :RCT1のパーク「稼動／閉鎖」信号機
 STR_5284    :RCT1ののシナリオ選定フォント
-STR_5287    :Ride is already broken down
-STR_5288    :Ride is closed
-STR_5289    :No breakdowns available for this ride
-STR_5290    :Fix ride
+STR_5287    :乗り物はすでに故障しています
+STR_5288    :乗り物は閉鎖されています
+STR_5289    :この乗り物には故障が発生しません
+STR_5290    :乗り物を修理する
 STR_5291    :故障を強制できません
 STR_5292    :故障を強制する
 STR_5293    :ライド/アトラクションの閉鎖
@@ -2553,10 +2563,10 @@ STR_5296    :遊園地を閉める
 STR_5297    :遊園地を開ける
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
-STR_5300    :Quick fire staff
-STR_5301    :Clear your loan
+STR_5300    :スタッフを即座に解雇する
+STR_5301    :ローンを削除する
 STR_5302    :借入額をクリアする
-STR_5303    :Allow building in pause mode
+STR_5303    :ポーズ中の建設を許可する
 STR_5304    :タイトル順序:
 STR_5305    :RollerCoaster Tycoon 1
 STR_5306    :RollerCoaster Tycoon 1 (AA)
@@ -2571,7 +2581,7 @@ STR_5314    :タイルインスペクター
 STR_5335    :ライド入口
 STR_5336    :ライド出口
 STR_5337    :パーク入口
-STR_5338    :Element type
+STR_5338    :要素タイプ
 STR_5339    :ベースの高さ
 STR_5340    :クリアランス高さ
 STR_5343    :自動的にスタッフを配置する
@@ -2599,16 +2609,16 @@ STR_5364    :15以下
 STR_5365    :{BLACK}スタッフのスピード:
 STR_5366    :普通
 STR_5367    :速い
-STR_5368    :Reset crash status
+STR_5368    :クラッシュ状態をリセットする
 STR_5371    :オブジェクト選定
-STR_5372    :Invert right mouse dragging
+STR_5372    :右マウスドラッグを反転する
 STR_5373    :名前 {STRINGID}
 STR_5374    :日時 {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5404    :Name already exists
+STR_5404    :名前はすでに存在します
 STR_5440    :フォーカス損失時に全画面を最小化
-STR_5442    :Force park rating:
+STR_5442    :パーク評価を設定する：
 STR_5447    :タイプ {STRINGID}
 STR_5448    :ライド／乗り物 {STRINGID}
 STR_5449    :ゲームのスピードを下げる
@@ -2623,10 +2633,10 @@ STR_5457    :サポート制限を無効にする
 STR_5458    :右へ回転する
 STR_5459    :左へ回転する
 STR_5460    :ビュウを左へ回転する
-STR_5461    :Set guests’ parameters
+STR_5461    :すべてのゲストのパラメータ
 STR_5462    :{CURRENCY}
 STR_5463    :楽しむの目的
-STR_5464    :General
+STR_5464    :一般設定
 STR_5465    :天気
 STR_5466    :スタッフ
 STR_5467    :ALT + 
@@ -2650,7 +2660,7 @@ STR_5484    :{BLACK}(残り{COMMA16}週間)
 STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :最近のメッセージの表示
-STR_5489    :Show only tracked guests
+STR_5489    :トラッキングされたゲストのみ表示する
 STR_5490    :フォーカス損失時に音を切る
 STR_5491    :発明品リスト
 STR_5492    :シナリオ設定
@@ -2666,7 +2676,7 @@ STR_5502    :マルチプレイ
 STR_5503    :ホスト名またはIPアドレスを入力してください:
 STR_5504    :マルチプレイのステイタスの表示
 STR_5505    :サーバに接続できない
-STR_5506    :Guests ignore intensities
+STR_5506    :ゲストは強度を無視する
 STR_5510    :デフォルトのサウンドデバイス
 STR_5511    :(未知)
 STR_5512    :名前を保存
@@ -2711,24 +2721,24 @@ STR_5550    :{POP16}{POP16}{COMMA16}年 {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}
 STR_5551    :年日月
 STR_5552    :{POP16}{POP16}{COMMA16}年 {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Steamオーバーレイが開いている時に一時停止する
-STR_5554    :Enable mountain tool
-STR_5555    :Show vehicles from other track types
+STR_5554    :マウンテンツールを切り替える
+STR_5555    :他のトラックタイプの乗り物を表示する
 STR_5556    :プレイヤーを蹴る
 STR_5557    :非同期化後に接続を維持する（マルチプレイ）
-STR_5558    :A restart is required for this setting to take effect
-STR_5559    :10 min. inspections
-STR_5560    :Sets the inspection time to ‘Every 10 minutes’ on all rides
-STR_5561    :Failed to load language
+STR_5558    :この設定を適用するには再起動が必要です
+STR_5559    :10分ごとの点検
+STR_5560    :すべての乗り物の点検時間を「10分ごと」に設定する。
+STR_5561    :言語の読み込みに失敗しました
 STR_5562    :ご注意！
-STR_5563    :This feature is currently unstable, take extra caution.
+STR_5563    :この機能は現在不安定ですので、十分に注意してください
 STR_5566    :パスワード:
 STR_5567    :発表する
 STR_5568    :パスワードが必要
 STR_5569    :このサーバはパスワードが必要
 STR_5570    :リストを更新する
-STR_5571    :Join Game
-STR_5572    :Add To Favourites
-STR_5573    :Remove From Favourites
+STR_5571    :ゲームに参加する
+STR_5572    :お気に入りに追加す
+STR_5573    :お気に入りから削除する
 STR_5574    :サーバの名前:
 STR_5575    :プレイヤーの制限:
 STR_5576    :ポート:
@@ -2737,12 +2747,12 @@ STR_5578    :ロシア・ルーブル (₽)
 STR_5579    :ウインドウのスケール:
 STR_5580    :チェコ・コルナ (Kč)
 STR_5581    :FPSを表示する
-STR_5582    :Trap mouse cursor in window
+STR_5582    :ウィンドウ内でマウスカーソルを制限する
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
-STR_5585    :Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
-STR_5586    :Automatically open shops and stalls
-STR_5587    :Shops and stalls will be automatically opened after building them
+STR_5585    :乗り物の運営制限を解除し、{VELOCITY} のリフトヒルなどを可能にします
+STR_5586    :ショップと屋台を自動的に開く
+STR_5587    :ショップと屋台は建設後に自動的に開かれます
 STR_5588    :他のプレイヤーと一緒にゲームする
 STR_5589    :知らせ設定
 STR_5590    :パークの賞罰
@@ -2761,16 +2771,16 @@ STR_5603    :ゲストがライドを出る
 STR_5604    :ゲストが売り物を買った
 STR_5605    :ゲストが設備を使った
 STR_5606    :ゲストが死んだ
-STR_5607    :Forcefully remove selected map element.
-STR_5608    :BH
-STR_5609    :CH
-STR_5610    :Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.
+STR_5607    :選択したマップ要素を強制的に削除する
+STR_5608    :ベ高
+STR_5609    :ク高
+STR_5610    :現在選択されているマップ要素を削除します。これは強制的に削除されるため、現金は使用されず、得られることもありません。使用には注意してください。
 STR_5611    :化
 STR_5612    :お化けを示すフラグ
 STR_5613    :壊
 STR_5614    :破損を示すフラグ
-STR_5615    :L
-STR_5616    :Last element for tile flag
+STR_5615    :最後
+STR_5616    :タイルフラグの最後の要素
 STR_5617    :選択された要素を上に移動する
 STR_5618    :選択された要素を下に移動する
 STR_5619    :ローラーコースタータイクーン
@@ -2789,24 +2799,24 @@ STR_5631    :オリジナルDLCパーク
 STR_5632    :自分だけのビルド…
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
-STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
-STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
+STR_5635    :{WINDOW_COLOUR_2}支出金額：{BLACK}{CURRENCY2DP}
+STR_5636    :{WINDOW_COLOUR_2}実行されたコマンド：{BLACK}{COMMA16}
 STR_5637    :それはできません…
 STR_5638    :アクセス拒否
-STR_5639    :Show list of players
-STR_5640    :Manage groups
+STR_5639    :プレイヤーのリストを表示する
+STR_5640    :グループを管理する
 STR_5641    :デファルトのグループ:
 STR_5642    :グループ
 STR_5643    :新しいグループ
 STR_5644    :グループを退ける
 STR_5645    :チャット
 STR_5646    :テラフォーム
-STR_5647    :Toggle Pause
-STR_5648    :Set Water Level
-STR_5649    :Create Ride
-STR_5650    :Remove Ride
-STR_5651    :Build Ride
-STR_5652    :Ride Properties
+STR_5647    :ポーズを切り替える
+STR_5648    :水位を設定する
+STR_5649    :乗り物を作成する
+STR_5650    :乗り物を削除する
+STR_5651    :乗り物を建設する
+STR_5652    :乗り物の設定
 STR_5653    :景色物
 STR_5654    :歩道
 STR_5655    :ゲスト
@@ -2817,22 +2827,22 @@ STR_5659    :プレイヤーを蹴る
 STR_5660    :グループを変更する
 STR_5661    :プレイヤーのグループに設定する
 STR_5662    :N/A
-STR_5663    :Clear Landscape
+STR_5663    :景色をクリアする
 STR_5664    :カンニング
-STR_5665    :Toggle Scenery Cluster
-STR_5666    :Passwordless Login
+STR_5665    :景観クラスタを切り替える
+STR_5666    :パスワードなしログイン
 STR_5701    :{WINDOW_COLOUR_2}最後のアクション: {BLACK}{STRINGID}
 STR_5702    :プレイヤーの最後のアクションをに移動
 STR_5703    :ホストを蹴られません
 STR_5704    :最後のアクション
-STR_5705    :Can’t set to this group
-STR_5706    :Can’t remove group that players belong to
-STR_5707    :This group cannot be modified
-STR_5708    :Can’t change the group that the host belongs to
+STR_5705    :このグループに設定できません
+STR_5706    :プレイヤーが所属しているグループは削除できません
+STR_5707    :このグループは変更できません
+STR_5708    :ホストが所属するグループは変更できません
 STR_5709    :グループ名を変える
 STR_5710    :グループ名
 STR_5711    :グループ名を入力してください。
-STR_5712    :Can’t modify permission that you do not have yourself
+STR_5712    :自分が持っていない権限を変更することはできません
 STR_5713    :プレイヤーを蹴る
 STR_5714    :設定ウィンドウの表示
 STR_5715    :新しいゲーム
@@ -2869,9 +2879,9 @@ STR_5750    :接続が切断されました。
 STR_5751    :データなし
 STR_5752    :{OUTLINE}{RED}{STRING}が切断されました
 STR_5753    :{OUTLINE}{RED}{STRING}が切断されました ({STRING})
-STR_5754    :Bad Player Name
+STR_5754    :無効なプレイヤー名
 STR_5755    :不適切なソフトウェアバージョン（サーバは{STRING}を使用しています）
-STR_5756    :Bad Password
+STR_5756    :無効なパスワード
 STR_5757    :サーバがいっぱいです
 STR_5758    :{OUTLINE}{GREEN}{STRING}がゲームに参加しました。
 STR_5759    :地図をダウンロード中…
@@ -2879,8 +2889,8 @@ STR_5760    :香港ドル (HK$)
 STR_5761    :ニュー台湾ドル (NT$)
 STR_5762    :人民元 (CN¥)
 STR_5763    :全てのファイル
-STR_5764    :Invalid ride type
-STR_5765    :Cannot edit rides of invalid type
+STR_5764    :無効な乗り物タイプ
+STR_5765    :無効なタイプの乗り物は編集できません
 STR_5766    :ハンガリーのフォリント(Ft)
 STR_5767    :収入
 STR_5768    :顧客総数
@@ -2901,93 +2911,93 @@ STR_5782    :今から接続中です。「{STRING}」でチャットできま�
 STR_5783    :{WINDOW_COLOUR_2}シナリオがロック中
 STR_5784    :{BLACK}このシナリオのロックを解除するために前のシナリオを完了して下さい。
 STR_5785    :グループの名を変えません。
-STR_5786    :Invalid group name
-STR_5787    :{COMMA32} players online
-STR_5788    :Default inspection interval:
+STR_5786    :無効なグループ名
+STR_5787    :{COMMA32}人のプレイヤーがオンライン
+STR_5788    :デフォルトの点検間隔：
 STR_5789    :電光効果を無効にする
-STR_5790    :Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
-STR_5791    :Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to “this year”
-STR_5792    :Fixes all broken down rides
-STR_5793    :Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
-STR_5794    :Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
-STR_5795    :Guests ride every attraction in the park{NEWLINE}even if the intensity is extremely high
-STR_5796    :Forces the park to close or open
-STR_5797    :Disables weather changes and{NEWLINE}freezes the selected weather
-STR_5798    :Allows building actions in pause mode
-STR_5799    :Disables ride breakdowns and crashes due to brake failure
-STR_5800    :Prevents rides from breaking down
-STR_5801    :Disable littering
-STR_5802    :Stops guests from littering and vomiting
-STR_5803    :Rotate selected map element
+STR_5790    :RCT1スタイルの料金を切り替える{NEWLINE}(例：乗り物の料金と入場料の両方)
+STR_5791    :すべての乗り物の信頼性を100%に設定し{NEWLINE}その建設日を「今年」にリセットする
+STR_5792    :故障した乗り物をすべて修理する
+STR_5793    :乗り物のクラッシュ履歴をリセットし、ゲストが安全ではないと不満を言わないようにする
+STR_5794    :一部のシナリオでは、公園内の{NEWLINE}すでに存在する乗り物の編集が無効になります{NEWLINE}このチートはその制限を解除します
+STR_5795    :ゲストは公園内のすべてのアトラクションに乗ります{NEWLINE}たとえ強度が非常に高くても
+STR_5796    :パークを強制的に閉鎖または開放する
+STR_5797    :天候の変化を無効にし、選択した天候を固定する
+STR_5798    :ポーズモードでの建設行動を許可する
+STR_5799    :ブレーキの故障による乗り物の故障とクラッシュを無効にする
+STR_5800    :乗り物の故障を防ぐ
+STR_5801    :ごみを散らかさないようにする
+STR_5802    :ゲストがごみを捨てたり嘔吐したりするのを止める
+STR_5803    :選択したマップ要素を回転させる
 STR_5804    :音をミュートする
-STR_5805    :If checked, your server will be added to the{NEWLINE}public server list so everyone can find it
-STR_5806    :Toggle windowed mode
+STR_5805    :チェックされている場合、あなたのサーバーは{NEWLINE}公共サーバーリストに追加され、誰でも見つけられるようになります。
+STR_5806    :ウィンドウモードを切り替える
 STR_5807    :{WINDOW_COLOUR_2}ライドの数: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}ショップの数: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}インフォメーションキオスクと設備などの数: {BLACK}{COMMA16}
-STR_5810    :Disable vehicle limits
-STR_5811    :If checked, you can have up to{NEWLINE}255 cars per train and 31{NEWLINE}trains per ride
-STR_5812    :Show multiplayer window
+STR_5810    :乗り物の制限を無効にする
+STR_5811    :チェックされている場合、1編成あたり最大255台の車両と、1つの乗り物に対して31編成を持つことができます。
+STR_5812    :マルチプレイヤーのウィンドウを表示する
 STR_5813    :「{STRING}」
 STR_5814    :{WINDOW_COLOUR_1}「{STRING}」
 
 #tooltips
-STR_5815    :Display FPS counter in-game
-STR_5816    :Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5819    :[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
-STR_5820    :Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
-STR_5822    :Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
-STR_5823    :Display banners in uppercase (RCT1 behaviour)
+STR_5815    :ゲーム内でFPSカウンターを表示する
+STR_5816    :ゲームのスケール比率を設定する。{NEWLINE}高解像度でプレイする際に最も便利
+STR_5819    :[ハードウェアディスプレイが必要]{NEWLINE}Steamのゲーム内オーバーレイが開かれるとゲームを一時停止する
+STR_5820    :フルスクリーンモードでフォーカスを失った場合、ゲームを最小化する
+STR_5822    :昼と夜をサイクルする。{NEWLINE}フルサイクルはゲーム内の1か月を要する
+STR_5823    :バナーを大文字で表示する（RCT1の動作）
 STR_5824    :雷雨時に電光効果を無効にする
-STR_5825    :Keep the mouse cursor in the window
-STR_5826    :Invert right mouse dragging of the viewport
-STR_5827    :Sets the colour scheme used for the GUI
-STR_5828    :Changes what measurement format is used for distances, speed, etc.
-STR_5829    :Changes what currency format is used. Purely visual, there is no exact exchange rate implementation
-STR_5830    :Changes what language is used
-STR_5831    :Changes what format the{NEWLINE}temperature is displayed in
-STR_5832    :Show height as generic units instead of measurement format set under “Distance and Speed”
-STR_5833    :Changes what date format is used
-STR_5834    :Select which audio device OpenRCT2 will use
-STR_5835    :Mute the game if the window loses focus
-STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy ‘data/css17.dat’ from your RCT1 game folder to ‘data/css50.dat’ in your RCT2 folder, or set the path to RCT1 in the Miscellaneous tab.
-STR_5837    :Create and manage custom UI themes
+STR_5825    :マウスカーソルをウィンドウ内に留める
+STR_5826    :ビューポートの右マウスドラッグを反転する
+STR_5827    :GUIに使用するカラースキームを設定する
+STR_5828    :距離、速度などに使用する測定形式を変更する
+STR_5829    :使用する通貨形式を変更する。純粋に視覚的なもので、正確な為替レートの実装はありません
+STR_5830    :使用する言語を変更する
+STR_5831    :温度の表示形式を変更する
+STR_5832    :高さを「距離と速度」の下で設定した測定形式ではなく一般的な単位で表示する
+STR_5833    :使用する日付形式を変更する
+STR_5834    :OpenRCT2が使用するオーディオデバイスを選択する
+STR_5835    :ウィンドウのフォーカスを失った場合、ゲームをミュートにする
+STR_5836    :メインメニューで使用する音楽を選択する。{NEWLINE}RCT1のテーマを選択するには、RCT1ゲームフォルダーから「data/css17.dat」をコピーして、RCT2フォルダーの「data/css50.dat」に貼り付けるか、雑多タブでRCT1のパスを設定する必要があります。
+STR_5837    :カスタムUIテーマを作成し、管理する
 STR_5838    :ツールバーで財務表のボタンを表示する
 STR_5839    :ツールバーで研究設定のボタンを表示する
 STR_5840    :ツールバーでカンニングのボタンを表示する
 STR_5841    :ツールバーで最近のメッセージのボタンを表示する
-STR_5842    :Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
-STR_5843    :Enable scenario unlocking (RCT1 behaviour)
-STR_5844    :Stay connected to a multiplayer server{NEWLINE}even if a desync or error occurs
-STR_5845    :Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
-STR_5846    :Set often OpenRCT2 automatically saves
-STR_5847    :Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
-STR_5849    :Automatically place{NEWLINE}newly hired staff members
-STR_5851    :Sets the default inspection interval{NEWLINE}on newly built rides
-STR_5853    :Toggle sound effects on/off
-STR_5854    :Toggle ride music on/off
-STR_5855    :Set regular fullscreen, borderless fullscreen{NEWLINE}or windowed display
-STR_5856    :Set game resolution when in fullscreen mode
+STR_5842    :シナリオを難易度（RCT2の動作）または出典ゲーム（RCT1の動作）によってタブに分ける
+STR_5843    :シナリオの段階的なアンロックを有効にする（RCT1の動作）
+STR_5844    :デシンクやエラーが発生しても、マルチプレイヤーサーバーに接続を維持する
+STR_5845    :ツールバーにデバッグツールのボタンを追加する。{NEWLINE}開発者コンソールのキーボードショートカットを有効にする
+STR_5846    :OpenRCT2が自動的に保存する頻度を設定する
+STR_5847    :タイトル画面で使用される公園のシーケンスを選択する。{NEWLINE}RCT1と2のタイトルシーケンスは、機能するためにインポートされたシナリオが必要です
+STR_5849    :新しく雇ったスタッフメンバーを自動的に配置する
+STR_5851    :新しく建設した乗り物のデフォルトの点検間隔を設定する
+STR_5853    :効果音のオン/オフを切り替える
+STR_5854    :乗り物の音楽のオン/オフを切り替える
+STR_5855    :通常のフルスクリーン、ボーダレスフルスクリーン、{NEWLINE}またはウィンドウ表示を設定する
+STR_5856    :フルスクリーンモードのゲーム解像度を設定する
 STR_5857    :ゲーム設定
-STR_5858    :Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
-STR_5859    :Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
-STR_5860    :Toggle original/decompiled track drawing
-STR_5861    :Key verification failure.
-STR_5862    :Block unknown players.
-STR_5863    :Only allow players with known keys to join.
-STR_5864    :This server only allows whitelisted players to connect.
-STR_5865    :Log chat history
-STR_5866    :Logs all chat history to files in your user directory.
-STR_5867    :{WINDOW_COLOUR_2}プロバイダ名： {BLACK}{STRING}
-STR_5868    :{WINDOW_COLOUR_2}プロバイダのメール： {BLACK}{STRING}
-STR_5869    :{WINDOW_COLOUR_2}プロバイダのウェブサイト： {BLACK}{STRING}
+STR_5858    :表示にCPUではなくGPUを使用する。画面キャプチャソフトウェアとの互換性を改善します。パフォーマンスがわずかに低下する可能があります
+STR_5859    :視覚的に滑らかなゲームプレイのためにフレームツイーニングを有効にする。無効にすると、{NEWLINE}ゲームは40fpsで実行されます
+STR_5860    :オリジナル/デコンパイルされたトラック描画を切り替える
+STR_5861    :キーの確認に失敗しました。
+STR_5862    :不明なプレイヤーをブロックする。
+STR_5863    :知られたキーを持つプレイヤーのみ参加を許可する。
+STR_5864    :このサーバーはホワイトリストに登録されたプレイヤーのみ接続を許可します
+STR_5865    :チャット履歴を記録する
+STR_5866    :すべてのチャット履歴をユーザーディレクトリのファイルに記録する
+STR_5867    :{WINDOW_COLOUR_2}プロバイダ名：{BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}プロバイダのメール：{BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}プロバイダのウェブサイト：{BLACK}{STRING}
 STR_5870    :サーバ報知の表示
-STR_5871    :Plants don’t age
-STR_5872    :Disable plant ageing such that they don’t wilt.
-STR_5873    :Allow chain lifts on all track pieces
-STR_5874    :Allows any piece of track to be made into a chain lift
+STR_5871    :植物の成長を無効にする
+STR_5872    :植物が枯れないように成長を無効にする
+STR_5873    :すべてのトラック部分でチェーンリフトを許可する
+STR_5874    :任意のトラック部分をチェーンリフトにすることを許可する
 STR_5875    :レンダリングエンジン:
-STR_5876    :ゲームのレンダリングに使用するエンジン。
+STR_5876    :ゲームのレンダリングに使用するエンジン
 STR_5877    :ソフトウェア
 STR_5878    :ソフトウェア（ハードウェア表示）
 STR_5879    :OpenGL（試験的）
@@ -2996,35 +3006,35 @@ STR_5881    :選定ないだけ
 STR_5882    :カスタム通貨記号
 STR_5883    :カスタム通貨記号設定
 STR_5884    :{WINDOW_COLOUR_2}円相場:
-STR_5885    :{WINDOW_COLOUR_2}は{COMMA32}GBP(£)と等価です。
+STR_5885    :{WINDOW_COLOUR_2}は{COMMA32}GBP(£)と等価です
 STR_5886    :{WINDOW_COLOUR_2}通貨記号:
 STR_5887    :接頭辞
 STR_5888    :接尾辞
 STR_5889    :カスタム通貨記号
-STR_5890    :通貨記号を入力して下さい。
+STR_5890    :通貨記号を入力して下さい
 STR_5891    :デフォルト
 STR_5892    :デフォルト・ディレクトリに移動
 STR_5893    :円相場
-STR_5894    :円相場を入力して下さい。
+STR_5894    :円相場を入力して下さい
 STR_5895    :トラックをセーブする
-STR_5896    :Track save failed!
-STR_5898    :{BLACK}Can’t load the track, the file might be {newline}corrupted, broken or missing!
-STR_5899    :Toggle paint debug window
-STR_5900    :Use original drawing code
-STR_5901    :Show segment heights
-STR_5902    :Show bounding boxes
-STR_5903    :Show paint debug window
-STR_5904    :Reset date
-STR_5905    :A map generation tool that automatically creates a custom landscape
+STR_5896    :トラックの保存に失敗しました！
+STR_5898    :{BLACK}トラックを読み込めません。ファイルが破損しているか、壊れているか、存在しない可能性があります！
+STR_5899    :塗装デバッグウィンドウを切り替える
+STR_5900    :オリジナルの描画コードを使用する
+STR_5901    :セグメントの高さを表示する
+STR_5902    :バウンディングボックスを表示する
+STR_5903    :塗装デバッグウィンドウを表示する
+STR_5904    :日付をリセットする
+STR_5905    :カスタムランドスケープを自動的に作成するマップ生成ツール
 STR_5906    :マウスカーソルにズームする
-STR_5907    :このオプションを有効にすると、ズームがマウスカーソルに中央します。
-STR_5908    :Allow arbitrary ride type changes
-STR_5909    :Allows changing ride type freely. May cause crashes.
-STR_5910    :Apply
+STR_5907    :このオプションを有効にすると、ズームがマウスカーソルに中央します
+STR_5908    :任意の乗り物タイプの変更を許可する
+STR_5909    :乗り物タイプを自由に変更できる。クラッシュの原因になる可能性があります
+STR_5910    :設定する
 STR_5911    :歩道透明度の切り替え
 STR_5912    :歩道透明度の切り替え
 STR_5913    :チャット
-STR_5914    :Unknown ride
+STR_5914    :不明なライド
 STR_5915    :プレイヤー
 STR_5916    :{COMMA16}プレイヤー
 STR_5917    :{COMMA16}プレイヤー
@@ -3032,8 +3042,8 @@ STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_5919    :{COMMA16}
 STR_5920    :天気効果をレンダリングする
 STR_5921    :このオプションを有効にすると、暴風雨ある時に雨と湿っぽい色でレンダリングします。
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Max {COMMA16} {STRINGID} per train
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}最大{STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}列車ごとに最大{COMMA16}{STRINGID}の車両
 STR_5924    :面ディテール
 STR_5925    :歩道ディテール
 STR_5926    :トラック・ディテール
@@ -3043,68 +3053,68 @@ STR_5929    :壁ディテール
 STR_5930    :大景色物ディテール
 STR_5931    :バナー・ディテール
 STR_5932    :破損要素ディテール
-STR_5933    :Properties
-STR_5934    :Terrain texture: {BLACK}{STRINGID}
-STR_5935    :Terrain edge: {BLACK}{STRINGID}
-STR_5936    :Land ownership: {BLACK}{STRINGID}
-STR_5937    :Not owned and not for sale
-STR_5938    :Water level: {BLACK}{COMMA16}
-STR_5939    :Remove park fences
-STR_5940    :Restore park fences
-STR_5941    :Base height:
-STR_5942    :Path name: {BLACK}{STRINGID}
-STR_5943    :Additions: {BLACK}{STRINGID}
-STR_5944    :Additions: {BLACK}None
-STR_5945    :Connected edges:
-STR_5946    :Ride type: {BLACK}{STRINGID}
-STR_5947    :Ride ID: {BLACK}{COMMA16}
-STR_5948    :Ride name: {BLACK}{STRINGID}
-STR_5949    :Chain lift
-STR_5950    :Apply changes to entire track piece
-STR_5951    :Track piece ID: {BLACK}{COMMA16}
-STR_5952    :Sequence number: {BLACK}{COMMA16}
-STR_5953    :Sort the map elements on the current tile based on their base height.
-STR_5954    :Scenery age: {BLACK}{COMMA16}
-STR_5955    :Quadrant placement: {BLACK}{STRINGID}
+STR_5933    :プロパティ
+STR_5934    :地形テクスチャ:{BLACK}{STRINGID}
+STR_5935    :地形エッジ:{BLACK}{STRINGID}
+STR_5936    :土地所有権:{BLACK}{STRINGID}
+STR_5937    :所有されておらず、販売されていません
+STR_5938    :水位:{BLACK}{COMMA16}
+STR_5939    :パークフェンスを削除
+STR_5940    :パークフェンスを復元
+STR_5941    :基本高さ:
+STR_5942    :パス名:{BLACK}{STRINGID}
+STR_5943    :追加:{BLACK}{STRINGID}
+STR_5944    :追加:{BLACK}なし
+STR_5945    :接続エッジ:
+STR_5946    :ライドタイプ:{BLACK}{STRINGID}
+STR_5947    :ライドID:{BLACK}{COMMA16}
+STR_5948    :ライド名:{BLACK}{STRINGID}
+STR_5949    :チェーンリフト
+STR_5950    :変更を全トラックピースに適用
+STR_5951    :トラックピースID:{BLACK}{COMMA16}
+STR_5952    :シーケンス番号:{BLACK}{COMMA16}
+STR_5953    :現在のタイル上の地面の高さに基づいてマップ要素をソートします
+STR_5954    :景観の年齢:{BLACK}{COMMA16}
+STR_5955    :四分円配置:{BLACK}{STRINGID}
 STR_5956    :南西
 STR_5957    :北西
 STR_5958    :北東
 STR_5959    :南東
-STR_5960    :Quadrant placement:
-STR_5961    :Entry index: {BLACK}{COMMA16}
-STR_5962    :Collision detection:
-STR_5963    :Raised Corners:
-STR_5964    :Diagonal
-STR_5965    :Entrance type: {BLACK}{STRINGID}
-STR_5966    :Park entrance part: {BLACK}{STRINGID}
+STR_5960    :四分円配置:
+STR_5961    :エントリーのインデックス:{BLACK}{COMMA16}
+STR_5962    :衝突検出:
+STR_5963    :角の持ち上げ:
+STR_5964    :対角線
+STR_5965    :入口タイプ:{BLACK}{STRINGID}
+STR_5966    :パーク入口パート:{BLACK}{STRINGID}
 STR_5967    :中
 STR_5968    :左
 STR_5969    :右
-STR_5970    :入口のID: {BLACK}{COMMA16}
-STR_5971    :出口のID: {BLACK}{COMMA16}
-STR_5972    :ライドのID: {BLACK}{COMMA16}
-STR_5973    :Clamp to next
-STR_5974    :Changes the base- and clearance height so that it’s at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
-STR_5975    :Slope:
-STR_5976    :Flat
-STR_5977    :Right side up
-STR_5978    :Left side up
-STR_5979    :Wall type: {BLACK}{COMMA16}
-STR_5980    :Banner text: {BLACK}{STRINGID}
+STR_5970    :入口のID:{BLACK}{COMMA16}
+STR_5971    :出口のID:{BLACK}{COMMA16}
+STR_5972    :ライドのID:{BLACK}{COMMA16}
+STR_5973    :次にクランプ
+STR_5974    :基本高さとクリアランス高さを、現在のタイルの次の要素と同じに変更します。これにより、このタイル上での建設が容易になります
+STR_5975    :傾斜:
+STR_5976    :平坦
+STR_5977    :右側上
+STR_5978    :左側上
+STR_5979    :壁の種類: {BLACK}{COMMA16}
+STR_5980    :バナーテキスト:{BLACK}{STRINGID}
 STR_5981    :バナーではありません
-STR_5982    :Large scenery type: {BLACK}{COMMA16}
-STR_5983    :Large scenery piece ID: {BLACK}{COMMA16}
-STR_5984    :Blocked paths:
+STR_5982    :大型景観タイプ:{BLACK}{COMMA16}
+STR_5983    :大型景観ピースID:{BLACK}{COMMA16}
+STR_5984    :ブロックされたパス:
 STR_5985    :新しいフォルダ
 STR_5986    :新しいフォルダの名を入力して下さい。
 STR_5987    :フォルダを作成できません
-STR_5988    :No remaining land rights for sale
-STR_5989    :No remaining construction rights for sale
-STR_5990    :No remaining land rights or construction rights for sale
-STR_5991    :Can’t paste element…
-STR_5992    :The map elements limit has been reached
-STR_5993    :Copy selected element
-STR_5994    :Paste copied element
+STR_5988    :売りに出ている土地権利はありません
+STR_5989    :売りに出ている建設権利はありません
+STR_5990    :売りに出ている土地権利または建設権利はありません
+STR_5991    :要素を貼り付けることができません…
+STR_5992    :マップ要素の制限に達しました
+STR_5993    :選択した要素をコピー
+STR_5994    :コピーした要素を貼り付け
 STR_5995    :ブースター
 STR_5996    :ブースターのスピード
 STR_5997    :資金を追加/設定
@@ -3116,18 +3126,18 @@ STR_6002    :ランプと乗り物は夜にライトアップされます。{NEW
 STR_6003    :切り欠きビュー
 STR_6004    :切り欠きビュー
 STR_6005    :切り欠きビューを使う
-STR_6006    :Cut-away view only displays map elements at or below the cut height (vertical clipping) and in the selected area (horizontal clipping).
+STR_6006    :切り取りビューは、切り高さ（垂直クリッピング）以下のマップ要素と選択されたエリア（水平クリッピング）のみを表示します
 STR_6007    :切り高さ
-STR_6008    :Click to toggle raw value<->value in measurement units
+STR_6008    :クリックして生の値<->測定単位の値を切り替え
 STR_6009    :切り高さに選定
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
-STR_6013    :Guests will only pay the ticket to enter the park and services.{NEWLINE}Ride entry is free.
-STR_6014    :Guests will only pay entrance tickets for rides and services.{NEWLINE}They won’t pay anything to enter the park.
+STR_6013    :ゲストはパークに入るためのチケットとサービスのみを支払います。{NEWLINE}ライドの入場は無料です
+STR_6014    :ゲストはライドとサービスの入場チケットのみを支払います。{NEWLINE}パークに入るためには何も支払う必要はありません
 STR_6015    :斜面
-STR_6016    :Modify Tile
-STR_6017    :ゆっくりして下さい。
+STR_6016    :タイルを変更
+STR_6017    :ゆっくりして下さい
 STR_6018    :ライドの建設 - 左折
 STR_6019    :ライドの建設 - 右折
 STR_6020    :ライドの建設 - 直進
@@ -3140,30 +3150,30 @@ STR_6026    :ライドの建設 - 前のトラック
 STR_6027    :ライドの建設 - 次のトラック
 STR_6028    :ライドの建設 - 現在のアイテムを建てる
 STR_6029    :ライドの建設 - 削除
-STR_6030    :Scenery picker. Click any scenery on the map to select the same piece for construction.
+STR_6030    :景観ピッカー。マップ上の任意の景観をクリックすると、同じピースを建設用に選択できます
 STR_6031    :サーバの説明:
 STR_6032    :サーバの挨拶:
 STR_6033    :RCT1インストールのパス:
 STR_6034    :{BLACK}{STRING}
 STR_6035    :RCT1のダイレクトリーを選定します。
 STR_6036    :クリア
-STR_6037    :Please select a valid RCT1 directory
-STR_6038    :If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
-STR_6039    :Quick demolish ride
+STR_6037    :有効なRCT1ディレクトリを選択してください
+STR_6038    :RCT1がインストールされている場合、このオプションをそのディレクトリに設定してシナリオ、音楽などを読み込むことができます。
+STR_6039    :ライドを迅速に解体
 STR_6040    :シナリオ設定
-STR_6041    :{BLACK}No mechanics are hired!
-STR_6042    :ハイトマップをロード
-STR_6043    :ハイトマップを選ぶ
-STR_6044    :地形の滑らか
-STR_6045    :Strength
-STR_6046    :Normalise height map
-STR_6047    :Smooth tiles
-STR_6048    :Height map error
-STR_6049    :Error reading PNG
-STR_6050    :Error reading bitmap
-STR_6052    :The heightmap is too big, and will be cut off
-STR_6053    :The heightmap cannot be normalised
-STR_6054    :Only 24-bit bitmaps are supported
+STR_6041    :{BLACK}メカニックが雇われていません！
+STR_6042    :ハイトマップを読み込む
+STR_6043    :ハイトマップを選択
+STR_6044    :ハイトマップを平滑化
+STR_6045    :強度:
+STR_6046    :ハイトマップを正規化
+STR_6047    :タイルのエッジを平滑化
+STR_6048    :ハイトマップエラー
+STR_6049    :PNGの読み取りエラー
+STR_6050    :ビットマップの読み取りエラー
+STR_6052    :ハイトマップが大きすぎて、切り取られます
+STR_6053    :ハイトマップを正規化できません
+STR_6054    :24ビットビットマップのみがサポートされています
 STR_6055    :OpenRCT2ハイトマップファイル
 STR_6056    :ミュート
 STR_6057    :ツールバーでミュートのボタンを表示する
@@ -3173,82 +3183,82 @@ STR_6060    :来客の購入をアニメーションで表示する
 STR_6061    :来客の購入時、金額をアニメーションで表示する
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
-STR_6064    :Own all land
-STR_6065    :Log user actions
-STR_6066    :Logs all user actions to files in your user directory.
-STR_6067    :Server started.
-STR_6068    :Server shutdown.
-STR_6069    :{STRING} was kicked from the server by {STRING}.
-STR_6070    :{STRING} was set to group ‘{STRING}’ by {STRING}.
-STR_6071    :{STRING} created new player group ‘{STRING}’.
-STR_6072    :{STRING} deleted player group ‘{STRING}’.
-STR_6073    :{STRING} edited permissions for player group ‘{STRING}’.
-STR_6074    :{STRING} changed player group name from ‘{STRING}’ to ‘{STRING}’.
-STR_6075    :{STRING} changed the default player group to ‘{STRING}’.
-STR_6076    :{STRING} used/toggled cheat ‘{STRING}’.
+STR_6064    :すべての土地を所有
+STR_6065    :ユーザーアクションをログに記録
+STR_6066    :ユーザーアクションをすべてユーザーディレクトリのファイルに記録します
+STR_6067    :サーバーが起動しました
+STR_6068    :サーバーがシャットダウンしました
+STR_6069    :{STRING}は{STRING} によってサーバーからキックされました。
+STR_6070    :{STRING}は{STRING} によってグループ「{STRING}」に設定されました。
+STR_6071    :{STRING}が新しいプレイヤーグループ「{STRING}」を作成しました。
+STR_6072    :{STRING}がプレイヤーグループ「{STRING}」を削除しました。
+STR_6073    :{STRING}がプレイヤーグループ「{STRING}」の権限を編集しました。
+STR_6074    :{STRING}がプレイヤーグループ名を「{STRING}」から「{STRING}」に変更しました。
+STR_6075    :{STRING}がデフォルトのプレイヤーグループを「{STRING}」に変更しました。
+STR_6076    :{STRING}がチート「{STRING}」を使用/切り替えました。
 STR_6077    :資金を追加
-STR_6078    :{STRING} created ride ‘{STRING}’.
-STR_6079    :{STRING} demolished ride ‘{STRING}’.
-STR_6080    :{STRING} changed the appearance of ride ‘{STRING}’.
-STR_6081    :{STRING} changed the status of ride ‘{STRING}’ to closed.
-STR_6082    :{STRING} changed the status of ride ‘{STRING}’ to open.
-STR_6083    :{STRING} changed the status of ride ‘{STRING}’ to testing.
-STR_6084    :{STRING} changed the vehicle settings of ride ‘{STRING}’.
-STR_6085    :{STRING} changed the ride settings of ride ‘{STRING}’.
-STR_6086    :{STRING} renamed the ride ‘{STRING}’ to ‘{STRING}’.
-STR_6087    :{STRING} changed the price of ride ‘{STRING}’ to {STRING}
-STR_6088    :{STRING} changed the secondary price of ride ‘{STRING}’ to {STRING}
-STR_6089    :{STRING} renamed the park from ‘{STRING}’ to ‘{STRING}’.
-STR_6090    :{STRING} opened the park.
-STR_6091    :{STRING} closed the park.
-STR_6092    :{STRING} changed the park entrance fee to {STRING}
-STR_6093    :{STRING} placed new scenery.
-STR_6094    :{STRING} removed scenery.
-STR_6095    :{STRING} edited scenery.
-STR_6096    :{STRING} set sign name to ‘{STRING}’.
-STR_6097    :{STRING} placed a track of ride ‘{STRING}’.
-STR_6098    :{STRING} removed a track of ride.
-STR_6099    :You connected to the server.
-STR_6100    :You disconnected from the server.
-STR_6101    :Rides don’t decrease in value over time
-STR_6102    :The value of a ride won’t decrease over time, so guests will not suddenly think that a ride is too expensive.
-STR_6103    :This option is disabled during network play.
+STR_6078    :{STRING}がライド「{STRING}」を作成しました。
+STR_6079    :{STRING}がライド「{STRING}」を解体しました。
+STR_6080    :{STRING}がライド「{STRING}」の外観を変更しました。
+STR_6081    :{STRING}がライド「{STRING}」の状態を閉鎖に変更しました。
+STR_6082    :{STRING}がライド「{STRING}」の状態を開放に変更しました。
+STR_6083    :{STRING}がライド「{STRING}」の状態をテスト中に変更しました。
+STR_6084    :{STRING}がライド「{STRING}」の車両設定を変更しました。
+STR_6085    :{STRING}がライド「{STRING}」の設定を変更しました。
+STR_6086    :{STRING}がライド「{STRING}」の名前を「{STRING}」に変更しました。
+STR_6087    :{STRING}がライド「{STRING}」の価格を {STRING} に変更しました。
+STR_6088    :{STRING}がライド「{STRING}」の追加価格を {STRING} に変更しました。
+STR_6089    :{STRING}がパークの名前を「{STRING}」から「{STRING}」に変更しました。
+STR_6090    :{STRING}がパークを開放しました。
+STR_6091    :{STRING}がパークを閉鎖しました。
+STR_6092    :{STRING}がパークの入場料を {STRING} に変更しました。
+STR_6093    :{STRING}が新しい景観を配置しました。
+STR_6094    :{STRING}が景観を削除しました。
+STR_6095    :{STRING}が景観を編集しました。
+STR_6096    :{STRING}が看板の名前を「{STRING}」に設定しました。
+STR_6097    :{STRING}がライド「{STRING}」のトラックを配置しました。
+STR_6098    :{STRING}がライドのトラックを削除しました。
+STR_6099    :サーバーに接続しました
+STR_6100    :サーバーから切断されました
+STR_6101    :ライドの価値は時間とともに減少しませ
+STR_6102    :ライドの価値は時間とともに減少しないため、ゲストが突然ライドが高すぎると感じることはありません
+STR_6103    :このオプションはネットワークプレイ中は無効です
 STR_6105    :ハイパーコースター
 STR_6107    :モンスタートラック
 STR_6109    :ハイパー・ツイスター
 STR_6111    :クラシック・ミニ・ジェットコースター
-STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
-STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
-STR_6116    :Wide roller coaster trains glide along smooth steel track, travelling through a variety of inversions
-STR_6119    :A cheap and easy to build roller coaster, but with a limited height
-STR_6120    :{BABYBLUE}{STRINGID}に新しい車両:{NEWLINE}{STRINGID}
-STR_6121    :Extends the park’s land rights all the way to the edges of the map
-STR_6122    :There are not enough roller coasters in this scenario!
-STR_6123    :Error loading objects for park
+STR_6113    :大型の落下や高速を持つ、背の高い非反転ローラーコースターで、ラップバーだけの快適な車両を備えています
+STR_6115    :急な坂を登れる電動巨大4x4トラック
+STR_6116    :幅広のローラーコースターの列車が滑らかな鋼鉄のトラックの上を滑り、さまざまな逆さまの動きを通過します
+STR_6119    :安価で簡単に建設できるローラーコースターですが、高さに制限があります
+STR_6120    :{BABYBLUE}{STRINGID}に新しい車両: {NEWLINE}{STRINGID}
+STR_6121    :パークの土地権を地図の端まで拡張します
+STR_6122    :このシナリオにはローラーコースターが足りません！
+STR_6123    :パークのオブジェクトの読み込みエラー
 STR_6124    :オブジェクトの名
 STR_6125    :オブジェクトのタイプ
 STR_6126    :タイプ未知
 STR_6127    :ファイル: {STRING}
-STR_6128    :The file could not be loaded as some of the objects referenced in it are missing or corrupt. A list of these objects is given below.
+STR_6128    :ファイルを読み込むことができませんでした。参照されているオブジェクトの一部が欠損または破損しています。オブジェクトのリストは以下に示されています。
 STR_6129    :このアイテムをクリップボードにコッピーする
 STR_6130    :全てをクリップボードにコッピーする
 STR_6131    :オブジェクト源
 STR_6132    :研究のステータスを無視する
-STR_6133    :Access rides and scenery that have not yet been invented
+STR_6133    :まだ発明されていないアトラクションやシーナリーにアクセス
 STR_6134    :景色物をクリアする
-STR_6135    :Client sent invalid request
-STR_6136    :Server sent invalid request
-STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in “contributors.md”. For more information, visit http://github.com/OpenRCT2/OpenRCT2
-STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
+STR_6135    :クライアントが無効なリクエストを送信しました
+STR_6136    :サーバーが無効なリクエストを送信しました
+STR_6137    :OpenRCT2は、RollerCoaster Tycoon 2の無料かつオープンソースのクローンです。
+STR_6138    :OpenRCT2は多くの著者の作品であり、完全なリストは「contributors.md」にあります。詳細については、https://github.com/OpenRCT2/OpenRCT2 を訪れてください。
+STR_6139    :すべての製品名および会社名はそれぞれの権利者に属します。これらの使用は、いかなる提携や承認を示すものではありません。
 STR_6140    :変更履歴…
 STR_6141    :RCT1の下のツールバー
 STR_6142    :{WINDOW_COLOUR_2}トラックの名: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}ラウドの名: {BLACK}{STRINGID}
 STR_6144    :汚いビジュアルを表示する
-STR_6145    :Set speed limit for boosters
-STR_6146    :Enable all drawable track pieces
-STR_6147    :Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
+STR_6145    :ブースターの速度制限を設定
+STR_6146    :描画可能なすべてのトラックパーツを有効にする
+STR_6147    :車両がサポートしているかどうかに関わらず、建設ウィンドウでライドタイプが対応可能なすべてのトラックパーツを有効にします
 STR_6148    :マスターサーバに接続中…
 STR_6149    :マスターサーバに接続が失敗しました。
 STR_6150    :マスターサーバから無効な返事をいただきました。(JSON整数がありません)
@@ -3361,29 +3371,29 @@ STR_6296    :GiB
 STR_6297    :TiB
 STR_6298    :1秒あたり{STRING}
 STR_6299    :全部のダウンロード
-STR_6300    :Download all missing objects if available online.
-STR_6301    :Copy the selected object name to the clipboard.
-STR_6302    :Copy the entire list of missing objects to the clipboard.
+STR_6300    :オンラインで利用可能なら、すべての欠損オブジェクトをダウンロード
+STR_6301    :選択したオブジェクト名をクリップボードにコピー
+STR_6302    :欠損オブジェクトの全リストをクリップボードにコピー
 STR_6303    :オブジェクトのダウンロード中 ({COMMA16} / {COMMA16}): [{STRING}]
-STR_6304    :Open scenery picker
+STR_6304    :シーナリーピッカーを開く
 STR_6305    :マルチスレッド
-STR_6306    :Experimental option to use multiple threads to render, may cause instability.
-STR_6307    :配色: {BLACK}{STRINGID}
+STR_6306    :複数のスレッドを使用してレンダリングする実験的オプションです（安定性に影響を与える可能性があります）
+STR_6307    :配色:{BLACK}{STRINGID}
 STR_6308    :{TOPAZ}「{STRINGID}{OUTLINE}{TOPAZ}」{NEWLINE}{STRINGID}
 STR_6309    :再接続
-STR_6310    :{WINDOW_COLOUR_2}拠点: {BLACK}{INT32} {INT32} {INT32}
-STR_6311    :{WINDOW_COLOUR_2}次: {BLACK}{INT32} {INT32} {INT32}
-STR_6312    :(surface)
-STR_6313    :(slope {INT32})
+STR_6310    :{WINDOW_COLOUR_2}拠点:{BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}次:{BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(サーフェス)
+STR_6313    :(傾斜：{INT32})
 STR_6314    :{WINDOW_COLOUR_2}目的地: {BLACK}{INT32}, {INT32} 寛大 {INT32}
 STR_6315    :{WINDOW_COLOUR_2}経路探索の目標: {BLACK}{INT32}, {INT32}, {INT32} 方 {INT32}
 STR_6316    :{WINDOW_COLOUR_2}経路探索の歴史:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} 方 {INT32}
-STR_6318    :Network desync detected.{NEWLINE}Log file: {STRING}
-STR_6319    :Block Brake Closed
-STR_6320    :Indestructible
-STR_6321    :Addition is broken
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6318    :ネットワークの非同期が検出されました。{NEWLINE}ログファイル：{STRING}
+STR_6319    :ブロックブレーキ閉鎖
+STR_6320    :壊れない
+STR_6321    :追加が壊れています
+STR_6322    :{WINDOW_COLOUR_2}スプライトID:{BLACK}{INT32}
 STR_6323    :シミュレーション中
 STR_6324    :シミュレーション
 STR_6325    :ライドやアトラクションをシミュレーションする
@@ -3391,7 +3401,7 @@ STR_6326    :{STRINGID}をシミュレートできません…
 STR_6327    :拡大スクリーンショットに透明な背景を使用
 STR_6328    :このオプションでは、拡大スクリーンショットの際にデフォルトの黒背景ではなく透明な背景を使用
 STR_6329    :{STRING}{STRINGID}
-STR_6330    :{POP16}{POP16}{POP16}{POP16}{STRING}から [{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{STRING}]をダウンロード中 ({COMMA16} / {COMMA16})
+STR_6330    :{POP16}{POP16}{POP16}{POP16}{STRING}から [{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{STRING}]をダウンロード中（{COMMA16}／{COMMA16}）
 STR_6331    :カモを投入する
 STR_6332    :カモを取り除く
 STR_6333    :ウインドウのスケール係数を上げる
@@ -3423,7 +3433,352 @@ STR_6359    :{POP16}{POP16}{UINT16}ページ目
 STR_6361    :乗り物のライトの効果を表示にする（試験的）
 STR_6362    :有効になっている場合、追跡された乗り物の車両は夜間にライトアップされます。
 STR_6363    :テキストをクリップボードにコピーしました。
+STR_6364    :{RED}{COMMA16} 人が {STRINGID} で事故で死亡しました
+STR_6365    :アトラクションの死傷者
+STR_6366    :動かないまたは停止した車両
+STR_6367    :アニメーションフレーム:
+STR_6368    :互換性の理由から、WineでOpenRCT2を実行することは推奨されません。OpenRCT2はmacOS、Linux、FreeBSD、OpenBSDをネイティブでサポートしています。
+STR_6369    :無効な高さでのトラックの建設を許可
+STR_6370    :どの高さの間隔でもトラックパーツを配置できるようにします
+STR_6371    :指定されたパスにはRollerCoaster Tycoon 1のインストールがありますが、「csg1i.dat」ファイルが欠けています。このファイルはLoopy LandscapesまたはRCT DeluxeのCDからハードドライブ上のRollerCoaster Tycoon 1インストールの「Data」フォルダーにコピーする必要があります。
+STR_6372    :指定されたパスにはRollerCoaster Tycoon 1のインストールがありますが、このバージョンは適切ではありません。OpenRCT2はRollerCoaster Tycoon 1のアセットを使用するためにLoopy LandscapesまたはRCT Deluxeのインストールが必要です。
+STR_6373    :クリアランスチェックを切り替え
+STR_6374    :C
+STR_6375    :不明なアトラクション
+STR_6376    :{WINDOW_COLOUR_2}アトラクション車両：{NEWLINE}{BLACK}{STRINGID}の{STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}タイプ：{BLACK}{STRINGID}の{STRINGID}
+STR_6378    :オブジェクトリストを受信中…
+STR_6379    :無効なデータを受信しました
+STR_6380    :アップデートが利用可能です！
+STR_6381    :OpenRCT2 Discordに参加！
+STR_6382    :より新しいOpenRCT2のリリースが利用可能です: {STRING}!
+STR_6383    :ダウンロードページを開く
+STR_6384    :雪
+STR_6385    :大雪
+STR_6386    :吹雪
+STR_6387    :ここで要素を下げることはできません…
+STR_6388    :ここで要素を上げることはできません…
+STR_6389    :無効なクリアランス
+STR_6390    :OpenRCT2は、動作するために元のRollerCoaster Tycoon 2またはRollerCoaster Tycoon Classicのファイルが必要です。RollerCoaster Tycoon 2またはRollerCoaster Tycoon Classicをインストールしたフォルダーを選択してください。
+STR_6391    :RCT2またはRCTCのフォルダーを選択してください
+STR_6392    :このパスで{STRING}が見つかりませんでした。
+STR_6393    :目標選択
+STR_6394    :目標
+STR_6395    :メンテナンス
+STR_6396    :スクリーンセーバーとモニターの省電力を無効にする
+STR_6397    :チェックされている場合、OpenRCT2が実行中はスクリーンセーバーやその他のモニター省電力機能が無効になります。
+STR_6398    :ファイルにはサポートされていないアトラクションタイプが含まれています。新しいバージョンのOpenRCT2にアップデートしてください。
+STR_6399    :OpenRCT2は、動作するために元のRollerCoaster Tycoon 2またはRollerCoaster Tycoon Classicのファイルが必要です。「config.ini」の「game_path」変数を、RollerCoaster Tycoon 2またはRollerCoaster Tycoon Classicをインストールしたフォルダーに設定し、OpenRCT2を再起動してください。
+STR_6400    :RollerCoaster Tycoon 2のGOGオフラインインストーラーをダウンロードしましたが、インストールされていません。
+STR_6401    :すでにRollerCoaster Tycoon 2またはRollerCoaster Tycoon Classicがインストールされています。
+STR_6402    :OpenRCT2データセットアップ
+STR_6403    :最も適したものを選択してください
+STR_6404    :GOGのRollerCoaster Tycoon 2インストーラーを選択してください。
+STR_6405    :GOGインストーラーを選択
+STR_6406    :GOG RollerCoaster Tycoon 2インストーラー
+STR_6407    :これには数分かかる場合があります。
+STR_6408    :GOGインストーラーを抽出するために「innoextract」をインストールしてください。その後、OpenRCT2を再起動してください。
+STR_6409    :選択したファイルは、RollerCoaster Tycoon 2のオフラインGOGインストーラーではありません。GOG Galaxyダウンローダースタブをダウンロードしたか、間違ったファイルを選択した可能性があります。
+STR_6410    :ズームイン/アウト
+STR_6411    :ツールバーにズームインおよびズームアウトのボタンを表示
+STR_6412    :NumPad Enter
+STR_6413    :Shift
+STR_6414    :L Shift
+STR_6415    :R Shift
+STR_6416    :Ctrl
+STR_6417    :L Ctrl
+STR_6418    :R Ctrl
+STR_6419    :Alt
+STR_6420    :L Alt
+STR_6421    :R Alt
+STR_6422    :Cmd
+STR_6423    :L Cmd
+STR_6424    :R Cmd
+STR_6425    :Joy Left
+STR_6426    :Joy Right
+STR_6427    :Joy Up
+STR_6428    :Joy Down
+STR_6429    :Joy {INT32}
+STR_6430    :LMB
+STR_6431    :RMB
+STR_6432    :Mouse {INT32}
+STR_6433    :削除
+STR_6434    :このショートカットのすべてのバインディングを削除します
+STR_6435    :{WINDOW_COLOUR_2}バンダルが停止しました:{BLACK}{COMMA32}
+STR_6436    :不可視状態の切り替え
+STR_6437    :可視
+STR_6438    :{MOVE_X}{2}👁
+STR_6439    :タイルインスペクター：不可視状態の切り替え
 STR_6440    :透明な水
+STR_6441    :少なくとも1つの非キュー歩道表面オブジェクトを選択する必要があります
+STR_6442    :少なくとも1つのキュー歩道表面オブジェクトを選択する必要があります
+STR_6443    :少なくとも1つの歩道手すりオブジェクトを選択する必要があります
+STR_6444    :歩道表面
+STR_6445    :歩道手すり
+STR_6446    :{WINDOW_COLOUR_2}表面名：{BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}手すり名：{BLACK}{STRINGID}
+STR_6448    :サポートされていないオブジェクト形式
+STR_6449    :{WINDOW_COLOUR_2}トラック：
+STR_6450    :{BLACK}「{STRING}」
+STR_6451    :{BLACK}「{STRING}」・{STRING}
+STR_6452    :{WINDOW_COLOUR_2}販売: {BLACK}{STRING}
+STR_6453    :バージョン情報をコピー
+STR_6454    :バナーの名前を変更できません…
+STR_6455    :サインの名前を変更できません…
+STR_6456    :巨大スクリーンショット
+STR_6457    :GitHubでバグを報告
+STR_6458    :メインビューでこれをフォロー
+STR_6460    :方
+STR_6461    :方向
+STR_6462    :エキサイトメント
+STR_6463    :エキサイトメント：{COMMA2DP32}
+STR_6464    :強度
+STR_6465    :強度：{COMMA2DP32}
+STR_6466    :吐き気
+STR_6467    :吐き気：{COMMA2DP32}
+STR_6468    :まだ知られていません
+STR_6469    :パトロールエリアの小さい部分を調整
+STR_6470    :パトロールエリアの大きい部分を調整
+STR_6471    :透過性のある植生
+STR_6472    :透過性のある車両
+STR_6473    :透過性のある支持物
+STR_6474    :不可視のゲスト
+STR_6475    :不可視のスタッフ
+STR_6476    :不可視の植生
+STR_6477    :不可視の風景
+STR_6478    :不可視の道
+STR_6479    :不可視のアトラクション
+STR_6480    :不可視の車両
+STR_6481    :透明度オプション
+STR_6482    :透明度オプション
+STR_6483    :透明度オプションを開く
+STR_6484    :透過性のある植生の切り替え
+STR_6485    :透過性のある車両の切り替え
+STR_6486    :ゲストを非表示にする切り替え
+STR_6487    :スタッフを非表示にする切り替え
+STR_6488    :{RED}ゲストがあなたのパークの行列の長さについて不満を言っています。{NEWLINE}問題のある行列を短くするか、ライドの処理能力を上げることを検討してください。
+STR_6489    :エラー：互換性のないパークバージョン
+STR_6490    :警告：準互換性のあるパークバージョン
+STR_6491    :このパークは新しいバージョンのOpenRCT2で保存されました。パークはv{INT32}で保存されており、少なくともv{INT32}が必要です。現在のバージョンはv{INT32}です。
+STR_6492    :このパークは古いバージョンのOpenRCT2で保存されており、このバージョンのOpenRCT2では開くことができません。パークはv{INT32}です。
+STR_6493    :このパークは新しいバージョンのOpenRCT2で保存されましたが、一部のデータが失われる可能性があります。パークはv{INT32}で保存されました。現在のバージョンはv{INT32}です。
+STR_6494    :ライドタイプでグループ化
+STR_6495    :各車両を別々に表示するのではなく、ライドタイプでライドをグループ化します。
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :タイルをクリックすると、そのタイル要素が表示されます。{NEWLINE}Ctrl + クリックでタイル要素を直接選択できます。
+STR_6498    :正方形のマップ形状を維持するために有効にします。
+STR_6499    :トラックデザインフォーマットでサポートされていない車両タイプ
+STR_6500    :トラックデザインフォーマットでサポートされていないトラック要素
+STR_6501    :ランダムカラー
+STR_6502    :{COMMA16}と{COMMA16}の間の値を入力してください
+STR_6503    :少なくとも1つのステーションオブジェクトを選択する必要があります
+STR_6504    :少なくとも1つの地形表面を選択する必要があります
+STR_6505    :少なくとも1つの地形エッジを選択する必要があります
+STR_6506    :大型ハーフコークスクリュー（左）
+STR_6507    :大型ハーフコークスクリュー（右）
+STR_6508    :中型ハーフループ（左）
+STR_6509    :中型ハーフループ（右）
+STR_6510    :ゼロGロール（左）
+STR_6511    :ゼロGロール（右）
+STR_6512    :大型ゼロGロール（左）
+STR_6513    :大型ゼロGロール（右）
+STR_6514    :無効な高さ！
+STR_6515    :{BLACK}RollerCoaster Tycoon 1がリンクされていません - フォールバック画像が使用されます。
+STR_6516    :追加された1つまたは複数のオブジェクトには、正しい表示のためにRollerCoaster Tycoon 1がリンクされている必要があります。フォールバック画像が使用されます。
+STR_6517    :このパークの1つまたは複数のオブジェクトには、正しい表示のためにRollerCoaster Tycoon 1がリンクされている必要があります。フォールバック画像が使用されます。
+STR_6518    :{BLACK}シナリオにマウスを乗せると、その説明と目的が表示されます。クリックするとプレイが開始されます。
+STR_6519    :追加要素
+STR_6520    :アセットパック
+STR_6521    :低優先度
+STR_6522    :高優先度
+STR_6523    :選択したアセットパックの優先度を下げます。
+STR_6524    :選択したアセットパックの優先度を上げます。
+STR_6525    :有効なアセットパックでゲーム内のすべてのアセットを再読み込みします。
+STR_6526    :(基本グラフィックス、音楽、音響効果)
+STR_6527    :コンペティション
+STR_6528    :無効なトラックパラメータ！
+STR_6529    :無効なカラースキームパラメータ！
+STR_6530    :ユーザー作成の拡張セット
+STR_6531    :ザ・タイム・マシン
+STR_6532    :ケイティーのドリームワールド
+STR_6533    :{WINDOW_COLOUR_2}エキサイトメントファクター：{BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}強度ファクター：{BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}吐き気ファクター：{BLACK}-{COMMA16}%
+STR_6536    :このパークはOpenRCT2の後のバージョンで保存されました。パークはv{INT32}で保存され、現在のバージョンはv{INT32}です。
+STR_6537    :通常の道をキューとして使用することを許可
+STR_6538    :フットパスウィンドウのキューのドロップダウンに通常の道を表示します。
+STR_6539    :ブレーキが閉じました
+STR_6540    :{WINDOW_COLOUR_2}以下の企業に肖像権を許可していただき、特別な感謝を申し上げます
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :貢献者
+STR_6543    :貢献者…
+STR_6544    :ローンは負の値にできません！
+STR_6545    :RCT1の利息計算を使用
+STR_6546    :RollerCoaster Tycoon 1の利息計算アルゴリズムを使用します。これは約1.33%の固定パーセンテージを使用しました。
+STR_6547    :すべての風景
+STR_6548    :交差点で手すりを表示
+STR_6549    :互換性のあるオブジェクトは選択できません！
+STR_6550    : このエントリーは古いまたは破損したオブジェクトとの後方互換性のために含まれています。選択できず、非選択にすることのみ可能です。
+
+STR_6551    :アーミーグリーン色
+STR_6552    :ハニーデュー色
+STR_6553    :タン色
+STR_6554    :マルーン色
+STR_6555    :コーラルピンク色
+STR_6556    :フォレストグリーン色
+STR_6557    :シャルトリューズ色
+STR_6558    :ハンターグリーン色
+STR_6559    :セラドン色
+STR_6560    :ライムグリーン色
+STR_6561    :セピア色
+STR_6562    :ピーチ色
+STR_6563    :ペリウィンクル色
+STR_6564    :ヴィリディアン色
+STR_6565    :シーフォームグリーン色
+STR_6566    :バイオレット色
+STR_6567    :ラベンダー色
+STR_6568    :パステルオレンジ色
+STR_6569    :ディープウォーター色
+STR_6570    :パステルピンク色
+STR_6571    :アンバー色
+STR_6572    :ベージュ色
+STR_6573    :インビジブル色
+STR_6574    :ヴォイド色
+STR_6575    :特殊なカラースキームを許可
+STR_6576    :カラードロップダウンに特殊な色を追加
+STR_6577    :ブロックブレーキ速度
+STR_6578    :ブロックブレーキの速度制限を設定します。ブロックセクションモードでは、隣接するブレーキが遅い速度のものとリンクされます。
+STR_6579    :トラックデザインとして保存すると、ブロックブレーキはデフォルトの速度に設定されます。
+STR_6580    :リセット
+STR_6581    :このタブのすべてのショートカットキーをリセットしてもよろしいですか？
+STR_6582    :キーボードショートカットウィンドウを開く
+STR_6583    :{WINDOW_COLOUR_2}逆転列車
+STR_6584    :列車を逆方向に運行するために選択
+STR_6585    :変更を加えることができません…
+STR_6586    :OpenRCT2
+STR_6587    :OpenRCT2のタイトルテーマはAllister Brimbleの作品{NEWLINE}CC BY-SA 4.0のライセンスがあります
+STR_6588    :35er Voigtの録音を許可してくれたHerman Ridderingに感謝します
+STR_6589    :ウィンドウボタンを左側に表示
+STR_6590    :ウィンドウボタン（例: ウィンドウを閉じるためのボタン）をタイトルバーの右側ではなく左側に表示します。
+STR_6591    :スタッフメンバーは現在アトラクションを修理中で、解雇できません。
+STR_6592    :スタッフメンバーは現在アトラクションを検査中で、解雇できません。
+STR_6593    :パークのフェンスを削除
+STR_6594    :タイルインスペクタ:壁の傾斜を切り替え
+STR_6595    :{WINDOW_COLOUR_2}作者:{BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}作者:{BLACK}{STRING}
+STR_6597    :無効なパラメーター
+STR_6598    :値が範囲外です
+STR_6599    :ゴースト要素が見つかりません
+STR_6600    :バルーンが見つかりません
+STR_6601    :スタッフが見つかりません
+STR_6602    :アトラクションが見つかりません
+STR_6603    :アトラクションオブジェクトのエントリーが見つかりません
+STR_6604    :プレイヤーが見つかりません
+STR_6605    :入口要素が見つかりません
+STR_6606    :サーフェス要素が見つかりません
+STR_6607    :タイル要素が見つかりません
+STR_6608    :トラック要素が見つかりません
+STR_6609    :トラックブロックが見つかりません
+STR_6610    :パス要素が見つかりません
+STR_6611    :壁要素が見つかりません
+STR_6612    :バナー要素が見つかりません
+STR_6613    :オブジェクトを再読み込み
+STR_6614    :パークの入場料を変更できません
+STR_6615    :このタイルのトラックには水が必要です
+STR_6616    :そのスタッフタイプには無効なアクションです
+STR_6617    :タイル要素を自分自身と入れ替えることはできません
+STR_6618    :オブジェクトの制限または解除ができません…
+STR_6619    :オブジェクトタイプは制限できません！
+STR_6620    :オブジェクトが見つかりません！
+STR_6621    :制限
+STR_6622    :オブジェクトをシナリオエディタとサンドボックスモードに制限します
+STR_6623    :利用可能なコマンドの一覧を表示するには「help」と入力してください。コンソールを隠すには「hide」と入力してください。
+STR_6624    :タイルインスペクタ: 要素を並べ替え
+STR_6625    :無効な色
+STR_6626    :アニメーションが逆になっています
+STR_6627    :トラックの速度が高すぎます！
+STR_6628    :パスの端にのみ配置できます！
+STR_6629    :ツールバーボタンを水平方向に中央揃え
+STR_6630    :この設定により、ツールバーボタンが画面の中央に水平に揃えられます。従来の方法では、左端と右端に揃えられます。
+STR_6631    :読み込み中…
+STR_6632    :オブジェクトのチェック中…
+STR_6633    :シナリオのチェック中…
+STR_6634    :トラックデザインのチェック中…
+STR_6635    :アセットパックのチェック中…
+STR_6636    :タイトルシーケンスのチェック中…
+STR_6637    :タイトルシーケンスの読み込み中…
+STR_6638    :UIの拡大
+STR_6639    :タッチ操作に適したインターフェースに変更します
+STR_6640    :アセットパックを編集…
+STR_6641    :読み込み/進行状況ウィンドウ
+STR_6642    :{STRING}（{COMMA32}／{COMMA32}）
+STR_6643    :{STRING}（{COMMA32}／{COMMA32} KiB）
+STR_6644    :タッチ強化
+STR_6645    :一部のUI要素を大きくして、クリックやタップしやすくします
+STR_6646    :作者:{STRING}
+STR_6647    :作者:{STRING}
+STR_6648    :プラグインエンジンを読み込み中…
+STR_6649    :シナリオを読み込み中…
+STR_6650    :セーブデータを読み込み中…
+STR_6651    :{STRING}（{COMMA32}%）
+STR_6652    :エラーメッセージウィンドウ
+STR_6653    :すべてのソースを表示
+STR_6654    :{POP16}{UINT16} のソースを表示中
+STR_6655    :「{POP16}{STRINGID}」のみ
+STR_6656    :パークからすべてのフェンスを削除
+STR_6657    :所有していない土地
+STR_6658    :土地をパークの所有ではなく、購入可能にも設定しない
+STR_6659    :ゲストが価格を無視
+STR_6660    :ゲストはアトラクションやスタンドの価格を無視します。
+STR_6661    :すべてをランダム化
+STR_6662    :すべての列車や車両の色をランダム化します。
+STR_6663    :日付チート
+STR_6664    :日付チートを表示
+STR_6665    :自然/天候チート
+STR_6666    :自然/天候チートを表示
+STR_6667    :動物
+STR_6668    :スタッフチート
+STR_6669    :スタッフチートを表示
+STR_6670    :ゲストの行動
+STR_6671    :スタッフの「実名」を表示
+STR_6672    :スタッフの「実名」とスタッフ番号の表示を切り替え
+STR_6673    :透明
+STR_6674    :{MONTH}、{COMMA16}年
+STR_6675    :ピープの名
+STR_6676    :少なくとも1つのピープ名オブジェクトを選択する必要があります
+STR_6677    :水域の周りにビーチを追加
+STR_6678    :ハイトマップソース:
+STR_6679    :平地
+STR_6680    :シンプレックスノイズ
+STR_6681    :ハイトマップファイル
+STR_6682    :マップジェネレーター・ジェネレーター
+STR_6683    :マップジェネレーター・地形の設定
+STR_6684    :マップジェネレーター・水の設定
+STR_6685    :マップジェネレーター・森の設定
+STR_6686    :木と土地の比率:
+STR_6687    :最小木の高度:
+STR_6688    :最大木の高度:
+STR_6689    :{UINT16}%
+STR_6690    :最低土地高さ
+STR_6691    :{COMMA16}と{COMMA16}の間で最小土地高さを入力してください
+STR_6692    :最高土地高さ
+STR_6693    :{COMMA16}と{COMMA16}の間で最大土地高さを入力してください
+STR_6694    :最小木の高度
+STR_6695    :{COMMA16}と{COMMA16}の間で最小木の高度を入力してください
+STR_6696    :最大木の高度
+STR_6697    :{COMMA16}と{COMMA16}の間で最大木の高度を入力してください
+STR_6698    :木と土地の比率
+STR_6699    :{COMMA16}と{COMMA16}の間で木と土地の比率を入力してください
+STR_6700    :シンプレックスベース周波数
+STR_6701    :{COMMA2DP32}と{COMMA2DP32}の間でベース周波数を入力してください
+STR_6702    :シンプレックスオクターブ
+STR_6703    :{COMMA16}と{COMMA16}の間でオクターブを入力してください
+STR_6704    :{COMMA2DP32}
+STR_6705    :ブラウズ...
+STR_6706    :{WINDOW_COLOUR_2}現在の画像ファイル:{BLACK}{STRING}
+STR_6707    :(選択されていません)
+STR_6708    :スムース強度
+STR_6709    :{COMMA16}と{COMMA16}の間でスムース強度を入力してください
 
 #############
 # Scenarios #
