@@ -22,7 +22,7 @@ enum
 #pragma pack(push, 1)
 struct SmallSceneryElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::SmallScenery;
+    static constexpr TileElementType kElementType = TileElementType::SmallScenery;
 
 private:
     ObjectEntryIndex entryIndex; // 5

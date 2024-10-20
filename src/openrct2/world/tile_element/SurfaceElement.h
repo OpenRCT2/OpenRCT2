@@ -44,7 +44,7 @@ constexpr uint8_t kTileElementSurfaceParkFenceMask = 0x0F;
 #pragma pack(push, 1)
 struct SurfaceElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Surface;
+    static constexpr TileElementType kElementType = TileElementType::Surface;
 
 private:
     uint8_t Slope;

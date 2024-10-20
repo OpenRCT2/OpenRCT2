@@ -29,7 +29,7 @@ enum
 #pragma pack(push, 1)
 struct WallElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Wall;
+    static constexpr TileElementType kElementType = TileElementType::Wall;
 
 private:
     ObjectEntryIndex entryIndex; // 05

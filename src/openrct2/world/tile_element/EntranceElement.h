@@ -42,7 +42,7 @@ struct EntranceElement;
 
 struct EntranceElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Entrance;
+    static constexpr TileElementType kElementType = TileElementType::Entrance;
 
 private:
     uint8_t entranceType;        // 5

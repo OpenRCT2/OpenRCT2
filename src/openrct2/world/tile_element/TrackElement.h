@@ -52,7 +52,7 @@ enum
 
 struct TrackElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Track;
+    static constexpr TileElementType kElementType = TileElementType::Track;
 
 private:
     OpenRCT2::TrackElemType TrackType;

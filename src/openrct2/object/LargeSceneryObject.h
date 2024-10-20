@@ -24,7 +24,7 @@ private:
     std::unique_ptr<LargeSceneryText> _3dFont;
 
 public:
-    static constexpr ObjectType objectType = ObjectType::LargeScenery;
+    static constexpr ObjectType kObjectType = ObjectType::LargeScenery;
 
     void* GetLegacyData() override
     {

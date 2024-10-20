@@ -20,7 +20,7 @@ private:
     EntranceEntry _legacyType = {};
 
 public:
-    static constexpr ObjectType objectType = ObjectType::ParkEntrance;
+    static constexpr ObjectType kObjectType = ObjectType::ParkEntrance;
 
     void* GetLegacyData() override
     {

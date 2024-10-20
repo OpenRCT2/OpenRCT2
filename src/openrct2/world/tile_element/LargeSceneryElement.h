@@ -24,7 +24,7 @@ enum
 #pragma pack(push, 1)
 struct LargeSceneryElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::LargeScenery;
+    static constexpr TileElementType kElementType = TileElementType::LargeScenery;
 
 private:
     ObjectEntryIndex EntryIndex;
