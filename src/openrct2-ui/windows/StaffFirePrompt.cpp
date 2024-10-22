@@ -78,6 +78,11 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
 
             Peep* peep = GetEntity<Staff>(EntityId::FromUnderlying(number));
+            // The staff member may have been fired in the meantime.
+            if (peep == nulltr)
+            {
+                return;
+            }
             auto ft = Formatter();
             peep->FormatNameTo(ft);
 
