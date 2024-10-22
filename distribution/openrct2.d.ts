@@ -602,6 +602,24 @@ declare global {
         transparent?: boolean;
     }
 
+    type SoundOptions = SoundOptions2d | SoundOptions3d;
+
+    interface SoundOptionsBase {
+        soundId: number; // see SoundId in openrct2/audio/audio.h
+    }
+
+    interface SoundOptions2d extends SoundOptionsBase {
+        location?: never;
+        volume: number;
+        pan: number;
+    }
+
+    interface SoundOptions3d extends SoundOptionsBase {
+        location: CoordsXYZ;
+        volume?: never;
+        pan?: never;
+    }
+
     type GameMode =
         "normal" |
         "title" |
@@ -4362,6 +4380,12 @@ declare global {
         registerToolboxMenuItem(text: string, callback: () => void): void;
 
         registerShortcut(desc: ShortcutDesc): void;
+
+        /**
+         * Play the sound effect.
+         * @param options Options that play the sound.
+         */
+        playSound(options: SoundOptions): void;
     }
 
     /**
