@@ -79,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
 
             Peep* peep = GetEntity<Staff>(EntityId::FromUnderlying(number));
             // The staff member may have been fired in the meantime.
-            if (peep == nulltr)
+            if (peep == nullptr)
             {
                 return;
             }
