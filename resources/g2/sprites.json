@@ -6776,6 +6776,270 @@
         "palette": "keep"
     },
     {
+        "path": "track/bm/medium_half_loop_left_1_1.png",
+        "x": -26,
+        "y": -34,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_1_2.png",
+        "x": -33,
+        "y": -55,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_1_3.png",
+        "x": -32,
+        "y": -95,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_1_4.png",
+        "x": -44,
+        "y": -123,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_1_5.png",
+        "x": -26,
+        "y": -35,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_2_1.png",
+        "x": -27,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_2_2.png",
+        "x": -16,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_2_3.png",
+        "x": -16,
+        "y": -85,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_2_4.png",
+        "x": -33,
+        "y": -148,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_2_5.png",
+        "x": -25,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_3_1.png",
+        "x": -29,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_3_2.png",
+        "x": 0,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_3_3.png",
+        "x": -6,
+        "y": -69,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_3_4.png",
+        "x": -32,
+        "y": -154,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_3_5.png",
+        "x": -19,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_4_1.png",
+        "x": -24,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_4_2.png",
+        "x": -26,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_4_3.png",
+        "x": -32,
+        "y": -31,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_4_4.png",
+        "x": -12,
+        "y": -126,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_4_5.png",
+        "x": -27,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_1_1.png",
+        "x": -27,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_1_2.png",
+        "x": -22,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_1_3.png",
+        "x": -21,
+        "y": -31,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_1_4.png",
+        "x": -46,
+        "y": -125,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_1_5.png",
+        "x": -27,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_2_1.png",
+        "x": -27,
+        "y": -17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_2_2.png",
+        "x": -32,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_2_3.png",
+        "x": -32,
+        "y": -62,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_2_4.png",
+        "x": -27,
+        "y": -153,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_2_5.png",
+        "x": -24,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_3_1.png",
+        "x": -32,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_3_2.png",
+        "x": -32,
+        "y": -35,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_3_3.png",
+        "x": -32,
+        "y": -85,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_3_4.png",
+        "x": -13,
+        "y": -149,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_3_5.png",
+        "x": -14,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_4_1.png",
+        "x": -23,
+        "y": -33,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_4_2.png",
+        "x": -17,
+        "y": -52,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_4_3.png",
+        "x": -5,
+        "y": -102,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_4_4.png",
+        "x": -32,
+        "y": -125,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_4_5.png",
+        "x": -32,
+        "y": -35,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_2_2_2.png",
+        "x": -16,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_left_3_2_2.png",
+        "x": 0,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_2_2_2.png",
+        "x": -32,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/medium_half_loop_right_3_2_2.png",
+        "x": -32,
+        "y": -35,
+        "palette": "keep"
+    },
+    {
         "path": "track/railway/quarter_turn_3_tiles_sw_se_part_3.png",
         "x": -8,
         "y": 1
