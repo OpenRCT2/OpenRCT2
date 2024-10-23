@@ -707,6 +707,10 @@ int32_t EditorRemoveUnusedObjects()
                 if (objectType == ObjectType::Water)
                     continue;
 
+                // Avoid the used peep names object being deleted as no in-use checks are performed.
+                if (objectType == ObjectType::PeepNames)
+                    continue;
+
                 // It’s hard to determine exactly if a scenery group is used, so do not remove these automatically.
                 if (objectType == ObjectType::SceneryGroup)
                     continue;

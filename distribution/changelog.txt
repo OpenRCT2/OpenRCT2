@@ -10,6 +10,7 @@
 - Fix: [#23009] Scenarios from RCT Classic (.sea files) are not included in the scenario index.
 - Fix: [#23015] Crash when loading a save game when the construction window is still open.
 - Fix: [#23023] Large scenery clearance height interpreted as negative when greater than 127.
+- Fix: [#23044] "remove_unused_objects" command causes blank peep names.
 
 0.4.15 (2024-10-06)
 ------------------------------------------------------------------------
