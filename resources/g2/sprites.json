@@ -6536,6 +6536,246 @@
         "y": -5
     },
     {
+        "path": "track/bm/large_corkscrew_left_1_1.png",
+        "x": -24,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_1_2.png",
+        "x": -24,
+        "y": -72,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_1_3.png",
+        "x": -28,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_1_4.png",
+        "x": -24,
+        "y": -50,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_1_5.png",
+        "x": -24,
+        "y": -37,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_2_1.png",
+        "x": -24,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_2_2.png",
+        "x": -32,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_2_3.png",
+        "x": -25,
+        "y": -52,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_2_4.png",
+        "x": -22,
+        "y": -58,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_2_5.png",
+        "x": -17,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_3_1.png",
+        "x": -16,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_3_2.png",
+        "x": -18,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_3_3.png",
+        "x": 10,
+        "y": -31,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_3_4.png",
+        "x": -8,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_3_5.png",
+        "x": -16,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_4_1.png",
+        "x": -26,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_4_2.png",
+        "x": -26,
+        "y": -28,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_4_3.png",
+        "x": -16,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_4_4.png",
+        "x": -45,
+        "y": -39,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_left_4_5.png",
+        "x": -25,
+        "y": -31,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_1_1.png",
+        "x": -24,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_1_2.png",
+        "x": -26,
+        "y": -28,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_1_3.png",
+        "x": -23,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_1_4.png",
+        "x": -31,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_1_5.png",
+        "x": -32,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_2_1.png",
+        "x": -24,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_2_2.png",
+        "x": -16,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_2_3.png",
+        "x": -24,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_2_4.png",
+        "x": -16,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_2_5.png",
+        "x": -26,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_3_1.png",
+        "x": -42,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_3_2.png",
+        "x": -16,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_3_3.png",
+        "x": -28,
+        "y": -51,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_3_4.png",
+        "x": -31,
+        "y": -57,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_3_5.png",
+        "x": -25,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_4_1.png",
+        "x": -26,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_4_2.png",
+        "x": -11,
+        "y": -73,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_4_3.png",
+        "x": 9,
+        "y": -38,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_4_4.png",
+        "x": -18,
+        "y": -51,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/large_corkscrew_right_4_5.png",
+        "x": -25,
+        "y": -37,
+        "palette": "keep"
+    },
+    {
         "path": "track/railway/quarter_turn_3_tiles_sw_se_part_3.png",
         "x": -8,
         "y": 1
