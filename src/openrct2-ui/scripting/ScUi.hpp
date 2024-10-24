@@ -21,6 +21,7 @@
 #    include <memory>
 #    include <openrct2/Context.h>
 #    include <openrct2/Input.h>
+#    include <openrct2/audio/audio.h>
 #    include <openrct2/scenario/ScenarioRepository.h>
 #    include <openrct2/scripting/Duktape.hpp>
 #    include <openrct2/scripting/ScriptEngine.h>
@@ -362,6 +363,39 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        void playSound(const DukValue& options)
+        {
+            auto ctx = _scriptEngine.GetContext();
+            try
+            {
+                OpenRCT2::Audio::SoundId soundId = OpenRCT2::Audio::SoundId(options["soundId"].as_uint());
+
+                auto dukLocation = options["location"];
+                if (dukLocation.type() == DukValue::Type::OBJECT)
+                {
+                    CoordsXYZ loc;
+                    loc.x = dukLocation["x"].as_int();
+                    loc.y = dukLocation["y"].as_int();
+                    loc.z = dukLocation["z"].as_int();
+                    OpenRCT2::Audio::Play3D(soundId, loc);
+                }
+                else
+                {
+                    int32_t volume = options["volume"].as_int();
+                    int32_t pan = AsOrDefault(options["pan"], 0);
+                    OpenRCT2::Audio::Play(soundId, volume, pan);
+                }
+            }
+            catch (const DukException&)
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid options.");
+            }
+            catch (const std::exception& ex)
+            {
+                duk_error(ctx, DUK_ERR_ERROR, ex.what());
+            }
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -384,6 +418,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
             dukglue_register_method(ctx, &ScUi::registerToolboxMenuItem, "registerToolboxMenuItem");
             dukglue_register_method(ctx, &ScUi::registerShortcut, "registerShortcut");
+            dukglue_register_method(ctx, &ScUi::playSound, "playSound");
         }
 
     private:
