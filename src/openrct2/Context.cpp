@@ -1569,7 +1569,7 @@ bool ContextLoadParkFromStream(void* stream)
 
 void OpenRCT2WriteFullVersionInfo(utf8* buffer, size_t bufferSize)
 {
-    String::Set(buffer, bufferSize, gVersionInfoFull);
+    String::Set(buffer, bufferSize, gVersionInfoFull.c_str());
 }
 
 void OpenRCT2Finish()

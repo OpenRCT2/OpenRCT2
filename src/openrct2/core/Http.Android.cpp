@@ -18,7 +18,7 @@
 #    include <android/log.h>
 #    include <jni.h>
 
-#    define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
+static const std::string OPENRCT2_USER_AGENT = "OpenRCT2/" + std::string(OPENRCT2_VERSION);
 
 namespace OpenRCT2::Http
 {
