@@ -920,18 +920,7 @@ void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport)
     if (dpi.y >= viewport->pos.y + viewport->height)
         return;
 
-#ifdef DEBUG_SHOW_DIRTY_BOX
-    const auto dirtyBoxTopLeft = topLeft;
-    const auto dirtyBoxTopRight = bottomRight - ScreenCoordsXY{ 1, 1 };
-#endif
-
     ViewportPaint(viewport, dpi);
-
-#ifdef DEBUG_SHOW_DIRTY_BOX
-    // FIXME g_viewport_list doesn't exist anymore
-    if (viewport != g_viewport_list)
-        GfxFillRectInset(dpi, { dirtyBoxTopLeft, dirtyBoxTopRight }, 0x2, INSET_RECT_F_30);
-#endif
 }
 
 static void ViewportFillColumn(PaintSession& session)
