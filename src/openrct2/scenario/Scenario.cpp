@@ -39,6 +39,7 @@
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/TerrainSurfaceObject.h"
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
@@ -924,4 +925,119 @@ bool ObjectiveNeedsMoney(const uint8_t objective)
     }
 
     return false;
+}
+
+static PaletteIndex getPreviewColourByTilePos(const TileCoordsXY& pos)
+{
+    PaletteIndex colour = PALETTE_INDEX_0;
+
+    auto tileElement = MapGetFirstElementAt(pos);
+    if (tileElement == nullptr)
+        return colour;
+
+    do
+    {
+        switch (tileElement->GetType())
+        {
+            case TileElementType::Surface:
+            {
+                auto* surfaceElement = tileElement->AsSurface();
+                if (surfaceElement == nullptr)
+                {
+                    colour = PALETTE_INDEX_0;
+                    break;
+                }
+
+                if (surfaceElement->GetWaterHeight() > 0)
+                {
+                    colour = PALETTE_INDEX_195;
+                    break;
+                }
+
+                const auto* surfaceObject = surfaceElement->GetSurfaceObject();
+                if (surfaceObject != nullptr)
+                {
+                    colour = surfaceObject->MapColours[1];
+                }
+                break;
+            }
+
+            case TileElementType::Path:
+                colour = PALETTE_INDEX_17;
+                break;
+
+            case TileElementType::Track:
+                colour = PALETTE_INDEX_183;
+                break;
+
+            case TileElementType::SmallScenery:
+            case TileElementType::LargeScenery:
+                colour = PALETTE_INDEX_99; // 64
+                break;
+
+            case TileElementType::Entrance:
+                colour = PALETTE_INDEX_186;
+                break;
+
+            default:
+                break;
+        }
+    } while (!(tileElement++)->IsLastForTile());
+
+    return colour;
+}
+
+// 0x0046DB4C
+void GeneratePreviewImage(ScenarioIndexEntry& entry)
+{
+    // TODO: this needs to:
+    // - load the scenario to a temp game state,
+    // - swap it with the global one
+    // - call preview generation, storing in scenario index entry
+    // - save the scenario index to cache the preview
+    // - swap the global one back again
+
+    auto tempState = std::make_unique<GameState_t>();
+
+    // Swap tempState with the original game state.
+    // TODO: Ideally we'd import the scenario _into_ the temp state, i.e. swap only after importing.
+    //       This is pending making importing rides/entities/etc game state aware.
+    SwapGameState(tempState);
+    auto& gameState = GetGameState();
+
+    auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+    std::unique_ptr<IParkImporter> importer;
+    std::string extension = Path::GetExtension(entry.Path);
+
+    if (String::IEquals(extension, ".park"))
+        importer = ParkImporter::CreateParkFile(objRepository);
+    else if (String::IEquals(extension, ".sc4"))
+        importer = ParkImporter::CreateS4();
+    else
+        importer = ParkImporter::CreateS6(objRepository);
+
+    if (importer)
+    {
+        importer->LoadScenario(entry.Path, true);
+        importer->Import(gameState);
+    }
+
+    const auto kPreviewSize = 128; // sizeof(entry.preview[0]);
+    const auto kMapSkipFactor = Ceil2(gameState.MapSize.x, kPreviewSize) / kPreviewSize;
+
+    for (auto y = 0u; y < kPreviewSize; y++)
+    {
+        for (auto x = 0u; x < kPreviewSize; x++)
+        {
+            auto pos = TileCoordsXY(gameState.MapSize.x - (x + 1) * kMapSkipFactor + 1, y * kMapSkipFactor + 1);
+
+            // TODO: 2D array
+            entry.preview[y * kPreviewSize + x] = getPreviewColourByTilePos(pos);
+        }
+    }
+
+    entry.previewGenerated = true;
+
+    // NB: swap the original game state back in
+    SwapGameState(tempState);
 }
