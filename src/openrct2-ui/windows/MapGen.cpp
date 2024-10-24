@@ -499,11 +499,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAP_SIZE_Y:
                 case WIDX_MAP_SIZE_X:
                     // The practical size is 2 lower than the technical size
-                    value += 2;
+                    auto technicalSize = std::clamp<uint16_t>(value + 2, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
                     if (_resizeDirection == ResizeDirection::Y || _mapWidthAndHeightLinked)
-                        _settings.mapSize.y = value;
+                        _settings.mapSize.y = technicalSize;
                     if (_resizeDirection == ResizeDirection::X || _mapWidthAndHeightLinked)
-                        _settings.mapSize.x = value;
+                        _settings.mapSize.x = technicalSize;
                     break;
             }
 
