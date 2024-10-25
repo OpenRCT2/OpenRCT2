@@ -8192,6 +8192,198 @@
         "palette": "keep"
     },
     {
+        "path": "track/bm/zero_g_roll_left_1_1.png",
+        "x": -26,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_1_2.png",
+        "x": -13,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_1_3.png",
+        "x": -12,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_1_4.png",
+        "x": -23,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_2_1.png",
+        "x": -27,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_2_2.png",
+        "x": -28,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_2_3.png",
+        "x": -23,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_2_4.png",
+        "x": -21,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_3_1.png",
+        "x": -22,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_3_2.png",
+        "x": -23,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_3_3.png",
+        "x": -8,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_3_4.png",
+        "x": -27,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_4_1.png",
+        "x": -18,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_4_2.png",
+        "x": -11,
+        "y": -42,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_4_3.png",
+        "x": -22,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_left_4_4.png",
+        "x": -23,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_1_1.png",
+        "x": -26,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_1_2.png",
+        "x": -30,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_1_3.png",
+        "x": -22,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_1_4.png",
+        "x": -27,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_2_1.png",
+        "x": -27,
+        "y": -17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_2_2.png",
+        "x": -16,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_2_3.png",
+        "x": -14,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_2_4.png",
+        "x": -12,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_3_1.png",
+        "x": -9,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_3_2.png",
+        "x": -9,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_3_3.png",
+        "x": -11,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_3_4.png",
+        "x": -24,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_4_1.png",
+        "x": -19,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_4_2.png",
+        "x": -33,
+        "y": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_4_3.png",
+        "x": -26,
+        "y": -26,
+        "palette": "keep"
+    },
+    {
+        "path": "track/bm/zero_g_roll_right_4_4.png",
+        "x": -26,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
         "path": "track/railway/quarter_turn_3_tiles_sw_se_part_3.png",
         "x": -8,
         "y": 1
