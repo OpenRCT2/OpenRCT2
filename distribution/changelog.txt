@@ -1,5 +1,6 @@
 0.4.17 (in development)
 ------------------------------------------------------------------------
+- Improved: [#23051] Add large sloped turns and new inversions to the Twister, Vertical Drop, Hyper and Flying Roller Coasters.
 - Improved: [#23123] Improve sorting of roller coasters in build new ride menu.
 
 0.4.16 (2024-11-03)
