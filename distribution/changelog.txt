@@ -13,6 +13,7 @@
 - Fix: [#23023] Large scenery clearance height interpreted as negative when greater than 127.
 - Fix: [#23044] "remove_unused_objects" command causes blank peep names.
 - Fix: [#23048] Map generator allows map sizes out of range through text input.
+- Fix: [#23058] [Plugin] Changing window colours doesn’t trigger the window to be fully redrawn.
 
 0.4.15 (2024-10-06)
 ------------------------------------------------------------------------
