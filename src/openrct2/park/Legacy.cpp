@@ -2404,6 +2404,25 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
+    else if (
+        (rideType == RIDE_TYPE_WOODEN_ROLLER_COASTER || rideType == RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER)
+        && parkFileVersion < kWoodenRollerCoasterMediumLargeHalfLoopsVersion)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::LeftMediumHalfLoopUp:
+            case TrackElemType::RightMediumHalfLoopUp:
+            case TrackElemType::LeftMediumHalfLoopDown:
+            case TrackElemType::RightMediumHalfLoopDown:
+            case TrackElemType::LeftLargeHalfLoopUp:
+            case TrackElemType::RightLargeHalfLoopUp:
+            case TrackElemType::LeftLargeHalfLoopDown:
+            case TrackElemType::RightLargeHalfLoopDown:
+                return true;
+            default:
+                break;
+        }
+    }
 
     return false;
 }

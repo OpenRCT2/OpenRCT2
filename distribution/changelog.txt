@@ -1,5 +1,6 @@
 0.4.16 (in development)
 ------------------------------------------------------------------------
+- Improved: [#22967] Add medium and large half loops to the Wooden and Classic Wooden Roller Coasters.
 - Improved: [#23010] Make AppImage compatible with Ubuntu 22.04 and Debian Bookworm again.
 - Fix: [#22615] Crash when drawing Space Rings with an invalid ride entry.
 - Fix: [#22633] Crash when drawing loading screen with an outdated g2.dat.
