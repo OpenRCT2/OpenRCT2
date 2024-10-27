@@ -16,6 +16,7 @@
 #include "ScenarioRepository.h"
 
 #include <iterator>
+#include <span>
 
 namespace OpenRCT2::ScenarioSources
 {
@@ -340,20 +341,16 @@ namespace OpenRCT2::ScenarioSources
         { SC_UNIDENTIFIED,                              "Tycoon Park",                                      SCENARIO_CATEGORY_OTHER          },
     };
 
-    #define DEFINE_SCENARIO_TITLE_DESC_GROUP(x) { std::size(x), x }
-    const struct {
-        size_t count;
-        const ScenarioTitleDescriptor * const titles;
-    } ScenarioTitlesBySource[] = {
-        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT1),
-        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT1AA),
-        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT1LL),
-        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2),
-        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2WW),
-        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRCT2TT),
-        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesUCES),
-        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRealParks),
-        DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesExtrasParks),
+    constexpr std::span<const ScenarioTitleDescriptor> ScenarioTitlesBySource[] = {
+        ScenarioTitlesRCT1,
+        ScenarioTitlesRCT1AA,
+        ScenarioTitlesRCT1LL,
+        ScenarioTitlesRCT2,
+        ScenarioTitlesRCT2WW,
+        ScenarioTitlesRCT2TT,
+        ScenarioTitlesUCES,
+        ScenarioTitlesRealParks,
+        ScenarioTitlesExtrasParks,
     };
     // clang-format on
 
@@ -366,9 +363,9 @@ namespace OpenRCT2::ScenarioSources
         int32_t currentIndex = 0;
         for (size_t i = 0; i < std::size(ScenarioTitlesBySource); i++)
         {
-            for (size_t j = 0; j < ScenarioTitlesBySource[i].count; j++)
+            for (size_t j = 0; j < std::size(ScenarioTitlesBySource[i]); j++)
             {
-                const ScenarioTitleDescriptor* desc = &ScenarioTitlesBySource[i].titles[j];
+                const ScenarioTitleDescriptor* desc = &ScenarioTitlesBySource[i][j];
                 if (String::IEquals(name, desc->Title))
                 {
                     outDesc->title = desc->Title;
@@ -397,9 +394,9 @@ namespace OpenRCT2::ScenarioSources
         int32_t currentIndex = 0;
         for (size_t i = 0; i < std::size(ScenarioTitlesBySource); i++)
         {
-            for (size_t j = 0; j < ScenarioTitlesBySource[i].count; j++)
+            for (size_t j = 0; j < std::size(ScenarioTitlesBySource[i]); j++)
             {
-                const ScenarioTitleDescriptor* desc = &ScenarioTitlesBySource[i].titles[j];
+                const ScenarioTitleDescriptor* desc = &ScenarioTitlesBySource[i][j];
                 if (id == desc->Id)
                 {
                     outDesc->title = desc->Title;
