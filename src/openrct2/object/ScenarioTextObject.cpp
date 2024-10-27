@@ -32,7 +32,7 @@ void ScenarioTextObject::ReadJson(IReadObjectContext* context, json_t& root)
 
 std::string ScenarioTextObject::GetScenarioName()
 {
-    return GetStringTable().GetString(ObjectStringID::SCENARIO_NAME);
+    return GetStringTable().GetString(ObjectStringID::NAME); // SCENARIO_NAME
 }
 
 std::string ScenarioTextObject::GetParkName()

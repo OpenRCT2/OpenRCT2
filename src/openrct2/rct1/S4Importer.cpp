@@ -48,6 +48,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/ScenarioTextObject.h"
 #include "../park/Legacy.h"
 #include "../peep/PeepAnimationData.h"
 #include "../peep/RideUseSystem.h"
@@ -244,7 +245,7 @@ namespace OpenRCT2::RCT1
                 dst->ObjectiveArg3 = GetBuildTheBestRideId();
             }
 
-            auto name = RCT2StringToUTF8(_s4.ScenarioName, RCT2LanguageId::EnglishUK);
+            std::string name = RCT2StringToUTF8(_s4.ScenarioName, RCT2LanguageId::EnglishUK);
             std::string details;
 
             // TryGetById won't set this property if the scenario is not recognised,
@@ -256,16 +257,20 @@ namespace OpenRCT2::RCT1
 
             String::Set(dst->InternalName, sizeof(dst->InternalName), desc.title);
 
-            StringId localisedStringIds[3];
-            if (LanguageGetLocalisedScenarioStrings(desc.title, localisedStringIds))
+            if (desc.textObjectId != nullptr)
             {
-                if (localisedStringIds[0] != STR_NONE)
+                auto& objManager = GetContext()->GetObjectManager();
+
+                // Unload loaded scenario text object, if any.
+                if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
+                    objManager.UnloadObjects({ obj->GetDescriptor() });
+
+                // Load the one specified
+                if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
                 {
-                    name = String::ToStd(LanguageGetString(localisedStringIds[0]));
-                }
-                if (localisedStringIds[2] != STR_NONE)
-                {
-                    details = String::ToStd(LanguageGetString(localisedStringIds[2]));
+                    auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
+                    name = textObject->GetScenarioName();
+                    details = textObject->GetScenarioDetails();
                 }
             }
 
@@ -2324,24 +2329,25 @@ namespace OpenRCT2::RCT1
             int32_t scNumber = _s4.ScenarioSlotIndex;
             if (scNumber != -1)
             {
-                SourceDescriptor sourceDesc;
-                if (ScenarioSources::TryGetById(scNumber, &sourceDesc))
+                SourceDescriptor desc;
+                if (ScenarioSources::TryGetById(scNumber, &desc) && desc.textObjectId != nullptr)
                 {
-                    StringId localisedStringIds[3];
-                    if (LanguageGetLocalisedScenarioStrings(sourceDesc.title, localisedStringIds))
+                    auto& objManager = GetContext()->GetObjectManager();
+
+                    // Ensure only one thread talks to the object manager at a time
+                    std::lock_guard lock(mtx);
+
+                    // Unload loaded scenario text object, if any.
+                    if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
+                        objManager.UnloadObjects({ obj->GetDescriptor() });
+
+                    // Load the one specified
+                    if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
                     {
-                        if (localisedStringIds[0] != STR_NONE)
-                        {
-                            name = String::ToStd(LanguageGetString(localisedStringIds[0]));
-                        }
-                        if (localisedStringIds[1] != STR_NONE)
-                        {
-                            parkName = String::ToStd(LanguageGetString(localisedStringIds[1]));
-                        }
-                        if (localisedStringIds[2] != STR_NONE)
-                        {
-                            details = String::ToStd(LanguageGetString(localisedStringIds[2]));
-                        }
+                        auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
+                        name = textObject->GetScenarioName();
+                        parkName = textObject->GetParkName();
+                        details = textObject->GetScenarioDetails();
                     }
                 }
             }

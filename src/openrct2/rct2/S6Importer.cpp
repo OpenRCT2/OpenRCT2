@@ -49,6 +49,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/ScenarioTextObject.h"
 #include "../object/WallSceneryEntry.h"
 #include "../park/Legacy.h"
 #include "../peep/RideUseSystem.h"
@@ -263,11 +264,6 @@ namespace OpenRCT2::RCT2
                 String::Set(dst->Name, sizeof(dst->Name), normalisedName.c_str());
             }
 
-            // dst->name will be translated later so keep the untranslated name here
-            String::Set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
-
-            String::Set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
-
             // Look up and store information regarding the origins of this scenario.
             SourceDescriptor desc;
             if (ScenarioSources::TryGetByName(dst->Name, &desc))
@@ -291,17 +287,27 @@ namespace OpenRCT2::RCT2
                 }
             }
 
-            // Localise the park name and description
-            StringId localisedStringIds[3];
-            if (LanguageGetLocalisedScenarioStrings(dst->Name, localisedStringIds))
+            // dst->name will be translated later so keep the untranslated name here
+            String::Set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
+            String::Set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
+
+            if (desc.textObjectId != nullptr)
             {
-                if (localisedStringIds[0] != STR_NONE)
+                auto& objManager = GetContext()->GetObjectManager();
+
+                // Unload loaded scenario text object, if any.
+                if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
+                    objManager.UnloadObjects({ obj->GetDescriptor() });
+
+                // Load the one specified
+                if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
                 {
-                    String::Set(dst->Name, sizeof(dst->Name), LanguageGetString(localisedStringIds[0]));
-                }
-                if (localisedStringIds[2] != STR_NONE)
-                {
-                    String::Set(dst->Details, sizeof(dst->Details), LanguageGetString(localisedStringIds[2]));
+                    auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
+                    auto name = textObject->GetScenarioName();
+                    auto details = textObject->GetScenarioDetails();
+
+                    String::Set(dst->Name, sizeof(dst->Name), name.c_str());
+                    String::Set(dst->Details, sizeof(dst->Details), details.c_str());
                 }
             }
 
