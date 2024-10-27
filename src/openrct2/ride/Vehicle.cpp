@@ -439,13 +439,15 @@ static constexpr CoordsXY AvoidCollisionMoveOffset[] = {
 };
 
 static constexpr OpenRCT2::Audio::SoundId DoorOpenSoundIds[] = {
-    OpenRCT2::Audio::SoundId::DoorOpen,
-    OpenRCT2::Audio::SoundId::Portcullis,
+    OpenRCT2::Audio::SoundId::Null,       // DoorSoundType::none
+    OpenRCT2::Audio::SoundId::DoorOpen,   // DoorSoundType::door
+    OpenRCT2::Audio::SoundId::Portcullis, // DoorSoundType::portcullis
 };
 
 static constexpr OpenRCT2::Audio::SoundId DoorCloseSoundIds[] = {
-    OpenRCT2::Audio::SoundId::DoorClose,
-    OpenRCT2::Audio::SoundId::Portcullis,
+    OpenRCT2::Audio::SoundId::Null,       // DoorSoundType::none
+    OpenRCT2::Audio::SoundId::DoorClose,  // DoorSoundType::door
+    OpenRCT2::Audio::SoundId::Portcullis, // DoorSoundType::portcullis
 };
 
 template<>
@@ -6247,15 +6249,15 @@ void Vehicle::UpdateAdditionalAnimation()
 static void play_scenery_door_open_sound(const CoordsXYZ& loc, WallElement* tileElement)
 {
     auto* wallEntry = tileElement->GetEntry();
-    int32_t doorSoundType = WallEntryGetDoorSound(wallEntry);
-    if (doorSoundType != 0)
-    {
-        auto soundId = DoorOpenSoundIds[doorSoundType - 1];
-        if (soundId != OpenRCT2::Audio::SoundId::Null)
-        {
-            OpenRCT2::Audio::Play3D(soundId, loc);
-        }
-    }
+    if (wallEntry == nullptr)
+        return;
+
+    auto doorSoundType = wallEntry->getDoorSoundType();
+    if (doorSoundType == DoorSoundType::none)
+        return;
+
+    auto soundId = DoorOpenSoundIds[EnumValue(doorSoundType)];
+    OpenRCT2::Audio::Play3D(soundId, loc);
 }
 
 /**
@@ -6265,15 +6267,15 @@ static void play_scenery_door_open_sound(const CoordsXYZ& loc, WallElement* tile
 static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* tileElement)
 {
     auto* wallEntry = tileElement->GetEntry();
-    int32_t doorSoundType = WallEntryGetDoorSound(wallEntry);
-    if (doorSoundType != 0)
-    {
-        auto soundId = DoorCloseSoundIds[doorSoundType - 1];
-        if (soundId != OpenRCT2::Audio::SoundId::Null)
-        {
-            Play3D(soundId, loc);
-        }
-    }
+    if (wallEntry == nullptr)
+        return;
+
+    auto doorSoundType = wallEntry->getDoorSoundType();
+    if (doorSoundType == DoorSoundType::none)
+        return;
+
+    auto soundId = DoorCloseSoundIds[EnumValue(doorSoundType)];
+    Play3D(soundId, loc);
 }
 
 template<bool isBackwards>

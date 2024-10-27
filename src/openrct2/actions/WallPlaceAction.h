@@ -15,6 +15,8 @@
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
+struct WallSceneryEntry;
+
 struct WallPlaceActionResult
 {
     int32_t BaseHeight{};

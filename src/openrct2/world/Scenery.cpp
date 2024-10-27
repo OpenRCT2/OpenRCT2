@@ -300,11 +300,6 @@ void SceneryRemoveGhostToolPlacement()
     }
 }
 
-int32_t WallEntryGetDoorSound(const WallSceneryEntry* wallEntry)
-{
-    return (wallEntry->flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
-}
-
 bool IsSceneryAvailableToBuild(const ScenerySelection& item)
 {
     // All scenery can be built when in the scenario editor
