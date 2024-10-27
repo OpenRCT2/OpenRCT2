@@ -3224,7 +3224,7 @@ static void VehiclePitchUp8BankedLeft45(
     }
     else
     {
-        VehiclePitchUp8Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3239,7 +3239,7 @@ static void VehiclePitchUp8BankedRight45(
     }
     else
     {
-        VehiclePitchUp8Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3304,7 +3304,7 @@ static void VehiclePitchUp16BankedLeft22(
     }
     else
     {
-        VehiclePitchUp16Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3319,7 +3319,7 @@ static void VehiclePitchUp16BankedRight22(
     }
     else
     {
-        VehiclePitchUp16Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp25BankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3466,7 +3466,7 @@ static void VehiclePitchDown8BankedLeft45(
     }
     else
     {
-        VehiclePitchFlat(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3481,7 +3481,7 @@ static void VehiclePitchDown8BankedRight45(
     }
     else
     {
-        VehiclePitchFlat(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3546,7 +3546,7 @@ static void VehiclePitchDown16BankedLeft22(
     }
     else
     {
-        VehiclePitchDown16Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3561,7 +3561,7 @@ static void VehiclePitchDown16BankedRight22(
     }
     else
     {
-        VehiclePitchDown16Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
