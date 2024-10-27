@@ -4902,10 +4902,18 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
         {},                                                        // TrackGroup::miniGolfHole
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TrackGroup::rotationControlToggle
         { SpriteGroupType::Slopes60, SpritePrecision::Sprites4 },  // TrackGroup::slopeSteepUp
-        {},                                                        // TrackGroup::corkscrewLarge
-        {},                                                        // TrackGroup::halfLoopMedium
-        {},                                                        // TrackGroup::zeroGRoll
-        {},                                                        // TrackGroup::zeroGRollLarge
+        { SpriteGroupType::Corkscrews, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::Sprites4 }, // TrackGroup::corkscrewLarge
+        { SpriteGroupType::Slopes60, SpritePrecision::Sprites4, SpriteGroupType::Slopes75, SpritePrecision::Sprites4,
+          SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
+          SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 }, // TrackGroup::halfLoopMedium
+        { SpriteGroupType::Slopes25Banked67, SpritePrecision::Sprites4, SpriteGroupType::Slopes25Banked90,
+          SpritePrecision::Sprites4, SpriteGroupType::Slopes25InlineTwists,
+          SpritePrecision::Sprites4 }, // TrackGroup::zeroGRoll
+        { SpriteGroupType::Slopes42Banked22, SpritePrecision::Sprites4, SpriteGroupType::Slopes42Banked45,
+          SpritePrecision::Sprites4, SpriteGroupType::Slopes42Banked67, SpritePrecision::Sprites4,
+          SpriteGroupType::Slopes42Banked90, SpritePrecision::Sprites4, SpriteGroupType::Slopes60Banked22,
+          SpritePrecision::Sprites4 }, // TrackGroup::zeroGRollLarge
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
           SpritePrecision::Sprites4 }, // TrackGroup::flyingLargeHalfLoopUninvertedUp
