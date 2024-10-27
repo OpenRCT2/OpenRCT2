@@ -11560,23 +11560,23 @@ static void CorkscrewRCTrack90DegUp(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 8),
-                        { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
+                        session, direction, session.TrackColours.WithIndex(26607), { 0, 0, height + 8 },
+                        { { 4, 6, height }, { 2, 20, 31 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 9),
-                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                        session, direction, session.TrackColours.WithIndex(26608), { 0, 0, height + 8 },
+                        { { 24, 6, height }, { 2, 20, 31 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 10),
-                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                        session, direction, session.TrackColours.WithIndex(26605), { 0, 0, height + 8 },
+                        { { 24, 6, height }, { 2, 20, 31 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_VERTICAL + 11),
-                        { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
+                        session, direction, session.TrackColours.WithIndex(26606), { 0, 0, height + 8 },
+                        { { 4, 6, height }, { 2, 20, 31 } });
                     break;
             }
             PaintUtilSetVerticalTunnel(session, height + 32);
