@@ -2424,7 +2424,8 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
         }
     }
     else if (
-        (rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER || rideType == RIDE_TYPE_HYPERCOASTER)
+        (rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER || rideType == RIDE_TYPE_HYPERCOASTER
+         || rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER)
         && parkFileVersion < kExtendedCorkscrewCoasterVersion)
     {
         switch (trackType)
