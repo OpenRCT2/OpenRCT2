@@ -69,17 +69,12 @@ jobs:
           . scripts/setenv
           echo "push=$OPENRCT2_PUSH"
           echo "push=$OPENRCT2_PUSH" >> $GITHUB_OUTPUT
-      # Name is very similar to "describe", but skips the "v" prefix
+      # Name now uses the same format as "describe"
       - name: Get artifact name
         id: artifact-name
         run: |
-          if [ ${{ steps.ghd.outputs.distance }} -eq 0 ]; then
-            echo "name=${{ env.OPENRCT2_VERSION }}"
-            echo "name=${{ env.OPENRCT2_VERSION }}" >> $GITHUB_OUTPUT
-          else
-            echo "name=${{ env.OPENRCT2_VERSION }}-${{ steps.ghd.outputs.distance }}-g${{ steps.ghd.outputs.short-sha }}"
-            echo "name=${{ env.OPENRCT2_VERSION }}-${{ steps.ghd.outputs.distance }}-g${{ steps.ghd.outputs.short-sha }}" >> $GITHUB_OUTPUT
-          fi
+          echo "name=${{ steps.ghd.outputs.describe }}"
+          echo "name=${{ steps.ghd.outputs.describe }}" >> $GITHUB_OUTPUT
   lint-commit:
     name: Lint Commit Message
     if: github.event_name == 'pull_request'
