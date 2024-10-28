@@ -1516,6 +1516,15 @@ namespace OpenRCT2::RCT1
             AppendRequiredObjects(result, ObjectType::FootpathRailings, _footpathRailingsEntries);
             AppendRequiredObjects(result, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
             RCT12AddDefaultObjects(result);
+
+            // Normalise the name to make the scenario as recognisable as possible
+            auto normalisedName = ScenarioSources::NormaliseName(_s4.ScenarioName);
+
+            // Infer what scenario text object to use, if any
+            SourceDescriptor desc;
+            if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && desc.textObjectId != nullptr)
+                AppendRequiredObjects(result, ObjectType::ScenarioText, std::vector<std::string>({ desc.textObjectId }));
+
             return result;
         }
 

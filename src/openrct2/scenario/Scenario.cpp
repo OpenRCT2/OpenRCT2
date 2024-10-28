@@ -109,7 +109,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.Cash = gameState.InitialCash;
 
     auto& objManager = GetContext()->GetObjectManager();
-    if (auto* object = objManager.GetLoadedObject(ObjectType::ScenarioText, 0))
+    if (auto* object = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); object != nullptr)
     {
         auto* textObject = reinterpret_cast<ScenarioTextObject*>(object);
 
