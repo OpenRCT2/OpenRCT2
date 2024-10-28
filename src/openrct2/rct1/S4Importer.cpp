@@ -86,6 +86,7 @@
 #include <cassert>
 #include <iterator>
 #include <memory>
+#include <mutex>
 #include <vector>
 
 using namespace OpenRCT2;
@@ -94,6 +95,8 @@ static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
 namespace OpenRCT2::RCT1
 {
+    static std::mutex mtx;
+
     class S4Importer final : public IParkImporter
     {
     private:
@@ -260,6 +263,9 @@ namespace OpenRCT2::RCT1
             if (desc.textObjectId != nullptr)
             {
                 auto& objManager = GetContext()->GetObjectManager();
+
+                // Ensure only one thread talks to the object manager at a time
+                std::lock_guard lock(mtx);
 
                 // Unload loaded scenario text object, if any.
                 if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
