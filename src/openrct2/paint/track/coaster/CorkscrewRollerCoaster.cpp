@@ -17503,7 +17503,7 @@ static void CorkscrewRCTrackLeftMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 3),
-                        { 0, 0, height }, { { 0, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 0, 2, height }, { 32, 1, 160 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 40),
                         { 0, 0, height }, { { 0, 29, height }, { 32, 1, 160 } });
@@ -17511,7 +17511,7 @@ static void CorkscrewRCTrackLeftMediumHalfLoopUp(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 8),
-                        { 0, 0, height }, { { 30, 20, height }, { 0, 12, 160 } });
+                        { 0, 0, height }, { { 0, 0, height + 140 }, { 32, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -17675,7 +17675,7 @@ static void CorkscrewRCTrackRightMediumHalfLoopUp(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 27),
-                        { 0, 0, height }, { { 32, 32, height + 60 }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 31, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::BottomLeftSide, 18, height, session.SupportColours);
                     break;
@@ -17710,7 +17710,7 @@ static void CorkscrewRCTrackRightMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 23),
-                        { 0, 0, height }, { { -12, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 0, 0, height }, { 1, 32, 160 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 44),
                         { 0, 0, height }, { { 0, 0, height + 140 }, { 32, 20, 1 } });
@@ -17723,12 +17723,12 @@ static void CorkscrewRCTrackRightMediumHalfLoopUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 33),
-                        { 0, 0, height }, { { 30, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 0, 0, height + 140 }, { 32, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 38),
-                        { 0, 0, height }, { { 0, 2, height }, { 32, 1, 160 } });
+                        { 0, 0, height }, { { 2, 0, height }, { 1, 32, 160 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_TRACK_MEDIUM_HALF_LOOP + 47),
                         { 0, 0, height }, { { 0, 0, height + 140 }, { 32, 20, 1 } });
