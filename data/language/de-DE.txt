@@ -1912,8 +1912,8 @@ STR_2670    :Rollen
 STR_2680    :Alle Forschungen beendet
 STR_2684    :Eine große Gruppe von Besuchern tritt ein
 STR_2685    :Simplexrauschparameter
-STR_2686    :Niedrig:
-STR_2687    :Hoch:
+STR_2686    :Min. Landhöhe:
+STR_2687    :Max. Landhöhe:
 STR_2688    :Basisfrequenz:
 STR_2689    :Oktaven:
 STR_2690    :Kartengenerierung
@@ -2603,8 +2603,8 @@ STR_5357    :{BLACK}Übelkeitstoleranz:
 STR_5358    :{BLACK}Toilette:
 STR_5359    :Besucher entfernen
 STR_5360    :Alle Besucher von der Karte entfernen
-STR_5361    :Gib allen Besuchern:
-STR_5362    :{BLACK}Bevorzugte Bahnintensität aller Besucher:
+STR_5361    :Zum Besucherinventar hinzufügen
+STR_5362    :{BLACK}Bevorzugte Bahnintensität:
 STR_5363    :Mehr als 1
 STR_5364    :Weniger als 15
 STR_5365    :{BLACK}Personalgeschw.:
@@ -2634,7 +2634,7 @@ STR_5457    :Stützenlimit deaktivieren
 STR_5458    :Im Uhrzeigersinn drehen
 STR_5459    :Gegen den Uhrzeigersinn drehen
 STR_5460    :Ansicht gegen den Uhrzeigers. drehen
-STR_5461    :Besucherparameter festlegen
+STR_5461    :Parameter für alle Besucher festlegen
 STR_5462    :{CURRENCY}
 STR_5463    :Ziel: Viel Spaß!
 STR_5464    :Allgemein
@@ -3162,9 +3162,9 @@ STR_6041    :{BLACK}Es sind keine Mechaniker eingestellt!
 STR_6042    :Höhenkarte laden
 STR_6043    :Höhenkarte auswählen
 STR_6044    :Höhenkarte glätten
-STR_6045    :Stärke
+STR_6045    :Stärke:
 STR_6046    :Höhenkarte normalisieren
-STR_6047    :Kacheln glätten
+STR_6047    :Kachelkanten glätten
 STR_6048    :Fehler beim Verarbeiten der Höhenkarte
 STR_6049    :Fehler beim Lesen der PNG-Datei
 STR_6050    :Fehler beim Lesen der Bitmap-Datei
@@ -3713,14 +3713,14 @@ STR_6644    :Verbesserungen für die Touch-Bedienung
 STR_6645    :Vergrößert einige Bedienelemente, damit sie leichter angeklickt oder angetippt werden können.
 STR_6646    :Autor: {STRING}
 STR_6647    :Autoren: {STRING}
-STR_6648    :Pluginengine laden…
-STR_6649    :Szenario laden…
+STR_6648    :Pluginengine laden …
+STR_6649    :Szenario laden …
 STR_6650    :Gespeichertes Spiel laden…
 STR_6651    :{STRING} ({COMMA32}%)
 STR_6652    :Fehlermeldung
 STR_6653    :Alle Quellen angezeigt
 STR_6654    :{POP16}{UINT16} Quellen angezeigt
-STR_6655    :Nur ‘{POP16}{STRINGID}’
+STR_6655    :Nur ‚{POP16}{STRINGID}‘
 STR_6656    :Alle Zäune vom Park entfernen
 STR_6657    :Gelände nicht im Besitz
 STR_6658    :Legen Sie das Gelände fest,{NEWLINE}das weder dem Park gehören soll noch gekauft werden kann
@@ -3728,6 +3728,53 @@ STR_6659    :Gäste ignorieren Preise
 STR_6660    :Gäste werden den Preis von Fahrgeschäften und Läden ignorieren
 STR_6661    :Alle zufällig
 STR_6662    :Zufallsfarben für jeden Zug oder jedes Fahrzeug
+STR_6663    :Datumscheats
+STR_6664    :Datumscheats anzeigen
+STR_6665    :Natur-/Wettercheats
+STR_6666    :Natur-/Wettercheats anzeigen
+STR_6667    :Fauna
+STR_6668    :Personalcheats
+STR_6669    :Personalcheats anzeigen
+STR_6670    :Gastverhalten
+STR_6671    :„Reale“ Namen des Personals anzeigen
+STR_6672    :Zwischen der Anzeige „realer“ Namen des Personals und Personalnummern umschalten
+STR_6673    :Transluzent
+STR_6674    :{MONTH}, Jahr {COMMA16}
+STR_6675    :Peep-Namen
+STR_6676    :Es muss mindestens ein Peep-Namensobjekt ausgewählt werden
+STR_6677    :Strände um Wasserflächen hinzufügen
+STR_6678    :Höhenkartenquelle:
+STR_6679    :Flachland
+STR_6680    :Simplexrauschen
+STR_6681    :Höhenkartendatei
+STR_6682    :Kartengenerator – Generator
+STR_6683    :Kartengenerator – Terrain
+STR_6684    :Kartengenerator – Wasser
+STR_6685    :Kartengenerator – Wälder
+STR_6686    :Baum-Land-Verhältnis:
+STR_6687    :Min. Baumhöhe:
+STR_6688    :Max. Baumhöhe:
+STR_6689    :{UINT16}%
+STR_6690    :Minimale Landhöhe
+STR_6691    :Min. Landhöhe zwischen {COMMA16} und {COMMA16} eingeben
+STR_6692    :Maximale Landhöhe
+STR_6693    :Max. Landhöhe zwischen {COMMA16} und {COMMA16} eingeben
+STR_6694    :Minimale Baumhöhe
+STR_6695    :Min. Baumhöhe zwischen {COMMA16} und {COMMA16} eingeben
+STR_6696    :Maximale Baumhöhe
+STR_6697    :Max. Baumhöhe zwischen {COMMA16} und {COMMA16} eingeben
+STR_6698    :Baum-Land-Verhältnis
+STR_6699    :Baum-Land-Verhältnis zwischen {COMMA16} und {COMMA16} eingeben
+STR_6700    :Simplexbasisfrequenz
+STR_6701    :Basisfrequenz zwischen {COMMA2DP32} und {COMMA2DP32} eingeben
+STR_6702    :Simplexoktaven
+STR_6703    :Oktaven zwischen {COMMA16} und {COMMA16} eingeben
+STR_6704    :{COMMA2DP32}
+STR_6705    :Durchsuchen …
+STR_6706    :{WINDOW_COLOUR_2}Aktuelle Bilddatei: {BLACK}{STRING}
+STR_6707    :(keine ausgewählt)
+STR_6708    :Weiche Stärke
+STR_6709    :Weiche Stärke zwischen {COMMA16} und {COMMA16} eingeben
 
 #############
 # Scenarios #
