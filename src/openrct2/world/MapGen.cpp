@@ -24,7 +24,6 @@
 #include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
 #include "../platform/Platform.h"
-#include "../util/Util.h"
 #include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/SurfaceElement.h"

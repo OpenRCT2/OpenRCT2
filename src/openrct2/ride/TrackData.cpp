@@ -10,6 +10,7 @@
 #include "TrackData.h"
 
 #include "../localisation/StringIds.h"
+#include "../util/Util.h"
 #include "Track.h"
 #include "TrackPaint.h"
 

@@ -43,7 +43,6 @@
 #    include "../park/ParkFile.h"
 #    include "../scenario/Scenario.h"
 #    include "../util/SawyerCoding.h"
-#    include "../util/Util.h"
 #    include "Platform.h"
 
 #    define WSZ(x) L"" x

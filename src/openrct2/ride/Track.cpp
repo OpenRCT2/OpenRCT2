@@ -22,7 +22,6 @@
 #include "../rct1/RCT1.h"
 #include "../ride/RideColour.h"
 #include "../util/SawyerCoding.h"
-#include "../util/Util.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"

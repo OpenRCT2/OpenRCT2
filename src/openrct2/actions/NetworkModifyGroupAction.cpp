@@ -10,7 +10,6 @@
 #include "NetworkModifyGroupAction.h"
 
 #include "../network/network.h"
-#include "../util/Util.h"
 
 using namespace OpenRCT2;
 

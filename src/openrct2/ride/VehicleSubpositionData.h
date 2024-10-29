@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../util/Util.h"
 #include "Track.h"
 
 #include <cstdint>

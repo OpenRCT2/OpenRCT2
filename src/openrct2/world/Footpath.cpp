@@ -32,7 +32,6 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
-#include "../util/Util.h"
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"

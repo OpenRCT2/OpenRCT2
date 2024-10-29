@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../util/Util.h"
 #include <cstdint>
 
 enum class ClimateType : uint8_t

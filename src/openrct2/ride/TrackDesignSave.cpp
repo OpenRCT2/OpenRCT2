@@ -21,7 +21,6 @@
 #include "../object/ObjectManager.h"
 #include "../rct2/RCT2.h"
 #include "../util/SawyerCoding.h"
-#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
