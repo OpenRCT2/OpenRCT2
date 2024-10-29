@@ -1481,7 +1481,7 @@ static int32_t RideGetNewBreakdownProblem(const Ride& ride)
     int32_t breakdownProblem;
     while (problemBits != 0)
     {
-        breakdownProblem = UtilBitScanForward(problemBits);
+        breakdownProblem = Numerics::bitScanForward(problemBits);
         problemBits &= ~(1 << breakdownProblem);
         totalProbability += _breakdownProblemProbabilities[breakdownProblem];
     }
@@ -1495,7 +1495,7 @@ static int32_t RideGetNewBreakdownProblem(const Ride& ride)
     problemBits = availableBreakdownProblems;
     do
     {
-        breakdownProblem = UtilBitScanForward(problemBits);
+        breakdownProblem = Numerics::bitScanForward(problemBits);
         problemBits &= ~(1 << breakdownProblem);
         randomProbability -= _breakdownProblemProbabilities[breakdownProblem];
     } while (randomProbability >= 0);

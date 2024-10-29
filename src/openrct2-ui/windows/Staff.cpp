@@ -883,7 +883,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             uint32_t staffOrders = staff->StaffOrders;
-            for (auto index = UtilBitScanForward(staffOrders); index != -1; index = UtilBitScanForward(staffOrders))
+            for (auto index = Numerics::bitScanForward(staffOrders); index != -1; index = Numerics::bitScanForward(staffOrders))
             {
                 staffOrders &= ~(1 << index);
                 SetCheckboxValue(WIDX_CHECKBOX_1 + index, true);

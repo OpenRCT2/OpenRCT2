@@ -820,7 +820,7 @@ void Guest::UpdateConsumptionMotives()
 
         if (TimeToConsume == 0)
         {
-            int32_t chosen_food = UtilBitScanForward(GetFoodOrDrinkFlags());
+            int32_t chosen_food = Numerics::bitScanForward(GetFoodOrDrinkFlags());
             if (chosen_food != -1)
             {
                 ShopItem food = ShopItem(chosen_food);
@@ -1513,7 +1513,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     const auto& shopItemDescriptor = GetShopItemDescriptor(shopItem);
     if (shopItemDescriptor.IsFoodOrDrink())
     {
-        int32_t food = UtilBitScanForward(GetFoodOrDrinkFlags());
+        int32_t food = Numerics::bitScanForward(GetFoodOrDrinkFlags());
         if (food != -1)
         {
             InsertNewThought(PeepThoughtType::HaventFinished, static_cast<ShopItem>(food));
@@ -5371,7 +5371,7 @@ void Guest::UpdateWalking()
         if ((!GetNextIsSurface()) && (static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
             && ((0xFFFF & ScenarioRand()) <= 4096))
         {
-            int32_t container = UtilBitScanForward(GetEmptyContainerFlags());
+            int32_t container = Numerics::bitScanForward(GetEmptyContainerFlags());
             auto litterType = Litter::Type::Vomit;
 
             if (container != -1)

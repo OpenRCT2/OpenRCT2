@@ -640,8 +640,8 @@ GameActions::Result TrackPlaceAction::Execute() const
             {
                 if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.Cheats.DisableClearanceChecks)
                 {
-                    for (int32_t chosenDirection = UtilBitScanForward(availableDirections); chosenDirection != -1;
-                         chosenDirection = UtilBitScanForward(availableDirections))
+                    for (int32_t chosenDirection = Numerics::bitScanForward(availableDirections); chosenDirection != -1;
+                         chosenDirection = Numerics::bitScanForward(availableDirections))
                     {
                         availableDirections &= ~(1 << chosenDirection);
                         CoordsXY tempLoc{ mapLoc.x, mapLoc.y };
