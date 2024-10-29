@@ -16,6 +16,7 @@ AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakTemplateDeclarations: true
 BinPackArguments: true
 BinPackParameters: true
 BraceWrapping:
@@ -40,7 +41,6 @@ BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: false
 BreakConstructorInitializers: BeforeComma
 BreakStringLiterals: true
-BreakTemplateDeclarations: true
 ColumnLimit:     128
 CompactNamespaces: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
