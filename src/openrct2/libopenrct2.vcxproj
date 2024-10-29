@@ -203,6 +203,8 @@
     <ClInclude Include="core\FileSystem.hpp" />
     <ClInclude Include="core\FileWatcher.h" />
     <ClInclude Include="core\FixedPoint.hpp" />
+    <ClInclude Include="core\FixedVector.h" />
+    <ClInclude Include="core\FlagHolder.hpp" />
     <ClInclude Include="core\GroupVector.hpp" />
     <ClInclude Include="core\Guard.hpp" />
     <ClInclude Include="core\Http.h" />
@@ -222,8 +224,7 @@
     <ClInclude Include="core\Random.hpp" />
     <ClInclude Include="core\Range.hpp" />
     <ClInclude Include="core\RTL.h" />
-    <ClInclude Include="core\FixedVector.h" />
-    <ClInclude Include="core\FlagHolder.hpp" />
+    <ClInclude Include="core\SawyerCoding.h" />
     <ClInclude Include="core\Speed.hpp" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
@@ -595,8 +596,7 @@
     <ClInclude Include="ui\UiContext.h" />
     <ClInclude Include="ui\WindowManager.h" />
     <ClInclude Include="util\Math.hpp" />
-    <ClInclude Include="util/Prefetch.h" />
-    <ClInclude Include="util\SawyerCoding.h" />
+    <ClInclude Include="util\Prefetch.h" />
     <ClInclude Include="util\Util.h" />
     <ClInclude Include="Version.h" />
     <ClInclude Include="windows\Intent.h" />
@@ -768,6 +768,7 @@
     <ClCompile Include="core\Path.cpp" />
     <ClCompile Include="core\RTL.FriBidi.cpp" />
     <ClCompile Include="core\RTL.ICU.cpp" />
+    <ClCompile Include="core\SawyerCoding.cpp" />
     <ClCompile Include="core\String.cpp" />
     <ClCompile Include="core\StringBuilder.cpp" />
     <ClCompile Include="core\StringReader.cpp" />
@@ -1091,7 +1092,6 @@
     <ClCompile Include="TrackImporter.cpp" />
     <ClCompile Include="ui\DummyUiContext.cpp" />
     <ClCompile Include="ui\DummyWindowManager.cpp" />
-    <ClCompile Include="util\SawyerCoding.cpp" />
     <ClCompile Include="util\Util.cpp" />
     <ClCompile Include="Version.cpp" />
     <ClCompile Include="windows\Intent.cpp" />

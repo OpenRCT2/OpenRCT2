@@ -9,10 +9,12 @@
 
 #include <gtest/gtest.h>
 #include <openrct2/core/MemoryStream.h>
+#include <openrct2/core/SawyerCoding.h>
 #include <openrct2/rct12/SawyerChunkReader.h>
-#include <openrct2/util/SawyerCoding.h>
 
 constexpr size_t BUFFER_SIZE = 0x600000;
+
+using namespace OpenRCT2;
 
 class SawyerCodingTest : public testing::Test
 {
@@ -34,13 +36,13 @@ protected:
     void TestEncodeDecode(uint8_t encoding_type)
     {
         // Encode
-        SawyerCodingChunkHeader chdr_in;
+        SawyerCoding::ChunkHeader chdr_in;
         chdr_in.encoding = encoding_type;
         chdr_in.length = sizeof(randomdata);
         uint8_t* encodedDataBuffer = new uint8_t[BUFFER_SIZE];
-        size_t encodedDataSize = SawyerCodingWriteChunkBuffer(
+        size_t encodedDataSize = SawyerCoding::WriteChunkBuffer(
             encodedDataBuffer, reinterpret_cast<const uint8_t*>(randomdata), chdr_in);
-        ASSERT_GT(encodedDataSize, sizeof(SawyerCodingChunkHeader));
+        ASSERT_GT(encodedDataSize, sizeof(SawyerCoding::ChunkHeader));
 
         // Decode
         OpenRCT2::MemoryStream ms(encodedDataBuffer, encodedDataSize);
@@ -56,8 +58,8 @@ protected:
 
     void TestDecode(const uint8_t* data, size_t size)
     {
-        auto expectedLength = size - sizeof(SawyerCodingChunkHeader);
-        auto chdr_in = reinterpret_cast<const SawyerCodingChunkHeader*>(data);
+        auto expectedLength = size - sizeof(SawyerCoding::ChunkHeader);
+        auto chdr_in = reinterpret_cast<const SawyerCoding::ChunkHeader*>(data);
         ASSERT_EQ(chdr_in->length, expectedLength);
 
         OpenRCT2::MemoryStream ms(data, size);

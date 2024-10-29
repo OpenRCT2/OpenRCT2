@@ -11,7 +11,7 @@
 
 #include "../core/IStream.hpp"
 #include "../core/Numerics.hpp"
-#include "../util/SawyerCoding.h"
+#include "../core/SawyerCoding.h"
 
 using namespace OpenRCT2;
 
@@ -30,12 +30,12 @@ void SawyerChunkWriter::WriteChunk(const SawyerChunk* chunk)
 
 void SawyerChunkWriter::WriteChunk(const void* src, size_t length, SAWYER_ENCODING encoding)
 {
-    SawyerCodingChunkHeader header;
+    SawyerCoding::ChunkHeader header;
     header.encoding = static_cast<uint8_t>(encoding);
     header.length = static_cast<uint32_t>(length);
 
     auto data = std::make_unique<uint8_t[]>(MAX_COMPRESSED_CHUNK_SIZE);
-    size_t dataLength = SawyerCodingWriteChunkBuffer(data.get(), static_cast<const uint8_t*>(src), header);
+    size_t dataLength = SawyerCoding::WriteChunkBuffer(data.get(), static_cast<const uint8_t*>(src), header);
 
     _stream->Write(data.get(), dataLength);
 }

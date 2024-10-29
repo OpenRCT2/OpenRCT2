@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/IStream.hpp"
-#include "../util/SawyerCoding.h"
+#include "../core/SawyerCoding.h"
 #include "SawyerChunk.h"
 
 #include <cstdint>

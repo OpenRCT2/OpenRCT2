@@ -24,7 +24,7 @@ constexpr const char* EXCEPTION_MSG_DESTINATION_TOO_SMALL = "Chunk data larger t
 constexpr const char* EXCEPTION_MSG_INVALID_CHUNK_ENCODING = "Invalid chunk encoding.";
 constexpr const char* EXCEPTION_MSG_ZERO_SIZED_CHUNK = "Encountered zero-sized chunk.";
 
-static MemoryStream DecodeChunk(const void* src, const SawyerCodingChunkHeader& header);
+static MemoryStream DecodeChunk(const void* src, const SawyerCoding::ChunkHeader& header);
 
 SawyerChunkReader::SawyerChunkReader(OpenRCT2::IStream* stream)
     : _stream(stream)
@@ -36,7 +36,7 @@ void SawyerChunkReader::SkipChunk()
     uint64_t originalPosition = _stream->GetPosition();
     try
     {
-        auto header = _stream->ReadValue<SawyerCodingChunkHeader>();
+        auto header = _stream->ReadValue<SawyerCoding::ChunkHeader>();
         _stream->Seek(header.length, OpenRCT2::STREAM_SEEK_CURRENT);
     }
     catch (const std::exception&)
@@ -52,7 +52,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
     uint64_t originalPosition = _stream->GetPosition();
     try
     {
-        auto header = _stream->ReadValue<SawyerCodingChunkHeader>();
+        auto header = _stream->ReadValue<SawyerCoding::ChunkHeader>();
         if (header.length >= MAX_UNCOMPRESSED_CHUNK_SIZE)
             throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
 
@@ -108,7 +108,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunkTrack()
             throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
         }
 
-        SawyerCodingChunkHeader header{ CHUNK_ENCODING_RLE, compressedDataLength };
+        SawyerCoding::ChunkHeader header{ CHUNK_ENCODING_RLE, compressedDataLength };
         auto buffer = DecodeChunk(compressedData.get(), header);
         if (buffer.GetLength() == 0)
         {
@@ -261,7 +261,7 @@ static MemoryStream DecodeChunkRotate(const void* src, size_t srcLength)
     return buf;
 }
 
-static MemoryStream DecodeChunk(const void* src, const SawyerCodingChunkHeader& header)
+static MemoryStream DecodeChunk(const void* src, const SawyerCoding::ChunkHeader& header)
 {
     MemoryStream buf;
 
