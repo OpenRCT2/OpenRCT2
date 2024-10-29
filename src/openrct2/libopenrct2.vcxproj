@@ -232,6 +232,7 @@
     <ClInclude Include="core\Timer.hpp" />
     <ClInclude Include="core\UTF8.h" />
     <ClInclude Include="core\UnicodeChar.h" />
+    <ClInclude Include="core\UnitConversion.h" />
     <ClInclude Include="core\Zip.h" />
     <ClInclude Include="core\ZipStream.hpp" />
     <ClInclude Include="Date.h" />
@@ -771,6 +772,7 @@
     <ClCompile Include="core\StringBuilder.cpp" />
     <ClCompile Include="core\StringReader.cpp" />
     <ClCompile Include="core\UTF8.cpp" />
+    <ClCompile Include="core\UnitConversion.cpp" />
     <ClCompile Include="core\Zip.cpp" />
     <ClCompile Include="core\ZipAndroid.cpp" />
     <ClCompile Include="Date.cpp" />

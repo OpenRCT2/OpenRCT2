@@ -35,6 +35,7 @@
 #include "../core/File.h"
 #include "../core/Numerics.hpp"
 #include "../core/String.hpp"
+#include "../core/UnitConversion.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"
