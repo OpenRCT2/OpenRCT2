@@ -67,8 +67,10 @@ namespace OpenRCT2::Scripting
         uint8_t bankRotation_get() const;
         void bankRotation_set(uint8_t value);
 
-        template<uint32_t flag> bool flag_get() const;
-        template<uint32_t flag> void flag_set(bool value);
+        template<uint32_t flag>
+        bool flag_get() const;
+        template<uint32_t flag>
+        void flag_set(bool value);
 
         DukValue colours_get() const;
         void colours_set(const DukValue& value);

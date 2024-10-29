@@ -15,7 +15,8 @@
 using namespace OpenRCT2;
 
 // Required for GetEntity to return a default
-template<> bool EntityBase::Is<EntityBase>() const
+template<>
+bool EntityBase::Is<EntityBase>() const
 {
     return true;
 }

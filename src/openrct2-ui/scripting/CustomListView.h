@@ -159,17 +159,38 @@ namespace OpenRCT2::Scripting
 {
     using namespace OpenRCT2::Ui::Windows;
 
-    template<> ColumnSortOrder FromDuk(const DukValue& d);
-    template<> std::optional<int32_t> FromDuk(const DukValue& d);
-    template<> ListViewColumn FromDuk(const DukValue& d);
-    template<> ListViewItem FromDuk(const DukValue& d);
-    template<> std::vector<ListViewColumn> FromDuk(const DukValue& d);
-    template<> std::vector<ListViewItem> FromDuk(const DukValue& d);
-    template<> std::optional<RowColumn> FromDuk(const DukValue& d);
-    template<> DukValue ToDuk(duk_context* ctx, const RowColumn& value);
-    template<> DukValue ToDuk(duk_context* ctx, const ListViewColumn& value);
-    template<> ScrollbarType FromDuk(const DukValue& d);
-    template<> DukValue ToDuk(duk_context* ctx, const ScrollbarType& value);
+    template<>
+    ColumnSortOrder FromDuk(const DukValue& d);
+
+    template<>
+    std::optional<int32_t> FromDuk(const DukValue& d);
+
+    template<>
+    ListViewColumn FromDuk(const DukValue& d);
+
+    template<>
+    ListViewItem FromDuk(const DukValue& d);
+
+    template<>
+    std::vector<ListViewColumn> FromDuk(const DukValue& d);
+
+    template<>
+    std::vector<ListViewItem> FromDuk(const DukValue& d);
+
+    template<>
+    std::optional<RowColumn> FromDuk(const DukValue& d);
+
+    template<>
+    DukValue ToDuk(duk_context* ctx, const RowColumn& value);
+
+    template<>
+    DukValue ToDuk(duk_context* ctx, const ListViewColumn& value);
+
+    template<>
+    ScrollbarType FromDuk(const DukValue& d);
+
+    template<>
+    DukValue ToDuk(duk_context* ctx, const ScrollbarType& value);
 } // namespace OpenRCT2::Scripting
 
 #endif

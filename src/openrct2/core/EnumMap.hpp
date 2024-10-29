@@ -18,7 +18,8 @@
 /**
  * Bi-directional map for converting between strings and enums / numbers.
  */
-template<typename T> class EnumMap
+template<typename T>
+class EnumMap
 {
 private:
     std::vector<std::pair<std::string_view, T>> _map;

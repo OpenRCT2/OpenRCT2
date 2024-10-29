@@ -1240,7 +1240,8 @@ namespace OpenRCT2::RCT1
         }
 
         void ImportEntity(const RCT12EntityBase& src);
-        template<typename T> void ImportEntity(const RCT12EntityBase& src);
+        template<typename T>
+        void ImportEntity(const RCT12EntityBase& src);
 
         void ImportEntities()
         {
@@ -2678,7 +2679,8 @@ namespace OpenRCT2::RCT1
         return output;
     }
 
-    template<> void S4Importer::ImportEntity<::Vehicle>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<::Vehicle>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<::Vehicle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT1::Vehicle*>(&srcBase);
@@ -2800,7 +2802,8 @@ namespace OpenRCT2::RCT1
         }
     }
 
-    template<> void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<Guest>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT1::Peep*>(&srcBase);
@@ -2891,7 +2894,8 @@ namespace OpenRCT2::RCT1
         dst->SetItemFlags(src->GetItemFlags());
     }
 
-    template<> void S4Importer::ImportEntity<Staff>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<Staff>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<Staff>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT1::Peep*>(&srcBase);
@@ -2909,7 +2913,8 @@ namespace OpenRCT2::RCT1
         ImportStaffPatrolArea(dst, src->StaffID);
     }
 
-    template<> void S4Importer::ImportEntity<Litter>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<Litter>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<Litter>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityLitter*>(&srcBase);
@@ -2919,7 +2924,8 @@ namespace OpenRCT2::RCT1
         dst->creationTick = src->CreationTick;
     }
 
-    template<> void S4Importer::ImportEntity<SteamParticle>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<SteamParticle>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<SteamParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntitySteamParticle*>(&srcBase);
@@ -2929,7 +2935,8 @@ namespace OpenRCT2::RCT1
         dst->time_to_move = src->TimeToMove;
     }
 
-    template<> void S4Importer::ImportEntity<MoneyEffect>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<MoneyEffect>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<MoneyEffect>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityMoneyEffect*>(&srcBase);
@@ -2943,7 +2950,8 @@ namespace OpenRCT2::RCT1
         dst->Wiggle = src->Wiggle;
     }
 
-    template<> void S4Importer::ImportEntity<VehicleCrashParticle>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<VehicleCrashParticle>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<VehicleCrashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityCrashedVehicleParticle*>(&srcBase);
@@ -2961,7 +2969,8 @@ namespace OpenRCT2::RCT1
         dst->acceleration_z = src->AccelerationZ;
     }
 
-    template<> void S4Importer::ImportEntity<ExplosionCloud>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<ExplosionCloud>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<ExplosionCloud>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
@@ -2969,7 +2978,8 @@ namespace OpenRCT2::RCT1
         dst->frame = src->Frame;
     }
 
-    template<> void S4Importer::ImportEntity<ExplosionFlare>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<ExplosionFlare>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<ExplosionFlare>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
@@ -2977,7 +2987,8 @@ namespace OpenRCT2::RCT1
         dst->frame = src->Frame;
     }
 
-    template<> void S4Importer::ImportEntity<CrashSplashParticle>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<CrashSplashParticle>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<CrashSplashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
@@ -2985,7 +2996,8 @@ namespace OpenRCT2::RCT1
         dst->frame = src->Frame;
     }
 
-    template<> void S4Importer::ImportEntity<JumpingFountain>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<JumpingFountain>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<JumpingFountain>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityJumpingFountain*>(&srcBase);
@@ -3004,7 +3016,8 @@ namespace OpenRCT2::RCT1
         dst->Iteration = src->Iteration;
     }
 
-    template<> void S4Importer::ImportEntity<Balloon>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<Balloon>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<Balloon>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityBalloon*>(&srcBase);
@@ -3024,7 +3037,8 @@ namespace OpenRCT2::RCT1
         }
     }
 
-    template<> void S4Importer::ImportEntity<Duck>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<Duck>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<Duck>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityDuck*>(&srcBase);

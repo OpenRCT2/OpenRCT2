@@ -12,7 +12,8 @@
 #include <array>
 #include <cstddef>
 
-template<typename TType, size_t TMax> class CircularBuffer
+template<typename TType, size_t TMax>
+class CircularBuffer
 {
 public:
     using value_type = TType;

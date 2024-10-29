@@ -791,7 +791,8 @@ namespace OpenRCT2::Ui::Windows
          * Used in RefreshList() to handle the sorting of the list.
          * Uses a lambda function (predicate) as exit criteria for the algorithm.
          */
-        template<typename TSortPred> void SortListByPredicate(const TSortPred& pred)
+        template<typename TSortPred>
+        void SortListByPredicate(const TSortPred& pred)
         {
             std::sort(_rideList.begin(), _rideList.end(), [&pred](const auto& lhs, const auto& rhs) {
                 const Ride* rideLhs = GetRide(lhs.Id);

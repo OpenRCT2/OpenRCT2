@@ -1851,7 +1851,8 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_blockbrakes[2][4] = 
     },
 };
 
-template<JuniorRCSubType TSubType> constexpr uint8_t JuniorRCGetSubTypeOffset(const TrackElement& trackElement)
+template<JuniorRCSubType TSubType>
+constexpr uint8_t JuniorRCGetSubTypeOffset(const TrackElement& trackElement)
 {
     return trackElement.HasChain() ? EnumValue(TSubType) : 0;
 }
@@ -5799,7 +5800,8 @@ static void JuniorRCTrackOnRidePhoto(
 }
 
 /* 0x008AAA0C */
-template<JuniorRCSubType TSubType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRCTemplate(OpenRCT2::TrackElemType trackType)
+template<JuniorRCSubType TSubType>
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRCTemplate(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {

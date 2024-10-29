@@ -222,7 +222,8 @@ void ResetEntitySpatialIndices()
 
 #ifndef DISABLE_NETWORK
 
-template<typename T> void NetworkSerialseEntityType(DataSerialiser& ds)
+template<typename T>
+void NetworkSerialseEntityType(DataSerialiser& ds)
 {
     for (auto* ent : EntityList<T>())
     {
@@ -230,7 +231,8 @@ template<typename T> void NetworkSerialseEntityType(DataSerialiser& ds)
     }
 }
 
-template<typename... T> void NetworkSerialiseEntityTypes(DataSerialiser& ds)
+template<typename... T>
+void NetworkSerialiseEntityTypes(DataSerialiser& ds)
 {
     (NetworkSerialseEntityType<T>(ds), ...);
 }
@@ -380,7 +382,8 @@ EntityBase* CreateEntityAt(const EntityId index, const EntityType type)
     return entity;
 }
 
-template<typename T> void MiscUpdateAllType()
+template<typename T>
+void MiscUpdateAllType()
 {
     for (auto misc : EntityList<T>())
     {
@@ -388,7 +391,8 @@ template<typename T> void MiscUpdateAllType()
     }
 }
 
-template<typename... T> void MiscUpdateAllTypes()
+template<typename... T>
+void MiscUpdateAllTypes()
 {
     (MiscUpdateAllType<T>(), ...);
 }

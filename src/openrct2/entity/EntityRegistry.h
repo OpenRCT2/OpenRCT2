@@ -30,7 +30,8 @@ constexpr uint16_t MAX_ENTITIES = 65535;
 
 EntityBase* GetEntity(EntityId sprite_idx);
 
-template<typename T> T* GetEntity(EntityId sprite_idx)
+template<typename T>
+T* GetEntity(EntityId sprite_idx)
 {
     auto spr = GetEntity(sprite_idx);
     return spr != nullptr ? spr->As<T>() : nullptr;
@@ -38,7 +39,8 @@ template<typename T> T* GetEntity(EntityId sprite_idx)
 
 EntityBase* TryGetEntity(EntityId spriteIndex);
 
-template<typename T> T* TryGetEntity(EntityId sprite_idx)
+template<typename T>
+T* TryGetEntity(EntityId sprite_idx)
 {
     auto spr = TryGetEntity(sprite_idx);
     return spr != nullptr ? spr->As<T>() : nullptr;
@@ -46,7 +48,8 @@ template<typename T> T* TryGetEntity(EntityId sprite_idx)
 
 EntityBase* CreateEntity(EntityType type);
 
-template<typename T> T* CreateEntity()
+template<typename T>
+T* CreateEntity()
 {
     return static_cast<T*>(CreateEntity(T::cEntityType));
 }
@@ -54,7 +57,8 @@ template<typename T> T* CreateEntity()
 // Use only with imports that must happen at a specified index
 EntityBase* CreateEntityAt(const EntityId index, const EntityType type);
 // Use only with imports that must happen at a specified index
-template<typename T> T* CreateEntityAt(const EntityId index)
+template<typename T>
+T* CreateEntityAt(const EntityId index)
 {
     return static_cast<T*>(CreateEntityAt(index, T::cEntityType));
 }

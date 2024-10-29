@@ -16,7 +16,8 @@ namespace OpenRCT2::Meta
     /**
      * Meta function for checking that all Conditions are true types.
      */
-    template<typename... TConditions> struct all : std::true_type
+    template<typename... TConditions>
+    struct all : std::true_type
     {
     };
 
@@ -25,6 +26,7 @@ namespace OpenRCT2::Meta
     {
     };
 
-    template<typename TType, typename... TTypes> using all_convertible = all<std::is_convertible<TTypes, TType>...>;
+    template<typename TType, typename... TTypes>
+    using all_convertible = all<std::is_convertible<TTypes, TType>...>;
 
 } // namespace OpenRCT2::Meta

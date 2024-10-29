@@ -12,7 +12,8 @@
 #include <cmath>
 #include <type_traits>
 
-template<typename T> struct Range
+template<typename T>
+struct Range
 {
     static_assert(std::is_integral<T>(), "type must be integral");
 

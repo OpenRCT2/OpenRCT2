@@ -112,7 +112,8 @@ namespace OpenRCT2
         /**
          * Reads the size of the given type from the stream directly into the given address.
          */
-        template<typename T> void Read(T* value)
+        template<typename T>
+        void Read(T* value)
         {
             // Selects the best path at compile time
             if constexpr (sizeof(T) == 1)
@@ -144,7 +145,8 @@ namespace OpenRCT2
         /**
          * Writes the size of the given type to the stream directly from the given address.
          */
-        template<typename T> void Write(const T* value)
+        template<typename T>
+        void Write(const T* value)
         {
             // Selects the best path at compile time
             if constexpr (sizeof(T) == 1)
@@ -176,7 +178,8 @@ namespace OpenRCT2
         /**
          * Reads the given type from the stream. Use this only for small types (e.g. int8_t, int64_t, double)
          */
-        template<typename T> T ReadValue()
+        template<typename T>
+        T ReadValue()
         {
             T buffer;
             Read(&buffer);
@@ -186,19 +189,22 @@ namespace OpenRCT2
         /**
          * Writes the given type to the stream. Use this only for small types (e.g. int8_t, int64_t, double)
          */
-        template<typename T> void WriteValue(const T value)
+        template<typename T>
+        void WriteValue(const T value)
         {
             Write(&value);
         }
 
-        template<typename T> [[nodiscard]] std::unique_ptr<T[]> ReadArray(size_t count)
+        template<typename T>
+        [[nodiscard]] std::unique_ptr<T[]> ReadArray(size_t count)
         {
             auto buffer = std::make_unique<T[]>(count);
             Read(buffer.get(), sizeof(T) * count);
             return buffer;
         }
 
-        template<typename T> void WriteArray(T* buffer, size_t count)
+        template<typename T>
+        void WriteArray(T* buffer, size_t count)
         {
             Write(buffer, sizeof(T) * count);
         }
@@ -224,7 +230,8 @@ public:
     }
 };
 
-template<typename T> class ivstream : public std::istream
+template<typename T>
+class ivstream : public std::istream
 {
 private:
     class vector_streambuf : public std::basic_streambuf<char, std::char_traits<char>>

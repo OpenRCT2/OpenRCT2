@@ -19,7 +19,8 @@ namespace OpenRCT2
     struct IStream;
 }
 
-template<typename T> struct IConfigEnum;
+template<typename T>
+struct IConfigEnum;
 
 struct IIniWriter
 {
@@ -34,7 +35,8 @@ struct IIniWriter
     virtual void WriteString(const std::string& name, const std::string& value) = 0;
     virtual void WriteEnum(const std::string& name, const std::string& key) = 0;
 
-    template<typename T> void WriteEnum(const std::string& name, T value, const IConfigEnum<T>& configEnum)
+    template<typename T>
+    void WriteEnum(const std::string& name, T value, const IConfigEnum<T>& configEnum)
     {
         static_assert(sizeof(T) <= sizeof(int32_t), "Type too large");
 

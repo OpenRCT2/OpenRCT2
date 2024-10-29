@@ -15,7 +15,8 @@
 #include <array>
 #include <utility>
 
-template<typename T, size_t MAX> class FixedVector
+template<typename T, size_t MAX>
+class FixedVector
 {
 public:
     using container = std::array<T, MAX>;
@@ -127,7 +128,8 @@ public:
         return _data.begin() + offset;
     }
 
-    template<typename... Args> constexpr reference_type emplace_back(Args&&... args)
+    template<typename... Args>
+    constexpr reference_type emplace_back(Args&&... args)
     {
         OpenRCT2::Guard::Assert(_count < MAX);
         reference_type res = _data[_count++];

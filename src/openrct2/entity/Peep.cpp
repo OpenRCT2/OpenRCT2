@@ -125,7 +125,8 @@ const bool gAnimationGroupToSlowWalkMap[] = {
     true,  true,  true,  true,  true,  true,  false, true,  false, true,  true,  true, true,  true,  true,  true,
 };
 
-template<> bool EntityBase::Is<Peep>() const
+template<>
+bool EntityBase::Is<Peep>() const
 {
     return Type == EntityType::Guest || Type == EntityType::Staff;
 }

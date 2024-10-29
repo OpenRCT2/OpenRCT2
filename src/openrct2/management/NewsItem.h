@@ -120,7 +120,8 @@ namespace OpenRCT2::News
     constexpr int32_t MaxItemsArchive = 50;
     constexpr int32_t MaxItems = News::ItemHistoryStart + News::MaxItemsArchive;
 
-    template<std::size_t N> class ItemQueue
+    template<std::size_t N>
+    class ItemQueue
     {
     public:
         static_assert(N > 0, "Cannot instantiate News::ItemQueue with size=0");
@@ -264,7 +265,8 @@ namespace OpenRCT2::News
             return Archived;
         }
 
-        template<typename Predicate> void ForeachRecentNews(Predicate&& p)
+        template<typename Predicate>
+        void ForeachRecentNews(Predicate&& p)
         {
             for (auto& newsItem : Recent)
             {
@@ -272,7 +274,8 @@ namespace OpenRCT2::News
             }
         }
 
-        template<typename Predicate> void ForeachArchivedNews(Predicate&& p)
+        template<typename Predicate>
+        void ForeachArchivedNews(Predicate&& p)
         {
             for (auto& newsItem : Archived)
             {

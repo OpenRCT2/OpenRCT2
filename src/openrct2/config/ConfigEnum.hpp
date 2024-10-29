@@ -15,7 +15,8 @@
 #include <utility>
 #include <vector>
 
-template<typename T> struct ConfigEnumEntry
+template<typename T>
+struct ConfigEnumEntry
 {
     std::string Key;
     T Value;
@@ -27,14 +28,16 @@ template<typename T> struct ConfigEnumEntry
     }
 };
 
-template<typename T> struct IConfigEnum
+template<typename T>
+struct IConfigEnum
 {
     virtual ~IConfigEnum() = default;
     virtual std::string GetName(T value) const = 0;
     virtual T GetValue(const std::string& key, T defaultValue) const = 0;
 };
 
-template<typename T> class ConfigEnum final : public IConfigEnum<T>
+template<typename T>
+class ConfigEnum final : public IConfigEnum<T>
 {
 private:
     const std::vector<ConfigEnumEntry<T>> _entries;

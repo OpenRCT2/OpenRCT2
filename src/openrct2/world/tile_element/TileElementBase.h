@@ -84,7 +84,8 @@ struct TileElementBase
     uint8_t GetOwner() const;
     void SetOwner(uint8_t newOwner);
 
-    template<typename TType> const TType* as() const
+    template<typename TType>
+    const TType* as() const
     {
         if constexpr (std::is_same_v<TType, TileElement>)
             return reinterpret_cast<const TileElement*>(this);
@@ -92,7 +93,8 @@ struct TileElementBase
             return GetType() == TType::kElementType ? reinterpret_cast<const TType*>(this) : nullptr;
     }
 
-    template<typename TType> TType* as()
+    template<typename TType>
+    TType* as()
     {
         if constexpr (std::is_same_v<TType, TileElement>)
             return reinterpret_cast<TileElement*>(this);

@@ -20,7 +20,8 @@
 
 namespace OpenRCT2::Scripting
 {
-    template<> inline DukValue ToDuk(duk_context* ctx, const TrackColour& value)
+    template<>
+    inline DukValue ToDuk(duk_context* ctx, const TrackColour& value)
     {
         DukObject obj(ctx);
         obj.Set("main", value.main);
@@ -29,7 +30,8 @@ namespace OpenRCT2::Scripting
         return obj.Take();
     }
 
-    template<> inline TrackColour FromDuk(const DukValue& s)
+    template<>
+    inline TrackColour FromDuk(const DukValue& s)
     {
         TrackColour result{};
         result.main = AsOrDefault(s["main"], 0);
@@ -38,7 +40,8 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
-    template<> inline DukValue ToDuk(duk_context* ctx, const VehicleColour& value)
+    template<>
+    inline DukValue ToDuk(duk_context* ctx, const VehicleColour& value)
     {
         DukObject obj(ctx);
         obj.Set("body", value.Body);
@@ -48,7 +51,8 @@ namespace OpenRCT2::Scripting
         return obj.Take();
     }
 
-    template<> inline VehicleColour FromDuk(const DukValue& s)
+    template<>
+    inline VehicleColour FromDuk(const DukValue& s)
     {
         VehicleColour result{};
         result.Body = AsOrDefault(s["body"], 0);

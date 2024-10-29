@@ -57,7 +57,8 @@ public:
         return _activeStream;
     }
 
-    template<typename T> DataSerialiser& operator<<(const T& data)
+    template<typename T>
+    DataSerialiser& operator<<(const T& data)
     {
         if (!_isLogging)
         {
@@ -74,7 +75,8 @@ public:
         return *this;
     }
 
-    template<typename T> DataSerialiser& operator<<(DataSerialiserTag<T> data)
+    template<typename T>
+    DataSerialiser& operator<<(DataSerialiserTag<T> data)
     {
         if (!_isLogging)
         {

@@ -25,7 +25,8 @@ namespace OpenRCT2
         {
             static constexpr size_t BitsPerByte = std::numeric_limits<std::underlying_type_t<std::byte>>::digits;
 
-            template<size_t TNumBits> static constexpr size_t ByteAlignBits()
+            template<size_t TNumBits>
+            static constexpr size_t ByteAlignBits()
             {
                 const auto reminder = TNumBits % BitsPerByte;
                 if constexpr (reminder == 0u)
@@ -48,7 +49,8 @@ namespace OpenRCT2
             static_assert(ByteAlignBits<31>() == 32);
 
             // Returns the amount of bytes required for a single block.
-            template<size_t TNumBits> static constexpr size_t ComputeBlockSize()
+            template<size_t TNumBits>
+            static constexpr size_t ComputeBlockSize()
             {
                 constexpr size_t numBits = ByteAlignBits<TNumBits>();
                 if constexpr (numBits >= std::numeric_limits<uintptr_t>::digits)
@@ -67,7 +69,8 @@ namespace OpenRCT2
                 }
             }
 
-            template<size_t TNumBits, size_t TBlockSizeBytes> static constexpr size_t ComputeBlockCount()
+            template<size_t TNumBits, size_t TBlockSizeBytes>
+            static constexpr size_t ComputeBlockCount()
             {
                 size_t numBits = TNumBits;
                 size_t numBlocks = 0;
@@ -90,7 +93,8 @@ namespace OpenRCT2
             static_assert(ComputeBlockSize<33>() == sizeof(uintptr_t));
 
             // TODO: Replace with std::popcount when C++20 is enabled.
-            template<typename T> static constexpr size_t popcount(const T val)
+            template<typename T>
+            static constexpr size_t popcount(const T val)
             {
                 size_t res = 0;
                 auto x = static_cast<std::make_unsigned_t<T>>(val);
@@ -103,36 +107,43 @@ namespace OpenRCT2
                 return res;
             }
 
-            template<size_t TByteSize> struct StorageBlockType;
+            template<size_t TByteSize>
+            struct StorageBlockType;
 
-            template<> struct StorageBlockType<1>
+            template<>
+            struct StorageBlockType<1>
             {
                 using value_type = uint8_t;
             };
 
-            template<> struct StorageBlockType<2>
+            template<>
+            struct StorageBlockType<2>
             {
                 using value_type = uint16_t;
             };
 
-            template<> struct StorageBlockType<4>
+            template<>
+            struct StorageBlockType<4>
             {
                 using value_type = uint32_t;
             };
 
-            template<> struct StorageBlockType<8>
+            template<>
+            struct StorageBlockType<8>
             {
                 using value_type = uint64_t;
             };
 
-            template<size_t TBitSize> struct storage_block_type_aligned
+            template<size_t TBitSize>
+            struct storage_block_type_aligned
             {
                 using value_type = typename StorageBlockType<ComputeBlockSize<TBitSize>()>::value_type;
             };
         } // namespace BitSet
     } // namespace Detail
 
-    template<size_t TBitSize> class BitSet
+    template<size_t TBitSize>
+    class BitSet
     {
         static constexpr size_t ByteAlignedBitSize = Detail::BitSet::ByteAlignBits<TBitSize>();
 
@@ -154,7 +165,8 @@ namespace OpenRCT2
         using Storage = std::array<BlockType, BlockCount>;
 
         // Proxy object to access the bits as single value.
-        template<typename T> class reference_base
+        template<typename T>
+        class reference_base
         {
             T& _storage;
             const size_t _blockIndex;
@@ -196,7 +208,8 @@ namespace OpenRCT2
         using reference = reference_base<Storage>;
         using const_reference = reference_base<const Storage>;
 
-        template<typename T, typename TValue> class iterator_base
+        template<typename T, typename TValue>
+        class iterator_base
         {
             T* _bitset{};
             size_t _pos{};
@@ -275,7 +288,8 @@ namespace OpenRCT2
         {
         }
 
-        template<typename T> constexpr BitSet(const std::initializer_list<T>& indices)
+        template<typename T>
+        constexpr BitSet(const std::initializer_list<T>& indices)
         {
             for (auto idx : indices)
             {

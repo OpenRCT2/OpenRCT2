@@ -53,7 +53,8 @@ public:
     friend constexpr bool operator>(const ZoomLevel& lhs, const ZoomLevel& rhs);
     friend constexpr bool operator<(const ZoomLevel& lhs, const ZoomLevel& rhs);
 
-    template<typename T> constexpr T ApplyTo(const T& lhs) const
+    template<typename T>
+    constexpr T ApplyTo(const T& lhs) const
     {
         if (_level < 0)
             return lhs >> -_level;
@@ -61,7 +62,8 @@ public:
         return lhs << _level;
     }
 
-    template<typename T> constexpr T ApplyInversedTo(const T& lhs) const
+    template<typename T>
+    constexpr T ApplyInversedTo(const T& lhs) const
     {
         if (_level < 0)
             return lhs << -_level;

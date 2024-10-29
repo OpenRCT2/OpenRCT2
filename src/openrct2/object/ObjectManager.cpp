@@ -472,7 +472,8 @@ private:
         LOG_VERBOSE("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
     }
 
-    template<typename T> void UpdateSceneryGroupIndexes(ObjectType type)
+    template<typename T>
+    void UpdateSceneryGroupIndexes(ObjectType type)
     {
         auto& list = GetObjectList(type);
         for (auto* loadedObject : list)

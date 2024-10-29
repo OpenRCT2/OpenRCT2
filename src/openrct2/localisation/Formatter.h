@@ -79,7 +79,8 @@ public:
         return CurrentBuf - StartBuf;
     }
 
-    template<typename TSpecified, typename TDeduced> Formatter& Add(TDeduced value)
+    template<typename TSpecified, typename TDeduced>
+    Formatter& Add(TDeduced value)
     {
         static_assert(sizeof(TSpecified) <= sizeof(uint64_t), "Type too large");
         static_assert(sizeof(TDeduced) <= sizeof(uint64_t), "Type too large");

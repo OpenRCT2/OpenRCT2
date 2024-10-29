@@ -3389,7 +3389,8 @@ namespace OpenRCT2::TrackMetaData
     };
     static_assert(std::size(TrackTypeToSpinFunction) == EnumValue(TrackElemType::Count));
 
-    template<int32_t TConstant> static int32_t EvaluatorConst(const int16_t)
+    template<int32_t TConstant>
+    static int32_t EvaluatorConst(const int16_t)
     {
         return TConstant;
     }

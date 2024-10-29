@@ -54,7 +54,8 @@ struct GameStateSnapshot_t
     OpenRCT2::MemoryStream storedSprites;
     OpenRCT2::MemoryStream parkParameters;
 
-    template<typename T> bool EntitySizeCheck(DataSerialiser& ds)
+    template<typename T>
+    bool EntitySizeCheck(DataSerialiser& ds)
     {
         uint32_t size = sizeof(T);
         ds << size;
@@ -64,7 +65,8 @@ struct GameStateSnapshot_t
         }
         return true;
     }
-    template<typename... T> bool EntitiesSizeCheck(DataSerialiser& ds)
+    template<typename... T>
+    bool EntitiesSizeCheck(DataSerialiser& ds)
     {
         return (EntitySizeCheck<T>(ds) && ...);
     }
@@ -234,7 +236,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         std::memcpy(&valB, &spriteCmp.field, sizeof(struc::field));                                                            \
         uintptr_t offset = reinterpret_cast<uintptr_t>(&spriteBase.field) - reinterpret_cast<uintptr_t>(&spriteBase);          \
         changeData.diffs.push_back(                                                                                            \
-            GameStateSpriteChange::Diff { static_cast<size_t>(offset), sizeof(struc::field), #struc, #field, valA, valB });    \
+            GameStateSpriteChange::Diff{ static_cast<size_t>(offset), sizeof(struc::field), #struc, #field, valA, valB });     \
     }
 
     void CompareSpriteDataCommon(

@@ -66,7 +66,8 @@ private:
 std::shared_ptr<IContext> TileElementsViewTests::_context;
 uint8_t TileElementsViewTests::_gScreenFlags;
 
-template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
+template<typename T>
+std::vector<T*> BuildListManual(const CoordsXY& pos)
 {
     std::vector<T*> res;
 
@@ -92,7 +93,8 @@ template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
     return res;
 }
 
-template<typename T> std::vector<T*> BuildListByView(const CoordsXY& pos)
+template<typename T>
+std::vector<T*> BuildListByView(const CoordsXY& pos)
 {
     std::vector<T*> res;
 
@@ -104,7 +106,8 @@ template<typename T> std::vector<T*> BuildListByView(const CoordsXY& pos)
     return res;
 }
 
-template<typename T> bool CompareLists(const CoordsXY& pos)
+template<typename T>
+bool CompareLists(const CoordsXY& pos)
 {
     auto listManual = BuildListManual<T>(pos);
     auto listView = BuildListByView<T>(pos);
@@ -124,7 +127,8 @@ template<typename T> bool CompareLists(const CoordsXY& pos)
     return true;
 }
 
-template<typename T> void CheckMapTiles()
+template<typename T>
+void CheckMapTiles()
 {
     for (int y = 0; y < kMaximumMapSizeTechnical; ++y)
     {

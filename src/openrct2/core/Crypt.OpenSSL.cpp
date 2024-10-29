@@ -40,7 +40,8 @@ static void OpenSSLInitialise()
     }
 }
 
-template<typename TBase> class OpenSSLHashAlgorithm final : public TBase
+template<typename TBase>
+class OpenSSLHashAlgorithm final : public TBase
 {
 private:
     const EVP_MD* _type;

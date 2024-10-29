@@ -32,7 +32,8 @@ static constexpr CoordsXY _moneyEffectMoveOffset[] = {
     { -1, -1 },
 };
 
-template<> bool EntityBase::Is<MoneyEffect>() const
+template<>
+bool EntityBase::Is<MoneyEffect>() const
 {
     return Type == EntityType::MoneyEffect;
 }

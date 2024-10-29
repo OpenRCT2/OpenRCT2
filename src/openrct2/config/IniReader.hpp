@@ -17,7 +17,8 @@ namespace OpenRCT2
     struct IStream;
 }
 
-template<typename T> struct IConfigEnum;
+template<typename T>
+struct IConfigEnum;
 
 struct IIniReader
 {
@@ -32,7 +33,8 @@ struct IIniReader
     virtual std::string GetString(const std::string& name, const std::string& defaultValue) const = 0;
     virtual bool TryGetString(const std::string& name, std::string* outValue) const = 0;
 
-    template<typename T> T GetEnum(const std::string& name, T defaultValue, const IConfigEnum<T>& configEnum) const
+    template<typename T>
+    T GetEnum(const std::string& name, T defaultValue, const IConfigEnum<T>& configEnum) const
     {
         std::string szValue;
         if (!TryGetString(name, &szValue))

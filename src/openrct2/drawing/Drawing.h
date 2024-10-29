@@ -451,7 +451,8 @@ struct DrawSpriteArgs
     }
 };
 
-template<DrawBlendOp TBlendOp> bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap)
+template<DrawBlendOp TBlendOp>
+bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap)
 {
     if constexpr (TBlendOp & BLEND_TRANSPARENT)
     {

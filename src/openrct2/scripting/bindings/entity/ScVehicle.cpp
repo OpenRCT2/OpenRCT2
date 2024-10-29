@@ -336,13 +336,15 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    template<uint32_t flag> bool ScVehicle::flag_get() const
+    template<uint32_t flag>
+    bool ScVehicle::flag_get() const
     {
         auto vehicle = GetVehicle();
         return vehicle != nullptr ? vehicle->HasFlag(flag) : false;
     }
 
-    template<uint32_t flag> void ScVehicle::flag_set(bool value)
+    template<uint32_t flag>
+    void ScVehicle::flag_set(bool value)
     {
         ThrowIfGameStateNotMutable();
         auto vehicle = GetVehicle();

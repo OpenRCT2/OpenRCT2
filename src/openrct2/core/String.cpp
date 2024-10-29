@@ -150,7 +150,8 @@ namespace OpenRCT2::String
         return strcmp(a, b);
     }
 
-    template<typename TString> static bool EqualsImpl(TString&& lhs, TString&& rhs, bool ignoreCase)
+    template<typename TString>
+    static bool EqualsImpl(TString&& lhs, TString&& rhs, bool ignoreCase)
     {
         return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), [ignoreCase](auto a, auto b) {
             const auto first = static_cast<unsigned char>(a);

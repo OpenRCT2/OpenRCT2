@@ -20,21 +20,24 @@
  */
 namespace OpenRCT2::Memory
 {
-    template<typename T> static T* Allocate()
+    template<typename T>
+    static T* Allocate()
     {
         T* result = static_cast<T*>(malloc(sizeof(T)));
         Guard::ArgumentNotNull(result, "Failed to allocate %zu bytes for %s", sizeof(T), typeid(T).name());
         return result;
     }
 
-    template<typename T> static T* Allocate(size_t size)
+    template<typename T>
+    static T* Allocate(size_t size)
     {
         T* result = static_cast<T*>(malloc(size));
         Guard::ArgumentNotNull(result, "Failed to allocate %zu bytes for %s", size, typeid(T).name());
         return result;
     }
 
-    template<typename T> static T* Reallocate(T* ptr, size_t size)
+    template<typename T>
+    static T* Reallocate(T* ptr, size_t size)
     {
         T* result;
         if (ptr == nullptr)
@@ -49,7 +52,8 @@ namespace OpenRCT2::Memory
         return result;
     }
 
-    template<typename T> static void Free(T* ptr)
+    template<typename T>
+    static void Free(T* ptr)
     {
         free(const_cast<void*>(reinterpret_cast<const void*>(ptr)));
     }

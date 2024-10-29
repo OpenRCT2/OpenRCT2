@@ -217,7 +217,8 @@ static int32_t GetCodePageForRCT2Language(RCT2LanguageId languageId)
     }
 }
 
-template<typename TConvertFunc> static std::string DecodeConvertWithTable(std::string_view src, TConvertFunc func)
+template<typename TConvertFunc>
+static std::string DecodeConvertWithTable(std::string_view src, TConvertFunc func)
 {
     auto decoded = DecodeToWideChar(src);
     std::wstring u16;

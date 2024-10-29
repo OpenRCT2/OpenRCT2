@@ -267,7 +267,8 @@ namespace OpenRCT2::Park
         return peep;
     }
 
-    template<typename T, size_t TSize> static void HistoryPushRecord(T history[TSize], T newItem)
+    template<typename T, size_t TSize>
+    static void HistoryPushRecord(T history[TSize], T newItem)
     {
         for (size_t i = TSize - 1; i > 0; i--)
         {

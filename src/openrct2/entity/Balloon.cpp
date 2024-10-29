@@ -20,7 +20,8 @@
 #include "../world/tile_element/TrackElement.h"
 #include "EntityRegistry.h"
 
-template<> bool EntityBase::Is<Balloon>() const
+template<>
+bool EntityBase::Is<Balloon>() const
 {
     return Type == EntityType::Balloon;
 }

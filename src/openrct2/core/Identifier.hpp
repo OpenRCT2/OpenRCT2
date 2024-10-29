@@ -12,7 +12,8 @@
 #include <cstdint>
 #include <cstdio>
 
-template<typename T, T TNullValue, typename TTag> class TIdentifier
+template<typename T, T TNullValue, typename TTag>
+class TIdentifier
 {
     enum class ValueType : T
     {

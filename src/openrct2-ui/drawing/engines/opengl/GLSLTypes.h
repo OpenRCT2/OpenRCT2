@@ -16,7 +16,8 @@ namespace OpenRCT2::Ui
 #pragma pack(push, 1)
     namespace detail
     {
-        template<typename T_> struct Vec2
+        template<typename T_>
+        struct Vec2
         {
             using ValueType = T_;
 
@@ -37,7 +38,8 @@ namespace OpenRCT2::Ui
         template struct Vec2<GLfloat>;
         template struct Vec2<GLint>;
 
-        template<typename T_> struct Vec3
+        template<typename T_>
+        struct Vec3
         {
             using ValueType = T_;
 
@@ -64,7 +66,8 @@ namespace OpenRCT2::Ui
         template struct Vec3<GLfloat>;
         template struct Vec3<GLint>;
 
-        template<typename T_> struct Vec4
+        template<typename T_>
+        struct Vec4
         {
             using ValueType = T_;
 

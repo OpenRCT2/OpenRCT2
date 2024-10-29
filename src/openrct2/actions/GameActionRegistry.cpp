@@ -117,7 +117,8 @@ namespace OpenRCT2::GameActions
         registry[idx] = { factory, name };
     }
 
-    template<typename T> static constexpr void Register(GameActionRegistry& registry, const char* name)
+    template<typename T>
+    static constexpr void Register(GameActionRegistry& registry, const char* name)
     {
         GameActionFactory factory = []() -> GameAction* { return new T(); };
         Register<T::TYPE>(registry, factory, name);

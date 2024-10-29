@@ -9,7 +9,8 @@
 
 #include "Drawing.h"
 
-template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp>
+static void FASTCALL DrawBMPSpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     auto& paletteMap = args.PalMap;
     auto src0 = args.SourceImage.offset;
@@ -34,7 +35,8 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMagnify(DrawPix
     }
 }
 
-template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp>
+static void FASTCALL DrawBMPSpriteMinify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     auto& g1 = args.SourceImage;
     auto src = g1.offset + ((static_cast<size_t>(g1.width) * args.SrcY) + args.SrcX);
@@ -59,7 +61,8 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(DrawPixe
     }
 }
 
-template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSprite(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp>
+static void FASTCALL DrawBMPSprite(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     if (dpi.zoom_level < ZoomLevel{ 0 })
     {

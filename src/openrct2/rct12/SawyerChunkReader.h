@@ -79,7 +79,8 @@ public:
      * specified type. If the chunk is smaller than the size of the type
      * then the remaining space is padded with zero.
      */
-    template<typename T> T ReadChunkAs()
+    template<typename T>
+    T ReadChunkAs()
     {
         T result;
         ReadChunk(&result, sizeof(result));
