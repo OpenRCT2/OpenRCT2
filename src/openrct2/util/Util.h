@@ -38,10 +38,6 @@ char* SafeStrCat(char* destination, const char* source, size_t size);
 uint32_t UtilRand();
 float UtilRandNormalDistributed();
 
-bool UtilGzipCompress(FILE* source, FILE* dest);
-std::vector<uint8_t> Gzip(const void* data, const size_t dataLen);
-std::vector<uint8_t> Ungzip(const void* data, const size_t dataLen);
-
 template<typename T>
 constexpr T AddClamp(T value, T valueToAdd)
 {

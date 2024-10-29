@@ -186,6 +186,7 @@
     <ClInclude Include="core\CircularBuffer.h" />
     <ClInclude Include="core\CodepointView.hpp" />
     <ClInclude Include="core\Collections.hpp" />
+    <ClInclude Include="core\Compression.h" />
     <ClInclude Include="core\Console.hpp" />
     <ClInclude Include="core\Crypt.h" />
     <ClInclude Include="core\DataSerialiser.h" />
@@ -745,6 +746,7 @@
     <ClCompile Include="config\IniWriter.cpp" />
     <ClCompile Include="Context.cpp" />
     <ClCompile Include="core\ChecksumStream.cpp" />
+    <ClCompile Include="core\Compression.cpp" />
     <ClCompile Include="core\Console.cpp" />
     <ClCompile Include="core\Crypt.CNG.cpp" />
     <ClCompile Include="core\Crypt.OpenRCT2.cpp" />

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../util/Util.h"
+#include "../core/Compression.h"
 #include "../world/Location.hpp"
 #include "Crypt.h"
 #include "FileStream.h"
@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <optional>
 #include <stack>
 #include <type_traits>
 #include <vector>
@@ -99,7 +100,7 @@ namespace OpenRCT2
                 // Uncompress
                 if (_header.Compression == COMPRESSION_GZIP)
                 {
-                    auto uncompressedData = Ungzip(_buffer.GetData(), _buffer.GetLength());
+                    auto uncompressedData = Compression::ungzip(_buffer.GetData(), _buffer.GetLength());
                     if (_header.UncompressedSize != uncompressedData.size())
                     {
                         // Warning?
@@ -135,7 +136,7 @@ namespace OpenRCT2
                 std::optional<std::vector<uint8_t>> compressedBytes;
                 if (_header.Compression == COMPRESSION_GZIP)
                 {
-                    compressedBytes = Gzip(uncompressedData, uncompressedSize);
+                    compressedBytes = Compression::gzip(uncompressedData, uncompressedSize);
                     if (compressedBytes)
                     {
                         _header.CompressedSize = compressedBytes->size();
