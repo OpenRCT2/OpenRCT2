@@ -11,10 +11,11 @@
 
 #include "SawyerChunkReader.h"
 
-using namespace OpenRCT2;
-
-SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, MemoryStream&& data)
-    : _data(std::move(data))
-    , _encoding(encoding)
+namespace OpenRCT2
 {
-}
+    SawyerChunk::SawyerChunk(SAWYER_ENCODING encoding, MemoryStream&& data)
+        : _data(std::move(data))
+        , _encoding(encoding)
+    {
+    }
+} // namespace OpenRCT2
