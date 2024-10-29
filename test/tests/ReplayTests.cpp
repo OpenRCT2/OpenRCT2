@@ -104,7 +104,8 @@ static void PrintTo(const ReplayTestData& testData, std::ostream* os)
 
 struct PrintReplayParameter
 {
-    template<class ParamType> std::string operator()(const testing::TestParamInfo<ParamType>& info) const
+    template<class ParamType>
+    std::string operator()(const testing::TestParamInfo<ParamType>& info) const
     {
         auto data = static_cast<ReplayTestData>(info.param);
         return data.name;

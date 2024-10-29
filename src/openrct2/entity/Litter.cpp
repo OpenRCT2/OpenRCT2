@@ -15,7 +15,8 @@
 
 using namespace OpenRCT2;
 
-template<> bool EntityBase::Is<Litter>() const
+template<>
+bool EntityBase::Is<Litter>() const
 {
     return Type == EntityType::Litter;
 }

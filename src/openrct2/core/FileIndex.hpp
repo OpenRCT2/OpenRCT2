@@ -26,7 +26,8 @@
 #include <tuple>
 #include <vector>
 
-template<typename TItem> class FileIndex
+template<typename TItem>
+class FileIndex
 {
 private:
     struct DirectoryStats

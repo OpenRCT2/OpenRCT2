@@ -97,7 +97,8 @@ namespace OpenRCT2
             Write<16>(buffer);
         }
 
-        template<size_t N> void Write(const void* buffer)
+        template<size_t N>
+        void Write(const void* buffer)
         {
             Write(buffer, N);
         }

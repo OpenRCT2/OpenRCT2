@@ -341,7 +341,8 @@ namespace OpenRCT2::Scripting
         return imageData;
     }
 
-    template<> PixelDataKind FromDuk(const DukValue& d)
+    template<>
+    PixelDataKind FromDuk(const DukValue& d)
     {
         if (d.type() == DukValue::Type::STRING)
         {
@@ -358,7 +359,8 @@ namespace OpenRCT2::Scripting
         return PixelDataKind::Unknown;
     }
 
-    template<> PixelDataPaletteKind FromDuk(const DukValue& d)
+    template<>
+    PixelDataPaletteKind FromDuk(const DukValue& d)
     {
         if (d.type() == DukValue::Type::STRING)
         {

@@ -12,7 +12,8 @@
 #include <cassert>
 #include <cstring>
 
-template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp>
+static void FASTCALL DrawRLESpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     auto& paletteMap = args.PalMap;
     auto imgData = args.SourceImage.offset;
@@ -151,7 +152,8 @@ static void FASTCALL DrawRLESpriteMinify(DrawPixelInfo& dpi, const DrawSpriteArg
     }
 }
 
-template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESprite(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp>
+static void FASTCALL DrawRLESprite(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     auto zoom_level = static_cast<int8_t>(dpi.zoom_level);
     switch (zoom_level)

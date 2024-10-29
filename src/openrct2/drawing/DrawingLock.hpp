@@ -13,7 +13,8 @@
 
 using namespace OpenRCT2;
 
-template<typename T> class DrawingUniqueLock
+template<typename T>
+class DrawingUniqueLock
 {
     T& _mutex;
     const bool _enabled;
@@ -33,7 +34,8 @@ public:
     }
 };
 
-template<typename T> class DrawingSharedLock
+template<typename T>
+class DrawingSharedLock
 {
     T& _mutex;
     const bool _enabled;

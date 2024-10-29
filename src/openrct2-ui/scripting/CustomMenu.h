@@ -108,8 +108,10 @@ namespace OpenRCT2::Scripting
     void InitialiseCustomMenuItems(ScriptEngine& scriptEngine);
     void InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue);
 
-    template<> DukValue ToDuk(duk_context* ctx, const CursorID& value);
-    template<> CursorID FromDuk(const DukValue& s);
+    template<>
+    DukValue ToDuk(duk_context* ctx, const CursorID& value);
+    template<>
+    CursorID FromDuk(const DukValue& s);
 
 } // namespace OpenRCT2::Scripting
 

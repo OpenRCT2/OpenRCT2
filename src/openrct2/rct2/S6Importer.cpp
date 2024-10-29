@@ -1617,7 +1617,8 @@ namespace OpenRCT2::RCT2
             return (_s6.Header.ClassicFlag == 0xf) ? Limits::kMaxEntitiesRCTCExtended : Limits::kMaxEntities;
         }
 
-        template<typename OpenRCT2_T> void ImportEntity(const RCT12EntityBase& src);
+        template<typename OpenRCT2_T>
+        void ImportEntity(const RCT12EntityBase& src);
 
         void ImportEntityPeep(::Peep* dst, const Peep* src)
         {
@@ -1880,7 +1881,8 @@ namespace OpenRCT2::RCT2
         }
     };
 
-    template<> void S6Importer::ImportEntity<::Vehicle>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Vehicle>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Vehicle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT2::Vehicle*>(&baseSrc);
@@ -2005,7 +2007,8 @@ namespace OpenRCT2::RCT2
         return s6.GameTicks1 - ticksElapsed;
     }
 
-    template<> void S6Importer::ImportEntity<::Guest>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Guest>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Guest>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const Peep*>(&baseSrc);
@@ -2079,7 +2082,8 @@ namespace OpenRCT2::RCT2
         dst->FavouriteRideRating = src->FavouriteRideRating;
     }
 
-    template<> void S6Importer::ImportEntity<::Staff>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Staff>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Staff>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const Peep*>(&baseSrc);
@@ -2099,7 +2103,8 @@ namespace OpenRCT2::RCT2
         ImportStaffPatrolArea(dst, src->StaffId);
     }
 
-    template<> void S6Importer::ImportEntity<::SteamParticle>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::SteamParticle>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::SteamParticle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntitySteamParticle*>(&baseSrc);
@@ -2108,7 +2113,8 @@ namespace OpenRCT2::RCT2
         dst->frame = src->Frame;
     }
 
-    template<> void S6Importer::ImportEntity<::MoneyEffect>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::MoneyEffect>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::MoneyEffect>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityMoneyEffect*>(&baseSrc);
@@ -2121,7 +2127,8 @@ namespace OpenRCT2::RCT2
         dst->Wiggle = src->Wiggle;
     }
 
-    template<> void S6Importer::ImportEntity<::VehicleCrashParticle>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::VehicleCrashParticle>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::VehicleCrashParticle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityCrashedVehicleParticle*>(&baseSrc);
@@ -2140,7 +2147,8 @@ namespace OpenRCT2::RCT2
         dst->acceleration_z = src->AccelerationZ;
     }
 
-    template<> void S6Importer::ImportEntity<::ExplosionCloud>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::ExplosionCloud>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::ExplosionCloud>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityParticle*>(&baseSrc);
@@ -2148,7 +2156,8 @@ namespace OpenRCT2::RCT2
         dst->frame = src->Frame;
     }
 
-    template<> void S6Importer::ImportEntity<::ExplosionFlare>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::ExplosionFlare>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::ExplosionFlare>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityParticle*>(&baseSrc);
@@ -2156,7 +2165,8 @@ namespace OpenRCT2::RCT2
         dst->frame = src->Frame;
     }
 
-    template<> void S6Importer::ImportEntity<::CrashSplashParticle>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::CrashSplashParticle>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::CrashSplashParticle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityParticle*>(&baseSrc);
@@ -2164,7 +2174,8 @@ namespace OpenRCT2::RCT2
         dst->frame = src->Frame;
     }
 
-    template<> void S6Importer::ImportEntity<::JumpingFountain>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::JumpingFountain>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::JumpingFountain>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityJumpingFountain*>(&baseSrc);
@@ -2180,7 +2191,8 @@ namespace OpenRCT2::RCT2
             : ::JumpingFountainType::Water;
     }
 
-    template<> void S6Importer::ImportEntity<::Balloon>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Balloon>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Balloon>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityBalloon*>(&baseSrc);
@@ -2191,7 +2203,8 @@ namespace OpenRCT2::RCT2
         dst->colour = src->Colour;
     }
 
-    template<> void S6Importer::ImportEntity<::Duck>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Duck>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Duck>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityDuck*>(&baseSrc);
@@ -2202,7 +2215,8 @@ namespace OpenRCT2::RCT2
         dst->state = static_cast<::Duck::DuckState>(src->State);
     }
 
-    template<> void S6Importer::ImportEntity<::Litter>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Litter>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Litter>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityLitter*>(&baseSrc);

@@ -262,7 +262,8 @@ int32_t ScTrackSegment::getPriceModifier() const
     return ted.priceModifier;
 }
 
-template<uint16_t flag> bool ScTrackSegment::getTrackFlag() const
+template<uint16_t flag>
+bool ScTrackSegment::getTrackFlag() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
 

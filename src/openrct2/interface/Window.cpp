@@ -244,7 +244,8 @@ void WindowFlushDead()
     g_window_list.remove_if([](auto&& w) -> bool { return w->flags & WF_DEAD; });
 }
 
-template<typename TPred> static void WindowCloseByCondition(TPred pred, uint32_t flags = WindowCloseFlags::None)
+template<typename TPred>
+static void WindowCloseByCondition(TPred pred, uint32_t flags = WindowCloseFlags::None)
 {
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); ++it)
     {
@@ -476,7 +477,8 @@ WidgetIndex WindowFindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& scree
  *
  * @param window The window to invalidate (esi).
  */
-template<typename TPred> static void WindowInvalidateByCondition(TPred pred)
+template<typename TPred>
+static void WindowInvalidateByCondition(TPred pred)
 {
     WindowVisitEach([pred](WindowBase* w) {
         if (pred(w))
@@ -541,7 +543,8 @@ void WidgetInvalidate(WindowBase& w, WidgetIndex widgetIndex)
                         { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
 }
 
-template<typename TPred> static void widget_invalidate_by_condition(TPred pred)
+template<typename TPred>
+static void widget_invalidate_by_condition(TPred pred)
 {
     WindowVisitEach([pred](WindowBase* w) {
         if (pred(w))

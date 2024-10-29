@@ -454,7 +454,8 @@ static void PeepLeavePark(Guest* peep);
 static void PeepHeadForNearestRideWithFlag(Guest* peep, bool considerOnlyCloseRides, RtdFlag rtdFlag);
 bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
-template<> bool EntityBase::Is<Guest>() const
+template<>
+bool EntityBase::Is<Guest>() const
 {
     return Type == EntityType::Guest;
 }
@@ -472,7 +473,8 @@ static bool IsValidLocation(const CoordsXYZ& coords)
     return false;
 }
 
-template<void (Guest::*EasterEggFunc)(Guest*), bool applyToSelf> static void ApplyEasterEggToNearbyGuests(Guest* guest)
+template<void (Guest::*EasterEggFunc)(Guest*), bool applyToSelf>
+static void ApplyEasterEggToNearbyGuests(Guest* guest)
 {
     const auto guestLoc = guest->GetLocation();
     if (!IsValidLocation(guestLoc))
@@ -3140,7 +3142,8 @@ static void PeepLeavePark(Guest* peep)
     WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
 }
 
-template<typename T> static void PeepHeadForNearestRide(Guest* peep, bool considerOnlyCloseRides, T predicate)
+template<typename T>
+static void PeepHeadForNearestRide(Guest* peep, bool considerOnlyCloseRides, T predicate)
 {
     if (peep->State != PeepState::Sitting && peep->State != PeepState::Watching && peep->State != PeepState::Walking)
     {

@@ -66,7 +66,8 @@ void CheatsSet(CheatType cheatType, int64_t param1 /* = 0*/, int64_t param2 /* =
     GameActions::Execute(&cheatSetAction);
 }
 
-template<typename T> static void CheatEntrySerialise(DataSerialiser& ds, CheatType type, const T& value, uint16_t& count)
+template<typename T>
+static void CheatEntrySerialise(DataSerialiser& ds, CheatType type, const T& value, uint16_t& count)
 {
     ds << static_cast<int32_t>(type) << value;
     count++;

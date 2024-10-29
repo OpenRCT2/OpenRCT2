@@ -448,7 +448,8 @@ static constexpr OpenRCT2::Audio::SoundId DoorCloseSoundIds[] = {
     OpenRCT2::Audio::SoundId::Portcullis,
 };
 
-template<> bool EntityBase::Is<Vehicle>() const
+template<>
+bool EntityBase::Is<Vehicle>() const
 {
     return Type == EntityType::Vehicle;
 }
@@ -6316,7 +6317,8 @@ void Vehicle::UpdateSceneryDoor() const
     AnimateSceneryDoor<false>({ wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train.IsNull());
 }
 
-template<bool isBackwards> static void AnimateLandscapeDoor(TrackElement* trackElement, bool isLastVehicle)
+template<bool isBackwards>
+static void AnimateLandscapeDoor(TrackElement* trackElement, bool isLastVehicle)
 {
     auto doorState = isBackwards ? trackElement->GetDoorAState() : trackElement->GetDoorBState();
     if (!isLastVehicle && doorState == LANDSCAPE_DOOR_CLOSED)

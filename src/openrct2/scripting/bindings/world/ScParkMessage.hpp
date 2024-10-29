@@ -48,7 +48,8 @@ namespace OpenRCT2::Scripting
         return {};
     }
 
-    template<> inline News::Item FromDuk(const DukValue& value)
+    template<>
+    inline News::Item FromDuk(const DukValue& value)
     {
         News::Item result{};
         result.Type = GetParkMessageType(value["type"].as_string());

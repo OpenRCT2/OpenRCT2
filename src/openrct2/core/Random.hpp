@@ -27,7 +27,8 @@ namespace OpenRCT2::Random
     /**
      * FixedSeedSequence adheres to the _Named Requirement_ `SeedSequence`.
      */
-    template<size_t TNum = 0> class FixedSeedSequence
+    template<size_t TNum = 0>
+    class FixedSeedSequence
     {
     public:
         using result_type = uint32_t;
@@ -60,7 +61,8 @@ namespace OpenRCT2::Random
         {
         }
 
-        template<typename TIt> void generate(TIt begin, TIt end) const
+        template<typename TIt>
+        void generate(TIt begin, TIt end) const
         {
             std::copy_n(v.begin(), std::min(static_cast<size_t>(end - begin), N), begin);
         }
@@ -70,7 +72,8 @@ namespace OpenRCT2::Random
             return N;
         }
 
-        template<typename TIt> constexpr void param(TIt ob) const
+        template<typename TIt>
+        constexpr void param(TIt ob) const
         {
             std::copy(v.begin(), v.end(), ob);
         }
@@ -79,7 +82,8 @@ namespace OpenRCT2::Random
         std::array<result_type, N> v;
     };
 
-    template<typename TUIntType> struct RotateEngineState
+    template<typename TUIntType>
+    struct RotateEngineState
     {
         using value_type = TUIntType;
 
@@ -143,7 +147,8 @@ namespace OpenRCT2::Random
             s1 = s;
         }
 
-        template<typename TSseq> typename std::enable_if<std::is_class<TSseq>::value, void>::type seed(TSseq& seed_seq)
+        template<typename TSseq>
+        typename std::enable_if<std::is_class<TSseq>::value, void>::type seed(TSseq& seed_seq)
         {
             std::array<result_type, 2> s;
             seed_seq.generate(s.begin(), s.end());

@@ -181,13 +181,15 @@ int16_t TileElementWaterHeight(const CoordsXY& loc);
 void TileElementRemove(TileElement* tileElement);
 TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
 
-template<typename T = TileElement> T* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc)
+template<typename T = TileElement>
+T* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc)
 {
     auto* element = MapGetFirstTileElementWithBaseHeightBetween(loc, T::kElementType);
     return element != nullptr ? element->template as<T>() : nullptr;
 }
 
-template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
+template<typename T>
+T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
 {
     auto* element = TileElementInsert(loc, occupiedQuadrants, T::kElementType);
     return (element != nullptr) ? element->template as<T>() : nullptr;

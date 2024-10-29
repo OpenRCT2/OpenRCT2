@@ -40,7 +40,8 @@ static constexpr const WoodenSupportSubType WoodenRCDiagonalSupports[4][kNumOrth
       WoodenSupportSubType::Null } // sequence 3
 };
 
-template<bool isClassic> ImageId WoodenRCGetTrackColour(const PaintSession& session)
+template<bool isClassic>
+ImageId WoodenRCGetTrackColour(const PaintSession& session)
 {
     if (isClassic)
         return session.TrackColours;
@@ -62,7 +63,8 @@ PaintStruct* WoodenRCTrackPaint(
     return PaintAddImageAsChildRotated(session, direction, railsImageId, offset, boundBox);
 }
 
-template<bool isClassic> void WoodenRCTrackPaintBb(PaintSession& session, const SpriteBoundBox2* bb, int16_t height)
+template<bool isClassic>
+void WoodenRCTrackPaintBb(PaintSession& session, const SpriteBoundBox2* bb, int16_t height)
 {
     if (bb->ImageIdA == 0)
         return;

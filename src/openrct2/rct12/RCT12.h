@@ -658,11 +658,13 @@ struct RCT12TileElementBase
 struct RCT12TileElement : public RCT12TileElementBase
 {
     uint8_t Pad04[4];
-    template<typename TType, RCT12TileElementType TClass> const TType* as() const
+    template<typename TType, RCT12TileElementType TClass>
+    const TType* as() const
     {
         return static_cast<RCT12TileElementType>(GetType()) == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
     }
-    template<typename TType, RCT12TileElementType TClass> TType* as()
+    template<typename TType, RCT12TileElementType TClass>
+    TType* as()
     {
         return static_cast<RCT12TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(this) : nullptr;
     }
@@ -1203,7 +1205,8 @@ static constexpr money32 RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
 
 money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue);
 
-template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
+template<typename T>
+std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 {
     std::vector<uint16_t> ridesTypesBeenOn;
     for (uint16_t i = 0; i < OpenRCT2::RCT12::Limits::kMaxRideObjects; i++)
@@ -1215,7 +1218,8 @@ template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
     }
     return ridesTypesBeenOn;
 }
-template<typename T> std::vector<RideId> RCT12GetRidesBeenOn(T* srcPeep)
+template<typename T>
+std::vector<RideId> RCT12GetRidesBeenOn(T* srcPeep)
 {
     std::vector<RideId> ridesBeenOn;
     for (uint16_t i = 0; i < OpenRCT2::RCT12::Limits::kMaxRidesInPark; i++)

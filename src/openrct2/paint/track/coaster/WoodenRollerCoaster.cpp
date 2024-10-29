@@ -17628,7 +17628,8 @@ static void WoodenRCTrackRightLargeHalfLoopDown(
     WoodenRCTrackLeftLargeHalfLoopUp<isClassic>(session, ride, 6 - trackSequence, direction, height, trackElement, supportType);
 }
 
-template<bool isClassic> TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::TrackElemType trackType)
+template<bool isClassic>
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {

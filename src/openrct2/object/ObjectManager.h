@@ -26,7 +26,8 @@ struct IObjectManager
     }
 
     virtual Object* GetLoadedObject(ObjectType objectType, size_t index) = 0;
-    template<typename TClass> TClass* GetLoadedObject(size_t index)
+    template<typename TClass>
+    TClass* GetLoadedObject(size_t index)
     {
         return static_cast<TClass*>(GetLoadedObject(TClass::kObjectType, index));
     }

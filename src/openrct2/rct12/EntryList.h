@@ -55,7 +55,8 @@ namespace OpenRCT2::RCT12
             }
         }
 
-        template<uint32_t i> void AddRange(const std::string_view (&list)[i])
+        template<uint32_t i>
+        void AddRange(const std::string_view (&list)[i])
         {
             for (auto entry : list)
             {

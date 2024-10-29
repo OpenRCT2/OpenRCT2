@@ -75,7 +75,8 @@ const StringId StaffCostumeNames[] = {
 // Maximum manhattan distance that litter can be for a handyman to seek to it
 const uint16_t MAX_LITTER_DISTANCE = 3 * kCoordsXYStep;
 
-template<> bool EntityBase::Is<Staff>() const
+template<>
+bool EntityBase::Is<Staff>() const
 {
     return Type == EntityType::Staff;
 }

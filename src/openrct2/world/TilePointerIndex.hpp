@@ -15,7 +15,8 @@
 #include <cstdint>
 #include <vector>
 
-template<typename T> class TilePointerIndex
+template<typename T>
+class TilePointerIndex
 {
     std::vector<T*> TilePointers;
     uint16_t MapSize{};

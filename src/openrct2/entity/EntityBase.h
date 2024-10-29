@@ -65,12 +65,15 @@ struct EntityBase
     CoordsXYZ GetLocation() const;
 
     void Invalidate();
-    template<typename T> bool Is() const;
-    template<typename T> T* As()
+    template<typename T>
+    bool Is() const;
+    template<typename T>
+    T* As()
     {
         return Is<T>() ? reinterpret_cast<T*>(this) : nullptr;
     }
-    template<typename T> const T* As() const
+    template<typename T>
+    const T* As() const
     {
         return Is<T>() ? reinterpret_cast<const T*>(this) : nullptr;
     }

@@ -52,7 +52,8 @@ static void ThrowBadAllocOnNull(const void* ptr)
     }
 }
 
-template<typename TBase> class CngHashAlgorithm final : public TBase
+template<typename TBase>
+class CngHashAlgorithm final : public TBase
 {
 private:
     const wchar_t* _algName;
@@ -143,14 +144,16 @@ class DerReader
 private:
     ivstream<uint8_t> _stream;
 
-    template<typename T> T Read(std::istream& stream)
+    template<typename T>
+    T Read(std::istream& stream)
     {
         T value;
         stream.read(reinterpret_cast<char*>(&value), sizeof(T));
         return value;
     }
 
-    template<typename T> std::vector<T> Read(std::istream& stream, size_t count)
+    template<typename T>
+    std::vector<T> Read(std::istream& stream, size_t count)
     {
         std::vector<T> values(count);
         stream.read(reinterpret_cast<char*>(values.data()), sizeof(T) * count);

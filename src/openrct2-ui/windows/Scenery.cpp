@@ -1071,7 +1071,8 @@ namespace OpenRCT2::Ui::Windows
             return contentWidth / SCENERY_BUTTON_WIDTH;
         }
 
-        template<typename T> T CountRows(T items) const
+        template<typename T>
+        T CountRows(T items) const
         {
             const auto rows = items / GetNumColumns();
             return rows;

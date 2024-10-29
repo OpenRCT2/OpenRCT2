@@ -67,7 +67,8 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     return context;
 }
 
-template<class Fn> static bool updateUntil(int maxSteps, Fn&& fn)
+template<class Fn>
+static bool updateUntil(int maxSteps, Fn&& fn)
 {
     while (maxSteps-- && !fn())
     {
@@ -76,7 +77,8 @@ template<class Fn> static bool updateUntil(int maxSteps, Fn&& fn)
     return maxSteps > 0;
 }
 
-template<class GA, class... Args> static void execute(Args&&... args)
+template<class GA, class... Args>
+static void execute(Args&&... args)
 {
     GA ga(std::forward<Args>(args)...);
     GameActions::Execute(&ga);

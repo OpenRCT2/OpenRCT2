@@ -17,7 +17,8 @@
 
 namespace OpenRCT2::Crypt
 {
-    template<size_t TLength> class HashAlgorithm
+    template<size_t TLength>
+    class HashAlgorithm
     {
     public:
         using Result = std::array<uint8_t, TLength>;

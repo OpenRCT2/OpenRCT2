@@ -13,7 +13,8 @@
 #include <initializer_list>
 #include <vector>
 
-template<typename T, typename TExpected> static void AssertVector(const std::vector<T>& actual, TExpected expected)
+template<typename T, typename TExpected>
+static void AssertVector(const std::vector<T>& actual, TExpected expected)
 {
     ASSERT_EQ(actual.size(), expected.size()) << "Expected vector of size " << expected.size() << ", but was " << actual.size();
     size_t i = 0;
@@ -24,7 +25,8 @@ template<typename T, typename TExpected> static void AssertVector(const std::vec
     }
 }
 
-template<typename T> static void AssertVector(const std::vector<T>& actual, std::initializer_list<T> expected)
+template<typename T>
+static void AssertVector(const std::vector<T>& actual, std::initializer_list<T> expected)
 {
     AssertVector<T, std::initializer_list<T>>(actual, expected);
 }

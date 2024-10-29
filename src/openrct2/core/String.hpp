@@ -98,7 +98,8 @@ namespace OpenRCT2::String
      */
     std::string ToUpper(std::string_view src);
 
-    template<typename T> std::optional<T> Parse(std::string_view input)
+    template<typename T>
+    std::optional<T> Parse(std::string_view input)
     {
         if (input.size() == 0)
             return std::nullopt;
@@ -130,7 +131,8 @@ namespace OpenRCT2::String
     /**
      * Returns string representation of a hexadecimal input, such as SHA256 hash
      */
-    template<typename T> std::string StringFromHex(T input)
+    template<typename T>
+    std::string StringFromHex(T input)
     {
         std::string result;
         result.reserve(input.size() * 2);

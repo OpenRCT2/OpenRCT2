@@ -18,7 +18,8 @@ namespace OpenRCT2::Graph
 {
     constexpr int32_t kYTickMarkPadding = 8;
 
-    template<typename T> struct GraphProperties
+    template<typename T>
+    struct GraphProperties
     {
         ScreenRect internalBounds;
         const T* series;

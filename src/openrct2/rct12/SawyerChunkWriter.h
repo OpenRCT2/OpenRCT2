@@ -52,7 +52,8 @@ public:
     /**
      * Writes a chunk to the stream containing the given type.
      */
-    template<typename T> void WriteChunk(const T* src, SAWYER_ENCODING encoding)
+    template<typename T>
+    void WriteChunk(const T* src, SAWYER_ENCODING encoding)
     {
         WriteChunk(src, sizeof(T), encoding);
     }

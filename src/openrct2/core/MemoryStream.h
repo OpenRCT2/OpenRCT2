@@ -67,7 +67,8 @@ namespace OpenRCT2
         void Read8(void* buffer) override;
         void Read16(void* buffer) override;
 
-        template<size_t N> void Read(void* buffer)
+        template<size_t N>
+        void Read(void* buffer)
         {
             uint64_t position = GetPosition();
             if (position + N > _dataSize)
@@ -86,7 +87,8 @@ namespace OpenRCT2
         void Write8(const void* buffer) override;
         void Write16(const void* buffer) override;
 
-        template<size_t N> void Write(const void* buffer)
+        template<size_t N>
+        void Write(const void* buffer)
         {
             uint64_t position = GetPosition();
             uint64_t nextPosition = position + N;
