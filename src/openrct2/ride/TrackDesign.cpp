@@ -35,6 +35,7 @@
 #include "../core/File.h"
 #include "../core/Numerics.hpp"
 #include "../core/String.hpp"
+#include "../core/UnitConversion.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"
@@ -888,7 +889,8 @@ static void TrackDesignMirrorMaze(TrackDesign& td)
 
         uint32_t mazeEntry = maze.mazeEntry;
         uint16_t newEntry = 0;
-        for (uint8_t position = UtilBitScanForward(mazeEntry); position != 0xFF; position = UtilBitScanForward(mazeEntry))
+        for (uint8_t position = Numerics::bitScanForward(mazeEntry); position != 0xFF;
+             position = Numerics::bitScanForward(mazeEntry))
         {
             mazeEntry &= ~(1 << position);
             newEntry |= (1 << maze_segment_mirror_map[position]);

@@ -31,6 +31,7 @@
 #    include "../PlatformEnvironment.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
+#    include "../core/Compression.h"
 #    include "../core/Console.hpp"
 #    include "../core/Guard.hpp"
 #    include "../core/Path.hpp"
@@ -42,7 +43,6 @@
 #    include "../park/ParkFile.h"
 #    include "../scenario/Scenario.h"
 #    include "../util/SawyerCoding.h"
-#    include "../util/Util.h"
 #    include "Platform.h"
 
 #    define WSZ(x) L"" x
@@ -139,7 +139,7 @@ static bool OnCrash(
         FILE* input = _wfopen(dumpFilePath, L"rb");
         FILE* dest = _wfopen(dumpFilePathGZIP, L"wb");
 
-        if (UtilGzipCompress(input, dest))
+        if (Compression::gzipCompress(input, dest))
         {
             // TODO: enable upload of gzip-compressed dumps once supported on
             // backtrace.io (uncomment the line below). For now leave compression

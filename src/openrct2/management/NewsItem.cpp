@@ -26,7 +26,6 @@
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
-#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Location.hpp"
 

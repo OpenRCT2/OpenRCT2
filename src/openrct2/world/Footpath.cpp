@@ -32,7 +32,6 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
-#include "../util/Util.h"
 #include "Location.hpp"
 #include "Map.h"
 #include "MapAnimation.h"
@@ -1020,7 +1019,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
 
 static bool GetNextDirection(uint32_t edges, int32_t* direction)
 {
-    int32_t index = UtilBitScanForward(edges);
+    int32_t index = Numerics::bitScanForward(edges);
     if (index == -1)
         return false;
 

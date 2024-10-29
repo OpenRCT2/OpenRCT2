@@ -14,11 +14,11 @@
 #include "../localisation/StringIdType.h"
 #include "../ride/RideTypes.h"
 #include "../ride/Station.h"
-#include "../util/Util.h"
 #include "../world/Location.hpp"
 
 #include <array>
 #include <optional>
+#include <string_view>
 
 constexpr uint8_t kPeepMinEnergy = 32;
 constexpr uint8_t kPeepMaxEnergy = 128;

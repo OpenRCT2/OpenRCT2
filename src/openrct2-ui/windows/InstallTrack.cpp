@@ -18,6 +18,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
+#include <openrct2/core/UnitConversion.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -25,7 +26,6 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <string>
 #include <vector>
 

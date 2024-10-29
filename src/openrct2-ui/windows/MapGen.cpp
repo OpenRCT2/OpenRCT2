@@ -16,13 +16,13 @@
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileSystem.hpp>
+#include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapGen.h>

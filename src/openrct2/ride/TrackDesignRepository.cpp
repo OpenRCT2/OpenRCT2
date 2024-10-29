@@ -21,7 +21,6 @@
 #include "../localisation/LocalisationService.h"
 #include "../object/ObjectRepository.h"
 #include "../ride/RideData.h"
-#include "../util/Util.h"
 #include "TrackDesign.h"
 
 #include <memory>

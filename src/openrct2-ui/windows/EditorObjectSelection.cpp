@@ -890,7 +890,7 @@ namespace OpenRCT2::Ui::Windows
                 if (numSourcesActive == 1)
                 {
                     widgets[WIDX_FILTER_DROPDOWN].text = STR_OBJECT_SELECTION_ONLY_STRINGID;
-                    auto firstActiveSource = UtilBitScanForward(sources);
+                    auto firstActiveSource = Numerics::bitScanForward(sources);
                     ft.Add<StringId>(kSourceStringIds[firstActiveSource]);
                 }
                 else

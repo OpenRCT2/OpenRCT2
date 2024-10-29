@@ -14,7 +14,6 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
 #include "../network/network.h"
-#include "../util/Util.h"
 
 using namespace OpenRCT2;
 

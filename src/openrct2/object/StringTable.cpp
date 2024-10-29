@@ -16,6 +16,7 @@
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
 #include "../rct12/CSStringConverter.h"
+#include "../util/Util.h"
 #include "Object.h"
 
 using namespace OpenRCT2;

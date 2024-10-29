@@ -12,6 +12,7 @@
 #    include "ScRide.hpp"
 
 #    include "../../../Context.h"
+#    include "../../../core/UnitConversion.h"
 #    include "../../../ride/Ride.h"
 #    include "../../../ride/RideData.h"
 #    include "../../Duktape.hpp"
