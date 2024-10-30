@@ -96,7 +96,7 @@ bool LanguageOpen(int32_t id)
     }
 }
 
-bool LanguageGetLocalisedScenarioStrings(const utf8* scenarioFilename, StringId* outStringIds)
+bool LanguageGetLocalisedScenarioStrings(u8string_view scenarioFilename, StringId* outStringIds)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     auto result = localisationService.GetLocalisedScenarioStrings(scenarioFilename);

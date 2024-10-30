@@ -88,6 +88,6 @@ uint8_t LanguageGetIDFromLocale(const char* locale);
 const char* LanguageGetString(StringId id);
 bool LanguageOpen(int32_t id);
 
-bool LanguageGetLocalisedScenarioStrings(const utf8* scenarioFilename, StringId* outStringIds);
+bool LanguageGetLocalisedScenarioStrings(u8string_view scenarioFilename, StringId* outStringIds);
 void LanguageFreeObjectString(StringId stringId);
 StringId LanguageAllocateObjectString(const std::string& target);

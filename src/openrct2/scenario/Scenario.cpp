@@ -108,8 +108,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.Cash = gameState.InitialCash;
 
     {
-        utf8 normalisedName[64];
-        ScenarioSources::NormaliseName(normalisedName, sizeof(normalisedName), gameState.ScenarioName.c_str());
+        auto normalisedName = ScenarioSources::NormaliseName(gameState.ScenarioName);
 
         StringId localisedStringIds[3];
         if (LanguageGetLocalisedScenarioStrings(normalisedName, localisedStringIds))

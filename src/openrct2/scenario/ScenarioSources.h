@@ -24,7 +24,7 @@ namespace OpenRCT2::ScenarioSources
 {
     bool TryGetByName(const utf8* name, SourceDescriptor* outDesc);
     bool TryGetById(uint8_t id, SourceDescriptor* outDesc);
-    void NormaliseName(utf8* buffer, size_t bufferSize, const utf8* name);
+    u8string NormaliseName(u8string_view input);
 } // namespace OpenRCT2::ScenarioSources
 
 // RCT1 scenario index map

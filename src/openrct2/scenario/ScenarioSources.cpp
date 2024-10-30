@@ -421,36 +421,39 @@ namespace OpenRCT2::ScenarioSources
         return false;
     }
 
-    void NormaliseName(utf8* buffer, size_t bufferSize, const utf8* name)
+    u8string NormaliseName(u8string_view input)
     {
-        size_t nameLength = String::LengthOf(name);
-
-        // Strip "RCT(1|2)?" prefix off scenario names.
-        if (nameLength >= 3 && (name[0] == 'R' && name[1] == 'C' && name[2] == 'T'))
-        {
-            if (nameLength >= 4 && (name[3] == '1' || name[3] == '2'))
-            {
-                LOG_VERBOSE("Stripping RCT/1/2 from name: %s", name);
-                String::Set(buffer, bufferSize, name + 4);
-            }
-            else
-            {
-                String::Set(buffer, bufferSize, name + 3);
-            }
-        }
-
-        // Trim (for the sake of the above and WW / TT scenarios
-        String::TrimStart(buffer, bufferSize, name);
-
         // American scenario titles should be converted to British name
         // Don't worry, names will be translated using language packs later
         for (const ScenarioAlias& alias : ScenarioAliases)
         {
-            if (String::Equals(alias.Alternative, name))
+            if (String::Equals(alias.Alternative, input))
             {
-                LOG_VERBOSE("Found alias: %s; will treat as: %s", name, alias.Original);
-                String::Set(buffer, bufferSize, alias.Original);
+                LOG_VERBOSE("Found alias: %s; will treat as: %s", input, alias.Original);
+                return u8string(alias.Original);
             }
         }
+
+        u8string normalisedName;
+        // Strip "RCT(1|2)?" prefix off scenario names.
+        if (input.starts_with("RCT"))
+        {
+            LOG_VERBOSE("Stripping RCT/1/2 from name: %s", u8string(input).c_str());
+            if (input.length() >= 4 && (input[3] == '1' || input[3] == '2'))
+            {
+                normalisedName = input.substr(4);
+            }
+            else
+            {
+                normalisedName = input.substr(3);
+            }
+        }
+        else
+        {
+            normalisedName = input;
+        }
+
+        // Trim (for the sake of the above and WW / TT scenarios)
+        return String::TrimStart(normalisedName);
     }
 } // namespace OpenRCT2::ScenarioSources
