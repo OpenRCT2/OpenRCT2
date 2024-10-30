@@ -818,7 +818,7 @@ void RCT12AddDefaultObjects(ObjectList& objectList)
     }
 }
 
-void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const std::vector<std::string>& objectNames)
+void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const std::vector<std::string_view>& objectNames)
 {
     for (const auto& objectName : objectNames)
     {

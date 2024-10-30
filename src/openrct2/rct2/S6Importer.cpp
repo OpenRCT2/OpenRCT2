@@ -294,7 +294,7 @@ namespace OpenRCT2::RCT2
             String::Set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
             String::Set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
 
-            if (desc.textObjectId != nullptr)
+            if (!desc.textObjectId.empty())
             {
                 auto& objManager = GetContext()->GetObjectManager();
 
@@ -1887,7 +1887,8 @@ namespace OpenRCT2::RCT2
 
             AppendRequiredObjects(objectList, ObjectType::TerrainSurface, _terrainSurfaceEntries);
             AppendRequiredObjects(objectList, ObjectType::TerrainEdge, _terrainEdgeEntries);
-            AppendRequiredObjects(objectList, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
+            AppendRequiredObjects(
+                objectList, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
             RCT12AddDefaultObjects(objectList);
 
             // Normalise the name to make the scenario as recognisable as possible
@@ -1895,8 +1896,9 @@ namespace OpenRCT2::RCT2
 
             // Infer what scenario text object to use, if any
             SourceDescriptor desc;
-            if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && desc.textObjectId != nullptr)
-                AppendRequiredObjects(objectList, ObjectType::ScenarioText, std::vector<std::string>({ desc.textObjectId }));
+            if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && !desc.textObjectId.empty())
+                AppendRequiredObjects(
+                    objectList, ObjectType::ScenarioText, std::vector<std::string_view>({ desc.textObjectId }));
 
             return objectList;
         }

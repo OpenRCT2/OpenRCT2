@@ -31,7 +31,7 @@ namespace OpenRCT2::ScenarioSources
         const uint8_t Id;
         const utf8* Title;
         const uint8_t Category;
-        const char* TextObjectId;
+        u8string_view TextObjectId;
     };
 
 #pragma region Scenario Data
@@ -386,7 +386,7 @@ namespace OpenRCT2::ScenarioSources
         outDesc->source = static_cast<uint8_t>(ScenarioSource::Other);
         outDesc->index = -1;
         outDesc->category = SCENARIO_CATEGORY_OTHER;
-        outDesc->textObjectId = nullptr;
+        outDesc->textObjectId = {};
         return false;
     }
 
@@ -419,7 +419,7 @@ namespace OpenRCT2::ScenarioSources
         outDesc->source = static_cast<uint8_t>(ScenarioSource::Other);
         outDesc->index = -1;
         outDesc->category = SCENARIO_CATEGORY_OTHER;
-        outDesc->textObjectId = nullptr;
+        outDesc->textObjectId = {};
         return false;
     }
 

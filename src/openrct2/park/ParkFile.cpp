@@ -380,7 +380,7 @@ namespace OpenRCT2
                 if (version < kPeepNamesObjectsVersion)
                 {
                     AppendRequiredObjects(
-                        requiredObjects, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
+                        requiredObjects, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
                 }
 
                 RequiredObjects = std::move(requiredObjects);

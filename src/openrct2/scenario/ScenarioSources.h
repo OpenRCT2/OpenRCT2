@@ -18,7 +18,7 @@ struct SourceDescriptor
     uint8_t source;
     int32_t index;
     uint8_t category;
-    const char* textObjectId;
+    u8string_view textObjectId;
 };
 
 namespace OpenRCT2::ScenarioSources
