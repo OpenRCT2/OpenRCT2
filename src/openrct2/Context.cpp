@@ -1566,11 +1566,6 @@ bool ContextLoadParkFromStream(void* stream)
     return GetContext()->LoadParkFromStream(static_cast<IStream*>(stream), "");
 }
 
-void OpenRCT2WriteFullVersionInfo(utf8* buffer, size_t bufferSize)
-{
-    String::Set(buffer, bufferSize, gVersionInfoFull);
-}
-
 void OpenRCT2Finish()
 {
     GetContext()->Finish();
