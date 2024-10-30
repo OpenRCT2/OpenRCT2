@@ -47,11 +47,8 @@ TEST_F(LanguagePackTest, language_pack_simple)
     ASSERT_EQ(lang->GetId(), 0);
     ASSERT_EQ(lang->GetCount(), 4u);
     ASSERT_STREQ(lang->GetString(2), "Spiral Roller Coaster");
-    ASSERT_EQ(lang->GetScenarioOverrideStringId("Arid Heights", 0), 0x7000);
-    ASSERT_STREQ(lang->GetString(0x7000), "Arid Heights scenario string");
     // Test some negatives too
     ASSERT_EQ(lang->GetString(1000), nullptr);
-    ASSERT_EQ(lang->GetScenarioOverrideStringId("No such park", 0), STR_NONE);
 }
 
 TEST_F(LanguagePackTest, language_pack_multibyte)
@@ -60,10 +57,6 @@ TEST_F(LanguagePackTest, language_pack_multibyte)
     ASSERT_EQ(lang->GetId(), 0);
     ASSERT_EQ(lang->GetCount(), 4u);
     ASSERT_STREQ(lang->GetString(2), u8"懸吊式雲霄飛車");
-    ASSERT_EQ(lang->GetScenarioOverrideStringId("Forest Frontiers", 0), 0x7000);
-    ASSERT_EQ(lang->GetScenarioOverrideStringId("Forest Frontiers", 2), 0x7002);
-    ASSERT_STREQ(lang->GetString(0x7000), "Forest Frontiers");
-    ASSERT_STREQ(lang->GetString(0x7002), u8"在隱藏於森林深處的清空範圍中, 建造一個很受歡迎的樂園");
 }
 
 const utf8* LanguagePackTest::LanguageEnGB = "# STR_XXXX part is read and XXXX becomes the string id number.\n"
@@ -74,11 +67,6 @@ const utf8* LanguagePackTest::LanguageEnGB = "# STR_XXXX part is read and XXXX b
                                              "STR_0001    :{STRINGID} {COMMA16}\n"
                                              "STR_0002    :Spiral Roller Coaster\n"
                                              "STR_0003    :Stand-up Roller Coaster\n"
-                                             "<Arid Heights>\n"
-                                             "STR_SCNR    :Arid Heights scenario string\n"
-                                             "STR_PARK    :Arid Heights park string\n"
-                                             "STR_DTLS    :Free of any financial limits, your challenge is to develop "
-                                             "this desert park while keeping the guests happy\n"
                                              "[CONDORRD]\n"
                                              "STR_NAME    :my test ride\n"
                                              "STR_DESC    :ride description\n"

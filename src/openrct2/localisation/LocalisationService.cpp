@@ -143,15 +143,6 @@ void LocalisationService::CloseLanguages()
     _currentLanguage = LANGUAGE_UNDEFINED;
 }
 
-std::tuple<StringId, StringId, StringId> LocalisationService::GetLocalisedScenarioStrings(u8string_view scenarioFilename) const
-{
-    Guard::Assert(!_loadedLanguages.empty());
-    auto result0 = _loadedLanguages[0]->GetScenarioOverrideStringId(scenarioFilename, 0);
-    auto result1 = _loadedLanguages[0]->GetScenarioOverrideStringId(scenarioFilename, 1);
-    auto result2 = _loadedLanguages[0]->GetScenarioOverrideStringId(scenarioFilename, 2);
-    return std::make_tuple(result0, result1, result2);
-}
-
 StringId LocalisationService::AllocateObjectString(const std::string& target)
 {
     if (_availableObjectStringIds.empty())

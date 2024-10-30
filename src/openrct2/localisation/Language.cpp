@@ -96,16 +96,6 @@ bool LanguageOpen(int32_t id)
     }
 }
 
-bool LanguageGetLocalisedScenarioStrings(u8string_view scenarioFilename, StringId* outStringIds)
-{
-    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
-    auto result = localisationService.GetLocalisedScenarioStrings(scenarioFilename);
-    outStringIds[0] = std::get<0>(result);
-    outStringIds[1] = std::get<1>(result);
-    outStringIds[2] = std::get<2>(result);
-    return outStringIds[0] != STR_NONE || outStringIds[1] != STR_NONE || outStringIds[2] != STR_NONE;
-}
-
 void LanguageFreeObjectString(StringId stringId)
 {
     auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
