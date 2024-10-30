@@ -35,6 +35,7 @@
 #    include "../core/Console.hpp"
 #    include "../core/Guard.hpp"
 #    include "../core/Path.hpp"
+#    include "../core/SawyerCoding.h"
 #    include "../core/String.hpp"
 #    include "../drawing/IDrawingEngine.h"
 #    include "../interface/Screenshot.h"
@@ -42,7 +43,6 @@
 #    include "../object/ObjectManager.h"
 #    include "../park/ParkFile.h"
 #    include "../scenario/Scenario.h"
-#    include "../util/SawyerCoding.h"
 #    include "Platform.h"
 
 #    define WSZ(x) L"" x

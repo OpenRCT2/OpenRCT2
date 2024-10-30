@@ -13,39 +13,42 @@
 
 #include <cstdint>
 
-/**
- * The type of encoding / compression for a sawyer encoded chunk.
- */
-enum class SAWYER_ENCODING : uint8_t
+namespace OpenRCT2
 {
-    NONE,
-    RLE,
-    RLECOMPRESSED,
-    ROTATE,
-};
-
-/**
- * Represents a sawyer encoded chunk.
- */
-class SawyerChunk final
-{
-private:
-    OpenRCT2::MemoryStream _data;
-    SAWYER_ENCODING _encoding = SAWYER_ENCODING::NONE;
-
-public:
-    const void* GetData() const
+    /**
+     * The type of encoding / compression for a sawyer encoded chunk.
+     */
+    enum class SAWYER_ENCODING : uint8_t
     {
-        return _data.GetData();
-    }
-    size_t GetLength() const
-    {
-        return _data.GetLength();
-    }
-    SAWYER_ENCODING GetEncoding() const
-    {
-        return _encoding;
-    }
+        NONE,
+        RLE,
+        RLECOMPRESSED,
+        ROTATE,
+    };
 
-    SawyerChunk(SAWYER_ENCODING encoding, OpenRCT2::MemoryStream&& data);
-};
+    /**
+     * Represents a sawyer encoded chunk.
+     */
+    class SawyerChunk final
+    {
+    private:
+        OpenRCT2::MemoryStream _data;
+        SAWYER_ENCODING _encoding = SAWYER_ENCODING::NONE;
+
+    public:
+        const void* GetData() const
+        {
+            return _data.GetData();
+        }
+        size_t GetLength() const
+        {
+            return _data.GetLength();
+        }
+        SAWYER_ENCODING GetEncoding() const
+        {
+            return _encoding;
+        }
+
+        SawyerChunk(SAWYER_ENCODING encoding, OpenRCT2::MemoryStream&& data);
+    };
+} // namespace OpenRCT2

@@ -11,8 +11,8 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../core/SawyerCoding.h"
 #include "../object/Object.h"
-#include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "ObjectLimits.h"
 #include "ObjectManager.h"

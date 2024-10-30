@@ -23,6 +23,7 @@
 #include "../core/MemoryStream.h"
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
+#include "../core/SawyerCoding.h"
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
 #include "../object/Object.h"
@@ -31,7 +32,6 @@
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "../scenario/ScenarioRepository.h"
-#include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "Object.h"
 #include "ObjectFactory.h"
@@ -528,11 +528,11 @@ private:
 
         // Encode data
         ObjectType objectType = entry->GetType();
-        SawyerCodingChunkHeader chunkHeader;
+        SawyerCoding::ChunkHeader chunkHeader;
         chunkHeader.encoding = kLegacyObjectEntryGroupEncoding[EnumValue(objectType)];
         chunkHeader.length = static_cast<uint32_t>(dataSize);
         uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
-        size_t encodedDataSize = SawyerCodingWriteChunkBuffer(
+        size_t encodedDataSize = SawyerCoding::WriteChunkBuffer(
             encodedDataBuffer, reinterpret_cast<const uint8_t*>(data), chunkHeader);
 
         // Save to file

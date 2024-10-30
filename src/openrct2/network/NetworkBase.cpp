@@ -23,6 +23,7 @@
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
+#include "../core/SawyerCoding.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
@@ -35,7 +36,6 @@
 #include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
-#include "../util/SawyerCoding.h"
 #include "../world/Location.hpp"
 #include "network.h"
 

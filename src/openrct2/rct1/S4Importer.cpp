@@ -24,6 +24,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
+#include "../core/SawyerCoding.h"
 #include "../core/String.hpp"
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"
@@ -61,7 +62,6 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
-#include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
@@ -175,7 +175,7 @@ namespace OpenRCT2::RCT1
             _s4 = *ReadAndDecodeS4(stream, isScenario);
             _s4Path = path;
             _isScenario = isScenario;
-            _gameVersion = SawyerCodingDetectRCT1Version(_s4.GameVersion) & FILE_VERSION_MASK;
+            _gameVersion = SawyerCoding::DetectRCT1Version(_s4.GameVersion) & FILE_VERSION_MASK;
 
             // Only determine what objects we required to import this saved game
             InitialiseEntryMaps();
@@ -309,14 +309,14 @@ namespace OpenRCT2::RCT1
             auto decodedData = std::make_unique<uint8_t[]>(sizeof(S4));
 
             size_t decodedSize;
-            int32_t fileType = SawyerCodingDetectFileType(data.get(), dataSize);
+            int32_t fileType = SawyerCoding::DetectFileType(data.get(), dataSize);
             if (isScenario && (fileType & FILE_VERSION_MASK) != FILE_VERSION_RCT1)
             {
-                decodedSize = SawyerCodingDecodeSC4(data.get(), decodedData.get(), dataSize, sizeof(S4));
+                decodedSize = SawyerCoding::DecodeSC4(data.get(), decodedData.get(), dataSize, sizeof(S4));
             }
             else
             {
-                decodedSize = SawyerCodingDecodeSV4(data.get(), decodedData.get(), dataSize, sizeof(S4));
+                decodedSize = SawyerCoding::DecodeSV4(data.get(), decodedData.get(), dataSize, sizeof(S4));
             }
 
             if (decodedSize == sizeof(S4))
