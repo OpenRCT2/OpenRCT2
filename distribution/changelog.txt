@@ -16,6 +16,7 @@
 - Fix: [#23044] "remove_unused_objects" command causes blank peep names.
 - Fix: [#23048] Map generator allows map sizes out of range through text input.
 - Fix: [#23058] [Plugin] Changing window colours doesn’t trigger the window to be fully redrawn.
+- Fix: [#23085] LIM Launched Roller Coaster medium half loops clip into each other when built back-to-back.
 
 0.4.15 (2024-10-06)
 ------------------------------------------------------------------------
