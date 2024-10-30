@@ -69,10 +69,6 @@ extern const CoordsXY SceneryQuadrantOffsets[];
 void SceneryUpdateTile(const CoordsXY& sceneryPos);
 void SceneryRemoveGhostToolPlacement();
 
-struct WallSceneryEntry;
-
-int32_t WallEntryGetDoorSound(const WallSceneryEntry* wallEntry);
-
 bool IsSceneryAvailableToBuild(const ScenerySelection& item);
 
 bool IsSceneryItemRestricted(const ScenerySelection& item);

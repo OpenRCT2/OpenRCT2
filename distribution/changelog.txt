@@ -5,6 +5,7 @@
 - Fix: [#21221] Trains use unbanked sprites on flat to gentle diagonal banked track pieces.
 - Fix: [#22615] Crash when drawing Space Rings with an invalid ride entry.
 - Fix: [#22633] Crash when drawing loading screen with an outdated g2.dat.
+- Fix: [#22908] Crash when passing through a door from an invalid wall type.
 - Fix: [#22918] Zooming with keyboard moves the view off centre.
 - Fix: [#22920] Crash when sacking a staff member.
 - Fix: [#22921] Wooden RollerCoaster flat to steep railings appear in front of track in front of them.
