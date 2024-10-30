@@ -36,9 +36,6 @@ private:
     uint16_t const _id;
     std::vector<std::string> _strings;
 
-    // Parsing work data
-    std::string _currentGroup;
-
 public:
     static std::unique_ptr<LanguagePack> FromFile(uint16_t id, const utf8* path)
     {
@@ -84,9 +81,6 @@ public:
         {
             ParseLine(&reader);
         }
-
-        // Clean up the parsing work data
-        _currentGroup.clear();
     }
 
     uint16_t GetId() const override
@@ -211,9 +205,6 @@ private:
                 case '#':
                     SkipToEndOfLine(reader);
                     break;
-                case '[':
-                    ParseGroupObject(reader);
-                    break;
                 case '\r':
                 case '\n':
                     break;
@@ -224,29 +215,6 @@ private:
             SkipToEndOfLine(reader);
             SkipNewLine(reader);
         }
-    }
-
-    void ParseGroupObject(IStringReader* reader)
-    {
-        // THIS IS NO LONGER USED SO WE ARE JUST SKIPPING OVER
-        codepoint_t codepoint;
-
-        // Should have already deduced that the next codepoint is a [
-        reader->Skip();
-
-        // Read string up to ] or line end
-        while (reader->TryPeek(&codepoint))
-        {
-            if (IsNewLine(codepoint))
-                break;
-
-            reader->Skip();
-            if (codepoint == ']')
-            {
-                break;
-            }
-        }
-        _currentGroup.clear();
     }
 
     void ParseString(IStringReader* reader)
@@ -288,33 +256,10 @@ private:
         const utf8* identifier = sb.GetBuffer();
 
         int32_t stringId;
-        if (_currentGroup.empty())
+        if (sscanf(identifier, "STR_%4d", &stringId) != 1)
         {
-            if (sscanf(identifier, "STR_%4d", &stringId) != 1)
-            {
-                // Ignore line entirely
-                return;
-            }
-        }
-        else
-        {
-            if (String::Equals(identifier, "STR_NAME"))
-            {
-                stringId = 0;
-            }
-            else if (String::Equals(identifier, "STR_DESC"))
-            {
-                stringId = 1;
-            }
-            else if (String::Equals(identifier, "STR_CPTY"))
-            {
-                stringId = 2;
-            }
-            else
-            {
-                // Ignore line entirely
-                return;
-            }
+            // Ignore line entirely
+            return;
         }
 
         // Rest of the line is the actual string
@@ -336,15 +281,12 @@ private:
             s = std::string(sb.GetBuffer(), sb.GetLength());
         }
 
-        if (_currentGroup.empty())
+        // Make sure the list is big enough to contain this string id
+        if (static_cast<size_t>(stringId) >= _strings.size())
         {
-            // Make sure the list is big enough to contain this string id
-            if (static_cast<size_t>(stringId) >= _strings.size())
-            {
-                _strings.resize(stringId + 1);
-            }
-            _strings[stringId] = s;
+            _strings.resize(stringId + 1);
         }
+        _strings[stringId] = s;
     }
 };
 

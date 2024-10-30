@@ -66,11 +66,7 @@ const utf8* LanguagePackTest::LanguageEnGB = "# STR_XXXX part is read and XXXX b
                                              "STR_0000    :\n"
                                              "STR_0001    :{STRINGID} {COMMA16}\n"
                                              "STR_0002    :Spiral Roller Coaster\n"
-                                             "STR_0003    :Stand-up Roller Coaster\n"
-                                             "[CONDORRD]\n"
-                                             "STR_NAME    :my test ride\n"
-                                             "STR_DESC    :ride description\n"
-                                             "STR_CPTY    :ride capacity\n";
+                                             "STR_0003    :Stand-up Roller Coaster\n";
 
 // This includes a few entries extracted from zh-TW localisation.
 // It has to be declared as `unsigned char`, or else the values overflow signed byte.
