@@ -1733,22 +1733,6 @@ void ContextQuit()
     GetContext()->Quit();
 }
 
-bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize)
-{
-    try
-    {
-        std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc);
-        String::Set(outFilename, outSize, result.c_str());
-        return !result.empty();
-    }
-    catch (const std::exception& ex)
-    {
-        LOG_ERROR(ex.what());
-        outFilename[0] = '\0';
-        return false;
-    }
-}
-
 u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc)
 {
     try

@@ -749,7 +749,7 @@ namespace OpenRCT2::Config
         return {};
     }
 
-    static bool SelectGogInstaller(utf8* installerPath)
+    static u8string SelectGogInstaller()
     {
         FileDialogDesc desc{};
         desc.Type = FileDialogType::Open;
@@ -760,7 +760,7 @@ namespace OpenRCT2::Config
         const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
         desc.InitialDirectory = userHomePath;
 
-        return ContextOpenCommonFileDialog(installerPath, desc, 4096);
+        return ContextOpenCommonFileDialog(desc);
     }
 
     static bool ExtractGogInstaller(const u8string& installerPath, const u8string& targetPath)
@@ -888,8 +888,8 @@ namespace OpenRCT2::Config
                         while (true)
                         {
                             uiContext->ShowMessageBox(LanguageGetString(STR_PLEASE_SELECT_GOG_INSTALLER));
-                            utf8 gogPath[4096];
-                            if (!SelectGogInstaller(gogPath))
+                            auto gogPath = SelectGogInstaller();
+                            if (gogPath.empty())
                             {
                                 // The user clicked "Cancel", so stop trying.
                                 return false;
