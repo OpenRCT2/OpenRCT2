@@ -539,7 +539,12 @@ private:
                 if (entry.HasValue())
                 {
                     const auto* ori = _objectRepository.FindObject(entry);
-                    if (ori == nullptr && entry.GetType() != ObjectType::ScenarioText)
+                    if (ori == nullptr && entry.GetType() == ObjectType::ScenarioText)
+                    {
+                        continue;
+                    }
+
+                    if (ori == nullptr)
                     {
                         missingObjects.push_back(entry);
                         ReportMissingObject(entry);
