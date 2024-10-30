@@ -199,12 +199,10 @@ namespace OpenRCT2::Ui::Windows
             ScreenCoordsXY logoCoords = windowPos
                 + ScreenCoordsXY(widgets[WIDX_OPENRCT2_LOGO].left, widgets[WIDX_OPENRCT2_LOGO].top);
             GfxDrawSprite(dpi, ImageId(SPR_G2_LOGO), logoCoords);
-            // Version info
-            utf8 buffer[256];
-            utf8* ch = buffer;
-            OpenRCT2WriteFullVersionInfo(ch, sizeof(buffer) - (ch - buffer));
+
+            u8string versionInfo = gVersionInfoFull;
             auto ft = Formatter();
-            ft.Add<const char*>(buffer);
+            ft.Add<const char*>(versionInfo.c_str());
 
             auto const& versionPlaceholder = widgets[WIDX_VERSION];
             auto versionPlaceHolderWidth = versionPlaceholder.right - versionPlaceholder.left;

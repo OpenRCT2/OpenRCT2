@@ -84,9 +84,8 @@ namespace OpenRCT2::String
     bool IsWhiteSpace(codepoint_t codepoint);
     utf8* Trim(utf8* str);
     const utf8* TrimStart(const utf8* str);
-    utf8* TrimStart(utf8* buffer, size_t bufferSize, const utf8* src);
-    std::string TrimStart(const std::string& s);
-    std::string Trim(const std::string& s);
+    [[nodiscard]] std::string TrimStart(const std::string& s);
+    [[nodiscard]] std::string Trim(const std::string& s);
 
     /**
      * Converts a multi-byte string from one code page to UTF-8.

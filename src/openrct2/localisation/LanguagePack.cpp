@@ -155,9 +155,8 @@ public:
         return nullptr;
     }
 
-    StringId GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) override
+    StringId GetScenarioOverrideStringId(u8string_view scenarioFilename, uint8_t index) override
     {
-        Guard::ArgumentNotNull(scenarioFilename);
         Guard::Assert(index < ScenarioOverrideMaxStringCount);
 
         int32_t ooIndex = 0;

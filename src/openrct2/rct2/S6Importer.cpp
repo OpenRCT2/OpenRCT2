@@ -258,9 +258,9 @@ namespace OpenRCT2::RCT2
             }
             else
             {
-                String::Set(dst->Name, sizeof(dst->Name), _s6.Info.Name);
                 // Normalise the name to make the scenario as recognisable as possible.
-                ScenarioSources::NormaliseName(dst->Name, sizeof(dst->Name), dst->Name);
+                auto normalisedName = ScenarioSources::NormaliseName(_s6.Info.Name);
+                String::Set(dst->Name, sizeof(dst->Name), normalisedName.c_str());
             }
 
             // dst->name will be translated later so keep the untranslated name here

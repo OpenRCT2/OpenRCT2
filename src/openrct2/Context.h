@@ -232,5 +232,4 @@ void ContextHandleInput();
 void ContextInputHandleKeyboard(bool isTitle);
 void ContextQuit();
 bool ContextLoadParkFromStream(void* stream);
-bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize);
 u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc);
