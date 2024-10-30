@@ -38,6 +38,7 @@
 #include "PathAdditionObject.h"
 #include "PeepNamesObject.h"
 #include "RideObject.h"
+#include "ScenarioTextObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
 #include "StationObject.h"
@@ -363,6 +364,7 @@ namespace OpenRCT2::ObjectFactory
                 result = std::make_unique<WaterObject>();
                 break;
             case ObjectType::ScenarioText:
+                result = std::make_unique<ScenarioTextObject>();
                 break;
             case ObjectType::TerrainSurface:
                 result = std::make_unique<TerrainSurfaceObject>();
@@ -414,6 +416,8 @@ namespace OpenRCT2::ObjectFactory
             return ObjectType::ParkEntrance;
         if (s == "water")
             return ObjectType::Water;
+        if (s == "scenario_text")
+            return ObjectType::ScenarioText;
         if (s == "terrain_surface")
             return ObjectType::TerrainSurface;
         if (s == "terrain_edge")

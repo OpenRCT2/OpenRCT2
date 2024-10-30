@@ -88,6 +88,10 @@ ObjectStringID StringTable::ParseStringId(const std::string& s)
         return ObjectStringID::NAME;
     if (s == "description")
         return ObjectStringID::DESCRIPTION;
+    if (s == "park_name")
+        return ObjectStringID::PARK_NAME;
+    if (s == "details")
+        return ObjectStringID::SCENARIO_DETAILS;
     if (s == "capacity")
         return ObjectStringID::CAPACITY;
     if (s == "vehicleName")

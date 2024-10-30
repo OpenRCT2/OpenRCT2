@@ -41,6 +41,7 @@
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/ScenarioTextObject.h"
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
@@ -107,25 +108,14 @@ void ScenarioReset(GameState_t& gameState)
     gameState.HistoricalProfit = gameState.InitialCash - gameState.BankLoan;
     gameState.Cash = gameState.InitialCash;
 
+    auto& objManager = GetContext()->GetObjectManager();
+    if (auto* object = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); object != nullptr)
     {
-        auto normalisedName = ScenarioSources::NormaliseName(gameState.ScenarioName);
+        auto* textObject = reinterpret_cast<ScenarioTextObject*>(object);
 
-        StringId localisedStringIds[3];
-        if (LanguageGetLocalisedScenarioStrings(normalisedName, localisedStringIds))
-        {
-            if (localisedStringIds[0] != STR_NONE)
-            {
-                gameState.ScenarioName = LanguageGetString(localisedStringIds[0]);
-            }
-            if (localisedStringIds[1] != STR_NONE)
-            {
-                gameState.Park.Name = LanguageGetString(localisedStringIds[1]);
-            }
-            if (localisedStringIds[2] != STR_NONE)
-            {
-                gameState.ScenarioDetails = LanguageGetString(localisedStringIds[2]);
-            }
-        }
+        gameState.ScenarioName = textObject->GetScenarioName();
+        gameState.Park.Name = textObject->GetParkName();
+        gameState.ScenarioDetails = textObject->GetScenarioDetails();
     }
 
     // Set the last saved game path
@@ -154,7 +144,6 @@ void ScenarioReset(GameState_t& gameState)
     MapCountRemainingLandRights();
     Staff::ResetStats();
 
-    auto& objManager = GetContext()->GetObjectManager();
     gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
     if (gameState.LastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
     {

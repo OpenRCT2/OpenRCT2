@@ -49,6 +49,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/ScenarioTextObject.h"
 #include "../object/WallSceneryEntry.h"
 #include "../park/Legacy.h"
 #include "../peep/RideUseSystem.h"
@@ -87,12 +88,15 @@
 #include "../world/tile_element/WallElement.h"
 
 #include <cassert>
+#include <mutex>
 
 using namespace OpenRCT2;
 
 namespace OpenRCT2::RCT2
 {
 #define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
+
+    static std::mutex mtx;
 
     /**
      * Class to import RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
@@ -263,11 +267,6 @@ namespace OpenRCT2::RCT2
                 String::Set(dst->Name, sizeof(dst->Name), normalisedName.c_str());
             }
 
-            // dst->name will be translated later so keep the untranslated name here
-            String::Set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
-
-            String::Set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
-
             // Look up and store information regarding the origins of this scenario.
             SourceDescriptor desc;
             if (ScenarioSources::TryGetByName(dst->Name, &desc))
@@ -291,17 +290,30 @@ namespace OpenRCT2::RCT2
                 }
             }
 
-            // Localise the park name and description
-            StringId localisedStringIds[3];
-            if (LanguageGetLocalisedScenarioStrings(dst->Name, localisedStringIds))
+            // dst->name will be translated later so keep the untranslated name here
+            String::Set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
+            String::Set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
+
+            if (!desc.textObjectId.empty())
             {
-                if (localisedStringIds[0] != STR_NONE)
+                auto& objManager = GetContext()->GetObjectManager();
+
+                // Ensure only one thread talks to the object manager at a time
+                std::lock_guard lock(mtx);
+
+                // Unload loaded scenario text object, if any.
+                if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
+                    objManager.UnloadObjects({ obj->GetDescriptor() });
+
+                // Load the one specified
+                if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
                 {
-                    String::Set(dst->Name, sizeof(dst->Name), LanguageGetString(localisedStringIds[0]));
-                }
-                if (localisedStringIds[2] != STR_NONE)
-                {
-                    String::Set(dst->Details, sizeof(dst->Details), LanguageGetString(localisedStringIds[2]));
+                    auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
+                    auto name = textObject->GetScenarioName();
+                    auto details = textObject->GetScenarioDetails();
+
+                    String::Set(dst->Name, sizeof(dst->Name), name.c_str());
+                    String::Set(dst->Details, sizeof(dst->Details), details.c_str());
                 }
             }
 
@@ -1875,8 +1887,19 @@ namespace OpenRCT2::RCT2
 
             AppendRequiredObjects(objectList, ObjectType::TerrainSurface, _terrainSurfaceEntries);
             AppendRequiredObjects(objectList, ObjectType::TerrainEdge, _terrainEdgeEntries);
-            AppendRequiredObjects(objectList, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
+            AppendRequiredObjects(
+                objectList, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
             RCT12AddDefaultObjects(objectList);
+
+            // Normalise the name to make the scenario as recognisable as possible
+            auto normalisedName = ScenarioSources::NormaliseName(_s6.Info.Name);
+
+            // Infer what scenario text object to use, if any
+            SourceDescriptor desc;
+            if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && !desc.textObjectId.empty())
+                AppendRequiredObjects(
+                    objectList, ObjectType::ScenarioText, std::vector<std::string_view>({ desc.textObjectId }));
+
             return objectList;
         }
     };
