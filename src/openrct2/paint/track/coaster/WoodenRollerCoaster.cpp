@@ -16754,7 +16754,7 @@ static void WoodenRCTrackLeftMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 3),
-                        { 0, 0, height }, { { 0, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 2, 0, height }, { 1, 32, 160 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 44),
                         { 0, 0, height }, { { 0, 0, height + 144 }, { 32, 20, 0 } });
@@ -16965,7 +16965,7 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 23),
-                        { 0, 0, height }, { { -12, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 0, 0, height }, { 1, 32, 160 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -16975,7 +16975,7 @@ static void WoodenRCTrackRightMediumHalfLoopUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_WOODEN_RC_MEDIUM_HALF_LOOP + 33),
-                        { 0, 0, height }, { { 30, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 0, 0, height + 140 }, { 32, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
