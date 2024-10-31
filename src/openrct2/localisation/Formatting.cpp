@@ -613,6 +613,12 @@ namespace OpenRCT2
                     }
                 }
                 break;
+            case FormatToken::Height2dp:
+                if constexpr (std::is_integral<T>())
+                {
+                    FormatNumber<2, true>(ss, arg);
+                }
+                break;
             case FormatToken::MonthYear:
             case FormatToken::MonthYearSentence:
                 if constexpr (std::is_integral<T>())
@@ -802,6 +808,7 @@ namespace OpenRCT2
                 case FormatToken::Int32:
                 case FormatToken::Comma2dp32:
                 case FormatToken::Sprite:
+                case FormatToken::Height2dp:
                     anyArgs.emplace_back(ReadFromArgs<int32_t>(args));
                     break;
                 case FormatToken::Currency2dp:
