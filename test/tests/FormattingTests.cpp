@@ -43,7 +43,7 @@ TEST_F(FmtStringTests, iteration)
         actual += String::stdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
     }
 
-    ASSERT_EQ("[31:{BLACK}][1:Guests: ][8:{INT32}]", actual);
+    ASSERT_EQ("[32:{BLACK}][1:Guests: ][8:{INT32}]", actual);
 }
 
 TEST_F(FmtStringTests, iteration_escaped)
@@ -248,6 +248,27 @@ TEST_F(FormattingTests, length_si)
     Config::Get().general.MeasurementFormat = MeasurementFormat::SI;
     auto actual = FormatString("Height: {LENGTH}", 2048);
     ASSERT_EQ("Height: 2,048 m", actual);
+}
+
+TEST_F(FormattingTests, height2dp_imperial)
+{
+    Config::Get().general.MeasurementFormat = MeasurementFormat::Imperial;
+    auto actual = FormatString("Height: {HEIGHT2DP}", 1024);
+    ASSERT_EQ("Height: 3,360.00 ft", actual);
+}
+
+TEST_F(FormattingTests, height2dp_metric)
+{
+    Config::Get().general.MeasurementFormat = MeasurementFormat::Metric;
+    auto actual = FormatString("Height: {HEIGHT2DP}", 1024);
+    ASSERT_EQ("Height: 1,024.00 m", actual);
+}
+
+TEST_F(FormattingTests, height2dp_si)
+{
+    Config::Get().general.MeasurementFormat = MeasurementFormat::SI;
+    auto actual = FormatString("Height: {HEIGHT2DP}", 2048);
+    ASSERT_EQ("Height: 2,048.00 m", actual);
 }
 
 TEST_F(FormattingTests, minssecs)

@@ -16,6 +16,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/ui/WindowManager.h>
@@ -315,36 +316,27 @@ namespace OpenRCT2::Ui::Windows
                 case DisplayType::DisplayUnits:
                 {
                     // Print the value in the configured height label type:
+                    auto ft = Formatter();
                     if (Config::Get().general.ShowHeightAsUnits)
                     {
-                        // Height label is Units.
-                        auto ft = Formatter();
-                        ft.Add<fixed16_1dp>((MakeFixed1dp<fixed16_1dp>(gClipHeight, 0) / 2 - MakeFixed1dp<fixed16_1dp>(7, 0)));
-                        DrawTextBasic(
-                            rt, screenCoords, STR_UNIT1DP_NO_SUFFIX, ft,
-                            { this->colours[0] }); // Printing the value in Height Units.
+                        ft.Add<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2 - FIXED_2DP(7, 0));
+                        DrawTextBasic(rt, screenCoords, STR_UNIT2DP_NO_SUFFIX, ft, { this->colours[0] });
                     }
                     else
                     {
-                        // Height label is Real Values.
-                        // Print the value in the configured measurement units.
                         switch (Config::Get().general.MeasurementFormat)
                         {
+                            case MeasurementFormat::Imperial:
+                            {
+                                ft.Add<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2.0f * 5.0f - FIXED_2DP(35, 0));
+                                DrawTextBasic(rt, screenCoords, STR_UNIT2DP_SUFFIX_FEET, ft, { this->colours[0] });
+                                break;
+                            }
                             case MeasurementFormat::Metric:
                             case MeasurementFormat::SI:
                             {
-                                auto ft = Formatter();
-                                ft.Add<fixed32_2dp>(
-                                    MakeFixed2dp<fixed32_2dp>(gClipHeight, 0) / 2 * 1.5f - MakeFixed2dp<fixed32_2dp>(10, 50));
+                                ft.Add<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2.0f * 1.5f - FIXED_2DP(10, 50));
                                 DrawTextBasic(rt, screenCoords, STR_UNIT2DP_SUFFIX_METRES, ft, { this->colours[0] });
-                                break;
-                            }
-                            case MeasurementFormat::Imperial:
-                            {
-                                auto ft = Formatter();
-                                ft.Add<fixed16_1dp>(
-                                    MakeFixed1dp<fixed16_1dp>(gClipHeight, 0) / 2.0f * 5 - MakeFixed1dp<fixed16_1dp>(35, 0));
-                                DrawTextBasic(rt, screenCoords, STR_UNIT1DP_SUFFIX_FEET, ft, { this->colours[0] });
                                 break;
                             }
                         }
