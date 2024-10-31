@@ -49,6 +49,7 @@ namespace OpenRCT2
         DurationLong,
         Length,
         Height,
+        Height2dp,
         Sprite,
         Pop16,
         Push16,
