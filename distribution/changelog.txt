@@ -1,5 +1,6 @@
 0.4.16 (in development)
 ------------------------------------------------------------------------
+- Improved: [#22937] Add banked sloped turns and many other pieces to the Corkscrew, Hypercoaster and Lay-down Roller Coaster.
 - Improved: [#22967] Add medium and large half loops to the Wooden and Classic Wooden Roller Coasters.
 - Improved: [#23010] Make AppImage compatible with Ubuntu 22.04 and Debian Bookworm again.
 - Fix: [#21221] Trains use unbanked sprites on flat to gentle diagonal banked track pieces.
