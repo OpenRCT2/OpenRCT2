@@ -425,17 +425,6 @@ namespace OpenRCT2::ScenarioSources
 
     u8string NormaliseName(u8string_view input)
     {
-        // American scenario titles should be converted to British name
-        // Don't worry, names will be translated using language packs later
-        for (const ScenarioAlias& alias : ScenarioAliases)
-        {
-            if (String::Equals(alias.Alternative, input))
-            {
-                LOG_VERBOSE("Found alias: %s; will treat as: %s", input, alias.Original);
-                return u8string(alias.Original);
-            }
-        }
-
         u8string normalisedName;
         // Strip "RCT(1|2)?" prefix off scenario names.
         if (input.starts_with("RCT"))
@@ -456,6 +445,19 @@ namespace OpenRCT2::ScenarioSources
         }
 
         // Trim (for the sake of the above and WW / TT scenarios)
-        return String::TrimStart(normalisedName);
+        normalisedName = String::TrimStart(normalisedName);
+
+        // American scenario titles should be converted to British name
+        // Don't worry, names will be translated using language packs later
+        for (const ScenarioAlias& alias : ScenarioAliases)
+        {
+            if (String::Equals(alias.Alternative, normalisedName))
+            {
+                LOG_VERBOSE("Found alias: %s; will treat as: %s", normalisedName.c_str(), alias.Original);
+                return u8string(alias.Original);
+            }
+        }
+
+        return normalisedName;
     }
 } // namespace OpenRCT2::ScenarioSources
