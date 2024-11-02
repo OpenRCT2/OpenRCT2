@@ -332,7 +332,7 @@ void DrawStringCentredRaw(
     for (int32_t i = 0; i <= numLines; i++)
     {
         int32_t width = GfxGetStringWidth(text, fontStyle);
-        DrawText(dpi, screenCoords - ScreenCoordsXY{ width / 2, 0 }, { TEXT_COLOUR_254, fontStyle }, text);
+        DrawText(dpi, screenCoords - ScreenCoordsXY{ width / 2, 0 }, { kTextColour254, fontStyle }, text);
 
         const utf8* ch = text;
         const utf8* nextCh = nullptr;
@@ -463,7 +463,7 @@ void DrawNewsTicker(
         }
 
         screenCoords = { coords.x - halfWidth, lineY };
-        DrawText(dpi, screenCoords, { TEXT_COLOUR_254, FontStyle::Small }, buffer);
+        DrawText(dpi, screenCoords, { kTextColour254, FontStyle::Small }, buffer);
 
         if (numCharactersDrawn > numCharactersToDraw)
         {
@@ -749,7 +749,7 @@ static void TTFProcessString(DrawPixelInfo& dpi, std::string_view text, TextDraw
 
 static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
 {
-    if (colour.colour != TEXT_COLOUR_254 && colour.colour != TEXT_COLOUR_255)
+    if (colour.colour != kTextColour254 && colour.colour != kTextColour255)
     {
         info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE);
         if (colour.hasFlag(ColourFlag::withOutline))
