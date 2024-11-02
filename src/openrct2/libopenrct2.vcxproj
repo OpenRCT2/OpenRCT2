@@ -449,6 +449,7 @@
     <ClInclude Include="ride\rtd\coaster\JuniorRollerCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\LayDownRollerCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\LIMLaunchedRollerCoaster.h" />
+    <ClInclude Include="ride\rtd\coaster\LSMLaunchedRollerCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\LoopingRollerCoaster.h" />
     <ClInclude Include="ride\rtd\coaster\MineRide.h" />
     <ClInclude Include="ride\rtd\coaster\MineTrainCoaster.h" />
@@ -920,6 +921,7 @@
     <ClCompile Include="paint\track\coaster\FlyingRollerCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\FlyingRollerCoasterInverted.cpp" />
     <ClCompile Include="paint\track\coaster\LatticeTriangleTrack.cpp" />
+    <ClCompile Include="paint\track\coaster\LatticeTriangleTrackAlt.cpp" />
     <ClCompile Include="paint\track\coaster\HeartlineTwisterCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\HybridCoaster.cpp" />
     <ClCompile Include="paint\track\coaster\InvertedHairpinCoaster.cpp" />

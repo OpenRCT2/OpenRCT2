@@ -607,6 +607,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(OpenRCT2::TrackElemType tra
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(OpenRCT2::TrackElemType trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(OpenRCT2::TrackElemType trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrackAlt(OpenRCT2::TrackElemType trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionRotoDrop(OpenRCT2::TrackElemType trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingSaucers(OpenRCT2::TrackElemType trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(OpenRCT2::TrackElemType trackType);

@@ -2712,6 +2712,106 @@
         "y": -5
     },
     {
+        "path": "track/lattice_triangle/booster_alt_1.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/booster_alt_2.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/booster_alt_3.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/booster_alt_4.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/block_brake_alt_closed_1.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/block_brake_alt_closed_2.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/block_brake_alt_closed_3.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/block_brake_alt_closed_4.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/block_brake_alt_open_1.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/block_brake_alt_open_2.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/block_brake_alt_open_3.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/block_brake_alt_open_4.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/brake_alt_closed_1.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/brake_alt_closed_2.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/brake_alt_closed_3.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/brake_alt_closed_4.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/brake_alt_open_1.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/brake_alt_open_2.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/brake_alt_open_3.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/brake_alt_open_4.png",
+        "x": -22,
+        "y": -4
+    },
+    {
         "path": "track/lattice_triangle/brake_horizontal_background_open.png",
         "x": -32,
         "y": -5,
@@ -2748,25 +2848,69 @@
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/liftbooster_0.png",
+        "path": "track/lattice_triangle/drive_tyre_1.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/drive_tyre_2.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/drive_tyre_3.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/drive_tyre_4.png",
+        "x": -22,
+        "y": -4
+    },
+    {
+        "path": "track/lattice_triangle/liftbooster_1.png",
         "x": -21,
         "y": -20,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/liftbooster_1.png",
+        "path": "track/lattice_triangle/liftbooster_2.png",
         "x": -21,
         "y": -4,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/liftbooster_2.png",
+        "path": "track/lattice_triangle/liftbooster_3.png",
         "x": -22,
         "y": -4,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/liftbooster_3.png",
+        "path": "track/lattice_triangle/liftbooster_4.png",
+        "x": -22,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lattice_triangle/liftbooster_alt_1.png",
+        "x": -21,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lattice_triangle/liftbooster_alt_2.png",
+        "x": -21,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lattice_triangle/liftbooster_alt_3.png",
+        "x": -22,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lattice_triangle/liftbooster_alt_4.png",
         "x": -22,
         "y": -20,
         "palette": "keep"

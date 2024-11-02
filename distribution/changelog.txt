@@ -1,8 +1,10 @@
 0.4.16 (in development)
 ------------------------------------------------------------------------
+- Feature: [#20810] New ride type: LSM Launched Roller Coaster.
 - Improved: [#22937] Add banked sloped turns and many other pieces to the Corkscrew, Hypercoaster and Lay-down Roller Coaster.
 - Improved: [#22967] Add medium and large half loops to the Wooden and Classic Wooden Roller Coasters.
 - Improved: [#23010] Make AppImage compatible with Ubuntu 22.04 and Debian Bookworm again.
+- Change: [#20810] Giga Coaster boosters and launched lift hill track pieces are now locked behind cheats.
 - Fix: [#21221] Trains use unbanked sprites on flat to gentle diagonal banked track pieces.
 - Fix: [#22615] Crash when drawing Space Rings with an invalid ride entry.
 - Fix: [#22633] Crash when drawing loading screen with an outdated g2.dat.
