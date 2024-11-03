@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
@@ -426,7 +427,7 @@ static void PaintReverseFreefallRCOnridePhoto(
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverseFreefallRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverseFreefallRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -442,6 +443,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverseFreefallRC(int32_t trackType)
             return PaintReverseFreefallRCVertical;
         case TrackElemType::OnRidePhoto:
             return PaintReverseFreefallRCOnridePhoto;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

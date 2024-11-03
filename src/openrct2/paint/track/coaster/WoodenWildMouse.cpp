@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Paint.TileElement.h"
@@ -720,7 +721,7 @@ static void WoodenWildMouseTrack60DegDownToFlat(
     WoodenWildMouseTrackFlatTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenWildMouse(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenWildMouse(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -770,6 +771,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenWildMouse(int32_t trackType)
             return WoodenWildMouseTrackFlatTo60DegDown;
         case TrackElemType::Down60ToFlat:
             return WoodenWildMouseTrack60DegDownToFlat;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

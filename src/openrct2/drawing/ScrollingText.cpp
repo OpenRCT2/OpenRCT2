@@ -18,6 +18,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../paint/Paint.h"
 #include "../sprites.h"
+#include "../util/Util.h"
 #include "Drawing.h"
 #include "TTF.h"
 

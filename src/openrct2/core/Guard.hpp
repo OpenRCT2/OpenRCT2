@@ -37,7 +37,8 @@ namespace OpenRCT2::Guard
 
     std::optional<std::string> GetLastAssertMessage();
 
-    template<typename T> static void ArgumentNotNull(T* argument, const char* message = nullptr, ...)
+    template<typename T>
+    static void ArgumentNotNull(T* argument, const char* message = nullptr, ...)
     {
         va_list args;
         va_start(args, message);
@@ -45,7 +46,8 @@ namespace OpenRCT2::Guard
         va_end(args);
     }
 
-    template<typename T> static void ArgumentNotNull(const std::shared_ptr<T>& argument, const char* message = nullptr, ...)
+    template<typename T>
+    static void ArgumentNotNull(const std::shared_ptr<T>& argument, const char* message = nullptr, ...)
     {
         va_list args;
         va_start(args, message);
@@ -53,7 +55,8 @@ namespace OpenRCT2::Guard
         va_end(args);
     }
 
-    template<typename T> static void ArgumentInRange(T argument, T min, T max, const char* message = nullptr, ...)
+    template<typename T>
+    static void ArgumentInRange(T argument, T min, T max, const char* message = nullptr, ...)
     {
         va_list args;
         va_start(args, message);
@@ -61,7 +64,8 @@ namespace OpenRCT2::Guard
         va_end(args);
     }
 
-    template<typename T> static void IndexInRange(size_t index, const T& container)
+    template<typename T>
+    static void IndexInRange(size_t index, const T& container)
     {
         Guard::Assert(index < container.size(), "Index %zu out of bounds (%zu)", index, container.size());
     }

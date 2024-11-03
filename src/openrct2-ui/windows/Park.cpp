@@ -24,6 +24,7 @@
 #include <openrct2/actions/ParkSetEntranceFeeAction.h>
 #include <openrct2/actions/ParkSetNameAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/UnitConversion.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/management/Award.h>
@@ -31,7 +32,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows

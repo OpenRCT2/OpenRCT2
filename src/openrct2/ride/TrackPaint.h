@@ -16,6 +16,7 @@
 #include "../world/Map.h"
 
 class StationObject;
+struct Ride;
 
 constexpr uint8_t kTrackMap2x2[][4] = {
     { 0, 1, 2, 3 },
@@ -548,92 +549,93 @@ void DrawSBendRightSupports(
 using TRACK_PAINT_FUNCTION = void (*)(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType);
-using TRACK_PAINT_FUNCTION_GETTER = TRACK_PAINT_FUNCTION (*)(int32_t trackType);
+using TRACK_PAINT_FUNCTION_GETTER = TRACK_PAINT_FUNCTION (*)(OpenRCT2::TrackElemType trackType);
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionStandUpRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedSwingingRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorail(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniSuspendedRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniatureRailway(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionBoatHire(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenWildMouse(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSteeplechase(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCarRide(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLaunchedFreefall(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionBobsleighRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionObservationTower(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLoopingRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlideCovered(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionChairlift(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMaze(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpiralSlide(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionGoKarts(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLogFlume(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionRiverRapids(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionDodgems(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingShip(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingInverterShip(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFerrisWheel(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMotionsimulator(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunction3dCinema(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionTopspin(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpaceRings(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverseFreefallRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLift(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionShop(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMerryGoRound(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFacility(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwist(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionHauntedHouse(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCircus(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionGhostTrain(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWildMouse(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRCInverted(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionVirginiaReel(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSplashBoats(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniHelicopters(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRCInverted(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedMonorail(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionRotoDrop(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingSaucers(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorailCycles(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedHairpinRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMagicCarpet(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSubmarineRide(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionEnterprise(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineRide(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwisterRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionStandUpRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedSwingingRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorail(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniSuspendedRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniatureRailway(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionBoatHire(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenWildMouse(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSteeplechase(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCarRide(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLaunchedFreefall(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionBobsleighRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionObservationTower(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLoopingRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlideCovered(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionChairlift(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMaze(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpiralSlide(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionGoKarts(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLogFlume(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionRiverRapids(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionDodgems(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingShip(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingInverterShip(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFerrisWheel(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMotionsimulator(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunction3dCinema(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionTopspin(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpaceRings(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverseFreefallRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLift(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionShop(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMerryGoRound(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFacility(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwist(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionHauntedHouse(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCircus(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionGhostTrain(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWildMouse(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRCInverted(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionVirginiaReel(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSplashBoats(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniHelicopters(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRCInverted(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedMonorail(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrackAlt(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionRotoDrop(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingSaucers(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorailCycles(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedHairpinRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMagicCarpet(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSubmarineRide(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionEnterprise(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineRide(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwisterRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType trackType);
 namespace OpenRCT2::HybridRC
 {
-    TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);
+    TRACK_PAINT_FUNCTION GetTrackPaintFunction(OpenRCT2::TrackElemType trackType);
 }
 namespace OpenRCT2::SingleRailRC
 {
-    TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);
+    TRACK_PAINT_FUNCTION GetTrackPaintFunction(OpenRCT2::TrackElemType trackType);
 }
 namespace OpenRCT2::AlpineRC
 {
-    TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);
+    TRACK_PAINT_FUNCTION GetTrackPaintFunction(OpenRCT2::TrackElemType trackType);
 }
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRC(int32_t trackType);
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRC(OpenRCT2::TrackElemType trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemType trackType);

@@ -933,7 +933,8 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        template<bool TRealNames> static bool CompareGuestItem(const GuestItem& a, const GuestItem& b)
+        template<bool TRealNames>
+        static bool CompareGuestItem(const GuestItem& a, const GuestItem& b)
         {
             const auto* peepA = GetEntity<Peep>(a.Id);
             const auto* peepB = GetEntity<Peep>(b.Id);

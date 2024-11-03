@@ -199,12 +199,10 @@ namespace OpenRCT2::Ui::Windows
             ScreenCoordsXY logoCoords = windowPos
                 + ScreenCoordsXY(widgets[WIDX_OPENRCT2_LOGO].left, widgets[WIDX_OPENRCT2_LOGO].top);
             GfxDrawSprite(dpi, ImageId(SPR_G2_LOGO), logoCoords);
-            // Version info
-            utf8 buffer[256];
-            utf8* ch = buffer;
-            OpenRCT2WriteFullVersionInfo(ch, sizeof(buffer) - (ch - buffer));
+
+            u8string versionInfo = gVersionInfoFull;
             auto ft = Formatter();
-            ft.Add<const char*>(buffer);
+            ft.Add<const char*>(versionInfo.c_str());
 
             auto const& versionPlaceholder = widgets[WIDX_VERSION];
             auto versionPlaceHolderWidth = versionPlaceholder.right - versionPlaceholder.left;
@@ -235,7 +233,7 @@ namespace OpenRCT2::Ui::Windows
             textCoords += ScreenCoordsXY(
                 0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_FAIRGROUND_ORGAN, ft2, tp) + 5); // Fairground organ
             textCoords += ScreenCoordsXY(
-                0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_1, ft2, tp)); // Special Thanks
+                0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_1, ft2, tp) + 7); // Special Thanks
             textCoords += ScreenCoordsXY(
                 0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_2, ft2, tp)); // Company names
         }

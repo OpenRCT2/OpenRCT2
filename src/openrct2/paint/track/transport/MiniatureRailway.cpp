@@ -13,6 +13,9 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/PathElement.h"
+#include "../../../world/tile_element/TileElement.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
@@ -2290,7 +2293,7 @@ static void MiniatureRailwayTrackDiag25DegDownToFlat(
 /**
  * rct2: 0x008ACE48
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniatureRailway(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniatureRailway(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -2354,7 +2357,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniatureRailway(int32_t trackType)
             return MiniatureRailwayTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
             return MiniatureRailwayTrackDiag25DegDownToFlat;
+        default:
+            return nullptr;
     }
-
-    return nullptr;
 }

@@ -11,6 +11,7 @@
 
 #include "../core/Money.hpp"
 #include "../world/Location.hpp"
+#include "../world/tile_element/SurfaceElement.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "TrackData.h"

@@ -47,7 +47,8 @@ namespace OpenRCT2::Scripting
         { "scenery", Research::EntryType::Scenery },
     });
 
-    template<> inline DukValue ToDuk(duk_context* ctx, const ResearchItem& value)
+    template<>
+    inline DukValue ToDuk(duk_context* ctx, const ResearchItem& value)
     {
         DukObject obj(ctx);
         obj.Set("category", ResearchCategoryMap[value.category]);
@@ -60,7 +61,8 @@ namespace OpenRCT2::Scripting
         return obj.Take();
     }
 
-    template<> Research::EntryType inline FromDuk(const DukValue& d)
+    template<>
+    Research::EntryType inline FromDuk(const DukValue& d)
     {
         if (d.type() == DukValue::STRING)
         {
@@ -73,7 +75,8 @@ namespace OpenRCT2::Scripting
         return Research::EntryType::Scenery;
     }
 
-    template<> ResearchItem inline FromDuk(const DukValue& d)
+    template<>
+    ResearchItem inline FromDuk(const DukValue& d)
     {
         ResearchItem result;
         result.baseRideType = 0;

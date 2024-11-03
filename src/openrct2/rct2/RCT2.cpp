@@ -97,39 +97,40 @@ namespace OpenRCT2::RCT2
         return MinMaxCarsPerTrain & 0xF;
     }
 
-    void Ride::SetMinCarsPerTrain(uint8_t newValue)
+    OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(
+        OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType, bool isFlatRide)
     {
-        MinMaxCarsPerTrain &= ~0xF0;
-        MinMaxCarsPerTrain |= (newValue << 4);
+        auto originalClass = OriginalRideClass::Regular;
+        if (rideType == RIDE_TYPE_STEEL_WILD_MOUSE || rideType == RIDE_TYPE_SPINNING_WILD_MOUSE)
+            originalClass = OriginalRideClass::WildMouse;
+        if (isFlatRide)
+            originalClass = OriginalRideClass::FlatRide;
+
+        return RCT2TrackTypeToOpenRCT2(origTrackType, originalClass);
     }
 
-    void Ride::SetMaxCarsPerTrain(uint8_t newValue)
+    OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(
+        OpenRCT2::RCT12::TrackElemType origTrackType, OriginalRideClass originalClass)
     {
-        MinMaxCarsPerTrain &= ~0x0F;
-        MinMaxCarsPerTrain |= newValue & 0x0F;
+        switch (originalClass)
+        {
+            case OriginalRideClass::FlatRide:
+                return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
+            case OriginalRideClass::WildMouse:
+                // Boosters share their ID with the Spinning Control track.
+                if (origTrackType == OpenRCT2::RCT12::TrackElemType::RotationControlToggleAlias)
+                    return OpenRCT2::TrackElemType::RotationControlToggle;
+                return static_cast<OpenRCT2::TrackElemType>(origTrackType);
+            case OriginalRideClass::Regular:
+            default:
+                return static_cast<OpenRCT2::TrackElemType>(origTrackType);
+        }
     }
 
-    bool RCT2TrackTypeIsBooster(ride_type_t rideType, uint16_t trackType)
-    {
-        // Boosters share their ID with the Spinning Control track.
-        return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && rideType != RIDE_TYPE_STEEL_WILD_MOUSE
-            && trackType == TrackElemType::Booster;
-    }
-
-    track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType, bool convertFlat)
-    {
-        if (convertFlat && GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isFlatRide))
-            return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
-        if (origTrackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(rideType, origTrackType))
-            return TrackElemType::RotationControlToggle;
-
-        return origTrackType;
-    }
-
-    RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType)
+    OpenRCT2::RCT12::TrackElemType OpenRCT2TrackTypeToRCT2(OpenRCT2::TrackElemType origTrackType)
     {
         if (origTrackType == TrackElemType::RotationControlToggle)
-            return TrackElemType::RotationControlToggleAlias;
+            return OpenRCT2::RCT12::TrackElemType::RotationControlToggleAlias;
 
         // This function is safe to run this way round.
         return OpenRCT2FlatTrackTypeToRCT12(origTrackType);

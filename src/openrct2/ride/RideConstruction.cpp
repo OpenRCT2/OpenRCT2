@@ -28,7 +28,6 @@
 #include "../network/network.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
-#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "../world/Climate.h"
@@ -41,6 +40,8 @@
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"
@@ -62,14 +63,14 @@ RideId _currentRideIndex;
 CoordsXYZ _currentTrackBegin;
 
 uint8_t _currentTrackPieceDirection;
-track_type_t _currentTrackPieceType;
+OpenRCT2::TrackElemType _currentTrackPieceType;
 uint8_t _currentTrackSelectionFlags;
 uint32_t _rideConstructionNextArrowPulse = 0;
 TrackPitch _currentTrackPitchEnd;
 TrackRoll _currentTrackRollEnd;
 bool _currentTrackHasLiftHill;
 OpenRCT2::SelectedAlternative _currentTrackAlternative{};
-track_type_t _selectedTrackType;
+OpenRCT2::TrackElemType _selectedTrackType;
 
 TrackRoll _previousTrackRollEnd;
 TrackPitch _previousTrackPitchEnd;
@@ -375,7 +376,8 @@ void RideClearBlockedTiles(const Ride& ride)
  * bp : flags
  */
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
-    const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags)
+    const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, TileElement** output_element,
+    uint16_t flags)
 {
     // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
     auto trackElement = MapGetTrackElementAtOfTypeSeq(location, type, 0);
@@ -573,7 +575,8 @@ void RideConstructionSetDefaultNextPiece()
 
     const auto& rtd = ride->GetRideTypeDescriptor();
 
-    int32_t z, direction, trackType;
+    int32_t z, direction;
+    OpenRCT2::TrackElemType trackType;
     TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
@@ -700,7 +703,7 @@ void RideSelectNextSection()
     {
         RideConstructionInvalidateCurrentTrack();
         int32_t direction = _currentTrackPieceDirection;
-        int32_t type = _currentTrackPieceType;
+        auto type = _currentTrackPieceType;
         TileElement* tileElement;
         auto newCoords = GetTrackElementOriginAndApplyChanges(
             { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
@@ -758,7 +761,7 @@ void RideSelectPreviousSection()
     {
         RideConstructionInvalidateCurrentTrack();
         int32_t direction = _currentTrackPieceDirection;
-        int32_t type = _currentTrackPieceType;
+        auto type = _currentTrackPieceType;
         TileElement* tileElement;
         auto newCoords = GetTrackElementOriginAndApplyChanges(
             { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
@@ -1475,7 +1478,7 @@ TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd)
     return getTrackDrawerEntry(rtd, isInverted, isCovered);
 }
 
-track_type_t GetTrackTypeFromCurve(
+OpenRCT2::TrackElemType GetTrackTypeFromCurve(
     TrackCurve curve, bool startsDiagonal, TrackPitch startSlope, TrackPitch endSlope, TrackRoll startBank, TrackRoll endBank)
 {
     for (uint32_t i = 0; i < std::size(gTrackDescriptors); i++)

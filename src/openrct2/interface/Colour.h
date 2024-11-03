@@ -213,8 +213,8 @@ constexpr uint8_t kColourNumNormal = 54;
 
 static constexpr uint8_t kLegacyColourFlagTranslucent = (1 << 7);
 
-#define TEXT_COLOUR_254 (254)
-#define TEXT_COLOUR_255 (255)
+constexpr colour_t kTextColour254 = 254;
+constexpr colour_t kTextColour255 = 255;
 
 enum class ColourFlag : uint8_t
 {

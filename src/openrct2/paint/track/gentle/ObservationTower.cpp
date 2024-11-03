@@ -13,6 +13,8 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TileElement.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
@@ -142,7 +144,7 @@ static void PaintObservationTowerSection(
 /**
  * rct2: 0x0070DC5C
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionObservationTower(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionObservationTower(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -151,7 +153,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionObservationTower(int32_t trackType)
 
         case TrackElemType::TowerSection:
             return PaintObservationTowerSection;
+        default:
+            return nullptr;
     }
-
-    return nullptr;
 }

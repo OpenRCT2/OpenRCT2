@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
@@ -9515,7 +9516,7 @@ static void StandUpRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionStandUpRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionStandUpRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -9725,6 +9726,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionStandUpRC(int32_t trackType)
             return StandUpRCTrackDiagBrakes;
         case TrackElemType::DiagBlockBrakes:
             return StandUpRCTrackDiagBlockBrakes;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

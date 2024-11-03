@@ -103,7 +103,8 @@ public:
     Intent* PutExtra(uint32_t key, std::string value);
     Intent* PutExtra(uint32_t key, close_callback value);
 
-    template<typename T, T TNull, typename TTag> Intent* PutExtra(uint32_t key, const TIdentifier<T, TNull, TTag>& value)
+    template<typename T, T TNull, typename TTag>
+    Intent* PutExtra(uint32_t key, const TIdentifier<T, TNull, TTag>& value)
     {
         const auto val = value.ToUnderlying();
         return PutExtra(key, static_cast<uint32_t>(val));

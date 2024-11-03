@@ -11,6 +11,8 @@
 
 #include "Map.h"
 
+struct Banner;
+
 namespace OpenRCT2::GameActions
 {
     class Result;

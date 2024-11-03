@@ -21,6 +21,7 @@
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
+#include "../core/SawyerCoding.h"
 #include "../core/String.hpp"
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"
@@ -48,6 +49,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/ScenarioTextObject.h"
 #include "../object/WallSceneryEntry.h"
 #include "../park/Legacy.h"
 #include "../peep/RideUseSystem.h"
@@ -68,24 +70,33 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
-#include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
 #include "../world/TilePointerIndex.hpp"
+#include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/LargeSceneryElement.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TileElement.h"
+#include "../world/tile_element/TrackElement.h"
+#include "../world/tile_element/WallElement.h"
 
 #include <cassert>
+#include <mutex>
 
 using namespace OpenRCT2;
 
 namespace OpenRCT2::RCT2
 {
 #define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
+
+    static std::mutex mtx;
 
     /**
      * Class to import RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
@@ -251,15 +262,10 @@ namespace OpenRCT2::RCT2
             }
             else
             {
-                String::Set(dst->Name, sizeof(dst->Name), _s6.Info.Name);
                 // Normalise the name to make the scenario as recognisable as possible.
-                ScenarioSources::NormaliseName(dst->Name, sizeof(dst->Name), dst->Name);
+                auto normalisedName = ScenarioSources::NormaliseName(_s6.Info.Name);
+                String::Set(dst->Name, sizeof(dst->Name), normalisedName.c_str());
             }
-
-            // dst->name will be translated later so keep the untranslated name here
-            String::Set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
-
-            String::Set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
 
             // Look up and store information regarding the origins of this scenario.
             SourceDescriptor desc;
@@ -284,17 +290,30 @@ namespace OpenRCT2::RCT2
                 }
             }
 
-            // Localise the park name and description
-            StringId localisedStringIds[3];
-            if (LanguageGetLocalisedScenarioStrings(dst->Name, localisedStringIds))
+            // dst->name will be translated later so keep the untranslated name here
+            String::Set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
+            String::Set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
+
+            if (!desc.textObjectId.empty())
             {
-                if (localisedStringIds[0] != STR_NONE)
+                auto& objManager = GetContext()->GetObjectManager();
+
+                // Ensure only one thread talks to the object manager at a time
+                std::lock_guard lock(mtx);
+
+                // Unload loaded scenario text object, if any.
+                if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
+                    objManager.UnloadObjects({ obj->GetDescriptor() });
+
+                // Load the one specified
+                if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
                 {
-                    String::Set(dst->Name, sizeof(dst->Name), LanguageGetString(localisedStringIds[0]));
-                }
-                if (localisedStringIds[2] != STR_NONE)
-                {
-                    String::Set(dst->Details, sizeof(dst->Details), LanguageGetString(localisedStringIds[2]));
+                    auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
+                    auto name = textObject->GetScenarioName();
+                    auto details = textObject->GetScenarioDetails();
+
+                    String::Set(dst->Name, sizeof(dst->Name), name.c_str());
+                    String::Set(dst->Details, sizeof(dst->Details), details.c_str());
                 }
             }
 
@@ -1002,10 +1021,14 @@ namespace OpenRCT2::RCT2
             dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.CurrentRide);
             dst.State = src.State;
             if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(RideTypeDescriptors))
+            {
                 dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
                     src.ProximityTrackType, _s6.Rides[src.CurrentRide].Type, IsFlatRide(src.CurrentRide));
+            }
             else
-                dst.ProximityTrackType = 0xFF;
+            {
+                dst.ProximityTrackType = TrackElemType::None;
+            }
             dst.ProximityBaseHeight = src.ProximityBaseHeight;
             dst.ProximityTotal = src.ProximityTotal;
             for (size_t i = 0; i < std::size(src.ProximityScores); i++)
@@ -1324,9 +1347,11 @@ namespace OpenRCT2::RCT2
                     auto src2 = src->AsTrack();
 
                     auto rideType = _s6.Rides[src2->GetRideIndex()].Type;
-                    track_type_t trackType = static_cast<track_type_t>(src2->GetTrackType());
+                    auto oldTrackType = src2->GetTrackType();
+                    OpenRCT2::TrackElemType trackType = RCT2TrackTypeToOpenRCT2(
+                        oldTrackType, rideType, IsFlatRide(src2->GetRideIndex()));
 
-                    dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, rideType, IsFlatRide(src2->GetRideIndex())));
+                    dst2->SetTrackType(trackType);
                     dst2->SetRideType(rideType);
                     dst2->SetSequenceIndex(src2->GetSequenceIndex());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
@@ -1604,7 +1629,8 @@ namespace OpenRCT2::RCT2
             return (_s6.Header.ClassicFlag == 0xf) ? Limits::kMaxEntitiesRCTCExtended : Limits::kMaxEntities;
         }
 
-        template<typename OpenRCT2_T> void ImportEntity(const RCT12EntityBase& src);
+        template<typename OpenRCT2_T>
+        void ImportEntity(const RCT12EntityBase& src);
 
         void ImportEntityPeep(::Peep* dst, const Peep* src)
         {
@@ -1861,13 +1887,25 @@ namespace OpenRCT2::RCT2
 
             AppendRequiredObjects(objectList, ObjectType::TerrainSurface, _terrainSurfaceEntries);
             AppendRequiredObjects(objectList, ObjectType::TerrainEdge, _terrainEdgeEntries);
-            AppendRequiredObjects(objectList, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
+            AppendRequiredObjects(
+                objectList, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
             RCT12AddDefaultObjects(objectList);
+
+            // Normalise the name to make the scenario as recognisable as possible
+            auto normalisedName = ScenarioSources::NormaliseName(_s6.Info.Name);
+
+            // Infer what scenario text object to use, if any
+            SourceDescriptor desc;
+            if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && !desc.textObjectId.empty())
+                AppendRequiredObjects(
+                    objectList, ObjectType::ScenarioText, std::vector<std::string_view>({ desc.textObjectId }));
+
             return objectList;
         }
     };
 
-    template<> void S6Importer::ImportEntity<::Vehicle>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Vehicle>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Vehicle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT2::Vehicle*>(&baseSrc);
@@ -1892,26 +1930,25 @@ namespace OpenRCT2::RCT2
         {
             dst->BoatLocation.SetNull();
             dst->SetTrackDirection(src->GetTrackDirection());
-            dst->SetTrackType(src->GetTrackType());
+            // Skipping OriginalRideClass::WildMouse - this is handled specifically.
+            auto originalClass = IsFlatRide(src->Ride) ? OriginalRideClass::FlatRide : OriginalRideClass::Regular;
+            auto convertedType = RCT2TrackTypeToOpenRCT2(src->GetTrackType(), originalClass);
+            dst->SetTrackType(convertedType);
             // RotationControlToggle and Booster are saved as the same track piece ID
             // Which one the vehicle is using must be determined
-            if (IsFlatRide(src->Ride))
-            {
-                dst->SetTrackType(RCT12FlatTrackTypeToOpenRCT2(src->GetTrackType()));
-            }
-            else if (src->GetTrackType() == TrackElemType::RotationControlToggleAlias)
+            if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::RotationControlToggleAlias)
             {
                 // Merging hacks mean the track type that's appropriate for the ride type is not necessarily the track type the
                 // ride is on. It's possible to create unwanted behavior if a user layers spinning control track on top of
                 // booster track but this is unlikely since only two rides have spinning control track - by default they load as
-                // booster
+                // booster.
                 TileElement* tileElement2 = MapGetTrackElementAtOfTypeSeq(
                     dst->TrackLocation, TrackElemType::RotationControlToggle, 0);
 
                 if (tileElement2 != nullptr)
                     dst->SetTrackType(TrackElemType::RotationControlToggle);
             }
-            else if (src->GetTrackType() == TrackElemType::BlockBrakes)
+            else if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::BlockBrakes)
             {
                 dst->brake_speed = kRCT2DefaultBlockBrakeSpeed;
             }
@@ -1920,7 +1957,7 @@ namespace OpenRCT2::RCT2
         {
             dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.ToCoordsXY();
             dst->SetTrackDirection(0);
-            dst->SetTrackType(0);
+            dst->SetTrackType(OpenRCT2::TrackElemType::Flat);
         }
 
         dst->next_vehicle_on_train = EntityId::FromUnderlying(src->NextVehicleOnTrain);
@@ -1993,7 +2030,8 @@ namespace OpenRCT2::RCT2
         return s6.GameTicks1 - ticksElapsed;
     }
 
-    template<> void S6Importer::ImportEntity<::Guest>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Guest>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Guest>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const Peep*>(&baseSrc);
@@ -2067,7 +2105,8 @@ namespace OpenRCT2::RCT2
         dst->FavouriteRideRating = src->FavouriteRideRating;
     }
 
-    template<> void S6Importer::ImportEntity<::Staff>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Staff>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Staff>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const Peep*>(&baseSrc);
@@ -2087,7 +2126,8 @@ namespace OpenRCT2::RCT2
         ImportStaffPatrolArea(dst, src->StaffId);
     }
 
-    template<> void S6Importer::ImportEntity<::SteamParticle>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::SteamParticle>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::SteamParticle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntitySteamParticle*>(&baseSrc);
@@ -2096,7 +2136,8 @@ namespace OpenRCT2::RCT2
         dst->frame = src->Frame;
     }
 
-    template<> void S6Importer::ImportEntity<::MoneyEffect>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::MoneyEffect>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::MoneyEffect>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityMoneyEffect*>(&baseSrc);
@@ -2109,7 +2150,8 @@ namespace OpenRCT2::RCT2
         dst->Wiggle = src->Wiggle;
     }
 
-    template<> void S6Importer::ImportEntity<::VehicleCrashParticle>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::VehicleCrashParticle>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::VehicleCrashParticle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityCrashedVehicleParticle*>(&baseSrc);
@@ -2128,7 +2170,8 @@ namespace OpenRCT2::RCT2
         dst->acceleration_z = src->AccelerationZ;
     }
 
-    template<> void S6Importer::ImportEntity<::ExplosionCloud>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::ExplosionCloud>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::ExplosionCloud>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityParticle*>(&baseSrc);
@@ -2136,7 +2179,8 @@ namespace OpenRCT2::RCT2
         dst->frame = src->Frame;
     }
 
-    template<> void S6Importer::ImportEntity<::ExplosionFlare>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::ExplosionFlare>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::ExplosionFlare>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityParticle*>(&baseSrc);
@@ -2144,7 +2188,8 @@ namespace OpenRCT2::RCT2
         dst->frame = src->Frame;
     }
 
-    template<> void S6Importer::ImportEntity<::CrashSplashParticle>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::CrashSplashParticle>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::CrashSplashParticle>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityParticle*>(&baseSrc);
@@ -2152,7 +2197,8 @@ namespace OpenRCT2::RCT2
         dst->frame = src->Frame;
     }
 
-    template<> void S6Importer::ImportEntity<::JumpingFountain>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::JumpingFountain>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::JumpingFountain>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityJumpingFountain*>(&baseSrc);
@@ -2168,7 +2214,8 @@ namespace OpenRCT2::RCT2
             : ::JumpingFountainType::Water;
     }
 
-    template<> void S6Importer::ImportEntity<::Balloon>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Balloon>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Balloon>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityBalloon*>(&baseSrc);
@@ -2179,7 +2226,8 @@ namespace OpenRCT2::RCT2
         dst->colour = src->Colour;
     }
 
-    template<> void S6Importer::ImportEntity<::Duck>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Duck>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Duck>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityDuck*>(&baseSrc);
@@ -2190,7 +2238,8 @@ namespace OpenRCT2::RCT2
         dst->state = static_cast<::Duck::DuckState>(src->State);
     }
 
-    template<> void S6Importer::ImportEntity<::Litter>(const RCT12EntityBase& baseSrc)
+    template<>
+    void S6Importer::ImportEntity<::Litter>(const RCT12EntityBase& baseSrc)
     {
         auto dst = CreateEntityAt<::Litter>(EntityId::FromUnderlying(baseSrc.EntityIndex));
         auto src = static_cast<const RCT12EntityLitter*>(&baseSrc);

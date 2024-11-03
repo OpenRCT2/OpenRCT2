@@ -10,6 +10,7 @@
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Segment.h"
@@ -1059,7 +1060,7 @@ static void DinghySlideTrackLeftQuarterTurn3(
     DinghySlideTrackRightQuarterTurn3(session, ride, trackSequence, (direction + 1) % 4, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1105,7 +1106,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(int32_t trackType)
             return DinghySlideTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
             return DinghySlideTrackRightQuarterTurn3;
+        default:
+            return nullptr;
     }
-
-    return nullptr;
 }

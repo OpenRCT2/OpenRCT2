@@ -58,9 +58,13 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/LargeSceneryElement.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
+#include "../world/tile_element/WallElement.h"
 #include "Peep.h"
 #include "Staff.h"
 
@@ -450,7 +454,8 @@ static void PeepLeavePark(Guest* peep);
 static void PeepHeadForNearestRideWithFlag(Guest* peep, bool considerOnlyCloseRides, RtdFlag rtdFlag);
 bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
-template<> bool EntityBase::Is<Guest>() const
+template<>
+bool EntityBase::Is<Guest>() const
 {
     return Type == EntityType::Guest;
 }
@@ -468,7 +473,8 @@ static bool IsValidLocation(const CoordsXYZ& coords)
     return false;
 }
 
-template<void (Guest::*EasterEggFunc)(Guest*), bool applyToSelf> static void ApplyEasterEggToNearbyGuests(Guest* guest)
+template<void (Guest::*EasterEggFunc)(Guest*), bool applyToSelf>
+static void ApplyEasterEggToNearbyGuests(Guest* guest)
 {
     const auto guestLoc = guest->GetLocation();
     if (!IsValidLocation(guestLoc))
@@ -814,7 +820,7 @@ void Guest::UpdateConsumptionMotives()
 
         if (TimeToConsume == 0)
         {
-            int32_t chosen_food = UtilBitScanForward(GetFoodOrDrinkFlags());
+            int32_t chosen_food = Numerics::bitScanForward(GetFoodOrDrinkFlags());
             if (chosen_food != -1)
             {
                 ShopItem food = ShopItem(chosen_food);
@@ -1507,7 +1513,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     const auto& shopItemDescriptor = GetShopItemDescriptor(shopItem);
     if (shopItemDescriptor.IsFoodOrDrink())
     {
-        int32_t food = UtilBitScanForward(GetFoodOrDrinkFlags());
+        int32_t food = Numerics::bitScanForward(GetFoodOrDrinkFlags());
         if (food != -1)
         {
             InsertNewThought(PeepThoughtType::HaventFinished, static_cast<ShopItem>(food));
@@ -3136,7 +3142,8 @@ static void PeepLeavePark(Guest* peep)
     WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
 }
 
-template<typename T> static void PeepHeadForNearestRide(Guest* peep, bool considerOnlyCloseRides, T predicate)
+template<typename T>
+static void PeepHeadForNearestRide(Guest* peep, bool considerOnlyCloseRides, T predicate)
 {
     if (peep->State != PeepState::Sitting && peep->State != PeepState::Watching && peep->State != PeepState::Walking)
     {
@@ -5364,7 +5371,7 @@ void Guest::UpdateWalking()
         if ((!GetNextIsSurface()) && (static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
             && ((0xFFFF & ScenarioRand()) <= 4096))
         {
-            int32_t container = UtilBitScanForward(GetEmptyContainerFlags());
+            int32_t container = Numerics::bitScanForward(GetEmptyContainerFlags());
             auto litterType = Litter::Type::Vomit;
 
             if (container != -1)

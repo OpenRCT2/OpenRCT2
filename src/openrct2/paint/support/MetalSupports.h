@@ -14,8 +14,6 @@
 
 #include <cstdint>
 
-using track_type_t = uint16_t;
-
 enum class MetalSupportType
 {
     /**

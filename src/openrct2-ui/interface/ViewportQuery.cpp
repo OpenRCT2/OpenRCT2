@@ -12,9 +12,11 @@
 #include "Window.h"
 
 #include <algorithm>
+#include <openrct2/core/Numerics.hpp>
 #include <openrct2/world/Map.h>
-#include <openrct2/world/TileElement.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
+#include <openrct2/world/tile_element/PathElement.h>
+#include <openrct2/world/tile_element/TileElement.h>
 
 namespace OpenRCT2::Ui
 {
@@ -149,7 +151,7 @@ namespace OpenRCT2::Ui
             uint32_t directions = (*tileElement)->AsEntrance()->GetDirections();
             if (directions & 0x0F)
             {
-                int32_t bx = UtilBitScanForward(directions);
+                int32_t bx = Numerics::bitScanForward(directions);
                 bx += (*tileElement)->AsEntrance()->GetDirection();
                 bx &= 3;
                 if (direction != nullptr)
@@ -166,7 +168,7 @@ namespace OpenRCT2::Ui
             uint32_t directions = (*tileElement)->AsEntrance()->GetDirections();
             if (directions & 0x0F)
             {
-                int32_t bx = (*tileElement)->GetDirectionWithOffset(UtilBitScanForward(directions));
+                int32_t bx = (*tileElement)->GetDirectionWithOffset(Numerics::bitScanForward(directions));
                 if (direction != nullptr)
                     *direction = bx;
                 return info.Loc;

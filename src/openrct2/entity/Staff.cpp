@@ -42,9 +42,12 @@
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "PatrolArea.h"
 #include "Peep.h"
 
@@ -72,7 +75,8 @@ const StringId StaffCostumeNames[] = {
 // Maximum manhattan distance that litter can be for a handyman to seek to it
 const uint16_t MAX_LITTER_DISTANCE = 3 * kCoordsXYStep;
 
-template<> bool EntityBase::Is<Staff>() const
+template<>
+bool EntityBase::Is<Staff>() const
 {
     return Type == EntityType::Staff;
 }
@@ -679,7 +683,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         pathDirections |= (1 << DirectionReverse(PeepDirection));
     }
 
-    Direction direction = UtilBitScanForward(pathDirections);
+    Direction direction = Numerics::bitScanForward(pathDirections);
     pathDirections &= ~(1 << direction);
     if (pathDirections == 0)
     {
@@ -797,7 +801,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
         pathDirections |= (1u << DirectionReverse(PeepDirection));
     }
 
-    Direction direction = UtilBitScanForward(pathDirections);
+    Direction direction = Numerics::bitScanForward(pathDirections);
     // If this is the only direction they can go, then go
     if (pathDirections == (1u << direction))
     {

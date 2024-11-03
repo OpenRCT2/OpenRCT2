@@ -10,11 +10,13 @@
 #include "StringTable.h"
 
 #include "../Context.h"
+#include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
 #include "../rct12/CSStringConverter.h"
+#include "../util/Util.h"
 #include "Object.h"
 
 using namespace OpenRCT2;
@@ -86,6 +88,10 @@ ObjectStringID StringTable::ParseStringId(const std::string& s)
         return ObjectStringID::NAME;
     if (s == "description")
         return ObjectStringID::DESCRIPTION;
+    if (s == "park_name")
+        return ObjectStringID::PARK_NAME;
+    if (s == "details")
+        return ObjectStringID::SCENARIO_DETAILS;
     if (s == "capacity")
         return ObjectStringID::CAPACITY;
     if (s == "vehicleName")

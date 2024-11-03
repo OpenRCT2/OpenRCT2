@@ -11,6 +11,7 @@
 
 #include <openrct2/ride/RideTypes.h>
 #include <openrct2/ride/Track.h>
+#include <openrct2/util/Util.h>
 
 namespace OpenRCT2
 {
@@ -142,7 +143,7 @@ namespace OpenRCT2
     constexpr size_t DropdownLength = DropdownOrder.size();
 
     // Update the magic number with the current number of track elements to silence
-    static_assert(TrackElemType::Count == 340, "Reminder to add new track element to special dropdown list");
+    static_assert(EnumValue(TrackElemType::Count) == 340, "Reminder to add new track element to special dropdown list");
 
     constexpr bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
     {
@@ -151,7 +152,7 @@ namespace OpenRCT2
 
     struct SpecialElement
     {
-        track_type_t TrackType;
+        OpenRCT2::TrackElemType TrackType;
         bool Disabled;
     };
 

@@ -17,6 +17,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/BannerElement.h"
 #include "GameAction.h"
 
 using namespace OpenRCT2;

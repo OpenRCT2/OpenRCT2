@@ -52,7 +52,7 @@ public:
         for (int32_t line = 0; line < LineCount; ++line)
         {
             DrawText(dpi, lineCoords, tempPaint, buffer);
-            tempPaint.Colour = TEXT_COLOUR_254;
+            tempPaint.Colour = kTextColour254;
             buffer = GetStringEnd(buffer) + 1;
             lineCoords.y += LineHeight;
         }

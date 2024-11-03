@@ -13,8 +13,9 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
 #include "../../../world/Map.h"
-#include "../../../world/Surface.h"
 #include "../../../world/tile_element/Slope.h"
+#include "../../../world/tile_element/SurfaceElement.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.SessionFlags.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
@@ -1085,7 +1086,7 @@ static void PaintMiniGolfHoleE(
 /**
  * rct2: 0x0087EDC4
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1126,7 +1127,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(int32_t trackType)
             return PaintMiniGolfHoleD;
         case TrackElemType::MinigolfHoleE:
             return PaintMiniGolfHoleE;
+        default:
+            return nullptr;
     }
-
-    return nullptr;
 }

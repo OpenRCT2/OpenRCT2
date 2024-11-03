@@ -9,6 +9,7 @@
 
 #include "WallObject.h"
 
+#include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"

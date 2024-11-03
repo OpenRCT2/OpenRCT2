@@ -17,9 +17,9 @@
 #include "../object/ObjectManager.h"
 #include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
+#include "../world/Footpath.h"
 #include "../world/Park.h"
-#include "../world/Surface.h"
-#include "../world/TileElement.h"
+#include "../world/tile_element/SurfaceElement.h"
 
 using namespace OpenRCT2;
 
@@ -67,7 +67,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
     if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
     {
-        const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _edgeStyle));
+        const auto edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_edgeStyle);
 
         if (edgeObj == nullptr)
         {

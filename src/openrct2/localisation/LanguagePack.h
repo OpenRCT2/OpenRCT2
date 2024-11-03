@@ -24,7 +24,6 @@ struct ILanguagePack
     virtual void RemoveString(StringId stringId) = 0;
     virtual void SetString(StringId stringId, const std::string& str) = 0;
     virtual const utf8* GetString(StringId stringId) const = 0;
-    virtual StringId GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) = 0;
 };
 
 namespace OpenRCT2::LanguagePackFactory

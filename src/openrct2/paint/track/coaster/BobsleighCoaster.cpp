@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
@@ -4120,7 +4121,7 @@ static void BobsleighRCTrackOnRidePhoto(
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionBobsleighRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionBobsleighRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -4213,6 +4214,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionBobsleighRC(int32_t trackType)
 
         case TrackElemType::OnRidePhoto:
             return BobsleighRCTrackOnRidePhoto;
+
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

@@ -56,6 +56,9 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "Legacy.h"
 
 #include <cassert>
@@ -377,7 +380,7 @@ namespace OpenRCT2
                 if (version < kPeepNamesObjectsVersion)
                 {
                     AppendRequiredObjects(
-                        requiredObjects, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
+                        requiredObjects, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
                 }
 
                 RequiredObjects = std::move(requiredObjects);
@@ -1637,7 +1640,8 @@ namespace OpenRCT2
             }
         }
 
-        template<typename T> static void ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, T& entity);
+        template<typename T>
+        static void ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, T& entity);
 
         static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, EntityBase& entity)
         {
@@ -2032,12 +2036,16 @@ namespace OpenRCT2
             }
         }
 
-        template<typename T> void WriteEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs);
-        template<typename... T> void WriteEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs);
+        template<typename T>
+        void WriteEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs);
+        template<typename... T>
+        void WriteEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs);
 
-        template<typename T> void ReadEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs);
+        template<typename T>
+        void ReadEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs);
 
-        template<typename... T> void ReadEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs);
+        template<typename... T>
+        void ReadEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs);
 
         void ReadWriteEntitiesChunk(GameState_t& gameState, OrcaStream& os);
 
@@ -2073,7 +2081,8 @@ namespace OpenRCT2
         }
     };
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Vehicle& entity)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Vehicle& entity)
     {
         ReadWriteEntityCommon(cs, entity);
         cs.ReadWrite(entity.SubType);
@@ -2189,7 +2198,8 @@ namespace OpenRCT2
         }
     }
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Guest& guest)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Guest& guest)
     {
         ReadWritePeep(os, cs, guest);
         auto version = os.GetHeader().TargetVersion;
@@ -2361,7 +2371,8 @@ namespace OpenRCT2
         cs.ReadWrite(guest.ItemFlags);
     }
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Staff& entity)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Staff& entity)
     {
         ReadWritePeep(os, cs, entity);
 
@@ -2407,14 +2418,16 @@ namespace OpenRCT2
         cs.ReadWrite(entity.StaffBinsEmptied);
     }
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, SteamParticle& steamParticle)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, SteamParticle& steamParticle)
     {
         ReadWriteEntityCommon(cs, steamParticle);
         cs.ReadWrite(steamParticle.time_to_move);
         cs.ReadWrite(steamParticle.frame);
     }
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, MoneyEffect& moneyEffect)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, MoneyEffect& moneyEffect)
     {
         ReadWriteEntityCommon(cs, moneyEffect);
         cs.ReadWrite(moneyEffect.MoveDelay);
@@ -2443,25 +2456,29 @@ namespace OpenRCT2
         cs.ReadWrite(vehicleCrashParticle.acceleration_z);
     }
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, ExplosionCloud& entity)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, ExplosionCloud& entity)
     {
         ReadWriteEntityCommon(cs, entity);
         cs.ReadWrite(entity.frame);
     }
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, CrashSplashParticle& entity)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, CrashSplashParticle& entity)
     {
         ReadWriteEntityCommon(cs, entity);
         cs.ReadWrite(entity.frame);
     }
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, ExplosionFlare& entity)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, ExplosionFlare& entity)
     {
         ReadWriteEntityCommon(cs, entity);
         cs.ReadWrite(entity.frame);
     }
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, JumpingFountain& fountain)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, JumpingFountain& fountain)
     {
         ReadWriteEntityCommon(cs, fountain);
         cs.ReadWrite(fountain.NumTicksAlive);
@@ -2473,7 +2490,8 @@ namespace OpenRCT2
         cs.ReadWrite(fountain.Iteration);
     }
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Balloon& balloon)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Balloon& balloon)
     {
         ReadWriteEntityCommon(cs, balloon);
         cs.ReadWrite(balloon.popped);
@@ -2482,7 +2500,8 @@ namespace OpenRCT2
         cs.ReadWrite(balloon.colour);
     }
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Duck& duck)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Duck& duck)
     {
         ReadWriteEntityCommon(cs, duck);
         cs.ReadWrite(duck.frame);
@@ -2491,14 +2510,16 @@ namespace OpenRCT2
         cs.ReadWrite(duck.state);
     }
 
-    template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Litter& entity)
+    template<>
+    void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Litter& entity)
     {
         ReadWriteEntityCommon(cs, entity);
         cs.ReadWrite(entity.SubType);
         cs.ReadWrite(entity.creationTick);
     }
 
-    template<typename T> void ParkFile::WriteEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs)
+    template<typename T>
+    void ParkFile::WriteEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
         uint16_t count = GetEntityListCount(T::cEntityType);
         cs.Write(T::cEntityType);
@@ -2510,12 +2531,14 @@ namespace OpenRCT2
         }
     }
 
-    template<typename... T> void ParkFile::WriteEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs)
+    template<typename... T>
+    void ParkFile::WriteEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
         (WriteEntitiesOfType<T>(os, cs), ...);
     }
 
-    template<typename T> void ParkFile::ReadEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs)
+    template<typename T>
+    void ParkFile::ReadEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
         [[maybe_unused]] auto t = cs.Read<EntityType>();
         assert(t == T::cEntityType);
@@ -2535,7 +2558,8 @@ namespace OpenRCT2
         }
     }
 
-    template<typename... T> void ParkFile::ReadEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs)
+    template<typename... T>
+    void ParkFile::ReadEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
         (ReadEntitiesOfType<T>(os, cs), ...);
     }

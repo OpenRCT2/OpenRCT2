@@ -28,9 +28,14 @@
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "windows/Intent.h"
-#include "world/Footpath.h"
-#include "world/Scenery.h"
+#include "world/tile_element/BannerElement.h"
 #include "world/tile_element/EntranceElement.h"
+#include "world/tile_element/LargeSceneryElement.h"
+#include "world/tile_element/PathElement.h"
+#include "world/tile_element/SmallSceneryElement.h"
+#include "world/tile_element/SurfaceElement.h"
+#include "world/tile_element/TileElement.h"
+#include "world/tile_element/WallElement.h"
 
 #include <iterator>
 #include <vector>
@@ -700,6 +705,10 @@ int32_t EditorRemoveUnusedObjects()
 
                 // The water type controls the entire palette. Removing that object can badly break the game state.
                 if (objectType == ObjectType::Water)
+                    continue;
+
+                // Avoid the used peep names object being deleted as no in-use checks are performed.
+                if (objectType == ObjectType::PeepNames)
                     continue;
 
                 // It’s hard to determine exactly if a scenery group is used, so do not remove these automatically.

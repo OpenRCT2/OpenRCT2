@@ -14,7 +14,10 @@
 
 #include <cstdint>
 
-using track_type_t = uint16_t;
+namespace OpenRCT2
+{
+    enum class TrackElemType : uint16_t;
+}
 
 enum class WoodenSupportType : uint8_t
 {
@@ -100,8 +103,8 @@ bool PathBoxSupportsPaintSetup(
     PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
     ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo);
 bool DrawSupportForSequenceA(
-    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
-    int32_t height, ImageId imageTemplate);
+    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
+    Direction direction, int32_t height, ImageId imageTemplate);
 bool DrawSupportForSequenceB(
-    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
-    int32_t height, ImageId imageTemplate);
+    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
+    Direction direction, int32_t height, ImageId imageTemplate);

@@ -38,8 +38,8 @@
 #include "../windows/Intent.h"
 #include "Entrance.h"
 #include "Map.h"
-#include "Surface.h"
 #include "tile_element/EntranceElement.h"
+#include "tile_element/SurfaceElement.h"
 
 #include <limits>
 #include <type_traits>
@@ -267,7 +267,8 @@ namespace OpenRCT2::Park
         return peep;
     }
 
-    template<typename T, size_t TSize> static void HistoryPushRecord(T history[TSize], T newItem)
+    template<typename T, size_t TSize>
+    static void HistoryPushRecord(T history[TSize], T newItem)
     {
         for (size_t i = TSize - 1; i > 0; i--)
         {

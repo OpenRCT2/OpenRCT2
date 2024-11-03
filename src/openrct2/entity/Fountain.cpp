@@ -20,6 +20,7 @@
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Scenery.h"
+#include "../world/tile_element/PathElement.h"
 #include "EntityRegistry.h"
 
 using namespace OpenRCT2;
@@ -82,7 +83,8 @@ const uint8_t _fountainPatternFlags[] = {
     FOUNTAIN_FLAG::FAST,                                                   // FAST_RANDOM_CHASERS
 };
 
-template<> bool EntityBase::Is<JumpingFountain>() const
+template<>
+bool EntityBase::Is<JumpingFountain>() const
 {
     return Type == EntityType::JumpingFountain;
 }

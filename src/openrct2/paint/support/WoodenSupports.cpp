@@ -13,7 +13,6 @@
 #include "../../ride/TrackData.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
-#include "../../world/Surface.h"
 #include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
@@ -641,8 +640,8 @@ bool PathBoxSupportsPaintSetup(
 }
 
 bool DrawSupportForSequenceA(
-    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
-    int32_t height, ImageId imageTemplate)
+    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
+    Direction direction, int32_t height, ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
     const auto& desc = ted.sequences[sequence].woodenSupports;
@@ -655,8 +654,8 @@ bool DrawSupportForSequenceA(
 }
 
 bool DrawSupportForSequenceB(
-    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
-    int32_t height, ImageId imageTemplate)
+    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
+    Direction direction, int32_t height, ImageId imageTemplate)
 {
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
     const auto& desc = ted.sequences[sequence].woodenSupports;

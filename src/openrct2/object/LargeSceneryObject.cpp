@@ -117,7 +117,7 @@ void LargeSceneryObject::Load()
     _baseImageId = LoadImages();
     _legacyType.image = _baseImageId;
 
-    _legacyType.tiles = _tiles.data();
+    _legacyType.tiles = _tiles;
 
     if (_legacyType.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
@@ -158,17 +158,27 @@ void LargeSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t 
     GfxDrawSprite(dpi, image, screenCoords);
 }
 
+enum
+{
+    LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS = 0x20,
+    LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE = 0x40,
+};
+
 std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* stream)
 {
     auto tiles = std::vector<LargeSceneryTile>();
 
     auto ReadLegacyTile = [&stream]() {
         LargeSceneryTile tile{};
-        tile.x_offset = stream->ReadValue<int16_t>();
-        tile.y_offset = stream->ReadValue<int16_t>();
-        tile.z_offset = stream->ReadValue<int16_t>();
-        tile.z_clearance = stream->ReadValue<uint8_t>();
-        tile.flags = stream->ReadValue<uint16_t>();
+        tile.offset.x = stream->ReadValue<int16_t>();
+        tile.offset.y = stream->ReadValue<int16_t>();
+        tile.offset.z = stream->ReadValue<int16_t>();
+        tile.zClearance = stream->ReadValue<uint8_t>();
+        uint16_t flags = stream->ReadValue<uint16_t>();
+        tile.walls = (flags >> 8) & 0xF;
+        tile.corners = (flags >> 12) & 0xF;
+        tile.allowSupportsAbove = flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE;
+        tile.hasSupports = !(flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS);
         return tile;
     };
 
@@ -177,7 +187,11 @@ std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* s
         stream->Seek(-2, OpenRCT2::STREAM_SEEK_CURRENT);
         tiles.push_back(ReadLegacyTile());
     }
-    tiles.push_back({ -1, -1, -1, 255, 0xFFFF });
+    uint8_t index = 0;
+    for (auto& tile : tiles)
+    {
+        tile.index = index++;
+    }
     return tiles;
 }
 
@@ -231,40 +245,29 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
 std::vector<LargeSceneryTile> LargeSceneryObject::ReadJsonTiles(json_t& jTiles)
 {
     std::vector<LargeSceneryTile> tiles;
-
     for (auto& jTile : jTiles)
     {
         if (jTile.is_object())
         {
             LargeSceneryTile tile = {};
-            tile.x_offset = Json::GetNumber<int16_t>(jTile["x"]);
-            tile.y_offset = Json::GetNumber<int16_t>(jTile["y"]);
-            tile.z_offset = Json::GetNumber<int16_t>(jTile["z"]);
-            tile.z_clearance = Json::GetNumber<int8_t>(jTile["clearance"]);
+            tile.offset.x = Json::GetNumber<int16_t>(jTile["x"]);
+            tile.offset.y = Json::GetNumber<int16_t>(jTile["y"]);
+            tile.offset.z = Json::GetNumber<int16_t>(jTile["z"]);
+            tile.zClearance = Json::GetNumber<int16_t>(jTile["clearance"]);
 
-            // clang-format off
-            tile.flags = Json::GetFlags<uint16_t>(
-                jTile,
-                {
-                    {"hasSupports",         LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS,            Json::FlagType::Inverted},
-                    {"allowSupportsAbove",  LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE,   Json::FlagType::Normal}
-                });
-            // clang-format on
+            tile.hasSupports = Json::GetBoolean(jTile["hasSupports"]);
+            tile.allowSupportsAbove = Json::GetBoolean(jTile["allowSupportsAbove"]);
 
             // All corners are by default occupied
-            uint16_t corners = Json::GetNumber<uint16_t>(jTile["corners"], 0xF);
-            tile.flags |= (corners & 0xFF) << 12;
+            tile.corners = Json::GetNumber<uint16_t>(jTile["corners"], 0xF);
 
-            auto walls = Json::GetNumber<int16_t>(jTile["walls"]);
-            tile.flags |= (walls & 0xFF) << 8;
+            tile.walls = Json::GetNumber<int16_t>(jTile["walls"]);
+
+            tile.index = static_cast<uint8_t>(tiles.size());
 
             tiles.push_back(std::move(tile));
         }
     }
-
-    // HACK Add end of tiles marker
-    //      We should remove this later by improving the code base to use tiles array length
-    tiles.push_back({ -1, -1, -1, 0xFF, 0xFFFF });
 
     return tiles;
 }
@@ -335,12 +338,4 @@ std::vector<LargeSceneryTextGlyph> LargeSceneryObject::ReadJsonGlyphs(json_t& jG
         }
     }
     return glyphs;
-}
-
-const LargeSceneryTile* LargeSceneryObject::GetTileForSequence(uint8_t SequenceIndex) const
-{
-    if (SequenceIndex >= _tiles.size())
-        return nullptr;
-
-    return &_tiles[SequenceIndex];
 }

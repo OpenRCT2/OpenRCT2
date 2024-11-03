@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
@@ -2909,7 +2910,7 @@ static void SideFrictionRCTrackDiag60DegDownTo25DegDown(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 };
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -2994,6 +2995,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRC(int32_t trackType)
             return SideFrictionRCTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagDown60ToDown25:
             return SideFrictionRCTrackDiag60DegDownTo25DegDown;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
@@ -14960,7 +14961,7 @@ static void MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -15167,6 +15168,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(int32_t trackType)
             return MultiDimensionRCTrackDiagBrakes;
         case TrackElemType::DiagBlockBrakes:
             return MultiDimensionRCTrackDiagBlockBrakes;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

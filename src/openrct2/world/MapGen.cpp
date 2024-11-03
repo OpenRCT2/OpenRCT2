@@ -24,12 +24,13 @@
 #include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
 #include "../platform/Platform.h"
-#include "../util/Util.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TileElement.h"
 #include "Map.h"
 #include "MapHelpers.h"
 #include "Scenery.h"
-#include "Surface.h"
 
 #include <cmath>
 #include <cstring>
@@ -334,7 +335,8 @@ static bool MapGenSurfaceTakesSnowTrees(const TerrainSurfaceObject& surface)
     return id == "rct2.terrain_surface.ice";
 }
 
-template<typename T> static bool TryFindTreeInList(std::string_view id, const T& treeList)
+template<typename T>
+static bool TryFindTreeInList(std::string_view id, const T& treeList)
 {
     for (size_t j = 0; j < std::size(treeList); j++)
     {

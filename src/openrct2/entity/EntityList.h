@@ -24,7 +24,8 @@ uint16_t GetMiscEntityCount();
 uint16_t GetNumFreeEntities();
 const std::vector<EntityId>& GetEntityTileList(const CoordsXY& spritePos);
 
-template<typename T> class EntityTileIterator
+template<typename T>
+class EntityTileIterator
 {
 private:
     std::vector<EntityId>::const_iterator iter;
@@ -75,7 +76,8 @@ public:
     using iterator_category = std::forward_iterator_tag;
 };
 
-template<typename T = EntityBase> class EntityTileList
+template<typename T = EntityBase>
+class EntityTileList
 {
 private:
     const std::vector<EntityId>& vec;
@@ -96,7 +98,8 @@ public:
     }
 };
 
-template<typename T> class EntityListIterator
+template<typename T>
+class EntityListIterator
 {
 private:
     std::list<EntityId>::const_iterator iter;
@@ -147,7 +150,8 @@ public:
     using iterator_category = std::forward_iterator_tag;
 };
 
-template<typename T = EntityBase> class EntityList
+template<typename T = EntityBase>
+class EntityList
 {
 private:
     using EntityListIterator_t = EntityListIterator<T>;

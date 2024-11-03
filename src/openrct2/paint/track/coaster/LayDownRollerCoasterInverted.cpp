@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
@@ -8343,7 +8344,7 @@ static void LayDownRCTrackHalfLoopInvertedUp(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRCInverted(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRCInverted(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -8550,6 +8551,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRCInverted(int32_t trackType)
             return LayDownRCTrackRightQuarterBankedHelixLargeDown;
         case TrackElemType::FlyerHalfLoopInvertedUp:
             return LayDownRCTrackHalfLoopInvertedUp;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

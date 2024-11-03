@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../core/Money.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Currency.h"
@@ -215,7 +216,8 @@ static PaintStruct* CreateNormalPaintStruct(
     return ps;
 }
 
-template<uint8_t direction> void PaintSessionGenerateRotate(PaintSession& session)
+template<uint8_t direction>
+void PaintSessionGenerateRotate(PaintSession& session)
 {
     // Optimised modified version of ViewportPosToMapPos
     ScreenCoordsXY screenCoord = { Floor2(session.DPI.WorldX(), 32), Floor2((session.DPI.WorldY() - 16), 32) };
@@ -399,7 +401,8 @@ static std::pair<PaintStruct*, PaintStruct*> PaintStructsGetNextPending(PaintStr
 
 // Re-orders all nodes after the specified child node and marks the child node as traversed. The resulting
 // order of the children is the depth based on rotation and dimensions of the bounding box.
-template<uint8_t TRotation> static void PaintStructsSortQuadrant(PaintStruct* parent, PaintStruct* child)
+template<uint8_t TRotation>
+static void PaintStructsSortQuadrant(PaintStruct* parent, PaintStruct* child)
 {
     // Mark visited.
     child->SortFlags &= ~PaintSortFlags::PendingVisit;
@@ -492,7 +495,8 @@ static void PaintStructsLinkQuadrants(PaintSessionCore& session, PaintStruct& ps
     } while (++quadrantIndex <= session.QuadrantFrontIndex);
 }
 
-template<int TRotation> static void PaintSessionArrangeImpl(PaintSessionCore& session)
+template<int TRotation>
+static void PaintSessionArrangeImpl(PaintSessionCore& session)
 {
     uint32_t quadrantIndex = session.QuadrantBackIndex;
     if (quadrantIndex == UINT32_MAX)

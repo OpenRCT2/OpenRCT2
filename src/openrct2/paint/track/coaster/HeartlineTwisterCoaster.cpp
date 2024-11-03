@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
@@ -1672,7 +1673,7 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1714,6 +1715,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(int32_t trackType)
             return HeartlineTwisterRCTrackLeftHeartlineRoll;
         case TrackElemType::RightHeartLineRoll:
             return HeartlineTwisterRCTrackRightHeartlineRoll;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

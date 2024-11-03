@@ -24,12 +24,17 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
-#include "../world/Wall.h"
 #include "Banner.h"
 #include "Footpath.h"
 #include "Map.h"
 #include "Scenery.h"
 #include "tile_element/EntranceElement.h"
+#include "tile_element/LargeSceneryElement.h"
+#include "tile_element/PathElement.h"
+#include "tile_element/SmallSceneryElement.h"
+#include "tile_element/TileElement.h"
+#include "tile_element/TrackElement.h"
+#include "tile_element/WallElement.h"
 
 using namespace OpenRCT2;
 
@@ -703,6 +708,8 @@ void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el)
                     break;
                 case TrackElemType::SpinningTunnel:
                     MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, loc);
+                    break;
+                default:
                     break;
             }
             break;

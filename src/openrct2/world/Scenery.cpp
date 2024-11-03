@@ -36,7 +36,8 @@
 #include "Footpath.h"
 #include "Map.h"
 #include "Park.h"
-#include "Wall.h"
+#include "tile_element/PathElement.h"
+#include "tile_element/SmallSceneryElement.h"
 
 uint8_t gSceneryQuadrant;
 
@@ -297,11 +298,6 @@ void SceneryRemoveGhostToolPlacement()
             GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         GameActions::Execute(&removeSceneryAction);
     }
-}
-
-int32_t WallEntryGetDoorSound(const WallSceneryEntry* wallEntry)
-{
-    return (wallEntry->flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
 }
 
 bool IsSceneryAvailableToBuild(const ScenerySelection& item)

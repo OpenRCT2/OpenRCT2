@@ -38,6 +38,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/core/UnitConversion.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Currency.h>
@@ -65,6 +66,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
+#include <openrct2/world/tile_element/TrackElement.h>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -2112,7 +2114,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (ObjectEntryIndex i = 0; i < kMaxStationObjects; i++)
             {
-                auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, i));
+                auto stationObj = objManager.GetLoadedObject<StationObject>(i);
                 if (stationObj != nullptr)
                 {
                     auto name = stationObj->NameStringId;
@@ -5054,7 +5056,7 @@ namespace OpenRCT2::Ui::Windows
         static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicObjectIndex));
+            auto musicObj = objManager.GetLoadedObject<MusicObject>(musicObjectIndex);
 
             return LanguageGetString(musicObj->NameStringId);
         }
@@ -5079,7 +5081,7 @@ namespace OpenRCT2::Ui::Windows
             auto& objManager = GetContext()->GetObjectManager();
             for (ObjectEntryIndex i = 0; i < kMaxMusicObjects; i++)
             {
-                auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, i));
+                auto musicObj = objManager.GetLoadedObject<MusicObject>(i);
                 if (musicObj != nullptr)
                 {
                     // Hide custom music if the WAV file does not exist
@@ -5118,7 +5120,7 @@ namespace OpenRCT2::Ui::Windows
             auto numItems = musicOrder.size();
             for (size_t i = 0; i < numItems; i++)
             {
-                auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicOrder[i]));
+                auto musicObj = objManager.GetLoadedObject<MusicObject>(musicOrder[i]);
                 gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItems[i].Args = musicObj->NameStringId;
             }

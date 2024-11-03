@@ -717,7 +717,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                int32_t firstPage = UtilBitScanForward(showPages);
+                int32_t firstPage = Numerics::bitScanForward(showPages);
                 if (firstPage != -1)
                 {
                     selected_tab = firstPage;

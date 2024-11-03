@@ -82,7 +82,8 @@ namespace OpenRCT2::Scripting
         { "banner", ViewportInteractionItem::Banner },
     });
 
-    template<> DukValue ToDuk(duk_context* ctx, const CursorID& cursorId)
+    template<>
+    DukValue ToDuk(duk_context* ctx, const CursorID& cursorId)
     {
         auto value = EnumValue(cursorId);
         if (value < std::size(CursorNames))
@@ -94,7 +95,8 @@ namespace OpenRCT2::Scripting
         return ToDuk(ctx, undefined);
     }
 
-    template<> CursorID FromDuk(const DukValue& s)
+    template<>
+    CursorID FromDuk(const DukValue& s)
     {
         if (s.type() == DukValue::Type::STRING)
         {

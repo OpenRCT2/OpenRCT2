@@ -262,6 +262,7 @@ namespace OpenRCT2::Scripting
                     }
                     w->colours[i] = c;
                 }
+                w->Invalidate();
             }
         }
 

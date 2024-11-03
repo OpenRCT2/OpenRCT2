@@ -11,7 +11,6 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../world/TileElement.h"
 #    include "../../Duktape.hpp"
 
 #    include <cstdint>
@@ -19,7 +18,8 @@
 
 namespace OpenRCT2::Scripting
 {
-    template<> inline DukValue ToDuk(duk_context* ctx, const VehicleInfo& value)
+    template<>
+    inline DukValue ToDuk(duk_context* ctx, const VehicleInfo& value)
     {
         DukObject dukSubposition(ctx);
         dukSubposition.Set("x", value.x);
@@ -34,10 +34,10 @@ namespace OpenRCT2::Scripting
     class ScTrackSegment
     {
     private:
-        track_type_t _type;
+        OpenRCT2::TrackElemType _type;
 
     public:
-        ScTrackSegment(track_type_t type);
+        ScTrackSegment(OpenRCT2::TrackElemType type);
 
         static void Register(duk_context* ctx);
 
@@ -65,7 +65,8 @@ namespace OpenRCT2::Scripting
         int32_t getPriceModifier() const;
         int32_t getPreviewZOffset() const;
         int32_t getTrackGroup() const;
-        template<uint16_t flag> bool getTrackFlag() const;
+        template<uint16_t flag>
+        bool getTrackFlag() const;
         std::string getTrackCurvature() const;
         std::string getTrackPitchDirection() const;
     };

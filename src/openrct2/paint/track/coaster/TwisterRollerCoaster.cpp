@@ -16,6 +16,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
@@ -14581,7 +14582,7 @@ static void TwisterRCTrackFlyerHalfLoopUp(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwisterRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwisterRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -14967,6 +14968,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwisterRC(int32_t trackType)
             return TwisterRCTrackRightFlyerTwistUp;
         case TrackElemType::FlyerHalfLoopUninvertedUp:
             return TwisterRCTrackFlyerHalfLoopUp;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

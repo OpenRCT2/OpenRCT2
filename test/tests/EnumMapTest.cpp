@@ -31,7 +31,8 @@ enum class TestEnumClassNonContinuous
     G
 };
 
-template<typename TEnum> void TestEnumKeyLookup()
+template<typename TEnum>
+void TestEnumKeyLookup()
 {
     // clang-format off
     EnumMap<TEnum> enumMap = {
@@ -78,7 +79,8 @@ template<typename TEnum> void TestEnumKeyLookup()
     SUCCEED();
 }
 
-template<typename TEnum> void TestEnumValueLookup()
+template<typename TEnum>
+void TestEnumValueLookup()
 {
     // clang-format off
     EnumMap<TEnum> enumMap = {

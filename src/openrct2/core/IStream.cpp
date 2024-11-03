@@ -9,30 +9,12 @@
 
 #include "IStream.hpp"
 
-#include "../object/Object.h"
-#include "Memory.hpp"
 #include "String.hpp"
 
 #include <vector>
 
 namespace OpenRCT2
 {
-    utf8* IStream::ReadString()
-    {
-        std::vector<utf8> result;
-
-        uint8_t ch;
-        while ((ch = ReadValue<uint8_t>()) != 0)
-        {
-            result.push_back(ch);
-        }
-        result.push_back(0);
-
-        utf8* resultString = Memory::AllocateArray<utf8>(result.size());
-        std::copy(result.begin(), result.end(), resultString);
-        return resultString;
-    }
-
     std::string IStream::ReadStdString()
     {
         std::string result;

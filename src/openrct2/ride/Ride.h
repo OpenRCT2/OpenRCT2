@@ -40,6 +40,8 @@ struct Staff;
 struct Vehicle;
 struct RideObjectEntry;
 struct ResultWithMessage;
+struct TileElement;
+struct TrackElement;
 
 constexpr uint8_t kRideAdjacencyCheckDistance = 5;
 
@@ -617,6 +619,7 @@ enum
     RIDE_TYPE_ALPINE_COASTER,
     RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER,
     RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER,
+    RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER,
 
     RIDE_TYPE_COUNT
 };

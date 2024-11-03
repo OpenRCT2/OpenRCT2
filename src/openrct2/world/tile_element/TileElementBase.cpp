@@ -7,9 +7,19 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "TileElementBase.h"
+
+#include "../../util/Util.h"
 #include "../Map.h"
-#include "../TileElement.h"
+#include "BannerElement.h"
 #include "EntranceElement.h"
+#include "LargeSceneryElement.h"
+#include "PathElement.h"
+#include "SmallSceneryElement.h"
+#include "SurfaceElement.h"
+#include "TileElement.h"
+#include "TrackElement.h"
+#include "WallElement.h"
 
 TileElementType TileElementBase::GetType() const
 {
@@ -119,13 +129,13 @@ void TileElementBase::SetClearanceZ(int32_t newZ)
 
 uint8_t TileElementBase::GetOwner() const
 {
-    return Owner & OWNER_MASK;
+    return Owner & kTileElementOwnerMask;
 }
 
 void TileElementBase::SetOwner(uint8_t newOwner)
 {
-    Owner &= ~OWNER_MASK;
-    Owner |= (newOwner & OWNER_MASK);
+    Owner &= ~kTileElementOwnerMask;
+    Owner |= (newOwner & kTileElementOwnerMask);
 }
 
 const SurfaceElement* TileElementBase::AsSurface() const

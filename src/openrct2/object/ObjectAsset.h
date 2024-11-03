@@ -48,7 +48,8 @@ public:
     friend bool operator==(const ObjectAsset& l, const ObjectAsset& r);
 };
 
-template<> struct std::hash<ObjectAsset>
+template<>
+struct std::hash<ObjectAsset>
 {
     std::size_t operator()(const ObjectAsset& asset) const noexcept
     {

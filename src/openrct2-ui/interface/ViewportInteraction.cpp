@@ -51,9 +51,14 @@
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/Surface.h>
-#include <openrct2/world/Wall.h>
+#include <openrct2/world/tile_element/BannerElement.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
+#include <openrct2/world/tile_element/LargeSceneryElement.h>
+#include <openrct2/world/tile_element/PathElement.h>
+#include <openrct2/world/tile_element/SmallSceneryElement.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
+#include <openrct2/world/tile_element/TrackElement.h>
+#include <openrct2/world/tile_element/WallElement.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui::Windows;

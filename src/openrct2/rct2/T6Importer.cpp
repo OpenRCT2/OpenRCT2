@@ -154,10 +154,16 @@ namespace OpenRCT2::RCT2
                     _stream.Read(&t6TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
 
-                    track_type_t trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.Type, td->trackAndVehicle.rtdIndex, true);
-                    if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
+                    OpenRCT2::TrackElemType trackType;
+                    if (t6TrackElement.Type == OpenRCT2::RCT12::TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
                     {
                         trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
+                    }
+                    else
+                    {
+                        auto rideType = td->trackAndVehicle.rtdIndex;
+                        const bool isFlatRide = GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isFlatRide);
+                        trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.Type, rideType, isFlatRide);
                     }
 
                     trackElement.type = trackType;
@@ -212,12 +218,9 @@ namespace OpenRCT2::RCT2
                 auto rawObject = ObjectRepositoryLoadObject(&td->trackAndVehicle.vehicleObject.Entry);
                 if (rawObject != nullptr)
                 {
-                    const auto* rideEntry = static_cast<const RideObjectEntry*>(
-                        static_cast<RideObject*>(rawObject.get())->GetLegacyData());
-                    if (rideEntry != nullptr)
-                    {
-                        td->trackAndVehicle.rtdIndex = RCT2RideTypeToOpenRCT2RideType(td->trackAndVehicle.rtdIndex, *rideEntry);
-                    }
+                    const auto& rideEntry = static_cast<RideObject*>(rawObject.get())->GetEntry();
+
+                    td->trackAndVehicle.rtdIndex = RCT2RideTypeToOpenRCT2RideType(td->trackAndVehicle.rtdIndex, rideEntry);
                     rawObject->Unload();
                 }
             }

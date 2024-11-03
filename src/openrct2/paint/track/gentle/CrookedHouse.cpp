@@ -14,6 +14,8 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
+#include "../../../world/tile_element/TileElement.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
@@ -144,7 +146,7 @@ static void PaintCrookedHouse(
     PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

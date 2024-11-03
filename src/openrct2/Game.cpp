@@ -30,6 +30,7 @@
 #include "core/FileScanner.h"
 #include "core/Money.hpp"
 #include "core/Path.hpp"
+#include "core/SawyerCoding.h"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
 #include "entity/Peep.h"
@@ -59,7 +60,6 @@
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
-#include "util/SawyerCoding.h"
 #include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Banner.h"
@@ -70,7 +70,7 @@
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
-#include "world/Surface.h"
+#include "world/tile_element/SurfaceElement.h"
 
 #include <cstdio>
 #include <iterator>
@@ -622,7 +622,11 @@ static void GameLoadOrQuitNoSavePromptCallback(int32_t result, const utf8* path)
 
 static void NewGameWindowCallback(const utf8* path)
 {
-    WindowCloseByClass(WindowClass::EditorObjectSelection);
+    // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
+    // no windows are open (besides the toolbars and LoadSave window).
+    WindowCloseByClass(WindowClass::RideConstruction);
+    WindowCloseAllExceptClass(WindowClass::Loadsave);
+
     GameNotifyMapChange();
     GetContext()->LoadParkFromFile(path, false, true);
     GameLoadScripts();
@@ -685,6 +689,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         default:
             GameUnloadScripts();
+            ResetAllEntities();
             OpenRCT2Finish();
             break;
     }

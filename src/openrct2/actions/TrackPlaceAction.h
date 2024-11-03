@@ -23,7 +23,7 @@ class TrackPlaceAction final : public GameActionBase<GameCommand::PlaceTrack>
 {
 private:
     RideId _rideIndex{ RideId::GetNull() };
-    int32_t _trackType{};
+    OpenRCT2::TrackElemType _trackType{};
     ride_type_t _rideType{};
     CoordsXYZD _origin;
     int32_t _brakeSpeed{};
@@ -35,8 +35,8 @@ private:
 public:
     TrackPlaceAction() = default;
     TrackPlaceAction(
-        RideId rideIndex, int32_t trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
-        int32_t seatRotation, SelectedLiftAndInverted liftHillAndAlternativeState, bool fromTrackDesign);
+        RideId rideIndex, OpenRCT2::TrackElemType trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed,
+        int32_t colour, int32_t seatRotation, SelectedLiftAndInverted liftHillAndAlternativeState, bool fromTrackDesign);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

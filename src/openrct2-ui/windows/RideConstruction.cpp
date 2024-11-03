@@ -47,9 +47,13 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Math.hpp>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
+#include <openrct2/world/tile_element/PathElement.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
+#include <openrct2/world/tile_element/TrackElement.h>
 
 constexpr int8_t kDefaultSpeedIncrement = 2;
 constexpr int8_t kDefaultMinimumSpeed = 2;
@@ -63,12 +67,12 @@ namespace OpenRCT2::Ui::Windows
     static RideConstructionState _rideConstructionState2;
 
     static bool WindowRideConstructionUpdateState(
-        int32_t* trackType, int32_t* trackDirection, RideId* rideIndex, SelectedLiftAndInverted* _liftHillAndAlternativeState,
-        CoordsXYZ* trackPos, int32_t* properties);
+        OpenRCT2::TrackElemType* trackType, int32_t* trackDirection, RideId* rideIndex,
+        SelectedLiftAndInverted* _liftHillAndAlternativeState, CoordsXYZ* trackPos, int32_t* properties);
     money64 PlaceProvisionalTrackPiece(
-        RideId rideIndex, int32_t trackType, int32_t trackDirection, SelectedLiftAndInverted liftHillAndAlternativeState,
-        const CoordsXYZ& trackPos);
-    static std::pair<bool, track_type_t> WindowRideConstructionUpdateStateGetTrackElement();
+        RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
+        SelectedLiftAndInverted liftHillAndAlternativeState, const CoordsXYZ& trackPos);
+    static std::pair<bool, OpenRCT2::TrackElemType> WindowRideConstructionUpdateStateGetTrackElement();
 
     static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
     static constexpr int32_t WH = 394;
@@ -199,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
         STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_450,     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_495,
     };
 
-    static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type);
+    static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, OpenRCT2::TrackElemType type);
     static void WindowRideConstructionUpdateActiveElements();
 
     /* move to ride.c */
@@ -947,6 +951,8 @@ namespace OpenRCT2::Ui::Windows
                     case TrackElemType::Waterfall:
                         WidgetInvalidate(*this, WIDX_CONSTRUCT);
                         break;
+                    default:
+                        break;
                 }
             }
 
@@ -1453,7 +1459,7 @@ namespace OpenRCT2::Ui::Windows
 
             RideConstructionInvalidateCurrentTrack();
             _currentTrackPrice = kMoney64Undefined;
-            track_type_t trackPiece = _specialElementDropdownState.Elements[selectedIndex].TrackType;
+            OpenRCT2::TrackElemType trackPiece = _specialElementDropdownState.Elements[selectedIndex].TrackType;
             switch (trackPiece)
             {
                 case TrackElemType::EndStation:
@@ -1469,6 +1475,8 @@ namespace OpenRCT2::Ui::Windows
                 case TrackElemType::BlockBrakes:
                 case TrackElemType::DiagBlockBrakes:
                     _currentBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+                default:
+                    break;
             }
             _currentlySelectedTrack = trackPiece;
             WindowRideConstructionUpdateActiveElements();
@@ -1603,7 +1611,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             RideId rideIndex;
-            int32_t trackType, trackDirection;
+            OpenRCT2::TrackElemType trackType;
+            int32_t trackDirection;
             SelectedLiftAndInverted liftHillAndInvertedState{};
             if (WindowRideConstructionUpdateState(
                     &trackType, &trackDirection, &rideIndex, &liftHillAndInvertedState, nullptr, nullptr))
@@ -2159,7 +2168,8 @@ namespace OpenRCT2::Ui::Windows
 
         void UpdateMapSelection()
         {
-            int32_t trackType, trackDirection;
+            OpenRCT2::TrackElemType trackType;
+            int32_t trackDirection;
             CoordsXYZ trackPos{};
 
             MapInvalidateMapSelectionTiles();
@@ -2170,7 +2180,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case RideConstructionState::State0:
                     trackDirection = _currentTrackPieceDirection;
-                    trackType = 0;
+                    trackType = TrackElemType::Flat;
                     trackPos = _currentTrackBegin;
                     break;
                 case RideConstructionState::Selected:
@@ -2185,7 +2195,7 @@ namespace OpenRCT2::Ui::Windows
                     if (WindowRideConstructionUpdateState(&trackType, &trackDirection, nullptr, nullptr, &trackPos, nullptr))
                     {
                         trackDirection = _currentTrackPieceDirection;
-                        trackType = 0;
+                        trackType = OpenRCT2::TrackElemType::Flat;
                         trackPos = _currentTrackBegin;
                     }
                     break;
@@ -2198,7 +2208,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void SelectMapTiles(int32_t trackType, int32_t trackDirection, const CoordsXY& tileCoords)
+        void SelectMapTiles(OpenRCT2::TrackElemType trackType, int32_t trackDirection, const CoordsXY& tileCoords)
         {
             // If the scenery tool is active, we do not display our tiles as it
             // will conflict with larger scenery objects selecting tiles
@@ -2223,7 +2233,8 @@ namespace OpenRCT2::Ui::Windows
         void Construct()
         {
             RideId rideIndex;
-            int32_t trackType, trackDirection, properties;
+            OpenRCT2::TrackElemType trackType;
+            int32_t trackDirection, properties;
             SelectedLiftAndInverted liftHillAndAlternativeState{};
             CoordsXYZ trackPos{};
 
@@ -2328,7 +2339,7 @@ namespace OpenRCT2::Ui::Windows
             direction = _currentTrackPieceDirection;
             // The direction is reset by ride_initialise_construction_window(), but we need it to remove flat rides properly.
             Direction currentDirection = _currentTrackPieceDirection;
-            track_type_t type = _currentTrackPieceType;
+            OpenRCT2::TrackElemType type = _currentTrackPieceType;
             auto newCoords = GetTrackElementOriginAndApplyChanges(
                 { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
             if (!newCoords.has_value())
@@ -2509,7 +2520,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t defaultIndex = -1;
             for (size_t i = 0; i < _specialElementDropdownState.Elements.size(); i++)
             {
-                track_type_t trackPiece = _specialElementDropdownState.Elements[i].TrackType;
+                OpenRCT2::TrackElemType trackPiece = _specialElementDropdownState.Elements[i].TrackType;
 
                 const auto& ted = GetTrackElementDescriptor(trackPiece);
                 StringId trackPieceStringId = ted.description;
@@ -2596,7 +2607,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void DrawTrackPiece(
-            DrawPixelInfo& dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection,
+            DrawPixelInfo& dpi, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
             SelectedLiftAndInverted liftHillAndInvertedState, int32_t widgetWidth, int32_t widgetHeight)
         {
             auto currentRide = GetRide(rideIndex);
@@ -2632,7 +2643,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void DrawTrackPieceHelper(
-            DrawPixelInfo& dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection,
+            DrawPixelInfo& dpi, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
             SelectedLiftAndInverted liftHillAndInvertedState, const CoordsXY& originCoords, int32_t originZ)
         {
             TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -3105,7 +3116,8 @@ namespace OpenRCT2::Ui::Windows
     void UpdateGhostTrackAndArrow()
     {
         RideId rideIndex;
-        int32_t direction, type;
+        int32_t direction;
+        OpenRCT2::TrackElemType type;
         SelectedLiftAndInverted liftHillAndAlternativeState{};
         CoordsXYZ trackPos{};
 
@@ -3262,7 +3274,8 @@ namespace OpenRCT2::Ui::Windows
         gMapSelectionTiles.push_back(*mapCoords);
 
         RideId rideIndex;
-        int32_t trackType, trackDirection;
+        OpenRCT2::TrackElemType trackType;
+        int32_t trackDirection;
         SelectedLiftAndInverted liftHillAndAlternativeState{};
         if (WindowRideConstructionUpdateState(
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr))
@@ -3503,7 +3516,8 @@ namespace OpenRCT2::Ui::Windows
         RideConstructionInvalidateCurrentTrack();
 
         CoordsXYZ mapCoords{};
-        int32_t trackType, z, highestZ;
+        OpenRCT2::TrackElemType trackType;
+        int32_t z, highestZ;
 
         if (WindowRideConstructionUpdateState(&trackType, nullptr, nullptr, nullptr, nullptr, nullptr))
             return;
@@ -4581,7 +4595,7 @@ namespace OpenRCT2::Ui::Windows
         w->OnMouseDown(WIDX_DEMOLISH);
     }
 
-    static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, int32_t type)
+    static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, OpenRCT2::TrackElemType type)
     {
         if (_gotoStartPlacementMode)
         {
@@ -4665,8 +4679,8 @@ namespace OpenRCT2::Ui::Windows
      *  rct2: 0x006CA162
      */
     money64 PlaceProvisionalTrackPiece(
-        RideId rideIndex, int32_t trackType, int32_t trackDirection, SelectedLiftAndInverted liftHillAndAlternativeState,
-        const CoordsXYZ& trackPos)
+        RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
+        SelectedLiftAndInverted liftHillAndAlternativeState, const CoordsXYZ& trackPos)
     {
         auto ride = GetRide(rideIndex);
         if (ride == nullptr)
@@ -4737,7 +4751,7 @@ namespace OpenRCT2::Ui::Windows
         return res.Cost;
     }
 
-    static std::pair<bool, track_type_t> WindowRideConstructionUpdateStateGetTrackElement()
+    static std::pair<bool, OpenRCT2::TrackElemType> WindowRideConstructionUpdateStateGetTrackElement()
     {
         auto startSlope = _previousTrackPitchEnd;
         auto endSlope = _currentTrackPitchEnd;
@@ -4755,7 +4769,7 @@ namespace OpenRCT2::Ui::Windows
         auto selectedTrack = _currentlySelectedTrack;
         if (selectedTrack == TrackElemType::None)
         {
-            return std::make_pair(false, 0);
+            return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
         }
 
         bool startsDiagonal = (_currentTrackPieceDirection & (1 << 2)) != 0;
@@ -4774,7 +4788,7 @@ namespace OpenRCT2::Ui::Windows
             if (trackPiece != TrackElemType::None)
                 return std::make_pair(true, trackPiece);
             else
-                return std::make_pair(false, 0);
+                return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
         }
 
         auto asTrackType = selectedTrack.trackType;
@@ -4785,12 +4799,12 @@ namespace OpenRCT2::Ui::Windows
             case TrackElemType::SBendRight:
                 if (startSlope != TrackPitch::None || endSlope != TrackPitch::None)
                 {
-                    return std::make_pair(false, 0);
+                    return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
                 }
 
                 if (startBank != TrackRoll::None || endBank != TrackRoll::None)
                 {
-                    return std::make_pair(false, 0);
+                    return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
                 }
 
                 return std::make_pair(true, asTrackType);
@@ -4799,21 +4813,21 @@ namespace OpenRCT2::Ui::Windows
             case TrackElemType::RightVerticalLoop:
                 if (startBank != TrackRoll::None || endBank != TrackRoll::None)
                 {
-                    return std::make_pair(false, 0);
+                    return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
                 }
 
                 if (_rideConstructionState == RideConstructionState::Back)
                 {
                     if (endSlope != TrackPitch::Down25)
                     {
-                        return std::make_pair(false, 0);
+                        return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
                     }
                 }
                 else
                 {
                     if (startSlope != TrackPitch::Up25)
                     {
-                        return std::make_pair(false, 0);
+                        return std::make_pair(false, OpenRCT2::TrackElemType::Flat);
                     }
                 }
 
@@ -4838,8 +4852,8 @@ namespace OpenRCT2::Ui::Windows
      * @return (CF)
      */
     static bool WindowRideConstructionUpdateState(
-        int32_t* _trackType, int32_t* _trackDirection, RideId* _rideIndex, SelectedLiftAndInverted* _liftHillAndInvertedState,
-        CoordsXYZ* _trackPos, int32_t* _properties)
+        OpenRCT2::TrackElemType* _trackType, int32_t* _trackDirection, RideId* _rideIndex,
+        SelectedLiftAndInverted* _liftHillAndInvertedState, CoordsXYZ* _trackPos, int32_t* _properties)
     {
         RideId rideIndex;
         uint8_t trackDirection;
@@ -4854,7 +4868,7 @@ namespace OpenRCT2::Ui::Windows
             return true;
         }
 
-        track_type_t trackType = std::get<1>(updated_element);
+        OpenRCT2::TrackElemType trackType = std::get<1>(updated_element);
         rideIndex = _currentRideIndex;
         if (_currentTrackHasLiftHill)
         {
@@ -4895,6 +4909,9 @@ namespace OpenRCT2::Ui::Windows
                 case TrackElemType::DiagFlatToDown60:
                 case TrackElemType::DiagDown60ToFlat:
                     return true;
+
+                default:
+                    break;
             }
         }
 
@@ -5001,7 +5018,8 @@ namespace OpenRCT2::Ui::Windows
         if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
         {
             RideId rideIndex;
-            int32_t direction, type;
+            int32_t direction;
+            OpenRCT2::TrackElemType type;
             SelectedLiftAndInverted liftHillAndAlternativeState{};
             CoordsXYZ trackPos;
             if (WindowRideConstructionUpdateState(

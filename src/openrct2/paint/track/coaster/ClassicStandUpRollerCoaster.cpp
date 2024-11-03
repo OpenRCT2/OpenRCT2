@@ -7,9 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../ride/Ride.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
@@ -1386,7 +1388,7 @@ static void classicStandUpRCTrackDiagRightBankTo25DegDown(
     classicStandUpRCTrackDiag25DegUpToLeftBank(session, ride, trackSequence, direction, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemType trackType)
 {
     if (!IsCsgLoaded())
     {
@@ -1469,7 +1471,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(int32_t trackType)
             return classicStandUpRCTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
             return classicStandUpRCTrackDiagRightBank;
+        default:
+            return GetTrackPaintFunctionStandUpRC(trackType);
     }
-
-    return GetTrackPaintFunctionStandUpRC(trackType);
 }

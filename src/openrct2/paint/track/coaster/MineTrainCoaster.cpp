@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
@@ -7326,7 +7327,7 @@ static void MineTrainRCTrack60DegDownToFlatLongBase(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -7528,6 +7529,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(int32_t trackType)
             return MineTrainRCTrackFlatTo60DegDownLongBase;
         case TrackElemType::Down60ToFlatLongBase:
             return MineTrainRCTrack60DegDownToFlatLongBase;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

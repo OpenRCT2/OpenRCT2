@@ -53,6 +53,8 @@ private:
     uint32_t _previewImageId{};
 
 public:
+    static constexpr ObjectType kObjectType = ObjectType::Music;
+
     StringId NameStringId{};
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;

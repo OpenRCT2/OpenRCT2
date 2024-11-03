@@ -21,8 +21,14 @@
 #    include "../../../ride/Track.h"
 #    include "../../../world/Footpath.h"
 #    include "../../../world/Scenery.h"
-#    include "../../../world/Surface.h"
+#    include "../../../world/tile_element/BannerElement.h"
 #    include "../../../world/tile_element/EntranceElement.h"
+#    include "../../../world/tile_element/LargeSceneryElement.h"
+#    include "../../../world/tile_element/PathElement.h"
+#    include "../../../world/tile_element/SmallSceneryElement.h"
+#    include "../../../world/tile_element/SurfaceElement.h"
+#    include "../../../world/tile_element/TrackElement.h"
+#    include "../../../world/tile_element/WallElement.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 
@@ -417,7 +423,7 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsTrack();
         if (el != nullptr)
         {
-            duk_push_int(ctx, el->GetTrackType());
+            duk_push_int(ctx, EnumValue(el->GetTrackType()));
         }
         else
         {
@@ -437,7 +443,7 @@ namespace OpenRCT2::Scripting
             return;
         }
 
-        el->SetTrackType(value);
+        el->SetTrackType(static_cast<TrackElemType>(value));
         Invalidate();
     }
 
@@ -2155,18 +2161,17 @@ namespace OpenRCT2::Scripting
         const auto* const largeEntry = largeScenery->GetEntry();
         const auto direction = largeScenery->GetDirection();
         const auto sequenceIndex = largeScenery->GetSequenceIndex();
-        const auto* tiles = largeEntry->tiles;
-        const auto& tile = tiles[sequenceIndex];
+        const auto& tiles = largeEntry->tiles;
+        const auto& initialTile = tiles[sequenceIndex];
         const auto rotatedFirstTile = CoordsXYZ{
-            CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(direction),
-            tile.z_offset,
+            CoordsXY{ initialTile.offset }.Rotate(direction),
+            initialTile.offset.z,
         };
 
         const auto firstTile = CoordsXYZ{ loc, largeScenery->GetBaseZ() } - rotatedFirstTile;
-        for (int32_t i = 0; tiles[i].x_offset != -1; i++)
+        for (auto& tile : tiles)
         {
-            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tiles[i].x_offset, tiles[i].y_offset }.Rotate(direction),
-                                                       tiles[i].z_offset };
+            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(direction), tile.offset.z };
 
             const auto currentTile = firstTile + rotatedCurrentTile;
 
@@ -2186,7 +2191,7 @@ namespace OpenRCT2::Scripting
                         continue;
                     if (tileElement->AsLargeScenery()->GetEntryIndex() != largeScenery->GetEntryIndex())
                         continue;
-                    if (tileElement->AsLargeScenery()->GetSequenceIndex() != i)
+                    if (tileElement->AsLargeScenery()->GetSequenceIndex() != tile.index)
                         continue;
 
                     return tileElement->AsLargeScenery();

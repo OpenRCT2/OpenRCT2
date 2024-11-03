@@ -19,6 +19,8 @@ private:
     BannerSceneryEntry _legacyType = {};
 
 public:
+    static constexpr ObjectType kObjectType = ObjectType::Banners;
+
     void* GetLegacyData() override
     {
         return &_legacyType;

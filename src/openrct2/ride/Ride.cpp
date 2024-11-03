@@ -63,6 +63,8 @@
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "CableLift.h"
 #include "RideAudio.h"
 #include "RideConstruction.h"
@@ -1479,7 +1481,7 @@ static int32_t RideGetNewBreakdownProblem(const Ride& ride)
     int32_t breakdownProblem;
     while (problemBits != 0)
     {
-        breakdownProblem = UtilBitScanForward(problemBits);
+        breakdownProblem = Numerics::bitScanForward(problemBits);
         problemBits &= ~(1 << breakdownProblem);
         totalProbability += _breakdownProblemProbabilities[breakdownProblem];
     }
@@ -1493,7 +1495,7 @@ static int32_t RideGetNewBreakdownProblem(const Ride& ride)
     problemBits = availableBreakdownProblems;
     do
     {
-        breakdownProblem = UtilBitScanForward(problemBits);
+        breakdownProblem = Numerics::bitScanForward(problemBits);
         problemBits &= ~(1 << breakdownProblem);
         randomProbability -= _breakdownProblemProbabilities[breakdownProblem];
     } while (randomProbability >= 0);
@@ -1979,7 +1981,7 @@ void DefaultMusicUpdate(Ride& ride)
     if (ride.music_tune_id == TUNE_ID_NULL)
     {
         auto& objManager = GetContext()->GetObjectManager();
-        auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride.music));
+        auto musicObj = objManager.GetLoadedObject<MusicObject>(ride.music);
         if (musicObj != nullptr)
         {
             auto numTracks = musicObj->GetTrackCount();
@@ -2994,7 +2996,7 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
  */
 static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement)
 {
-    int32_t trackType = -1;
+    auto trackType = TrackElemType::None;
     auto returnPos = startElement;
     int32_t startX = returnPos.x;
     int32_t startY = returnPos.y;
@@ -3002,7 +3004,7 @@ static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement
     while (TrackBlockGetPrevious(returnPos, &trackBeginEnd))
     {
         // If previous track is back to the starting x, y, then break loop (otherwise possible infinite loop)
-        if (trackType != -1 && startX == trackBeginEnd.begin_x && startY == trackBeginEnd.begin_y)
+        if (trackType != TrackElemType::None && startX == trackBeginEnd.begin_x && startY == trackBeginEnd.begin_y)
             break;
 
         auto trackCoords = CoordsXYZ{ trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
@@ -3113,6 +3115,8 @@ static void RideOpenBlockBrakes(const CoordsXYE& startElement)
             case TrackElemType::Up25ToFlat:
             case TrackElemType::Up60ToFlat:
                 SetBrakeClosedMultiTile(*currentElement.element->AsTrack(), { currentElement.x, currentElement.y }, false);
+                break;
+            default:
                 break;
         }
     } while (TrackBlockGetNext(&currentElement, &currentElement, nullptr, nullptr)
@@ -3587,6 +3591,8 @@ static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
             case TrackElemType::BlockBrakes:
                 *outXYElement = { trackPos, reinterpret_cast<TileElement*>(trackElement) };
                 return;
+            default:
+                break;
         }
     }
 
@@ -4896,10 +4902,18 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
         {},                                                        // TrackGroup::miniGolfHole
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TrackGroup::rotationControlToggle
         { SpriteGroupType::Slopes60, SpritePrecision::Sprites4 },  // TrackGroup::slopeSteepUp
-        {},                                                        // TrackGroup::corkscrewLarge
-        {},                                                        // TrackGroup::halfLoopMedium
-        {},                                                        // TrackGroup::zeroGRoll
-        {},                                                        // TrackGroup::zeroGRollLarge
+        { SpriteGroupType::Corkscrews, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
+          SpritePrecision::Sprites4 }, // TrackGroup::corkscrewLarge
+        { SpriteGroupType::Slopes60, SpritePrecision::Sprites4, SpriteGroupType::Slopes75, SpritePrecision::Sprites4,
+          SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
+          SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 }, // TrackGroup::halfLoopMedium
+        { SpriteGroupType::Slopes25Banked67, SpritePrecision::Sprites4, SpriteGroupType::Slopes25Banked90,
+          SpritePrecision::Sprites4, SpriteGroupType::Slopes25InlineTwists,
+          SpritePrecision::Sprites4 }, // TrackGroup::zeroGRoll
+        { SpriteGroupType::Slopes42Banked22, SpritePrecision::Sprites4, SpriteGroupType::Slopes42Banked45,
+          SpritePrecision::Sprites4, SpriteGroupType::Slopes42Banked67, SpritePrecision::Sprites4,
+          SpriteGroupType::Slopes42Banked90, SpritePrecision::Sprites4, SpriteGroupType::Slopes60Banked22,
+          SpritePrecision::Sprites4 }, // TrackGroup::zeroGRollLarge
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
           SpritePrecision::Sprites4 }, // TrackGroup::flyingLargeHalfLoopUninvertedUp
@@ -4971,7 +4985,7 @@ static std::optional<int32_t> RideGetSmallestStationLength(const Ride& ride)
 static int32_t RideGetTrackLength(const Ride& ride)
 {
     TileElement* tileElement = nullptr;
-    track_type_t trackType;
+    OpenRCT2::TrackElemType trackType;
     CoordsXYZ trackStart;
     bool foundTrack = false;
 
@@ -5537,13 +5551,13 @@ int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType)
 const StationObject* Ride::GetStationObject() const
 {
     auto& objManager = GetContext()->GetObjectManager();
-    return static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, entrance_style));
+    return objManager.GetLoadedObject<StationObject>(entrance_style);
 }
 
 const MusicObject* Ride::GetMusicObject() const
 {
     auto& objManager = GetContext()->GetObjectManager();
-    return static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, music));
+    return objManager.GetLoadedObject<MusicObject>(music);
 }
 
 // Normally, a station has at most one entrance and one exit, which are at the same height

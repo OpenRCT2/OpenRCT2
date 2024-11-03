@@ -37,10 +37,12 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Surface.h>
+#include <openrct2/world/tile_element/PathElement.h>
 #include <openrct2/world/tile_element/Slope.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -713,7 +715,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (ObjectEntryIndex i = 0; i < kMaxPathObjects; i++)
             {
-                auto* pathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, i));
+                auto* pathObj = objManager.GetLoadedObject<FootpathObject>(i);
                 if (pathObj == nullptr)
                 {
                     continue;

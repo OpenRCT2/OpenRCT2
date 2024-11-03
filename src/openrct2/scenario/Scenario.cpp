@@ -24,6 +24,8 @@
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
+#include "../core/SawyerCoding.h"
+#include "../core/UnitConversion.h"
 #include "../entity/Duck.h"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
@@ -39,6 +41,7 @@
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/ScenarioTextObject.h"
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
@@ -46,7 +49,6 @@
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
-#include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -54,6 +56,8 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/tile_element/TileElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
@@ -104,26 +108,14 @@ void ScenarioReset(GameState_t& gameState)
     gameState.HistoricalProfit = gameState.InitialCash - gameState.BankLoan;
     gameState.Cash = gameState.InitialCash;
 
+    auto& objManager = GetContext()->GetObjectManager();
+    if (auto* object = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); object != nullptr)
     {
-        utf8 normalisedName[64];
-        ScenarioSources::NormaliseName(normalisedName, sizeof(normalisedName), gameState.ScenarioName.c_str());
+        auto* textObject = reinterpret_cast<ScenarioTextObject*>(object);
 
-        StringId localisedStringIds[3];
-        if (LanguageGetLocalisedScenarioStrings(normalisedName, localisedStringIds))
-        {
-            if (localisedStringIds[0] != STR_NONE)
-            {
-                gameState.ScenarioName = LanguageGetString(localisedStringIds[0]);
-            }
-            if (localisedStringIds[1] != STR_NONE)
-            {
-                gameState.Park.Name = LanguageGetString(localisedStringIds[1]);
-            }
-            if (localisedStringIds[2] != STR_NONE)
-            {
-                gameState.ScenarioDetails = LanguageGetString(localisedStringIds[2]);
-            }
-        }
+        gameState.ScenarioName = textObject->GetScenarioName();
+        gameState.Park.Name = textObject->GetParkName();
+        gameState.ScenarioDetails = textObject->GetScenarioDetails();
     }
 
     // Set the last saved game path
@@ -152,7 +144,6 @@ void ScenarioReset(GameState_t& gameState)
     MapCountRemainingLandRights();
     Staff::ResetStats();
 
-    auto& objManager = GetContext()->GetObjectManager();
     gameState.LastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
     if (gameState.LastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
     {

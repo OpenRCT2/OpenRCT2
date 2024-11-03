@@ -8,13 +8,15 @@
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../sprites.h"
+#include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"
 
 using namespace OpenRCT2;
 
-template<> bool EntityBase::Is<Litter>() const
+template<>
+bool EntityBase::Is<Litter>() const
 {
     return Type == EntityType::Litter;
 }

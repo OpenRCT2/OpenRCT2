@@ -84,9 +84,8 @@ namespace OpenRCT2::String
     bool IsWhiteSpace(codepoint_t codepoint);
     utf8* Trim(utf8* str);
     const utf8* TrimStart(const utf8* str);
-    utf8* TrimStart(utf8* buffer, size_t bufferSize, const utf8* src);
-    std::string TrimStart(const std::string& s);
-    std::string Trim(const std::string& s);
+    [[nodiscard]] std::string TrimStart(const std::string& s);
+    [[nodiscard]] std::string Trim(const std::string& s);
 
     /**
      * Converts a multi-byte string from one code page to UTF-8.
@@ -98,7 +97,8 @@ namespace OpenRCT2::String
      */
     std::string ToUpper(std::string_view src);
 
-    template<typename T> std::optional<T> Parse(std::string_view input)
+    template<typename T>
+    std::optional<T> Parse(std::string_view input)
     {
         if (input.size() == 0)
             return std::nullopt;
@@ -130,7 +130,8 @@ namespace OpenRCT2::String
     /**
      * Returns string representation of a hexadecimal input, such as SHA256 hash
      */
-    template<typename T> std::string StringFromHex(T input)
+    template<typename T>
+    std::string StringFromHex(T input)
     {
         std::string result;
         result.reserve(input.size() * 2);

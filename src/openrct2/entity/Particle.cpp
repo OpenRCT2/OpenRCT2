@@ -14,6 +14,7 @@
 #include "../profiling/Profiling.h"
 #include "../ride/VehicleColour.h"
 #include "../scenario/Scenario.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "EntityRegistry.h"
 
 #include <iterator>
@@ -23,27 +24,32 @@ static constexpr uint32_t _VehicleCrashParticleSprites[kCrashedVehicleParticleNu
     22577, 22589, 22601, 22613, 22625,
 };
 
-template<> bool EntityBase::Is<SteamParticle>() const
+template<>
+bool EntityBase::Is<SteamParticle>() const
 {
     return Type == EntityType::SteamParticle;
 }
 
-template<> bool EntityBase::Is<ExplosionFlare>() const
+template<>
+bool EntityBase::Is<ExplosionFlare>() const
 {
     return Type == EntityType::ExplosionFlare;
 }
 
-template<> bool EntityBase::Is<ExplosionCloud>() const
+template<>
+bool EntityBase::Is<ExplosionCloud>() const
 {
     return Type == EntityType::ExplosionCloud;
 }
 
-template<> bool EntityBase::Is<VehicleCrashParticle>() const
+template<>
+bool EntityBase::Is<VehicleCrashParticle>() const
 {
     return Type == EntityType::CrashedVehicleParticle;
 }
 
-template<> bool EntityBase::Is<CrashSplashParticle>() const
+template<>
+bool EntityBase::Is<CrashSplashParticle>() const
 {
     return Type == EntityType::CrashSplash;
 }

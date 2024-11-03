@@ -55,8 +55,10 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "PatrolArea.h"
 #include "Staff.h"
 
@@ -123,7 +125,8 @@ const bool gAnimationGroupToSlowWalkMap[] = {
     true,  true,  true,  true,  true,  true,  false, true,  false, true,  true,  true, true,  true,  true,  true,
 };
 
-template<> bool EntityBase::Is<Peep>() const
+template<>
+bool EntityBase::Is<Peep>() const
 {
     return Type == EntityType::Guest || Type == EntityType::Staff;
 }

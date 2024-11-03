@@ -15,6 +15,7 @@
 #include "../PlatformEnvironment.h"
 #include "../core/File.h"
 #include "../core/FileScanner.h"
+#include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"

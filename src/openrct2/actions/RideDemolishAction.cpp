@@ -26,6 +26,7 @@
 #include "../world/Banner.h"
 #include "../world/Park.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/TrackElement.h"
 #include "MazeSetTrackAction.h"
 #include "TrackRemoveAction.h"
 

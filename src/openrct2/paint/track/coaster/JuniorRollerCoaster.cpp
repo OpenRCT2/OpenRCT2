@@ -15,6 +15,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Segment.h"
@@ -1850,7 +1851,8 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_blockbrakes[2][4] = 
     },
 };
 
-template<JuniorRCSubType TSubType> constexpr uint8_t JuniorRCGetSubTypeOffset(const TrackElement& trackElement)
+template<JuniorRCSubType TSubType>
+constexpr uint8_t JuniorRCGetSubTypeOffset(const TrackElement& trackElement)
 {
     return trackElement.HasChain() ? EnumValue(TSubType) : 0;
 }
@@ -5798,7 +5800,8 @@ static void JuniorRCTrackOnRidePhoto(
 }
 
 /* 0x008AAA0C */
-template<JuniorRCSubType TSubType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRCTemplate(int32_t trackType)
+template<JuniorRCSubType TSubType>
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRCTemplate(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -6022,16 +6025,17 @@ template<JuniorRCSubType TSubType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionJun
 
         case TrackElemType::OnRidePhoto:
             return JuniorRCTrackOnRidePhoto;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRC(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::Junior>(trackType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRC(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::WaterCoaster>(trackType);
 }

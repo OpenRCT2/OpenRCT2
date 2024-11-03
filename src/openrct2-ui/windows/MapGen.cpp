@@ -16,17 +16,16 @@
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileSystem.hpp>
+#include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapGen.h>
-#include <openrct2/world/Surface.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -500,11 +499,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAP_SIZE_Y:
                 case WIDX_MAP_SIZE_X:
                     // The practical size is 2 lower than the technical size
-                    value += 2;
+                    auto technicalSize = std::clamp<uint16_t>(value + 2, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
                     if (_resizeDirection == ResizeDirection::Y || _mapWidthAndHeightLinked)
-                        _settings.mapSize.y = value;
+                        _settings.mapSize.y = technicalSize;
                     if (_resizeDirection == ResizeDirection::X || _mapWidthAndHeightLinked)
-                        _settings.mapSize.x = value;
+                        _settings.mapSize.x = technicalSize;
                     break;
             }
 

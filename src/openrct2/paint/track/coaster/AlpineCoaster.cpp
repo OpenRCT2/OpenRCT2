@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Segment.h"
@@ -7176,7 +7177,7 @@ namespace OpenRCT2::AlpineRC
         }
     }
 
-    TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType)
+    TRACK_PAINT_FUNCTION GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
     {
         switch (trackType)
         {
@@ -7346,8 +7347,9 @@ namespace OpenRCT2::AlpineRC
                 return TrackLeftQuarterTurn3Tile25DegDownToLeftBank;
             case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
                 return TrackRightQuarterTurn3Tile25DegDownToRightBank;
+            default:
+                return nullptr;
         }
-        return nullptr;
     }
 
 } // namespace OpenRCT2::AlpineRC

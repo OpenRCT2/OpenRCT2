@@ -7,9 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../ride/Ride.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../track/Segment.h"
 
 #include <cstdint>
@@ -9097,7 +9099,7 @@ static void FlyingRCTrackFlyerHalfLoopDown(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRCInverted(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRCInverted(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -9377,7 +9379,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRCInverted(int32_t trackType)
             return InvertedFlyingRCTrackDiagBrakes;
         case TrackElemType::DiagBlockBrakes:
             return InvertedFlyingRCTrackDiagBlockBrakes;
-    }
 
-    return GetTrackPaintFunctionFlyingRC(trackType);
+        default:
+            return GetTrackPaintFunctionFlyingRC(trackType);
+    }
 }

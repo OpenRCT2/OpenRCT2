@@ -14,7 +14,8 @@
 #include <cstdio>
 #include <vector>
 
-template<typename Handle, typename V> class GroupVector
+template<typename Handle, typename V>
+class GroupVector
 {
     std::vector<std::vector<V>> _data;
 

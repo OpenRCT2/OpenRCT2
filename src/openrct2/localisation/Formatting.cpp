@@ -13,9 +13,9 @@
 #include "../Diagnostic.h"
 #include "../config/Config.h"
 #include "../core/String.hpp"
+#include "../core/UnitConversion.h"
 #include "../object/ObjectManager.h"
 #include "../object/PeepNamesObject.h"
-#include "../util/Util.h"
 #include "Currency.h"
 #include "FormatCodes.h"
 #include "Formatter.h"
@@ -292,7 +292,7 @@ namespace OpenRCT2
         if (IsRealNameStringId(id))
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto* peepNamesObj = static_cast<PeepNamesObject*>(objManager.GetLoadedObject(ObjectType::PeepNames, 0));
+            auto* peepNamesObj = objManager.GetLoadedObject<PeepNamesObject>(0);
             if (peepNamesObj != nullptr)
             {
                 auto realNameIndex = id - kRealNameStart;
@@ -317,7 +317,8 @@ namespace OpenRCT2
         }
     }
 
-    template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatNumber(FormatBuffer& ss, T value)
+    template<size_t TDecimalPlace, bool TDigitSep, typename T>
+    void FormatNumber(FormatBuffer& ss, T value)
     {
         char buffer[32];
         size_t i = 0;
@@ -395,7 +396,8 @@ namespace OpenRCT2
         }
     }
 
-    template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatCurrency(FormatBuffer& ss, T rawValue)
+    template<size_t TDecimalPlace, bool TDigitSep, typename T>
+    void FormatCurrency(FormatBuffer& ss, T rawValue)
     {
         auto currencyDesc = &CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
         auto value = static_cast<int64_t>(rawValue) * currencyDesc->rate;
@@ -450,7 +452,8 @@ namespace OpenRCT2
         }
     }
 
-    template<typename T> static void FormatMinutesSeconds(FormatBuffer& ss, T value)
+    template<typename T>
+    static void FormatMinutesSeconds(FormatBuffer& ss, T value)
     {
         static constexpr StringId Formats[][2] = {
             { STR_DURATION_SEC, STR_DURATION_SECS },
@@ -472,7 +475,8 @@ namespace OpenRCT2
         }
     }
 
-    template<typename T> static void FormatHoursMinutes(FormatBuffer& ss, T value)
+    template<typename T>
+    static void FormatHoursMinutes(FormatBuffer& ss, T value)
     {
         static constexpr StringId Formats[][2] = {
             { STR_REALTIME_MIN, STR_REALTIME_MINS },
@@ -494,7 +498,8 @@ namespace OpenRCT2
         }
     }
 
-    template<typename T> void FormatArgument(FormatBuffer& ss, FormatToken token, T arg)
+    template<typename T>
+    void FormatArgument(FormatBuffer& ss, FormatToken token, T arg)
     {
         switch (token)
         {
@@ -777,7 +782,8 @@ namespace OpenRCT2
         return CopyStringStreamToBuffer(buffer, bufferLen, ss);
     }
 
-    template<typename T> static T ReadFromArgs(const void*& args)
+    template<typename T>
+    static T ReadFromArgs(const void*& args)
     {
         T value;
         std::memcpy(&value, args, sizeof(T));

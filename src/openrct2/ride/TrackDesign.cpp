@@ -34,7 +34,9 @@
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
 #include "../core/Numerics.hpp"
+#include "../core/SawyerCoding.h"
 #include "../core/String.hpp"
+#include "../core/UnitConversion.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"
@@ -51,15 +53,15 @@
 #include "../object/StationObject.h"
 #include "../rct2/RCT2.h"
 #include "../ride/RideConstruction.h"
-#include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
-#include "../world/Wall.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"
@@ -759,23 +761,23 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
             {
                 auto* sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-                for (LargeSceneryTile* tile = sceneryEntry->tiles; tile->x_offset != -1; tile++)
+                for (auto& tile : sceneryEntry->tiles)
                 {
-                    if (x1 > tile->x_offset)
+                    if (x1 > tile.offset.x)
                     {
-                        x1 = tile->x_offset;
+                        x1 = tile.offset.x;
                     }
-                    if (x2 < tile->x_offset)
+                    if (x2 < tile.offset.x)
                     {
-                        x2 = tile->x_offset;
+                        x2 = tile.offset.x;
                     }
-                    if (y1 > tile->y_offset)
+                    if (y1 > tile.offset.y)
                     {
-                        y1 = tile->y_offset;
+                        y1 = tile.offset.y;
                     }
-                    if (y2 < tile->y_offset)
+                    if (y2 < tile.offset.y)
                     {
-                        y2 = tile->y_offset;
+                        y2 = tile.offset.y;
                     }
                 }
 
@@ -887,7 +889,8 @@ static void TrackDesignMirrorMaze(TrackDesign& td)
 
         uint32_t mazeEntry = maze.mazeEntry;
         uint16_t newEntry = 0;
-        for (uint8_t position = UtilBitScanForward(mazeEntry); position != 0xFF; position = UtilBitScanForward(mazeEntry))
+        for (uint8_t position = Numerics::bitScanForward(mazeEntry); position != 0xFF;
+             position = Numerics::bitScanForward(mazeEntry))
         {
             mazeEntry &= ~(1 << position);
             newEntry |= (1 << maze_segment_mirror_map[position]);

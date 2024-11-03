@@ -198,7 +198,8 @@ struct Focus
     ZoomLevel zoom{};
     std::variant<CoordinateFocus, EntityFocus> data;
 
-    template<typename T> constexpr explicit Focus(T newValue, ZoomLevel newZoom = {})
+    template<typename T>
+    constexpr explicit Focus(T newValue, ZoomLevel newZoom = {})
     {
         data = newValue;
         zoom = newZoom;

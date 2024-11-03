@@ -18,6 +18,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideTypes.h>
 #include <openrct2/ride/TrackData.h>
+#include <openrct2/world/tile_element/TrackElement.h>
 
 using namespace OpenRCT2::TrackMetaData;
 
@@ -59,7 +60,7 @@ namespace OpenRCT2
             && state != RideConstructionState::Back)
             return list;
 
-        for (track_type_t trackType : DropdownOrder)
+        for (OpenRCT2::TrackElemType trackType : DropdownOrder)
         {
             const auto& ted = GetTrackElementDescriptor(trackType);
             if (!IsTrackEnabled(ted.definition.group))

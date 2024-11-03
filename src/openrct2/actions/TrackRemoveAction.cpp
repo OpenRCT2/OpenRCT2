@@ -16,15 +16,16 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
-#include "../util/Util.h"
+#include "../world/Footpath.h"
 #include "../world/MapAnimation.h"
-#include "../world/Surface.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "RideSetSettingAction.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
-TrackRemoveAction::TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin)
+TrackRemoveAction::TrackRemoveAction(OpenRCT2::TrackElemType trackType, int32_t sequence, const CoordsXYZD& origin)
     : _trackType(trackType)
     , _sequence(sequence)
     , _origin(origin)
@@ -44,16 +45,16 @@ uint16_t TrackRemoveAction::GetActionFlags() const
     return GameAction::GetActionFlags();
 }
 
-static int32_t normaliseTrackType(int32_t trackType)
+static OpenRCT2::TrackElemType normaliseTrackType(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
             return TrackElemType::EndStation;
+        default:
+            return trackType;
     }
-
-    return trackType;
 }
 
 void TrackRemoveAction::Serialise(DataSerialiser& stream)
@@ -478,6 +479,8 @@ GameActions::Result TrackRemoveAction::Execute() const
                 }
 
                 break;
+            default:
+                break;
         }
 
         switch (trackType)
@@ -491,6 +494,8 @@ GameActions::Result TrackRemoveAction::Execute() const
                 [[fallthrough]];
             case TrackElemType::CableLiftHill:
                 ride->num_block_brakes--;
+                break;
+            default:
                 break;
         }
     }

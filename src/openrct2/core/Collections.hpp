@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "Memory.hpp"
 #include "String.hpp"
 
 #include <initializer_list>
@@ -50,7 +49,8 @@ namespace OpenRCT2::Collections
         return SIZE_MAX;
     }
 
-    template<typename TCollection, typename TPred> static size_t IndexOf(const TCollection& collection, TPred predicate)
+    template<typename TCollection, typename TPred>
+    static size_t IndexOf(const TCollection& collection, TPred predicate)
     {
         size_t index = 0;
         for (const auto& item : collection)
@@ -66,34 +66,18 @@ namespace OpenRCT2::Collections
 
 #pragma region String helpers
 
-    template<typename TCollection> static bool Contains(TCollection& collection, const char* item, bool ignoreCase = false)
+    template<typename TCollection>
+    static bool Contains(TCollection& collection, const char* item, bool ignoreCase = false)
     {
         return Contains(
             collection, item, [ignoreCase](const char* a, const char* b) { return String::Equals(a, b, ignoreCase); });
     }
 
-    template<typename TCollection> static size_t IndexOf(TCollection& collection, const char* item, bool ignoreCase = false)
+    template<typename TCollection>
+    static size_t IndexOf(TCollection& collection, const char* item, bool ignoreCase = false)
     {
         return IndexOf(
             collection, item, [ignoreCase](const char* a, const char* b) { return String::Equals(a, b, ignoreCase); });
-    }
-
-    template<typename TCollection> static typename TCollection::value_type* ToArray(const TCollection& collection)
-    {
-        size_t count = collection.size();
-        if (count == 0)
-        {
-            return nullptr;
-        }
-
-        auto* items = Memory::AllocateArray<typename TCollection::value_type>(count);
-        size_t i = 0;
-        for (const auto& item : collection)
-        {
-            items[i] = item;
-            i++;
-        }
-        return items;
     }
 
 #pragma endregion

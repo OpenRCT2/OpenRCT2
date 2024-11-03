@@ -54,12 +54,16 @@
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
-#include "Surface.h"
 #include "TileElementsView.h"
 #include "TileInspector.h"
-#include "Wall.h"
+#include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"
+#include "tile_element/LargeSceneryElement.h"
+#include "tile_element/PathElement.h"
 #include "tile_element/Slope.h"
+#include "tile_element/SmallSceneryElement.h"
+#include "tile_element/SurfaceElement.h"
+#include "tile_element/TrackElement.h"
 
 #include <iterator>
 #include <memory>
@@ -1036,7 +1040,7 @@ void TileElementRemove(TileElement* tileElement)
 
     // Mark the latest element with the last element flag.
     (tileElement - 1)->SetLastForTile(true);
-    tileElement->BaseHeight = MAX_ELEMENT_HEIGHT;
+    tileElement->BaseHeight = kMaxTileElementHeight;
     _tileElementsInUse--;
     auto& gameState = GetGameState();
     if (tileElement == &gameState.TileElements.back())
@@ -1204,7 +1208,7 @@ TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, 
         {
             // Copy over map element
             *newTileElement = *originalTileElement;
-            originalTileElement->BaseHeight = MAX_ELEMENT_HEIGHT;
+            originalTileElement->BaseHeight = kMaxTileElementHeight;
             originalTileElement++;
             newTileElement++;
 
@@ -1239,7 +1243,7 @@ TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, 
         {
             // Copy over map element
             *newTileElement = *originalTileElement;
-            originalTileElement->BaseHeight = MAX_ELEMENT_HEIGHT;
+            originalTileElement->BaseHeight = kMaxTileElementHeight;
             originalTileElement++;
             newTileElement++;
         } while (!((newTileElement - 1)->IsLastForTile()));
@@ -1674,20 +1678,18 @@ SmallSceneryElement* MapGetSmallSceneryElementAt(const CoordsXYZ& sceneryCoords,
 std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
     const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement)
 {
-    LargeSceneryTile* tile;
-
     auto tileElement = MapGetLargeScenerySegment(sceneryPos, sequence);
     if (tileElement == nullptr)
         return std::nullopt;
 
     auto* sceneryEntry = tileElement->GetEntry();
-    tile = &sceneryEntry->tiles[sequence];
+    auto& tile = sceneryEntry->tiles[sequence];
 
-    CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+    CoordsXY offsetPos{ tile.offset };
     auto rotatedOffsetPos = offsetPos.Rotate(sceneryPos.direction);
 
     auto origin = CoordsXYZ{ sceneryPos.x - rotatedOffsetPos.x, sceneryPos.y - rotatedOffsetPos.y,
-                             sceneryPos.z - tile->z_offset };
+                             sceneryPos.z - tile.offset.z };
     if (outElement != nullptr)
         *outElement = tileElement;
     return origin;
@@ -1700,7 +1702,6 @@ std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
 bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
     LargeSceneryElement* tileElement;
-    LargeSceneryTile *sceneryTiles, *tile;
 
     auto sceneryOrigin = MapLargeSceneryGetOrigin(signPos, sequence, &tileElement);
     if (!sceneryOrigin)
@@ -1709,18 +1710,16 @@ bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, u
     }
 
     auto* sceneryEntry = tileElement->GetEntry();
-    sceneryTiles = sceneryEntry->tiles;
 
     // Iterate through each tile of the large scenery element
-    sequence = 0;
-    for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+    for (auto& tile : sceneryEntry->tiles)
     {
-        CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+        CoordsXY offsetPos{ tile.offset };
         auto rotatedOffsetPos = offsetPos.Rotate(signPos.direction);
 
         auto tmpSignPos = CoordsXYZD{ sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                                      sceneryOrigin->z + tile->z_offset, signPos.direction };
-        tileElement = MapGetLargeScenerySegment(tmpSignPos, sequence);
+                                      sceneryOrigin->z + tile.offset.z, signPos.direction };
+        tileElement = MapGetLargeScenerySegment(tmpSignPos, tile.index);
         if (tileElement != nullptr)
         {
             tileElement->SetPrimaryColour(mainColour);
@@ -1908,7 +1907,7 @@ TrackElement* MapGetTrackElementAt(const CoordsXYZ& trackPos)
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, track_type_t trackType)
+TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
@@ -1935,7 +1934,7 @@ TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, track_type_t 
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, track_type_t trackType, int32_t sequence)
+TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, int32_t sequence)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     auto trackTilePos = TileCoordsXYZ{ trackPos };
@@ -1958,7 +1957,7 @@ TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, track_type
     return nullptr;
 }
 
-TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, track_type_t trackType)
+TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType)
 {
     auto tileElement = MapGetFirstElementAt(location);
     if (tileElement != nullptr)
@@ -1981,7 +1980,7 @@ TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, track_type_
     return nullptr;
 }
 
-TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, track_type_t trackType, int32_t sequence)
+TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, int32_t sequence)
 {
     auto tileElement = MapGetFirstElementAt(location);
     if (tileElement != nullptr)
@@ -2012,7 +2011,7 @@ TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, track_ty
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, track_type_t trackType, RideId rideIndex)
+TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, RideId rideIndex)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)

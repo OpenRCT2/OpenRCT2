@@ -54,7 +54,8 @@ struct GameStateSnapshot_t
     OpenRCT2::MemoryStream storedSprites;
     OpenRCT2::MemoryStream parkParameters;
 
-    template<typename T> bool EntitySizeCheck(DataSerialiser& ds)
+    template<typename T>
+    bool EntitySizeCheck(DataSerialiser& ds)
     {
         uint32_t size = sizeof(T);
         ds << size;
@@ -64,7 +65,8 @@ struct GameStateSnapshot_t
         }
         return true;
     }
-    template<typename... T> bool EntitiesSizeCheck(DataSerialiser& ds)
+    template<typename... T>
+    bool EntitiesSizeCheck(DataSerialiser& ds)
     {
         return (EntitySizeCheck<T>(ds) && ...);
     }

@@ -33,9 +33,10 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/Surface.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/Slope.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
+#include <openrct2/world/tile_element/TrackElement.h>
 #include <vector>
 
 namespace OpenRCT2::Ui::Windows

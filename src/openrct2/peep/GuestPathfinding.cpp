@@ -19,10 +19,13 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
-#include "../util/Util.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
+#include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/TileElement.h"
+#include "../world/tile_element/TrackElement.h"
 
 #include <bit>
 #include <bitset>
@@ -598,7 +601,7 @@ namespace OpenRCT2::PathFinding
 
         uint32_t edges = path->GetEdges();
 
-        int32_t testEdge = UtilBitScanForward(edges);
+        int32_t testEdge = Numerics::bitScanForward(edges);
         if (testEdge == -1)
             return false;
 
@@ -623,7 +626,7 @@ namespace OpenRCT2::PathFinding
                 break;
             }
             edges &= ~(1 << testEdge);
-        } while ((testEdge = UtilBitScanForward(edges)) != -1);
+        } while ((testEdge = Numerics::bitScanForward(edges)) != -1);
         return isThinJunction;
     }
 
@@ -1004,7 +1007,7 @@ namespace OpenRCT2::PathFinding
             /* Remove the reverse edge (i.e. the edge back to the previous map element.) */
             edges &= ~(1 << DirectionReverse(testEdge));
 
-            int32_t nextTestEdge = UtilBitScanForward(edges);
+            int32_t nextTestEdge = Numerics::bitScanForward(edges);
 
             /* If there are no other edges the current search ends here.
              * Continue to the next map element without updating the parameters (best result so far). */
@@ -1201,7 +1204,7 @@ namespace OpenRCT2::PathFinding
                 LogPathfinding(
                     &peep, "Returned to %d,%d,%d; Steps: %u; edge: %d; Score: %d", loc.x >> 5, loc.y >> 5, loc.z, numSteps,
                     nextTestEdge, *endScore);
-            } while ((nextTestEdge = UtilBitScanForward(edges)) != -1);
+            } while ((nextTestEdge = Numerics::bitScanForward(edges)) != -1);
 
         } while (!(tileElement++)->IsLastForTile());
 
@@ -1373,7 +1376,7 @@ namespace OpenRCT2::PathFinding
         if (edges == 0)
             return INVALID_DIRECTION;
 
-        int32_t chosenEdge = UtilBitScanForward(edges);
+        int32_t chosenEdge = Numerics::bitScanForward(edges);
 
         // Peep has multiple edges still to try.
         if (edges & ~(1 << chosenEdge))
@@ -1394,7 +1397,7 @@ namespace OpenRCT2::PathFinding
              * or for different edges with equal value, the edge with the
              * least steps (best_sub). */
             int32_t numEdges = std::popcount(edges);
-            for (int32_t testEdge = chosenEdge; testEdge != -1; testEdge = UtilBitScanForward(edges))
+            for (int32_t testEdge = chosenEdge; testEdge != -1; testEdge = Numerics::bitScanForward(edges))
             {
                 edges &= ~(1 << testEdge);
                 uint8_t height = loc.z;
@@ -1821,7 +1824,7 @@ namespace OpenRCT2::PathFinding
             break;
         }
 
-        if (loc.z == MAX_ELEMENT_HEIGHT)
+        if (loc.z == kMaxTileElementHeight)
             return;
 
         tileElement = lastPathElement;
@@ -1941,7 +1944,7 @@ namespace OpenRCT2::PathFinding
             edges &= ~(1 << direction);
         }
 
-        direction = UtilBitScanForward(edges);
+        direction = Numerics::bitScanForward(edges);
         // IF only one edge to choose from
         if ((edges & ~(1 << direction)) == 0)
         {

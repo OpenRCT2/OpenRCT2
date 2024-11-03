@@ -12,7 +12,6 @@
 #include "../core/JsonFwd.hpp"
 #include "../core/StringTypes.h"
 #include "../drawing/ImageIndexType.h"
-#include "../util/Util.h"
 #include "ImageTable.h"
 #include "ObjectAsset.h"
 #include "ObjectTypes.h"

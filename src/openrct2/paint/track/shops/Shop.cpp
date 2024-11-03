@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
@@ -65,13 +66,14 @@ static void PaintShop(
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionShop(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionShop(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
         case TrackElemType::FlatTrack1x1A:
         case TrackElemType::FlatTrack1x1B:
             return PaintShop;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

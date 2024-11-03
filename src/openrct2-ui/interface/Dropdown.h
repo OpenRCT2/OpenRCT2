@@ -119,7 +119,8 @@ namespace OpenRCT2::Dropdown
         return ItemExt(-1, Dropdown::SeparatorString, STR_EMPTY);
     }
 
-    template<int N> void SetItems(const Dropdown::ItemExt (&items)[N])
+    template<int N>
+    void SetItems(const Dropdown::ItemExt (&items)[N])
     {
         for (int i = 0; i < N; ++i)
         {
@@ -129,7 +130,8 @@ namespace OpenRCT2::Dropdown
         }
     }
 
-    template<int N> constexpr bool ItemIDsMatchIndices(const Dropdown::ItemExt (&items)[N])
+    template<int N>
+    constexpr bool ItemIDsMatchIndices(const Dropdown::ItemExt (&items)[N])
     {
         for (int i = 0; i < N; ++i)
         {

@@ -15,6 +15,7 @@
 #include "../management/Finance.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../world/Scenery.h"
+#include "../world/tile_element/LargeSceneryElement.h"
 
 using namespace OpenRCT2;
 
@@ -115,18 +116,15 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
         return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
     // Work out the base tile coordinates (Tile with index 0)
-    auto rotatedBaseCoordsOffset = CoordsXYZ{
-        CoordsXY{ sceneryEntry->tiles[_tileIndex].x_offset, sceneryEntry->tiles[_tileIndex].y_offset }.Rotate(_loc.direction),
-        sceneryEntry->tiles[_tileIndex].z_offset
-    };
+    auto rotatedBaseCoordsOffset = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.Rotate(_loc.direction),
+                                              sceneryEntry->tiles[_tileIndex].offset.z };
 
     auto baseTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedBaseCoordsOffset;
 
-    auto i = 0;
-    for (auto tile = sceneryEntry->tiles; tile->x_offset != -1; ++tile, ++i)
+    for (auto& tile : sceneryEntry->tiles)
     {
         // Work out the current tile coordinates
-        auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction), tile->z_offset };
+        auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(_loc.direction), tile.offset.z };
         auto currentTile = CoordsXYZ{ baseTile.x, baseTile.y, baseTile.z } + rotatedTileCoords;
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
@@ -142,7 +140,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
-        auto tileElement = MapGetLargeScenerySegment({ currentTile.x, currentTile.y, _loc.z, _loc.direction }, i);
+        auto tileElement = MapGetLargeScenerySegment({ currentTile.x, currentTile.y, _loc.z, _loc.direction }, tile.index);
 
         if (tileElement == nullptr)
         {

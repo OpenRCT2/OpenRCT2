@@ -17,7 +17,6 @@
 #    include "../../../ride/Track.h"
 #    include "../../../world/Footpath.h"
 #    include "../../../world/Scenery.h"
-#    include "../../../world/Surface.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 

@@ -16,7 +16,7 @@
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
-#include "../world/Surface.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "EntityRegistry.h"
 
 #include <iterator>
@@ -71,7 +71,8 @@ static constexpr const uint8_t * kDuckAnimations[] =
 };
 // clang-format on
 
-template<> bool EntityBase::Is<Duck>() const
+template<>
+bool EntityBase::Is<Duck>() const
 {
     return Type == EntityType::Duck;
 }

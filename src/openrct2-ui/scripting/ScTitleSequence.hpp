@@ -61,12 +61,14 @@ namespace OpenRCT2::Scripting
         { OpenRCT2::Title::EndCommand::ScriptingName, TitleScript::End },
     });
 
-    template<> DukValue ToDuk(duk_context* ctx, const TitleScript& value)
+    template<>
+    DukValue ToDuk(duk_context* ctx, const TitleScript& value)
     {
         return ToDuk(ctx, TitleScriptMap[value]);
     }
 
-    template<> DukValue ToDuk(duk_context* ctx, const OpenRCT2::Title::TitleCommand& value)
+    template<>
+    DukValue ToDuk(duk_context* ctx, const OpenRCT2::Title::TitleCommand& value)
     {
         using namespace OpenRCT2::Title;
         DukObject obj(ctx);
@@ -115,14 +117,16 @@ namespace OpenRCT2::Scripting
         return obj.Take();
     }
 
-    template<> TitleScript FromDuk(const DukValue& value)
+    template<>
+    TitleScript FromDuk(const DukValue& value)
     {
         if (value.type() == DukValue::Type::STRING)
             return TitleScriptMap[value.as_string()];
         throw DukException() << "Invalid title command id";
     }
 
-    template<> OpenRCT2::Title::TitleCommand FromDuk(const DukValue& value)
+    template<>
+    OpenRCT2::Title::TitleCommand FromDuk(const DukValue& value)
     {
         using namespace OpenRCT2::Title;
         auto type = FromDuk<TitleScript>(value["type"]);

@@ -26,9 +26,11 @@
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
-#include "../world/Surface.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TileElementType.h"
+#include "../world/tile_element/TrackElement.h"
 
 #ifdef DISABLE_NETWORK
 #    include <picosha2.hpp>
@@ -207,7 +209,7 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
     }
 }
 
-static track_type_t toTrackType(const u8string_view trackTypeString)
+static OpenRCT2::TrackElemType toTrackType(const u8string_view trackTypeString)
 {
     if (trackTypeString == "flat")
         return OpenRCT2::TrackElemType::Flat;

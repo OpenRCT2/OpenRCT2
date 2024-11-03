@@ -39,10 +39,16 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/Surface.h>
 #include <openrct2/world/TileInspector.h>
+#include <openrct2/world/tile_element/BannerElement.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
+#include <openrct2/world/tile_element/LargeSceneryElement.h>
+#include <openrct2/world/tile_element/PathElement.h>
 #include <openrct2/world/tile_element/Slope.h>
+#include <openrct2/world/tile_element/SmallSceneryElement.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
+#include <openrct2/world/tile_element/TrackElement.h>
+#include <openrct2/world/tile_element/WallElement.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -1247,12 +1253,12 @@ static uint64_t PageDisabledWidgets[] = {
 
                         // Track
                         ft = Formatter();
-                        ft.Add<track_type_t>(trackElement->GetTrackType());
+                        ft.Add<uint16_t>(trackElement->GetTrackType());
                         DrawTextBasic(
                             dpi, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_TRACK_PIECE_ID, ft, { colours[1] });
 
                         ft = Formatter();
-                        ft.Add<track_type_t>(trackElement->GetSequenceIndex());
+                        ft.Add<uint16_t>(trackElement->GetSequenceIndex());
                         DrawTextBasic(
                             dpi, screenCoords + ScreenCoordsXY{ 0, 44 }, STR_TILE_INSPECTOR_TRACK_SEQUENCE, ft, { colours[1] });
                         if (trackElement->IsStation())

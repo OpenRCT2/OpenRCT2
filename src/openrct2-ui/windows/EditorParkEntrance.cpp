@@ -17,9 +17,11 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/object/EntranceObject.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/sprites.h>
+#include <openrct2/world/tile_element/EntranceElement.h>
+#include <openrct2/world/tile_element/PathElement.h>
 #include <openrct2/world/tile_element/Slope.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -77,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
             for (ObjectEntryIndex objectIndex = 0; objectIndex < kMaxParkEntranceObjects; objectIndex++)
             {
                 auto& objManager = GetContext()->GetObjectManager();
-                auto* object = static_cast<EntranceObject*>(objManager.GetLoadedObject(ObjectType::ParkEntrance, objectIndex));
+                auto* object = objManager.GetLoadedObject<EntranceObject>(objectIndex);
                 if (object != nullptr)
                 {
                     const auto* legacyData = reinterpret_cast<const EntranceEntry*>(object->GetLegacyData());

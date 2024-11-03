@@ -87,7 +87,8 @@ public:
         Visit("y2", param.Point2.y);
     }
 
-    template<typename T> void Visit(std::string_view name, T& param)
+    template<typename T>
+    void Visit(std::string_view name, T& param)
     {
         static_assert(std::is_arithmetic_v<T> || std::is_enum_v<T>, "Not an arithmetic type");
         auto value = static_cast<int32_t>(param);
@@ -95,14 +96,16 @@ public:
         param = static_cast<T>(value);
     }
 
-    template<typename T, T TNull, typename TTag> void Visit(std::string_view name, TIdentifier<T, TNull, TTag>& param)
+    template<typename T, T TNull, typename TTag>
+    void Visit(std::string_view name, TIdentifier<T, TNull, TTag>& param)
     {
         auto value = param.ToUnderlying();
         Visit(name, value);
         param = TIdentifier<T, TNull, TTag>::FromUnderlying(value);
     }
 
-    template<typename T, size_t _TypeID> void Visit(std::string_view name, NetworkObjectId<T, _TypeID>& param)
+    template<typename T, size_t _TypeID>
+    void Visit(std::string_view name, NetworkObjectId<T, _TypeID>& param)
     {
         Visit(name, param.id);
     }
@@ -247,11 +250,13 @@ public:
 #    pragma GCC diagnostic pop
 #endif
 
-template<GameCommand TId> struct GameActionNameQuery
+template<GameCommand TId>
+struct GameActionNameQuery
 {
 };
 
-template<GameCommand TType> struct GameActionBase : GameAction
+template<GameCommand TType>
+struct GameActionBase : GameAction
 {
 public:
     static constexpr GameCommand TYPE = TType;

@@ -11,6 +11,7 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
@@ -480,7 +481,7 @@ static void PaintVirginiaReelTrackRightQuarterTurn1Tile(
 /**
  * rct2: 0x00811184
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionVirginiaReel(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionVirginiaReel(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -515,7 +516,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionVirginiaReel(int32_t trackType)
             return PaintVirginiaReelTrackLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
             return PaintVirginiaReelTrackRightQuarterTurn1Tile;
-    }
 
-    return nullptr;
+        default:
+            return nullptr;
+    }
 }

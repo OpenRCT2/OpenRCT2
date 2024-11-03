@@ -44,6 +44,7 @@ struct EntityBase
     EntitySpriteData SpriteData;
     // Used as direction or rotation depending on the entity.
     uint8_t Orientation;
+    uint32_t SpatialIndex;
 
     /**
      * Moves a sprite to a new location, invalidates the current position if valid
@@ -64,12 +65,15 @@ struct EntityBase
     CoordsXYZ GetLocation() const;
 
     void Invalidate();
-    template<typename T> bool Is() const;
-    template<typename T> T* As()
+    template<typename T>
+    bool Is() const;
+    template<typename T>
+    T* As()
     {
         return Is<T>() ? reinterpret_cast<T*>(this) : nullptr;
     }
-    template<typename T> const T* As() const
+    template<typename T>
+    const T* As() const
     {
         return Is<T>() ? reinterpret_cast<const T*>(this) : nullptr;
     }

@@ -43,7 +43,8 @@ struct NetworkPacket final
     void Write(const void* bytes, size_t size);
     void WriteString(std::string_view s);
 
-    template<typename T> NetworkPacket& operator>>(T& value)
+    template<typename T>
+    NetworkPacket& operator>>(T& value)
     {
         if (BytesRead + sizeof(value) > Header.Size)
         {
@@ -59,7 +60,8 @@ struct NetworkPacket final
         return *this;
     }
 
-    template<typename T> NetworkPacket& operator<<(T value)
+    template<typename T>
+    NetworkPacket& operator<<(T value)
     {
         T swapped = ByteSwapBE(value);
         Write(&swapped, sizeof(T));

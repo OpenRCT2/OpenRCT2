@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
@@ -2237,7 +2238,7 @@ static void SteeplechaseTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSteeplechase(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionSteeplechase(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -2300,6 +2301,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSteeplechase(int32_t trackType)
         case TrackElemType::DiagBrakes:
         case TrackElemType::DiagBlockBrakes:
             return SteeplechaseTrackDiagBrakes;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

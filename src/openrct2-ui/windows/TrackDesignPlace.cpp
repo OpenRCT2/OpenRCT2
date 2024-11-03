@@ -33,8 +33,8 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Surface.h>
 #include <openrct2/world/tile_element/Slope.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
 #include <vector>
 
 using namespace OpenRCT2::TrackMetaData;

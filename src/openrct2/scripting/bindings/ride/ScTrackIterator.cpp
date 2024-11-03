@@ -14,6 +14,7 @@
 #    include "../../../Context.h"
 #    include "../../../ride/Ride.h"
 #    include "../../../ride/TrackData.h"
+#    include "../../../world/tile_element/TrackElement.h"
 #    include "../../ScriptEngine.h"
 #    include "ScTrackSegment.h"
 
@@ -33,7 +34,7 @@ std::shared_ptr<ScTrackIterator> ScTrackIterator::FromElement(const CoordsXY& po
     return std::make_shared<ScTrackIterator>(*origin, trackEl->GetTrackType(), trackEl->GetRideIndex());
 }
 
-ScTrackIterator::ScTrackIterator(const CoordsXYZD& position, track_type_t type, RideId ride)
+ScTrackIterator::ScTrackIterator(const CoordsXYZD& position, OpenRCT2::TrackElemType type, RideId ride)
     : _position(position)
     , _type(type)
     , _ride(ride)

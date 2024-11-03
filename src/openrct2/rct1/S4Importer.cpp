@@ -24,6 +24,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
+#include "../core/SawyerCoding.h"
 #include "../core/String.hpp"
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"
@@ -47,6 +48,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/ScenarioTextObject.h"
 #include "../park/Legacy.h"
 #include "../peep/PeepAnimationData.h"
 #include "../peep/RideUseSystem.h"
@@ -61,7 +63,6 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
-#include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
@@ -69,16 +70,23 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
 #include "../world/TilePointerIndex.hpp"
 #include "../world/Wall.h"
+#include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/LargeSceneryElement.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
+#include "../world/tile_element/WallElement.h"
 #include "RCT1.h"
 #include "Tables.h"
 
 #include <cassert>
 #include <iterator>
 #include <memory>
+#include <mutex>
 #include <vector>
 
 using namespace OpenRCT2;
@@ -87,6 +95,8 @@ static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
 namespace OpenRCT2::RCT1
 {
+    static std::mutex mtx;
+
     class S4Importer final : public IParkImporter
     {
     private:
@@ -169,7 +179,7 @@ namespace OpenRCT2::RCT1
             _s4 = *ReadAndDecodeS4(stream, isScenario);
             _s4Path = path;
             _isScenario = isScenario;
-            _gameVersion = SawyerCodingDetectRCT1Version(_s4.GameVersion) & FILE_VERSION_MASK;
+            _gameVersion = SawyerCoding::DetectRCT1Version(_s4.GameVersion) & FILE_VERSION_MASK;
 
             // Only determine what objects we required to import this saved game
             InitialiseEntryMaps();
@@ -238,7 +248,7 @@ namespace OpenRCT2::RCT1
                 dst->ObjectiveArg3 = GetBuildTheBestRideId();
             }
 
-            auto name = RCT2StringToUTF8(_s4.ScenarioName, RCT2LanguageId::EnglishUK);
+            std::string name = RCT2StringToUTF8(_s4.ScenarioName, RCT2LanguageId::EnglishUK);
             std::string details;
 
             // TryGetById won't set this property if the scenario is not recognised,
@@ -250,16 +260,23 @@ namespace OpenRCT2::RCT1
 
             String::Set(dst->InternalName, sizeof(dst->InternalName), desc.title);
 
-            StringId localisedStringIds[3];
-            if (LanguageGetLocalisedScenarioStrings(desc.title, localisedStringIds))
+            if (!desc.textObjectId.empty())
             {
-                if (localisedStringIds[0] != STR_NONE)
+                auto& objManager = GetContext()->GetObjectManager();
+
+                // Ensure only one thread talks to the object manager at a time
+                std::lock_guard lock(mtx);
+
+                // Unload loaded scenario text object, if any.
+                if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
+                    objManager.UnloadObjects({ obj->GetDescriptor() });
+
+                // Load the one specified
+                if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
                 {
-                    name = String::ToStd(LanguageGetString(localisedStringIds[0]));
-                }
-                if (localisedStringIds[2] != STR_NONE)
-                {
-                    details = String::ToStd(LanguageGetString(localisedStringIds[2]));
+                    auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
+                    name = textObject->GetScenarioName();
+                    details = textObject->GetScenarioDetails();
                 }
             }
 
@@ -303,14 +320,14 @@ namespace OpenRCT2::RCT1
             auto decodedData = std::make_unique<uint8_t[]>(sizeof(S4));
 
             size_t decodedSize;
-            int32_t fileType = SawyerCodingDetectFileType(data.get(), dataSize);
+            int32_t fileType = SawyerCoding::DetectFileType(data.get(), dataSize);
             if (isScenario && (fileType & FILE_VERSION_MASK) != FILE_VERSION_RCT1)
             {
-                decodedSize = SawyerCodingDecodeSC4(data.get(), decodedData.get(), dataSize, sizeof(S4));
+                decodedSize = SawyerCoding::DecodeSC4(data.get(), decodedData.get(), dataSize, sizeof(S4));
             }
             else
             {
-                decodedSize = SawyerCodingDecodeSV4(data.get(), decodedData.get(), dataSize, sizeof(S4));
+                decodedSize = SawyerCoding::DecodeSV4(data.get(), decodedData.get(), dataSize, sizeof(S4));
             }
 
             if (decodedSize == sizeof(S4))
@@ -1234,7 +1251,8 @@ namespace OpenRCT2::RCT1
         }
 
         void ImportEntity(const RCT12EntityBase& src);
-        template<typename T> void ImportEntity(const RCT12EntityBase& src);
+        template<typename T>
+        void ImportEntity(const RCT12EntityBase& src);
 
         void ImportEntities()
         {
@@ -1496,14 +1514,24 @@ namespace OpenRCT2::RCT1
             AppendRequiredObjects(result, ObjectType::PathAdditions, _pathAdditionEntries);
             AppendRequiredObjects(result, ObjectType::SceneryGroup, _sceneryGroupEntries);
             AppendRequiredObjects(result, ObjectType::Banners, _bannerEntries);
-            AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<std::string>({ "rct2.park_entrance.pkent1" }));
+            AppendRequiredObjects(
+                result, ObjectType::ParkEntrance, std::vector<std::string_view>({ "rct2.park_entrance.pkent1" }));
             AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
             AppendRequiredObjects(result, ObjectType::TerrainSurface, _terrainSurfaceEntries);
             AppendRequiredObjects(result, ObjectType::TerrainEdge, _terrainEdgeEntries);
             AppendRequiredObjects(result, ObjectType::FootpathSurface, _footpathSurfaceEntries);
             AppendRequiredObjects(result, ObjectType::FootpathRailings, _footpathRailingsEntries);
-            AppendRequiredObjects(result, ObjectType::PeepNames, std::vector<std::string>({ "rct2.peep_names.original" }));
+            AppendRequiredObjects(result, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
             RCT12AddDefaultObjects(result);
+
+            // Normalise the name to make the scenario as recognisable as possible
+            auto normalisedName = ScenarioSources::NormaliseName(_s4.ScenarioName);
+
+            // Infer what scenario text object to use, if any
+            SourceDescriptor desc;
+            if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && !desc.textObjectId.empty())
+                AppendRequiredObjects(result, ObjectType::ScenarioText, std::vector<std::string_view>({ desc.textObjectId }));
+
             return result;
         }
 
@@ -2317,24 +2345,25 @@ namespace OpenRCT2::RCT1
             int32_t scNumber = _s4.ScenarioSlotIndex;
             if (scNumber != -1)
             {
-                SourceDescriptor sourceDesc;
-                if (ScenarioSources::TryGetById(scNumber, &sourceDesc))
+                SourceDescriptor desc;
+                if (ScenarioSources::TryGetById(scNumber, &desc) && !desc.textObjectId.empty())
                 {
-                    StringId localisedStringIds[3];
-                    if (LanguageGetLocalisedScenarioStrings(sourceDesc.title, localisedStringIds))
+                    auto& objManager = GetContext()->GetObjectManager();
+
+                    // Ensure only one thread talks to the object manager at a time
+                    std::lock_guard lock(mtx);
+
+                    // Unload loaded scenario text object, if any.
+                    if (auto* obj = objManager.GetLoadedObject(ObjectType::ScenarioText, 0); obj != nullptr)
+                        objManager.UnloadObjects({ obj->GetDescriptor() });
+
+                    // Load the one specified
+                    if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
                     {
-                        if (localisedStringIds[0] != STR_NONE)
-                        {
-                            name = String::ToStd(LanguageGetString(localisedStringIds[0]));
-                        }
-                        if (localisedStringIds[1] != STR_NONE)
-                        {
-                            parkName = String::ToStd(LanguageGetString(localisedStringIds[1]));
-                        }
-                        if (localisedStringIds[2] != STR_NONE)
-                        {
-                            details = String::ToStd(LanguageGetString(localisedStringIds[2]));
-                        }
+                        auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
+                        name = textObject->GetScenarioName();
+                        parkName = textObject->GetParkName();
+                        details = textObject->GetScenarioDetails();
                     }
                 }
             }
@@ -2672,7 +2701,8 @@ namespace OpenRCT2::RCT1
         return output;
     }
 
-    template<> void S4Importer::ImportEntity<::Vehicle>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<::Vehicle>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<::Vehicle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT1::Vehicle*>(&srcBase);
@@ -2766,7 +2796,7 @@ namespace OpenRCT2::RCT1
         {
             dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.ToCoordsXY();
             dst->SetTrackDirection(0);
-            dst->SetTrackType(0);
+            dst->SetTrackType(OpenRCT2::TrackElemType::Flat);
         }
         dst->track_progress = src->TrackProgress;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
@@ -2794,7 +2824,8 @@ namespace OpenRCT2::RCT1
         }
     }
 
-    template<> void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<Guest>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT1::Peep*>(&srcBase);
@@ -2885,7 +2916,8 @@ namespace OpenRCT2::RCT1
         dst->SetItemFlags(src->GetItemFlags());
     }
 
-    template<> void S4Importer::ImportEntity<Staff>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<Staff>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<Staff>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT1::Peep*>(&srcBase);
@@ -2903,7 +2935,8 @@ namespace OpenRCT2::RCT1
         ImportStaffPatrolArea(dst, src->StaffID);
     }
 
-    template<> void S4Importer::ImportEntity<Litter>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<Litter>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<Litter>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityLitter*>(&srcBase);
@@ -2913,7 +2946,8 @@ namespace OpenRCT2::RCT1
         dst->creationTick = src->CreationTick;
     }
 
-    template<> void S4Importer::ImportEntity<SteamParticle>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<SteamParticle>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<SteamParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntitySteamParticle*>(&srcBase);
@@ -2923,7 +2957,8 @@ namespace OpenRCT2::RCT1
         dst->time_to_move = src->TimeToMove;
     }
 
-    template<> void S4Importer::ImportEntity<MoneyEffect>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<MoneyEffect>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<MoneyEffect>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityMoneyEffect*>(&srcBase);
@@ -2937,7 +2972,8 @@ namespace OpenRCT2::RCT1
         dst->Wiggle = src->Wiggle;
     }
 
-    template<> void S4Importer::ImportEntity<VehicleCrashParticle>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<VehicleCrashParticle>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<VehicleCrashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityCrashedVehicleParticle*>(&srcBase);
@@ -2955,7 +2991,8 @@ namespace OpenRCT2::RCT1
         dst->acceleration_z = src->AccelerationZ;
     }
 
-    template<> void S4Importer::ImportEntity<ExplosionCloud>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<ExplosionCloud>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<ExplosionCloud>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
@@ -2963,7 +3000,8 @@ namespace OpenRCT2::RCT1
         dst->frame = src->Frame;
     }
 
-    template<> void S4Importer::ImportEntity<ExplosionFlare>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<ExplosionFlare>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<ExplosionFlare>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
@@ -2971,7 +3009,8 @@ namespace OpenRCT2::RCT1
         dst->frame = src->Frame;
     }
 
-    template<> void S4Importer::ImportEntity<CrashSplashParticle>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<CrashSplashParticle>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<CrashSplashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
@@ -2979,7 +3018,8 @@ namespace OpenRCT2::RCT1
         dst->frame = src->Frame;
     }
 
-    template<> void S4Importer::ImportEntity<JumpingFountain>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<JumpingFountain>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<JumpingFountain>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityJumpingFountain*>(&srcBase);
@@ -2998,7 +3038,8 @@ namespace OpenRCT2::RCT1
         dst->Iteration = src->Iteration;
     }
 
-    template<> void S4Importer::ImportEntity<Balloon>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<Balloon>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<Balloon>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityBalloon*>(&srcBase);
@@ -3018,7 +3059,8 @@ namespace OpenRCT2::RCT1
         }
     }
 
-    template<> void S4Importer::ImportEntity<Duck>(const RCT12EntityBase& srcBase)
+    template<>
+    void S4Importer::ImportEntity<Duck>(const RCT12EntityBase& srcBase)
     {
         auto* dst = CreateEntityAt<Duck>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityDuck*>(&srcBase);

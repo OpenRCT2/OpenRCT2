@@ -24,6 +24,8 @@ private:
     std::unique_ptr<LargeSceneryText> _3dFont;
 
 public:
+    static constexpr ObjectType kObjectType = ObjectType::LargeScenery;
+
     void* GetLegacyData() override
     {
         return &_legacyType;
@@ -35,7 +37,6 @@ public:
     void Unload() override;
 
     void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
-    const LargeSceneryTile* GetTileForSequence(uint8_t SequenceIndex) const;
 
 private:
     [[nodiscard]] static std::vector<LargeSceneryTile> ReadTiles(OpenRCT2::IStream* stream);

@@ -15,7 +15,6 @@
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
-#include "../world/Surface.h"
 #include "RCT1.h"
 
 #include <iterator>
@@ -1497,12 +1496,12 @@ namespace OpenRCT2::RCT1
     }
     // clang-format on
 
-    track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType)
+    OpenRCT2::TrackElemType RCT1TrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType)
     {
         if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isFlatRide))
             return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
 
-        return origTrackType;
+        return static_cast<OpenRCT2::TrackElemType>(origTrackType);
     }
 
     bool VehicleTypeIsReversed(const VehicleType vehicleType)

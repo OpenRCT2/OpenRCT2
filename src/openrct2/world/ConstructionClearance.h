@@ -21,6 +21,13 @@ class QuarterTile;
 
 using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
 
+enum
+{
+    ELEMENT_IS_ABOVE_GROUND = 1 << 0,
+    ELEMENT_IS_UNDERGROUND = 1 << 1,
+    ELEMENT_IS_UNDERWATER = 1 << 2,
+};
+
 // Used when calling MapCanConstructWithClearAt();
 // This assumes that the caller has already done the check on the element it wants to place,
 // as this function can only check the element the player wants to build through.

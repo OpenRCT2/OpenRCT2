@@ -16,7 +16,8 @@
 #include <vector>
 namespace OpenRCT2::Ui
 {
-    template<typename T> class CommandBatch
+    template<typename T>
+    class CommandBatch
     {
     private:
         std::vector<T> _instances;

@@ -22,6 +22,8 @@ public:
     PathSurfaceDescriptor _descriptor = {};
 
 public:
+    static constexpr ObjectType kObjectType = ObjectType::FootpathSurface;
+
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;

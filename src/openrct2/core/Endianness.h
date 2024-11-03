@@ -13,11 +13,13 @@
 #include <cstring>
 #include <type_traits>
 
-template<size_t size> struct ByteSwapT
+template<size_t size>
+struct ByteSwapT
 {
 };
 
-template<> struct ByteSwapT<1>
+template<>
+struct ByteSwapT<1>
 {
     using UIntType = uint8_t;
     static uint8_t SwapBE(uint8_t value)
@@ -26,7 +28,8 @@ template<> struct ByteSwapT<1>
     }
 };
 
-template<> struct ByteSwapT<2>
+template<>
+struct ByteSwapT<2>
 {
     using UIntType = uint16_t;
     static uint16_t SwapBE(uint16_t value)
@@ -35,7 +38,8 @@ template<> struct ByteSwapT<2>
     }
 };
 
-template<> struct ByteSwapT<4>
+template<>
+struct ByteSwapT<4>
 {
     using UIntType = uint32_t;
     static uint32_t SwapBE(uint32_t value)
@@ -45,7 +49,8 @@ template<> struct ByteSwapT<4>
     }
 };
 
-template<> struct ByteSwapT<8>
+template<>
+struct ByteSwapT<8>
 {
     using UIntType = uint64_t;
     static uint64_t SwapBE(uint64_t value)
@@ -57,7 +62,8 @@ template<> struct ByteSwapT<8>
     }
 };
 
-template<typename T> static T ByteSwapBE(const T& value)
+template<typename T>
+static T ByteSwapBE(const T& value)
 {
     using ByteSwap = ByteSwapT<sizeof(T)>;
     using UIntType = typename ByteSwap::UIntType;

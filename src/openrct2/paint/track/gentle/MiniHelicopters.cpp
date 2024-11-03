@@ -373,7 +373,7 @@ static void PaintMiniHelicoptersTrackSpinningTunnel(
 /**
  * rct2: 0x0081F268
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniHelicopters(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniHelicopters(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -411,7 +411,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniHelicopters(int32_t trackType)
 
         case TrackElemType::SpinningTunnel:
             return PaintMiniHelicoptersTrackSpinningTunnel;
+        default:
+            return nullptr;
     }
-
-    return nullptr;
 }

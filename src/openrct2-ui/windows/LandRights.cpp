@@ -24,7 +24,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Surface.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
 
 namespace OpenRCT2::Ui::Windows
 {

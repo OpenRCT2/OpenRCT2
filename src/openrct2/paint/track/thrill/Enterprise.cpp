@@ -14,6 +14,7 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
@@ -173,7 +174,7 @@ static void PaintEnterprise(
     PaintUtilSetGeneralSupportHeight(session, height + 160);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionEnterprise(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionEnterprise(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack4x4)
     {

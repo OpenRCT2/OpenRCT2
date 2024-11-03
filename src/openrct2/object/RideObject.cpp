@@ -17,6 +17,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Numerics.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../entity/Yaw.hpp"
@@ -112,7 +113,7 @@ static constexpr SpritePrecision PrecisionFromNumFrames(uint32_t numRotationFram
     if (numRotationFrames == 0)
         return SpritePrecision::None;
     else
-        return static_cast<SpritePrecision>(UtilBitScanForward(numRotationFrames) + 1);
+        return static_cast<SpritePrecision>(Numerics::bitScanForward(numRotationFrames) + 1);
 }
 
 static void RideObjectUpdateRideType(RideObjectEntry& rideEntry)
@@ -265,8 +266,6 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 
 void RideObject::Load()
 {
-    _legacyType.obj = this;
-
     GetStringTable().Sort();
     _legacyType.naming.Name = LanguageAllocateObjectString(GetName());
     _legacyType.naming.Description = LanguageAllocateObjectString(GetDescription());

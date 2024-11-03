@@ -732,7 +732,8 @@ struct TileCoordsXYZD : public TileCoordsXYZ
 /**
  * Represents a range of the map using regular coordinates.
  */
-template<class T> struct CoordsRange
+template<class T>
+struct CoordsRange
 {
     T Point1{ 0, 0 };
     T Point2{ 0, 0 };
@@ -767,7 +768,8 @@ template<class T> struct CoordsRange
     }
 };
 
-template<class T> struct RectRange : public CoordsRange<T>
+template<class T>
+struct RectRange : public CoordsRange<T>
 {
     using CoordsRange<T>::CoordsRange;
 

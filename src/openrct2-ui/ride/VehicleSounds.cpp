@@ -16,13 +16,16 @@
 #include <openrct2/profiling/Profiling.h>
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
 
 namespace OpenRCT2::Audio
 {
     namespace
     {
-        template<typename T> class TrainIterator;
-        template<typename T> class Train
+        template<typename T>
+        class TrainIterator;
+        template<typename T>
+        class Train
         {
         public:
             explicit Train(T* vehicle)
@@ -46,7 +49,8 @@ namespace OpenRCT2::Audio
         private:
             T* FirstCar;
         };
-        template<typename T> class TrainIterator
+        template<typename T>
+        class TrainIterator
         {
         public:
             using iterator = TrainIterator;
@@ -90,7 +94,8 @@ namespace OpenRCT2::Audio
         };
     } // namespace
 
-    template<typename T> int32_t Train<T>::GetMass() const
+    template<typename T>
+    int32_t Train<T>::GetMass() const
     {
         return std::accumulate(
             begin(), end(), 0, [](int32_t totalMass, const Vehicle& vehicle) { return totalMass + vehicle.mass; });
@@ -429,7 +434,8 @@ namespace OpenRCT2::Audio
         OtherNoises, // e.g. Screams
     };
 
-    template<SoundType type> static uint16_t SoundFrequency(const SoundId id, uint16_t baseFrequency)
+    template<SoundType type>
+    static uint16_t SoundFrequency(const SoundId id, uint16_t baseFrequency)
     {
         if constexpr (type == SoundType::TrackNoises)
         {
@@ -449,7 +455,8 @@ namespace OpenRCT2::Audio
         }
     }
 
-    template<SoundType type> static bool ShouldUpdateChannelRate(const SoundId id)
+    template<SoundType type>
+    static bool ShouldUpdateChannelRate(const SoundId id)
     {
         return type == SoundType::TrackNoises || !IsFixedFrequencySound(id);
     }

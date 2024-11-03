@@ -194,11 +194,12 @@ namespace OpenRCT2::Ui::Windows
 
             // Figure out where to position the vehicle to indicate progress
             auto* vehicle = GfxGetG1Element(variant.vehicle);
+            int16_t vehicleWidth = (vehicle != nullptr) ? vehicle->width : 0;
             int32_t position;
             if (_totalCount > 0)
-                position = (-vehicle->width + 2) + width * _currentProgress / _totalCount;
+                position = (-vehicleWidth + 2) + width * _currentProgress / _totalCount;
             else
-                position = (vehicle->width + width) / 2;
+                position = (vehicleWidth + width) / 2;
 
             GfxDrawSprite(clipDPI, variant.vehicle, ScreenCoordsXY(position, widget.bottom + 1));
         }

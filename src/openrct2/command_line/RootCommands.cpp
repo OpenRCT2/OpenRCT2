@@ -447,9 +447,8 @@ static void PrintAbout()
 
 static void PrintVersion()
 {
-    char buffer[256];
-    OpenRCT2WriteFullVersionInfo(buffer, sizeof(buffer));
-    Console::WriteLine(buffer);
+    u8string versionInfo = gVersionInfoFull;
+    Console::WriteLine(versionInfo.c_str());
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
     Console::WriteLine();
     Console::WriteFormat("Network version: %s", NetworkGetVersion().c_str());
@@ -481,9 +480,8 @@ static void PrintLaunchInformation()
     struct tm* tmInfo;
 
     // Print name and version information
-    OpenRCT2WriteFullVersionInfo(buffer, sizeof(buffer));
-    Console::WriteFormat("%s", buffer);
-    Console::WriteLine();
+    u8string versionInfo = gVersionInfoFull;
+    Console::WriteLine(versionInfo.c_str());
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
     Console::WriteLine();
     Console::WriteLine();

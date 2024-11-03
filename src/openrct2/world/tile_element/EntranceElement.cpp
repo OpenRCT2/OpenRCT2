@@ -80,7 +80,7 @@ ObjectEntryIndex EntranceElement::GetLegacyPathEntryIndex() const
 const FootpathObject* EntranceElement::GetLegacyPathEntry() const
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<FootpathObject*>(objMgr.GetLoadedObject(ObjectType::Paths, GetLegacyPathEntryIndex()));
+    return objMgr.GetLoadedObject<FootpathObject>(GetLegacyPathEntryIndex());
 }
 
 void EntranceElement::SetLegacyPathEntryIndex(ObjectEntryIndex newPathType)
@@ -100,7 +100,7 @@ ObjectEntryIndex EntranceElement::GetSurfaceEntryIndex() const
 const FootpathSurfaceObject* EntranceElement::GetSurfaceEntry() const
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<FootpathSurfaceObject*>(objMgr.GetLoadedObject(ObjectType::FootpathSurface, GetSurfaceEntryIndex()));
+    return objMgr.GetLoadedObject<FootpathSurfaceObject>(GetSurfaceEntryIndex());
 }
 
 void EntranceElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)

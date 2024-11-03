@@ -28,7 +28,8 @@ namespace OpenRCT2::Scripting
 {
     constexpr size_t COLUMN_HEADER_HEIGHT = kListRowHeight + 1;
 
-    template<> ColumnSortOrder FromDuk(const DukValue& d)
+    template<>
+    ColumnSortOrder FromDuk(const DukValue& d)
     {
         if (d.type() == DukValue::Type::STRING)
         {
@@ -41,7 +42,8 @@ namespace OpenRCT2::Scripting
         return ColumnSortOrder::None;
     }
 
-    template<> DukValue ToDuk(duk_context* ctx, const ColumnSortOrder& value)
+    template<>
+    DukValue ToDuk(duk_context* ctx, const ColumnSortOrder& value)
     {
         switch (value)
         {
@@ -54,7 +56,8 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    template<> std::optional<int32_t> FromDuk(const DukValue& d)
+    template<>
+    std::optional<int32_t> FromDuk(const DukValue& d)
     {
         if (d.type() == DukValue::Type::NUMBER)
         {
@@ -63,7 +66,8 @@ namespace OpenRCT2::Scripting
         return std::nullopt;
     }
 
-    template<> ListViewColumn FromDuk(const DukValue& d)
+    template<>
+    ListViewColumn FromDuk(const DukValue& d)
     {
         ListViewColumn result;
         result.CanSort = AsOrDefault(d["canSort"], false);
@@ -86,7 +90,8 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
-    template<> DukValue ToDuk(duk_context* ctx, const ListViewColumn& value)
+    template<>
+    DukValue ToDuk(duk_context* ctx, const ListViewColumn& value)
     {
         DukObject obj(ctx);
         obj.Set("canSort", value.CanSort);
@@ -100,7 +105,8 @@ namespace OpenRCT2::Scripting
         return obj.Take();
     }
 
-    template<> ListViewItem FromDuk(const DukValue& d)
+    template<>
+    ListViewItem FromDuk(const DukValue& d)
     {
         ListViewItem result;
         if (d.type() == DukValue::Type::STRING)
@@ -129,7 +135,8 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
-    template<> std::vector<ListViewColumn> FromDuk(const DukValue& d)
+    template<>
+    std::vector<ListViewColumn> FromDuk(const DukValue& d)
     {
         std::vector<ListViewColumn> result;
         if (d.is_array())
@@ -143,7 +150,8 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
-    template<> std::vector<ListViewItem> FromDuk(const DukValue& d)
+    template<>
+    std::vector<ListViewItem> FromDuk(const DukValue& d)
     {
         std::vector<ListViewItem> result;
         if (d.is_array())
@@ -157,7 +165,8 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
-    template<> std::optional<RowColumn> FromDuk(const DukValue& d)
+    template<>
+    std::optional<RowColumn> FromDuk(const DukValue& d)
     {
         if (d.type() == DukValue::Type::OBJECT)
         {
@@ -171,7 +180,8 @@ namespace OpenRCT2::Scripting
         return std::nullopt;
     }
 
-    template<> DukValue ToDuk(duk_context* ctx, const RowColumn& value)
+    template<>
+    DukValue ToDuk(duk_context* ctx, const RowColumn& value)
     {
         DukObject obj(ctx);
         obj.Set("row", value.Row);
@@ -179,7 +189,8 @@ namespace OpenRCT2::Scripting
         return obj.Take();
     }
 
-    template<> ScrollbarType FromDuk(const DukValue& d)
+    template<>
+    ScrollbarType FromDuk(const DukValue& d)
     {
         auto value = AsOrDefault(d, "");
         if (value == "horizontal")
@@ -191,7 +202,8 @@ namespace OpenRCT2::Scripting
         return ScrollbarType::None;
     }
 
-    template<> DukValue ToDuk(duk_context* ctx, const ScrollbarType& value)
+    template<>
+    DukValue ToDuk(duk_context* ctx, const ScrollbarType& value)
     {
         switch (value)
         {

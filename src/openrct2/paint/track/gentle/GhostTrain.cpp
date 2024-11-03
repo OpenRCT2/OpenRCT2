@@ -12,6 +12,7 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../support/WoodenSupports.h"
@@ -561,7 +562,7 @@ static void PaintGhostTrainTrackBrakes(
 /**
  * rct2: 0x00770924
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionGhostTrain(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionGhostTrain(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -602,7 +603,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionGhostTrain(int32_t trackType)
 
         case TrackElemType::SpinningTunnel:
             return PaintGhostTrainTrackSpinningTunnel;
+        default:
+            return nullptr;
     }
-
-    return nullptr;
 }

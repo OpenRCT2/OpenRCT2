@@ -23,7 +23,8 @@ using namespace OpenRCT2;
 class CryptTests : public testing::Test
 {
 public:
-    template<typename T> void AssertHash(std::string expected, T hash)
+    template<typename T>
+    void AssertHash(std::string expected, T hash)
     {
         auto actual = String::StringFromHex(hash);
         ASSERT_EQ(expected, actual);

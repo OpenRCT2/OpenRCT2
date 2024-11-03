@@ -48,8 +48,16 @@
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/sprites.h>
+#include <openrct2/world/ConstructionClearance.h>
+#include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/world/tile_element/BannerElement.h>
+#include <openrct2/world/tile_element/LargeSceneryElement.h>
+#include <openrct2/world/tile_element/PathElement.h>
+#include <openrct2/world/tile_element/SmallSceneryElement.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
+#include <openrct2/world/tile_element/WallElement.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -1063,7 +1071,8 @@ namespace OpenRCT2::Ui::Windows
             return contentWidth / SCENERY_BUTTON_WIDTH;
         }
 
-        template<typename T> T CountRows(T items) const
+        template<typename T>
+        T CountRows(T items) const
         {
             const auto rows = items / GetNumColumns();
             return rows;
@@ -1957,10 +1966,9 @@ namespace OpenRCT2::Ui::Windows
                     auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
                     gMapSelectionTiles.clear();
 
-                    for (auto* tile = sceneryEntry->tiles;
-                         tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)); tile++)
+                    for (auto& tile : sceneryEntry->tiles)
                     {
-                        CoordsXY tileLocation = { tile->x_offset, tile->y_offset };
+                        CoordsXY tileLocation = { tile.offset };
                         auto rotatedTileCoords = tileLocation.Rotate(direction);
 
                         rotatedTileCoords.x += mapTile.x;
@@ -2767,9 +2775,9 @@ namespace OpenRCT2::Ui::Windows
             if (sceneryEntry)
             {
                 int16_t maxClearZ = 0;
-                for (int32_t i = 0; sceneryEntry->tiles[i].x_offset != -1; ++i)
+                for (auto& tile : sceneryEntry->tiles)
                 {
-                    maxClearZ = std::max<int16_t>(maxClearZ, sceneryEntry->tiles[i].z_clearance);
+                    maxClearZ = std::max<int16_t>(maxClearZ, tile.zClearance);
                 }
                 maxPossibleHeight = std::max(0, maxPossibleHeight - maxClearZ);
             }

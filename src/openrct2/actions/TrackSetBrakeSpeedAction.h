@@ -15,12 +15,12 @@ class TrackSetBrakeSpeedAction final : public GameActionBase<GameCommand::SetBra
 {
 private:
     CoordsXYZ _loc;
-    track_type_t _trackType{};
+    OpenRCT2::TrackElemType _trackType{};
     uint8_t _brakeSpeed{};
 
 public:
     TrackSetBrakeSpeedAction() = default;
-    TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed);
+    TrackSetBrakeSpeedAction(const CoordsXYZ& loc, OpenRCT2::TrackElemType trackType, uint8_t brakeSpeed);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

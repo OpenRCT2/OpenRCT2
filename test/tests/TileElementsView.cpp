@@ -18,7 +18,15 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/TileElementsView.h>
+#include <openrct2/world/tile_element/BannerElement.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
+#include <openrct2/world/tile_element/LargeSceneryElement.h>
+#include <openrct2/world/tile_element/PathElement.h>
+#include <openrct2/world/tile_element/SmallSceneryElement.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
+#include <openrct2/world/tile_element/TileElement.h>
+#include <openrct2/world/tile_element/TrackElement.h>
+#include <openrct2/world/tile_element/WallElement.h>
 
 using namespace OpenRCT2;
 
@@ -58,7 +66,8 @@ private:
 std::shared_ptr<IContext> TileElementsViewTests::_context;
 uint8_t TileElementsViewTests::_gScreenFlags;
 
-template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
+template<typename T>
+std::vector<T*> BuildListManual(const CoordsXY& pos)
 {
     std::vector<T*> res;
 
@@ -84,7 +93,8 @@ template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
     return res;
 }
 
-template<typename T> std::vector<T*> BuildListByView(const CoordsXY& pos)
+template<typename T>
+std::vector<T*> BuildListByView(const CoordsXY& pos)
 {
     std::vector<T*> res;
 
@@ -96,7 +106,8 @@ template<typename T> std::vector<T*> BuildListByView(const CoordsXY& pos)
     return res;
 }
 
-template<typename T> bool CompareLists(const CoordsXY& pos)
+template<typename T>
+bool CompareLists(const CoordsXY& pos)
 {
     auto listManual = BuildListManual<T>(pos);
     auto listView = BuildListByView<T>(pos);
@@ -116,7 +127,8 @@ template<typename T> bool CompareLists(const CoordsXY& pos)
     return true;
 }
 
-template<typename T> void CheckMapTiles()
+template<typename T>
+void CheckMapTiles()
 {
     for (int y = 0; y < kMaximumMapSizeTechnical; ++y)
     {

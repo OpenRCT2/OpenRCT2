@@ -29,29 +29,12 @@ using namespace OpenRCT2;
 
 // Don't try to load more than language files that exceed 64 MiB
 constexpr uint64_t MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
-constexpr uint64_t MAX_SCENARIO_OVERRIDES = 4096;
-
-constexpr StringId ScenarioOverrideBase = 0x7000;
-constexpr int32_t ScenarioOverrideMaxStringCount = 3;
-
-struct ScenarioOverride
-{
-    std::string filename;
-    std::string strings[ScenarioOverrideMaxStringCount];
-};
 
 class LanguagePack final : public ILanguagePack
 {
 private:
     uint16_t const _id;
     std::vector<std::string> _strings;
-    std::vector<ScenarioOverride> _scenarioOverrides;
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Parsing work data
-    ///////////////////////////////////////////////////////////////////////////
-    std::string _currentGroup;
-    ScenarioOverride* _currentScenarioOverride = nullptr;
 
 public:
     static std::unique_ptr<LanguagePack> FromFile(uint16_t id, const utf8* path)
@@ -98,10 +81,6 @@ public:
         {
             ParseLine(&reader);
         }
-
-        // Clean up the parsing work data
-        _currentGroup.clear();
-        _currentScenarioOverride = nullptr;
     }
 
     uint16_t GetId() const override
@@ -132,21 +111,6 @@ public:
 
     const utf8* GetString(StringId stringId) const override
     {
-        if (stringId >= ScenarioOverrideBase)
-        {
-            int32_t offset = stringId - ScenarioOverrideBase;
-            int32_t ooIndex = offset / ScenarioOverrideMaxStringCount;
-            int32_t ooStringIndex = offset % ScenarioOverrideMaxStringCount;
-
-            if (_scenarioOverrides.size() > static_cast<size_t>(ooIndex)
-                && !_scenarioOverrides[ooIndex].strings[ooStringIndex].empty())
-            {
-                return _scenarioOverrides[ooIndex].strings[ooStringIndex].c_str();
-            }
-
-            return nullptr;
-        }
-
         if ((_strings.size() > static_cast<size_t>(stringId)) && !_strings[stringId].empty())
         {
             return _strings[stringId].c_str();
@@ -155,41 +119,7 @@ public:
         return nullptr;
     }
 
-    StringId GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) override
-    {
-        Guard::ArgumentNotNull(scenarioFilename);
-        Guard::Assert(index < ScenarioOverrideMaxStringCount);
-
-        int32_t ooIndex = 0;
-        for (const ScenarioOverride& scenarioOverride : _scenarioOverrides)
-        {
-            if (String::IEquals(scenarioOverride.filename, scenarioFilename))
-            {
-                if (scenarioOverride.strings[index].empty())
-                {
-                    return STR_NONE;
-                }
-                return ScenarioOverrideBase + (ooIndex * ScenarioOverrideMaxStringCount) + index;
-            }
-            ooIndex++;
-        }
-
-        return STR_NONE;
-    }
-
 private:
-    ScenarioOverride* GetScenarioOverride(const std::string& scenarioIdentifier)
-    {
-        for (auto& so : _scenarioOverrides)
-        {
-            if (String::IEquals(so.strings[0], scenarioIdentifier))
-            {
-                return &so;
-            }
-        }
-        return nullptr;
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Parsing
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -275,12 +205,6 @@ private:
                 case '#':
                     SkipToEndOfLine(reader);
                     break;
-                case '[':
-                    ParseGroupObject(reader);
-                    break;
-                case '<':
-                    ParseGroupScenario(reader);
-                    break;
                 case '\r':
                 case '\n':
                     break;
@@ -290,71 +214,6 @@ private:
             }
             SkipToEndOfLine(reader);
             SkipNewLine(reader);
-        }
-    }
-
-    void ParseGroupObject(IStringReader* reader)
-    {
-        // THIS IS NO LONGER USED SO WE ARE JUST SKIPPING OVER
-        codepoint_t codepoint;
-
-        // Should have already deduced that the next codepoint is a [
-        reader->Skip();
-
-        // Read string up to ] or line end
-        while (reader->TryPeek(&codepoint))
-        {
-            if (IsNewLine(codepoint))
-                break;
-
-            reader->Skip();
-            if (codepoint == ']')
-            {
-                break;
-            }
-        }
-        _currentGroup.clear();
-    }
-
-    void ParseGroupScenario(IStringReader* reader)
-    {
-        auto sb = StringBuilder();
-        codepoint_t codepoint;
-
-        // Should have already deduced that the next codepoint is a <
-        reader->Skip();
-
-        // Read string up to > or line end
-        bool closedCorrectly = false;
-        while (reader->TryPeek(&codepoint))
-        {
-            if (IsNewLine(codepoint))
-                break;
-
-            reader->Skip();
-            if (codepoint == '>')
-            {
-                closedCorrectly = true;
-                break;
-            }
-            sb.Append(codepoint);
-        }
-
-        if (closedCorrectly)
-        {
-            _currentGroup = sb.GetStdString();
-            _currentScenarioOverride = GetScenarioOverride(_currentGroup);
-            if (_currentScenarioOverride == nullptr)
-            {
-                if (_scenarioOverrides.size() == MAX_SCENARIO_OVERRIDES)
-                {
-                    LOG_WARNING("Maximum number of scenario strings exceeded.");
-                }
-
-                _scenarioOverrides.emplace_back();
-                _currentScenarioOverride = &_scenarioOverrides[_scenarioOverrides.size() - 1];
-                _currentScenarioOverride->filename = std::string(sb.GetBuffer());
-            }
         }
     }
 
@@ -397,46 +256,10 @@ private:
         const utf8* identifier = sb.GetBuffer();
 
         int32_t stringId;
-        if (_currentGroup.empty())
+        if (sscanf(identifier, "STR_%4d", &stringId) != 1)
         {
-            if (sscanf(identifier, "STR_%4d", &stringId) != 1)
-            {
-                // Ignore line entirely
-                return;
-            }
-        }
-        else
-        {
-            if (String::Equals(identifier, "STR_NAME"))
-            {
-                stringId = 0;
-            }
-            else if (String::Equals(identifier, "STR_DESC"))
-            {
-                stringId = 1;
-            }
-            else if (String::Equals(identifier, "STR_CPTY"))
-            {
-                stringId = 2;
-            }
-
-            else if (String::Equals(identifier, "STR_SCNR"))
-            {
-                stringId = 0;
-            }
-            else if (String::Equals(identifier, "STR_PARK"))
-            {
-                stringId = 1;
-            }
-            else if (String::Equals(identifier, "STR_DTLS"))
-            {
-                stringId = 2;
-            }
-            else
-            {
-                // Ignore line entirely
-                return;
-            }
+            // Ignore line entirely
+            return;
         }
 
         // Rest of the line is the actual string
@@ -458,22 +281,12 @@ private:
             s = std::string(sb.GetBuffer(), sb.GetLength());
         }
 
-        if (_currentGroup.empty())
+        // Make sure the list is big enough to contain this string id
+        if (static_cast<size_t>(stringId) >= _strings.size())
         {
-            // Make sure the list is big enough to contain this string id
-            if (static_cast<size_t>(stringId) >= _strings.size())
-            {
-                _strings.resize(stringId + 1);
-            }
-            _strings[stringId] = s;
+            _strings.resize(stringId + 1);
         }
-        else
-        {
-            if (_currentScenarioOverride != nullptr)
-            {
-                _currentScenarioOverride->strings[stringId] = std::move(s);
-            }
-        }
+        _strings[stringId] = s;
     }
 };
 

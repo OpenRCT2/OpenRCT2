@@ -48,8 +48,6 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/Surface.h>
-#include <openrct2/world/Wall.h>
 #include <string>
 
 namespace OpenRCT2::Ui::Windows
@@ -785,7 +783,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // TODO: look into using std::span
-        template<typename T> uint16_t GetToolbarWidth(T toolbarItems)
+        template<typename T>
+        uint16_t GetToolbarWidth(T toolbarItems)
         {
             bool firstItem = true;
             auto totalWidth = 0;
@@ -805,7 +804,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // TODO: look into using std::span
-        template<typename T> void AlignButtons(T toolbarItems, uint16_t xPos)
+        template<typename T>
+        void AlignButtons(T toolbarItems, uint16_t xPos)
         {
             bool firstItem = true;
             for (auto widgetIndex : toolbarItems)

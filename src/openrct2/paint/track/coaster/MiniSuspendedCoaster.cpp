@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
@@ -2242,7 +2243,7 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniSuspendedRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniSuspendedRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -2298,6 +2299,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniSuspendedRC(int32_t trackType)
             return MiniSuspendedRCTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
             return MiniSuspendedRCTrackDiag25DegDownToFlat;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

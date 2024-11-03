@@ -38,6 +38,10 @@
 #include "../util/Math.hpp"
 #include "../world/Climate.h"
 #include "../world/Map.h"
+#include "../world/tile_element/LargeSceneryElement.h"
+#include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/TileElement.h"
+#include "../world/tile_element/WallElement.h"
 #include "Colour.h"
 #include "Window.h"
 #include "Window_internal.h"
@@ -916,18 +920,7 @@ void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport)
     if (dpi.y >= viewport->pos.y + viewport->height)
         return;
 
-#ifdef DEBUG_SHOW_DIRTY_BOX
-    const auto dirtyBoxTopLeft = topLeft;
-    const auto dirtyBoxTopRight = bottomRight - ScreenCoordsXY{ 1, 1 };
-#endif
-
     ViewportPaint(viewport, dpi);
-
-#ifdef DEBUG_SHOW_DIRTY_BOX
-    // FIXME g_viewport_list doesn't exist anymore
-    if (viewport != g_viewport_list)
-        GfxFillRectInset(dpi, { dirtyBoxTopLeft, dirtyBoxTopRight }, 0x2, INSET_RECT_F_30);
-#endif
 }
 
 static void ViewportFillColumn(PaintSession& session)
@@ -1548,11 +1541,11 @@ static bool IsPixelPresentBMP(
 /**
  * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
  */
-static bool IsPixelPresentRLE(const void* data, const int32_t x, const int32_t y)
+static bool IsPixelPresentRLE(const uint8_t* imgData, const int32_t x, const int32_t y)
 {
-    const uint16_t* data16 = static_cast<const uint16_t*>(data);
-    uint16_t startOffset = data16[y];
-    const uint8_t* data8 = static_cast<const uint8_t*>(data) + startOffset;
+    uint16_t lineOffset;
+    std::memcpy(&lineOffset, &imgData[y * sizeof(uint16_t)], sizeof(uint16_t));
+    const uint8_t* data8 = imgData + lineOffset;
 
     bool lastDataLine = false;
     while (!lastDataLine)

@@ -12,6 +12,8 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
+#include "../../../world/tile_element/TileElement.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
@@ -142,7 +144,7 @@ static void PaintLaunchedFreefallTowerSection(
 /**
  * rct2: 0x006FD0E8
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLaunchedFreefall(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionLaunchedFreefall(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -151,7 +153,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLaunchedFreefall(int32_t trackType)
 
         case TrackElemType::TowerSection:
             return PaintLaunchedFreefallTowerSection;
+        default:
+            return nullptr;
     }
-
-    return nullptr;
 }

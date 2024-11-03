@@ -1912,8 +1912,8 @@ STR_2670    :Rollen
 STR_2680    :Alle Forschungen beendet
 STR_2684    :Eine große Gruppe von Besuchern tritt ein
 STR_2685    :Simplexrauschparameter
-STR_2686    :Niedrig:
-STR_2687    :Hoch:
+STR_2686    :Min. Landhöhe:
+STR_2687    :Max. Landhöhe:
 STR_2688    :Basisfrequenz:
 STR_2689    :Oktaven:
 STR_2690    :Kartengenerierung
@@ -2603,8 +2603,8 @@ STR_5357    :{BLACK}Übelkeitstoleranz:
 STR_5358    :{BLACK}Toilette:
 STR_5359    :Besucher entfernen
 STR_5360    :Alle Besucher von der Karte entfernen
-STR_5361    :Gib allen Besuchern:
-STR_5362    :{BLACK}Bevorzugte Bahnintensität aller Besucher:
+STR_5361    :Zum Besucherinventar hinzufügen
+STR_5362    :{BLACK}Bevorzugte Bahnintensität:
 STR_5363    :Mehr als 1
 STR_5364    :Weniger als 15
 STR_5365    :{BLACK}Personalgeschw.:
@@ -2634,7 +2634,7 @@ STR_5457    :Stützenlimit deaktivieren
 STR_5458    :Im Uhrzeigersinn drehen
 STR_5459    :Gegen den Uhrzeigersinn drehen
 STR_5460    :Ansicht gegen den Uhrzeigers. drehen
-STR_5461    :Besucherparameter festlegen
+STR_5461    :Parameter für alle Besucher festlegen
 STR_5462    :{CURRENCY}
 STR_5463    :Ziel: Viel Spaß!
 STR_5464    :Allgemein
@@ -3162,9 +3162,9 @@ STR_6041    :{BLACK}Es sind keine Mechaniker eingestellt!
 STR_6042    :Höhenkarte laden
 STR_6043    :Höhenkarte auswählen
 STR_6044    :Höhenkarte glätten
-STR_6045    :Stärke
+STR_6045    :Stärke:
 STR_6046    :Höhenkarte normalisieren
-STR_6047    :Kacheln glätten
+STR_6047    :Kachelkanten glätten
 STR_6048    :Fehler beim Verarbeiten der Höhenkarte
 STR_6049    :Fehler beim Lesen der PNG-Datei
 STR_6050    :Fehler beim Lesen der Bitmap-Datei
@@ -3713,14 +3713,14 @@ STR_6644    :Verbesserungen für die Touch-Bedienung
 STR_6645    :Vergrößert einige Bedienelemente, damit sie leichter angeklickt oder angetippt werden können.
 STR_6646    :Autor: {STRING}
 STR_6647    :Autoren: {STRING}
-STR_6648    :Pluginengine laden…
-STR_6649    :Szenario laden…
+STR_6648    :Pluginengine laden …
+STR_6649    :Szenario laden …
 STR_6650    :Gespeichertes Spiel laden…
 STR_6651    :{STRING} ({COMMA32}%)
 STR_6652    :Fehlermeldung
 STR_6653    :Alle Quellen angezeigt
 STR_6654    :{POP16}{UINT16} Quellen angezeigt
-STR_6655    :Nur ‘{POP16}{STRINGID}’
+STR_6655    :Nur ‚{POP16}{STRINGID}‘
 STR_6656    :Alle Zäune vom Park entfernen
 STR_6657    :Gelände nicht im Besitz
 STR_6658    :Legen Sie das Gelände fest,{NEWLINE}das weder dem Park gehören soll noch gekauft werden kann
@@ -3728,860 +3728,50 @@ STR_6659    :Gäste ignorieren Preise
 STR_6660    :Gäste werden den Preis von Fahrgeschäften und Läden ignorieren
 STR_6661    :Alle zufällig
 STR_6662    :Zufallsfarben für jeden Zug oder jedes Fahrzeug
-
-#############
-# Scenarios #
-################
-# RCT Original #
-################
-<Forest Frontiers>
-STR_SCNR    :Forest Frontiers
-STR_PARK    :Forest Frontiers
-STR_DTLS    :Bauen Sie tief im Wald auf einem großen freigelegten Gelände einen erfolgreichen Freizeitpark.
-
-<Dynamite Dunes>
-STR_SCNR    :Dynamite Dunes
-STR_PARK    :Dynamite Dunes
-STR_DTLS    :Dieser Freizeitpark inmitten der Wüste besitzt nur eine Achterbahn, hat aber genug Platz für Erweiterungen.
-
-<Leafy Lake>
-STR_SCNR    :Leafy Lake
-STR_PARK    :Leafy Lake
-STR_DTLS    :Fangen Sie bei Null an und bauen Sie einen Freizeitpark um einen großen See herum.
-
-<Diamond Heights>
-STR_SCNR    :Diamond Heights
-STR_PARK    :Diamond Heights
-STR_DTLS    :Diamond Heights ist bereits ein erfolgreicher Freizeitpark mit tollen Attraktionen. Entwickeln Sie ihn weiter und verdoppeln Sie seinen Verkehrswert.
-
-<Evergreen Gardens>
-STR_SCNR    :Evergreen Gardens
-STR_PARK    :Evergreen Gardens
-STR_DTLS    :Wandeln Sie die schönen Evergreen Gardens in einen gut besuchten Freizeitpark um.
-
-<Bumbly Beach>
-STR_SCNR    :Bumbly Beach
-STR_PARK    :Bumbly Beach
-STR_DTLS    :Machen Sie aus dem kleinen Vergnügungspark Bumbly Beach einen florierenden Freizeitpark.
-
-<Trinity Islands>
-STR_SCNR    :Trinity Islands
-STR_PARK    :Trinity Islands
-STR_DTLS    :Mehrere Inseln bilden den Ausgangspunkt für diesen neuen Park.
-
-<Katie's Dreamland>
-STR_SCNR    :Katie’s Dreamland
-STR_PARK    :Katie’s Dreamland
-STR_DTLS    :Ein kleiner Freizeitpark mit wenigen Attraktionen, aber genug Gelände zur Erweiterung. Ihr Ziel ist es, den Verkehrswert des Parks zu verdoppeln.
-
-<Pokey Park>
-STR_SCNR    :Pokey Park
-STR_PARK    :Pokey Park
-STR_DTLS    :Ein kleiner, eng zusammengedrängter Vergnügungspark, bei dem eine Erweiterung in großem Ausmaß erforderlich ist.
-
-<White Water Park>
-STR_SCNR    :White Water Park
-STR_PARK    :White Water Park
-STR_DTLS    :Dieser Park mit verschiedenen hervorragenden Wasser-Attraktionen hat einen Ausbau nötig.
-
-<Millennium Mines>
-STR_SCNR    :Millennium Mines
-STR_PARK    :Millennium Mines
-STR_DTLS    :Machen Sie einen Freizeitpark aus dieser weitläufigen, verlassenen Mine, die zur Zeit nur von Touristen besichtigt wird.
-
-<Karts & Coasters>
-STR_SCNR    :Karts & Coasters
-STR_PARK    :Karts & Coasters
-STR_DTLS    :Ein großer Park, versteckt im Wald gelegen, der nur Gokartbahnen und Holzachterbahnen aufzuweisen hat.
-
-<Mel's World>
-STR_SCNR    :Mel’s World
-STR_PARK    :Mel’s World
-STR_DTLS    :Dieser Freizeitpark verfügt über ein paar ausgezeichnete moderne Attraktionen und jede Menge Platz für Erweiterungen.
-
-<Mystic Mountain>
-STR_SCNR    :Mystic Mountain
-STR_PARK    :Mystic Mountain
-STR_DTLS    :Bauen Sie in den bergigen Wäldern der Mystic Mountains einen neuen Freizeitpark.
-
-<Pacific Pyramids>
-STR_SCNR    :Pacific Pyramids
-STR_PARK    :Pacific Pyramids
-STR_DTLS    :Verwandeln Sie die Touristenattraktion mit ägyptischen Ruinen in einen erfolgreichen Freizeitpark.
-
-<Crumbly Woods>
-STR_SCNR    :Crumbly Woods
-STR_PARK    :Crumbly Woods
-STR_DTLS    :Ein großer Park mit guten, aber ziemlich alten Attraktionen. Ersetzen Sie die alten Attraktionen oder fügen Sie neue hinzu, damit der Park mehr Leute anzieht.
-
-<Paradise Pier>
-STR_SCNR    :Paradise Pier
-STR_PARK    :Paradise Pier
-STR_DTLS    :Verwandeln Sie die Anlegestelle dieser verschlafenen Stadt in einen wohlbekannten und gutgehenden Anziehungspunkt.
-
-<Lightning Peaks>
-STR_SCNR    :Lightning Peaks
-STR_PARK    :Lightning Peaks
-STR_DTLS    :Die herrlichen Berge von Lightning Peaks sind beliebt bei Wanderern und Leuten, die gern interessante Orte besichtigen. Nutzen Sie das zur Verfügung stehende Gelände, um jene Besucher anzulocken, die auf der Suche nach einem aufregenden Kick sind.
-
-<Ivory Towers>
-STR_SCNR    :Ivory Towers
-STR_PARK    :Ivory Towers
-STR_DTLS    :Ein gut geführter Park, der jedoch ein paar Probleme hat.
-
-<Rainbow Valley>
-STR_SCNR    :Rainbow Valley
-STR_PARK    :Rainbow Valley
-STR_DTLS    :Die örtlichen Behörden von Rainbow Valley werden landschaftliche Veränderungen oder größere Baumrodungen nicht erlauben, aber Sie sollen in dem Gebiet einen großen Freizeitpark entstehen lassen.
-
-<Thunder Rock>
-STR_SCNR    :Thunder Rock
-STR_PARK    :Thunder Rock
-STR_DTLS    :Thunder Rock befindet sich mitten in einer Wüste und zieht viele Touristen an. Bauen Sie auf dem verfügbaren Platz Attraktionen, die noch mehr Leute herlocken.
-
-<Mega Park>
-STR_SCNR    :Mega Park
-STR_PARK    :Mega Park
-STR_DTLS    :Nur zum Spaß!
-
-## Added Attractions
-<Whispering Cliffs>
-STR_SCNR    :Whispering Cliffs
-STR_PARK    :Whispering Cliffs
-STR_DTLS    :Lassen Sie in diesen Klippen am Meer einen florierenden Vergnügungspark entstehen.
-
-<Three Monkeys Park>
-STR_SCNR    :Three Monkeys Park
-STR_PARK    :Three Monkeys Park
-STR_DTLS    :Mitten in diesem großen, aufstrebenden Park steht eine riesige Dreispur-Achterbahn, in der die Fahrt wie ein Kopf-an-Kopf-Rennen abläuft.
-
-<Canary Mines>
-STR_SCNR    :Canary Mines
-STR_PARK    :Canary Mines
-STR_DTLS    :Dieses verlassene Bergwerk bietet mit der Miniatureisenbahn und den Sturzachterbahnen bereits gute Voraussetzungen, eine Touristenattraktion zu werden.
-
-<Barony Bridge>
-STR_SCNR    :Barony Bridge
-STR_PARK    :Barony Bridge
-STR_DTLS    :Wandeln Sie eine alte, nicht mehr benutzte Brücke in einen attraktiven Park um.
-
-<Funtopia>
-STR_SCNR    :Funtopia
-STR_PARK    :Funtopia
-STR_DTLS    :In diesem Park zu beiden Seiten einer Autobahn sind bereits verschiedene Attraktionen in Betrieb.
-
-<Haunted Harbour>
-STR_SCNR    :Haunted Harbour
-STR_PARK    :Haunted Harbour
-STR_DTLS    :Die örtlichen Behörden haben zugestimmt, dem kleinen Park an der Küste umliegendes Gelände günstig zu verkaufen, unter der Bedingung, dass bestimmte Attraktionen erhalten werden.
-
-<Fun Fortress>
-STR_SCNR    :Fun Fortress
-STR_PARK    :Fun Fortress
-STR_DTLS    :Sie können Ihrer Fantasie freien Lauf lassen, damit ein Themenpark aus diesem Schloss entsteht.
-
-<Future World>
-STR_SCNR    :Future World
-STR_PARK    :Future World
-STR_DTLS    :Dieser futuristische Park bietet auf seinem fremdartigen Gelände viel Platz für neue Attraktionen.
-
-<Gentle Glen>
-STR_SCNR    :Gentle Glen
-STR_PARK    :Gentle Glen
-STR_DTLS    :Die Bevölkerung in der Umgebung bevorzugt gemäßigte Attraktionen, auf denen man sich erholen kann. Ihre Aufgabe ist es, diesen Ansprüchen gerecht zu werden.
-
-<Jolly Jungle>
-STR_SCNR    :Jolly Jungle
-STR_PARK    :Jolly Jungle
-STR_DTLS    :Ein riesiges Gelände tief im Dschungel wartet darauf, von Ihnen in einen Themenpark umgewandelt zu werden.
-
-<Hydro Hills>
-STR_SCNR    :Hydro Hills
-STR_PARK    :Hydro Hills
-STR_DTLS    :Eine Reihe terrassenförmig angeordneter Seen sind der Ausgangsort für den neuen Park.
-
-<Sprightly Park>
-STR_SCNR    :Sprightly Park
-STR_PARK    :Sprightly Park
-STR_DTLS    :Dieser ältere Park besitzt viele historisch interessante Attraktionen, ist aber hoch verschuldet.
-
-<Magic Quarters>
-STR_SCNR    :Magic Quarters
-STR_PARK    :Magic Quarters
-STR_DTLS    :Ein großes Gelände wurde freigeräumt und teilweise thematisch gestaltet. Sie sollen daraus einen interessante Themenlandschaft machen.
-
-<Fruit Farm>
-STR_SCNR    :Fruit Farm
-STR_PARK    :Fruit Farm
-STR_DTLS    :Eine gutgehende Obstplantage hat eine Miniatureisenbahn bauen lassen, um die Einnahmen zu steigern. Entwickeln Sie jetzt daraus einen Vergnügungspark mit allem Drum und Dran.
-
-<Butterfly Dam>
-STR_SCNR    :Butterfly Dam
-STR_PARK    :Butterfly Dam
-STR_DTLS    :Das Gebiet rings um einen Damm steht Ihnen zur Verfügung, damit daraus ein Vergnügungspark entsteht.
-
-<Coaster Canyon>
-STR_SCNR    :Coaster Canyon
-STR_PARK    :Coaster Canyon
-STR_DTLS    :Ein weitläufiger Canyon steht Ihnen zur Verfügung, um in einen Themenpark verwandelt zu werden.
-
-<Thunderstorm Park>
-STR_SCNR    :Thunderstorm Park
-STR_PARK    :Thunderstorm Park
-STR_DTLS    :Das Wetter in dieser Gegend ist so feucht, dass bereits eine riesengroße Pyramide gebaut wurde, damit wenigstens einige Attraktionen überdacht sind.
-
-<Harmonic Hills>
-STR_SCNR    :Harmonic Hills
-STR_PARK    :Harmonic Hills
-STR_DTLS    :Die Baubehörde dieser Gegend erlaubt in diesem Park keine Konstruktionen über Baumhöhe.
-
-<Roman Village>
-STR_SCNR    :Roman Village
-STR_PARK    :Roman Village
-STR_DTLS    :Entwickeln Sie diesen römisch gestalteten Park weiter, indem Sie Achterbahnen und andere Attraktionen hinzufügen.
-
-<Swamp Cove>
-STR_SCNR    :Swamp Cove
-STR_PARK    :Swamp Cove
-STR_DTLS    :Dieser Park, der sich über eine Reihe kleiner Inseln erstreckt, besitzt ein Paar einer großen Achterbahn als Hauptattraktion.
-
-<Adrenaline Heights>
-STR_SCNR    :Adrenaline Heights
-STR_PARK    :Adrenaline Heights
-STR_DTLS    :Bauen Sie einen Park für die Menschen dieser Gegend, die hohe Intensität und Nervenkitzel bevorzugen.
-
-<Utopia Park>
-STR_SCNR    :Utopia Park
-STR_PARK    :Utopia
-STR_DTLS    :Eine Oase inmitten der Wüste ist sicher eine ungewöhnliche Herausforderung für Planer eines Vergnügungsparks.
-
-<Rotting Heights>
-STR_SCNR    :Rotting Heights
-STR_PARK    :Rotting Heights
-STR_DTLS    :Überwuchert und verfallen. Können Sie diesen einst großartigen Vergnügungspark wieder zum Leben erwecken?
-
-<Fiasco Forest>
-STR_SCNR    :Fiasco Forest
-STR_PARK    :Fiasco Forest
-STR_DTLS    :Hier gibt es fast nur gefährliche und schlecht geplante Attraktionen. Sie haben nur sehr begrenzte finanzielle Mittel und wenig Zeit, die Probleme zu beheben und den Park umzukrempeln.
-
-<Pickle Park>
-STR_SCNR    :Pickle Park
-STR_PARK    :Pickle Park
-STR_DTLS    :Die strengen örtlichen Ämter erlauben keinerlei Werbung oder Propaganda. Dieser Park kann also nur durch seinen Ruf zum Erfolg gelangen.
-
-<Giggle Downs>
-STR_SCNR    :Giggle Downs
-STR_PARK    :Giggle Downs
-STR_DTLS    :Eine vierspurige Bahn mit Renncharakter ist das Herzstück dieses aufstrebenden Parks.
-
-<Mineral Park>
-STR_SCNR    :Mineral Park
-STR_PARK    :Mineral Park
-STR_DTLS    :Verwandeln Sie diesen verlassenen Steinbruch in einen Ort, der Touristen anzieht, die den besonderen Kick suchen.
-
-<Coaster Crazy>
-STR_SCNR    :Coaster Crazy
-STR_PARK    :Coaster Crazy
-STR_DTLS    :Sie haben nur begrenzt Geld, aber jede Menge Zeit, aus diesem Berggelände einen riesigen Achterbahn-Park zu machen.
-
-<Urban Park>
-STR_SCNR    :Urban Park
-STR_PARK    :Urban Park
-STR_DTLS    :Ein winzig kleiner Park hat mit der nahe gelegenen Stadt vereinbart, dass er sich durch die Stadt hindurch ausbreiten darf.
-
-<Geoffrey Gardens>
-STR_SCNR    :Geoffrey Gardens
-STR_PARK    :Geoffrey Gardens
-STR_DTLS    :Eine große gepflegte Parkanlage soll in einen erfolgreichen Themenpark umgestaltet werden.
-
-
-## Loopy Landscapes
-<Iceberg Islands>
-STR_SCNR    :Iceberg Islands
-STR_PARK    :Iceberg Islands
-STR_DTLS    :Eine Anzahl Eisberge bilden die kalte Umgebung dieses anspruchsvollen Parkprojekts.
-
-<Volcania>
-STR_SCNR    :Volcania
-STR_PARK    :Volcania
-STR_DTLS    :Ein untätiger Vulkan fordert geradezu heraus, an ihm eine Achterbahnanlage zu bauen.
-
-<Arid Heights>
-STR_SCNR    :Arid Heights
-STR_PARK    :Arid Heights
-STR_DTLS    :Ohne jegliche finanzielle Einschränkungen sollen Sie diesen Wüstenpark ausbauen und dabei die Besucher bei Laune halten.
-
-<Razor Rocks>
-STR_SCNR    :Razor Rocks
-STR_PARK    :Razor Rocks
-STR_DTLS    :Ihre Aufgabe ist es, zwischen den zerklüfteten Felsen einen Park mit dicht gedrängten Achterbahnen zu bauen.
-
-<Crater Lake>
-STR_SCNR    :Crater Lake
-STR_PARK    :Crater Lake
-STR_DTLS    :Ein großer See in einem alten Krater ist Ausgangspunkt für diesen Park.
-
-<Vertigo Views>
-STR_SCNR    :Vertigo Views
-STR_PARK    :Vertigo Views
-STR_DTLS    :Dieser große Park besitzt bereits eine ausgezeichnete Hyper-Achterbahn, aber Ihre Aufgabe ist es, die Erträge beträchtlich zu steigern.
-
-<Paradise Pier 2>
-STR_SCNR    :Paradise Pier 2
-STR_PARK    :Paradise Pier 2
-STR_DTLS    :Paradise Pier hat sein Netz von Spazierwegen über dem Meer erweitert. Sie sollen den Park erweitern, indem Sie den neu gewonnenen Platz nutzen.
-
-<Dragon's Cove>
-STR_SCNR    :Dragon’s Cove
-STR_PARK    :Dragon’s Cove
-STR_DTLS    :Eine Meeresbucht ist der Rahmen für dieses anspruchsvolle Achterbahn-Bauvorhaben.
-
-<Good Knight Park>
-STR_SCNR    :Good Knight Park
-STR_PARK    :Good Knight Park
-STR_DTLS    :Ein Schloss mit ein paar Achterbahnen soll zu einem großen Vergnügungspark entwickelt werden.
-
-<Wacky Warren>
-STR_SCNR    :Wacky Warren
-STR_PARK    :Wacky Warren
-STR_DTLS    :Ein Park, dessen Gehwege und Achterbahnen größtenteils unterirdisch angelegt sind.
-
-<Grand Glacier>
-STR_SCNR    :Grand Glacier
-STR_PARK    :Grand Glacier
-STR_DTLS    :Es steht Ihnen ein Gletschertal zur Verfügung, das in einen Vergnügungspark zu verwandeln ist.
-
-<Crazy Craters>
-STR_SCNR    :Crazy Craters
-STR_PARK    :Crazy Craters
-STR_DTLS    :In einer weit entfernten Welt, wo man Geld nicht braucht, sollen Sie ein Unterhaltungszentrum bauen, damit die Leute glücklich und zufrieden bleiben.
-
-<Dusty Desert>
-STR_SCNR    :Dusty Desert
-STR_PARK    :Dusty Desert
-STR_DTLS    :Fünf Achterbahnen müssen in diesem Wüstenpark fertiggestellt werden.
-
-<Woodworm Park>
-STR_SCNR    :Woodworm Park
-STR_PARK    :Woodworm Park
-STR_DTLS    :In diesem historischen Park dürfen nur Attraktionen im altmodischen Stil gebaut werden.
-
-<Icarus Park>
-STR_SCNR    :Icarus Park
-STR_PARK    :Icarus Park
-STR_DTLS    :Verbessern Sie diesen außerirdischen Park, damit höchste Erträge erzielt werden.
-
-<Sunny Swamps>
-STR_SCNR    :Sunny Swamps
-STR_PARK    :Sunny Swamps
-STR_DTLS    :In diesem nach Themen angelegten Park gibt es zwar verschiedene Attraktionen, aber noch viel Platz für Erweiterungen.
-
-<Frightmare Hills>
-STR_SCNR    :Frightmare Hills
-STR_PARK    :Frightmare Hills
-STR_DTLS    :Ein Gruselpark mit einer Riesenachterbahn als Herzstück.
-
-<Thunder Rocks>
-STR_SCNR    :Thunder Rocks
-STR_PARK    :Thunder Rocks
-STR_DTLS    :Zwei enorme Gesteinsbrocken ragen aus dem Wüstensand, auf denen mit den ersten Bauten für einen Vergnügungspark bereits begonnen wurde.
-
-<Octagon Park>
-STR_SCNR    :Octagon Park
-STR_PARK    :Octagon Park
-STR_DTLS    :In diesem weitläufigen Park sollen Sie zehn große Achterbahnen entwerfen und konstruieren.
-
-<Pleasure Island>
-STR_SCNR    :Pleasure Island
-STR_PARK    :Pleasure Island
-STR_DTLS    :Diese lange, schmale Insel ist Anreiz genug, eine Auswahl an Achterbahnen zu errichten.
-
-<Icicle Worlds>
-STR_SCNR    :Icicle Worlds
-STR_PARK    :Icicle Worlds
-STR_DTLS    :Eine Eislandschaft soll in einen florierenden Vergnügungspark verwandelt werden.
-
-<Southern Sands>
-STR_SCNR    :Southern Sands
-STR_PARK    :Southern Sands
-STR_DTLS    :Ein Park in der Wüste mit ein paar durchdachten Achterbahnen steht Ihnen zur Verfügung und soll erweitert werden.
-
-<Tiny Towers>
-STR_SCNR    :Tiny Towers
-STR_PARK    :Tiny Towers
-STR_DTLS    :In diesem winzigen Park sollten Sie die fünf angefangenen Achterbahnen fertigstellen.
-
-<Nevermore Park>
-STR_SCNR    :Nevermore Park
-STR_PARK    :Nevermore Park
-STR_DTLS    :Ein großer Park mit einem neuartigen Transportsystem, das durch die Randbereiche führt.
-
-<Pacifica>
-STR_SCNR    :Pacifica
-STR_PARK    :Pacifica
-STR_DTLS    :Diese große Insel steht zu Ihrer Verfügung, machen Sie einen Vergnügungspark daraus.
-
-<Urban Jungle>
-STR_SCNR    :Urban Jungle
-STR_PARK    :Urban Jungle
-STR_DTLS    :Ein gigantischer, verlassener Wolkenkratzer ist eine einmalige Gelegenheit für einen Vergnügungsparkbetreiber.
-
-<Terror Town>
-STR_SCNR    :Terror Town
-STR_PARK    :Terror Town
-STR_DTLS    :Aus diesem Stadtgebiet können Sie einen Vergnügungspark zaubern.
-
-<Megaworld Park>
-STR_SCNR    :Megaworld Park
-STR_PARK    :Megaworld Park
-STR_DTLS    :Ein ausgedehnter Park, der bereits mit Attraktionen vollgepackt ist, bedarf der Verbesserung.
-
-<Venus Ponds>
-STR_SCNR    :Venus Ponds
-STR_PARK    :Venus Ponds
-STR_DTLS    :Auf einem weit entfernten Planeten soll dieses Stück Land in einen Vergnügungspark umgewandelt werden.
-
-<Micro Park>
-STR_SCNR    :Micro Park
-STR_PARK    :Micro Park
-STR_DTLS    :Versuchen Sie, den kleinsten Park der Welt anzulegen und dabei möglichst viel Gewinn zu erzielen.
-
-## Real Parks from RCT1
-# None of them had details
-<Alton Towers>
-STR_SCNR    :Alton Towers
-STR_PARK    :Alton Towers
-STR_DTLS    :
-
-<Heide-Park>
-STR_SCNR    :Heide-Park
-STR_PARK    :Heide-Park
-STR_DTLS    :
-
-<Blackpool Pleasure Beach>
-STR_SCNR    :Blackpool Pleasure Beach
-STR_PARK    :Blackpool Pleasure Beach
-STR_DTLS    :
-
-## Misc parks from RCT1
-# Had no details
-<Fort Anachronism>
-STR_SCNR    :Fort Anachronism
-STR_PARK    :Fort Anachronism
-STR_DTLS    :
-
-###########
-# Scenery #
-###########
-
-## Start OpenRCT2 Official
-[TTPIRF05]
-STR_NAME    :Dach
-
-## End of OpenRCT2 Official
-
-###############################################################################
-## RCT2 Scenarios
-###############################################################################
-<Alpine Adventures>
-STR_SCNR    :Bergabenteuer
-STR_PARK    :Bergabenteuer
-STR_DTLS    :Verwandeln Sie einen kleinen Bergskiort in einen Schnee-Themenpark
-
-<Amity Airfield>
-STR_SCNR    :Amity-Flugplatz
-STR_PARK    :Amity-Flugplatz
-STR_DTLS    :Bauen Sie einen Vergnügungspark mit dem Thema „Fliegen“ auf diesem verlassenen Flughafen
-
-<Botany Breakers>
-STR_SCNR    :Kahlschlag
-STR_PARK    :Kahlschlag
-STR_DTLS    :Ihre Aufgabe besteht darin, einen gewinnträchtigen Park auf dieser paradiesischen Insel zu errichten
-
-<Build your own Six Flags Belgium>
-STR_SCNR    :Bauen Sie Ihren eigenen Six Flags Belgien
-STR_PARK    :Six Flags Belgien
-STR_DTLS    :Bauen Sie Ihre eigene Version dieses europäischen Six-Flags-Parks
-
-<Build your own Six Flags Great Adventure>
-STR_SCNR    :Bauen Sie Ihr eigenes Six Flags Great Adventure
-STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Nutzen Sie Ihre Entwurfsfähigkeiten, um diesen Six-Flags-Park nachzubauen
-
-<Build your own Six Flags Holland>
-STR_SCNR    :Bauen Sie Ihren eigenen Six Flags Holland
-STR_PARK    :Six Flags Holland
-STR_DTLS    :Bauen Sie diesen europäischen Six-Flags-Park nach Ihren Wünschen
-
-<Build your own Six Flags Magic Mountain>
-STR_SCNR    :Bauen Sie Ihren eigenen Six Flags Magic Mountain
-STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Bauen Sie Ihre eigene Version dieses riesigen Six-Flags-Parks
-
-<Build your own Six Flags Park>
-STR_SCNR    :Bauen Sie Ihren eigenen Six-Flags-Park
-STR_PARK    :Six Flags
-STR_DTLS    :Setzen Sie Ihren eigenen Entwurf eines Six-Flags-Park um. Bauen Sie entweder Bahnen aus anderen Six-Flags-Parks oder entwerfen und bauen Sie Ihre eigenen Bahnen
-
-<Build your own Six Flags over Texas>
-STR_SCNR    :Bauen Sie Ihren eigenen Six Flags over Texas
-STR_PARK    :Six Flags over Texas
-STR_DTLS    :Sie fangen von vorne an, diesen Six-Flags-Park zu bauen
-
-<Bumbly Bazaar>
-STR_SCNR    :Kleinbasar
-STR_PARK    :Kleinbasar
-STR_DTLS    :Sie fangen mit einem kleinen Basar an und müssen die Gewinne aus Läden und Ständen steigern, damit Sie Attraktionen und Achterbahnen bauen können, um weitere Kunden anzuziehen
-
-<Crazy Castle>
-STR_SCNR    :Verrückte Burg
-STR_PARK    :Verrückte Burg
-STR_DTLS    :Sie haben eine große Burg geerbt - Ihr Ziel besteht darin, sie in einen kleinen Themenpark umzubauen.
-
-<Dusty Greens>
-STR_SCNR    :Dusty Greens
-STR_PARK    :Dusty Greens
-STR_DTLS    :Dusty Greens liegt in der Nähe eines Autobahnkreuzes in der Wüste und bietet somit die Gelegenheit, einen kleinen Golfort in einen expandierenden Themenpark umzuwandeln
-
-<Electric Fields>
-STR_SCNR    :Elektrische Felder
-STR_PARK    :Elektrische Felder
-STR_DTLS    :Sie haben eine kleine Farm geerbt, und Ihre Aufgabe besteht darin, einen kleinen Themenpark zwischen den Feldern und Farmgebäuden zu bauen
-
-<Extreme Heights>
-STR_SCNR    :Extreme Höhen
-STR_PARK    :Extreme Höhen
-STR_DTLS    :Sie sind frei von finanziellen Einschränkungen und müssen diesen Wüstenpark erweitern, um Menschen anzuziehen, die den ultimativen Kick suchen
-
-<Factory Capers>
-STR_SCNR    :Fabrikkapriolen
-STR_PARK    :Fabrikkapriolen
-STR_DTLS    :Ein verlassener Fabrikkomplex bietet die Gelegenheit, einen Vergnügungspark mit einem Maschinenthema zu bauen
-
-<Fungus Woods>
-STR_SCNR    :Fungus Woods
-STR_PARK    :Fungus Woods
-STR_DTLS    :Sie sind ausschließlich auf ältere Holzbahnen beschränkt und müssen einen expandierenden Themenpark in Fungus Woods errichten
-
-<Ghost Town>
-STR_SCNR    :Geisterstadt
-STR_PARK    :Geisterstadt
-STR_DTLS    :Sie wurden von einer großen Vergnügungsparkkette angeheuert und müssen für sie einen riesigen Achterbahnpark rings um eine verlassene Minenstadt bauen
-
-<Gravity Gardens>
-STR_SCNR    :Schwerkraftgärten
-STR_PARK    :Schwerkraftgärten
-STR_DTLS    :Ihre Aufgabe besteht darin, einen Achterbahnpark in die schönen Schwerkraftgärten zu bauen. Keine anderen Attraktionen - nur Achterbahnen!
-
-<Infernal Views>
-STR_SCNR    :Höllenaussicht
-STR_PARK    :Höllenaussicht
-STR_DTLS    :Ein Park, der sich auf einem gefährlichen Lavafelsen mit Magmaströmen befindet
-
-<Lucky Lake>
-STR_SCNR    :Glückssee
-STR_PARK    :Glückssee
-STR_DTLS    :Bei den unbegrenzten Geldmitteln aber der herausfordernden Seelage wird es eine große Aufgabe sein, diesen Park zu erweitern und verwalten
-
-<Rainbow Summit>
-STR_SCNR    :Regenbogen-Gipfel
-STR_PARK    :Regenbogen-Gipfel
-STR_DTLS    :Dieser Park wurde auf einem Hügel errichtet, und es darf nichts Hohes darauf gebaut werden. Können Sie den Park vergrößern und ihn zu einem Erfolg machen?
-
-<Six Flags Belgium>
-STR_SCNR    :Six Flags Belgien
-STR_PARK    :Six Flags Belgien
-STR_DTLS    :Versuchen Sie sich an der Verwaltung und Verbesserung dieses Six-Flags-Parks
-
-<Six Flags Great Adventure>
-STR_SCNR    :Six Flags Great Adventure
-STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Bauen Sie die fehlenden Six-Flags-Bahnen, oder erstellen Sie Ihre eigenen Entwürfe, um den Park zu verbessern! Aber vergessen Sie nicht Ihr endgültiges Ziel - mehr Besucher in den Park zu bekommen!
-
-<Six Flags Holland>
-STR_SCNR    :Six Flags Holland
-STR_PARK    :Six Flags Holland
-STR_DTLS    :Versuchen Sie sich an der Verwaltung und Verbesserung dieses Six-Flags-Parks
-
-<Six Flags Magic Mountain>
-STR_SCNR    :Six Flags Magic Mountain
-STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Bauen Sie die fehlenden Six-Flags-Bahnen, oder erstellen Sie Ihre eigenen Entwürfe, um den Park zu verbessern! Aber vergessen Sie nicht Ihr endgültiges Ziel - das Darlehen zurückzuzahlen und dabei den Verkehrswert hoch zu halten!
-
-<Six Flags over Texas>
-STR_SCNR    :Six Flags over Texas
-STR_PARK    :Six Flags over Texas
-STR_DTLS    :Bauen Sie die fehlenden Six-Flags-Bahnen, oder erstellen Sie Ihre eigenen Entwürfe, um den Park zu verbessern! Aber vergessen Sie nicht Ihr endgültiges Ziel - mehr Besucher in den Park zu bekommen!
-
-###############################################################################
-## Wacky Worlds Scenarios
-###############################################################################
-<Africa - African Diamond Mine>
-STR_SCNR    :Die Minen Afrikas
-STR_PARK    :Die Minen Afrikas
-STR_DTLS    :Sie haben eine aufgegebene Diamantenmine geerbt und finden einen wertvollen Diamanten. Sie beschließen, das Geld in einen weltberühmten Themenpark zu investieren.
-
-<Africa - Oasis>
-STR_SCNR    :Fata Morgana
-STR_PARK    :Fata Morgana
-STR_DTLS    :In der Wüste wurde eine Oase entdeckt, die der ideale Standort für einen Vergnügungspark wäre. Transportmittel zur Oase wurden zur Verfügung gestellt.
-
-<Africa - Victoria Falls>
-STR_SCNR    :Über die Kante
-STR_PARK    :Über die Kante
-STR_DTLS    :Ein Damm wurde gebaut und erzeugt große Mengen an billigem Strom, mit dem Sie einen Park betreiben können. Sie müssen allerdings einen hohen Park-Verkehrswert erreichen, um das Darlehen für den Damm zurückzahlen zu können.
-
-<Antarctic - Ecological Salvage>
-STR_SCNR    :Abenteuer im Eis
-STR_PARK    :Abenteuer im Eis
-STR_DTLS    :Sie sollen eine alte Ölraffinerie, die den Umweltschützern ein Dorn im Auge ist, in eine erstklassige Touristenattraktion verwandeln. Das Land ist günstig, doch die Darlehenszinsen sind hoch. Sie können aber die alten Gebäude verkaufen.
-
-<Asia - Great Wall of China Tourism Enhancement>
-STR_SCNR    :Große Mauer von China
-STR_PARK    :Große Mauer von China
-STR_DTLS    :Die Behörden haben entschieden, noch mehr Touristen zur Großen Mauer zu locken, und wollen auf einem angrenzenden Gebiet einen Themenpark errichten. Geld spielt keine Rolle
-
-<Asia - Japanese Coastal Reclaim>
-STR_SCNR    :Okinawa-Küste
-STR_PARK    :Okinawa-Küste
-STR_DTLS    :In einem vorhandenen Park herrscht Platzmangel, Sie müssen also dem Meer neues Land abringen. Dafür haben Sie ein Darlehen aufgenommen. Die maximale Bauhöhe ist aufgrund des instabilen Untergrunds und der Erdbeben beschränkt.
-
-<Asia - Maharaja Palace>
-STR_SCNR    :Maharadscha-Park
-STR_PARK    :Maharadscha-Park
-STR_DTLS    :Der Maharadscha hat Sie damit beauftragt, die örtlichen Massen zu unterhalten. Errichten Sie einen Park, der seine Inspiration aus dem Palast des Maharadschas bezieht.
-
-<Australasia - Ayers Rock>
-STR_SCNR    :Ayers-Abenteuer
-STR_PARK    :Ayers-Abenteuer
-STR_DTLS    :Sie helfen den Aborigines, im Rahmen eines Programms zur Kulturförderung einen Vergnügungspark zu bauen. Sie müssen eine große Besucherzahl erreichen, um den Leuten das einzigartige kulturelle Erbe der Aborigines nahe zu bringen.
-
-<Australasia - Fun at the Beach>
-STR_SCNR    :Strand-Party
-STR_PARK    :Strand-Party
-STR_DTLS    :Der Meerespark eines örtlichen Unternehmers hat Bankrott gemacht. Sie besitzen bereits einen kleinen Park und möchten den anderen dazukaufen. Um die benötigten Gelder aufzutreiben, müssen Sie zunächst Ihren kleinen Park ausbauen.
-
-<Europe - European Cultural Festival>
-STR_SCNR    :Europäisches Happening
-STR_PARK    :Europäisches Happening
-STR_DTLS    :Sie wurden engagiert, um eine kulturelle Besucherattraktion in Europa zu leiten, und müssen die Anzahl der Gäste steigern, um die EU-Subventionen bis zum Ende der Amtsperiode des aktuellen Europäischen Parlaments zurückzahlen zu können.
-
-<Europe - Renovation>
-STR_SCNR    :Wie Phönix aus der Asche
-STR_PARK    :Wie Phönix aus der Asche
-STR_DTLS    :Ein alter Vergnügungspark befindet sich in desolatem Zustand. Sie erhalten EU-Fördermittel, um dem verwahrlosten Gebiet wieder zu seinem früheren Glanz zu verhelfen. Sie müssen den Park renovieren und die Fördermittel zurückzahlen.
-
-<N. America - Extreme Hawaiian Island>
-STR_SCNR    :Verrücktes Waikiki
-STR_PARK    :Verrücktes Waikiki
-STR_DTLS    :Die Bevölkerung von Hawaii hat das Surfen satt und sehnt sich nach etwas Abwechslung. Sie müssen einen Park bauen, um sie bei Laune zu halten und gleichzeitig dafür sorgen, dass die Insel für Touristen attraktiv bleibt.
-
-<North America - Grand Canyon>
-STR_SCNR    :Canyon-Katastrophen
-STR_PARK    :Canyon-Katastrophen
-STR_DTLS    :Sie müssen neben diesem Naturwunder einen Vergnügungspark errichten. Es herrscht Platzmangel, Sie können aber Land von den Indianern kaufen. Haben Sie Erfolg, sichern Sie damit der örtlichen Bevölkerung den Lebensunterhalt.
-
-<North America - Rollercoaster Heaven>
-STR_SCNR    :Achterbahnhimmel
-STR_PARK    :Achterbahnhimmel
-STR_DTLS    :Sie sind ein erfolgreicher Geschäftsmann, der sich eine vierjährige Auszeit genommen hat und nun einen Vergnügungspark errichten möchte, bei dem Geld keine Rolle spielt.
-
-<South America - Inca Lost City>
-STR_SCNR    :Gründer der Verlorenen Stadt
-STR_PARK    :Gründer der Verlorenen Stadt
-STR_DTLS    :Um der örtlichen Tourismusindustrie den Rücken zu stärken, müssen Sie einen Vergnügungspark konstruieren, der sich harmonisch in die Umgebung einfügt.
-
-<South America - Rain Forest Plateau>
-STR_SCNR    :Rummel im Regenwald
-STR_PARK    :Rummel im Regenwald
-STR_DTLS    :Platz ist Mangelware im kostbaren Regenwald - Sie müssen so viele Attraktionen wie möglich auf der existierenden Lichtung unterbringen, um eine rentable Alternative zur örtlichen Holzindustrie zu schaffen.
-
-<South America - Rio Carnival>
-STR_SCNR    :Zauberei am Zuckerhut
-STR_PARK    :Zauberei am Zuckerhut
-STR_DTLS    :Sie leiten einen kleinen Vergnügungspark in der Nähe von Rio. Als die Bank plötzlich das Ihnen gewährte Darlehen zurückfordert, müssen Sie einen Weg finden, Ihre Einnahmen rasch zu steigern, um diese unerwarteten Schulden zurückzuzahlen.
-
-###############################################################################
-## Time Twister Scenarios
-###############################################################################
-<Dark Age - Castle>
-STR_SCNR    :Felsenschloss
-STR_PARK    :Felsenschloss
-STR_DTLS    :Einige Mitglieder der Gesellschaft zur Nachstellung von Schlachten nehmen ihr Hobby ziemlich ernst. Sie haben Sie damit beauftragt, einen Freizeitpark Finsteres Mittelalter auf den Gründen des Felsenschlosses zu bauen.
-
-<Dark Age - Robin Hood>
-STR_SCNR    :Sherwood Forest
-STR_PARK    :Sherwood Forest
-STR_DTLS    :Um die Reichen finanziell zu erleichtern und das Geld den Bedürftigen zukommen zu lassen, haben Sie und Ihre Gespielen beschlossen, im Sherwood Forest einen Freizeitpark zu bauen.
-
-<Future - First Encounters>
-STR_SCNR    :Außerirdische Extravaganz
-STR_PARK    :Außerirdische Extravaganz
-STR_DTLS    :Auf einem fernen Planeten ist Leben entdeckt worden. Bauen Sie einen außerirdischen Freizeitpark, um die unerwartet heftige Hysterie in bare Münze umzuwandeln.
-
-<Future - Future World>
-STR_SCNR    :Zwillingsstadt
-STR_PARK    :Zwillingsstadt
-STR_DTLS    :Beweisen Sie Ihre innovative, utopische Vision der Zukunft - errichten Sie einen futuristischen Freizeitpark mit topmodernen Attraktionen.
-
-<Mythological - Animatronic Film Set>
-STR_SCNR    :Animatronic-Possen
-STR_PARK    :Animatronic-Possen
-STR_DTLS    :Ihre Aufgabe ist, einen bestehenden Freizeitpark zu verbessern, der auf einem alten Filmgelände gebaut wurde. Bauen Sie eine Gedenkstätte für die Pioniere der Stop-Motion, die die Mystikwesen als Erste ins Kino brachten.
-
-<Mythological - Cradle of Civilisation>
-STR_SCNR    :Mythologischer Wahnsinn
-STR_PARK    :Mythologischer Wahnsinn
-STR_DTLS    :Sie besitzen eine Insel von besonderem architektonischen Wert. Sie haben beschlossen, ihre Erhaltung durch einen Freizeitpark zu finanzieren, der sich mit dem reichen mythologischen Erbe der Gegend befasst.
-
-<Prehistoric - After the Asteroid>
-STR_SCNR    :Kratergemetzel
-STR_PARK    :Kratergemetzel
-STR_DTLS    :Sie besitzen einen alten, verstaubten Meteoritenkrater. In Ihrem unternehmerischen Geist haben Sie beschlossen, einen Asteroiden-Freizeitpark zu bauen und Ihr scheinbar wertloses Land in eine Geldanlage umzuwandeln.
-
-<Prehistoric - Jurassic Safari>
-STR_SCNR    :Achtersaurus
-STR_PARK    :Achtersaurus
-STR_DTLS    :Sie haben die Aufgabe, einen Jurassic-Freizeitpark zu bauen. Damit Ihre Besucher optimalen Zugang zu den exotischen Pflanzen und Tieren haben, müssen Sie Attraktionen errichten, die über und in die Täler führen.
-
-<Prehistoric - Stone Age>
-STR_SCNR    :Felswanderungen
-STR_PARK    :Felswanderungen
-STR_DTLS    :Um den Autobahnbauern ein Schnippchen zu schlagen und die alten Steinkreise zu erhalten, müssen Sie einen Steinzeitpark bauen und ihn profitabel machen. Besucher anzulocken wird schwer, weil das Gelände unwirtlich ist.
-
-<Roaring Twenties - Prison Island>
-STR_SCNR    :Alcatraz
-STR_PARK    :Alcatraz
-STR_DTLS    :Die berüchtigte Gefängnisinsel - die einst überquoll vor Schwarzhändlern und Gaunern - steht jetzt zum Verkauf. Sie haben beschlossen, sie in eine 1A-Touristenattraktion zu verwandeln. Geld spielt keine Rolle
-
-<Roaring Twenties - Schneider Cup>
-STR_SCNR    :Schneider-Ufer
-STR_PARK    :Schneider-Ufer
-STR_DTLS    :In ein paar Jahren ist das 75. Jubiläum des Sieges Ihres Großvaters im Schneider-Cup. Ihm zu Ehren bauen Sie einen Freizeitpark auf der berühmten Wasserflugzeug-Rennstrecke.
-
-<Roaring Twenties - Skyscrapers>
-STR_SCNR    :Metropolis
-STR_PARK    :Metropolis
-STR_DTLS    :Sie besitzen ein Gelände in der Nähe des flach gebauten Teils der Stadt. Um aus Ihrem Besitz das Beste zu machen, bauen Sie einen Wolkenkratzer-Freizeitpark im hochragenden Stil der Art Déco-Architektur der Zwanziger Jahre.
-
-<Rock 'n' Roll - Flower Power>
-STR_SCNR    :Woodstock
-STR_PARK    :Woodstock
-STR_DTLS    :Auf Ihrem Land findet jährlich ein großes Musikfestival statt. Bauen Sie einen hippen Freizeitpark, um das freidenkende Publikum bei Laune zu halten.
-
-<Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock-’n’-Roll-Revival
-STR_PARK    :Rock-’n’-Roll-Revival
-STR_DTLS    :Dieser Freizeitpark ist ein wenig in die Jahre gekommen. Helfen Sie dem Besitzer, ihm einen Rock-’n’-Roll-Anstrich zu geben und ihn zu einem beliebten Ausflugsziel zu machen.
-
-###############################################################################
-## Official Custom Content Scenarios
-###############################################################################
-<Panda World>
-STR_SCNR    :Pandawelt
-STR_PARK    :Pandawelt
-STR_DTLS    :Bauen Sie weitere Fahrgeschäfte und ziehen Sie neue Gäste in diesem Park im Pandastil an
-
-<Tycoon Park>
-STR_SCNR    :Tycoon Park
-STR_PARK    :Tycoon Park
-STR_DTLS    :
-
-###
-<UCES Halloween>
-STR_SCNR    :Cemetery Ridge
-STR_PARK    :Cemetery Ridge
-STR_DTLS    :Es ist Halloween, UCES-Halloween. Kürbisse kreischen in der kalten toten Nacht! Dieser Friedhof ist in Gefahr, und es liegt an Ihnen, ihn zu retten, während Sie die Toten in Frieden ruhen lassen. Können Sie die Geister in ihren Gräbern halten und Ihren Kunden das Fürchten lehren?{NEWLINE}Autor: Squid
-
-###############################################################################
-## UCES: The Time Machine (2003)
-###############################################################################
-<Lighthouse of Alexandria by Katatude for UCES>
-STR_SCNR    :Der Leuchtturm von Alexandria
-STR_PARK    :Der Leuchtturm von Alexandria
-STR_DTLS    :Alexander erbaute die Stadt; Griechen, Römer, Ägypter hinterließen ihre Spuren. Aber die größte Ehre war ein Wunder der Antiken Welt - der Leuchtturm. Statten Sie ihm einen Besuch ab und bauen Sie einen Park.{NEWLINE}Autor: Katatude
-
-<Cleveland's Luna Park>
-STR_SCNR    :Luna Park, Cleveland
-STR_PARK    :Luna Park
-STR_DTLS    :So, wie er am Eröffnungstag war, den 18. Mai 1905.{NEWLINE}Autor: Aetherwave
-
-<Mount Vesuvius 1700 A.D. by Katatude for UCES>
-STR_SCNR    :Vesuv
-STR_PARK    :Vesuv
-STR_DTLS    :Pompeji and Herculaneum wurden vom Vesuv in 79 v. Chr. zerstört. Besuchen Sie die Ausgrabungen und bauen Sie einen Park!{NEWLINE}Autor: Katatude
-
-<The Sandbox by Katatude for UCES>
-STR_SCNR    :Der Sandkasten
-STR_PARK    :Der Sandkasten
-STR_DTLS    :Was alle wollen - ein Sandkasten! Also schnappen Sie sich Eimer und Schaufel und bauen Sie einen Park!{NEWLINE}Autor: Katatude
-
-<Niagara Falls & Gorge by Katatude for UCES>
-STR_SCNR    :Niagarafälle u. Schlucht
-STR_PARK    :Niagarafälle
-STR_DTLS    :Die American Falls, Bridal Falls und die kanadischen Horseshoe Falls am Niagara, 1850.{NEWLINE}Autor: Katatude
-
-<Rocky Mountain Miners>
-STR_SCNR    :Rocky Mountain Miners
-STR_PARK    :Rocky Mountain Miners
-STR_DTLS    :Ein Steinschlag hat Ihre Eisenbahnstrecke beschädigt. Ihre Arbeiter sind auf die Suche nach Bodenschätzen gegangen. Gibt es Gold in Achterbahnen?{NEWLINE}Autoren: Squid, Buckone, Fossil
-
-<The Time Machine by Katatude for UCES>
-STR_SCNR    :Die Zeitmaschine
-STR_PARK    :Die Zeitmaschine
-STR_DTLS    :Die Zeitmaschine. Bauen Sie, wann Sie wollen, wo Sie wollen. Die Ewigkeit wartet. Alles ist relativ.{NEWLINE}Autor: Katatude
-
-<Tower of Babel>
-STR_SCNR    :Turmbau zu Babel
-STR_PARK    :Turmbau zu Babel
-STR_DTLS    :Wow! Schauen Sie, wohin uns die Zeitmaschine jetzt befördert hat! Wo sind alle hin?{NEWLINE}Autor: Fossil
-
-<Transformation>
-STR_SCNR    :Transformation
-STR_PARK    :Transformation
-STR_DTLS    :Wir haben auf Sie gewartet …{NEWLINE}Autor: Fossil
-
-<Urbis Incognitus>
-STR_SCNR    :Urbis Incognitus
-STR_PARK    :Urbis Incognitus
-STR_DTLS    :Die Römer haben keine Lust mehr auf langweilige Gladiatorenkämpfe. Geben Sie ihnen etwas aufregenderes; verwandeln Sie eine römische Stadt zum großartigsten Vergnügungspark aller Zeiten!{NEWLINE}Autor: Kaffe
-
-###############################################################################
-## UCES: Katy’s Dreamworld (2003)
-###############################################################################
-
-<Beneath the Christmas Tree by Katatude for UCES>
-STR_SCNR    :Unter dem Weihnachtsbaum
-STR_PARK    :Winterwunderland
-STR_DTLS    :Mama hat diese Szenerie unter unserem Baum gebaut. Jetzt möchte sie darin einen Park gebaut haben! Können Sie helfen?{NEWLINE}Autor: Katatude
-
-<Bigrock Blast>
-STR_SCNR    :Bigrock Blast
-STR_PARK    :Bigrock Blast
-STR_DTLS    :Nach einer Explosion bei der Bigrock Mining Co. haben die Einwohner von Bigrock einen Vergnügungspark gebaut, um ihre Stadt am Leben zu halten.{NEWLINE}Autoren: rbarclay u. buckone
-
-<Camp Mockingbird for UCES by Katatude>
-STR_SCNR    :Camp Mockingbird
-STR_PARK    :Camp Mockingbird
-STR_DTLS    :Nur $500/Woche in diesem Sommercamp! Ziehen Sie Ihre Spendierhosen an, haben Sie Spaß und bauen Sie einen Park.{NEWLINE}Autor: Katatude
-
-<Choo Choo Town>
-STR_SCNR    :Töff-Töff-Land
-STR_PARK    :Töff-Töff-Land
-STR_DTLS    :Mama! Papa! Ich will ins Töff-Töff-Land!{NEWLINE}Autor: Fossil
-
-<Dragon Islands>
-STR_SCNR    :Dracheninseln
-STR_PARK    :Dracheninseln
-STR_DTLS    :Dracheninseln? Ich bin mir nicht sicher, wie man da hinkommt …{NEWLINE}Autor: Fossil
-
-<Kiddy Karnival II>
-STR_SCNR    :Kiddie Karnival II
-STR_PARK    :Kiddie Karnival
-STR_DTLS    :Hallo Kinder! Lasst uns Spaß haben!{NEWLINE}Autoren: Piehead u. Fossil
-
-<Sand Dune>
-STR_SCNR    :Sanddüne
-STR_PARK    :Sanddüne
-STR_DTLS    :Als der Eigentümer eines kleinen Parks haben Sie sich ein größes Grundstück am Strand gekauft, um den Park zu erweitern, um mehr Gäste anzulocken, die schönen Sanddünen zu besuchen. Aber vorsicht: Sie dürfen die ökologisch fragilen Sanddünen nicht zerstören.{NEWLINE}Autor: rbarclay
+STR_6663    :Datumscheats
+STR_6664    :Datumscheats anzeigen
+STR_6665    :Natur-/Wettercheats
+STR_6666    :Natur-/Wettercheats anzeigen
+STR_6667    :Fauna
+STR_6668    :Personalcheats
+STR_6669    :Personalcheats anzeigen
+STR_6670    :Gastverhalten
+STR_6671    :„Reale“ Namen des Personals anzeigen
+STR_6672    :Zwischen der Anzeige „realer“ Namen des Personals und Personalnummern umschalten
+STR_6673    :Transluzent
+STR_6674    :{MONTH}, Jahr {COMMA16}
+STR_6675    :Peep-Namen
+STR_6676    :Es muss mindestens ein Peep-Namensobjekt ausgewählt werden
+STR_6677    :Strände um Wasserflächen hinzufügen
+STR_6678    :Höhenkartenquelle:
+STR_6679    :Flachland
+STR_6680    :Simplexrauschen
+STR_6681    :Höhenkartendatei
+STR_6682    :Kartengenerator – Generator
+STR_6683    :Kartengenerator – Terrain
+STR_6684    :Kartengenerator – Wasser
+STR_6685    :Kartengenerator – Wälder
+STR_6686    :Baum-Land-Verhältnis:
+STR_6687    :Min. Baumhöhe:
+STR_6688    :Max. Baumhöhe:
+STR_6689    :{UINT16}%
+STR_6690    :Minimale Landhöhe
+STR_6691    :Min. Landhöhe zwischen {COMMA16} und {COMMA16} eingeben
+STR_6692    :Maximale Landhöhe
+STR_6693    :Max. Landhöhe zwischen {COMMA16} und {COMMA16} eingeben
+STR_6694    :Minimale Baumhöhe
+STR_6695    :Min. Baumhöhe zwischen {COMMA16} und {COMMA16} eingeben
+STR_6696    :Maximale Baumhöhe
+STR_6697    :Max. Baumhöhe zwischen {COMMA16} und {COMMA16} eingeben
+STR_6698    :Baum-Land-Verhältnis
+STR_6699    :Baum-Land-Verhältnis zwischen {COMMA16} und {COMMA16} eingeben
+STR_6700    :Simplexbasisfrequenz
+STR_6701    :Basisfrequenz zwischen {COMMA2DP32} und {COMMA2DP32} eingeben
+STR_6702    :Simplexoktaven
+STR_6703    :Oktaven zwischen {COMMA16} und {COMMA16} eingeben
+STR_6704    :{COMMA2DP32}
+STR_6705    :Durchsuchen …
+STR_6706    :{WINDOW_COLOUR_2}Aktuelle Bilddatei: {BLACK}{STRING}
+STR_6707    :(keine ausgewählt)
+STR_6708    :Weiche Stärke
+STR_6709    :Weiche Stärke zwischen {COMMA16} und {COMMA16} eingeben

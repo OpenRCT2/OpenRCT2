@@ -15,6 +15,7 @@
 #include "../../../ride/Vehicle.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
@@ -1379,7 +1380,7 @@ static void ReverserRCTrackRightReverser(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1419,6 +1420,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(int32_t trackType)
             return ReverserRCTrackLeftReverser;
         case TrackElemType::RightReverser:
             return ReverserRCTrackRightReverser;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

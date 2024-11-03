@@ -14,6 +14,7 @@
 #include "../../../ride/TrackPaint.h"
 #include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
@@ -1015,7 +1016,7 @@ static void AirPoweredVerticalRCTrackOnridePhoto(
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1061,6 +1062,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRC(int32_t trackType
             return AirPoweredVerticalRCTrackBooster;
         case TrackElemType::OnRidePhoto:
             return AirPoweredVerticalRCTrackOnridePhoto;
+        default:
+            return nullptr;
     }
-    return nullptr;
 }

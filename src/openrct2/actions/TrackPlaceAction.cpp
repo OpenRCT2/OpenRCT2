@@ -19,18 +19,22 @@
 #include "../ride/TrackDesign.h"
 #include "../util/Math.hpp"
 #include "../world/ConstructionClearance.h"
+#include "../world/Footpath.h"
 #include "../world/MapAnimation.h"
 #include "../world/QuarterTile.h"
-#include "../world/Surface.h"
+#include "../world/Wall.h"
+#include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "RideSetSettingAction.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
 TrackPlaceAction::TrackPlaceAction(
-    RideId rideIndex, int32_t trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
-    int32_t seatRotation, SelectedLiftAndInverted liftHillAndAlternativeState, bool fromTrackDesign)
+    RideId rideIndex, OpenRCT2::TrackElemType trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed,
+    int32_t colour, int32_t seatRotation, SelectedLiftAndInverted liftHillAndAlternativeState, bool fromTrackDesign)
     : _rideIndex(rideIndex)
     , _trackType(trackType)
     , _rideType(rideType)
@@ -604,6 +608,8 @@ GameActions::Result TrackPlaceAction::Execute() const
             case TrackElemType::DiagBrakes:
                 trackElement->SetBrakeClosed(true);
                 break;
+            default:
+                break;
         }
         if (TrackTypeHasSpeedSetting(_trackType))
         {
@@ -634,8 +640,8 @@ GameActions::Result TrackPlaceAction::Execute() const
             {
                 if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gameState.Cheats.DisableClearanceChecks)
                 {
-                    for (int32_t chosenDirection = UtilBitScanForward(availableDirections); chosenDirection != -1;
-                         chosenDirection = UtilBitScanForward(availableDirections))
+                    for (int32_t chosenDirection = Numerics::bitScanForward(availableDirections); chosenDirection != -1;
+                         chosenDirection = Numerics::bitScanForward(availableDirections))
                     {
                         availableDirections &= ~(1 << chosenDirection);
                         CoordsXY tempLoc{ mapLoc.x, mapLoc.y };
@@ -715,6 +721,8 @@ GameActions::Result TrackPlaceAction::Execute() const
                 GameActions::ExecuteNested(&rideSetSetting);
                 break;
             }
+            default:
+                break;
         }
 
         switch (_trackType)
@@ -728,6 +736,8 @@ GameActions::Result TrackPlaceAction::Execute() const
                 [[fallthrough]];
             case TrackElemType::CableLiftHill:
                 ride->num_block_brakes++;
+                break;
+            default:
                 break;
         }
     }

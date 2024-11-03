@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../world/TileElement.h"
 #include "GameAction.h"
 
 struct SmallSceneryPlaceActionResult

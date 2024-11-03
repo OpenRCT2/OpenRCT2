@@ -1299,7 +1299,7 @@ constexpr std::array _objectTypeNames = {
     "Scenery groups",
     "Park entrances",
     "Water",
-    "ScenarioText",
+    "Scenario Text",
     "Terrain Surface",
     "Terrain Edges",
     "Stations",

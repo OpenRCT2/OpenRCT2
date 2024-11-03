@@ -13,13 +13,16 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../core/UnitConversion.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.Date.h"
 #include "../profiling/Profiling.h"
 #include "../scripting/ScriptEngine.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
-#include "../world/Surface.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Station.h"
@@ -352,7 +355,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
     }
 
     auto loc = state.Proximity;
-    track_type_t trackType = state.ProximityTrackType;
+    OpenRCT2::TrackElemType trackType = state.ProximityTrackType;
 
     TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
@@ -458,7 +461,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
     }
 
     auto loc = state.Proximity;
-    track_type_t trackType = state.ProximityTrackType;
+    OpenRCT2::TrackElemType trackType = state.ProximityTrackType;
 
     TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
@@ -862,6 +865,8 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
         case TrackElemType::LeftReverser:
         case TrackElemType::RightReverser:
             state.AmountOfReversers++;
+            break;
+        default:
             break;
     }
 }

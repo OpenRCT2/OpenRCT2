@@ -14,6 +14,8 @@
 #include "../entity/Guest.h"
 #include "../scenario/Scenario.h"
 #include "../world/Location.hpp"
+#include "../world/tile_element/TileElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "RideEntry.h"
 #include "Track.h"
 #include "Vehicle.h"

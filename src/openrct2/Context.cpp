@@ -74,7 +74,6 @@
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
-#include "util/Util.h"
 #include "world/Park.h"
 
 #include <chrono>
@@ -1567,11 +1566,6 @@ bool ContextLoadParkFromStream(void* stream)
     return GetContext()->LoadParkFromStream(static_cast<IStream*>(stream), "");
 }
 
-void OpenRCT2WriteFullVersionInfo(utf8* buffer, size_t bufferSize)
-{
-    String::Set(buffer, bufferSize, gVersionInfoFull);
-}
-
 void OpenRCT2Finish()
 {
     GetContext()->Finish();
@@ -1737,22 +1731,6 @@ void ContextInputHandleKeyboard(bool isTitle)
 void ContextQuit()
 {
     GetContext()->Quit();
-}
-
-bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize)
-{
-    try
-    {
-        std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc);
-        String::Set(outFilename, outSize, result.c_str());
-        return !result.empty();
-    }
-    catch (const std::exception& ex)
-    {
-        LOG_ERROR(ex.what());
-        outFilename[0] = '\0';
-        return false;
-    }
 }
 
 u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc)
