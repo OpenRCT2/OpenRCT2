@@ -1,4 +1,4 @@
-0.4.16 (in development)
+0.4.16 (2024-11-03)
 ------------------------------------------------------------------------
 - Feature: [#20810] New ride type: LSM Launched Roller Coaster.
 - Improved: [#22937] Add banked sloped turns and many other pieces to the Corkscrew, Hypercoaster and Lay-down Roller Coaster.
