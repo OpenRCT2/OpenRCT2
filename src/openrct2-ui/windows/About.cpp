@@ -233,7 +233,7 @@ namespace OpenRCT2::Ui::Windows
             textCoords += ScreenCoordsXY(
                 0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_FAIRGROUND_ORGAN, ft2, tp) + 5); // Fairground organ
             textCoords += ScreenCoordsXY(
-                0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_1, ft2, tp)); // Special Thanks
+                0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_1, ft2, tp) + 7); // Special Thanks
             textCoords += ScreenCoordsXY(
                 0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_2, ft2, tp)); // Company names
         }
