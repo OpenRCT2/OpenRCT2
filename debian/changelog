@@ -1,3 +1,27 @@
+openrct2 (0.4.16-develop-1) unstable; urgency=medium
+
+ * Feature: [#20810] New ride type: LSM Launched Roller Coaster.
+ * Improved: [#22937] Add banked sloped turns and many other pieces to the Corkscrew, Hypercoaster and Lay-down Roller Coaster.
+ * Improved: [#22967] Add medium and large half loops to the Wooden and Classic Wooden Roller Coasters.
+ * Improved: [#23010] Make AppImage compatible with Ubuntu 22.04 and Debian Bookworm again.
+ * Change: [#20810] Giga Coaster boosters and launched lift hill track pieces are now locked behind cheats.
+ * Fix: [#21221] Trains use unbanked sprites on flat to gentle diagonal banked track pieces.
+ * Fix: [#22615] Crash when drawing Space Rings with an invalid ride entry.
+ * Fix: [#22633] Crash when drawing loading screen with an outdated g2.dat.
+ * Fix: [#22908] Crash when passing through a door from an invalid wall type.
+ * Fix: [#22918] Zooming with keyboard moves the view off centre.
+ * Fix: [#22920] Crash when sacking a staff member.
+ * Fix: [#22921] Wooden RollerCoaster flat to steep railings appear in front of track in front of them.
+ * Fix: [#22962] Fuzzy horizontal-to-vertical line transitions in charts.
+ * Fix: [#23009] Scenarios from RCT Classic (.sea files) are not included in the scenario index.
+ * Fix: [#23015] Crash when loading a save game when the construction window is still open.
+ * Fix: [#23018] Crash when loading a new game when the construction window is still open.
+ * Fix: [#23023] Large scenery clearance height interpreted as negative when greater than 127.
+ * Fix: [#23044] "remove_unused_objects" command causes blank peep names.
+ * Fix: [#23048] Map generator allows map sizes out of range through text input.
+ * Fix: [#23058] [Plugin] Changing window colours doesn’t trigger the window to be fully redrawn.
+ * Fix: [#23085] LIM Launched Roller Coaster medium half loops clip into each other when built back-to-back.
+
 openrct2 (0.4.15-develop-1) unstable; urgency=medium
 
  * Feature: [#775] Add 2x and 4x zoom levels to software renderer (previously limited to OpenGL).
