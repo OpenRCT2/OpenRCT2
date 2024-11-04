@@ -79,6 +79,7 @@ static const std::string _operationKey = "operation";
 static const std::string _pathsKey = "paths";
 static const std::string _railingsKey = "railings";
 static const std::string _surfaceKey = "surface";
+static const std::string _directionKey = "slope_direction";
 
 static u8string ToOwnershipJsonKey(int ownershipType)
 {
@@ -159,6 +160,29 @@ static std::vector<TTileCoords> getCoordinates(const json_t& parameters)
         readCoordinate(parsedCoordinates, coordinatesArray);
     }
     return parsedCoordinates;
+}
+
+static Direction GetDirection(const json_t& parameters)
+{
+    if (!parameters.contains(_directionKey))
+    {
+        return INVALID_DIRECTION;
+    }
+    else if (!parameters[_directionKey].is_number())
+    {
+        OpenRCT2::Guard::Assert(0, "Fix direction must be a number");
+        return INVALID_DIRECTION;
+    }
+
+    Direction direction = OpenRCT2::Json::GetNumber<Direction>(parameters[_directionKey]);
+
+    if (direction > 3)
+    {
+        OpenRCT2::Guard::Assert(0, "Direction must be between 0 and 3");
+        return INVALID_DIRECTION;
+    }
+
+    return direction;
 }
 
 static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int ownershipType)
@@ -604,6 +628,7 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
         }
 
         auto coordinates = getCoordinates<TileCoordsXYZ>(pathFix);
+        Direction direction = GetDirection(pathFix);
 
         for (auto coordinate : coordinates)
         {
@@ -612,6 +637,11 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
             pathElement->SetSurfaceEntryIndex(surfaceObjIndex);
             pathElement->SetRailingsEntryIndex(railingsObjIndex);
+            if (direction != INVALID_DIRECTION)
+            {
+                pathElement->SetSloped(true);
+                pathElement->SetSlopeDirection(direction);
+            }
 
             FootpathQueueChainReset();
             FootpathConnectEdges(

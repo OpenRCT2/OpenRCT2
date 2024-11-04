@@ -13,6 +13,12 @@
             "railings": "rct2.footpath_railings.wood",
             "surface": "rct1.footpath_surface.crazy_paving",
             "coordinates": [ [ 83, 81, 22 ] ]
+        },
+        {
+            "railings": "rct2.footpath_railings.wood",
+            "surface": "rct1.footpath_surface.crazy_paving",
+            "coordinates": [ [ 85, 77, 22 ] ],
+            "slope_direction": 2
         }
     ]
 }
