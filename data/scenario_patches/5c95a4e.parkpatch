@@ -7,5 +7,12 @@
                 [ 11, 31 ], [ 68, 112 ], [ 72, 118 ]
             ]
         }
-    }
+    },
+    "paths": [
+        {
+            "railings": "rct2.footpath_railings.wood",
+            "surface": "rct1.footpath_surface.crazy_paving",
+            "coordinates": [ [ 83, 81, 22 ] ]
+        }
+    ]
 }

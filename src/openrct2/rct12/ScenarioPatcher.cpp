@@ -27,6 +27,7 @@
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TileElementType.h"
@@ -74,6 +75,11 @@ static const std::string _ridesKey = "rides";
 static const std::string _rideIdKey = "id";
 static const std::string _operationKey = "operation";
 
+// Path fix keys
+static const std::string _pathsKey = "paths";
+static const std::string _railingsKey = "railings";
+static const std::string _surfaceKey = "surface";
+
 static u8string ToOwnershipJsonKey(int ownershipType)
 {
     switch (ownershipType)
@@ -93,7 +99,33 @@ static u8string ToOwnershipJsonKey(int ownershipType)
     return {};
 }
 
-static std::vector<TileCoordsXY> getCoordinates(const json_t& parameters)
+static void readCoordinate(std::vector<TileCoordsXY>& out, const json_t& coordinatesArray)
+{
+    if (coordinatesArray.size() != 2)
+    {
+        OpenRCT2::Guard::Assert(0, "Fix coordinates sub array should have 2 elements");
+        return;
+    }
+
+    out.emplace_back(
+        OpenRCT2::Json::GetNumber<int32_t>(coordinatesArray[0]), OpenRCT2::Json::GetNumber<int32_t>(coordinatesArray[1]));
+}
+
+static void readCoordinate(std::vector<TileCoordsXYZ>& out, const json_t& coordinatesArray)
+{
+    if (coordinatesArray.size() != 3)
+    {
+        OpenRCT2::Guard::Assert(0, "Fix coordinates sub array should have 3 elements");
+        return;
+    }
+
+    out.emplace_back(
+        OpenRCT2::Json::GetNumber<int32_t>(coordinatesArray[0]), OpenRCT2::Json::GetNumber<int32_t>(coordinatesArray[1]),
+        OpenRCT2::Json::GetNumber<int32_t>(coordinatesArray[2]));
+}
+
+template<typename TTileCoords = TileCoordsXY>
+static std::vector<TTileCoords> getCoordinates(const json_t& parameters)
 {
     if (!parameters.contains(_coordinatesKey))
     {
@@ -113,7 +145,7 @@ static std::vector<TileCoordsXY> getCoordinates(const json_t& parameters)
         return {};
     }
 
-    std::vector<TileCoordsXY> parsedCoordinates;
+    std::vector<TTileCoords> parsedCoordinates;
     parsedCoordinates.reserve(coords.size());
     for (size_t i = 0; i < coords.size(); ++i)
     {
@@ -123,14 +155,8 @@ static std::vector<TileCoordsXY> getCoordinates(const json_t& parameters)
             return {};
         }
 
-        auto coordinatesPair = OpenRCT2::Json::AsArray(coords[i]);
-        if (coordinatesPair.size() != 2)
-        {
-            OpenRCT2::Guard::Assert(0, "Fix coordinates sub array should have 2 elements");
-            return {};
-        }
-        parsedCoordinates.emplace_back(
-            OpenRCT2::Json::GetNumber<int32_t>(coordinatesPair[0]), OpenRCT2::Json::GetNumber<int32_t>(coordinatesPair[1]));
+        auto coordinatesArray = OpenRCT2::Json::AsArray(coords[i]);
+        readCoordinate(parsedCoordinates, coordinatesArray);
     }
     return parsedCoordinates;
 }
@@ -517,6 +543,87 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
     }
 }
 
+static void ApplyPathFixes(const json_t& scenarioPatch)
+{
+    if (!scenarioPatch.contains(_pathsKey))
+    {
+        return;
+    }
+
+    if (!scenarioPatch[_pathsKey].is_array())
+    {
+        OpenRCT2::Guard::Assert(0, "Path fixes should be an array of arrays");
+        return;
+    }
+
+    auto pathFixes = OpenRCT2::Json::AsArray(scenarioPatch[_pathsKey]);
+    if (pathFixes.empty())
+    {
+        OpenRCT2::Guard::Assert(0, "Path fixes should not be an empty array");
+        return;
+    }
+
+    for (size_t i = 0; i < pathFixes.size(); ++i)
+    {
+        auto pathFix = pathFixes[i];
+
+        if (!pathFix.contains(_railingsKey))
+        {
+            OpenRCT2::Guard::Assert(0, "Path fixes should have railings");
+            return;
+        }
+
+        if (!pathFix.contains(_surfaceKey))
+        {
+            OpenRCT2::Guard::Assert(0, "Path fixes should have a surface");
+            return;
+        }
+
+        auto railings = OpenRCT2::Json::GetString(pathFix[_railingsKey]);
+        auto surface = OpenRCT2::Json::GetString(pathFix[_surfaceKey]);
+
+        if (_dryRun)
+        {
+            continue;
+        }
+
+        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto railingsObjIndex = objectManager.GetLoadedObjectEntryIndex(railings);
+        auto surfaceObjIndex = objectManager.GetLoadedObjectEntryIndex(surface);
+
+        if (railingsObjIndex == OBJECT_ENTRY_INDEX_NULL)
+        {
+            OpenRCT2::Guard::Assert(0, "Railings object not found");
+            return;
+        }
+
+        if (surfaceObjIndex == OBJECT_ENTRY_INDEX_NULL)
+        {
+            OpenRCT2::Guard::Assert(0, "Surface object not found");
+            return;
+        }
+
+        auto coordinates = getCoordinates<TileCoordsXYZ>(pathFix);
+
+        for (auto coordinate : coordinates)
+        {
+            auto* pathElement = TileElementInsert<PathElement>(coordinate.ToCoordsXYZ(), 0b1111);
+            OpenRCT2::Guard::Assert(pathElement != nullptr);
+
+            pathElement->SetSurfaceEntryIndex(surfaceObjIndex);
+            pathElement->SetRailingsEntryIndex(railingsObjIndex);
+
+            FootpathQueueChainReset();
+            FootpathConnectEdges(
+                coordinate.ToCoordsXY(), pathElement->as<TileElement>(),
+                GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            FootpathUpdateQueueChains();
+
+            MapInvalidateTileFull(coordinate.ToCoordsXY());
+        }
+    }
+}
+
 static u8string getScenarioSHA256(u8string_view scenarioPath)
 {
     auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
@@ -581,6 +688,7 @@ void OpenRCT2::RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8stri
     ApplySurfaceFixes(scenarioPatch);
     RemoveTileElements(scenarioPatch);
     ApplyRideFixes(scenarioPatch);
+    ApplyPathFixes(scenarioPatch);
 }
 
 void OpenRCT2::RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath)
