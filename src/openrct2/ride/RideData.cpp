@@ -452,11 +452,6 @@ TrackDrawerEntry getTrackDrawerEntry(const RideTypeDescriptor& rtd, bool isInver
     return descriptor.Regular;
 }
 
-int32_t RideTypeDescriptor::GetRelativeBoosterSpeed(const int32_t& absoluteSpeed) const
-{
-    return absoluteSpeed * 2 / LegacyBoosterSettings.BoosterSpeedFactor;
-}
-
 int32_t RideTypeDescriptor::GetAbsoluteBoosterSpeed(const int32_t& relativeSpeed) const
 {
     // BoosterSpeedFactor has valid values of 1, 2, 4 representing a 1/2, 1, and 2 multiplier of relative speed to absolute

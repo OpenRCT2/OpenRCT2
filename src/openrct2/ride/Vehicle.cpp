@@ -6836,13 +6836,10 @@ void Vehicle::Sub6DBF3E()
 
 static uint8_t GetLegacyBoosterSpeed(uint8_t rawSpeed, RideTypeDescriptor& vehicleRTD, RideTypeDescriptor& trackRTD)
 {
-    auto relativeSpeed = trackRTD.GetRelativeBoosterSpeed(rawSpeed);
-    relativeSpeed &= kLegacyBrakeSpeedMask;
-    auto finalSpeed = vehicleRTD.GetAbsoluteBoosterSpeed(relativeSpeed);
-    auto finalSpeed2 = (rawSpeed * vehicleRTD.LegacyBoosterSettings.BoosterSpeedFactor
-                        / trackRTD.LegacyBoosterSettings.BoosterSpeedFactor)
-        & (15 * vehicleRTD.LegacyBoosterSettings.BoosterSpeedFactor);
-    assert(finalSpeed == finalSpeed2);
+    // convert between speed regimes and mask to the highest 4 bits
+    auto finalSpeed = (rawSpeed * vehicleRTD.LegacyBoosterSettings.BoosterSpeedFactor
+                       / trackRTD.LegacyBoosterSettings.BoosterSpeedFactor)
+        & (kLegacyBrakeSpeedMask * vehicleRTD.LegacyBoosterSettings.BoosterSpeedFactor);
     return finalSpeed;
 }
 

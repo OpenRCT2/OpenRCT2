@@ -239,11 +239,12 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
             trackFlags = trackElement.element->AsTrack()->GetBrakeBoosterSpeed();
             if (track.type == TrackElemType::Booster)
             {
-                trackFlags = ride.GetRideTypeDescriptor().GetRelativeBoosterSpeed(trackFlags);
+                // convert absolute speed into legacy speed units
+                trackFlags *= 2 / ride.GetRideTypeDescriptor().LegacyBoosterSettings.BoosterSpeedFactor;
             }
 
             // check to ensure the value is serialisable. This warning will not apply to new track design format.
-            bool tooHigh = trackFlags > kLegacyBrakeSpeedMask;
+            bool tooHigh = trackFlags > kLegacyBrakeSpeedMax;
             bool tooPrecise = trackFlags & 1;
             if (tooPrecise || tooHigh)
             {
@@ -253,7 +254,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
             {
                 trackFlags += 1;
             }
-            trackFlags = std::min<uint8_t>(trackFlags, kLegacyBrakeSpeedMask);
+            trackFlags = std::min<uint8_t>(trackFlags, kLegacyBrakeSpeedMax);
 
             trackFlags /= kLegacyBrakeSpeedMultiplier;
             trackFlags &= 0xF;
