@@ -5448,8 +5448,12 @@ void Vehicle::ApplyNonStopBlockBrake()
 {
     if (velocity >= 0)
     {
-        // If the vehicle is below the speed limit
-        if (velocity < kBlockBrakeBaseSpeed)
+        /**
+         * Prior to Unify Booster Speeds, trains were clamped to kBlockBrakeBaseSpeed until the front car left the block brake.
+         * After Unify Booster Speeds, if the train is accelerated faster (because of a downhill or booster before the block
+         * brake) can accelerate.
+         */
+        if (velocity - HasFlag(VehicleFlags::LegacyBoosterSpeed) < kBlockBrakeBaseSpeed)
         {
             // Boost it to the fixed block brake speed
             velocity = kBlockBrakeBaseSpeed;
