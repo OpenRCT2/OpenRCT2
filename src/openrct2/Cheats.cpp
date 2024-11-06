@@ -57,7 +57,7 @@ void CheatsReset()
     gameState.Cheats.AllowSpecialColourSchemes = false;
     gameState.Cheats.MakeAllDestructible = false;
     gameState.Cheats.SelectedStaffSpeed = StaffSpeedCheat::None;
-    gameState.Cheats.ForcedParkRating = -1;                                 //Reuses previously implemented logic. -1 means cheat is off, any positive value means cheat is on
+    gameState.Cheats.ForcedParkRating = -1;
 }
 
 void CheatsSet(CheatType cheatType, int64_t param1 /* = 0*/, int64_t param2 /* = 0*/)
