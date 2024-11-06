@@ -47,6 +47,7 @@ struct CheatsState
     bool AllowSpecialColourSchemes;
     bool MakeAllDestructible;
     StaffSpeedCheat SelectedStaffSpeed;
+    int ForcedParkRating;
 };
 
 enum class CheatType : int32_t
