@@ -282,7 +282,7 @@ STR_0884    :Wczytaj krajobraz
 STR_0885    :Zapisz krajobraz
 STR_0887    :Wyjdź z edytora scenariuszy
 STR_0888    :Wyjdź z projektanta kolejek
-STR_0889    :Wyjdź z menadżera projektów tras
+STR_0889    :Wyjdź z menedżera projektów tras
 STR_0891    :Zrzut ekranu
 STR_0892    :Zrzut ekranu zapisany jako „{STRINGID}”
 STR_0893    :Zrzut ekranu nieudany!
@@ -2020,7 +2020,7 @@ STR_2815    :{WINDOW_COLOUR_2}Nagroda dla najczystszego parku
 STR_2816    :{WINDOW_COLOUR_2}Nagroda dla parku z najlepszymi kolejkami górskimi
 STR_2817    :{WINDOW_COLOUR_2}Nagroda dla parku o najlepszej wartości
 STR_2818    :{WINDOW_COLOUR_2}Nagroda dla najpiękniejszego parku
-STR_2819    :{WINDOW_COLOUR_2}Nagroda dla parku o najniższej wartości
+STR_2819    :{WINDOW_COLOUR_2}Nagroda dla parku o najgorszej wartości
 STR_2820    :{WINDOW_COLOUR_2}Nagroda dla najbezpieczniejszego parku
 STR_2821    :{WINDOW_COLOUR_2}Nagroda za najlepszy personel
 STR_2822    :{WINDOW_COLOUR_2}Nagroda za najlepsze jedzenie
@@ -2183,7 +2183,7 @@ STR_3141    :Wielokrotne pętle nie są dostępne w parze z wyciągarką
 STR_3142    :{WINDOW_COLOUR_2}Pojemność: {BLACK}{STRINGID}
 STR_3143    :Pokaż ludzi
 STR_3144    :Pokaż atrakcje i stoiska
-STR_3160    :Wybierz liczbę obrotów na przejażdzkę
+STR_3160    :Wybierz liczbę obrotów na przejażdżkę
 STR_3162    :Nie można zaalokować odpowiedniej ilości pamięci
 STR_3163    :Instalowanie nowych danych: 
 STR_3164    :{BLACK}{COMMA16} wybrano (maksymalnie {COMMA16})
@@ -2217,7 +2217,7 @@ STR_3196    :{WINDOW_COLOUR_2}Grupa badawcza: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Rzeczy wynalezione na początku gry:
 STR_3198    :{WINDOW_COLOUR_2}Rzeczy do wynalezienia podczas gry:
 STR_3199    :Losowe sortowanie
-STR_3200    :Losowe sortowanie rzeczy do wynalezenia w grze
+STR_3200    :Losowe sortowanie rzeczy do wynalezienia w grze
 STR_3201    :Wybór obiektu
 STR_3202    :Edytor krajobrazu
 STR_3203    :Konfiguracja listy wynalazków
@@ -2291,15 +2291,15 @@ STR_3270    :Zabroń jakichkolwiek zmian krajobrazu
 STR_3271    :Zakaz wysokich konstrukcji
 STR_3272    :Zabroń wysokich konstrukcji
 STR_3273    :Ocena parku trudna do zwiększenia i utrzymania
-STR_3274    :Ocena parku staje się prawdziwym wyzwaniem
-STR_3275    :Utrudniona ocena parku
+STR_3274    :Zwiększenie i utrzymanie oceny parku staje się prawdziwym wyzwaniem
+STR_3275    :Goście są trudniejsi do przyciągnięcia
 STR_3276    :Trudniej jest przyciągnąć gości do parku
 STR_3277    :{WINDOW_COLOUR_2}Koszt zakupu ziemi:
 STR_3278    :{WINDOW_COLOUR_2}Koszt zakupu planów budowy:
 STR_3279    :Darmowe wejście do parku / atrakcje płatne
 STR_3280    :Płatne wejście do parku / darmowe atrakcje
 STR_3281    :{WINDOW_COLOUR_2}Cena za wejście:
-STR_3282    :|Wybierz cel i nazwę parku
+STR_3282    :Wybierz cel i nazwę parku
 STR_3283    :Wybierz atrakcje, które mają zostać zachowane
 STR_3284    :Wybór celu
 STR_3285    :Zachowane atrakcje
@@ -2345,12 +2345,12 @@ STR_3327    :Nieustawiona pozycja początkowa dla ludzi
 STR_3328    :Nie można przejść do dalszego etapu edytora…
 STR_3329    :Nie wybudowano jeszcze wejścia do parku
 STR_3330    :Park musi posiadać jakiś teren na własność
-STR_3331    :Ścieżka od wejścia do parku do krawędzi mapy jest albo niekompletna, albo zbyt skomplikowana - Trasa musi być jednej szerokości z jak najmniejszą liczbą skrzyżowań i zakrętów
+STR_3331    :Ścieżka od wejścia do parku do krawędzi mapy jest albo niekompletna, albo zbyt skomplikowana. Trasa musi być jednej szerokości z jak najmniejszą liczbą skrzyżowań i zakrętów.
 STR_3332    :Wejście do parku jest nieprawidłowe lub nie ma ścieżki prowadzącej do krawędzi mapy
 STR_3333    :Eksportuj elementy dodatkowe do zapisów gier
 STR_3334    :Wybierz, czy chcesz zapisać wymagane wtyczki (te, które nie są dołączone do produktu głównego) w zapisanych plikach gry lub scenariuszu, co pozwoli na ich załadowanie przez kogoś, kto nie posiada dodatkowych plików
 STR_3335    :Projektant tras - Wybierz rodzaj trasy i pojazdu
-STR_3336    :Menadżer projektanta tras - Wybierz rodzaj przejazdu
+STR_3336    :Menedżer projektanta tras - Wybierz rodzaj przejazdu
 STR_3338    :{BLACK}Własny projekt
 STR_3339    :{BLACK}{COMMA16} projekt dostępny, możliwość stworzenia własnego
 STR_3340    :{BLACK}{COMMA16} projekty dostępne, możliwość stworzenia własnego
@@ -2358,7 +2358,7 @@ STR_3341    :Narzędzia
 STR_3342    :Edytor scenariuszy
 STR_3343    :Przekonwertuj zapisaną grę do scenariusza
 STR_3344    :Projektant kolejek
-STR_3345    :Menadżer projektów tras
+STR_3345    :Menedżer projektów tras
 STR_3346    :Nie można zapisać projektu trasy…
 STR_3347    :Kolejka jest za duża, zawiera za dużo elementów, lub sceneria jest za bardzo rozległa
 STR_3348    :Zmień nazwę
@@ -2376,7 +2376,7 @@ STR_3359    :{BLACK}Brak projektów trasy tego typu
 STR_3360    :Ostrzeżenie!
 STR_3361    :Za dużo projektów tras tego typu - Część nie będzie wyświetlona.
 STR_3364    :Zaawansowane
-STR_3365    :Zezwól na wybór indwyidualnych elementów scenerii jako dodatek do grup
+STR_3365    :Zezwól na wybór indywidualnych elementów scenerii jako dodatek do grup
 STR_3366    :{BLACK}= Atrakcja
 STR_3367    :{BLACK}= Budka z jedzeniem
 STR_3368    :{BLACK}= Budka z napojami
@@ -2440,7 +2440,7 @@ STR_5152    :,
 STR_5153    :Edytuj motywy…
 STR_5154    :Grafika sprzętowa
 STR_5155    :Zezwalaj na testowanie nieskończonych tras
-STR_5156    :Pozwala przetestować większość typów przejażdżek, nawet jeśli tor nie jest ukończony, nie ma zastosowania do sekcji blokowych
+STR_5156    :Pozwala przetestować większość typów przejażdżek, nawet jeśli tor nie jest ukończony, nie dotyczy trybów z podziałem na sekcje blokowe
 STR_5158    :Wyjdź do menu
 STR_5159    :Wyłącz OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Rok {POP16}{COMMA16}
@@ -2465,7 +2465,7 @@ STR_5191    :Widok
 STR_5192    :Ostatnie wiadomości
 STR_5193    :Ziemia
 STR_5194    :Woda
-STR_5195    :Wyczyść scenerie
+STR_5195    :Wyczyść scenerię
 STR_5196    :Prawa ziemskie
 STR_5197    :Sceneria
 STR_5198    :Chodnik
@@ -2611,7 +2611,7 @@ STR_5364    :Mniej niż 15
 STR_5365    :{BLACK}Szybkość personelu:
 STR_5366    :Normalnie
 STR_5367    :Szybko
-STR_5368    :Zresetuj status wypadku
+STR_5368    :Zresetuj wypadki
 STR_5371    :Wybór obiektu
 STR_5372    :Odwrócone przesuwanie prawym przyciskiem myszy
 STR_5373    :Nazwa {STRINGID}
@@ -2630,8 +2630,8 @@ STR_5452    :Przełącz widoczność pasków narzędzi
 STR_5453    :Wybierz inną atrakcję
 STR_5454    :Odblokuj FPS
 STR_5455    :Uruchom tryb piaskownicy
-STR_5456    :Wyłącz kontrolę odjazdu
-STR_5457    :Wyłącz limity wsparcia
+STR_5456    :Wyłącz sprawdzanie kolizji
+STR_5457    :Wyłącz limity wsporników
 STR_5458    :Obróć zgodnie ze wskazówką zegara
 STR_5459    :Obróć odwrotnie względem wskazówki zegara
 STR_5460    :Widok odwrotny względem wskazówki zegara
@@ -2675,9 +2675,9 @@ STR_5499    :Nazwa gracza:
 STR_5500    :Dodaj serwer
 STR_5501    :Uruchom serwer
 STR_5502    :Multiplayer
-STR_5503    :Wprowadź IP lub hostname:
+STR_5503    :Wprowadź IP lub nazwę hosta:
 STR_5504    :Pokaż status gry wieloosobowej
-STR_5505    :Nie można połączyć z serwerem.
+STR_5505    :Nie można połączyć się z serwerem.
 STR_5506    :Goście ignorują intensywność
 STR_5510    :Domyślne urządzenie audio
 STR_5511    :(UNKNOWN)
@@ -2724,7 +2724,7 @@ STR_5551    :rok/dzień/miesiąc
 STR_5552    :{POP16}{POP16}Rok {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Wstrzymaj grę gdy nakładka Steam jest otwarta
 STR_5554    :Uruchom narzędzie tworzenia gór
-STR_5555    :Pokaż pojazdy również dla innych typów atrakcji
+STR_5555    :Pokaż pojazdy z innych typów torów
 STR_5556    :Wyrzuć gracza
 STR_5557    :Nie rozłączaj po desynchronizacji (tryb wieloosobowy)
 STR_5558    :Wymagany restart dla tej zmiany
@@ -2771,12 +2771,12 @@ STR_5601    :Gość stoi w kolejce do atrakcji
 STR_5602    :Gość korzysta z atrakcji
 STR_5603    :Gość opuścił atrakcję
 STR_5604    :Gość kupił nowy przedmiot
-STR_5605    :Gość użył udogodnienie
+STR_5605    :Gość skorzystał z udogodnienia
 STR_5606    :Gość zmarł
-STR_5607    :Wymuszono usunięcie wybranego elementu mapy.
+STR_5607    :Wymuś usunięcie wybranego elementu mapy.
 STR_5608    :BH
 STR_5609    :CH
-STR_5610    :Usuń aktualnie zaznaczony element. Wymusi to jego usunięcie, więc nie dostaniesz za to pieniędzy. Używaj z głową.
+STR_5610    :Usuń aktualnie zaznaczony element. Wymusi to jego usunięcie, bez wydatków lub zysków gotówkowych. Używaj ostrożnie.
 STR_5611    :G
 STR_5612    :Flaga duch
 STR_5613    :B
@@ -2786,15 +2786,15 @@ STR_5616    :Ostatni fragment flagi
 STR_5617    :Przesuń element wyżej.
 STR_5618    :Przesuń element niżej.
 STR_5619    :RollerCoaster Tycoon
-STR_5620    :Dodatkowe atrakcje
-STR_5621    :Zwariowane krajobrazy
+STR_5620    :Dodatkowe Atrakcje
+STR_5621    :Zwariowane Krajobrazy
 STR_5622    :RollerCoaster Tycoon 2
-STR_5623    :Zakręcone światy
-STR_5624    :Zakręcone czasy
+STR_5623    :Zakręcone Światy
+STR_5624    :Zakręcone Czasy
 STR_5625    :„Prawdziwe” parki
 STR_5626    :Inne parki
 STR_5627    :Grupuj scenariusze według:
-STR_5628    :Gra Źródłowa
+STR_5628    :Gra źródłowa
 STR_5629    :Poziom trudności
 STR_5630    :Włącz odblokowywanie scenariuszy
 STR_5631    :Oryginalne parki z dodatku
@@ -2864,8 +2864,8 @@ STR_5726    :Ustawia aktualną pogodę w parku
 STR_5734    :Renderowanie
 STR_5735    :Status sieci
 STR_5736    :Gracz
-STR_5737    :Zamknięte, {COMMA16} człowiek nadal korzysta z przejażdżki
-STR_5738    :Zamknięte, {COMMA16} ludzi nadal korzysta z przejażdżki
+STR_5737    :Zamknięte, {COMMA16} gość nadal korzysta z przejażdżki
+STR_5738    :Zamknięte, {COMMA16} gości nadal korzysta z przejażdżki
 STR_5739    :{WINDOW_COLOUR_2}Gości na atrakcji: {BLACK}{COMMA16}
 STR_5740    :Stałe kampanie reklamowe
 STR_5741    :Nigdy niekończące się kampanie reklamowe
@@ -2920,7 +2920,7 @@ STR_5789    :Wyłącz efekty świetlne
 STR_5790    :Mieszany styl płatności RCT1{NEWLINE}(np. jednoczesna odpłatność za wejście i atrakcję)
 STR_5791    :Ustaw niezawodność wszystkich atrakcji na 100%{NEWLINE}i zresetuj datę budowy na „w tym roku”
 STR_5792    :Naprawia wszystkie uszkodzone atrakcje
-STR_5793    :Usuwa historię katastrof,{NEWLINE}dzięki czemu goście nie będą narzekać że jest niebezpieczne
+STR_5793    :Usuwa historię katastrof,{NEWLINE}dzięki czemu goście nie będą narzekać, że atrakcja jest niebezpieczna
 STR_5794    :Niektóre scenariusze blokują edycję{NEWLINE}istniejących już w parku atrakcji.{NEWLINE}Ta opcja obchodzi tę restrykcję
 STR_5795    :Goście korzystają ze wszystkich atrakcji w parku{NEWLINE}nawet jeśli ich intensywność jest ekstremalna
 STR_5796    :Wymusza zamknięcie/otwarcie parku
@@ -2957,15 +2957,15 @@ STR_5827    :Ustawia kolor interfejsu graficznego
 STR_5828    :Zmień użyty format jednostki użyty do czasu, prędkość itp.
 STR_5829    :Zmień rodzaj użytej waluty. Jedynie w celach wizualnych, nie ma wdrożonego dokładnego kursu wymiany.
 STR_5830    :Zmień używany język
-STR_5831    :Zmień użyty format{NEWLINE}wyświetlanej temperatury
-STR_5832    :Pokaż wysokość jako ogólną jednostkę w miejscu formatu jednostki ustawionej w zakładce „Odległość i Prędkość”
+STR_5831    :Zmień używany format{NEWLINE}wyświetlanej temperatury
+STR_5832    :Pokaż wysokość jako ogólną jednostkę w miejscu formatu jednostki ustawionej w zakładce „Odległość i prędkość”
 STR_5833    :Zmień używany format daty
 STR_5834    :Wybierz urządzenie dźwiękowe dla OpenRCT2
 STR_5835    :Wycisz grę przy utracie ostrości okna
-STR_5836    :Wybierz muzykę do ekranu tytułowego.{NEWLINE}Wybranie motywu z RCT1 wymaga podania ścieżki do RCT1 w zakładce ustawień zaawansowanych.
+STR_5836    :Wybierz muzykę ekranu tytułowego.{NEWLINE}Wybranie motywu z RCT1 wymaga podania ścieżki do RCT1 w zakładce ustawień zaawansowanych.
 STR_5837    :Stwórz i zarządzaj własnymi motywami interfejsu użytkownika
-STR_5838    :Pokaż osobny przycisk dla okienka Finansów w pasku narzędzi
-STR_5839    :Pokaż osobny przycisk dla okienka Badań i Rozwoju w pasku narzędzi
+STR_5838    :Pokaż osobny przycisk dla okienka finansów w pasku narzędzi
+STR_5839    :Pokaż osobny przycisk dla okienka badań i rozwoju w pasku narzędzi
 STR_5840    :Pokaż osobny przycisk dla okienka kodów w pasku narzędzi
 STR_5841    :Pokaż osobny przycisk dla okienka komunikatów w pasku narzędzi
 STR_5842    :Posortuj scenariusze w zakładkach według trudności (zachowanie RCT2) lub ich źródła (zachowanie RCT1)
@@ -2978,12 +2978,12 @@ STR_5849    :Automatycznie rozlokuj{NEWLINE}nowo zatrudniony personel
 STR_5851    :Ustaw domyślną częstotliwość inspekcji{NEWLINE}na nowych atrakcjach
 STR_5853    :Włącz/Wyłącz efekty dźwiękowe
 STR_5854    :Włącz/Wyłącz muzykę na atrakcjach
-STR_5855    :Ustaw normalny pełny ekran, bezramkowy pełny ekran{NEWLINE}klub tryb okienkowy
+STR_5855    :Ustaw normalny pełny ekran, bezramkowy pełny ekran{NEWLINE}lub tryb okienkowy
 STR_5856    :Ustaw rozdzielczość ekranu w trybie pełnoekranowym
 STR_5857    :Ustawienia gry
 STR_5858    :Użyj do wyświetlania GPU zamiast CPU. Pomoże to w poprawie kompatybilności z oprogramowaniem do przechwytywania ekranu, jednak może wpłynąć negatywnie na wydajność.
 STR_5859    :Włącz zmienną ilość klatek dla {NEWLINE}płynniejszej gry. Gdy wyłączone,{NEWLINE}gra będzie używała stałych 40 FPS.
-STR_5860    :Przełącz między originalnym/zdekompilowanym rysowaniem trasy
+STR_5860    :Przełącz między oryginalnym/zdekompilowanym rysowaniem trasy
 STR_5861    :Błąd weryfikacji klucza
 STR_5862    :Blokuj nieznanych graczy.
 STR_5863    :Zezwól na połączenie graczy znających klucz.
@@ -2996,13 +2996,13 @@ STR_5869    :{WINDOW_COLOUR_2}Strona hostującego: {BLACK}{STRING}
 STR_5870    :Pokaż informacje o serwerze
 STR_5871    :Wyłącz usychanie kwiatów
 STR_5872    :Kwiaty się nie starzeją, nie usychają, nie trzeba ich wymieniać
-STR_5873    :Zezwól na wyciągarkę na wszystkich typach torów
+STR_5873    :Wyciągarka dozwolona na dowolnym torze
 STR_5874    :Umożliwia przekształcenie dowolnego typu toru w wyciągarkę.
 STR_5875    :Silnik graficzny:
 STR_5876    :Silnik używany do generowania grafiki.
 STR_5877    :Programowy
 STR_5878    :Programowy (karta graficzna)
-STR_5879    :OpenGL (eksperymentalnie)
+STR_5879    :OpenGL (eksperymentalne)
 STR_5880    :Tylko zaznaczone
 STR_5881    :Tylko niezaznaczone
 STR_5882    :Własna waluta
@@ -3039,7 +3039,7 @@ STR_5913    :Czat
 STR_5914    :Nieznana atrakcja
 STR_5915    :Gracz
 STR_5916    :{COMMA16} gracz
-STR_5917    :{COMMA16} gracze
+STR_5917    :{COMMA16} graczy
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Efekty graficzne pogody
@@ -3053,7 +3053,7 @@ STR_5927    :Szczegóły scenerii
 STR_5928    :Szczegóły wejścia
 STR_5929    :Szczegóły ściany
 STR_5930    :Szczegóły dużej scenerii
-STR_5931    :Szczegóły banneru
+STR_5931    :Szczegóły baneru
 STR_5932    :Szczegóły uszkodzonych elementów
 STR_5933    :Właściwości
 STR_5934    :Tekstura terenu: {BLACK}{STRINGID}
@@ -3076,7 +3076,7 @@ STR_5950    :Zastosuj zmiany dla całego elementu trasy
 STR_5951    :ID elementu trasy: {BLACK}{COMMA16}
 STR_5952    :Numer sekwencji: {BLACK}{COMMA16}
 STR_5953    :Posortuj elementy mapy na podstawie ich wysokości.
-STR_5954    :Wiek scenografii: {BLACK}{COMMA16}
+STR_5954    :Wiek scenerii: {BLACK}{COMMA16}
 STR_5955    :Umiejscowienie ćwiartki: {BLACK}{STRINGID}
 STR_5956    :Południowy-zachód
 STR_5957    :Północny-zachód
@@ -3160,7 +3160,7 @@ STR_6034    :{BLACK}{STRING}
 STR_6035    :Proszę wybrać katalog z RCT1
 STR_6036    :Wyczyść
 STR_6037    :Proszę wybrać prawidłowy katalog RCT1
-STR_6038    :Jeżeli masz zainstalowane RCT1, ustaw tę opcję na ścieżkę do owej gry, aby załadować scenariusze, muzykę, itp. z pierwszej części
+STR_6038    :Jeżeli masz zainstalowane RCT1, ustaw tę opcję na ścieżkę do owej gry, aby załadować scenariusze, muzykę itp.
 STR_6039    :Szybkie niszczenie atrakcji
 STR_6040    :Edytuj opcje scenariusza
 STR_6041    :{BLACK}Nie masz zatrudnionych mechaników!
@@ -3222,8 +3222,8 @@ STR_6097    :{STRING} dodał odcinek trasy „{STRING}”.
 STR_6098    :{STRING} usunął odcinek trasy.
 STR_6099    :Połączyłeś się z serwerem.
 STR_6100    :Rozłączyłeś się z serwerem.
-STR_6101    :Wartość atrakcji nie spada wraz z upływem czasu.
-STR_6102    :Wartość atrakcji nie będzie spadała z czasem, dlatego klienci stwierdzą po pewnym czasie, że jest za droga.
+STR_6101    :Wartość atrakcji nie spada
+STR_6102    :Wartość atrakcji nie będzie spadała z czasem, więc goście nie będą nagle twierdzić, że atrakcja jest za droga.
 STR_6103    :Opcja ta nie jest dostępna w grze wieloosobowej.
 STR_6105    :Hiperjazda
 STR_6107    :Potworne pikapy
@@ -3260,7 +3260,7 @@ STR_6143    :{WINDOW_COLOUR_2}Typ przejażdżki: {BLACK}{STRINGID}
 STR_6144    :Pokaż odrysowane kafelki
 STR_6145    :Ustaw limit prędkości dla generatorów prędkości
 STR_6146    :Włącz wszystkie dostępne części toru
-STR_6147    :Włącza wszystkie części które są dostępne dla tego typu przejażdżki, oprócz tych niedostępnych dla danego pojazdu.
+STR_6147    :Włącza wszystkie części, które są dostępne dla tego typu przejażdżki, oprócz tych niedostępnych dla danego pojazdu.
 STR_6148    :Łączenie z serwerem głównym…
 STR_6149    :Nieudane połączenie z serwerem głównym
 STR_6150    :Błędna odpowiedź z głównego serwera (brak numeru JSON)
@@ -3268,7 +3268,7 @@ STR_6151    :Główny serwer nie zwrócił listy serwerów
 STR_6152    :Błędna odpowiedź z głównego serwera (brak tablicy JSON)
 STR_6153    :Opłata za wejście do parku / Opłata za atrakcje
 STR_6154    :Z uwagi na bezpieczeństwo, nie zaleca się uruchamiania OpenRCT2 z podwyższonymi uprawnieniami.
-STR_6155    :KDialog ani Zenity nie jest zainstalowane. Zainstaluj, lub skonfiguruj z poziomu konsoli.
+STR_6155    :Ani KDialog, ani Zenity nie jest zainstalowane. Zainstaluj jedno z nich, lub skonfiguruj z poziomu konsoli.
 STR_6156    :Nazwa jest zastrzeżona
 STR_6157    :Konsola
 STR_6160    :{WINDOW_COLOUR_2}Dostępne pojazdy: {BLACK}{STRING}
@@ -3281,7 +3281,7 @@ STR_6166    :Synchronizuje każdą wyświetlaną klatkę z częstotliwością od
 STR_6167    :Zaawansowane
 STR_6168    :Sekwencja tytułowa
 STR_6169    :Wybór scenariusza
-STR_6170    :Zmiany w interfejsie
+STR_6170    :Dostosowanie interfejsu
 STR_6171    :Szukaj
 STR_6172    :Szukaj
 STR_6173    :Wpisz nazwę której szukasz:
@@ -3336,7 +3336,7 @@ STR_6247    :Odnowienie przejażdżki/atrakcji
 STR_6248    :{WINDOW_COLOUR_1}Czy chcesz odnowić {STRINGID} za {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Czy chcesz odnowić {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Czy na pewno chcesz zburzyć {STRINGID} i dostać za to {CURRENCY}?
-STR_6251    :Przejażdżka nie jest pusta jeszcze
+STR_6251    :Atrakcja nie jest jeszcze pusta
 STR_6255    :Adres URL jest nieprawidłowy
 STR_6256    :Efekty renderowania
 STR_6257    :Świecące
@@ -3352,8 +3352,8 @@ STR_6266    :Otwórz folder ze spersonalizowaną zawartością
 STR_6267    :Otwórz inspektor kafelków
 STR_6268    :Tick do przodu
 STR_6269    :Nieprawidłowy indentyfikator klimatu
-STR_6270    :Powierzchnie otoczenia
-STR_6271    :Krawędzie otoczenia
+STR_6270    :Powierzchnie terenu
+STR_6271    :Krawędzie terenu
 STR_6272    :Stacje
 STR_6273    :Muzyka
 STR_6274    :Nie można ustawić schematu koloru…
@@ -3400,7 +3400,7 @@ STR_6323    :Symulowanie
 STR_6324    :Symuluj
 STR_6325    :Symuluj atrakcję
 STR_6326    :Nie można symulować {STRINGID}…
-STR_6327    :Przezroczyste tło dla ogromnych zrzutów z ekranu
+STR_6327    :Przezroczyste tło dla ogromnych zrzutów ekranu
 STR_6328    :Ogromny zrzut ekranu będzie miał przezroczyste tło zamiast domyślnego czarnego.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Pobieranie [{STRING}] z {STRING} ({COMMA16} / {COMMA16})
@@ -3421,13 +3421,13 @@ STR_6345    :Inspektor kafelków: Zwiększ wysokość elementu
 STR_6346    :Inspektor kafelków: Zmniejsz wysokość elementu
 STR_6347    :Dodatkowe ścieżki nie mogą być na przejeździe kolejowym!
 STR_6348    :Najpierw usuń przejazd kolejowy!
-STR_6349    :Losowa sekwecja tytułów
-STR_6350    :Rozpraszane
+STR_6349    :Losowa sekwencja tytułowa
+STR_6350    :Rozpraszanie
 STR_6351    :Narzędzie rozpraszania scenerii
 STR_6352    :Gęstość
 STR_6353    :Niska gęstość
 STR_6354    :Średnia gęstość
-STR_6355    :Wyskoka gęstość
+STR_6355    :Wysoka gęstość
 STR_6356    :Przyzywa kaczki jeśli park zawiera wodę
 STR_6357    :Usuwa wszystkie kaczki z mapy
 STR_6358    :Strona {UINT16}
@@ -3440,10 +3440,10 @@ STR_6365    :Ofiary atrakcji
 STR_6366    :Zablokowane pojazdy
 STR_6367    :Klatka animacji:
 STR_6368    :Z powodów kompatybilności nie zaleca się uruchamiania OpenRCT2 za pomocą Wine. OpenRCT2 działa poprawnie na macOS, Linux, FreeBSD i OpenBSD.
-STR_6369    :Zezwól na budowanie torów na dowolnych wysokościach
+STR_6369    :Tory na dowolnych wysokościach
 STR_6370    :Zezwala na ustawianie fragmentów torów na dowolnych interwałach wysokościowych
-STR_6371    :Wskazana ścieżka zawiera instalację RollerCoaster Tycoon 1, ale brakuje pliku „csg1i.dat”. Ten plik musi zostać skopiowany z płyty Zwariowane krajobrazy lub RCT Deluxe do folderu „Data” w RollerCoaster Tycoon 1 zainstalowanym na dysku twardym.
-STR_6372    :Wskazana ścieżka zawiera instalację RollerCoaster Tycoon 1, ale ta wersja jest nieodpowiednia. OpenRCT2 wymaga instalacji Zwariowane krajobrazy lub RCT Deluxe w celku korzystania z zasobów RollerCoaster Tycoon 1.
+STR_6371    :Wskazana ścieżka zawiera instalację RollerCoaster Tycoon 1, ale brakuje pliku „csg1i.dat”. Ten plik musi zostać skopiowany z płyty Zwariowane Krajobrazy lub RCT Deluxe do folderu „Data” w RollerCoaster Tycoon 1 zainstalowanym na dysku twardym.
+STR_6372    :Wskazana ścieżka zawiera instalację RollerCoaster Tycoon 1, ale ta wersja jest nieodpowiednia. OpenRCT2 wymaga instalacji Zwariowane Krajobrazy lub RCT Deluxe w celu korzystania z zasobów RollerCoaster Tycoon 1.
 STR_6373    :Pokaż/schowaj sprawdzenia prześwitu
 STR_6374    :P
 STR_6375    :Nieznana atrakcja
@@ -3461,7 +3461,7 @@ STR_6386    :Śnieżyca
 STR_6387    :Nie można tutaj obniżyć elementu…
 STR_6388    :Nie można tutaj podwyższyć elementu…
 STR_6389    :Nieprawidłowy prześwit
-STR_6390    :Do działania OpenRCT2 wymaga plików z oryginalnego RollerCoaster Tycoon 2 lub RollerCoaster Tycoon Classic. Wybierz katalog gdzie został zainstalowany RollerCoaster Tycoon 2 lub RollerCoaster Tycoon Classic.
+STR_6390    :OpenRCT2 wymaga do działania plików z oryginalnego RollerCoaster Tycoon 2 lub RollerCoaster Tycoon Classic. Wybierz katalog gdzie został zainstalowany RollerCoaster Tycoon 2 lub RollerCoaster Tycoon Classic.
 STR_6391    :Wybierz katalog z RCT2
 STR_6392    :Nie można znaleźć {STRING} w tej ścieżce
 STR_6393    :Wybór celu
@@ -3543,7 +3543,7 @@ STR_6469    :Zmniejsz obszar patrolu
 STR_6470    :Zwiększ obszar patrolu
 STR_6471    :Przezroczysta rośliność
 STR_6472    :Przezroczyste pojazdy
-STR_6473    :Przezroczyste podpory
+STR_6473    :Przezroczyste wsporniki
 STR_6474    :Ukryj gości
 STR_6475    :Ukryj pracowników
 STR_6476    :Niewidzialne rośliny
@@ -3607,7 +3607,7 @@ STR_6533    :{WINDOW_COLOUR_2}Czynnik ekscytacji: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Czynnik intensywności: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Czynnik mdłości: {BLACK}-{COMMA16}%
 STR_6536    :Ten park został zapisany w późniejszej wersji OpenRCT2. Park został zapisany w v{INT32}, a obecnie używasz v{INT32}.
-STR_6537    :Zezwól na używanie zwykłych chodników jako kolejek
+STR_6537    :Zezwól na zwykłe chodniki jako kolejki
 STR_6538    :Pokazuje zwykłe chodniki na liście kolejek do atrakcji w menu chodników.
 STR_6539    :Hamulec zamknięty
 STR_6540    :{WINDOW_COLOUR_2}Podziękowania dla następujących firm za zgodę na wykorzystanie ich wizerunku:
@@ -3644,7 +3644,7 @@ STR_6570    :Pastelowy róż
 STR_6571    :Umbra
 STR_6572    :Beżowy
 STR_6573    :Niewidzialny
-STR_6574    :Próżnia
+STR_6574    :Pustka
 STR_6575    :Zezwól na specjalne schematy kolorów
 STR_6576    :Dodaje specjalne kolory do rozwijanej listy kolorów
 STR_6577    :Prędkość hamowania blokowego
@@ -3663,7 +3663,7 @@ STR_6589    :Umieść przyciski okna po lewej stronie
 STR_6590    :Umieść przyciski okna (np. zamknięcie okna) po lewej stronie paska tytułowego zamiast po prawej.
 STR_6591    :Pracownik obecnie naprawia atrakcję i nie może zostać zwolniony.
 STR_6592    :Pracownik obecnie inspektuje atrakcję i nie może zostać zwolniony.
-STR_6593    :Usuń ogrodzenia parku
+STR_6593    :Usuń ogrodzenia
 STR_6594    :Inspektor kafelków: Przełącz nachylenie ściany
 STR_6595    :{WINDOW_COLOUR_2}Autor: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Autorzy: {BLACK}{STRING}

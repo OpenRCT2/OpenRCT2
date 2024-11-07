@@ -99,6 +99,7 @@ STR_0094    :Montanha-Russa de Trilho Único
 STR_0095    :Montanha-Russa Alpina
 STR_0096    :Montanha-Russa de Madeira Clássica
 STR_0097    :Montanha-Russa em Pé Clássica
+STR_0098    :Montanha-Russa acelerada por LSM
 STR_0512    :Uma montanha russa compacta com subida de elevação em espiral e quedas suaves e retorcidas
 STR_0513    :Uma montanha russa de looping onde passageiros andam em pé
 STR_0514    :Trens suspensos abaixo do trilho da montanha-russa balançam para fora nas curvas
@@ -183,6 +184,7 @@ STR_0604    :Passageiros andam numa fila única em uma pista estreita de monotri
 STR_0605    :Passageiros descem de tobogã por um trilho de aço sinuoso, freando para controlar suas velocidades
 STR_0606    :Uma montanha-russa de madeira de estilo mais antigo com um trajeto rápido e duro, com muito ‘tempo no ar’, alguma força G lateral e projetada para um sentimento de ‘perda de controle’
 STR_0607    :Uma montanha-russa de aço intensa e de estilo antigo onde os passageiros andam em pé
+STR_0608    :Os trens da montanha-russa são acelerados por motores síncronos lineares, acelerando por curvas e giros estreitos
 STR_0767    :Visitante {INT32}
 STR_0768    :Faxineiro {INT32}
 STR_0769    :Mecânico {INT32}
@@ -3609,7 +3611,7 @@ STR_6537    :Permitir o uso de caminhos normais como filas de espera
 STR_6538    :Mostra caminhos normais na lista da janela de Caminhos.
 STR_6539    :Freio Travado
 STR_6540    :{WINDOW_COLOUR_2}Agradecimento especial às seguintes empresas por permitirem semelhança com elas:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Contribuidores
 STR_6543    :Contribuidores…
 STR_6544    :Empréstimo não pode ser negativo!
