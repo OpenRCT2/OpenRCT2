@@ -27,6 +27,8 @@ using namespace OpenRCT2;
 // TODO: Refactor this. Cheat variables should contain the cheat type
 // and a serialisation method.
 
+const int kForcedParkRatingDisabled = -1;
+
 void CheatsReset()
 {
     auto& gameState = GetGameState();
@@ -57,7 +59,7 @@ void CheatsReset()
     gameState.Cheats.AllowSpecialColourSchemes = false;
     gameState.Cheats.MakeAllDestructible = false;
     gameState.Cheats.SelectedStaffSpeed = StaffSpeedCheat::None;
-    gameState.Cheats.ForcedParkRating = -1;
+    gameState.Cheats.ForcedParkRating = kForcedParkRatingDisabled;
 }
 
 void CheatsSet(CheatType cheatType, int64_t param1 /* = 0*/, int64_t param2 /* = 0*/)
