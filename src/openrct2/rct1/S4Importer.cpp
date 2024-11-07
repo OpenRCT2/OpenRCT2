@@ -886,6 +886,7 @@ namespace OpenRCT2::RCT1
             {
                 dst->lifecycle_flags |= RIDE_LIFECYCLE_REVERSED_TRAINS;
             }
+            dst->SetLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED, true);
 
             // Station
             if (src->OverallView.IsNull())
@@ -1714,7 +1715,15 @@ namespace OpenRCT2::RCT1
                     dst2->SetBrakeClosed(trackType == TrackElemType::Brakes);
                     if (TrackTypeHasSpeedSetting(trackType))
                     {
-                        dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                        auto brakeSpeed = src2->GetBrakeBoosterSpeed() * kLegacyBrakeSpeedMultiplier;
+                        if (dst2->GetTrackType() != TrackElemType::Booster)
+                        {
+                            dst2->SetBrakeBoosterSpeed(brakeSpeed);
+                        }
+                        else
+                        {
+                            dst2->SetBrakeBoosterSpeed(GetAbsoluteBoosterSpeed(rideType, brakeSpeed));
+                        }
                     }
                     else if (trackType == TrackElemType::OnRidePhoto)
                     {
@@ -2128,7 +2137,7 @@ namespace OpenRCT2::RCT1
         void InsertResearchVehicle(const ResearchItem& researchItem, bool researched)
         {
             uint8_t vehicle = researchItem.Item;
-            // RCT1 research sometimes contain vehicles that aren’t actually researched.
+            // RCT1 research sometimes contain vehicles that aren�t actually researched.
             // In such cases, `_vehicleTypeToRideEntryMap` will return OBJECT_ENTRY_INDEX_NULL. This is expected.
             auto rideEntryIndex = _vehicleTypeToRideEntryMap[vehicle];
 
@@ -2733,7 +2742,6 @@ namespace OpenRCT2::RCT1
         dst->num_seats = src->NumSeats;
         dst->speed = src->Speed;
         dst->powered_acceleration = src->PoweredAcceleration;
-        dst->brake_speed = src->BrakeSpeed;
 
         dst->velocity = src->Velocity;
         dst->acceleration = src->Acceleration;
@@ -2798,10 +2806,27 @@ namespace OpenRCT2::RCT1
             dst->SetTrackDirection(0);
             dst->SetTrackType(OpenRCT2::TrackElemType::Flat);
         }
+
+        dst->brake_speed = src->BrakeSpeed * kLegacyBrakeSpeedMultiplier;
+        dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+        dst->Flags = src->UpdateFlags;
+
+        auto rtd = dst->GetRide()->GetRideTypeDescriptor();
+        dst->SetFlag(VehicleFlags::LegacyBoosterSpeed);
+        if ((dst->GetTrackType() == TrackElemType::PoweredLift)
+            || (dst->GetTrackType() == TrackElemType::Flat && rtd.HasFlag(RtdFlag::hasLsmBehaviourOnFlat)))
+        {
+            dst->BoosterAcceleration = ride->GetRideTypeDescriptor().BoosterSettings.PoweredLiftAcceleration;
+            dst->SetFlag(VehicleFlags::OnPoweredLift);
+        }
+        else if (dst->GetTrackType() == TrackElemType::Booster)
+        {
+            dst->brake_speed = ride->GetRideTypeDescriptor().GetAbsoluteBoosterSpeed(dst->brake_speed);
+            dst->BoosterAcceleration = ride->GetRideTypeDescriptor().LegacyBoosterSettings.BoosterAcceleration;
+        }
         dst->track_progress = src->TrackProgress;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
         dst->sub_state = src->SubState;
-        dst->Flags = src->UpdateFlags;
 
         SetVehicleColours(dst, src);
 

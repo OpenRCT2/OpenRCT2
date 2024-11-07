@@ -3783,3 +3783,7 @@ STR_6706    :{WINDOW_COLOUR_2}Current image file: {BLACK}{STRING}
 STR_6707    :(none selected)
 STR_6708    :Smooth Strength
 STR_6709    :Enter Smooth Strength between {COMMA16} and {COMMA16}
+STR_6710    :Track’s speed is un-savable in current track design format. Speeds too high are capped to maximum, speeds at invalid intervals are rounded up.
+STR_6711    :Track’s speed is un-savable in current track design format. Speeds too high are capped to maximum, speeds at invalid intervals are rounded up.
+STR_6712    :Legacy booster speeds
+STR_6713    :Use old methods of getting brake and booster speeds. Not recommended for new work.

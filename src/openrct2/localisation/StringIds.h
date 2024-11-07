@@ -1696,6 +1696,11 @@ enum : StringId
 
     STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED = 6676,
 
+    STR_TRACK_DESIGN_SPEED_UNSERIALISABLE = 6710,
+    STR_RIDE_SET_VEHICLE_LEGACY_SPEED_FAIL = 6711,
+    STR_OPTION_USE_LEGACY_SPEED = 6712,
+    STR_OPTION_USE_LEGACY_SPEED_TIP = 6713,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

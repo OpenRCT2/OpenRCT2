@@ -71,6 +71,9 @@ using namespace OpenRCT2::TrackMetaData;
 using namespace OpenRCT2::Math::Trigonometry;
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 
+constexpr uint8_t const BrakeSpeedShiftAmount = 16;
+constexpr uint8_t const BoosterAccelerationShiftAmount = 16;
+
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
 constexpr int16_t VEHICLE_MIN_SPIN_SPEED = -VEHICLE_MAX_SPIN_SPEED;
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING = 700;
@@ -5445,8 +5448,12 @@ void Vehicle::ApplyNonStopBlockBrake()
 {
     if (velocity >= 0)
     {
-        // If the vehicle is below the speed limit
-        if (velocity <= kBlockBrakeBaseSpeed)
+        /**
+         * Prior to Unify Booster Speeds, trains were clamped to kBlockBrakeBaseSpeed until the front car left the block brake.
+         * After Unify Booster Speeds, if the train is accelerated faster (because of a downhill or booster before the block
+         * brake) can accelerate.
+         */
+        if (velocity - HasFlag(VehicleFlags::LegacyBoosterSpeed) < kBlockBrakeBaseSpeed)
         {
             // Boost it to the fixed block brake speed
             velocity = kBlockBrakeBaseSpeed;
@@ -6831,6 +6838,51 @@ void Vehicle::Sub6DBF3E()
     }
 }
 
+static uint8_t GetLegacyBoosterSpeed(uint8_t rawSpeed, RideTypeDescriptor& vehicleRTD, RideTypeDescriptor& trackRTD)
+{
+    // convert between speed regimes and mask to the highest 4 bits
+    auto finalSpeed = (rawSpeed * vehicleRTD.LegacyBoosterSettings.BoosterSpeedFactor
+                       / trackRTD.LegacyBoosterSettings.BoosterSpeedFactor)
+        & (kLegacyBrakeSpeedMask * vehicleRTD.LegacyBoosterSettings.BoosterSpeedFactor);
+    return finalSpeed;
+}
+
+void Vehicle::PopulateBoosterSpeed(TrackElement& trackElement)
+{
+    auto trackType = trackElement.GetTrackType();
+    auto trackRTD = ::GetRide(trackElement.GetRideIndex())->GetRideTypeDescriptor();
+
+    auto poweredLiftAcceleration = trackRTD.BoosterSettings.PoweredLiftAcceleration;
+    auto boosterAcceleration = trackRTD.BoosterSettings.BoosterAcceleration;
+    auto rawSpeed = trackElement.GetBrakeBoosterSpeed();
+
+    bool useReverseFreefallBehaviour = trackType == TrackElemType::Flat && trackRTD.HasFlag(RtdFlag::hasLsmBehaviourOnFlat);
+
+    if (HasFlag(VehicleFlags::LegacyBoosterSpeed))
+    {
+        auto vehicleRTD = GetRide()->GetRideTypeDescriptor();
+        poweredLiftAcceleration = vehicleRTD.LegacyBoosterSettings.PoweredLiftAcceleration;
+        boosterAcceleration = vehicleRTD.LegacyBoosterSettings.BoosterAcceleration;
+        useReverseFreefallBehaviour = trackType == TrackElemType::Flat && vehicleRTD.HasFlag(RtdFlag::hasLsmBehaviourOnFlat);
+        if (TrackTypeIsBooster(trackType))
+        {
+            rawSpeed = GetLegacyBoosterSpeed(rawSpeed, vehicleRTD, trackRTD);
+        }
+    }
+    if ((trackType == TrackElemType::PoweredLift) || useReverseFreefallBehaviour)
+    {
+        SetFlag(VehicleFlags::OnPoweredLift);
+        BoosterAcceleration = poweredLiftAcceleration;
+        brake_speed = trackElement.GetBrakeBoosterSpeed();
+        BlockBrakeSpeed = trackElement.GetBrakeBoosterSpeed();
+        return;
+    }
+    ClearFlag(VehicleFlags::OnPoweredLift);
+    BoosterAcceleration = boosterAcceleration;
+    brake_speed = rawSpeed;
+    BlockBrakeSpeed = brake_speed;
+}
+
 /**
  * Determine whether to use block brake speed or brake speed. If block brake is closed or no block brake present, use the
  * brake's speed; if block brake is open, use maximum of brake speed or block brake speed.
@@ -6856,10 +6908,11 @@ uint8_t Vehicle::ChooseBrakeSpeed() const
 void Vehicle::PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake)
 {
     auto trackSpeed = brake.GetBrakeBoosterSpeed();
+    auto trackType = GetTrackType();
     brake_speed = trackSpeed;
-    if (!TrackTypeIsBrakes(brake.GetTrackType()))
+    if (!TrackTypeIsBrakes(trackType))
     {
-        BlockBrakeSpeed = trackSpeed;
+        PopulateBoosterSpeed(brake);
         return;
     }
     // As soon as feasible, encode block brake speed into track element so the lookforward can be skipped here.
@@ -7120,23 +7173,22 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
         }
         else if (TrackTypeIsBooster(trackType))
         {
-            auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
+            auto boosterSpeed = brake_speed << BoosterAccelerationShiftAmount;
             if (boosterSpeed > _vehicleVelocityF64E08)
             {
-                acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration
-                    << 16; //_vehicleVelocityF64E08 * 1.2;
+                acceleration = BoosterAcceleration << BoosterAccelerationShiftAmount;
             }
+        }
+        else if (HasFlag(VehicleFlags::OnPoweredLift))
+        {
+            // Uncapped forward acceleration
+            acceleration = BoosterAcceleration << BoosterAccelerationShiftAmount;
         }
         else if (rideEntry.flags & RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED && num_peeps > 0)
         {
             acceleration += CalculateRiderBraking();
         }
 
-        if ((trackType == TrackElemType::Flat && curRide.GetRideTypeDescriptor().HasFlag(RtdFlag::hasLsmBehaviourOnFlat))
-            || (trackType == TrackElemType::PoweredLift))
-        {
-            acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.PoweredLiftAcceleration << 16;
-        }
         if (trackType == TrackElemType::BrakeForDrop)
         {
             if (IsHead())
@@ -7483,7 +7535,8 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     while (true)
     {
         auto trackType = GetTrackType();
-        if (trackType == TrackElemType::Flat && curRide.GetRideTypeDescriptor().HasFlag(RtdFlag::hasLsmBehaviourOnFlat))
+        // Reverse Freefall Coaster braking
+        if (HasFlag(VehicleFlags::OnPoweredLift) && trackType == TrackElemType::Flat)
         {
             int32_t unkVelocity = _vehicleVelocityF64E08;
             if (unkVelocity < -524288)
@@ -7495,20 +7548,9 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
         if (TrackTypeIsBrakes(trackType))
         {
-            auto brakeSpeed = ChooseBrakeSpeed();
-
-            if (-(brakeSpeed << 16) > _vehicleVelocityF64E08)
+            if (-(brake_speed << BrakeSpeedShiftAmount) > _vehicleVelocityF64E08)
             {
                 acceleration = _vehicleVelocityF64E08 * -16;
-            }
-        }
-
-        if (trackType == TrackElemType::Booster)
-        {
-            auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
-            if (boosterSpeed < _vehicleVelocityF64E08)
-            {
-                acceleration = GetRideTypeDescriptor(curRide.type).LegacyBoosterSettings.BoosterAcceleration << 16;
             }
         }
 
@@ -8959,6 +9001,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << target_seat_rotation;
     stream << BoatLocation;
     stream << BlockBrakeSpeed;
+    stream << BoosterAcceleration;
 }
 
 bool Vehicle::IsOnCoveredTrack() const

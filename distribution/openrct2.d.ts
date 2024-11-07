@@ -1146,7 +1146,7 @@ declare global {
 
     interface RideSetVehicleArgs extends GameActionArgs {
         ride: number;
-        type: number; // 0: number of trains, 1: number of cars per train, 2: ride entry
+        type: number; // 0: number of trains, 1: number of cars per train, 2: ride entry, 3: spawn trains in reverse, 4: use legacy booster speed
         value: number; // number value or sub type
         colour: number; // only used if type is ride entry
     }
@@ -2637,6 +2637,11 @@ declare global {
          * Whether the car sprite is reversed or not.
          */
         isReversed: boolean;
+
+        /**
+         * If the vehicle uses legacy booster speeds.
+         */
+        usesLegacyBoosterSpeed: boolean;
 
         /**
          * The colour of the car.
