@@ -116,6 +116,186 @@ static inline uint32_t rctc_to_rct2_index(uint32_t image)
 }
 // clang-format on
 
+static void OverrideElementOffsets(size_t index, G1Element& element)
+{
+    switch (index)
+    {
+        case 25286:
+        case 25317:
+        case 25318:
+        case 25323:
+        case 25324:
+        case 25325:
+        case 25326:
+        case 25455:
+        case 25456:
+        case 25457:
+        case 25458:
+        case 25459:
+        case 25460:
+        case 25461:
+        case 25462:
+        case 25463:
+        case 25464:
+        case 25465:
+        case 25466:
+        case 25467:
+        case 25468:
+        case 25469:
+        case 25470:
+        case 25471:
+        case 25472:
+        case 25473:
+        case 25474:
+        case 25475:
+        case 25476:
+        case 25521:
+        case 25522:
+        case 25523:
+        case 25524:
+        case 25525:
+        case 25526:
+        case 25527:
+        case 25528:
+        case 25529:
+        case 25530:
+        case 25531:
+        case 25532:
+        case 25533:
+        case 25534:
+        case 25659:
+        case 25660:
+        case 25661:
+        case 25662:
+        case 25663:
+        case 25664:
+        case 25665:
+        case 25666:
+        case 25667:
+        case 25668:
+        case 25669:
+        case 25670:
+        case 25671:
+        case 25672:
+        case 25673:
+        case 25674:
+        case 25675:
+        case 25676:
+        case 25677:
+        case 25678:
+        case 25679:
+        case 25680:
+        case 25681:
+        case 25682:
+        case 25683:
+        case 25684:
+        case 25685:
+        case 25686:
+        case 25687:
+        case 25688:
+        case 25689:
+        case 25690:
+        case 25723:
+        case 25725:
+        case 25727:
+        case 25728:
+        case 25730:
+        case 25732:
+        case 25733:
+        case 25735:
+        case 25737:
+        case 25738:
+        case 25740:
+        case 25742:
+        case 25743:
+        case 25745:
+        case 25747:
+        case 25748:
+        case 25781:
+        case 25782:
+        case 25783:
+        case 25784:
+        case 25785:
+        case 25786:
+        case 25787:
+        case 25788:
+        case 25789:
+        case 25790:
+        case 25791:
+        case 25792:
+        case 25793:
+        case 25794:
+        case 25795:
+        case 25796:
+        case 25797:
+        case 25798:
+        case 25799:
+        case 25800:
+        case 25801:
+        case 25803:
+        case 25804:
+        case 25805:
+        case 25806:
+        case 25807:
+        case 25808:
+        case 25809:
+        case 25810:
+        case 25811:
+        case 25812:
+        case 25813:
+        case 25814:
+        case 25815:
+        case 25816:
+        case 25817:
+        case 25818:
+        case 25819:
+        case 25820:
+        case 25821:
+        case 25822:
+        case 25823:
+        case 25824:
+        case 25825:
+        case 25826:
+        case 25827:
+        case 25828:
+        case 25829:
+        case 25830:
+        case 25831:
+        case 25832:
+        case 25833:
+        case 25834:
+        case 25835:
+        case 25836:
+        case 25837:
+        case 25838:
+        case 25839:
+        case 25840:
+        case 25841:
+        case 25842:
+        case 25843:
+        case 25844:
+        case 25845:
+        case 25846:
+        case 25847:
+        case 25848:
+        case 25849:
+        case 25850:
+        case 25851:
+        case 25852:
+            element.y_offset += 1;
+            break;
+        case 25307:
+        case 25315:
+        case 25319:
+            element.x_offset -= 1;
+            element.y_offset += 1;
+            break;
+        case 25802:
+            element.y_offset += 2;
+            break;
+    }
+}
+
 static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1Element* elements)
 {
     auto g1Elements32 = std::make_unique<RCTG1Element[]>(count);
@@ -168,6 +348,8 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
                 elements[i].zoomed_offset = src.zoomed_offset;
             }
 
+            OverrideElementOffsets(i, elements[i]);
+
             ++rctc;
         }
 
@@ -198,6 +380,8 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
             elements[i].y_offset = src.y_offset;
             elements[i].flags = src.flags;
             elements[i].zoomed_offset = src.zoomed_offset;
+
+            OverrideElementOffsets(i, elements[i]);
         }
     }
 }

@@ -10433,6 +10433,378 @@
         "palette": "keep"
     },
     {
+        "path": "track/standup/25455_filler.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25457_filler.png",
+        "x": -22,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25459_filler.png",
+        "x": -26,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25461_filler.png",
+        "x": -28,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25462_filler.png",
+        "x": 7,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25463_filler.png",
+        "x": -29,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25464_filler.png",
+        "x": -2,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25466_filler.png",
+        "x": -18,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25468_filler.png",
+        "x": -18,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25470_filler.png",
+        "x": -14,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25471_filler.png",
+        "x": 7,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25472_filler.png",
+        "x": -27,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25473_filler.png",
+        "x": 8,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25521_filler.png",
+        "x": 28,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25523_filler.png",
+        "x": -32,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25526_filler.png",
+        "x": -4,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25528_filler.png",
+        "x": -6,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25530_filler.png",
+        "x": 1,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25659_filler.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25661_filler.png",
+        "x": -12,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25664_filler.png",
+        "x": -26,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25665_filler.png",
+        "x": 16,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25666_filler.png",
+        "x": -10,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25668_filler.png",
+        "x": 0,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25672_filler.png",
+        "x": -4,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25673_filler.png",
+        "x": -32,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25676_filler.png",
+        "x": -20,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25677_filler.png",
+        "x": 21,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25680_filler.png",
+        "x": -22,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25684_filler.png",
+        "x": 3,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25685_filler.png",
+        "x": -30,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25686_filler.png",
+        "x": -10,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25687_filler.png",
+        "x": -24,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25689_filler.png",
+        "x": -8,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25781_filler.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25783_filler.png",
+        "x": -14,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25785_filler.png",
+        "x": -18,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25787_filler.png",
+        "x": -27,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25788_filler.png",
+        "x": 8,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25792_filler.png",
+        "x": -33,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25794_filler.png",
+        "x": -16,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25796_filler.png",
+        "x": -12,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25797_filler.png",
+        "x": 9,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25798_filler.png",
+        "x": -26,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25799_filler.png",
+        "x": 6,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25803_filler.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25805_filler.png",
+        "x": -12,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25807_filler.png",
+        "x": -24,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25809_filler.png",
+        "x": -26,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25810_filler.png",
+        "x": 9,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25811_filler.png",
+        "x": -30,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25812_filler.png",
+        "x": 1,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25814_filler.png",
+        "x": -32,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25816_filler.png",
+        "x": -12,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25820_filler.png",
+        "x": -25,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25821_filler.png",
+        "x": 7,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25825_filler.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25827_filler.png",
+        "x": -24,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25834_filler.png",
+        "x": -9,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25835_filler.png",
+        "x": 19,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25843_filler.png",
+        "x": -28,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/25844_filler.png",
+        "x": -4,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
         "path": "track/steeplechase/brake_horizontal.png",
         "x": -32,
         "y": 9,
