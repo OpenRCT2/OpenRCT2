@@ -394,7 +394,7 @@ namespace OpenRCT2::Park
     {
         auto& gameState = GetGameState();
 
-        if (gameState.Cheats.ForcedParkRating >= 0)
+        if (gameState.Cheats.ForcedParkRating != kForcedParkRatingDisabled)
         {
             return gameState.Cheats.ForcedParkRating;
         }
