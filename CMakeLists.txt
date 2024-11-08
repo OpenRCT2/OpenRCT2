@@ -113,7 +113,7 @@ option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(ENABLE_SCRIPTING "Enable script / plugin support." ON)
 option(ENABLE_ASAN "Enable the AddressSanitizer.")
 option(ENABLE_UBSAN "Enable the UndefinedBehaviourSanitizer.")
-option(ENABLE_HEADERS_CHECK "Check if include directives in header files are correct. Only works with clang" ON)
+option(ENABLE_HEADERS_CHECK "Check if include directives in header files are correct. Only works with clang" OFF)
 option(DISABLE_GUI "Don't build GUI. (Headless only.)")
 
 

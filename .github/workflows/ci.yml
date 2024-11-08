@@ -471,7 +471,7 @@ jobs:
       - name: Install GCC problem matcher
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
-        run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-fprofile-instr-generate -fcoverage-mapping" -DWITH_TESTS=on
+        run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DENABLE_HEADERS_CHECK=on -DCMAKE_CXX_FLAGS="-fprofile-instr-generate -fcoverage-mapping" -DWITH_TESTS=on
       - name: Run Tests
         run: . scripts/setenv -q && LLVM_PROFILE_FILE="openrct2-coverage-%p.profraw" run-tests
       - name: Test Summary
