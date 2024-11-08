@@ -27,7 +27,7 @@ using namespace OpenRCT2;
 // TODO: Refactor this. Cheat variables should contain the cheat type
 // and a serialisation method.
 
-const int kForcedParkRatingDisabled = -1;
+const int32_t kForcedParkRatingDisabled = -1;
 
 void CheatsReset()
 {
