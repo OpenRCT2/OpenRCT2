@@ -9314,10 +9314,10 @@ static void StandUpRCTrackDiagRightBankTo25DegDown(
             {
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(16676), { -16, -16, height },
+                        session, direction, session.TrackColours.WithIndex(25733), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(16680), { -16, -16, height },
+                        session, direction, session.TrackColours.WithIndex(25737), { -16, -16, height },
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
                     break;
             }
