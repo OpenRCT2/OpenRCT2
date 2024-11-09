@@ -27,8 +27,6 @@ using namespace OpenRCT2;
 // TODO: Refactor this. Cheat variables should contain the cheat type
 // and a serialisation method.
 
-const int32_t kForcedParkRatingDisabled = -1;
-
 void CheatsReset()
 {
     auto& gameState = GetGameState();
@@ -59,7 +57,7 @@ void CheatsReset()
     gameState.Cheats.AllowSpecialColourSchemes = false;
     gameState.Cheats.MakeAllDestructible = false;
     gameState.Cheats.SelectedStaffSpeed = StaffSpeedCheat::None;
-    gameState.Cheats.ForcedParkRating = kForcedParkRatingDisabled;
+    gameState.Cheats.forcedParkRating = kForcedParkRatingDisabled;
 }
 
 void CheatsSet(CheatType cheatType, int64_t param1 /* = 0*/, int64_t param2 /* = 0*/)
@@ -118,7 +116,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::MakeDestructible, gameState.Cheats.MakeAllDestructible, count);
         CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gameState.Cheats.SelectedStaffSpeed, count);
         CheatEntrySerialise(ds, CheatType::IgnorePrice, gameState.Cheats.IgnorePrice, count);
-        CheatEntrySerialise(ds, CheatType::SetForcedParkRating, gameState.Cheats.ForcedParkRating, count);
+        CheatEntrySerialise(ds, CheatType::SetForcedParkRating, gameState.Cheats.forcedParkRating, count);
 
         // Remember current position and update count.
         uint64_t endOffset = stream.GetPosition();
@@ -227,7 +225,7 @@ void CheatsSerialise(DataSerialiser& ds)
                     ds << gameState.Cheats.SelectedStaffSpeed;
                     break;
                 case CheatType::SetForcedParkRating:
-                    ds << gameState.Cheats.ForcedParkRating;
+                    ds << gameState.Cheats.forcedParkRating;
                 default:
                     break;
             }

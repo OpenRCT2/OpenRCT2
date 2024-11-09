@@ -394,9 +394,9 @@ namespace OpenRCT2::Park
     {
         auto& gameState = GetGameState();
 
-        if (gameState.Cheats.ForcedParkRating != kForcedParkRatingDisabled)
+        if (gameState.Cheats.forcedParkRating != kForcedParkRatingDisabled)
         {
-            return gameState.Cheats.ForcedParkRating;
+            return gameState.Cheats.forcedParkRating;
         }
 
         int32_t result = 1150;
@@ -732,7 +732,7 @@ namespace OpenRCT2::Park
 
     void SetForcedRating(int32_t rating)
     {
-        GetGameState().Cheats.ForcedParkRating = rating;
+        GetGameState().Cheats.forcedParkRating = rating;
         GetGameState().Park.Rating = CalculateParkRating();
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         ContextBroadcastIntent(&intent);
@@ -740,7 +740,7 @@ namespace OpenRCT2::Park
 
     int32_t GetForcedRating()
     {
-        return GetGameState().Cheats.ForcedParkRating;
+        return GetGameState().Cheats.forcedParkRating;
     }
 
     money64 GetEntranceFee()
