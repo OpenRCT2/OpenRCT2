@@ -96,6 +96,7 @@ STR_0094    :Achtbaan met enkele rail
 STR_0095    :Rodelachtbaan
 STR_0096    :Klassieke houten achtbaan
 STR_0097    :Klassieke staande achtbaan
+STR_0098    :LSM-lanceringsachtbaan
 STR_0512    :Een compacte achtbaan met een spiraalvormige kettingheuvel en soepele, kronkelende afdalingen.
 STR_0513    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
 STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten.
@@ -180,6 +181,7 @@ STR_0604    :Passagiers zitten achter elkaar op een smalle baan met één rail, 
 STR_0605    :Passagiers rodelen over een kronkelende stalen baan, waarbij ze zelf kunnen beslissen hoe snel ze gaan.
 STR_0606    :Een ouder type houten achtbaan met een snelle en ruwe loop, veel airtime, enige zijwaartse G-krachten en het gevoel van controleverlies.
 STR_0607    :Een intens ouder type achtbaan waarin de passagiers staan.
+STR_0608    :Achtbaan worden door lineaire synchroonmotoren gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
 STR_0767    :Bezoeker {INT32}
 STR_0768    :Klusjesman {INT32}
 STR_0769    :Monteur {INT32}
@@ -3608,7 +3610,7 @@ STR_6537    :Gewone paden als wachtrij bruikbaar maken
 STR_6538    :Zorgt ervoor dat je wachtrijen kunt bouwen met paden die daar niet voor bedoeld zijn.
 STR_6539    :Rem is gesloten
 STR_6540    :{WINDOW_COLOUR_2}Onze dank gaat uit naar de volgende bedrijven voor hun toestemming om voertuigen op hun ontwerpen te baseren:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Deelnemers
 STR_6543    :Deelnemers…
 STR_6544    :Lening kan niet negatief zijn!
