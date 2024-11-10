@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor MazeRTD =
         RatingsCalculationType::FlatRide,
         { MakeRideRating(1, 30), MakeRideRating(0, 50), MakeRideRating(0, 00) },
         8,
-        0,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusMazeSize, 100, 1, 2, 0 },
