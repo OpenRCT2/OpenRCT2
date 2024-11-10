@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor TopSpinRTD =
         RatingsCalculationType::FlatRide,
         { 1, 1, 1 },
         19,
-        0,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusTopSpinMode, 0, 0, 0, 0 },
