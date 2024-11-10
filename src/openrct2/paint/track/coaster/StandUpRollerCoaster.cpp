@@ -6072,16 +6072,22 @@ static void StandUpRCTrackLeftEighthBankToDiag(
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(25675), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(25679), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(25683), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 4, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -6090,9 +6096,10 @@ static void StandUpRCTrackLeftEighthBankToDiag(
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_STANDUP_TRACK_25687_FILLER), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 4, height, session.SupportColours);
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6230,7 +6237,7 @@ static void StandUpRCTrackLeftEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(25690), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::RightCorner, 4, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -6263,24 +6270,31 @@ static void StandUpRCTrackRightEighthBankToDiag(
                     PaintAddImageAsChildRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_STANDUP_TRACK_25659_FILLER), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(25663), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 4, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(25667), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(25671), { 0, 0, height },
                         { { 0, 27, height }, { 32, 1, 26 } });
+                    MetalASupportsPaintSetup(
+                        session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
                     break;
             }
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6394,7 +6408,7 @@ static void StandUpRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(25662), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::LeftCorner, 4, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -6404,7 +6418,7 @@ static void StandUpRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_STANDUP_TRACK_25666_FILLER), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::TopCorner, 1, height, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
