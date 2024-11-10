@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
         RatingsCalculationType::FlatRide,
         { MakeRideRating(2, 45), MakeRideRating(1, 60), MakeRideRating(2, 60) },
         16,
-        0,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusOperationOption, 0, 10, 20, 20 }, 
