@@ -849,23 +849,39 @@ static void StandUpRCTrackFlatToLeftBank(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25281), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25286), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25280), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25283), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            }
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -882,23 +898,39 @@ static void StandUpRCTrackFlatToRightBank(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25279), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25284), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25282), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25285), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            }
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -915,23 +947,39 @@ static void StandUpRCTrackLeftBankToFlat(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25282), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25285), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25279), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25284), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            }
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -948,23 +996,39 @@ static void StandUpRCTrackRightBankToFlat(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25280), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25283), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25281), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25286), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            }
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -1236,23 +1300,39 @@ static void StandUpRCTrackLeftBankTo25DegUp(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25315), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25316), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25317), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25318), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            }
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -1276,23 +1356,39 @@ static void StandUpRCTrackRightBankTo25DegUp(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25319), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 5, height, session.SupportColours);
+            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25320), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25321), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25322), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
+            }
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -1316,23 +1412,39 @@ static void StandUpRCTrack25DegUpToLeftBank(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25311), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 4, height, session.SupportColours);
+            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25312), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25313), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25314), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+            }
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -1356,23 +1468,39 @@ static void StandUpRCTrack25DegUpToRightBank(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25307), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 9, height, session.SupportColours);
+            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25308), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25309), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25310), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 4, height, session.SupportColours);
+            }
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
     if (direction == 0 || direction == 3)
     {
@@ -1428,23 +1556,39 @@ static void StandUpRCTrackLeftBank(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25323), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            }
             break;
         case 1:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25324), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
+            }
             break;
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25325), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            }
             break;
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(25326), { 0, 6, height }, { 32, 20, 3 });
+            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+            {
+                MetalASupportsPaintSetup(
+                    session, supportType.metal, MetalSupportPlace::Centre, 6, height, session.SupportColours);
+            }
             break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
