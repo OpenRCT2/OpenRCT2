@@ -2622,10 +2622,6 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
             case TrackElemType::RightMediumHalfLoopUp:
             case TrackElemType::LeftMediumHalfLoopDown:
             case TrackElemType::RightMediumHalfLoopDown:
-            case TrackElemType::LeftLargeHalfLoopUp:
-            case TrackElemType::RightLargeHalfLoopUp:
-            case TrackElemType::LeftLargeHalfLoopDown:
-            case TrackElemType::RightLargeHalfLoopDown:
             case TrackElemType::LeftZeroGRollUp:
             case TrackElemType::RightZeroGRollUp:
             case TrackElemType::LeftZeroGRollDown:
