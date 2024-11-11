@@ -2563,6 +2563,82 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
+    else if (
+        (rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER || rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
+         || rideType == RIDE_TYPE_HYPER_TWISTER || rideType == RIDE_TYPE_FLYING_ROLLER_COASTER)
+        && parkFileVersion < kExtendedTwisterCoasterVersion)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::LeftEighthToDiagUp25:
+            case TrackElemType::RightEighthToDiagUp25:
+            case TrackElemType::LeftEighthToDiagDown25:
+            case TrackElemType::RightEighthToDiagDown25:
+            case TrackElemType::LeftEighthToOrthogonalUp25:
+            case TrackElemType::RightEighthToOrthogonalUp25:
+            case TrackElemType::LeftEighthToOrthogonalDown25:
+            case TrackElemType::RightEighthToOrthogonalDown25:
+            case TrackElemType::DiagUp25ToLeftBankedUp25:
+            case TrackElemType::DiagUp25ToRightBankedUp25:
+            case TrackElemType::DiagLeftBankedUp25ToUp25:
+            case TrackElemType::DiagRightBankedUp25ToUp25:
+            case TrackElemType::DiagDown25ToLeftBankedDown25:
+            case TrackElemType::DiagDown25ToRightBankedDown25:
+            case TrackElemType::DiagLeftBankedDown25ToDown25:
+            case TrackElemType::DiagRightBankedDown25ToDown25:
+            case TrackElemType::DiagLeftBankedFlatToLeftBankedUp25:
+            case TrackElemType::DiagRightBankedFlatToRightBankedUp25:
+            case TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat:
+            case TrackElemType::DiagRightBankedUp25ToRightBankedFlat:
+            case TrackElemType::DiagLeftBankedFlatToLeftBankedDown25:
+            case TrackElemType::DiagRightBankedFlatToRightBankedDown25:
+            case TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat:
+            case TrackElemType::DiagRightBankedDown25ToRightBankedFlat:
+            case TrackElemType::DiagUp25LeftBanked:
+            case TrackElemType::DiagUp25RightBanked:
+            case TrackElemType::DiagDown25LeftBanked:
+            case TrackElemType::DiagDown25RightBanked:
+            case TrackElemType::DiagFlatToLeftBankedUp25:
+            case TrackElemType::DiagFlatToRightBankedUp25:
+            case TrackElemType::DiagLeftBankedUp25ToFlat:
+            case TrackElemType::DiagRightBankedUp25ToFlat:
+            case TrackElemType::DiagFlatToLeftBankedDown25:
+            case TrackElemType::DiagFlatToRightBankedDown25:
+            case TrackElemType::DiagLeftBankedDown25ToFlat:
+            case TrackElemType::DiagRightBankedDown25ToFlat:
+            case TrackElemType::LeftEighthBankToDiagUp25:
+            case TrackElemType::RightEighthBankToDiagUp25:
+            case TrackElemType::LeftEighthBankToDiagDown25:
+            case TrackElemType::RightEighthBankToDiagDown25:
+            case TrackElemType::LeftEighthBankToOrthogonalUp25:
+            case TrackElemType::RightEighthBankToOrthogonalUp25:
+            case TrackElemType::LeftEighthBankToOrthogonalDown25:
+            case TrackElemType::RightEighthBankToOrthogonalDown25:
+            case TrackElemType::LeftLargeCorkscrewUp:
+            case TrackElemType::RightLargeCorkscrewUp:
+            case TrackElemType::LeftLargeCorkscrewDown:
+            case TrackElemType::RightLargeCorkscrewDown:
+            case TrackElemType::LeftMediumHalfLoopUp:
+            case TrackElemType::RightMediumHalfLoopUp:
+            case TrackElemType::LeftMediumHalfLoopDown:
+            case TrackElemType::RightMediumHalfLoopDown:
+            case TrackElemType::LeftLargeHalfLoopUp:
+            case TrackElemType::RightLargeHalfLoopUp:
+            case TrackElemType::LeftLargeHalfLoopDown:
+            case TrackElemType::RightLargeHalfLoopDown:
+            case TrackElemType::LeftZeroGRollUp:
+            case TrackElemType::RightZeroGRollUp:
+            case TrackElemType::LeftZeroGRollDown:
+            case TrackElemType::RightZeroGRollDown:
+            case TrackElemType::LeftLargeZeroGRollUp:
+            case TrackElemType::RightLargeZeroGRollUp:
+            case TrackElemType::LeftLargeZeroGRollDown:
+            case TrackElemType::RightLargeZeroGRollDown:
+                return true;
+            default:
+                break;
+        }
+    }
 
     return false;
 }
