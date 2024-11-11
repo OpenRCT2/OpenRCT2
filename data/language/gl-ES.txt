@@ -99,6 +99,7 @@ STR_0094    :Montaña rusa dun só carril
 STR_0095    :Montaña Rusa Alpina
 STR_0096    :Montaña rusa clásica de madeira
 STR_0097    :Montaña rusa clásica de pé
+STR_0098    :Montaña Rusa de Lanzamento LSM
 STR_0512    :Unha pequena montaña rusa de aceiro cunha subida en espiral e coches con asentos en liña.
 STR_0513    :Unha montaña rusa na que os pasaxeiros permanecen de pé.
 STR_0514    :Os coches suspendidos baixo os carrís balanceanse lateralmente ao virar en curva.
@@ -183,6 +184,7 @@ STR_0604    :Os pasaxeiros viaxan en ringleira por unha estreita vía de monorra
 STR_0605    :Os pasaxeiros baixan por unha sinuosa vía de aceiro, freando para controlar a súa velocidade.
 STR_0606    :Unha montaña rusa de madeira de estilo antigo cun paseo rápido e áspero, con moitas caídas, algunhas forzas G laterais e deseñada para ofrecer unha experiencia "descontrolada".
 STR_0607    :Unha montaña rusa en espiral de aceiro de estilo vintage intenso con xinetes montando de pé.
+STR_0608    :Os trens da montaña rusa son acelerados por motores lineais síncronos, percorrendo a gran velocidade curvas pechadas e viraxes pronunciadas
 STR_0767    :Visitante {INT32}
 STR_0768    :Manitas {INT32}
 STR_0769    :Mecánica {INT32}
@@ -3609,7 +3611,7 @@ STR_6537    :Permitir que as rutas normais se utilicen como cola
 STR_6538    :Mostra rutas normais no menú despregable da cola da xanela Rutas.
 STR_6539    :freo pechado
 STR_6540    :{WINDOW_COLOUR_2}Grazas especiais ás seguintes empresas por permitir o uso da súa imaxe:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Colaboradores
 STR_6543    :Colaboradores...
 STR_6544    :O préstamo non pode ser negativo!
@@ -3730,5 +3732,52 @@ STR_6657    :Terra Sen Propietario
 STR_6658    :Establecer que a terra non sexa propiedade do parque nin estea dispoñible para a compra
 STR_6659    :Os invitados ignoran os prezos
 STR_6660    :Os invitados ignorarán o prezo das atraccións e dos postos
-
-
+STR_6661    :Todo ao chou
+STR_6662    :Cores ao chou para cada tren ou vehículo.
+STR_6663    :Trucos de data
+STR_6664    :Amosar trucos de data
+STR_6665    :Trucos de natureza/clima
+STR_6666    :Amosar trucos de natureza/clima
+STR_6667    :Fauna
+STR_6668    :Trucos de empleados
+STR_6669    :Amosar trucos de empleados
+STR_6670    :Comportamento dos visitantes
+STR_6671    :Amosar nomes ‘reais’ de empleados
+STR_6672    :Alternar entre amosar nomes ‘reais’ e números de empleados
+STR_6673    :Translúcido
+STR_6674    :{MONTH}, Ano {COMMA16}
+STR_6675    :Nomes dos Visitantes
+STR_6676    :Debe escollerse polo menos un obxecto de nomes de visitantes
+STR_6677    :Engade praias arredor das masas de auga
+STR_6678    :Fonte do mapa de elevación:
+STR_6679    :Chaira
+STR_6680    :Ruído Simplex
+STR_6681    :Arquivo do mapa de elevación
+STR_6682    :Xerador de Mapas - Xerador
+STR_6683    :Xerador de Mapas - Terreo
+STR_6684    :Xerador de Mapas - Auga
+STR_6685    :Xerador de Mapas - Fragas
+STR_6686    :Relación árbores/terreo
+STR_6687    :Altitude mínima das árbores:
+STR_6688    :Altitude máxima das árbores:
+STR_6689    :{UINT16}%
+STR_6690    :Altura mínima do terreo
+STR_6691    :Introduce a altura mínima do terreo entre {COMMA16} e {COMMA16}
+STR_6692    :Altura máxima do terreo
+STR_6693    :Introduce a altura máxima do terreo entre {COMMA16} e {COMMA16}
+STR_6694    :Altitude mínima das árbores
+STR_6695    :Introduce a altitude mínima das árbores entre {COMMA16} e {COMMA16}
+STR_6696    :Altitude máxima das árbores
+STR_6697    :Introduce a altitude máxima das árbores entre {COMMA16} e {COMMA16}
+STR_6698    :Relación árbores/terreo
+STR_6699    :Introduce a relación árbores/terreo entre {COMMA16} e {COMMA16}
+STR_6700    :Frecuencia base Simplex
+STR_6701    :Introduce a frecuencia base entre {COMMA2DP32} e {COMMA2DP32}
+STR_6702    :Octavas Simplex
+STR_6703    :Introduce as octavas entre {COMMA16} e {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Explorar…
+STR_6706    :{WINDOW_COLOUR_2}Arquivo de imaxe actual: {BLACK}{STRING}
+STR_6707    :(Ningún escollido)
+STR_6708    :Intensidade de suavizado
+STR_6709    :Introduce a intensidade de suavizado entre {COMMA16} e {COMMA16}
