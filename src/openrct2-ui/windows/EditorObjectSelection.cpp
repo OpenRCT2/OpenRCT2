@@ -1404,7 +1404,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool FilterCompatibilityObject(const ObjectRepositoryItem& item, uint8_t objectFlag)
         {
-            // Only show compat objects if they are not selected already.
+            // Only show compat objects if they are selected already.
             return !(item.Flags & ObjectItemFlags::IsCompatibilityObject) || (objectFlag & ObjectSelectionFlags::Selected);
         }
 
