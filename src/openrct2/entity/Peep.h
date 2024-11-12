@@ -36,16 +36,6 @@ namespace OpenRCT2::GameActions
     class Result;
 }
 
-enum class StaffType : uint8_t
-{
-    Handyman,
-    Mechanic,
-    Security,
-    Entertainer,
-
-    Count
-};
-
 enum class PeepState : uint8_t
 {
     Falling = 0, // Drowning is part of falling
