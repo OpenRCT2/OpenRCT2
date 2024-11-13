@@ -11392,6 +11392,78 @@
         "palette": "keep"
     },
     {
+        "path": "track/standup/vertical_twist_left_up_1.png",
+        "x": -12,
+        "y": -93,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/vertical_twist_left_up_2_1.png",
+        "x": -9,
+        "y": -93,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/vertical_twist_left_up_2_2.png",
+        "x": -9,
+        "y": -85,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/vertical_twist_left_up_3.png",
+        "x": -12,
+        "y": -93,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/vertical_twist_left_up_4_1.png",
+        "x": -8,
+        "y": -64,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/vertical_twist_left_up_4_2.png",
+        "x": -10,
+        "y": -93,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/vertical_twist_right_up_1_1.png",
+        "x": -9,
+        "y": -64,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/vertical_twist_right_up_1_2.png",
+        "x": -9,
+        "y": -93,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/vertical_twist_right_up_2.png",
+        "x": -12,
+        "y": -93,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/vertical_twist_right_up_3_1.png",
+        "x": -8,
+        "y": -93,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/vertical_twist_right_up_3_2.png",
+        "x": -10,
+        "y": -85,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/vertical_twist_right_up_4.png",
+        "x": -12,
+        "y": -93,
+        "palette": "keep"
+    },
+    {
         "path": "track/steeplechase/brake_horizontal.png",
         "x": -32,
         "y": 9,

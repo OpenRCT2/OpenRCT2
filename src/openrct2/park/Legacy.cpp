@@ -2683,6 +2683,10 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
             case TrackElemType::RightQuarterTurn1TileUp60:
             case TrackElemType::LeftQuarterTurn1TileDown60:
             case TrackElemType::RightQuarterTurn1TileDown60:
+            case TrackElemType::LeftQuarterTurn1TileUp90:
+            case TrackElemType::RightQuarterTurn1TileUp90:
+            case TrackElemType::LeftQuarterTurn1TileDown90:
+            case TrackElemType::RightQuarterTurn1TileDown90:
                 return true;
             default:
                 break;
