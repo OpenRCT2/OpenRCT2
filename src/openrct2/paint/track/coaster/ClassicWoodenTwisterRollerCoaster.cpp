@@ -45,10 +45,26 @@ enum
     SPR_CLASSIC_WOODEN_RC_UP25_TO_RIGHT_BANK_2 = SPR_CSG_BEGIN + 65465,
     SPR_CLASSIC_WOODEN_RC_UP25_TO_RIGHT_BANK_3 = SPR_CSG_BEGIN + 65466,
 
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_0 = SPR_CSG_BEGIN + 65467,
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_1 = SPR_CSG_BEGIN + 65468,
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_2 = SPR_CSG_BEGIN + 65469,
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_3 = SPR_CSG_BEGIN + 65470,
+
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_0 = SPR_CSG_BEGIN + 65471,
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_1 = SPR_CSG_BEGIN + 65472,
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_2 = SPR_CSG_BEGIN + 65473,
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_3 = SPR_CSG_BEGIN + 65474,
+
     SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_FRONT_1 = SPR_CSG_BEGIN + 65475,
     SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_FRONT_3 = SPR_CSG_BEGIN + 65476,
     //    SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_FRONT_0 = SPR_CSG_BEGIN + 65477,
     //    SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_FRONT_2 = SPR_CSG_BEGIN + 65478,
+
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_FRONT_1 = SPR_CSG_BEGIN + 65482,
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_FRONT_2 = SPR_CSG_BEGIN + 65483,
+
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_FRONT_1 = SPR_CSG_BEGIN + 65484,
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_FRONT_2 = SPR_CSG_BEGIN + 65485,
 
     SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_HANDRAIL_0 = SPR_CSG_BEGIN + 66203,
     SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_HANDRAIL_1 = SPR_CSG_BEGIN + 66204,
@@ -75,10 +91,26 @@ enum
     SPR_CLASSIC_WOODEN_RC_UP25_TO_RIGHT_BANK_HANDRAIL_2 = SPR_CSG_BEGIN + 66221,
     SPR_CLASSIC_WOODEN_RC_UP25_TO_RIGHT_BANK_HANDRAIL_3 = SPR_CSG_BEGIN + 66222,
 
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_HANDRAIL_0 = SPR_CSG_BEGIN + 66223,
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_HANDRAIL_1 = SPR_CSG_BEGIN + 66224,
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_HANDRAIL_2 = SPR_CSG_BEGIN + 66225,
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_HANDRAIL_3 = SPR_CSG_BEGIN + 66226,
+
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_HANDRAIL_0 = SPR_CSG_BEGIN + 66227,
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_HANDRAIL_1 = SPR_CSG_BEGIN + 66228,
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_HANDRAIL_2 = SPR_CSG_BEGIN + 66229,
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_HANDRAIL_3 = SPR_CSG_BEGIN + 66230,
+
     SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_FRONT_HANDRAIL_1 = SPR_CSG_BEGIN + 66231,
     SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_FRONT_HANDRAIL_3 = SPR_CSG_BEGIN + 66232,
     //    SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_FRONT_HANDRAIL_0 = SPR_CSG_BEGIN + 66233,
     //    SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_FRONT_HANDRAIL_2 = SPR_CSG_BEGIN + 66234,
+
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_FRONT_HANDRAIL_1 = SPR_CSG_BEGIN + 66238,
+    SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_FRONT_HANDRAIL_2 = SPR_CSG_BEGIN + 66239,
+
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_FRONT_HANDRAIL_1 = SPR_CSG_BEGIN + 66240,
+    SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_FRONT_HANDRAIL_2 = SPR_CSG_BEGIN + 66241,
 };
 
 static constexpr std::array<StraightWoodenTrack, kNumOrthogonalDirections> kFlatToLeftBankImages = { {
@@ -170,6 +202,47 @@ static constexpr std::array<StraightWoodenTrack, kNumOrthogonalDirections> kUp25
     },
 } };
 
+static constexpr std::array<StraightWoodenTrack, kNumOrthogonalDirections> kLeftBankToUp25Images = { {
+    {
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_0,
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_HANDRAIL_0,
+    },
+    {
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_1,
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_HANDRAIL_1,
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_FRONT_1,
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_FRONT_HANDRAIL_1,
+    },
+    {
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_2,
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_HANDRAIL_2,
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_FRONT_2,
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_FRONT_HANDRAIL_2,
+    },
+    {
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_3,
+        SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_UP25_HANDRAIL_3,
+    },
+} };
+static constexpr std::array<StraightWoodenTrack, kNumOrthogonalDirections> kRightBankToUp25Images = { {
+    {
+        SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_0,
+        SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_HANDRAIL_0,
+    },
+    {
+        SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_1,
+        SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_HANDRAIL_1,
+    },
+    {
+        SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_2,
+        SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_HANDRAIL_2,
+    },
+    {
+        SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_3,
+        SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_UP25_HANDRAIL_3,
+    },
+} };
+
 static void ClassicWoodenTwisterRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -210,6 +283,22 @@ static void ClassicWoodenTwisterRCTrackRightBankTo25DegDown(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
+static void ClassicWoodenTwisterRCTrack25DegDownToLeftBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    WoodenRCTrackBankTo25DegUp<false, kRightBankToUp25Images>(
+        session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
+}
+
+static void ClassicWoodenTwisterRCTrack25DegDownToRightBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    WoodenRCTrackBankTo25DegUp<false, kLeftBankToUp25Images>(
+        session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
+}
+
 // Stylistically, this coaster is _very_ similar to the regular Wooden Roller Coaster.
 // The only difference is the degree of the banking.
 // As such, all non-banked pieces are simply drawn as regular wooden roller coaster pieces.
@@ -242,6 +331,16 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenTwisterRC(OpenRCT2::Track
             return ClassicWoodenTwisterRCTrackLeftBankTo25DegDown;
         case TrackElemType::RightBankToDown25:
             return ClassicWoodenTwisterRCTrackRightBankTo25DegDown;
+
+        case TrackElemType::LeftBankToUp25:
+            return WoodenRCTrackBankTo25DegUp<false, kLeftBankToUp25Images>;
+        case TrackElemType::RightBankToUp25:
+            return WoodenRCTrackBankTo25DegUp<false, kRightBankToUp25Images>;
+        case TrackElemType::Down25ToLeftBank:
+            return ClassicWoodenTwisterRCTrack25DegDownToLeftBank;
+        case TrackElemType::Down25ToRightBank:
+            return ClassicWoodenTwisterRCTrack25DegDownToRightBank;
+
         default:
             return GetTrackPaintFunctionWoodenRC(trackType);
     }
