@@ -12,6 +12,8 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../PlatformEnvironment.h"
+#include "../actions/FootpathPlaceAction.h"
+#include "../actions/GameActionResult.h"
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
@@ -28,6 +30,7 @@
 #include "../world/Map.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TileElementType.h"
@@ -80,6 +83,7 @@ static const std::string _pathsKey = "paths";
 static const std::string _railingsKey = "railings";
 static const std::string _surfaceKey = "surface";
 static const std::string _directionKey = "slope_direction";
+static const std::string _isQueue = "queue";
 
 static u8string ToOwnershipJsonKey(int ownershipType)
 {
@@ -183,6 +187,23 @@ static Direction GetDirection(const json_t& parameters)
     }
 
     return direction;
+}
+
+static bool IsQueue(const json_t& parameters)
+{
+    if (!parameters.contains(_isQueue))
+    {
+        return false;
+    }
+    else if (!parameters[_isQueue].is_boolean())
+    {
+        OpenRCT2::Guard::Assert(0, "queue must be a boolean");
+        return false;
+    }
+    else
+    {
+        return OpenRCT2::Json::GetBoolean(parameters[_isQueue]);
+    }
 }
 
 static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int ownershipType)
@@ -629,27 +650,18 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
         auto coordinates = getCoordinates<TileCoordsXYZ>(pathFix);
         Direction direction = GetDirection(pathFix);
+        PathConstructFlags constructionFlags = IsQueue(pathFix) ? OpenRCT2::PathConstructFlag::IsQueue : 0;
 
         for (auto coordinate : coordinates)
         {
-            auto* pathElement = TileElementInsert<PathElement>(coordinate.ToCoordsXYZ(), 0b1111);
-            OpenRCT2::Guard::Assert(pathElement != nullptr);
-
-            pathElement->SetSurfaceEntryIndex(surfaceObjIndex);
-            pathElement->SetRailingsEntryIndex(railingsObjIndex);
-            if (direction != INVALID_DIRECTION)
+            auto slope = direction != INVALID_DIRECTION ? direction + 4 : 0;
+            auto footpathPlaceAction = FootpathPlaceAction(
+                coordinate.ToCoordsXYZ(), slope, surfaceObjIndex, railingsObjIndex, direction, constructionFlags);
+            auto result = footpathPlaceAction.Execute();
+            if (result.Error != OpenRCT2::GameActions::Status::Ok)
             {
-                pathElement->SetSloped(true);
-                pathElement->SetSlopeDirection(direction);
+                OpenRCT2::Guard::Assert(0, "Could not patch path");
             }
-
-            FootpathQueueChainReset();
-            FootpathConnectEdges(
-                coordinate.ToCoordsXY(), pathElement->as<TileElement>(),
-                GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-            FootpathUpdateQueueChains();
-
-            MapInvalidateTileFull(coordinate.ToCoordsXY());
         }
     }
 }
