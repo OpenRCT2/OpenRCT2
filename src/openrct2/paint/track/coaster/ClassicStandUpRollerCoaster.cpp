@@ -1544,6 +1544,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemTy
         case TrackElemType::RightEighthBankToOrthogonalUp25:
         case TrackElemType::LeftEighthBankToOrthogonalDown25:
         case TrackElemType::RightEighthBankToOrthogonalDown25:
+        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
+        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
+        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
             return nullptr;
 
         default:
