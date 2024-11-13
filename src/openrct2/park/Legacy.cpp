@@ -2655,6 +2655,25 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
+    else if (
+        (rideType == RIDE_TYPE_STAND_UP_ROLLER_COASTER || rideType == RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER)
+        && parkFileVersion < kExtendedStandUpRollerCoasterVersion)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::FlatToUp60:
+            case TrackElemType::Up60ToFlat:
+            case TrackElemType::FlatToDown60:
+            case TrackElemType::Down60ToFlat:
+            case TrackElemType::DiagFlatToUp60:
+            case TrackElemType::DiagUp60ToFlat:
+            case TrackElemType::DiagFlatToDown60:
+            case TrackElemType::DiagDown60ToFlat:
+                return true;
+            default:
+                break;
+        }
+    }
 
     return false;
 }
