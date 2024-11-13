@@ -2669,6 +2669,10 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
             case TrackElemType::DiagUp60ToFlat:
             case TrackElemType::DiagFlatToDown60:
             case TrackElemType::DiagDown60ToFlat:
+            case TrackElemType::FlatToUp60LongBase:
+            case TrackElemType::Up60ToFlatLongBase:
+            case TrackElemType::Down60ToFlatLongBase:
+            case TrackElemType::FlatToDown60LongBase:
                 return true;
             default:
                 break;
