@@ -2687,6 +2687,42 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
             case TrackElemType::RightQuarterTurn1TileUp90:
             case TrackElemType::LeftQuarterTurn1TileDown90:
             case TrackElemType::RightQuarterTurn1TileDown90:
+            case TrackElemType::Up25ToLeftBankedUp25:
+            case TrackElemType::Up25ToRightBankedUp25:
+            case TrackElemType::LeftBankedUp25ToUp25:
+            case TrackElemType::RightBankedUp25ToUp25:
+            case TrackElemType::Down25ToLeftBankedDown25:
+            case TrackElemType::Down25ToRightBankedDown25:
+            case TrackElemType::LeftBankedDown25ToDown25:
+            case TrackElemType::RightBankedDown25ToDown25:
+            case TrackElemType::LeftBankedFlatToLeftBankedUp25:
+            case TrackElemType::RightBankedFlatToRightBankedUp25:
+            case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
+            case TrackElemType::RightBankedUp25ToRightBankedFlat:
+            case TrackElemType::LeftBankedFlatToLeftBankedDown25:
+            case TrackElemType::RightBankedFlatToRightBankedDown25:
+            case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
+            case TrackElemType::RightBankedDown25ToRightBankedFlat:
+            case TrackElemType::Down25LeftBanked:
+            case TrackElemType::Down25RightBanked:
+            case TrackElemType::FlatToLeftBankedUp25:
+            case TrackElemType::FlatToRightBankedUp25:
+            case TrackElemType::LeftBankedUp25ToFlat:
+            case TrackElemType::RightBankedUp25ToFlat:
+            case TrackElemType::FlatToLeftBankedDown25:
+            case TrackElemType::FlatToRightBankedDown25:
+            case TrackElemType::LeftBankedDown25ToFlat:
+            case TrackElemType::RightBankedDown25ToFlat:
+            case TrackElemType::Up25LeftBanked:
+            case TrackElemType::Up25RightBanked:
+            case TrackElemType::LeftBankedQuarterTurn3TileUp25:
+            case TrackElemType::RightBankedQuarterTurn3TileUp25:
+            case TrackElemType::LeftBankedQuarterTurn3TileDown25:
+            case TrackElemType::RightBankedQuarterTurn3TileDown25:
+            case TrackElemType::LeftBankedQuarterTurn5TileUp25:
+            case TrackElemType::RightBankedQuarterTurn5TileUp25:
+            case TrackElemType::LeftBankedQuarterTurn5TileDown25:
+            case TrackElemType::RightBankedQuarterTurn5TileDown25:
                 return true;
             default:
                 break;

@@ -11464,6 +11464,626 @@
         "palette": "keep"
     },
     {
+        "path": "track/standup/gentle_up_to_gentle_up_left_bank_1.png",
+        "x": -24,
+        "y": -20
+    },
+    {
+        "path": "track/standup/gentle_up_to_gentle_up_left_bank_2_1.png",
+        "x": -10,
+        "y": -5
+    },
+    {
+        "path": "track/standup/gentle_up_to_gentle_up_left_bank_2_2.png",
+        "x": -25,
+        "y": -6
+    },
+    {
+        "path": "track/standup/gentle_up_to_gentle_up_left_bank_3.png",
+        "x": -22,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_to_gentle_up_left_bank_4.png",
+        "x": -24,
+        "y": -25
+    },
+    {
+        "path": "track/standup/gentle_up_to_gentle_up_right_bank_1.png",
+        "x": -24,
+        "y": -25
+    },
+    {
+        "path": "track/standup/gentle_up_to_gentle_up_right_bank_2.png",
+        "x": -25,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_to_gentle_up_right_bank_3_1.png",
+        "x": 4,
+        "y": -5
+    },
+    {
+        "path": "track/standup/gentle_up_to_gentle_up_right_bank_3_2.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "track/standup/gentle_up_to_gentle_up_right_bank_4.png",
+        "x": -22,
+        "y": -20
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_gentle_up_1.png",
+        "x": -20,
+        "y": -21
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_gentle_up_2_1.png",
+        "x": -15,
+        "y": -5
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_gentle_up_2_2.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_gentle_up_3.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_gentle_up_4.png",
+        "x": -25,
+        "y": -20
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_gentle_up_1.png",
+        "x": -24,
+        "y": -21
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_gentle_up_2.png",
+        "x": -20,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_gentle_up_3_1.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_gentle_up_3_2.png",
+        "x": 0,
+        "y": -6
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_gentle_up_4.png",
+        "x": -25,
+        "y": -20
+    },
+    {
+        "path": "track/standup/left_bank_to_gentle_up_left_bank_1.png",
+        "x": -21,
+        "y": -12
+    },
+    {
+        "path": "track/standup/left_bank_to_gentle_up_left_bank_2.png",
+        "x": -22,
+        "y": -5
+    },
+    {
+        "path": "track/standup/left_bank_to_gentle_up_left_bank_3.png",
+        "x": -22,
+        "y": -11
+    },
+    {
+        "path": "track/standup/left_bank_to_gentle_up_left_bank_4.png",
+        "x": -24,
+        "y": -17
+    },
+    {
+        "path": "track/standup/right_bank_to_gentle_up_right_bank_1.png",
+        "x": -23,
+        "y": -17
+    },
+    {
+        "path": "track/standup/right_bank_to_gentle_up_right_bank_2.png",
+        "x": -22,
+        "y": -11
+    },
+    {
+        "path": "track/standup/right_bank_to_gentle_up_right_bank_3.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/standup/right_bank_to_gentle_up_right_bank_4.png",
+        "x": -22,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_left_bank_1.png",
+        "x": -20,
+        "y": -13
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_left_bank_2.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_left_bank_3.png",
+        "x": -23,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_left_bank_4.png",
+        "x": -22,
+        "y": -19
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_right_bank_1.png",
+        "x": -24,
+        "y": -19
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_right_bank_2.png",
+        "x": -20,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_right_bank_3.png",
+        "x": -21,
+        "y": -6
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_right_bank_4.png",
+        "x": -22,
+        "y": -13
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_1.png",
+        "x": -20,
+        "y": -20
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_2.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_3.png",
+        "x": -22,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_4.png",
+        "x": -24,
+        "y": -25
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_1.png",
+        "x": -24,
+        "y": -25
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_2.png",
+        "x": -20,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_3.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_4.png",
+        "x": -22,
+        "y": -20
+    },
+    {
+        "path": "track/standup/flat_to_gentle_up_left_bank_1.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "track/standup/flat_to_gentle_up_left_bank_2_1.png",
+        "x": -23,
+        "y": -5
+    },
+    {
+        "path": "track/standup/flat_to_gentle_up_left_bank_2_2.png",
+        "x": -24,
+        "y": 2
+    },
+    {
+        "path": "track/standup/flat_to_gentle_up_left_bank_3.png",
+        "x": -22,
+        "y": -5
+    },
+    {
+        "path": "track/standup/flat_to_gentle_up_left_bank_4.png",
+        "x": -24,
+        "y": -17
+    },
+    {
+        "path": "track/standup/flat_to_gentle_up_right_bank_1.png",
+        "x": -24,
+        "y": -17
+    },
+    {
+        "path": "track/standup/flat_to_gentle_up_right_bank_2.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/standup/flat_to_gentle_up_right_bank_3_1.png",
+        "x": -13,
+        "y": -5
+    },
+    {
+        "path": "track/standup/flat_to_gentle_up_right_bank_3_2.png",
+        "x": -24,
+        "y": 2
+    },
+    {
+        "path": "track/standup/flat_to_gentle_up_right_bank_4.png",
+        "x": -22,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_flat_1.png",
+        "x": -20,
+        "y": -13
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_flat_2_1.png",
+        "x": -18,
+        "y": -5
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_flat_2_2.png",
+        "x": -24,
+        "y": -6
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_flat_3.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_left_bank_to_flat_4.png",
+        "x": -24,
+        "y": -13
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_flat_1.png",
+        "x": -24,
+        "y": -13
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_flat_2.png",
+        "x": -20,
+        "y": -12
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_flat_3_1.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_flat_3_2.png",
+        "x": -3,
+        "y": -6
+    },
+    {
+        "path": "track/standup/gentle_up_right_bank_to_flat_4.png",
+        "x": -24,
+        "y": -13
+    },
+    {
+        "path": "track/standup/small_turn_left_bank_gentle_up_1_1.png",
+        "x": -26,
+        "y": -25
+    },
+    {
+        "path": "track/standup/small_turn_left_bank_gentle_up_1_2.png",
+        "x": -9,
+        "y": 12
+    },
+    {
+        "path": "track/standup/small_turn_left_bank_gentle_up_1_3.png",
+        "x": -18,
+        "y": -28
+    },
+    {
+        "path": "track/standup/small_turn_left_bank_gentle_up_2_1.png",
+        "x": -18,
+        "y": -14
+    },
+    {
+        "path": "track/standup/small_turn_left_bank_gentle_up_2_2.png",
+        "x": -38,
+        "y": -23
+    },
+    {
+        "path": "track/standup/small_turn_left_bank_gentle_up_3_1.png",
+        "x": -19,
+        "y": -15
+    },
+    {
+        "path": "track/standup/small_turn_left_bank_gentle_up_3_2.png",
+        "x": -6,
+        "y": -10
+    },
+    {
+        "path": "track/standup/small_turn_left_bank_gentle_up_4_1.png",
+        "x": -15,
+        "y": -22
+    },
+    {
+        "path": "track/standup/small_turn_left_bank_gentle_up_4_2.png",
+        "x": -10,
+        "y": -9
+    },
+    {
+        "path": "track/standup/small_turn_left_bank_gentle_up_4_3.png",
+        "x": -28,
+        "y": -15
+    },
+    {
+        "path": "track/standup/small_turn_right_bank_gentle_up_1_1.png",
+        "x": -30,
+        "y": -22
+    },
+    {
+        "path": "track/standup/small_turn_right_bank_gentle_up_1_2.png",
+        "x": -11,
+        "y": -9
+    },
+    {
+        "path": "track/standup/small_turn_right_bank_gentle_up_1_3.png",
+        "x": -16,
+        "y": -15
+    },
+    {
+        "path": "track/standup/small_turn_right_bank_gentle_up_2_1.png",
+        "x": -14,
+        "y": -15
+    },
+    {
+        "path": "track/standup/small_turn_right_bank_gentle_up_2_2.png",
+        "x": -30,
+        "y": -10
+    },
+    {
+        "path": "track/standup/small_turn_right_bank_gentle_up_3_1.png",
+        "x": -38,
+        "y": -14
+    },
+    {
+        "path": "track/standup/small_turn_right_bank_gentle_up_3_2.png",
+        "x": -16,
+        "y": -23
+    },
+    {
+        "path": "track/standup/small_turn_right_bank_gentle_up_4_1.png",
+        "x": -7,
+        "y": -25
+    },
+    {
+        "path": "track/standup/small_turn_right_bank_gentle_up_4_2.png",
+        "x": -14,
+        "y": 12
+    },
+    {
+        "path": "track/standup/small_turn_right_bank_gentle_up_4_3.png",
+        "x": -19,
+        "y": -28
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_1_1.png",
+        "x": -20,
+        "y": -16
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_1_2.png",
+        "x": -31,
+        "y": -14
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_1_3.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_1_4.png",
+        "x": -32,
+        "y": -11
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_1_5.png",
+        "x": -24,
+        "y": -25
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_2_1.png",
+        "x": -24,
+        "y": -9
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_2_2.png",
+        "x": -15,
+        "y": -20
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_2_3.png",
+        "x": 0,
+        "y": -4
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_2_4.png",
+        "x": -13,
+        "y": -26
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_2_5.png",
+        "x": -17,
+        "y": -20
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_3_1.png",
+        "x": -25,
+        "y": -12
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_3_2.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_3_3.png",
+        "x": -27,
+        "y": -10
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_3_4.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_3_5.png",
+        "x": -24,
+        "y": -10
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_4_1.png",
+        "x": -29,
+        "y": -23
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_4_2.png",
+        "x": -32,
+        "y": -13
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_4_3.png",
+        "x": -20,
+        "y": -25
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_4_4.png",
+        "x": -23,
+        "y": -10
+    },
+    {
+        "path": "track/standup/medium_turn_left_bank_gentle_up_4_5.png",
+        "x": -22,
+        "y": -12
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_1_1.png",
+        "x": -24,
+        "y": -23
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_1_2.png",
+        "x": -16,
+        "y": -13
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_1_3.png",
+        "x": 0,
+        "y": -25
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_1_4.png",
+        "x": -19,
+        "y": -10
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_1_5.png",
+        "x": -24,
+        "y": -12
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_2_1.png",
+        "x": -20,
+        "y": -12
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_2_2.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_2_3.png",
+        "x": 16,
+        "y": -10
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_2_4.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_2_5.png",
+        "x": -24,
+        "y": -10
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_3_1.png",
+        "x": -17,
+        "y": -9
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_3_2.png",
+        "x": -32,
+        "y": -20
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_3_3.png",
+        "x": -26,
+        "y": -4
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_3_4.png",
+        "x": -22,
+        "y": -26
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_3_5.png",
+        "x": -22,
+        "y": -20
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_4_1.png",
+        "x": -17,
+        "y": -16
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_4_2.png",
+        "x": 7,
+        "y": -14
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_4_3.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_4_4.png",
+        "x": 5,
+        "y": -11
+    },
+    {
+        "path": "track/standup/medium_turn_right_bank_gentle_up_4_5.png",
+        "x": -21,
+        "y": -25
+    },
+    {
         "path": "track/steeplechase/brake_horizontal.png",
         "x": -32,
         "y": 9,
