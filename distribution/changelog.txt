@@ -1,5 +1,6 @@
 0.4.18 (in development)
 ------------------------------------------------------------------------
+- Improved: [#23200] Add banked sloped turns and many other pieces to the Stand-Up and Classic Stand-Up Roller Coaster.
 - Improved: [#23260] Add diagonal (block) brakes to LSM Launched Roller Coaster.
 - Improved: [#23350] Increased the maximum width of the ride graph window.
 - Improved: [#23404] Folders are now paired with an icon in the load/save window.
