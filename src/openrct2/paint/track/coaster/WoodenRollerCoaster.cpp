@@ -623,6 +623,119 @@ static constexpr std::array<StraightWoodenTrack, kNumOrthogonalDirections> kRigh
     },
 } };
 
+static constexpr std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 5> kBankedQuarterTurn5Images = { {
+    { {
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_0,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_0,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_0,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_0,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_0,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_0,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_0,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_0,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_0,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_0,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_0,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_0,
+        },
+    } },
+    { {
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_2,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_2,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_2,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_2,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_2,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_2,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_2,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_2,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_2,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_2,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_2,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_2,
+        },
+    } },
+    { {
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_3,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_3,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_3,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_3,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_3,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_3,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_3,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_3,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_3,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_3,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_3,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_3,
+        },
+    } },
+    { {
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_5,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_5,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_5,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_5,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_5,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_5,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_5,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_5,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_5,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_5,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_5,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_5,
+        },
+    } },
+    { {
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_6,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_6,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_6,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_6,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_6,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_6,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_6,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_6,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_6,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_6,
+        },
+        {
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_6,
+            SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_6,
+        },
+    } },
+} };
+
 ImageId WoodenRCGetRailsColour(PaintSession& session)
 {
     return session.TrackColours;
@@ -1688,363 +1801,13 @@ static void WoodenRCTrackRightBankToFlat(
 }
 
 template<bool isClassic>
-static void WoodenRCTrackBankedRightQuarterTurn5(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
-{
-    static constexpr SpriteBoundBox2 imageIds[2][4][7] = {
-        {
-            {
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_0,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 2, 0 }, { 32, 32, 2 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_2,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_2,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 16, 0 }, { 32, 16, 2 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_3,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_3,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 16, 16, 2 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_5,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_5,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 16, 0, 0 }, { 16, 32, 2 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_6,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_6,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 2, 0, 0 }, { 32, 32, 2 }),
-                },
-            },
-            {
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_0,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 2, 0, 0 }, { 32, 32, 2 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_2,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_2,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 16, 0, 0 }, { 16, 32, 2 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_3,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_3,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 16, 0 }, { 16, 16, 2 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_5,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_5,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 32, 16, 2 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_6,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_6,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 2, 0 }, { 32, 27, 2 }),
-                },
-            },
-            {
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_0,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 2, 0 }, { 32, 27, 2 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_2,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_2,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 32, 16, 2 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_3,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_3,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 16, 16, 0 }, { 16, 16, 2 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_5,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_5,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 16, 32, 2 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_6,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_6,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 2, 0, 0 }, { 27, 32, 2 }),
-                },
-            },
-            {
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_0,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 2, 0, 0 }, { 27, 32, 2 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_2,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_2,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 16, 32, 2 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_3,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_3,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 16, 0, 0 }, { 16, 16, 2 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_5,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_5,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 16, 0 }, { 32, 16, 2 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_6,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_6,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 2, 0 }, { 32, 32, 2 }),
-                },
-            },
-        },
-        {
-            {
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_0,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 2, 27 }, { 32, 32, 0 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_2,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_2,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 16, 27 }, { 32, 16, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_3,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_3,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 27 }, { 16, 16, 0 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_5,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_5,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 16, 0, 27 }, { 16, 32, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_6,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_6,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 2, 0, 27 }, { 32, 32, 0 }),
-                },
-            },
-            {
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-            },
-            {
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_0,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 2, 27 }, { 32, 27, 0 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_2,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_2,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 27 }, { 32, 16, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_3,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_3,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 16, 16, 27 }, { 16, 16, 0 }),
-                },
-                {
-                    0,
-                    0,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_5,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_5,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 0, 0, 27 }, { 16, 32, 0 }),
-                },
-                {
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_6,
-                    SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_6,
-                    { 0, 0, 0 },
-                    BoundBoxXYZ({ 2, 0, 27 }, { 27, 32, 0 }),
-                },
-            },
-            {
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 0 }, { 0, 0, 0 }) },
-            },
-        },
-    };
-    static WoodenSupportSubType supportSubType[kNumOrthogonalDirections][7] = {
-        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
-          WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
-        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
-          WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
-        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
-          WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
-        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
-          WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
-    };
-
-    WoodenRCTrackPaintBb<isClassic>(session, &imageIds[0][direction][trackSequence], height);
-    WoodenRCTrackPaintBb<isClassic>(session, &imageIds[1][direction][trackSequence], height);
-    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
-
-    if (supportSubType[direction][trackSequence] != WoodenSupportSubType::Null)
-    {
-        WoodenASupportsPaintSetup(
-            session, supportType.wooden, supportSubType[direction][trackSequence], height, session.SupportColours);
-    }
-
-    int32_t blockedSegments = 0;
-    switch (trackSequence)
-    {
-        case 0:
-            blockedSegments = kSegmentsAll;
-            break;
-        case 1:
-            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
-            break;
-        case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide);
-            break;
-        case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::centre,
-                PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide,
-                PaintSegment::bottomRightSide);
-            break;
-        case 4:
-            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
-            break;
-        case 5:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide);
-            break;
-        case 6:
-            blockedSegments = kSegmentsAll;
-            break;
-    }
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-}
-
-template<bool isClassic>
 static void WoodenRCTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
     trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    WoodenRCTrackBankedRightQuarterTurn5<isClassic>(
-        session, ride, trackSequence, (direction + 1) & 3, height, trackElement, supportType);
+    WoodenRCTrackBankedRightQuarterTurn5<isClassic, kBankedQuarterTurn5Images>(
+        session, ride, trackSequence, DirectionNext(direction), height, trackElement, supportType);
 }
 
 /** rct2:  */
@@ -17476,7 +17239,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::Tra
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
             return WoodenRCTrackBankedLeftQuarterTurn5<isClassic>;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
-            return WoodenRCTrackBankedRightQuarterTurn5<isClassic>;
+            return WoodenRCTrackBankedRightQuarterTurn5<isClassic, kBankedQuarterTurn5Images>;
         case TrackElemType::LeftBankToUp25:
             return WoodenRCTrackBankTo25DegUp<isClassic, kLeftBankToUp25Images>;
         case TrackElemType::RightBankToUp25:
