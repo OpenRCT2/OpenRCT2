@@ -16590,6 +16590,126 @@ static void StandUpRCTrackRightLargeCorkscrewDown(
         session, ride, 5 - trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
+static void StandUpRCTrack90DegToInvertedFlatQuarterLoopUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 0)),
+                        { 0, 0, height }, { { 6, 4, height + 8 }, { 20, 2, 48 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 4)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 7)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 10)),
+                        { 0, 0, height }, { { 6, 4, height + 8 }, { 20, 2, 48 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 88);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 1)),
+                        { 0, 0, height }, { { -8, 4, height }, { 28, 2, 31 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 2),
+                        { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 20, 1 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 5)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 8)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 11)),
+                        { 0, 0, height }, { { -8, 4, height }, { 28, 2, 31 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 12),
+                        { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 20, 1 } });
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 3)),
+                        { 0, 0, height }, { { 0, 6, height + 24 }, { 32, 20, 3 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 6)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 9)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex((SPR_G2_STANDUP_TRACK_QUARTER_LOOP + 13)),
+                        { 0, 0, height }, { { 0, 6, height + 24 }, { 32, 20, 3 } });
+                    break;
+            }
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
+            }
+            PaintUtilSetSegmentSupportHeight(
+                session,
+                PaintUtilRotateSegments(
+                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
+                0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+    }
+}
+
+static void StandUpRCTrackInvertedFlatTo90DegQuarterLoopDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    StandUpRCTrack90DegToInvertedFlatQuarterLoopUp(
+        session, ride, 2 - trackSequence, direction, height, trackElement, supportType);
+}
+
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionStandUpRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
@@ -17056,6 +17176,12 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionStandUpRC(OpenRCT2::TrackElemType trac
             return StandUpRCTrackLeftLargeCorkscrewDown;
         case TrackElemType::RightLargeCorkscrewDown:
             return StandUpRCTrackRightLargeCorkscrewDown;
+
+        // Quarter loops
+        case TrackElemType::Up90ToInvertedFlatQuarterLoop:
+            return StandUpRCTrack90DegToInvertedFlatQuarterLoopUp;
+        case TrackElemType::InvertedFlatToDown90QuarterLoop:
+            return StandUpRCTrackInvertedFlatTo90DegQuarterLoopDown;
 
         default:
             return nullptr;
