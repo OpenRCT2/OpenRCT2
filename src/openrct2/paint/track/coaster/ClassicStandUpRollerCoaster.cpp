@@ -1508,6 +1508,42 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemTy
         case TrackElemType::RightBankedQuarterTurn5TileUp25:
         case TrackElemType::LeftBankedQuarterTurn5TileDown25:
         case TrackElemType::RightBankedQuarterTurn5TileDown25:
+        case TrackElemType::DiagUp25ToLeftBankedUp25:
+        case TrackElemType::DiagUp25ToRightBankedUp25:
+        case TrackElemType::DiagLeftBankedUp25ToUp25:
+        case TrackElemType::DiagRightBankedUp25ToUp25:
+        case TrackElemType::DiagDown25ToLeftBankedDown25:
+        case TrackElemType::DiagDown25ToRightBankedDown25:
+        case TrackElemType::DiagLeftBankedDown25ToDown25:
+        case TrackElemType::DiagRightBankedDown25ToDown25:
+        case TrackElemType::DiagLeftBankedFlatToLeftBankedUp25:
+        case TrackElemType::DiagRightBankedFlatToRightBankedUp25:
+        case TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat:
+        case TrackElemType::DiagRightBankedUp25ToRightBankedFlat:
+        case TrackElemType::DiagLeftBankedFlatToLeftBankedDown25:
+        case TrackElemType::DiagRightBankedFlatToRightBankedDown25:
+        case TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat:
+        case TrackElemType::DiagRightBankedDown25ToRightBankedFlat:
+        case TrackElemType::DiagUp25LeftBanked:
+        case TrackElemType::DiagUp25RightBanked:
+        case TrackElemType::DiagDown25LeftBanked:
+        case TrackElemType::DiagDown25RightBanked:
+        case TrackElemType::DiagFlatToLeftBankedUp25:
+        case TrackElemType::DiagFlatToRightBankedUp25:
+        case TrackElemType::DiagLeftBankedUp25ToFlat:
+        case TrackElemType::DiagRightBankedUp25ToFlat:
+        case TrackElemType::DiagFlatToLeftBankedDown25:
+        case TrackElemType::DiagFlatToRightBankedDown25:
+        case TrackElemType::DiagLeftBankedDown25ToFlat:
+        case TrackElemType::DiagRightBankedDown25ToFlat:
+        case TrackElemType::LeftEighthBankToDiagUp25:
+        case TrackElemType::RightEighthBankToDiagUp25:
+        case TrackElemType::LeftEighthBankToDiagDown25:
+        case TrackElemType::RightEighthBankToDiagDown25:
+        case TrackElemType::LeftEighthBankToOrthogonalUp25:
+        case TrackElemType::RightEighthBankToOrthogonalUp25:
+        case TrackElemType::LeftEighthBankToOrthogonalDown25:
+        case TrackElemType::RightEighthBankToOrthogonalDown25:
             return nullptr;
 
         default:
