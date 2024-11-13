@@ -11296,6 +11296,102 @@
         "palette": "keep"
     },
     {
+        "path": "track/standup/very_small_turn_left_steep_up_1_1.png",
+        "x": -25,
+        "y": -68,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_left_steep_up_1_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_left_steep_up_2_1.png",
+        "x": -17,
+        "y": -69,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_left_steep_up_2_2.png",
+        "x": -25,
+        "y": -34,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_left_steep_up_3_1.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_left_steep_up_3_2.png",
+        "x": -3,
+        "y": -53,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_left_steep_up_4_1.png",
+        "x": -3,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_left_steep_up_4_2.png",
+        "x": -25,
+        "y": -53,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_right_steep_up_1_1.png",
+        "x": -24,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_right_steep_up_1_2.png",
+        "x": 0,
+        "y": -53,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_right_steep_up_2_1.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_right_steep_up_2_2.png",
+        "x": -25,
+        "y": -53,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_right_steep_up_3_1.png",
+        "x": -25,
+        "y": -68,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_right_steep_up_3_2.png",
+        "x": -14,
+        "y": -36,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_right_steep_up_4_1.png",
+        "x": -3,
+        "y": -69,
+        "palette": "keep"
+    },
+    {
+        "path": "track/standup/very_small_turn_right_steep_up_4_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
         "path": "track/steeplechase/brake_horizontal.png",
         "x": -32,
         "y": 9,
