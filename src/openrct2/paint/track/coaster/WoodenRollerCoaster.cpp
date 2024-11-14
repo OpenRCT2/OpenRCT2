@@ -366,6 +366,19 @@ enum
     SPR_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_FRONT_0 = 24087,
     SPR_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_FRONT_2 = 24088,
 
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_0 = 24101,
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_1 = 24102,
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_2 = 24103,
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_3 = 24104,
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_FRONT_0 = 24105,
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_FRONT_2 = 24106,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_0 = 24107,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_1 = 24108,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_2 = 24109,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_3 = 24110,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_FRONT_0 = 24111,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_FRONT_2 = 24112,
+
     SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SW_NE = 24363,
     SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_NW_SE = 24364,
     SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_NE_SW = 24365,
@@ -696,6 +709,19 @@ enum
     SPR_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_HANDRAIL_3 = 24952,
     SPR_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_FRONT_HANDRAIL_0 = 24953,
     SPR_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_FRONT_HANDRAIL_2 = 24954,
+
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_HANDRAIL_0 = 24967,
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_HANDRAIL_1 = 24968,
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_HANDRAIL_2 = 24969,
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_HANDRAIL_3 = 24970,
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_FRONT_HANDRAIL_0 = 24971,
+    SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_FRONT_HANDRAIL_2 = 24972,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_HANDRAIL_0 = 24973,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_HANDRAIL_1 = 24974,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_HANDRAIL_2 = 24975,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_HANDRAIL_3 = 24976,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_FRONT_HANDRAIL_0 = 24977,
+    SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_FRONT_HANDRAIL_2 = 24978,
 };
 
 static constexpr uint32_t _wooden_rc_block_brakes_image_ids[4][3] = {
@@ -1575,6 +1601,52 @@ static constexpr std::array<StraightWoodenTrack, kNumOrthogonalDirections> kDiag
     {
         SPR_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_3,
         SPR_WOODEN_RC_DIAG_FLAT_TO_RIGHT_BANK_HANDRAIL_3,
+    },
+} };
+
+static constexpr std::array<StraightWoodenTrack, kNumOrthogonalDirections> kDiagLeftBankTo25DegUpImages = { {
+    {
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_0,
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_HANDRAIL_0,
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_FRONT_0,
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_FRONT_HANDRAIL_0,
+    },
+    {
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_1,
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_HANDRAIL_1,
+    },
+    {
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_2,
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_HANDRAIL_2,
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_FRONT_2,
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_FRONT_HANDRAIL_2,
+    },
+    {
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_3,
+        SPR_WOODEN_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_HANDRAIL_3,
+    },
+} };
+
+static constexpr std::array<StraightWoodenTrack, kNumOrthogonalDirections> kDiagRightBankTo25DegUpImages = { {
+    {
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_0,
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_HANDRAIL_0,
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_FRONT_0,
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_FRONT_HANDRAIL_0,
+    },
+    {
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_1,
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_HANDRAIL_1,
+    },
+    {
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_2,
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_HANDRAIL_2,
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_FRONT_2,
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_FRONT_HANDRAIL_2,
+    },
+    {
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_3,
+        SPR_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_HANDRAIL_3,
     },
 } };
 
@@ -9972,228 +10044,6 @@ static void WoodenRCTrackDiagRightBankToFlat(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
-/** rct2: 0x008ACA58 */
-template<bool isClassic>
-static void WoodenRCTrackDiagLeftBankTo25DegUp(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
-{
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24104), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24970), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24101), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24967), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24105), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24971), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                    break;
-                case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                    break;
-                case 2:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                    break;
-                case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 0:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                    break;
-                case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24103), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24969), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24106), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24972), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                    break;
-                case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24102), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24968), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-    }
-}
-
-/** rct2: 0x008ACA68 */
-template<bool isClassic>
-static void WoodenRCTrackDiagRightBankTo25DegUp(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
-{
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24110), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24976), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24107), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24973), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24111), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24977), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                    break;
-                case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                    break;
-                case 2:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                    break;
-                case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 0:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                    break;
-                case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24109), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24975), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24112), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24978), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                    break;
-                case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24108), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24974), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-    }
-}
-
 /** rct2: 0x008ACA38 */
 template<bool isClassic>
 static void WoodenRCTrackDiag25DegUpToLeftBank(
@@ -10534,226 +10384,24 @@ static void WoodenRCTrackDiagRightBankTo25DegDown(
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
-/** rct2: 0x008ACA98 */
 template<bool isClassic>
-static void WoodenRCTrackDiag25DegDownToLeftBank(
+static void WoodenRCTrackDiagDown25ToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24108), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24974), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24109), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24975), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24112), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24978), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                    break;
-                case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                    break;
-                case 2:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                    break;
-                case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 0:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                    break;
-                case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24107), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24973), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24111), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24977), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                    break;
-                case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24110), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24976), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-    }
+    trackSequence = kMapReversedDiagonalStraight[trackSequence];
+    return WoodenRCTrackDiagBankTo25DegUp<isClassic, kDiagRightBankTo25DegUpImages>(
+        session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
-/** rct2: 0x008ACAA8 */
 template<bool isClassic>
-static void WoodenRCTrackDiag25DegDownToRightBank(
+static void WoodenRCTrackDiagDown25ToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    switch (trackSequence)
-    {
-        case 0:
-            switch (direction)
-            {
-                case 3:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24102), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24968), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 1:
-            switch (direction)
-            {
-                case 0:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24103), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24969), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24106), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24972), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                    break;
-                case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                    break;
-                case 2:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                    break;
-                case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 2:
-            switch (direction)
-            {
-                case 0:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
-                    break;
-                case 1:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
-                    break;
-                case 2:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24101), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24967), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24105), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24971), { -16, -16, height },
-                        { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
-                    break;
-                case 3:
-                    WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-        case 3:
-            switch (direction)
-            {
-                case 1:
-                    PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(24104), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    PaintAddImageAsChildRotated(
-                        session, direction, WoodenRCGetRailsColour(session).WithIndex(24970), { -16, -16, height },
-                        { { -16, -16, height }, { 32, 32, 2 } });
-                    break;
-            }
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 48);
-            break;
-    }
+    trackSequence = kMapReversedDiagonalStraight[trackSequence];
+    return WoodenRCTrackDiagBankTo25DegUp<isClassic, kDiagLeftBankTo25DegUpImages>(
+        session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
 /** rct2: 0x008AC9D8 */
@@ -14347,9 +13995,9 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::Tra
         case TrackElemType::DiagRightBankToFlat:
             return WoodenRCTrackDiagRightBankToFlat<isClassic>;
         case TrackElemType::DiagLeftBankToUp25:
-            return WoodenRCTrackDiagLeftBankTo25DegUp<isClassic>;
+            return WoodenRCTrackDiagBankTo25DegUp<false, kDiagLeftBankTo25DegUpImages>;
         case TrackElemType::DiagRightBankToUp25:
-            return WoodenRCTrackDiagRightBankTo25DegUp<isClassic>;
+            return WoodenRCTrackDiagBankTo25DegUp<false, kDiagRightBankTo25DegUpImages>;
         case TrackElemType::DiagUp25ToLeftBank:
             return WoodenRCTrackDiag25DegUpToLeftBank<isClassic>;
         case TrackElemType::DiagUp25ToRightBank:
@@ -14359,9 +14007,9 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::Tra
         case TrackElemType::DiagRightBankToDown25:
             return WoodenRCTrackDiagRightBankTo25DegDown<isClassic>;
         case TrackElemType::DiagDown25ToLeftBank:
-            return WoodenRCTrackDiag25DegDownToLeftBank<isClassic>;
+            return WoodenRCTrackDiagDown25ToLeftBank<isClassic>;
         case TrackElemType::DiagDown25ToRightBank:
-            return WoodenRCTrackDiag25DegDownToRightBank<isClassic>;
+            return WoodenRCTrackDiagDown25ToRightBank<isClassic>;
         case TrackElemType::DiagLeftBank:
             return WoodenRCTrackDiagLeftBank<isClassic>;
         case TrackElemType::DiagRightBank:
