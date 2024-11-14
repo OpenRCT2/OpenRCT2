@@ -161,9 +161,31 @@ jobs:
         uses: ammaraskar/msvc-problem-matcher@master
       - name: Build OpenRCT2
         run: . scripts/setenv && build
+      - name: Upload unsigned binaries
+        id: upload-windows-binaries-unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-unsigned-${{ matrix.platform }}
+          path: |
+            bin/openrct2.exe
+            bin/openrct2.com
+      - name: Sign binaries
+        id: sign-binaries
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: 645b821f-6283-45e1-8198-264997072801
+          project-slug: OpenRCT2
+          signing-policy-slug: 'test-signing'
+          artifact-configuration-slug: 'binaries'
+          github-artifact-id: ${{ steps.upload-windows-binaries-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: files-signed
       - name: Build artifacts
         run: |
           . scripts/setenv -q
+          mv files-signed/openrct2.com bin/openrct2.com
+          mv files-signed/openrct2.exe bin/openrct2.exe
           build-portable
           build-symbols
           build-installer -i
@@ -178,11 +200,31 @@ jobs:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-portable-${{ matrix.platform }}
           path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-portable-${{ matrix.platform }}.zip
           if-no-files-found: error
-      - name: Upload installer artifact (CI)
+      - name: Upload unsigned installer artifact (CI)
+        id: upload-windows-installer-unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-installer-${{ matrix.platform }}-unsigned
+          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
+          if-no-files-found: error
+      - name: Sign installer
+        id: sign-installer
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: 645b821f-6283-45e1-8198-264997072801
+          project-slug: OpenRCT2
+          signing-policy-slug: 'test-signing'
+          artifact-configuration-slug: 'installer'
+          github-artifact-id: ${{ steps.upload-windows-installer-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: files-signed
+      - name: Upload signed installer artifact (CI)
+        id: upload-windows-installer-signed
         uses: actions/upload-artifact@v4
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-installer-${{ matrix.platform }}
-          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
+          path: files-signed/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
           if-no-files-found: error
       - name: Upload symbols artifact (CI)
         uses: actions/upload-artifact@v4
