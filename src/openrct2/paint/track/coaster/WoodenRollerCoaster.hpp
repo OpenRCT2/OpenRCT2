@@ -165,6 +165,141 @@ static void WoodenRCTrackBankTo25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
+/** rct2: 0x008AC808 */
+template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 3> imageIds>
+static void WoodenRCTrackLeftQuarterTurn3Bank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 2 } });
+                    break;
+                case 1:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 2 } });
+                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
+                            { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
+                    }
+                    break;
+                case 2:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 2 } });
+                    break;
+                case 3:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[0][direction].track, imageIds[0][direction].handrail, { 0, 0, height },
+                        { { 0, 6, height }, { 32, 20, 2 } });
+                    if (imageIds[0][direction].frontTrack != ImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[0][direction].frontTrack, imageIds[0][direction].frontHandrail,
+                            { 0, 0, height }, { { 0, 6, height + 27 }, { 32, 20, 0 } });
+                    }
+                    break;
+            }
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 0:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
+                        { { 16, 0, height }, { 16, 16, 2 } });
+                    break;
+                case 1:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
+                        { { 0, 0, height }, { 16, 16, 2 } });
+                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
+                            { 0, 0, height }, { { 0, 0, height + 27 }, { 16, 16, 0 } });
+                    }
+                    break;
+                case 2:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
+                        { { 0, 16, height }, { 16, 16, 2 } });
+                    break;
+                case 3:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[1][direction].track, imageIds[1][direction].handrail, { 0, 0, height },
+                        { { 16, 16, height }, { 16, 16, 2 } });
+                    if (imageIds[1][direction].frontTrack != ImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[1][direction].frontTrack, imageIds[1][direction].frontHandrail,
+                            { 0, 0, height }, { { 16, 16, height + 27 }, { 16, 16, 0 } });
+                    }
+                    break;
+            }
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
+                        { { 6, 0, height }, { 20, 32, 2 } });
+                    break;
+                case 1:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
+                        { { 6, 0, height }, { 20, 32, 2 } });
+                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
+                            { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
+                    }
+                    break;
+                case 2:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
+                        { { 6, 0, height }, { 20, 32, 2 } });
+                    break;
+                case 3:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[2][direction].track, imageIds[2][direction].handrail, { 0, 0, height },
+                        { { 6, 0, height }, { 20, 32, 2 } });
+                    if (imageIds[2][direction].frontTrack != ImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[2][direction].frontTrack, imageIds[2][direction].frontHandrail,
+                            { 0, 0, height }, { { 6, 0, height + 27 }, { 20, 32, 0 } });
+                    }
+                    break;
+            }
+    }
+
+    TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
+
+    static constexpr int blockedSegments[4] = {
+        kSegmentsAll,
+        kSegmentsAll,
+        EnumsToFlags(PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomLeftSide),
+        kSegmentsAll,
+    };
+
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::LeftBankedQuarterTurn3Tiles>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+}
+
 template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 5> imageIds>
 static void WoodenRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
