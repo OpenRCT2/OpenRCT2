@@ -23,7 +23,7 @@
 
 static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
-struct StraightWoodenTrack
+struct WoodenTrackSection
 {
     ImageIndex track;
     ImageIndex handrail;
@@ -93,7 +93,7 @@ void WoodenRCTrackPaintBb(PaintSession& session, const SpriteBoundBox2* bb, int1
     }
 }
 
-template<bool isClassic, std::array<StraightWoodenTrack, kNumOrthogonalDirections> imageIds>
+template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrackStraightBankTrack(PaintSession& session, uint8_t direction, int32_t height)
 {
     WoodenRCTrackPaint<isClassic>(
@@ -108,7 +108,7 @@ static void WoodenRCTrackStraightBankTrack(PaintSession& session, uint8_t direct
 }
 
 /** rct2: 0x008AC658, 0x008AC668, 0x008AC738 */
-template<bool isClassic, std::array<StraightWoodenTrack, kNumOrthogonalDirections> imageIds>
+template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 void WoodenRCTrackFlatToBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -122,7 +122,7 @@ void WoodenRCTrackFlatToBank(
 }
 
 /** rct2: 0x008AC6D8, 0x008AC6E8 */
-template<bool isClassic, std::array<StraightWoodenTrack, kNumOrthogonalDirections> imageIds>
+template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrack25DegUpToBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -144,7 +144,7 @@ static void WoodenRCTrack25DegUpToBank(
 }
 
 /** rct2: 0x008AC6B8, 0x008AC6C8 */
-template<bool isClassic, std::array<StraightWoodenTrack, kNumOrthogonalDirections> imageIds>
+template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrackBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -166,7 +166,7 @@ static void WoodenRCTrackBankTo25DegUp(
 }
 
 /** rct2: 0x008AC808 */
-template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 3> imageIds>
+template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> imageIds>
 static void WoodenRCTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -300,7 +300,7 @@ static void WoodenRCTrackLeftQuarterTurn3Bank(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 5> imageIds>
+template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> imageIds>
 static void WoodenRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -519,7 +519,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
 }
 
 /** rct2: 0x008ACAB8 */
-template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 3> imageIds>
+template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> imageIds>
 static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -940,7 +940,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpSmall(
 }
 
 /** rct2: 0x008ACAC8 */
-template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 3> imageIds>
+template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 3> imageIds>
 static void WoodenRCTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -1361,7 +1361,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpSmall(
 }
 
 /** rct2: 0x008ACAF8 */
-template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 5> imageIds>
+template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> imageIds>
 static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -2019,7 +2019,7 @@ static void WoodenRCTrackLeftHalfBankedHelixUpLarge(
 }
 
 /** rct2: 0x008ACB08 */
-template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 5> imageIds>
+template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 5> imageIds>
 static void WoodenRCTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -2677,7 +2677,7 @@ static void WoodenRCTrackRightHalfBankedHelixUpLarge(
 }
 
 /** rct2: 0x008ACB38 */
-template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 2> imageIds>
+template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 2> imageIds>
 static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -2815,7 +2815,7 @@ static void WoodenRCTrackLeftBankToLeftQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008ACB48 */
-template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 2> imageIds>
+template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 2> imageIds>
 static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -2953,7 +2953,7 @@ static void WoodenRCTrackRightBankToRightQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008ACA18, 0x008AC9F8 */
-template<bool isClassic, std::array<StraightWoodenTrack, kNumOrthogonalDirections> imageIds>
+template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrackDiagFlatToBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -3021,7 +3021,7 @@ static void WoodenRCTrackDiagFlatToBank(
 }
 
 /** rct2: 0x008ACA58, 0x008ACA68 */
-template<bool isClassic, std::array<StraightWoodenTrack, kNumOrthogonalDirections> imageIds>
+template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrackDiagBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -3089,7 +3089,7 @@ static void WoodenRCTrackDiagBankTo25DegUp(
 }
 
 /** rct2: 0x008ACA38, 0x008ACA48 */
-template<bool isClassic, std::array<StraightWoodenTrack, kNumOrthogonalDirections> imageIds>
+template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
 static void WoodenRCTrackDiagUp25ToBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -3157,7 +3157,7 @@ static void WoodenRCTrackDiagUp25ToBank(
 }
 
 /** rct2: 0x008AC998 */
-template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 4> imageIds>
+template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4> imageIds>
 static void WoodenRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -3325,7 +3325,7 @@ static void WoodenRCTrackLeftEighthBankToDiag(
 }
 
 /** rct2: 0x008AC9A8 */
-template<bool isClassic, std::array<std::array<StraightWoodenTrack, kNumOrthogonalDirections>, 4> imageIds>
+template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4> imageIds>
 static void WoodenRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
