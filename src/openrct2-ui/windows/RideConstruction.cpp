@@ -528,7 +528,7 @@ namespace OpenRCT2::Ui::Windows
                 case TrackPitch::None:
                     if (_currentlySelectedTrack != TrackCurve::None
                         || (IsTrackEnabled(TrackGroup::slopeSteepLong)
-                            && TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
+                            && (TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)&&0)))
                     {
                         disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                     }
@@ -541,7 +541,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
                         && !(
                             IsTrackEnabled(TrackGroup::slopeSteepLong)
-                            && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
+                            && !(TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)&&0)))
                     {
                         disabledWidgets |= (1uLL << WIDX_LEVEL);
                     }
@@ -554,7 +554,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
                         && !(
                             IsTrackEnabled(TrackGroup::slopeSteepLong)
-                            && !TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
+                            && !(TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)&&0)))
                     {
                         disabledWidgets |= (1uLL << WIDX_LEVEL);
                     }
@@ -4930,10 +4930,18 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case TrackElemType::DiagFlatToUp60:
+                    trackType = TrackElemType::DiagFlatToUp60LongBase;
+                    break;
                 case TrackElemType::DiagUp60ToFlat:
+                    trackType = TrackElemType::DiagUp60ToFlatLongBase;
+                    break;
                 case TrackElemType::DiagFlatToDown60:
+                    trackType = TrackElemType::DiagFlatToDown60LongBase;
+                    break;
                 case TrackElemType::DiagDown60ToFlat:
-                    return true;
+                    trackType = TrackElemType::DiagDown60ToFlatLongBase;
+                    break;
+                    //return true;
 
                 default:
                     break;

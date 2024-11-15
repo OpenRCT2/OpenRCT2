@@ -2018,6 +2018,38 @@ static void VehiclePitchUp42BankedRight90(
     }
 }
 
+static void VehiclePitchUp42BankedLeft135(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
+    {
+	imageDirection=(imageDirection+8)%32;
+        int32_t boundingBoxNum = YawTo4(imageDirection)+13*4+144;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 13);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchUp42BankedRight135(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
+    {
+        int32_t boundingBoxNum = YawTo4(imageDirection)+3*4+144;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 3);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+
 // 6D49DC
 static void VehiclePitchUp42(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
@@ -2045,16 +2077,25 @@ static void VehiclePitchUp42(
         case 6:
             VehiclePitchUp42BankedLeft90(session, vehicle, imageDirection, z, carEntry);
             break;
+        case 8:
+            VehiclePitchUp42BankedLeft135(session, vehicle, imageDirection, z, carEntry);
+            break;
         case 10:
             VehiclePitchUp42BankedRight67(session, vehicle, imageDirection, z, carEntry);
             break;
         case 11:
             VehiclePitchUp42BankedRight90(session, vehicle, imageDirection, z, carEntry);
             break;
+        case 13:
+            VehiclePitchUp42BankedRight135(session, vehicle, imageDirection, z, carEntry);
+            break;
         default:
             VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
+
+
+
 
 // 6D4A31
 static void VehiclePitchUp60Unbanked(
@@ -2736,6 +2777,40 @@ static void VehiclePitchDown42BankedRight90(
     }
 }
 
+static void VehiclePitchDown42BankedLeft135(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
+    {
+        int32_t boundingBoxNum = YawTo4(imageDirection)+8*4+144;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 8);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchDown42BankedRight135(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
+    {
+	imageDirection=(imageDirection+8)%32;
+        int32_t boundingBoxNum = YawTo4(imageDirection)+18*4+144;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 18);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+
+
+
 static void VehiclePitchDown42(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
@@ -2762,11 +2837,17 @@ static void VehiclePitchDown42(
         case 6:
             VehiclePitchDown42BankedLeft90(session, vehicle, imageDirection, z, carEntry);
             break;
+        case 8:
+            VehiclePitchDown42BankedLeft135(session, vehicle, imageDirection, z, carEntry);
+            break;
         case 10:
             VehiclePitchDown42BankedRight67(session, vehicle, imageDirection, z, carEntry);
             break;
         case 11:
             VehiclePitchDown42BankedRight90(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 13:
+            VehiclePitchDown42BankedRight135(session, vehicle, imageDirection, z, carEntry);
             break;
         default:
             VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -3384,7 +3465,7 @@ static void VehiclePitchUp16(
 #pragma region SlopeUp50
 
 // 6D4E8F
-static void VehiclePitchUp50(
+static void VehiclePitchUp50Unbanked(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes50))
@@ -3398,6 +3479,130 @@ static void VehiclePitchUp50(
         VehiclePitchFlat(session, vehicle, imageDirection, z, carEntry);
     }
 }
+
+static void VehiclePitchUp50BankedLeft45(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked45))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked45, imageDirection, 0);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchUp50BankedRight45(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked45))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked45, imageDirection, 1);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchUp50BankedLeft67(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked67))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked67, imageDirection, 0);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchUp50BankedRight67(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked67))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked67, imageDirection, 1);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchUp50BankedLeft90(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked90))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked90, imageDirection, 0);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchUp50BankedRight90(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked90))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked90, imageDirection, 1);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+
+
+static void VehiclePitchUp50(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    switch (GetPaintBankRotation(vehicle))
+    {
+        case 0:
+            VehiclePitchUp50Unbanked(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 2:
+            VehiclePitchUp50BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 4:
+            VehiclePitchUp50BankedRight45(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 5:
+            VehiclePitchUp50BankedLeft67(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 6:
+            VehiclePitchUp50BankedLeft90(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 10:
+            VehiclePitchUp50BankedRight67(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 11:
+            VehiclePitchUp50BankedRight90(session, vehicle, imageDirection, z, carEntry);
+            break;
+        default:
+            VehiclePitchUp50Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
 
 #pragma endregion
 
@@ -3626,7 +3831,7 @@ static void VehiclePitchDown16(
 #pragma region SlopeDown50
 
 // 6D4EB8
-static void VehiclePitchDown50(
+static void VehiclePitchDown50Unbanked(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes50))
@@ -3638,6 +3843,168 @@ static void VehiclePitchDown50(
     else
     {
         VehiclePitchFlat(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+
+static void VehiclePitchDown50BankedLeft45(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked45))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked45, imageDirection, 2);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchDown50BankedRight45(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked45))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked45, imageDirection, 3);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+
+
+static void VehiclePitchDown50BankedLeft67(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked67))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked67, imageDirection, 2);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchDown50BankedRight67(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked67))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked67, imageDirection, 3);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchDown50BankedLeft90(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked90))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked90, imageDirection, 2);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchDown50BankedRight90(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Slopes50Banked90))
+    {
+        int32_t boundingBoxNum = (YawTo16(imageDirection)) + 40;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Slopes50Banked90, imageDirection, 3);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchDown50BankedLeft135(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
+    {
+        int32_t boundingBoxNum = (YawTo4(imageDirection))+4*4+144;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 4);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchDown50BankedRight135(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
+    {
+        int32_t boundingBoxNum = (YawTo4(imageDirection))+4*4+144;
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 4);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+
+
+static void VehiclePitchDown50(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    switch (GetPaintBankRotation(vehicle))
+    {
+        case 0:
+            VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 2:
+            VehiclePitchDown50BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 4:
+            VehiclePitchDown50BankedRight45(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 5:
+            VehiclePitchDown50BankedLeft67(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 6:
+            VehiclePitchDown50BankedLeft90(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 8:
+            VehiclePitchDown50BankedLeft135(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 10:
+            VehiclePitchDown50BankedRight67(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 11:
+            VehiclePitchDown50BankedRight90(session, vehicle, imageDirection, z, carEntry);
+            break;
+        case 13:
+            VehiclePitchDown50BankedRight135(session, vehicle, imageDirection, z, carEntry);
+            break;
+        default:
+            VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 

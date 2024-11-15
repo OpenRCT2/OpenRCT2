@@ -358,18 +358,26 @@ namespace OpenRCT2::TrackMetaData
         { 4, 4, 0, 16, -32, 32 },  // TrackElemType::DiagUp25RightBanked 
         { 4, 4, 16, 0, -32, 32 },  // TrackElemType::DiagDown25LeftBanked
         { 4, 4, 16, 0, -32, 32 },  // TrackElemType::DiagDown25RightBanked
-            { 0, 7, 0, 48, -64, -32 }, // TrackElemType::LeftEighthBankToDiagUp25
-            { 0, 4, 0, 48, -64, 32 },  // TrackElemType::RightEighthBankToDiagUp25
-            { 0, 7, 0,-48, -64, -32 }, // TrackElemType::LeftEighthBankToDiagDown25
-            { 0, 4, 0,-48, -64, 32 },  // TrackElemType::RightEighthBankToDiagDown25
-            { 4, 0, 0, 48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalUp25
-            { 4, 1, 0, 48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalUp25 
-            { 4, 0, 0,-48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalDown25
-            { 4, 1, 0,-48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalDown25     
-            { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBrakes
-            { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBlockBrakes
-			{ 0, 0, 16, 0, 0, 0 },      // TrackElemType::Down25Brakes
-            { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBooster
+        { 0, 7, 0, 48, -64, -32 }, // TrackElemType::LeftEighthBankToDiagUp25
+        { 0, 4, 0, 48, -64, 32 },  // TrackElemType::RightEighthBankToDiagUp25
+        { 0, 7, 0,-48, -64, -32 }, // TrackElemType::LeftEighthBankToDiagDown25
+        { 0, 4, 0,-48, -64, 32 },  // TrackElemType::RightEighthBankToDiagDown25
+        { 4, 0, 0, 48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalUp25
+        { 4, 1, 0, 48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalUp25 
+        { 4, 0, 0,-48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalDown25
+        { 4, 1, 0,-48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalDown25     
+        { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBrakes
+        { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBlockBrakes
+        { 0, 0, 16, 0, 0, 0 },     // TrackElemType::Down25Brakes
+        { 4, 4, 0, 0, -32, 32 },   // TrackElemType::DiagBooster
+        { 4, 4, 0, 88, -96, 96 },   // TrackElemType::DiagFlatToUp60LongBase,
+        { 4, 4, 0, 88, -96, 96 },   // TrackElemType::DiagUp60ToFlatLongBase,
+        { 4, 4, 88, 0, -96, 96 },   // TrackElemType::DiagFlatToDown60LongBase,
+        { 4, 4, 88, 0, -96, 96 },   // TrackElemType::DiagDown60ToFlatLongBase,
+        { 4, 0, 0,152, -96, 32 },   // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
+        { 4, 1, 0,152, -32, 96 },   // TrackElemType::RightEighthDiveLoopUpToOrthogonal
+        { 0, 7,152, 0, -96, -32 },   // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        { 0, 4,152, 0, -96, 32 },   // TrackElemType::RightEighthDiveLoopDownToDiag
     };
     static_assert(std::size(_trackCoordinates) == EnumValue(TrackElemType::Count));
     
@@ -715,7 +723,16 @@ namespace OpenRCT2::TrackMetaData
         45, // TrackElemType::DiagBlockBrakes
         33, // TrackElemType::Down25Brakes
         45, // TrackElemType::DiagBooster
+        165, // TrackElemType::DiagFlatToUp60LongBase,
+        165, // TrackElemType::DiagUp60ToFlatLongBase,
+        165, // TrackElemType::DiagFlatToDown60LongBase,
+        165, // TrackElemType::DiagDown60ToFlatLongBase,
+        165, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal    
+        165, // TrackElemType::RightEighthDiveLoopUpToOrthogonal   
+        165, // TrackElemType::LeftEighthDiveLoopDownToDiag  
+        165, // TrackElemType::RightEighthDiveLoopDownToDiag      
     };
+
     static_assert(std::size(TrackPieceLengths) == EnumValue(TrackElemType::Count));
     
     // rct2: 0x00998C95
@@ -1058,9 +1075,17 @@ namespace OpenRCT2::TrackMetaData
         { TrackCurve::LeftLarge, TrackCurve::LeftLarge },   // TrackElemType::LeftEighthBankToOrthogonalDown25
         { TrackCurve::RightLarge, TrackCurve::RightLarge }, // TrackElemType::RightEighthBankToOrthogonalDown25     
         { TrackElemType::DiagBrakes, TrackElemType::DiagBrakes }, // TrackElemType::DiagBrakes
-        { TrackCurve::None, TrackCurve::None }, // TrackElemType::DiagBlockBrakes
+        { TrackCurve::None, TrackCurve::None },             // TrackElemType::DiagBlockBrakes
         { TrackElemType::Down25Brakes, TrackElemType::Down25Brakes }, // TrackElemType::Down25Brakes
         { TrackElemType::DiagBooster, TrackElemType::DiagBooster }, // TrackElemType::DiagBooster
+        { TrackCurve::None, TrackCurve::None },             // TrackElemType::DiagFlatToUp60LongBase,
+        { TrackCurve::None, TrackCurve::None },             // TrackElemType::DiagUp60ToFlatLongBase,
+        { TrackCurve::None, TrackCurve::None },             // TrackElemType::DiagFlatToDown60LongBase,
+        { TrackCurve::None, TrackCurve::None },             // TrackElemType::DiagDown60ToFlatLongBase,
+        { TrackElemType::RightEighthDiveLoopDownToDiag , TrackCurve::None },          // TrackElemType::LeftEighthDiveLoopUpToOrthogonal    
+        { TrackElemType::LeftEighthDiveLoopDownToDiag, TrackCurve::None },            // TrackElemType::RightEighthDiveLoopUpToOrthogonal   
+        { TrackCurve::None, TrackElemType::RightEighthDiveLoopUpToOrthogonal  },             // TrackElemType::LeftEighthDiveLoopDownToDiag  
+        { TrackCurve::None, TrackElemType::LeftEighthDiveLoopUpToOrthogonal },             // TrackElemType::RightEighthDiveLoopDownToDiag 
     };
     static_assert(std::size(gTrackCurveChain) == EnumValue(TrackElemType::Count));
     
@@ -1596,6 +1621,14 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::None, // TrackElemType::DiagBlockBrakes
         TrackElemType::None, // TrackElemType::Down25Brakes
         TrackElemType::None, // TrackElemType::DiagBooster
+        TrackElemType::None, // TrackElemType::DiagFlatToUp60LongBase,
+        TrackElemType::None, // TrackElemType::DiagUp60ToFlatLongBase,
+        TrackElemType::None, // TrackElemType::DiagFlatToDown60LongBase,
+        TrackElemType::None, // TrackElemType::DiagDown60ToFlatLongBase,
+        TrackElemType::None, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal   
+        TrackElemType::None, // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
+        TrackElemType::None, // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        TrackElemType::None, // TrackElemType::RightEighthDiveLoopDownToDiag
     };
     static_assert(std::size(AlternativeTrackTypes) == EnumValue(TrackElemType::Count));
     
@@ -1942,6 +1975,14 @@ namespace OpenRCT2::TrackMetaData
         123456, // TrackElemType::DiagBlockBrakes
         109824, // TrackElemType::Down25Brakes
         123456, // TrackElemType::DiagBooster
+        399690 , // TrackElemType::DiagFlatToUp60LongBase,
+        399690, // TrackElemType::DiagUp60ToFlatLongBase,
+        399690, // TrackElemType::DiagFlatToDown60LongBase,
+        399690, // TrackElemType::DiagDown60ToFlatLongBase,
+        458752, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal   
+        458752, // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
+        458752, // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        458752, // TrackElemType::RightEighthDiveLoopDownToDiag
     };
     static_assert(std::size(TrackPricing) == EnumValue(TrackElemType::Count));
     
@@ -2288,6 +2329,14 @@ namespace OpenRCT2::TrackMetaData
         TrackElemType::DiagBlockBrakes,
         TrackElemType::Down25Brakes,
         TrackElemType::DiagBooster,
+        TrackElemType::DiagFlatToUp60LongBase,                // TrackElemType::DiagFlatToUp60LongBase,
+        TrackElemType::DiagUp60ToFlatLongBase,                // TrackElemType::DiagUp60ToFlatLongBase,
+        TrackElemType::DiagFlatToDown60LongBase,              // TrackElemType::DiagFlatToDown60LongBase,
+        TrackElemType::DiagDown60ToFlatLongBase,              // TrackElemType::DiagDown60ToFlatLongBase,
+        TrackElemType::RightEighthDiveLoopUpToOrthogonal,     // TrackElemType::LeftEighthDiveLoopUpToOrthogonal   
+        TrackElemType::LeftEighthDiveLoopUpToOrthogonal,      // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
+        TrackElemType::RightEighthDiveLoopDownToDiag,   // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        TrackElemType::LeftEighthDiveLoopDownToDiag,    // TrackElemType::RightEighthDiveLoopDownToDiag
     };
     static_assert(std::size(TrackElementMirrorMap) == EnumValue(TrackElemType::Count));
     
@@ -2634,6 +2683,14 @@ namespace OpenRCT2::TrackMetaData
         (1 << 0), // TrackElemType::DiagBlockBrakes
         (1 << 0), // TrackElemType::Down25Brakes
         (1 << 0), // TrackElemType::DiagBooster
+        (1 << 0), // TrackElemType::DiagFlatToUp60LongBase,
+        (1 << 0), // TrackElemType::DiagUp60ToFlatLongBase,
+        (1 << 9), // TrackElemType::DiagFlatToDown60LongBase,
+        (1 << 9), // TrackElemType::DiagDown60ToFlatLongBase,
+        (1 << 0) | (1 << 5), // TrackElemType::LeftEighthDiveLoopUpToOrthogonal   
+        (1 << 0) | (1 << 5), // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
+        (1 << 0) | (1 << 5), // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        (1 << 0) | (1 << 5), // TrackElemType::RightEighthDiveLoopDownToDiag
     };
     static_assert(std::size(TrackHeightMarkerPositions) == EnumValue(TrackElemType::Count));
     
@@ -2983,6 +3040,14 @@ namespace OpenRCT2::TrackMetaData
         /* TrackElemType::DiagBlockBrakes                        */   0,
         /* TrackElemType::Down25Brakes                           */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
         /* TrackElemType::DiagBooster                            */   0,
+        /* TrackElemType::DiagFlatToUp60LongBase                 */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_IS_STEEP_UP | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL,
+        /* TrackElemType::DiagUp60ToFlatLongBase                 */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_IS_STEEP_UP | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL,
+        /* TrackElemType::DiagFlatToDown60LongBase               */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL,
+        /* TrackElemType::DiagDown60ToFlatLongBase               */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL,                                                                    
+        /* TrackElemType::LeftEighthDiveLoopUpToOrthogonal       */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+        /* TrackElemType::RightEighthDiveLoopUpToOrthogonal      */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+        /* TrackElemType::LeftEighthDiveLoopDownToDiag     */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+        /* TrackElemType::RightEighthDiveLoopDownToDiag    */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
     };
     static_assert(std::size(TrackFlags) == EnumValue(TrackElemType::Count));
     // clang-format on
@@ -3333,6 +3398,14 @@ namespace OpenRCT2::TrackMetaData
         { TrackGroup::diagBlockBrakes,                   TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,       0    }, // TrackElemType::DiagBlockBrakes
         { TrackGroup::inclinedBrakes,                    TrackPitch::Down25,           TrackPitch::Down25,         TrackRoll::None,        TrackRoll::None,       0    }, // TrackElemType::Down25Brakes
         { TrackGroup::diagBooster,                       TrackPitch::None,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,       0    }, // TrackElemType::DiagBooster
+        { TrackGroup::flat,                              TrackPitch::Up60,             TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        16   }, // TrackElemType::DiagFlatToUp60LongBase,                                 
+        { TrackGroup::flat,                              TrackPitch::None,             TrackPitch::Up60,           TrackRoll::None,        TrackRoll::None,        48   }, // TrackElemType::DiagUp60ToFlatLongBase,                                 
+        { TrackGroup::flat,                              TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        -32   }, // TrackElemType::DiagFlatToDown60LongBase,                               
+        { TrackGroup::flat,                              TrackPitch::None,             TrackPitch::Down60,         TrackRoll::None,        TrackRoll::None,        -24   }, // TrackElemType::DiagDown60ToFlatLongBase,                               
+        { TrackGroup::diveLoop,                          TrackPitch::None,             TrackPitch::Up60,           TrackRoll::UpsideDown,  TrackRoll::None,        56  }, // TrackElemType::LeftEighthDiveLoopUpToOrthogonal   
+        { TrackGroup::diveLoop,                          TrackPitch::None,             TrackPitch::Up60,           TrackRoll::UpsideDown,  TrackRoll::None,        56  }, // TrackElemType::RightEighthDiveLoopUpToOrthogonal  
+        { TrackGroup::diveLoop,                          TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown,  -56 }, // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        { TrackGroup::diveLoop,                          TrackPitch::Down60,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown,  -56 }, // TrackElemType::RightEighthDiveLoopDownToDiag
     };
     static_assert(std::size(TrackDefinitions) == EnumValue(TrackElemType::Count));
 
@@ -3395,7 +3468,9 @@ namespace OpenRCT2::TrackMetaData
         SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
         SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L9,
         SpinFunction::R9,   SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,
-        SpinFunction::R9,   SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None
+        SpinFunction::R9,   SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::None,
+        SpinFunction::None, SpinFunction::None, SpinFunction::None, SpinFunction::L9,   SpinFunction::R9,   SpinFunction::L9,
+        SpinFunction::R9
     };
     static_assert(std::size(TrackTypeToSpinFunction) == EnumValue(TrackElemType::Count));
 
@@ -4691,6 +4766,14 @@ namespace OpenRCT2::TrackMetaData
         STR_BLOCK_BRAKES,                  // TrackElemType::DiagBlockBrakes
         STR_BRAKES,                        // TrackElemType::Down25Brakes
         STR_BOOSTER,                       // TrackElemType::DiagBooster
+        STR_EMPTY,                         // TrackElemType::DiagFlatToUp60LongBase,
+        STR_EMPTY,                         // TrackElemType::DiagUp60ToFlatLongBase,
+        STR_EMPTY,                         // TrackElemType::DiagFlatToDown60LongBase,
+        STR_EMPTY,                         // TrackElemType::DiagDown60ToFlatLongBase,
+        STR_DIVE_LOOP_LEFT,                // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
+        STR_DIVE_LOOP_RIGHT,               // TrackElemType::RightEighthDiveLoopUpToOrthogonal
+        STR_DIVE_LOOP_LEFT,                // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        STR_DIVE_LOOP_RIGHT,               // TrackElemType::RightEighthDiveLoopDownToDiag
     };
     static_assert(std::size(RideConfigurationStringIds) == EnumValue(TrackElemType::Count));
 
@@ -11713,6 +11796,264 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -32, 32, 0, 0, { 0b0010, 0 }, 0 },
     };
 
+    static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq0 = {
+        .clearance = { 0, 0, 0, 0, { 0b1101, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq1 = {
+        .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq2 = {
+        .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq3 = {
+        .clearance = { -32, 32, 0, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq4 = {
+        .clearance = { -32, 64, 8, 40, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq5 = {
+        .clearance = { -64, 32, 8, 40, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq6 = {
+        .clearance = { -64, 64, 8, 64, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq7 = {
+        .clearance = { -64, 96, 40, 88, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq8 = {
+        .clearance = { -96, 64, 40, 88, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq9 = {
+        .clearance = { -96, 96, 40, 104, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq1 = {
+        .clearance = { 0, 32, 0, 72, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq2 = {
+        .clearance = { -32, 0, 0, 72, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq3 = {
+        .clearance = { -32, 32, 0, 80, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq4 = {
+        .clearance = { -32, 64, 56, 32, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq5 = {
+        .clearance = { -64, 32, 56, 32, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq6 = {
+        .clearance = { -64, 64, 56, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq7 = {
+        .clearance = { -64, 96, 80, 8, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq8 = {
+        .clearance = { -96, 64, 80, 8, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq9 = {
+        .clearance = { -96, 96, 80, 8, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq0 = {
+        .clearance = { 0, 0, 80, 8, { 0b1101, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq1 = {
+        .clearance = { 0, 32, 80, 8, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq2 = {
+        .clearance = { -32, 0, 80, 8, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq3 = {
+        .clearance = { -32, 32, 56, 8, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq4 = {
+        .clearance = { -32, 64, 56, 32, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq5 = {
+        .clearance = { -64, 32, 56, 32, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq6 = {
+        .clearance = { -64, 64, 0, 80, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq7 = {
+        .clearance = { -64, 96, 0, 72, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq8 = {
+        .clearance = { -96, 64, 0, 72, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq9 = {
+        .clearance = { -96, 96, 0, 64, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq0 = {
+        .clearance = { 0, 0, 40, 104, { 0b1101, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq1 = {
+        .clearance = { 0, 32, 40, 88, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq2 = {
+        .clearance = { -32, 0, 40, 88, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq3 = {
+        .clearance = { -32, 32, 8, 64, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq4 = {
+        .clearance = { -32, 64, 8, 40, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq5 = {
+        .clearance = { -64, 32, 8, 40, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq6 = {
+        .clearance = { -64, 64, 0, 32, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq7 = {
+        .clearance = { -64, 96, 0, 16, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq8 = {
+        .clearance = { -96, 64, 0, 16, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kDiagDown60ToFlatLongBaseSeq9 = {
+        .clearance = { -96, 96, 0, 0, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq1 = {
+        .clearance = { 0, 32, 0, 88, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq2 = {
+        .clearance = { -32, 0, 0, 88, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq3 = {
+        .clearance = { -32, 32, 32, 80, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq4 = {
+        .clearance = { -64, 32, 80, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq5 = {
+        .clearance = { -96, 32, 112, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq0 = {
+        .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq1 = {
+        .clearance = { -32, 0, 0, 88, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq2 = {
+        .clearance = { 0, 32, 0, 88, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq3 = {
+        .clearance = { -32, 32, 32, 80, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0001,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq4 = {
+        .clearance = { -32, 64, 80, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq5 = {
+        .clearance = { -32, 96, 112, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0101,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq0 = {
+        .clearance = { 0, 0, 112, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq1 = {
+        .clearance = { -32, 0, 80, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq2 = {
+        .clearance = { -64, 0, 32, 80, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b0010,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq3 = {
+        .clearance = { -64, -32, 0, 88, { 0b1000, 0 }, 0 },
+        .allowedWallEdges = 0b1100,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq4 = {
+        .clearance = { -96, 0, 0, 88, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0011,
+    };
+    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq5 = {
+        .clearance = { -96, -32, 0, 64, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq0 = {
+        .clearance = { 0, 0, 112, 24, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq1 = {
+        .clearance = { -32, 0, 80, 48, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1010,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq2 = {
+        .clearance = { -64, 0, 32, 80, { 0b1111, 0 }, 0 },
+        .allowedWallEdges = 0b1000,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq3 = {
+        .clearance = { -64, 32, 0, 88, { 0b0100, 0 }, 0 },
+        .allowedWallEdges = 0b0110,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq4 = {
+        .clearance = { -96, 0, 0, 88, { 0b0001, 0 }, 0 },
+        .allowedWallEdges = 0b1001,
+    };
+    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq5 = {
+        .clearance = { -96, 32, 0, 64, { 0b0010, 0 }, 0 },
+        .allowedWallEdges = 0b0000,
+    };
+    
+
     static constexpr SequenceData kSequenceDescriptorsByElement[] = {
         /* TrackElemType::Flat */ { 1, { kFlatSeq0 } },
         /* TrackElemType::EndStation */ { 1, { kEndStationSeq0 } },
@@ -12609,7 +12950,15 @@ namespace OpenRCT2::TrackMetaData
         /* TrackElemType::InclinedBrakes */
         { 1, { kDown25Seq0 } },
         /* TrackElemType::DiagBooster */ { 4, { kDiagFlatSeq0, kDiagFlatSeq1, kDiagFlatSeq2, kDiagFlatSeq3 } },
-    };
+        /* TrackElemType::DiagFlatToUp60LongBase */ { 10, { kDiagFlatToUp60LongBaseSeq0, kDiagFlatToUp60LongBaseSeq1, kDiagFlatToUp60LongBaseSeq2, kDiagFlatToUp60LongBaseSeq3, kDiagFlatToUp60LongBaseSeq4, kDiagFlatToUp60LongBaseSeq5, kDiagFlatToUp60LongBaseSeq6, kDiagFlatToUp60LongBaseSeq7, kDiagFlatToUp60LongBaseSeq8, kDiagFlatToUp60LongBaseSeq9 } },
+        /* TrackElemType::DiagUp60ToFlatLongBase */ { 10, { kDiagUp60ToFlatLongBaseSeq0, kDiagUp60ToFlatLongBaseSeq1, kDiagUp60ToFlatLongBaseSeq2, kDiagUp60ToFlatLongBaseSeq3, kDiagUp60ToFlatLongBaseSeq4, kDiagUp60ToFlatLongBaseSeq5, kDiagUp60ToFlatLongBaseSeq6, kDiagUp60ToFlatLongBaseSeq7, kDiagUp60ToFlatLongBaseSeq8, kDiagUp60ToFlatLongBaseSeq9 } },
+        /* TrackElemType::DiagFlatToDown60LongBase */ { 10, { kDiagFlatToDown60LongBaseSeq0, kDiagFlatToDown60LongBaseSeq1, kDiagFlatToDown60LongBaseSeq2, kDiagFlatToDown60LongBaseSeq3, kDiagFlatToDown60LongBaseSeq4, kDiagFlatToDown60LongBaseSeq5, kDiagFlatToDown60LongBaseSeq6, kDiagFlatToDown60LongBaseSeq7, kDiagFlatToDown60LongBaseSeq8, kDiagFlatToDown60LongBaseSeq9 } },
+        /* TrackElemType::DiagDown60ToFlatLongBase */ { 10, { kDiagDown60ToFlatLongBaseSeq0, kDiagDown60ToFlatLongBaseSeq1, kDiagDown60ToFlatLongBaseSeq2, kDiagDown60ToFlatLongBaseSeq3, kDiagDown60ToFlatLongBaseSeq4, kDiagDown60ToFlatLongBaseSeq5, kDiagDown60ToFlatLongBaseSeq6, kDiagDown60ToFlatLongBaseSeq7, kDiagDown60ToFlatLongBaseSeq8, kDiagDown60ToFlatLongBaseSeq9 } },
+        /* TrackElemType::LeftEighthDiveLoopUpToOrthogonal */ { 6, { kLeftEighthDiveLoopUpToOrthogonalSeq0, kLeftEighthDiveLoopUpToOrthogonalSeq1, kLeftEighthDiveLoopUpToOrthogonalSeq2, kLeftEighthDiveLoopUpToOrthogonalSeq3, kLeftEighthDiveLoopUpToOrthogonalSeq4, kLeftEighthDiveLoopUpToOrthogonalSeq5 } },
+        /* TrackElemType::RightEighthDiveLoopUpToOrthogonal */ { 6, { kRightEighthDiveLoopUpToOrthogonalSeq0, kRightEighthDiveLoopUpToOrthogonalSeq1, kRightEighthDiveLoopUpToOrthogonalSeq2, kRightEighthDiveLoopUpToOrthogonalSeq3, kRightEighthDiveLoopUpToOrthogonalSeq4, kRightEighthDiveLoopUpToOrthogonalSeq5 } },
+        /* TrackElemType::LeftEighthDiveLoopDownToDiag */ { 6, { kLeftEighthDiveLoopDownToDiagSeq0, kLeftEighthDiveLoopDownToDiagSeq1, kLeftEighthDiveLoopDownToDiagSeq2, kLeftEighthDiveLoopDownToDiagSeq3, kLeftEighthDiveLoopDownToDiagSeq4, kLeftEighthDiveLoopDownToDiagSeq5 } },
+        /* TrackElemType::RightEighthDiveLoopDownToDiag */ { 6, { kRightEighthDiveLoopDownToDiagSeq0, kRightEighthDiveLoopDownToDiagSeq1, kRightEighthDiveLoopDownToDiagSeq2, kRightEighthDiveLoopDownToDiagSeq3, kRightEighthDiveLoopDownToDiagSeq4, kRightEighthDiveLoopDownToDiagSeq5 } },
+};
 
     static constexpr auto BuildDescriptorTable()
     {
