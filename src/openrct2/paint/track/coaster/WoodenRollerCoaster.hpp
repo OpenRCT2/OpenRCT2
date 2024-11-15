@@ -26,7 +26,7 @@ static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 struct WoodenTrackSection
 {
     ImageIndex track;
-    ImageIndex handrail;
+    ImageIndex handrail = ImageIndexUndefined;
     ImageIndex frontTrack = ImageIndexUndefined;
     ImageIndex frontHandrail = ImageIndexUndefined;
 };
@@ -67,11 +67,20 @@ PaintStruct* WoodenRCTrackPaint(
     PaintSession& session, uint8_t direction, ImageIndex imageIdTrack, ImageIndex imageIdRails, const CoordsXYZ& offset,
     const BoundBoxXYZ& boundBox)
 {
-    ImageId imageId = WoodenRCGetTrackColour<isClassic>(session).WithIndex(imageIdTrack);
-    ImageId railsImageId = WoodenRCGetRailsColour(session).WithIndex(imageIdRails);
+    if (isClassic)
+    {
+        const ImageId imageId = session.TrackColours.WithIndex(imageIdTrack);
 
-    PaintAddImageAsParentRotated(session, direction, imageId, offset, boundBox);
-    return PaintAddImageAsChildRotated(session, direction, railsImageId, offset, boundBox);
+        return PaintAddImageAsParentRotated(session, direction, imageId, offset, boundBox);
+    }
+    else
+    {
+        const ImageId imageId = session.SupportColours.WithIndex(imageIdTrack);
+        const ImageId railsImageId = WoodenRCGetRailsColour(session).WithIndex(imageIdRails);
+
+        PaintAddImageAsParentRotated(session, direction, imageId, offset, boundBox);
+        return PaintAddImageAsChildRotated(session, direction, railsImageId, offset, boundBox);
+    }
 }
 
 template<bool isClassic>
