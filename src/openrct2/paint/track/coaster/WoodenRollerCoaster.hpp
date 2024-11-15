@@ -3156,6 +3156,74 @@ static void WoodenRCTrackDiagUp25ToBank(
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
+/** rct2: 0x008AC9D8 */
+template<bool isClassic, std::array<WoodenTrackSection, kNumOrthogonalDirections> imageIds>
+static void WoodenRCTrackDiagLeftBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 3:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
+                        { { -16, -16, height }, { 32, 32, 2 } });
+                    break;
+            }
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
+                        { { -16, -16, height }, { 32, 32, 2 } });
+                    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail,
+                            { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                    }
+                    break;
+            }
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 2:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
+                        { { -16, -16, height }, { 32, 32, 2 } });
+                    if (imageIds[direction].frontTrack != ImageIndexUndefined)
+                    {
+                        WoodenRCTrackPaint<isClassic>(
+                            session, direction, imageIds[direction].frontTrack, imageIds[direction].frontHandrail,
+                            { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                    }
+                    break;
+            }
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 1:
+                    WoodenRCTrackPaint<isClassic>(
+                        session, direction, imageIds[direction].track, imageIds[direction].handrail, { -16, -16, height },
+                        { { -16, -16, height }, { 32, 32, 2 } });
+                    break;
+            }
+            break;
+    }
+
+    DrawSupportForSequenceA<OpenRCT2::TrackElemType::DiagLeftBank>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+}
+
 /** rct2: 0x008AC998 */
 template<bool isClassic, std::array<std::array<WoodenTrackSection, kNumOrthogonalDirections>, 4> imageIds>
 static void WoodenRCTrackLeftEighthBankToDiag(

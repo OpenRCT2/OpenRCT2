@@ -260,6 +260,14 @@ enum
     SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_25_DEG_UP_FRONT_0_1 = SPR_CSG_BEGIN + 65979,
     SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_25_DEG_UP_FRONT_1_2 = SPR_CSG_BEGIN + 65980,
 
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_0 = SPR_CSG_BEGIN + 66049,
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_1 = SPR_CSG_BEGIN + 66050,
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_2 = SPR_CSG_BEGIN + 66051,
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_3 = SPR_CSG_BEGIN + 66052,
+
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_FRONT_0 = SPR_CSG_BEGIN + 66053,
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_FRONT_2 = SPR_CSG_BEGIN + 66054,
+
     SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_FLAT_TO_LEFT_BANK_0 = SPR_CSG_BEGIN + 66055,
     SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_FLAT_TO_LEFT_BANK_1 = SPR_CSG_BEGIN + 66056,
     SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_FLAT_TO_LEFT_BANK_2 = SPR_CSG_BEGIN + 66057,
@@ -599,6 +607,14 @@ enum
     SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_25_DEG_UP_FRONT_HANDRAIL_1_1 = SPR_CSG_BEGIN + 66734,
     SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_25_DEG_UP_FRONT_HANDRAIL_0_1 = SPR_CSG_BEGIN + 66735,
     SPR_CLASSIC_WOODEN_TWISTER_RC_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_25_DEG_UP_FRONT_HANDRAIL_1_2 = SPR_CSG_BEGIN + 66736,
+
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_HANDRAIL_0 = SPR_CSG_BEGIN + 66805,
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_HANDRAIL_1 = SPR_CSG_BEGIN + 66806,
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_HANDRAIL_2 = SPR_CSG_BEGIN + 66807,
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_HANDRAIL_3 = SPR_CSG_BEGIN + 66808,
+
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_FRONT_HANDRAIL_0 = SPR_CSG_BEGIN + 66809,
+    SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_FRONT_HANDRAIL_2 = SPR_CSG_BEGIN + 66810,
 
     SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_FLAT_TO_LEFT_BANK_HANDRAIL_0 = SPR_CSG_BEGIN + 66811,
     SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_FLAT_TO_LEFT_BANK_HANDRAIL_1 = SPR_CSG_BEGIN + 66812,
@@ -1611,6 +1627,29 @@ static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagU
     },
 } };
 
+static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagLeftBankImages = { {
+    {
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_0,
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_HANDRAIL_0,
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_FRONT_0,
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_FRONT_HANDRAIL_0,
+    },
+    {
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_1,
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_HANDRAIL_1,
+    },
+    {
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_2,
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_HANDRAIL_2,
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_FRONT_2,
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_FRONT_HANDRAIL_2,
+    },
+    {
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_3,
+        SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_LEFT_BANK_HANDRAIL_3,
+    },
+} };
+
 static constexpr std::array<WoodenTrackSection, kNumOrthogonalDirections> kDiagUp25ToRightBankImages = { {
     {
         SPR_CLASSIC_WOODEN_TWISTER_RC_DIAG_UP_25_TO_RIGHT_BANK_0,
@@ -2017,6 +2056,15 @@ static void ClassicWoodenTwisterRCTrackDiagRightBankToDown25(
         session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
 }
 
+static void ClassicWoodenTwisterRCTrackDiagRightBank(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    trackSequence = kMapReversedDiagonalStraight[trackSequence];
+    return WoodenRCTrackDiagLeftBank<false, kDiagLeftBankImages>(
+        session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
+}
+
 static void ClassicWoodenTwisterRCTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -2139,6 +2187,11 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenTwisterRC(OpenRCT2::Track
             return ClassicWoodenTwisterRCTrackDiagLeftBankToDown25;
         case TrackElemType::DiagRightBankToDown25:
             return ClassicWoodenTwisterRCTrackDiagRightBankToDown25;
+
+        case TrackElemType::DiagLeftBank:
+            return WoodenRCTrackDiagLeftBank<false, kDiagLeftBankImages>;
+        case TrackElemType::DiagRightBank:
+            return ClassicWoodenTwisterRCTrackDiagRightBank;
 
         case TrackElemType::LeftEighthBankToDiag:
             return WoodenRCTrackLeftEighthBankToDiag<false, kLeftEighthBankToDiagImages>;
