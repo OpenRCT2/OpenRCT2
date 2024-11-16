@@ -481,6 +481,16 @@ void EntityBase::SetLocation(const CoordsXYZ& newLocation)
     SpatialIndex |= kSpatialIndexDirtyMask;
 }
 
+static void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
+{
+    auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), entityPos);
+
+    entity->SpriteData.SpriteRect = ScreenRect(
+        screenCoords - ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMin },
+        screenCoords + ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMax });
+    entity->SetLocation(entityPos);
+}
+
 void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 {
     if (x != kLocationNull)
@@ -504,16 +514,6 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
         EntitySetCoordinates(loc, this);
         Invalidate(); // Invalidate new position.
     }
-}
-
-void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
-{
-    auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), entityPos);
-
-    entity->SpriteData.SpriteRect = ScreenRect(
-        screenCoords - ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMin },
-        screenCoords + ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMax });
-    entity->SetLocation(entityPos);
 }
 
 /**
