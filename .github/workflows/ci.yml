@@ -41,6 +41,7 @@ jobs:
       distance: ${{ steps.ghd.outputs.distance }}
       tag: ${{ steps.ghd.outputs.tag }}
       push: ${{ steps.setenv.outputs.push }}
+      sign: ${{ steps.sign.outputs.sign }}
     steps:
       # We need to fetch entire repo to get the tags and correctly run `describe`
       - name: Check out code
@@ -75,6 +76,11 @@ jobs:
         run: |
           echo "name=${{ steps.ghd.outputs.describe }}"
           echo "name=${{ steps.ghd.outputs.describe }}" >> $GITHUB_OUTPUT
+      - name: Sign
+        id: sign
+        run: |
+          echo "sign=${{ env.SIGNPATH_API_TOKEN != '' && (needs.build_variables.outputs.push || startsWith(github.ref, 'refs/tags/v')) }}"
+          echo "sign=${{ env.SIGNPATH_API_TOKEN != '' && (needs.build_variables.outputs.push || startsWith(github.ref, 'refs/tags/v')) }}" >> $GITHUB_OUTPUT
   lint-commit:
     name: Lint Commit Message
     if: github.event_name == 'pull_request'
@@ -169,8 +175,12 @@ jobs:
           path: |
             bin/openrct2.exe
             bin/openrct2.com
+      # Sign the binaries first, so that all other artifacts (portable, installer, symbols) use signed binaries
       - name: Sign binaries
         id: sign-binaries
+        env:
+          SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
+        if: ${{ needs.build_variables.outputs.sign == 'true' }}
         uses: signpath/github-action-submit-signing-request@v1
         with:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
@@ -181,6 +191,11 @@ jobs:
           github-artifact-id: ${{ steps.upload-windows-binaries-unsigned.outputs.artifact-id }}
           wait-for-completion: true
           output-artifact-directory: files-signed
+      - name: Use signed binaries
+        if: ${{ needs.build_variables.outputs.sign == 'true' }}
+        run: |
+          mv files-signed/openrct2.com bin/openrct2.com
+          mv files-signed/openrct2.exe bin/openrct2.exe
       - name: Download g2.dat on ARM64
         if: matrix.platform == 'arm64'
         uses: actions/download-artifact@v4
@@ -190,8 +205,6 @@ jobs:
       - name: Build artifacts
         run: |
           . scripts/setenv -q
-          mv files-signed/openrct2.com bin/openrct2.com
-          mv files-signed/openrct2.exe bin/openrct2.exe
           build-portable
           build-symbols
           build-installer -i
@@ -215,6 +228,7 @@ jobs:
           if-no-files-found: error
       - name: Sign installer
         id: sign-installer
+        if: ${{ needs.build_variables.outputs.sign == 'true' }}
         uses: signpath/github-action-submit-signing-request@v1
         with:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
@@ -227,6 +241,7 @@ jobs:
           output-artifact-directory: files-signed
       - name: Upload signed installer artifact (CI)
         id: upload-windows-installer-signed
+        if: ${{ needs.build_variables.outputs.sign == 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-installer-${{ matrix.platform }}
