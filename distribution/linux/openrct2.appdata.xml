@@ -5,7 +5,9 @@
   <project_license>GPL-3.0</project_license>
   <name>OpenRCT2</name>
   <summary>Amusement park simulation</summary>
+  <summary xml:lang="ca">Simulador de parcs d'atraccions</summary>
   <developer_name>The OpenRCT2 Team</developer_name>
+  <developer_name xml:lang="ca">Equip de l'OpenRCT2</developer_name>
   <launchable type="desktop-id">openrct2.desktop</launchable>
   <description>
     <p>
@@ -33,6 +35,33 @@
     </ul>
     <p>
       Original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic game files are required in order to play OpenRCT2.
+    </p>
+
+    <p xml:lang="ca">
+        L'OpenRCT2 és una reimplementació de codi obert del RollerCoaster Tycoon 2 (RCT2).
+        El joc consisteix en construir i mantenir un parc d'atraccions i gestionar-ne també
+        les paradetes i instal·lacions. El jugador ha d'obtenir beneficis i mantenir una bona
+        reputació del seu parc i alhora fer que els seus visitants siguin feliços. L'OpenRCT2
+        permet jugar en escenaris o en mode lliure. Als escenaris, el jugador ha de completar
+        alguns objectius en un determinat període de temps, mentre que al mode lliure pot
+        construir amb més flexibilitat, fins i tot sense restriccions.
+    </p>
+    <p xml:lang="ca">
+        L'OpenRCT2 té molts canvis respecte al joc RollerCoaster Tycoon 2 original, com ara:
+    </p>
+    <ul xml:lang="ca">
+        <li xml:lang="ca">Temes per a la interfície gràfica</li>
+        <li xml:lang="ca">Diferents velocitats de joc disponibles durant la partida</li>
+        <li xml:lang="ca">Suport multijugador</li>
+        <li xml:lang="ca">Traduït a diversos idiomes i amb traduccions millorades</li>
+        <li xml:lang="ca">Renderització OpenGL per maquinari</li>
+        <li xml:lang="ca">Correccions i millores dels errors del joc original</li>
+        <li xml:lang="ca">Suport natiu per a Linux i macOS</li>
+        <li xml:lang="ca">Es poden fer trucs i trampes</li>
+        <li xml:lang="ca">Desades automàtiques i captures de pantalla gegants</li>
+    </ul>
+    <p xml:lang="ca">
+        Per a jugar a l'OpenRCT2, fan falta els fitxers originals del RollerCoaster Tycoon 2 o del RollerCoaster Tycoon clàssic.
     </p>
   </description>
   <screenshots>
