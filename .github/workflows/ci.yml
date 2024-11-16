@@ -139,7 +139,7 @@ jobs:
   windows:
     name: Windows
     runs-on: windows-latest
-    needs: [check-code-formatting, build_variables]
+    needs: [check-code-formatting, build_variables, g2dat]
     strategy:
       fail-fast: false
       matrix:
@@ -181,6 +181,12 @@ jobs:
           github-artifact-id: ${{ steps.upload-windows-binaries-unsigned.outputs.artifact-id }}
           wait-for-completion: true
           output-artifact-directory: files-signed
+      - name: Download g2.dat on ARM64
+        if: matrix.platform == 'arm64'
+        uses: actions/download-artifact@v4
+        with:
+          name: g2-${{ needs.build_variables.outputs.name }}.dat
+          path: bin/data/g2.dat
       - name: Build artifacts
         run: |
           . scripts/setenv -q
