@@ -587,6 +587,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           merge-multiple: true
+      # Having multiple artifacts named the same might be onfusing to the users. Drop the unsigned versions
+      - name: Remove unsigned artifacts
+        run: |
+          rm -rf *unsigned*
       - name: Concatenate sha1 files
         run: |
           ls -lR
