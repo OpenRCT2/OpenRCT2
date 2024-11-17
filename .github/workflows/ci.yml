@@ -22,6 +22,7 @@ on:
         description: Sign binaries
         type: choice
         options:
+          - 'no'
           - test-signing
           - release-signing
         default: test-signing
@@ -95,16 +96,18 @@ jobs:
       - name: Sign
         id: sign
         run: |
-          echo "sign=${{ env.SIGNPATH_API_TOKEN != '' && (needs.build_variables.outputs.push || startsWith(github.ref, 'refs/tags/v')) }}"
+          sign=${{ env.SIGNPATH_API_TOKEN != '' && github.event.inputs.sign != 'no' && (needs.build_variables.outputs.push || startsWith(github.ref, 'refs/tags/v')) }}
           # if using workflow_dispatch, use the provided certificate
           if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
             certificate=${{ github.event.inputs.sign }}
           else
-            # Default to test-signing
-            certificate=test-signing
+            # Default to no signing
+            certificate=no
+            sign=false
           fi
+          echo "sign=$sign"
           echo "certificate=$certificate"
-          echo "sign=${{ env.SIGNPATH_API_TOKEN != '' && (needs.build_variables.outputs.push || startsWith(github.ref, 'refs/tags/v')) }}" >> $GITHUB_OUTPUT
+          echo "sign=$sign" >> $GITHUB_OUTPUT
           echo "certificate=$certificate" >> $GITHUB_OUTPUT
   lint-commit:
     name: Lint Commit Message
