@@ -333,7 +333,7 @@ jobs:
   macos-cmake:
     name: macOS (${{ matrix.arch }}) using CMake
     runs-on: macos-14
-    needs: check-code-formatting
+    needs: [check-code-formatting, build_variables]
     strategy:
       fail-fast: false
       matrix:
@@ -505,7 +505,7 @@ jobs:
           if-no-files-found: error
   linux-docker:
     name: Ubuntu Linux (Docker)
-    needs: check-code-formatting
+    needs: [check-code-formatting, build_variables]
     if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
@@ -531,7 +531,7 @@ jobs:
   linux-clang:
     name: Ubuntu Linux (noble, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
-    needs: check-code-formatting
+    needs: [check-code-formatting, build_variables]
     container: openrct2/openrct2-build:16-noble
     steps:
       - name: Checkout
