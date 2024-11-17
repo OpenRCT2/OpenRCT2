@@ -35,7 +35,7 @@ SetCompressor LZMA
 
 ; Version Info
 VIProductVersion "${APPVERSIONINTERNAL}"
-VIAddVersionKey "ProductName" "OpenRCT2 ${APPBITS}-bit Installer for ${SUPPORTED_OS}"
+VIAddVersionKey "ProductName" "OpenRCT2 ${PLATFORM} Installer for ${SUPPORTED_OS}"
 VIAddVersionKey "Comments" "Installs ${APPNAMEANDVERSION}"
 VIAddVersionKey "CompanyName" "OpenRCT2 Developers"
 VIAddVersionKey "FileDescription" "Installs ${APPNAMEANDVERSION}"
@@ -44,7 +44,7 @@ VIAddVersionKey "InternalName" "InstOpenRCT2-${APPARCH}"
 VIAddVersionKey "FileVersion" "${APPVERSION}-${APPARCH}"
 VIAddVersionKey "LegalCopyright" " "
 ; Main Install settings
-Name "${APPNAMEANDVERSION} ${APPBITS}-bit for ${SUPPORTED_OS}"
+Name "${APPNAMEANDVERSION} ${PLATFORM} for ${SUPPORTED_OS}"
 
 ; NOTE: Keep trailing backslash!
 InstallDirRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Install Folder"

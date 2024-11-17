@@ -239,6 +239,7 @@ jobs:
           build-portable
           build-symbols
           build-installer -i
+          echo "OPENRCT2_VERSION_EXTRA=$OPENRCT2_VERSION_EXTRA" >> "$GITHUB_ENV"
       - name: Rename artifacts
         run: |
           mv artifacts/openrct2-portable-*.zip artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-portable-$PLATFORM.zip
@@ -270,6 +271,9 @@ jobs:
           github-artifact-id: ${{ steps.upload-windows-installer-unsigned.outputs.artifact-id }}
           wait-for-completion: true
           output-artifact-directory: files-signed
+          parameters: |
+            version: "${{ env.OPENRCT2_VERSION }}${{ env.OPENRCT2_VERSION_EXTRA }}"
+            product: "OpenRCT2 ${{ matrix.platform }} Installer for Windows 7 and later"
       - name: Upload signed installer artifact (CI)
         id: upload-windows-installer-signed
         if: ${{ needs.build_variables.outputs.sign == 'true' }}
