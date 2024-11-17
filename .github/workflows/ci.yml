@@ -220,6 +220,8 @@ jobs:
           github-artifact-id: ${{ steps.upload-windows-binaries-unsigned.outputs.artifact-id }}
           wait-for-completion: true
           output-artifact-directory: files-signed
+          parameters: |
+            version: "${{ env.OPENRCT2_VERSION }}.${{ needs.build_variables.outputs.distance }}-${{ needs.build_variables.outputs.short-sha }}"
       - name: Use signed binaries
         if: ${{ needs.build_variables.outputs.sign == 'true' }}
         run: |
