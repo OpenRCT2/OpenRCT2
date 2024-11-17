@@ -30,7 +30,7 @@ namespace OpenRCT2::Numerics
         int32_t success = __builtin_ffs(source);
         return success - 1;
 #else
-#    pragma message("Falling back to iterative bitscan forward, consider using intrinsics")
+#    pragma message("Falling back to iterative bitscan32 forward, consider using intrinsics")
         // This is a low-hanging optimisation boost, check if your compiler offers
         // any intrinsic.
         // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
@@ -44,7 +44,7 @@ namespace OpenRCT2::Numerics
 
     inline int64_t bitScanForward(uint64_t source)
     {
-#if defined(_MSC_VER) && (_MSC_VER >= 1400) && defined(_M_X64) // Visual Studio 2005
+#if defined(_MSC_VER) && (_MSC_VER >= 1400) && (defined(_M_X64) || defined(_M_ARM64)) // Visual Studio 2005
         unsigned long i;
         uint8_t success = _BitScanForward64(&i, source);
         return success != 0 ? i : -1;
@@ -52,7 +52,7 @@ namespace OpenRCT2::Numerics
         int32_t success = __builtin_ffsll(source);
         return success - 1;
 #else
-#    pragma message("Falling back to iterative bitscan forward, consider using intrinsics")
+#    pragma message("Falling back to iterative bitscan64 forward, consider using intrinsics")
         // This is a low-hanging optimisation boost, check if your compiler offers
         // any intrinsic.
         // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
