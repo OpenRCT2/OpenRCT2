@@ -660,7 +660,6 @@ jobs:
         with:
           draft: true
           files: |
-            OpenRCT2-${{ needs.build_variables.outputs.name }}-sha1sums.txt
             OpenRCT2-${{ needs.build_variables.outputs.name }}-*
           body_path: release_notes.txt
           tag_name: ${{ needs.build_variables.outputs.tag }}
