@@ -180,6 +180,7 @@ jobs:
         platform: [win32, x64, arm64]
     env:
       PLATFORM: ${{ matrix.platform }}
+      DISTANCE_FROM_TAG: ${{ needs.build_variables.outputs.distance }}
     steps:
       - name: Setup environment
         run: |
