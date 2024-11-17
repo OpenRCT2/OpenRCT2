@@ -643,11 +643,16 @@ jobs:
           sed -n '1,/^$/p' distribution/changelog.txt >> release_notes.txt
           echo "" >> release_notes.txt
 
+          echo "Release created in ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> release_notes.txt
+          echo "" >> release_notes.txt
+
           echo "SHA1 checksums:" >> release_notes.txt
           echo "\`\`\`" >> release_notes.txt
           cat OpenRCT2-${{ needs.build_variables.outputs.name }}-sha1sums.txt >> release_notes.txt
           echo "\`\`\`" >> release_notes.txt
           echo "" >> release_notes.txt
+
+          cat release_notes.txt
       # Only upload tagged releases, mark them as draft for manual verification
       - name: Create tagged release
         uses: softprops/action-gh-release@v2
