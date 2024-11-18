@@ -135,7 +135,7 @@ constexpr int kCheatsDuckIncrement = 20;
 constexpr int kCheatsStaffFastSpeed = 0xFF;
 constexpr int kCheatsStaffNormalSpeed = 0x60;
 constexpr int kCheatsStaffFreezeSpeed = 0;
-const int32_t kForcedParkRatingDisabled = -1;
+constexpr int32_t kForcedParkRatingDisabled = -1;
 
 void CheatsReset();
 const char* CheatsGetName(CheatType cheatType);
