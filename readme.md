@@ -52,7 +52,10 @@ If you want to help translate the game to your language, please stop by the Loca
   - 4.4 - [Graphics](#44-graphics)
   - 4.5 - [Audio](#45-audio)
   - 4.6 - [Scenarios](#46-scenarios)
-- 5 - [Code signing policy](#5-code-signing-policy)
+- 5 - [Policies](#5-policies)
+  - 5.1 - [Code of conduct](#51-code-of-conduct)
+  - 5.2 - [Code signing policy](#52-code-signing-policy)
+  - 5.3 - [Privacy policy](#53-privacy-policy)
 - 5 - [Licence](#6-licence)
 - 6 - [More information](#7-more-information)
 - 7 - [Sponsors](#8-sponsors)
@@ -247,13 +250,23 @@ We would also like to distribute additional scenarios with the game, when the ti
 
 ---
 
-# 5. Code signing policy
+# 5. Policies
 
-We sign our releases digital certificate provided by SignPath Foundation.
+## 5.1 Code of Conduct
+
+We have a [Code of Conduct](CODE_OF_CONDUCT.md) that applies to all OpenRCT2 projects. Please read it.
+
+## 5.2 Code signing policy
+
+We sign our releases with a digital certificate provided by SignPath Foundation.
 
 Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
 
 Signed releases can only be done by member of the [development team](https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md#development-team).
+
+## 5.3 Privacy policy
+
+See [PRIVACY.md](PRIVACY.md) for more information.
 
 ---
 
