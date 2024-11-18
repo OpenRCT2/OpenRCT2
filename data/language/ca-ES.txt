@@ -99,7 +99,9 @@ STR_0094    :Muntanya russa d’un sol rail
 STR_0095    :Muntanya russa alpina
 STR_0096    :Muntanya russa clàssica de fusta
 STR_0097    :Muntanya russa a peu dret clàssica
+STR_0098    :Muntanya russa d’impuls LSM
 STR_0607    :Una muntanya russa d’estil antic i d’acer molt intensa on els passatgers van com si estiguessin de peu.
+STR_0608    :Els cotxes acceleren amb motors síncrons lineals i circulen a gran velocitat per girs i corbes tancades.
 STR_0512    :Muntanya russa compacta amb una pujada en espiral i caigudes sinuoses suaus.
 STR_0513    :Muntanya russa amb inversions en la qual els passatgers es mantenen drets.
 STR_0514    :Els cotxes que pengen per sota dels rails es balancegen cap a fora en les corbes.
@@ -1045,10 +1047,10 @@ STR_1653    :«…i aquí estem en {STRINGID}!»
 STR_1654    :{WINDOW_COLOUR_2}Pensaments recents:
 STR_1655    :Construeix camí al terra
 STR_1656    :Construeix camí al pont o al túnel
-STR_1657    :{WINDOW_COLOUR_2}Atracció preferida
-STR_1658    :{WINDOW_COLOUR_2}intensitat: {BLACK}menys de {COMMA16}
-STR_1659    :{WINDOW_COLOUR_2}intensitat: {BLACK}entre {COMMA16} i {COMMA16}
-STR_1660    :{WINDOW_COLOUR_2}intensitat: {BLACK}més de {COMMA16}
+STR_1657    :{WINDOW_COLOUR_2}Atraccions preferides:
+STR_1658    :{WINDOW_COLOUR_2}De {BLACK}menys de {COMMA16} {WINDOW_COLOUR_2}d’intensitat
+STR_1659    :{WINDOW_COLOUR_2}D’{BLACK}entre {COMMA16} i {COMMA16} {WINDOW_COLOUR_2}d’intensitat
+STR_1660    :{WINDOW_COLOUR_2}De {BLACK}més de {COMMA16} {WINDOW_COLOUR_2}d’intensitat
 STR_1661    :{WINDOW_COLOUR_2}Tolerància a la nàusea: {BLACK}{STRINGID}
 STR_1662    :{WINDOW_COLOUR_2}Felicitat:
 STR_1663    :{WINDOW_COLOUR_2}Nàusea:
@@ -1742,7 +1744,7 @@ STR_2382    :Terra
 STR_2383    :Aigua
 STR_2384    :{WINDOW_COLOUR_2}El vostre objectiu:
 STR_2385    :{BLACK}Cap
-STR_2386    :{BLACK}Tenir almenys {COMMA32} visitants al parc al final de {MONTHYEAR}, amb una valoració del parc d’almenys 600.
+STR_2386    :{BLACK}Tenir almenys {COMMA32} visitants al parc al final de {MONTHYEAR}, amb una valoració del parc almenys de 600.
 STR_2387    :{BLACK}Aconseguir una valoració del parc d’almenys {POP16}{POP16}{CURRENCY} al final de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}.
 STR_2388    :{BLACK}Divertiu-vos!
 STR_2389    :{BLACK}Construïu el millor {STRINGID} que pugueu!
@@ -1913,8 +1915,8 @@ STR_2670    :Bloq Despl
 STR_2680    :S’han completat totes les recerques.
 STR_2684    :Arriba un grup gran de visitants.
 STR_2685    :Paràmetres de soroll del símplex
-STR_2686    :Baix:
-STR_2687    :Alt:
+STR_2686    :Altura del terreny mín.:
+STR_2687    :Altura del terreny màx.:
 STR_2688    :Freqüència base:
 STR_2689    :Octaves:
 STR_2690    :Generació del mapa
@@ -2150,8 +2152,8 @@ STR_3107    :Tanca
 STR_3108    :Prova
 STR_3109    :Obre
 STR_3110    :{WINDOW_COLOUR_2}Seccions de bloc: {BLACK}{COMMA16}
-STR_3111    :Cliqueu el disseny per a construir-lo.
-STR_3112    :Cliqueu el disseny per a canviar-ne el nom o per a esborrar-lo.
+STR_3111    :Feu clic al disseny per a construir-lo.
+STR_3112    :Feu clic al disseny per a canviar-ne el nom o per a esborrar-lo.
 STR_3113    :Selecciona un altre disseny
 STR_3114    :Torna a la finestra de selecció de dissenys.
 STR_3115    :Desa el disseny de via
@@ -2171,7 +2173,7 @@ STR_3128    :Desa el disseny de via
 STR_3129    :Desa el disseny de via i el decorat
 STR_3130    :Desa
 STR_3131    :Cancel·la
-STR_3132    :{BLACK}Cliqueu elements del decorat per a seleccionar-los i desar-los amb el disseny de via.
+STR_3132    :{BLACK}Feu clic als elements del decorat per a seleccionar-los i desar-los amb el disseny de via.
 STR_3133    :No es pot construir a sobre d’un pendent.
 STR_3134    :{RED}(El disseny inclou algun decorat no disponible)
 STR_3135    :{RED}(Disseny de vehicle no disponible - Això pot afectar al rendiment de l’atracció)
@@ -2440,7 +2442,7 @@ STR_5149    :Mostra les trampes que es poden fer a la partida.
 STR_5150    :Activa les eines de depuració
 STR_5151    :.
 STR_5152    :,
-STR_5153    :Edita temes…
+STR_5153    :Edita els temes…
 STR_5154    :Renderitzat per maquinari
 STR_5155    :Permet provar atraccions sense acabar
 STR_5156    :Permet provar la majoria d’atraccions fins i tot si la via no està acabada. No s’aplica als modes de bloc de seccions.
@@ -2607,8 +2609,8 @@ STR_5357    :{BLACK}Tolerància a la nàusea:
 STR_5358    :{BLACK}Orina:
 STR_5359    :Treu visitants
 STR_5360    :Elimina tots els visitants del mapa.
-STR_5361    :Dóna a tots els visitants:
-STR_5362    :{BLACK}Estableix la intensitat preferida dels visitants a:
+STR_5361    :Afegeix a l’inventari dels visitants
+STR_5362    :{BLACK}Intensitat preferida dels visitants:
 STR_5363    :Més d’1
 STR_5364    :Menys de 15
 STR_5365    :{BLACK}Velocitat dels empleats:
@@ -2638,7 +2640,7 @@ STR_5457    :Desactiva els límits dels suports
 STR_5458    :Gira en sentit horari
 STR_5459    :Gira en sentit antihorari
 STR_5460    :Gira la vista en sentit antihorari
-STR_5461    :Estableix els paràmetres dels visitants
+STR_5461    :Estableix els paràmetres de tots els visitants
 STR_5462    :{CURRENCY}
 STR_5463    :Objectiu: Divertiu-vos!
 STR_5464    :General
@@ -3170,9 +3172,9 @@ STR_6041    :{BLACK}No s’han contractat mecànics!
 STR_6042    :Carrega el mapa d’alçades
 STR_6043    :Selecciona el mapa d’alçades
 STR_6044    :Suavitza el mapa d’alçades
-STR_6045    :Força
+STR_6045    :Força:
 STR_6046    :Normalitza el mapa d’alçades
-STR_6047    :Suavitza les caselles
+STR_6047    :Suavitza les vores de les caselles
 STR_6048    :Error del mapa d’alçades
 STR_6049    :S’ha produït un error mentre es llegia el fitxer PNG.
 STR_6050    :S’ha produït un error mentre es llegia el bitmap.
@@ -3614,7 +3616,7 @@ STR_6537    :Permet fer servir els camins normals per a fer cues
 STR_6538    :Mostra els camins normals al menú desplegable de les cues de la finestra de construcció corresponent.
 STR_6539    :Fre tancat
 STR_6540    :{WINDOW_COLOUR_2}Donem les gràcies a les companyies següents per permetre fer servir les seves imatges:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Col·laboradors
 STR_6543    :Col·laboradors…
 STR_6544    :El préstec no pot ser negatiu!
@@ -3736,3 +3738,51 @@ STR_6659    :Els visitants ignoren els preus
 STR_6660    :Els visitants ignoraran els preus de les atraccions i paradetes.
 STR_6661    :Aleatoritza’ls tots
 STR_6662    :Aleatoritza els colors de cada cotxe o vehicle.
+STR_6663    :Trampes de dates
+STR_6664    :Mostra les trampes de dates
+STR_6665    :Trampes de clima/natura
+STR_6666    :Mostra les trampes de clima/natura
+STR_6667    :Fauna
+STR_6668    :Trampes dels encarregats
+STR_6669    :Mostra les trampes sobre encarregats
+STR_6670    :Comportament dels visitants
+STR_6671    :Mostra noms «reals» dels encarregats
+STR_6672    :Commuta entre mostra noms «reals» dels encarregats o el seu número.
+STR_6673    :Transparència
+STR_6674    :{MONTH} de l’any {COMMA16}
+STR_6675    :Noms de persones
+STR_6676    :Cal escollir com a mínim un objecte de noms de persona.
+STR_6677    :Afegeix platges al voltant de les masses d’aigua
+STR_6678    :Origen del mapa d’alçades:
+STR_6679    :Terreny pla
+STR_6680    :Soroll símplex
+STR_6681    :Fitxer del mapa d’alçades
+STR_6682    :Generador de mapes - Generador
+STR_6683    :Generador de mapes - Terreny
+STR_6684    :Generador de mapes - Aigua
+STR_6685    :Generador de mapes - Boscos
+STR_6686    :Proporció arbres/terreny:
+STR_6687    :Altura mín. per als arbres:
+STR_6688    :Altura màx. per als arbres:
+STR_6689    :{UINT16} %
+STR_6690    :Altura mínima del terreny
+STR_6691    :Escriviu una altura mínima del terreny entre {COMMA16} i {COMMA16}
+STR_6692    :Altura màxima del terreny
+STR_6693    :Escriviu una altura màxima del terreny entre {COMMA16} i {COMMA16}
+STR_6694    :Altura mínima per als arbres
+STR_6695    :Escriviu una altura mínima per als arbres entre {COMMA16} i {COMMA16}
+STR_6696    :Altura màxima per als arbres
+STR_6697    :Escriviu una altura màxima per als arbres entre {COMMA16} i {COMMA16}
+STR_6698    :Proporció arbres/terreny
+STR_6699    :Escriviu una proporció arbres/terreny entre {COMMA16} i {COMMA16}
+STR_6700    :Freqüència base del símplex
+STR_6701    :Escriviu una freqüència base del símplex entre {COMMA2DP32} i {COMMA2DP32}
+STR_6702    :Octaves del símplex
+STR_6703    :Escriviu octaves entre {COMMA16} i {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Navega…
+STR_6706    :{WINDOW_COLOUR_2}Fitxer d’imatge actual: {BLACK}{STRING}
+STR_6707    :(cap de seleccionat)
+STR_6708    :Força suau
+STR_6709    :Escriviu una força suau entre {COMMA16} i {COMMA16}
+
