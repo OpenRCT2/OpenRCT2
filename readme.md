@@ -52,9 +52,10 @@ If you want to help translate the game to your language, please stop by the Loca
   - 4.4 - [Graphics](#44-graphics)
   - 4.5 - [Audio](#45-audio)
   - 4.6 - [Scenarios](#46-scenarios)
-- 5 - [Licence](#5-licence)
-- 6 - [More information](#6-more-information)
-- 7 - [Sponsors](#7-sponsors)
+- 5 - [Code signing policy](#5-code-signing-policy)
+- 5 - [Licence](#6-licence)
+- 6 - [More information](#7-more-information)
+- 7 - [Sponsors](#8-sponsors)
 
 ---
 
@@ -246,12 +247,22 @@ We would also like to distribute additional scenarios with the game, when the ti
 
 ---
 
-# 5. Licence
+# 5. Code signing policy
+
+We sign our releases digital certificate provided by SignPath Foundation.
+
+Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
+
+Signed releases can only be done by member of the [development team](https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md#development-team).
+
+---
+
+# 6. Licence
 **OpenRCT2** is licensed under the GNU General Public License version 3 or (at your option) any later version. See the [`licence.txt`](licence.txt) file for more details.
 
 ---
 
-# 6. More information
+# 7. More information
 - [GitHub](https://github.com/OpenRCT2/OpenRCT2)
 - [OpenRCT2.org](https://openrct2.org)
 - [Forums](https://openrct2.org/forums/)
@@ -266,11 +277,11 @@ We would also like to distribute additional scenarios with the game, when the ti
 | [![icon_x128](https://user-images.githubusercontent.com/604665/53047651-2c533c00-3493-11e9-911a-1a3540fc1156.png)](https://github.com/OpenLoco/OpenLoco) | [![](https://github.com/OpenTTD/OpenTTD/raw/850d05d24d4768c81d97765204ef2a487dd4972c/media/openttd.128.png)](https://github.com/OpenTTD/OpenTTD) | [![](https://user-images.githubusercontent.com/550290/36507534-4693f354-175a-11e8-93a7-faa0481474fb.png)](https://github.com/SFTtech/openage) | [![](https://raw.githubusercontent.com/OpenRA/OpenRA/bleed/packaging/artwork/ra_128x128.png)](https://github.com/OpenRA/OpenRA) |
 | Chris Sawyer's Locomotion | Transport Tycoon Deluxe | Age of Empires 2 | Red Alert |
 
-# 7. Sponsors
+# 8. Sponsors
 
 Companies that kindly allow us to use their stuff:
 
-| [DigitalOcean](https://www.digitalocean.com/) | [JetBrains](https://www.jetbrains.com/) | [Backtrace](https://backtrace.io/) |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| [![do_logo_vertical_blue svg](https://user-images.githubusercontent.com/550290/36508276-8b572f0e-175c-11e8-8622-9febbce756b2.png)](https://www.digitalocean.com/) | [![jetbrains](https://user-images.githubusercontent.com/550290/36413299-0e0985ea-161e-11e8-8a01-3ef523b5905b.png)](https://www.jetbrains.com/) | [![backtrace](https://user-images.githubusercontent.com/550290/47113259-d0647680-d258-11e8-97c3-1a2c6bde6d11.png)](https://backtrace.io/) |
-| Hosting of various services | CLion and other products | Minidump uploads and inspection |
+| [DigitalOcean](https://www.digitalocean.com/)                                                                                                                     | [JetBrains](https://www.jetbrains.com/)                                                                                                        | [Backtrace](https://backtrace.io/)                                                                                                        | [SignPath](https://signpath.org/)                                                                                  |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| [![do_logo_vertical_blue svg](https://user-images.githubusercontent.com/550290/36508276-8b572f0e-175c-11e8-8622-9febbce756b2.png)](https://www.digitalocean.com/) | [![jetbrains](https://user-images.githubusercontent.com/550290/36413299-0e0985ea-161e-11e8-8a01-3ef523b5905b.png)](https://www.jetbrains.com/) | [![backtrace](https://user-images.githubusercontent.com/550290/47113259-d0647680-d258-11e8-97c3-1a2c6bde6d11.png)](https://backtrace.io/) | [![Image](https://github.com/user-attachments/assets/2b5679e0-76a4-4ae7-bb37-a6a507a53466)](https://signpath.org/) |
+| Hosting of various services                                                                                                                                       | CLion and other products                                                                                                                       | Minidump uploads and inspection                                                                                                           | Code signing                                                                                                       |
