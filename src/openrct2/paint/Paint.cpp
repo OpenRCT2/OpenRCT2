@@ -409,36 +409,59 @@ static void PaintStructsSortQuadrant(PaintStruct* parent, PaintStruct* child)
 
     // Compare all the children below the first child and move them up in the list if they intersect.
     const PaintStructBoundBox& initialBBox = child->Bounds;
+
+    // Create a temporary list to collect sorted nodes in stable order.
+    PaintStruct* sortedHead = nullptr;
+    PaintStruct* sortedTail = nullptr;
+
+    // Traverse the list and reorder based on intersection.
     for (;;)
     {
-        auto* ps = child;
-        child = child->NextQuadrantEntry;
+        PaintStruct* next = child->NextQuadrantEntry;
 
-        if (child != nullptr)
-        {
-            PREFETCH(&child->Bounds);
-        }
-        if (child == nullptr || child->SortFlags & PaintSortFlags::OutsideQuadrant)
+        // Stop if at the end of the list or outside the quadrant range.
+        if (next == nullptr || next->SortFlags & PaintSortFlags::OutsideQuadrant)
         {
             break;
         }
 
-        if (!(child->SortFlags & PaintSortFlags::Neighbour))
+        // Ignore nodes that are not neighbors.
+        if (!(next->SortFlags & PaintSortFlags::Neighbour))
         {
+            child = next;
             continue;
         }
 
-        if (CheckBoundingBox<TRotation>(initialBBox, child->Bounds))
+        // Detach the current node from the list if it intersects.
+        if (CheckBoundingBox<TRotation>(initialBBox, next->Bounds))
         {
-            // Child node intersects with current node, move behind.
-            ps->NextQuadrantEntry = child->NextQuadrantEntry;
+            child->NextQuadrantEntry = next->NextQuadrantEntry;
 
-            auto* psTemp = parent->NextQuadrantEntry;
-            parent->NextQuadrantEntry = child;
-
-            child->NextQuadrantEntry = psTemp;
-            child = ps;
+            if (sortedHead == nullptr)
+            {
+                sortedHead = next;
+                sortedTail = next;
+                next->NextQuadrantEntry = nullptr;
+            }
+            else
+            {
+                sortedTail->NextQuadrantEntry = next;
+                sortedTail = next;
+                next->NextQuadrantEntry = nullptr;
+            }
         }
+        else
+        {
+            child = next;
+        }
+    }
+
+    // Merge the sorted list back into the main list after parent.
+    if (sortedHead != nullptr)
+    {
+        PaintStruct* originalNext = parent->NextQuadrantEntry;
+        parent->NextQuadrantEntry = sortedHead;
+        sortedTail->NextQuadrantEntry = originalNext;
     }
 }
 
