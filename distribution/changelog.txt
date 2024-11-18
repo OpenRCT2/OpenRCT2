@@ -3,6 +3,7 @@
 - Feature: [#23166] Add Galician translation.
 - Improved: [#23051] Add large sloped turns and new inversions to the Twister, Vertical Drop, Hyper and Flying Roller Coasters.
 - Improved: [#23123] Improve sorting of roller coasters in build new ride menu.
+- Improved: [#23211] Add boosters to classic wooden roller coaster (cheats only).
 - Fix: [#23206] Multiplayer desyncs when FPS is uncapped.
 
 0.4.16 (2024-11-03)
