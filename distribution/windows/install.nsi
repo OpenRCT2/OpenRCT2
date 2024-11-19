@@ -170,6 +170,9 @@ Section "!OpenRCT2" Section1
     File ..\..\contributors.md
     Push "$INSTDIR\contributors.md"
     Call unix2dos
+    File ..\..\PRIVACY.md
+    Push "$INSTDIR\PRIVACY.md"
+    Call unix2dos
     File ..\scripting.md
     Push "$INSTDIR\scripting.md"
     Call unix2dos
@@ -204,6 +207,7 @@ Section "!OpenRCT2" Section1
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Readme.lnk" "$INSTDIR\Readme.txt"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Changelog.lnk" "$INSTDIR\Changelog.txt"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Contributors.lnk" "$INSTDIR\contributors.md"
+    CreateShortCut "$SMPROGRAMS\$SHORTCUTS\PrivacyPolicy.lnk" "$INSTDIR\PRIVACY.md"
     !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -240,12 +244,14 @@ Section "Uninstall"
     Delete "$SMPROGRAMS\$SHORTCUTS\Readme.lnk"
     Delete "$SMPROGRAMS\$SHORTCUTS\Changelog.lnk"
     Delete "$SMPROGRAMS\$SHORTCUTS\Contributors.lnk"
+    Delete "$SMPROGRAMS\$SHORTCUTS\PrivacyPolicy.lnk"
 
     ; Clean up OpenRCT2 dir
     Delete "$INSTDIR\changelog.txt"
     Delete "$INSTDIR\licence.txt"
     Delete "$INSTDIR\readme.txt"
     Delete "$INSTDIR\contributors.md"
+    Delete "$INSTDIR\PRIVACY.md"
     Delete "$INSTDIR\scripting.md"
     Delete "$INSTDIR\openrct2.d.ts"
     Delete "$INSTDIR\${OPENRCT2_EXE}"
