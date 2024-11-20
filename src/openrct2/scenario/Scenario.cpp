@@ -254,19 +254,19 @@ void ScenarioAutosaveCheck()
     switch (Config::Get().general.AutosaveFrequency)
     {
         case AUTOSAVE_EVERY_MINUTE:
-            shouldSave = timeSinceSave >= 1 * 60 * 1000;
+            shouldSave = timeSinceSave >= ONE_MINUTE_MS;
             break;
         case AUTOSAVE_EVERY_5MINUTES:
-            shouldSave = timeSinceSave >= 5 * 60 * 1000;
+            shouldSave = timeSinceSave >= FIVE_MINUTES_MS;
             break;
         case AUTOSAVE_EVERY_15MINUTES:
-            shouldSave = timeSinceSave >= 15 * 60 * 1000;
+            shouldSave = timeSinceSave >= FIFTEEN_MINUTES_MS;
             break;
         case AUTOSAVE_EVERY_30MINUTES:
-            shouldSave = timeSinceSave >= 30 * 60 * 1000;
+            shouldSave = timeSinceSave >= THIRTY_MINUTES_MS;
             break;
         case AUTOSAVE_EVERY_HOUR:
-            shouldSave = timeSinceSave >= 60 * 60 * 1000;
+            shouldSave = timeSinceSave >= ONE_HOUR_MS;
             break;
     }
 
@@ -419,6 +419,14 @@ bool ScenarioCreateDucks()
     constexpr int32_t SquareSize = 7;
     constexpr int32_t SquareCentre = SquareSize / 2;
     constexpr int32_t SquareRadiusSize = SquareCentre * 32;
+    constexpr int32_t PARK_RATING_THRESHOLD = 700;
+    constexpr uint32_t ONE_MINUTE_MS = 1 * 60 * 1000;
+    constexpr uint32_t FIVE_MINUTES_MS = 5 * 60 * 1000;
+    constexpr uint32_t FIFTEEN_MINUTES_MS = 15 * 60 * 1000;
+    constexpr uint32_t THIRTY_MINUTES_MS = 30 * 60 * 1000;
+    constexpr uint32_t ONE_HOUR_MS = 60 * 60 * 1000;
+
+
 
     CoordsXY centrePos;
     auto& gameState = GetGameState();
@@ -679,7 +687,7 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
 ObjectiveStatus Objective::CheckGuestsAndRating() const
 {
     auto& gameState = GetGameState();
-    if (gameState.Park.Rating < 700 && GetDate().GetMonthsElapsed() >= 1)
+    if (gameState.Park.Rating < PARK_RATING_THRESHOLD && GetDate().GetMonthsElapsed() >= 1)
     {
         gameState.ScenarioParkRatingWarningDays++;
         if (gameState.ScenarioParkRatingWarningDays == 1)
@@ -723,7 +731,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         gameState.ScenarioParkRatingWarningDays = 0;
     }
 
-    if (gameState.Park.Rating >= 700)
+    if (gameState.Park.Rating >= PARK_RATING_THRESHOLD)
         if (gameState.NumGuestsInPark >= NumGuests)
             return ObjectiveStatus::Success;
 
