@@ -735,7 +735,7 @@ namespace OpenRCT2::Park
         auto& gameState = GetGameState();
         gameState.Cheats.forcedParkRating = rating;
         gameState.Park.Rating = CalculateParkRating();
-        
+
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         ContextBroadcastIntent(&intent);
     }
