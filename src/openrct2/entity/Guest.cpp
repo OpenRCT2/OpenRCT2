@@ -440,7 +440,7 @@ static void PeepRideIsTooIntense(Guest* peep, Ride& ride, bool peepAtRide);
 static void PeepResetRideHeading(Guest* peep);
 static void PeepTriedToEnterFullQueue(Guest* peep, Ride& ride);
 static int16_t PeepCalculateRideSatisfaction(Guest* peep, const Ride& ride);
-static void PeepUpdateFavouriteRide(Guest* peep, const Ride& ride);
+static void PeepUpdateFavouriteRide(Guest& peep, const Ride& ride, const uint8_t satisfaction);
 static int16_t PeepCalculateRideValueSatisfaction(Guest* peep, const Ride& ride);
 static int16_t PeepCalculateRideIntensityNauseaSatisfaction(Guest* peep, const Ride& ride);
 static void PeepUpdateRideNauseaGrowth(Guest* peep, const Ride& ride);
@@ -1761,7 +1761,7 @@ void Guest::OnEnterRide(Ride& ride)
         GuestNumRides++;
 
     SetHasRidden(ride);
-    PeepUpdateFavouriteRide(this, ride);
+    PeepUpdateFavouriteRide(*this, ride, satisfaction);
     HappinessTarget = std::clamp(HappinessTarget + satisfaction, 0, kPeepMaxHappiness);
     PeepUpdateRideNauseaGrowth(this, ride);
 }
@@ -2703,24 +2703,24 @@ static int16_t PeepCalculateRideSatisfaction(Guest* peep, const Ride& ride)
 
 /**
  * Check to see if the specified ride should become the peep's favourite.
- * For this, a "ride rating" is calculated based on the excitement of the ride and the peep's current happiness.
- * As this value cannot exceed 255, the happier the peep is, the more irrelevant the ride's excitement becomes.
+ * For this, a "ride rating" is calculated based on the excitement of the ride and the satisfaction of the ride.
+ * As this value cannot exceed 255, the more satisfied the peep is, the more irrelevant the ride's excitement becomes.
  * Due to the minimum happiness requirement, an excitement rating of more than 3.8 has no further effect.
  *
  * If the ride rating is higher than any ride the peep has already been on and the happiness criteria is met,
  * the ride becomes the peep's favourite. (This doesn't happen right away, but will be updated once the peep
  * exits the ride.)
  */
-static void PeepUpdateFavouriteRide(Guest* peep, const Ride& ride)
+static void PeepUpdateFavouriteRide(Guest& peep, const Ride& ride, uint8_t satisfaction)
 {
-    peep->PeepFlags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-    uint8_t peepRideRating = std::clamp((ride.ratings.excitement / 4) + peep->Happiness, 0, kPeepMaxHappiness);
-    if (peepRideRating >= peep->FavouriteRideRating)
+    peep.PeepFlags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
+    uint8_t peepRideRating = std::clamp((ride.ratings.excitement / 4) + satisfaction, 0, kPeepMaxHappiness);
+    if (peepRideRating >= peep.FavouriteRideRating)
     {
-        if (peep->Happiness >= 160 && peep->HappinessTarget >= 160)
+        if (peep.Happiness >= 160 && peep.HappinessTarget >= 160)
         {
-            peep->FavouriteRideRating = peepRideRating;
-            peep->PeepFlags |= PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
+            peep.FavouriteRideRating = peepRideRating;
+            peep.PeepFlags |= PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
         }
     }
 }
