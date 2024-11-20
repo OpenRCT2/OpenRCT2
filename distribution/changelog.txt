@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#23166] Add Galician translation.
 - Feature: [#23227] Add Classic Wooden Twister roller coaster, for better compatibility with RCT1.
+- Feature: [#23233] New ride element: Diagonal Booster.
 - Improved: [#23051] Add large sloped turns and new inversions to the Twister, Vertical Drop, Hyper and Flying Roller Coasters.
 - Improved: [#23123] Improve sorting of roller coasters in build new ride menu.
 - Improved: [#23211] Add boosters to classic wooden roller coaster (cheats only).
