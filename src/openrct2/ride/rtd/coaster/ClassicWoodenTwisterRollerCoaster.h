@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 80), RIDE_RATING(2, 60), RIDE_RATING(2, 00) },
+        { RIDE_RATING(3, 20), RIDE_RATING(2, 60), RIDE_RATING(2, 00) },
         19,
         -1,
         false,
