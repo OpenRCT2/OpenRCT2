@@ -106,11 +106,11 @@ void FinancePayWages()
 
     for (auto peep : EntityList<Staff>())
     {
-        auto wage = GetStaffWage(peep->AssignedStaffType);
+        auto wage = GetStaffWage(peep->AssignedStaffType) / 4;
 #ifdef ENABLE_SCRIPTING
         GetContext()->GetScriptEngine().RunMoneySpendHooks(wage, ExpenditureType::Wages);
 #endif
-        FinancePayment(wage / 4, ExpenditureType::Wages);
+        FinancePayment(wage, ExpenditureType::Wages);
     }
 }
 
@@ -127,11 +127,11 @@ void FinancePayResearch()
     }
 
     const uint8_t level = gameState.ResearchFundingLevel;
-    auto cost = research_cost_table[level];
+    auto cost = research_cost_table[level] / 4;
 #ifdef ENABLE_SCRIPTING
     GetContext()->GetScriptEngine().RunMoneySpendHooks(cost, ExpenditureType::Research);
 #endif
-    FinancePayment(cost / 4, ExpenditureType::Research);
+    FinancePayment(cost, ExpenditureType::Research);
 }
 
 /**
