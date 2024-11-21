@@ -211,7 +211,7 @@ namespace OpenRCT2::GameActions
         if (result.Error == GameActions::Status::Ok)
         {
 #ifdef ENABLE_SCRIPTING
-            if (topLevel)
+            if (topLevel && result.Expenditure != ExpenditureType::Count)
                 GetContext()->GetScriptEngine().RunMoneySpendHooks(result.Cost, result.Expenditure);
 #endif
             if (!FinanceCheckAffordability(result.Cost, action->GetFlags()))
@@ -365,7 +365,7 @@ namespace OpenRCT2::GameActions
             if (result.Error == GameActions::Status::Ok)
             {
                 auto& scriptEngine = GetContext()->GetScriptEngine();
-                if (topLevel)
+                if (topLevel && result.Expenditure != ExpenditureType::Count)
                     scriptEngine.RunMoneySpendHooks(result.Cost, result.Expenditure);
                 scriptEngine.RunGameActionHooks(*action, result, true);
                 // Script hooks may now have changed the game action result...
