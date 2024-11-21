@@ -2334,14 +2334,16 @@ void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureTyp
 
     WindowInvalidateByNumber(WindowClass::Peep, Id);
 
+    amount *= -1;
+
 #ifdef ENABLE_SCRIPTING
     // guest pays original price, player receives modified amount
     GetContext()->GetScriptEngine().RunMoneySpendHooks(amount, expenditure);
 #endif
 
-    FinancePayment(-amount, expenditure);
+    FinancePayment(amount, expenditure);
 
-    MoneyEffect::CreateAt(amount, GetLocation(), true);
+    MoneyEffect::CreateAt(-amount, GetLocation(), true);
 
     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Purchase, GetLocation());
 }
