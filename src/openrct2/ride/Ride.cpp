@@ -298,11 +298,11 @@ size_t Ride::GetNumPrices() const
 {
     size_t result = 0;
     const auto& rtd = GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isCashMachine) || rtd.HasFlag(RtdFlag::isFirstAid))
+    if (rtd.specialType == RtdSpecialType::cashMachine || rtd.specialType == RtdSpecialType::firstAid)
     {
         result = 0;
     }
-    else if (rtd.HasFlag(RtdFlag::isToilet))
+    else if (rtd.specialType == RtdSpecialType::toilet)
     {
         result = 1;
     }
@@ -795,7 +795,7 @@ bool Ride::FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const
         return false;
 
     const auto& rtd = GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
         return false;
 
     WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
@@ -1108,7 +1108,7 @@ void Ride::Update()
 
     // Update stations
     const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType != RtdSpecialType::maze)
         for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             RideUpdateStation(*this, StationIndex::FromUnderlying(i));
 
@@ -2630,7 +2630,7 @@ static StationIndexWithMessage RideModeCheckStationPresent(const Ride& ride)
         if (!rtd.HasFlag(RtdFlag::hasTrack))
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
         return { StationIndex::GetNull(), STR_REQUIRES_A_STATION_PLATFORM };
@@ -2793,7 +2793,7 @@ static bool RideCheckTrackContainsInversions(const CoordsXYE& input, CoordsXYE* 
     if (ride != nullptr)
     {
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
             return true;
     }
 
@@ -2854,7 +2854,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
         return false;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
         return true;
 
     WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
@@ -3189,7 +3189,7 @@ static void RideSetStartFinishPoints(RideId rideIndex, const CoordsXYE& startEle
         return;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
         RideSetMazeEntranceExitPoints(*ride);
     else if (ride->type == RIDE_TYPE_BOAT_HIRE)
         RideSetBoatHireReturnPoint(*ride, startElement);
@@ -3974,7 +3974,7 @@ void Ride::ConstructMissingEntranceOrExit() const
     }
 
     const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType != RtdSpecialType::maze)
     {
         auto location = incompleteStation->GetStart();
         WindowScrollToLocation(*w, location);
@@ -5906,7 +5906,7 @@ ResultWithMessage Ride::ChangeStatusGetStartElement(StationIndex stationIndex, C
     {
         // Maze is strange, station start is 0... investigation required
         const auto& rtd = GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType != RtdSpecialType::maze)
             return { false };
     }
 

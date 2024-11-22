@@ -3059,7 +3059,7 @@ namespace OpenRCT2::Ui::Windows
     {
         WindowRideConstructionUpdateEnabledTrackPieces();
         if (auto currentRide = GetRide(_currentRideIndex);
-            !currentRide || currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::isMaze))
+            !currentRide || currentRide->GetRideTypeDescriptor().specialType == RtdSpecialType::maze)
         {
             return;
         }
@@ -3293,7 +3293,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType != RtdSpecialType::maze)
         {
             auto window = static_cast<RideConstructionWindow*>(WindowFindByClass(WindowClass::RideConstruction));
             if (!window)
@@ -3349,7 +3349,7 @@ namespace OpenRCT2::Ui::Windows
         // search for appropriate z value for ghost, up to max ride height
         int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
 
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
         {
             for (int zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
             {
@@ -3586,7 +3586,7 @@ namespace OpenRCT2::Ui::Windows
         int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
 
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
         {
             for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
             {
@@ -4689,7 +4689,7 @@ namespace OpenRCT2::Ui::Windows
 
         RideConstructionRemoveGhosts();
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
         {
             int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
             auto gameAction = MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
@@ -5051,7 +5051,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t z = _unkF440C5.z;
 
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
         {
             const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
             const CoordsXYZD quadrants[kNumOrthogonalDirections] = {

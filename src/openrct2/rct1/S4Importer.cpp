@@ -1050,7 +1050,7 @@ namespace OpenRCT2::RCT1
             dst->dropsPoweredLifts = src->NumDrops;
             dst->start_drop_height = src->StartDropHeight / 2;
             dst->highest_drop_height = src->HighestDropHeight / 2;
-            if (dst->type == RIDE_TYPE_MINI_GOLF)
+            if (src->Type == RideType::MiniatureGolf)
                 dst->holes = src->NumInversions & kRCT12InversionAndHoleMask;
             else
                 dst->inversions = src->NumInversions & kRCT12InversionAndHoleMask;

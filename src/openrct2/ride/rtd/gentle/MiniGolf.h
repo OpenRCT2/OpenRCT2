@@ -80,5 +80,6 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
     .RideUpdate = nullptr,
     .UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_MiniGolf,
+    .specialType = RtdSpecialType::miniGolf,
 };
 // clang-format on

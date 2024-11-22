@@ -452,6 +452,7 @@ static void PeepUpdateHunger(Guest* peep);
 static void PeepDecideWhetherToLeavePark(Guest* peep);
 static void PeepLeavePark(Guest* peep);
 static void PeepHeadForNearestRideWithFlag(Guest* peep, bool considerOnlyCloseRides, RtdFlag rtdFlag);
+static void GuestHeadForNearestRideWithSpecialType(Guest& guest, bool considerOnlyCloseRides, RtdSpecialType specialType);
 bool Loc690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
 template<>
@@ -1122,10 +1123,10 @@ void Guest::Tick128UpdateGuest(uint32_t index)
                         PeepHeadForNearestRideWithFlag(this, false, RtdFlag::sellsDrinks);
                         break;
                     case PeepThoughtType::Toilet:
-                        PeepHeadForNearestRideWithFlag(this, false, RtdFlag::isToilet);
+                        GuestHeadForNearestRideWithSpecialType(*this, false, RtdSpecialType::toilet);
                         break;
                     case PeepThoughtType::RunningOut:
-                        PeepHeadForNearestRideWithFlag(this, false, RtdFlag::isCashMachine);
+                        GuestHeadForNearestRideWithSpecialType(*this, false, RtdSpecialType::cashMachine);
                         break;
                     default:
                         break;
@@ -1145,7 +1146,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
             if (Nausea >= 200)
             {
                 thought_type = PeepThoughtType::VerySick;
-                PeepHeadForNearestRideWithFlag(this, true, RtdFlag::isFirstAid);
+                GuestHeadForNearestRideWithSpecialType(*this, true, RtdSpecialType::firstAid);
             }
             InsertNewThought(thought_type);
         }
@@ -2240,7 +2241,7 @@ bool Guest::ShouldGoToShop(Ride& ride, bool peepAtShop)
     }
 
     const auto& rtd = ride.GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isToilet))
+    if (rtd.specialType == RtdSpecialType::toilet)
     {
         if (Toilet < 70)
         {
@@ -2266,7 +2267,7 @@ bool Guest::ShouldGoToShop(Ride& ride, bool peepAtShop)
         }
     }
 
-    if (rtd.HasFlag(RtdFlag::isFirstAid))
+    if (rtd.specialType == RtdSpecialType::firstAid)
     {
         if (Nausea < 128)
         {
@@ -3251,12 +3252,19 @@ static void PeepHeadForNearestRide(Guest* peep, bool considerOnlyCloseRides, T p
 
 static void PeepHeadForNearestRideWithFlag(Guest* peep, bool considerOnlyCloseRides, RtdFlag rtdFlag)
 {
-    if ((rtdFlag == RtdFlag::isToilet) && peep->HasFoodOrDrink())
+    PeepHeadForNearestRide(
+        peep, considerOnlyCloseRides, [rtdFlag](const Ride& ride) { return ride.GetRideTypeDescriptor().HasFlag(rtdFlag); });
+}
+
+static void GuestHeadForNearestRideWithSpecialType(Guest& guest, bool considerOnlyCloseRides, RtdSpecialType specialType)
+{
+    if ((specialType == RtdSpecialType::toilet) && guest.HasFoodOrDrink())
     {
         return;
     }
-    PeepHeadForNearestRide(
-        peep, considerOnlyCloseRides, [rtdFlag](const Ride& ride) { return ride.GetRideTypeDescriptor().HasFlag(rtdFlag); });
+    PeepHeadForNearestRide(&guest, considerOnlyCloseRides, [specialType](const Ride& ride) {
+        return ride.GetRideTypeDescriptor().specialType == specialType;
+    });
 }
 
 /**
@@ -3277,10 +3285,10 @@ void Guest::StopPurchaseThought(ride_type_t rideType)
         if (!rtd.HasFlag(RtdFlag::sellsDrinks))
         {
             thoughtType = PeepThoughtType::RunningOut;
-            if (!rtd.HasFlag(RtdFlag::isCashMachine))
+            if (rtd.specialType != RtdSpecialType::cashMachine)
             {
                 thoughtType = PeepThoughtType::Toilet;
-                if (!rtd.HasFlag(RtdFlag::isToilet))
+                if (rtd.specialType != RtdSpecialType::toilet)
                 {
                     return;
                 }
@@ -3365,7 +3373,7 @@ void Guest::UpdateBuying()
         }
 
         const auto& rtd = GetRideTypeDescriptor(ride->type);
-        if (rtd.HasFlag(RtdFlag::isCashMachine))
+        if (rtd.specialType == RtdSpecialType::cashMachine)
         {
             if (CurrentRide != PreviousRide)
             {
@@ -3388,7 +3396,7 @@ void Guest::UpdateBuying()
     if (CurrentRide != PreviousRide)
     {
         const auto& rtd = GetRideTypeDescriptor(ride->type);
-        if (rtd.HasFlag(RtdFlag::isCashMachine))
+        if (rtd.specialType == RtdSpecialType::cashMachine)
         {
             item_bought = PeepShouldUseCashMachine(this, CurrentRide);
             if (!item_bought)
@@ -3907,7 +3915,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
     }
 
     const auto& rtd = ride.GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isSpiralSlide))
+    if (rtd.specialType == RtdSpecialType::spiralSlide)
     {
         SwitchToSpecialSprite(1);
     }
@@ -4697,7 +4705,7 @@ void Guest::UpdateRideApproachSpiralSlide()
             Var37 = (directionTemp * 4) | (Var37 & 0x30) | waypoint;
             CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
-            assert(rtd.HasFlag(RtdFlag::isSpiralSlide));
+            assert(rtd.specialType == RtdSpecialType::spiralSlide);
             targetLoc += SpiralSlideWalkingPath[Var37];
 
             SetDestination(targetLoc);
@@ -4711,7 +4719,7 @@ void Guest::UpdateRideApproachSpiralSlide()
 
     CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
-    assert(rtd.HasFlag(RtdFlag::isSpiralSlide));
+    assert(rtd.specialType == RtdSpecialType::spiralSlide);
     targetLoc += SpiralSlideWalkingPath[Var37];
 
     SetDestination(targetLoc);
@@ -4745,7 +4753,7 @@ void Guest::UpdateRideOnSpiralSlide()
         return;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RtdFlag::isSpiralSlide))
+    if (rtd.specialType != RtdSpecialType::spiralSlide)
         return;
 
     auto destination = GetDestination();
@@ -4850,7 +4858,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
         CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
         [[maybe_unused]] const auto& rtd = ride->GetRideTypeDescriptor();
-        assert(rtd.HasFlag(RtdFlag::isSpiralSlide));
+        assert(rtd.specialType == RtdSpecialType::spiralSlide);
         targetLoc += SpiralSlideWalkingPath[Var37];
 
         SetDestination(targetLoc);
@@ -5110,7 +5118,7 @@ void Guest::UpdateRideShopInteract()
     const int16_t tileCentreY = NextLoc.y + 16;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isFirstAid))
+    if (rtd.specialType == RtdSpecialType::firstAid)
     {
         if (Nausea <= 35)
         {

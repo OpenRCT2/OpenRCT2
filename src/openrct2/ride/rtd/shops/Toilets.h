@@ -27,7 +27,7 @@ constexpr RideTypeDescriptor ToiletsRTD =
     .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::guestsShouldGoInsideFacility, RtdFlag::describeAsInside,
-                     RtdFlag::isToilet, RtdFlag::listVehiclesSeparately),
+                     RtdFlag::listVehiclesSeparately),
     .RideModes = EnumsToFlags(RideMode::ShopStall),
     .DefaultMode = RideMode::ShopStall,
     .OperatingSettings = { 4, 4 },
@@ -63,5 +63,6 @@ constexpr RideTypeDescriptor ToiletsRTD =
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::KioskOrFacility,
+    .specialType = RtdSpecialType::toilet,
 };
 // clang-format on

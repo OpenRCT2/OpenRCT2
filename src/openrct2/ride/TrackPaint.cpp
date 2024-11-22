@@ -1972,7 +1972,8 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         {
             uint8_t zOffset = 16;
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RtdFlag::isToilet) || rtd.HasFlag(RtdFlag::isFirstAid) || rtd.HasFlag(RtdFlag::isCashMachine))
+            if (rtd.specialType == RtdSpecialType::toilet || rtd.specialType == RtdSpecialType::firstAid
+                || rtd.specialType == RtdSpecialType::cashMachine)
                 zOffset = 23;
 
             const auto* originElement = ride->GetOriginElement(StationIndex::FromUnderlying(0));

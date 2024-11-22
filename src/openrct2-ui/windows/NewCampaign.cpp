@@ -151,7 +151,7 @@ namespace OpenRCT2::Ui::Windows
                         continue;
                     if (rtd.HasFlag(RtdFlag::sellsDrinks))
                         continue;
-                    if (rtd.HasFlag(RtdFlag::isToilet))
+                    if (rtd.specialType == RtdSpecialType::toilet)
                         continue;
 
                     RideList.push_back(curRide.id);

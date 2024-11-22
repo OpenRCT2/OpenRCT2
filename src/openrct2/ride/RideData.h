@@ -328,114 +328,126 @@ struct TrackDrawerDescriptor
 
 enum class RtdFlag : uint8_t
 {
-    hasTrackColourMain = 0,
-    hasTrackColourAdditional = 1,
-    hasTrackColourSupports = 2,
+    hasTrackColourMain,
+    hasTrackColourAdditional,
+    hasTrackColourSupports,
 
     // Set by flat rides, tower rides and shops/stalls.
-    hasSinglePieceStation = 3,
+    hasSinglePieceStation,
 
-    hasLeaveWhenAnotherVehicleArrivesAtStation = 4,
-    canSynchroniseWithAdjacentStations = 5,
+    hasLeaveWhenAnotherVehicleArrivesAtStation,
+    canSynchroniseWithAdjacentStations,
 
     // Used only by boat Hire and submarine ride
-    trackMustBeOnWater = 6,
+    trackMustBeOnWater,
 
-    hasGForces = 7,
+    hasGForces,
 
     // Used by rides that can't have gaps, like those with a vertical tower,
     // such as the observation tower.
-    cannotHaveGaps = 8,
+    cannotHaveGaps,
 
-    hasDataLogging = 9,
-    hasDrops = 10,
+    hasDataLogging,
+    hasDrops,
 
-    noTestMode = 11,
+    noTestMode,
+
     // Set on rides with two varieties, like the u and o shapes of the dinghy slide
     // and the dry and submerged track of the water coaster.
-
-    hasCoveredPieces = 12,
+    hasCoveredPieces,
 
     // Used only by maze, spiral slide and shops
-    noVehicles = 13,
+    noVehicles,
 
-    hasLoadOptions = 14,
-    hasLsmBehaviourOnFlat = 15,
+    hasLoadOptions,
+    hasLsmBehaviourOnFlat,
 
     // Set by flat rides where the vehicle is integral to the structure, like
     // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
-    vehicleIsIntegral = 16,
+    vehicleIsIntegral,
 
-    isShopOrFacility = 17,
+    isShopOrFacility,
 
     // If set, wall scenery can not share a tile with the ride's track
-    noWallsAroundTrack = 18,
+    noWallsAroundTrack,
 
-    isFlatRide = 19,
+    isFlatRide,
 
     // Whether or not guests will go on the ride again if they liked it
     // (this is usually applied to everything apart from transport rides).
-    guestsWillRideAgain = 20,
+    guestsWillRideAgain,
 
     // Used by Toilets and First Aid to mark that guest should go
     // inside the building (rather than 'buying' at the counter)
-    guestsShouldGoInsideFacility = 21,
+    guestsShouldGoInsideFacility,
 
     // Guests are "IN" (ride) rather than "ON" (ride)
-    describeAsInside = 22,
+    describeAsInside,
 
-    sellsFood = 23,
-    sellsDrinks = 24,
-    isToilet = 25,
+    sellsFood,
+    sellsDrinks,
 
     // Whether or not vehicle colours can be set
-    hasVehicleColours = 26,
+    hasVehicleColours,
 
-    checkForStalling = 27,
-    hasTrack = 28,
+    checkForStalling,
+    hasTrack,
 
     // Only set by lift
-    allowExtraTowerBases = 29,
+    allowExtraTowerBases,
 
     // Only set by reverser coaster
-    layeredVehiclePreview = 30,
+    layeredVehiclePreview,
 
-    supportsMultipleColourSchemes = 31,
-    allowDoorsOnTrack = 32,
-    hasMusicByDefault = 33,
-    allowMusic = 34,
+    supportsMultipleColourSchemes,
+    allowDoorsOnTrack,
+    hasMusicByDefault,
+    allowMusic,
 
     // Used by the Flying RC, Lay-down RC, Multi-dimension RC
-    hasInvertedVariant = 35,
+    hasInvertedVariant,
 
-    checkGForces = 36,
-    hasEntranceAndExit = 37,
-    allowMoreVehiclesThanStationFits = 38,
-    hasAirTime = 39,
-    singleSession = 40,
-    allowMultipleCircuits = 41,
-    allowCableLiftHill = 42,
-    showInTrackDesigner = 43,
-    isTransportRide = 44,
-    interestingToLookAt = 45,
-    slightlyInterestingToLookAt = 46,
+    checkGForces,
+    hasEntranceAndExit,
+    allowMoreVehiclesThanStationFits,
+    hasAirTime,
+    singleSession,
+    allowMultipleCircuits,
+    allowCableLiftHill,
+    showInTrackDesigner,
+    isTransportRide,
+    interestingToLookAt,
+    slightlyInterestingToLookAt,
 
     // This is only set on the Flying RC and its alternative type.
-    startConstructionInverted = 47,
+    startConstructionInverted,
 
-    listVehiclesSeparately = 48,
-    supportsLevelCrossings = 49,
-    isSuspended = 50,
-    hasLandscapeDoors = 51,
-    upInclineRequiresLift = 52,
-    guestsCanUseUmbrella = 53,
-    isCashMachine = 54,
-    hasOneStation = 55,
-    hasSeatRotation = 56,
-    isFirstAid = 57,
-    isMaze = 58,
-    isSpiralSlide = 59,
-    allowReversedTrains = 60,
+    listVehiclesSeparately,
+    supportsLevelCrossings,
+    isSuspended,
+    hasLandscapeDoors,
+    upInclineRequiresLift,
+    guestsCanUseUmbrella,
+    hasOneStation,
+    hasSeatRotation,
+    allowReversedTrains,
+};
+
+/**
+ * Some rides are so different from others that they need some special code.
+ * This replaces direct ride type checks.
+ *
+ * Note: only add to this list if behaviour cannot sufficiently be altered using flags.
+ */
+enum class RtdSpecialType
+{
+    none,
+    maze,
+    miniGolf,
+    spiralSlide,
+    toilet,
+    cashMachine,
+    firstAid,
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
@@ -517,6 +529,7 @@ struct RideTypeDescriptor
     MusicTrackOffsetLengthFunc MusicTrackOffsetLength = OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default;
 
     UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsDefault;
+    RtdSpecialType specialType = RtdSpecialType::none;
 
     bool HasFlag(RtdFlag flag) const;
     /** @deprecated */

@@ -25,7 +25,7 @@ constexpr RideTypeDescriptor CashMachineRTD =
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,
-                     RtdFlag::noVehicles, RtdFlag::isCashMachine, RtdFlag::isShopOrFacility,
+                     RtdFlag::noVehicles, RtdFlag::isShopOrFacility,
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::listVehiclesSeparately),
     .RideModes = EnumsToFlags(RideMode::ShopStall),
     .DefaultMode = RideMode::ShopStall,
@@ -61,5 +61,6 @@ constexpr RideTypeDescriptor CashMachineRTD =
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::KioskOrFacility,
+    .specialType = RtdSpecialType::cashMachine,
 };
 // clang-format on

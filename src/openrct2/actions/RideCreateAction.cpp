@@ -235,7 +235,7 @@ GameActions::Result RideCreateAction::Execute() const
             ride->price[0] = 0;
         }
 
-        if (rtd.HasFlag(RtdFlag::isToilet))
+        if (rtd.specialType == RtdSpecialType::toilet)
         {
             if (ShopItemHasCommonPrice(ShopItem::Admission))
             {

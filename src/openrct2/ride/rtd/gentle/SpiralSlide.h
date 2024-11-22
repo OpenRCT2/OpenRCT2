@@ -29,7 +29,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
                      RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::interestingToLookAt,
-                     RtdFlag::listVehiclesSeparately, RtdFlag::isSpiralSlide),
+                     RtdFlag::listVehiclesSeparately),
     .RideModes = EnumsToFlags(RideMode::SingleRidePerAdmission, RideMode::UnlimitedRidesPerAdmission),
     .DefaultMode = RideMode::SingleRidePerAdmission,
     .OperatingSettings = { 1, 5 },
@@ -78,5 +78,6 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
     .RideUpdate = UpdateSpiralSlide,
+    .specialType = RtdSpecialType::spiralSlide,
 };
 // clang-format on

@@ -374,7 +374,7 @@ static bool AwardIsDeservedBestToilets([[maybe_unused]] int32_t activeAwardTypes
     const auto& rideManager = GetRideManager();
     auto numToilets = static_cast<size_t>(std::count_if(rideManager.begin(), rideManager.end(), [](const Ride& ride) {
         const auto& rtd = ride.GetRideTypeDescriptor();
-        return rtd.HasFlag(RtdFlag::isToilet) && ride.status == RideStatus::Open;
+        return rtd.specialType == RtdSpecialType::toilet && ride.status == RideStatus::Open;
     }));
 
     // At least 4 open toilets

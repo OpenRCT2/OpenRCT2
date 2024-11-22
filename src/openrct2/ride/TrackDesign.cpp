@@ -906,7 +906,7 @@ static void TrackDesignMirrorMaze(TrackDesign& td)
 void TrackDesignMirror(TrackDesign& td)
 {
     const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
     {
         TrackDesignMirrorMaze(td);
     }
@@ -1767,7 +1767,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
 
     GameActions::Result trackPlaceRes;
     const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
     {
         trackPlaceRes = TrackDesignPlaceMaze(tds, td, coords, ride);
     }

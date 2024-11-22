@@ -1362,7 +1362,7 @@ namespace OpenRCT2::Ui::Windows
             if (!rtd.HasFlag(RtdFlag::hasDataLogging))
                 disabledTabs |= (1uLL << WIDX_TAB_8); // 0x800
 
-            if (ride->type == RIDE_TYPE_MINI_GOLF)
+            if (rtd.specialType == RtdSpecialType::miniGolf)
                 disabledTabs |= (1uLL << WIDX_TAB_2 | 1uLL << WIDX_TAB_3 | 1uLL << WIDX_TAB_4); // 0xE0
 
             if (rtd.HasFlag(RtdFlag::noVehicles))
@@ -1383,7 +1383,7 @@ namespace OpenRCT2::Ui::Windows
                 disabledTabs |= (1uLL << WIDX_TAB_6); // 0x200
             }
 
-            if (rtd.HasFlag(RtdFlag::isCashMachine) || rtd.HasFlag(RtdFlag::isFirstAid)
+            if (rtd.specialType == RtdSpecialType::cashMachine || rtd.specialType == RtdSpecialType::firstAid
                 || (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) != 0)
                 disabledTabs |= (1uLL << WIDX_TAB_9); // 0x1000
 
@@ -2010,7 +2010,9 @@ namespace OpenRCT2::Ui::Windows
             const auto& gameState = GetGameState();
             const auto& rtd = ride.GetRideTypeDescriptor();
             if (gameState.Cheats.ShowVehiclesFromOtherTrackTypes
-                && !(rtd.HasFlag(RtdFlag::isFlatRide) || rtd.HasFlag(RtdFlag::isMaze) || ride.type == RIDE_TYPE_MINI_GOLF))
+                && !(
+                    rtd.HasFlag(RtdFlag::isFlatRide) || rtd.specialType == RtdSpecialType::maze
+                    || rtd.specialType == RtdSpecialType::miniGolf))
             {
                 selectionShouldBeExpanded = true;
                 rideTypeIterator = 0;
@@ -2037,7 +2039,7 @@ namespace OpenRCT2::Ui::Windows
                 if (selectionShouldBeExpanded && rtdIterator.HasFlag(RtdFlag::isFlatRide))
                     continue;
                 if (selectionShouldBeExpanded
-                    && (rtdIterator.HasFlag(RtdFlag::isMaze) || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
+                    && (rtdIterator.specialType == RtdSpecialType::maze || rtd.specialType == RtdSpecialType::miniGolf))
                     continue;
 
                 auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
@@ -2486,6 +2488,7 @@ namespace OpenRCT2::Ui::Windows
             if (vehicle == nullptr)
                 return STR_EMPTY;
 
+            auto& rtd = ride->GetRideTypeDescriptor();
             if (vehicle->status != Vehicle::Status::Crashing && vehicle->status != Vehicle::Status::Crashed)
             {
                 auto trackType = vehicle->GetTrackType();
@@ -2494,7 +2497,7 @@ namespace OpenRCT2::Ui::Windows
                     || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat
                     || trackType == TrackElemType::DiagBlockBrakes)
                 {
-                    if (ride->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::blockBrakes) && vehicle->velocity == 0)
+                    if (rtd.SupportsTrackGroup(TrackGroup::blockBrakes) && vehicle->velocity == 0)
                     {
                         ft.Add<StringId>(STR_STOPPED_BY_BLOCK_BRAKES);
                         return STR_BLACK_STRING;
@@ -2502,7 +2505,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (ride->type == RIDE_TYPE_MINI_GOLF)
+            if (rtd.specialType == RtdSpecialType::miniGolf)
                 return STR_EMPTY;
 
             auto stringId = VehicleStatusNames[EnumValue(vehicle->status)];
@@ -4622,7 +4625,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Maze style
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RtdFlag::isMaze))
+            if (rtd.specialType == RtdSpecialType::maze)
             {
                 widgets[WIDX_MAZE_STYLE].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_MAZE_STYLE_DROPDOWN].type = WindowWidgetType::Button;
@@ -4689,7 +4692,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Track supports colour
-            if (HasTrackColour(*ride, 2) && !rtd.HasFlag(RtdFlag::isMaze))
+            if (HasTrackColour(*ride, 2) && rtd.specialType != RtdSpecialType::maze)
             {
                 widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WindowWidgetType::ColourBtn;
                 widgets[WIDX_TRACK_SUPPORT_COLOUR].image = GetColourButtonImage(trackColour.supports);
@@ -4872,7 +4875,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Track
                 const auto& rtd = ride->GetRideTypeDescriptor();
-                if (rtd.HasFlag(RtdFlag::isMaze))
+                if (rtd.specialType == RtdSpecialType::maze)
                 {
                     GfxDrawSprite(dpi, ImageId(MazeOptions[trackColour.supports].sprite), screenCoords);
                 }
@@ -5721,7 +5724,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_NO_RAW_STATS))
                     {
-                        if (ride->type == RIDE_TYPE_MINI_GOLF)
+                        if (ride->GetRideTypeDescriptor().specialType == RtdSpecialType::miniGolf)
                         {
                             // Holes
                             ft = Formatter();
@@ -5873,7 +5876,7 @@ namespace OpenRCT2::Ui::Windows
                             screenCoords.y += kListRowHeight;
                         }
 
-                        if (ride->type != RIDE_TYPE_MINI_GOLF)
+                        if (ride->GetRideTypeDescriptor().specialType != RtdSpecialType::miniGolf)
                         {
                             // Inversions
                             if (ride->inversions != 0)
@@ -6314,7 +6317,7 @@ namespace OpenRCT2::Ui::Windows
 
             ShopItem shopItem;
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RtdFlag::isToilet))
+            if (rtd.specialType == RtdSpecialType::toilet)
             {
                 shopItem = ShopItem::Admission;
             }
@@ -6420,7 +6423,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto rideEntry = ride->GetRideEntry();
             const auto& rtd = ride->GetRideTypeDescriptor();
-            return Park::RidePricesUnlocked() || rtd.HasFlag(RtdFlag::isToilet)
+            return Park::RidePricesUnlocked() || rtd.specialType == RtdSpecialType::toilet
                 || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::None);
         }
 
@@ -6595,7 +6598,8 @@ namespace OpenRCT2::Ui::Windows
 
             // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None && !rtd.HasFlag(RtdFlag::isToilet))
+            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None
+                && rtd.specialType != RtdSpecialType::toilet)
             {
                 disabled_widgets |= (1uLL << WIDX_PRIMARY_PRICE);
                 widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
@@ -6614,7 +6618,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
 
             ShopItem primaryItem = ShopItem::Admission;
-            if (rtd.HasFlag(RtdFlag::isToilet) || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
+            if (rtd.specialType == RtdSpecialType::toilet || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
             {
                 widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Checkbox;
 
