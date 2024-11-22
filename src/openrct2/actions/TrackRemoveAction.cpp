@@ -469,7 +469,7 @@ GameActions::Result TrackRemoveAction::Execute() const
                 {
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
                     RideMode newMode = RideMode::ContinuousCircuit;
-                    if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
+                    if (ride->mode == RideMode::PoweredLaunchBlockSectioned)
                     {
                         newMode = RideMode::PoweredLaunch;
                     }
