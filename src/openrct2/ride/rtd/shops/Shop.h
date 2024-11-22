@@ -32,7 +32,6 @@ constexpr RideTypeDescriptor ShopRTD =
     .DefaultMode = RideMode::ShopStall,
     .Naming = { STR_RIDE_NAME_SHOP, STR_RIDE_DESCRIPTION_SHOP },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_SHOP",
     .AvailableBreakdowns = 0,
     .Heights = { 12, DefaultShopHeight, 0, 0, },
     .MaxMass = 255,

@@ -33,7 +33,6 @@ constexpr RideTypeDescriptor ToiletsRTD =
     .OperatingSettings = { 4, 4 },
     .Naming = { STR_RIDE_NAME_TOILETS, STR_RIDE_DESCRIPTION_TOILETS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_TOILETS",
     .AvailableBreakdowns = 0,
     .Heights = { 12, DefaultToiletHeight, 0, 0, },
     .MaxMass = 255,

@@ -33,7 +33,6 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .DefaultMode = RideMode::ContinuousCircuit,
     .Naming = { STR_RIDE_NAME_MINI_GOLF, STR_RIDE_DESCRIPTION_MINI_GOLF },
     .NameConvention = { RideComponentType::Player, RideComponentType::Course, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_MINI_GOLF",
     .AvailableBreakdowns = 0,
     .Heights = { 7, 32, 2, 2, },
     .MaxMass = 255,

@@ -33,7 +33,6 @@ constexpr RideTypeDescriptor FirstAidRTD =
     .OperatingSettings = { 8, 8 },
     .Naming = { STR_RIDE_NAME_FIRST_AID, STR_RIDE_DESCRIPTION_FIRST_AID },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_FIRST_AID",
     .AvailableBreakdowns = 0,
     .Heights = { 12, DefaultFirstAidHeight, 0, 0, },
     .MaxMass = 255,

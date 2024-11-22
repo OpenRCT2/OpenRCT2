@@ -35,7 +35,6 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
     .OperatingSettings = { 7, 15 },
     .Naming = { STR_RIDE_NAME_SWINGING_INVERTER_SHIP, STR_RIDE_DESCRIPTION_SWINGING_INVERTER_SHIP },
     .NameConvention = { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_SWINGING_INVERTER_SHIP",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 15, 176, 7, 11, },
     .MaxMass = 255,

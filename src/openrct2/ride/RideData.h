@@ -468,7 +468,6 @@ struct RideTypeDescriptor
     RideLegacyBoosterSettings LegacyBoosterSettings{};
     RideNaming Naming{};
     RideNameConvention NameConvention{};
-    const char* EnumName{};
     uint8_t AvailableBreakdowns{};
     /** rct2: 0x0097D218 */
     RideHeights Heights{};
@@ -601,7 +600,6 @@ constexpr RideTypeDescriptor DummyRTD =
     .LegacyBoosterSettings = {},
     .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "(INVALID)",
     .AvailableBreakdowns = 0,
     .Heights = { 12, 64, 0, 0, },
     .MaxMass = 255,

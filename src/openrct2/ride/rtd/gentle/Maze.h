@@ -35,7 +35,6 @@ constexpr RideTypeDescriptor MazeRTD =
     .OperatingSettings = { 1, 64 },
     .Naming = { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_MAZE",
     .AvailableBreakdowns = 0,
     .Heights = { 6, 24, 0, 1, },
     .MaxMass = 18,

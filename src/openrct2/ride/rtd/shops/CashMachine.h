@@ -31,7 +31,6 @@ constexpr RideTypeDescriptor CashMachineRTD =
     .DefaultMode = RideMode::ShopStall,
     .Naming = { STR_RIDE_NAME_CASH_MACHINE, STR_RIDE_DESCRIPTION_CASH_MACHINE },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_CASH_MACHINE",
     .AvailableBreakdowns = 0,
     .Heights = { 12, DefaultCashMachineHeight, 0, 0, },
     .MaxMass = 255,

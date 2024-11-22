@@ -32,7 +32,6 @@ constexpr RideTypeDescriptor FoodStallRTD =
     .DefaultMode = RideMode::ShopStall,
     .Naming = { STR_RIDE_NAME_FOOD_STALL, STR_RIDE_DESCRIPTION_FOOD_STALL },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_FOOD_STALL",
     .AvailableBreakdowns = 0,
     .Heights = { 12, DefaultFoodStallHeight, 0, 0, },
     .MaxMass = 255,
