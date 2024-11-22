@@ -755,7 +755,7 @@ namespace OpenRCT2::RCT1
             "rct2.ride.circus1",                     // RCT1_RIDE_TYPE_CIRCUS
             "rct1aa.ride.ghost_train_cars",          // RCT1_RIDE_TYPE_GHOST_TRAIN
             "rct1aa.ride.twister_trains",            // RCT1_RIDE_TYPE_STEEL_TWISTER_ROLLER_COASTER
-            "rct1aa.ride.woodtrc",                   // RCT1_RIDE_TYPE_WOODEN_TWISTER_ROLLER_COASTER
+            "rct1aa.ride.wooden_articulated_trains", // RCT1_RIDE_TYPE_WOODEN_TWISTER_ROLLER_COASTER
             "rct1aa.ride.side_friction_cars",        // RCT1_RIDE_TYPE_WOODEN_SIDE_FRICTION_ROLLER_COASTER
             "rct1aa.ride.steel_wild_mouse_cars",     // RCT1_RIDE_TYPE_STEEL_WILD_MOUSE_ROLLER_COASTER
             "rct2.ride.hotds",                       // RCT1_RIDE_TYPE_HOT_DOG_STALL
@@ -856,7 +856,7 @@ namespace OpenRCT2::RCT1
             "rct2.ride.circus1",                           //  VehicleType::CircusTent
             "rct1aa.ride.ghost_train_cars",                //  VehicleType::GhostTrainCars
             "rct1aa.ride.twister_trains",                  //  VehicleType::SteelTwisterRollerCoasterTrain
-            "rct1aa.ride.woodtrc",                         //  VehicleType::WoodenTwisterRollerCoasterTrain
+            "rct1aa.ride.wooden_articulated_trains",       //  VehicleType::WoodenTwisterRollerCoasterTrain
             "rct1aa.ride.side_friction_cars",              //  VehicleType::WoodenSideFrictionCars
             "rct1aa.ride.vintage_cars",                    //  VehicleType::VintageCars
             "rct1aa.ride.steam_trains_covered",            //  VehicleType::SteamTrainCoveredCars

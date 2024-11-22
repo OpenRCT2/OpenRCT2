@@ -1,12 +1,15 @@
 0.4.17 (in development)
 ------------------------------------------------------------------------
 - Feature: [#23166] Add Galician translation.
+- Feature: [#23227] Add Classic Wooden Twister roller coaster, for better compatibility with RCT1.
 - Improved: [#23051] Add large sloped turns and new inversions to the Twister, Vertical Drop, Hyper and Flying Roller Coasters.
 - Improved: [#23123] Improve sorting of roller coasters in build new ride menu.
 - Improved: [#23211] Add boosters to classic wooden roller coaster (cheats only).
 - Fix: [#22726] ‘Force park rating’ cheat is not saved with the park.
 - Fix: [#23206] Multiplayer desyncs when FPS is uncapped.
 - Fix: [#23238] Updating a guest’s favourite ride works differently from vanilla RCT2.
+- Fix: [objects#355] Fix colour preset settings of the Stand-Up Roller Coaster trains.
+- Fix: [objects#355] Fix colour preset settings of many vehicles from Wacky Worlds and Time Twister.
 
 0.4.16 (2024-11-03)
 ------------------------------------------------------------------------
