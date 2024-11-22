@@ -1153,7 +1153,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            if (_gameVersion < FILE_VERSION_RCT1_LL && dst->type == RIDE_TYPE_MERRY_GO_ROUND)
+            if (_gameVersion < FILE_VERSION_RCT1_LL && src->Type == RideType::MerryGoRound)
             {
                 // The merry-go-round in pre-LL versions was always yellow with red
                 dst->vehicle_colours[0].Body = COLOUR_YELLOW;
