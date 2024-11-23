@@ -15,15 +15,15 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
+constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
 {
    .Category = RIDE_CATEGORY_ROLLERCOASTER,
    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
    .TrackPaintFunctions = TrackDrawerDescriptor({
-       .Drawer = GetTrackPaintFunctionClassicWoodenRC,
+       .Drawer = GetTrackPaintFunctionClassicWoodenTwisterRC,
        .supportType = WoodenSupportType::Truss,
-       .enabledTrackGroups = {TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::waterSplash, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeSteepLong, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge},
-       .extraTrackGroups = {TrackGroup::booster, TrackGroup::slopeCurveSteep},
+       .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeSteepLong, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::slopeCurveSteep, TrackGroup::slopeCurveBanked },
+       .extraTrackGroups = { TrackGroup::verticalLoop, TrackGroup::waterSplash, TrackGroup::booster, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge },
    }),
    .InvertedTrackPaintFunctions = {},
    .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
@@ -33,9 +33,9 @@ constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
    .DefaultMode = RideMode::ContinuousCircuit,
    .BoosterSettings = { 0, 68 },
    .LegacyBoosterSettings = { 0, 68 },
-   .Naming = { STR_RIDE_NAME_CLASSIC_WOODEN_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CLASSIC_WOODEN_ROLLER_COASTER },
+   .Naming = { STR_RIDE_NAME_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER },
    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-   .EnumName = "RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER",
+   .EnumName = "RIDE_TYPE_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER",
    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
    .Heights = { 24, 24, 8, 11, },
    .MaxMass = 19,
@@ -47,18 +47,20 @@ constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
    .DefaultMusic = MUSIC_OBJECT_WILD_WEST,
    .PhotoItem = ShopItem::Photo3,
    .BonusValue = 105,
-   .ColourPresets = TRACK_COLOUR_PRESETS(
-       { COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN},
-       { COLOUR_WHITE, COLOUR_LIGHT_BROWN, COLOUR_WHITE },
-       { COLOUR_LIGHT_BROWN, COLOUR_BLACK, COLOUR_LIGHT_BROWN },
-   ),
-   .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CLASSIC_WOODEN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_CLASSIC_WOODEN_ROLLER_COASTER_SUPPORTS },
+    .ColourPresets = TRACK_COLOUR_PRESETS(
+        { COLOUR_BORDEAUX_RED, COLOUR_BLACK, COLOUR_WHITE },
+        { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },
+        { COLOUR_YELLOW, COLOUR_DARK_BROWN, COLOUR_DARK_BROWN },
+        { COLOUR_TEAL, COLOUR_BORDEAUX_RED, COLOUR_WHITE },
+        { COLOUR_LIGHT_BLUE, COLOUR_BLACK, COLOUR_BLACK },
+    ),
+   .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_SUPPORTS },
    .ColourKey = RideColourKey::Ride,
-   .Name = "classic_wooden_rc",
+   .Name = "classic_wooden_twister_rc",
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 80), RIDE_RATING(2, 60), RIDE_RATING(2, 00) },
+        { RIDE_RATING(3, 20), RIDE_RATING(2, 60), RIDE_RATING(2, 00) },
         19,
         -1,
         false,
@@ -76,11 +78,11 @@ constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
             { RatingsModifierType::BonusReversedTrains,   0,                2, 12, 22 },
             { RatingsModifierType::BonusProximity,        0,                22367, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
-            { RatingsModifierType::RequirementDropHeight, 12,               2, 1, 2 },
-            { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 1, 2 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 10), 2, 1, 2 },
-            { RatingsModifierType::RequirementLength,     0x1720000,        2, 1, 2 },
-            { RatingsModifierType::RequirementNumDrops,   2,                2, 1, 2 },
+            { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },
+            { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 10), 2, 2, 2 },
+            { RatingsModifierType::RequirementLength,     0x1720000,        2, 2, 2 },
+            { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                40960, 34555, 49648 },
         },
     },
