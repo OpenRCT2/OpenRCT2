@@ -5,9 +5,9 @@
   <project_license>GPL-3.0</project_license>
   <name>OpenRCT2</name>
   <summary>Amusement park simulation</summary>
-  <summary xml:lang="ca">Simulador de parcs d'atraccions</summary>
+  <summary xml:lang="ca">Simulador de parcs d’atraccions</summary>
   <developer_name>The OpenRCT2 Team</developer_name>
-  <developer_name xml:lang="ca">Equip de l'OpenRCT2</developer_name>
+  <developer_name xml:lang="ca">Equip de l’OpenRCT2</developer_name>
   <launchable type="desktop-id">openrct2.desktop</launchable>
   <description>
     <p>
@@ -19,49 +19,57 @@
       objective in a set time limit whilst sandbox allows the player to build a more
       flexible park with optionally no restrictions or finance.
     </p>
-    <p>
-      OpenRCT2 features many changes compared to the original RollerCoaster Tycoon 2 game. A few of them are listed here.
-    </p>
-    <ul>
-      <li>User Interface theming.</li>
-      <li>Fast-forwarding gameplay.</li>
-      <li>Multiplayer support.</li>
-      <li>Multilingual. Improved translations.</li>
-      <li>OpenGL hardware rendering.</li>
-      <li>Various fixes and improvements for bugs in the original game.</li>
-      <li>Native support for Linux and macOS.</li>
-      <li>Added hacks and cheats.</li>
-      <li>Auto-saving and giant screenshots.</li>
-    </ul>
-    <p>
-      Original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic game files are required in order to play OpenRCT2.
-    </p>
-
     <p xml:lang="ca">
-        L'OpenRCT2 és una reimplementació de codi obert del RollerCoaster Tycoon 2 (RCT2).
-        El joc consisteix en construir i mantenir un parc d'atraccions i gestionar-ne també
-        les paradetes i instal·lacions. El jugador ha d'obtenir beneficis i mantenir una bona
-        reputació del seu parc i alhora fer que els seus visitants siguin feliços. L'OpenRCT2
+        L’OpenRCT2 és una reimplementació de codi obert del RollerCoaster Tycoon 2 (RCT2).
+        El joc consisteix en construir i mantenir un parc d’atraccions i gestionar-ne també
+        les paradetes i instal·lacions. El jugador ha d’obtenir beneficis i mantenir una bona
+        reputació del seu parc i alhora fer que els seus visitants siguin feliços. L’OpenRCT2
         permet jugar en escenaris o en mode lliure. Als escenaris, el jugador ha de completar
         alguns objectius en un determinat període de temps, mentre que al mode lliure pot
         construir amb més flexibilitat, fins i tot sense restriccions.
     </p>
-    <p xml:lang="ca">
-        L'OpenRCT2 té molts canvis respecte al joc RollerCoaster Tycoon 2 original, com ara:
+
+    <p>
+      OpenRCT2 features many changes compared to the original RollerCoaster Tycoon 2 game. A few of them are listed here.
     </p>
-    <ul xml:lang="ca">
-        <li xml:lang="ca">Temes per a la interfície gràfica</li>
-        <li xml:lang="ca">Diferents velocitats de joc disponibles durant la partida</li>
-        <li xml:lang="ca">Suport multijugador</li>
-        <li xml:lang="ca">Traduït a diversos idiomes i amb traduccions millorades</li>
-        <li xml:lang="ca">Renderització OpenGL per maquinari</li>
-        <li xml:lang="ca">Correccions i millores dels errors del joc original</li>
-        <li xml:lang="ca">Suport natiu per a Linux i macOS</li>
-        <li xml:lang="ca">Es poden fer trucs i trampes</li>
-        <li xml:lang="ca">Desades automàtiques i captures de pantalla gegants</li>
-    </ul>
     <p xml:lang="ca">
-        Per a jugar a l'OpenRCT2, fan falta els fitxers originals del RollerCoaster Tycoon 2 o del RollerCoaster Tycoon clàssic.
+        L’OpenRCT2 té molts canvis respecte al joc RollerCoaster Tycoon 2 original, com ara:
+    </p>
+
+    <ul>
+      <li>User Interface theming.</li>
+      <li xml:lang="ca">Temes per a la interfície gràfica</li>
+
+      <li>Fast-forwarding gameplay.</li>
+      <li xml:lang="ca">Diferents velocitats de joc disponibles durant la partida</li>
+
+      <li>Multiplayer support.</li>
+      <li xml:lang="ca">Suport multijugador</li>
+
+      <li>Multilingual. Improved translations.</li>
+      <li xml:lang="ca">Traduït a diversos idiomes i amb traduccions millorades</li>
+
+      <li>OpenGL hardware rendering.</li>
+      <li xml:lang="ca">Renderització OpenGL per maquinari</li>
+
+      <li>Various fixes and improvements for bugs in the original game.</li>
+      <li xml:lang="ca">Correccions i millores dels errors del joc original</li>
+
+      <li>Native support for Linux and macOS.</li>
+      <li xml:lang="ca">Suport natiu per a Linux i macOS</li>
+
+      <li>Added hacks and cheats.</li>
+      <li xml:lang="ca">Es poden fer trucs i trampes</li>
+
+      <li>Auto-saving and giant screenshots.</li>
+      <li xml:lang="ca">Desades automàtiques i captures de pantalla gegants</li>
+    </ul>
+
+    <p>
+      Original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic game files are required in order to play OpenRCT2.
+    </p>
+    <p xml:lang="ca">
+        Per a jugar a l’OpenRCT2, fan falta els fitxers originals del RollerCoaster Tycoon 2 o del RollerCoaster Tycoon clàssic.
     </p>
   </description>
   <screenshots>
@@ -98,6 +106,27 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+      <release version="0.4.16" date="2024-11-03">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.16</url>
+      </release>
+      <release version="0.4.15" date="2024-10-06">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.15</url>
+      </release>
+      <release version="0.4.14" date="2024-09-01">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.14</url>
+      </release>
+      <release version="0.4.13" date="2024-08-04">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.13</url>
+      </release>
+      <release version="0.4.12" date="2024-07-07">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.12</url>
+      </release>
+      <release version="0.4.11" date="2024-05-05">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.11</url>
+      </release>
+      <release version="0.4.10" date="2024-04-02">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.10</url>
+      </release>
       <release version="0.4.9" date="2024-03-02">
           <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.9</url>
       </release>
