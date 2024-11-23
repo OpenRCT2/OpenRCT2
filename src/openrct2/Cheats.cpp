@@ -57,6 +57,7 @@ void CheatsReset()
     gameState.Cheats.AllowSpecialColourSchemes = false;
     gameState.Cheats.MakeAllDestructible = false;
     gameState.Cheats.SelectedStaffSpeed = StaffSpeedCheat::None;
+    gameState.Cheats.forcedParkRating = kForcedParkRatingDisabled;
 }
 
 void CheatsSet(CheatType cheatType, int64_t param1 /* = 0*/, int64_t param2 /* = 0*/)
@@ -115,6 +116,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::MakeDestructible, gameState.Cheats.MakeAllDestructible, count);
         CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gameState.Cheats.SelectedStaffSpeed, count);
         CheatEntrySerialise(ds, CheatType::IgnorePrice, gameState.Cheats.IgnorePrice, count);
+        CheatEntrySerialise(ds, CheatType::SetForcedParkRating, gameState.Cheats.forcedParkRating, count);
 
         // Remember current position and update count.
         uint64_t endOffset = stream.GetPosition();
@@ -222,6 +224,8 @@ void CheatsSerialise(DataSerialiser& ds)
                 case CheatType::SetStaffSpeed:
                     ds << gameState.Cheats.SelectedStaffSpeed;
                     break;
+                case CheatType::SetForcedParkRating:
+                    ds << gameState.Cheats.forcedParkRating;
                 default:
                     break;
             }

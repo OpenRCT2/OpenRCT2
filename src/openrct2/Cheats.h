@@ -47,6 +47,7 @@ struct CheatsState
     bool AllowSpecialColourSchemes;
     bool MakeAllDestructible;
     StaffSpeedCheat SelectedStaffSpeed;
+    int32_t forcedParkRating;
 };
 
 enum class CheatType : int32_t
@@ -134,6 +135,7 @@ constexpr int kCheatsDuckIncrement = 20;
 constexpr int kCheatsStaffFastSpeed = 0xFF;
 constexpr int kCheatsStaffNormalSpeed = 0x60;
 constexpr int kCheatsStaffFreezeSpeed = 0;
+constexpr int32_t kForcedParkRatingDisabled = -1;
 
 void CheatsReset();
 const char* CheatsGetName(CheatType cheatType);

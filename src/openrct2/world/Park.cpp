@@ -49,9 +49,6 @@ using namespace OpenRCT2::Scripting;
 
 namespace OpenRCT2::Park
 {
-    // If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
-    static int32_t _forcedParkRating = -1;
-
     static money64 calculateRideValue(const Ride& ride);
     static money64 calculateTotalRideValueForMoney();
     static uint32_t calculateSuggestedMaxGuests();
@@ -395,12 +392,13 @@ namespace OpenRCT2::Park
 
     int32_t CalculateParkRating()
     {
-        if (_forcedParkRating >= 0)
+        auto& gameState = GetGameState();
+
+        if (gameState.Cheats.forcedParkRating != kForcedParkRatingDisabled)
         {
-            return _forcedParkRating;
+            return gameState.Cheats.forcedParkRating;
         }
 
-        auto& gameState = GetGameState();
         int32_t result = 1150;
         if (gameState.Park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING)
         {
@@ -734,15 +732,17 @@ namespace OpenRCT2::Park
 
     void SetForcedRating(int32_t rating)
     {
-        _forcedParkRating = rating;
-        GetGameState().Park.Rating = CalculateParkRating();
+        auto& gameState = GetGameState();
+        gameState.Cheats.forcedParkRating = rating;
+        gameState.Park.Rating = CalculateParkRating();
+
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         ContextBroadcastIntent(&intent);
     }
 
     int32_t GetForcedRating()
     {
-        return _forcedParkRating;
+        return GetGameState().Cheats.forcedParkRating;
     }
 
     money64 GetEntranceFee()
