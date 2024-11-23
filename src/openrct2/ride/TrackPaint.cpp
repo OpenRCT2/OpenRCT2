@@ -1975,7 +1975,8 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             if (rtd.HasFlag(RtdFlag::isToilet) || rtd.HasFlag(RtdFlag::isFirstAid) || rtd.HasFlag(RtdFlag::isCashMachine))
                 zOffset = 23;
 
-            if (ride->type == RIDE_TYPE_INFORMATION_KIOSK)
+            const auto* originElement = ride->GetOriginElement(StationIndex::FromUnderlying(0));
+            if (originElement != nullptr && originElement->GetTrackType() == TrackElemType::FlatTrack1x1B)
                 LightFxAddKioskLights(session.MapPosition, height, zOffset);
             else if (RideTypeDescriptors[ride->type].HasFlag(RtdFlag::isShopOrFacility))
                 LightFxAddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
