@@ -5,6 +5,7 @@
 - Improved: [#23123] Improve sorting of roller coasters in build new ride menu.
 - Improved: [#23211] Add boosters to classic wooden roller coaster (cheats only).
 - Fix: [#23206] Multiplayer desyncs when FPS is uncapped.
+- Fix: [#23238] Updating a guest’s favourite ride works differently from vanilla RCT2.
 
 0.4.16 (2024-11-03)
 ------------------------------------------------------------------------
