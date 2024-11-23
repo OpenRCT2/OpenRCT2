@@ -207,7 +207,7 @@ Section "!OpenRCT2" Section1
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Readme.lnk" "$INSTDIR\Readme.txt"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Changelog.lnk" "$INSTDIR\Changelog.txt"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Contributors.lnk" "$INSTDIR\contributors.md"
-    CreateShortCut "$SMPROGRAMS\$SHORTCUTS\PrivacyPolicy.lnk" "$INSTDIR\PRIVACY.md"
+    CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Privacy Policy.lnk" "$INSTDIR\PRIVACY.md"
     !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -244,7 +244,7 @@ Section "Uninstall"
     Delete "$SMPROGRAMS\$SHORTCUTS\Readme.lnk"
     Delete "$SMPROGRAMS\$SHORTCUTS\Changelog.lnk"
     Delete "$SMPROGRAMS\$SHORTCUTS\Contributors.lnk"
-    Delete "$SMPROGRAMS\$SHORTCUTS\PrivacyPolicy.lnk"
+    Delete "$SMPROGRAMS\$SHORTCUTS\Privacy Policy.lnk"
 
     ; Clean up OpenRCT2 dir
     Delete "$INSTDIR\changelog.txt"
