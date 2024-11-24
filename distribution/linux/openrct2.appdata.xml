@@ -6,12 +6,16 @@
   <name>OpenRCT2</name>
   <summary>Amusement park simulation</summary>
   <summary xml:lang="ca">Simulador de parcs d’atraccions</summary>
+  <summary xml:lang="de">Freizeitparksimulation</summary>
   <summary xml:lang="ko">놀이공원 시뮬레이션</summary>
   <summary xml:lang="pl">Symulator parku rozrywki</summary>
+  <summary xml:lang="pt">Simulador de parque de diversões</summary>
   <developer_name>The OpenRCT2 Team</developer_name>
-  <developer_name xml:lang="ko">OpenRCT2 팀</developer_name>
   <developer_name xml:lang="ca">Equip de l’OpenRCT2</developer_name>
+  <developer_name xml:lang="de">Das OpenRCT2-Team</developer_name>
+  <developer_name xml:lang="ko">OpenRCT2 팀</developer_name>
   <developer_name xml:lang="pl">Zespół OpenRCT2</developer_name>
+  <developer_name xml:lang="pt">Equipe do OpenRCT2</developer_name>
   <launchable type="desktop-id">openrct2.desktop</launchable>
   <description>
     <p>
@@ -32,6 +36,16 @@
         alguns objectius en un determinat període de temps, mentre que al mode lliure pot
         construir amb més flexibilitat, fins i tot sense restriccions.
     </p>
+    <p xml:lang="de">
+        OpenRCT2 ist eine Open-Source-Reimplementierung von RollerCoaster Tycoon 2 (RCT2).
+        Im Spiel geht es um den Bau und die Verwaltung eines Freizeitparks mit Attraktionen,
+        Läden und Einrichtungen. Der Spieler muss versuchen, Profit zu erwirtschaften und
+        eine gute Parkreputation aufrecht zu erhalten, während die Gäste bei Laune gehalten
+        werden. In OpenRCT2 kann mal sowohl Szenarien als auch in einen Sandboxmodus
+        spielen. In Szenarien muss der Spieler ein bestimmtes Ziel innerhalb eines Zeitlimits
+        erfüllen. In der Sandbox kann der Spieler einen flexibleren Park bauen – falls
+        gewünscht ohne Einschränkungen.
+    </p>
     <p xml:lang="ko">
       OpenRCT는 RollerCoaster Tycoon 2 (RCT2)의 오픈 소스 재구현판입니다.
       놀이기구, 상점, 매점 등을 건설하고 유지하는 것이 게임 플레이의 중심이 됩니다.
@@ -50,6 +64,16 @@
       określonego celu w wyznaczonym czasie, podczas gdy tryb sandbox pozwala na
       swobodne budowanie parku, z możliwością wyłączenia ograniczeń i finansów.
     </p>
+    <p xml:lang="pt">
+      OpenRCT2 é uma reimplementação de código aberto do RollerCoaster Tycoon 2 (RCT2).
+      A dinâmica de jogo gira em torno de construir e manter um parque de diversões contendo
+      atrações, lojas e instalações. O jogador deve tentar gerar lucro e manter uma boa
+      reputação para o parque, enquanto tenta fazer com que os visitantes continuem felizes.
+      O OpenRCT2 permite tanto jogos em cenários quanto em “caixa de areia”. Os cenários
+      demandam que o jogador atinja um certo objetivo em um determinado prazo, enquanto a
+      “caixa de areia” deixa o jogador construir um parque mais flexível, opcionalmente sem
+      restrições ou finanças.
+    </p>
 
     <p>
       OpenRCT2 features many changes compared to the original RollerCoaster Tycoon 2 game. A few of them are listed here.
@@ -57,58 +81,82 @@
     <p xml:lang="ca">
         L’OpenRCT2 té molts canvis respecte al joc RollerCoaster Tycoon 2 original, com ara:
     </p>
+    <p xml:lang="de">
+        OpenRCT2 hat viele Änderungen im Verleich mit dem Originalspiel RollerCoaster Tycoon 2. Hier sind einige von ihnen aufgelistet.
+    </p>
     <p xml:lang="ko">
       OpenRCT2는 오리지널 RollerCoaster Tycoon 2 게임에 비해 많은 기능적 변화가 있습니다. 여기에 일부 기능이 나열되어 있습니다.
     </p>
     <p xml:lang="pl">
       OpenRCT2 zawiera wiele zmian w porównaniu do oryginalnej gry RollerCoaster Tycoon 2. Oto kilka z nich:
     </p>
+    <p xml:lang="pt">
+      O OpenRCT2 conta com muitas mudanças quando comparado ao jogo RollerCoaster Tycoon 2 original. Aqui são listadas algumas delas.
+    </p>
 
     <ul>
       <li>User Interface theming.</li>
       <li xml:lang="ca">Temes per a la interfície gràfica</li>
+      <li xml:lang="de">Thematische User-Interface-Anpassung.</li>
       <li xml:lang="ko">유저 인터페이스 커스터마이징</li>
       <li xml:lang="pl">Edycja motywów interfejsu użytkownika</li>
+      <li xml:lang="pt">Customização por temas da interface de usuário.</li>
 
       <li>Fast-forwarding gameplay.</li>
       <li xml:lang="ca">Diferents velocitats de joc disponibles durant la partida</li>
+      <li xml:lang="de">Spielsimulation beschleunigen.</li>
       <li xml:lang="ko">게임 속도 조절</li>
       <li xml:lang="pl">Przyspieszanie rozgrywki</li>
+      <li xml:lang="pt">Dinâmica de jogo acelerável.</li>
 
       <li>Multiplayer support.</li>
       <li xml:lang="ca">Suport multijugador</li>
+      <li xml:lang="de">Mehrspielerunterstützung.</li>
       <li xml:lang="ko">멀티플레이 지원</li>
       <li xml:lang="pl">Tryb wieloosobowy</li>
+      <li xml:lang="pt">Suporte multijogador.</li>
 
       <li>Multilingual. Improved translations.</li>
       <li xml:lang="ca">Traduït a diversos idiomes i amb traduccions millorades</li>
+      <li xml:lang="de">Mehrsprachig. Verbesserte Übersetzungen.</li>
       <li xml:lang="ko">다국어 지원 및 번역 개선</li>
       <li xml:lang="pl">Wielojęzyczność i ulepszone tłumaczenia</li>
+      <li xml:lang="pt">Multilíngue. Traduções aperfeiçoadas.</li>
 
       <li>OpenGL hardware rendering.</li>
       <li xml:lang="ca">Renderització OpenGL per maquinari</li>
+      <li xml:lang="de">OpenGL-Hardwarerendering.</li>
       <li xml:lang="ko">OpenGL 하드웨어 렌더링</li>
       <li xml:lang="pl">Obsługa renderowania OpenGL</li>
+      <li xml:lang="pt">Renderização por hardware OpenGL.</li>
 
       <li>Various fixes and improvements for bugs in the original game.</li>
       <li xml:lang="ca">Correccions i millores dels errors del joc original</li>
+      <li xml:lang="de">Diverse Fehlerkorrekturen und Verbesserungen für Fehler im Originalspiel.</li>
       <li xml:lang="ko">오리지널 게임에 있던 다양한 버그 수정 및 개선</li>
       <li xml:lang="pl">Poprawki błędów i usprawnienia względem oryginalnej gry</li>
+      <li xml:lang="pt">Várias correções e melhorias para problemas no jogo original.</li>
 
       <li>Native support for Linux and macOS.</li>
       <li xml:lang="ca">Suport natiu per a Linux i macOS</li>
+      <li xml:lang="de">Native Unterstützung für Linux und macOS.</li>
       <li xml:lang="ko">Linux 및 macOS 자체 지원</li>
       <li xml:lang="pl">Natywna obsługa systemów Linux i macOS</li>
+      <li xml:lang="pt">Suporte nativo para Linux e macOS.</li>
 
       <li>Added hacks and cheats.</li>
       <li xml:lang="ca">Es poden fer trucs i trampes</li>
+      <li xml:lang="de">Eingebaute Hacks und Cheats.</li>
       <li xml:lang="ko">치트 기능 지원</li>
       <li xml:lang="pl">Kody i hacki</li>
+      <li xml:lang="pt">Trapaças e hacks adicionados.</li>
 
       <li>Auto-saving and giant screenshots.</li>
       <li xml:lang="ca">Desades automàtiques i captures de pantalla gegants</li>
+      <li xml:lang="de">Automatisches Speichern und gigantische Screenshots.</li>
       <li xml:lang="ko">자동 저장 및 대형 스크린 샷</li>
       <li xml:lang="pl">Autozapis i możliwość robienia ogromnych zrzutów ekranu</li>
+      <li xml:lang="pt">Salvamento automático e capturas de tela gigantes.</li>
     </ul>
 
     <p>
@@ -117,19 +165,27 @@
     <p xml:lang="ca">
         Per a jugar a l’OpenRCT2, fan falta els fitxers originals del RollerCoaster Tycoon 2 o del RollerCoaster Tycoon clàssic.
     </p>
+    <p xml:lang="de">
+        Die Originaldateien von RollerCoaster Tycoon 2 oder RollerCoaster Tycoon Classic werden benötigt, um OpenRCT2 zu spielen.
+    </p>
     <p xml:lang="ko">
         OpenRCT2를 플레이하기 위해서는 오리지널 RollerCoaster Tycoon 2 또는 RollerCoaster Tycoon Classic 게임 파일이 필요합니다.
     </p>
     <p xml:lang="pl">
       Do działania OpenRCT2 wymagane są pliki z RollerCoaster Tycoon 2 lub RollerCoaster Tycoon Classic.
     </p>
+    <p xml:lang="pt">
+      Arquivos dos jogos originais RollerCoaster Tycoon 2 ou RollerCoaster Tycoon Classic são necessários para jogar OpenRCT2.
+    </p>
   </description>
   <screenshots>
     <screenshot type="default">
       <image>https://camo.githubusercontent.com/f513bc551e2c9e04e292724113ea4789726d23921d286f21dad39a6e955b5a56/68747470733a2f2f692e696d6775722e636f6d2f6537434b3553632e706e67</image>
       <caption>Amusement park featuring an inverted roller coaster, a river rapids ride and custom scenery</caption>
+      <caption xml:lang="de">Freizeitpark mit einer umgekehrten Achterbahn, einer Stromschnellenattraktion und einer eigens errichteten Szenerie</caption>
       <caption xml:lang="ko">인버티드 롤러코스터를 구현한 놀이공원과 리버 래피드 기구 및 커스텀 풍경 오브젝트</caption>
       <caption xml:lang="pl">Park rozrywki z odwróconą kolejką górską, spływem rwącą rzeką i niestandardową scenerią</caption>
+      <caption xml:lang="pt">Parque de diversões que conta com uma montanha-russa invertida, corredeira de rio e cenários customizados</caption>
     </screenshot>
   </screenshots>
   <url type="homepage">https://openrct2.io/</url>
