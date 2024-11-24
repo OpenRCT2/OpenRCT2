@@ -2848,6 +2848,36 @@
         "palette": "keep"
     },
     {
+        "path": "track/lattice_triangle/diagonal_booster_0.png",
+        "x": -32,
+        "y": 3
+    },
+    {
+        "path": "track/lattice_triangle/diagonal_booster_1.png",
+        "x": -8,
+        "y": -9
+    },
+    {
+        "path": "track/lattice_triangle/diagonal_booster_alt_0.png",
+        "x": -32,
+        "y": 2
+    },
+    {
+        "path": "track/lattice_triangle/diagonal_booster_alt_1.png",
+        "x": -8,
+        "y": -9
+    },
+    {
+        "path": "track/lattice_triangle/diagonal_booster_alt_2.png",
+        "x": -32,
+        "y": 3
+    },
+    {
+        "path": "track/lattice_triangle/diagonal_booster_alt_3.png",
+        "x": -8,
+        "y": -9
+    },
+    {
         "path": "track/lattice_triangle/drive_tyre_1.png",
         "x": -22,
         "y": -4
