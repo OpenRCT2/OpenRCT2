@@ -128,7 +128,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
   - libpng (>= 1.2)
   - speexdsp (only for UI client)
   - curl (only if building with http support)
-  - nlohmann-json (>= 3.6.0)
+  - nlohmann-json (>= 3.9.0)
   - openssl (>= 1.0; only if building with multiplayer support)
   - icu (>= 59.0)
   - zlib
