@@ -7,9 +7,11 @@
   <summary>Amusement park simulation</summary>
   <summary xml:lang="ca">Simulador de parcs d’atraccions</summary>
   <summary xml:lang="ko">놀이공원 시뮬레이션</summary>
+  <summary xml:lang="pl">Symulator parku rozrywki</summary>
   <developer_name>The OpenRCT2 Team</developer_name>
   <developer_name xml:lang="ko">OpenRCT2 팀</developer_name>
   <developer_name xml:lang="ca">Equip de l’OpenRCT2</developer_name>
+  <developer_name xml:lang="pl">Zespół OpenRCT2</developer_name>
   <launchable type="desktop-id">openrct2.desktop</launchable>
   <description>
     <p>
@@ -39,6 +41,15 @@
       모래상자에서는 플레이어가 자금이타 금지 행위에 대한 제한 없이 더 유연한 공원을
       만들 수 있습니다.
     </p>
+    <p xml:lang="pl">
+      OpenRCT2 to open-source'owa reimplementacja gry RollerCoaster Tycoon 2 (RCT2).
+      Rozgrywka polega na budowaniu i zarządzaniu parkiem rozrywki zawierającym
+      przeróżne atrakcje, sklepy i udogodnienia. Gracz musi starać się osiągnąć zysk i utrzymać
+      dobrą reputację parku, jednocześnie dbając o zadowolenie gości. OpenRCT2 umożliwia
+      rozgrywkę w scenariuszach oraz w trybie sandbox. Scenariusze wymagają od gracza ukończenia
+      określonego celu w wyznaczonym czasie, podczas gdy tryb sandbox pozwala na
+      swobodne budowanie parku, z możliwością wyłączenia ograniczeń i finansów.
+    </p>
 
     <p>
       OpenRCT2 features many changes compared to the original RollerCoaster Tycoon 2 game. A few of them are listed here.
@@ -49,43 +60,55 @@
     <p xml:lang="ko">
       OpenRCT2는 오리지널 RollerCoaster Tycoon 2 게임에 비해 많은 기능적 변화가 있습니다. 여기에 일부 기능이 나열되어 있습니다.
     </p>
+    <p xml:lang="pl">
+      OpenRCT2 zawiera wiele zmian w porównaniu do oryginalnej gry RollerCoaster Tycoon 2. Oto kilka z nich:
+    </p>
 
     <ul>
       <li>User Interface theming.</li>
       <li xml:lang="ca">Temes per a la interfície gràfica</li>
       <li xml:lang="ko">유저 인터페이스 커스터마이징</li>
+      <li xml:lang="pl">Edycja motywów interfejsu użytkownika</li>
 
       <li>Fast-forwarding gameplay.</li>
       <li xml:lang="ca">Diferents velocitats de joc disponibles durant la partida</li>
       <li xml:lang="ko">게임 속도 조절</li>
+      <li xml:lang="pl">Przyspieszanie rozgrywki</li>
 
       <li>Multiplayer support.</li>
       <li xml:lang="ca">Suport multijugador</li>
       <li xml:lang="ko">멀티플레이 지원</li>
+      <li xml:lang="pl">Tryb wieloosobowy</li>
 
       <li>Multilingual. Improved translations.</li>
       <li xml:lang="ca">Traduït a diversos idiomes i amb traduccions millorades</li>
       <li xml:lang="ko">다국어 지원 및 번역 개선</li>
+      <li xml:lang="pl">Wielojęzyczność i ulepszone tłumaczenia</li>
 
       <li>OpenGL hardware rendering.</li>
       <li xml:lang="ca">Renderització OpenGL per maquinari</li>
       <li xml:lang="ko">OpenGL 하드웨어 렌더링</li>
+      <li xml:lang="pl">Obsługa renderowania OpenGL</li>
 
       <li>Various fixes and improvements for bugs in the original game.</li>
       <li xml:lang="ca">Correccions i millores dels errors del joc original</li>
       <li xml:lang="ko">오리지널 게임에 있던 다양한 버그 수정 및 개선</li>
+      <li xml:lang="pl">Poprawki błędów i usprawnienia względem oryginalnej gry</li>
 
       <li>Native support for Linux and macOS.</li>
       <li xml:lang="ca">Suport natiu per a Linux i macOS</li>
       <li xml:lang="ko">Linux 및 macOS 자체 지원</li>
+      <li xml:lang="pl">Natywna obsługa systemów Linux i macOS</li>
 
       <li>Added hacks and cheats.</li>
       <li xml:lang="ca">Es poden fer trucs i trampes</li>
       <li xml:lang="ko">치트 기능 지원</li>
+      <li xml:lang="pl">Kody i hacki</li>
 
       <li>Auto-saving and giant screenshots.</li>
       <li xml:lang="ca">Desades automàtiques i captures de pantalla gegants</li>
       <li xml:lang="ko">자동 저장 및 대형 스크린 샷</li>
+      <li xml:lang="pl">Autozapis i możliwość robienia ogromnych zrzutów ekranu</li>
     </ul>
 
     <p>
@@ -97,12 +120,16 @@
     <p xml:lang="ko">
         OpenRCT2를 플레이하기 위해서는 오리지널 RollerCoaster Tycoon 2 또는 RollerCoaster Tycoon Classic 게임 파일이 필요합니다.
     </p>
+    <p xml:lang="pl">
+      Do działania OpenRCT2 wymagane są pliki z RollerCoaster Tycoon 2 lub RollerCoaster Tycoon Classic.
+    </p>
   </description>
   <screenshots>
     <screenshot type="default">
       <image>https://camo.githubusercontent.com/f513bc551e2c9e04e292724113ea4789726d23921d286f21dad39a6e955b5a56/68747470733a2f2f692e696d6775722e636f6d2f6537434b3553632e706e67</image>
       <caption>Amusement park featuring an inverted roller coaster, a river rapids ride and custom scenery</caption>
       <caption xml:lang="ko">인버티드 롤러코스터를 구현한 놀이공원과 리버 래피드 기구 및 커스텀 풍경 오브젝트</caption>
+      <caption xml:lang="pl">Park rozrywki z odwróconą kolejką górską, spływem rwącą rzeką i niestandardową scenerią</caption>
     </screenshot>
   </screenshots>
   <url type="homepage">https://openrct2.io/</url>
