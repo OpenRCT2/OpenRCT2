@@ -9,8 +9,8 @@
   <summary xml:lang="ko">놀이공원 시뮬레이션</summary>
   <summary xml:lang="pl">Symulator parku rozrywki</summary>
   <developer_name>The OpenRCT2 Team</developer_name>
-  <developer_name xml:lang="ko">OpenRCT2 팀</developer_name>
   <developer_name xml:lang="ca">Equip de l’OpenRCT2</developer_name>
+  <developer_name xml:lang="ko">OpenRCT2 팀</developer_name>
   <developer_name xml:lang="pl">Zespół OpenRCT2</developer_name>
   <launchable type="desktop-id">openrct2.desktop</launchable>
   <description>
