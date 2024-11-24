@@ -15,9 +15,9 @@
 #include <string>
 #include <string_view>
 
-#if NLOHMANN_JSON_VERSION_MAJOR < 3 || (NLOHMANN_JSON_VERSION_MAJOR == 3 && NLOHMANN_JSON_VERSION_MINOR < 6)
-#    error "Unsupported version of nlohmann json library, must be >= 3.6"
-#endif // NLOHMANN_JSON_VERSION_MAJOR < 3 || (NLOHMANN_JSON_VERSION_MAJOR == 3 && NLOHMANN_JSON_VERSION_MINOR < 6)
+#if NLOHMANN_JSON_VERSION_MAJOR < 3 || (NLOHMANN_JSON_VERSION_MAJOR == 3 && NLOHMANN_JSON_VERSION_MINOR < 9)
+#    error "Unsupported version of nlohmann json library, must be >= 3.9"
+#endif // NLOHMANN_JSON_VERSION_MAJOR < 3 || (NLOHMANN_JSON_VERSION_MAJOR == 3 && NLOHMANN_JSON_VERSION_MINOR < 9)
 
 using json_t = nlohmann::json;
 
