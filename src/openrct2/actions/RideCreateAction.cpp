@@ -18,6 +18,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
+#include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../rct1/RCT1.h"
 #include "../ride/Ride.h"
