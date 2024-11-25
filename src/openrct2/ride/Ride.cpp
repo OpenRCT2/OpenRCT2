@@ -1453,7 +1453,7 @@ static void RideBreakdownUpdate(Ride& ride)
     // continues.
     if ((ride.reliability == 0
          || static_cast<uint32_t>(ScenarioRand() & 0x2FFFFF) <= 1u + kRideInitialReliability - ride.reliability)
-        && !gameState.Cheats.DisableAllBreakdowns)
+        && !gameState.Cheats.disableAllBreakdowns)
     {
         int32_t breakdownReason = RideGetNewBreakdownProblem(ride);
         if (breakdownReason != -1)
@@ -1511,7 +1511,7 @@ static int32_t RideGetNewBreakdownProblem(const Ride& ride)
             return -1;
 
     // If brakes failure is disabled, also take it out of the equation (see above comment why)
-    if (GetGameState().Cheats.DisableBrakesFailure)
+    if (GetGameState().Cheats.disableBrakesFailure)
         return -1;
 
     auto monthsOld = ride.GetAge();
@@ -5108,7 +5108,7 @@ void Ride::UpdateMaxVehicles()
         }
         int32_t newCarsPerTrain = std::max(proposed_num_cars_per_train, rideEntry->min_cars_in_train);
         maxCarsPerTrain = std::max(maxCarsPerTrain, static_cast<int32_t>(rideEntry->min_cars_in_train));
-        if (!GetGameState().Cheats.DisableTrainLengthLimit)
+        if (!GetGameState().Cheats.disableTrainLengthLimit)
         {
             newCarsPerTrain = std::min(maxCarsPerTrain, newCarsPerTrain);
         }
@@ -5197,7 +5197,7 @@ void Ride::UpdateMaxVehicles()
         maxNumTrains = rideEntry->cars_per_flat_ride;
     }
 
-    if (GetGameState().Cheats.DisableTrainLengthLimit)
+    if (GetGameState().Cheats.disableTrainLengthLimit)
     {
         maxNumTrains = OpenRCT2::Limits::kMaxTrainsPerRide;
     }
@@ -5532,7 +5532,7 @@ int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType)
                 }
 
                 // Can happen in select-by-track-type mode
-                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.IgnoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.ignoreResearchStatus)
                 {
                     continue;
                 }
@@ -5761,7 +5761,7 @@ void Ride::FormatNameTo(Formatter& ft) const
 
 uint64_t Ride::GetAvailableModes() const
 {
-    if (GetGameState().Cheats.ShowAllOperatingModes)
+    if (GetGameState().Cheats.showAllOperatingModes)
         return AllRideModesAvailable;
 
     return GetRideTypeDescriptor().RideModes;
@@ -5943,7 +5943,7 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
         }
     }
 
-    if (subtype != OBJECT_ENTRY_INDEX_NULL && !GetGameState().Cheats.EnableAllDrawableTrackPieces)
+    if (subtype != OBJECT_ENTRY_INDEX_NULL && !GetGameState().Cheats.enableAllDrawableTrackPieces)
     {
         const auto* rideEntry = GetRideEntryByIndex(subtype);
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)

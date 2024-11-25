@@ -209,7 +209,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                     auto res = SetOperatingSetting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
                     if (res == kMoney64Undefined)
                     {
-                        if (!GetGameState().Cheats.AllowArbitraryRideTypeChanges)
+                        if (!GetGameState().Cheats.allowArbitraryRideTypeChanges)
                         {
                             console.WriteFormatLine(
                                 "That didn't work. Try enabling the 'Allow arbitrary ride type changes' cheat");
@@ -718,15 +718,15 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "cheat_sandbox_mode")
         {
-            console.WriteFormatLine("cheat_sandbox_mode %d", GetGameState().Cheats.SandboxMode);
+            console.WriteFormatLine("cheat_sandbox_mode %d", GetGameState().Cheats.sandboxMode);
         }
         else if (argv[0] == "cheat_disable_clearance_checks")
         {
-            console.WriteFormatLine("cheat_disable_clearance_checks %d", GetGameState().Cheats.DisableClearanceChecks);
+            console.WriteFormatLine("cheat_disable_clearance_checks %d", GetGameState().Cheats.disableClearanceChecks);
         }
         else if (argv[0] == "cheat_disable_support_limits")
         {
-            console.WriteFormatLine("cheat_disable_support_limits %d", GetGameState().Cheats.DisableSupportLimits);
+            console.WriteFormatLine("cheat_disable_support_limits %d", GetGameState().Cheats.disableSupportLimits);
         }
         else if (argv[0] == "current_rotation")
         {
@@ -1109,7 +1109,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "cheat_sandbox_mode" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            if (GetGameState().Cheats.SandboxMode != (int_val[0] != 0))
+            if (GetGameState().Cheats.sandboxMode != (int_val[0] != 0))
             {
                 auto cheatSetAction = CheatSetAction(CheatType::SandboxMode, int_val[0] != 0);
                 cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
@@ -1127,7 +1127,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "cheat_disable_clearance_checks" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            if (GetGameState().Cheats.DisableClearanceChecks != (int_val[0] != 0))
+            if (GetGameState().Cheats.disableClearanceChecks != (int_val[0] != 0))
             {
                 auto cheatSetAction = CheatSetAction(CheatType::DisableClearanceChecks, int_val[0] != 0);
                 cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
@@ -1145,7 +1145,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "cheat_disable_support_limits" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            if (GetGameState().Cheats.DisableSupportLimits != (int_val[0] != 0))
+            if (GetGameState().Cheats.disableSupportLimits != (int_val[0] != 0))
             {
                 auto cheatSetAction = CheatSetAction(CheatType::DisableSupportLimits, int_val[0] != 0);
                 cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {

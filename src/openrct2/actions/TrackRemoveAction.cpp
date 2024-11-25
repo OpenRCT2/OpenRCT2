@@ -440,7 +440,7 @@ GameActions::Result TrackRemoveAction::Execute() const
 
         InvalidateTestResults(*ride);
         FootpathQueueChainReset();
-        if (!GetGameState().Cheats.DisableClearanceChecks || !(tileElement->IsGhost()))
+        if (!GetGameState().Cheats.disableClearanceChecks || !(tileElement->IsGhost()))
         {
             FootpathRemoveEdgesAt(mapLoc, tileElement);
         }

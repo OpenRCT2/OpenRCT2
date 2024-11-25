@@ -1591,7 +1591,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
                     if (Happiness >= 180)
                         itemValue /= 2;
                 }
-                if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)) && !(GetGameState().Cheats.IgnorePrice))
+                if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)) && !(GetGameState().Cheats.ignorePrice))
                 {
                     // "I'm not paying that much for x"
                     InsertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
@@ -2066,7 +2066,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 // excitement check and will only do a basic intensity check when they arrive at the ride itself.
                 if (ride.id == GuestHeadingToRideId)
                 {
-                    if (ride.ratings.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
+                    if (ride.ratings.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.ignoreRideIntensity)
                     {
                         PeepRideIsTooIntense(this, ride, peepAtRide);
                         return false;
@@ -2093,7 +2093,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     // ride intensity check and get me on a sheltered ride!
                     if (!isPrecipitating || !ShouldRideWhileRaining(ride))
                     {
-                        if (!GetGameState().Cheats.IgnoreRideIntensity)
+                        if (!GetGameState().Cheats.ignoreRideIntensity)
                         {
                             // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                             // at 10.0 (before happiness calculations). A full happiness bar will increase the max
@@ -2159,7 +2159,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     return false;
                 }
 
-                if (!GetGameState().Cheats.IgnoreRideIntensity)
+                if (!GetGameState().Cheats.ignoreRideIntensity)
                 {
                     if (ride.max_positive_vertical_g > FIXED_2DP(5, 00) || ride.max_negative_vertical_g < FIXED_2DP(-4, 00)
                         || ride.max_lateral_g > FIXED_2DP(4, 00))
@@ -2182,7 +2182,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
 
                 // Peeps won't pay more than twice the value of the ride.
                 ridePrice = RideGetPrice(ride);
-                if ((ridePrice > (value * 2)) && !(gameState.Cheats.IgnorePrice))
+                if ((ridePrice > (value * 2)) && !(gameState.Cheats.ignorePrice))
                 {
                     if (peepAtRide)
                     {
@@ -2250,7 +2250,7 @@ bool Guest::ShouldGoToShop(Ride& ride, bool peepAtShop)
 
         // The amount that peeps are willing to pay to use the Toilets scales with their toilet stat.
         // It effectively has a minimum of $0.10 (due to the check above) and a maximum of $0.60.
-        if ((RideGetPrice(ride) * 40 > Toilet) && !GetGameState().Cheats.IgnorePrice)
+        if ((RideGetPrice(ride) * 40 > Toilet) && !GetGameState().Cheats.ignorePrice)
         {
             if (peepAtShop)
             {
@@ -2657,7 +2657,7 @@ static bool PeepCheckRidePriceAtEntrance(Guest* peep, const Ride& ride, money64 
     auto value = ride.value;
     if (value != RIDE_VALUE_UNDEFINED)
     {
-        if (((value * 2) < ridePrice) && !(GetGameState().Cheats.IgnorePrice))
+        if (((value * 2) < ridePrice) && !(GetGameState().Cheats.ignorePrice))
         {
             peep->InsertNewThought(PeepThoughtType::BadValue, peep->CurrentRide);
             PeepUpdateRideAtEntranceTryLeave(peep);
@@ -2873,7 +2873,7 @@ static bool PeepShouldGoOnRideAgain(Guest* peep, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.ratings.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
+    if (ride.ratings.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.ignoreRideIntensity)
         return false;
     if (peep->Happiness < 180)
         return false;
@@ -2918,7 +2918,7 @@ static bool PeepReallyLikedRide(Guest* peep, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.ratings.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.IgnoreRideIntensity)
+    if (ride.ratings.intensity > RIDE_RATING(10, 00) && !GetGameState().Cheats.ignoreRideIntensity)
         return false;
     return true;
 }
@@ -3037,7 +3037,7 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
     if (nearby_music == 1 && num_rubbish < 20)
         return PeepThoughtType::Music;
 
-    if (num_rubbish < 2 && !GetGameState().Cheats.DisableLittering)
+    if (num_rubbish < 2 && !GetGameState().Cheats.disableLittering)
         // if disable littering cheat is enabled, peeps will not have the "clean and tidy park" thought
         return PeepThoughtType::VeryClean;
 
@@ -6210,7 +6210,7 @@ static PathElement* FindBreakableElement(const CoordsXYZ& loc)
  */
 static void PeepUpdateWalkingBreakScenery(Guest* peep)
 {
-    if (GetGameState().Cheats.DisableVandalism)
+    if (GetGameState().Cheats.disableVandalism)
         return;
 
     if (!(peep->PeepFlags & PEEP_FLAGS_ANGRY))

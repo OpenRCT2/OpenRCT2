@@ -640,7 +640,7 @@ bool SceneryGroupIsInvented(int32_t sgIndex)
         return true;
     }
 
-    if (GetGameState().Cheats.IgnoreResearchStatus)
+    if (GetGameState().Cheats.ignoreResearchStatus)
     {
         return true;
     }

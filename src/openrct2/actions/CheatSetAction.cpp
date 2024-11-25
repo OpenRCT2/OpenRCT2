@@ -107,53 +107,53 @@ GameActions::Result CheatSetAction::Execute() const
     switch (static_cast<CheatType>(_cheatType.id))
     {
         case CheatType::SandboxMode:
-            gameState.Cheats.SandboxMode = _param1 != 0;
+            gameState.Cheats.sandboxMode = _param1 != 0;
             WindowInvalidateByClass(WindowClass::Map);
             WindowInvalidateByClass(WindowClass::Footpath);
             break;
         case CheatType::DisableClearanceChecks:
-            gameState.Cheats.DisableClearanceChecks = _param1 != 0;
+            gameState.Cheats.disableClearanceChecks = _param1 != 0;
             // Required to update the clearance checks overlay on the Cheats button.
             WindowInvalidateByClass(WindowClass::TopToolbar);
             break;
         case CheatType::DisableSupportLimits:
-            gameState.Cheats.DisableSupportLimits = _param1 != 0;
+            gameState.Cheats.disableSupportLimits = _param1 != 0;
             break;
         case CheatType::ShowAllOperatingModes:
-            gameState.Cheats.ShowAllOperatingModes = _param1 != 0;
+            gameState.Cheats.showAllOperatingModes = _param1 != 0;
             break;
         case CheatType::ShowVehiclesFromOtherTrackTypes:
-            gameState.Cheats.ShowVehiclesFromOtherTrackTypes = _param1 != 0;
+            gameState.Cheats.showVehiclesFromOtherTrackTypes = _param1 != 0;
             break;
         case CheatType::FastLiftHill:
-            gameState.Cheats.UnlockOperatingLimits = _param1 != 0;
+            gameState.Cheats.unlockOperatingLimits = _param1 != 0;
             break;
         case CheatType::DisableBrakesFailure:
-            gameState.Cheats.DisableBrakesFailure = _param1 != 0;
+            gameState.Cheats.disableBrakesFailure = _param1 != 0;
             break;
         case CheatType::DisableAllBreakdowns:
-            gameState.Cheats.DisableAllBreakdowns = _param1 != 0;
+            gameState.Cheats.disableAllBreakdowns = _param1 != 0;
             break;
         case CheatType::DisableTrainLengthLimit:
-            gameState.Cheats.DisableTrainLengthLimit = _param1 != 0;
+            gameState.Cheats.disableTrainLengthLimit = _param1 != 0;
             break;
         case CheatType::EnableChainLiftOnAllTrack:
-            gameState.Cheats.EnableChainLiftOnAllTrack = _param1 != 0;
+            gameState.Cheats.enableChainLiftOnAllTrack = _param1 != 0;
             break;
         case CheatType::BuildInPauseMode:
-            gameState.Cheats.BuildInPauseMode = _param1 != 0;
+            gameState.Cheats.buildInPauseMode = _param1 != 0;
             break;
         case CheatType::IgnoreRideIntensity:
-            gameState.Cheats.IgnoreRideIntensity = _param1 != 0;
+            gameState.Cheats.ignoreRideIntensity = _param1 != 0;
             break;
         case CheatType::IgnorePrice:
-            gameState.Cheats.IgnorePrice = _param1 != 0;
+            gameState.Cheats.ignorePrice = _param1 != 0;
             break;
         case CheatType::DisableVandalism:
-            gameState.Cheats.DisableVandalism = _param1 != 0;
+            gameState.Cheats.disableVandalism = _param1 != 0;
             break;
         case CheatType::DisableLittering:
-            gameState.Cheats.DisableLittering = _param1 != 0;
+            gameState.Cheats.disableLittering = _param1 != 0;
             break;
         case CheatType::NoMoney:
             SetScenarioNoMoney(_param1 != 0);
@@ -192,7 +192,7 @@ GameActions::Result CheatSetAction::Execute() const
             RemoveLitter();
             break;
         case CheatType::DisablePlantAging:
-            gameState.Cheats.DisablePlantAging = _param1 != 0;
+            gameState.Cheats.disablePlantAging = _param1 != 0;
             break;
         case CheatType::SetStaffSpeed:
             SetStaffSpeed(_param1);
@@ -221,10 +221,10 @@ GameActions::Result CheatSetAction::Execute() const
             ClimateForceWeather(WeatherType{ static_cast<uint8_t>(_param1) });
             break;
         case CheatType::FreezeWeather:
-            gameState.Cheats.FreezeWeather = _param1 != 0;
+            gameState.Cheats.freezeWeather = _param1 != 0;
             break;
         case CheatType::NeverEndingMarketing:
-            gameState.Cheats.NeverendingMarketing = _param1 != 0;
+            gameState.Cheats.neverendingMarketing = _param1 != 0;
             break;
         case CheatType::OpenClosePark:
             ParkSetOpen(!gameState.Park.IsOpen());
@@ -236,20 +236,20 @@ GameActions::Result CheatSetAction::Execute() const
             Park::SetForcedRating(_param1);
             break;
         case CheatType::AllowArbitraryRideTypeChanges:
-            gameState.Cheats.AllowArbitraryRideTypeChanges = _param1 != 0;
+            gameState.Cheats.allowArbitraryRideTypeChanges = _param1 != 0;
             WindowInvalidateByClass(WindowClass::Ride);
             break;
         case CheatType::OwnAllLand:
             OwnAllLand();
             break;
         case CheatType::DisableRideValueAging:
-            gameState.Cheats.DisableRideValueAging = _param1 != 0;
+            gameState.Cheats.disableRideValueAging = _param1 != 0;
             break;
         case CheatType::IgnoreResearchStatus:
-            gameState.Cheats.IgnoreResearchStatus = _param1 != 0;
+            gameState.Cheats.ignoreResearchStatus = _param1 != 0;
             break;
         case CheatType::EnableAllDrawableTrackPieces:
-            gameState.Cheats.EnableAllDrawableTrackPieces = _param1 != 0;
+            gameState.Cheats.enableAllDrawableTrackPieces = _param1 != 0;
             break;
         case CheatType::CreateDucks:
             CreateDucks(_param1);
@@ -258,13 +258,13 @@ GameActions::Result CheatSetAction::Execute() const
             Duck::RemoveAll();
             break;
         case CheatType::AllowTrackPlaceInvalidHeights:
-            gameState.Cheats.AllowTrackPlaceInvalidHeights = _param1 != 0;
+            gameState.Cheats.allowTrackPlaceInvalidHeights = _param1 != 0;
             break;
         case CheatType::AllowRegularPathAsQueue:
-            gameState.Cheats.AllowRegularPathAsQueue = _param1 != 0;
+            gameState.Cheats.allowRegularPathAsQueue = _param1 != 0;
             break;
         case CheatType::AllowSpecialColourSchemes:
-            gameState.Cheats.AllowSpecialColourSchemes = static_cast<bool>(_param1);
+            gameState.Cheats.allowSpecialColourSchemes = static_cast<bool>(_param1);
             break;
         case CheatType::RemoveParkFences:
             RemoveParkFences();

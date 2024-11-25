@@ -636,7 +636,7 @@ void RideConstructionSetDefaultNextPiece()
             _previousTrackPitchEnd = slope;
             _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain()
                 && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
-                    || GetGameState().Cheats.EnableChainLiftOnAllTrack);
+                    || GetGameState().Cheats.enableChainLiftOnAllTrack);
             break;
         }
         case RideConstructionState::Back:
@@ -682,7 +682,7 @@ void RideConstructionSetDefaultNextPiece()
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
-            if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
                 _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain();
             }

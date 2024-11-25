@@ -164,7 +164,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->NumTrains = 1;
 
     auto& gameState = GetGameState();
-    if (gameState.Cheats.DisableTrainLengthLimit)
+    if (gameState.Cheats.disableTrainLengthLimit)
     {
         // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled
         if (rideEntry->cars_per_flat_ride == NoFlatRideCars)

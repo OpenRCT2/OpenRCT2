@@ -549,10 +549,10 @@ static StringId window_cheats_page_titles[] = {
                 {
                     auto ft = Formatter::Common();
                     ft.Add<money64>(1000.00_GBP);
-                    SetCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gameState.Cheats.IgnoreRideIntensity);
-                    SetCheckboxValue(WIDX_GUEST_IGNORE_PRICE, gameState.Cheats.IgnorePrice);
-                    SetCheckboxValue(WIDX_DISABLE_VANDALISM, gameState.Cheats.DisableVandalism);
-                    SetCheckboxValue(WIDX_DISABLE_LITTERING, gameState.Cheats.DisableLittering);
+                    SetCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gameState.Cheats.ignoreRideIntensity);
+                    SetCheckboxValue(WIDX_GUEST_IGNORE_PRICE, gameState.Cheats.ignorePrice);
+                    SetCheckboxValue(WIDX_DISABLE_VANDALISM, gameState.Cheats.disableVandalism);
+                    SetCheckboxValue(WIDX_DISABLE_LITTERING, gameState.Cheats.disableLittering);
                     break;
                 }
                 case WINDOW_CHEATS_PAGE_PARK:
@@ -561,32 +561,32 @@ static StringId window_cheats_page_titles[] = {
                         widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
 
                     SetCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
-                    SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gameState.Cheats.NeverendingMarketing);
-                    SetCheckboxValue(WIDX_ALLOW_BUILD_IN_PAUSE_MODE, gameState.Cheats.BuildInPauseMode);
-                    SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gameState.Cheats.AllowRegularPathAsQueue);
-                    SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gameState.Cheats.AllowSpecialColourSchemes);
+                    SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gameState.Cheats.neverendingMarketing);
+                    SetCheckboxValue(WIDX_ALLOW_BUILD_IN_PAUSE_MODE, gameState.Cheats.buildInPauseMode);
+                    SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gameState.Cheats.allowRegularPathAsQueue);
+                    SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gameState.Cheats.allowSpecialColourSchemes);
                     break;
                 case WINDOW_CHEATS_PAGE_RIDES:
-                    SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gameState.Cheats.UnlockOperatingLimits);
-                    SetCheckboxValue(WIDX_DISABLE_BRAKES_FAILURE, gameState.Cheats.DisableBrakesFailure);
-                    SetCheckboxValue(WIDX_DISABLE_ALL_BREAKDOWNS, gameState.Cheats.DisableAllBreakdowns);
-                    SetCheckboxValue(WIDX_SHOW_ALL_OPERATING_MODES, gameState.Cheats.ShowAllOperatingModes);
+                    SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gameState.Cheats.unlockOperatingLimits);
+                    SetCheckboxValue(WIDX_DISABLE_BRAKES_FAILURE, gameState.Cheats.disableBrakesFailure);
+                    SetCheckboxValue(WIDX_DISABLE_ALL_BREAKDOWNS, gameState.Cheats.disableAllBreakdowns);
+                    SetCheckboxValue(WIDX_SHOW_ALL_OPERATING_MODES, gameState.Cheats.showAllOperatingModes);
                     SetCheckboxValue(
-                        WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, gameState.Cheats.ShowVehiclesFromOtherTrackTypes);
-                    SetCheckboxValue(WIDX_DISABLE_TRAIN_LENGTH_LIMITS, gameState.Cheats.DisableTrainLengthLimit);
-                    SetCheckboxValue(WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, gameState.Cheats.EnableChainLiftOnAllTrack);
-                    SetCheckboxValue(WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gameState.Cheats.AllowArbitraryRideTypeChanges);
-                    SetCheckboxValue(WIDX_DISABLE_RIDE_VALUE_AGING, gameState.Cheats.DisableRideValueAging);
-                    SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gameState.Cheats.IgnoreResearchStatus);
-                    SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gameState.Cheats.EnableAllDrawableTrackPieces);
-                    SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gameState.Cheats.AllowTrackPlaceInvalidHeights);
+                        WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, gameState.Cheats.showVehiclesFromOtherTrackTypes);
+                    SetCheckboxValue(WIDX_DISABLE_TRAIN_LENGTH_LIMITS, gameState.Cheats.disableTrainLengthLimit);
+                    SetCheckboxValue(WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, gameState.Cheats.enableChainLiftOnAllTrack);
+                    SetCheckboxValue(WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gameState.Cheats.allowArbitraryRideTypeChanges);
+                    SetCheckboxValue(WIDX_DISABLE_RIDE_VALUE_AGING, gameState.Cheats.disableRideValueAging);
+                    SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gameState.Cheats.ignoreResearchStatus);
+                    SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gameState.Cheats.enableAllDrawableTrackPieces);
+                    SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gameState.Cheats.allowTrackPlaceInvalidHeights);
                     SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gameState.Cheats.makeAllDestructible);
                     break;
                 case WINDOW_CHEATS_PAGE_STAFF:
-                    SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.Cheats.DisablePlantAging);
+                    SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.Cheats.disablePlantAging);
                     break;
                 case WINDOW_CHEATS_PAGE_WEATHER:
-                    SetCheckboxValue(WIDX_FREEZE_WEATHER, gameState.Cheats.FreezeWeather);
+                    SetCheckboxValue(WIDX_FREEZE_WEATHER, gameState.Cheats.freezeWeather);
                     break;
             }
 
@@ -1060,7 +1060,7 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::HaveFun);
                     break;
                 case WIDX_NEVERENDING_MARKETING:
-                    CheatsSet(CheatType::NeverEndingMarketing, !gameState.Cheats.NeverendingMarketing);
+                    CheatsSet(CheatType::NeverEndingMarketing, !gameState.Cheats.neverendingMarketing);
                     break;
                 case WIDX_FORCE_PARK_RATING:
                     if (Park::GetForcedRating() >= 0)
@@ -1073,13 +1073,13 @@ static StringId window_cheats_page_titles[] = {
                     }
                     break;
                 case WIDX_ALLOW_BUILD_IN_PAUSE_MODE:
-                    CheatsSet(CheatType::BuildInPauseMode, !gameState.Cheats.BuildInPauseMode);
+                    CheatsSet(CheatType::BuildInPauseMode, !gameState.Cheats.buildInPauseMode);
                     break;
                 case WIDX_ALLOW_REGULAR_PATH_AS_QUEUE:
-                    CheatsSet(CheatType::AllowRegularPathAsQueue, !gameState.Cheats.AllowRegularPathAsQueue);
+                    CheatsSet(CheatType::AllowRegularPathAsQueue, !gameState.Cheats.allowRegularPathAsQueue);
                     break;
                 case WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES:
-                    CheatsSet(CheatType::AllowSpecialColourSchemes, !gameState.Cheats.AllowSpecialColourSchemes);
+                    CheatsSet(CheatType::AllowSpecialColourSchemes, !gameState.Cheats.allowSpecialColourSchemes);
                     break;
             }
         }
@@ -1105,7 +1105,7 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::RemoveLitter);
                     break;
                 case WIDX_DISABLE_PLANT_AGING:
-                    CheatsSet(CheatType::DisablePlantAging, !gameState.Cheats.DisablePlantAging);
+                    CheatsSet(CheatType::DisablePlantAging, !gameState.Cheats.disablePlantAging);
                     break;
             }
         }
@@ -1116,7 +1116,7 @@ static StringId window_cheats_page_titles[] = {
             switch (widgetIndex)
             {
                 case WIDX_FREEZE_WEATHER:
-                    CheatsSet(CheatType::FreezeWeather, !gameState.Cheats.FreezeWeather);
+                    CheatsSet(CheatType::FreezeWeather, !gameState.Cheats.freezeWeather);
                     break;
                 case WIDX_CREATE_DUCKS:
                     CheatsSet(CheatType::CreateDucks, kCheatsDuckIncrement);
@@ -1245,16 +1245,16 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::GiveAllGuests, OBJECT_UMBRELLA);
                     break;
                 case WIDX_GUEST_IGNORE_RIDE_INTENSITY:
-                    CheatsSet(CheatType::IgnoreRideIntensity, !gameState.Cheats.IgnoreRideIntensity);
+                    CheatsSet(CheatType::IgnoreRideIntensity, !gameState.Cheats.ignoreRideIntensity);
                     break;
                 case WIDX_GUEST_IGNORE_PRICE:
-                    CheatsSet(CheatType::IgnorePrice, !gameState.Cheats.IgnorePrice);
+                    CheatsSet(CheatType::IgnorePrice, !gameState.Cheats.ignorePrice);
                     break;
                 case WIDX_DISABLE_VANDALISM:
-                    CheatsSet(CheatType::DisableVandalism, !gameState.Cheats.DisableVandalism);
+                    CheatsSet(CheatType::DisableVandalism, !gameState.Cheats.disableVandalism);
                     break;
                 case WIDX_DISABLE_LITTERING:
-                    CheatsSet(CheatType::DisableLittering, !gameState.Cheats.DisableLittering);
+                    CheatsSet(CheatType::DisableLittering, !gameState.Cheats.disableLittering);
                     break;
             }
         }
@@ -1274,13 +1274,13 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::FixRides);
                     break;
                 case WIDX_UNLOCK_OPERATING_LIMITS:
-                    CheatsSet(CheatType::FastLiftHill, !gameState.Cheats.UnlockOperatingLimits);
+                    CheatsSet(CheatType::FastLiftHill, !gameState.Cheats.unlockOperatingLimits);
                     break;
                 case WIDX_DISABLE_BRAKES_FAILURE:
-                    CheatsSet(CheatType::DisableBrakesFailure, !gameState.Cheats.DisableBrakesFailure);
+                    CheatsSet(CheatType::DisableBrakesFailure, !gameState.Cheats.disableBrakesFailure);
                     break;
                 case WIDX_DISABLE_ALL_BREAKDOWNS:
-                    CheatsSet(CheatType::DisableAllBreakdowns, !gameState.Cheats.DisableAllBreakdowns);
+                    CheatsSet(CheatType::DisableAllBreakdowns, !gameState.Cheats.disableAllBreakdowns);
                     break;
                 case WIDX_RESET_CRASH_STATUS:
                     CheatsSet(CheatType::ResetCrashStatus);
@@ -1290,59 +1290,59 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_SHOW_ALL_OPERATING_MODES:
                 {
-                    if (!gameState.Cheats.ShowAllOperatingModes)
+                    if (!gameState.Cheats.showAllOperatingModes)
                     {
                         ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                     }
-                    CheatsSet(CheatType::ShowAllOperatingModes, !gameState.Cheats.ShowAllOperatingModes);
+                    CheatsSet(CheatType::ShowAllOperatingModes, !gameState.Cheats.showAllOperatingModes);
                 }
                 break;
                 case WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES:
                 {
-                    if (!gameState.Cheats.ShowVehiclesFromOtherTrackTypes)
+                    if (!gameState.Cheats.showVehiclesFromOtherTrackTypes)
                     {
                         ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                     }
-                    CheatsSet(CheatType::ShowVehiclesFromOtherTrackTypes, !gameState.Cheats.ShowVehiclesFromOtherTrackTypes);
+                    CheatsSet(CheatType::ShowVehiclesFromOtherTrackTypes, !gameState.Cheats.showVehiclesFromOtherTrackTypes);
                 }
                 break;
                 case WIDX_DISABLE_TRAIN_LENGTH_LIMITS:
                 {
-                    if (!gameState.Cheats.DisableTrainLengthLimit)
+                    if (!gameState.Cheats.disableTrainLengthLimit)
                     {
                         ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                     }
-                    CheatsSet(CheatType::DisableTrainLengthLimit, !gameState.Cheats.DisableTrainLengthLimit);
+                    CheatsSet(CheatType::DisableTrainLengthLimit, !gameState.Cheats.disableTrainLengthLimit);
                 }
                 break;
                 case WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK:
-                    CheatsSet(CheatType::EnableChainLiftOnAllTrack, !gameState.Cheats.EnableChainLiftOnAllTrack);
+                    CheatsSet(CheatType::EnableChainLiftOnAllTrack, !gameState.Cheats.enableChainLiftOnAllTrack);
                     break;
                 case WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES:
                 {
-                    if (!gameState.Cheats.AllowArbitraryRideTypeChanges)
+                    if (!gameState.Cheats.allowArbitraryRideTypeChanges)
                     {
                         ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                     }
-                    CheatsSet(CheatType::AllowArbitraryRideTypeChanges, !gameState.Cheats.AllowArbitraryRideTypeChanges);
+                    CheatsSet(CheatType::AllowArbitraryRideTypeChanges, !gameState.Cheats.allowArbitraryRideTypeChanges);
                 }
                 break;
                 case WIDX_DISABLE_RIDE_VALUE_AGING:
-                    CheatsSet(CheatType::DisableRideValueAging, !gameState.Cheats.DisableRideValueAging);
+                    CheatsSet(CheatType::DisableRideValueAging, !gameState.Cheats.disableRideValueAging);
                     break;
                 case WIDX_IGNORE_RESEARCH_STATUS:
-                    CheatsSet(CheatType::IgnoreResearchStatus, !gameState.Cheats.IgnoreResearchStatus);
+                    CheatsSet(CheatType::IgnoreResearchStatus, !gameState.Cheats.ignoreResearchStatus);
                     break;
                 case WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES:
-                    CheatsSet(CheatType::EnableAllDrawableTrackPieces, !gameState.Cheats.EnableAllDrawableTrackPieces);
+                    CheatsSet(CheatType::EnableAllDrawableTrackPieces, !gameState.Cheats.enableAllDrawableTrackPieces);
                     break;
                 case WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS:
                 {
-                    if (!gameState.Cheats.AllowTrackPlaceInvalidHeights)
+                    if (!gameState.Cheats.allowTrackPlaceInvalidHeights)
                     {
                         ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                     }
-                    CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gameState.Cheats.AllowTrackPlaceInvalidHeights);
+                    CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gameState.Cheats.allowTrackPlaceInvalidHeights);
                 }
                 break;
             }

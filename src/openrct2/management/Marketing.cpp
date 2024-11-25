@@ -113,7 +113,7 @@ void MarketingUpdate()
 
     auto& gameState = GetGameState();
 
-    if (gameState.Cheats.NeverendingMarketing)
+    if (gameState.Cheats.neverendingMarketing)
         return;
 
     for (auto it = gameState.MarketingCampaigns.begin(); it != gameState.MarketingCampaigns.end();)

@@ -102,7 +102,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
     }
-    if (!GetGameState().Cheats.SandboxMode && !MapIsLocationOwned({ _loc, z }))
+    if (!GetGameState().Cheats.sandboxMode && !MapIsLocationOwned({ _loc, z }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -173,7 +173,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
 
     auto z = station.GetBaseZ();
     if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        && !GetGameState().Cheats.DisableClearanceChecks)
+        && !GetGameState().Cheats.disableClearanceChecks)
     {
         FootpathRemoveLitter({ _loc, z });
         WallRemoveAtZ({ _loc, z });
@@ -236,7 +236,7 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
     const auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                    : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
 
-    if (!GetGameState().Cheats.SandboxMode && !MapIsLocationOwned(loc))
+    if (!GetGameState().Cheats.sandboxMode && !MapIsLocationOwned(loc))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
