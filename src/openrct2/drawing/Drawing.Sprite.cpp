@@ -120,6 +120,9 @@ static void OverrideElementOffsets(size_t index, G1Element& element)
 {
     switch (index)
     {
+        case 25285:
+            element.x_offset -= 1;
+            break;
         case 25286:
         case 25317:
         case 25318:
