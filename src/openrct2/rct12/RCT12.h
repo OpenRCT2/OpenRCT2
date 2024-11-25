@@ -14,6 +14,7 @@
 #include "../management/Research.h"
 #include "../object/Object.h"
 #include "../ride/RideTypes.h"
+#include "../util/Util.h"
 #include "../world/tile_element/TileElementType.h"
 #include "Limits.h"
 
