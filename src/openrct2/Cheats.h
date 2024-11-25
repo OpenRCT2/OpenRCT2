@@ -45,8 +45,8 @@ struct CheatsState
     bool AllowTrackPlaceInvalidHeights;
     bool AllowRegularPathAsQueue;
     bool AllowSpecialColourSchemes;
-    bool MakeAllDestructible;
-    StaffSpeedCheat SelectedStaffSpeed;
+    bool makeAllDestructible;
+    StaffSpeedCheat selectedStaffSpeed;
     int32_t forcedParkRating;
 };
 
@@ -130,11 +130,11 @@ enum
 };
 
 constexpr auto kCheatsGiveGuestsMoney = 1000.00_GBP;
-constexpr int kCheatsTramIncrement = 250;
-constexpr int kCheatsDuckIncrement = 20;
-constexpr int kCheatsStaffFastSpeed = 0xFF;
-constexpr int kCheatsStaffNormalSpeed = 0x60;
-constexpr int kCheatsStaffFreezeSpeed = 0;
+constexpr int32_t kCheatsTramIncrement = 250;
+constexpr int32_t kCheatsDuckIncrement = 20;
+constexpr int32_t kCheatsStaffFastSpeed = 0xFF;
+constexpr int32_t kCheatsStaffNormalSpeed = 0x60;
+constexpr int32_t kCheatsStaffFreezeSpeed = 0;
 constexpr int32_t kForcedParkRatingDisabled = -1;
 
 void CheatsReset();

@@ -67,7 +67,7 @@ GameActions::Result RideDemolishAction::Query() const
 
     if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
          && _modifyType == RIDE_MODIFY_DEMOLISH)
-        && !GetGameState().Cheats.MakeAllDestructible)
+        && !GetGameState().Cheats.makeAllDestructible)
     {
         return GameActions::Result(
             GameActions::Status::NoClearance, STR_CANT_DEMOLISH_RIDE,

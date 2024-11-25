@@ -2336,7 +2336,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& gameState = GetGameState();
             disabled_widgets &= ~((1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_CONSTRUCTION));
             if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-                && !gameState.Cheats.MakeAllDestructible)
+                && !gameState.Cheats.makeAllDestructible)
                 disabled_widgets |= (1uLL << WIDX_DEMOLISH);
 
             auto ft = Formatter::Common();

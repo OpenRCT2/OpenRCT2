@@ -55,8 +55,8 @@ void CheatsReset()
     gameState.Cheats.AllowTrackPlaceInvalidHeights = false;
     gameState.Cheats.AllowRegularPathAsQueue = false;
     gameState.Cheats.AllowSpecialColourSchemes = false;
-    gameState.Cheats.MakeAllDestructible = false;
-    gameState.Cheats.SelectedStaffSpeed = StaffSpeedCheat::None;
+    gameState.Cheats.makeAllDestructible = false;
+    gameState.Cheats.selectedStaffSpeed = StaffSpeedCheat::None;
     gameState.Cheats.forcedParkRating = kForcedParkRatingDisabled;
 }
 
@@ -113,8 +113,8 @@ void CheatsSerialise(DataSerialiser& ds)
             ds, CheatType::AllowTrackPlaceInvalidHeights, gameState.Cheats.AllowTrackPlaceInvalidHeights, count);
         CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gameState.Cheats.AllowRegularPathAsQueue, count);
         CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gameState.Cheats.AllowSpecialColourSchemes, count);
-        CheatEntrySerialise(ds, CheatType::MakeDestructible, gameState.Cheats.MakeAllDestructible, count);
-        CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gameState.Cheats.SelectedStaffSpeed, count);
+        CheatEntrySerialise(ds, CheatType::MakeDestructible, gameState.Cheats.makeAllDestructible, count);
+        CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gameState.Cheats.selectedStaffSpeed, count);
         CheatEntrySerialise(ds, CheatType::IgnorePrice, gameState.Cheats.IgnorePrice, count);
         CheatEntrySerialise(ds, CheatType::SetForcedParkRating, gameState.Cheats.forcedParkRating, count);
 
@@ -219,10 +219,10 @@ void CheatsSerialise(DataSerialiser& ds)
                     ds << gameState.Cheats.AllowSpecialColourSchemes;
                     break;
                 case CheatType::MakeDestructible:
-                    ds << gameState.Cheats.MakeAllDestructible;
+                    ds << gameState.Cheats.makeAllDestructible;
                     break;
                 case CheatType::SetStaffSpeed:
-                    ds << gameState.Cheats.SelectedStaffSpeed;
+                    ds << gameState.Cheats.selectedStaffSpeed;
                     break;
                 case CheatType::SetForcedParkRating:
                     ds << gameState.Cheats.forcedParkRating;

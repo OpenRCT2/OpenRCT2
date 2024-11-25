@@ -580,7 +580,7 @@ static StringId window_cheats_page_titles[] = {
                     SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gameState.Cheats.IgnoreResearchStatus);
                     SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gameState.Cheats.EnableAllDrawableTrackPieces);
                     SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gameState.Cheats.AllowTrackPlaceInvalidHeights);
-                    SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gameState.Cheats.MakeAllDestructible);
+                    SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gameState.Cheats.makeAllDestructible);
                     break;
                 case WINDOW_CHEATS_PAGE_STAFF:
                     SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.Cheats.DisablePlantAging);
@@ -595,7 +595,7 @@ static StringId window_cheats_page_titles[] = {
 
             // Staff speed
             window_cheats_staff_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(
-                gameState.Cheats.SelectedStaffSpeed)];
+                gameState.Cheats.selectedStaffSpeed)];
 
             if (gScreenFlags & SCREEN_FLAGS_EDITOR)
             {
@@ -1007,7 +1007,7 @@ static StringId window_cheats_page_titles[] = {
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
-                    Dropdown::SetChecked(EnumValue(gameState.Cheats.SelectedStaffSpeed), true);
+                    Dropdown::SetChecked(EnumValue(gameState.Cheats.selectedStaffSpeed), true);
                 }
             }
         }
@@ -1141,17 +1141,17 @@ static StringId window_cheats_page_titles[] = {
                 switch (dropdownIndex)
                 {
                     case 0:
-                        gameState.Cheats.SelectedStaffSpeed = StaffSpeedCheat::None;
+                        gameState.Cheats.selectedStaffSpeed = StaffSpeedCheat::None;
                         speed = kCheatsStaffNormalSpeed;
                         break;
 
                     case 1:
-                        gameState.Cheats.SelectedStaffSpeed = StaffSpeedCheat::Frozen;
+                        gameState.Cheats.selectedStaffSpeed = StaffSpeedCheat::Frozen;
                         speed = kCheatsStaffFreezeSpeed;
                         break;
 
                     case 2:
-                        gameState.Cheats.SelectedStaffSpeed = StaffSpeedCheat::Fast;
+                        gameState.Cheats.selectedStaffSpeed = StaffSpeedCheat::Fast;
                         speed = kCheatsStaffFastSpeed;
                 }
                 CheatsSet(CheatType::SetStaffSpeed, speed);
@@ -1268,7 +1268,7 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::RenewRides);
                     break;
                 case WIDX_MAKE_DESTRUCTIBLE:
-                    CheatsSet(CheatType::MakeDestructible, !gameState.Cheats.MakeAllDestructible);
+                    CheatsSet(CheatType::MakeDestructible, !gameState.Cheats.makeAllDestructible);
                     break;
                 case WIDX_FIX_ALL:
                     CheatsSet(CheatType::FixRides);
