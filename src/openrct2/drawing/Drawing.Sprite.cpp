@@ -198,6 +198,8 @@ static void OverrideElementOffsets(size_t index, G1Element& element)
         case 25688:
         case 25689:
         case 25690:
+        case 25719:
+        case 25721:
         case 25723:
         case 25725:
         case 25727:
