@@ -14,6 +14,7 @@
 #include <cstdint>
 #include <optional>
 #include <string_view>
+#include <vector>
 
 namespace OpenRCT2
 {
@@ -24,6 +25,7 @@ namespace OpenRCT2
         struct FootpathMapping;
     }
 } // namespace OpenRCT2
+
 struct ObjectEntryDescriptor;
 class ObjectList;
 using ride_type_t = uint16_t;
@@ -35,6 +37,8 @@ void UpdateFootpathsFromMapping(
     ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
     ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
     const OpenRCT2::RCT2::FootpathMapping* footpathMapping);
+
+const std::vector<std::string_view>& GetLegacyPeepAnimationObjects(const ObjectList& entryList);
 
 /**
  * If new pieces get added to existing ride types, this could cause existing parks to change appearance,

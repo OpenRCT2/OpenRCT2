@@ -328,6 +328,11 @@
         "path": "icons/folder.png"
     },
     {
+        "path": "icons/peep_animations.png",
+        "x": 2,
+        "y": 1
+    },
+    {
         "path": "loader/loader_hybrid_supports.png",
         "y": 10
     },

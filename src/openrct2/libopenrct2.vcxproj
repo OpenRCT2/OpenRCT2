@@ -350,6 +350,7 @@
     <ClInclude Include="object\ObjectTypes.h" />
     <ClInclude Include="object\PathAdditionEntry.h" />
     <ClInclude Include="object\PathAdditionObject.h" />
+    <ClInclude Include="object\PeepAnimationsObject.h" />
     <ClInclude Include="object\PeepNamesObject.h" />
     <ClInclude Include="object\ResourceTable.h" />
     <ClInclude Include="object\RideObject.h" />
@@ -887,6 +888,7 @@
     <ClCompile Include="object\ObjectRepository.cpp" />
     <ClCompile Include="object\ObjectTypes.cpp" />
     <ClCompile Include="object\PathAdditionObject.cpp" />
+    <ClCompile Include="object\PeepAnimationsObject.cpp" />
     <ClCompile Include="object\PeepNamesObject.cpp" />
     <ClCompile Include="object\ResourceTable.cpp" />
     <ClCompile Include="object\RideObject.cpp" />

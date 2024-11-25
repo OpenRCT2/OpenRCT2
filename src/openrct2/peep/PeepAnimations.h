@@ -14,6 +14,11 @@
 #include "../drawing/ImageIndexType.h"
 #include "../entity/Peep.h"
 
+#include <span>
+
+enum class PeepAnimationGroup : uint8_t;
+enum class PeepAnimationType : uint8_t;
+
 namespace OpenRCT2
 {
     enum class AnimationPeepType : uint8_t
@@ -37,6 +42,7 @@ namespace OpenRCT2
     struct PeepAnimation
     {
         uint32_t base_image;
+        ImageIndex imageTableOffset{};
         std::span<const uint8_t> frame_offsets;
         SpriteBounds bounds{};
 

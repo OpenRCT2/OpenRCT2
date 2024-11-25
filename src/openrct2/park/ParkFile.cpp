@@ -385,6 +385,13 @@ namespace OpenRCT2
                         requiredObjects, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
                 }
 
+                if (version < kPeepAnimationObjectsVersion)
+                {
+                    // Add all legacy peep animation objects
+                    auto animObjects = GetLegacyPeepAnimationObjects(requiredObjects);
+                    AppendRequiredObjects(requiredObjects, ObjectType::PeepAnimations, animObjects);
+                }
+
                 RequiredObjects = std::move(requiredObjects);
             }
             else

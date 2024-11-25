@@ -9,7 +9,6 @@
 
 #include "PeepAnimations.h"
 
-#include "../Context.h"
 #include "../drawing/Drawing.h"
 #include "../entity/Peep.h"
 

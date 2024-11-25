@@ -9,8 +9,23 @@
 
 #pragma once
 
+#include "../core/IStream.hpp"
 #include "Object.h"
 
-extern const std::string_view MinimumRequiredObjects[2];
-extern const std::string_view DefaultSelectedObjects[119];
-extern const std::string_view DesignerSelectedObjects[39];
+#include <string>
+#include <vector>
+
+class PeepAnimationsObject final : public Object
+{
+private:
+    ImageIndex _imageOffsetId;
+
+public:
+    static constexpr ObjectType kObjectType = ObjectType::PeepAnimations;
+
+    void ReadJson(IReadObjectContext* context, json_t& root) override;
+    void Load() override;
+    void Unload() override;
+
+    void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
+};

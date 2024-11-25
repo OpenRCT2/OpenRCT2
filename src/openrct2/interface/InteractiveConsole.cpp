@@ -1163,7 +1163,8 @@ constexpr std::array _objectTypeNames = {
     "Footpath Surface",
     "Footpath Railings",
     "Audio",
-    "Guest Names",
+    "Peep Names",
+    "Peep Animations",
 };
 static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
 

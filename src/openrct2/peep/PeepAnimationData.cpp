@@ -9,7 +9,6 @@
 
 #include "PeepAnimationData.h"
 
-#include "../drawing/Drawing.h"
 #include "PeepAnimations.h"
 #include "PeepSpriteIds.h"
 
