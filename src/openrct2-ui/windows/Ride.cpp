@@ -47,6 +47,7 @@
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/MusicObject.h>
+#include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/StationObject.h>
