@@ -3747,3 +3747,5 @@ STR_6671    :Mostrar nombres ‘reales’ de empleados
 STR_6672    :Alternar entre mostrar nombres ‘reales’ y números de empleados
 STR_6673    :Translúcido
 STR_6674    :{MONTH}, Año {COMMA16}
+STR_6675    :Nombres de Personitas
+STR_6676    :Se debe seleccionar al menos un objeto de nombre de personita

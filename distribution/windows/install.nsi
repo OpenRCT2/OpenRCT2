@@ -35,7 +35,7 @@ SetCompressor LZMA
 
 ; Version Info
 VIProductVersion "${APPVERSIONINTERNAL}"
-VIAddVersionKey "ProductName" "OpenRCT2 ${APPBITS}-bit Installer for ${SUPPORTED_OS}"
+VIAddVersionKey "ProductName" "OpenRCT2 ${PLATFORM} Installer for ${SUPPORTED_OS}"
 VIAddVersionKey "Comments" "Installs ${APPNAMEANDVERSION}"
 VIAddVersionKey "CompanyName" "OpenRCT2 Developers"
 VIAddVersionKey "FileDescription" "Installs ${APPNAMEANDVERSION}"
@@ -44,7 +44,7 @@ VIAddVersionKey "InternalName" "InstOpenRCT2-${APPARCH}"
 VIAddVersionKey "FileVersion" "${APPVERSION}-${APPARCH}"
 VIAddVersionKey "LegalCopyright" " "
 ; Main Install settings
-Name "${APPNAMEANDVERSION} ${APPBITS}-bit for ${SUPPORTED_OS}"
+Name "${APPNAMEANDVERSION} ${PLATFORM} for ${SUPPORTED_OS}"
 
 ; NOTE: Keep trailing backslash!
 InstallDirRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Install Folder"
@@ -170,6 +170,9 @@ Section "!OpenRCT2" Section1
     File ..\..\contributors.md
     Push "$INSTDIR\contributors.md"
     Call unix2dos
+    File ..\..\PRIVACY.md
+    Push "$INSTDIR\PRIVACY.md"
+    Call unix2dos
     File ..\scripting.md
     Push "$INSTDIR\scripting.md"
     Call unix2dos
@@ -204,6 +207,7 @@ Section "!OpenRCT2" Section1
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Readme.lnk" "$INSTDIR\Readme.txt"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Changelog.lnk" "$INSTDIR\Changelog.txt"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Contributors.lnk" "$INSTDIR\contributors.md"
+    CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Privacy Policy.lnk" "$INSTDIR\PRIVACY.md"
     !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -240,6 +244,7 @@ Section "Uninstall"
     Delete "$SMPROGRAMS\$SHORTCUTS\Readme.lnk"
     Delete "$SMPROGRAMS\$SHORTCUTS\Changelog.lnk"
     Delete "$SMPROGRAMS\$SHORTCUTS\Contributors.lnk"
+    Delete "$SMPROGRAMS\$SHORTCUTS\Privacy Policy.lnk"
 
     ; Clean up OpenRCT2 dir
     Delete "$INSTDIR\changelog.txt"
@@ -247,6 +252,7 @@ Section "Uninstall"
     Delete "$INSTDIR\readme.txt"
     Delete "$INSTDIR\contributors.md"
     Delete "$INSTDIR\known_issues.txt"
+    Delete "$INSTDIR\PRIVACY.md"
     Delete "$INSTDIR\scripting.md"
     Delete "$INSTDIR\openrct2.d.ts"
     Delete "$INSTDIR\OGLdpf.log"
