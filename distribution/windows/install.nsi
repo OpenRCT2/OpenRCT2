@@ -255,7 +255,7 @@ Section "Uninstall"
     Delete "$INSTDIR\${OPENRCT2_COM}"
     Delete "$INSTDIR\INSTALL.LOG"
 
-    ; Data files
+    ; Remove data files
     RMDir /r "$INSTDIR\data"
 
     ; Remove remaining directories
