@@ -439,9 +439,10 @@ static void PrintAbout()
     Console::WriteLine("includes some 3rd party software under different licenses. See the file");
     Console::WriteLine("\"licence.txt\" shipped with the game for details.");
     Console::WriteLine();
-    Console::WriteLine("Website:      https://openrct2.io");
-    Console::WriteLine("GitHub:       https://github.com/OpenRCT2/OpenRCT2");
-    Console::WriteLine("Contributors: https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md");
+    Console::WriteLine("Website:        https://openrct2.io");
+    Console::WriteLine("GitHub:         https://github.com/OpenRCT2/OpenRCT2");
+    Console::WriteLine("Contributors:   https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md");
+    Console::WriteLine("Privacy Policy: https://github.com/OpenRCT2/OpenRCT2/blob/develop/PRIVACY.md");
     Console::WriteLine();
 }
 

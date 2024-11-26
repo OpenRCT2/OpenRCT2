@@ -1,4 +1,4 @@
-Last updated:    2024-08-04
+Last updated:    2024-11-19
 ------------------------------------------------------------------------
 
 
@@ -13,7 +13,8 @@ Table of contents
 6.0) Translation
 7.0) Troubleshooting
 8.0) Licensing
-9.0) Credits
+9.0) Privacy policy
+10.0) Credits
 
 1.0) About
 ---- -----
@@ -156,6 +157,10 @@ Google Benchmark | Apache 2.0 licence.
 
 Licences for sub-libraries used by the above may vary. For more information, visit the libraries' respective official websites.
 
-9.0) Credits
+9.0) Privacy policy
+
+For privacy policy, see the file 'PRIVACY.md'.
+
+10.0) Credits
 ---- -------
 For the full list of contributors to OpenRCT2, see the file 'contributors.md'.

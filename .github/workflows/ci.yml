@@ -16,6 +16,17 @@ on:
       - '.github/workflows/localisation.yml'
       - '.gitignore'
       - '.vscode/**'
+  workflow_dispatch:
+    inputs:
+      sign:
+        description: Sign binaries
+        type: choice
+        options:
+          - 'no'
+          - test-signing
+          - release-signing
+        default: test-signing
+
 defaults:
   run:
     shell: bash
@@ -34,6 +45,11 @@ jobs:
   build_variables:
     name: Get version info
     runs-on: ubuntu-latest
+    # We want to sign tagged releases with release certificates, but it is only allowed to be ran manually.
+    # Disable automatic runs for tags and force release signing for tags.
+    if: |
+      (startsWith(github.ref, 'refs/tags/v') && github.event_name == 'workflow_dispatch' && github.event.inputs.sign == 'release-signing') ||
+      (!startsWith(github.ref, 'refs/tags/v') && github.event.inputs.sign != 'release-signing')
     outputs:
       name: ${{ steps.artifact-name.outputs.name }}
       describe: ${{ steps.ghd.outputs.describe }}
@@ -41,6 +57,8 @@ jobs:
       distance: ${{ steps.ghd.outputs.distance }}
       tag: ${{ steps.ghd.outputs.tag }}
       push: ${{ steps.setenv.outputs.push }}
+      sign: ${{ steps.sign.outputs.sign }}
+      certificate: ${{ steps.sign.outputs.certificate }}
     steps:
       # We need to fetch entire repo to get the tags and correctly run `describe`
       - name: Check out code
@@ -75,6 +93,22 @@ jobs:
         run: |
           echo "name=${{ steps.ghd.outputs.describe }}"
           echo "name=${{ steps.ghd.outputs.describe }}" >> $GITHUB_OUTPUT
+      - name: Sign
+        id: sign
+        run: |
+          sign=${{ env.SIGNPATH_API_TOKEN != '' && github.event.inputs.sign != 'no' && (needs.build_variables.outputs.push || startsWith(github.ref, 'refs/tags/v')) }}
+          # if using workflow_dispatch, use the provided certificate
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            certificate=${{ github.event.inputs.sign }}
+          else
+            # Default to no signing
+            certificate=no
+            sign=false
+          fi
+          echo "sign=$sign"
+          echo "certificate=$certificate"
+          echo "sign=$sign" >> $GITHUB_OUTPUT
+          echo "certificate=$certificate" >> $GITHUB_OUTPUT
   lint-commit:
     name: Lint Commit Message
     if: github.event_name == 'pull_request'
@@ -139,13 +173,14 @@ jobs:
   windows:
     name: Windows
     runs-on: windows-latest
-    needs: [check-code-formatting, build_variables]
+    needs: [check-code-formatting, build_variables, g2dat]
     strategy:
       fail-fast: false
       matrix:
         platform: [win32, x64, arm64]
     env:
       PLATFORM: ${{ matrix.platform }}
+      DISTANCE_FROM_TAG: ${{ needs.build_variables.outputs.distance }}
     steps:
       - name: Setup environment
         run: |
@@ -161,12 +196,50 @@ jobs:
         uses: ammaraskar/msvc-problem-matcher@master
       - name: Build OpenRCT2
         run: . scripts/setenv && build
+      - name: Upload unsigned binaries
+        id: upload-windows-binaries-unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-unsigned-${{ matrix.platform }}
+          path: |
+            bin/openrct2.exe
+            bin/openrct2.com
+      # Sign the binaries first, so that all other artifacts (portable, installer, symbols) use signed binaries
+      - name: Sign binaries
+        id: sign-binaries
+        env:
+          SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
+        if: ${{ needs.build_variables.outputs.sign == 'true' }}
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: 645b821f-6283-45e1-8198-264997072801
+          project-slug: OpenRCT2
+          signing-policy-slug: ${{ needs.build_variables.outputs.certificate }}
+          artifact-configuration-slug: 'binaries'
+          github-artifact-id: ${{ steps.upload-windows-binaries-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: files-signed
+          parameters: |
+            version: "${{ env.OPENRCT2_VERSION }}.${{ needs.build_variables.outputs.distance }}-${{ needs.build_variables.outputs.short-sha }}"
+      - name: Use signed binaries
+        if: ${{ needs.build_variables.outputs.sign == 'true' }}
+        run: |
+          mv files-signed/openrct2.com bin/openrct2.com
+          mv files-signed/openrct2.exe bin/openrct2.exe
+      - name: Download g2.dat on ARM64
+        if: matrix.platform == 'arm64'
+        uses: actions/download-artifact@v4
+        with:
+          name: g2-${{ needs.build_variables.outputs.name }}.dat
+          path: bin/data/g2.dat
       - name: Build artifacts
         run: |
           . scripts/setenv -q
           build-portable
           build-symbols
           build-installer -i
+          echo "OPENRCT2_VERSION_EXTRA=$OPENRCT2_VERSION_EXTRA" >> "$GITHUB_ENV"
       - name: Rename artifacts
         run: |
           mv artifacts/openrct2-portable-*.zip artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-portable-$PLATFORM.zip
@@ -178,11 +251,36 @@ jobs:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-portable-${{ matrix.platform }}
           path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-portable-${{ matrix.platform }}.zip
           if-no-files-found: error
-      - name: Upload installer artifact (CI)
+      - name: Upload unsigned installer artifact (CI)
+        id: upload-windows-installer-unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-installer-${{ matrix.platform }}-unsigned
+          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
+          if-no-files-found: error
+      - name: Sign installer
+        id: sign-installer
+        if: ${{ needs.build_variables.outputs.sign == 'true' }}
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: 645b821f-6283-45e1-8198-264997072801
+          project-slug: OpenRCT2
+          signing-policy-slug: ${{ needs.build_variables.outputs.certificate }}
+          artifact-configuration-slug: 'installer'
+          github-artifact-id: ${{ steps.upload-windows-installer-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: files-signed
+          parameters: |
+            version: "${{ env.OPENRCT2_VERSION }}${{ env.OPENRCT2_VERSION_EXTRA }}"
+            product: "OpenRCT2 ${{ matrix.platform }} Installer for Windows 7 and later"
+      - name: Upload signed installer artifact (CI)
+        id: upload-windows-installer-signed
+        if: ${{ needs.build_variables.outputs.sign == 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-${{ runner.os }}-installer-${{ matrix.platform }}
-          path: artifacts/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
+          path: files-signed/OpenRCT2-${{ needs.build_variables.outputs.name }}-windows-installer-${{ matrix.platform }}.exe
           if-no-files-found: error
       - name: Upload symbols artifact (CI)
         uses: actions/upload-artifact@v4
@@ -245,7 +343,7 @@ jobs:
   macos-cmake:
     name: macOS (${{ matrix.arch }}) using CMake
     runs-on: macos-14
-    needs: check-code-formatting
+    needs: [check-code-formatting, build_variables]
     strategy:
       fail-fast: false
       matrix:
@@ -417,7 +515,7 @@ jobs:
           if-no-files-found: error
   linux-docker:
     name: Ubuntu Linux (Docker)
-    needs: check-code-formatting
+    needs: [check-code-formatting, build_variables]
     if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
@@ -443,7 +541,7 @@ jobs:
   linux-clang:
     name: Ubuntu Linux (noble, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
-    needs: check-code-formatting
+    needs: [check-code-formatting, build_variables]
     container: openrct2/openrct2-build:16-noble
     steps:
       - name: Checkout
@@ -539,6 +637,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           merge-multiple: true
+      # Having multiple artifacts named the same might be confusing to the users. Drop the unsigned versions.
+      - name: Remove unsigned artifacts
+        run: |
+          rm -rf *unsigned*
       - name: Concatenate sha1 files
         run: |
           ls -lR
@@ -551,11 +653,16 @@ jobs:
           sed -n '1,/^$/p' distribution/changelog.txt >> release_notes.txt
           echo "" >> release_notes.txt
 
+          echo "Release created in ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> release_notes.txt
+          echo "" >> release_notes.txt
+
           echo "SHA1 checksums:" >> release_notes.txt
           echo "\`\`\`" >> release_notes.txt
           cat OpenRCT2-${{ needs.build_variables.outputs.name }}-sha1sums.txt >> release_notes.txt
           echo "\`\`\`" >> release_notes.txt
           echo "" >> release_notes.txt
+
+          cat release_notes.txt
       # Only upload tagged releases, mark them as draft for manual verification
       - name: Create tagged release
         uses: softprops/action-gh-release@v2
@@ -563,7 +670,6 @@ jobs:
         with:
           draft: true
           files: |
-            OpenRCT2-${{ needs.build_variables.outputs.name }}-sha1sums.txt
             OpenRCT2-${{ needs.build_variables.outputs.name }}-*
           body_path: release_notes.txt
           tag_name: ${{ needs.build_variables.outputs.tag }}

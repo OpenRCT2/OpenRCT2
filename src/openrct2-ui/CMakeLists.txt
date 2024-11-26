@@ -184,6 +184,7 @@ if(MACOS_BUNDLE)
         PUBLIC ${ROOT_DIR}/distribution/readme.txt
         PUBLIC ${ROOT_DIR}/distribution/changelog.txt
         PUBLIC ${ROOT_DIR}/contributors.md
+        PUBLIC ${ROOT_DIR}/PRIVACY.md
         PUBLIC ${ROOT_DIR}/resources/mac/openrct2.icns
         )
 
@@ -192,6 +193,7 @@ if(MACOS_BUNDLE)
         ${ROOT_DIR}/distribution/readme.txt
         ${ROOT_DIR}/distribution/changelog.txt
         ${ROOT_DIR}/contributors.md
+        ${ROOT_DIR}/PRIVACY.md
         ${ROOT_DIR}/resources/mac/openrct2.icns
         )
 
