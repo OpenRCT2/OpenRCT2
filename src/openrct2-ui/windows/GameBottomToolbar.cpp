@@ -300,7 +300,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->BalloonColour), clipCoords);
                         }
-                        if (image_id_base >= kPeepSpriteUmbrellaStateNoneId
+                        if (image_id_base >= kPeepSpriteUmbrellaStateWalkingId
                             && image_id_base < kPeepSpriteUmbrellaStateSittingIdleId + 4)
                         {
                             GfxDrawSprite(cliped_dpi, ImageId(image_id_base + 32, guest->UmbrellaColour), clipCoords);
