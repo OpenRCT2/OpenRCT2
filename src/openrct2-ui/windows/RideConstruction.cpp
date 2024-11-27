@@ -425,7 +425,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
             if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
-                && !GetGameState().Cheats.EnableAllDrawableTrackPieces)
+                && !GetGameState().Cheats.enableAllDrawableTrackPieces)
             {
                 // Disable lift hill toggle and banking if current track piece is uphill
                 if (_previousTrackPitchEnd == TrackPitch::Up25 || _previousTrackPitchEnd == TrackPitch::Up60
@@ -748,7 +748,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN);
             }
-            if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
                 if (_currentTrackPitchEnd != TrackPitch::None && !IsTrackEnabled(TrackGroup::liftHillCurve))
                 {
@@ -841,7 +841,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_currentTrackPitchEnd == TrackPitch::None && _previousTrackRollEnd != TrackRoll::None
                             && (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
-                                || GetGameState().Cheats.EnableAllDrawableTrackPieces))
+                                || GetGameState().Cheats.enableAllDrawableTrackPieces))
                         {
                             disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
                         }
@@ -905,7 +905,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // If chain lift cheat is enabled then show the chain lift widget no matter what
-            if (GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            if (GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
                 disabledWidgets &= ~(1uLL << WIDX_CHAIN_LIFT);
             }
@@ -1330,7 +1330,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CHAIN_LIFT:
                     RideConstructionInvalidateCurrentTrack();
                     _currentTrackHasLiftHill = !_currentTrackHasLiftHill;
-                    if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+                    if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.enableChainLiftOnAllTrack)
                         _currentTrackAlternative.unset(AlternativeTrackFlag::alternativePieces);
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
@@ -1383,7 +1383,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto trackSpeedIncrement = kDefaultSpeedIncrement;
                         auto trackSpeedMinimum = kDefaultMinimumSpeed;
-                        if (GetGameState().Cheats.UnlockOperatingLimits)
+                        if (GetGameState().Cheats.unlockOperatingLimits)
                         {
                             trackSpeedMinimum = 0;
                         }
@@ -1414,7 +1414,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_O_TRACK:
                     RideConstructionInvalidateCurrentTrack();
                     _currentTrackAlternative.set(AlternativeTrackFlag::alternativePieces);
-                    if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
+                    if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
                         _currentTrackHasLiftHill = false;
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
@@ -1775,13 +1775,13 @@ namespace OpenRCT2::Ui::Windows
             const auto& gameState = GetGameState();
             if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                 && (_currentTrackPitchEnd == TrackPitch::Up25 || _currentTrackPitchEnd == TrackPitch::Up60)
-                && !gameState.Cheats.EnableAllDrawableTrackPieces)
+                && !gameState.Cheats.enableAllDrawableTrackPieces)
             {
                 _currentTrackHasLiftHill = true;
             }
 
             if ((IsTrackEnabled(TrackGroup::liftHill) && !_currentlySelectedTrack.isTrackType)
-                || (gameState.Cheats.EnableChainLiftOnAllTrack
+                || (gameState.Cheats.enableChainLiftOnAllTrack
                     && currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack)))
             {
                 widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::FlatBtn;
@@ -2479,7 +2479,7 @@ namespace OpenRCT2::Ui::Windows
         {
             _currentTrackPitchEnd = slope;
             _currentTrackPrice = kMoney64Undefined;
-            if (_rideConstructionState == RideConstructionState::Front && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            if (_rideConstructionState == RideConstructionState::Front && !GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
                 switch (slope)
                 {
@@ -3572,7 +3572,7 @@ namespace OpenRCT2::Ui::Windows
 
             // FIX not sure exactly why it starts trial and error place from a lower Z, but it causes issues with disable
             // clearance
-            if (!GetGameState().Cheats.DisableClearanceChecks && z > kMinimumLandZ)
+            if (!GetGameState().Cheats.disableClearanceChecks && z > kMinimumLandZ)
             {
                 z -= LAND_HEIGHT_STEP;
             }
@@ -4928,7 +4928,7 @@ namespace OpenRCT2::Ui::Windows
             if (coveredVariant != TrackElemType::None && (availableGroups.get(EnumValue(ted.definition.group))))
             {
                 trackType = coveredVariant;
-                if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
+                if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
                     liftHillAndInvertedState.unset(LiftHillAndInverted::liftHill);
             }
         }
@@ -4978,7 +4978,7 @@ namespace OpenRCT2::Ui::Windows
             turnOffLiftHill = true;
         }
 
-        if (turnOffLiftHill && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+        if (turnOffLiftHill && !GetGameState().Cheats.enableChainLiftOnAllTrack)
         {
             liftHillAndInvertedState.unset(LiftHillAndInverted::liftHill);
             _currentTrackHasLiftHill = false;

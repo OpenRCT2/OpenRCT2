@@ -179,7 +179,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
     }
 
     auto& gameState = GetGameState();
-    if (gameState.Cheats.DisablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+    if (gameState.Cheats.disablePlantAging && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED))
     {
         return;
     }
@@ -310,7 +310,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
     }
 
     auto& gameState = GetGameState();
-    if (!gameState.Cheats.IgnoreResearchStatus)
+    if (!gameState.Cheats.ignoreResearchStatus)
     {
         if (!SceneryIsInvented(item))
         {
@@ -318,7 +318,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         }
     }
 
-    if (!gameState.Cheats.SandboxMode && !(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    if (!gameState.Cheats.sandboxMode && !(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         if (IsSceneryItemRestricted(item))
         {

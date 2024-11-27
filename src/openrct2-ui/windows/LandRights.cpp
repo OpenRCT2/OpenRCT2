@@ -98,7 +98,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsOwnershipMode() const
         {
-            return (gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.SandboxMode;
+            return (gScreenFlags & SCREEN_FLAGS_EDITOR) != 0 || GetGameState().Cheats.sandboxMode;
         }
 
         void SwitchToMode(LandRightsMode mode)
