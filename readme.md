@@ -56,9 +56,9 @@ If you want to help translate the game to your language, please stop by the Loca
   - 5.1 - [Code of conduct](#51-code-of-conduct)
   - 5.2 - [Code signing policy](#52-code-signing-policy)
   - 5.3 - [Privacy policy](#53-privacy-policy)
-- 5 - [Licence](#6-licence)
-- 6 - [More information](#7-more-information)
-- 7 - [Sponsors](#8-sponsors)
+- 6 - [Licence](#6-licence)
+- 7 - [More information](#7-more-information)
+- 8 - [Sponsors](#8-sponsors)
 
 ---
 
