@@ -415,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-                if (rtd.HasFlag(RtdFlag::isMaze))
+                if (rtd.specialType == RtdSpecialType::maze)
                 {
                     DrawMiniPreviewMaze(td, pass, origin, min, max);
                 }

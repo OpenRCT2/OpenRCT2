@@ -35,7 +35,6 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
     .OperatingSettings = { 20, 180 },
     .Naming = { STR_RIDE_NAME_FLYING_SAUCERS, STR_RIDE_DESCRIPTION_FLYING_SAUCERS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_FLYING_SAUCERS",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 9, 48, 2, 2, },
     .MaxMass = 255,

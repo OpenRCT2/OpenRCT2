@@ -36,7 +36,6 @@ constexpr RideTypeDescriptor SwingingShipRTD =
     .OperatingSettings = { 7, 25 },
     .Naming = { STR_RIDE_NAME_SWINGING_SHIP, STR_RIDE_DESCRIPTION_SWINGING_SHIP },
     .NameConvention = { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_SWINGING_SHIP",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 112, 7, 11, },
     .MaxMass = 255,

@@ -37,7 +37,6 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
     .DefaultMode = RideMode::ContinuousCircuit,
     .Naming = { STR_RIDE_NAME_SPLASH_BOATS, STR_RIDE_DESCRIPTION_SPLASH_BOATS },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_SPLASH_BOATS",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
     .Heights = { 16, 24, 7, 11, },
     .MaxMass = 255,

@@ -960,7 +960,7 @@ bool RideModify(const CoordsXYE& input)
     ride_create_or_find_construction_window(rideIndex);
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
     {
         return ride_modify_maze(tileElement);
     }
@@ -1147,7 +1147,7 @@ money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t
 void Ride::ValidateStations()
 {
     const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType != RtdSpecialType::maze)
     {
         // find the stations of the ride to begin stepping over track elements from
         for (const auto& station : stations)

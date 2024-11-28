@@ -35,7 +35,6 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
     .OperatingSettings = { 4, 25 },
     .Naming = { STR_RIDE_NAME_MERRY_GO_ROUND, STR_RIDE_DESCRIPTION_MERRY_GO_ROUND },
     .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_MERRY_GO_ROUND",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
     .Heights = { 12, 64, 3, 2, },
     .MaxMass = 255,

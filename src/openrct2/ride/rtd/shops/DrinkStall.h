@@ -32,7 +32,6 @@ constexpr RideTypeDescriptor DrinkStallRTD =
     .DefaultMode = RideMode::ShopStall,
     .Naming = { STR_RIDE_NAME_DRINK_STALL, STR_RIDE_DESCRIPTION_DRINK_STALL },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_DRINK_STALL",
     .AvailableBreakdowns = 0,
     .Heights = { 12, DefaultDrinksStallHeight, 0, 0, },
     .MaxMass = 255,

@@ -35,7 +35,6 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .OperatingSettings = { 7, 15 },
     .Naming = { STR_RIDE_NAME_MAGIC_CARPET, STR_RIDE_DESCRIPTION_MAGIC_CARPET },
     .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_MAGIC_CARPET",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 15, 176, 7, 11, },
     .MaxMass = 255,

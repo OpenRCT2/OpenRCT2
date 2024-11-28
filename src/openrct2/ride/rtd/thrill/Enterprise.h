@@ -34,7 +34,6 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .OperatingSettings = { 10, 20 },
     .Naming = { STR_RIDE_NAME_ENTERPRISE, STR_RIDE_DESCRIPTION_ENTERPRISE },
     .NameConvention = { RideComponentType::Wheel, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_ENTERPRISE",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 16, 160, 3, 2, },
     .MaxMass = 255,

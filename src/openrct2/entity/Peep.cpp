@@ -1141,7 +1141,7 @@ void PeepProblemWarningsUpdate()
                     break;
                 }
                 ride = GetRide(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isToilet))
+                if (ride != nullptr && ride->GetRideTypeDescriptor().specialType != RtdSpecialType::toilet)
                     toiletCounter++;
                 break;
 

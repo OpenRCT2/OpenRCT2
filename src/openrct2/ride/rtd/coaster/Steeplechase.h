@@ -32,7 +32,6 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
     .DefaultMode = RideMode::ContinuousCircuit,
     .Naming = { STR_RIDE_NAME_STEEPLECHASE, STR_RIDE_DESCRIPTION_STEEPLECHASE },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_STEEPLECHASE",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 14, 24, 7, 7, },
     .MaxMass = 4,
