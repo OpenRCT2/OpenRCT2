@@ -9,22 +9,23 @@
 
 #ifdef _WIN32
 
-// Windows.h needs to be included first
-// clang-format off
-#    ifndef WIN32_LEAN_AND_MEAN
-#        define WIN32_LEAN_AND_MEAN
-#    endif
-#    include <openrct2/Diagnostic.h>
-#    include <windows.h>
-#    include <shellapi.h>
-    // clang-format on
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+
+    // clang-format off
+    // windows.h needs to be included first
+    #include <windows.h>
+    #include <shellapi.h>
     #undef CreateWindow
+    // clang-format on
 
     // Then the rest
     #include "UiContext.h"
 
     #include <SDL.h>
     #include <SDL_syswm.h>
+    #include <openrct2/Diagnostic.h>
     #include <openrct2/core/Path.hpp>
     #include <openrct2/core/String.hpp>
     #include <openrct2/ui/UiContext.h>
