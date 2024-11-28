@@ -99,6 +99,7 @@ STR_0094    :Enkelt skinde rutchebane
 STR_0095    :Alpin rutchebane
 STR_0096    :Klassisk træ rutsjebane
 STR_0097    :Klassisk Stå-op Rutschebane
+STR_0098    :LSM Accelereret Rutschebane
 STR_0512    :En kompakt rutschebane med en spiral stigning og bløde, snoede fald.
 STR_0513    :En loopende rutschebane hvor passagerne er i en stående position
 STR_0514    :Vogne suspenderet under rutschebane sporet, svinger ud til siden i svingene
@@ -183,6 +184,7 @@ STR_0604    :Gæster sider i en enkelt række, på et smalt monorail spor, imens
 STR_0605    :Ryttere kælker ned ad en bugtende stålbane og bremser for at kontrollere deres hastighed
 STR_0606    :En ældre stils trærutsjebane med en hurtig og ujævn tur med masser af luft tid, laterale G'er, og designet til at føles som ‘ude-af-kontrol’
 STR_0607    :En intens, Klassisk stål-stil, loopende rutschebane hvor passagerne er i en stående position
+STR_0608    :Rutsjebanetog accelereres ud af stationen af lineære synkronmotorer, for at suse gennem snoede inversioner og sving
 STR_0767    :Gæst {INT32}
 STR_0768    :Handymand {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -3609,7 +3611,7 @@ STR_6537    :Tillad almindelige stier som køområde
 STR_6538    :Viser almindelige gangstier i rullemenuen Køer i sti vinduet.
 STR_6539    :Bremser lukket
 STR_6540    :{WINDOW_COLOUR_2}Særlig tak til følgende virksomheder for at tillade deres lighed:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Bidragydere
 STR_6543    :Bidragydere…
 STR_6544    :Lån kan ikke være negativ!
@@ -3717,3 +3719,66 @@ STR_6644    :Touch-forbedringer
 STR_6645    :Gør nogle UI-elementer større, så de er nemmere at klikke eller trykke på.
 STR_6646    :Forfatter: {STRING}
 STR_6647    :Forfattere: {STRING}
+STR_6648    :Indlæser udvidelsesmodul…
+STR_6649    :Indlæser scenarie…
+STR_6650    :Indlæser gemt spil…
+STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Fejlvindue
+STR_6653    :Alle kilder vist
+STR_6654    :Viser {POP16}{UINT16} kilder
+STR_6655    :Kun ‘{POP16}{STRINGID}’
+STR_6656    :Fjern alle hegn fra parken
+STR_6657    :Land Ikke Ejet
+STR_6658    :Sæt land til at ikke være ejet af parken, heller ikke muligt at købe land
+STR_6659    :Gæster ignorerer priser
+STR_6660    :Gæsterne vil ignorere priserne for forlystelser og stande.
+STR_6661    :Alt tilfældigt
+STR_6662    :Gør farverne tilfældige for hver Randomise colours for every train or vehicle.
+STR_6663    :Dato snyd
+STR_6664    :Vis dato snyd
+STR_6665    :Natur/vejr Snyd
+STR_6666    :Vis natur/vejr snyd
+STR_6667    :Fauna
+STR_6668    :Ansatte snyd
+STR_6669    :Vis snyd med ansatte
+STR_6670    :Gæste opførsel
+STR_6671    :Vis ‘rigtige’ navne på ansatte
+STR_6672    :Skift imellem at vise ‘rigtige’ navne på ansatte og ansatte numre
+STR_6673    :Gennemsigtig
+# Used as part of a sentence (see https://github.com/OpenRCT2/OpenRCT2/issues/22072).
+STR_6674    :{MONTH}, År {COMMA16}
+STR_6675    :Peep Navne
+STR_6676    :Mindst et peep navne objekt skal være valgt
+STR_6677    :Tilføj strand omkring vandområder
+STR_6678    :Højdekort kilde:
+STR_6679    :Fladland
+STR_6680    :Simpeleks støj
+STR_6681    :Højdekort fil
+STR_6682    :Kort Generator - Generator
+STR_6683    :Kort Generator - Terræn
+STR_6684    :Kort Generator - Vand
+STR_6685    :Kort Generator - Skove
+STR_6686    :Træ til land rate:
+STR_6687    :Min. trægrænse:
+STR_6688    :Maks. trægrænse:
+STR_6689    :{UINT16}%
+STR_6690    :Minimum landskabshøjde
+STR_6691    :Angiv min. landskabshøjde imellem {COMMA16} og {COMMA16}
+STR_6692    :Maksimum landskabshøjde
+STR_6693    :Angiv maks. landskabshøjde imellem {COMMA16} og {COMMA16}
+STR_6694    :Minimum trægrænse
+STR_6695    :Angiv min. trægrænse imellem {COMMA16} og {COMMA16}
+STR_6696    :Maksimum trægrænse
+STR_6697    :Angiv maks. trægrænse imellem {COMMA16} og {COMMA16}
+STR_6698    :Træ til land rate
+STR_6699    :Angiv træ til land rate imellem {COMMA16} og {COMMA16}
+STR_6700    :Simpleks Base Frekvens
+STR_6701    :Angiv Base Frekvens imellem {COMMA2DP32} og {COMMA2DP32}
+STR_6702    :Simpleks oktaver
+STR_6703    :Angiv Oktaver imellem {COMMA16} og {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Gennemse...
+STR_6706    :{WINDOW_COLOUR_2}Nuværende billedfil: {BLACK}{STRING}
+STR_6707    :(Ingen valgt)
+STR_6708    :Udglatnings Styrke
+STR_6709    :Angiv udglatnings styrke imellem {COMMA16} og {COMMA16}
