@@ -11,12 +11,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../Context.h"
-#    include "../../Duktape.hpp"
-#    include "ScParkMessage.hpp"
-#    include "ScResearch.hpp"
+    #include "../../../Context.h"
+    #include "../../Duktape.hpp"
+    #include "ScParkMessage.hpp"
+    #include "ScResearch.hpp"
 
-#    include <vector>
+    #include <vector>
 
 namespace OpenRCT2::Scripting
 {

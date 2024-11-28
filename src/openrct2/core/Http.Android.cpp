@@ -9,16 +9,16 @@
 
 #if !defined(DISABLE_HTTP) && defined(__ANDROID__)
 
-#    include "Http.h"
+    #include "Http.h"
 
-#    include "../Version.h"
-#    include "../platform/Platform.h"
+    #include "../Version.h"
+    #include "../platform/Platform.h"
 
-#    include <SDL.h>
-#    include <android/log.h>
-#    include <jni.h>
+    #include <SDL.h>
+    #include <android/log.h>
+    #include <jni.h>
 
-#    define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
+    #define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
 
 namespace OpenRCT2::Http
 {

@@ -9,7 +9,7 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "ApplyTransparencyShader.h"
+    #include "ApplyTransparencyShader.h"
 
 using namespace OpenRCT2::Ui;
 

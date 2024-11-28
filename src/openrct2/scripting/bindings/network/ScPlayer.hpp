@@ -11,9 +11,9 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../Duktape.hpp"
+    #include "../../Duktape.hpp"
 
-#    include <string.h>
+    #include <string.h>
 
 namespace OpenRCT2::Scripting
 {

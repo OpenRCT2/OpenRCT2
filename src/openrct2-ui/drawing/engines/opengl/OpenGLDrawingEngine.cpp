@@ -9,34 +9,34 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "../DrawingEngineFactory.hpp"
-#    include "ApplyPaletteShader.h"
-#    include "DrawCommands.h"
-#    include "DrawLineShader.h"
-#    include "DrawRectShader.h"
-#    include "GLSLTypes.h"
-#    include "OpenGLAPI.h"
-#    include "OpenGLFramebuffer.h"
-#    include "SwapFramebuffer.h"
-#    include "TextureCache.h"
-#    include "TransparencyDepth.h"
+    #include "../DrawingEngineFactory.hpp"
+    #include "ApplyPaletteShader.h"
+    #include "DrawCommands.h"
+    #include "DrawLineShader.h"
+    #include "DrawRectShader.h"
+    #include "GLSLTypes.h"
+    #include "OpenGLAPI.h"
+    #include "OpenGLFramebuffer.h"
+    #include "SwapFramebuffer.h"
+    #include "TextureCache.h"
+    #include "TransparencyDepth.h"
 
-#    include <SDL.h>
-#    include <algorithm>
-#    include <cassert>
-#    include <cmath>
-#    include <openrct2-ui/interface/Window.h>
-#    include <openrct2/config/Config.h>
-#    include <openrct2/core/Console.hpp>
-#    include <openrct2/drawing/Drawing.h>
-#    include <openrct2/drawing/IDrawingContext.h>
-#    include <openrct2/drawing/IDrawingEngine.h>
-#    include <openrct2/drawing/LightFX.h>
-#    include <openrct2/drawing/Weather.h>
-#    include <openrct2/interface/Screenshot.h>
-#    include <openrct2/ui/UiContext.h>
-#    include <openrct2/util/Util.h>
-#    include <openrct2/world/Climate.h>
+    #include <SDL.h>
+    #include <algorithm>
+    #include <cassert>
+    #include <cmath>
+    #include <openrct2-ui/interface/Window.h>
+    #include <openrct2/config/Config.h>
+    #include <openrct2/core/Console.hpp>
+    #include <openrct2/drawing/Drawing.h>
+    #include <openrct2/drawing/IDrawingContext.h>
+    #include <openrct2/drawing/IDrawingEngine.h>
+    #include <openrct2/drawing/LightFX.h>
+    #include <openrct2/drawing/Weather.h>
+    #include <openrct2/interface/Screenshot.h>
+    #include <openrct2/ui/UiContext.h>
+    #include <openrct2/util/Util.h>
+    #include <openrct2/world/Climate.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -977,7 +977,7 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
 void OpenGLDrawingContext::DrawTTFBitmap(
     DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
-#    ifndef NO_TTF
+    #ifndef NO_TTF
     auto baseId = static_cast<uint32_t>(0x7FFFF) - 1024;
     auto imageId = baseId + _ttfGlId;
     _engine.InvalidateImage(imageId);
@@ -1062,7 +1062,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     command.colour = info->palette[1];
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
-#    endif // NO_TTF
+    #endif // NO_TTF
 }
 
 void OpenGLDrawingContext::FlushCommandBuffers()
@@ -1149,10 +1149,10 @@ ScreenRect OpenGLDrawingContext::CalculateClipping(const DrawPixelInfo& dpi) con
     const DrawPixelInfo* screenDPI = _engine.GetDPI();
     const int32_t bytesPerRow = screenDPI->LineStride();
     const int32_t bitsOffset = static_cast<int32_t>(dpi.bits - screenDPI->bits);
-#    ifndef NDEBUG
+    #ifndef NDEBUG
     const ptrdiff_t bitsSize = static_cast<ptrdiff_t>(screenDPI->height) * static_cast<ptrdiff_t>(bytesPerRow);
     assert(static_cast<ptrdiff_t>(bitsOffset) < bitsSize && static_cast<ptrdiff_t>(bitsOffset) >= 0);
-#    endif
+    #endif
 
     const int32_t left = bitsOffset % bytesPerRow;
     const int32_t top = bitsOffset / bytesPerRow;

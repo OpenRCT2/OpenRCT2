@@ -9,18 +9,18 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "NetworkUser.h"
+    #include "NetworkUser.h"
 
-#    include "../Context.h"
-#    include "../PlatformEnvironment.h"
-#    include "../core/Console.hpp"
-#    include "../core/File.h"
-#    include "../core/Guard.hpp"
-#    include "../core/Json.hpp"
-#    include "../core/Path.hpp"
-#    include "../core/String.hpp"
+    #include "../Context.h"
+    #include "../PlatformEnvironment.h"
+    #include "../core/Console.hpp"
+    #include "../core/File.h"
+    #include "../core/Guard.hpp"
+    #include "../core/Json.hpp"
+    #include "../core/Path.hpp"
+    #include "../core/String.hpp"
 
-#    include <unordered_set>
+    #include <unordered_set>
 
 using namespace OpenRCT2;
 

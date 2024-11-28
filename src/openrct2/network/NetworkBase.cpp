@@ -66,45 +66,45 @@ static constexpr uint32_t kChunkSize = 1024 * 63;
 // This limit is per connection, the current value was determined by tests with fuzzing.
 static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
-#    include "../Cheats.h"
-#    include "../ParkImporter.h"
-#    include "../Version.h"
-#    include "../actions/GameAction.h"
-#    include "../config/Config.h"
-#    include "../core/Console.hpp"
-#    include "../core/FileStream.h"
-#    include "../core/MemoryStream.h"
-#    include "../core/Path.hpp"
-#    include "../core/String.hpp"
-#    include "../interface/Chat.h"
-#    include "../interface/Window.h"
-#    include "../localisation/Localisation.Date.h"
-#    include "../object/ObjectManager.h"
-#    include "../object/ObjectRepository.h"
-#    include "../scenario/Scenario.h"
-#    include "../util/Util.h"
-#    include "../world/Park.h"
-#    include "NetworkAction.h"
-#    include "NetworkConnection.h"
-#    include "NetworkGroup.h"
-#    include "NetworkKey.h"
-#    include "NetworkPacket.h"
-#    include "NetworkPlayer.h"
-#    include "NetworkServerAdvertiser.h"
-#    include "NetworkUser.h"
-#    include "Socket.h"
+    #include "../Cheats.h"
+    #include "../ParkImporter.h"
+    #include "../Version.h"
+    #include "../actions/GameAction.h"
+    #include "../config/Config.h"
+    #include "../core/Console.hpp"
+    #include "../core/FileStream.h"
+    #include "../core/MemoryStream.h"
+    #include "../core/Path.hpp"
+    #include "../core/String.hpp"
+    #include "../interface/Chat.h"
+    #include "../interface/Window.h"
+    #include "../localisation/Localisation.Date.h"
+    #include "../object/ObjectManager.h"
+    #include "../object/ObjectRepository.h"
+    #include "../scenario/Scenario.h"
+    #include "../util/Util.h"
+    #include "../world/Park.h"
+    #include "NetworkAction.h"
+    #include "NetworkConnection.h"
+    #include "NetworkGroup.h"
+    #include "NetworkKey.h"
+    #include "NetworkPacket.h"
+    #include "NetworkPlayer.h"
+    #include "NetworkServerAdvertiser.h"
+    #include "NetworkUser.h"
+    #include "Socket.h"
 
-#    include <array>
-#    include <cerrno>
-#    include <cmath>
-#    include <fstream>
-#    include <functional>
-#    include <list>
-#    include <map>
-#    include <memory>
-#    include <set>
-#    include <string>
-#    include <vector>
+    #include <array>
+    #include <cerrno>
+    #include <cmath>
+    #include <fstream>
+    #include <functional>
+    #include <list>
+    #include <map>
+    #include <memory>
+    #include <set>
+    #include <string>
+    #include <vector>
 
 using namespace OpenRCT2;
 
@@ -209,10 +209,10 @@ void NetworkBase::Close()
         _pendingPlayerLists.clear();
         _pendingPlayerInfo.clear();
 
-#    ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING
         auto& scriptEngine = GetContext().GetScriptEngine();
         scriptEngine.RemoveNetworkPlugins();
-#    endif
+    #endif
 
         GfxInvalidateScreen();
 
@@ -1350,7 +1350,7 @@ void NetworkBase::ServerSendObjectsList(
 
 void NetworkBase::ServerSendScripts(NetworkConnection& connection)
 {
-#    ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
     auto& scriptEngine = GetContext().GetScriptEngine();
@@ -1393,11 +1393,11 @@ void NetworkBase::ServerSendScripts(NetworkConnection& connection)
     }
     Guard::Assert(dataOffset == pluginData.GetLength());
 
-#    else
+    #else
     NetworkPacket packetScriptHeader(NetworkCommand::ScriptsHeader);
     packetScriptHeader << static_cast<uint32_t>(0u);
     packetScriptHeader << static_cast<uint32_t>(0u);
-#    endif
+    #endif
 }
 
 void NetworkBase::Client_Send_HEARTBEAT(NetworkConnection& connection) const
@@ -1676,7 +1676,7 @@ json_t NetworkBase::GetServerInfoAsJson() const
 void NetworkBase::ServerSendGameInfo(NetworkConnection& connection)
 {
     NetworkPacket packet(NetworkCommand::GameInfo);
-#    ifndef DISABLE_HTTP
+    #ifndef DISABLE_HTTP
     json_t jsonObj = GetServerInfoAsJson();
 
     // Provider details
@@ -1692,7 +1692,7 @@ void NetworkBase::ServerSendGameInfo(NetworkConnection& connection)
     packet << _serverState.gamestateSnapshotsEnabled;
     packet << IsServerPlayerInvisible;
 
-#    endif
+    #endif
     connection.QueuePacket(std::move(packet));
 }
 
@@ -1819,7 +1819,7 @@ void NetworkBase::ProcessPending()
 static bool ProcessPlayerAuthenticatePluginHooks(
     const NetworkConnection& connection, std::string_view name, std::string_view publicKeyHash)
 {
-#    ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -1844,13 +1844,13 @@ static bool ProcessPlayerAuthenticatePluginHooks(
             return false;
         }
     }
-#    endif
+    #endif
     return true;
 }
 
 static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
 {
-#    ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -1866,12 +1866,12 @@ static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
         // Call the subscriptions
         hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_JOIN, e, false);
     }
-#    endif
+    #endif
 }
 
 static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
 {
-#    ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
@@ -1887,7 +1887,7 @@ static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
         // Call the subscriptions
         hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_LEAVE, e, false);
     }
-#    endif
+    #endif
 }
 
 void NetworkBase::ProcessPlayerList()
@@ -2467,22 +2467,22 @@ void NetworkBase::Client_Handle_SCRIPTS_HEADER(NetworkConnection& connection, Ne
     uint32_t dataSize{};
     packet >> numScripts >> dataSize;
 
-#    ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING
     _serverScriptsData.data.Clear();
     _serverScriptsData.pluginCount = numScripts;
     _serverScriptsData.dataSize = dataSize;
-#    else
+    #else
     if (numScripts > 0)
     {
         connection.SetLastDisconnectReason("The client requires plugin support.");
         Close();
     }
-#    endif
+    #endif
 }
 
 void NetworkBase::Client_Handle_SCRIPTS_DATA(NetworkConnection& connection, NetworkPacket& packet)
 {
-#    ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING
     uint32_t dataSize{};
     packet >> dataSize;
     Guard::Assert(dataSize > 0);
@@ -2511,10 +2511,10 @@ void NetworkBase::Client_Handle_SCRIPTS_DATA(NetworkConnection& connection, Netw
         // Empty the current buffer.
         _serverScriptsData = {};
     }
-#    else
+    #else
     connection.SetLastDisconnectReason("The client requires plugin support.");
     Close();
-#    endif
+    #endif
 }
 
 void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet)
@@ -2896,7 +2896,7 @@ void NetworkBase::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connect
 
 static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
 {
-#    ifdef ENABLE_SCRIPTING
+    #ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT))
     {
@@ -2926,7 +2926,7 @@ static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
             return false;
         }
     }
-#    endif
+    #endif
     return true;
 }
 

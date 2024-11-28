@@ -9,15 +9,15 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScRide.hpp"
+    #include "ScRide.hpp"
 
-#    include "../../../Context.h"
-#    include "../../../core/UnitConversion.h"
-#    include "../../../ride/Ride.h"
-#    include "../../../ride/RideData.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
-#    include "../object/ScObject.hpp"
+    #include "../../../Context.h"
+    #include "../../../core/UnitConversion.h"
+    #include "../../../ride/Ride.h"
+    #include "../../../ride/RideData.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
+    #include "../object/ScObject.hpp"
 
 namespace OpenRCT2::Scripting
 {

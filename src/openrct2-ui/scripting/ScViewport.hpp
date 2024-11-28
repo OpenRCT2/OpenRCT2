@@ -11,14 +11,14 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../interface/Window.h"
+    #include "../interface/Window.h"
 
-#    include <memory>
-#    include <openrct2/Context.h>
-#    include <openrct2/interface/Viewport.h>
-#    include <openrct2/scripting/Duktape.hpp>
-#    include <openrct2/scripting/ScriptEngine.h>
-#    include <openrct2/world/Map.h>
+    #include <memory>
+    #include <openrct2/Context.h>
+    #include <openrct2/interface/Viewport.h>
+    #include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/scripting/ScriptEngine.h>
+    #include <openrct2/world/Map.h>
 
 namespace OpenRCT2::Scripting
 {

@@ -9,11 +9,11 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScStaff.hpp"
+    #include "ScStaff.hpp"
 
-#    include "../../../entity/PatrolArea.h"
-#    include "../../../entity/Staff.h"
-#    include "../../../peep/PeepAnimationData.h"
+    #include "../../../entity/PatrolArea.h"
+    #include "../../../entity/Staff.h"
+    #include "../../../peep/PeepAnimationData.h"
 
 namespace OpenRCT2::Scripting
 {

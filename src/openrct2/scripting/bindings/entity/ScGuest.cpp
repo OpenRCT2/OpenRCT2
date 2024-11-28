@@ -9,13 +9,13 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScGuest.hpp"
+    #include "ScGuest.hpp"
 
-#    include "../../../GameState.h"
-#    include "../../../entity/Guest.h"
-#    include "../../../localisation/Formatting.h"
-#    include "../../../peep/PeepAnimationData.h"
-#    include "../../../ride/RideEntry.h"
+    #include "../../../GameState.h"
+    #include "../../../entity/Guest.h"
+    #include "../../../localisation/Formatting.h"
+    #include "../../../peep/PeepAnimationData.h"
+    #include "../../../ride/RideEntry.h"
 
 namespace OpenRCT2::Scripting
 {

@@ -11,12 +11,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
-#    include "ScInstalledObject.hpp"
-#    include "ScObject.hpp"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
+    #include "ScInstalledObject.hpp"
+    #include "ScObject.hpp"
 
-#    include <memory>
+    #include <memory>
 
 namespace OpenRCT2::Scripting
 {

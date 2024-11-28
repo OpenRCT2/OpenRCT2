@@ -20,10 +20,10 @@
 #include <openrct2/core/UTF8.h>
 
 #ifdef __MACOSX__
-// macOS uses COMMAND rather than CTRL for many keyboard shortcuts
-#    define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
+    // macOS uses COMMAND rather than CTRL for many keyboard shortcuts
+    #define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
 #else
-#    define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
+    #define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
 #endif
 
 using namespace OpenRCT2;

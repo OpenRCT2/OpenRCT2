@@ -13,31 +13,31 @@
 
 #ifdef OPENGL_NO_LINK
 
-// BEGIN [Do not define 1.1 function signatures]
-#    define glActiveTexture __static__glActiveTexture
-#    define glBegin __static__glBegin
-#    define glBindTexture __static__glBindTexture
-#    define glBlendFunc __static__glBlendFunc
-#    define glClear __static__glClear
-#    define glClearColor __static__glClearColor
-#    define glCullFace __static__glCullFace
-#    define glDeleteTextures __static__glDeleteTextures
-#    define glDepthFunc __static__glDepthFunc
-#    define glDisable __static__glDisable
-#    define glDrawArrays __static__glDrawArrays
-#    define glEnable __static__glEnable
-#    define glEnd __static__glEnd
-#    define glGenTextures __static__glGenTextures
-#    define glGetError __static__glGetError
-#    define glPixelStorei __static__glPixelStorei
-#    define glReadPixels __static__glReadPixels
-#    define glTexImage2D __static__glTexImage2D
-#    define glTexParameteri __static__glTexParameteri
-#    define glViewport __static__glViewport
-#    define glTexSubImage3D __static__glTexSubImage3D
-#    define glTexImage3D __static__glTexImage3D
-#    define glGetIntegerv __static__glGetIntegerv
-#    define glGetTexImage __static__glGetTexImage
+    // BEGIN [Do not define 1.1 function signatures]
+    #define glActiveTexture __static__glActiveTexture
+    #define glBegin __static__glBegin
+    #define glBindTexture __static__glBindTexture
+    #define glBlendFunc __static__glBlendFunc
+    #define glClear __static__glClear
+    #define glClearColor __static__glClearColor
+    #define glCullFace __static__glCullFace
+    #define glDeleteTextures __static__glDeleteTextures
+    #define glDepthFunc __static__glDepthFunc
+    #define glDisable __static__glDisable
+    #define glDrawArrays __static__glDrawArrays
+    #define glEnable __static__glEnable
+    #define glEnd __static__glEnd
+    #define glGenTextures __static__glGenTextures
+    #define glGetError __static__glGetError
+    #define glPixelStorei __static__glPixelStorei
+    #define glReadPixels __static__glReadPixels
+    #define glTexImage2D __static__glTexImage2D
+    #define glTexParameteri __static__glTexParameteri
+    #define glViewport __static__glViewport
+    #define glTexSubImage3D __static__glTexSubImage3D
+    #define glTexImage3D __static__glTexImage3D
+    #define glGetIntegerv __static__glGetIntegerv
+    #define glGetTexImage __static__glGetTexImage
 
 #endif
 
@@ -49,31 +49,31 @@
 
 #ifdef OPENGL_NO_LINK
 
-// END [Do not define 1.1 function signatures]
-#    undef glActiveTexture
-#    undef glBegin
-#    undef glBindTexture
-#    undef glBlendFunc
-#    undef glClear
-#    undef glClearColor
-#    undef glCullFace
-#    undef glDeleteTextures
-#    undef glDepthFunc
-#    undef glDisable
-#    undef glDrawArrays
-#    undef glEnable
-#    undef glEnd
-#    undef glGenTextures
-#    undef glGetError
-#    undef glPixelStorei
-#    undef glReadPixels
-#    undef glTexImage2D
-#    undef glTexParameteri
-#    undef glViewport
-#    undef glTexSubImage3D
-#    undef glTexImage3D
-#    undef glGetIntegerv
-#    undef glGetTexImage
+    // END [Do not define 1.1 function signatures]
+    #undef glActiveTexture
+    #undef glBegin
+    #undef glBindTexture
+    #undef glBlendFunc
+    #undef glClear
+    #undef glClearColor
+    #undef glCullFace
+    #undef glDeleteTextures
+    #undef glDepthFunc
+    #undef glDisable
+    #undef glDrawArrays
+    #undef glEnable
+    #undef glEnd
+    #undef glGenTextures
+    #undef glGetError
+    #undef glPixelStorei
+    #undef glReadPixels
+    #undef glTexImage2D
+    #undef glTexParameteri
+    #undef glViewport
+    #undef glTexSubImage3D
+    #undef glTexImage3D
+    #undef glGetIntegerv
+    #undef glGetTexImage
 
 // 1.1 function signatures
 using PFNGLBEGINPROC = void(APIENTRYP)(GLenum mode);
@@ -107,9 +107,9 @@ using PFNGLTEXIMAGE3DPROC = void(APIENTRYP)(
 using PFNGLGETINTERGERVPROC = void(APIENTRYP)(GLenum pname, GLint* data);
 using PFNGLGETTEXIMAGEPROC = void(APIENTRYP)(GLenum target, GLint level, GLenum format, GLenum type, GLvoid* img);
 
-#    define OPENGL_PROC(TYPE, PROC) extern TYPE PROC;
-#    include "OpenGLAPIProc.h"
-#    undef OPENGL_PROC
+    #define OPENGL_PROC(TYPE, PROC) extern TYPE PROC;
+    #include "OpenGLAPIProc.h"
+    #undef OPENGL_PROC
 
 #endif /* OPENGL_NO_LINK */
 

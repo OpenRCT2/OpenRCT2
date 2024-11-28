@@ -11,9 +11,9 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../entity/Guest.h"
-#    include "../../../management/Marketing.h"
-#    include "ScPeep.hpp"
+    #include "../../../entity/Guest.h"
+    #include "../../../management/Marketing.h"
+    #include "ScPeep.hpp"
 
 enum class PeepAnimationType : uint8_t;
 

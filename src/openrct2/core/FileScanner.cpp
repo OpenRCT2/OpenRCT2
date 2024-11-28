@@ -8,17 +8,17 @@
  *****************************************************************************/
 
 #ifdef _WIN32
-#    include <windows.h>
+    #include <windows.h>
 #endif
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-#    include <dirent.h>
-#    include <sys/stat.h>
-#    include <sys/types.h>
-#    include <unistd.h>
+    #include <dirent.h>
+    #include <sys/stat.h>
+    #include <sys/types.h>
+    #include <unistd.h>
 #elif defined(_WIN32)
-// Windows needs this for widechar <-> utf8 conversion utils
-#    include "../localisation/Language.h"
+    // Windows needs this for widechar <-> utf8 conversion utils
+    #include "../localisation/Language.h"
 #endif
 
 #include "FileScanner.h"
@@ -303,9 +303,7 @@ private:
             // Get the full path of the file
             auto path = Path::Combine(directory, node->d_name);
 
-            struct stat statInfo
-            {
-            };
+            struct stat statInfo{};
             int32_t statRes = stat(path.c_str(), &statInfo);
             if (statRes != -1)
             {

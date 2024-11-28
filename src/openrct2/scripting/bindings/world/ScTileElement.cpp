@@ -9,32 +9,32 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScTileElement.hpp"
+    #include "ScTileElement.hpp"
 
-#    include "../../../Context.h"
-#    include "../../../core/Guard.hpp"
-#    include "../../../entity/EntityRegistry.h"
-#    include "../../../object/LargeSceneryEntry.h"
-#    include "../../../object/WallSceneryEntry.h"
-#    include "../../../ride/Ride.h"
-#    include "../../../ride/RideData.h"
-#    include "../../../ride/Track.h"
-#    include "../../../world/Footpath.h"
-#    include "../../../world/Scenery.h"
-#    include "../../../world/tile_element/BannerElement.h"
-#    include "../../../world/tile_element/EntranceElement.h"
-#    include "../../../world/tile_element/LargeSceneryElement.h"
-#    include "../../../world/tile_element/PathElement.h"
-#    include "../../../world/tile_element/SmallSceneryElement.h"
-#    include "../../../world/tile_element/SurfaceElement.h"
-#    include "../../../world/tile_element/TrackElement.h"
-#    include "../../../world/tile_element/WallElement.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
+    #include "../../../Context.h"
+    #include "../../../core/Guard.hpp"
+    #include "../../../entity/EntityRegistry.h"
+    #include "../../../object/LargeSceneryEntry.h"
+    #include "../../../object/WallSceneryEntry.h"
+    #include "../../../ride/Ride.h"
+    #include "../../../ride/RideData.h"
+    #include "../../../ride/Track.h"
+    #include "../../../world/Footpath.h"
+    #include "../../../world/Scenery.h"
+    #include "../../../world/tile_element/BannerElement.h"
+    #include "../../../world/tile_element/EntranceElement.h"
+    #include "../../../world/tile_element/LargeSceneryElement.h"
+    #include "../../../world/tile_element/PathElement.h"
+    #include "../../../world/tile_element/SmallSceneryElement.h"
+    #include "../../../world/tile_element/SurfaceElement.h"
+    #include "../../../world/tile_element/TrackElement.h"
+    #include "../../../world/tile_element/WallElement.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
-#    include <cstdio>
-#    include <cstring>
-#    include <utility>
+    #include <cstdio>
+    #include <cstring>
+    #include <utility>
 
 namespace OpenRCT2::Scripting
 {

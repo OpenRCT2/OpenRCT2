@@ -10,54 +10,54 @@
 #include "Crash.h"
 
 #ifdef USE_BREAKPAD
-#    include <iterator>
-#    include <map>
-#    include <memory>
-#    include <stdio.h>
+    #include <iterator>
+    #include <map>
+    #include <memory>
+    #include <stdio.h>
 
-#    if defined(_WIN32)
-#        include <ShlObj.h>
-#        include <client/windows/handler/exception_handler.h>
-#        include <common/windows/http_upload.h>
-#        include <string>
-#    else
-#        error Breakpad support not implemented yet for this platform
-#    endif
+    #if defined(_WIN32)
+        #include <ShlObj.h>
+        #include <client/windows/handler/exception_handler.h>
+        #include <common/windows/http_upload.h>
+        #include <string>
+    #else
+        #error Breakpad support not implemented yet for this platform
+    #endif
 
-#    include "../Context.h"
-#    include "../Game.h"
-#    include "../GameState.h"
-#    include "../OpenRCT2.h"
-#    include "../PlatformEnvironment.h"
-#    include "../Version.h"
-#    include "../config/Config.h"
-#    include "../core/Compression.h"
-#    include "../core/Console.hpp"
-#    include "../core/Guard.hpp"
-#    include "../core/Path.hpp"
-#    include "../core/SawyerCoding.h"
-#    include "../core/String.hpp"
-#    include "../drawing/IDrawingEngine.h"
-#    include "../interface/Screenshot.h"
-#    include "../localisation/Language.h"
-#    include "../object/ObjectManager.h"
-#    include "../park/ParkFile.h"
-#    include "../scenario/Scenario.h"
-#    include "Platform.h"
+    #include "../Context.h"
+    #include "../Game.h"
+    #include "../GameState.h"
+    #include "../OpenRCT2.h"
+    #include "../PlatformEnvironment.h"
+    #include "../Version.h"
+    #include "../config/Config.h"
+    #include "../core/Compression.h"
+    #include "../core/Console.hpp"
+    #include "../core/Guard.hpp"
+    #include "../core/Path.hpp"
+    #include "../core/SawyerCoding.h"
+    #include "../core/String.hpp"
+    #include "../drawing/IDrawingEngine.h"
+    #include "../interface/Screenshot.h"
+    #include "../localisation/Language.h"
+    #include "../object/ObjectManager.h"
+    #include "../park/ParkFile.h"
+    #include "../scenario/Scenario.h"
+    #include "Platform.h"
 
-#    define WSZ(x) L"" x
+    #define WSZ(x) L"" x
 
-#    ifdef OPENRCT2_COMMIT_SHA1_SHORT
+    #ifdef OPENRCT2_COMMIT_SHA1_SHORT
 static const wchar_t* _wszCommitSha1Short = WSZ(OPENRCT2_COMMIT_SHA1_SHORT);
-#    else
+    #else
 static const wchar_t* _wszCommitSha1Short = WSZ("");
-#    endif
+    #endif
 
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
 static const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 static std::map<std::wstring, std::wstring> _uploadFiles;
 
-#    define BACKTRACE_TOKEN "1a9becc5de031b0a24ecad5222d2b42820c3710863a0f1dba6ab378b02ca659a"
+    #define BACKTRACE_TOKEN "1a9becc5de031b0a24ecad5222d2b42820c3710863a0f1dba6ab378b02ca659a"
 
 using namespace OpenRCT2;
 

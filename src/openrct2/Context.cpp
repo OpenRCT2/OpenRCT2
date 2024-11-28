@@ -8,8 +8,8 @@
  *****************************************************************************/
 
 #ifdef __EMSCRIPTEN__
-#    include <cassert>
-#    include <emscripten.h>
+    #include <cassert>
+    #include <emscripten.h>
 #endif // __EMSCRIPTEN__
 
 #include "AssetPackManager.h"

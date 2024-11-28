@@ -11,7 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../ScriptEngine.h"
+    #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
