@@ -303,7 +303,9 @@ private:
             // Get the full path of the file
             auto path = Path::Combine(directory, node->d_name);
 
-            struct stat statInfo{};
+            struct stat statInfo
+            {
+            };
             int32_t statRes = stat(path.c_str(), &statInfo);
             if (statRes != -1)
             {
