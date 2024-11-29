@@ -170,7 +170,7 @@ void ObjectList::SetObject(ObjectType type, ObjectEntryIndex index, std::string_
     SetObject(index, entry);
 }
 
-ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier)
+ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier) const
 {
     auto& subList = GetList(type);
     for (size_t i = 0; i < subList.size(); i++)

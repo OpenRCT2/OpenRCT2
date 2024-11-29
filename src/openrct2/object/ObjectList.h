@@ -25,7 +25,7 @@ public:
     const ObjectEntryDescriptor& GetObject(ObjectType type, ObjectEntryIndex index) const;
     void SetObject(ObjectEntryIndex index, const ObjectEntryDescriptor& entry);
     void SetObject(ObjectType type, ObjectEntryIndex index, std::string_view identifier);
-    ObjectEntryIndex Find(ObjectType type, std::string_view identifier);
+    ObjectEntryIndex Find(ObjectType type, std::string_view identifier) const;
 
     struct const_iterator
     {
