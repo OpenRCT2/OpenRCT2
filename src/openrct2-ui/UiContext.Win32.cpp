@@ -9,16 +9,15 @@
 
 #ifdef _WIN32
 
+// clang-format off
+    // windows.h needs to be included first
     #ifndef WIN32_LEAN_AND_MEAN
         #define WIN32_LEAN_AND_MEAN
     #endif
-
-    // clang-format off
-    // windows.h needs to be included first
     #include <windows.h>
     #include <shellapi.h>
     #undef CreateWindow
-    // clang-format on
+// clang-format on
 
     // Then the rest
     #include "UiContext.h"
