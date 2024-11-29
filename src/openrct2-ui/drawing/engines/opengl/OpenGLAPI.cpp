@@ -9,20 +9,20 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "OpenGLAPI.h"
+    #include "OpenGLAPI.h"
 
-#    if OPENGL_NO_LINK
+    #if OPENGL_NO_LINK
 
-#        define OPENGL_PROC(TYPE, PROC) TYPE PROC = nullptr;
-#        include "OpenGLAPIProc.h"
-#        undef OPENGL_PROC
+        #define OPENGL_PROC(TYPE, PROC) TYPE PROC = nullptr;
+        #include "OpenGLAPIProc.h"
+        #undef OPENGL_PROC
 
-#        include <SDL_video.h>
-#        include <openrct2/core/Console.hpp>
+        #include <SDL_video.h>
+        #include <openrct2/core/Console.hpp>
 
 static const char* TryLoadAllProcAddresses()
 {
-#        define OPENGL_PROC(TYPE, PROC)                                                                                        \
+        #define OPENGL_PROC(TYPE, PROC)                                                                                        \
             {                                                                                                                  \
                 PROC = reinterpret_cast<TYPE>(SDL_GL_GetProcAddress(#PROC));                                                   \
                 if (PROC == nullptr)                                                                                           \
@@ -30,13 +30,13 @@ static const char* TryLoadAllProcAddresses()
                     return #PROC;                                                                                              \
                 }                                                                                                              \
             }
-#        include "OpenGLAPIProc.h"
-#        undef OPENGL_PROC
+        #include "OpenGLAPIProc.h"
+        #undef OPENGL_PROC
 
     return nullptr;
 }
 
-#    endif /* #if OPENGL_NO_LINK */
+    #endif /* #if OPENGL_NO_LINK */
 
 using namespace OpenRCT2::Ui;
 
@@ -65,14 +65,14 @@ bool OpenGLAPI::Initialise()
 {
     OpenGLState::Reset();
 
-#    ifdef OPENGL_NO_LINK
+    #ifdef OPENGL_NO_LINK
     const char* failedProcName = TryLoadAllProcAddresses();
     if (failedProcName != nullptr)
     {
         Console::Error::WriteLine("Failed to load %s.", failedProcName);
         return false;
     }
-#    endif
+    #endif
     return true;
 }
 

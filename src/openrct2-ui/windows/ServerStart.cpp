@@ -9,17 +9,17 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "../interface/Theme.h"
+    #include "../interface/Theme.h"
 
-#    include <openrct2-ui/interface/Widget.h>
-#    include <openrct2-ui/windows/Window.h>
-#    include <openrct2/Context.h>
-#    include <openrct2/ParkImporter.h>
-#    include <openrct2/config/Config.h>
-#    include <openrct2/interface/Chat.h>
-#    include <openrct2/network/network.h>
-#    include <openrct2/util/Util.h>
-#    include <openrct2/windows/Intent.h>
+    #include <openrct2-ui/interface/Widget.h>
+    #include <openrct2-ui/windows/Window.h>
+    #include <openrct2/Context.h>
+    #include <openrct2/ParkImporter.h>
+    #include <openrct2/config/Config.h>
+    #include <openrct2/interface/Chat.h>
+    #include <openrct2/network/network.h>
+    #include <openrct2/util/Util.h>
+    #include <openrct2/windows/Intent.h>
 
 namespace OpenRCT2::Ui::Windows
 {

@@ -11,8 +11,8 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include <openrct2/scripting/Duktape.hpp>
-#    include <openrct2/world/Map.h>
+    #include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/world/Map.h>
 
 namespace OpenRCT2::Scripting
 {

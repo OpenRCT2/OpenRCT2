@@ -74,7 +74,7 @@
 #include <vector>
 
 #ifndef NO_TTF
-#    include "../drawing/TTF.h"
+    #include "../drawing/TTF.h"
 #endif
 
 using namespace OpenRCT2;

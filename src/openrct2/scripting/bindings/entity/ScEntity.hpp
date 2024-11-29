@@ -11,16 +11,16 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../Context.h"
-#    include "../../../entity/EntityList.h"
-#    include "../../../entity/EntityRegistry.h"
-#    include "../../../entity/Peep.h"
-#    include "../../../util/Util.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
+    #include "../../../Context.h"
+    #include "../../../entity/EntityList.h"
+    #include "../../../entity/EntityRegistry.h"
+    #include "../../../entity/Peep.h"
+    #include "../../../util/Util.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
-#    include <string_view>
-#    include <unordered_map>
+    #include <string_view>
+    #include <unordered_map>
 
 namespace OpenRCT2::Scripting
 {

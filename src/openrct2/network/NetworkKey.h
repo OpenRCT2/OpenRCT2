@@ -11,9 +11,9 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include <memory>
-#    include <string>
-#    include <vector>
+    #include <memory>
+    #include <string>
+    #include <vector>
 
 namespace OpenRCT2
 {

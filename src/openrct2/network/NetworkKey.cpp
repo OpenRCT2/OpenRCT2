@@ -9,15 +9,15 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "NetworkKey.h"
+    #include "NetworkKey.h"
 
-#    include "../Diagnostic.h"
-#    include "../core/Crypt.h"
-#    include "../core/Guard.hpp"
-#    include "../core/IStream.hpp"
-#    include "../core/String.hpp"
+    #include "../Diagnostic.h"
+    #include "../core/Crypt.h"
+    #include "../core/Guard.hpp"
+    #include "../core/IStream.hpp"
+    #include "../core/String.hpp"
 
-#    include <vector>
+    #include <vector>
 
 using namespace OpenRCT2;
 

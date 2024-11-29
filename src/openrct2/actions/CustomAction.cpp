@@ -8,10 +8,10 @@
  *****************************************************************************/
 
 #ifdef ENABLE_SCRIPTING
-#    include "CustomAction.h"
+    #include "CustomAction.h"
 
-#    include "../Context.h"
-#    include "../scripting/ScriptEngine.h"
+    #include "../Context.h"
+    #include "../scripting/ScriptEngine.h"
 
 using namespace OpenRCT2;
 

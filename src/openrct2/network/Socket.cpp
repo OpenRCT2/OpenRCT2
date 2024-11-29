@@ -9,15 +9,15 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "../Diagnostic.h"
+    #include "../Diagnostic.h"
 
-#    include <atomic>
-#    include <chrono>
-#    include <cmath>
-#    include <cstring>
-#    include <future>
-#    include <string>
-#    include <thread>
+    #include <atomic>
+    #include <chrono>
+    #include <cmath>
+    #include <cstring>
+    #include <future>
+    #include <string>
+    #include <thread>
 
 // clang-format off
 // MSVC: include <math.h> here otherwise PI gets defined twice
@@ -71,12 +71,12 @@
 #endif // _WIN32
 // clang-format on
 
-#    include "Socket.h"
+    #include "Socket.h"
 
 constexpr auto kConnectTimeout = std::chrono::milliseconds(3000);
 
-// RAII WSA initialisation needed for Windows
-#    ifdef _WIN32
+    // RAII WSA initialisation needed for Windows
+    #ifdef _WIN32
 class WSA
 {
 private:
@@ -120,12 +120,12 @@ static bool InitialiseWSA()
     static WSA wsa;
     return wsa.Initialise();
 }
-#    else
+    #else
 static bool InitialiseWSA()
 {
     return true;
 }
-#    endif
+    #endif
 
 class SocketException : public std::runtime_error
 {
@@ -198,13 +198,13 @@ protected:
 
     static bool SetNonBlocking(SOCKET socket, bool on)
     {
-#    ifdef _WIN32
+    #ifdef _WIN32
         u_long nonBlocking = on;
         return ioctlsocket(socket, FIONBIO, &nonBlocking) == 0;
-#    else
+    #else
         int32_t flags = fcntl(socket, F_GETFL, 0);
         return fcntl(socket, F_SETFL, on ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK)) == 0;
-#    endif
+    #endif
     }
 
     static bool SetOption(SOCKET socket, int32_t a, int32_t b, bool value)
@@ -471,10 +471,10 @@ public:
 
                 fd_set writeFD;
                 FD_ZERO(&writeFD);
-#    pragma warning(push)
-#    pragma warning(disable : 4548) // expression before comma has no effect; expected expression with side-effect
+    #pragma warning(push)
+    #pragma warning(disable : 4548) // expression before comma has no effect; expected expression with side-effect
                 FD_SET(_socket, &writeFD);
-#    pragma warning(pop)
+    #pragma warning(pop)
                 timeval timeout{};
                 timeout.tv_sec = 0;
                 timeout.tv_usec = 0;
@@ -591,7 +591,7 @@ public:
         if (readBytes == SOCKET_ERROR)
         {
             *sizeReceived = 0;
-#    ifndef _WIN32
+    #ifndef _WIN32
             // Removing the check for EAGAIN and instead relying on the values being the same allows turning on of
             // -Wlogical-op warning.
             // This is not true on Windows, see:
@@ -602,7 +602,7 @@ public:
                 EWOULDBLOCK == EAGAIN,
                 "Portability note: your system has different values for EWOULDBLOCK "
                 "and EAGAIN, please extend the condition below");
-#    endif // _WIN32
+    #endif // _WIN32
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
             {
                 return NetworkReadPacket::Disconnected;
@@ -876,7 +876,7 @@ std::unique_ptr<IUdpSocket> CreateUdpSocket()
     return std::make_unique<UdpSocket>();
 }
 
-#    ifdef _WIN32
+    #ifdef _WIN32
 static std::vector<INTERFACE_INFO> GetNetworkInterfaces()
 {
     InitialiseWSA();
@@ -913,12 +913,12 @@ static std::vector<INTERFACE_INFO> GetNetworkInterfaces()
     interfaces.shrink_to_fit();
     return interfaces;
 }
-#    endif
+    #endif
 
 std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses()
 {
     std::vector<std::unique_ptr<INetworkEndpoint>> baddresses;
-#    ifdef _WIN32
+    #ifdef _WIN32
     auto interfaces = GetNetworkInterfaces();
     for (const auto& ifo : interfaces)
     {
@@ -935,7 +935,7 @@ std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses()
         baddresses.push_back(std::make_unique<NetworkEndpoint>(
             reinterpret_cast<const sockaddr*>(&address), static_cast<socklen_t>(sizeof(sockaddr))));
     }
-#    else
+    #else
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock == -1)
     {
@@ -966,12 +966,12 @@ std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses()
             }
         }
         p += sizeof(ifreq);
-#        if defined(AF_LINK) && !defined(SUNOS)
+        #if defined(AF_LINK) && !defined(SUNOS)
         p += req->ifr_addr.sa_len - sizeof(struct sockaddr);
-#        endif
+        #endif
     }
     close(sock);
-#    endif
+    #endif
     return baddresses;
 }
 

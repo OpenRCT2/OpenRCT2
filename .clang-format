@@ -62,7 +62,7 @@ IncludeCategories:
   - Regex:           '^<'
     Priority:        2
 IndentCaseLabels: true
-IndentPPDirectives: AfterHash
+IndentPPDirectives: BeforeHash
 IndentWidth:     4
 IndentWrappedFunctionNames: true
 KeepEmptyLinesAtTheStartOfBlocks: false

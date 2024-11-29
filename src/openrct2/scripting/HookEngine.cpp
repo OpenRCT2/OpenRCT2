@@ -9,12 +9,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "HookEngine.h"
+    #include "HookEngine.h"
 
-#    include "../core/EnumMap.hpp"
-#    include "ScriptEngine.h"
+    #include "../core/EnumMap.hpp"
+    #include "ScriptEngine.h"
 
-#    include <unordered_map>
+    #include <unordered_map>
 
 using namespace OpenRCT2::Scripting;
 

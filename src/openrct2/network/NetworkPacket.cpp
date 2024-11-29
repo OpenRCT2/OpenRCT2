@@ -9,11 +9,11 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "NetworkPacket.h"
+    #include "NetworkPacket.h"
 
-#    include "NetworkTypes.h"
+    #include "NetworkTypes.h"
 
-#    include <memory>
+    #include <memory>
 
 NetworkPacket::NetworkPacket(NetworkCommand id) noexcept
     : Header{ 0, id }

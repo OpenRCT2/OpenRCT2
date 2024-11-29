@@ -9,32 +9,32 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include <cassert>
-#    include <chrono>
-#    include <openrct2-ui/interface/Dropdown.h>
-#    include <openrct2-ui/interface/Widget.h>
-#    include <openrct2-ui/windows/Window.h>
-#    include <openrct2/Context.h>
-#    include <openrct2/Diagnostic.h>
-#    include <openrct2/config/Config.h>
-#    include <openrct2/core/Json.hpp>
-#    include <openrct2/drawing/Text.h>
-#    include <openrct2/interface/Colour.h>
-#    include <openrct2/localisation/Formatter.h>
-#    include <openrct2/network/ServerList.h>
-#    include <openrct2/network/network.h>
-#    include <openrct2/platform/Platform.h>
-#    include <openrct2/sprites.h>
-#    include <openrct2/util/Util.h>
-#    include <tuple>
+    #include <cassert>
+    #include <chrono>
+    #include <openrct2-ui/interface/Dropdown.h>
+    #include <openrct2-ui/interface/Widget.h>
+    #include <openrct2-ui/windows/Window.h>
+    #include <openrct2/Context.h>
+    #include <openrct2/Diagnostic.h>
+    #include <openrct2/config/Config.h>
+    #include <openrct2/core/Json.hpp>
+    #include <openrct2/drawing/Text.h>
+    #include <openrct2/interface/Colour.h>
+    #include <openrct2/localisation/Formatter.h>
+    #include <openrct2/network/ServerList.h>
+    #include <openrct2/network/network.h>
+    #include <openrct2/platform/Platform.h>
+    #include <openrct2/sprites.h>
+    #include <openrct2/util/Util.h>
+    #include <tuple>
 
 namespace OpenRCT2::Ui::Windows
 {
-#    define WWIDTH_MIN 500
-#    define WHEIGHT_MIN 300
-#    define WWIDTH_MAX 1200
-#    define WHEIGHT_MAX 800
-#    define ITEM_HEIGHT (3 + 9 + 3)
+    #define WWIDTH_MIN 500
+    #define WHEIGHT_MIN 300
+    #define WWIDTH_MAX 1200
+    #define WHEIGHT_MAX 800
+    #define ITEM_HEIGHT (3 + 9 + 3)
 
     constexpr size_t MaxPlayerNameLength = 32;
 
@@ -91,7 +91,7 @@ namespace OpenRCT2::Ui::Windows
         std::string _version;
 
     public:
-#    pragma region Window Override Events
+    #pragma region Window Override Events
 
         void OnOpen() override
         {
@@ -433,7 +433,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-#    pragma endregion
+    #pragma endregion
 
     private:
         void ServerListFetchServersBegin()

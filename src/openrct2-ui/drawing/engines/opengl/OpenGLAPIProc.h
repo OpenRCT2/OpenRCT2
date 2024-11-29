@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #ifndef OPENGL_PROC
-#    error "Do not include OpenGLAPIProc.h directly. Include OpenGLAPI.h instead."
+    #error "Do not include OpenGLAPIProc.h directly. Include OpenGLAPI.h instead."
 #endif
 
 // 1.1 function pointers

@@ -9,12 +9,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScTrackSegment.h"
+    #include "ScTrackSegment.h"
 
-#    include "../../../Context.h"
-#    include "../../../ride/TrackData.h"
-#    include "../../../ride/Vehicle.h"
-#    include "../../ScriptEngine.h"
+    #include "../../../Context.h"
+    #include "../../../ride/TrackData.h"
+    #include "../../../ride/Vehicle.h"
+    #include "../../ScriptEngine.h"
 
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::TrackMetaData;

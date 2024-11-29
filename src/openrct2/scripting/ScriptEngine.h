@@ -11,22 +11,22 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../actions/CustomAction.h"
-#    include "../core/FileWatcher.h"
-#    include "../management/Finance.h"
-#    include "../world/Location.hpp"
-#    include "HookEngine.h"
-#    include "Plugin.h"
+    #include "../actions/CustomAction.h"
+    #include "../core/FileWatcher.h"
+    #include "../management/Finance.h"
+    #include "../world/Location.hpp"
+    #include "HookEngine.h"
+    #include "Plugin.h"
 
-#    include <future>
-#    include <list>
-#    include <memory>
-#    include <mutex>
-#    include <queue>
-#    include <string>
-#    include <unordered_map>
-#    include <unordered_set>
-#    include <vector>
+    #include <future>
+    #include <list>
+    #include <memory>
+    #include <mutex>
+    #include <queue>
+    #include <string>
+    #include <unordered_map>
+    #include <unordered_set>
+    #include <vector>
 
 struct duk_hthread;
 typedef struct duk_hthread duk_context;
@@ -54,9 +54,9 @@ namespace OpenRCT2::Scripting
     static constexpr int32_t API_VERSION_68_CUSTOM_ACTION_ARGS = 68;
     static constexpr int32_t API_VERSION_77_NETWORK_IDS = 77;
 
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
     class ScSocketBase;
-#    endif
+    #endif
 
     class ScriptExecutionInfo
     {
@@ -173,9 +173,9 @@ namespace OpenRCT2::Scripting
         };
 
         std::unordered_map<std::string, CustomActionInfo> _customActions;
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
         std::list<std::shared_ptr<ScSocketBase>> _sockets;
-#    endif
+    #endif
 
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
@@ -264,9 +264,9 @@ namespace OpenRCT2::Scripting
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
         static ExpenditureType StringToExpenditureType(std::string_view expenditureType);
 
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
         void AddSocket(const std::shared_ptr<ScSocketBase>& socket);
-#    endif
+    #endif
 
     private:
         void RegisterConstants();

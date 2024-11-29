@@ -8,8 +8,8 @@
  *****************************************************************************/
 
 #ifdef _WIN32
-#    include <cassert>
-#    include <windows.h>
+    #include <cassert>
+    #include <windows.h>
 #endif
 
 #include "../Version.h"
@@ -144,12 +144,12 @@ namespace OpenRCT2::Guard
 
     static void ForceCrash()
     {
-#    ifdef USE_BREAKPAD
+    #ifdef USE_BREAKPAD
         // Force a crash that breakpad will handle allowing us to get a dump
         *((void**)0) = 0;
-#    else
+    #else
         assert(false);
-#    endif
+    #endif
     }
 #endif
 } // namespace OpenRCT2::Guard

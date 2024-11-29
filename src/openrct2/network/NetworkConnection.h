@@ -11,15 +11,15 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "NetworkKey.h"
-#    include "NetworkPacket.h"
-#    include "NetworkTypes.h"
-#    include "Socket.h"
+    #include "NetworkKey.h"
+    #include "NetworkPacket.h"
+    #include "NetworkTypes.h"
+    #include "Socket.h"
 
-#    include <deque>
-#    include <memory>
-#    include <string_view>
-#    include <vector>
+    #include <deque>
+    #include <memory>
+    #include <string_view>
+    #include <vector>
 
 class NetworkPlayer;
 struct ObjectRepositoryItem;

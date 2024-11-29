@@ -17,18 +17,18 @@
 #include <vector>
 
 #ifdef _WIN32
-#    define PATH_SEPARATOR u8"\\"
-#    define PLATFORM_NEWLINE u8"\r\n"
+    #define PATH_SEPARATOR u8"\\"
+    #define PLATFORM_NEWLINE u8"\r\n"
 #else
-#    define PATH_SEPARATOR u8"/"
-#    define PLATFORM_NEWLINE u8"\n"
+    #define PATH_SEPARATOR u8"/"
+    #define PLATFORM_NEWLINE u8"\n"
 #endif
 #ifdef __ANDROID__
-#    include <jni.h>
+    #include <jni.h>
 #endif // __ANDROID__
 
 #ifndef MAX_PATH
-#    define MAX_PATH 260
+    #define MAX_PATH 260
 #endif
 
 enum class SPECIAL_FOLDER

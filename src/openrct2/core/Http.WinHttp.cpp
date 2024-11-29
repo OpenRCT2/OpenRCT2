@@ -9,16 +9,16 @@
 
 #if !defined(DISABLE_HTTP) && defined(_WIN32)
 
-#    include "Http.h"
+    #include "Http.h"
 
-#    include "../Version.h"
-#    include "../core/Console.hpp"
-#    include "String.hpp"
+    #include "../Version.h"
+    #include "../core/Console.hpp"
+    #include "String.hpp"
 
-#    include <cstdio>
-#    include <stdexcept>
-#    include <windows.h>
-#    include <winhttp.h>
+    #include <cstdio>
+    #include <stdexcept>
+    #include <windows.h>
+    #include <winhttp.h>
 
 namespace OpenRCT2::Http
 {
@@ -226,9 +226,9 @@ namespace OpenRCT2::Http
         }
         catch ([[maybe_unused]] const std::exception& e)
         {
-#    ifdef DEBUG
+    #ifdef DEBUG
             Console::Error::WriteLine("HTTP request failed: %s", e.what());
-#    endif
+    #endif
             WinHttpCloseHandle(hSession);
             WinHttpCloseHandle(hConnect);
             WinHttpCloseHandle(hRequest);

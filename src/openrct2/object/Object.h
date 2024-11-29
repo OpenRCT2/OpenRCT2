@@ -179,9 +179,9 @@ struct IReadObjectContext
 };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
-#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 class Object
 {
@@ -336,7 +336,7 @@ public:
     void UnloadImages();
 };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
-#    pragma GCC diagnostic pop
+    #pragma GCC diagnostic pop
 #endif
 
 int32_t ObjectCalculateChecksum(const RCTObjectEntry* entry, const void* data, size_t dataLength);

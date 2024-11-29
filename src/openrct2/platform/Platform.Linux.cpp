@@ -9,33 +9,33 @@
 
 #if defined(__unix__) && !defined(__ANDROID__) && !defined(__APPLE__)
 
-#    include "../Diagnostic.h"
+    #include "../Diagnostic.h"
 
-#    include <cstring>
-#    include <fnmatch.h>
-#    include <limits.h>
-#    include <locale.h>
-#    include <pwd.h>
-#    include <unistd.h>
-#    include <vector>
-#    if defined(__FreeBSD__) || defined(__NetBSD__)
-#        include <stddef.h>
-#        include <sys/param.h>
-#        include <sys/sysctl.h>
-#    endif // __FreeBSD__ || __NetBSD__
-#    if defined(__linux__)
-// for PATH_MAX
-#        include <linux/limits.h>
-#    endif // __linux__
-#    ifndef NO_TTF
-#        include <fontconfig/fontconfig.h>
-#    endif // NO_TTF
+    #include <cstring>
+    #include <fnmatch.h>
+    #include <limits.h>
+    #include <locale.h>
+    #include <pwd.h>
+    #include <unistd.h>
+    #include <vector>
+    #if defined(__FreeBSD__) || defined(__NetBSD__)
+        #include <stddef.h>
+        #include <sys/param.h>
+        #include <sys/sysctl.h>
+    #endif // __FreeBSD__ || __NetBSD__
+    #if defined(__linux__)
+        // for PATH_MAX
+        #include <linux/limits.h>
+    #endif // __linux__
+    #ifndef NO_TTF
+        #include <fontconfig/fontconfig.h>
+    #endif // NO_TTF
 
-#    include "../Date.h"
-#    include "../OpenRCT2.h"
-#    include "../core/Path.hpp"
-#    include "../localisation/Language.h"
-#    include "Platform.h"
+    #include "../Date.h"
+    #include "../OpenRCT2.h"
+    #include "../core/Path.hpp"
+    #include "../localisation/Language.h"
+    #include "Platform.h"
 
 namespace OpenRCT2::Platform
 {
@@ -131,40 +131,40 @@ namespace OpenRCT2::Platform
     std::string GetCurrentExecutablePath()
     {
         char exePath[PATH_MAX] = { 0 };
-#    ifdef __linux__
+    #ifdef __linux__
         auto bytesRead = readlink("/proc/self/exe", exePath, sizeof(exePath));
         if (bytesRead == -1)
         {
             LOG_FATAL("failed to read /proc/self/exe");
         }
-#    elif defined(__FreeBSD__) || defined(__NetBSD__)
-#        if defined(__FreeBSD__)
+    #elif defined(__FreeBSD__) || defined(__NetBSD__)
+        #if defined(__FreeBSD__)
         const int32_t mib[] = {
             CTL_KERN,
             KERN_PROC,
             KERN_PROC_PATHNAME,
             -1,
         };
-#        else
+        #else
         const int32_t mib[] = {
             CTL_KERN,
             KERN_PROC_ARGS,
             -1,
             KERN_PROC_PATHNAME,
         };
-#        endif
+        #endif
         auto exeLen = sizeof(exePath);
         if (sysctl(mib, 4, exePath, &exeLen, nullptr, 0) == -1)
         {
             LOG_FATAL("failed to get process path");
         }
-#    elif defined(__OpenBSD__)
+    #elif defined(__OpenBSD__)
         // There is no way to get the path name of a running executable.
         // If you are not using the port or package, you may have to change this line!
         strlcpy(exePath, "/usr/local/bin/", sizeof(exePath));
-#    else
-#        error "Platform does not support full path exe retrieval"
-#    endif
+    #else
+        #error "Platform does not support full path exe retrieval"
+    #endif
         return exePath;
     }
 
@@ -259,12 +259,12 @@ namespace OpenRCT2::Platform
 
     MeasurementFormat GetLocaleMeasurementFormat()
     {
-// LC_MEASUREMENT is GNU specific.
-#    ifdef LC_MEASUREMENT
+    // LC_MEASUREMENT is GNU specific.
+    #ifdef LC_MEASUREMENT
         const char* langstring = setlocale(LC_MEASUREMENT, "");
-#    else
+    #else
         const char* langstring = setlocale(LC_ALL, "");
-#    endif
+    #endif
 
         if (langstring != nullptr)
         {
@@ -349,7 +349,7 @@ namespace OpenRCT2::Platform
         };
     }
 
-#    ifndef NO_TTF
+    #ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
         LOG_VERBOSE("Looking for font %s with FontConfig.", font.font_name);
@@ -406,7 +406,7 @@ namespace OpenRCT2::Platform
         FcFini();
         return path;
     }
-#    endif // NO_TTF
+    #endif // NO_TTF
 } // namespace OpenRCT2::Platform
 
 #endif

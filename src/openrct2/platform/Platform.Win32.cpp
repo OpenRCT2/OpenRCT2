@@ -9,48 +9,48 @@
 
 #ifdef _WIN32
 
-// Windows.h needs to be included first
-#    ifndef WIN32_LEAN_AND_MEAN
-#        define WIN32_LEAN_AND_MEAN
-#    endif
-#    include "../Diagnostic.h"
+    // Windows.h needs to be included first
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    #include "../Diagnostic.h"
 
-#    include <cassert>
-#    include <windows.h>
+    #include <cassert>
+    #include <windows.h>
 
-// Then the rest
-#    include "../Version.h"
+    // Then the rest
+    #include "../Version.h"
 
-#    include <datetimeapi.h>
-#    include <lmcons.h>
-#    include <memory>
-#    include <shlobj.h>
-#    undef GetEnvironmentVariable
+    #include <datetimeapi.h>
+    #include <lmcons.h>
+    #include <memory>
+    #include <shlobj.h>
+    #undef GetEnvironmentVariable
 
-#    include "../Date.h"
-#    include "../OpenRCT2.h"
-#    include "../core/Path.hpp"
-#    include "../core/String.hpp"
-#    include "../localisation/Language.h"
-#    include "../localisation/Localisation.Date.h"
-#    include "Platform.h"
+    #include "../Date.h"
+    #include "../OpenRCT2.h"
+    #include "../core/Path.hpp"
+    #include "../core/String.hpp"
+    #include "../localisation/Language.h"
+    #include "../localisation/Localisation.Date.h"
+    #include "Platform.h"
 
-#    include <cstring>
-#    include <iterator>
-#    include <locale>
+    #include <cstring>
+    #include <iterator>
+    #include <locale>
 
-// Native resource IDs
-#    include "../../../resources/resource.h"
+    // Native resource IDs
+    #include "../../../resources/resource.h"
 
-// Enable visual styles
-#    pragma comment(                                                                                                           \
+    // Enable visual styles
+    #pragma comment(                                                                                                           \
         linker,                                                                                                                \
         "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 // The name of the mutex used to prevent multiple instances of the game from running
 static constexpr wchar_t SINGLE_INSTANCE_MUTEX_NAME[] = L"RollerCoaster Tycoon 2_GSKMUTEX";
 
-#    define SOFTWARE_CLASSES L"Software\\Classes"
-#    define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
+    #define SOFTWARE_CLASSES L"Software\\Classes"
+    #define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
 
 namespace OpenRCT2::Platform
 {
@@ -215,14 +215,14 @@ namespace OpenRCT2::Platform
         if (hModule != nullptr)
         {
             using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
-#    if defined(__GNUC__) && __GNUC__ >= 8
-#        pragma GCC diagnostic push
-#        pragma GCC diagnostic ignored "-Wcast-function-type"
-#    endif
+    #if defined(__GNUC__) && __GNUC__ >= 8
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wcast-function-type"
+    #endif
             auto fn = reinterpret_cast<RtlGetVersionPtr>(GetProcAddress(hModule, "RtlGetVersion"));
-#    if defined(__GNUC__) && __GNUC__ >= 8
-#        pragma GCC diagnostic pop
-#    endif
+    #if defined(__GNUC__) && __GNUC__ >= 8
+        #pragma GCC diagnostic pop
+    #endif
             if (fn != nullptr)
             {
                 RTL_OSVERSIONINFOW rovi{};

@@ -33,9 +33,9 @@
 #include "../world/tile_element/TrackElement.h"
 
 #ifdef DISABLE_NETWORK
-#    include <picosha2.hpp>
+    #include <picosha2.hpp>
 #else
-#    include "../core/Crypt.h"
+    #include "../core/Crypt.h"
 #endif
 
 #include <iostream>

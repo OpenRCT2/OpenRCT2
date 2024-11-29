@@ -12,7 +12,7 @@
 
 #ifdef __AVX2__
 
-#    include <immintrin.h>
+    #include <immintrin.h>
 
 void MaskAvx2(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
@@ -43,9 +43,9 @@ void MaskAvx2(
 
 #else
 
-#    ifdef OPENRCT2_X86
-#        error You have to compile this file with AVX2 enabled, when targeting x86!
-#    endif
+    #ifdef OPENRCT2_X86
+        #error You have to compile this file with AVX2 enabled, when targeting x86!
+    #endif
 
 void MaskAvx2(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,

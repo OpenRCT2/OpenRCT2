@@ -11,15 +11,15 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../interface/Window.h"
+    #include "../interface/Window.h"
 
-#    include <cstdint>
-#    include <memory>
-#    include <openrct2/scripting/Duktape.hpp>
-#    include <openrct2/scripting/ScriptEngine.h>
-#    include <optional>
-#    include <string>
-#    include <vector>
+    #include <cstdint>
+    #include <memory>
+    #include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/scripting/ScriptEngine.h>
+    #include <optional>
+    #include <string>
+    #include <vector>
 
 namespace OpenRCT2::Ui::Windows
 {

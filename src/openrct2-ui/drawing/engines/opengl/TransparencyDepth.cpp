@@ -9,12 +9,12 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "TransparencyDepth.h"
+    #include "TransparencyDepth.h"
 
-#    include <algorithm>
-#    include <cassert>
-#    include <map>
-#    include <vector>
+    #include <algorithm>
+    #include <cassert>
+    #include <map>
+    #include <vector>
 
 namespace OpenRCT2::Ui
 {
