@@ -248,6 +248,8 @@ void SetupInUseSelectionFlags()
         Editor::SetSelectedObject(ObjectType::Music, ride.music, ObjectSelectionFlags::InUse);
     }
 
+    // TODO: peep animation objects
+
     // Apply selected object status for hacked vehicles that may not have an associated ride
     for (auto* vehicle : TrainManager::View())
     {

@@ -11,18 +11,38 @@
 
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
+#include "../core/EnumMap.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../peep/PeepAnimations.h"
 
 using namespace OpenRCT2;
 
+static const EnumMap<AnimationPeepType> animationPeepTypeMap({
+    { "guest", AnimationPeepType::Guest },
+    { "handyman", AnimationPeepType::Handyman },
+    { "mechanic", AnimationPeepType::Mechanic },
+    { "security", AnimationPeepType::Security },
+    { "entertainer", AnimationPeepType::Entertainer },
+});
+
 void PeepAnimationsObject::Load()
 {
     auto numImages = GetImageTable().GetCount();
-    if (numImages != 0)
+    if (numImages == 0)
+        return;
+
+    _imageOffsetId = LoadImages();
+
+    // Set loaded image offsets for all animations
+    for (auto& group : _animationGroups)
     {
-        _imageOffsetId = LoadImages();
+        auto& requiredAnimationMap = getAnimationsByPeepType(_peepType);
+        for (auto& [typeStr, typeEnum] : requiredAnimationMap)
+        {
+            group[typeEnum].base_image = _imageOffsetId + group[typeEnum].imageTableOffset;
+            group[typeEnum].bounds = inferMaxAnimationDimensions(group[typeEnum]);
+        }
     }
 }
 
@@ -35,6 +55,43 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
     Guard::Assert(root.is_object(), "PeepAnimationsObject::ReadJson expects parameter root to be an object");
     PopulateTablesFromJson(context, root);
+
+    Guard::Assert(root["peepType"].is_string(), "PeepAnimationsObject::ReadJson expects peepType to be a string");
+    _peepType = animationPeepTypeMap[Json::GetString(root["peepType"])];
+
+    auto& requiredAnimationMap = getAnimationsByPeepType(_peepType);
+    _animationGroups.clear();
+
+    Guard::Assert(root["animationGroups"].is_array(), "PeepAnimationsObject::ReadJson expects animationGroups to be an array");
+    for (auto& groupJson : root["animationGroups"])
+    {
+        Guard::Assert(groupJson["animations"].is_object(), "PeepAnimationsObject::ReadJson expects animations to be an array");
+
+        PeepAnimations group{};
+        for (auto& [typeStr, typeEnum] : requiredAnimationMap)
+        {
+            if (!groupJson["animations"].contains(typeStr))
+            {
+                LOG_ERROR("Required animation does not exist: %s", typeStr);
+                continue;
+            }
+
+            // The `.data()` here is a workaround for older versions of nlohmann-json.
+            // TODO: remove when we no longer support Ubuntu 22.04 (Jammy).
+            auto& animJson = animations[typeStr.data()];
+
+            // Store animation sequence in vector
+            auto sequence = animJson["sequence"].get<std::vector<uint8_t>>();
+
+            // TODO: simplify
+            PeepAnimation anim{ kSpriteIdNull, sequence };
+            anim.imageTableOffset = Json::GetNumber<uint16_t>(animJson["offset"]);
+
+            group[typeEnum] = anim;
+        }
+
+        _animationGroups.push_back(group);
+    }
 }
 
 void PeepAnimationsObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const

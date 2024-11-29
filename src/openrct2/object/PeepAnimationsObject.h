@@ -10,15 +10,17 @@
 #pragma once
 
 #include "../core/IStream.hpp"
+#include "../peep/PeepAnimations.h"
 #include "Object.h"
 
-#include <string>
 #include <vector>
 
 class PeepAnimationsObject final : public Object
 {
 private:
+    OpenRCT2::AnimationPeepType _peepType;
     ImageIndex _imageOffsetId;
+    std::vector<OpenRCT2::PeepAnimations> _animationGroups;
 
 public:
     static constexpr ObjectType kObjectType = ObjectType::PeepAnimations;
