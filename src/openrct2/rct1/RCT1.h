@@ -541,7 +541,11 @@ namespace OpenRCT2::RCT1
         Hat = 27,
         HotDog = 28, // Unsure
         Tentacle = 29,
-        ToffeeApple = 30
+        ToffeeApple = 30,
+        Doughnut = 31, // Unsure
+        Coffee = 32,   // Unsure
+        Chicken = 33,  // Unsure
+        Lemonade = 34, // Unsure
     };
 
     struct Peep : RCT12EntityBase
