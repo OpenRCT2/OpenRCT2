@@ -523,7 +523,10 @@ namespace OpenRCT2::RCT1
         EntertainerSnowman = 9,
         EntertainerKnight = 10,
         EntertainerAstronaut = 11,
-
+        IceCream = 12, // Unsure
+        Chips = 13,    // Unsure
+        Burger = 14,   // Unsure
+        Drink = 15,    // Unsure
         Balloon = 16,
         Candyfloss = 17,
         Umbrella = 18,
@@ -536,7 +539,7 @@ namespace OpenRCT2::RCT1
         VeryNauseous = 25,
         RequireToilet = 26,
         Hat = 27,
-        Burger = 28,
+        HotDog = 28, // Unsure
         Tentacle = 29,
         ToffeeApple = 30
     };
