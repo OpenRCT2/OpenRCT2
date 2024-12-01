@@ -830,7 +830,7 @@ bool MapCanBuildAt(const CoordsXYZ& loc)
 {
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return true;
-    if (GetGameState().Cheats.SandboxMode)
+    if (GetGameState().Cheats.sandboxMode)
         return true;
     if (MapIsLocationOwned(loc))
         return true;
@@ -966,7 +966,7 @@ uint8_t MapGetLowestLandHeight(const MapRange& range)
 
             if (surfaceElement != nullptr && min_height > surfaceElement->BaseHeight)
             {
-                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
                     {
@@ -995,7 +995,7 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
             auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr)
             {
-                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
                     {
@@ -1318,8 +1318,8 @@ void MapRemoveOutOfRangeElements()
     // Map resize has to become its own Game Action to properly solve this issue.
     //
     auto& gameState = GetGameState();
-    bool buildState = gameState.Cheats.BuildInPauseMode;
-    gameState.Cheats.BuildInPauseMode = true;
+    bool buildState = gameState.Cheats.buildInPauseMode;
+    gameState.Cheats.buildInPauseMode = true;
 
     for (int32_t y = MAXIMUM_MAP_SIZE_BIG - kCoordsXYStep; y >= 0; y -= kCoordsXYStep)
     {
@@ -1340,7 +1340,7 @@ void MapRemoveOutOfRangeElements()
     }
 
     // Reset cheat state
-    gameState.Cheats.BuildInPauseMode = buildState;
+    gameState.Cheats.buildInPauseMode = buildState;
 }
 
 static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile, SurfaceElement& destTile)

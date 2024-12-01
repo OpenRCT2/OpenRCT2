@@ -72,7 +72,7 @@ GameActions::Result TrackDesignAction::Query() const
     {
         // Force a fallback if the entry is not invented yet a track design of it is selected,
         // which can happen in select-by-track-type mode
-        if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.IgnoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.ignoreResearchStatus)
         {
             entryIndex = OBJECT_ENTRY_INDEX_NULL;
         }
@@ -146,7 +146,7 @@ GameActions::Result TrackDesignAction::Execute() const
     {
         // Force a fallback if the entry is not invented yet a track design using it is selected.
         // This can happen on rides with multiple vehicles where some have been invented and some haven’t.
-        if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.IgnoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !gameState.Cheats.ignoreResearchStatus)
         {
             entryIndex = OBJECT_ENTRY_INDEX_NULL;
         }

@@ -52,7 +52,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     res.Position = { _coords, _height * kCoordsZStep };
 
     auto& gameState = GetGameState();
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode
         && gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
@@ -69,7 +69,7 @@ GameActions::Result WaterSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {
@@ -121,7 +121,7 @@ GameActions::Result WaterSetHeightAction::Execute() const
 
     int32_t surfaceHeight = TileElementHeight(_coords);
     FootpathRemoveLitter({ _coords, surfaceHeight });
-    if (!GetGameState().Cheats.DisableClearanceChecks)
+    if (!GetGameState().Cheats.disableClearanceChecks)
         WallRemoveAtZ({ _coords, surfaceHeight });
 
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);

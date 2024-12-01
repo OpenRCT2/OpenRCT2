@@ -159,7 +159,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             }
             uint8_t clampValue = _value;
             static_assert(sizeof(clampValue) == sizeof(ride->proposed_num_cars_per_train));
-            if (!GetGameState().Cheats.DisableTrainLengthLimit)
+            if (!GetGameState().Cheats.disableTrainLengthLimit)
             {
                 clampValue = std::clamp(clampValue, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
             }
@@ -182,7 +182,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             }
 
             RideSetVehicleColoursToRandomPreset(*ride, _colour);
-            if (!GetGameState().Cheats.DisableTrainLengthLimit)
+            if (!GetGameState().Cheats.disableTrainLengthLimit)
             {
                 ride->proposed_num_cars_per_train = std::clamp(
                     ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
@@ -230,7 +230,7 @@ bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
 
     {
         const auto& rtd = ride.GetRideTypeDescriptor();
-        if (gameState.Cheats.ShowVehiclesFromOtherTrackTypes
+        if (gameState.Cheats.showVehiclesFromOtherTrackTypes
             && !(
                 ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide) || rtd.specialType == RtdSpecialType::maze
                 || rtd.specialType == RtdSpecialType::miniGolf))
@@ -265,7 +265,7 @@ bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
         {
             if (rideEntryIndex == _value)
             {
-                if (!RideEntryIsInvented(rideEntryIndex) && !gameState.Cheats.IgnoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !gameState.Cheats.ignoreResearchStatus)
                 {
                     return false;
                 }

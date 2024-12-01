@@ -377,7 +377,7 @@ namespace OpenRCT2::Ui
                 else
                 {
                     // FIXME: Why does it *2 the value?
-                    if (!GetGameState().Cheats.SandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
+                    if (!GetGameState().Cheats.sandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
                     {
                         info.interactionType = ViewportInteractionItem::None;
                         return info;
@@ -508,7 +508,7 @@ namespace OpenRCT2::Ui
                 return info;
             }
             case ViewportInteractionItem::ParkEntrance:
-                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
                     break;
 
                 if (tileElement->GetType() != TileElementType::Entrance)

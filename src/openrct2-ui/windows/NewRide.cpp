@@ -618,7 +618,7 @@ namespace OpenRCT2::Ui::Windows
                 auto currentRideEntry = GetRideEntryByIndex(rideEntryIndex);
 
                 // Skip if vehicle type is not invented yet
-                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.IgnoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.ignoreResearchStatus)
                 {
                     continue;
                 }
@@ -680,7 +680,7 @@ namespace OpenRCT2::Ui::Windows
             for (auto rideEntryIndex : rideEntries)
             {
                 // Skip if vehicle type is not invented yet
-                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.IgnoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.ignoreResearchStatus)
                     continue;
 
                 // Ride entries

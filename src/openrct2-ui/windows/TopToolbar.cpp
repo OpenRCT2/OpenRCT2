@@ -916,7 +916,7 @@ namespace OpenRCT2::Ui::Windows
                 GfxDrawSprite(dpi, ImageId(SPR_G2_SANDBOX), screenPos);
 
                 // Draw an overlay if clearance checks are disabled
-                if (GetGameState().Cheats.DisableClearanceChecks)
+                if (GetGameState().Cheats.disableClearanceChecks)
                 {
                     auto colour = ColourWithFlags{ COLOUR_DARK_ORANGE }.withFlag(ColourFlag::withOutline, true);
                     DrawTextBasic(
@@ -1448,15 +1448,15 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto& gameState = GetGameState();
-        if (gameState.Cheats.SandboxMode)
+        if (gameState.Cheats.sandboxMode)
         {
             Dropdown::SetChecked(DDIDX_ENABLE_SANDBOX_MODE, true);
         }
-        if (gameState.Cheats.DisableClearanceChecks)
+        if (gameState.Cheats.disableClearanceChecks)
         {
             Dropdown::SetChecked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
         }
-        if (gameState.Cheats.DisableSupportLimits)
+        if (gameState.Cheats.disableSupportLimits)
         {
             Dropdown::SetChecked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
         }
@@ -1488,13 +1488,13 @@ namespace OpenRCT2::Ui::Windows
                 ContextOpenWindow(WindowClass::EditorObjectiveOptions);
                 break;
             case DDIDX_ENABLE_SANDBOX_MODE:
-                CheatsSet(CheatType::SandboxMode, !GetGameState().Cheats.SandboxMode);
+                CheatsSet(CheatType::SandboxMode, !GetGameState().Cheats.sandboxMode);
                 break;
             case DDIDX_DISABLE_CLEARANCE_CHECKS:
-                CheatsSet(CheatType::DisableClearanceChecks, !GetGameState().Cheats.DisableClearanceChecks);
+                CheatsSet(CheatType::DisableClearanceChecks, !GetGameState().Cheats.disableClearanceChecks);
                 break;
             case DDIDX_DISABLE_SUPPORT_LIMITS:
-                CheatsSet(CheatType::DisableSupportLimits, !GetGameState().Cheats.DisableSupportLimits);
+                CheatsSet(CheatType::DisableSupportLimits, !GetGameState().Cheats.disableSupportLimits);
                 break;
         }
     }

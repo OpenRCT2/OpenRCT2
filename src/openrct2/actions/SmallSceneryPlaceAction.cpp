@@ -172,7 +172,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
 
     auto& gameState = GetGameState();
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode
         && !MapIsLocationOwned({ _loc.x, _loc.y, targetHeight }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -180,7 +180,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
 
     auto* surfaceElement = MapGetSurfaceElementAt(_loc);
 
-    if (surfaceElement != nullptr && !gameState.Cheats.DisableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
+    if (surfaceElement != nullptr && !gameState.Cheats.disableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
     {
         int32_t water_height = surfaceElement->GetWaterHeight() - 1;
         if (water_height > targetHeight)
@@ -190,7 +190,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         }
     }
 
-    if (!gameState.Cheats.DisableClearanceChecks && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE)))
+    if (!gameState.Cheats.disableClearanceChecks && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE)))
     {
         if (isOnWater)
         {
@@ -208,13 +208,13 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
         }
     }
 
-    if (!gameState.Cheats.DisableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE))
+    if (!gameState.Cheats.disableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE))
         && !supportsRequired && !isOnWater && surfaceElement != nullptr && (surfaceElement->GetSlope() != kTileSlopeFlat))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
     }
 
-    if (!gameState.Cheats.DisableSupportLimits && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE)) && supportsRequired)
+    if (!gameState.Cheats.disableSupportLimits && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE)) && supportsRequired)
     {
         if (!isOnWater)
         {
@@ -367,7 +367,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         FootpathRemoveLitter({ _loc, targetHeight });
-        if (!GetGameState().Cheats.DisableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS)))
+        if (!GetGameState().Cheats.disableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS)))
         {
             WallRemoveAt({ _loc, targetHeight, targetHeight + sceneryEntry->height });
         }
