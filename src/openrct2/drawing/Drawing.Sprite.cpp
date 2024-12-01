@@ -353,8 +353,6 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
                 elements[i].zoomed_offset = src.zoomed_offset;
             }
 
-            OverrideElementOffsets(i, elements[i]);
-
             ++rctc;
         }
 
@@ -385,8 +383,6 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
             elements[i].y_offset = src.y_offset;
             elements[i].flags = src.flags;
             elements[i].zoomed_offset = src.zoomed_offset;
-
-            OverrideElementOffsets(i, elements[i]);
         }
     }
 }
@@ -479,6 +475,7 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
         for (uint32_t i = 0; i < _g1.header.num_entries; i++)
         {
             _g1.elements[i].offset += reinterpret_cast<uintptr_t>(_g1.data.get());
+            OverrideElementOffsets(i, _g1.elements[i]);
         }
         return true;
     }
