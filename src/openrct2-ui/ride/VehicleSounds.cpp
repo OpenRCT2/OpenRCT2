@@ -11,12 +11,12 @@
 #include <openrct2/audio/AudioChannel.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/core/FixedVector.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/profiling/Profiling.h>
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
+#include <sfl/static_vector.hpp>
 
 namespace OpenRCT2::Audio
 {
@@ -236,7 +236,7 @@ namespace OpenRCT2::Audio
      *  rct2: 0x006BB9FF
      */
     static void UpdateSoundParams(
-        const Vehicle& vehicle, FixedVector<VehicleSoundParams, kMaxVehicleSounds>& vehicleSoundParamsList)
+        const Vehicle& vehicle, sfl::static_vector<VehicleSoundParams, kMaxVehicleSounds>& vehicleSoundParamsList)
     {
         if (!SoundCanPlay(vehicle))
             return;
@@ -536,7 +536,7 @@ namespace OpenRCT2::Audio
         if (!IsAvailable())
             return;
 
-        FixedVector<VehicleSoundParams, kMaxVehicleSounds> vehicleSoundParamsList;
+        sfl::static_vector<VehicleSoundParams, kMaxVehicleSounds> vehicleSoundParamsList;
 
         VehicleSoundsUpdateWindowSetup();
 

@@ -18,7 +18,6 @@
 #include "../actions/RideSetStatusAction.h"
 #include "../actions/RideSetVehicleAction.h"
 #include "../actions/TrackRemoveAction.h"
-#include "../core/FixedVector.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
@@ -50,6 +49,7 @@
 #include "Vehicle.h"
 
 #include <cassert>
+#include <sfl/static_vector.hpp>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
@@ -1255,7 +1255,7 @@ void Ride::ValidateStations()
         }
     }
     // determine what entrances and exits exist
-    FixedVector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
+    sfl::static_vector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
     for (auto& station : stations)
     {
         if (!station.Entrance.IsNull())
