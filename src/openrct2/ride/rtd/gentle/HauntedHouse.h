@@ -20,7 +20,7 @@ constexpr RideTypeDescriptor HauntedHouseRTD =
     .Category = RIDE_CATEGORY_GENTLE,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionHauntedHouse,
+        .trackStyle = TrackStyle::hauntedHouse,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),
