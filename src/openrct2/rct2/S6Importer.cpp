@@ -352,6 +352,7 @@ namespace OpenRCT2::RCT2
             DetermineFlatRideStatus();
             ImportTileElements(gameState);
             ImportEntities();
+            ConvertPeepAnimationTypeToObjects(gameState);
 
             gameState.InitialCash = ToMoney64(_s6.InitialCash);
             gameState.BankLoan = ToMoney64(_s6.CurrentLoan);
@@ -1647,7 +1648,11 @@ namespace OpenRCT2::RCT2
             dst->NextFlags = src->NextFlags;
             dst->State = static_cast<PeepState>(src->State);
             dst->SubState = src->SubState;
+
+            // TODO
+            dst->AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
             dst->AnimationGroup = static_cast<PeepAnimationGroup>(src->AnimationGroup);
+
             dst->TshirtColour = src->TshirtColour;
             dst->TrousersColour = src->TrousersColour;
             dst->DestinationX = src->DestinationX;

@@ -313,6 +313,7 @@ struct Peep : EntityBase
         PeepRideSubState RideSubState;
         PeepUsingBinSubState UsingBinSubState;
     };
+    ObjectEntryIndex AnimationObjectIndex;
     PeepAnimationGroup AnimationGroup;
     uint8_t TshirtColour;
     uint8_t TrousersColour;

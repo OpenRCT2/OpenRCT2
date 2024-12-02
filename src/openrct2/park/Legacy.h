@@ -18,6 +18,8 @@
 
 namespace OpenRCT2
 {
+    struct GameState_t;
+
     enum class TrackElemType : uint16_t;
 
     namespace RCT2
@@ -39,6 +41,7 @@ void UpdateFootpathsFromMapping(
     const OpenRCT2::RCT2::FootpathMapping* footpathMapping);
 
 const std::vector<std::string_view>& GetLegacyPeepAnimationObjects(const ObjectList& entryList);
+void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState);
 
 /**
  * If new pieces get added to existing ride types, this could cause existing parks to change appearance,

@@ -9,7 +9,15 @@
 
 #include "Legacy.h"
 
+#include "../Context.h"
+#include "../Diagnostic.h"
+#include "../entity/EntityList.h"
+#include "../entity/Guest.h"
+#include "../entity/Staff.h"
+#include "../object/ObjectLimits.h"
 #include "../object/ObjectList.h"
+#include "../object/ObjectManager.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
@@ -2287,6 +2295,70 @@ const std::vector<std::string_view> peepAnimObjects = {
 const std::vector<std::string_view>& GetLegacyPeepAnimationObjects(const ObjectList& entryList)
 {
     return peepAnimObjects;
+}
+
+// TODO: change type to legacy PeepAnimationGroup and new PeepAnimationGroup
+using AnimObjectConversionTable = std::map<PeepAnimationGroup, std::pair<ObjectEntryIndex, uint8_t>>;
+
+static AnimObjectConversionTable BuildPeepAnimObjectConversionTable()
+{
+    auto& objectManager = GetContext()->GetObjectManager();
+
+    AnimObjectConversionTable table{};
+    for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+    {
+        auto object = objectManager.GetLoadedObject<PeepAnimationsObject>(i);
+        if (object == nullptr)
+            continue;
+
+        for (auto j = 0u; j < object->GetNumAnimationGroups(); j++)
+        {
+            auto legacyPosition = object->GetLegacyPosition(PeepAnimationGroup(j));
+            if (legacyPosition == PeepAnimationGroup::Invalid)
+                continue;
+
+            table[legacyPosition] = { i, j };
+        }
+    }
+
+    return table;
+}
+
+template<typename TPeepType>
+static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable& table)
+{
+    if (peep->AnimationObjectIndex != OBJECT_ENTRY_INDEX_NULL)
+        return false;
+
+    // TODO: catch missings
+    auto conversion = table[peep->AnimationGroup];
+    peep->AnimationObjectIndex = conversion.first;
+    peep->AnimationGroup = static_cast<PeepAnimationGroup>(conversion.second);
+    return true;
+}
+
+void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState)
+{
+    // First, build a conversion table based on the currently selected objects
+    auto table = BuildPeepAnimObjectConversionTable();
+
+    auto numConverted = 0u;
+
+    // Convert all guests
+    for (auto* guest : EntityList<Guest>())
+    {
+        if (ConvertPeepAnimationType(guest, table))
+            numConverted++;
+    }
+
+    // Convert all staff members
+    for (auto* staff : EntityList<Staff>())
+    {
+        if (ConvertPeepAnimationType(staff, table))
+            numConverted++;
+    }
+
+    LOG_INFO("Converted %d peep entities", numConverted);
 }
 
 bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)

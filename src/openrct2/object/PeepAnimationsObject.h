@@ -29,5 +29,8 @@ public:
     void Load() override;
     void Unload() override;
 
+    size_t GetNumAnimationGroups() const;
+    PeepAnimationGroup GetLegacyPosition(PeepAnimationGroup animGroup) const;
+
     void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
 };

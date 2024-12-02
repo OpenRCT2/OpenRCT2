@@ -90,8 +90,28 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
             group[typeEnum] = anim;
         }
 
+        // Is this animation group replacing a legacy group?
+        if (groupJson.contains("legacyPosition"))
+        {
+            auto position = Json::GetNumber<uint8_t>(groupJson["legacyPosition"]);
+            if (position <= EnumValue(PeepAnimationGroup::Count))
+            {
+                group.legacyPosition = static_cast<PeepAnimationGroup>(position);
+            }
+        }
+
         _animationGroups.push_back(group);
     }
+}
+
+size_t PeepAnimationsObject::GetNumAnimationGroups() const
+{
+    return _animationGroups.size();
+}
+
+PeepAnimationGroup PeepAnimationsObject::GetLegacyPosition(PeepAnimationGroup animGroup) const
+{
+    return _animationGroups[EnumValue(animGroup)].legacyPosition;
 }
 
 void PeepAnimationsObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const

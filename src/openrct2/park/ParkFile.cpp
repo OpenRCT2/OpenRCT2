@@ -1725,6 +1725,12 @@ namespace OpenRCT2
 
             cs.ReadWrite(entity.State);
             cs.ReadWrite(entity.SubState);
+
+            if (version >= kPeepAnimationObjectsVersion)
+                cs.ReadWrite(entity.AnimationObjectIndex);
+            else
+                entity.AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
+
             cs.ReadWrite(entity.AnimationGroup);
 
             if (version <= 1)
@@ -2575,7 +2581,7 @@ namespace OpenRCT2
 
     void ParkFile::ReadWriteEntitiesChunk(GameState_t& gameState, OrcaStream& os)
     {
-        os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [this, &os](OrcaStream::ChunkStream& cs) {
+        os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [this, &gameState, &os](OrcaStream::ChunkStream& cs) {
             if (cs.GetMode() == OrcaStream::Mode::READING)
             {
                 ResetAllEntities();
@@ -2587,6 +2593,12 @@ namespace OpenRCT2
                 ReadEntitiesOfTypes<
                     Vehicle, Guest, Staff, Litter, SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud,
                     CrashSplashParticle, ExplosionFlare, JumpingFountain, Balloon, Duck>(os, cs);
+
+                auto version = os.GetHeader().TargetVersion;
+                if (version < kPeepAnimationObjectsVersion)
+                {
+                    ConvertPeepAnimationTypeToObjects(gameState);
+                }
             }
             else
             {

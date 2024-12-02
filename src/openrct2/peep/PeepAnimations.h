@@ -16,9 +16,6 @@
 
 #include <vector>
 
-enum class PeepAnimationGroup : uint8_t;
-enum class PeepAnimationType : uint8_t;
-
 namespace OpenRCT2
 {
     enum class AnimationPeepType : uint8_t
@@ -58,6 +55,9 @@ namespace OpenRCT2
     struct PeepAnimations
     {
     public:
+        // TODO: move type to RCT12?
+        PeepAnimationGroup legacyPosition = PeepAnimationGroup::Invalid;
+
         constexpr PeepAnimation& operator[](PeepAnimationType n)
         {
             return animations[EnumValue(n)];

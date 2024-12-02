@@ -207,6 +207,8 @@ namespace OpenRCT2::RCT1
             ImportScenarioObjective(gameState);
             ImportSavedView(gameState);
 
+            ConvertPeepAnimationTypeToObjects(gameState);
+
             if (_isScenario)
             {
                 RCT12::FetchAndApplyScenarioPatch(_s4Path);
@@ -1319,8 +1321,10 @@ namespace OpenRCT2::RCT1
 
         void ImportPeep(::Peep* dst, const RCT1::Peep* src)
         {
-            // Peep vs. staff (including which kind)
+            // TODO
+            dst->AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
             dst->AnimationGroup = RCT1::GetPeepAnimationGroup(src->AnimationGroup);
+
             dst->Action = static_cast<PeepActionType>(src->Action);
             dst->SpecialSprite = src->SpecialSprite;
             dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
