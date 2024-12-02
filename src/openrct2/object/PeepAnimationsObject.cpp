@@ -15,6 +15,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../peep/PeepAnimations.h"
+#include "../rct12/RCT12.h"
 
 using namespace OpenRCT2;
 
@@ -94,7 +95,7 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
         if (groupJson.contains("legacyPosition"))
         {
             auto position = Json::GetNumber<uint8_t>(groupJson["legacyPosition"]);
-            if (position <= EnumValue(PeepAnimationGroup::Count))
+            if (position <= EnumValue(RCT12PeepAnimationGroup::Count))
             {
                 group.legacyPosition = static_cast<PeepAnimationGroup>(position);
             }
@@ -102,6 +103,16 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         _animationGroups.push_back(group);
     }
+}
+
+ImageIndex PeepAnimationsObject::GetInlineImageId() const
+{
+    return _imageOffsetId;
+}
+
+const PeepAnimation& PeepAnimationsObject::GetPeepAnimation(PeepAnimationGroup animGroup, PeepAnimationType animType) const
+{
+    return _animationGroups[EnumValue(animGroup)][animType];
 }
 
 size_t PeepAnimationsObject::GetNumAnimationGroups() const

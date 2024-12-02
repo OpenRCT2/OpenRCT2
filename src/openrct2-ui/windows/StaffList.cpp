@@ -33,6 +33,8 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Finance.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
@@ -461,7 +463,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        GfxDrawSprite(dpi, ImageId(GetEntertainerCostumeSprite(peep->AnimationGroup)), { staffOrderIcon_x, y });
+                        GfxDrawSprite(dpi, GetCostumeInlineSprite(peep->AnimationObjectIndex), { staffOrderIcon_x, y });
                     }
                 }
 
@@ -728,36 +730,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        static uint32_t GetEntertainerCostumeSprite(PeepAnimationGroup type)
+        static ImageId GetCostumeInlineSprite(ObjectEntryIndex index)
         {
-            switch (type)
-            {
-                case PeepAnimationGroup::EntertainerPanda:
-                    return SPR_STAFF_COSTUME_PANDA;
-                case PeepAnimationGroup::EntertainerTiger:
-                    return SPR_STAFF_COSTUME_TIGER;
-                case PeepAnimationGroup::EntertainerElephant:
-                    return SPR_STAFF_COSTUME_ELEPHANT;
-                case PeepAnimationGroup::EntertainerRoman:
-                    return SPR_STAFF_COSTUME_ROMAN;
-                case PeepAnimationGroup::EntertainerGorilla:
-                    return SPR_STAFF_COSTUME_GORILLA;
-                case PeepAnimationGroup::EntertainerSnowman:
-                    return SPR_STAFF_COSTUME_SNOWMAN;
-                case PeepAnimationGroup::EntertainerKnight:
-                    return SPR_STAFF_COSTUME_KNIGHT;
-                case PeepAnimationGroup::EntertainerAstronaut:
-                    return SPR_STAFF_COSTUME_ASTRONAUT;
-                case PeepAnimationGroup::EntertainerBandit:
-                    return SPR_STAFF_COSTUME_BANDIT;
-                case PeepAnimationGroup::EntertainerSheriff:
-                    return SPR_STAFF_COSTUME_SHERIFF;
-                case PeepAnimationGroup::EntertainerPirate:
-                    return SPR_STAFF_COSTUME_PIRATE;
-                case PeepAnimationGroup::Normal:
-                default:
-                    return SPR_PEEP_SMALL_FACE_HAPPY;
-            }
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(index);
+            return ImageId(animObj->GetInlineImageId());
         }
     };
 

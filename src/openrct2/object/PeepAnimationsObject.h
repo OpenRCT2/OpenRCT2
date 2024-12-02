@@ -29,6 +29,10 @@ public:
     void Load() override;
     void Unload() override;
 
+    ImageIndex GetInlineImageId() const;
+    const OpenRCT2::PeepAnimation& GetPeepAnimation(
+        PeepAnimationGroup animGroup, PeepAnimationType animType = PeepAnimationType::Walking) const;
+
     size_t GetNumAnimationGroups() const;
     PeepAnimationGroup GetLegacyPosition(PeepAnimationGroup animGroup) const;
 

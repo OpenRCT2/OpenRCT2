@@ -1323,7 +1323,8 @@ namespace OpenRCT2::RCT1
         {
             // TODO
             dst->AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
-            dst->AnimationGroup = RCT1::GetPeepAnimationGroup(src->AnimationGroup);
+            auto rct12AnimGroup = RCT1::GetPeepAnimationGroup(src->AnimationGroup);
+            dst->AnimationGroup = static_cast<::PeepAnimationGroup>(rct12AnimGroup);
 
             dst->Action = static_cast<PeepActionType>(src->Action);
             dst->SpecialSprite = src->SpecialSprite;

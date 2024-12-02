@@ -36,6 +36,8 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
+#include "../object/ObjectManager.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../paint/Paint.h"
 #include "../peep/GuestPathfinding.h"
 #include "../peep/PeepAnimationData.h"
@@ -471,7 +473,10 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
 bool Peep::UpdateActionAnimation()
 {
-    const PeepAnimation& peepAnimation = GetPeepAnimation(AnimationGroup, AnimationType);
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
+    const PeepAnimation& peepAnimation = animObj->GetPeepAnimation(AnimationGroup, AnimationType);
     AnimationFrameNum++;
 
     // If last frame of action
@@ -529,8 +534,11 @@ std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc,
 
 void Peep::UpdateWalkingAnimation()
 {
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
     WalkingAnimationFrameNum++;
-    const PeepAnimation& peepAnimation = GetPeepAnimation(AnimationGroup, AnimationType);
+    const PeepAnimation& peepAnimation = animObj->GetPeepAnimation(AnimationGroup, AnimationType);
     if (WalkingAnimationFrameNum >= peepAnimation.frame_offsets.size())
     {
         WalkingAnimationFrameNum = 0;
@@ -2896,9 +2904,12 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         imageOffset = 0;
     }
 
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
     // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
-    uint32_t baseImageId = GetPeepAnimation(AnimationGroup, actionAnimationGroup).base_image;
+    uint32_t baseImageId = animObj->GetPeepAnimation(AnimationGroup, actionAnimationGroup).base_image;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
     if (actionAnimationGroup != PeepAnimationType::Hanging)

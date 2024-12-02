@@ -25,7 +25,7 @@ namespace OpenRCT2::RCT1
     enum class PeepAnimationGroup : uint8_t;
 
     colour_t GetColour(colour_t colour);
-    ::PeepAnimationGroup GetPeepAnimationGroup(PeepAnimationGroup rct1AnimationGroup);
+    RCT12PeepAnimationGroup GetPeepAnimationGroup(PeepAnimationGroup rct1AnimationGroup);
 
     uint8_t GetRideType(RideType rideType, VehicleType vehicleType);
     VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(VehicleType vehicleType);
