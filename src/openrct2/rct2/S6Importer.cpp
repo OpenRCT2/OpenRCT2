@@ -1774,12 +1774,12 @@ namespace OpenRCT2::RCT2
         void ImportEntityCommonProperties(EntityBase* dst, const RCT12EntityBase* src)
         {
             dst->Type = GetEntityTypeFromRCT2Sprite(src);
-            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
             dst->Id = EntityId::FromUnderlying(src->EntityIndex);
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
             dst->SpriteData.Width = src->SpriteWidth;
+            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
             dst->SpriteData.HeightMax = src->SpriteHeightPositive;
             dst->SpriteData.SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
             dst->Orientation = src->EntityDirection;
