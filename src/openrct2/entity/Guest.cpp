@@ -71,6 +71,8 @@
 #include <cassert>
 #include <functional>
 #include <iterator>
+#include <sfl/static_vector.hpp>
+#include <span>
 
 using namespace OpenRCT2;
 
@@ -2458,19 +2460,19 @@ static void PeepRideIsTooIntense(Guest* peep, Ride& ride, bool peepAtRide)
  *
  *  rct2: 0x00691C6E
  */
-static Vehicle* PeepChooseCarFromRide(Peep* peep, const Ride& ride, std::vector<uint8_t>& car_array)
+static Vehicle* PeepChooseCarFromRide(Peep* peep, const Ride& ride, std::span<const uint8_t> carArray)
 {
     uint8_t chosen_car = ScenarioRand();
     if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasGForces) && ((chosen_car & 0xC) != 0xC))
     {
-        chosen_car = (ScenarioRand() & 1) ? 0 : static_cast<uint8_t>(car_array.size()) - 1;
+        chosen_car = (ScenarioRand() & 1) ? 0 : static_cast<uint8_t>(carArray.size()) - 1;
     }
     else
     {
-        chosen_car = (chosen_car * static_cast<uint16_t>(car_array.size())) >> 8;
+        chosen_car = (chosen_car * static_cast<uint16_t>(carArray.size())) >> 8;
     }
 
-    peep->CurrentCar = car_array[chosen_car];
+    peep->CurrentCar = carArray[chosen_car];
 
     Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[peep->CurrentTrain]);
     if (vehicle == nullptr)
@@ -2551,7 +2553,8 @@ void Guest::GoToRideEntrance(const Ride& ride)
     RemoveFromQueue();
 }
 
-bool Guest::FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array)
+static bool FindVehicleToEnter(
+    Guest& guest, const Ride& ride, sfl::static_vector<uint8_t, OpenRCT2::Limits::kMaxTrainsPerRide>& car_array)
 {
     uint8_t chosen_train = RideStation::kNoTrain;
 
@@ -2577,14 +2580,14 @@ bool Guest::FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array
     }
     else
     {
-        chosen_train = ride.GetStation(CurrentRideStation).TrainAtStation;
+        chosen_train = ride.GetStation(guest.CurrentRideStation).TrainAtStation;
     }
     if (chosen_train >= OpenRCT2::Limits::kMaxTrainsPerRide)
     {
         return false;
     }
 
-    CurrentTrain = chosen_train;
+    guest.CurrentTrain = chosen_train;
 
     int32_t i = 0;
 
@@ -3497,7 +3500,7 @@ void Guest::UpdateRideAtEntrance()
         }
     }
 
-    std::vector<uint8_t> carArray;
+    sfl::static_vector<uint8_t, OpenRCT2::Limits::kMaxTrainsPerRide> carArray;
 
     if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::noVehicles))
     {
@@ -3506,7 +3509,7 @@ void Guest::UpdateRideAtEntrance()
     }
     else
     {
-        if (!FindVehicleToEnter(*ride, carArray))
+        if (!FindVehicleToEnter(*this, *ride, carArray))
             return;
     }
 
