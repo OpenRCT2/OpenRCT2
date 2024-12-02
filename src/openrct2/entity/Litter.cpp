@@ -13,6 +13,8 @@
 #include "EntityList.h"
 #include "EntityRegistry.h"
 
+#include <sfl/small_vector.hpp>
+
 using namespace OpenRCT2;
 
 template<>
@@ -101,7 +103,9 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
  */
 void Litter::RemoveAt(const CoordsXYZ& litterPos)
 {
-    std::vector<Litter*> removals;
+    // There can be a lot of litter entities on the same tile, avoid heap allocations
+    // by having the first 512 stored in a small_vector which is on the stack.
+    sfl::small_vector<Litter*, 512> removals;
     for (auto litter : EntityTileList<Litter>(litterPos))
     {
         if (abs(litter->z - litterPos.z) <= 16)
