@@ -183,6 +183,7 @@ ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier) 
     return OBJECT_ENTRY_INDEX_NULL;
 }
 
+// Intended to be used to find non-custom legacy objects. For internal use only.
 ObjectEntryIndex ObjectList::FindLegacy(ObjectType type, std::string_view identifier) const
 {
     auto& subList = GetList(type);
