@@ -9,12 +9,110 @@
 
 #include "PeepAnimationData.h"
 
+#include "../drawing/Drawing.h"
 #include "PeepSpriteIds.h"
 
+#include <algorithm>
 #include <array>
 
 namespace OpenRCT2
 {
+    // Adapted from CarEntry.cpp
+    static SpriteBounds inferMaxAnimationDimensions(const PeepAnimation& anim)
+    {
+        constexpr uint8_t kWidth = 200;
+        constexpr uint8_t kHeight = 200;
+        constexpr uint8_t kCentreX = kWidth / 2;
+        constexpr uint8_t kCentreY = kHeight / 2;
+
+        uint8_t bitmap[kHeight][kWidth] = { 0 };
+
+        DrawPixelInfo dpi = {
+            .bits = reinterpret_cast<uint8_t*>(bitmap),
+            .x = -(kWidth / 2),
+            .y = -(kHeight / 2),
+            .width = kWidth,
+            .height = kHeight,
+            .pitch = 0,
+            .zoom_level = ZoomLevel{ 0 },
+        };
+
+        const auto numImages = *(std::max_element(anim.frame_offsets.begin(), anim.frame_offsets.end())) + 1;
+        for (int32_t i = 0; i < numImages; ++i)
+        {
+            GfxDrawSpriteSoftware(dpi, ImageId(anim.base_image + i), { 0, 0 });
+        }
+
+        int32_t spriteWidth = -1;
+        for (int32_t i = kCentreX - 1; i != 0; --i)
+        {
+            for (int32_t j = 0; j < kWidth; j++)
+            {
+                if (bitmap[j][kCentreX - i] != 0)
+                {
+                    spriteWidth = i;
+                    break;
+                }
+            }
+
+            if (spriteWidth != -1)
+                break;
+
+            for (int32_t j = 0; j < kWidth; j++)
+            {
+                if (bitmap[j][kCentreX + i] != 0)
+                {
+                    spriteWidth = i;
+                    break;
+                }
+            }
+
+            if (spriteWidth != -1)
+                break;
+        }
+        spriteWidth++;
+
+        int32_t spriteHeightNegative = -1;
+        for (int32_t i = kCentreY - 1; i != 0; --i)
+        {
+            for (int32_t j = 0; j < kWidth; j++)
+            {
+                if (bitmap[kCentreY - i][j] != 0)
+                {
+                    spriteHeightNegative = i;
+                    break;
+                }
+            }
+
+            if (spriteHeightNegative != -1)
+                break;
+        }
+        spriteHeightNegative++;
+
+        int32_t spriteHeightPositive = -1;
+        for (int32_t i = kCentreY - 1; i != 0; --i)
+        {
+            for (int32_t j = 0; j < kWidth; j++)
+            {
+                if (bitmap[kCentreY + i][j] != 0)
+                {
+                    spriteHeightPositive = i;
+                    break;
+                }
+            }
+
+            if (spriteHeightPositive != -1)
+                break;
+        }
+        spriteHeightPositive++;
+
+        return {
+            .sprite_width = static_cast<uint8_t>(spriteWidth),
+            .sprite_height_negative = static_cast<uint8_t>(spriteHeightNegative),
+            .sprite_height_positive = static_cast<uint8_t>(spriteHeightPositive),
+        };
+    }
+
     // clang-format off
 
     // Define animation sequences for Normal sprites
@@ -46,34 +144,34 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t,  30> kPeepAnimationSequenceNormalWithdrawMoney          = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11, 12, 11, 12, 11, 12, 11, 12, 11, 11, 11, 11, 11, 13, 14, 15 };
 
     // Define animation group for Normal sequences
-    static constexpr PeepAnimations kPeepAnimationsNormal = []() {
+    static PeepAnimations kPeepAnimationsNormal = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]                   = { kPeepSpriteNormalStateNoneId,                   {  8, 16,  5 }, kPeepAnimationSequenceNormalNone };
-        pag[PeepAnimationType::CheckTime]              = { kPeepSpriteNormalStateCheckTimeId,              {  8, 16,  5 }, kPeepAnimationSequenceNormalCheckTime };
-        pag[PeepAnimationType::WatchRide]              = { kPeepSpriteNormalStateWatchRideId,              {  8, 16,  5 }, kPeepAnimationSequenceNormalWatchRide };
-        pag[PeepAnimationType::EatFood]                = { kPeepSpriteNormalStateEatFoodId,                {  8, 16,  5 }, kPeepAnimationSequenceNormalEatFood };
-        pag[PeepAnimationType::ShakeHead]              = { kPeepSpriteNormalStateShakeHeadId,              {  8, 16,  5 }, kPeepAnimationSequenceNormalShakeHead };
-        pag[PeepAnimationType::EmptyPockets]           = { kPeepSpriteNormalStateEmptyPocketsId,           {  8, 16,  5 }, kPeepAnimationSequenceNormalEmptyPockets };
-        pag[PeepAnimationType::HoldMat]                = { kPeepSpriteNormalStateHoldMatId,                {  9, 16,  5 }, kPeepAnimationSequenceNormalHoldMat };
-        pag[PeepAnimationType::SittingIdle]            = { kPeepSpriteNormalStateSittingIdleId,            {  9, 16,  6 }, kPeepAnimationSequenceNormalSittingIdle };
-        pag[PeepAnimationType::SittingEatFood]         = { kPeepSpriteNormalStateSittingEatFoodId,         {  9, 16,  6 }, kPeepAnimationSequenceNormalSittingEatFood };
-        pag[PeepAnimationType::SittingLookAroundLeft]  = { kPeepSpriteNormalStateSittingLookAroundLeftId,  {  9, 16,  6 }, kPeepAnimationSequenceNormalSittingLookAroundLeft };
-        pag[PeepAnimationType::SittingLookAroundRight] = { kPeepSpriteNormalStateSittingLookAroundRightId, {  9, 16,  6 }, kPeepAnimationSequenceNormalSittingLookAroundRight };
-        pag[PeepAnimationType::Hanging]                = { kPeepSpriteNormalStateHangingId,                {  8, 16,  5 }, kPeepAnimationSequenceNormalHanging };
-        pag[PeepAnimationType::Wow]                    = { kPeepSpriteNormalStateWowId,                    { 12, 22,  5 }, kPeepAnimationSequenceNormalWow };
-        pag[PeepAnimationType::ThrowUp]                = { kPeepSpriteNormalStateThrowUpId,                {  9, 16,  7 }, kPeepAnimationSequenceNormalThrowUp };
-        pag[PeepAnimationType::Jump]                   = { kPeepSpriteNormalStateJumpId,                   { 10, 22,  5 }, kPeepAnimationSequenceNormalJump };
-        pag[PeepAnimationType::Drowning]               = { kPeepSpriteNormalStateDrowningId,               {  9, 15,  6 }, kPeepAnimationSequenceNormalDrowning };
-        pag[PeepAnimationType::Joy]                    = { kPeepSpriteNormalStateJoyId,                    { 11, 24,  6 }, kPeepAnimationSequenceNormalJoy };
-        pag[PeepAnimationType::ReadMap]                = { kPeepSpriteNormalStateReadMapId,                { 11, 16,  5 }, kPeepAnimationSequenceNormalReadMap };
-        pag[PeepAnimationType::Wave]                   = { kPeepSpriteNormalStateWaveId,                   { 11, 16,  5 }, kPeepAnimationSequenceNormalWave };
-        pag[PeepAnimationType::Wave2]                  = { kPeepSpriteNormalStateWave2Id,                  { 11, 16,  5 }, kPeepAnimationSequenceNormalWave2 };
-        pag[PeepAnimationType::TakePhoto]              = { kPeepSpriteNormalStateTakePhotoId,              {  8, 16,  5 }, kPeepAnimationSequenceNormalTakePhoto };
-        pag[PeepAnimationType::Clap]                   = { kPeepSpriteNormalStateClapId,                   {  9, 17,  6 }, kPeepAnimationSequenceNormalClap };
-        pag[PeepAnimationType::Disgust]                = { kPeepSpriteNormalStateDisgustId,                {  9, 16,  5 }, kPeepAnimationSequenceNormalDisgust };
-        pag[PeepAnimationType::DrawPicture]            = { kPeepSpriteNormalStateDrawPictureId,            {  9, 22,  7 }, kPeepAnimationSequenceNormalDrawPicture };
-        pag[PeepAnimationType::BeingWatched]           = { kPeepSpriteNormalStateBeingWatchedId,           {  9, 22,  7 }, kPeepAnimationSequenceNormalBeingWatched };
-        pag[PeepAnimationType::WithdrawMoney]          = { kPeepSpriteNormalStateWithdrawMoneyId,          {  9, 22,  7 }, kPeepAnimationSequenceNormalWithdrawMoney };
+        pag[PeepAnimationType::None]                   = { kPeepSpriteNormalStateNoneId,                   kPeepAnimationSequenceNormalNone };
+        pag[PeepAnimationType::CheckTime]              = { kPeepSpriteNormalStateCheckTimeId,              kPeepAnimationSequenceNormalCheckTime };
+        pag[PeepAnimationType::WatchRide]              = { kPeepSpriteNormalStateWatchRideId,              kPeepAnimationSequenceNormalWatchRide };
+        pag[PeepAnimationType::EatFood]                = { kPeepSpriteNormalStateEatFoodId,                kPeepAnimationSequenceNormalEatFood };
+        pag[PeepAnimationType::ShakeHead]              = { kPeepSpriteNormalStateShakeHeadId,              kPeepAnimationSequenceNormalShakeHead };
+        pag[PeepAnimationType::EmptyPockets]           = { kPeepSpriteNormalStateEmptyPocketsId,           kPeepAnimationSequenceNormalEmptyPockets };
+        pag[PeepAnimationType::HoldMat]                = { kPeepSpriteNormalStateHoldMatId,                kPeepAnimationSequenceNormalHoldMat };
+        pag[PeepAnimationType::SittingIdle]            = { kPeepSpriteNormalStateSittingIdleId,            kPeepAnimationSequenceNormalSittingIdle };
+        pag[PeepAnimationType::SittingEatFood]         = { kPeepSpriteNormalStateSittingEatFoodId,         kPeepAnimationSequenceNormalSittingEatFood };
+        pag[PeepAnimationType::SittingLookAroundLeft]  = { kPeepSpriteNormalStateSittingLookAroundLeftId,  kPeepAnimationSequenceNormalSittingLookAroundLeft };
+        pag[PeepAnimationType::SittingLookAroundRight] = { kPeepSpriteNormalStateSittingLookAroundRightId, kPeepAnimationSequenceNormalSittingLookAroundRight };
+        pag[PeepAnimationType::Hanging]                = { kPeepSpriteNormalStateHangingId,                kPeepAnimationSequenceNormalHanging };
+        pag[PeepAnimationType::Wow]                    = { kPeepSpriteNormalStateWowId,                    kPeepAnimationSequenceNormalWow };
+        pag[PeepAnimationType::ThrowUp]                = { kPeepSpriteNormalStateThrowUpId,                kPeepAnimationSequenceNormalThrowUp };
+        pag[PeepAnimationType::Jump]                   = { kPeepSpriteNormalStateJumpId,                   kPeepAnimationSequenceNormalJump };
+        pag[PeepAnimationType::Drowning]               = { kPeepSpriteNormalStateDrowningId,               kPeepAnimationSequenceNormalDrowning };
+        pag[PeepAnimationType::Joy]                    = { kPeepSpriteNormalStateJoyId,                    kPeepAnimationSequenceNormalJoy };
+        pag[PeepAnimationType::ReadMap]                = { kPeepSpriteNormalStateReadMapId,                kPeepAnimationSequenceNormalReadMap };
+        pag[PeepAnimationType::Wave]                   = { kPeepSpriteNormalStateWaveId,                   kPeepAnimationSequenceNormalWave };
+        pag[PeepAnimationType::Wave2]                  = { kPeepSpriteNormalStateWave2Id,                  kPeepAnimationSequenceNormalWave2 };
+        pag[PeepAnimationType::TakePhoto]              = { kPeepSpriteNormalStateTakePhotoId,              kPeepAnimationSequenceNormalTakePhoto };
+        pag[PeepAnimationType::Clap]                   = { kPeepSpriteNormalStateClapId,                   kPeepAnimationSequenceNormalClap };
+        pag[PeepAnimationType::Disgust]                = { kPeepSpriteNormalStateDisgustId,                kPeepAnimationSequenceNormalDisgust };
+        pag[PeepAnimationType::DrawPicture]            = { kPeepSpriteNormalStateDrawPictureId,            kPeepAnimationSequenceNormalDrawPicture };
+        pag[PeepAnimationType::BeingWatched]           = { kPeepSpriteNormalStateBeingWatchedId,           kPeepAnimationSequenceNormalBeingWatched };
+        pag[PeepAnimationType::WithdrawMoney]          = { kPeepSpriteNormalStateWithdrawMoneyId,          kPeepAnimationSequenceNormalWithdrawMoney };
         return pag;
     }();
 
@@ -88,16 +186,16 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 19> kPeepAnimationSequenceHandymanStaffEmptyBin = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
 
     // Define animation group for Handyman sequences
-    static constexpr PeepAnimations kPeepAnimationsHandyman = []() {
+    static PeepAnimations kPeepAnimationsHandyman = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]          = { kHandymanSpriteStateNoneId,          { 12, 16,  6 }, kPeepAnimationSequenceHandymanNone };
-        pag[PeepAnimationType::WatchRide]     = { kHandymanSpriteStateWatchRideId,     {  9, 16,  6 }, kPeepAnimationSequenceHandymanWatchRide };
-        pag[PeepAnimationType::Hanging]       = { kHandymanSpriteStateHangingId,       { 15, 16,  5 }, kPeepAnimationSequenceHandymanHanging };
-        pag[PeepAnimationType::StaffMower]    = { kHandymanSpriteStateStaffMowerId,    { 18, 16, 11 }, kPeepAnimationSequenceHandymanStaffMower };
-        pag[PeepAnimationType::StaffSweep]    = { kHandymanSpriteStateStaffSweepId,    { 17, 16,  9 }, kPeepAnimationSequenceHandymanStaffSweep };
-        pag[PeepAnimationType::Drowning]      = { kHandymanSpriteStateDrowningId,      {  9, 15,  6 }, kPeepAnimationSequenceHandymanDrowning };
-        pag[PeepAnimationType::StaffWatering] = { kHandymanSpriteStateStaffWateringId, { 17, 16,  9 }, kPeepAnimationSequenceHandymanStaffWatering };
-        pag[PeepAnimationType::StaffEmptyBin] = { kHandymanSpriteStateStaffEmptyBinId, { 17, 16,  9 }, kPeepAnimationSequenceHandymanStaffEmptyBin };
+        pag[PeepAnimationType::None]          = { kHandymanSpriteStateNoneId,          kPeepAnimationSequenceHandymanNone };
+        pag[PeepAnimationType::WatchRide]     = { kHandymanSpriteStateWatchRideId,     kPeepAnimationSequenceHandymanWatchRide };
+        pag[PeepAnimationType::Hanging]       = { kHandymanSpriteStateHangingId,       kPeepAnimationSequenceHandymanHanging };
+        pag[PeepAnimationType::StaffMower]    = { kHandymanSpriteStateStaffMowerId,    kPeepAnimationSequenceHandymanStaffMower };
+        pag[PeepAnimationType::StaffSweep]    = { kHandymanSpriteStateStaffSweepId,    kPeepAnimationSequenceHandymanStaffSweep };
+        pag[PeepAnimationType::Drowning]      = { kHandymanSpriteStateDrowningId,      kPeepAnimationSequenceHandymanDrowning };
+        pag[PeepAnimationType::StaffWatering] = { kHandymanSpriteStateStaffWateringId, kPeepAnimationSequenceHandymanStaffWatering };
+        pag[PeepAnimationType::StaffEmptyBin] = { kHandymanSpriteStateStaffEmptyBinId, kPeepAnimationSequenceHandymanStaffEmptyBin };
         return pag;
     }();
 
@@ -115,19 +213,19 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 110> kPeepAnimationSequenceMechanicStaffFix3        = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 18, 19, 20, 21, 22, 21, 20, 21, 22, 21, 20, 21, 22, 20, 19, 18, 0, 0, 23, 24, 25, 26, 27, 28, 28, 26, 24, 0, 0, 0, 0, 0, 0 };
 
     // Define animation group for Mechanic sequences
-    static constexpr PeepAnimations kPeepAnimationsMechanic = []() {
+    static PeepAnimations kPeepAnimationsMechanic = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]             = { kMechanicSpriteStateNoneId,            { 10, 16,  5 }, kPeepAnimationSequenceMechanicNone };
-        pag[PeepAnimationType::WatchRide]        = { kMechanicSpriteStateWatchRideId,       { 10, 16,  5 }, kPeepAnimationSequenceMechanicWatchRide };
-        pag[PeepAnimationType::Hanging]          = { kMechanicSpriteStateHangingId,         { 10, 16,  5 }, kPeepAnimationSequenceMechanicHanging };
-        pag[PeepAnimationType::Drowning]         = { kMechanicSpriteStateDrowningId,        {  9, 15,  6 }, kPeepAnimationSequenceMechanicDrowning };
-        pag[PeepAnimationType::StaffAnswerCall]  = { kMechanicSpriteStateStaffAnswerCallId, { 13, 22,  7 }, kPeepAnimationSequenceMechanicStaffAnswerCall };
-        pag[PeepAnimationType::StaffAnswerCall2] = { kMechanicSpriteStateStaffAnswerCallId, { 13, 22,  7 }, kPeepAnimationSequenceMechanicStaffAnswerCall2 };
-        pag[PeepAnimationType::StaffCheckBoard]  = { kMechanicSpriteStateStaffCheckBoardId, { 13, 22,  7 }, kPeepAnimationSequenceMechanicStaffCheckBoard };
-        pag[PeepAnimationType::StaffFix]         = { kMechanicSpriteStateStaffFixId,        { 13, 22,  7 }, kPeepAnimationSequenceMechanicStaffFix };
-        pag[PeepAnimationType::StaffFix2]        = { kMechanicSpriteStateStaffFixId,        { 13, 22,  7 }, kPeepAnimationSequenceMechanicStaffFix2 };
-        pag[PeepAnimationType::StaffFixGround]   = { kMechanicSpriteStateStaffFixGroundId,  { 19, 16, 16 }, kPeepAnimationSequenceMechanicStaffFixGround };
-        pag[PeepAnimationType::StaffFix3]        = { kMechanicSpriteStateStaffFixId,        { 13, 22,  7 }, kPeepAnimationSequenceMechanicStaffFix3 };
+        pag[PeepAnimationType::None]             = { kMechanicSpriteStateNoneId,            kPeepAnimationSequenceMechanicNone };
+        pag[PeepAnimationType::WatchRide]        = { kMechanicSpriteStateWatchRideId,       kPeepAnimationSequenceMechanicWatchRide };
+        pag[PeepAnimationType::Hanging]          = { kMechanicSpriteStateHangingId,         kPeepAnimationSequenceMechanicHanging };
+        pag[PeepAnimationType::Drowning]         = { kMechanicSpriteStateDrowningId,        kPeepAnimationSequenceMechanicDrowning };
+        pag[PeepAnimationType::StaffAnswerCall]  = { kMechanicSpriteStateStaffAnswerCallId, kPeepAnimationSequenceMechanicStaffAnswerCall };
+        pag[PeepAnimationType::StaffAnswerCall2] = { kMechanicSpriteStateStaffAnswerCallId, kPeepAnimationSequenceMechanicStaffAnswerCall2 };
+        pag[PeepAnimationType::StaffCheckBoard]  = { kMechanicSpriteStateStaffCheckBoardId, kPeepAnimationSequenceMechanicStaffCheckBoard };
+        pag[PeepAnimationType::StaffFix]         = { kMechanicSpriteStateStaffFixId,        kPeepAnimationSequenceMechanicStaffFix };
+        pag[PeepAnimationType::StaffFix2]        = { kMechanicSpriteStateStaffFixId,        kPeepAnimationSequenceMechanicStaffFix2 };
+        pag[PeepAnimationType::StaffFixGround]   = { kMechanicSpriteStateStaffFixGroundId,  kPeepAnimationSequenceMechanicStaffFixGround };
+        pag[PeepAnimationType::StaffFix3]        = { kMechanicSpriteStateStaffFixId,        kPeepAnimationSequenceMechanicStaffFix3 };
         return pag;
     }();
 
@@ -138,12 +236,12 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 64> kPeepAnimationSequenceSecurityDrowning  = { 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 4, 5, 6 };
 
     // Define animation group for Security sequences
-    static constexpr PeepAnimations kPeepAnimationsSecurity = []() {
+    static PeepAnimations kPeepAnimationsSecurity = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kSecuritySpriteStateNoneId,      {  8, 18,  5 }, kPeepAnimationSequenceSecurityNone };
-        pag[PeepAnimationType::WatchRide] = { kSecuritySpriteStateWatchRideId, {  8, 17,  5 }, kPeepAnimationSequenceSecurityWatchRide };
-        pag[PeepAnimationType::Hanging]   = { kSecuritySpriteStateHangingId,   { 15, 19,  6 }, kPeepAnimationSequenceSecurityHanging };
-        pag[PeepAnimationType::Drowning]  = { kSecuritySpriteStateDrowningId,  {  9, 15,  6 }, kPeepAnimationSequenceSecurityDrowning };
+        pag[PeepAnimationType::None]      = { kSecuritySpriteStateNoneId,      kPeepAnimationSequenceSecurityNone };
+        pag[PeepAnimationType::WatchRide] = { kSecuritySpriteStateWatchRideId, kPeepAnimationSequenceSecurityWatchRide };
+        pag[PeepAnimationType::Hanging]   = { kSecuritySpriteStateHangingId,   kPeepAnimationSequenceSecurityHanging };
+        pag[PeepAnimationType::Drowning]  = { kSecuritySpriteStateDrowningId,  kPeepAnimationSequenceSecurityDrowning };
         return pag;
     }();
 
@@ -157,15 +255,15 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 23> kPeepAnimationSequenceEntertainerPandaWave2     = { 0, 1, 2, 3, 4, 5, 4, 3, 4, 5, 4, 3, 4, 5, 4, 3, 4, 5, 4, 3, 2, 1, 0 };
 
     // Define animation group for EntertainerPanda sequences
-    static constexpr PeepAnimations kPeepAnimationsEntertainerPanda = []() {
+    static PeepAnimations kPeepAnimationsEntertainerPanda = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kEntertainerSpritePandaStateNoneId,      { 13, 24,  8 }, kPeepAnimationSequenceEntertainerPandaNone };
-        pag[PeepAnimationType::WatchRide] = { kEntertainerSpritePandaStateWatchRideId, { 10, 23,  7 }, kPeepAnimationSequenceEntertainerPandaWatchRide };
-        pag[PeepAnimationType::EatFood]   = { kEntertainerSpritePandaStateWaveId,      { 14, 24,  7 }, kPeepAnimationSequenceEntertainerPandaEatFood };
-        pag[PeepAnimationType::Hanging]   = { kEntertainerSpritePandaStateHangingId,   { 19, 30,  8 }, kPeepAnimationSequenceEntertainerPandaHanging };
-        pag[PeepAnimationType::Drowning]  = { kEntertainerSpritePandaStateDrowningId,  { 13, 15,  6 }, kPeepAnimationSequenceEntertainerPandaDrowning };
-        pag[PeepAnimationType::Joy]       = { kEntertainerSpritePandaStateJoyId,       { 14, 25,  8 }, kPeepAnimationSequenceEntertainerPandaJoy };
-        pag[PeepAnimationType::Wave2]     = { kEntertainerSpritePandaStateWaveId,      { 14, 24,  7 }, kPeepAnimationSequenceEntertainerPandaWave2 };
+        pag[PeepAnimationType::None]      = { kEntertainerSpritePandaStateNoneId,      kPeepAnimationSequenceEntertainerPandaNone };
+        pag[PeepAnimationType::WatchRide] = { kEntertainerSpritePandaStateWatchRideId, kPeepAnimationSequenceEntertainerPandaWatchRide };
+        pag[PeepAnimationType::EatFood]   = { kEntertainerSpritePandaStateWaveId,      kPeepAnimationSequenceEntertainerPandaEatFood };
+        pag[PeepAnimationType::Hanging]   = { kEntertainerSpritePandaStateHangingId,   kPeepAnimationSequenceEntertainerPandaHanging };
+        pag[PeepAnimationType::Drowning]  = { kEntertainerSpritePandaStateDrowningId,  kPeepAnimationSequenceEntertainerPandaDrowning };
+        pag[PeepAnimationType::Joy]       = { kEntertainerSpritePandaStateJoyId,       kPeepAnimationSequenceEntertainerPandaJoy };
+        pag[PeepAnimationType::Wave2]     = { kEntertainerSpritePandaStateWaveId,      kPeepAnimationSequenceEntertainerPandaWave2 };
         return pag;
     }();
 
@@ -179,15 +277,15 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 23> kPeepAnimationSequenceEntertainerTigerWave2     = { 0, 1, 2, 3, 4, 5, 4, 3, 4, 5, 4, 3, 4, 5, 4, 3, 4, 5, 4, 3, 2, 1, 0 };
 
     // Define animation group for EntertainerTiger sequences
-    static constexpr PeepAnimations kPeepAnimationsEntertainerTiger = []() {
+    static PeepAnimations kPeepAnimationsEntertainerTiger = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kEntertainerSpriteTigerStateNoneId,      { 13, 24,  8 }, kPeepAnimationSequenceEntertainerTigerNone };
-        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteTigerStateWatchRideId, { 10, 23,  7 }, kPeepAnimationSequenceEntertainerTigerWatchRide };
-        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteTigerStateWaveId,      { 16, 24,  8 }, kPeepAnimationSequenceEntertainerTigerEatFood };
-        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteTigerStateHangingId,   { 23, 30,  8 }, kPeepAnimationSequenceEntertainerTigerHanging };
-        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteTigerStateDrowningId,  { 13, 15,  6 }, kPeepAnimationSequenceEntertainerTigerDrowning };
-        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteTigerStateJoyId,       { 16, 28,  9 }, kPeepAnimationSequenceEntertainerTigerJoy };
-        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteTigerStateWaveId,      { 16, 24,  8 }, kPeepAnimationSequenceEntertainerTigerWave2 };
+        pag[PeepAnimationType::None]      = { kEntertainerSpriteTigerStateNoneId,      kPeepAnimationSequenceEntertainerTigerNone };
+        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteTigerStateWatchRideId, kPeepAnimationSequenceEntertainerTigerWatchRide };
+        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteTigerStateWaveId,      kPeepAnimationSequenceEntertainerTigerEatFood };
+        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteTigerStateHangingId,   kPeepAnimationSequenceEntertainerTigerHanging };
+        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteTigerStateDrowningId,  kPeepAnimationSequenceEntertainerTigerDrowning };
+        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteTigerStateJoyId,       kPeepAnimationSequenceEntertainerTigerJoy };
+        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteTigerStateWaveId,      kPeepAnimationSequenceEntertainerTigerWave2 };
         return pag;
     }();
 
@@ -201,15 +299,15 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 25> kPeepAnimationSequenceEntertainerElephantWave2     = { 0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 4, 5, 6, 5, 4, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0 };
 
     // Define animation group for EntertainerElephant sequences
-    static constexpr PeepAnimations kPeepAnimationsEntertainerElephant = []() {
+    static PeepAnimations kPeepAnimationsEntertainerElephant = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kEntertainerSpriteElephantStateNoneId,      { 13, 24,  8 }, kPeepAnimationSequenceEntertainerElephantNone };
-        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteElephantStateWatchRideId, { 10, 23,  7 }, kPeepAnimationSequenceEntertainerElephantWatchRide };
-        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteElephantStateWaveId,      { 17, 24,  8 }, kPeepAnimationSequenceEntertainerElephantEatFood };
-        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteElephantStateHangingId,   { 23, 30,  8 }, kPeepAnimationSequenceEntertainerElephantHanging };
-        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteElephantStateDrowningId,  { 17, 15,  6 }, kPeepAnimationSequenceEntertainerElephantDrowning };
-        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteElephantStateJoyId,       { 18, 25,  9 }, kPeepAnimationSequenceEntertainerElephantJoy };
-        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteElephantStateWaveId,      { 17, 24,  8 }, kPeepAnimationSequenceEntertainerElephantWave2 };
+        pag[PeepAnimationType::None]      = { kEntertainerSpriteElephantStateNoneId,      kPeepAnimationSequenceEntertainerElephantNone };
+        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteElephantStateWatchRideId, kPeepAnimationSequenceEntertainerElephantWatchRide };
+        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteElephantStateWaveId,      kPeepAnimationSequenceEntertainerElephantEatFood };
+        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteElephantStateHangingId,   kPeepAnimationSequenceEntertainerElephantHanging };
+        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteElephantStateDrowningId,  kPeepAnimationSequenceEntertainerElephantDrowning };
+        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteElephantStateJoyId,       kPeepAnimationSequenceEntertainerElephantJoy };
+        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteElephantStateWaveId,      kPeepAnimationSequenceEntertainerElephantWave2 };
         return pag;
     }();
 
@@ -223,15 +321,15 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t,  21> kPeepAnimationSequenceEntertainerRomanWave2     = { 0, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 7, 6, 5, 4, 3, 2, 1, 0 };
 
     // Define animation group for EntertainerRoman sequences
-    static constexpr PeepAnimations kPeepAnimationsEntertainerRoman = []() {
+    static PeepAnimations kPeepAnimationsEntertainerRoman = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kEntertainerSpriteRomanStateNoneId,      { 13, 24,  8 }, kPeepAnimationSequenceEntertainerRomanNone };
-        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteRomanStateWatchRideId, { 10, 23,  7 }, kPeepAnimationSequenceEntertainerRomanWatchRide };
-        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteRomanStateWaveId,      { 17, 24,  8 }, kPeepAnimationSequenceEntertainerRomanEatFood };
-        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteRomanStateHangingId,   { 23, 30,  8 }, kPeepAnimationSequenceEntertainerRomanHanging };
-        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteRomanStateDrowningId,  { 17, 15,  6 }, kPeepAnimationSequenceEntertainerRomanDrowning };
-        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteRomanStateJoyId,       { 18, 25,  9 }, kPeepAnimationSequenceEntertainerRomanJoy };
-        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteRomanStateWaveId,      { 17, 24,  8 }, kPeepAnimationSequenceEntertainerRomanWave2 };
+        pag[PeepAnimationType::None]      = { kEntertainerSpriteRomanStateNoneId,      kPeepAnimationSequenceEntertainerRomanNone };
+        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteRomanStateWatchRideId, kPeepAnimationSequenceEntertainerRomanWatchRide };
+        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteRomanStateWaveId,      kPeepAnimationSequenceEntertainerRomanEatFood };
+        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteRomanStateHangingId,   kPeepAnimationSequenceEntertainerRomanHanging };
+        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteRomanStateDrowningId,  kPeepAnimationSequenceEntertainerRomanDrowning };
+        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteRomanStateJoyId,       kPeepAnimationSequenceEntertainerRomanJoy };
+        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteRomanStateWaveId,      kPeepAnimationSequenceEntertainerRomanWave2 };
         return pag;
     }();
 
@@ -245,15 +343,15 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 39> kPeepAnimationSequenceEntertainerGorillaWave2     = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 8, 9, 10, 9, 8, 7, 8, 9, 10, 9, 8, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
 
     // Define animation group for EntertainerGorilla sequences
-    static constexpr PeepAnimations kPeepAnimationsEntertainerGorilla = []() {
+    static PeepAnimations kPeepAnimationsEntertainerGorilla = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kEntertainerSpriteGorillaStateNoneId,      { 13, 24,  8 }, kPeepAnimationSequenceEntertainerGorillaNone };
-        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteGorillaStateWatchRideId, { 10, 23,  7 }, kPeepAnimationSequenceEntertainerGorillaWatchRide };
-        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteGorillaStateWaveId,      { 17, 24,  8 }, kPeepAnimationSequenceEntertainerGorillaEatFood };
-        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteGorillaStateHangingId,   { 23, 30,  8 }, kPeepAnimationSequenceEntertainerGorillaHanging };
-        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteGorillaStateDrowningId,  { 17, 15,  6 }, kPeepAnimationSequenceEntertainerGorillaDrowning };
-        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteGorillaStateWaveId,      { 18, 25,  9 }, kPeepAnimationSequenceEntertainerGorillaJoy };
-        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteGorillaStateWaveId,      { 17, 24,  8 }, kPeepAnimationSequenceEntertainerGorillaWave2 };
+        pag[PeepAnimationType::None]      = { kEntertainerSpriteGorillaStateNoneId,      kPeepAnimationSequenceEntertainerGorillaNone };
+        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteGorillaStateWatchRideId, kPeepAnimationSequenceEntertainerGorillaWatchRide };
+        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteGorillaStateWaveId,      kPeepAnimationSequenceEntertainerGorillaEatFood };
+        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteGorillaStateHangingId,   kPeepAnimationSequenceEntertainerGorillaHanging };
+        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteGorillaStateDrowningId,  kPeepAnimationSequenceEntertainerGorillaDrowning };
+        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteGorillaStateWaveId,      kPeepAnimationSequenceEntertainerGorillaJoy };
+        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteGorillaStateWaveId,      kPeepAnimationSequenceEntertainerGorillaWave2 };
         return pag;
     }();
 
@@ -267,15 +365,15 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 65> kPeepAnimationSequenceEntertainerSnowmanWave2     = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 16, 17, 18, 19, 16, 17, 18, 19, 16, 17, 18, 19, 16, 17, 18, 19, 16, 17, 18, 19, 16, 17, 18, 19, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 31, 31, 31, 32, 33 };
 
     // Define animation group for EntertainerSnowman sequences
-    static constexpr PeepAnimations kPeepAnimationsEntertainerSnowman = []() {
+    static PeepAnimations kPeepAnimationsEntertainerSnowman = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kEntertainerSpriteSnowmanStateNoneId,      { 13, 24,  8 }, kPeepAnimationSequenceEntertainerSnowmanNone };
-        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteSnowmanStateWatchRideId, { 10, 23,  7 }, kPeepAnimationSequenceEntertainerSnowmanWatchRide };
-        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteSnowmanStateWaveId,      { 17, 28,  9 }, kPeepAnimationSequenceEntertainerSnowmanEatFood };
-        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteSnowmanStateHangingId,   { 23, 30,  8 }, kPeepAnimationSequenceEntertainerSnowmanHanging };
-        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteSnowmanStateDrowningId,  { 17, 15,  9 }, kPeepAnimationSequenceEntertainerSnowmanDrowning };
-        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteSnowmanStateWaveId,      { 18, 28,  9 }, kPeepAnimationSequenceEntertainerSnowmanJoy };
-        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteSnowmanStateWaveId,      { 17, 28,  9 }, kPeepAnimationSequenceEntertainerSnowmanWave2 };
+        pag[PeepAnimationType::None]      = { kEntertainerSpriteSnowmanStateNoneId,      kPeepAnimationSequenceEntertainerSnowmanNone };
+        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteSnowmanStateWatchRideId, kPeepAnimationSequenceEntertainerSnowmanWatchRide };
+        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteSnowmanStateWaveId,      kPeepAnimationSequenceEntertainerSnowmanEatFood };
+        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteSnowmanStateHangingId,   kPeepAnimationSequenceEntertainerSnowmanHanging };
+        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteSnowmanStateDrowningId,  kPeepAnimationSequenceEntertainerSnowmanDrowning };
+        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteSnowmanStateWaveId,      kPeepAnimationSequenceEntertainerSnowmanJoy };
+        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteSnowmanStateWaveId,      kPeepAnimationSequenceEntertainerSnowmanWave2 };
         return pag;
     }();
 
@@ -289,15 +387,15 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 47> kPeepAnimationSequenceEntertainerKnightWave2     = { 0, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 9, 10, 11, 12, 12, 12, 12, 12, 13, 14, 15, 16, 17, 17, 17, 17, 17, 18, 19, 20, 21, 22, 23, 23, 23, 23, 23, 24, 25, 26, 27 };
 
     // Define animation group for EntertainerKnight sequences
-    static constexpr PeepAnimations kPeepAnimationsEntertainerKnight = []() {
+    static PeepAnimations kPeepAnimationsEntertainerKnight = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kEntertainerSpriteKnightStateNoneId,      { 16, 32,  8 }, kPeepAnimationSequenceEntertainerKnightNone };
-        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteKnightStateWatchRideId, { 10, 23,  7 }, kPeepAnimationSequenceEntertainerKnightWatchRide };
-        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteKnightStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerKnightEatFood };
-        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteKnightStateHangingId,   { 23, 30,  8 }, kPeepAnimationSequenceEntertainerKnightHanging };
-        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteKnightStateDrowningId,  { 21, 32,  9 }, kPeepAnimationSequenceEntertainerKnightDrowning };
-        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteKnightStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerKnightJoy };
-        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteKnightStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerKnightWave2 };
+        pag[PeepAnimationType::None]      = { kEntertainerSpriteKnightStateNoneId,      kPeepAnimationSequenceEntertainerKnightNone };
+        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteKnightStateWatchRideId, kPeepAnimationSequenceEntertainerKnightWatchRide };
+        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteKnightStateWaveId,      kPeepAnimationSequenceEntertainerKnightEatFood };
+        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteKnightStateHangingId,   kPeepAnimationSequenceEntertainerKnightHanging };
+        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteKnightStateDrowningId,  kPeepAnimationSequenceEntertainerKnightDrowning };
+        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteKnightStateWaveId,      kPeepAnimationSequenceEntertainerKnightJoy };
+        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteKnightStateWaveId,      kPeepAnimationSequenceEntertainerKnightWave2 };
         return pag;
     }();
 
@@ -311,15 +409,15 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 19> kPeepAnimationSequenceEntertainerAstronautWave2     = { 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 7, 8, 9, 0 };
 
     // Define animation group for EntertainerAstronaut sequences
-    static constexpr PeepAnimations kPeepAnimationsEntertainerAstronaut = []() {
+    static PeepAnimations kPeepAnimationsEntertainerAstronaut = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kEntertainerSpriteAstronautStateNoneId,      { 16, 32,  8 }, kPeepAnimationSequenceEntertainerAstronautNone };
-        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteAstronautStateWatchRideId, { 10, 23,  7 }, kPeepAnimationSequenceEntertainerAstronautWatchRide };
-        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteAstronautStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerAstronautEatFood };
-        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteAstronautStateHangingId,   { 23, 30,  8 }, kPeepAnimationSequenceEntertainerAstronautHanging };
-        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteAstronautStateDrowningId,  { 21, 32,  9 }, kPeepAnimationSequenceEntertainerAstronautDrowning };
-        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteAstronautStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerAstronautJoy };
-        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteAstronautStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerAstronautWave2 };
+        pag[PeepAnimationType::None]      = { kEntertainerSpriteAstronautStateNoneId,      kPeepAnimationSequenceEntertainerAstronautNone };
+        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteAstronautStateWatchRideId, kPeepAnimationSequenceEntertainerAstronautWatchRide };
+        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteAstronautStateWaveId,      kPeepAnimationSequenceEntertainerAstronautEatFood };
+        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteAstronautStateHangingId,   kPeepAnimationSequenceEntertainerAstronautHanging };
+        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteAstronautStateDrowningId,  kPeepAnimationSequenceEntertainerAstronautDrowning };
+        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteAstronautStateWaveId,      kPeepAnimationSequenceEntertainerAstronautJoy };
+        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteAstronautStateWaveId,      kPeepAnimationSequenceEntertainerAstronautWave2 };
         return pag;
     }();
 
@@ -333,15 +431,15 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 111> kPeepAnimationSequenceEntertainerBanditWave2     = { 0, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 8, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 12, 13, 13, 13, 13, 13, 14, 15, 16, 17, 17, 17, 17, 17, 18, 19, 20, 21, 22, 21, 20, 19, 20, 21, 22, 21, 20, 19, 20, 21, 22, 21, 20, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 31, 32, 33, 34, 35, 36, 31, 32, 33, 34, 35, 36, 31, 32, 33, 34, 35, 36, 31, 32, 33, 34, 35, 36, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41 };
 
     // Define animation group for EntertainerBandit sequences
-    static constexpr PeepAnimations kPeepAnimationsEntertainerBandit = []() {
+    static PeepAnimations kPeepAnimationsEntertainerBandit = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kEntertainerSpriteBanditStateNoneId,      { 16, 32,  8 }, kPeepAnimationSequenceEntertainerBanditNone };
-        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteBanditStateWatchRideId, { 10, 23,  7 }, kPeepAnimationSequenceEntertainerBanditWatchRide };
-        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteBanditStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerBanditEatFood };
-        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteBanditStateHangingId,   { 23, 30,  8 }, kPeepAnimationSequenceEntertainerBanditHanging };
-        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteBanditStateDrowningId,  { 21, 32,  9 }, kPeepAnimationSequenceEntertainerBanditDrowning };
-        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteBanditStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerBanditJoy };
-        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteBanditStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerBanditWave2 };
+        pag[PeepAnimationType::None]      = { kEntertainerSpriteBanditStateNoneId,      kPeepAnimationSequenceEntertainerBanditNone };
+        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteBanditStateWatchRideId, kPeepAnimationSequenceEntertainerBanditWatchRide };
+        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteBanditStateWaveId,      kPeepAnimationSequenceEntertainerBanditEatFood };
+        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteBanditStateHangingId,   kPeepAnimationSequenceEntertainerBanditHanging };
+        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteBanditStateDrowningId,  kPeepAnimationSequenceEntertainerBanditDrowning };
+        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteBanditStateWaveId,      kPeepAnimationSequenceEntertainerBanditJoy };
+        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteBanditStateWaveId,      kPeepAnimationSequenceEntertainerBanditWave2 };
         return pag;
     }();
 
@@ -355,15 +453,15 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 48> kPeepAnimationSequenceEntertainerSheriffWave2     = { 0, 1, 2, 3, 4, 5, 6, 7, 7, 7, 7, 7, 8, 9, 10, 11, 12, 11, 10, 11, 12, 11, 10, 11, 12, 11, 10, 11, 12, 11, 10, 11, 12, 11, 10, 11, 12, 11, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
 
     // Define animation group for EntertainerSheriff sequences
-    static constexpr PeepAnimations kPeepAnimationsEntertainerSheriff = []() {
+    static PeepAnimations kPeepAnimationsEntertainerSheriff = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kEntertainerSpriteSheriffStateNoneId,      { 16, 32,  8 }, kPeepAnimationSequenceEntertainerSheriffNone };
-        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteSheriffStateWatchRideId, { 10, 23,  7 }, kPeepAnimationSequenceEntertainerSheriffWatchRide };
-        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteSheriffStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerSheriffEatFood };
-        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteSheriffStateHangingId,   { 23, 30,  8 }, kPeepAnimationSequenceEntertainerSheriffHanging };
-        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteSheriffStateDrowningId,  { 21, 32,  9 }, kPeepAnimationSequenceEntertainerSheriffDrowning };
-        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteSheriffStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerSheriffJoy };
-        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteSheriffStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerSheriffWave2 };
+        pag[PeepAnimationType::None]      = { kEntertainerSpriteSheriffStateNoneId,      kPeepAnimationSequenceEntertainerSheriffNone };
+        pag[PeepAnimationType::WatchRide] = { kEntertainerSpriteSheriffStateWatchRideId, kPeepAnimationSequenceEntertainerSheriffWatchRide };
+        pag[PeepAnimationType::EatFood]   = { kEntertainerSpriteSheriffStateWaveId,      kPeepAnimationSequenceEntertainerSheriffEatFood };
+        pag[PeepAnimationType::Hanging]   = { kEntertainerSpriteSheriffStateHangingId,   kPeepAnimationSequenceEntertainerSheriffHanging };
+        pag[PeepAnimationType::Drowning]  = { kEntertainerSpriteSheriffStateDrowningId,  kPeepAnimationSequenceEntertainerSheriffDrowning };
+        pag[PeepAnimationType::Joy]       = { kEntertainerSpriteSheriffStateWaveId,      kPeepAnimationSequenceEntertainerSheriffJoy };
+        pag[PeepAnimationType::Wave2]     = { kEntertainerSpriteSheriffStateWaveId,      kPeepAnimationSequenceEntertainerSheriffWave2 };
         return pag;
     }();
 
@@ -377,15 +475,15 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 67> kPeepAnimationSequenceEntertainerPirateWave2     = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 9, 10, 11, 12, 13, 14, 15, 16, 9, 10, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 21, 21, 21, 21, 21, 22, 23, 23, 23, 23, 24, 25, 26, 27, 27, 27, 27, 28, 29, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 31 };
 
     // Define animation group for EntertainerPirate sequences
-    static constexpr PeepAnimations kPeepAnimationsEntertainerPirate = []() {
+    static PeepAnimations kPeepAnimationsEntertainerPirate = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kEntertainerSpritePirateStateNoneId,      { 16, 32,  8 }, kPeepAnimationSequenceEntertainerPirateNone };
-        pag[PeepAnimationType::WatchRide] = { kEntertainerSpritePirateStateWatchRideId, { 10, 23,  7 }, kPeepAnimationSequenceEntertainerPirateWatchRide };
-        pag[PeepAnimationType::EatFood]   = { kEntertainerSpritePirateStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerPirateEatFood };
-        pag[PeepAnimationType::Hanging]   = { kEntertainerSpritePirateStateHangingId,   { 23, 30,  8 }, kPeepAnimationSequenceEntertainerPirateHanging };
-        pag[PeepAnimationType::Drowning]  = { kEntertainerSpritePirateStateDrowningId,  { 21, 32,  9 }, kPeepAnimationSequenceEntertainerPirateDrowning };
-        pag[PeepAnimationType::Joy]       = { kEntertainerSpritePirateStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerPirateJoy };
-        pag[PeepAnimationType::Wave2]     = { kEntertainerSpritePirateStateWaveId,      { 23, 30, 15 }, kPeepAnimationSequenceEntertainerPirateWave2 };
+        pag[PeepAnimationType::None]      = { kEntertainerSpritePirateStateNoneId,      kPeepAnimationSequenceEntertainerPirateNone };
+        pag[PeepAnimationType::WatchRide] = { kEntertainerSpritePirateStateWatchRideId, kPeepAnimationSequenceEntertainerPirateWatchRide };
+        pag[PeepAnimationType::EatFood]   = { kEntertainerSpritePirateStateWaveId,      kPeepAnimationSequenceEntertainerPirateEatFood };
+        pag[PeepAnimationType::Hanging]   = { kEntertainerSpritePirateStateHangingId,   kPeepAnimationSequenceEntertainerPirateHanging };
+        pag[PeepAnimationType::Drowning]  = { kEntertainerSpritePirateStateDrowningId,  kPeepAnimationSequenceEntertainerPirateDrowning };
+        pag[PeepAnimationType::Joy]       = { kEntertainerSpritePirateStateWaveId,      kPeepAnimationSequenceEntertainerPirateJoy };
+        pag[PeepAnimationType::Wave2]     = { kEntertainerSpritePirateStateWaveId,      kPeepAnimationSequenceEntertainerPirateWave2 };
         return pag;
     }();
 
@@ -397,13 +495,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t,  6> kPeepAnimationSequenceIceCreamSittingEatFood = { 0, 1, 2, 3, 4, 5 };
 
     // Define animation group for IceCream sequences
-    static constexpr PeepAnimations kPeepAnimationsIceCream = []() {
+    static PeepAnimations kPeepAnimationsIceCream = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteIceCreamStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceIceCreamNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteIceCreamStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceIceCreamWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteIceCreamStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceIceCreamEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteIceCreamStateSittingIdleId,    {  9, 16,  6 }, kPeepAnimationSequenceIceCreamSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteIceCreamStateSittingEatFoodId, {  9, 16,  6 }, kPeepAnimationSequenceIceCreamSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteIceCreamStateNoneId,           kPeepAnimationSequenceIceCreamNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteIceCreamStateWatchRideId,      kPeepAnimationSequenceIceCreamWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteIceCreamStateEatFoodId,        kPeepAnimationSequenceIceCreamEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteIceCreamStateSittingIdleId,    kPeepAnimationSequenceIceCreamSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteIceCreamStateSittingEatFoodId, kPeepAnimationSequenceIceCreamSittingEatFood };
         return pag;
     }();
 
@@ -415,13 +513,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceChipsSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Chips sequences
-    static constexpr PeepAnimations kPeepAnimationsChips = []() {
+    static PeepAnimations kPeepAnimationsChips = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteChipsStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceChipsNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteChipsStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceChipsWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteChipsStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceChipsEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteChipsStateSittingIdleId,    {  9, 16,  6 }, kPeepAnimationSequenceChipsSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteChipsStateSittingEatFoodId, {  9, 16,  6 }, kPeepAnimationSequenceChipsSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteChipsStateNoneId,           kPeepAnimationSequenceChipsNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteChipsStateWatchRideId,      kPeepAnimationSequenceChipsWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteChipsStateEatFoodId,        kPeepAnimationSequenceChipsEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteChipsStateSittingIdleId,    kPeepAnimationSequenceChipsSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteChipsStateSittingEatFoodId, kPeepAnimationSequenceChipsSittingEatFood };
         return pag;
     }();
 
@@ -433,13 +531,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceBurgerSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Burger sequences
-    static constexpr PeepAnimations kPeepAnimationsBurger = []() {
+    static PeepAnimations kPeepAnimationsBurger = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteBurgerStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceBurgerNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteBurgerStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceBurgerWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteBurgerStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceBurgerEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteBurgerStateSittingIdleId,    {  9, 16,  6 }, kPeepAnimationSequenceBurgerSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteBurgerStateSittingEatFoodId, {  9, 16,  6 }, kPeepAnimationSequenceBurgerSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteBurgerStateNoneId,           kPeepAnimationSequenceBurgerNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteBurgerStateWatchRideId,      kPeepAnimationSequenceBurgerWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteBurgerStateEatFoodId,        kPeepAnimationSequenceBurgerEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteBurgerStateSittingIdleId,    kPeepAnimationSequenceBurgerSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteBurgerStateSittingEatFoodId, kPeepAnimationSequenceBurgerSittingEatFood };
         return pag;
     }();
 
@@ -451,13 +549,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceDrinkSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Drink sequences
-    static constexpr PeepAnimations kPeepAnimationsDrink = []() {
+    static PeepAnimations kPeepAnimationsDrink = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteDrinkStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceDrinkNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteDrinkStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceDrinkWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteDrinkStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceDrinkEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteDrinkStateSittingIdleId,    {  9, 16,  6 }, kPeepAnimationSequenceDrinkSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteDrinkStateSittingEatFoodId, {  9, 16,  6 }, kPeepAnimationSequenceDrinkSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteDrinkStateNoneId,           kPeepAnimationSequenceDrinkNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteDrinkStateWatchRideId,      kPeepAnimationSequenceDrinkWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteDrinkStateEatFoodId,        kPeepAnimationSequenceDrinkEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteDrinkStateSittingIdleId,    kPeepAnimationSequenceDrinkSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteDrinkStateSittingEatFoodId, kPeepAnimationSequenceDrinkSittingEatFood };
         return pag;
     }();
 
@@ -467,11 +565,11 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 1> kPeepAnimationSequenceBalloonSittingIdle = { 0 };
 
     // Define animation group for Balloon sequences
-    static constexpr PeepAnimations kPeepAnimationsBalloon = []() {
+    static PeepAnimations kPeepAnimationsBalloon = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]        = { kPeepSpriteBalloonStateNoneId,        { 11, 28,  5 }, kPeepAnimationSequenceBalloonNone };
-        pag[PeepAnimationType::WatchRide]   = { kPeepSpriteBalloonStateWatchRideId,   { 11, 28,  5 }, kPeepAnimationSequenceBalloonWatchRide };
-        pag[PeepAnimationType::SittingIdle] = { kPeepSpriteBalloonStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceBalloonSittingIdle };
+        pag[PeepAnimationType::None]        = { kPeepSpriteBalloonStateNoneId,        kPeepAnimationSequenceBalloonNone };
+        pag[PeepAnimationType::WatchRide]   = { kPeepSpriteBalloonStateWatchRideId,   kPeepAnimationSequenceBalloonWatchRide };
+        pag[PeepAnimationType::SittingIdle] = { kPeepSpriteBalloonStateSittingIdleId, kPeepAnimationSequenceBalloonSittingIdle };
         return pag;
     }();
 
@@ -483,13 +581,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceCandyflossSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Candyfloss sequences
-    static constexpr PeepAnimations kPeepAnimationsCandyfloss = []() {
+    static PeepAnimations kPeepAnimationsCandyfloss = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteCandyflossStateNoneId,           { 11, 19,  5 }, kPeepAnimationSequenceCandyflossNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteCandyflossStateWatchRideId,      { 11, 19,  5 }, kPeepAnimationSequenceCandyflossWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteCandyflossStateEatFoodId,        { 11, 19,  5 }, kPeepAnimationSequenceCandyflossEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteCandyflossStateSittingIdleId,    { 13, 16,  6 }, kPeepAnimationSequenceCandyflossSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteCandyflossStateSittingEatFoodId, { 13, 16,  6 }, kPeepAnimationSequenceCandyflossSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteCandyflossStateNoneId,           kPeepAnimationSequenceCandyflossNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteCandyflossStateWatchRideId,      kPeepAnimationSequenceCandyflossWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteCandyflossStateEatFoodId,        kPeepAnimationSequenceCandyflossEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteCandyflossStateSittingIdleId,    kPeepAnimationSequenceCandyflossSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteCandyflossStateSittingEatFoodId, kPeepAnimationSequenceCandyflossSittingEatFood };
         return pag;
     }();
 
@@ -499,11 +597,11 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 1> kPeepAnimationSequenceUmbrellaSittingIdle = { 0 };
 
     // Define animation group for Umbrella sequences
-    static constexpr PeepAnimations kPeepAnimationsUmbrella = []() {
+    static PeepAnimations kPeepAnimationsUmbrella = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]        = { kPeepSpriteUmbrellaStateNoneId,        { 14, 21,  5 }, kPeepAnimationSequenceUmbrellaNone };
-        pag[PeepAnimationType::WatchRide]   = { kPeepSpriteUmbrellaStateWatchRideId,   { 14, 21,  5 }, kPeepAnimationSequenceUmbrellaWatchRide };
-        pag[PeepAnimationType::SittingIdle] = { kPeepSpriteUmbrellaStateSittingIdleId, { 14, 19,  6 }, kPeepAnimationSequenceUmbrellaSittingIdle };
+        pag[PeepAnimationType::None]        = { kPeepSpriteUmbrellaStateNoneId,        kPeepAnimationSequenceUmbrellaNone };
+        pag[PeepAnimationType::WatchRide]   = { kPeepSpriteUmbrellaStateWatchRideId,   kPeepAnimationSequenceUmbrellaWatchRide };
+        pag[PeepAnimationType::SittingIdle] = { kPeepSpriteUmbrellaStateSittingIdleId, kPeepAnimationSequenceUmbrellaSittingIdle };
         return pag;
     }();
 
@@ -515,13 +613,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t,  6> kPeepAnimationSequencePizzaSittingEatFood = { 0, 1, 2, 3, 4, 5 };
 
     // Define animation group for Pizza sequences
-    static constexpr PeepAnimations kPeepAnimationsPizza = []() {
+    static PeepAnimations kPeepAnimationsPizza = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpritePizzaStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequencePizzaNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpritePizzaStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequencePizzaWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpritePizzaStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequencePizzaEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpritePizzaStateSittingIdleId,    {  9, 16,  6 }, kPeepAnimationSequencePizzaSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpritePizzaStateSittingEatFoodId, {  9, 16,  6 }, kPeepAnimationSequencePizzaSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpritePizzaStateNoneId,           kPeepAnimationSequencePizzaNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpritePizzaStateWatchRideId,      kPeepAnimationSequencePizzaWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpritePizzaStateEatFoodId,        kPeepAnimationSequencePizzaEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpritePizzaStateSittingIdleId,    kPeepAnimationSequencePizzaSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpritePizzaStateSittingEatFoodId, kPeepAnimationSequencePizzaSittingEatFood };
         return pag;
     }();
 
@@ -532,12 +630,12 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 64> kPeepAnimationSequenceSecurityAltDrowning  = { 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 4, 5, 6 };
 
     // Define animation group for SecurityAlt sequences
-    static constexpr PeepAnimations kPeepAnimationsSecurityAlt = []() {
+    static PeepAnimations kPeepAnimationsSecurityAlt = []() {
         PeepAnimations pag;
-        pag[PeepAnimationType::None]      = { kSecurityStaffSpriteAltStateNoneId, {  8, 18,  5 }, kPeepAnimationSequenceSecurityAltNone };
-        pag[PeepAnimationType::WatchRide] = { kSecuritySpriteStateWatchRideId,    {  8, 17,  5 }, kPeepAnimationSequenceSecurityAltWatchRide };
-        pag[PeepAnimationType::Hanging]   = { kSecuritySpriteStateHangingId,      { 15, 19,  6 }, kPeepAnimationSequenceSecurityAltHanging };
-        pag[PeepAnimationType::Drowning]  = { kSecuritySpriteStateDrowningId,     {  9, 15,  6 }, kPeepAnimationSequenceSecurityAltDrowning };
+        pag[PeepAnimationType::None]      = { kSecurityStaffSpriteAltStateNoneId, kPeepAnimationSequenceSecurityAltNone };
+        pag[PeepAnimationType::WatchRide] = { kSecuritySpriteStateWatchRideId,    kPeepAnimationSequenceSecurityAltWatchRide };
+        pag[PeepAnimationType::Hanging]   = { kSecuritySpriteStateHangingId,      kPeepAnimationSequenceSecurityAltHanging };
+        pag[PeepAnimationType::Drowning]  = { kSecuritySpriteStateDrowningId,     kPeepAnimationSequenceSecurityAltDrowning };
         return pag;
     }();
 
@@ -549,13 +647,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequencePopcornSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Popcorn sequences
-    static constexpr PeepAnimations kPeepAnimationsPopcorn = []() {
+    static PeepAnimations kPeepAnimationsPopcorn = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpritePopcornStateNoneId,           { 11, 19,  5 }, kPeepAnimationSequencePopcornNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpritePopcornStateWatchRideId,      { 11, 19,  5 }, kPeepAnimationSequencePopcornWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpritePopcornStateEatFoodId,        { 11, 19,  5 }, kPeepAnimationSequencePopcornEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpritePopcornStateSittingIdleId,    { 13, 16,  6 }, kPeepAnimationSequencePopcornSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpritePopcornStateSittingEatFoodId, { 13, 16,  6 }, kPeepAnimationSequencePopcornSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpritePopcornStateNoneId,           kPeepAnimationSequencePopcornNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpritePopcornStateWatchRideId,      kPeepAnimationSequencePopcornWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpritePopcornStateEatFoodId,        kPeepAnimationSequencePopcornEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpritePopcornStateSittingIdleId,    kPeepAnimationSequencePopcornSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpritePopcornStateSittingEatFoodId, kPeepAnimationSequencePopcornSittingEatFood };
         return pag;
     }();
 
@@ -563,9 +661,9 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 6> kPeepAnimationSequenceArmsCrossedNone = { 0, 1, 2, 3, 4, 5 };
 
     // Define animation group for ArmsCrossed sequences
-    static constexpr PeepAnimations kPeepAnimationsArmsCrossed = []() {
+    static PeepAnimations kPeepAnimationsArmsCrossed = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None] = { kPeepSpriteArmsCrossedStateNoneId, {  8, 16,  5 }, kPeepAnimationSequenceArmsCrossedNone };
+        pag[PeepAnimationType::None] = { kPeepSpriteArmsCrossedStateNoneId, kPeepAnimationSequenceArmsCrossedNone };
         return pag;
     }();
 
@@ -573,9 +671,9 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 6> kPeepAnimationSequenceHeadDownNone = { 0, 1, 2, 3, 4, 5 };
 
     // Define animation group for HeadDown sequences
-    static constexpr PeepAnimations kPeepAnimationsHeadDown = []() {
+    static PeepAnimations kPeepAnimationsHeadDown = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None] = { kPeepSpriteHeadDownStateNoneId, {  8, 16,  5 }, kPeepAnimationSequenceHeadDownNone };
+        pag[PeepAnimationType::None] = { kPeepSpriteHeadDownStateNoneId, kPeepAnimationSequenceHeadDownNone };
         return pag;
     }();
 
@@ -583,9 +681,9 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 6> kPeepAnimationSequenceNauseousNone = { 0, 1, 2, 3, 4, 5 };
 
     // Define animation group for Nauseous sequences
-    static constexpr PeepAnimations kPeepAnimationsNauseous = []() {
+    static PeepAnimations kPeepAnimationsNauseous = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None] = { kPeepSpriteNauseousStateNoneId, {  8, 16,  5 }, kPeepAnimationSequenceNauseousNone };
+        pag[PeepAnimationType::None] = { kPeepSpriteNauseousStateNoneId, kPeepAnimationSequenceNauseousNone };
         return pag;
     }();
 
@@ -595,11 +693,11 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 1> kPeepAnimationSequenceVeryNauseousSittingIdle = { 0 };
 
     // Define animation group for VeryNauseous sequences
-    static constexpr PeepAnimations kPeepAnimationsVeryNauseous = []() {
+    static PeepAnimations kPeepAnimationsVeryNauseous = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]        = { kPeepSpriteVeryNauseousStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceVeryNauseousNone };
-        pag[PeepAnimationType::WatchRide]   = { kPeepSpriteVeryNauseousStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceVeryNauseousWatchRide };
-        pag[PeepAnimationType::SittingIdle] = { kPeepSpriteVeryNauseousStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceVeryNauseousSittingIdle };
+        pag[PeepAnimationType::None]        = { kPeepSpriteVeryNauseousStateNoneId,        kPeepAnimationSequenceVeryNauseousNone };
+        pag[PeepAnimationType::WatchRide]   = { kPeepSpriteVeryNauseousStateWatchRideId,   kPeepAnimationSequenceVeryNauseousWatchRide };
+        pag[PeepAnimationType::SittingIdle] = { kPeepSpriteVeryNauseousStateSittingIdleId, kPeepAnimationSequenceVeryNauseousSittingIdle };
         return pag;
     }();
 
@@ -607,9 +705,9 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 6> kPeepAnimationSequenceRequireToiletNone = { 0, 1, 2, 3, 4, 5 };
 
     // Define animation group for RequireToilet sequences
-    static constexpr PeepAnimations kPeepAnimationsRequireToilet = []() {
+    static PeepAnimations kPeepAnimationsRequireToilet = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None] = { kPeepSpriteRequireToiletStateNoneId, {  8, 16,  5 }, kPeepAnimationSequenceRequireToiletNone };
+        pag[PeepAnimationType::None] = { kPeepSpriteRequireToiletStateNoneId, kPeepAnimationSequenceRequireToiletNone };
         return pag;
     }();
 
@@ -619,11 +717,11 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 1> kPeepAnimationSequenceHatSittingIdle = { 0 };
 
     // Define animation group for Hat sequences
-    static constexpr PeepAnimations kPeepAnimationsHat = []() {
+    static PeepAnimations kPeepAnimationsHat = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]        = { kPeepSpriteHatStateNoneId,        { 12, 32,  5 }, kPeepAnimationSequenceHatNone };
-        pag[PeepAnimationType::WatchRide]   = { kPeepSpriteHatStateWatchRideId,   { 12, 32,  5 }, kPeepAnimationSequenceHatWatchRide };
-        pag[PeepAnimationType::SittingIdle] = { kPeepSpriteHatStateSittingIdleId, { 10, 20,  6 }, kPeepAnimationSequenceHatSittingIdle };
+        pag[PeepAnimationType::None]        = { kPeepSpriteHatStateNoneId,        kPeepAnimationSequenceHatNone };
+        pag[PeepAnimationType::WatchRide]   = { kPeepSpriteHatStateWatchRideId,   kPeepAnimationSequenceHatWatchRide };
+        pag[PeepAnimationType::SittingIdle] = { kPeepSpriteHatStateSittingIdleId, kPeepAnimationSequenceHatSittingIdle };
         return pag;
     }();
 
@@ -635,13 +733,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceHotDogSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for HotDog sequences
-    static constexpr PeepAnimations kPeepAnimationsHotDog = []() {
+    static PeepAnimations kPeepAnimationsHotDog = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteHotDogStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceHotDogNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteHotDogStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceHotDogWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteHotDogStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceHotDogEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteHotDogStateSittingIdleId,    {  9, 16,  6 }, kPeepAnimationSequenceHotDogSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteHotDogStateSittingEatFoodId, {  9, 16,  6 }, kPeepAnimationSequenceHotDogSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteHotDogStateNoneId,           kPeepAnimationSequenceHotDogNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteHotDogStateWatchRideId,      kPeepAnimationSequenceHotDogWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteHotDogStateEatFoodId,        kPeepAnimationSequenceHotDogEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteHotDogStateSittingIdleId,    kPeepAnimationSequenceHotDogSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteHotDogStateSittingEatFoodId, kPeepAnimationSequenceHotDogSittingEatFood };
         return pag;
     }();
 
@@ -653,13 +751,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 24> kPeepAnimationSequenceTentacleSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
 
     // Define animation group for Tentacle sequences
-    static constexpr PeepAnimations kPeepAnimationsTentacle = []() {
+    static PeepAnimations kPeepAnimationsTentacle = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteTentacleStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceTentacleNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteTentacleStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceTentacleWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteTentacleStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceTentacleEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteTentacleStateSittingIdleId,    {  9, 16,  6 }, kPeepAnimationSequenceTentacleSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteTentacleStateSittingEatFoodId, {  9, 16,  6 }, kPeepAnimationSequenceTentacleSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteTentacleStateNoneId,           kPeepAnimationSequenceTentacleNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteTentacleStateWatchRideId,      kPeepAnimationSequenceTentacleWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteTentacleStateEatFoodId,        kPeepAnimationSequenceTentacleEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteTentacleStateSittingIdleId,    kPeepAnimationSequenceTentacleSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteTentacleStateSittingEatFoodId, kPeepAnimationSequenceTentacleSittingEatFood };
         return pag;
     }();
 
@@ -671,13 +769,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t,  6> kPeepAnimationSequenceToffeeAppleSittingEatFood = { 0, 1, 2, 3, 4, 5 };
 
     // Define animation group for ToffeeApple sequences
-    static constexpr PeepAnimations kPeepAnimationsToffeeApple = []() {
+    static PeepAnimations kPeepAnimationsToffeeApple = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteToffeeAppleStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceToffeeAppleNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteToffeeAppleStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceToffeeAppleWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteToffeeAppleStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceToffeeAppleEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteToffeeAppleStateSittingIdleId,    {  9, 16,  6 }, kPeepAnimationSequenceToffeeAppleSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteToffeeAppleStateSittingEatFoodId, {  9, 16,  6 }, kPeepAnimationSequenceToffeeAppleSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteToffeeAppleStateNoneId,           kPeepAnimationSequenceToffeeAppleNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteToffeeAppleStateWatchRideId,      kPeepAnimationSequenceToffeeAppleWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteToffeeAppleStateEatFoodId,        kPeepAnimationSequenceToffeeAppleEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteToffeeAppleStateSittingIdleId,    kPeepAnimationSequenceToffeeAppleSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteToffeeAppleStateSittingEatFoodId, kPeepAnimationSequenceToffeeAppleSittingEatFood };
         return pag;
     }();
 
@@ -689,13 +787,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 11> kPeepAnimationSequenceDonutSittingEatFood = { 0, 1, 2, 3, 3, 3, 3, 3, 3, 4, 5 };
 
     // Define animation group for Donut sequences
-    static constexpr PeepAnimations kPeepAnimationsDonut = []() {
+    static PeepAnimations kPeepAnimationsDonut = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteDonutStateNoneId,           {  8, 16,  5 }, kPeepAnimationSequenceDonutNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteDonutStateWatchRideId,      {  8, 16,  5 }, kPeepAnimationSequenceDonutWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteDonutStateEatFoodId,        {  8, 16,  5 }, kPeepAnimationSequenceDonutEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteDonutStateSittingIdleId,    {  9, 16,  6 }, kPeepAnimationSequenceDonutSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteDonutStateSittingEatFoodId, {  9, 16,  6 }, kPeepAnimationSequenceDonutSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteDonutStateNoneId,           kPeepAnimationSequenceDonutNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteDonutStateWatchRideId,      kPeepAnimationSequenceDonutWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteDonutStateEatFoodId,        kPeepAnimationSequenceDonutEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteDonutStateSittingIdleId,    kPeepAnimationSequenceDonutSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteDonutStateSittingEatFoodId, kPeepAnimationSequenceDonutSittingEatFood };
         return pag;
     }();
 
@@ -707,13 +805,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceCoffeeSittingEatFood = { 0, 1, 2, 3, 3, 3, 3, 3, 3, 3, 2, 1 };
 
     // Define animation group for Coffee sequences
-    static constexpr PeepAnimations kPeepAnimationsCoffee = []() {
+    static PeepAnimations kPeepAnimationsCoffee = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteCoffeeStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceCoffeeNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteCoffeeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceCoffeeWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteCoffeeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceCoffeeEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteCoffeeStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceCoffeeSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteCoffeeStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceCoffeeSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteCoffeeStateNoneId,        kPeepAnimationSequenceCoffeeNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteCoffeeStateWatchRideId,   kPeepAnimationSequenceCoffeeWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteCoffeeStateWatchRideId,   kPeepAnimationSequenceCoffeeEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteCoffeeStateSittingIdleId, kPeepAnimationSequenceCoffeeSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteCoffeeStateSittingIdleId, kPeepAnimationSequenceCoffeeSittingEatFood };
         return pag;
     }();
 
@@ -725,13 +823,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceChickenSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Chicken sequences
-    static constexpr PeepAnimations kPeepAnimationsChicken = []() {
+    static PeepAnimations kPeepAnimationsChicken = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteChickenStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceChickenNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteChickenStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceChickenWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteChickenStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceChickenEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteChickenStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceChickenSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteChickenStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceChickenSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteChickenStateNoneId,        kPeepAnimationSequenceChickenNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteChickenStateWatchRideId,   kPeepAnimationSequenceChickenWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteChickenStateWatchRideId,   kPeepAnimationSequenceChickenEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteChickenStateSittingIdleId, kPeepAnimationSequenceChickenSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteChickenStateSittingIdleId, kPeepAnimationSequenceChickenSittingEatFood };
         return pag;
     }();
 
@@ -743,13 +841,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceLemonadeSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Lemonade sequences
-    static constexpr PeepAnimations kPeepAnimationsLemonade = []() {
+    static PeepAnimations kPeepAnimationsLemonade = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteLemonadeStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceLemonadeNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteLemonadeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceLemonadeWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteLemonadeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceLemonadeEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteLemonadeStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceLemonadeSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteLemonadeStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceLemonadeSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteLemonadeStateNoneId,        kPeepAnimationSequenceLemonadeNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteLemonadeStateWatchRideId,   kPeepAnimationSequenceLemonadeWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteLemonadeStateWatchRideId,   kPeepAnimationSequenceLemonadeEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteLemonadeStateSittingIdleId, kPeepAnimationSequenceLemonadeSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteLemonadeStateSittingIdleId, kPeepAnimationSequenceLemonadeSittingEatFood };
         return pag;
     }();
 
@@ -757,9 +855,9 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 1> kPeepAnimationSequenceWatchingWatchRide = { 0 };
 
     // Define animation group for Watching sequences
-    static constexpr PeepAnimations kPeepAnimationsWatching = []() {
+    static PeepAnimations kPeepAnimationsWatching = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::WatchRide] = { kPeepSpriteWatchingStateWatchRideId, {  8, 16,  5 }, kPeepAnimationSequenceWatchingWatchRide };
+        pag[PeepAnimationType::WatchRide] = { kPeepSpriteWatchingStateWatchRideId, kPeepAnimationSequenceWatchingWatchRide };
         return pag;
     }();
 
@@ -771,13 +869,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequencePretzelSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Pretzel sequences
-    static constexpr PeepAnimations kPeepAnimationsPretzel = []() {
+    static PeepAnimations kPeepAnimationsPretzel = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpritePretzelStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequencePretzelNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpritePretzelStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequencePretzelWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpritePretzelStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequencePretzelEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpritePretzelStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequencePretzelSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpritePretzelStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequencePretzelSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpritePretzelStateNoneId,        kPeepAnimationSequencePretzelNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpritePretzelStateWatchRideId,   kPeepAnimationSequencePretzelWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpritePretzelStateWatchRideId,   kPeepAnimationSequencePretzelEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpritePretzelStateSittingIdleId, kPeepAnimationSequencePretzelSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpritePretzelStateSittingIdleId, kPeepAnimationSequencePretzelSittingEatFood };
         return pag;
     }();
 
@@ -787,11 +885,11 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 1> kPeepAnimationSequenceSunglassesSittingIdle = { 0 };
 
     // Define animation group for Sunglasses sequences
-    static constexpr PeepAnimations kPeepAnimationsSunglasses = []() {
+    static PeepAnimations kPeepAnimationsSunglasses = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]        = { kPeepSpriteSunglassesStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceSunglassesNone };
-        pag[PeepAnimationType::WatchRide]   = { kPeepSpriteSunglassesStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSunglassesWatchRide };
-        pag[PeepAnimationType::SittingIdle] = { kPeepSpriteSunglassesStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceSunglassesSittingIdle };
+        pag[PeepAnimationType::None]        = { kPeepSpriteSunglassesStateNoneId,        kPeepAnimationSequenceSunglassesNone };
+        pag[PeepAnimationType::WatchRide]   = { kPeepSpriteSunglassesStateWatchRideId,   kPeepAnimationSequenceSunglassesWatchRide };
+        pag[PeepAnimationType::SittingIdle] = { kPeepSpriteSunglassesStateSittingIdleId, kPeepAnimationSequenceSunglassesSittingIdle };
         return pag;
     }();
 
@@ -803,13 +901,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceSuJongkwaSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for SuJongkwa sequences
-    static constexpr PeepAnimations kPeepAnimationsSuJongkwa = []() {
+    static PeepAnimations kPeepAnimationsSuJongkwa = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteSuJongkwaStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceSuJongkwaNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteSuJongkwaStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSuJongkwaWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteSuJongkwaStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSuJongkwaEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteSuJongkwaStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceSuJongkwaSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteSuJongkwaStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceSuJongkwaSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteSuJongkwaStateNoneId,        kPeepAnimationSequenceSuJongkwaNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteSuJongkwaStateWatchRideId,   kPeepAnimationSequenceSuJongkwaWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteSuJongkwaStateWatchRideId,   kPeepAnimationSequenceSuJongkwaEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteSuJongkwaStateSittingIdleId, kPeepAnimationSequenceSuJongkwaSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteSuJongkwaStateSittingIdleId, kPeepAnimationSequenceSuJongkwaSittingEatFood };
         return pag;
     }();
 
@@ -821,13 +919,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceJuiceSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Juice sequences
-    static constexpr PeepAnimations kPeepAnimationsJuice = []() {
+    static PeepAnimations kPeepAnimationsJuice = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteJuiceStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceJuiceNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteJuiceStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceJuiceWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteJuiceStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceJuiceEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteJuiceStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceJuiceSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteJuiceStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceJuiceSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteJuiceStateNoneId,        kPeepAnimationSequenceJuiceNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteJuiceStateWatchRideId,   kPeepAnimationSequenceJuiceWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteJuiceStateWatchRideId,   kPeepAnimationSequenceJuiceEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteJuiceStateSittingIdleId, kPeepAnimationSequenceJuiceSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteJuiceStateSittingIdleId, kPeepAnimationSequenceJuiceSittingEatFood };
         return pag;
     }();
 
@@ -839,13 +937,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceFunnelCakeSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for FunnelCake sequences
-    static constexpr PeepAnimations kPeepAnimationsFunnelCake = []() {
+    static PeepAnimations kPeepAnimationsFunnelCake = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteFunnelCakeStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceFunnelCakeNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteFunnelCakeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceFunnelCakeWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteFunnelCakeStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceFunnelCakeEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteFunnelCakeStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceFunnelCakeSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteFunnelCakeStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceFunnelCakeSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteFunnelCakeStateNoneId,        kPeepAnimationSequenceFunnelCakeNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteFunnelCakeStateWatchRideId,   kPeepAnimationSequenceFunnelCakeWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteFunnelCakeStateWatchRideId,   kPeepAnimationSequenceFunnelCakeEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteFunnelCakeStateSittingIdleId, kPeepAnimationSequenceFunnelCakeSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteFunnelCakeStateSittingIdleId, kPeepAnimationSequenceFunnelCakeSittingEatFood };
         return pag;
     }();
 
@@ -857,13 +955,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceNoodlesSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Noodles sequences
-    static constexpr PeepAnimations kPeepAnimationsNoodles = []() {
+    static PeepAnimations kPeepAnimationsNoodles = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteNoodlesStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceNoodlesNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteNoodlesStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceNoodlesWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteNoodlesStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceNoodlesEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteNoodlesStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceNoodlesSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteNoodlesStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceNoodlesSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteNoodlesStateNoneId,        kPeepAnimationSequenceNoodlesNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteNoodlesStateWatchRideId,   kPeepAnimationSequenceNoodlesWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteNoodlesStateWatchRideId,   kPeepAnimationSequenceNoodlesEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteNoodlesStateSittingIdleId, kPeepAnimationSequenceNoodlesSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteNoodlesStateSittingIdleId, kPeepAnimationSequenceNoodlesSittingEatFood };
         return pag;
     }();
 
@@ -875,13 +973,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceSausageSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Sausage sequences
-    static constexpr PeepAnimations kPeepAnimationsSausage = []() {
+    static PeepAnimations kPeepAnimationsSausage = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteSausageStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceSausageNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteSausageStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSausageWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteSausageStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSausageEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteSausageStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceSausageSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteSausageStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceSausageSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteSausageStateNoneId,        kPeepAnimationSequenceSausageNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteSausageStateWatchRideId,   kPeepAnimationSequenceSausageWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteSausageStateWatchRideId,   kPeepAnimationSequenceSausageEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteSausageStateSittingIdleId, kPeepAnimationSequenceSausageSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteSausageStateSittingIdleId, kPeepAnimationSequenceSausageSittingEatFood };
         return pag;
     }();
 
@@ -893,13 +991,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceSoupSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Soup sequences
-    static constexpr PeepAnimations kPeepAnimationsSoup = []() {
+    static PeepAnimations kPeepAnimationsSoup = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteSoupStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceSoupNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteSoupStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSoupWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteSoupStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSoupEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteSoupStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceSoupSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteSoupStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceSoupSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteSoupStateNoneId,        kPeepAnimationSequenceSoupNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteSoupStateWatchRideId,   kPeepAnimationSequenceSoupWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteSoupStateWatchRideId,   kPeepAnimationSequenceSoupEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteSoupStateSittingIdleId, kPeepAnimationSequenceSoupSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteSoupStateSittingIdleId, kPeepAnimationSequenceSoupSittingEatFood };
         return pag;
     }();
 
@@ -911,13 +1009,13 @@ namespace OpenRCT2
     static constexpr std::array<uint8_t, 12> kPeepAnimationSequenceSandwichSittingEatFood = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     // Define animation group for Sandwich sequences
-    static constexpr PeepAnimations kPeepAnimationsSandwich = []() {
+    static PeepAnimations kPeepAnimationsSandwich = []() {
         PeepAnimations pag = kPeepAnimationsNormal;
-        pag[PeepAnimationType::None]           = { kPeepSpriteSandwichStateNoneId,        {  8, 16,  5 }, kPeepAnimationSequenceSandwichNone };
-        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteSandwichStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSandwichWatchRide };
-        pag[PeepAnimationType::EatFood]        = { kPeepSpriteSandwichStateWatchRideId,   {  8, 16,  5 }, kPeepAnimationSequenceSandwichEatFood };
-        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteSandwichStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceSandwichSittingIdle };
-        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteSandwichStateSittingIdleId, {  9, 16,  6 }, kPeepAnimationSequenceSandwichSittingEatFood };
+        pag[PeepAnimationType::None]           = { kPeepSpriteSandwichStateNoneId,        kPeepAnimationSequenceSandwichNone };
+        pag[PeepAnimationType::WatchRide]      = { kPeepSpriteSandwichStateWatchRideId,   kPeepAnimationSequenceSandwichWatchRide };
+        pag[PeepAnimationType::EatFood]        = { kPeepSpriteSandwichStateWatchRideId,   kPeepAnimationSequenceSandwichEatFood };
+        pag[PeepAnimationType::SittingIdle]    = { kPeepSpriteSandwichStateSittingIdleId, kPeepAnimationSequenceSandwichSittingIdle };
+        pag[PeepAnimationType::SittingEatFood] = { kPeepSpriteSandwichStateSittingIdleId, kPeepAnimationSequenceSandwichSittingEatFood };
         return pag;
     }();
 
@@ -983,4 +1081,22 @@ namespace OpenRCT2
     {
         return kPeepAnimationEntries[EnumValue(spriteType)][actionAnimationGroup].bounds;
     }
+
+    void inferMaxPeepSpriteDimensions()
+    {
+        for (auto groupKey = EnumValue(PeepAnimationGroup::Normal); groupKey < EnumValue(PeepAnimationGroup::Count); groupKey++)
+        {
+            auto& group = kPeepAnimationEntries[groupKey];
+
+            for (auto type = EnumValue(PeepAnimationType::None); type <= EnumValue(PeepAnimationType::WithdrawMoney); type++)
+            {
+                auto& anim = group[PeepAnimationType(type)];
+                if (anim.frame_offsets.empty())
+                    continue;
+
+                anim.bounds = inferMaxAnimationDimensions(anim);
+            }
+        }
+    }
+
 } // namespace OpenRCT2

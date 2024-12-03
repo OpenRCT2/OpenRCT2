@@ -57,6 +57,7 @@
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
 #include "park/ParkFile.h"
+#include "peep/PeepAnimationData.h"
 #include "platform/Crash.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
@@ -1006,6 +1007,7 @@ namespace OpenRCT2
             return result;
         }
 
+        // TODO: move function elsewhere?
         bool LoadBaseGraphics()
         {
             if (!GfxLoadG1(*_env))
@@ -1015,6 +1017,7 @@ namespace OpenRCT2
             GfxLoadG2();
             GfxLoadCsg();
             FontSpriteInitialiseCharacters();
+            inferMaxPeepSpriteDimensions();
             return true;
         }
 
