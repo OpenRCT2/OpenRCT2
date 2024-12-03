@@ -423,7 +423,6 @@ private:
     void GivePassingPeepsIceCream(Guest* passingPeep);
     Ride* FindBestRideToGoOn();
     OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> FindRidesToGoOn();
-    bool FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array);
     void GoToRideEntrance(const Ride& ride);
 };
 

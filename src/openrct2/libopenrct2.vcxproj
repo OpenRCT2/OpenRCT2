@@ -203,7 +203,6 @@
     <ClInclude Include="core\FileSystem.hpp" />
     <ClInclude Include="core\FileWatcher.h" />
     <ClInclude Include="core\FixedPoint.hpp" />
-    <ClInclude Include="core\FixedVector.h" />
     <ClInclude Include="core\FlagHolder.hpp" />
     <ClInclude Include="core\GroupVector.hpp" />
     <ClInclude Include="core\Guard.hpp" />

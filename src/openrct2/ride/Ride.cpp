@@ -25,7 +25,6 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
-#include "../core/FixedVector.h"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
 #include "../entity/EntityRegistry.h"
@@ -84,6 +83,7 @@
 #include <iterator>
 #include <limits>
 #include <optional>
+#include <sfl/static_vector.hpp>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
