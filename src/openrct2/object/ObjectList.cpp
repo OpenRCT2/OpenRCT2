@@ -175,7 +175,9 @@ ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier) 
     auto& subList = GetList(type);
     for (size_t i = 0; i < subList.size(); i++)
     {
-        if (subList[i].Identifier == identifier)
+        auto& entry = subList[i];
+        if ((entry.Generation == ObjectGeneration::JSON && entry.Identifier == identifier) ||
+            (entry.Generation == ObjectGeneration::DAT && entry.Entry.GetName() == identifier))
         {
             return static_cast<ObjectEntryIndex>(i);
         }
