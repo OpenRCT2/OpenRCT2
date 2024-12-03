@@ -175,9 +175,21 @@ ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier) 
     auto& subList = GetList(type);
     for (size_t i = 0; i < subList.size(); i++)
     {
-        auto& entry = subList[i];
-        if ((entry.Generation == ObjectGeneration::JSON && entry.Identifier == identifier)
-            || (entry.Generation == ObjectGeneration::DAT && entry.Entry.GetName() == identifier))
+        if (subList[i].Generation == ObjectGeneration::JSON && subList[i].Identifier == identifier)
+        {
+            return static_cast<ObjectEntryIndex>(i);
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+ObjectEntryIndex ObjectList::FindLegacy(ObjectType type, std::string_view identifier) const
+{
+    auto& subList = GetList(type);
+    for (size_t i = 0; i < subList.size(); i++)
+    {
+        if (subList[i].Generation == ObjectGeneration::DAT && subList[i].Entry.GetName() == identifier
+            && subList[i].Entry.GetSourceGame() != ObjectSourceGame::Custom)
         {
             return static_cast<ObjectEntryIndex>(i);
         }
