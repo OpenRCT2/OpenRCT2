@@ -475,7 +475,6 @@ WindowBase* WindowBringToFrontByClassWithFlags(WindowClass cls, uint16_t flags);
 WindowBase* WindowBringToFrontByNumber(WindowClass cls, rct_windownumber number);
 
 void WindowClose(WindowBase& window);
-void WindowFlushDead();
 void WindowCloseByClass(WindowClass cls);
 void WindowCloseByNumber(WindowClass cls, rct_windownumber number);
 void WindowCloseByNumber(WindowClass cls, EntityId number);

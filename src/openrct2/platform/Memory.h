@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#pragma once
+
 #if defined(__amd64__) || defined(_M_AMD64) || defined(__i386__) || defined(_M_IX86)
     // Don't bother checking for CPUID, prefetch is available since Pentium 4
     #include <xmmintrin.h>
