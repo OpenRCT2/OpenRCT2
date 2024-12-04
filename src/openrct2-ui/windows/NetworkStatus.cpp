@@ -110,7 +110,7 @@ namespace OpenRCT2::Ui::Windows
             DrawText(dpi, screenCoords, { COLOUR_BLACK }, _buffer.c_str());
         }
 
-        void SetCloseCallBack(close_callback onClose)
+        void SetCloseCallBack(CloseCallback onClose)
         {
             _onClose = onClose;
         }
@@ -127,12 +127,12 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        close_callback _onClose = nullptr;
+        CloseCallback _onClose = nullptr;
         std::string _windowNetworkStatusText;
         std::string _password;
     };
 
-    WindowBase* NetworkStatusOpen(const std::string& text, close_callback onClose)
+    WindowBase* NetworkStatusOpen(const std::string& text, CloseCallback onClose)
     {
         ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
 

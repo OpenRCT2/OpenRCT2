@@ -246,8 +246,8 @@ public:
             {
                 uint32_t type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
                 std::string defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH);
-                loadsave_callback callback = reinterpret_cast<loadsave_callback>(
-                    intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
+                LoadSaveCallback callback = reinterpret_cast<LoadSaveCallback>(
+                    intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK));
                 TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
                 auto* w = LoadsaveOpen(
                     type, defaultName,
@@ -265,7 +265,7 @@ public:
             case WindowClass::NetworkStatus:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
-                close_callback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
+                CloseCallback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
                 return NetworkStatusOpen(message, callback);
             }
             case WindowClass::ObjectLoadError:
@@ -294,7 +294,7 @@ public:
             }
             case WindowClass::ScenarioSelect:
                 return ScenarioselectOpen(
-                    reinterpret_cast<scenarioselect_callback>(intent->GetPointerExtra(INTENT_EXTRA_CALLBACK)));
+                    reinterpret_cast<ScenarioSelectCallback>(intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK)));
 
             case WindowClass::Null:
                 // Intent does not hold a window class
@@ -335,7 +335,7 @@ public:
             case INTENT_ACTION_PROGRESS_OPEN:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
-                close_callback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
+                CloseCallback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
                 return ProgressWindowOpen(message, callback);
             }
 

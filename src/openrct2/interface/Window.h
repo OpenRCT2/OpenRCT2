@@ -445,7 +445,7 @@ extern Tool gCurrentToolId;
 extern WidgetRef gCurrentToolWidget;
 
 using modal_callback = void (*)(int32_t result);
-using close_callback = void (*)();
+using CloseCallback = void (*)();
 
 constexpr int8_t kWindowLimitMin = 4;
 constexpr int8_t kWindowLimitMax = 64;
