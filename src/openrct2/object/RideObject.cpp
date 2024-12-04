@@ -879,7 +879,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             auto numRotationFrames = Json::GetNumber<uint8_t>(jRotationCount[SpriteGroupNames[i]], 0);
             if (numRotationFrames != 0)
             {
-                if (!isPowerOf2(numRotationFrames))
+                if (!std::has_single_bit(numRotationFrames))
                 {
                     context->LogError(ObjectError::InvalidProperty, "spriteGroups values must be powers of 2");
                     continue;
