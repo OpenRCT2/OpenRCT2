@@ -13,6 +13,8 @@
 #include "../localisation/StringIdType.h"
 #include "EntityBase.h"
 
+#include <utility>
+
 class DataSerialiser;
 struct CoordsXYZ;
 struct PaintSession;

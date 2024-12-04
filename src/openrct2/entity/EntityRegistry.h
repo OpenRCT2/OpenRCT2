@@ -12,6 +12,7 @@
 #include "EntityBase.h"
 
 #include <array>
+#include <string>
 
 namespace OpenRCT2
 {
