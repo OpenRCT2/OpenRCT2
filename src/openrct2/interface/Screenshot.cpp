@@ -63,7 +63,7 @@ static bool WriteDpiToFile(std::string_view path, const DrawPixelInfo& dpi, cons
         image.Height = dpi.height;
         image.Depth = 8;
         image.Stride = dpi.LineStride();
-        image.Palette = std::make_unique<GamePalette>(palette);
+        image.Palette = palette;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG);
         return true;

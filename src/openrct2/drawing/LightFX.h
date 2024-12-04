@@ -9,12 +9,13 @@
 
 #pragma once
 
+#include "ColourPalette.h"
+
 #include <cstdint>
 
 struct CoordsXY;
 struct Vehicle;
 struct DrawPixelInfo;
-struct GamePalette;
 struct CoordsXYZ;
 struct EntityBase;
 
@@ -56,7 +57,7 @@ void LightFXRenderLightsToFrontBuffer();
 void LightFXUpdateViewportSettings();
 
 void* LightFXGetFrontBuffer();
-const GamePalette& LightFXGetPalette();
+const OpenRCT2::Drawing::GamePalette& LightFXGetPalette();
 
 void LightFXAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType);
 

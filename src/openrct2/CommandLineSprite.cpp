@@ -214,7 +214,7 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
         image.Height = dpi.height;
         image.Depth = 8;
         image.Stride = dpi.LineStride();
-        image.Palette = std::make_unique<GamePalette>(StandardPalette);
+        image.Palette = StandardPalette;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(outPath, image, IMAGE_FORMAT::PNG);
         return true;

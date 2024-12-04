@@ -95,7 +95,7 @@ void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, s
     std::memcpy(&_data[dstIndex], &src._data[srcIndex], copyLength);
 }
 
-GamePalette gPalette;
+OpenRCT2::Drawing::GamePalette gPalette;
 uint8_t gGamePalette[256 * 4];
 uint32_t gPaletteEffectFrame;
 

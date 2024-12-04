@@ -14,10 +14,12 @@
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
+#include "ColourPalette.h"
 #include "Font.h"
 #include "ImageId.hpp"
 #include "Text.h"
 
+#include <array>
 #include <cassert>
 #include <memory>
 #include <optional>
@@ -26,6 +28,7 @@
 struct ScreenCoordsXY;
 struct ScreenLine;
 struct ScreenRect;
+
 namespace OpenRCT2
 {
     struct IPlatformEnvironment;
@@ -36,47 +39,6 @@ namespace OpenRCT2::Drawing
 {
     struct IDrawingEngine;
 }
-
-struct PaletteBGRA
-{
-    uint8_t Blue{};
-    uint8_t Green{};
-    uint8_t Red{};
-    uint8_t Alpha{};
-};
-
-constexpr auto PALETTE_SIZE = 256u;
-
-struct GamePalette
-{
-    PaletteBGRA Colour[PALETTE_SIZE]{};
-
-    PaletteBGRA& operator[](size_t idx)
-    {
-        assert(idx < PALETTE_SIZE);
-        if (idx >= PALETTE_SIZE)
-        {
-            static PaletteBGRA dummy;
-            return dummy;
-        }
-
-        return Colour[idx];
-    }
-
-    const PaletteBGRA operator[](size_t idx) const
-    {
-        assert(idx < PALETTE_SIZE);
-        if (idx >= PALETTE_SIZE)
-            return {};
-
-        return Colour[idx];
-    }
-
-    explicit operator uint8_t*()
-    {
-        return reinterpret_cast<uint8_t*>(Colour);
-    }
-};
 
 struct G1Element
 {
@@ -528,7 +490,7 @@ constexpr uint8_t kPaletteTotalOffsets = 192;
 
 constexpr int8_t kMaxScrollingTextModes = 38;
 
-extern GamePalette gPalette;
+extern OpenRCT2::Drawing::GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
 extern uint32_t gPaletteEffectFrame;
 

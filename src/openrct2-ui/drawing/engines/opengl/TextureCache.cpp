@@ -21,6 +21,7 @@
     #include <vector>
 
 using namespace OpenRCT2::Ui;
+using namespace OpenRCT2::Drawing;
 
 constexpr uint32_t kUnusedIndex = 0xFFFFFFFF;
 
@@ -206,7 +207,7 @@ void TextureCache::CreateTextures()
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
             glTexImage2D(
-                GL_TEXTURE_2D, 0, GL_R8UI, PALETTE_SIZE, PALETTE_SIZE, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, blendArray);
+                GL_TEXTURE_2D, 0, GL_R8UI, kGamePaletteSize, kGamePaletteSize, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, blendArray);
         }
 
         _initialized = true;

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "./Weather.h"
+#include "ColourPalette.h"
 
 #include <memory>
 #include <string>
@@ -39,7 +40,6 @@ enum DRAWING_ENGINE_FLAGS
 };
 
 struct DrawPixelInfo;
-struct GamePalette;
 
 namespace OpenRCT2::Ui
 {
