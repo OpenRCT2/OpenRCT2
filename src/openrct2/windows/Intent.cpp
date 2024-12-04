@@ -16,6 +16,35 @@
 
 using namespace OpenRCT2;
 
+template<typename T>
+static void putExtraImpl(IntentDataStorage& storage, uint32_t key, T&& value)
+{
+    auto it = std::ranges::lower_bound(storage, key, {}, &IntentDataEntry::first);
+
+    // Key should not already exist.
+    assert(it == storage.end() || it->first != key);
+
+    storage.emplace(it, key, std::forward<T>(value));
+}
+
+template<typename T>
+static auto getExtraImpl(const IntentDataStorage& storage, uint32_t key)
+{
+    auto it = std::ranges::lower_bound(storage, key, {}, &IntentDataEntry::first);
+    if (it == storage.end() || it->first != key)
+    {
+        // If key does not exist then the usage of Intent is incorrect.
+        assert(false);
+
+        return T{};
+    }
+
+    const auto& [_, data] = *it;
+    assert(std::holds_alternative<T>(data));
+
+    return std::get<T>(data);
+}
+
 Intent::Intent(WindowClass windowClass)
     : _Class(windowClass)
 {
@@ -33,51 +62,31 @@ Intent::Intent(IntentAction intentAction)
 
 Intent* Intent::PutExtra(uint32_t key, uint32_t value)
 {
-    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
-    assert(it == _Data.end() || it->first != key);
-
-    _Data.emplace(it, key, static_cast<int64_t>(value));
-
+    putExtraImpl(_Data, key, static_cast<int64_t>(value));
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, void* value)
 {
-    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
-    assert(it == _Data.end() || it->first != key);
-
-    _Data.emplace(it, key, value);
-
+    putExtraImpl(_Data, key, value);
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, int32_t value)
 {
-    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
-    assert(it == _Data.end() || it->first != key);
-
-    _Data.emplace(it, key, static_cast<int64_t>(value));
-
+    putExtraImpl(_Data, key, static_cast<int64_t>(value));
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, std::string value)
 {
-    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
-    assert(it == _Data.end() || it->first != key);
-
-    _Data.emplace(it, key, std::move(value));
-
+    putExtraImpl(_Data, key, std::move(value));
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, close_callback value)
 {
-    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
-    assert(it == _Data.end() || it->first != key);
-
-    _Data.emplace(it, key, value);
-
+    putExtraImpl(_Data, key, value);
     return this;
 }
 
@@ -98,70 +107,25 @@ IntentAction Intent::GetAction() const
 
 void* Intent::GetPointerExtra(uint32_t key) const
 {
-    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
-    if (it == _Data.end() || it->first != key)
-    {
-        return nullptr;
-    }
-
-    const auto& [_, data] = *it;
-
-    assert(std::holds_alternative<void*>(data));
-    return std::get<void*>(data);
+    return getExtraImpl<void*>(_Data, key);
 }
 
 uint32_t Intent::GetUIntExtra(uint32_t key) const
 {
-    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
-    if (it == _Data.end() || it->first != key)
-    {
-        return 0;
-    }
-
-    const auto& [_, data] = *it;
-
-    assert(std::holds_alternative<int64_t>(data));
-    return static_cast<uint32_t>(std::get<int64_t>(data));
+    return static_cast<uint32_t>(getExtraImpl<int64_t>(_Data, key));
 }
 
 int32_t Intent::GetSIntExtra(uint32_t key) const
 {
-    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
-    if (it == _Data.end() || it->first != key)
-    {
-        return 0;
-    }
-
-    const auto& [_, data] = *it;
-
-    assert(std::holds_alternative<int64_t>(data));
-    return static_cast<int32_t>(std::get<int64_t>(data));
+    return static_cast<uint32_t>(getExtraImpl<int64_t>(_Data, key));
 }
 
 std::string Intent::GetStringExtra(uint32_t key) const
 {
-    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
-    if (it == _Data.end() || it->first != key)
-    {
-        return std::string{};
-    }
-
-    const auto& [_, data] = *it;
-
-    assert(std::holds_alternative<std::string>(data));
-    return std::get<std::string>(data);
+    return getExtraImpl<std::string>(_Data, key);
 }
 
 close_callback Intent::GetCloseCallbackExtra(uint32_t key) const
 {
-    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
-    if (it == _Data.end() || it->first != key)
-    {
-        return nullptr;
-    }
-
-    const auto& [_, data] = *it;
-
-    assert(std::holds_alternative<close_callback>(data));
-    return std::get<close_callback>(data);
+    return getExtraImpl<close_callback>(_Data, key);
 }

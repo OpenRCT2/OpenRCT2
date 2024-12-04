@@ -59,32 +59,35 @@ enum IntentAction
     INTENT_ACTION_NULL = 255,
 };
 
+// The maximum amount of data the Intent can hold, 8 should be sufficient, raise this if needed.
+static constexpr size_t kIntentMaxDataSlots = 8;
+
+using IntentData = std::variant<int64_t, std::string, close_callback, void*>;
+using IntentDataEntry = std::pair<uint32_t, IntentData>;
+using IntentDataStorage = sfl::static_vector<IntentDataEntry, kIntentMaxDataSlots>;
+
 class Intent
 {
-    // The maximum amount of data the Intent can hold, 8 should be sufficient, raise this if needed.
-    static constexpr size_t kMaxDataSlots = 8;
-
-    using IntentData = std::variant<int64_t, std::string, close_callback, void*>;
-
     WindowClass _Class{ WindowClass::Null };
     WindowDetail _WindowDetail{ WD_NULL };
     IntentAction _Action{ INTENT_ACTION_NULL };
-
-    using DataEntry = std::pair<uint32_t, IntentData>;
-    sfl::static_vector<DataEntry, kMaxDataSlots> _Data;
+    IntentDataStorage _Data;
 
 public:
     explicit Intent(WindowClass windowClass);
     explicit Intent(WindowDetail windowDetail);
     explicit Intent(IntentAction windowclass);
+
     WindowClass GetWindowClass() const;
     WindowDetail GetWindowDetail() const;
     IntentAction GetAction() const;
+
     void* GetPointerExtra(uint32_t key) const;
     std::string GetStringExtra(uint32_t key) const;
     uint32_t GetUIntExtra(uint32_t key) const;
     int32_t GetSIntExtra(uint32_t key) const;
     close_callback GetCloseCallbackExtra(uint32_t key) const;
+
     Intent* PutExtra(uint32_t key, uint32_t value);
     Intent* PutExtra(uint32_t key, void* value);
     Intent* PutExtra(uint32_t key, int32_t value);
