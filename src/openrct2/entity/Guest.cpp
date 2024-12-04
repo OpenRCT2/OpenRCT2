@@ -7145,7 +7145,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->SpecialSprite = 0;
     peep->AnimationImageIdOffset = 0;
     peep->WalkingAnimationFrameNum = 0;
-    peep->AnimationType = PeepAnimationType::None;
+    peep->AnimationType = PeepAnimationType::Walking;
     peep->PeepFlags = 0;
     peep->FavouriteRide = RideId::GetNull();
     peep->FavouriteRideRating = 0;
