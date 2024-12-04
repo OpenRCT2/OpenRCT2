@@ -32,6 +32,7 @@
 #include <openrct2/actions/TrackSetBrakeSpeedAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/Numerics.hpp>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
@@ -45,7 +46,6 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Math.hpp>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Entrance.h>
@@ -58,6 +58,7 @@
 constexpr int8_t kDefaultSpeedIncrement = 2;
 constexpr int8_t kDefaultMinimumSpeed = 2;
 
+using namespace OpenRCT2::Numerics;
 using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Ui::Windows
@@ -2994,7 +2995,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _trackPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_trackPlaceShiftZ);
                 }
-                _trackPlaceShiftZ = Floor2(_trackPlaceShiftZ, 8);
+                _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, 8);
 
                 // Clamp to maximum possible value of BaseHeight can offer.
                 _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
@@ -3019,7 +3020,7 @@ namespace OpenRCT2::Ui::Windows
                 auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
                 if (surfaceElement == nullptr)
                     return std::nullopt;
-                auto mapZ = Floor2(surfaceElement->GetBaseZ(), 16);
+                auto mapZ = floor2(surfaceElement->GetBaseZ(), 16);
                 mapZ += _trackPlaceShiftZ;
                 mapZ = std::max<int16_t>(mapZ, 16);
                 _trackPlaceZ = mapZ;
@@ -4600,7 +4601,7 @@ namespace OpenRCT2::Ui::Windows
     {
         if (_gotoStartPlacementMode)
         {
-            _currentTrackBegin.z = Floor2(piecePos.z, kCoordsZStep);
+            _currentTrackBegin.z = floor2(piecePos.z, kCoordsZStep);
             _rideConstructionState = RideConstructionState::Front;
             _currentTrackSelectionFlags = 0;
             _currentTrackPieceDirection = piecePos.direction & 3;

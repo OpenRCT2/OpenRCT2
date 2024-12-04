@@ -12,6 +12,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <stdexcept>
 #include <type_traits>
 
 #ifdef _MSC_VER
@@ -62,6 +63,27 @@ namespace OpenRCT2::Numerics
 
         return -1;
 #endif
+    }
+
+    [[maybe_unused]] constexpr bool isPowerOf2(int v)
+    {
+        return v && ((v & (v - 1)) == 0);
+    }
+
+    // Rounds an integer down to the given power of 2. y must be a power of 2.
+    [[maybe_unused]] constexpr int floor2(const int x, const int y)
+    {
+        if (!isPowerOf2(y))
+            throw std::logic_error("floor2 should only operate on power of 2");
+        return x & ~(y - 1);
+    }
+
+    // Rounds an integer up to the given power of 2. y must be a power of 2.
+    [[maybe_unused]] constexpr int ceil2(const int x, const int y)
+    {
+        if (!isPowerOf2(y))
+            throw std::logic_error("ceil2 should only operate on power of 2");
+        return (x + y - 1) & ~(y - 1);
     }
 
     /**

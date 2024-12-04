@@ -18,6 +18,7 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/JobPool.h"
+#include "../core/Numerics.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../entity/EntityList.h"
@@ -35,7 +36,6 @@
 #include "../ride/Vehicle.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
-#include "../util/Math.hpp"
 #include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/tile_element/LargeSceneryElement.h"
@@ -51,6 +51,7 @@
 #include <unordered_map>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 enum : uint8_t
 {
@@ -1013,7 +1014,7 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi)
 
     const int32_t columnWidth = worldDpi.zoom_level.ApplyInversedTo(kCoordsXYStep);
     const int32_t rightBorder = worldDpi.x + worldDpi.width;
-    const int32_t alignedX = Floor2(worldDpi.x, columnWidth);
+    const int32_t alignedX = floor2(worldDpi.x, columnWidth);
 
     // Generate and sort columns.
     for (int32_t x = alignedX; x < rightBorder; x += columnWidth)

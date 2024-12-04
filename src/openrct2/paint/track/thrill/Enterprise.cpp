@@ -22,6 +22,7 @@
 #include "../../track/Segment.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 static void PaintEnterpriseRiders(
     PaintSession& session, const RideObjectEntry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
@@ -39,7 +40,7 @@ static void PaintEnterpriseRiders(
             break;
 
         auto frameOffset1 = ((imageOffset % 4) * 4 + (i * 4) % 15) & 0x0F;
-        auto frameOffset2 = Floor2(imageOffset, 4) * 4;
+        auto frameOffset2 = floor2(imageOffset, 4) * 4;
         auto imageTemplate = ImageId(0, vehicle.peep_tshirt_colours[i]);
         auto imageId = imageTemplate.WithIndex(baseImageIndex + 196 + frameOffset1 + frameOffset2);
         PaintAddImageAsChild(session, imageId, offset, bb);
