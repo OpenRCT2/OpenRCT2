@@ -94,8 +94,7 @@ std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowB
 
 void WindowVisitEach(std::function<void(WindowBase*)> func)
 {
-    auto windowList = g_window_list;
-    for (auto& w : windowList)
+    for (auto& w : g_window_list)
     {
         if (w->flags & WF_DEAD)
             continue;
