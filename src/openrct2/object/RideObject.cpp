@@ -37,6 +37,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Entity::Yaw;
+using namespace OpenRCT2::Numerics;
 
 /*
  * The number of sprites in the sprite group is the specified precision multiplied by this number. General rule is any slope or
@@ -878,7 +879,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             auto numRotationFrames = Json::GetNumber<uint8_t>(jRotationCount[SpriteGroupNames[i]], 0);
             if (numRotationFrames != 0)
             {
-                if (!IsPowerOf2(numRotationFrames))
+                if (!std::has_single_bit(numRotationFrames))
                 {
                     context->LogError(ObjectError::InvalidProperty, "spriteGroups values must be powers of 2");
                     continue;

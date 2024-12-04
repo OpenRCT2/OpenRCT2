@@ -17,7 +17,6 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
-#include "../util/Math.hpp"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
 #include "../world/MapAnimation.h"
@@ -30,6 +29,7 @@
 #include "RideSetSettingAction.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 using namespace OpenRCT2::TrackMetaData;
 
 TrackPlaceAction::TrackPlaceAction(
@@ -247,7 +247,7 @@ GameActions::Result TrackPlaceAction::Query() const
                 GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
         }
 
-        int32_t baseZ = Floor2(mapLoc.z, kCoordsZStep);
+        int32_t baseZ = floor2(mapLoc.z, kCoordsZStep);
 
         int32_t clearanceZ = trackBlock.clearanceZ;
         if (trackBlock.flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
@@ -259,7 +259,7 @@ GameActions::Result TrackPlaceAction::Query() const
             clearanceZ += clearanceHeight;
         }
 
-        clearanceZ = Floor2(clearanceZ, kCoordsZStep) + baseZ;
+        clearanceZ = floor2(clearanceZ, kCoordsZStep) + baseZ;
 
         if (clearanceZ > MAX_TRACK_HEIGHT)
         {
@@ -467,7 +467,7 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         auto quarterTile = trackBlock.quarterTile.Rotate(_origin.direction);
 
-        int32_t baseZ = Floor2(mapLoc.z, kCoordsZStep);
+        int32_t baseZ = floor2(mapLoc.z, kCoordsZStep);
         int32_t clearanceZ = trackBlock.clearanceZ;
         if (trackBlock.flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
@@ -478,7 +478,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             clearanceZ += clearanceHeight;
         }
 
-        clearanceZ = Floor2(clearanceZ, kCoordsZStep) + baseZ;
+        clearanceZ = floor2(clearanceZ, kCoordsZStep) + baseZ;
         const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
         auto crossingMode = (rtd.HasFlag(RtdFlag::supportsLevelCrossings) && _trackType == TrackElemType::Flat)

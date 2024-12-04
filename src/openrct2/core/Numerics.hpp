@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <bit>
+#include <cassert>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
@@ -62,6 +64,23 @@ namespace OpenRCT2::Numerics
 
         return -1;
 #endif
+    }
+
+    // Rounds an integer down to the given power of 2. Alignment must be a power of 2.
+    template<typename T>
+    constexpr T floor2(T value, size_t alignment)
+    {
+        // Ensure alignment is power of two or 0.
+        assert(alignment > 0 && std::has_single_bit(alignment));
+
+        return value & ~(alignment - 1);
+    }
+
+    // Rounds an integer up to the given power of 2. Alignment must be a power of 2.
+    template<typename T>
+    constexpr T ceil2(T value, size_t alignment)
+    {
+        return floor2(static_cast<T>(value + alignment - 1), alignment);
     }
 
     /**

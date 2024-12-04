@@ -15,11 +15,11 @@
 #include "../OpenRCT2.h"
 #include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
+#include "../core/Numerics.hpp"
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
-#include "../util/Math.hpp"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -28,6 +28,7 @@
 #include "../world/tile_element/SurfaceElement.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 LandSetRightsAction::LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, uint8_t ownership)
     : _range(range)
@@ -220,7 +221,7 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                         std::remove_if(
                             gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(),
                             [x = loc.x, y = loc.y](const auto& spawn) {
-                                return Floor2(spawn.x, 32) == x && Floor2(spawn.y, 32) == y;
+                                return floor2(spawn.x, 32) == x && floor2(spawn.y, 32) == y;
                             }),
                         gameState.PeepSpawns.end());
                 }

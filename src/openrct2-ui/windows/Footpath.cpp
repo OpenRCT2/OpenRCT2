@@ -44,6 +44,8 @@
 #include <openrct2/world/tile_element/Slope.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 
+using namespace OpenRCT2::Numerics;
+
 namespace OpenRCT2::Ui::Windows
 {
     static money64 FootpathProvisionalSet(
@@ -824,7 +826,7 @@ namespace OpenRCT2::Ui::Windows
                         const bool allowInvalidHeights = GetGameState().Cheats.allowTrackPlaceInvalidHeights;
                         const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
 
-                        _footpathPlaceCtrlZ = Floor2(info.Element->GetBaseZ(), heightStep);
+                        _footpathPlaceCtrlZ = floor2(info.Element->GetBaseZ(), heightStep);
                         _footpathPlaceCtrlState = true;
                     }
                 }
@@ -856,7 +858,7 @@ namespace OpenRCT2::Ui::Windows
 
                 const bool allowInvalidHeights = GetGameState().Cheats.allowTrackPlaceInvalidHeights;
                 const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
-                _footpathPlaceShiftZ = Floor2(_footpathPlaceShiftZ, heightStep);
+                _footpathPlaceShiftZ = floor2(_footpathPlaceShiftZ, heightStep);
 
                 // Clamp to maximum possible value of BaseHeight can offer.
                 _footpathPlaceShiftZ = std::min<int16_t>(_footpathPlaceShiftZ, maxHeight);
@@ -886,7 +888,7 @@ namespace OpenRCT2::Ui::Windows
                     if (surfaceElement == nullptr)
                         return std::nullopt;
 
-                    auto mapZ = Floor2(surfaceElement->GetBaseZ(), 16);
+                    auto mapZ = floor2(surfaceElement->GetBaseZ(), 16);
                     mapZ += _footpathPlaceShiftZ;
                     mapZ = std::max<int16_t>(mapZ, 16);
                     _footpathPlaceZ = mapZ;

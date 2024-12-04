@@ -9,15 +9,10 @@
 
 #pragma once
 
-#include "../core/CallingConventions.h"
 #include "../core/Money.hpp"
 #include "../core/StringTypes.h"
 
-#include <cstdio>
 #include <ctime>
-#include <optional>
-#include <type_traits>
-#include <vector>
 
 int32_t StrLogicalCmp(char const* a, char const* b);
 char* SafeStrCpy(char* destination, const char* source, size_t num);

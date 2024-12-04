@@ -50,7 +50,6 @@
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../sprites.h"
-#include "../util/Math.hpp"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/Footpath.h"
@@ -75,6 +74,7 @@
 #include <span>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 // Locations of the spiral slide platform that a peep walks from the entrance of the ride to the
 // entrance of the slide. Up to 4 waypoints for each 4 sides that an ride entrance can be located
@@ -1906,8 +1906,8 @@ OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> Guest::FindRidesToGoOn()
     {
         // Take nearby rides into consideration
         constexpr auto radius = 10 * 32;
-        int32_t cx = Floor2(x, 32);
-        int32_t cy = Floor2(y, 32);
+        int32_t cx = floor2(x, 32);
+        int32_t cy = floor2(y, 32);
         for (int32_t tileX = cx - radius; tileX <= cx + radius; tileX += kCoordsXYStep)
         {
             for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += kCoordsXYStep)
@@ -3182,8 +3182,8 @@ static void PeepHeadForNearestRide(Guest* peep, bool considerOnlyCloseRides, T p
     {
         // Take nearby rides into consideration
         constexpr auto searchRadius = 10 * 32;
-        int32_t cx = Floor2(peep->x, 32);
-        int32_t cy = Floor2(peep->y, 32);
+        int32_t cx = floor2(peep->x, 32);
+        int32_t cy = floor2(peep->y, 32);
         for (auto x = cx - searchRadius; x <= cx + searchRadius; x += kCoordsXYStep)
         {
             for (auto y = cy - searchRadius; y <= cy + searchRadius; y += kCoordsXYStep)

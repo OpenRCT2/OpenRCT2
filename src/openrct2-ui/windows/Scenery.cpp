@@ -60,6 +60,8 @@
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <openrct2/world/tile_element/WallElement.h>
 
+using namespace OpenRCT2::Numerics;
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_NONE;
@@ -2422,7 +2424,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             gSceneryShiftPressZOffset = mainWnd->viewport->zoom.ApplyTo(gSceneryShiftPressZOffset);
                         }
-                        gSceneryShiftPressZOffset = Floor2(gSceneryShiftPressZOffset, 8);
+                        gSceneryShiftPressZOffset = floor2(gSceneryShiftPressZOffset, 8);
 
                         screenPos.x = gSceneryShiftPressX;
                         screenPos.y = gSceneryShiftPressY;

@@ -35,6 +35,7 @@
 #include "SmallSceneryRemoveAction.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 SmallSceneryPlaceAction::SmallSceneryPlaceAction(
     const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
@@ -235,7 +236,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
 
     int32_t zLow = targetHeight;
-    int32_t zHigh = zLow + Ceil2(sceneryEntry->height, kCoordsZStep);
+    int32_t zHigh = zLow + ceil2(sceneryEntry->height, kCoordsZStep);
     uint8_t collisionQuadrants = 0b1111;
     auto quadRotation{ 0 };
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))
@@ -374,7 +375,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     }
 
     int32_t zLow = targetHeight;
-    int32_t zHigh = zLow + Ceil2(sceneryEntry->height, 8);
+    int32_t zHigh = zLow + ceil2(sceneryEntry->height, 8);
     uint8_t collisionQuadrants = 0b1111;
     auto quadRotation{ 0 };
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))

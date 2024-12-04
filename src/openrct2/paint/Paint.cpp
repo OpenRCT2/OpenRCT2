@@ -13,6 +13,7 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Money.hpp"
+#include "../core/Numerics.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Currency.h"
@@ -21,7 +22,6 @@
 #include "../paint/Painter.h"
 #include "../platform/Memory.h"
 #include "../profiling/Profiling.h"
-#include "../util/Math.hpp"
 #include "Boundbox.h"
 #include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
@@ -31,6 +31,7 @@
 #include <cassert>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 // Globals for paint clipping
 uint8_t gClipHeight = 128; // Default to middle value
@@ -220,7 +221,7 @@ template<uint8_t direction>
 void PaintSessionGenerateRotate(PaintSession& session)
 {
     // Optimised modified version of ViewportPosToMapPos
-    ScreenCoordsXY screenCoord = { Floor2(session.DPI.WorldX(), 32), Floor2((session.DPI.WorldY() - 16), 32) };
+    ScreenCoordsXY screenCoord = { floor2(session.DPI.WorldX(), 32), floor2((session.DPI.WorldY() - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
 
@@ -547,12 +548,12 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     {
         if (session.DPI.zoom_level >= ZoomLevel{ 1 })
         {
-            screenPos.x = Floor2(screenPos.x, 2);
-            screenPos.y = Floor2(screenPos.y, 2);
+            screenPos.x = floor2(screenPos.x, 2);
+            screenPos.y = floor2(screenPos.y, 2);
             if (session.DPI.zoom_level >= ZoomLevel{ 2 })
             {
-                screenPos.x = Floor2(screenPos.x, 4);
-                screenPos.y = Floor2(screenPos.y, 4);
+                screenPos.x = floor2(screenPos.x, 4);
+                screenPos.y = floor2(screenPos.y, 4);
             }
         }
     }
