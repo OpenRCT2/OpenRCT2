@@ -32,55 +32,35 @@ Intent::Intent(IntentAction intentAction)
 
 Intent* Intent::PutExtra(uint32_t key, uint32_t value)
 {
-    IntentData data = {};
-    data.intVal.unsignedInt = value;
-    data.type = IntentData::DataType::Int;
-
-    _Data.insert(std::make_pair(key, data));
+    _Data.emplace(key, static_cast<int64_t>(value));
 
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, void* value)
 {
-    IntentData data = {};
-    data.pointerVal = value;
-    data.type = IntentData::DataType::Pointer;
-
-    _Data.insert(std::make_pair(key, data));
+    _Data.emplace(key, value);
 
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, int32_t value)
 {
-    IntentData data = {};
-    data.intVal.signedInt = value;
-    data.type = IntentData::DataType::Int;
-
-    _Data.insert(std::make_pair(key, data));
+    _Data.emplace(key, static_cast<int64_t>(value));
 
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, std::string value)
 {
-    IntentData data = {};
-    data.stringVal = std::move(value);
-    data.type = IntentData::DataType::String;
-
-    _Data.insert(std::make_pair(key, data));
+    _Data.emplace(key, value);
 
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, close_callback value)
 {
-    IntentData data = {};
-    data.closeCallbackVal = value;
-    data.type = IntentData::DataType::CloseCallback;
-
-    _Data.insert(std::make_pair(key, data));
+    _Data.emplace(key, value);
 
     return this;
 }
@@ -108,8 +88,9 @@ void* Intent::GetPointerExtra(uint32_t key) const
     }
 
     auto data = _Data.at(key);
-    Guard::Assert(data.type == IntentData::DataType::Pointer, "Actual type doesn't match requested type");
-    return static_cast<void*>(data.pointerVal);
+
+    assert(std::holds_alternative<void*>(data));
+    return std::get<void*>(data);
 }
 
 uint32_t Intent::GetUIntExtra(uint32_t key) const
@@ -120,8 +101,9 @@ uint32_t Intent::GetUIntExtra(uint32_t key) const
     }
 
     auto data = _Data.at(key);
-    Guard::Assert(data.type == IntentData::DataType::Int, "Actual type doesn't match requested type");
-    return data.intVal.unsignedInt;
+
+    assert(std::holds_alternative<int64_t>(data));
+    return static_cast<uint32_t>(std::get<int64_t>(data));
 }
 
 int32_t Intent::GetSIntExtra(uint32_t key) const
@@ -132,8 +114,9 @@ int32_t Intent::GetSIntExtra(uint32_t key) const
     }
 
     auto data = _Data.at(key);
-    Guard::Assert(data.type == IntentData::DataType::Int, "Actual type doesn't match requested type");
-    return data.intVal.signedInt;
+
+    assert(std::holds_alternative<int64_t>(data));
+    return static_cast<int32_t>(std::get<int64_t>(data));
 }
 
 std::string Intent::GetStringExtra(uint32_t key) const
@@ -144,8 +127,9 @@ std::string Intent::GetStringExtra(uint32_t key) const
     }
 
     auto data = _Data.at(key);
-    Guard::Assert(data.type == IntentData::DataType::String, "Actual type doesn't match requested type");
-    return data.stringVal;
+
+    assert(std::holds_alternative<std::string>(data));
+    return std::get<std::string>(data);
 }
 
 close_callback Intent::GetCloseCallbackExtra(uint32_t key) const
@@ -156,6 +140,7 @@ close_callback Intent::GetCloseCallbackExtra(uint32_t key) const
     }
 
     auto data = _Data.at(key);
-    Guard::Assert(data.type == IntentData::DataType::CloseCallback, "Actual type doesn't match requested type");
-    return data.closeCallbackVal;
+
+    assert(std::holds_alternative<close_callback>(data));
+    return std::get<close_callback>(data);
 }

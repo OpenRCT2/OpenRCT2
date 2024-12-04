@@ -14,6 +14,7 @@
 
 #include <map>
 #include <string>
+#include <variant>
 
 enum IntentAction
 {
@@ -57,29 +58,10 @@ enum IntentAction
     INTENT_ACTION_NULL = 255,
 };
 
-struct IntentData
-{
-    enum class DataType
-    {
-        Int,
-        String,
-        Pointer,
-        CloseCallback
-    } type;
-
-    union
-    {
-        uint32_t unsignedInt;
-        int32_t signedInt;
-    } intVal;
-    std::string stringVal;
-    close_callback closeCallbackVal;
-    void* pointerVal;
-};
-
 class Intent
 {
-private:
+    using IntentData = std::variant<int64_t, std::string, close_callback, void*>;
+
     WindowClass _Class{ WindowClass::Null };
     WindowDetail _WindowDetail{ WD_NULL };
     IntentAction _Action{ INTENT_ACTION_NULL };
