@@ -11,6 +11,7 @@
 
 #include "../core/Guard.hpp"
 
+#include <ranges>
 #include <utility>
 
 using namespace OpenRCT2;
@@ -32,35 +33,50 @@ Intent::Intent(IntentAction intentAction)
 
 Intent* Intent::PutExtra(uint32_t key, uint32_t value)
 {
-    _Data.emplace(key, static_cast<int64_t>(value));
+    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
+    assert(it == _Data.end() || it->first != key);
+
+    _Data.emplace(it, key, static_cast<int64_t>(value));
 
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, void* value)
 {
-    _Data.emplace(key, value);
+    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
+    assert(it == _Data.end() || it->first != key);
+
+    _Data.emplace(it, key, value);
 
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, int32_t value)
 {
-    _Data.emplace(key, static_cast<int64_t>(value));
+    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
+    assert(it == _Data.end() || it->first != key);
+
+    _Data.emplace(it, key, static_cast<int64_t>(value));
 
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, std::string value)
 {
-    _Data.emplace(key, value);
+    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
+    assert(it == _Data.end() || it->first != key);
+
+    _Data.emplace(it, key, std::move(value));
 
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, close_callback value)
 {
-    _Data.emplace(key, value);
+    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
+    assert(it == _Data.end() || it->first != key);
+
+    _Data.emplace(it, key, value);
 
     return this;
 }
@@ -82,12 +98,13 @@ IntentAction Intent::GetAction() const
 
 void* Intent::GetPointerExtra(uint32_t key) const
 {
-    if (_Data.count(key) == 0)
+    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
+    if (it == _Data.end() || it->first != key)
     {
         return nullptr;
     }
 
-    auto data = _Data.at(key);
+    const auto& [_, data] = *it;
 
     assert(std::holds_alternative<void*>(data));
     return std::get<void*>(data);
@@ -95,12 +112,13 @@ void* Intent::GetPointerExtra(uint32_t key) const
 
 uint32_t Intent::GetUIntExtra(uint32_t key) const
 {
-    if (_Data.count(key) == 0)
+    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
+    if (it == _Data.end() || it->first != key)
     {
         return 0;
     }
 
-    auto data = _Data.at(key);
+    const auto& [_, data] = *it;
 
     assert(std::holds_alternative<int64_t>(data));
     return static_cast<uint32_t>(std::get<int64_t>(data));
@@ -108,12 +126,13 @@ uint32_t Intent::GetUIntExtra(uint32_t key) const
 
 int32_t Intent::GetSIntExtra(uint32_t key) const
 {
-    if (_Data.count(key) == 0)
+    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
+    if (it == _Data.end() || it->first != key)
     {
         return 0;
     }
 
-    auto data = _Data.at(key);
+    const auto& [_, data] = *it;
 
     assert(std::holds_alternative<int64_t>(data));
     return static_cast<int32_t>(std::get<int64_t>(data));
@@ -121,12 +140,13 @@ int32_t Intent::GetSIntExtra(uint32_t key) const
 
 std::string Intent::GetStringExtra(uint32_t key) const
 {
-    if (_Data.count(key) == 0)
+    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
+    if (it == _Data.end() || it->first != key)
     {
         return std::string{};
     }
 
-    auto data = _Data.at(key);
+    const auto& [_, data] = *it;
 
     assert(std::holds_alternative<std::string>(data));
     return std::get<std::string>(data);
@@ -134,12 +154,13 @@ std::string Intent::GetStringExtra(uint32_t key) const
 
 close_callback Intent::GetCloseCallbackExtra(uint32_t key) const
 {
-    if (_Data.count(key) == 0)
+    auto it = std::ranges::lower_bound(_Data, key, {}, &DataEntry::first);
+    if (it == _Data.end() || it->first != key)
     {
         return nullptr;
     }
 
-    auto data = _Data.at(key);
+    const auto& [_, data] = *it;
 
     assert(std::holds_alternative<close_callback>(data));
     return std::get<close_callback>(data);

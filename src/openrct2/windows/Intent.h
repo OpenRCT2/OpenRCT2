@@ -13,6 +13,7 @@
 #include "../interface/Window.h"
 
 #include <map>
+#include <sfl/static_vector.hpp>
 #include <string>
 #include <variant>
 
@@ -60,12 +61,17 @@ enum IntentAction
 
 class Intent
 {
+    // The maximum amount of data the Intent can hold, 8 should be sufficient, raise this if needed.
+    static constexpr size_t kMaxDataSlots = 8;
+
     using IntentData = std::variant<int64_t, std::string, close_callback, void*>;
 
     WindowClass _Class{ WindowClass::Null };
     WindowDetail _WindowDetail{ WD_NULL };
     IntentAction _Action{ INTENT_ACTION_NULL };
-    std::map<uint32_t, IntentData> _Data;
+
+    using DataEntry = std::pair<uint32_t, IntentData>;
+    sfl::static_vector<DataEntry, kMaxDataSlots> _Data;
 
 public:
     explicit Intent(WindowClass windowClass);
