@@ -33,9 +33,7 @@ static auto getExtraImpl(const IntentDataStorage& storage, uint32_t key)
     auto it = std::ranges::lower_bound(storage, key, {}, &IntentDataEntry::first);
     if (it == storage.end() || it->first != key)
     {
-        // If key does not exist then the usage of Intent is incorrect.
-        assert(false);
-
+        // TODO: The code currently assumes that some things are optional, we need to handle this better.
         return T{};
     }
 
