@@ -67,20 +67,21 @@ namespace OpenRCT2::Numerics
 #endif
     }
 
-    // Rounds an integer down to the given power of 2. y must be a power of 2.
-    constexpr int floor2(const int x, const int y)
+    // Rounds an integer down to the given power of 2. Alignment must be a power of 2.
+    template<typename T>
+    constexpr T floor2(T value, size_t alignment)
     {
-        assert(std::has_single_bit(y));
+        // Ensure alignment is power of two or 0.
+        assert(alignment > 0 && std::has_single_bit(alignment));
 
-        return x & ~(y - 1);
+        return value & ~(alignment - 1);
     }
 
-    // Rounds an integer up to the given power of 2. y must be a power of 2.
-    constexpr int ceil2(const int x, const int y)
+    // Rounds an integer up to the given power of 2. Alignment must be a power of 2.
+    template<typename T>
+    constexpr T ceil2(T value, size_t alignment)
     {
-        assert(std::has_single_bit(y));
-
-        return (x + y - 1) & ~(y - 1);
+        return floor2(static_cast<T>(value + alignment - 1), alignment);
     }
 
     /**
