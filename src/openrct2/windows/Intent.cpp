@@ -82,7 +82,7 @@ Intent* Intent::PutExtra(uint32_t key, std::string value)
     return this;
 }
 
-Intent* Intent::PutExtra(uint32_t key, close_callback value)
+Intent* Intent::PutExtra(uint32_t key, CloseCallback value)
 {
     putExtraImpl(_Data, key, value);
     return this;
@@ -123,7 +123,7 @@ std::string Intent::GetStringExtra(uint32_t key) const
     return getExtraImpl<std::string>(_Data, key);
 }
 
-close_callback Intent::GetCloseCallbackExtra(uint32_t key) const
+CloseCallback Intent::GetCloseCallbackExtra(uint32_t key) const
 {
-    return getExtraImpl<close_callback>(_Data, key);
+    return getExtraImpl<CloseCallback>(_Data, key);
 }

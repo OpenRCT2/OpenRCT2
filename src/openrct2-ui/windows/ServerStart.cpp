@@ -139,7 +139,7 @@ namespace OpenRCT2::Ui::Windows
                     NetworkSetPassword(_password);
                     auto intent = Intent(WindowClass::Loadsave);
                     intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-                    intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<close_callback>(LoadSaveCallback));
+                    intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(LoadSaveCallback));
                     ContextOpenIntent(&intent);
                     break;
             }
