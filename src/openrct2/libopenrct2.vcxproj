@@ -396,6 +396,7 @@
     <ClInclude Include="peep\RideUseSystem.h" />
     <ClInclude Include="PlatformEnvironment.h" />
     <ClInclude Include="platform\Crash.h" />
+    <ClInclude Include="platform\Memory.h" />
     <ClInclude Include="platform\Platform.h" />
     <ClInclude Include="profiling\Profiling.h" />
     <ClInclude Include="profiling\ProfilingMacros.hpp" />
@@ -598,7 +599,6 @@
     <ClInclude Include="ui\UiContext.h" />
     <ClInclude Include="ui\WindowManager.h" />
     <ClInclude Include="util\Math.hpp" />
-    <ClInclude Include="util\Prefetch.h" />
     <ClInclude Include="util\Util.h" />
     <ClInclude Include="Version.h" />
     <ClInclude Include="windows\Intent.h" />
