@@ -141,7 +141,8 @@ void WindowUpdateAllViewports()
  */
 void WindowUpdateAll()
 {
-    WindowFlushDead();
+    // Remove all windows in g_window_list that have the WF_DEAD flag
+    g_window_list.remove_if([](auto&& w) -> bool { return w->flags & WF_DEAD; });
 
     // Periodic update happens every second so 40 ticks.
     if (gCurrentRealTimeTicks >= gWindowUpdateTicks)
@@ -235,12 +236,6 @@ void WindowClose(WindowBase& w)
     w.Invalidate();
 
     w.flags |= WF_DEAD;
-}
-
-void WindowFlushDead()
-{
-    // Remove all windows in g_window_list that have the WF_DEAD flag
-    g_window_list.remove_if([](auto&& w) -> bool { return w->flags & WF_DEAD; });
 }
 
 template<typename TPred>
