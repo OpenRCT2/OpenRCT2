@@ -9,7 +9,7 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "ApplyPaletteShader.h"
+    #include "ApplyPaletteShader.h"
 
 using namespace OpenRCT2::Ui;
 

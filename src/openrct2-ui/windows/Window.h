@@ -24,8 +24,8 @@ struct Vehicle;
 enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
 
-using loadsave_callback = void (*)(int32_t result, const utf8* path);
-using scenarioselect_callback = void (*)(const utf8* path);
+using LoadSaveCallback = void (*)(int32_t result, const utf8* path);
+using ScenarioSelectCallback = void (*)(const utf8* path);
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -118,7 +118,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* GuestListOpen();
     WindowBase* GuestListOpenWithFilter(GuestListFilterType type, int32_t index);
     WindowBase* StaffFirePromptOpen(Peep* peep);
-    WindowBase* ScenarioselectOpen(scenarioselect_callback callback);
+    WindowBase* ScenarioselectOpen(ScenarioSelectCallback callback);
     WindowBase* ScenarioselectOpen(std::function<void(std::string_view)> callback);
 
     WindowBase* ErrorOpen(StringId title, StringId message, const class Formatter& formatter, bool autoClose = false);
@@ -174,11 +174,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* MazeConstructionOpen();
     void WindowMazeConstructionUpdatePressedWidgets();
 
-    WindowBase* NetworkStatusOpen(const std::string& text, close_callback onClose);
+    WindowBase* NetworkStatusOpen(const std::string& text, CloseCallback onClose);
     WindowBase* NetworkStatusOpenPassword();
     void WindowNetworkStatusClose();
 
-    WindowBase* ProgressWindowOpen(const std::string& text, close_callback onClose = nullptr);
+    WindowBase* ProgressWindowOpen(const std::string& text, CloseCallback onClose = nullptr);
     void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE);
     void ProgressWindowClose();
 

@@ -15,7 +15,7 @@
 #include <type_traits>
 
 #ifdef _MSC_VER
-#    include <intrin.h>
+    #include <intrin.h>
 #endif
 
 namespace OpenRCT2::Numerics
@@ -30,7 +30,7 @@ namespace OpenRCT2::Numerics
         int32_t success = __builtin_ffs(source);
         return success - 1;
 #else
-#    pragma message("Falling back to iterative bitscan32 forward, consider using intrinsics")
+    #pragma message("Falling back to iterative bitscan32 forward, consider using intrinsics")
         // This is a low-hanging optimisation boost, check if your compiler offers
         // any intrinsic.
         // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
@@ -52,7 +52,7 @@ namespace OpenRCT2::Numerics
         int32_t success = __builtin_ffsll(source);
         return success - 1;
 #else
-#    pragma message("Falling back to iterative bitscan64 forward, consider using intrinsics")
+    #pragma message("Falling back to iterative bitscan64 forward, consider using intrinsics")
         // This is a low-hanging optimisation boost, check if your compiler offers
         // any intrinsic.
         // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093

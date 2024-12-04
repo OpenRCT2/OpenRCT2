@@ -173,7 +173,7 @@ namespace OpenRCT2::Ui::Windows
                         intent = CreateSaveGameAsIntent();
                     }
                     Close();
-                    intent->PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
+                    intent->PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(WindowSavePromptCallback));
                     ContextOpenIntent(intent.get());
                     break;
                 }

@@ -11,12 +11,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScWidget.hpp"
+    #include "ScWidget.hpp"
 
-#    include <openrct2/interface/Window.h>
-#    include <openrct2/interface/Window_internal.h>
-#    include <openrct2/localisation/Language.h>
-#    include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/interface/Window.h>
+    #include <openrct2/interface/Window_internal.h>
+    #include <openrct2/localisation/Language.h>
+    #include <openrct2/scripting/Duktape.hpp>
 
 namespace OpenRCT2::Scripting
 {

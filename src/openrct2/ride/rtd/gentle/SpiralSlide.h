@@ -29,13 +29,12 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
                      RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::interestingToLookAt,
-                     RtdFlag::listVehiclesSeparately, RtdFlag::isSpiralSlide),
+                     RtdFlag::listVehiclesSeparately),
     .RideModes = EnumsToFlags(RideMode::SingleRidePerAdmission, RideMode::UnlimitedRidesPerAdmission),
     .DefaultMode = RideMode::SingleRidePerAdmission,
     .OperatingSettings = { 1, 5 },
     .Naming = { STR_RIDE_NAME_SPIRAL_SLIDE, STR_RIDE_DESCRIPTION_SPIRAL_SLIDE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_SPIRAL_SLIDE",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 15, 128, 0, 2, },
     .MaxMass = 255,
@@ -79,5 +78,6 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
     .RideUpdate = UpdateSpiralSlide,
+    .specialType = RtdSpecialType::spiralSlide,
 };
 // clang-format on

@@ -7,6 +7,8 @@
 - Improved: [#23211] Add boosters to classic wooden roller coaster (cheats only).
 - Improved: [#23233] Add diagonal booster to LSM Launched Coaster.
 - Fix: [#22726] ‘Force park rating’ cheat is not saved with the park.
+- Fix: [#23064] Stand-Up Roller Coaster unbanked to banked track pieces are misaligned.
+- Fix: [#23066] Stand-Up Roller Coaster has many supports that don't join up to the track.
 - Fix: [#23206] Multiplayer desyncs when FPS is uncapped.
 - Fix: [#23238] Updating a guest’s favourite ride works differently from vanilla RCT2.
 - Fix: [objects#355] Fix colour preset settings of the Stand-Up Roller Coaster trains.

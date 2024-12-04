@@ -9,9 +9,9 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScLitter.hpp"
+    #include "ScLitter.hpp"
 
-#    include "../../../entity/Litter.h"
+    #include "../../../entity/Litter.h"
 
 namespace OpenRCT2::Scripting
 {

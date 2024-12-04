@@ -526,7 +526,7 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
     }
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
     {
         state.State = RIDE_RATINGS_STATE_CALCULATE;
         return;
@@ -1141,7 +1141,7 @@ static void RideRatingsCalculateValue(Ride& ride)
         + (((ride.ratings.nausea * ratingsMultipliers.nausea) * 32) >> 15);
 
     int32_t monthsOld = 0;
-    if (!GetGameState().Cheats.DisableRideValueAging)
+    if (!GetGameState().Cheats.disableRideValueAging)
     {
         monthsOld = ride.GetAge();
     }
@@ -1632,7 +1632,7 @@ static RatingTuple ride_ratings_get_turns_ratings(const Ride& ride)
     intensity += slopedTurnsRating.intensity;
     nausea += slopedTurnsRating.nausea;
 
-    auto inversions = (ride.type == RIDE_TYPE_MINI_GOLF) ? ride.holes : ride.inversions;
+    auto inversions = ride.GetRideTypeDescriptor().specialType == RtdSpecialType::miniGolf ? ride.holes : ride.inversions;
     RatingTuple inversionsRating = get_inversions_ratings(inversions);
     excitement += inversionsRating.excitement;
     intensity += inversionsRating.intensity;
@@ -1769,7 +1769,7 @@ static int32_t ride_ratings_get_scenery_score(const Ride& ride)
     }
 
     const auto& rtd = ride.GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
     {
         location = ride.GetStation().Entrance.ToCoordsXY();
     }

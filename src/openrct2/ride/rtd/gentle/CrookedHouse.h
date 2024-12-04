@@ -34,7 +34,6 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .DefaultMode = RideMode::CrookedHouse,
     .Naming = { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_CROOKED_HOUSE",
     .AvailableBreakdowns = 0,
     .Heights = { 16, 96, 3, 2, },
     .MaxMass = 255,

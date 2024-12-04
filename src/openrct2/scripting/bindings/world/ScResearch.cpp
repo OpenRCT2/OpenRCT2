@@ -9,16 +9,16 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScResearch.hpp"
+    #include "ScResearch.hpp"
 
-#    include "../../../Context.h"
-#    include "../../../GameState.h"
-#    include "../../../core/String.hpp"
-#    include "../../../management/Research.h"
-#    include "../../../ride/RideData.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
-#    include "../object/ScObject.hpp"
+    #include "../../../Context.h"
+    #include "../../../GameState.h"
+    #include "../../../core/String.hpp"
+    #include "../../../management/Research.h"
+    #include "../../../ride/RideData.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
+    #include "../object/ScObject.hpp"
 
 using namespace OpenRCT2;
 

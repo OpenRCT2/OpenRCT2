@@ -17,8 +17,16 @@ namespace OpenRCT2
     struct PeepAnimation
     {
         uint32_t base_image;
-        SpriteBounds bounds;
         std::span<const uint8_t> frame_offsets;
+        SpriteBounds bounds{};
+
+        constexpr PeepAnimation() = default;
+
+        PeepAnimation(uint32_t baseImage, std::span<const uint8_t> frameOffsets)
+            : base_image(baseImage)
+            , frame_offsets(frameOffsets)
+        {
+        }
     };
 
     struct PeepAnimations
@@ -38,7 +46,9 @@ namespace OpenRCT2
     };
 
     const PeepAnimation& GetPeepAnimation(
-        PeepAnimationGroup spriteType, PeepAnimationType actionAnimationGroup = PeepAnimationType::None);
+        PeepAnimationGroup spriteType, PeepAnimationType actionAnimationGroup = PeepAnimationType::Walking);
     const SpriteBounds& GetSpriteBounds(
-        PeepAnimationGroup spriteType, PeepAnimationType actionAnimationGroup = PeepAnimationType::None);
+        PeepAnimationGroup spriteType, PeepAnimationType actionAnimationGroup = PeepAnimationType::Walking);
+
+    void inferMaxPeepSpriteDimensions();
 } // namespace OpenRCT2

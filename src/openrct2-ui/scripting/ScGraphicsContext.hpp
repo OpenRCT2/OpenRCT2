@@ -11,10 +11,10 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "CustomImages.h"
+    #include "CustomImages.h"
 
-#    include <openrct2/drawing/Text.h>
-#    include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/drawing/Text.h>
+    #include <openrct2/scripting/Duktape.hpp>
 
 namespace OpenRCT2::Scripting
 {

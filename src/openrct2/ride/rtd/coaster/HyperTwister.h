@@ -38,7 +38,6 @@ constexpr RideTypeDescriptor HyperTwisterRTD =
     .LegacyBoosterSettings = { 17, 68 },
     .Naming = { STR_RIDE_NAME_HYPER_TWISTER, STR_RIDE_DESCRIPTION_HYPER_TWISTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station},
-    .EnumName = "RIDE_TYPE_HYPER_TWISTER",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 61, 24, 8, 9, },
     .MaxMass = 31,

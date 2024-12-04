@@ -11,23 +11,23 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../OpenRCT2.h"
-#    include "../../../actions/GameAction.h"
-#    include "../../../interface/Screenshot.h"
-#    include "../../../localisation/Formatting.h"
-#    include "../../../object/ObjectManager.h"
-#    include "../../../scenario/Scenario.h"
-#    include "../../Duktape.hpp"
-#    include "../../HookEngine.h"
-#    include "../../IconNames.hpp"
-#    include "../../ScriptEngine.h"
-#    include "../game/ScConfiguration.hpp"
-#    include "../game/ScDisposable.hpp"
-#    include "../object/ScObjectManager.h"
-#    include "../ride/ScTrackSegment.h"
+    #include "../../../OpenRCT2.h"
+    #include "../../../actions/GameAction.h"
+    #include "../../../interface/Screenshot.h"
+    #include "../../../localisation/Formatting.h"
+    #include "../../../object/ObjectManager.h"
+    #include "../../../scenario/Scenario.h"
+    #include "../../Duktape.hpp"
+    #include "../../HookEngine.h"
+    #include "../../IconNames.hpp"
+    #include "../../ScriptEngine.h"
+    #include "../game/ScConfiguration.hpp"
+    #include "../game/ScDisposable.hpp"
+    #include "../object/ScObjectManager.h"
+    #include "../ride/ScTrackSegment.h"
 
-#    include <cstdio>
-#    include <memory>
+    #include <cstdio>
+    #include <memory>
 
 namespace OpenRCT2::Scripting
 {
@@ -267,12 +267,12 @@ namespace OpenRCT2::Scripting
             return 1;
         }
 
-#    ifdef _MSC_VER
+    #ifdef _MSC_VER
         // HACK workaround to resolve issue #14853
         //      The exception thrown in duk_error was causing a crash when RAII kicked in for this lambda.
         //      Only ensuring it was not in the same generated method fixed it.
         __declspec(noinline)
-#    endif
+    #endif
         std::shared_ptr<ScDisposable>
             CreateSubscription(HOOK_TYPE hookType, const DukValue& callback)
         {

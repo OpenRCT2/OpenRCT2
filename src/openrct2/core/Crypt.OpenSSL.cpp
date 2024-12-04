@@ -9,16 +9,16 @@
 
 #if !defined(DISABLE_NETWORK) && !defined(_WIN32)
 
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
-#    include "Crypt.h"
+    #include "Crypt.h"
 
-#    include <openssl/evp.h>
-#    include <openssl/pem.h>
-#    include <stdexcept>
-#    include <string>
-#    include <vector>
+    #include <openssl/evp.h>
+    #include <openssl/pem.h>
+    #include <stdexcept>
+    #include <string>
+    #include <vector>
 
 using namespace OpenRCT2::Crypt;
 
@@ -354,6 +354,6 @@ namespace OpenRCT2::Crypt
     }
 } // namespace OpenRCT2::Crypt
 
-#    pragma GCC diagnostic pop
+    #pragma GCC diagnostic pop
 
 #endif // DISABLE_NETWORK

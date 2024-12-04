@@ -193,8 +193,8 @@ void Object::SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames)
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 
 std::string Object::GetName() const
@@ -426,5 +426,5 @@ ObjectVersion VersionTuple(std::string_view version)
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic pop
+    #pragma GCC diagnostic pop
 #endif

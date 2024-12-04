@@ -17,14 +17,14 @@
 #include <vector>
 
 #ifndef _WIN32
-#    if !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(__OpenBSD__)
-#        include <alloca.h>
-#    endif
-#    include <unicode/ucnv.h>
-#    include <unicode/unistr.h>
-#    include <unicode/utypes.h>
+    #if !defined(__FreeBSD__) && !defined(__NetBSD__) && !defined(__OpenBSD__)
+        #include <alloca.h>
+    #endif
+    #include <unicode/ucnv.h>
+    #include <unicode/unistr.h>
+    #include <unicode/utypes.h>
 #else
-#    include <windows.h>
+    #include <windows.h>
 #endif
 
 #include "../util/Util.h"
@@ -34,8 +34,8 @@
 #include "UTF8.h"
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-#    include <strings.h>
-#    define _stricmp(x, y) strcasecmp((x), (y))
+    #include <strings.h>
+    #define _stricmp(x, y) strcasecmp((x), (y))
 #endif
 
 namespace OpenRCT2::String
@@ -57,17 +57,17 @@ namespace OpenRCT2::String
         WideCharToMultiByte(OpenRCT2::CodePage::UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
         return result;
 #else
-// Which constructor to use depends on the size of wchar_t...
-// UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
-// Unfortunately, we'll have to help the compiler here.
-#    if U_SIZEOF_WCHAR_T == 4
+    // Which constructor to use depends on the size of wchar_t...
+    // UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
+    // Unfortunately, we'll have to help the compiler here.
+    #if U_SIZEOF_WCHAR_T == 4
         icu::UnicodeString str = icu::UnicodeString::fromUTF32(reinterpret_cast<const UChar32*>(src.data()), src.length());
-#    elif U_SIZEOF_WCHAR_T == 2
+    #elif U_SIZEOF_WCHAR_T == 2
         std::wstring wstr = std::wstring(src);
         icu::UnicodeString str = icu::UnicodeString(static_cast<const wchar_t*>(wstr.c_str()));
-#    else
-#        error Unsupported U_SIZEOF_WCHAR_T size
-#    endif
+    #else
+        #error Unsupported U_SIZEOF_WCHAR_T size
+    #endif
 
         std::string result;
         str.toUTF8String(result);
@@ -87,23 +87,23 @@ namespace OpenRCT2::String
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
 
-// Which constructor to use depends on the size of wchar_t...
-// UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
-// Unfortunately, we'll have to help the compiler here.
-#    if U_SIZEOF_WCHAR_T == 4
+    // Which constructor to use depends on the size of wchar_t...
+    // UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
+    // Unfortunately, we'll have to help the compiler here.
+    #if U_SIZEOF_WCHAR_T == 4
         size_t length = static_cast<size_t>(str.length());
         std::wstring result(length, '\0');
 
         UErrorCode status = U_ZERO_ERROR;
         str.toUTF32(reinterpret_cast<UChar32*>(&result[0]), str.length(), status);
 
-#    elif U_SIZEOF_WCHAR_T == 2
+    #elif U_SIZEOF_WCHAR_T == 2
         const char16_t* buffer = str.getBuffer();
         std::wstring result = static_cast<wchar_t*>(buffer);
 
-#    else
-#        error Unsupported U_SIZEOF_WCHAR_T size
-#    endif
+    #else
+        #error Unsupported U_SIZEOF_WCHAR_T size
+    #endif
 
         return result;
 #endif

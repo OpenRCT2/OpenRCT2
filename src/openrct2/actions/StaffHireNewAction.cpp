@@ -134,7 +134,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->SpecialSprite = 0;
         newPeep->AnimationImageIdOffset = 0;
         newPeep->WalkingAnimationFrameNum = 0;
-        newPeep->AnimationType = PeepAnimationType::None;
+        newPeep->AnimationType = PeepAnimationType::Walking;
         newPeep->PathCheckOptimisation = 0;
         newPeep->PeepFlags = 0;
         newPeep->StaffLawnsMown = 0;
@@ -201,7 +201,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->TrousersColour = colour;
 
         // Staff energy determines their walking speed
-        switch (GetGameState().Cheats.SelectedStaffSpeed)
+        switch (GetGameState().Cheats.selectedStaffSpeed)
         {
             case StaffSpeedCheat::None:
                 newPeep->Energy = kCheatsStaffNormalSpeed;

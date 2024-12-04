@@ -15,7 +15,7 @@ constexpr std::nullptr_t kFamilyOpenRCT2Sprite = nullptr;
 
 #ifndef NO_TTF
 
-#    include <vector>
+    #include <vector>
 
 struct TTFFontSetDescriptor;
 
@@ -27,10 +27,10 @@ extern TTFontFamily const TTFFamilyJapanese;
 extern TTFontFamily const TTFFamilyKorean;
 extern TTFontFamily const TTFFamilySansSerif;
 
-#    define FAMILY(x) x
+    #define FAMILY(x) x
 
 #else // NO_TTF
 
-#    define FAMILY(x) kFamilyOpenRCT2Sprite
+    #define FAMILY(x) kFamilyOpenRCT2Sprite
 
 #endif // NO_TTF

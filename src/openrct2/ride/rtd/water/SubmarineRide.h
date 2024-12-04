@@ -36,7 +36,6 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
     .DefaultMode = RideMode::ContinuousCircuit,
     .Naming = { STR_RIDE_NAME_SUBMARINE_RIDE, STR_RIDE_DESCRIPTION_SUBMARINE_RIDE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::DockingPlatform },
-    .EnumName = "RIDE_TYPE_SUBMARINE_RIDE",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 16, 0, 3, },
     .MaxMass = 255,

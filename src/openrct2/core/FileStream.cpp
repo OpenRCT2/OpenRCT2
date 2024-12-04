@@ -15,14 +15,14 @@
 #include <string_view>
 
 #ifndef _WIN32
-#    include <sys/stat.h>
+    #include <sys/stat.h>
 #else
-#    include <io.h>
+    #include <io.h>
 #endif
 
 #ifdef _MSC_VER
-#    define ftello _ftelli64
-#    define fseeko _fseeki64
+    #define ftello _ftelli64
+    #define fseeko _fseeki64
 #endif
 
 namespace OpenRCT2

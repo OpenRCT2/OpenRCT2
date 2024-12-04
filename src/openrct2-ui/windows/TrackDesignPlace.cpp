@@ -207,7 +207,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             money64 cost = kMoney64Undefined;
-            if (GameIsNotPaused() || GetGameState().Cheats.BuildInPauseMode)
+            if (GameIsNotPaused() || GetGameState().Cheats.buildInPauseMode)
             {
                 ClearProvisional();
                 auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
@@ -415,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-                if (rtd.HasFlag(RtdFlag::isMaze))
+                if (rtd.specialType == RtdSpecialType::maze)
                 {
                     DrawMiniPreviewMaze(td, pass, origin, min, max);
                 }

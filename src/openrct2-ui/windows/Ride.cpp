@@ -1363,7 +1363,7 @@ namespace OpenRCT2::Ui::Windows
             if (!rtd.HasFlag(RtdFlag::hasDataLogging))
                 disabledTabs |= (1uLL << WIDX_TAB_8); // 0x800
 
-            if (ride->type == RIDE_TYPE_MINI_GOLF)
+            if (rtd.specialType == RtdSpecialType::miniGolf)
                 disabledTabs |= (1uLL << WIDX_TAB_2 | 1uLL << WIDX_TAB_3 | 1uLL << WIDX_TAB_4); // 0xE0
 
             if (rtd.HasFlag(RtdFlag::noVehicles))
@@ -1384,7 +1384,7 @@ namespace OpenRCT2::Ui::Windows
                 disabledTabs |= (1uLL << WIDX_TAB_6); // 0x200
             }
 
-            if (rtd.HasFlag(RtdFlag::isCashMachine) || rtd.HasFlag(RtdFlag::isFirstAid)
+            if (rtd.specialType == RtdSpecialType::cashMachine || rtd.specialType == RtdSpecialType::firstAid
                 || (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) != 0)
                 disabledTabs |= (1uLL << WIDX_TAB_9); // 0x1000
 
@@ -1708,7 +1708,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
             }
-            if (GetGameState().Cheats.AllowArbitraryRideTypeChanges)
+            if (GetGameState().Cheats.allowArbitraryRideTypeChanges)
             {
                 minHeight += 15;
             }
@@ -2010,8 +2010,10 @@ namespace OpenRCT2::Ui::Windows
 
             const auto& gameState = GetGameState();
             const auto& rtd = ride.GetRideTypeDescriptor();
-            if (gameState.Cheats.ShowVehiclesFromOtherTrackTypes
-                && !(rtd.HasFlag(RtdFlag::isFlatRide) || rtd.HasFlag(RtdFlag::isMaze) || ride.type == RIDE_TYPE_MINI_GOLF))
+            if (gameState.Cheats.showVehiclesFromOtherTrackTypes
+                && !(
+                    rtd.HasFlag(RtdFlag::isFlatRide) || rtd.specialType == RtdSpecialType::maze
+                    || rtd.specialType == RtdSpecialType::miniGolf))
             {
                 selectionShouldBeExpanded = true;
                 rideTypeIterator = 0;
@@ -2038,7 +2040,7 @@ namespace OpenRCT2::Ui::Windows
                 if (selectionShouldBeExpanded && rtdIterator.HasFlag(RtdFlag::isFlatRide))
                     continue;
                 if (selectionShouldBeExpanded
-                    && (rtdIterator.HasFlag(RtdFlag::isMaze) || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
+                    && (rtdIterator.specialType == RtdSpecialType::maze || rtd.specialType == RtdSpecialType::miniGolf))
                     continue;
 
                 auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
@@ -2049,7 +2051,7 @@ namespace OpenRCT2::Ui::Windows
                         continue;
 
                     // Skip if vehicle type has not been invented yet
-                    if (!RideEntryIsInvented(rideEntryIndex) && !gameState.Cheats.IgnoreResearchStatus)
+                    if (!RideEntryIsInvented(rideEntryIndex) && !gameState.Cheats.ignoreResearchStatus)
                         continue;
 
                     auto name = currentRideEntry->naming.Name;
@@ -2337,7 +2339,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& gameState = GetGameState();
             disabled_widgets &= ~((1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_CONSTRUCTION));
             if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-                && !gameState.Cheats.MakeAllDestructible)
+                && !gameState.Cheats.makeAllDestructible)
                 disabled_widgets |= (1uLL << WIDX_DEMOLISH);
 
             auto ft = Formatter::Common();
@@ -2376,7 +2378,7 @@ namespace OpenRCT2::Ui::Windows
 
             AnchorBorderWidgets();
 
-            const int32_t offset = gameState.Cheats.AllowArbitraryRideTypeChanges ? 15 : 0;
+            const int32_t offset = gameState.Cheats.allowArbitraryRideTypeChanges ? 15 : 0;
             // Anchor main page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
             widgets[WIDX_VIEWPORT].bottom = height - (14 + offset);
@@ -2394,7 +2396,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_RIDE_TYPE_DROPDOWN].top = height - 16;
             widgets[WIDX_RIDE_TYPE_DROPDOWN].bottom = height - 5;
 
-            if (!gameState.Cheats.AllowArbitraryRideTypeChanges)
+            if (!gameState.Cheats.allowArbitraryRideTypeChanges)
             {
                 widgets[WIDX_RIDE_TYPE].type = WindowWidgetType::Empty;
                 widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WindowWidgetType::Empty;
@@ -2487,6 +2489,7 @@ namespace OpenRCT2::Ui::Windows
             if (vehicle == nullptr)
                 return STR_EMPTY;
 
+            auto& rtd = ride->GetRideTypeDescriptor();
             if (vehicle->status != Vehicle::Status::Crashing && vehicle->status != Vehicle::Status::Crashed)
             {
                 auto trackType = vehicle->GetTrackType();
@@ -2495,7 +2498,7 @@ namespace OpenRCT2::Ui::Windows
                     || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat
                     || trackType == TrackElemType::DiagBlockBrakes)
                 {
-                    if (ride->GetRideTypeDescriptor().SupportsTrackGroup(TrackGroup::blockBrakes) && vehicle->velocity == 0)
+                    if (rtd.SupportsTrackGroup(TrackGroup::blockBrakes) && vehicle->velocity == 0)
                     {
                         ft.Add<StringId>(STR_STOPPED_BY_BLOCK_BRAKES);
                         return STR_BLACK_STRING;
@@ -2503,7 +2506,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (ride->type == RIDE_TYPE_MINI_GOLF)
+            if (rtd.specialType == RtdSpecialType::miniGolf)
                 return STR_EMPTY;
 
             auto stringId = VehicleStatusNames[EnumValue(vehicle->status)];
@@ -2809,7 +2812,7 @@ namespace OpenRCT2::Ui::Windows
 
             const auto& gameState = GetGameState();
             // Trains
-            if (rideEntry->cars_per_flat_ride > 1 || gameState.Cheats.DisableTrainLengthLimit)
+            if (rideEntry->cars_per_flat_ride > 1 || gameState.Cheats.disableTrainLengthLimit)
             {
                 widgets[WIDX_VEHICLE_TRAINS].type = WindowWidgetType::Spinner;
                 widgets[WIDX_VEHICLE_TRAINS_INCREASE].type = WindowWidgetType::Button;
@@ -2823,7 +2826,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Cars per train
-            if (rideEntry->zero_cars + 1 < rideEntry->max_cars_in_train || gameState.Cheats.DisableTrainLengthLimit)
+            if (rideEntry->zero_cars + 1 < rideEntry->max_cars_in_train || gameState.Cheats.disableTrainLengthLimit)
             {
                 widgets[WIDX_VEHICLE_CARS_PER_TRAIN].type = WindowWidgetType::Spinner;
                 widgets[WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE].type = WindowWidgetType::Button;
@@ -2837,7 +2840,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             if (ride->GetRideTypeDescriptor().HasFlag(RtdFlag::allowReversedTrains)
-                || (gameState.Cheats.DisableTrainLengthLimit && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide)))
+                || (gameState.Cheats.disableTrainLengthLimit && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide)))
             {
                 widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Checkbox;
                 if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
@@ -3080,9 +3083,9 @@ namespace OpenRCT2::Ui::Windows
             const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
             const auto& gameState = GetGameState();
             uint8_t maxValue = operatingSettings.MaxValue;
-            uint8_t minValue = gameState.Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+            uint8_t minValue = gameState.Cheats.unlockOperatingLimits ? 0 : operatingSettings.MinValue;
 
-            if (gameState.Cheats.UnlockOperatingLimits)
+            if (gameState.Cheats.unlockOperatingLimits)
             {
                 maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
@@ -3102,8 +3105,8 @@ namespace OpenRCT2::Ui::Windows
             const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
             const auto& gameState = GetGameState();
             uint8_t maxValue = operatingSettings.MaxValue;
-            uint8_t minValue = gameState.Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
-            if (gameState.Cheats.UnlockOperatingLimits)
+            uint8_t minValue = gameState.Cheats.unlockOperatingLimits ? 0 : operatingSettings.MinValue;
+            if (gameState.Cheats.unlockOperatingLimits)
             {
                 maxValue = OpenRCT2::Limits::kCheatsMaxOperatingLimit;
             }
@@ -3240,10 +3243,10 @@ namespace OpenRCT2::Ui::Windows
                     ModeTweakDecrease();
                     break;
                 case WIDX_LIFT_HILL_SPEED_INCREASE:
-                    upperBound = GetGameState().Cheats.UnlockOperatingLimits
+                    upperBound = GetGameState().Cheats.unlockOperatingLimits
                         ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                         : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
-                    lowerBound = GetGameState().Cheats.UnlockOperatingLimits
+                    lowerBound = GetGameState().Cheats.unlockOperatingLimits
                         ? 0
                         : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
                     SetOperatingSetting(
@@ -3251,10 +3254,10 @@ namespace OpenRCT2::Ui::Windows
                         std::clamp<int16_t>(ride->lift_hill_speed + 1, lowerBound, upperBound));
                     break;
                 case WIDX_LIFT_HILL_SPEED_DECREASE:
-                    upperBound = GetGameState().Cheats.UnlockOperatingLimits
+                    upperBound = GetGameState().Cheats.unlockOperatingLimits
                         ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                         : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
-                    lowerBound = GetGameState().Cheats.UnlockOperatingLimits
+                    lowerBound = GetGameState().Cheats.unlockOperatingLimits
                         ? 0
                         : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
                     SetOperatingSetting(
@@ -3302,7 +3305,7 @@ namespace OpenRCT2::Ui::Windows
                     LoadDropdown(&widgets[widgetIndex]);
                     break;
                 case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
-                    upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
+                    upperBound = GetGameState().Cheats.unlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                                                                              : OpenRCT2::Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
@@ -3310,7 +3313,7 @@ namespace OpenRCT2::Ui::Windows
                         std::clamp<int16_t>(ride->num_circuits + 1, lowerBound, upperBound));
                     break;
                 case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
-                    upperBound = GetGameState().Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
+                    upperBound = GetGameState().Cheats.unlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                                                                              : OpenRCT2::Limits::kMaxCircuitsPerRide;
                     lowerBound = 1;
                     SetOperatingSetting(
@@ -3355,9 +3358,9 @@ namespace OpenRCT2::Ui::Windows
 
             const auto& operatingSettings = ride.GetRideTypeDescriptor().OperatingSettings;
             const auto& gameState = GetGameState();
-            int16_t maxValue = gameState.Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
+            int16_t maxValue = gameState.Cheats.unlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                                                                       : operatingSettings.MaxValue;
-            int16_t minValue = gameState.Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+            int16_t minValue = gameState.Cheats.unlockOperatingLimits ? 0 : operatingSettings.MinValue;
 
             const auto& title = widgets[WIDX_MODE_TWEAK_LABEL].text;
             Formatter ft;
@@ -3438,9 +3441,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
                 const auto& gameState = GetGameState();
-                uint32_t maxValue = gameState.Cheats.UnlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
+                uint32_t maxValue = gameState.Cheats.unlockOperatingLimits ? OpenRCT2::Limits::kCheatsMaxOperatingLimit
                                                                            : operatingSettings.MaxValue;
-                uint32_t minValue = gameState.Cheats.UnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+                uint32_t minValue = gameState.Cheats.unlockOperatingLimits ? 0 : operatingSettings.MinValue;
                 auto multiplier = ride->GetRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
 
                 try
@@ -4623,7 +4626,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Maze style
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RtdFlag::isMaze))
+            if (rtd.specialType == RtdSpecialType::maze)
             {
                 widgets[WIDX_MAZE_STYLE].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_MAZE_STYLE_DROPDOWN].type = WindowWidgetType::Button;
@@ -4690,7 +4693,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Track supports colour
-            if (HasTrackColour(*ride, 2) && !rtd.HasFlag(RtdFlag::isMaze))
+            if (HasTrackColour(*ride, 2) && rtd.specialType != RtdSpecialType::maze)
             {
                 widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WindowWidgetType::ColourBtn;
                 widgets[WIDX_TRACK_SUPPORT_COLOUR].image = GetColourButtonImage(trackColour.supports);
@@ -4873,7 +4876,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Track
                 const auto& rtd = ride->GetRideTypeDescriptor();
-                if (rtd.HasFlag(RtdFlag::isMaze))
+                if (rtd.specialType == RtdSpecialType::maze)
                 {
                     GfxDrawSprite(dpi, ImageId(MazeOptions[trackColour.supports].sprite), screenCoords);
                 }
@@ -5105,7 +5108,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
 
-                    if (GetGameState().Cheats.UnlockOperatingLimits || musicObj->SupportsRideType(ride->type))
+                    if (GetGameState().Cheats.unlockOperatingLimits || musicObj->SupportsRideType(ride->type))
                     {
                         musicOrder.push_back(i);
                     }
@@ -5453,7 +5456,7 @@ namespace OpenRCT2::Ui::Windows
             intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
             intent.PutExtra(INTENT_EXTRA_TRACK_DESIGN, _trackDesign.get());
             intent.PutExtra(INTENT_EXTRA_PATH, trackName);
-            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(&TrackDesignCallback));
+            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(&TrackDesignCallback));
 
             ContextOpenIntent(&intent);
         }
@@ -5722,7 +5725,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_NO_RAW_STATS))
                     {
-                        if (ride->type == RIDE_TYPE_MINI_GOLF)
+                        if (ride->GetRideTypeDescriptor().specialType == RtdSpecialType::miniGolf)
                         {
                             // Holes
                             ft = Formatter();
@@ -5874,7 +5877,7 @@ namespace OpenRCT2::Ui::Windows
                             screenCoords.y += kListRowHeight;
                         }
 
-                        if (ride->type != RIDE_TYPE_MINI_GOLF)
+                        if (ride->GetRideTypeDescriptor().specialType != RtdSpecialType::miniGolf)
                         {
                             // Inversions
                             if (ride->inversions != 0)
@@ -6315,7 +6318,7 @@ namespace OpenRCT2::Ui::Windows
 
             ShopItem shopItem;
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RtdFlag::isToilet))
+            if (rtd.specialType == RtdSpecialType::toilet)
             {
                 shopItem = ShopItem::Admission;
             }
@@ -6421,7 +6424,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto rideEntry = ride->GetRideEntry();
             const auto& rtd = ride->GetRideTypeDescriptor();
-            return Park::RidePricesUnlocked() || rtd.HasFlag(RtdFlag::isToilet)
+            return Park::RidePricesUnlocked() || rtd.specialType == RtdSpecialType::toilet
                 || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::None);
         }
 
@@ -6596,7 +6599,8 @@ namespace OpenRCT2::Ui::Windows
 
             // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None && !rtd.HasFlag(RtdFlag::isToilet))
+            if (!Park::RidePricesUnlocked() && rideEntry->shop_item[0] == ShopItem::None
+                && rtd.specialType != RtdSpecialType::toilet)
             {
                 disabled_widgets |= (1uLL << WIDX_PRIMARY_PRICE);
                 widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
@@ -6615,7 +6619,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
 
             ShopItem primaryItem = ShopItem::Admission;
-            if (rtd.HasFlag(RtdFlag::isToilet) || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
+            if (rtd.specialType == RtdSpecialType::toilet || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::None))
             {
                 widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Checkbox;
 

@@ -11,10 +11,10 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../Cheats.h"
-#    include "../../../GameState.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
+    #include "../../../Cheats.h"
+    #include "../../../GameState.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -79,266 +79,266 @@ namespace OpenRCT2::Scripting
     private:
         bool allowArbitraryRideTypeChanges_get()
         {
-            return GetGameState().Cheats.AllowArbitraryRideTypeChanges;
+            return GetGameState().Cheats.allowArbitraryRideTypeChanges;
         }
 
         void allowArbitraryRideTypeChanges_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.AllowArbitraryRideTypeChanges = value;
+            GetGameState().Cheats.allowArbitraryRideTypeChanges = value;
         }
 
         bool allowTrackPlaceInvalidHeights_get()
         {
-            return GetGameState().Cheats.AllowTrackPlaceInvalidHeights;
+            return GetGameState().Cheats.allowTrackPlaceInvalidHeights;
         }
 
         void allowTrackPlaceInvalidHeights_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.AllowTrackPlaceInvalidHeights = value;
+            GetGameState().Cheats.allowTrackPlaceInvalidHeights = value;
         }
 
         bool buildInPauseMode_get()
         {
-            return GetGameState().Cheats.BuildInPauseMode;
+            return GetGameState().Cheats.buildInPauseMode;
         }
 
         void buildInPauseMode_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.BuildInPauseMode = value;
+            GetGameState().Cheats.buildInPauseMode = value;
         }
 
         bool disableAllBreakdowns_get()
         {
-            return GetGameState().Cheats.DisableAllBreakdowns;
+            return GetGameState().Cheats.disableAllBreakdowns;
         }
 
         void disableAllBreakdowns_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.DisableAllBreakdowns = value;
+            GetGameState().Cheats.disableAllBreakdowns = value;
         }
 
         bool disableBrakesFailure_get()
         {
-            return GetGameState().Cheats.DisableBrakesFailure;
+            return GetGameState().Cheats.disableBrakesFailure;
         }
 
         void disableBrakesFailure_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.DisableBrakesFailure = value;
+            GetGameState().Cheats.disableBrakesFailure = value;
         }
 
         bool disableClearanceChecks_get()
         {
-            return GetGameState().Cheats.DisableClearanceChecks;
+            return GetGameState().Cheats.disableClearanceChecks;
         }
 
         void disableClearanceChecks_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.DisableClearanceChecks = value;
+            GetGameState().Cheats.disableClearanceChecks = value;
         }
 
         bool disableLittering_get()
         {
-            return GetGameState().Cheats.DisableLittering;
+            return GetGameState().Cheats.disableLittering;
         }
 
         void disableLittering_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.DisableLittering = value;
+            GetGameState().Cheats.disableLittering = value;
         }
 
         bool disablePlantAging_get()
         {
-            return GetGameState().Cheats.DisablePlantAging;
+            return GetGameState().Cheats.disablePlantAging;
         }
 
         void disablePlantAging_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.DisablePlantAging = value;
+            GetGameState().Cheats.disablePlantAging = value;
         }
 
         bool allowRegularPathAsQueue_get()
         {
-            return GetGameState().Cheats.AllowRegularPathAsQueue;
+            return GetGameState().Cheats.allowRegularPathAsQueue;
         }
 
         void allowRegularPathAsQueue_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.AllowRegularPathAsQueue = value;
+            GetGameState().Cheats.allowRegularPathAsQueue = value;
         }
 
         bool allowSpecialColourSchemes_get()
         {
-            return GetGameState().Cheats.AllowSpecialColourSchemes;
+            return GetGameState().Cheats.allowSpecialColourSchemes;
         }
 
         void allowSpecialColourSchemes_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.AllowSpecialColourSchemes = value;
+            GetGameState().Cheats.allowSpecialColourSchemes = value;
         }
 
         bool disableRideValueAging_get()
         {
-            return GetGameState().Cheats.DisableRideValueAging;
+            return GetGameState().Cheats.disableRideValueAging;
         }
 
         void disableRideValueAging_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.DisableRideValueAging = value;
+            GetGameState().Cheats.disableRideValueAging = value;
         }
 
         bool disableSupportLimits_get()
         {
-            return GetGameState().Cheats.DisableSupportLimits;
+            return GetGameState().Cheats.disableSupportLimits;
         }
 
         void disableSupportLimits_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.DisableSupportLimits = value;
+            GetGameState().Cheats.disableSupportLimits = value;
         }
 
         bool disableTrainLengthLimit_get()
         {
-            return GetGameState().Cheats.DisableTrainLengthLimit;
+            return GetGameState().Cheats.disableTrainLengthLimit;
         }
 
         void disableTrainLengthLimit_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.DisableTrainLengthLimit = value;
+            GetGameState().Cheats.disableTrainLengthLimit = value;
         }
 
         bool disableVandalism_get()
         {
-            return GetGameState().Cheats.DisableVandalism;
+            return GetGameState().Cheats.disableVandalism;
         }
 
         void disableVandalism_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.DisableVandalism = value;
+            GetGameState().Cheats.disableVandalism = value;
         }
 
         bool enableAllDrawableTrackPieces_get()
         {
-            return GetGameState().Cheats.EnableAllDrawableTrackPieces;
+            return GetGameState().Cheats.enableAllDrawableTrackPieces;
         }
 
         void enableAllDrawableTrackPieces_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.EnableAllDrawableTrackPieces = value;
+            GetGameState().Cheats.enableAllDrawableTrackPieces = value;
         }
 
         bool enableChainLiftOnAllTrack_get()
         {
-            return GetGameState().Cheats.EnableChainLiftOnAllTrack;
+            return GetGameState().Cheats.enableChainLiftOnAllTrack;
         }
 
         void enableChainLiftOnAllTrack_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.EnableChainLiftOnAllTrack = value;
+            GetGameState().Cheats.enableChainLiftOnAllTrack = value;
         }
 
         bool fastLiftHill_get()
         {
-            return GetGameState().Cheats.UnlockOperatingLimits;
+            return GetGameState().Cheats.unlockOperatingLimits;
         }
 
         void fastLiftHill_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.UnlockOperatingLimits = value;
+            GetGameState().Cheats.unlockOperatingLimits = value;
         }
 
         bool freezeWeather_get()
         {
-            return GetGameState().Cheats.FreezeWeather;
+            return GetGameState().Cheats.freezeWeather;
         }
 
         void freezeWeather_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.FreezeWeather = value;
+            GetGameState().Cheats.freezeWeather = value;
         }
 
         bool ignoreResearchStatus_get()
         {
-            return GetGameState().Cheats.IgnoreResearchStatus;
+            return GetGameState().Cheats.ignoreResearchStatus;
         }
 
         void ignoreResearchStatus_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.IgnoreResearchStatus = value;
+            GetGameState().Cheats.ignoreResearchStatus = value;
         }
 
         bool ignoreRideIntensity_get()
         {
-            return GetGameState().Cheats.IgnoreRideIntensity;
+            return GetGameState().Cheats.ignoreRideIntensity;
         }
 
         void ignoreRideIntensity_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.IgnoreRideIntensity = value;
+            GetGameState().Cheats.ignoreRideIntensity = value;
         }
 
         bool neverendingMarketing_get()
         {
-            return GetGameState().Cheats.NeverendingMarketing;
+            return GetGameState().Cheats.neverendingMarketing;
         }
 
         void neverendingMarketing_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.NeverendingMarketing = value;
+            GetGameState().Cheats.neverendingMarketing = value;
         }
 
         bool sandboxMode_get()
         {
-            return GetGameState().Cheats.SandboxMode;
+            return GetGameState().Cheats.sandboxMode;
         }
 
         void sandboxMode_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.SandboxMode = value;
+            GetGameState().Cheats.sandboxMode = value;
         }
 
         bool showAllOperatingModes_get()
         {
-            return GetGameState().Cheats.ShowAllOperatingModes;
+            return GetGameState().Cheats.showAllOperatingModes;
         }
 
         void showAllOperatingModes_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.ShowAllOperatingModes = value;
+            GetGameState().Cheats.showAllOperatingModes = value;
         }
 
         bool showVehiclesFromOtherTrackTypes_get()
         {
-            return GetGameState().Cheats.ShowVehiclesFromOtherTrackTypes;
+            return GetGameState().Cheats.showVehiclesFromOtherTrackTypes;
         }
 
         void showVehiclesFromOtherTrackTypes_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            GetGameState().Cheats.ShowVehiclesFromOtherTrackTypes = value;
+            GetGameState().Cheats.showVehiclesFromOtherTrackTypes = value;
         }
     };
 } // namespace OpenRCT2::Scripting

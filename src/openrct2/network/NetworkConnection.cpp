@@ -9,21 +9,21 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "NetworkConnection.h"
+    #include "NetworkConnection.h"
 
-#    include "../core/String.hpp"
-#    include "../localisation/Formatting.h"
-#    include "../platform/Platform.h"
-#    include "Socket.h"
-#    include "network.h"
+    #include "../core/String.hpp"
+    #include "../localisation/Formatting.h"
+    #include "../platform/Platform.h"
+    #include "Socket.h"
+    #include "network.h"
 
 using namespace OpenRCT2;
 
 static constexpr size_t kNetworkDisconnectReasonBufSize = 256;
 static constexpr size_t kNetworkBufferSize = 1024 * 64; // 64 KiB, maximum packet size.
-#    ifndef DEBUG
+    #ifndef DEBUG
 static constexpr size_t kNetworkNoDataTimeout = 20; // Seconds.
-#    endif
+    #endif
 
 NetworkConnection::NetworkConnection() noexcept
 {
@@ -181,13 +181,13 @@ void NetworkConnection::ResetLastPacketTime() noexcept
 
 bool NetworkConnection::ReceivedPacketRecently() const noexcept
 {
-#    ifndef DEBUG
+    #ifndef DEBUG
     constexpr auto kTimeoutMs = kNetworkNoDataTimeout * 1000;
     if (Platform::GetTicks() > _lastPacketTime + kTimeoutMs)
     {
         return false;
     }
-#    endif
+    #endif
     return true;
 }
 

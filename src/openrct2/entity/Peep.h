@@ -153,7 +153,7 @@ enum class PeepActionType : uint8_t
 
 enum class PeepAnimationType : uint8_t
 {
-    None = 0,
+    Walking = 0,
     CheckTime = 1,
     WatchRide = 2,
     EatFood = 3,

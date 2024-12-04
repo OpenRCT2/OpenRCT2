@@ -25,7 +25,6 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
-#include "../core/FixedVector.h"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
 #include "../entity/EntityRegistry.h"
@@ -84,6 +83,7 @@
 #include <iterator>
 #include <limits>
 #include <optional>
+#include <sfl/static_vector.hpp>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
@@ -298,11 +298,11 @@ size_t Ride::GetNumPrices() const
 {
     size_t result = 0;
     const auto& rtd = GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isCashMachine) || rtd.HasFlag(RtdFlag::isFirstAid))
+    if (rtd.specialType == RtdSpecialType::cashMachine || rtd.specialType == RtdSpecialType::firstAid)
     {
         result = 0;
     }
-    else if (rtd.HasFlag(RtdFlag::isToilet))
+    else if (rtd.specialType == RtdSpecialType::toilet)
     {
         result = 1;
     }
@@ -795,7 +795,7 @@ bool Ride::FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const
         return false;
 
     const auto& rtd = GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
         return false;
 
     WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
@@ -1108,7 +1108,7 @@ void Ride::Update()
 
     // Update stations
     const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType != RtdSpecialType::maze)
         for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             RideUpdateStation(*this, StationIndex::FromUnderlying(i));
 
@@ -1453,7 +1453,7 @@ static void RideBreakdownUpdate(Ride& ride)
     // continues.
     if ((ride.reliability == 0
          || static_cast<uint32_t>(ScenarioRand() & 0x2FFFFF) <= 1u + kRideInitialReliability - ride.reliability)
-        && !gameState.Cheats.DisableAllBreakdowns)
+        && !gameState.Cheats.disableAllBreakdowns)
     {
         int32_t breakdownReason = RideGetNewBreakdownProblem(ride);
         if (breakdownReason != -1)
@@ -1511,7 +1511,7 @@ static int32_t RideGetNewBreakdownProblem(const Ride& ride)
             return -1;
 
     // If brakes failure is disabled, also take it out of the equation (see above comment why)
-    if (GetGameState().Cheats.DisableBrakesFailure)
+    if (GetGameState().Cheats.disableBrakesFailure)
         return -1;
 
     auto monthsOld = ride.GetAge();
@@ -2630,7 +2630,7 @@ static StationIndexWithMessage RideModeCheckStationPresent(const Ride& ride)
         if (!rtd.HasFlag(RtdFlag::hasTrack))
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
         return { StationIndex::GetNull(), STR_REQUIRES_A_STATION_PLATFORM };
@@ -2793,7 +2793,7 @@ static bool RideCheckTrackContainsInversions(const CoordsXYE& input, CoordsXYE* 
     if (ride != nullptr)
     {
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
             return true;
     }
 
@@ -2854,7 +2854,7 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
         return false;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
         return true;
 
     WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
@@ -3189,7 +3189,7 @@ static void RideSetStartFinishPoints(RideId rideIndex, const CoordsXYE& startEle
         return;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
         RideSetMazeEntranceExitPoints(*ride);
     else if (ride->type == RIDE_TYPE_BOAT_HIRE)
         RideSetBoatHireReturnPoint(*ride, startElement);
@@ -3974,7 +3974,7 @@ void Ride::ConstructMissingEntranceOrExit() const
     }
 
     const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType != RtdSpecialType::maze)
     {
         auto location = incompleteStation->GetStart();
         WindowScrollToLocation(*w, location);
@@ -5108,7 +5108,7 @@ void Ride::UpdateMaxVehicles()
         }
         int32_t newCarsPerTrain = std::max(proposed_num_cars_per_train, rideEntry->min_cars_in_train);
         maxCarsPerTrain = std::max(maxCarsPerTrain, static_cast<int32_t>(rideEntry->min_cars_in_train));
-        if (!GetGameState().Cheats.DisableTrainLengthLimit)
+        if (!GetGameState().Cheats.disableTrainLengthLimit)
         {
             newCarsPerTrain = std::min(maxCarsPerTrain, newCarsPerTrain);
         }
@@ -5197,7 +5197,7 @@ void Ride::UpdateMaxVehicles()
         maxNumTrains = rideEntry->cars_per_flat_ride;
     }
 
-    if (GetGameState().Cheats.DisableTrainLengthLimit)
+    if (GetGameState().Cheats.disableTrainLengthLimit)
     {
         maxNumTrains = OpenRCT2::Limits::kMaxTrainsPerRide;
     }
@@ -5532,7 +5532,7 @@ int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType)
                 }
 
                 // Can happen in select-by-track-type mode
-                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.IgnoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.ignoreResearchStatus)
                 {
                     continue;
                 }
@@ -5761,7 +5761,7 @@ void Ride::FormatNameTo(Formatter& ft) const
 
 uint64_t Ride::GetAvailableModes() const
 {
-    if (GetGameState().Cheats.ShowAllOperatingModes)
+    if (GetGameState().Cheats.showAllOperatingModes)
         return AllRideModesAvailable;
 
     return GetRideTypeDescriptor().RideModes;
@@ -5907,7 +5907,7 @@ ResultWithMessage Ride::ChangeStatusGetStartElement(StationIndex stationIndex, C
     {
         // Maze is strange, station start is 0... investigation required
         const auto& rtd = GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType != RtdSpecialType::maze)
             return { false };
     }
 
@@ -5943,7 +5943,7 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
         }
     }
 
-    if (subtype != OBJECT_ENTRY_INDEX_NULL && !GetGameState().Cheats.EnableAllDrawableTrackPieces)
+    if (subtype != OBJECT_ENTRY_INDEX_NULL && !GetGameState().Cheats.enableAllDrawableTrackPieces)
     {
         const auto* rideEntry = GetRideEntryByIndex(subtype);
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)

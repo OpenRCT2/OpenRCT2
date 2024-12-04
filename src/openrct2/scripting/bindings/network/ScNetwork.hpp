@@ -11,21 +11,21 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../Duktape.hpp"
-#    include "ScPlayer.hpp"
-#    include "ScPlayerGroup.hpp"
-#    include "ScSocket.hpp"
+    #include "../../Duktape.hpp"
+    #include "ScPlayer.hpp"
+    #include "ScPlayerGroup.hpp"
+    #include "ScSocket.hpp"
 
-#    include <memory>
+    #include <memory>
 
 namespace OpenRCT2::Scripting
 {
     class ScNetwork
     {
     private:
-#    ifdef __clang__
+    #ifdef __clang__
         [[maybe_unused]]
-#    endif
+    #endif
         duk_context* _context;
 
     public:
@@ -57,17 +57,17 @@ namespace OpenRCT2::Scripting
 
         void sendMessage(std::string message, DukValue players);
 
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
         std::shared_ptr<ScListener> createListener();
-#    else
+    #else
         void createListener();
-#    endif
+    #endif
 
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
         std::shared_ptr<ScSocket> createSocket();
-#    else
+    #else
         void createSocket();
-#    endif
+    #endif
 
         static void Register(duk_context* ctx);
     };

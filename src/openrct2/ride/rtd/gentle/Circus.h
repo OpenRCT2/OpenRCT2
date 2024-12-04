@@ -34,7 +34,6 @@ constexpr RideTypeDescriptor CircusRTD =
     .DefaultMode = RideMode::Circus,
     .Naming = { STR_RIDE_NAME_CIRCUS, STR_RIDE_DESCRIPTION_CIRCUS },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_CIRCUS",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 128, 3, 2, },
     .MaxMass = 255,

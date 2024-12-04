@@ -170,12 +170,27 @@ void ObjectList::SetObject(ObjectType type, ObjectEntryIndex index, std::string_
     SetObject(index, entry);
 }
 
-ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier)
+ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier) const
 {
     auto& subList = GetList(type);
     for (size_t i = 0; i < subList.size(); i++)
     {
-        if (subList[i].Identifier == identifier)
+        if (subList[i].Generation == ObjectGeneration::JSON && subList[i].Identifier == identifier)
+        {
+            return static_cast<ObjectEntryIndex>(i);
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+// Intended to be used to find non-custom legacy objects. For internal use only.
+ObjectEntryIndex ObjectList::FindLegacy(ObjectType type, std::string_view identifier) const
+{
+    auto& subList = GetList(type);
+    for (size_t i = 0; i < subList.size(); i++)
+    {
+        if (subList[i].Generation == ObjectGeneration::DAT && subList[i].Entry.GetName() == identifier
+            && subList[i].Entry.GetSourceGame() != ObjectSourceGame::Custom)
         {
             return static_cast<ObjectEntryIndex>(i);
         }

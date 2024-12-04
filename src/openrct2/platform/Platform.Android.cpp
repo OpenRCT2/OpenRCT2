@@ -9,15 +9,15 @@
 
 #ifdef __ANDROID__
 
-#    include "Platform.h"
+    #include "Platform.h"
 
-#    include "../Diagnostic.h"
-#    include "../core/Guard.hpp"
-#    include "../localisation/Language.h"
+    #include "../Diagnostic.h"
+    #include "../core/Guard.hpp"
+    #include "../localisation/Language.h"
 
-#    include <SDL.h>
-#    include <jni.h>
-#    include <memory>
+    #include <SDL.h>
+    #include <jni.h>
+    #include <memory>
 
 AndroidClassLoader::~AndroidClassLoader()
 {
@@ -162,13 +162,13 @@ namespace OpenRCT2::Platform
         return {};
     }
 
-#    ifndef NO_TTF
+    #ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
         STUB();
         return {};
     }
-#    endif
+    #endif
 
     float GetDefaultScale()
     {

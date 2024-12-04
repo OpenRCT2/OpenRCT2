@@ -728,7 +728,7 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
         {
             result.Type = obj->GetObjectType();
             result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
-            if (!GetGameState().Cheats.IgnoreResearchStatus)
+            if (!GetGameState().Cheats.ignoreResearchStatus)
             {
                 objectUnavailable = !ResearchIsInvented(result.Type, result.Index);
             }
@@ -907,7 +907,7 @@ static void TrackDesignMirrorMaze(TrackDesign& td)
 void TrackDesignMirror(TrackDesign& td)
 {
     const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
     {
         TrackDesignMirrorMaze(td);
     }
@@ -1768,7 +1768,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
 
     GameActions::Result trackPlaceRes;
     const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
     {
         trackPlaceRes = TrackDesignPlaceMaze(tds, td, coords, ride);
     }
@@ -1951,7 +1951,7 @@ static bool TrackDesignPlacePreview(
         {
             gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
         }
-        else if (!RideEntryIsInvented(entry_index) && !GetGameState().Cheats.IgnoreResearchStatus)
+        else if (!RideEntryIsInvented(entry_index) && !GetGameState().Cheats.ignoreResearchStatus)
         {
             gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
         }

@@ -9,32 +9,32 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScTileElement.hpp"
+    #include "ScTileElement.hpp"
 
-#    include "../../../Context.h"
-#    include "../../../core/Guard.hpp"
-#    include "../../../entity/EntityRegistry.h"
-#    include "../../../object/LargeSceneryEntry.h"
-#    include "../../../object/WallSceneryEntry.h"
-#    include "../../../ride/Ride.h"
-#    include "../../../ride/RideData.h"
-#    include "../../../ride/Track.h"
-#    include "../../../world/Footpath.h"
-#    include "../../../world/Scenery.h"
-#    include "../../../world/tile_element/BannerElement.h"
-#    include "../../../world/tile_element/EntranceElement.h"
-#    include "../../../world/tile_element/LargeSceneryElement.h"
-#    include "../../../world/tile_element/PathElement.h"
-#    include "../../../world/tile_element/SmallSceneryElement.h"
-#    include "../../../world/tile_element/SurfaceElement.h"
-#    include "../../../world/tile_element/TrackElement.h"
-#    include "../../../world/tile_element/WallElement.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
+    #include "../../../Context.h"
+    #include "../../../core/Guard.hpp"
+    #include "../../../entity/EntityRegistry.h"
+    #include "../../../object/LargeSceneryEntry.h"
+    #include "../../../object/WallSceneryEntry.h"
+    #include "../../../ride/Ride.h"
+    #include "../../../ride/RideData.h"
+    #include "../../../ride/Track.h"
+    #include "../../../world/Footpath.h"
+    #include "../../../world/Scenery.h"
+    #include "../../../world/tile_element/BannerElement.h"
+    #include "../../../world/tile_element/EntranceElement.h"
+    #include "../../../world/tile_element/LargeSceneryElement.h"
+    #include "../../../world/tile_element/PathElement.h"
+    #include "../../../world/tile_element/SmallSceneryElement.h"
+    #include "../../../world/tile_element/SurfaceElement.h"
+    #include "../../../world/tile_element/TrackElement.h"
+    #include "../../../world/tile_element/WallElement.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
-#    include <cstdio>
-#    include <cstring>
-#    include <utility>
+    #include <cstdio>
+    #include <cstring>
+    #include <utility>
 
 namespace OpenRCT2::Scripting
 {
@@ -508,7 +508,7 @@ namespace OpenRCT2::Scripting
                     if (ride != nullptr)
                     {
                         const auto& rtd = ride->GetRideTypeDescriptor();
-                        if (rtd.HasFlag(RtdFlag::isMaze))
+                        if (rtd.specialType == RtdSpecialType::maze)
                             throw DukException() << "Cannot read 'sequence' property, TrackElement belongs to a maze.";
                     }
 
@@ -561,7 +561,7 @@ namespace OpenRCT2::Scripting
                     if (ride != nullptr)
                     {
                         const auto& rtd = ride->GetRideTypeDescriptor();
-                        if (rtd.HasFlag(RtdFlag::isMaze))
+                        if (rtd.specialType == RtdSpecialType::maze)
                             throw DukException() << "Cannot set 'sequence' property, TrackElement belongs to a maze.";
                     }
 
@@ -834,7 +834,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot read 'mazeEntry' property, ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!rtd.HasFlag(RtdFlag::isMaze))
+            if (rtd.specialType != RtdSpecialType::maze)
                 throw DukException() << "Cannot read 'mazeEntry' property, ride is not a maze.";
 
             duk_push_int(ctx, el->GetMazeEntry());
@@ -864,7 +864,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot set 'mazeEntry' property, ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!rtd.HasFlag(RtdFlag::isMaze))
+            if (rtd.specialType != RtdSpecialType::maze)
                 throw DukException() << "Cannot set 'mazeEntry' property, ride is not a maze.";
 
             el->SetMazeEntry(value.as_uint());
@@ -892,7 +892,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot read 'colourScheme' property, ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RtdFlag::isMaze))
+            if (rtd.specialType == RtdSpecialType::maze)
                 throw DukException() << "Cannot read 'colourScheme' property, TrackElement belongs to a maze.";
 
             duk_push_int(ctx, el->GetColourScheme());
@@ -922,7 +922,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot set 'colourScheme', ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RtdFlag::isMaze))
+            if (rtd.specialType == RtdSpecialType::maze)
                 throw DukException() << "Cannot set 'colourScheme' property, TrackElement belongs to a maze.";
 
             el->SetColourScheme(static_cast<RideColourScheme>(value.as_uint()));
@@ -950,7 +950,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot read 'seatRotation' property, ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RtdFlag::isMaze))
+            if (rtd.specialType == RtdSpecialType::maze)
                 throw DukException() << "Cannot read 'seatRotation' property, TrackElement belongs to a maze.";
 
             duk_push_int(ctx, el->GetSeatRotation());
@@ -980,7 +980,7 @@ namespace OpenRCT2::Scripting
                 throw DukException() << "Cannot set 'seatRotation' property, ride is invalid.";
 
             const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!rtd.HasFlag(RtdFlag::isMaze))
+            if (rtd.specialType != RtdSpecialType::maze)
                 throw DukException() << "Cannot set 'seatRotation' property, TrackElement belongs to a maze.";
 
             el->SetSeatRotation(value.as_uint());

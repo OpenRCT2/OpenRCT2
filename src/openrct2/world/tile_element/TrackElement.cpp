@@ -252,7 +252,7 @@ void TrackElement::SetBrakeClosed(bool isClosed)
 
 bool TrackElement::IsIndestructible() const
 {
-    return (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0 && !GetGameState().Cheats.MakeAllDestructible;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0 && !GetGameState().Cheats.makeAllDestructible;
 }
 
 void TrackElement::SetIsIndestructible(bool isIndestructible)

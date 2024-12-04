@@ -9,17 +9,17 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "../interface/Theme.h"
+    #include "../interface/Theme.h"
 
-#    include <openrct2-ui/interface/Widget.h>
-#    include <openrct2-ui/windows/Window.h>
-#    include <openrct2/Context.h>
-#    include <openrct2/ParkImporter.h>
-#    include <openrct2/config/Config.h>
-#    include <openrct2/interface/Chat.h>
-#    include <openrct2/network/network.h>
-#    include <openrct2/util/Util.h>
-#    include <openrct2/windows/Intent.h>
+    #include <openrct2-ui/interface/Widget.h>
+    #include <openrct2-ui/windows/Window.h>
+    #include <openrct2/Context.h>
+    #include <openrct2/ParkImporter.h>
+    #include <openrct2/config/Config.h>
+    #include <openrct2/interface/Chat.h>
+    #include <openrct2/network/network.h>
+    #include <openrct2/util/Util.h>
+    #include <openrct2/windows/Intent.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -139,7 +139,7 @@ namespace OpenRCT2::Ui::Windows
                     NetworkSetPassword(_password);
                     auto intent = Intent(WindowClass::Loadsave);
                     intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-                    intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(LoadSaveCallback));
+                    intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(LoadSaveCallback));
                     ContextOpenIntent(&intent);
                     break;
             }

@@ -1051,7 +1051,7 @@ namespace OpenRCT2::RCT1
             dst->dropsPoweredLifts = src->NumDrops;
             dst->start_drop_height = src->StartDropHeight / 2;
             dst->highest_drop_height = src->HighestDropHeight / 2;
-            if (dst->type == RIDE_TYPE_MINI_GOLF)
+            if (src->Type == RideType::MiniatureGolf)
                 dst->holes = src->NumInversions & kRCT12InversionAndHoleMask;
             else
                 dst->inversions = src->NumInversions & kRCT12InversionAndHoleMask;
@@ -1154,7 +1154,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            if (_gameVersion < FILE_VERSION_RCT1_LL && dst->type == RIDE_TYPE_MERRY_GO_ROUND)
+            if (_gameVersion < FILE_VERSION_RCT1_LL && src->Type == RideType::MerryGoRound)
             {
                 // The merry-go-round in pre-LL versions was always yellow with red
                 dst->vehicle_colours[0].Body = COLOUR_YELLOW;

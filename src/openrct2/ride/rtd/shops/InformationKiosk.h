@@ -32,7 +32,6 @@ constexpr RideTypeDescriptor InformationKioskRTD =
     .DefaultMode = RideMode::ShopStall,
     .Naming = { STR_RIDE_NAME_INFORMATION_KIOSK, STR_RIDE_DESCRIPTION_INFORMATION_KIOSK },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_INFORMATION_KIOSK",
     .AvailableBreakdowns = 0,
     .Heights = { 12, DefaultInformationKioskHeight, 0, 0, },
     .MaxMass = 255,

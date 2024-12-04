@@ -15,14 +15,14 @@
 #include <stdexcept>
 
 #ifdef _WIN32
-#    include <windows.h>
+    #include <windows.h>
 #elif defined(__linux__)
-#    include <fcntl.h>
-#    include <sys/inotify.h>
-#    include <sys/types.h>
-#    include <unistd.h>
+    #include <fcntl.h>
+    #include <sys/inotify.h>
+    #include <sys/types.h>
+    #include <unistd.h>
 #elif defined(__APPLE__)
-#    include <CoreServices/CoreServices.h>
+    #include <CoreServices/CoreServices.h>
 #endif
 
 #include "../core/Guard.hpp"

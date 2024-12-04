@@ -9,14 +9,14 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "CustomMenu.h"
+    #include "CustomMenu.h"
 
-#    include "../interface/Viewport.h"
+    #include "../interface/Viewport.h"
 
-#    include <openrct2-ui/UiContext.h>
-#    include <openrct2-ui/input/ShortcutManager.h>
-#    include <openrct2/Input.h>
-#    include <openrct2/world/Map.h>
+    #include <openrct2-ui/UiContext.h>
+    #include <openrct2-ui/input/ShortcutManager.h>
+    #include <openrct2/Input.h>
+    #include <openrct2/world/Map.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;

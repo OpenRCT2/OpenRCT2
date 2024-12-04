@@ -26,14 +26,13 @@ constexpr RideTypeDescriptor FirstAidRTD =
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack,
-                     RtdFlag::isFlatRide, RtdFlag::isFirstAid, RtdFlag::guestsShouldGoInsideFacility,
+                     RtdFlag::isFlatRide, RtdFlag::guestsShouldGoInsideFacility,
                      RtdFlag::describeAsInside, RtdFlag::listVehiclesSeparately),
     .RideModes = EnumsToFlags(RideMode::ShopStall),
     .DefaultMode = RideMode::ShopStall,
     .OperatingSettings = { 8, 8 },
     .Naming = { STR_RIDE_NAME_FIRST_AID, STR_RIDE_DESCRIPTION_FIRST_AID },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_FIRST_AID",
     .AvailableBreakdowns = 0,
     .Heights = { 12, DefaultFirstAidHeight, 0, 0, },
     .MaxMass = 255,
@@ -64,5 +63,6 @@ constexpr RideTypeDescriptor FirstAidRTD =
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::KioskOrFacility,
+    .specialType = RtdSpecialType::firstAid,
 };
 // clang-format on

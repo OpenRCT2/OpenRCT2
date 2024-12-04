@@ -92,9 +92,12 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     }
     else if (String::StartsWith(s, "$CSG"))
     {
-        auto range = ParseRange(s.substr(4));
-        if (!range.empty())
+        auto rangeStart = s.find('[');
+        auto rangeEnd = s.find(']');
+        if (rangeStart != std::string::npos && rangeEnd != std::string::npos)
         {
+            auto rangeString = s.substr(rangeStart, rangeEnd - rangeStart + 1);
+            auto range = ParseRange(rangeString);
             if (IsCsgLoaded())
             {
                 for (auto i : range)
@@ -118,9 +121,12 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     }
     else if (String::StartsWith(s, "$G1"))
     {
-        auto range = ParseRange(s.substr(3));
-        if (!range.empty())
+        auto rangeStart = s.find('[');
+        auto rangeEnd = s.find(']');
+        if (rangeStart != std::string::npos && rangeEnd != std::string::npos)
         {
+            auto rangeString = s.substr(rangeStart, rangeEnd - rangeStart + 1);
+            auto range = ParseRange(rangeString);
             for (auto i : range)
             {
                 result.push_back(std::make_unique<RequiredImage>(
@@ -132,10 +138,11 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     {
         auto name = s.substr(14);
         auto rangeStart = name.find('[');
-        if (rangeStart != std::string::npos)
+        auto rangeEnd = name.find(']');
+        if (rangeStart != std::string::npos && rangeEnd != std::string::npos)
         {
-            auto rangeString = name.substr(rangeStart);
-            auto range = ParseRange(name.substr(rangeStart));
+            auto rangeString = name.substr(rangeStart, rangeEnd - rangeStart + 1);
+            auto range = ParseRange(rangeString);
             name = name.substr(0, rangeStart);
             result = LoadObjectImages(context, name, range);
         }
@@ -144,10 +151,11 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     {
         auto name = s.substr(5);
         auto rangeStart = name.find('[');
-        if (rangeStart != std::string::npos)
+        auto rangeEnd = name.find(']');
+        if (rangeStart != std::string::npos && rangeEnd != std::string::npos)
         {
-            auto rangeString = name.substr(rangeStart);
-            auto range = ParseRange(name.substr(rangeStart));
+            auto rangeString = name.substr(rangeStart, rangeEnd - rangeStart + 1);
+            auto range = ParseRange(rangeString);
             name = name.substr(0, rangeStart);
             result = LoadImageArchiveImages(context, name, range);
         }

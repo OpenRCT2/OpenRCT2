@@ -761,7 +761,7 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    WindowBase* ScenarioselectOpen(scenarioselect_callback callback)
+    WindowBase* ScenarioselectOpen(ScenarioSelectCallback callback)
     {
         return ScenarioselectOpen([callback](std::string_view scenario) { callback(std::string(scenario).c_str()); });
     }

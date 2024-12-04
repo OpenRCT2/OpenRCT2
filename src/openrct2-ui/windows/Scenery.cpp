@@ -680,7 +680,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
                 }
 
-                if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
+                if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode)
                 {
                     widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Button;
                     if (IsSceneryItemRestricted(tabSelectedScenery))
@@ -2364,7 +2364,7 @@ namespace OpenRCT2::Ui::Windows
 
         void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, ScreenCoordsXY& screenPos)
         {
-            if (!canRaiseItem && !GetGameState().Cheats.DisableSupportLimits)
+            if (!canRaiseItem && !GetGameState().Cheats.disableSupportLimits)
             {
                 gSceneryCtrlPressed = false;
                 gSceneryShiftPressed = false;

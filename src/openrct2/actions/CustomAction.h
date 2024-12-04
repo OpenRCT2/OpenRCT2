@@ -11,7 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "GameAction.h"
+    #include "GameAction.h"
 
 class CustomAction final : public GameActionBase<GameCommand::Custom>
 {
