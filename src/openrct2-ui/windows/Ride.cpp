@@ -5456,7 +5456,7 @@ namespace OpenRCT2::Ui::Windows
             intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
             intent.PutExtra(INTENT_EXTRA_TRACK_DESIGN, _trackDesign.get());
             intent.PutExtra(INTENT_EXTRA_PATH, trackName);
-            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(&TrackDesignCallback));
+            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<close_callback>(&TrackDesignCallback));
 
             ContextOpenIntent(&intent);
         }

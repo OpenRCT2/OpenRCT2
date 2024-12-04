@@ -942,7 +942,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto intent = Intent(WindowClass::Loadsave);
                     intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
-                    intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(HeightmapLoadsaveCallback));
+                    intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<close_callback>(HeightmapLoadsaveCallback));
                     ContextOpenIntent(&intent);
                     return;
                 }

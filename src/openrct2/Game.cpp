@@ -654,7 +654,7 @@ void GameLoadOrQuitNoSavePrompt()
             {
                 auto intent = Intent(WindowClass::Loadsave);
                 intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-                intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(GameLoadOrQuitNoSavePromptCallback));
+                intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<close_callback>(GameLoadOrQuitNoSavePromptCallback));
                 ContextOpenIntent(&intent);
             }
             break;
@@ -683,7 +683,7 @@ void GameLoadOrQuitNoSavePrompt()
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
             auto intent = Intent(WindowClass::ScenarioSelect);
-            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(NewGameWindowCallback));
+            intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<close_callback>(NewGameWindowCallback));
             ContextOpenIntent(&intent);
             break;
         }
