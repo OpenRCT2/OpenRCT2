@@ -18,5 +18,20 @@
                 [  140, 74 ], [  141, 74 ], [  142, 74 ], [ 143, 74 ], [ 144, 74 ], [ 145, 74 ], [ 146, 74 ], [ 147, 74 ]
             ]
         }
-    }
+    },
+    "elements_to_delete": [
+        {
+            "element_index": 1,
+            "coordinates": [
+                [ 86, 75 ], [ 86, 77 ], [ 86, 78 ]
+            ]
+        }
+    ],
+    "paths": [
+        {
+            "railings": "rct2.footpath_railings.bamboo_brown",
+            "surface": "rct2.footpath_surface.dirt",
+            "coordinates": [ [ 86, 74, 12 ], [ 86, 75, 12 ], [ 86, 76, 12 ], [ 86, 77, 12 ], [ 86, 78, 12 ] ]
+        }
+    ]
 }

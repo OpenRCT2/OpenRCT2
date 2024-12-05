@@ -6,6 +6,7 @@
 - Improved: [#23123] Improve sorting of roller coasters in build new ride menu.
 - Improved: [#23211] Add boosters to classic wooden roller coaster (cheats only).
 - Improved: [#23233] Add diagonal booster to LSM Launched Coaster.
+- Fix: [#20070, #22972] Missing and mismatched flat and sloped footpaths on several scenarios.
 - Fix: [#22726] ‘Force park rating’ cheat is not saved with the park.
 - Fix: [#23064] Stand-Up Roller Coaster unbanked to banked track pieces are misaligned.
 - Fix: [#23066] Stand-Up Roller Coaster has many supports that don't join up to the track.
