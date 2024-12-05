@@ -20,6 +20,7 @@ class PeepAnimationsObject final : public Object
 private:
     ImageIndex _imageOffsetId;
     OpenRCT2::AnimationPeepType _peepType;
+    bool _slowWalking;
     std::vector<OpenRCT2::PeepAnimations> _animationGroups;
 
 public:
@@ -29,7 +30,9 @@ public:
     void Load() override;
     void Unload() override;
 
+    std::string GetCostumeName() const;
     ImageIndex GetInlineImageId() const;
+
     const OpenRCT2::PeepAnimation& GetPeepAnimation(
         PeepAnimationGroup animGroup, PeepAnimationType animType = PeepAnimationType::Walking) const;
     const OpenRCT2::SpriteBounds& GetSpriteBounds(
@@ -38,6 +41,11 @@ public:
     OpenRCT2::AnimationPeepType GetPeepType() const;
     size_t GetNumAnimationGroups() const;
     PeepAnimationGroup GetLegacyPosition(PeepAnimationGroup animGroup) const;
+
+    bool IsSlowWalking()
+    {
+        return _slowWalking;
+    };
 
     void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
 };

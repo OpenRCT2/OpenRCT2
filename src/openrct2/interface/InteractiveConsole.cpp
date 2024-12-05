@@ -53,6 +53,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
@@ -476,14 +477,15 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
             {
                 console.WriteFormatLine("staff set energy <staff id> <value 0-255>");
                 console.WriteFormatLine("staff set costume <staff id> <costume id>");
-                for (int32_t i = 0; i < static_cast<uint8_t>(EntertainerCostume::Count); i++)
+
+                auto _availableCostumeIndexes = findAllPeepAnimationsIndexesForType(AnimationPeepType::Entertainer);
+                auto _availableCostumeObjects = findAllPeepAnimationsObjectForType(AnimationPeepType::Entertainer);
+
+                for (auto i = 0u; i < _availableCostumeIndexes.size(); i++)
                 {
-                    char costume_name[128] = { 0 };
-                    StringId costume = StaffCostumeNames[i];
-                    OpenRCT2::FormatStringLegacy(costume_name, 128, STR_STRINGID, &costume);
-                    // That's a terrible hack here. Costume names include inline sprites
-                    // that don't work well with the console, so manually skip past them.
-                    console.WriteFormatLine("        costume %i: %s", i, costume_name + 7);
+                    auto index = _availableCostumeIndexes[i];
+                    auto name = _availableCostumeObjects[i]->GetCostumeName();
+                    console.WriteFormatLine("        costume %i: %s", index, name.c_str());
                 }
                 return;
             }
@@ -526,13 +528,14 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                     console.WriteLineError("Specified staff is not entertainer");
                     return;
                 }
-                if (!int_valid[1] || int_val[1] < 0 || int_val[1] >= static_cast<uint8_t>(EntertainerCostume::Count))
+                auto& objManager = GetContext()->GetObjectManager();
+                if (!int_valid[1] || int_val[1] < 0 || objManager.GetLoadedObject<PeepAnimationsObject>(int_val[1]) == nullptr)
                 {
                     console.WriteLineError("Invalid costume ID");
                     return;
                 }
 
-                EntertainerCostume costume = static_cast<EntertainerCostume>(int_val[1]);
+                auto costume = static_cast<ObjectEntryIndex>(int_val[1]);
                 auto staffSetCostumeAction = StaffSetCostumeAction(EntityId::FromUnderlying(int_val[0]), costume);
                 GameActions::Execute(&staffSetCostumeAction);
             }

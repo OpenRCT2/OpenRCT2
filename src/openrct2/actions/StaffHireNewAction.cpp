@@ -161,6 +161,10 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         auto& objManager = GetContext()->GetObjectManager();
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(animObjectIndex);
 
+        newPeep->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
+        if (animObj->IsSlowWalking())
+            newPeep->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
+
         const auto& spriteBounds = animObj->GetSpriteBounds(newPeep->AnimationGroup);
         newPeep->SpriteData.Width = spriteBounds.sprite_width;
         newPeep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;

@@ -57,22 +57,6 @@
 
 using namespace OpenRCT2;
 
-// clang-format off
-const StringId StaffCostumeNames[] = {
-        STR_STAFF_OPTION_COSTUME_PANDA,
-        STR_STAFF_OPTION_COSTUME_TIGER,
-        STR_STAFF_OPTION_COSTUME_ELEPHANT,
-        STR_STAFF_OPTION_COSTUME_ROMAN,
-        STR_STAFF_OPTION_COSTUME_GORILLA,
-        STR_STAFF_OPTION_COSTUME_SNOWMAN,
-        STR_STAFF_OPTION_COSTUME_KNIGHT,
-        STR_STAFF_OPTION_COSTUME_ASTRONAUT,
-        STR_STAFF_OPTION_COSTUME_BANDIT,
-        STR_STAFF_OPTION_COSTUME_SHERIFF,
-        STR_STAFF_OPTION_COSTUME_PIRATE,
-};
-// clang-format on
-
 // Maximum manhattan distance that litter can be for a handyman to seek to it
 const uint16_t MAX_LITTER_DISTANCE = 3 * kCoordsXYStep;
 
@@ -963,14 +947,6 @@ int32_t Staff::GetHireDate() const
     return HireDate;
 }
 
-PeepAnimationGroup EntertainerCostumeToSprite(EntertainerCostume entertainerType)
-{
-    uint8_t value = static_cast<uint8_t>(entertainerType);
-    PeepAnimationGroup newAnimationGroup = static_cast<PeepAnimationGroup>(
-        value + EnumValue(PeepAnimationGroup::EntertainerPanda));
-    return newAnimationGroup;
-}
-
 colour_t StaffGetColour(StaffType staffType)
 {
     const auto& gameState = GetGameState();
@@ -1009,42 +985,6 @@ GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
                 GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE);
     }
     return GameActions::Result();
-}
-
-uint32_t StaffGetAvailableEntertainerCostumes()
-{
-    uint32_t entertainerCostumes = 0;
-    for (int32_t i = 0; i < kMaxSceneryGroupObjects; i++)
-    {
-        if (SceneryGroupIsInvented(i))
-        {
-            const auto sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
-            entertainerCostumes |= sgEntry->entertainer_costumes;
-        }
-    }
-
-    // For some reason the flags are +4 from the actual costume IDs
-    entertainerCostumes >>= 4;
-
-    // Fix #6593: force enable the default costumes, which normally get enabled through the default scenery groups.
-    entertainerCostumes |= (1 << static_cast<uint8_t>(EntertainerCostume::Panda))
-        | (1 << static_cast<uint8_t>(EntertainerCostume::Tiger)) | (1 << static_cast<uint8_t>(EntertainerCostume::Elephant));
-
-    return entertainerCostumes;
-}
-
-int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList)
-{
-    uint32_t availableCostumes = StaffGetAvailableEntertainerCostumes();
-    int32_t numCostumes = 0;
-    for (uint8_t i = 0; i < static_cast<uint8_t>(EntertainerCostume::Count); i++)
-    {
-        if (availableCostumes & (1 << i))
-        {
-            costumeList[numCostumes++] = static_cast<EntertainerCostume>(i);
-        }
-    }
-    return numCostumes;
 }
 
 /** rct2: 0x009929C8 */

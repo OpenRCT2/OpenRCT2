@@ -701,19 +701,6 @@ namespace OpenRCT2::Ui::Windows
             return closestPeep;
         }
 
-        static EntertainerCostume GetRandomEntertainerCostume()
-        {
-            auto result = EntertainerCostume::Panda;
-            EntertainerCostume costumeList[EnumValue(EntertainerCostume::Count)];
-            int32_t numCostumes = StaffGetAvailableEntertainerCostumeList(costumeList);
-            if (numCostumes > 0)
-            {
-                int32_t index = UtilRand() % numCostumes;
-                result = costumeList[index];
-            }
-            return result;
-        }
-
         static constexpr StaffNamingConvention GetStaffNamingConvention(StaffType type)
         {
             switch (type)

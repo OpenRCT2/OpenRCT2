@@ -60,6 +60,9 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
     Guard::Assert(root["peepType"].is_string(), "PeepAnimationsObject::ReadJson expects peepType to be a string");
     _peepType = animationPeepTypeMap[Json::GetString(root["peepType"])];
 
+    Guard::Assert(root["isSlowWalking"].is_boolean(), "PeepAnimationsObject::ReadJson expects isSlowWalking to be a boolean");
+    _slowWalking = Json::GetBoolean(root["isSlowWalking"]);
+
     auto& requiredAnimationMap = getAnimationsByPeepType(_peepType);
     _animationGroups.clear();
 
@@ -103,6 +106,11 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         _animationGroups.push_back(group);
     }
+}
+
+std::string PeepAnimationsObject::GetCostumeName() const
+{
+    return GetStringTable().GetString(ObjectStringID::NAME);
 }
 
 ImageIndex PeepAnimationsObject::GetInlineImageId() const
