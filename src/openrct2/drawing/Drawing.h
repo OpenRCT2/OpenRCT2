@@ -23,6 +23,7 @@
 #include <cassert>
 #include <memory>
 #include <optional>
+#include <span>
 #include <vector>
 
 struct ScreenCoordsXY;
@@ -491,7 +492,7 @@ constexpr uint8_t kPaletteTotalOffsets = 192;
 constexpr int8_t kMaxScrollingTextModes = 38;
 
 extern OpenRCT2::Drawing::GamePalette gPalette;
-extern uint8_t gGamePalette[256 * 4];
+extern OpenRCT2::Drawing::GamePalette gGamePalette;
 extern uint32_t gPaletteEffectFrame;
 
 extern uint8_t gTextPalette[];
@@ -604,7 +605,7 @@ void MaskFn(
 
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
-void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
+void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, int32_t start_index, int32_t num_colours);
 void UpdatePaletteEffects();
 
 void RefreshVideo();
