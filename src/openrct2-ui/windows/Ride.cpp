@@ -50,8 +50,8 @@
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/object/StationObject.h>
-#include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -1333,7 +1333,8 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_RIDE_PAGE_CUSTOMER)
                     spriteIndex = picked_peep_frame & ~3;
 
-                spriteIndex += GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
+                auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
+                spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
 
                 GfxDrawSprite(
                     dpi, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_TEAL),

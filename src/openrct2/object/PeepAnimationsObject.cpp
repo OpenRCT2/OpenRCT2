@@ -110,9 +110,19 @@ ImageIndex PeepAnimationsObject::GetInlineImageId() const
     return _imageOffsetId;
 }
 
+AnimationPeepType PeepAnimationsObject::GetPeepType() const
+{
+    return _peepType;
+}
+
 const PeepAnimation& PeepAnimationsObject::GetPeepAnimation(PeepAnimationGroup animGroup, PeepAnimationType animType) const
 {
     return _animationGroups[EnumValue(animGroup)][animType];
+}
+
+const SpriteBounds& PeepAnimationsObject::GetSpriteBounds(PeepAnimationGroup animGroup, PeepAnimationType animType) const
+{
+    return _animationGroups[EnumValue(animGroup)][animType].bounds;
 }
 
 size_t PeepAnimationsObject::GetNumAnimationGroups() const

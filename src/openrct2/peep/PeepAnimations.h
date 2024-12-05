@@ -16,6 +16,8 @@
 
 #include <vector>
 
+class PeepAnimationsObject;
+
 namespace OpenRCT2
 {
     enum class AnimationPeepType : uint8_t

@@ -30,7 +30,8 @@
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/network/network.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
@@ -560,8 +561,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            int32_t animationFrame = GetPeepAnimation(peep->AnimationGroup).base_image + 1;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
+            int32_t animationFrame = animObj->GetPeepAnimation(peep->AnimationGroup).base_image + 1;
             int32_t animationFrameOffset = 0;
 
             if (page == WINDOW_GUEST_OVERVIEW)
@@ -961,7 +964,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto baseImageId = GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging).base_image;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+            auto baseImageId = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging).base_image;
             baseImageId += picked_peep_frame >> 2;
             gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
         }

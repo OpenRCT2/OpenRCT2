@@ -33,9 +33,9 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Finance.h>
+#include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
-#include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -606,34 +606,44 @@ namespace OpenRCT2::Ui::Windows
         void DrawTabImages(DrawPixelInfo& dpi) const
         {
             const auto& gameState = GetGameState();
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, PeepAnimationGroup::Handyman, gameState.StaffHandymanColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, PeepAnimationGroup::Mechanic, gameState.StaffMechanicColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, PeepAnimationGroup::Security, gameState.StaffSecurityColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, PeepAnimationGroup::EntertainerElephant);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.StaffHandymanColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.StaffMechanicColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.StaffSecurityColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::Entertainer);
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepAnimationGroup type, colour_t colour) const
+        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
         {
+            PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
+            if (animObj == nullptr)
+                return;
+
             auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
             const auto& widget = widgets[widgetIndex];
+
             auto imageId = (_selectedTab == tabIndex ? (_tabAnimationIndex & ~3) : 0);
-            imageId += GetPeepAnimation(type).base_image + 1;
+            imageId += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
             GfxDrawSprite(
                 dpi, ImageId(imageId, colour),
                 windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepAnimationGroup type) const
+        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, AnimationPeepType type) const
         {
+            PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
+            if (animObj == nullptr)
+                return;
+
             auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
             const auto& widget = widgets[widgetIndex];
+
             DrawPixelInfo clippedDpi;
             if (ClipDrawPixelInfo(
                     clippedDpi, dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
                     widget.right - widget.left - 1, widget.bottom - widget.top - 1))
             {
                 auto imageId = (_selectedTab == 3 ? (_tabAnimationIndex & ~3) : 0);
-                imageId += GetPeepAnimation(type).base_image + 1;
+                imageId += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
                 GfxDrawSprite(clippedDpi, ImageId(imageId), { 15, 23 });
             }
         }

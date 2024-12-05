@@ -19,7 +19,8 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/management/NewsItem.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/sprites.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -262,7 +263,10 @@ namespace OpenRCT2::Ui::Windows
                                 }
                             }
 
-                            ImageIndex imageId = GetPeepAnimation(spriteType).base_image + 1;
+                            auto& objManager = GetContext()->GetObjectManager();
+                            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+                            ImageIndex imageId = animObj->GetPeepAnimation(spriteType).base_image + 1;
                             auto image = ImageId(imageId, peep->TshirtColour, peep->TrousersColour);
                             GfxDrawSprite(cliped_dpi, image, clipCoords);
                             break;

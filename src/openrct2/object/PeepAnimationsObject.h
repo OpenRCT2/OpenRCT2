@@ -18,8 +18,8 @@
 class PeepAnimationsObject final : public Object
 {
 private:
-    OpenRCT2::AnimationPeepType _peepType;
     ImageIndex _imageOffsetId;
+    OpenRCT2::AnimationPeepType _peepType;
     std::vector<OpenRCT2::PeepAnimations> _animationGroups;
 
 public:
@@ -32,7 +32,10 @@ public:
     ImageIndex GetInlineImageId() const;
     const OpenRCT2::PeepAnimation& GetPeepAnimation(
         PeepAnimationGroup animGroup, PeepAnimationType animType = PeepAnimationType::Walking) const;
+    const OpenRCT2::SpriteBounds& GetSpriteBounds(
+        PeepAnimationGroup spriteType, PeepAnimationType actionAnimationGroup = PeepAnimationType::Walking) const;
 
+    OpenRCT2::AnimationPeepType GetPeepType() const;
     size_t GetNumAnimationGroups() const;
     PeepAnimationGroup GetLegacyPosition(PeepAnimationGroup animGroup) const;
 

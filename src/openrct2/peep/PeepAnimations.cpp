@@ -9,8 +9,12 @@
 
 #include "PeepAnimations.h"
 
+#include "../Context.h"
 #include "../drawing/Drawing.h"
 #include "../entity/Peep.h"
+#include "../object/ObjectLimits.h"
+#include "../object/ObjectManager.h"
+#include "../object/PeepAnimationsObject.h"
 
 #include <algorithm>
 #include <random>

@@ -29,7 +29,8 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/network/network.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -580,8 +581,10 @@ namespace OpenRCT2::Ui::Windows
             if (staff->Is<Staff>() && staff->AssignedStaffType == StaffType::Entertainer)
                 screenCoords.y++;
 
-            int32_t imageIndex = GetPeepAnimation(staff->AnimationGroup).base_image + 1;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
 
+            int32_t imageIndex = animObj->GetPeepAnimation(staff->AnimationGroup).base_image + 1;
             int32_t offset = 0;
 
             if (page == WINDOW_STAFF_OVERVIEW)
@@ -684,7 +687,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto baseImageId = GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging).base_image;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(staff->AnimationObjectIndex);
+
+            auto baseImageId = animObj->GetPeepAnimation(staff->AnimationGroup, PeepAnimationType::Hanging).base_image;
             baseImageId += picked_peep_frame >> 2;
             gPickupPeepImage = ImageId(baseImageId, staff->TshirtColour, staff->TrousersColour);
         }

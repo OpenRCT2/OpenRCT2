@@ -14,7 +14,8 @@
     #include "../../../GameState.h"
     #include "../../../entity/Guest.h"
     #include "../../../localisation/Formatting.h"
-    #include "../../../peep/PeepAnimationData.h"
+    #include "../../../object/ObjectManager.h"
+    #include "../../../object/PeepAnimationsObject.h"
     #include "../../../peep/PeepAnimations.h"
     #include "../../../ride/RideEntry.h"
 
@@ -867,7 +868,10 @@ namespace OpenRCT2::Scripting
         auto peep = GetPeep();
         if (peep != nullptr)
         {
-            const auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, *animationType);
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+            const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, *animationType);
             for (auto frameOffset : animationGroup.frame_offsets)
             {
                 auto imageId = animationGroup.base_image;
@@ -921,7 +925,10 @@ namespace OpenRCT2::Scripting
         else
             peep->AnimationFrameNum = offset;
 
-        const auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
+        auto& objManager = GetContext()->GetObjectManager();
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+        const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
         peep->Invalidate();
         peep->UpdateSpriteBoundingBox();
@@ -948,7 +955,10 @@ namespace OpenRCT2::Scripting
 
         auto* peep = GetGuest();
 
-        const auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
+        auto& objManager = GetContext()->GetObjectManager();
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+        const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         auto length = animationGroup.frame_offsets.size();
         offset %= length;
 
@@ -969,7 +979,10 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        const auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
+        auto& objManager = GetContext()->GetObjectManager();
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+        const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         return static_cast<uint8_t>(animationGroup.frame_offsets.size());
     }
 

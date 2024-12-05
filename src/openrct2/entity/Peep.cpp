@@ -40,7 +40,6 @@
 #include "../object/PeepAnimationsObject.h"
 #include "../paint/Paint.h"
 #include "../peep/GuestPathfinding.h"
-#include "../peep/PeepAnimationData.h"
 #include "../peep/PeepSpriteIds.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
@@ -380,7 +379,10 @@ void Peep::UpdateCurrentAnimationType()
 
 void Peep::UpdateSpriteBoundingBox()
 {
-    const auto& spriteBounds = GetSpriteBounds(AnimationGroup, AnimationType);
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
+    const auto& spriteBounds = animObj->GetSpriteBounds(AnimationGroup, AnimationType);
     SpriteData.Width = spriteBounds.sprite_width;
     SpriteData.HeightMin = spriteBounds.sprite_height_negative;
     SpriteData.HeightMax = spriteBounds.sprite_height_positive;
@@ -1745,10 +1747,14 @@ void Peep::SwitchNextAnimationType()
     {
         Invalidate();
         AnimationType = NextAnimationType;
-        const SpriteBounds* spriteBounds = &GetSpriteBounds(AnimationGroup, NextAnimationType);
-        SpriteData.Width = spriteBounds->sprite_width;
-        SpriteData.HeightMin = spriteBounds->sprite_height_negative;
-        SpriteData.HeightMax = spriteBounds->sprite_height_positive;
+
+        auto& objManager = GetContext()->GetObjectManager();
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
+        const auto& spriteBounds = animObj->GetSpriteBounds(AnimationGroup, NextAnimationType);
+        SpriteData.Width = spriteBounds.sprite_width;
+        SpriteData.HeightMin = spriteBounds.sprite_height_negative;
+        SpriteData.HeightMax = spriteBounds.sprite_height_positive;
         Invalidate();
     }
 }

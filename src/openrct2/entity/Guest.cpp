@@ -33,10 +33,12 @@
 #include "../network/network.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/MusicObject.h"
+#include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"
-#include "../peep/PeepAnimationData.h"
+#include "../peep/PeepAnimations.h"
 #include "../peep/PeepThoughts.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
@@ -7142,6 +7144,8 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     auto& gameState = GetGameState();
     Guest* peep = CreateEntity<Guest>();
+
+    peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Guest);
     peep->AnimationGroup = PeepAnimationGroup::Normal;
     peep->OutsideOfPark = true;
     peep->State = PeepState::Falling;
@@ -7154,10 +7158,13 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->FavouriteRide = RideId::GetNull();
     peep->FavouriteRideRating = 0;
 
-    const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-    peep->SpriteData.Width = spriteBounds->sprite_width;
-    peep->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
-    peep->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+    const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
+    peep->SpriteData.Width = spriteBounds.sprite_width;
+    peep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;
+    peep->SpriteData.HeightMax = spriteBounds.sprite_height_positive;
     peep->Orientation = 0;
 
     peep->MoveTo(coords);
