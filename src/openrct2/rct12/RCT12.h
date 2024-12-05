@@ -18,6 +18,7 @@
 #include "../world/tile_element/TileElementType.h"
 #include "Limits.h"
 
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
