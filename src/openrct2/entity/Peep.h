@@ -18,6 +18,7 @@
 
 #include <array>
 #include <optional>
+#include <string>
 #include <string_view>
 
 constexpr uint8_t kPeepMinEnergy = 32;
