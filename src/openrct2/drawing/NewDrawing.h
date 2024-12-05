@@ -13,7 +13,7 @@
 #include "ColourPalette.h"
 
 struct DrawPixelInfo;
-struct PaletteBGRA;
+
 enum class DrawingEngine : int32_t;
 
 extern StringId DrawingEngineStringIds[3];
