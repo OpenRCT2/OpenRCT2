@@ -149,12 +149,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_STAFF_LIST_HIRE_BUTTON:
                 {
                     auto staffType = GetSelectedStaffType();
-                    auto costume = EntertainerCostume::Count;
-                    if (staffType == StaffType::Entertainer)
-                    {
-                        costume = GetRandomEntertainerCostume();
-                    }
-                    HireNewMember(staffType, costume);
+                    HireNewMember(staffType);
                     break;
                 }
                 case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
@@ -531,7 +526,7 @@ namespace OpenRCT2::Ui::Windows
         /**
          * Hires a new staff member of the given type.
          */
-        void HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
+        void HireNewMember(StaffType staffType)
         {
             bool autoPosition = Config::Get().general.AutoStaffPlacement;
             if (GetInputManager().IsModifierKeyPressed(ModifierKey::shift))
@@ -554,7 +549,15 @@ namespace OpenRCT2::Ui::Windows
                 staffOrders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
             }
 
-            auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType, staffOrders);
+            // Select a (random) costume for this staff member
+            auto animPeepType = AnimationPeepType(static_cast<uint8_t>(staffType) + 1);
+            ObjectEntryIndex costume;
+            if (staffType == StaffType::Entertainer)
+                costume = findRandomPeepAnimationsIndexForType(animPeepType);
+            else
+                costume = findPeepAnimationsIndexForType(animPeepType);
+
+            auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, costume, staffOrders);
             hireStaffAction.SetCallback([=](const GameAction*, const GameActions::Result* res) -> void {
                 if (res->Error != GameActions::Status::Ok)
                     return;
