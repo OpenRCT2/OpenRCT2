@@ -25,56 +25,31 @@
 #include "../world/Location.hpp"
 #include "LightFX.h"
 
+#include <array>
 #include <cassert>
 #include <cstring>
+#include <numeric>
 
 using namespace OpenRCT2;
 
-const PaletteMap& PaletteMap::GetDefault()
-{
-    static bool initialised = false;
-    static uint8_t data[256];
-    static PaletteMap defaultMap(data);
-    if (!initialised)
-    {
-        for (size_t i = 0; i < sizeof(data); i++)
-        {
-            data[i] = static_cast<uint8_t>(i);
-        }
-        initialised = true;
-    }
-    return defaultMap;
-}
+static auto _defaultPaletteMapping = []() {
+    std::array<uint8_t, 256> res;
+    std::iota(res.begin(), res.end(), 0);
+    return res;
+}();
 
-bool PaletteMap::operator==(const PaletteMap& lhs) const
+PaletteMap PaletteMap::GetDefault()
 {
-    return _data == lhs._data && _dataLength == lhs._dataLength && _numMaps == lhs._numMaps && _mapLength == lhs._mapLength;
+    return PaletteMap(_defaultPaletteMapping);
 }
 
 uint8_t& PaletteMap::operator[](size_t index)
 {
-    assert(index < _dataLength);
-
-    // Provide safety in release builds
-    if (index >= _dataLength)
-    {
-        static uint8_t dummy;
-        return dummy;
-    }
-
     return _data[index];
 }
 
 uint8_t PaletteMap::operator[](size_t index) const
 {
-    assert(index < _dataLength);
-
-    // Provide safety in release builds
-    if (index >= _dataLength)
-    {
-        return 0;
-    }
-
     return _data[index];
 }
 
@@ -84,15 +59,15 @@ uint8_t PaletteMap::Blend(uint8_t src, uint8_t dst) const
     assert(src != 0 && (src - 1) < _numMaps);
     assert(dst < _mapLength);
     auto idx = ((src - 1) * 256) + dst;
-    return (*this)[idx];
+    return _data[idx];
 }
 
 void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, size_t length)
 {
-    auto maxLength = std::min(_mapLength - srcIndex, _mapLength - dstIndex);
+    auto maxLength = std::min(_data.size() - srcIndex, _data.size() - dstIndex);
     assert(length <= maxLength);
     auto copyLength = std::min(length, maxLength);
-    std::memcpy(&_data[dstIndex], &src._data[srcIndex], copyLength);
+    std::copy(src._data.begin() + srcIndex, src._data.begin() + srcIndex + copyLength, _data.begin() + dstIndex);
 }
 
 OpenRCT2::Drawing::GamePalette gPalette;
