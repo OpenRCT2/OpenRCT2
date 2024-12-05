@@ -13,6 +13,7 @@
 #include "../entity/Peep.h"
 
 #include <algorithm>
+#include <random>
 
 namespace OpenRCT2
 {
@@ -102,6 +103,67 @@ namespace OpenRCT2
             default:
                 return availableEntertainerAnimations;
         }
+    }
+
+    ObjectEntryIndex findPeepAnimationsIndexForType(const AnimationPeepType type)
+    {
+        auto& objManager = GetContext()->GetObjectManager();
+        for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+        {
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
+            if (animObj != nullptr && animObj->GetPeepType() == type)
+                return i;
+        }
+        return OBJECT_ENTRY_INDEX_NULL;
+    }
+
+    PeepAnimationsObject* findPeepAnimationsObjectForType(const AnimationPeepType type)
+    {
+        auto& objManager = GetContext()->GetObjectManager();
+        for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+        {
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
+            if (animObj != nullptr && animObj->GetPeepType() == type)
+                return animObj;
+        }
+        return nullptr;
+    }
+
+    std::vector<ObjectEntryIndex> findAllPeepAnimationsIndexesForType(const AnimationPeepType type)
+    {
+        std::vector<ObjectEntryIndex> output{};
+        auto& objManager = GetContext()->GetObjectManager();
+        for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+        {
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
+            if (animObj != nullptr && animObj->GetPeepType() == type)
+                output.push_back(i);
+        }
+        return output;
+    }
+
+    std::vector<PeepAnimationsObject*> findAllPeepAnimationsObjectForType(const AnimationPeepType type)
+    {
+        std::vector<PeepAnimationsObject*> output{};
+        auto& objManager = GetContext()->GetObjectManager();
+        for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+        {
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
+            if (animObj != nullptr && animObj->GetPeepType() == type)
+                output.push_back(animObj);
+        }
+        return output;
+    }
+
+    ObjectEntryIndex findRandomPeepAnimationsIndexForType(const AnimationPeepType type)
+    {
+        auto costumes = findAllPeepAnimationsIndexesForType(type);
+        if (costumes.empty())
+            return OBJECT_ENTRY_INDEX_NULL;
+
+        std::vector<ObjectEntryIndex> out{};
+        std::sample(costumes.begin(), costumes.end(), std::back_inserter(out), 1, std::mt19937{ std::random_device{}() });
+        return !out.empty() ? out[0] : OBJECT_ENTRY_INDEX_NULL;
     }
 
     // Adapted from CarEntry.cpp

@@ -71,5 +71,13 @@ namespace OpenRCT2
         PeepAnimation animations[37]{};
     };
 
+    ObjectEntryIndex findPeepAnimationsIndexForType(const AnimationPeepType type);
+    PeepAnimationsObject* findPeepAnimationsObjectForType(const AnimationPeepType type);
+
+    std::vector<ObjectEntryIndex> findAllPeepAnimationsIndexesForType(const AnimationPeepType type);
+    std::vector<PeepAnimationsObject*> findAllPeepAnimationsObjectForType(const AnimationPeepType type);
+
+    ObjectEntryIndex findRandomPeepAnimationsIndexForType(const AnimationPeepType type);
+
     SpriteBounds inferMaxAnimationDimensions(const PeepAnimation& anim);
 } // namespace OpenRCT2
