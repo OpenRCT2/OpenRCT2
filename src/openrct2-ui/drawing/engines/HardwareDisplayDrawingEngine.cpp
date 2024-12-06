@@ -150,7 +150,9 @@ public:
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
             _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
-            Guard::Assert(_screenTexture != nullptr, "Failed to create screen texture: %s", SDL_GetError());
+            Guard::Assert(
+                _screenTexture != nullptr, "Failed to create unscaled screen texture (%ux%u, pixelFormat = %u): %s", width,
+                height, pixelFormat, SDL_GetError());
 
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
@@ -158,12 +160,17 @@ public:
             _scaledScreenTexture = SDL_CreateTexture(
                 _sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, width * scale, height * scale);
 
-            Guard::Assert(_scaledScreenTexture != nullptr, "Failed to create scaled screen texture: %s", SDL_GetError());
+            Guard::Assert(
+                _scaledScreenTexture != nullptr,
+                "Failed to create scaled screen texture (%ux%u, scale = %u, pixelFormat = %u): %s", width, height, scale,
+                pixelFormat, SDL_GetError());
         }
         else
         {
             _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
-            Guard::Assert(_screenTexture != nullptr, "Failed to create screen texture: %s", SDL_GetError());
+            Guard::Assert(
+                _screenTexture != nullptr, "Failed to create screen texture (%ux%u, pixelFormat = %u): %s", width, height,
+                pixelFormat, SDL_GetError());
         }
 
         uint32_t format;
