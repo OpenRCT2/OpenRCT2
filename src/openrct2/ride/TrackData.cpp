@@ -10145,12 +10145,12 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq3 = {
-        .clearance = { 0, -32, -200, 48, { 0b1111, 0 }, 0 },
+        .clearance = { 0, -32, -200, 48, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1000,
     };
 
     static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq4 = {
-        .clearance = { 32, -32, -216, 24, { 0b1111, 0 }, 0 },
+        .clearance = { 32, -32, -216, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
     };
 
@@ -10170,12 +10170,12 @@ namespace OpenRCT2::TrackMetaData
     };
 
     static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq3 = {
-        .clearance = { 0, 32, -200, 48, { 0b1111, 0 }, 0 },
+        .clearance = { 0, 32, -200, 48, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b0010,
     };
 
     static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq4 = {
-        .clearance = { 32, 32, -216, 24, { 0b1111, 0 }, 0 },
+        .clearance = { 32, 32, -216, 24, { 0b1111, 0b1100 }, 0 },
         .allowedWallEdges = 0b1010,
     };
 
