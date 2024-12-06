@@ -87,11 +87,10 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
             // Store animation sequence in vector
             auto sequence = animJson["sequence"].get<std::vector<uint8_t>>();
 
-            // TODO: simplify
-            PeepAnimation anim{ kSpriteIdNull, sequence };
-            anim.imageTableOffset = Json::GetNumber<uint16_t>(animJson["offset"]);
-
-            group[typeEnum] = anim;
+            group[typeEnum] = {
+                .imageTableOffset = Json::GetNumber<uint16_t>(animJson["offset"]),
+                .frame_offsets = sequence,
+            };
         }
 
         // Is this animation group replacing a legacy group?

@@ -40,18 +40,10 @@ namespace OpenRCT2
 
     struct PeepAnimation
     {
-        uint32_t base_image;
-        ImageIndex imageTableOffset{};
+        ImageIndex imageTableOffset;
         std::vector<uint8_t> frame_offsets;
+        uint32_t base_image{};
         SpriteBounds bounds{};
-
-        constexpr PeepAnimation() = default;
-
-        PeepAnimation(uint32_t baseImage, std::vector<uint8_t> frameOffsets)
-            : base_image(baseImage)
-            , frame_offsets(frameOffsets)
-        {
-        }
     };
 
     struct PeepAnimations
