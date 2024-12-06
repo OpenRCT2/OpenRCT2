@@ -532,78 +532,129 @@ namespace OpenRCT2::Ui::Windows
                     | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
             }
 
-            switch (_previousTrackPitchEnd)
+            if (TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection))
             {
-                case TrackPitch::None:
-                    if (_currentlySelectedTrack != TrackCurve::None
-                        || (IsTrackEnabled(TrackGroup::slopeSteepLong) && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong)
-                            && TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)))
-                    {
-                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
-                    }
-                    break;
-                case TrackPitch::Down25:
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
-                    break;
-                case TrackPitch::Down60:
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
-                    if (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
-                        && !(
-                            IsTrackEnabled(TrackGroup::slopeSteepLong)
-                            && !(
-                                TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)
-                                && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))))
-                    {
-                        disabledWidgets |= (1uLL << WIDX_LEVEL);
-                    }
-                    break;
-                case TrackPitch::Up25:
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
-                    break;
-                case TrackPitch::Up60:
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
-                    if (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
-                        && !(
-                            IsTrackEnabled(TrackGroup::slopeSteepLong)
-                            && !(
-                                TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)
-                                && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))))
-                    {
-                        disabledWidgets |= (1uLL << WIDX_LEVEL);
-                    }
-                    break;
-                case TrackPitch::Down90:
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP)
-                        | (1uLL << WIDX_SLOPE_UP_STEEP);
-                    break;
-                case TrackPitch::Up90:
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL)
-                        | (1uLL << WIDX_SLOPE_UP);
-                    break;
-            }
-            if (_previousTrackPitchEnd == TrackPitch::None)
-            {
-                if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::slopeSteepLong)
-                    && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))
+                switch (_previousTrackPitchEnd)
                 {
-                    disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                    case TrackPitch::None:
+                        if (!IsTrackEnabled(TrackGroup::diagSlope))
+                        {
+                            disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_DOWN);
+                        }
+                        if (_currentlySelectedTrack != TrackCurve::None
+                            || (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
+                                && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong)))
+                        {
+                            disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                        }
+                        break;
+                    case TrackPitch::Down25:
+                        disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                        if (!IsTrackEnabled(TrackGroup::diagSlopeSteepDown))
+                        {
+                            disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP);
+                        }
+                        break;
+                    case TrackPitch::Down60:
+                        disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                        if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))
+                        {
+                            disabledWidgets |= (1uLL << WIDX_LEVEL);
+                        }
+                        break;
+                    case TrackPitch::Up25:
+                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
+                        if (!IsTrackEnabled(TrackGroup::diagSlopeSteepUp))
+                        {
+                            disabledWidgets |= (1uLL << WIDX_SLOPE_UP_STEEP);
+                        }
+                        break;
+                    case TrackPitch::Up60:
+                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
+                        if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))
+                        {
+                            disabledWidgets |= (1uLL << WIDX_LEVEL);
+                        }
+                        break;
+                    case TrackPitch::Down90:
+                    case TrackPitch::Up90:
+                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP);
+                        break;
                 }
             }
-            if (IsTrackEnabled(TrackGroup::slopeVertical))
+            else
             {
-                if (_previousTrackPitchEnd == TrackPitch::Up60 && _currentTrackPieceDirection < 4)
+                switch (_previousTrackPitchEnd)
                 {
-                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_VERTICAL);
+                    case TrackPitch::None:
+                        if (_currentlySelectedTrack != TrackCurve::None
+                            || (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::slopeSteepLong)))
+                        {
+                            disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                        }
+                        break;
+                    case TrackPitch::Down25:
+                        disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                        if (!IsTrackEnabled(TrackGroup::slopeSteepDown))
+                        {
+                            disabledWidgets |= 1uLL << WIDX_SLOPE_DOWN_STEEP;
+                        }
+                        break;
+                    case TrackPitch::Down60:
+                        disabledWidgets |= (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+                        if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::slopeSteepLong))
+                        {
+                            disabledWidgets |= (1uLL << WIDX_LEVEL);
+                        }
+                        break;
+                    case TrackPitch::Up25:
+                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
+                        if (!IsTrackEnabled(TrackGroup::slopeSteepUp))
+                        {
+                            disabledWidgets |= 1uLL << WIDX_SLOPE_UP_STEEP;
+                        }
+                        break;
+                    case TrackPitch::Up60:
+                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN);
+                        if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::slopeSteepLong))
+                        {
+                            disabledWidgets |= (1uLL << WIDX_LEVEL);
+                        }
+                        break;
+                    case TrackPitch::Down90:
+                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP)
+                            | (1uLL << WIDX_SLOPE_UP_STEEP);
+                        break;
+                    case TrackPitch::Up90:
+                        disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_LEVEL)
+                            | (1uLL << WIDX_SLOPE_UP);
+                        break;
                 }
-                if (_previousTrackPitchEnd == TrackPitch::Up90)
+                if (IsTrackEnabled(TrackGroup::slopeVertical))
                 {
-                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_VERTICAL);
-                }
-                if (_previousTrackPitchEnd == TrackPitch::Down60 && _currentTrackPieceDirection < 4)
-                {
-                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_VERTICAL);
+                    if (_previousTrackPitchEnd == TrackPitch::Up60 && _currentTrackPieceDirection < 4)
+                    {
+                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_VERTICAL);
+                    }
+                    if (_previousTrackPitchEnd == TrackPitch::Up90)
+                    {
+                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_VERTICAL);
+                    }
+                    if (_previousTrackPitchEnd == TrackPitch::Down60 && _currentTrackPieceDirection < 4)
+                    {
+                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_VERTICAL);
+                    }
                 }
             }
+
+            if (TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)
+                && (_currentlySelectedTrack == TrackCurve::LeftLarge || _currentlySelectedTrack == TrackCurve::RightLarge)
+                && (_previousTrackPitchEnd == TrackPitch::Up25 || _previousTrackPitchEnd == TrackPitch::Down25)
+                && !IsTrackEnabled(TrackGroup::diagSlope))
+            {
+                disabledWidgets |= 1uLL << WIDX_STRAIGHT;
+            }
+
             if (_previousTrackRollEnd == TrackRoll::Left)
             {
                 disabledWidgets |= (1uLL << WIDX_RIGHT_CURVE_SMALL) | (1uLL << WIDX_RIGHT_CURVE)
@@ -1790,11 +1841,11 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (IsTrackEnabled(TrackGroup::slopeSteepDown))
+            if (IsTrackEnabled(TrackGroup::slopeSteepDown) || IsTrackEnabled(TrackGroup::diagSlopeSteepDown))
             {
                 widgets[WIDX_SLOPE_DOWN_STEEP].type = WidgetType::flatBtn;
             }
-            if (IsTrackEnabled(TrackGroup::slopeSteepUp))
+            if (IsTrackEnabled(TrackGroup::slopeSteepUp) || IsTrackEnabled(TrackGroup::diagSlopeSteepUp))
             {
                 widgets[WIDX_SLOPE_UP_STEEP].type = WidgetType::flatBtn;
             }
