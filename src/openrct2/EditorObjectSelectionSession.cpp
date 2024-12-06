@@ -16,6 +16,8 @@
 #include "GameState.h"
 #include "OpenRCT2.h"
 #include "drawing/Drawing.h"
+#include "entity/Guest.h"
+#include "entity/Staff.h"
 #include "localisation/Formatter.h"
 #include "management/Research.h"
 #include "object/DefaultObjects.h"
@@ -248,7 +250,24 @@ void SetupInUseSelectionFlags()
         Editor::SetSelectedObject(ObjectType::Music, ride.music, ObjectSelectionFlags::InUse);
     }
 
-    // TODO: peep animation objects
+    // Figure out what peep animations are in use
+    ObjectEntryIndex lastIndex = OBJECT_ENTRY_INDEX_NULL;
+    for (auto* peep : EntityList<Guest>())
+    {
+        if (peep->AnimationObjectIndex == lastIndex)
+            continue;
+
+        lastIndex = peep->AnimationObjectIndex;
+        Editor::SetSelectedObject(ObjectType::PeepAnimations, lastIndex, ObjectSelectionFlags::InUse);
+    }
+    for (auto* peep : EntityList<Staff>())
+    {
+        if (peep->AnimationObjectIndex == lastIndex)
+            continue;
+
+        lastIndex = peep->AnimationObjectIndex;
+        Editor::SetSelectedObject(ObjectType::PeepAnimations, lastIndex, ObjectSelectionFlags::InUse);
+    }
 
     // Apply selected object status for hacked vehicles that may not have an associated ride
     for (auto* vehicle : TrainManager::View())
