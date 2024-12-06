@@ -474,7 +474,14 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
         // Fix entry data offsets
         for (uint32_t i = 0; i < _g1.header.num_entries; i++)
         {
-            _g1.elements[i].offset += reinterpret_cast<uintptr_t>(_g1.data.get());
+            if (_g1.elements[i].offset == nullptr)
+            {
+                _g1.elements[i].offset = _g1.data.get();
+            }
+            else
+            {
+                _g1.elements[i].offset += reinterpret_cast<uintptr_t>(_g1.data.get());
+            }
             OverrideElementOffsets(i, _g1.elements[i]);
         }
         return true;
@@ -554,7 +561,14 @@ bool GfxLoadG2()
         // Fix entry data offsets
         for (uint32_t i = 0; i < _g2.header.num_entries; i++)
         {
-            _g2.elements[i].offset += reinterpret_cast<uintptr_t>(_g2.data.get());
+            if (_g2.elements[i].offset == nullptr)
+            {
+                _g2.elements[i].offset = _g2.data.get();
+            }
+            else
+            {
+                _g2.elements[i].offset += reinterpret_cast<uintptr_t>(_g2.data.get());
+            }
         }
         return true;
     }
@@ -611,7 +625,14 @@ bool GfxLoadCsg()
         // Fix entry data offsets
         for (uint32_t i = 0; i < _csg.header.num_entries; i++)
         {
-            _csg.elements[i].offset += reinterpret_cast<uintptr_t>(_csg.data.get());
+            if (_csg.elements[i].offset == nullptr)
+            {
+                _csg.elements[i].offset = _csg.data.get();
+            }
+            else
+            {
+                _csg.elements[i].offset += reinterpret_cast<uintptr_t>(_csg.data.get());
+            }
             // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
             if (_csg.elements[i].flags & G1_FLAG_HAS_ZOOM_SPRITE)
             {

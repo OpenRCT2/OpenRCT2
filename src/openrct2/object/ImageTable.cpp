@@ -232,7 +232,14 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
         // Fix entry data offsets
         for (uint32_t i = 0; i < gxData->header.num_entries; i++)
         {
-            gxData->elements[i].offset += reinterpret_cast<uintptr_t>(gxData->data.get());
+            if (gxData->elements[i].offset == nullptr)
+            {
+                gxData->elements[i].offset = gxData->data.get();
+            }
+            else
+            {
+                gxData->elements[i].offset += reinterpret_cast<uintptr_t>(gxData->data.get());
+            }
         }
 
         if (range.size() > 0)
