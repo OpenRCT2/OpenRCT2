@@ -3781,3 +3781,9 @@ STR_6714    :Filename
 STR_6715    :Date modified
 STR_6716    :File size
 STR_6717    :File size {STRINGID}
+STR_6718    :Peep Animations
+STR_6719    :At least one guest peep animations object must be selected
+STR_6720    :At least one handyman peep animations object must be selected
+STR_6721    :At least one mechanic peep animations object must be selected
+STR_6722    :At least one security peep animations object must be selected
+STR_6723    :At least one entertainer peep animations object must be selected

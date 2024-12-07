@@ -179,7 +179,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static ObjectSubTab kPeepObjectSubTabs[] = {
-        { STR_OBJECT_SELECTION_PEEP_NAMES,        ObjectType::PeepAnimations,   FILTER_NONE, SPR_G2_PEEP_ANIMATIONS, 1, 1 },
+        { STR_OBJECT_SELECTION_PEEP_ANIMATIONS,   ObjectType::PeepAnimations,   FILTER_NONE, SPR_G2_PEEP_ANIMATIONS, 1, 1 },
         { STR_OBJECT_SELECTION_PEEP_NAMES,        ObjectType::PeepNames,        FILTER_NONE, SPR_TAB_GUESTS_0,       1, 1 },
     };
 

@@ -16,6 +16,7 @@
 #include "../core/Json.hpp"
 #include "../peep/PeepAnimations.h"
 #include "../rct12/RCT12.h"
+#include "ObjectRepository.h"
 
 using namespace OpenRCT2;
 
@@ -154,4 +155,9 @@ void PeepAnimationsObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_
     GfxDrawSprite(dpi, ImageId(_imageOffsetId + 2, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ +32, +32 });
     GfxDrawSprite(dpi, ImageId(_imageOffsetId + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ +32, -24 });
     GfxDrawSprite(dpi, ImageId(_imageOffsetId + 3, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ -32, +32 });
+}
+
+void PeepAnimationsObject::SetRepositoryItem(ObjectRepositoryItem* item) const
+{
+    item->PeepAnimationsInfo.PeepType = EnumValue(_peepType);
 }

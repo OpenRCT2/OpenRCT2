@@ -687,6 +687,23 @@ bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType)
     return false;
 }
 
+bool EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(uint8_t peepType)
+{
+    auto numObjects = std::min(ObjectRepositoryGetItemsCount(), _objectSelectionFlags.size());
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
+
+    for (size_t i = 0; i < numObjects; i++)
+    {
+        const auto isAnimObjectType = items[i].Type == ObjectType::PeepAnimations;
+        const bool isSelected = _objectSelectionFlags[i] & ObjectSelectionFlags::Selected;
+        if (isAnimObjectType && isSelected && items[i].PeepAnimationsInfo.PeepType == peepType)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue)
 {
     auto numObjects = std::min(ObjectRepositoryGetItemsCount(), _objectSelectionFlags.size());
