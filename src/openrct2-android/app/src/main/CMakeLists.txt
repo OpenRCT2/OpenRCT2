@@ -20,7 +20,7 @@ endif()
 
 include(ExternalProject)
 ExternalProject_Add(libs
-    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v11/${ANDROID_ABI}-android-dynamic.tar.zst
+    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v12/${ANDROID_ABI}-android-dynamic.tar.zst
 
     SOURCE_DIR "${CMAKE_BINARY_DIR}/libs"
 
