@@ -11,10 +11,10 @@
 
 #ifndef DISABLE_HTTP
 
-#    include <functional>
-#    include <map>
-#    include <string>
-#    include <thread>
+    #include <functional>
+    #include <map>
+    #include <string>
+    #include <thread>
 
 namespace OpenRCT2::Http
 {

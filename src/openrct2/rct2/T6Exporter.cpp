@@ -51,6 +51,7 @@ namespace OpenRCT2::RCT2
 
     bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     {
+        auto& rtd = GetRideTypeDescriptor(_trackDesign.trackAndVehicle.rtdIndex);
         auto td6rideType = OpenRCT2RideTypeToRCT2RideType(_trackDesign.trackAndVehicle.rtdIndex);
         OpenRCT2::MemoryStream tempStream;
         tempStream.WriteValue<uint8_t>(td6rideType);
@@ -81,7 +82,7 @@ namespace OpenRCT2::RCT2
         tempStream.WriteValue<int8_t>(_trackDesign.statistics.maxNegativeVerticalG / kTD46GForcesMultiplier);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.maxLateralG / kTD46GForcesMultiplier);
 
-        if (td6rideType == RIDE_TYPE_MINI_GOLF)
+        if (rtd.specialType == RtdSpecialType::miniGolf)
             tempStream.WriteValue<uint8_t>(_trackDesign.statistics.holes & kRCT12InversionAndHoleMask);
         else
             tempStream.WriteValue<uint8_t>(_trackDesign.statistics.inversions & kRCT12InversionAndHoleMask);
@@ -114,8 +115,7 @@ namespace OpenRCT2::RCT2
         }
         tempStream.WriteValue<uint8_t>(_trackDesign.operation.liftHillSpeed | (_trackDesign.operation.numCircuits << 5));
 
-        const auto& rtd = GetRideTypeDescriptor(_trackDesign.trackAndVehicle.rtdIndex);
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
         {
             for (const auto& mazeElement : _trackDesign.mazeElements)
             {

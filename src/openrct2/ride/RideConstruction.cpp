@@ -18,7 +18,6 @@
 #include "../actions/RideSetStatusAction.h"
 #include "../actions/RideSetVehicleAction.h"
 #include "../actions/TrackRemoveAction.h"
-#include "../core/FixedVector.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
@@ -50,6 +49,7 @@
 #include "Vehicle.h"
 
 #include <cassert>
+#include <sfl/static_vector.hpp>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
@@ -636,7 +636,7 @@ void RideConstructionSetDefaultNextPiece()
             _previousTrackPitchEnd = slope;
             _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain()
                 && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60)
-                    || GetGameState().Cheats.EnableChainLiftOnAllTrack);
+                    || GetGameState().Cheats.enableChainLiftOnAllTrack);
             break;
         }
         case RideConstructionState::Back:
@@ -682,7 +682,7 @@ void RideConstructionSetDefaultNextPiece()
             // Set track slope and lift hill
             _currentTrackPitchEnd = slope;
             _previousTrackPitchEnd = slope;
-            if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
                 _currentTrackHasLiftHill = tileElement->AsTrack()->HasChain();
             }
@@ -960,7 +960,7 @@ bool RideModify(const CoordsXYE& input)
     ride_create_or_find_construction_window(rideIndex);
 
     const auto& rtd = ride->GetRideTypeDescriptor();
-    if (rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType == RtdSpecialType::maze)
     {
         return ride_modify_maze(tileElement);
     }
@@ -1147,7 +1147,7 @@ money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t
 void Ride::ValidateStations()
 {
     const auto& rtd = GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RtdFlag::isMaze))
+    if (rtd.specialType != RtdSpecialType::maze)
     {
         // find the stations of the ride to begin stepping over track elements from
         for (const auto& station : stations)
@@ -1255,7 +1255,7 @@ void Ride::ValidateStations()
         }
     }
     // determine what entrances and exits exist
-    FixedVector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
+    sfl::static_vector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
     for (auto& station : stations)
     {
         if (!station.Entrance.IsNull())

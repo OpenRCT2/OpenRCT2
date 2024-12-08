@@ -34,7 +34,6 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .DefaultMode = RideMode::RotatingLift,
     .Naming = { STR_RIDE_NAME_OBSERVATION_TOWER, STR_RIDE_DESCRIPTION_OBSERVATION_TOWER },
     .NameConvention = { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_OBSERVATION_TOWER",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 32, 3, 2, },
     .MaxMass = 15,

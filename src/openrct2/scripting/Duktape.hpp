@@ -11,16 +11,16 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../core/Console.hpp"
-#    include "../core/EnumMap.hpp"
-#    include "../ride/Vehicle.h"
-#    include "../world/Map.h"
+    #include "../core/Console.hpp"
+    #include "../core/EnumMap.hpp"
+    #include "../ride/Vehicle.h"
+    #include "../world/Map.h"
 
-#    include <cstdio>
-#    include <dukglue/dukglue.h>
-#    include <duktape.h>
-#    include <optional>
-#    include <stdexcept>
+    #include <cstdio>
+    #include <dukglue/dukglue.h>
+    #include <duktape.h>
+    #include <optional>
+    #include <stdexcept>
 
 namespace OpenRCT2::Scripting
 {

@@ -11,23 +11,23 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include <memory>
-#    include <openrct2/Context.h>
-#    include <openrct2/Game.h>
-#    include <openrct2/GameState.h>
-#    include <openrct2/OpenRCT2.h>
-#    include <openrct2/ParkImporter.h>
-#    include <openrct2/core/String.hpp>
-#    include <openrct2/entity/EntityRegistry.h>
-#    include <openrct2/object/ObjectManager.h>
-#    include <openrct2/scenario/Scenario.h>
-#    include <openrct2/scenes/title/TitleScene.h>
-#    include <openrct2/scenes/title/TitleSequence.h>
-#    include <openrct2/scenes/title/TitleSequenceManager.h>
-#    include <openrct2/scenes/title/TitleSequencePlayer.h>
-#    include <openrct2/scripting/ScriptEngine.h>
-#    include <type_traits>
-#    include <variant>
+    #include <memory>
+    #include <openrct2/Context.h>
+    #include <openrct2/Game.h>
+    #include <openrct2/GameState.h>
+    #include <openrct2/OpenRCT2.h>
+    #include <openrct2/ParkImporter.h>
+    #include <openrct2/core/String.hpp>
+    #include <openrct2/entity/EntityRegistry.h>
+    #include <openrct2/object/ObjectManager.h>
+    #include <openrct2/scenario/Scenario.h>
+    #include <openrct2/scenes/title/TitleScene.h>
+    #include <openrct2/scenes/title/TitleSequence.h>
+    #include <openrct2/scenes/title/TitleSequenceManager.h>
+    #include <openrct2/scenes/title/TitleSequencePlayer.h>
+    #include <openrct2/scripting/ScriptEngine.h>
+    #include <type_traits>
+    #include <variant>
 
 namespace OpenRCT2::Scripting
 {

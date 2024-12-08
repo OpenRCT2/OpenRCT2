@@ -21,6 +21,7 @@
 #include <cassert>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 constexpr auto kNumWoodenSupportTypes = 2;
 constexpr auto kNumWoodenSupportSubTypes = 6;
@@ -421,7 +422,7 @@ static inline bool WoodenSupportsPaintSetupCommon(
         imageTemplate = ImageId().WithTransparency(FilterPaletteID::PaletteDarken1);
     }
 
-    baseHeight = Ceil2(session.Support.height, 16);
+    baseHeight = ceil2(session.Support.height, 16);
     int16_t supportLength = height - baseHeight;
 
     if (supportLength < 0)

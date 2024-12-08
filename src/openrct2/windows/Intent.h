@@ -13,7 +13,9 @@
 #include "../interface/Window.h"
 
 #include <map>
+#include <sfl/static_vector.hpp>
 #include <string>
+#include <variant>
 
 enum IntentAction
 {
@@ -57,51 +59,40 @@ enum IntentAction
     INTENT_ACTION_NULL = 255,
 };
 
-struct IntentData
-{
-    enum class DataType
-    {
-        Int,
-        String,
-        Pointer,
-        CloseCallback
-    } type;
+// The maximum amount of data the Intent can hold, 8 should be sufficient, raise this if needed.
+static constexpr size_t kIntentMaxDataSlots = 8;
 
-    union
-    {
-        uint32_t unsignedInt;
-        int32_t signedInt;
-    } intVal;
-    std::string stringVal;
-    close_callback closeCallbackVal;
-    void* pointerVal;
-};
+using IntentData = std::variant<int64_t, std::string, CloseCallback, void*>;
+using IntentDataEntry = std::pair<uint32_t, IntentData>;
+using IntentDataStorage = sfl::static_vector<IntentDataEntry, kIntentMaxDataSlots>;
 
 class Intent
 {
-private:
     WindowClass _Class{ WindowClass::Null };
     WindowDetail _WindowDetail{ WD_NULL };
     IntentAction _Action{ INTENT_ACTION_NULL };
-    std::map<uint32_t, IntentData> _Data;
+    IntentDataStorage _Data;
 
 public:
     explicit Intent(WindowClass windowClass);
     explicit Intent(WindowDetail windowDetail);
     explicit Intent(IntentAction windowclass);
+
     WindowClass GetWindowClass() const;
     WindowDetail GetWindowDetail() const;
     IntentAction GetAction() const;
+
     void* GetPointerExtra(uint32_t key) const;
     std::string GetStringExtra(uint32_t key) const;
     uint32_t GetUIntExtra(uint32_t key) const;
     int32_t GetSIntExtra(uint32_t key) const;
-    close_callback GetCloseCallbackExtra(uint32_t key) const;
+    CloseCallback GetCloseCallbackExtra(uint32_t key) const;
+
     Intent* PutExtra(uint32_t key, uint32_t value);
     Intent* PutExtra(uint32_t key, void* value);
     Intent* PutExtra(uint32_t key, int32_t value);
     Intent* PutExtra(uint32_t key, std::string value);
-    Intent* PutExtra(uint32_t key, close_callback value);
+    Intent* PutExtra(uint32_t key, CloseCallback value);
 
     template<typename T, T TNull, typename TTag>
     Intent* PutExtra(uint32_t key, const TIdentifier<T, TNull, TTag>& value)

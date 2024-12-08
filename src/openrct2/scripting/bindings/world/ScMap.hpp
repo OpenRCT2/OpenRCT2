@@ -11,10 +11,10 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../Duktape.hpp"
-#    include "../ride/ScRide.hpp"
-#    include "../ride/ScTrackIterator.h"
-#    include "../world/ScTile.hpp"
+    #include "../../Duktape.hpp"
+    #include "../ride/ScRide.hpp"
+    #include "../ride/ScTrackIterator.h"
+    #include "../world/ScTile.hpp"
 
 namespace OpenRCT2::Scripting
 {

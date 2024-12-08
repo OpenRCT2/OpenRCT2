@@ -523,12 +523,15 @@ namespace OpenRCT2::RCT1
         EntertainerSnowman = 9,
         EntertainerKnight = 10,
         EntertainerAstronaut = 11,
-
+        IceCream = 12,
+        Chips = 13,
+        Burger = 14,
+        Drink = 15,
         Balloon = 16,
         Candyfloss = 17,
         Umbrella = 18,
-        Pizza = 19,       // Unsure
-        SecurityAlt = 20, // Unknown
+        Pizza = 19,
+        SecurityAlt = 20,
         Popcorn = 21,
         ArmsCrossed = 22,
         HeadDown = 23,
@@ -536,9 +539,13 @@ namespace OpenRCT2::RCT1
         VeryNauseous = 25,
         RequireToilet = 26,
         Hat = 27,
-        Burger = 28,
+        HotDog = 28,
         Tentacle = 29,
-        ToffeeApple = 30
+        ToffeeApple = 30,
+        Doughnut = 31,
+        Coffee = 32,
+        Chicken = 33,
+        Lemonade = 34,
     };
 
     struct Peep : RCT12EntityBase

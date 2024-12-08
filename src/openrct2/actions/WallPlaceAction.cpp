@@ -92,7 +92,7 @@ GameActions::Result WallPlaceAction::Query() const
     auto& gameState = GetGameState();
     auto mapSizeMax = GetMapSizeMaxXY();
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN)
-        && !gameState.Cheats.SandboxMode)
+        && !gameState.Cheats.sandboxMode)
     {
         if (_loc.z == 0)
         {
@@ -151,14 +151,14 @@ GameActions::Result WallPlaceAction::Query() const
     {
         uint16_t waterHeight = surfaceElement->GetWaterHeight();
 
-        if (targetHeight < waterHeight && !gameState.Cheats.DisableClearanceChecks)
+        if (targetHeight < waterHeight && !gameState.Cheats.disableClearanceChecks)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
     }
 
-    if (targetHeight < surfaceElement->GetBaseZ() && !gameState.Cheats.DisableClearanceChecks)
+    if (targetHeight < surfaceElement->GetBaseZ() && !gameState.Cheats.disableClearanceChecks)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
@@ -171,7 +171,7 @@ GameActions::Result WallPlaceAction::Query() const
         newBaseHeight += 2;
         if (surfaceElement->GetSlope() & (1 << newEdge))
         {
-            if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.DisableClearanceChecks)
+            if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.disableClearanceChecks)
             {
                 return GameActions::Result(
                     GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
@@ -187,7 +187,7 @@ GameActions::Result WallPlaceAction::Query() const
                     if (surfaceElement->GetSlope() & (1 << newEdge))
                     {
                         newBaseHeight += 2;
-                        if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.DisableClearanceChecks)
+                        if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.disableClearanceChecks)
                         {
                             return GameActions::Result(
                                 GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE,
@@ -202,7 +202,7 @@ GameActions::Result WallPlaceAction::Query() const
         newEdge = (_edge + 3) & 3;
         if (surfaceElement->GetSlope() & (1 << newEdge))
         {
-            if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.DisableClearanceChecks)
+            if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.disableClearanceChecks)
             {
                 return GameActions::Result(
                     GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
@@ -218,7 +218,7 @@ GameActions::Result WallPlaceAction::Query() const
                     if (surfaceElement->GetSlope() & (1 << newEdge))
                     {
                         newBaseHeight += 2;
-                        if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.DisableClearanceChecks)
+                        if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.disableClearanceChecks)
                         {
                             return GameActions::Result(
                                 GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE,
@@ -261,7 +261,7 @@ GameActions::Result WallPlaceAction::Query() const
     clearanceHeight += wallEntry->height;
 
     bool wallAcrossTrack = false;
-    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gameState.Cheats.DisableClearanceChecks)
+    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gameState.Cheats.disableClearanceChecks)
     {
         auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
         if (result.Error != GameActions::Status::Ok)
@@ -339,7 +339,7 @@ GameActions::Result WallPlaceAction::Execute() const
     clearanceHeight += wallEntry->height;
 
     bool wallAcrossTrack = false;
-    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gameState.Cheats.DisableClearanceChecks)
+    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gameState.Cheats.disableClearanceChecks)
     {
         auto result = WallCheckObstruction(wallEntry, targetHeight / kCoordsZStep, clearanceHeight, &wallAcrossTrack);
         if (result.Error != GameActions::Status::Ok)

@@ -9,27 +9,27 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "ServerList.h"
+    #include "ServerList.h"
 
-#    include "../Context.h"
-#    include "../Diagnostic.h"
-#    include "../PlatformEnvironment.h"
-#    include "../config/Config.h"
-#    include "../core/File.h"
-#    include "../core/FileStream.h"
-#    include "../core/Guard.hpp"
-#    include "../core/Http.h"
-#    include "../core/Json.hpp"
-#    include "../core/Memory.hpp"
-#    include "../core/Path.hpp"
-#    include "../core/String.hpp"
-#    include "../localisation/Language.h"
-#    include "../platform/Platform.h"
-#    include "Socket.h"
-#    include "network.h"
+    #include "../Context.h"
+    #include "../Diagnostic.h"
+    #include "../PlatformEnvironment.h"
+    #include "../config/Config.h"
+    #include "../core/File.h"
+    #include "../core/FileStream.h"
+    #include "../core/Guard.hpp"
+    #include "../core/Http.h"
+    #include "../core/Json.hpp"
+    #include "../core/Memory.hpp"
+    #include "../core/Path.hpp"
+    #include "../core/String.hpp"
+    #include "../localisation/Language.h"
+    #include "../platform/Platform.h"
+    #include "Socket.h"
+    #include "network.h"
 
-#    include <numeric>
-#    include <optional>
+    #include <numeric>
+    #include <optional>
 
 using namespace OpenRCT2;
 
@@ -354,9 +354,9 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
 
 std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync() const
 {
-#    ifdef DISABLE_HTTP
+    #ifdef DISABLE_HTTP
     return {};
-#    else
+    #else
 
     auto p = std::make_shared<std::promise<std::vector<ServerListEntry>>>();
     auto f = p->get_future();
@@ -423,7 +423,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
         }
     });
     return f;
-#    endif
+    #endif
 }
 
 uint32_t ServerList::GetTotalPlayerCount() const

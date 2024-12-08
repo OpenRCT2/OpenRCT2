@@ -17,11 +17,11 @@
 #include <vector>
 
 #ifdef _WIN32
-#    include "FileSystem.hpp"
+    #include "FileSystem.hpp"
 
 typedef void* HANDLE;
 #elif defined(__APPLE__)
-#    include <CoreServices/CoreServices.h>
+    #include <CoreServices/CoreServices.h>
 #endif
 
 /**

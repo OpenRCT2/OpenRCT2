@@ -11,9 +11,37 @@
 
 #include "../core/Guard.hpp"
 
+#include <ranges>
 #include <utility>
 
 using namespace OpenRCT2;
+
+template<typename T>
+static void putExtraImpl(IntentDataStorage& storage, uint32_t key, T&& value)
+{
+    auto it = std::ranges::lower_bound(storage, key, {}, &IntentDataEntry::first);
+
+    // Key should not already exist.
+    assert(it == storage.end() || it->first != key);
+
+    storage.emplace(it, key, std::forward<T>(value));
+}
+
+template<typename T>
+static auto getExtraImpl(const IntentDataStorage& storage, uint32_t key)
+{
+    auto it = std::ranges::lower_bound(storage, key, {}, &IntentDataEntry::first);
+    if (it == storage.end() || it->first != key)
+    {
+        // TODO: The code currently assumes that some things are optional, we need to handle this better.
+        return T{};
+    }
+
+    const auto& [_, data] = *it;
+    assert(std::holds_alternative<T>(data));
+
+    return std::get<T>(data);
+}
 
 Intent::Intent(WindowClass windowClass)
     : _Class(windowClass)
@@ -32,56 +60,31 @@ Intent::Intent(IntentAction intentAction)
 
 Intent* Intent::PutExtra(uint32_t key, uint32_t value)
 {
-    IntentData data = {};
-    data.intVal.unsignedInt = value;
-    data.type = IntentData::DataType::Int;
-
-    _Data.insert(std::make_pair(key, data));
-
+    putExtraImpl(_Data, key, static_cast<int64_t>(value));
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, void* value)
 {
-    IntentData data = {};
-    data.pointerVal = value;
-    data.type = IntentData::DataType::Pointer;
-
-    _Data.insert(std::make_pair(key, data));
-
+    putExtraImpl(_Data, key, value);
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, int32_t value)
 {
-    IntentData data = {};
-    data.intVal.signedInt = value;
-    data.type = IntentData::DataType::Int;
-
-    _Data.insert(std::make_pair(key, data));
-
+    putExtraImpl(_Data, key, static_cast<int64_t>(value));
     return this;
 }
 
 Intent* Intent::PutExtra(uint32_t key, std::string value)
 {
-    IntentData data = {};
-    data.stringVal = std::move(value);
-    data.type = IntentData::DataType::String;
-
-    _Data.insert(std::make_pair(key, data));
-
+    putExtraImpl(_Data, key, std::move(value));
     return this;
 }
 
-Intent* Intent::PutExtra(uint32_t key, close_callback value)
+Intent* Intent::PutExtra(uint32_t key, CloseCallback value)
 {
-    IntentData data = {};
-    data.closeCallbackVal = value;
-    data.type = IntentData::DataType::CloseCallback;
-
-    _Data.insert(std::make_pair(key, data));
-
+    putExtraImpl(_Data, key, value);
     return this;
 }
 
@@ -102,60 +105,25 @@ IntentAction Intent::GetAction() const
 
 void* Intent::GetPointerExtra(uint32_t key) const
 {
-    if (_Data.count(key) == 0)
-    {
-        return nullptr;
-    }
-
-    auto data = _Data.at(key);
-    Guard::Assert(data.type == IntentData::DataType::Pointer, "Actual type doesn't match requested type");
-    return static_cast<void*>(data.pointerVal);
+    return getExtraImpl<void*>(_Data, key);
 }
 
 uint32_t Intent::GetUIntExtra(uint32_t key) const
 {
-    if (_Data.count(key) == 0)
-    {
-        return 0;
-    }
-
-    auto data = _Data.at(key);
-    Guard::Assert(data.type == IntentData::DataType::Int, "Actual type doesn't match requested type");
-    return data.intVal.unsignedInt;
+    return static_cast<uint32_t>(getExtraImpl<int64_t>(_Data, key));
 }
 
 int32_t Intent::GetSIntExtra(uint32_t key) const
 {
-    if (_Data.count(key) == 0)
-    {
-        return 0;
-    }
-
-    auto data = _Data.at(key);
-    Guard::Assert(data.type == IntentData::DataType::Int, "Actual type doesn't match requested type");
-    return data.intVal.signedInt;
+    return static_cast<uint32_t>(getExtraImpl<int64_t>(_Data, key));
 }
 
 std::string Intent::GetStringExtra(uint32_t key) const
 {
-    if (_Data.count(key) == 0)
-    {
-        return std::string{};
-    }
-
-    auto data = _Data.at(key);
-    Guard::Assert(data.type == IntentData::DataType::String, "Actual type doesn't match requested type");
-    return data.stringVal;
+    return getExtraImpl<std::string>(_Data, key);
 }
 
-close_callback Intent::GetCloseCallbackExtra(uint32_t key) const
+CloseCallback Intent::GetCloseCallbackExtra(uint32_t key) const
 {
-    if (_Data.count(key) == 0)
-    {
-        return nullptr;
-    }
-
-    auto data = _Data.at(key);
-    Guard::Assert(data.type == IntentData::DataType::CloseCallback, "Actual type doesn't match requested type");
-    return data.closeCallbackVal;
+    return getExtraImpl<CloseCallback>(_Data, key);
 }

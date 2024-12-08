@@ -9,17 +9,17 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "CustomListView.h"
+    #include "CustomListView.h"
 
-#    include "../interface/Viewport.h"
-#    include "../interface/Widget.h"
-#    include "../interface/Window.h"
+    #include "../interface/Viewport.h"
+    #include "../interface/Widget.h"
+    #include "../interface/Window.h"
 
-#    include <numeric>
-#    include <openrct2/Context.h>
-#    include <openrct2/localisation/Formatter.h>
-#    include <openrct2/localisation/Formatting.h>
-#    include <openrct2/util/Util.h>
+    #include <numeric>
+    #include <openrct2/Context.h>
+    #include <openrct2/localisation/Formatter.h>
+    #include <openrct2/localisation/Formatting.h>
+    #include <openrct2/util/Util.h>
 
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui::Windows;

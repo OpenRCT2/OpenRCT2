@@ -9,13 +9,13 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScGuest.hpp"
+    #include "ScGuest.hpp"
 
-#    include "../../../GameState.h"
-#    include "../../../entity/Guest.h"
-#    include "../../../localisation/Formatting.h"
-#    include "../../../peep/PeepAnimationData.h"
-#    include "../../../ride/RideEntry.h"
+    #include "../../../GameState.h"
+    #include "../../../entity/Guest.h"
+    #include "../../../localisation/Formatting.h"
+    #include "../../../peep/PeepAnimationData.h"
+    #include "../../../ride/RideEntry.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -148,7 +148,7 @@ namespace OpenRCT2::Scripting
     });
 
     static const DukEnumMap<PeepAnimationType> availableGuestAnimations({
-        { "walking", PeepAnimationType::None },
+        { "walking", PeepAnimationType::Walking },
         { "checkTime", PeepAnimationType::CheckTime },
         { "watchRide", PeepAnimationType::WatchRide },
         { "eatFood", PeepAnimationType::EatFood },
@@ -921,7 +921,7 @@ namespace OpenRCT2::Scripting
 
         // Special consideration for sitting peeps
         // TODO: something funky going on in the state machine
-        if (peep->AnimationType == PeepAnimationType::None && peep->State == PeepState::Sitting)
+        if (peep->AnimationType == PeepAnimationType::Walking && peep->State == PeepState::Sitting)
             action = availableGuestAnimations[PeepAnimationType::SittingIdle];
 
         return std::string(action);

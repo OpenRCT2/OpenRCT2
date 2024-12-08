@@ -99,6 +99,7 @@ STR_0094    :Ottovolante a binario singolo
 STR_0095    :Ottovolante Alpino
 STR_0096    :Ottovolante di legno classico
 STR_0097    :Ottovolante in piedi classico
+STR_0098    :Ottovolante a lancio LSM
 STR_0512    :Un ottovolante compatto con una salita a spirale e cadute fluide e tortuose.
 STR_0513    :Un ottovolante con giro della morte dove i passeggeri si trovano in una posizione eretta
 STR_0514    :I treni, sospesi sotto l’ottovolante, durante le curve oscillano lateralmente
@@ -183,6 +184,7 @@ STR_0604    :I visitatori viaggiano lungo un sottile tracciato da monorotaia, at
 STR_0605    :I visitatori scendono lungo una rotaia piena di curve, frenando per controllare la velocità del loro vagone
 STR_0606    :Un ottovolante di legno vecchio stile con un percorso veloce e turbolento, con molto air-time, G laterali, progettato per farti sentire “fuori controllo”
 STR_0607    :Un intenso ottovolante d’acciaio vecchio stile, nel quale i passeggeri sono in posizione eretta
+STR_0608    :I treni dell’ottovolante sono lanciati da motori sincroni lineari e corrono attraverso curve e avvitamenti stretti
 STR_0767    :Visitatore {INT32}
 STR_0768    :Tuttofare {INT32}
 STR_0769    :Meccanico {INT32}
@@ -1913,11 +1915,11 @@ STR_2670    :Scorr
 STR_2680    :Tutte le ricerche sono completate
 STR_2684    :Fa arrivare una folla di visitatori
 STR_2685    :Simplex Noise Parameters
-STR_2686    :Basso:
-STR_2687    :Alto:
-STR_2688    :Frequenza Base:
-STR_2689    :Ottavi:
-STR_2690    :Generazione Mappa
+STR_2686    :Altezza min. terreno:
+STR_2687    :Altezza max. terreno:
+STR_2688    :Frequenza base:
+STR_2689    :Ottave:
+STR_2690    :Generazione mappa
 STR_2691    :Base height:
 STR_2692    :Livello acqua:
 STR_2693    :Terreno:
@@ -3168,19 +3170,19 @@ STR_6038    :Se RCT1 è installato, selezionarne la cartella per caricarne gli s
 STR_6039    :Demolizione veloce percorso
 STR_6040    :Modifica opzioni scenario
 STR_6041    :{BLACK}Non è stato assunto alcun meccanico!
-STR_6042    :Carica heightmap
-STR_6043    :Seleziona heightmap
-STR_6044    :Ammorbidisci heightmap
-STR_6045    :Forza
-STR_6046    :Normalizza heightmap
-STR_6047    :Ammorbidisci celle
-STR_6048    :Errore nella heightmap
+STR_6042    :Carica mappa altimetrica
+STR_6043    :Seleziona mappa altimetrica
+STR_6044    :Ammorbidisci mappa altimetrica
+STR_6045    :Forza:
+STR_6046    :Normalizza mappa altimetrica
+STR_6047    :Ammorbidisci bordi celle
+STR_6048    :Errore nella mappa altimetrica
 STR_6049    :Errore nella lettura del PNG
 STR_6050    :Errore nella lettura della bitmap
-STR_6052    :La heightmap è troppo grande e sarà tagliata
-STR_6053    :La heightmap non può essere normalizzata
+STR_6052    :La mappa altimetrica è troppo grande e sarà tagliata
+STR_6053    :La mappa altimetrica non può essere normalizzata
 STR_6054    :Sono supportate solo le bitmap a 24 bit
-STR_6055    :File di heightmap di OpenRCT2
+STR_6055    :File mappa altimetrica di OpenRCT2
 STR_6056    :Muto
 STR_6057    :Mostra un bottone separato per l’opzione Muto nella barra degli strumenti
 STR_6058    :Muto
@@ -3615,7 +3617,7 @@ STR_6537    :Usa sentieri normali come code
 STR_6538    :Mostra i percorsi regolari nel menu a cascata della finestra dei Sentieri.
 STR_6539    :Freno chiuso
 STR_6540    :{WINDOW_COLOUR_2}Un ringraziamento speciale alle seguenti aziende per aver concesso l'utilizzo della loro immagine:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Collaboratori
 STR_6543    :Collaboratori…
 STR_6544    :I prestiti non posso essere negativi!
@@ -3748,3 +3750,41 @@ STR_6669    :Mostra i trucchi sul personale
 STR_6670    :Comportamento visitatori
 STR_6671    :Mostra i “veri” nomi del personale
 STR_6672    :Alterna tra i nomi “veri” del personale e i loro numeri
+STR_6673    :Trasparente
+STR_6674    :{MONTH}, anno {COMMA16}
+STR_6675    :Nomi visitatori
+STR_6676    :È necessario selezionare almeno un oggetto nomi visitatori
+STR_6677    :Aggiungi spiagge attorno agli specchi d’acqua
+STR_6678    :Fonte mappa altimetrica:
+STR_6679    :Pianura
+STR_6680    :Rumore Simplex
+STR_6681    :File mappa altimetrica
+STR_6682    :Generatore mappa - Generatore
+STR_6683    :Generatore mappa - Terreno
+STR_6684    :Generatore mappa - Acqua
+STR_6685    :Generatore mappa - Foreste
+STR_6686    :Rapporto alberi/terreno:
+STR_6687    :Altitudine min. alberi:
+STR_6688    :Altitudine max. alberi:
+STR_6689    :{UINT16}%
+STR_6690    :Altezza terreno minima
+STR_6691    :Inserisci un’altezza min. terreno tra {COMMA16} e {COMMA16}
+STR_6692    :Altezza terreno massima
+STR_6693    :Inserisci un’altezza max. terreno tra {COMMA16} e {COMMA16}
+STR_6694    :Altitudine minima alberi
+STR_6695    :Inserisci altitudine min. alberi tra {COMMA16} e {COMMA16}
+STR_6696    :Altitudine massima alberi
+STR_6697    :Inserisci altitudine max. alberi tra {COMMA16} e {COMMA16}
+STR_6698    :Rapporto alberi/terreno
+STR_6699    :Inserisci un rapporto alberi/terreno tra {COMMA16} e {COMMA16}
+STR_6700    :Frequenza di base Simplex
+STR_6701    :Inserisci una frequenza di base tra {COMMA2DP32} e {COMMA2DP32}
+STR_6702    :Ottave Simplex
+STR_6703    :Inserisci ottave tra {COMMA16} e {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Sfoglia…
+STR_6706    :{WINDOW_COLOUR_2}File immagine attuale: {BLACK}{STRING}
+STR_6707    :(nessuno selezionato)
+STR_6708    :Forza addolcimento
+STR_6709    :Inserisci una forza addolcimento tra {COMMA16} e {COMMA16}
+

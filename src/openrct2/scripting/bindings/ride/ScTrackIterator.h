@@ -11,11 +11,11 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../Identifiers.h"
-#    include "../../Duktape.hpp"
+    #include "../../../Identifiers.h"
+    #include "../../Duktape.hpp"
 
-#    include <cstdint>
-#    include <memory>
+    #include <cstdint>
+    #include <memory>
 
 namespace OpenRCT2::Scripting
 {

@@ -70,7 +70,7 @@ namespace OpenRCT2::Ui::Windows
     class ProgressWindow final : public Window
     {
     private:
-        close_callback _onClose = nullptr;
+        CloseCallback _onClose = nullptr;
 
         StringId _progressFormat;
         std::string _progressTitle;
@@ -213,7 +213,7 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
         }
 
-        void SetCloseCallback(close_callback onClose)
+        void SetCloseCallback(CloseCallback onClose)
         {
             _onClose = onClose;
         }
@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    WindowBase* ProgressWindowOpen(const std::string& text, close_callback onClose)
+    WindowBase* ProgressWindowOpen(const std::string& text, CloseCallback onClose)
     {
         ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
 

@@ -88,7 +88,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
     auto& gameState = GetGameState();
 
     // Do nothing if not in editor, sandbox mode or landscaping is forbidden
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode
         && (gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
     {
         return GameActions::Result(
@@ -105,7 +105,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
             if (!LocationValid(coords))
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(coords))
                     continue;
@@ -173,7 +173,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
             if (!LocationValid(coords))
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(coords))
                     continue;

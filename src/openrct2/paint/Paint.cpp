@@ -13,15 +13,15 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Money.hpp"
+#include "../core/Numerics.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Currency.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Painter.h"
+#include "../platform/Memory.h"
 #include "../profiling/Profiling.h"
-#include "../util/Math.hpp"
-#include "../util/Prefetch.h"
 #include "Boundbox.h"
 #include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
@@ -31,6 +31,7 @@
 #include <cassert>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 // Globals for paint clipping
 uint8_t gClipHeight = 128; // Default to middle value
@@ -56,6 +57,7 @@ static constexpr uint8_t BoundBoxDebugColours[] = {
 bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
+bool gPaintStableSort;
 
 static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
@@ -220,7 +222,7 @@ template<uint8_t direction>
 void PaintSessionGenerateRotate(PaintSession& session)
 {
     // Optimised modified version of ViewportPosToMapPos
-    ScreenCoordsXY screenCoord = { Floor2(session.DPI.WorldX(), 32), Floor2((session.DPI.WorldY() - 16), 32) };
+    ScreenCoordsXY screenCoord = { floor2(session.DPI.WorldX(), 32), floor2((session.DPI.WorldY() - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
 
@@ -402,13 +404,14 @@ static std::pair<PaintStruct*, PaintStruct*> PaintStructsGetNextPending(PaintStr
 // Re-orders all nodes after the specified child node and marks the child node as traversed. The resulting
 // order of the children is the depth based on rotation and dimensions of the bounding box.
 template<uint8_t TRotation>
-static void PaintStructsSortQuadrant(PaintStruct* parent, PaintStruct* child)
+static void PaintStructsSortQuadrantLegacy(PaintStruct* parent, PaintStruct* child)
 {
     // Mark visited.
     child->SortFlags &= ~PaintSortFlags::PendingVisit;
 
     // Compare all the children below the first child and move them up in the list if they intersect.
     const PaintStructBoundBox& initialBBox = child->Bounds;
+
     for (;;)
     {
         auto* ps = child;
@@ -442,7 +445,78 @@ static void PaintStructsSortQuadrant(PaintStruct* parent, PaintStruct* child)
     }
 }
 
+// Re-orders all nodes after the specified child node and marks the child node as traversed. The resulting
+// order of the children is the depth based on rotation and dimensions of the bounding box.
 template<uint8_t TRotation>
+static void PaintStructsSortQuadrantStable(PaintStruct* parent, PaintStruct* child)
+{
+    // Mark visited.
+    child->SortFlags &= ~PaintSortFlags::PendingVisit;
+
+    // Compare all the children below the first child and move them up in the list if they intersect.
+    const PaintStructBoundBox& initialBBox = child->Bounds;
+
+    // Create a temporary list to collect sorted nodes in stable order.
+    PaintStruct* sortedHead = nullptr;
+    PaintStruct* sortedTail = nullptr;
+
+    // Traverse the list and reorder based on intersection.
+    for (;;)
+    {
+        PaintStruct* next = child->NextQuadrantEntry;
+
+        if (next != nullptr)
+        {
+            PREFETCH(&next->Bounds);
+        }
+
+        // Stop if at the end of the list or outside the quadrant range.
+        if (next == nullptr || next->SortFlags & PaintSortFlags::OutsideQuadrant)
+        {
+            break;
+        }
+
+        // Ignore nodes that are not neighbors.
+        if (!(next->SortFlags & PaintSortFlags::Neighbour))
+        {
+            child = next;
+            continue;
+        }
+
+        // Detach the current node from the list if it intersects.
+        if (CheckBoundingBox<TRotation>(initialBBox, next->Bounds))
+        {
+            child->NextQuadrantEntry = next->NextQuadrantEntry;
+
+            if (sortedHead == nullptr)
+            {
+                sortedHead = next;
+                sortedTail = next;
+                next->NextQuadrantEntry = nullptr;
+            }
+            else
+            {
+                sortedTail->NextQuadrantEntry = next;
+                sortedTail = next;
+                next->NextQuadrantEntry = nullptr;
+            }
+        }
+        else
+        {
+            child = next;
+        }
+    }
+
+    // Merge the sorted list back into the main list after parent.
+    if (sortedHead != nullptr)
+    {
+        PaintStruct* originalNext = parent->NextQuadrantEntry;
+        parent->NextQuadrantEntry = sortedHead;
+        sortedTail->NextQuadrantEntry = originalNext;
+    }
+}
+
+template<bool TStableSort, uint8_t TRotation>
 static PaintStruct* PaintArrangeStructsHelperRotation(PaintStruct* psQuadrantEntry, uint16_t quadrantIndex, uint8_t flag)
 {
     // We keep track of the first node in the quadrant so the next call with a higher quadrant index
@@ -463,7 +537,15 @@ static PaintStruct* PaintArrangeStructsHelperRotation(PaintStruct* psQuadrantEnt
             break;
         }
 
-        PaintStructsSortQuadrant<TRotation>(parent, child);
+        if constexpr (TStableSort)
+        {
+            PaintStructsSortQuadrantStable<TRotation>(parent, child);
+        }
+        else
+        {
+            PaintStructsSortQuadrantLegacy<TRotation>(parent, child);
+        }
+
         ps = parent;
     }
 
@@ -495,7 +577,7 @@ static void PaintStructsLinkQuadrants(PaintSessionCore& session, PaintStruct& ps
     } while (++quadrantIndex <= session.QuadrantFrontIndex);
 }
 
-template<int TRotation>
+template<bool TStableSort, int TRotation>
 static void PaintSessionArrangeImpl(PaintSessionCore& session)
 {
     uint32_t quadrantIndex = session.QuadrantBackIndex;
@@ -510,12 +592,13 @@ static void PaintSessionArrangeImpl(PaintSessionCore& session)
     PaintStruct psHead{};
     PaintStructsLinkQuadrants(session, psHead);
 
-    PaintStruct* psNextQuadrant = PaintArrangeStructsHelperRotation<TRotation>(
+    PaintStruct* psNextQuadrant = PaintArrangeStructsHelperRotation<TStableSort, TRotation>(
         &psHead, session.QuadrantBackIndex, PaintSortFlags::Neighbour);
 
     while (++quadrantIndex < session.QuadrantFrontIndex)
     {
-        psNextQuadrant = PaintArrangeStructsHelperRotation<TRotation>(psNextQuadrant, quadrantIndex, PaintSortFlags::None);
+        psNextQuadrant = PaintArrangeStructsHelperRotation<TStableSort, TRotation>(
+            psNextQuadrant, quadrantIndex, PaintSortFlags::None);
     }
 
     session.PaintHead = psHead.NextQuadrantEntry;
@@ -523,11 +606,18 @@ static void PaintSessionArrangeImpl(PaintSessionCore& session)
 
 using PaintArrangeWithRotation = void (*)(PaintSessionCore& session);
 
-constexpr std::array _paintArrangeFuncs = {
-    PaintSessionArrangeImpl<0>,
-    PaintSessionArrangeImpl<1>,
-    PaintSessionArrangeImpl<2>,
-    PaintSessionArrangeImpl<3>,
+constexpr std::array _paintArrangeFuncsLegacy = {
+    PaintSessionArrangeImpl<false, 0>,
+    PaintSessionArrangeImpl<false, 1>,
+    PaintSessionArrangeImpl<false, 2>,
+    PaintSessionArrangeImpl<false, 3>,
+};
+
+constexpr std::array _paintArrangeFuncsStable = {
+    PaintSessionArrangeImpl<true, 0>,
+    PaintSessionArrangeImpl<true, 1>,
+    PaintSessionArrangeImpl<true, 2>,
+    PaintSessionArrangeImpl<true, 3>,
 };
 
 /**
@@ -537,7 +627,11 @@ constexpr std::array _paintArrangeFuncs = {
 void PaintSessionArrange(PaintSessionCore& session)
 {
     PROFILED_FUNCTION();
-    return _paintArrangeFuncs[session.CurrentRotation](session);
+    if (gPaintStableSort)
+    {
+        return _paintArrangeFuncsStable[session.CurrentRotation](session);
+    }
+    return _paintArrangeFuncsLegacy[session.CurrentRotation](session);
 }
 
 static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
@@ -547,12 +641,12 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     {
         if (session.DPI.zoom_level >= ZoomLevel{ 1 })
         {
-            screenPos.x = Floor2(screenPos.x, 2);
-            screenPos.y = Floor2(screenPos.y, 2);
+            screenPos.x = floor2(screenPos.x, 2);
+            screenPos.y = floor2(screenPos.y, 2);
             if (session.DPI.zoom_level >= ZoomLevel{ 2 })
             {
-                screenPos.x = Floor2(screenPos.x, 4);
-                screenPos.y = Floor2(screenPos.y, 4);
+                screenPos.x = floor2(screenPos.x, 4);
+                screenPos.y = floor2(screenPos.y, 4);
             }
         }
     }

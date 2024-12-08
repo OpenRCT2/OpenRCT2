@@ -11,20 +11,20 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../windows/Window.h"
-#    include "CustomMenu.h"
-#    include "ScImageManager.hpp"
-#    include "ScTileSelection.hpp"
-#    include "ScViewport.hpp"
-#    include "ScWindow.hpp"
+    #include "../windows/Window.h"
+    #include "CustomMenu.h"
+    #include "ScImageManager.hpp"
+    #include "ScTileSelection.hpp"
+    #include "ScViewport.hpp"
+    #include "ScWindow.hpp"
 
-#    include <memory>
-#    include <openrct2/Context.h>
-#    include <openrct2/Input.h>
-#    include <openrct2/scenario/ScenarioRepository.h>
-#    include <openrct2/scripting/Duktape.hpp>
-#    include <openrct2/scripting/ScriptEngine.h>
-#    include <string>
+    #include <memory>
+    #include <openrct2/Context.h>
+    #include <openrct2/Input.h>
+    #include <openrct2/scenario/ScenarioRepository.h>
+    #include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/scripting/ScriptEngine.h>
+    #include <string>
 
 namespace OpenRCT2::Scripting
 {

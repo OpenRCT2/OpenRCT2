@@ -80,7 +80,7 @@ static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 static void GuestReleaseBalloon(Guest* peep, int16_t spawn_height);
 
 static PeepAnimationType PeepSpecialSpriteToAnimationGroupMap[] = {
-    PeepAnimationType::None,
+    PeepAnimationType::Walking,
     PeepAnimationType::HoldMat,
     PeepAnimationType::StaffMower,
 };
@@ -332,7 +332,7 @@ PeepAnimationType Peep::GetAnimationType()
     Guard::Assert(
         EnumValue(Action) >= std::size(PeepActionToAnimationGroupMap) && Action < PeepActionType::Idle,
         "Invalid peep action %u", EnumValue(Action));
-    return PeepAnimationType::None;
+    return PeepAnimationType::Walking;
 }
 
 /*
@@ -625,7 +625,7 @@ void Peep::PickupAbort(int32_t old_x)
         Action = PeepActionType::Walking;
         SpecialSprite = 0;
         AnimationImageIdOffset = 0;
-        AnimationType = PeepAnimationType::None;
+        AnimationType = PeepAnimationType::Walking;
         PathCheckOptimisation = 0;
     }
 
@@ -674,7 +674,7 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
         Action = PeepActionType::Walking;
         SpecialSprite = 0;
         AnimationImageIdOffset = 0;
-        AnimationType = PeepAnimationType::None;
+        AnimationType = PeepAnimationType::Walking;
         PathCheckOptimisation = 0;
         EntityTweener::Get().Reset();
         auto* guest = As<Guest>();
@@ -1141,7 +1141,7 @@ void PeepProblemWarningsUpdate()
                     break;
                 }
                 ride = GetRide(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isToilet))
+                if (ride != nullptr && ride->GetRideTypeDescriptor().specialType != RtdSpecialType::toilet)
                     toiletCounter++;
                 break;
 
@@ -2911,7 +2911,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
             return;
         }
 
-        if (baseImageId >= kPeepSpriteUmbrellaStateNoneId && baseImageId < (kPeepSpriteUmbrellaStateSittingIdleId + 4))
+        if (baseImageId >= kPeepSpriteUmbrellaStateWalkingId && baseImageId < (kPeepSpriteUmbrellaStateSittingIdleId + 4))
         {
             imageId = ImageId(baseImageId + 32, guest->UmbrellaColour);
             PaintAddImageAsChild(session, imageId, offset, bb);

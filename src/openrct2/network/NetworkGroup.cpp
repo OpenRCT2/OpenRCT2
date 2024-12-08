@@ -9,11 +9,11 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "NetworkGroup.h"
+    #include "NetworkGroup.h"
 
-#    include "../openrct2/core/Json.hpp"
-#    include "NetworkAction.h"
-#    include "NetworkTypes.h"
+    #include "../openrct2/core/Json.hpp"
+    #include "NetworkAction.h"
+    #include "NetworkTypes.h"
 
 using namespace OpenRCT2;
 

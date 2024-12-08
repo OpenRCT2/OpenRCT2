@@ -9,14 +9,14 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "OpenGLShaderProgram.h"
+    #include "OpenGLShaderProgram.h"
 
-#    include <openrct2/Context.h>
-#    include <openrct2/PlatformEnvironment.h>
-#    include <openrct2/core/Console.hpp>
-#    include <openrct2/core/FileStream.h>
-#    include <openrct2/core/Path.hpp>
-#    include <openrct2/core/String.hpp>
+    #include <openrct2/Context.h>
+    #include <openrct2/PlatformEnvironment.h>
+    #include <openrct2/core/Console.hpp>
+    #include <openrct2/core/FileStream.h>
+    #include <openrct2/core/Path.hpp>
+    #include <openrct2/core/String.hpp>
 
 using namespace OpenRCT2::Ui;
 

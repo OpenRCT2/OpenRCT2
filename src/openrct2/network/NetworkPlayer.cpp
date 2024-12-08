@@ -9,11 +9,11 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "NetworkPlayer.h"
+    #include "NetworkPlayer.h"
 
-#    include "../core/Money.hpp"
-#    include "../interface/Window.h"
-#    include "NetworkPacket.h"
+    #include "../core/Money.hpp"
+    #include "../interface/Window.h"
+    #include "NetworkPacket.h"
 
 void NetworkPlayer::SetName(std::string_view name)
 {

@@ -29,13 +29,12 @@ constexpr RideTypeDescriptor MazeRTD =
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourSupports, RtdFlag::hasSinglePieceStation, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::noWallsAroundTrack, RtdFlag::describeAsInside, RtdFlag::hasTrack, RtdFlag::hasEntranceAndExit,
-                     RtdFlag::guestsCanUseUmbrella, RtdFlag::isMaze),
+                     RtdFlag::guestsCanUseUmbrella),
     .RideModes = EnumsToFlags(RideMode::Maze),
     .DefaultMode = RideMode::Maze,
     .OperatingSettings = { 1, 64 },
     .Naming = { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_MAZE",
     .AvailableBreakdowns = 0,
     .Heights = { 6, 24, 0, 1, },
     .MaxMass = 18,
@@ -75,5 +74,6 @@ constexpr RideTypeDescriptor MazeRTD =
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
     .ConstructionWindowContext = RideConstructionWindowContext::Maze,
+    .specialType = RtdSpecialType::maze,
 };
 // clang-format on

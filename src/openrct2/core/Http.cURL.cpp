@@ -9,23 +9,23 @@
 
 #if !defined(DISABLE_HTTP) && !defined(_WIN32) && !defined(__ANDROID__)
 
-#    include "Http.h"
+    #include "Http.h"
 
-#    include "../Version.h"
-#    include "../core/Console.hpp"
+    #include "../Version.h"
+    #include "../core/Console.hpp"
 
-#    include <cstring>
-#    include <memory>
-#    include <stdexcept>
-#    include <thread>
+    #include <cstring>
+    #include <memory>
+    #include <stdexcept>
+    #include <thread>
 
-#    if defined(_WIN32) && !defined(WIN32_LEAN_AND_MEAN)
-// cURL includes windows.h, but we don't need all of it.
-#        define WIN32_LEAN_AND_MEAN
-#    endif
-#    include <curl/curl.h>
+    #if defined(_WIN32) && !defined(WIN32_LEAN_AND_MEAN)
+        // cURL includes windows.h, but we don't need all of it.
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    #include <curl/curl.h>
 
-#    define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
+    #define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
 
 namespace OpenRCT2::Http
 {

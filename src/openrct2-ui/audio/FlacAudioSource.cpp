@@ -13,10 +13,10 @@
 #include <stdexcept>
 
 #ifndef DISABLE_FLAC
-#    include <FLAC/all.h>
-#    include <SDL.h>
-#    include <cstring>
-#    include <vector>
+    #include <FLAC/all.h>
+    #include <SDL.h>
+    #include <cstring>
+    #include <vector>
 #endif
 
 namespace OpenRCT2::Audio

@@ -9,16 +9,16 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "TextureCache.h"
+    #include "TextureCache.h"
 
-#    include <algorithm>
-#    include <openrct2/Diagnostic.h>
-#    include <openrct2/drawing/Drawing.h>
-#    include <openrct2/interface/Colour.h>
-#    include <openrct2/util/Util.h>
-#    include <openrct2/world/Location.hpp>
-#    include <stdexcept>
-#    include <vector>
+    #include <algorithm>
+    #include <openrct2/Diagnostic.h>
+    #include <openrct2/drawing/Drawing.h>
+    #include <openrct2/interface/Colour.h>
+    #include <openrct2/util/Util.h>
+    #include <openrct2/world/Location.hpp>
+    #include <stdexcept>
+    #include <vector>
 
 using namespace OpenRCT2::Ui;
 
@@ -352,9 +352,9 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     auto atlasIndex = static_cast<int32_t>(_atlases.size());
     int32_t atlasSize = powf(2, static_cast<float>(Atlas::CalculateImageSizeOrder(imageWidth, imageHeight)));
 
-#    ifdef DEBUG
+    #ifdef DEBUG
     LOG_VERBOSE("new texture atlas #%d (size %d) allocated", atlasIndex, atlasSize);
-#    endif
+    #endif
 
     _atlases.emplace_back(atlasIndex, atlasSize);
     _atlases.back().Initialise(_atlasesTextureDimensions, _atlasesTextureDimensions);

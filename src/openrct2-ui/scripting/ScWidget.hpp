@@ -11,17 +11,17 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../interface/Widget.h"
-#    include "../interface/Window.h"
-#    include "CustomListView.h"
-#    include "CustomWindow.h"
-#    include "ScViewport.hpp"
+    #include "../interface/Widget.h"
+    #include "../interface/Window.h"
+    #include "CustomListView.h"
+    #include "CustomWindow.h"
+    #include "ScViewport.hpp"
 
-#    include <memory>
-#    include <openrct2/Context.h>
-#    include <openrct2/scripting/Duktape.hpp>
-#    include <openrct2/scripting/IconNames.hpp>
-#    include <openrct2/scripting/ScriptEngine.h>
+    #include <memory>
+    #include <openrct2/Context.h>
+    #include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/scripting/IconNames.hpp>
+    #include <openrct2/scripting/ScriptEngine.h>
 
 namespace OpenRCT2::Scripting
 {

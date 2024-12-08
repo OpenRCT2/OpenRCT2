@@ -9,30 +9,30 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "NetworkServerAdvertiser.h"
+    #include "NetworkServerAdvertiser.h"
 
-#    include "../Diagnostic.h"
-#    include "../GameState.h"
-#    include "../config/Config.h"
-#    include "../core/Console.hpp"
-#    include "../core/Guard.hpp"
-#    include "../core/Http.h"
-#    include "../core/Json.hpp"
-#    include "../core/String.hpp"
-#    include "../entity/Guest.h"
-#    include "../localisation/Localisation.Date.h"
-#    include "../management/Finance.h"
-#    include "../platform/Platform.h"
-#    include "../world/Map.h"
-#    include "../world/Park.h"
-#    include "Socket.h"
-#    include "network.h"
+    #include "../Diagnostic.h"
+    #include "../GameState.h"
+    #include "../config/Config.h"
+    #include "../core/Console.hpp"
+    #include "../core/Guard.hpp"
+    #include "../core/Http.h"
+    #include "../core/Json.hpp"
+    #include "../core/String.hpp"
+    #include "../entity/Guest.h"
+    #include "../localisation/Localisation.Date.h"
+    #include "../management/Finance.h"
+    #include "../platform/Platform.h"
+    #include "../world/Map.h"
+    #include "../world/Park.h"
+    #include "Socket.h"
+    #include "network.h"
 
-#    include <cstring>
-#    include <iterator>
-#    include <memory>
-#    include <random>
-#    include <string>
+    #include <cstring>
+    #include <iterator>
+    #include <memory>
+    #include <random>
+    #include <string>
 
 using namespace OpenRCT2;
 
@@ -44,10 +44,10 @@ enum class MasterServerStatus
     InternalError = 500
 };
 
-#    ifndef DISABLE_HTTP
+    #ifndef DISABLE_HTTP
 constexpr int32_t kMasterServerRegisterTime = 120 * 1000; // 2 minutes
 constexpr int32_t kMasterServerHeartbeatTime = 60 * 1000; // 1 minute
-#    endif
+    #endif
 
 class NetworkServerAdvertiser final : public INetworkServerAdvertiser
 {
@@ -59,7 +59,7 @@ private:
 
     ADVERTISE_STATUS _status = ADVERTISE_STATUS::UNREGISTERED;
 
-#    ifndef DISABLE_HTTP
+    #ifndef DISABLE_HTTP
     uint32_t _lastAdvertiseTime = 0;
     uint32_t _lastHeartbeatTime = 0;
 
@@ -71,16 +71,16 @@ private:
 
     // See https://github.com/OpenRCT2/OpenRCT2/issues/6277 and 4953
     bool _forceIPv4 = false;
-#    endif
+    #endif
 
 public:
     explicit NetworkServerAdvertiser(uint16_t port)
     {
         _port = port;
         _lanListener = CreateUdpSocket();
-#    ifndef DISABLE_HTTP
+    #ifndef DISABLE_HTTP
         _key = GenerateAdvertiseKey();
-#    endif
+    #endif
     }
 
     ADVERTISE_STATUS GetStatus() const override
@@ -91,12 +91,12 @@ public:
     void Update() override
     {
         UpdateLAN();
-#    ifndef DISABLE_HTTP
+    #ifndef DISABLE_HTTP
         if (Config::Get().network.Advertise)
         {
             UpdateWAN();
         }
-#    endif
+    #endif
     }
 
 private:
@@ -140,7 +140,7 @@ private:
         return root;
     }
 
-#    ifndef DISABLE_HTTP
+    #ifndef DISABLE_HTTP
     void UpdateWAN()
     {
         switch (_status)
@@ -351,7 +351,7 @@ private:
         }
         return result;
     }
-#    endif
+    #endif
 };
 
 std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port)

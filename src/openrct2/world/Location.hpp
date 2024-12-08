@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../util/Math.hpp"
+#include "../core/Numerics.hpp"
 
 #include <cstdint>
 
@@ -227,7 +227,9 @@ struct CoordsXY
 
     constexpr CoordsXY ToTileStart() const
     {
-        return { Floor2(x, kCoordsXYStep), Floor2(y, kCoordsXYStep) };
+        using namespace OpenRCT2::Numerics;
+
+        return { floor2(x, kCoordsXYStep), floor2(y, kCoordsXYStep) };
     }
 
     constexpr bool IsNull() const
@@ -276,7 +278,9 @@ struct CoordsXYZ : public CoordsXY
 
     constexpr CoordsXYZ ToTileStart() const
     {
-        return { Floor2(x, kCoordsXYStep), Floor2(y, kCoordsXYStep), z };
+        using namespace OpenRCT2::Numerics;
+
+        return { floor2(x, kCoordsXYStep), floor2(y, kCoordsXYStep), z };
     }
 
     constexpr CoordsXYZ ToTileCentre() const
@@ -661,7 +665,9 @@ struct CoordsXYZD : public CoordsXYZ
 
     constexpr CoordsXYZD ToTileStart() const
     {
-        return { Floor2(x, kCoordsXYStep), Floor2(y, kCoordsXYStep), z, direction };
+        using namespace OpenRCT2::Numerics;
+
+        return { floor2(x, kCoordsXYStep), floor2(y, kCoordsXYStep), z, direction };
     }
 
     constexpr CoordsXYZD ToTileCentre() const

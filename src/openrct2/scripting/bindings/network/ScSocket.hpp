@@ -10,16 +10,16 @@
 #pragma once
 
 #ifdef ENABLE_SCRIPTING
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
 
-#        include "../../../Context.h"
-#        include "../../../config/Config.h"
-#        include "../../../network/Socket.h"
-#        include "../../Duktape.hpp"
-#        include "../../ScriptEngine.h"
+        #include "../../../Context.h"
+        #include "../../../config/Config.h"
+        #include "../../../network/Socket.h"
+        #include "../../Duktape.hpp"
+        #include "../../ScriptEngine.h"
 
-#        include <memory>
-#        include <vector>
+        #include <memory>
+        #include <vector>
 
 namespace OpenRCT2::Scripting
 {
@@ -556,5 +556,5 @@ namespace OpenRCT2::Scripting
     };
 } // namespace OpenRCT2::Scripting
 
-#    endif
+    #endif
 #endif

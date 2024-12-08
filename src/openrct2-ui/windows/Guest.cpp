@@ -580,7 +580,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // If holding umbrella
-                if (animationFrame >= kPeepSpriteUmbrellaStateNoneId
+                if (animationFrame >= kPeepSpriteUmbrellaStateWalkingId
                     && animationFrame < kPeepSpriteUmbrellaStateSittingIdleId + 4)
                 {
                     GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);

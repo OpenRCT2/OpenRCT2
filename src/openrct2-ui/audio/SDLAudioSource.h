@@ -22,9 +22,9 @@ namespace OpenRCT2::Audio
     struct IAudioMixer;
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
-#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
 #endif
     class SDLAudioSource : public IAudioSource
     {
@@ -46,7 +46,7 @@ namespace OpenRCT2::Audio
         IAudioMixer* GetMixer();
     };
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic pop
+    #pragma GCC diagnostic pop
 #endif
 
     std::unique_ptr<SDLAudioSource> CreateAudioSource(SDL_RWops* rw);

@@ -18,6 +18,7 @@
 #include "../Paint.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 constexpr auto kMetalSupportSkip = 9 * 4 * 2;
 
@@ -385,7 +386,7 @@ static bool MetalASupportsPaintSetup(
 
     // Work out if a small support segment required to bring support to normal
     // size (aka floor2(x, 16))
-    int16_t heightDiff = Floor2(height + 16, 16);
+    int16_t heightDiff = floor2(height + 16, 16);
     if (heightDiff > si)
     {
         heightDiff = si;
@@ -598,7 +599,7 @@ static bool MetalBSupportsPaintSetup(
         baseHeight = supportSegments[segment].height + 6;
     }
 
-    int16_t heightDiff = Floor2(baseHeight + 16, 16);
+    int16_t heightDiff = floor2(baseHeight + 16, 16);
     if (heightDiff > si)
     {
         heightDiff = si;
@@ -782,7 +783,7 @@ bool PathPoleSupportsPaintSetup(
     // si = height
     // dx = baseHeight
 
-    int16_t heightDiff = Floor2(baseHeight + 16, 16);
+    int16_t heightDiff = floor2(baseHeight + 16, 16);
     if (heightDiff > height)
     {
         heightDiff = height;

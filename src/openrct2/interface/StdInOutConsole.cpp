@@ -19,7 +19,7 @@
 
 // Ignore isatty warning on WIN32
 #ifdef _MSC_VER
-#    pragma warning(disable : 4996)
+    #pragma warning(disable : 4996)
 #endif
 
 void StdInOutConsole::Start()

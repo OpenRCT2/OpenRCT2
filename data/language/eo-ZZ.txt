@@ -99,6 +99,7 @@ STR_0094    :Onda Fervojo kun Unuopa Relo
 STR_0095    :Alpa Onda Fervojo
 STR_0096    :Klasika Ligna Onda Fervojo
 STR_0097    :Klasika Staranta Onda Fervojo
+STR_0098    :Onda Fervojo Lanĉita per Linearaj Sinkronaj Motoroj
 STR_0512    :Onda fervojo kompakta kun helikforma lifto kaj glataj kurboplenaj malleviĝoj.
 STR_0513    :Onda fervojo kun lopoj, sur kiun la rajdantoj rajdas starante
 STR_0514    :Trajnoj penditaj sub la trako de la onda fervojo svingiĝas flanken ĉe anguloj
@@ -183,6 +184,7 @@ STR_0604    :Rajdantoj rajdas anservice sur mallarĝa monorela trako, dum ili ve
 STR_0605    :Rajdantoj toboganas malsupren serpentuman ŝtalan trakon, bremsante por regi ilian rapidecon.
 STR_0606    :Maljuna-stila ligna onda fervojo kun rapida kaj malglata rajdo, kun sufiĉe da ‘en-aeraj periodoj’, kelka flanka graviteco, kaj desegnita sentiĝi ‘nedirektebla’
 STR_0607    :Intensa, malnovstila ŝtala onda fervojo kun lopoj, sur kiun la rajdantoj rajdas starante
+STR_0608    :Linearaj sinkronaj motoroj plirapidigas la trajnojn de la onda fervojo, kiuj tiam trapasas krutajn inversigojn kaj kurbiĝojn
 STR_0767    :Gasto {INT32}
 STR_0768    :Faktoto {INT32}
 STR_0769    :Mekanikisto {INT32}
@@ -3609,7 +3611,7 @@ STR_6537    :Permesi uzante regulajn trotuarojn kiel atendovico
 STR_6538    :Montras regulajn trotuarojn en la atendovicoj-fallisto de la Trotuaroj-fenestro.
 STR_6539    :Bremso Fermita
 STR_6540    :{WINDOW_COLOUR_2}Specialan dankon al la sekvantaj firmaoj por permesi ilian similecon:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Kontribuantoj
 STR_6543    :Kontribuantoj…
 STR_6544    :Prunto ne povas esti negativa!

@@ -26,6 +26,7 @@
 #include "Segment.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 static constexpr CoordsXY lengths[] = {
     { 12, 26 },
@@ -74,7 +75,7 @@ static void SetSupportHeights(
 {
     height += sceneryEntry.height;
 
-    PaintUtilSetGeneralSupportHeight(session, Ceil2(height, 8));
+    PaintUtilSetGeneralSupportHeight(session, ceil2(height, 8));
     if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP))
     {
         if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))

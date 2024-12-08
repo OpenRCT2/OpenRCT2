@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui::Windows
 
     static bool isEditorOrSandbox()
     {
-        return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode;
+        return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode;
     }
 
     static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;

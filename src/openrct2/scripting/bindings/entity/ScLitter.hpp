@@ -11,7 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScEntity.hpp"
+    #include "ScEntity.hpp"
 
 struct Litter;
 

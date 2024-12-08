@@ -194,6 +194,18 @@ static void LatticeTriangleTrackAltPoweredLift(
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
+static void LatticeTriangleTrackAltDiagBooster(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    constexpr ImageIndex images[kNumOrthogonalDirections] = { SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BOOSTER_ALT_1,
+                                                              SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BOOSTER_ALT_2,
+                                                              SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BOOSTER_ALT_3,
+                                                              SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BOOSTER_ALT_4 };
+
+    TrackPaintUtilDiagTilesPaintExtra(session, 3, height, direction, trackSequence, images, supportType.metal);
+}
+
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrackAlt(TrackElemType trackType)
 {
     switch (trackType)
@@ -210,6 +222,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrackAlt(TrackElemType 
             return LatticeTriangleTrackAltBooster;
         case TrackElemType::PoweredLift:
             return LatticeTriangleTrackAltPoweredLift;
+        case TrackElemType::DiagBooster:
+            return LatticeTriangleTrackAltDiagBooster;
 
         default:
             return GetTrackPaintFunctionLatticeTriangleTrack(trackType);

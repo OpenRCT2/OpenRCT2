@@ -17,7 +17,7 @@
 #include <cstdio>
 
 #ifdef __ANDROID__
-#    include <android/log.h>
+    #include <android/log.h>
 #endif
 
 using namespace OpenRCT2;

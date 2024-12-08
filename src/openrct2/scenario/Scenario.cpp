@@ -39,6 +39,7 @@
 #include "../network/network.h"
 #include "../object/Object.h"
 #include "../object/ObjectEntryManager.h"
+#include "../object/ObjectLimits.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ScenarioTextObject.h"

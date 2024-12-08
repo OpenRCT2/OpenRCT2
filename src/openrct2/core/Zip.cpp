@@ -12,7 +12,7 @@
 #include "IStream.hpp"
 
 #ifndef __ANDROID__
-#    include <zip.h>
+    #include <zip.h>
 #endif
 
 using namespace OpenRCT2;

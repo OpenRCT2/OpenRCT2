@@ -44,28 +44,28 @@ enum class DiagnosticLevel
  */
 
 #if defined(DEBUG)
-#    if DEBUG > 0
-#        define DEBUG_LEVEL_1 1
-#        if DEBUG > 1
-#            define DEBUG_LEVEL_2 1
-#            if DEBUG > 2
-#                define DEBUG_LEVEL_3 1
-#            else
-#                define DEBUG_LEVEL_3 0
-#            endif // DEBUG > 2
-#        else
-#            define DEBUG_LEVEL_3 0
-#            define DEBUG_LEVEL_2 0
-#        endif // DEBUG > 1
-#    else
-#        define DEBUG_LEVEL_1 0
-#        define DEBUG_LEVEL_2 0
-#        define DEBUG_LEVEL_3 0
-#    endif // DEBUG > 0
+    #if DEBUG > 0
+        #define DEBUG_LEVEL_1 1
+        #if DEBUG > 1
+            #define DEBUG_LEVEL_2 1
+            #if DEBUG > 2
+                #define DEBUG_LEVEL_3 1
+            #else
+                #define DEBUG_LEVEL_3 0
+            #endif // DEBUG > 2
+        #else
+            #define DEBUG_LEVEL_3 0
+            #define DEBUG_LEVEL_2 0
+        #endif // DEBUG > 1
+    #else
+        #define DEBUG_LEVEL_1 0
+        #define DEBUG_LEVEL_2 0
+        #define DEBUG_LEVEL_3 0
+    #endif // DEBUG > 0
 #else
-#    define DEBUG_LEVEL_3 0
-#    define DEBUG_LEVEL_2 0
-#    define DEBUG_LEVEL_1 0
+    #define DEBUG_LEVEL_3 0
+    #define DEBUG_LEVEL_2 0
+    #define DEBUG_LEVEL_1 0
 #endif // defined(DEBUG)
 
 extern bool _log_levels[static_cast<uint8_t>(DiagnosticLevel::Count)];
@@ -75,10 +75,10 @@ void DiagnosticLogWithLocation(
     DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...);
 
 #ifdef _MSC_VER
-#    define DIAGNOSTIC_LOG_MACRO(level, format, ...)                                                                           \
+    #define DIAGNOSTIC_LOG_MACRO(level, format, ...)                                                                           \
         DiagnosticLogWithLocation(level, __FILE__, __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
 #else
-#    define DIAGNOSTIC_LOG_MACRO(level, format, ...)                                                                           \
+    #define DIAGNOSTIC_LOG_MACRO(level, format, ...)                                                                           \
         DiagnosticLogWithLocation(level, __FILE__, __func__, __LINE__, format, ##__VA_ARGS__)
 #endif // _MSC_VER
 

@@ -8,17 +8,17 @@
  *****************************************************************************/
 
 #if defined(_WIN32) && defined(USE_FRIBIDI)
-#    include "RTL.h"
+    #include "RTL.h"
 
-#    include "../Diagnostic.h"
+    #include "../Diagnostic.h"
 
-#    include <string>
+    #include <string>
 
 extern "C" {
-#    include <fribidi/fribidi-bidi-types.h>
-#    include <fribidi/fribidi-char-sets.h>
-#    include <fribidi/fribidi-flags.h>
-#    include <fribidi/fribidi.h>
+    #include <fribidi/fribidi-bidi-types.h>
+    #include <fribidi/fribidi-char-sets.h>
+    #include <fribidi/fribidi-flags.h>
+    #include <fribidi/fribidi.h>
 }
 
 static constexpr uint16_t BufferLength = 1024;
@@ -50,10 +50,10 @@ std::string FixRTL(std::string& input)
     return std::string(outputString);
 }
 #elif defined(_WIN32)
-#    include "../Diagnostic.h"
-#    include "RTL.h"
+    #include "../Diagnostic.h"
+    #include "RTL.h"
 
-#    include <string>
+    #include <string>
 
 static bool hasWarned = false;
 

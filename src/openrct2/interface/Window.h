@@ -445,7 +445,7 @@ extern Tool gCurrentToolId;
 extern WidgetRef gCurrentToolWidget;
 
 using modal_callback = void (*)(int32_t result);
-using close_callback = void (*)();
+using CloseCallback = void (*)();
 
 constexpr int8_t kWindowLimitMin = 4;
 constexpr int8_t kWindowLimitMax = 64;
@@ -475,7 +475,6 @@ WindowBase* WindowBringToFrontByClassWithFlags(WindowClass cls, uint16_t flags);
 WindowBase* WindowBringToFrontByNumber(WindowClass cls, rct_windownumber number);
 
 void WindowClose(WindowBase& window);
-void WindowFlushDead();
 void WindowCloseByClass(WindowClass cls);
 void WindowCloseByNumber(WindowClass cls, rct_windownumber number);
 void WindowCloseByNumber(WindowClass cls, EntityId number);

@@ -44,6 +44,8 @@
 #include <openrct2/world/tile_element/Slope.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 
+using namespace OpenRCT2::Numerics;
+
 namespace OpenRCT2::Ui::Windows
 {
     static money64 FootpathProvisionalSet(
@@ -670,7 +672,7 @@ namespace OpenRCT2::Ui::Windows
 
             uint32_t numPathTypes = 0;
             // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
-            bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode);
+            bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode);
 
             _dropdownEntries.clear();
             std::optional<size_t> defaultIndex;
@@ -688,14 +690,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 // If regular paths can be used as queue, only hide the path if we’re _not_ looking at a queue,
                 // but the path surface is one.
-                if (GetGameState().Cheats.AllowRegularPathAsQueue && !showQueues
+                if (GetGameState().Cheats.allowRegularPathAsQueue && !showQueues
                     && ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
                 {
                     continue;
                 }
                 // If the cheat is disabled, hide queues from the regular path view and vice versa.
                 else if (
-                    !GetGameState().Cheats.AllowRegularPathAsQueue
+                    !GetGameState().Cheats.allowRegularPathAsQueue
                     && showQueues != ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
                 {
                     continue;
@@ -821,10 +823,10 @@ namespace OpenRCT2::Ui::Windows
                     auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
                     if (info.interactionType != ViewportInteractionItem::None)
                     {
-                        const bool allowInvalidHeights = GetGameState().Cheats.AllowTrackPlaceInvalidHeights;
+                        const bool allowInvalidHeights = GetGameState().Cheats.allowTrackPlaceInvalidHeights;
                         const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
 
-                        _footpathPlaceCtrlZ = Floor2(info.Element->GetBaseZ(), heightStep);
+                        _footpathPlaceCtrlZ = floor2(info.Element->GetBaseZ(), heightStep);
                         _footpathPlaceCtrlState = true;
                     }
                 }
@@ -854,9 +856,9 @@ namespace OpenRCT2::Ui::Windows
                     _footpathPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_footpathPlaceShiftZ);
                 }
 
-                const bool allowInvalidHeights = GetGameState().Cheats.AllowTrackPlaceInvalidHeights;
+                const bool allowInvalidHeights = GetGameState().Cheats.allowTrackPlaceInvalidHeights;
                 const auto heightStep = kCoordsZStep * (!allowInvalidHeights ? 2 : 1);
-                _footpathPlaceShiftZ = Floor2(_footpathPlaceShiftZ, heightStep);
+                _footpathPlaceShiftZ = floor2(_footpathPlaceShiftZ, heightStep);
 
                 // Clamp to maximum possible value of BaseHeight can offer.
                 _footpathPlaceShiftZ = std::min<int16_t>(_footpathPlaceShiftZ, maxHeight);
@@ -886,7 +888,7 @@ namespace OpenRCT2::Ui::Windows
                     if (surfaceElement == nullptr)
                         return std::nullopt;
 
-                    auto mapZ = Floor2(surfaceElement->GetBaseZ(), 16);
+                    auto mapZ = floor2(surfaceElement->GetBaseZ(), 16);
                     mapZ += _footpathPlaceShiftZ;
                     mapZ = std::max<int16_t>(mapZ, 16);
                     _footpathPlaceZ = mapZ;
@@ -1589,7 +1591,7 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutDemolishCurrent()
         {
             if (IsWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
-                || (!GetGameState().Cheats.BuildInPauseMode && GameIsPaused()))
+                || (!GetGameState().Cheats.buildInPauseMode && GameIsPaused()))
             {
                 return;
             }

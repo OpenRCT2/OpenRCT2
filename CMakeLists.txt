@@ -1,5 +1,6 @@
 # CMAKE project for openrct2
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.10)
+
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
@@ -68,9 +69,9 @@ set(TITLE_SEQUENCE_VERSION "0.4.14")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "6c04781b959b468e1f65ec2d2f21f5aaa5e5724d")
 
-set(OBJECTS_VERSION "1.4.10")
+set(OBJECTS_VERSION "1.4.11")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "e4953075d8dbe13ef48e8c4e87621cf3503a9d23")
+set(OBJECTS_SHA1 "da04330679de2eff53a94a6505802512bfec6403")
 
 set(OPENSFX_VERSION "1.0.5")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
@@ -80,9 +81,9 @@ set(OPENMSX_VERSION "1.6")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
 set(OPENMSX_SHA1 "ba170fa6d777b309c15420f4b6eb3fa25082a9d1")
 
-set(REPLAYS_VERSION "0.0.83")
+set(REPLAYS_VERSION "0.0.84")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "FFC98C36AFEC68DC6A48E863413D4E2364A202B3")
+set(REPLAYS_SHA1 "90B848AB344E29A2CF1E3E48539F06F5845772C3")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -112,8 +113,9 @@ option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(ENABLE_SCRIPTING "Enable script / plugin support." ON)
 option(ENABLE_ASAN "Enable the AddressSanitizer.")
 option(ENABLE_UBSAN "Enable the UndefinedBehaviourSanitizer.")
-
+option(ENABLE_HEADERS_CHECK "Check if include directives in header files are correct. Only works with clang" OFF)
 option(DISABLE_GUI "Don't build GUI. (Headless only.)")
+
 
 if (FORCE32)
     set(TARGET_M "-m32")
@@ -434,6 +436,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
     add_definitions(-DDOCDIR="${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DOCDIR}")
     file(GLOB DOC_FILES "${ROOT_DIR}/distribution/*.txt")
     list(APPEND DOC_FILES "${ROOT_DIR}/contributors.md"
+                        "${ROOT_DIR}/PRIVACY.md"
                         "${ROOT_DIR}/licence.txt"
                         "${ROOT_DIR}/distribution/scripting.md"
                         "${ROOT_DIR}/distribution/openrct2.d.ts")

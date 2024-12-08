@@ -146,6 +146,7 @@ enum class TrackGroup : uint8_t
     diagBrakes,
     diagBlockBrakes,
     inclinedBrakes,
+    diagBooster,
 
     count,
 };
@@ -600,8 +601,9 @@ namespace OpenRCT2
         DiagBrakes = 337,
         DiagBlockBrakes = 338,
         Down25Brakes = 339,
+        DiagBooster = 340,
 
-        Count = 340,
+        Count = 341,
         None = 65535,
     };
 }

@@ -9,23 +9,23 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScTile.hpp"
+    #include "ScTile.hpp"
 
-#    include "../../../Context.h"
-#    include "../../../core/Guard.hpp"
-#    include "../../../entity/EntityRegistry.h"
-#    include "../../../object/LargeSceneryEntry.h"
-#    include "../../../ride/Track.h"
-#    include "../../../world/Footpath.h"
-#    include "../../../world/Scenery.h"
-#    include "../../../world/tile_element/LargeSceneryElement.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
-#    include "ScTileElement.hpp"
+    #include "../../../Context.h"
+    #include "../../../core/Guard.hpp"
+    #include "../../../entity/EntityRegistry.h"
+    #include "../../../object/LargeSceneryEntry.h"
+    #include "../../../ride/Track.h"
+    #include "../../../world/Footpath.h"
+    #include "../../../world/Scenery.h"
+    #include "../../../world/tile_element/LargeSceneryElement.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
+    #include "ScTileElement.hpp"
 
-#    include <cstdio>
-#    include <cstring>
-#    include <utility>
+    #include <cstdio>
+    #include <cstring>
+    #include <utility>
 
 namespace OpenRCT2::Scripting
 {

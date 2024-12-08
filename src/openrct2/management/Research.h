@@ -10,10 +10,8 @@
 #pragma once
 
 #include "../localisation/StringIdType.h"
-#include "../object/ObjectLimits.h"
 #include "../object/ObjectTypes.h"
 #include "../ride/RideTypes.h"
-#include "../util/Util.h"
 
 #include <optional>
 

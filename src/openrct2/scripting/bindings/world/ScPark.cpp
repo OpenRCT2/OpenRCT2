@@ -9,21 +9,21 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScPark.hpp"
+    #include "ScPark.hpp"
 
-#    include "../../../Context.h"
-#    include "../../../Date.h"
-#    include "../../../GameState.h"
-#    include "../../../core/String.hpp"
-#    include "../../../entity/Guest.h"
-#    include "../../../management/Finance.h"
-#    include "../../../management/NewsItem.h"
-#    include "../../../windows/Intent.h"
-#    include "../../../world/Park.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
-#    include "../entity/ScGuest.hpp"
-#    include "ScParkMessage.hpp"
+    #include "../../../Context.h"
+    #include "../../../Date.h"
+    #include "../../../GameState.h"
+    #include "../../../core/String.hpp"
+    #include "../../../entity/Guest.h"
+    #include "../../../management/Finance.h"
+    #include "../../../management/NewsItem.h"
+    #include "../../../windows/Intent.h"
+    #include "../../../world/Park.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
+    #include "../entity/ScGuest.hpp"
+    #include "ScParkMessage.hpp"
 
 namespace OpenRCT2::Scripting
 {

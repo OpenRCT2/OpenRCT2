@@ -34,6 +34,7 @@
 #include "Segment.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 // clang-format off
 static constexpr BoundBoxXY LargeSceneryBoundBoxes[] = {
@@ -77,7 +78,7 @@ static void PaintLargeScenerySupports(
     WoodenBSupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, supportHeight, imageTemplate, transitionType);
 
-    int32_t clearanceHeight = Ceil2(tileElement.GetClearanceZ() + 15, 16);
+    int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
     if (tile.allowSupportsAbove)
     {
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, clearanceHeight, 0x20);

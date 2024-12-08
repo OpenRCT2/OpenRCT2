@@ -36,7 +36,6 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     .TrackSpeedSettings = { 10, 10 },
     .Naming = { STR_RIDE_NAME_ALPINE_COASTER, STR_RIDE_DESCRIPTION_ALPINE_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_ALPINE_ROLLER_COASTER",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = {18, 24, 3, 7},
     .MaxMass = 4,

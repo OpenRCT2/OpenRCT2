@@ -10,19 +10,19 @@
 #include "../Date.h"
 
 #ifdef _WIN32
-#    ifndef WIN32_LEAN_AND_MEAN
-#        define WIN32_LEAN_AND_MEAN
-#    endif
-#    include <windows.h>
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    #include <windows.h>
 #endif
 
 #if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
-#    include <cpuid.h>
-#    define OpenRCT2_CPUID_GNUC_X86
+    #include <cpuid.h>
+    #define OpenRCT2_CPUID_GNUC_X86
 #elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
-#    include <intrin.h>
-#    include <nmmintrin.h>
-#    define OpenRCT2_CPUID_MSVC_X86
+    #include <intrin.h>
+    #include <nmmintrin.h>
+    #define OpenRCT2_CPUID_MSVC_X86
 #endif
 
 #include "../Context.h"
@@ -149,15 +149,15 @@ namespace OpenRCT2::Platform
 #ifdef OPENRCT2_X86
     static bool CPUIDX86(uint32_t* cpuid_outdata, int32_t eax)
     {
-#    if defined(OpenRCT2_CPUID_GNUC_X86)
+    #if defined(OpenRCT2_CPUID_GNUC_X86)
         int ret = __get_cpuid(eax, &cpuid_outdata[0], &cpuid_outdata[1], &cpuid_outdata[2], &cpuid_outdata[3]);
         return ret == 1;
-#    elif defined(OpenRCT2_CPUID_MSVC_X86)
+    #elif defined(OpenRCT2_CPUID_MSVC_X86)
         __cpuid(reinterpret_cast<int*>(cpuid_outdata), static_cast<int>(eax));
         return true;
-#    else
+    #else
         return false;
-#    endif
+    #endif
     }
 #endif // OPENRCT2_X86
 
@@ -181,9 +181,9 @@ namespace OpenRCT2::Platform
         // https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
         // which causes it to ignore subleafs, but the new function is unavailable on
         // Ubuntu 18.04's toolchains.
-#    if defined(OpenRCT2_CPUID_GNUC_X86) && (!defined(__FreeBSD__) || (__FreeBSD__ > 10))
+    #if defined(OpenRCT2_CPUID_GNUC_X86) && (!defined(__FreeBSD__) || (__FreeBSD__ > 10))
         return __builtin_cpu_supports("avx2");
-#    else
+    #else
         // AVX2 support is declared as the 5th bit of EBX with CPUID(EAX = 7, ECX = 0).
         uint32_t regs[4] = { 0 };
         if (CPUIDX86(regs, 7))
@@ -198,7 +198,7 @@ namespace OpenRCT2::Platform
             }
             return avxCPUSupport;
         }
-#    endif
+    #endif
 #endif
         return false;
     }

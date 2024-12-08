@@ -9,19 +9,19 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "UiExtensions.h"
+    #include "UiExtensions.h"
 
-#    include "CustomImages.h"
-#    include "CustomMenu.h"
-#    include "ScGraphicsContext.hpp"
-#    include "ScImageManager.hpp"
-#    include "ScTileSelection.hpp"
-#    include "ScTitleSequence.hpp"
-#    include "ScUi.hpp"
-#    include "ScWidget.hpp"
-#    include "ScWindow.hpp"
+    #include "CustomImages.h"
+    #include "CustomMenu.h"
+    #include "ScGraphicsContext.hpp"
+    #include "ScImageManager.hpp"
+    #include "ScTileSelection.hpp"
+    #include "ScTitleSequence.hpp"
+    #include "ScUi.hpp"
+    #include "ScWidget.hpp"
+    #include "ScWindow.hpp"
 
-#    include <openrct2/scripting/ScriptEngine.h>
+    #include <openrct2/scripting/ScriptEngine.h>
 
 using namespace OpenRCT2::Scripting;
 

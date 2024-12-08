@@ -239,9 +239,9 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-            if (!rtd.HasFlag(RtdFlag::isMaze))
+            if (rtd.specialType != RtdSpecialType::maze)
             {
-                if (td.trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
+                if (rtd.specialType == RtdSpecialType::miniGolf)
                 {
                     // Holes
                     auto ft = Formatter();

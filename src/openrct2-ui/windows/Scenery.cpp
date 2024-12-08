@@ -39,6 +39,7 @@
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
+#include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
@@ -58,6 +59,8 @@
 #include <openrct2/world/tile_element/SmallSceneryElement.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <openrct2/world/tile_element/WallElement.h>
+
+using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -679,7 +682,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
                 }
 
-                if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
+                if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.sandboxMode)
                 {
                     widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Button;
                     if (IsSceneryItemRestricted(tabSelectedScenery))
@@ -2363,7 +2366,7 @@ namespace OpenRCT2::Ui::Windows
 
         void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, ScreenCoordsXY& screenPos)
         {
-            if (!canRaiseItem && !GetGameState().Cheats.DisableSupportLimits)
+            if (!canRaiseItem && !GetGameState().Cheats.disableSupportLimits)
             {
                 gSceneryCtrlPressed = false;
                 gSceneryShiftPressed = false;
@@ -2421,7 +2424,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             gSceneryShiftPressZOffset = mainWnd->viewport->zoom.ApplyTo(gSceneryShiftPressZOffset);
                         }
-                        gSceneryShiftPressZOffset = Floor2(gSceneryShiftPressZOffset, 8);
+                        gSceneryShiftPressZOffset = floor2(gSceneryShiftPressZOffset, 8);
 
                         screenPos.x = gSceneryShiftPressX;
                         screenPos.y = gSceneryShiftPressY;

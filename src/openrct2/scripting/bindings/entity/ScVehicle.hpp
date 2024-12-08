@@ -11,10 +11,10 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../ride/Ride.h"
-#    include "ScEntity.hpp"
+    #include "../../../ride/Ride.h"
+    #include "ScEntity.hpp"
 
-#    include <optional>
+    #include <optional>
 
 namespace OpenRCT2::Scripting
 {

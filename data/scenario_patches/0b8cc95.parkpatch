@@ -1,0 +1,31 @@
+{
+    "scenario_name": "Rollercoaster Heaven",
+    "sha256": "0b8cc952c399e1515546a4ababe5ba2f7aace83915a7e51c56ee901568c9ef56",
+    "elements_to_delete": [
+        {
+            "element_index": 0,
+            "coordinates": [
+                [ 23, 79 ], [ 24, 79 ]
+            ]
+        },
+        {
+            "element_index": 1,
+            "coordinates": [
+                [ 87, 13 ]
+            ]
+        }
+    ],
+    "paths": [
+        {
+            "railings": "rct2.footpath_railings.concrete",
+            "surface": "rct2.footpath_surface.crazy_paving",
+            "coordinates": [ [ 24, 79, 14 ], [ 87, 13, 18 ] ]
+        },
+        {
+            "railings": "rct2.footpath_railings.concrete",
+            "surface": "rct2.footpath_surface.crazy_paving",
+            "coordinates": [ [ 23, 79, 12 ] ],
+            "slope_direction": 2
+        }
+    ]
+}

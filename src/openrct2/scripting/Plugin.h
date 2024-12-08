@@ -11,12 +11,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "Duktape.hpp"
+    #include "Duktape.hpp"
 
-#    include <memory>
-#    include <string>
-#    include <string_view>
-#    include <vector>
+    #include <memory>
+    #include <string>
+    #include <string_view>
+    #include <vector>
 
 namespace OpenRCT2::Scripting
 {

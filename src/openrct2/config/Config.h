@@ -17,7 +17,7 @@
 
 // windows.h defines an interface keyword
 #ifdef interface
-#    undef interface
+    #undef interface
 #endif
 
 namespace OpenRCT2::Config

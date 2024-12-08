@@ -1382,7 +1382,7 @@ namespace OpenRCT2::RCT2
 
                     // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
                     const auto& rtd = GetRideTypeDescriptor(rideType);
-                    if (rtd.HasFlag(RtdFlag::isMaze))
+                    if (rtd.specialType == RtdSpecialType::maze)
                     {
                         dst2->SetMazeEntry(src2->GetMazeEntry());
                     }

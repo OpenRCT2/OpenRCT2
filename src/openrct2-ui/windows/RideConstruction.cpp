@@ -32,6 +32,7 @@
 #include <openrct2/actions/TrackSetBrakeSpeedAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/Numerics.hpp>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
@@ -45,7 +46,6 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Math.hpp>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Entrance.h>
@@ -58,6 +58,7 @@
 constexpr int8_t kDefaultSpeedIncrement = 2;
 constexpr int8_t kDefaultMinimumSpeed = 2;
 
+using namespace OpenRCT2::Numerics;
 using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Ui::Windows
@@ -425,7 +426,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
             if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
-                && !GetGameState().Cheats.EnableAllDrawableTrackPieces)
+                && !GetGameState().Cheats.enableAllDrawableTrackPieces)
             {
                 // Disable lift hill toggle and banking if current track piece is uphill
                 if (_previousTrackPitchEnd == TrackPitch::Up25 || _previousTrackPitchEnd == TrackPitch::Up60
@@ -748,7 +749,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN);
             }
-            if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
                 if (_currentTrackPitchEnd != TrackPitch::None && !IsTrackEnabled(TrackGroup::liftHillCurve))
                 {
@@ -841,7 +842,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_currentTrackPitchEnd == TrackPitch::None && _previousTrackRollEnd != TrackRoll::None
                             && (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
-                                || GetGameState().Cheats.EnableAllDrawableTrackPieces))
+                                || GetGameState().Cheats.enableAllDrawableTrackPieces))
                         {
                             disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP);
                         }
@@ -905,7 +906,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // If chain lift cheat is enabled then show the chain lift widget no matter what
-            if (GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            if (GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
                 disabledWidgets &= ~(1uLL << WIDX_CHAIN_LIFT);
             }
@@ -1330,7 +1331,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CHAIN_LIFT:
                     RideConstructionInvalidateCurrentTrack();
                     _currentTrackHasLiftHill = !_currentTrackHasLiftHill;
-                    if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+                    if ((_currentTrackHasLiftHill) && !GetGameState().Cheats.enableChainLiftOnAllTrack)
                         _currentTrackAlternative.unset(AlternativeTrackFlag::alternativePieces);
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
@@ -1383,7 +1384,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto trackSpeedIncrement = kDefaultSpeedIncrement;
                         auto trackSpeedMinimum = kDefaultMinimumSpeed;
-                        if (GetGameState().Cheats.UnlockOperatingLimits)
+                        if (GetGameState().Cheats.unlockOperatingLimits)
                         {
                             trackSpeedMinimum = 0;
                         }
@@ -1414,7 +1415,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_O_TRACK:
                     RideConstructionInvalidateCurrentTrack();
                     _currentTrackAlternative.set(AlternativeTrackFlag::alternativePieces);
-                    if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
+                    if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
                         _currentTrackHasLiftHill = false;
                     _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
@@ -1775,13 +1776,13 @@ namespace OpenRCT2::Ui::Windows
             const auto& gameState = GetGameState();
             if (currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::upInclineRequiresLift)
                 && (_currentTrackPitchEnd == TrackPitch::Up25 || _currentTrackPitchEnd == TrackPitch::Up60)
-                && !gameState.Cheats.EnableAllDrawableTrackPieces)
+                && !gameState.Cheats.enableAllDrawableTrackPieces)
             {
                 _currentTrackHasLiftHill = true;
             }
 
             if ((IsTrackEnabled(TrackGroup::liftHill) && !_currentlySelectedTrack.isTrackType)
-                || (gameState.Cheats.EnableChainLiftOnAllTrack
+                || (gameState.Cheats.enableChainLiftOnAllTrack
                     && currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack)))
             {
                 widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::FlatBtn;
@@ -2479,7 +2480,7 @@ namespace OpenRCT2::Ui::Windows
         {
             _currentTrackPitchEnd = slope;
             _currentTrackPrice = kMoney64Undefined;
-            if (_rideConstructionState == RideConstructionState::Front && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+            if (_rideConstructionState == RideConstructionState::Front && !GetGameState().Cheats.enableChainLiftOnAllTrack)
             {
                 switch (slope)
                 {
@@ -2760,8 +2761,9 @@ namespace OpenRCT2::Ui::Windows
                     continue;
 
                 // Non-default vehicle visuals do not use this system, so we have to assume it supports all the track pieces.
-                if (currentRideEntry->Cars[0].PaintStyle != VEHICLE_VISUAL_DEFAULT || rideType == RIDE_TYPE_CHAIRLIFT
-                    || (currentRideEntry->Cars[0].flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+                auto& firstCar = currentRideEntry->Cars[0];
+                if (firstCar.PaintStyle != VEHICLE_VISUAL_DEFAULT || (firstCar.flags & CAR_ENTRY_FLAG_CHAIRLIFT)
+                    || (firstCar.flags & CAR_ENTRY_FLAG_SLIDE_SWING))
                 {
                     disabledGroups.reset();
                     break;
@@ -2993,7 +2995,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _trackPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_trackPlaceShiftZ);
                 }
-                _trackPlaceShiftZ = Floor2(_trackPlaceShiftZ, 8);
+                _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, 8);
 
                 // Clamp to maximum possible value of BaseHeight can offer.
                 _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
@@ -3018,7 +3020,7 @@ namespace OpenRCT2::Ui::Windows
                 auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
                 if (surfaceElement == nullptr)
                     return std::nullopt;
-                auto mapZ = Floor2(surfaceElement->GetBaseZ(), 16);
+                auto mapZ = floor2(surfaceElement->GetBaseZ(), 16);
                 mapZ += _trackPlaceShiftZ;
                 mapZ = std::max<int16_t>(mapZ, 16);
                 _trackPlaceZ = mapZ;
@@ -3058,7 +3060,7 @@ namespace OpenRCT2::Ui::Windows
     {
         WindowRideConstructionUpdateEnabledTrackPieces();
         if (auto currentRide = GetRide(_currentRideIndex);
-            !currentRide || currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::isMaze))
+            !currentRide || currentRide->GetRideTypeDescriptor().specialType == RtdSpecialType::maze)
         {
             return;
         }
@@ -3292,7 +3294,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (!rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType != RtdSpecialType::maze)
         {
             auto window = static_cast<RideConstructionWindow*>(WindowFindByClass(WindowClass::RideConstruction));
             if (!window)
@@ -3348,7 +3350,7 @@ namespace OpenRCT2::Ui::Windows
         // search for appropriate z value for ghost, up to max ride height
         int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
 
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
         {
             for (int zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
             {
@@ -3571,7 +3573,7 @@ namespace OpenRCT2::Ui::Windows
 
             // FIX not sure exactly why it starts trial and error place from a lower Z, but it causes issues with disable
             // clearance
-            if (!GetGameState().Cheats.DisableClearanceChecks && z > kMinimumLandZ)
+            if (!GetGameState().Cheats.disableClearanceChecks && z > kMinimumLandZ)
             {
                 z -= LAND_HEIGHT_STEP;
             }
@@ -3585,7 +3587,7 @@ namespace OpenRCT2::Ui::Windows
         int numAttempts = (z <= MAX_TRACK_HEIGHT ? ((MAX_TRACK_HEIGHT - z) / kCoordsZStep + 1) : 2);
 
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
         {
             for (int32_t zAttempts = 0; zAttempts < numAttempts; ++zAttempts)
             {
@@ -4599,7 +4601,7 @@ namespace OpenRCT2::Ui::Windows
     {
         if (_gotoStartPlacementMode)
         {
-            _currentTrackBegin.z = Floor2(piecePos.z, kCoordsZStep);
+            _currentTrackBegin.z = floor2(piecePos.z, kCoordsZStep);
             _rideConstructionState = RideConstructionState::Front;
             _currentTrackSelectionFlags = 0;
             _currentTrackPieceDirection = piecePos.direction & 3;
@@ -4688,7 +4690,7 @@ namespace OpenRCT2::Ui::Windows
 
         RideConstructionRemoveGhosts();
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
         {
             int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
             auto gameAction = MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
@@ -4927,7 +4929,7 @@ namespace OpenRCT2::Ui::Windows
             if (coveredVariant != TrackElemType::None && (availableGroups.get(EnumValue(ted.definition.group))))
             {
                 trackType = coveredVariant;
-                if (!GetGameState().Cheats.EnableChainLiftOnAllTrack)
+                if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
                     liftHillAndInvertedState.unset(LiftHillAndInverted::liftHill);
             }
         }
@@ -4977,7 +4979,7 @@ namespace OpenRCT2::Ui::Windows
             turnOffLiftHill = true;
         }
 
-        if (turnOffLiftHill && !GetGameState().Cheats.EnableChainLiftOnAllTrack)
+        if (turnOffLiftHill && !GetGameState().Cheats.enableChainLiftOnAllTrack)
         {
             liftHillAndInvertedState.unset(LiftHillAndInverted::liftHill);
             _currentTrackHasLiftHill = false;
@@ -5050,7 +5052,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t z = _unkF440C5.z;
 
         const auto& rtd = ride->GetRideTypeDescriptor();
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
         {
             const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
             const CoordsXYZD quadrants[kNumOrthogonalDirections] = {

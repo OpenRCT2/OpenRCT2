@@ -9,19 +9,19 @@
 
 #if !defined(DISABLE_NETWORK) && defined(_WIN32)
 
-#    include "Crypt.h"
+    #include "Crypt.h"
 
-#    include "../platform/Platform.h"
-#    include "IStream.hpp"
+    #include "../platform/Platform.h"
+    #include "IStream.hpp"
 
-#    include <cstdint>
-#    include <cstring>
-#    include <iomanip>
-#    include <limits>
-#    include <sstream>
-#    include <stdexcept>
-#    include <string>
-#    include <tuple>
+    #include <cstdint>
+    #include <cstring>
+    #include <iomanip>
+    #include <limits>
+    #include <sstream>
+    #include <stdexcept>
+    #include <string>
+    #include <tuple>
 
 // clang-format off
 // CNG: Cryptography API: Next Generation (CNG)

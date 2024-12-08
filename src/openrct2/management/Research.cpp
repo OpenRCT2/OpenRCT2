@@ -25,6 +25,7 @@
 #include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectEntryManager.h"
+#include "../object/ObjectLimits.h"
 #include "../object/ObjectList.h"
 #include "../object/RideObject.h"
 #include "../object/SceneryGroupEntry.h"
@@ -639,7 +640,7 @@ bool SceneryGroupIsInvented(int32_t sgIndex)
         return true;
     }
 
-    if (GetGameState().Cheats.IgnoreResearchStatus)
+    if (GetGameState().Cheats.ignoreResearchStatus)
     {
         return true;
     }

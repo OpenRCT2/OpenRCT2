@@ -11,11 +11,11 @@
 namespace OpenRCT2::Profiling
 {
 #if defined(__clang__) || defined(__GNUC__)
-#    define PROFILING_FUNC_NAME __PRETTY_FUNCTION__
+    #define PROFILING_FUNC_NAME __PRETTY_FUNCTION__
 #elif defined(_MSC_VER)
-#    define PROFILING_FUNC_NAME __FUNCSIG__
+    #define PROFILING_FUNC_NAME __FUNCSIG__
 #else
-#    error "Unsupported compiler"
+    #error "Unsupported compiler"
 #endif
 
 #define PROFILED_FUNCTION_NAME(func)                                                                                           \
@@ -30,10 +30,10 @@ namespace OpenRCT2::Profiling
 
 #if defined(__clang_major__) && __clang_major__ <= 5
     // Clang 5 crashes using the profiler, we need to disable it.
-#    define PROFILED_FUNCTION()
+    #define PROFILED_FUNCTION()
 #else
 
-#    define PROFILED_FUNCTION()                                                                                                \
+    #define PROFILED_FUNCTION()                                                                                                \
         PROFILED_FUNCTION_NAME(PROFILING_FUNC_NAME)                                                                            \
         static auto& _profiling_func = ::OpenRCT2::Profiling::Detail::Storage<Profiler_FunctionLiteral>::Data;                 \
         ::OpenRCT2::Profiling::ScopedProfiling<decltype(_profiling_func)> _profiling_scope(_profiling_func);

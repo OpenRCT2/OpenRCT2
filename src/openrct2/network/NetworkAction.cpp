@@ -9,12 +9,12 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "NetworkAction.h"
+    #include "NetworkAction.h"
 
-#    include "../Game.h"
-#    include "../localisation/StringIds.h"
+    #include "../Game.h"
+    #include "../localisation/StringIds.h"
 
-#    include <algorithm>
+    #include <algorithm>
 
 NetworkPermission NetworkActions::FindCommand(GameCommand command)
 {

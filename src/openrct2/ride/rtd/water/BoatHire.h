@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .Drawer = GetTrackPaintFunctionBoatHire,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::curveVerySmall},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::sBend},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
@@ -33,7 +33,6 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .DefaultMode = RideMode::BoatHire,
     .Naming = { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::DockingPlatform, RideComponentType::DockingPlatform },
-    .EnumName = "RIDE_TYPE_BOAT_HIRE",
     .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 16, 0, 3, },
     .MaxMass = 255,

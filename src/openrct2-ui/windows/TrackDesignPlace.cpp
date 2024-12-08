@@ -37,6 +37,7 @@
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <vector>
 
+using namespace OpenRCT2::Numerics;
 using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Ui::Windows
@@ -207,7 +208,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             money64 cost = kMoney64Undefined;
-            if (GameIsNotPaused() || GetGameState().Cheats.BuildInPauseMode)
+            if (GameIsNotPaused() || GetGameState().Cheats.buildInPauseMode)
             {
                 ClearProvisional();
                 auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
@@ -415,7 +416,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-                if (rtd.HasFlag(RtdFlag::isMaze))
+                if (rtd.specialType == RtdSpecialType::maze)
                 {
                     DrawMiniPreviewMaze(td, pass, origin, min, max);
                 }
@@ -466,7 +467,7 @@ namespace OpenRCT2::Ui::Windows
                 auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
                 if (info.interactionType == ViewportInteractionItem::Terrain)
                 {
-                    _trackPlaceCtrlZ = Floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
+                    _trackPlaceCtrlZ = floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
 
                     // Increase Z above water
                     if (surfaceElement->GetWaterHeight() > 0)
@@ -474,7 +475,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    _trackPlaceCtrlZ = Floor2(info.Element->GetBaseZ(), kCoordsZStep);
+                    _trackPlaceCtrlZ = floor2(info.Element->GetBaseZ(), kCoordsZStep);
                 }
 
                 _trackPlaceCtrlState = true;
@@ -504,7 +505,7 @@ namespace OpenRCT2::Ui::Windows
                     _trackPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_trackPlaceShiftZ);
 
                 // Floor to closest kCoordsZStep
-                _trackPlaceShiftZ = Floor2(_trackPlaceShiftZ, kCoordsZStep);
+                _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, kCoordsZStep);
 
                 // Clamp to maximum possible value of BaseHeight can offer.
                 _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
@@ -517,7 +518,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (!_trackPlaceCtrlState)
             {
-                _trackPlaceZ = Floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
+                _trackPlaceZ = floor2(surfaceElement->GetBaseZ(), kCoordsZStep);
 
                 // Increase Z above water
                 if (surfaceElement->GetWaterHeight() > 0)

@@ -599,7 +599,14 @@ bool TrackTypeIsBlockBrakes(OpenRCT2::TrackElemType trackType)
 
 bool TrackTypeIsBooster(OpenRCT2::TrackElemType trackType)
 {
-    return trackType == TrackElemType::Booster;
+    switch (trackType)
+    {
+        case TrackElemType::Booster:
+        case TrackElemType::DiagBooster:
+            return true;
+        default:
+            return false;
+    }
 }
 
 bool TrackElementIsCovered(OpenRCT2::TrackElemType trackElementType)

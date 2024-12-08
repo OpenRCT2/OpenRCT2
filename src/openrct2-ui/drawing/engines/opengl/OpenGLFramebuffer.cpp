@@ -9,12 +9,12 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "OpenGLFramebuffer.h"
+    #include "OpenGLFramebuffer.h"
 
-#    include <SDL_video.h>
-#    include <algorithm>
-#    include <cassert>
-#    include <memory>
+    #include <SDL_video.h>
+    #include <algorithm>
+    #include <cassert>
+    #include <memory>
 
 using namespace OpenRCT2::Ui;
 

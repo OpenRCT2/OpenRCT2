@@ -9,28 +9,28 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../UiContext.h"
-#    include "../UiStringIds.h"
-#    include "../interface/Dropdown.h"
-#    include "../interface/Widget.h"
-#    include "../scripting/ScGraphicsContext.hpp"
-#    include "../scripting/ScWidget.hpp"
-#    include "../windows/Window.h"
-#    include "CustomListView.h"
-#    include "ScUi.hpp"
-#    include "ScWindow.hpp"
+    #include "../UiContext.h"
+    #include "../UiStringIds.h"
+    #include "../interface/Dropdown.h"
+    #include "../interface/Widget.h"
+    #include "../scripting/ScGraphicsContext.hpp"
+    #include "../scripting/ScWidget.hpp"
+    #include "../windows/Window.h"
+    #include "CustomListView.h"
+    #include "ScUi.hpp"
+    #include "ScWindow.hpp"
 
-#    include <limits>
-#    include <openrct2/drawing/Drawing.h>
-#    include <openrct2/interface/Window.h>
-#    include <openrct2/localisation/Formatter.h>
-#    include <openrct2/localisation/Language.h>
-#    include <openrct2/scripting/Plugin.h>
-#    include <openrct2/sprites.h>
-#    include <optional>
-#    include <string>
-#    include <utility>
-#    include <vector>
+    #include <limits>
+    #include <openrct2/drawing/Drawing.h>
+    #include <openrct2/interface/Window.h>
+    #include <openrct2/localisation/Formatter.h>
+    #include <openrct2/localisation/Language.h>
+    #include <openrct2/scripting/Plugin.h>
+    #include <openrct2/sprites.h>
+    #include <optional>
+    #include <string>
+    #include <utility>
+    #include <vector>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;

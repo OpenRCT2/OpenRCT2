@@ -18421,6 +18421,18 @@ static void LatticeTriangleTrackDiagBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
+static void LatticeTriangleTrackDiagBooster(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    constexpr ImageIndex images[kNumOrthogonalDirections] = { SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BOOSTER_1,
+                                                              SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BOOSTER_2,
+                                                              SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BOOSTER_1,
+                                                              SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BOOSTER_2 };
+
+    TrackPaintUtilDiagTilesPaintExtra(session, 3, height, direction, trackSequence, images, supportType.metal);
+}
+
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
@@ -18910,6 +18922,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackEl
         case TrackElemType::DiagBlockBrakes:
         case TrackElemType::DiagBrakes:
             return LatticeTriangleTrackDiagBrakes;
+        case TrackElemType::DiagBooster:
+            return LatticeTriangleTrackDiagBooster;
         default:
             return nullptr;
     }

@@ -9,16 +9,16 @@
 
 #ifdef __ANDROID__
 
-#    include "../Diagnostic.h"
-#    include "../platform/Platform.h"
-#    include "IStream.hpp"
-#    include "Memory.hpp"
-#    include "MemoryStream.h"
-#    include "Zip.h"
+    #include "../Diagnostic.h"
+    #include "../platform/Platform.h"
+    #include "IStream.hpp"
+    #include "Memory.hpp"
+    #include "MemoryStream.h"
+    #include "Zip.h"
 
-#    include <SDL.h>
-#    include <jni.h>
-#    include <string>
+    #include <SDL.h>
+    #include <jni.h>
+    #include <string>
 
 using namespace OpenRCT2;
 

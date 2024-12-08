@@ -11,14 +11,14 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../Duktape.hpp"
-#    include "ScTileElement.hpp"
+    #include "../../Duktape.hpp"
+    #include "ScTileElement.hpp"
 
-#    include <cstdio>
-#    include <cstring>
-#    include <memory>
-#    include <utility>
-#    include <vector>
+    #include <cstdio>
+    #include <cstring>
+    #include <memory>
+    #include <utility>
+    #include <vector>
 
 namespace OpenRCT2::Scripting
 {

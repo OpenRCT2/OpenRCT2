@@ -11,9 +11,9 @@
 
 #ifdef __ENABLE_DISCORD__
 
-#    include "../core/Timer.hpp"
+    #include "../core/Timer.hpp"
 
-#    include <limits>
+    #include <limits>
 
 class DiscordService final
 {

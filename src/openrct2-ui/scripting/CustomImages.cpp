@@ -9,15 +9,15 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "CustomImages.h"
+    #include "CustomImages.h"
 
-#    include "ScGraphicsContext.hpp"
+    #include "ScGraphicsContext.hpp"
 
-#    include <openrct2/Context.h>
-#    include <openrct2/drawing/Image.h>
-#    include <openrct2/drawing/ImageImporter.h>
-#    include <openrct2/drawing/X8DrawingEngine.h>
-#    include <openrct2/scripting/Plugin.h>
+    #include <openrct2/Context.h>
+    #include <openrct2/drawing/Image.h>
+    #include <openrct2/drawing/ImageImporter.h>
+    #include <openrct2/drawing/X8DrawingEngine.h>
+    #include <openrct2/scripting/Plugin.h>
 
 using namespace OpenRCT2::Drawing;
 

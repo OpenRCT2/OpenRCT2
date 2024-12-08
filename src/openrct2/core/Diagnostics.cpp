@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #if defined(DEBUG) && defined(_WIN32)
-#    include <windows.h>
+    #include <windows.h>
 #endif
 
 #include "Diagnostics.hpp"
@@ -18,12 +18,12 @@ namespace OpenRCT2::Debug
     void Break()
     {
 #if defined(DEBUG)
-#    if defined(_WIN32)
+    #if defined(_WIN32)
         if (IsDebuggerPresent())
         {
             DebugBreak();
         }
-#    endif
+    #endif
 #endif
     }
 } // namespace OpenRCT2::Debug

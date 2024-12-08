@@ -11,8 +11,8 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../profiling/Profiling.h"
-#    include "../../Duktape.hpp"
+    #include "../../../profiling/Profiling.h"
+    #include "../../Duktape.hpp"
 
 namespace OpenRCT2::Scripting
 {

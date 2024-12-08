@@ -14,10 +14,10 @@
 #include <stdexcept>
 
 #ifndef DISABLE_VORBIS
-#    include <SDL.h>
-#    include <optional>
-#    include <vector>
-#    include <vorbis/vorbisfile.h>
+    #include <SDL.h>
+    #include <optional>
+    #include <vector>
+    #include <vorbis/vorbisfile.h>
 #endif
 
 namespace OpenRCT2::Audio

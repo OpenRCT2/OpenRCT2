@@ -11,18 +11,18 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../Context.h"
-#    include "../../../object/LargeSceneryObject.h"
-#    include "../../../object/ObjectManager.h"
-#    include "../../../object/RideObject.h"
-#    include "../../../object/SceneryGroupObject.h"
-#    include "../../../object/SmallSceneryObject.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
-#    include "ScInstalledObject.hpp"
+    #include "../../../Context.h"
+    #include "../../../object/LargeSceneryObject.h"
+    #include "../../../object/ObjectManager.h"
+    #include "../../../object/RideObject.h"
+    #include "../../../object/SceneryGroupObject.h"
+    #include "../../../object/SmallSceneryObject.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
+    #include "ScInstalledObject.hpp"
 
-#    include <memory>
-#    include <optional>
+    #include <memory>
+    #include <optional>
 
 namespace OpenRCT2::Scripting
 {

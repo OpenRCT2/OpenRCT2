@@ -125,7 +125,7 @@ void ClimateUpdate()
     if (gScreenFlags & (~SCREEN_FLAGS_PLAYING))
         return;
 
-    if (!GetGameState().Cheats.FreezeWeather)
+    if (!GetGameState().Cheats.freezeWeather)
     {
         if (gameState.ClimateUpdateTimer)
         {

@@ -12,6 +12,8 @@
 #include "../management/Finance.h"
 #include "Map.h"
 
+#include <string>
+
 constexpr auto MAX_ENTRANCE_FEE = 999.00_GBP;
 
 constexpr uint16_t kParkRatingHistoryUndefined = std::numeric_limits<uint16_t>::max();

@@ -33,7 +33,6 @@ constexpr RideTypeDescriptor MotionSimulatorRTD =
     .DefaultMode = RideMode::FilmAvengingAviators,
     .Naming = { STR_RIDE_NAME_MOTION_SIMULATOR, STR_RIDE_DESCRIPTION_MOTION_SIMULATOR },
     .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_MOTION_SIMULATOR",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 64, 3, 2, },
     .MaxMass = 255,

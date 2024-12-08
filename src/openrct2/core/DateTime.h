@@ -10,7 +10,7 @@
 #pragma once
 
 #ifdef _MSC_VER
-#    include <ctime>
+    #include <ctime>
 #endif
 
 #include <cstdint>

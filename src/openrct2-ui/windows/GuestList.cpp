@@ -14,6 +14,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/core/Numerics.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -25,10 +26,11 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Math.hpp>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
 #include <vector>
+
+using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -815,7 +817,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsRefreshOfGroupsRequired()
         {
-            uint32_t tick256 = Floor2(GetGameState().CurrentTicks, 256);
+            uint32_t tick256 = floor2(GetGameState().CurrentTicks, 256);
             if (_selectedView == _lastFindGroupsSelectedView)
             {
                 if (_lastFindGroupsWait != 0 || _lastFindGroupsTick == tick256)
@@ -843,7 +845,7 @@ namespace OpenRCT2::Ui::Windows
 
         void RefreshGroups()
         {
-            _lastFindGroupsTick = Floor2(GetGameState().CurrentTicks, 256);
+            _lastFindGroupsTick = floor2(GetGameState().CurrentTicks, 256);
             _lastFindGroupsSelectedView = _selectedView;
             _lastFindGroupsWait = 320;
             _groups.clear();

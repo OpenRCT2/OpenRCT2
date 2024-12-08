@@ -11,9 +11,9 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScPeep.hpp"
+    #include "ScPeep.hpp"
 
-#    include <memory>
+    #include <memory>
 
 enum class PeepAnimationType : uint8_t;
 enum class StaffType : uint8_t;

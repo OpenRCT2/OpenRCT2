@@ -9,24 +9,24 @@
 
 #ifndef NO_TTF
 
-#    include "../Diagnostic.h"
+    #include "../Diagnostic.h"
 
-#    include <mutex>
-#    pragma clang diagnostic push
-#    pragma clang diagnostic ignored "-Wdocumentation"
-#    include <ft2build.h>
-#    include FT_FREETYPE_H
-#    pragma clang diagnostic pop
+    #include <mutex>
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdocumentation"
+    #include <ft2build.h>
+    #include FT_FREETYPE_H
+    #pragma clang diagnostic pop
 
-#    include "../OpenRCT2.h"
-#    include "../core/Numerics.hpp"
-#    include "../core/String.hpp"
-#    include "../drawing/Font.h"
-#    include "../localisation/LocalisationService.h"
-#    include "../platform/Platform.h"
-#    include "../util/Util.h"
-#    include "DrawingLock.hpp"
-#    include "TTF.h"
+    #include "../OpenRCT2.h"
+    #include "../core/Numerics.hpp"
+    #include "../core/String.hpp"
+    #include "../drawing/Font.h"
+    #include "../localisation/LocalisationService.h"
+    #include "../platform/Platform.h"
+    #include "../util/Util.h"
+    #include "DrawingLock.hpp"
+    #include "TTF.h"
 
 using namespace OpenRCT2;
 
@@ -360,7 +360,7 @@ void TTFFreeSurface(TTFSurface* surface)
 
 #else
 
-#    include "TTF.h"
+    #include "TTF.h"
 
 bool TTFInitialise()
 {

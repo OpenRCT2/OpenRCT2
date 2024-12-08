@@ -9,16 +9,16 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScStaff.hpp"
+    #include "ScStaff.hpp"
 
-#    include "../../../entity/PatrolArea.h"
-#    include "../../../entity/Staff.h"
-#    include "../../../peep/PeepAnimationData.h"
+    #include "../../../entity/PatrolArea.h"
+    #include "../../../entity/Staff.h"
+    #include "../../../peep/PeepAnimationData.h"
 
 namespace OpenRCT2::Scripting
 {
     static const DukEnumMap<PeepAnimationType> availableHandymanAnimations({
-        { "walking", PeepAnimationType::None },
+        { "walking", PeepAnimationType::Walking },
         { "watchRide", PeepAnimationType::WatchRide },
         { "hanging", PeepAnimationType::Hanging },
         { "staffMower", PeepAnimationType::StaffMower },
@@ -29,7 +29,7 @@ namespace OpenRCT2::Scripting
     });
 
     static const DukEnumMap<PeepAnimationType> availableMechanicAnimations({
-        { "walking", PeepAnimationType::None },
+        { "walking", PeepAnimationType::Walking },
         { "watchRide", PeepAnimationType::WatchRide },
         { "hanging", PeepAnimationType::Hanging },
         { "drowning", PeepAnimationType::Drowning },
@@ -43,14 +43,14 @@ namespace OpenRCT2::Scripting
     });
 
     static const DukEnumMap<PeepAnimationType> availableSecurityAnimations({
-        { "walking", PeepAnimationType::None },
+        { "walking", PeepAnimationType::Walking },
         { "watchRide", PeepAnimationType::WatchRide },
         { "hanging", PeepAnimationType::Hanging },
         { "drowning", PeepAnimationType::Drowning },
     });
 
     static const DukEnumMap<PeepAnimationType> availableEntertainerAnimations({
-        { "walking", PeepAnimationType::None },
+        { "walking", PeepAnimationType::Walking },
         { "watchRide", PeepAnimationType::WatchRide },
         { "wave", PeepAnimationType::EatFood }, // NB: this not a typo
         { "hanging", PeepAnimationType::Hanging },
@@ -136,7 +136,7 @@ namespace OpenRCT2::Scripting
 
             // Reset state to walking to prevent invalid actions from carrying over
             peep->Action = PeepActionType::Walking;
-            peep->AnimationType = peep->NextAnimationType = PeepAnimationType::None;
+            peep->AnimationType = peep->NextAnimationType = PeepAnimationType::Walking;
         }
     }
 

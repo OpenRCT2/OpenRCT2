@@ -9,23 +9,23 @@
 
 #if (defined(__unix__) || defined(__EMSCRIPTEN__)) && !defined(__ANDROID__) && !defined(__APPLE__)
 
-#    include "UiContext.h"
+    #include "UiContext.h"
 
-#    include "UiStringIds.h"
+    #include "UiStringIds.h"
 
-#    include <SDL.h>
-#    include <algorithm>
-#    include <dlfcn.h>
-#    include <openrct2/Diagnostic.h>
-#    include <openrct2/core/Path.hpp>
-#    include <openrct2/core/String.hpp>
-#    include <openrct2/core/StringBuilder.h>
-#    include <openrct2/localisation/Language.h>
-#    include <openrct2/platform/Platform.h>
-#    include <openrct2/ui/UiContext.h>
-#    include <sstream>
-#    include <stdexcept>
-#    include <unistd.h>
+    #include <SDL.h>
+    #include <algorithm>
+    #include <dlfcn.h>
+    #include <openrct2/Diagnostic.h>
+    #include <openrct2/core/Path.hpp>
+    #include <openrct2/core/String.hpp>
+    #include <openrct2/core/StringBuilder.h>
+    #include <openrct2/localisation/Language.h>
+    #include <openrct2/platform/Platform.h>
+    #include <openrct2/ui/UiContext.h>
+    #include <sstream>
+    #include <stdexcept>
+    #include <unistd.h>
 
 namespace OpenRCT2::Ui
 {
@@ -52,7 +52,7 @@ namespace OpenRCT2::Ui
 
         bool IsSteamOverlayAttached() override
         {
-#    ifdef __linux__
+    #ifdef __linux__
             // See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
             struct lmap
             {
@@ -87,9 +87,9 @@ namespace OpenRCT2::Ui
                 dlclose(processHandle);
             }
             return result;
-#    else
+    #else
             return false; // Needed for OpenBSD, likely all other Unixes.
-#    endif
+    #endif
         }
 
         void ShowMessageBox(SDL_Window* window, const std::string& message) override

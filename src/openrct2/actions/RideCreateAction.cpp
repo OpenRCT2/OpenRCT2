@@ -18,6 +18,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
+#include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../rct1/RCT1.h"
 #include "../ride/Ride.h"
@@ -163,7 +164,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->NumTrains = 1;
 
     auto& gameState = GetGameState();
-    if (gameState.Cheats.DisableTrainLengthLimit)
+    if (gameState.Cheats.disableTrainLengthLimit)
     {
         // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled
         if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
@@ -235,7 +236,7 @@ GameActions::Result RideCreateAction::Execute() const
             ride->price[0] = 0;
         }
 
-        if (rtd.HasFlag(RtdFlag::isToilet))
+        if (rtd.specialType == RtdSpecialType::toilet)
         {
             if (ShopItemHasCommonPrice(ShopItem::Admission))
             {

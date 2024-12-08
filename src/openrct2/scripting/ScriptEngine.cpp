@@ -9,61 +9,61 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScriptEngine.h"
+    #include "ScriptEngine.h"
 
-#    include "../PlatformEnvironment.h"
-#    include "../actions/BannerPlaceAction.h"
-#    include "../actions/CustomAction.h"
-#    include "../actions/GameAction.h"
-#    include "../actions/LargeSceneryPlaceAction.h"
-#    include "../actions/RideCreateAction.h"
-#    include "../actions/StaffHireNewAction.h"
-#    include "../actions/WallPlaceAction.h"
-#    include "../config/Config.h"
-#    include "../core/EnumMap.hpp"
-#    include "../core/File.h"
-#    include "../core/FileScanner.h"
-#    include "../core/Path.hpp"
-#    include "../interface/InteractiveConsole.h"
-#    include "../platform/Platform.h"
-#    include "Duktape.hpp"
-#    include "bindings/entity/ScEntity.hpp"
-#    include "bindings/entity/ScGuest.hpp"
-#    include "bindings/entity/ScLitter.hpp"
-#    include "bindings/entity/ScParticle.hpp"
-#    include "bindings/entity/ScPeep.hpp"
-#    include "bindings/entity/ScStaff.hpp"
-#    include "bindings/entity/ScVehicle.hpp"
-#    include "bindings/game/ScCheats.hpp"
-#    include "bindings/game/ScConsole.hpp"
-#    include "bindings/game/ScContext.hpp"
-#    include "bindings/game/ScDisposable.hpp"
-#    include "bindings/game/ScPlugin.hpp"
-#    include "bindings/game/ScProfiler.hpp"
-#    include "bindings/network/ScNetwork.hpp"
-#    include "bindings/network/ScPlayer.hpp"
-#    include "bindings/network/ScPlayerGroup.hpp"
-#    include "bindings/network/ScSocket.hpp"
-#    include "bindings/object/ScInstalledObject.hpp"
-#    include "bindings/object/ScObject.hpp"
-#    include "bindings/object/ScObjectManager.h"
-#    include "bindings/ride/ScRide.hpp"
-#    include "bindings/ride/ScRideStation.hpp"
-#    include "bindings/world/ScClimate.hpp"
-#    include "bindings/world/ScDate.hpp"
-#    include "bindings/world/ScMap.hpp"
-#    include "bindings/world/ScPark.hpp"
-#    include "bindings/world/ScParkMessage.hpp"
-#    include "bindings/world/ScResearch.hpp"
-#    include "bindings/world/ScScenario.hpp"
-#    include "bindings/world/ScTile.hpp"
-#    include "bindings/world/ScTileElement.hpp"
+    #include "../PlatformEnvironment.h"
+    #include "../actions/BannerPlaceAction.h"
+    #include "../actions/CustomAction.h"
+    #include "../actions/GameAction.h"
+    #include "../actions/LargeSceneryPlaceAction.h"
+    #include "../actions/RideCreateAction.h"
+    #include "../actions/StaffHireNewAction.h"
+    #include "../actions/WallPlaceAction.h"
+    #include "../config/Config.h"
+    #include "../core/EnumMap.hpp"
+    #include "../core/File.h"
+    #include "../core/FileScanner.h"
+    #include "../core/Path.hpp"
+    #include "../interface/InteractiveConsole.h"
+    #include "../platform/Platform.h"
+    #include "Duktape.hpp"
+    #include "bindings/entity/ScEntity.hpp"
+    #include "bindings/entity/ScGuest.hpp"
+    #include "bindings/entity/ScLitter.hpp"
+    #include "bindings/entity/ScParticle.hpp"
+    #include "bindings/entity/ScPeep.hpp"
+    #include "bindings/entity/ScStaff.hpp"
+    #include "bindings/entity/ScVehicle.hpp"
+    #include "bindings/game/ScCheats.hpp"
+    #include "bindings/game/ScConsole.hpp"
+    #include "bindings/game/ScContext.hpp"
+    #include "bindings/game/ScDisposable.hpp"
+    #include "bindings/game/ScPlugin.hpp"
+    #include "bindings/game/ScProfiler.hpp"
+    #include "bindings/network/ScNetwork.hpp"
+    #include "bindings/network/ScPlayer.hpp"
+    #include "bindings/network/ScPlayerGroup.hpp"
+    #include "bindings/network/ScSocket.hpp"
+    #include "bindings/object/ScInstalledObject.hpp"
+    #include "bindings/object/ScObject.hpp"
+    #include "bindings/object/ScObjectManager.h"
+    #include "bindings/ride/ScRide.hpp"
+    #include "bindings/ride/ScRideStation.hpp"
+    #include "bindings/world/ScClimate.hpp"
+    #include "bindings/world/ScDate.hpp"
+    #include "bindings/world/ScMap.hpp"
+    #include "bindings/world/ScPark.hpp"
+    #include "bindings/world/ScParkMessage.hpp"
+    #include "bindings/world/ScResearch.hpp"
+    #include "bindings/world/ScScenario.hpp"
+    #include "bindings/world/ScTile.hpp"
+    #include "bindings/world/ScTileElement.hpp"
 
-#    include <cassert>
-#    include <iostream>
-#    include <memory>
-#    include <stdexcept>
-#    include <string>
+    #include <cassert>
+    #include <iostream>
+    #include <memory>
+    #include <stdexcept>
+    #include <string>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -443,10 +443,10 @@ void ScriptEngine::Initialise()
     ScPeep::Register(ctx);
     ScGuest::Register(ctx);
     ScThought::Register(ctx);
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
     ScSocket::Register(ctx);
     ScListener::Register(ctx);
-#    endif
+    #endif
     ScScenario::Register(ctx);
     ScScenarioObjective::Register(ctx);
     ScPatrolArea::Register(ctx);
@@ -1749,16 +1749,16 @@ void ScriptEngine::RemoveIntervals(const std::shared_ptr<Plugin>& plugin)
     }
 }
 
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
 void ScriptEngine::AddSocket(const std::shared_ptr<ScSocketBase>& socket)
 {
     _sockets.push_back(socket);
 }
-#    endif
+    #endif
 
 void ScriptEngine::UpdateSockets()
 {
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
     // Use simple for i loop as Update calls can modify the list
     auto it = _sockets.begin();
     while (it != _sockets.end())
@@ -1774,12 +1774,12 @@ void ScriptEngine::UpdateSockets()
             it++;
         }
     }
-#    endif
+    #endif
 }
 
 void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
 {
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
     auto it = _sockets.begin();
     while (it != _sockets.end())
     {
@@ -1794,7 +1794,7 @@ void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
             it++;
         }
     }
-#    endif
+    #endif
 }
 
 std::string OpenRCT2::Scripting::Stringify(const DukValue& val)

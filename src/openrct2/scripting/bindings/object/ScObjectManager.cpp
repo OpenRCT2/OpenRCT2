@@ -9,12 +9,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScObjectManager.h"
+    #include "ScObjectManager.h"
 
-#    include "../../../object/ObjectList.h"
-#    include "../../../ride/RideData.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
+    #include "../../../object/ObjectList.h"
+    #include "../../../ride/RideData.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;

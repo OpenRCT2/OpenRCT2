@@ -43,7 +43,7 @@ void ParkEntranceRemoveAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkEntranceRemoveAction::Query() const
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.SandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.sandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_REMOVE_THIS, STR_NONE);
     }
