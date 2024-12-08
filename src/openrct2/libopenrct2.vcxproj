@@ -566,7 +566,10 @@
     <ClInclude Include="scripting\bindings\network\ScPlayerGroup.hpp" />
     <ClInclude Include="scripting\bindings\object\ScInstalledObject.hpp" />
     <ClInclude Include="scripting\bindings\object\ScObjectManager.h" />
+    <ClInclude Include="scripting\bindings\ride\ScRatingsModifier.hpp" />
+    <ClInclude Include="scripting\bindings\ride\ScRideRatingsDescriptor.hpp" />
     <ClInclude Include="scripting\bindings\ride\ScRideStation.hpp" />
+    <ClInclude Include="scripting\bindings\ride\ScRideTypeDescriptor.hpp" />
     <ClInclude Include="scripting\bindings\ride\ScTrackIterator.h" />
     <ClInclude Include="scripting\bindings\ride\ScTrackSegment.h" />
     <ClInclude Include="scripting\bindings\world\ScParkMessage.hpp" />
@@ -1081,8 +1084,11 @@
     <ClCompile Include="scripting\bindings\network\ScPlayer.cpp" />
     <ClCompile Include="scripting\bindings\network\ScPlayerGroup.cpp" />
     <ClCompile Include="scripting\bindings\object\ScObjectManager.cpp" />
+    <ClCompile Include="scripting\bindings\ride\ScRatingsModifier.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRide.cpp" />
+    <ClCompile Include="scripting\bindings\ride\ScRideRatingsDescriptor.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRideStation.cpp" />
+    <ClCompile Include="scripting\bindings\ride\ScRideTypeDescriptor.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScTrackIterator.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScTrackSegment.cpp" />
     <ClCompile Include="scripting\bindings\world\ScMap.cpp" />

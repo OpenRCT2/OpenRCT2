@@ -47,8 +47,11 @@
     #include "bindings/object/ScInstalledObject.hpp"
     #include "bindings/object/ScObject.hpp"
     #include "bindings/object/ScObjectManager.h"
+    #include "bindings/ride/ScRatingsModifier.hpp"
     #include "bindings/ride/ScRide.hpp"
+    #include "bindings/ride/ScRideRatingsDescriptor.hpp"
     #include "bindings/ride/ScRideStation.hpp"
+    #include "bindings/ride/ScRideTypeDescriptor.hpp"
     #include "bindings/world/ScClimate.hpp"
     #include "bindings/world/ScDate.hpp"
     #include "bindings/world/ScMap.hpp"
@@ -428,8 +431,11 @@ void ScriptEngine::Initialise()
     ScPlayerGroup::Register(ctx);
     ScProfiler::Register(ctx);
     ScResearch::Register(ctx);
+    ScRatingsModifier::Register(ctx);
     ScRide::Register(ctx);
+    ScRideRatingsDescriptor::Register(ctx);
     ScRideStation::Register(ctx);
+    ScRideTypeDescriptor::Register(ctx);
     ScRideObject::Register(ctx);
     ScRideObjectVehicle::Register(ctx);
     ScTile::Register(ctx);
@@ -543,6 +549,92 @@ void ScriptEngine::RegisterConstants()
         .Constant("BankLeft", EnumValue(TrackRoll::Left))
         .Constant("BankRight", EnumValue(TrackRoll::Right))
         .Constant("UpsideDown", EnumValue(TrackRoll::UpsideDown));
+    builder.Namespace("RatingsModifierType")
+        .Constant("NoModifier", EnumValue(RatingsModifierType::NoModifier))
+        .Constant("BonusLength", EnumValue(RatingsModifierType::BonusLength))
+        .Constant("BonusSynchronisation", EnumValue(RatingsModifierType::BonusSynchronisation))
+        .Constant("BonusTrainLength", EnumValue(RatingsModifierType::BonusTrainLength))
+        .Constant("BonusMaxSpeed", EnumValue(RatingsModifierType::BonusMaxSpeed))
+        .Constant("BonusAverageSpeed", EnumValue(RatingsModifierType::BonusAverageSpeed))
+        .Constant("BonusDuration", EnumValue(RatingsModifierType::BonusDuration))
+        .Constant("BonusGForces", EnumValue(RatingsModifierType::BonusGForces))
+        .Constant("BonusTurns", EnumValue(RatingsModifierType::BonusTurns))
+        .Constant("BonusDrops", EnumValue(RatingsModifierType::BonusDrops))
+        .Constant("BonusSheltered", EnumValue(RatingsModifierType::BonusSheltered))
+        .Constant("BonusProximity", EnumValue(RatingsModifierType::BonusProximity))
+        .Constant("BonusScenery", EnumValue(RatingsModifierType::BonusScenery))
+        .Constant("BonusRotations", EnumValue(RatingsModifierType::BonusRotations))
+        .Constant("BonusOperationOption", EnumValue(RatingsModifierType::BonusOperationOption))
+        .Constant("BonusReversedTrains", EnumValue(RatingsModifierType::BonusReversedTrains))
+        .Constant("BonusGoKartRace", EnumValue(RatingsModifierType::BonusGoKartRace))
+        .Constant("BonusTowerRide", EnumValue(RatingsModifierType::BonusTowerRide))
+        .Constant("BonusRotoDrop", EnumValue(RatingsModifierType::BonusRotoDrop))
+        .Constant("BonusMazeSize", EnumValue(RatingsModifierType::BonusMazeSize))
+        .Constant("BonusBoatHireNoCircuit", EnumValue(RatingsModifierType::BonusBoatHireNoCircuit))
+        .Constant("BonusSlideUnlimitedRides", EnumValue(RatingsModifierType::BonusSlideUnlimitedRides))
+        .Constant("BonusMotionSimulatorMode", EnumValue(RatingsModifierType::BonusMotionSimulatorMode))
+        .Constant("Bonus3DCinemaMode", EnumValue(RatingsModifierType::Bonus3DCinemaMode))
+        .Constant("BonusTopSpinMode", EnumValue(RatingsModifierType::BonusTopSpinMode))
+        .Constant("BonusReversals", EnumValue(RatingsModifierType::BonusReversals))
+        .Constant("BonusHoles", EnumValue(RatingsModifierType::BonusHoles))
+        .Constant("BonusNumTrains", EnumValue(RatingsModifierType::BonusNumTrains))
+        .Constant("BonusDownwardLaunch", EnumValue(RatingsModifierType::BonusDownwardLaunch))
+        .Constant("BonusLaunchedFreefallSpecial", EnumValue(RatingsModifierType::BonusLaunchedFreefallSpecial))
+        .Constant("RequirementLength", EnumValue(RatingsModifierType::RequirementLength))
+        .Constant("RequirementDropHeight", EnumValue(RatingsModifierType::RequirementDropHeight))
+        .Constant("RequirementNumDrops", EnumValue(RatingsModifierType::RequirementNumDrops))
+        .Constant("RequirementMaxSpeed", EnumValue(RatingsModifierType::RequirementMaxSpeed))
+        .Constant("RequirementNegativeGs", EnumValue(RatingsModifierType::RequirementNegativeGs))
+        .Constant("RequirementLateralGs", EnumValue(RatingsModifierType::RequirementLateralGs))
+        .Constant("RequirementInversions", EnumValue(RatingsModifierType::RequirementInversions))
+        .Constant("RequirementUnsheltered", EnumValue(RatingsModifierType::RequirementUnsheltered))
+        .Constant("RequirementReversals", EnumValue(RatingsModifierType::RequirementReversals))
+        .Constant("RequirementHoles", EnumValue(RatingsModifierType::RequirementHoles))
+        .Constant("RequirementStations", EnumValue(RatingsModifierType::RequirementStations))
+        .Constant("RequirementSplashdown", EnumValue(RatingsModifierType::RequirementSplashdown))
+        .Constant("PenaltyLateralGs", EnumValue(RatingsModifierType::PenaltyLateralGs));
+    builder.Namespace("RatingsCalculationType")
+        .Constant("Normal", EnumValue(RatingsCalculationType::Normal))
+        .Constant("FlatRide", EnumValue(RatingsCalculationType::FlatRide))
+        .Constant("Stall", EnumValue(RatingsCalculationType::Stall));
+    builder.Namespace("RideMode")
+        .Constant("Normal", EnumValue(RideMode::Normal))
+        .Constant("ContinuousCircuit", EnumValue(RideMode::ContinuousCircuit))
+        .Constant("ReverseInclineLaunchedShuttle", EnumValue(RideMode::ReverseInclineLaunchedShuttle))
+        .Constant("PoweredLaunchPasstrough", EnumValue(RideMode::PoweredLaunchPasstrough))
+        .Constant("Shuttle", EnumValue(RideMode::Shuttle))
+        .Constant("BoatHire", EnumValue(RideMode::BoatHire))
+        .Constant("UpwardLaunch", EnumValue(RideMode::UpwardLaunch))
+        .Constant("RotatingLift", EnumValue(RideMode::RotatingLift))
+        .Constant("StationToStation", EnumValue(RideMode::StationToStation))
+        .Constant("SingleRidePerAdmission", EnumValue(RideMode::SingleRidePerAdmission))
+        .Constant("UnlimitedRidesPerAdmission", EnumValue(RideMode::UnlimitedRidesPerAdmission))
+        .Constant("Maze", EnumValue(RideMode::Maze))
+        .Constant("Race", EnumValue(RideMode::Race))
+        .Constant("Dodgems", EnumValue(RideMode::Dodgems))
+        .Constant("Swing", EnumValue(RideMode::Swing))
+        .Constant("ShopStall", EnumValue(RideMode::ShopStall))
+        .Constant("Rotation", EnumValue(RideMode::Rotation))
+        .Constant("ForwardRotation", EnumValue(RideMode::ForwardRotation))
+        .Constant("BackwardRotation", EnumValue(RideMode::BackwardRotation))
+        .Constant("FilmAvengingAviators", EnumValue(RideMode::FilmAvengingAviators))
+        .Constant("MouseTails3DFilm", EnumValue(RideMode::MouseTails3DFilm))
+        .Constant("SpaceRings", EnumValue(RideMode::SpaceRings))
+        .Constant("Beginners", EnumValue(RideMode::Beginners))
+        .Constant("LimPoweredLaunch", EnumValue(RideMode::LimPoweredLaunch))
+        .Constant("FilmThrillRiders", EnumValue(RideMode::FilmThrillRiders))
+        .Constant("StormChasers3DFilm", EnumValue(RideMode::StormChasers3DFilm))
+        .Constant("SpaceRaiders3DFilm", EnumValue(RideMode::SpaceRaiders3DFilm))
+        .Constant("Intense", EnumValue(RideMode::Intense))
+        .Constant("Berserk", EnumValue(RideMode::Berserk))
+        .Constant("HauntedHouse", EnumValue(RideMode::HauntedHouse))
+        .Constant("Circus", EnumValue(RideMode::Circus))
+        .Constant("DownwardLaunch", EnumValue(RideMode::DownwardLaunch))
+        .Constant("CrookedHouse", EnumValue(RideMode::CrookedHouse))
+        .Constant("FreefallDrop", EnumValue(RideMode::FreefallDrop))
+        .Constant("ContinuousCircuitBlockSectioned", EnumValue(RideMode::ContinuousCircuitBlockSectioned))
+        .Constant("PoweredLaunch", EnumValue(RideMode::PoweredLaunch))
+        .Constant("PoweredLaunchBlockSectioned", EnumValue(RideMode::PoweredLaunchBlockSectioned));
 }
 
 void ScriptEngine::RefreshPlugins()

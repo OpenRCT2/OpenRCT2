@@ -2008,6 +2008,37 @@ declare global {
     }
 
     /**
+     * Represents a ratings modifier for a ride, like a rating bonus
+     * or ride requirement penalty.
+     */
+    interface RatingsModifier {
+        /**
+         * The type of the modifier.
+         */
+        readonly type: RatingsModifierType;
+
+        /**
+         * The threshold value for the modifier.
+         */
+        readonly threshold: number;
+
+        /**
+         * The excitement rating modifier.
+         */
+        readonly excitement: number;
+
+        /**
+         * The intensity rating modifier.
+         */
+        readonly intensity: number;
+
+        /**
+         * The nausea rating modifier.
+         */
+        readonly nausea: number;
+    }
+
+    /**
      * Represents a ride or stall within the park.
      */
     interface Ride {
@@ -2236,6 +2267,87 @@ declare global {
          * Highest drop height in height units. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.
          */
         readonly highestDropHeight: number;
+
+        /**
+         * The type descriptor for the ride with information about the ride type.
+         */
+        readonly rideTypeDescriptor: RideTypeDescriptor;
+    }
+
+    /**
+     * Represents a descriptor for ride ratings.
+     */
+    interface RideRatingsDescriptor {
+        /**
+         * The calculation type of the ratings descriptor.
+         */
+        readonly type: RatingsCalculationType;
+
+        /**
+         * The unreliability value for the ride.
+         */
+        readonly unreliability: number;
+
+        /**
+         * The ride shelter value, used for rides with a set sheltered
+         * 8ths value (-1 = normal calculation)
+         */
+        readonly rideShelter: number;
+
+        /**
+         * Whether the requirements are relaxed if the ride has inversions.
+         */
+        readonly relaxRequirementsIfInversions: boolean;
+
+        /**
+         * The list of rating modifiers associated with the ride.
+         */
+        readonly modifiers: RatingsModifier[];
+    }
+
+    /**
+     * Represents a descriptor for a ride type.
+     */
+    interface RideTypeDescriptor {
+        /**
+         * The category of the ride type.
+         */
+        readonly category: number;
+
+        /**
+         * The starting track piece for the ride type.
+         */
+        readonly startTrackPiece: number;
+
+        /**
+         * The default ride mode.
+         */
+        readonly defaultMode: RideMode;
+
+        /**
+         * The available breakdowns for the ride type.
+         */
+        readonly availableBreakdowns: number;
+
+        /**
+         * The maximum mass allowed for the ride type.
+         */
+        readonly maxMass: number;
+
+        /**
+         * The bonus value for the ride type.
+         */
+        readonly bonusValue: number;
+
+        /**
+         * The name of the ride type.
+         */
+        readonly name: string;
+
+        /**
+         * The ride ratings descriptor associated with this ride type.
+         */
+        readonly ratingsData: RideRatingsDescriptor;
     }
 
     type RideClassification = "ride" | "stall" | "facility";
@@ -2456,6 +2568,95 @@ declare global {
         Left = 2,
         Right = 4,
         UpsideDown = 15
+    }
+
+    enum RatingsModifierType {
+        NoModifier = 0,
+        BonusLength = 1,
+        BonusSynchronisation = 2,
+        BonusTrainLength = 3,
+        BonusMaxSpeed = 4,
+        BonusAverageSpeed = 5,
+        BonusDuration = 6,
+        BonusGForces = 7,
+        BonusTurns = 8,
+        BonusDrops = 9,
+        BonusSheltered = 10,
+        BonusProximity = 11,
+        BonusScenery = 12,
+        BonusRotations = 13,
+        BonusOperationOption = 14,
+        BonusReversedTrains = 15,
+        BonusGoKartRace = 16,
+        BonusTowerRide = 17,
+        BonusRotoDrop = 18,
+        BonusMazeSize = 19,
+        BonusBoatHireNoCircuit = 20,
+        BonusSlideUnlimitedRides = 21,
+        BonusMotionSimulatorMode = 22,
+        Bonus3DCinemaMode = 23,
+        BonusTopSpinMode = 24,
+        BonusReversals = 25,
+        BonusHoles = 26,
+        BonusNumTrains = 27,
+        BonusDownwardLaunch = 28,
+        BonusLaunchedFreefallSpecial = 29,
+        RequirementLength = 30,
+        RequirementMaxSpeed = 31,
+        RequirementLateralGs = 32,
+        RequirementInversions = 33,
+        RequirementUnsheltered = 34,
+        RequirementReversals = 35,
+        RequirementHoles = 36,
+        RequirementStations = 37,
+        RequirementSplashdown = 38,
+        PenaltyLateralGs = 39
+    }
+
+    enum RatingsCalculationType {
+        Normal = 0,
+        FlatRide = 1,
+        Stall = 2
+    }
+
+    enum RideMode {
+        Normal = 0,
+        ContinuousCircuit = 1,
+        ReverseInclineLaunchedShuttle = 2,
+        PoweredLaunchPasstrough = 3,
+        Shuttle = 4,
+        BoatHire = 5,
+        UpwardLaunch = 6,
+        RotatingLift = 7,
+        StationToStation = 8,
+        SingleRidePerAdmission = 9,
+        UnlimitedRidesPerAdmission = 10,
+        Maze = 11,
+        Race = 12,
+        Dodgems = 13,
+        Swing = 14,
+        ShopStall = 15,
+        Rotation = 16,
+        ForwardRotation = 17,
+        BackwardRotation = 18,
+        FilmAvengingAviators = 19,
+        MouseTails3DFilm = 20,
+        SpaceRings = 21,
+        Beginners = 22,
+        LimPoweredLaunch = 23,
+        FilmThrillRiders = 24,
+        StormChasers3DFilm = 25,
+        SpaceRaiders3DFilm = 26,
+        Intense = 27,
+        Berserk = 28,
+        HauntedHouse = 29,
+        Circus = 30,
+        DownwardLaunch = 31,
+        CrookedHouse = 32,
+        FreefallDrop = 33,
+        ContinuousCircuitBlockSectioned = 34,
+        PoweredLaunch = 35,
+        PoweredLaunchBlockSectioned = 36
     }
 
     type TrackCurveType = "straight" | "left" | "right";

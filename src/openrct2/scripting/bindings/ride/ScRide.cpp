@@ -596,6 +596,12 @@ namespace OpenRCT2::Scripting
         return ride != nullptr ? ride->highest_drop_height : 0;
     }
 
+    std::shared_ptr<ScRideTypeDescriptor> ScRide::rideTypeDescriptor_get()
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? std::make_shared<ScRideTypeDescriptor>(ride->GetRideTypeDescriptor()) : nullptr;
+    }
+
     void ScRide::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScRide::id_get, nullptr, "id");
@@ -642,6 +648,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRide::numDrops_get, nullptr, "numDrops");
         dukglue_register_property(ctx, &ScRide::numLiftHills_get, nullptr, "numLiftHills");
         dukglue_register_property(ctx, &ScRide::highestDropHeight_get, nullptr, "highestDropHeight");
+        dukglue_register_property(ctx, &ScRide::rideTypeDescriptor_get, nullptr, "rideTypeDescriptor");
     }
 
 } // namespace OpenRCT2::Scripting

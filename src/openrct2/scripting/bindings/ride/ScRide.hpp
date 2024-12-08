@@ -17,6 +17,7 @@
     #include "../../ScriptEngine.h"
     #include "../object/ScObject.hpp"
     #include "ScRideStation.hpp"
+    #include "ScRideTypeDescriptor.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -189,6 +190,8 @@ namespace OpenRCT2::Scripting
         uint8_t numLiftHills_get() const;
 
         double highestDropHeight_get() const;
+
+        std::shared_ptr<ScRideTypeDescriptor> rideTypeDescriptor_get();
 
         Ride* GetRide() const;
 
