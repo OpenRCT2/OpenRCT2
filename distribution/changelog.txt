@@ -18,6 +18,7 @@
 - Fix: [#18309] Flying and Multi Dimension trains glitch when changing between inverted and uninverted track when uncap fps is on.
 - Fix: [#19506] Queue paths can be placed on level crossings by replacing an existing regular path.
 - Fix: [#21908] Ride mode warnings when hovering track designs.
+- Fix: [#23359] Scripting: Redraw vehicle when setting car trackLocation.
 - Fix: [#23443] New GOG version of RCT2 is not extracted correctly.
 - Fix: [#23484] Stray coloured pixels on castle-themed stations and Roman-themed entrances/exits (original bug).
 - Fix: [#23486] Object selection minimum requirements can be bypassed with close window hotkey.
@@ -121,7 +122,7 @@
 - Fix: [#22742, #22793] In game console does not handle format tokens properly.
 - Fix: [#23135] Map generator tree placement has noticable patterns.
 - Fix: [#23286] Currency formatted incorrectly in the in game console.
-- Fix: [#23348] Console set commands don’t print output properly.
+- Fix: [#23348] Console set commands don't print output properly.
 - Fix: [#23376] Peeps with balloons, hats and umbrellas may leave artifacts on screen.
 - Fix: [#23496] Newly spawned vehicles are invisible when spawned while the game is paused.
 - Fix: [#23509] Map generator window reverts to flatland after selecting a heightmap image.

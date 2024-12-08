@@ -588,6 +588,30 @@ void Vehicle::MoveRelativeDistance(int32_t distance)
     ClearFlag(VehicleFlags::MoveSingleCar | VehicleFlags::CollisionDisabled);
 }
 
+void Vehicle::MoveToTrack(CoordsXYZ xyz, uint8_t direction, OpenRCT2::TrackElemType trackType)
+{
+    TrackLocation = xyz;
+    SetTrackDirection(direction);
+    SetTrackType(trackType);
+
+    auto curRide = GetRide();
+    if (curRide == nullptr)
+        return;
+
+    // Clip track progress to avoid being out of bounds of current piece
+    uint16_t trackTotalProgress = GetTrackProgress();
+    if (track_progress >= trackTotalProgress)
+        track_progress = trackTotalProgress - 1;
+
+    const auto moveInfo = GetMoveInfo();
+    _vehicleCurPosition = TrackLocation
+        + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + GetRideTypeDescriptor((*curRide).type).Heights.VehicleZOffset };
+    Orientation = moveInfo->direction;
+    bank_rotation = moveInfo->bank_rotation;
+    Pitch = moveInfo->Pitch;
+    MoveTo(_vehicleCurPosition);
+}
+
 Vehicle* TryGetVehicle(EntityId spriteIndex)
 {
     return TryGetEntity<Vehicle>(spriteIndex);

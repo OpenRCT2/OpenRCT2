@@ -236,6 +236,7 @@ struct Vehicle : EntityBase
      * Instantly moves the specific car forward or backwards along the track.
      */
     void MoveRelativeDistance(int32_t distance);
+    void MoveToTrack(CoordsXYZ xyz, uint8_t direction, OpenRCT2::TrackElemType trackType);
     OpenRCT2::TrackElemType GetTrackType() const
     {
         return static_cast<OpenRCT2::TrackElemType>(TrackTypeAndDirection >> 2);

@@ -406,9 +406,9 @@ namespace OpenRCT2::Scripting
             auto x = AsOrDefault(value["x"], 0);
             auto y = AsOrDefault(value["y"], 0);
             auto z = AsOrDefault(value["z"], 0);
-            vehicle->TrackLocation = CoordsXYZ(x, y, z);
-            vehicle->SetTrackDirection(AsOrDefault(value["direction"], 0));
-            vehicle->SetTrackType(static_cast<TrackElemType>(AsOrDefault(value["trackType"], 0)));
+            auto direction = AsOrDefault(value["direction"], 0);
+            auto trackType = static_cast<TrackElemType>(AsOrDefault(value["trackType"], 0));
+            vehicle->MoveToTrack(CoordsXYZ(x, y, z), direction, trackType);
         }
     }
 
