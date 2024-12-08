@@ -75,5 +75,15 @@ namespace OpenRCT2
 
     ObjectEntryIndex findRandomPeepAnimationsIndexForType(const AnimationPeepType type);
 
+    struct AnimationGroupResult
+    {
+        ObjectEntryIndex objectId;
+        PeepAnimationGroup group;
+        PeepAnimationGroup legacyPosition;
+        std::string_view scriptName;
+    };
+
+    std::vector<AnimationGroupResult> getAnimationGroupsByPeepType(const AnimationPeepType type);
+
     SpriteBounds inferMaxAnimationDimensions(const PeepAnimation& anim);
 } // namespace OpenRCT2

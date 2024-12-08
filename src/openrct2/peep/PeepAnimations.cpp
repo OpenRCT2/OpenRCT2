@@ -170,6 +170,36 @@ namespace OpenRCT2
         return !out.empty() ? out[0] : OBJECT_ENTRY_INDEX_NULL;
     }
 
+    std::vector<AnimationGroupResult> getAnimationGroupsByPeepType(const AnimationPeepType type)
+    {
+        std::vector<AnimationGroupResult> groups{};
+
+        auto& objManager = GetContext()->GetObjectManager();
+        for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+        {
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
+            if (animObj == nullptr || animObj->GetPeepType() != type)
+                continue;
+
+            for (auto j = 0u; j < animObj->GetNumAnimationGroups(); j++)
+            {
+                auto group = PeepAnimationGroup(j);
+                auto scriptName = animObj->GetScriptName(group);
+                if (scriptName.empty())
+                    continue;
+
+                groups.push_back({
+                    .objectId = ObjectEntryIndex(i),
+                    .group = group,
+                    .legacyPosition = animObj->GetLegacyPosition(group),
+                    .scriptName = scriptName,
+                });
+            }
+        }
+
+        return groups;
+    }
+
     // Adapted from CarEntry.cpp
     SpriteBounds inferMaxAnimationDimensions(const PeepAnimation& anim)
     {

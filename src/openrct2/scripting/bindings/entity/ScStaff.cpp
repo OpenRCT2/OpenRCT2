@@ -76,22 +76,26 @@ namespace OpenRCT2::Scripting
             if (value == "handyman" && peep->AssignedStaffType != StaffType::Handyman)
             {
                 peep->AssignedStaffType = StaffType::Handyman;
-                peep->AnimationGroup = PeepAnimationGroup::Handyman;
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Handyman);
+                peep->AnimationGroup = PeepAnimationGroup::Normal;
             }
             else if (value == "mechanic" && peep->AssignedStaffType != StaffType::Mechanic)
             {
                 peep->AssignedStaffType = StaffType::Mechanic;
-                peep->AnimationGroup = PeepAnimationGroup::Mechanic;
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Mechanic);
+                peep->AnimationGroup = PeepAnimationGroup::Normal;
             }
             else if (value == "security" && peep->AssignedStaffType != StaffType::Security)
             {
                 peep->AssignedStaffType = StaffType::Security;
-                peep->AnimationGroup = PeepAnimationGroup::Security;
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Security);
+                peep->AnimationGroup = PeepAnimationGroup::Normal;
             }
             else if (value == "entertainer" && peep->AssignedStaffType != StaffType::Entertainer)
             {
                 peep->AssignedStaffType = StaffType::Entertainer;
-                peep->AnimationGroup = PeepAnimationGroup::EntertainerPanda;
+                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Entertainer);
+                peep->AnimationGroup = PeepAnimationGroup::Normal;
             }
 
             // Reset state to walking to prevent invalid actions from carrying over
@@ -117,47 +121,20 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    static const DukEnumMap<PeepAnimationGroup> availableHandymanCostumes({
-        { "handyman", PeepAnimationGroup::Handyman },
-    });
-
-    static const DukEnumMap<PeepAnimationGroup> availableMechanicCostumes({
-        { "mechanic", PeepAnimationGroup::Mechanic },
-    });
-
-    static const DukEnumMap<PeepAnimationGroup> availableSecurityCostumes({
-        { "security1", PeepAnimationGroup::Security },
-        { "security2", PeepAnimationGroup::SecurityAlt },
-    });
-
-    static const DukEnumMap<PeepAnimationGroup> availableEntertainerCostumes({
-        { "none", PeepAnimationGroup::Normal },
-        { "panda", PeepAnimationGroup::EntertainerPanda },
-        { "tiger", PeepAnimationGroup::EntertainerTiger },
-        { "elephant", PeepAnimationGroup::EntertainerElephant },
-        { "roman", PeepAnimationGroup::EntertainerRoman },
-        { "gorilla", PeepAnimationGroup::EntertainerGorilla },
-        { "snowman", PeepAnimationGroup::EntertainerSnowman },
-        { "knight", PeepAnimationGroup::EntertainerKnight },
-        { "astronaut", PeepAnimationGroup::EntertainerAstronaut },
-        { "bandit", PeepAnimationGroup::EntertainerBandit },
-        { "sheriff", PeepAnimationGroup::EntertainerSheriff },
-        { "pirate", PeepAnimationGroup::EntertainerPirate },
-    });
-
-    static const DukEnumMap<PeepAnimationGroup>& costumesByStaffType(StaffType staffType)
+    static const std::vector<AnimationGroupResult> costumesByStaffType(StaffType staffType)
     {
+        // TODO: shouldn't get hit repeatedly, but cache these if (and only if) it's too slow
         switch (staffType)
         {
             case StaffType::Handyman:
-                return availableHandymanCostumes;
+                return getAnimationGroupsByPeepType(AnimationPeepType::Handyman);
             case StaffType::Mechanic:
-                return availableMechanicCostumes;
+                return getAnimationGroupsByPeepType(AnimationPeepType::Mechanic);
             case StaffType::Security:
-                return availableSecurityCostumes;
+                return getAnimationGroupsByPeepType(AnimationPeepType::Security);
             case StaffType::Entertainer:
             default:
-                return availableEntertainerCostumes;
+                return getAnimationGroupsByPeepType(AnimationPeepType::Entertainer);
         }
     }
 
@@ -169,7 +146,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto& costume : costumesByStaffType(peep->AssignedStaffType))
             {
-                availableCostumes.push_back(std::string(costume.first));
+                availableCostumes.push_back(std::string(costume.scriptName));
             }
         }
         return availableCostumes;
@@ -180,18 +157,22 @@ namespace OpenRCT2::Scripting
         auto peep = GetStaff();
         if (peep == nullptr)
         {
-            return nullptr;
+            return "";
         }
 
-        auto& availableCostumes = costumesByStaffType(peep->AssignedStaffType);
+        auto& costumes = costumesByStaffType(peep->AssignedStaffType);
 
-        auto costume = availableCostumes.find(peep->AnimationGroup);
-        if (costume != availableCostumes.end())
+        // Find the peep's current costume in the list
+        auto costume = std::find_if(costumes.begin(), costumes.end(), [peep](auto& candidate) {
+            return candidate.objectId == peep->AnimationObjectIndex;
+        });
+
+        if (costume != costumes.end())
         {
-            return std::string(costume->first);
+            return std::string(costume->scriptName);
         }
         else
-            return nullptr;
+            return "";
     }
 
     void ScStaff::costume_set(const DukValue& value)
@@ -204,30 +185,30 @@ namespace OpenRCT2::Scripting
             return;
         }
 
-        auto& availableCostumes = costumesByStaffType(peep->AssignedStaffType);
+        auto& costumes = costumesByStaffType(peep->AssignedStaffType);
+        auto costume = costumes.end();
 
         // Split by type passed so as to not break old plugins
         if (value.type() == DukValue::Type::STRING)
         {
-            std::string newCostume = value.as_string();
-            auto newAnimationGroup = availableCostumes.TryGet(newCostume);
-            if (newAnimationGroup != std::nullopt)
-            {
-                peep->AnimationGroup = *newAnimationGroup;
-                return;
-            }
+            // Find the peep's current costume by string
+            costume = std::find_if(costumes.begin(), costumes.end(), [value](auto& candidate) {
+                return candidate.scriptName == value.as_string();
+            });
         }
         else if (value.type() == DukValue::Type::NUMBER)
         {
-            auto newAnimationGroup = PeepAnimationGroup(value.as_uint() + EnumValue(PeepAnimationGroup::EntertainerPanda));
-            if (availableCostumes.find(newAnimationGroup) != availableCostumes.end())
-            {
-                peep->AnimationGroup = newAnimationGroup;
-                return;
-            }
+            // Find the peep's current costume by legacy number
+            auto target = PeepAnimationGroup(value.as_uint() + EnumValue(PeepAnimationGroup::EntertainerPanda));
+            costume = std::find_if(
+                costumes.begin(), costumes.end(), [target](auto& candidate) { return candidate.legacyPosition == target; });
         }
 
-        throw DukException() << "Invalid costume for this staff member";
+        if (costume == costumes.end())
+            throw DukException() << "Invalid costume for this staff member";
+
+        peep->AnimationObjectIndex = costume->objectId;
+        peep->AnimationGroup = costume->group;
     }
 
     std::shared_ptr<ScPatrolArea> ScStaff::patrolArea_get() const
