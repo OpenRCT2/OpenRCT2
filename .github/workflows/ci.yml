@@ -34,7 +34,7 @@ env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
-  OPENRCT2_VERSION: 0.4.16
+  OPENRCT2_VERSION: 0.4.17
 
 # https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
 concurrency:
@@ -95,6 +95,8 @@ jobs:
           echo "name=${{ steps.ghd.outputs.describe }}" >> $GITHUB_OUTPUT
       - name: Sign
         id: sign
+        env:
+          SIGNPATH_API_TOKEN: ${{ secrets.SIGNPATH_API_TOKEN }}
         run: |
           sign=${{ env.SIGNPATH_API_TOKEN != '' && github.event.inputs.sign != 'no' && (needs.build_variables.outputs.push || startsWith(github.ref, 'refs/tags/v')) }}
           # if using workflow_dispatch, use the provided certificate
