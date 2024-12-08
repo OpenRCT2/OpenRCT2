@@ -2635,6 +2635,26 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
+    else if (rideType == RIDE_TYPE_BOAT_HIRE && parkFileVersion < kExtendedBoatHireVersion)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::LeftQuarterTurn3Tiles:
+            case TrackElemType::RightQuarterTurn3Tiles:
+            case TrackElemType::LeftQuarterTurn5Tiles:
+            case TrackElemType::RightQuarterTurn5Tiles:
+            case TrackElemType::LeftEighthToDiag:
+            case TrackElemType::RightEighthToDiag:
+            case TrackElemType::LeftEighthToOrthogonal:
+            case TrackElemType::RightEighthToOrthogonal:
+            case TrackElemType::DiagFlat:
+            case TrackElemType::SBendLeft:
+            case TrackElemType::SBendRight:
+                return true;
+            default:
+                break;
+        }
+    }
 
     return false;
 }
