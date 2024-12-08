@@ -414,7 +414,7 @@ namespace OpenRCT2::Editor
             }
         }
 
-        // Beyond this point, all checks don't apply to the track designer/manager.
+        // No checks beyond this point apply to the track designer or track designs manager.
         const bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
         if (isTrackDesignerManager)
         {
