@@ -100,6 +100,7 @@ STR_0095    :Tor saneczkowy
 STR_0096    :Klasyczna drewniana jazda
 STR_0097    :Klasyczna kolejka stojąca
 STR_0098    :Kolejka z napędem synchronicznym liniowym
+STR_0099    :Klasyczna drewniana zwijka
 STR_0512    :Zwarta przestrzennie kolejka ze spiralnym podjazdem i gładkimi, zakręconymi zjazdami
 STR_0513    :Zapętlona kolejka, w której pasażerowie jadą w pozycji stojącej
 STR_0514    :Wagoniki podwieszone pod torem kolejki wychylają się swobodnie na zakrętach
@@ -182,9 +183,10 @@ STR_0602    :Wagoniki napędzane liniowymi silnikami indukcyjnymi, mknące przez
 STR_0603    :Drewniana kolejka górska ze stalowymi torami pozwalającymi na strome zjazdy i mocne inwersje
 STR_0604    :Pasażerowie jadą pojedynczymi wagonikami po wąskim jednoszynowym torze, pokonując ostre zakręty i mocne inwersje
 STR_0605    :Pasażerowie zjeżdżają po wijącym się stalowym torze, ręcznie hamując, aby kontrolować prędkość
-STR_0606    :Drewniana kolejka górska w starszym stylu, oferująca szybką i twardą jazdę z licznymi wzniesieniami i przeciążeniami bocznymi, co daje poczucie braku kontroli nad przejazdem
+STR_0606    :Drewniana kolejka górska w starszym stylu, oferująca szybką i intensywną jazdę z licznymi wzniesieniami i przeciążeniami bocznymi, co daje poczucie braku kontroli nad przejazdem
 STR_0607    :Intensywna kolejka w starym stylu ze stalowymi torami, w której pasażerowie jadą na stojąco
 STR_0608    :Wagoniki napędzane synchronicznymi silnikami liniowymi, mknące przez ciasne zakręty i inwersje
+STR_0609    :Drewniana kolejka górska w starszym stylu, oferująca szybką i intensywną jazdę w pojedynczych wagonikach, z licznymi wzniesieniami i ostrymi zakrętami
 STR_0767    :Gość {INT32}
 STR_0768    :Dozorca {INT32}
 STR_0769    :Mechanik {INT32}
