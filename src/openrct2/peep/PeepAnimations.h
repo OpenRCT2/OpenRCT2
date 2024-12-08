@@ -14,6 +14,7 @@
 #include "../drawing/ImageIndexType.h"
 #include "../entity/Peep.h"
 
+#include <string>
 #include <vector>
 
 class PeepAnimationsObject;
@@ -51,6 +52,7 @@ namespace OpenRCT2
     public:
         // TODO: move type to RCT12?
         PeepAnimationGroup legacyPosition = PeepAnimationGroup::Invalid;
+        std::string scriptName{};
 
         constexpr PeepAnimation& operator[](PeepAnimationType n)
         {

@@ -13,6 +13,7 @@
 #include "../peep/PeepAnimations.h"
 #include "Object.h"
 
+#include <string_view>
 #include <vector>
 
 class PeepAnimationsObject final : public Object
@@ -41,6 +42,7 @@ public:
     OpenRCT2::AnimationPeepType GetPeepType() const;
     size_t GetNumAnimationGroups() const;
     PeepAnimationGroup GetLegacyPosition(PeepAnimationGroup animGroup) const;
+    std::string_view GetScriptName(PeepAnimationGroup animGroup) const;
 
     bool IsSlowWalking()
     {

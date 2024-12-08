@@ -104,6 +104,17 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
             }
         }
 
+        // Do we have a preferred way of addressing this object in scripts?
+        if (groupJson.contains("scriptName"))
+        {
+            group.scriptName = Json::GetString(groupJson["scriptName"]);
+        }
+        // If not, just use the object identifier.
+        else
+        {
+            group.scriptName = GetIdentifier();
+        }
+
         _animationGroups.push_back(group);
     }
 }
@@ -141,6 +152,11 @@ size_t PeepAnimationsObject::GetNumAnimationGroups() const
 PeepAnimationGroup PeepAnimationsObject::GetLegacyPosition(PeepAnimationGroup animGroup) const
 {
     return _animationGroups[EnumValue(animGroup)].legacyPosition;
+}
+
+std::string_view PeepAnimationsObject::GetScriptName(PeepAnimationGroup animGroup) const
+{
+    return _animationGroups[EnumValue(animGroup)].scriptName;
 }
 
 void PeepAnimationsObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
