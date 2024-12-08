@@ -1,6 +1,7 @@
 0.4.18 (in development)
 ------------------------------------------------------------------------
 - Improved: [#23260] Add diagonal (block) brakes to LSM Launched Roller Coaster.
+- Fix: [#23286] Currency formatted incorrectly in the in game console.
 
 0.4.17 (2024-12-08)
 ------------------------------------------------------------------------
