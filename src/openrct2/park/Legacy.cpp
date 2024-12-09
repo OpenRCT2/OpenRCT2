@@ -2297,8 +2297,7 @@ const std::vector<std::string_view>& GetLegacyPeepAnimationObjects(const ObjectL
     return peepAnimObjects;
 }
 
-// TODO: change type to legacy PeepAnimationGroup and new PeepAnimationGroup
-using AnimObjectConversionTable = std::map<PeepAnimationGroup, std::pair<ObjectEntryIndex, uint8_t>>;
+using AnimObjectConversionTable = std::map<RCT12PeepAnimationGroup, std::pair<ObjectEntryIndex, PeepAnimationGroup>>;
 
 static AnimObjectConversionTable BuildPeepAnimObjectConversionTable()
 {
@@ -2313,11 +2312,12 @@ static AnimObjectConversionTable BuildPeepAnimObjectConversionTable()
 
         for (auto j = 0u; j < object->GetNumAnimationGroups(); j++)
         {
-            auto legacyPosition = object->GetLegacyPosition(PeepAnimationGroup(j));
-            if (legacyPosition == PeepAnimationGroup::Invalid)
+            auto pag = PeepAnimationGroup(j);
+            auto legacyPosition = object->GetLegacyPosition(pag);
+            if (legacyPosition == RCT12PeepAnimationGroup::Invalid)
                 continue;
 
-            table[legacyPosition] = { i, j };
+            table[legacyPosition] = { i, pag };
         }
     }
 
@@ -2331,7 +2331,8 @@ static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable&
         return false;
 
     // TODO: catch missings
-    auto conversion = table[peep->AnimationGroup];
+    auto legacyPAG = RCT12PeepAnimationGroup(peep->AnimationGroup);
+    auto& conversion = table[legacyPAG];
     peep->AnimationObjectIndex = conversion.first;
     peep->AnimationGroup = static_cast<PeepAnimationGroup>(conversion.second);
     return true;

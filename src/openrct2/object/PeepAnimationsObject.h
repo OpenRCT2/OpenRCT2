@@ -16,6 +16,8 @@
 #include <string_view>
 #include <vector>
 
+enum class RCT12PeepAnimationGroup : uint8_t;
+
 class PeepAnimationsObject final : public Object
 {
 private:
@@ -41,7 +43,7 @@ public:
 
     OpenRCT2::AnimationPeepType GetPeepType() const;
     size_t GetNumAnimationGroups() const;
-    PeepAnimationGroup GetLegacyPosition(PeepAnimationGroup animGroup) const;
+    RCT12PeepAnimationGroup GetLegacyPosition(PeepAnimationGroup animGroup) const;
     std::string_view GetScriptName(PeepAnimationGroup animGroup) const;
 
     bool IsSlowWalking()

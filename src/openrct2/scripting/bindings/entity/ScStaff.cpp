@@ -199,7 +199,7 @@ namespace OpenRCT2::Scripting
         else if (value.type() == DukValue::Type::NUMBER)
         {
             // Find the peep's current costume by legacy number
-            auto target = PeepAnimationGroup(value.as_uint() + EnumValue(PeepAnimationGroup::EntertainerPanda));
+            auto target = RCT12PeepAnimationGroup(value.as_uint() + EnumValue(RCT12PeepAnimationGroup::EntertainerPanda));
             costume = std::find_if(
                 costumes.begin(), costumes.end(), [target](auto& candidate) { return candidate.legacyPosition == target; });
         }

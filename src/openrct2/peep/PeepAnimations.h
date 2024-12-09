@@ -18,6 +18,7 @@
 #include <vector>
 
 class PeepAnimationsObject;
+enum class RCT12PeepAnimationGroup : uint8_t;
 
 namespace OpenRCT2
 {
@@ -50,8 +51,7 @@ namespace OpenRCT2
     struct PeepAnimations
     {
     public:
-        // TODO: move type to RCT12?
-        PeepAnimationGroup legacyPosition = PeepAnimationGroup::Invalid;
+        RCT12PeepAnimationGroup legacyPosition;
         std::string scriptName{};
 
         constexpr PeepAnimation& operator[](PeepAnimationType n)
@@ -79,7 +79,7 @@ namespace OpenRCT2
     {
         ObjectEntryIndex objectId;
         PeepAnimationGroup group;
-        PeepAnimationGroup legacyPosition;
+        RCT12PeepAnimationGroup legacyPosition;
         std::string_view scriptName;
     };
 

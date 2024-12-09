@@ -360,10 +360,6 @@ PeepAnimationType Peep::GetAnimationType()
  */
 void Peep::UpdateCurrentAnimationType()
 {
-    if (EnumValue(AnimationGroup) >= EnumValue(PeepAnimationGroup::Count))
-    {
-        return;
-    }
     PeepAnimationType newAnimationType = GetAnimationType();
     if (AnimationType == newAnimationType)
     {

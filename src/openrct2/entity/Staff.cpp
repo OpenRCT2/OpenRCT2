@@ -1637,9 +1637,9 @@ void Staff::Tick128UpdateStaff()
     if (AssignedStaffType != StaffType::Security)
         return;
 
-    PeepAnimationGroup newAnimationGroup = PeepAnimationGroup::SecurityAlt;
+    PeepAnimationGroup newAnimationGroup = PeepAnimationGroup::Alternate;
     if (State != PeepState::Patrolling)
-        newAnimationGroup = PeepAnimationGroup::Security;
+        newAnimationGroup = PeepAnimationGroup::Normal;
 
     if (AnimationGroup == newAnimationGroup)
         return;

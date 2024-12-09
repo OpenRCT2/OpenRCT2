@@ -117,8 +117,12 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
             auto position = Json::GetNumber<uint8_t>(groupJson["legacyPosition"]);
             if (position <= EnumValue(RCT12PeepAnimationGroup::Count))
             {
-                group.legacyPosition = static_cast<PeepAnimationGroup>(position);
+                group.legacyPosition = static_cast<RCT12PeepAnimationGroup>(position);
             }
+        }
+        else
+        {
+            group.legacyPosition = RCT12PeepAnimationGroup::Invalid;
         }
 
         // Do we have a preferred way of addressing this object in scripts?
@@ -166,7 +170,7 @@ size_t PeepAnimationsObject::GetNumAnimationGroups() const
     return _animationGroups.size();
 }
 
-PeepAnimationGroup PeepAnimationsObject::GetLegacyPosition(PeepAnimationGroup animGroup) const
+RCT12PeepAnimationGroup PeepAnimationsObject::GetLegacyPosition(PeepAnimationGroup animGroup) const
 {
     return _animationGroups[EnumValue(animGroup)].legacyPosition;
 }
