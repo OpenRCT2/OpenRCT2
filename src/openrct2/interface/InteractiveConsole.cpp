@@ -559,32 +559,39 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "park_value")
         {
-            console.WriteFormatLine("park_value %d", gameState.Park.Value / 10);
+            console.WriteLine(FormatString("park_value {CURRENCY2DP}", gameState.Park.Value));
         }
         else if (argv[0] == "company_value")
         {
-            console.WriteFormatLine("company_value %d", gameState.CompanyValue / 10);
+            console.WriteLine(FormatString("company_value {CURRENCY2DP}", gameState.CompanyValue));
         }
         else if (argv[0] == "money")
         {
-            console.WriteFormatLine("money %d.%d0", gameState.Cash / 10, gameState.Cash % 10);
+            console.WriteLine(FormatString("money {CURRENCY2DP}", gameState.Cash));
         }
         else if (argv[0] == "scenario_initial_cash")
         {
-            console.WriteFormatLine("scenario_initial_cash %d", gameState.InitialCash / 10);
+            console.WriteLine(FormatString("scenario_initial_cash {CURRENCY2DP}", gameState.InitialCash));
         }
         else if (argv[0] == "current_loan")
         {
-            console.WriteFormatLine("current_loan %d", gameState.BankLoan / 10);
+            console.WriteLine(FormatString("current_loan {CURRENCY2DP}", gameState.BankLoan));
         }
         else if (argv[0] == "max_loan")
         {
-            console.WriteFormatLine("max_loan %d", gameState.MaxBankLoan / 10);
+            console.WriteLine(FormatString("max_loan {CURRENCY2DP}", gameState.MaxBankLoan));
         }
         else if (argv[0] == "guest_initial_cash")
         {
-            console.WriteFormatLine(
-                "guest_initial_cash %d.%d0", gameState.GuestInitialCash / 10, gameState.GuestInitialCash % 10);
+            console.WriteLine(FormatString("guest_initial_cash {CURRENCY2DP}", gameState.GuestInitialCash));
+        }
+        else if (argv[0] == "land_rights_cost")
+        {
+            console.WriteLine(FormatString("land_rights_cost {CURRENCY2DP}", gameState.LandPrice));
+        }
+        else if (argv[0] == "construction_rights_cost")
+        {
+            console.WriteLine(FormatString("construction_rights_cost {CURRENCY2DP}", gameState.ConstructionRightsPrice));
         }
         else if (argv[0] == "guest_initial_happiness")
         {
@@ -663,16 +670,6 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "park_open")
         {
             console.WriteFormatLine("park_open %d", (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) != 0);
-        }
-        else if (argv[0] == "land_rights_cost")
-        {
-            console.WriteFormatLine("land_rights_cost %d.%d0", gameState.LandPrice / 10, gameState.LandPrice % 10);
-        }
-        else if (argv[0] == "construction_rights_cost")
-        {
-            console.WriteFormatLine(
-                "construction_rights_cost %d.%d0", gameState.ConstructionRightsPrice / 10,
-                gameState.ConstructionRightsPrice % 10);
         }
         else if (argv[0] == "climate")
         {
