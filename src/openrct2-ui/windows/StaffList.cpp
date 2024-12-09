@@ -189,26 +189,29 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            _tabAnimationIndex++;
-            if (_tabAnimationIndex >= 24)
+            auto animPeepType = AnimationPeepType(static_cast<uint8_t>(_selectedTab) + 1);
+            auto* animObj = findPeepAnimationsObjectForType(animPeepType);
+            if (animObj != nullptr)
             {
-                _tabAnimationIndex = 0;
-            }
-            else
-            {
-                InvalidateWidget(WIDX_STAFF_LIST_HANDYMEN_TAB + _selectedTab);
+                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
+                _tabAnimationIndex++;
 
-                // Enable highlighting of these staff members in map window
-                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
-                if (windowMgr->FindByClass(WindowClass::Map) != nullptr)
+                if (_tabAnimationIndex >= anim.frame_offsets.size() * 4)
+                    _tabAnimationIndex = 0;
+
+                InvalidateWidget(WIDX_STAFF_LIST_HANDYMEN_TAB + _selectedTab);
+            }
+
+            // Enable highlighting of these staff members in map window
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            if (windowMgr->FindByClass(WindowClass::Map) != nullptr)
+            {
+                for (auto peep : EntityList<Staff>())
                 {
-                    for (auto peep : EntityList<Staff>())
+                    EntitySetFlashing(peep, false);
+                    if (peep->AssignedStaffType == GetSelectedStaffType())
                     {
-                        EntitySetFlashing(peep, false);
-                        if (peep->AssignedStaffType == GetSelectedStaffType())
-                        {
-                            EntitySetFlashing(peep, true);
-                        }
+                        EntitySetFlashing(peep, true);
                     }
                 }
             }
@@ -624,8 +627,10 @@ namespace OpenRCT2::Ui::Windows
             auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
             const auto& widget = widgets[widgetIndex];
 
-            auto imageId = (_selectedTab == tabIndex ? (_tabAnimationIndex & ~3) : 0);
-            imageId += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
+            auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;
+            auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
+            auto imageId = anim.base_image + 1 + anim.frame_offsets[frame] * 4;
+
             GfxDrawSprite(
                 dpi, ImageId(imageId, colour),
                 windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
@@ -645,8 +650,10 @@ namespace OpenRCT2::Ui::Windows
                     clippedDpi, dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
                     widget.right - widget.left - 1, widget.bottom - widget.top - 1))
             {
-                auto imageId = (_selectedTab == 3 ? (_tabAnimationIndex & ~3) : 0);
-                imageId += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
+                auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;
+                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
+                auto imageId = anim.base_image + 1 + anim.frame_offsets[frame] * 4;
+
                 GfxDrawSprite(clippedDpi, ImageId(imageId), { 15, 23 });
             }
         }
