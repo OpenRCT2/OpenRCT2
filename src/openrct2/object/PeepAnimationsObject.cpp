@@ -77,6 +77,23 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
         {
             if (!groupJson["animations"].contains(typeStr))
             {
+                // Successive animation groups can copy the basic animations from the primary group
+                if (!_animationGroups.empty())
+                {
+                    auto& referenceAnim = _animationGroups[0][typeEnum];
+                    if (referenceAnim.imageTableOffset != 0)
+                    {
+                        LOG_VERBOSE("Copying animation '%s' from primary group", typeStr);
+                        std::vector<uint8_t> sequence = referenceAnim.frame_offsets;
+                        group[typeEnum] = {
+                            .imageTableOffset = referenceAnim.imageTableOffset,
+                            .frame_offsets = sequence,
+                        };
+                        continue;
+                    }
+                }
+
+                // No primary animation bail us out -- error here!
                 LOG_ERROR("Required animation does not exist: %s", typeStr);
                 continue;
             }
