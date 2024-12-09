@@ -5946,7 +5946,7 @@ namespace OpenRCT2::Ui::Windows
 
         void GraphsResize()
         {
-            WindowSetResize(*this, 316, 182, 5000, 450);
+            WindowSetResize(*this, 316, 182, std::numeric_limits<int16_t>::max(), 450);
         }
 
         void GraphsOnMouseDown(WidgetIndex widgetIndex)
