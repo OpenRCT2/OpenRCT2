@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Improved: [#23260] Add diagonal (block) brakes to LSM Launched Roller Coaster.
 - Fix: [#23286] Currency formatted incorrectly in the in game console.
+- Fix: [#23348] Console set commands don't print output properly.
 
 0.4.17 (2024-12-08)
 ------------------------------------------------------------------------

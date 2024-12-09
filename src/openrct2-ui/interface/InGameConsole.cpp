@@ -54,6 +54,12 @@ void InGameConsole::WritePrompt()
 
 void InGameConsole::Input(ConsoleInput input)
 {
+    if (_isCommandAwaitingCompletion)
+    {
+        // Do not process input while a command is running
+        return;
+    }
+
     switch (input)
     {
         case ConsoleInput::LineClear:
@@ -69,7 +75,14 @@ void InGameConsole::Input(ConsoleInput input)
                 _consoleLines.back().append(_consoleCurrentLine);
 
                 Execute(_consoleCurrentLine);
-                WritePrompt();
+                if (IsExecuting())
+                {
+                    _isCommandAwaitingCompletion = true;
+                }
+                else
+                {
+                    WritePrompt();
+                }
                 ClearInput();
                 RefreshCaret();
             }
@@ -269,6 +282,12 @@ void InGameConsole::Update()
                 }
             }
         }
+    }
+
+    if (_isCommandAwaitingCompletion && !IsExecuting())
+    {
+        WritePrompt();
+        _isCommandAwaitingCompletion = false;
     }
 
     // Flash the caret
