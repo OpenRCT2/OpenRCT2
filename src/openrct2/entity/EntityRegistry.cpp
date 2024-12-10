@@ -10,7 +10,6 @@
 #include "EntityRegistry.h"
 
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../core/Algorithm.hpp"
 #include "../core/ChecksumStream.h"
@@ -36,7 +35,6 @@
 #include <cassert>
 #include <cmath>
 #include <iterator>
-#include <numeric>
 #include <vector>
 
 using namespace OpenRCT2;
