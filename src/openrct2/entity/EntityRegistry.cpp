@@ -159,12 +159,10 @@ const std::list<EntityId>& GetEntityList(const EntityType id)
 }
 
 /**
- *
- *  rct2: 0x0069EB13
+ * Frees any dynamically attached memory for all entities
  */
-void ResetAllEntities()
+void FreeAllEntities()
 {
-    // Free all associated Entity pointers prior to zeroing memory
     for (int32_t i = 0; i < MAX_ENTITIES; ++i)
     {
         auto* spr = GetEntity(EntityId::FromUnderlying(i));
@@ -174,6 +172,15 @@ void ResetAllEntities()
         }
         FreeEntity(*spr);
     }
+}
+
+/**
+ *
+ *  rct2: 0x0069EB13
+ */
+void ResetAllEntities()
+{
+    FreeAllEntities();
 
     auto& gameState = GetGameState();
     std::fill(std::begin(gameState.Entities), std::end(gameState.Entities), Entity_t());

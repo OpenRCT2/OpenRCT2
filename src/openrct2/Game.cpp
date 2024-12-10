@@ -689,7 +689,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         default:
             GameUnloadScripts();
-            ResetAllEntities();
+            FreeAllEntities();
             OpenRCT2Finish();
             break;
     }

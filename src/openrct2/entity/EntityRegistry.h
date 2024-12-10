@@ -64,6 +64,7 @@ T* CreateEntityAt(const EntityId index)
     return static_cast<T*>(CreateEntityAt(index, T::cEntityType));
 }
 
+void FreeAllEntities();
 void ResetAllEntities();
 void ResetEntitySpatialIndices();
 void UpdateAllMiscEntities();
