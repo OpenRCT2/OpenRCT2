@@ -22,15 +22,17 @@ class PeepAnimationsObject final : public Object
 {
 private:
     ImageIndex _imageOffsetId;
+    std::vector<OpenRCT2::PeepAnimations> _animationGroups;
     OpenRCT2::AnimationPeepType _peepType;
     bool _slowWalking;
-    std::vector<OpenRCT2::PeepAnimations> _animationGroups;
+    bool _noRandomPlacement;
 
 public:
     static constexpr ObjectType kObjectType = ObjectType::PeepAnimations;
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     OpenRCT2::PeepAnimations ReadAnimations(const EnumMap<PeepAnimationType>& requiredAnimationMap, json_t& animations);
+    void ReadProperties(json_t& properties);
     void Load() override;
     void Unload() override;
 
@@ -47,10 +49,15 @@ public:
     RCT12PeepAnimationGroup GetLegacyPosition(PeepAnimationGroup animGroup) const;
     std::string_view GetScriptName(PeepAnimationGroup animGroup) const;
 
-    bool IsSlowWalking()
+    bool IsSlowWalking() const
     {
         return _slowWalking;
     };
+
+    bool ShouldExcludeFromRandomPlacement() const
+    {
+        return _noRandomPlacement;
+    }
 
     void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;

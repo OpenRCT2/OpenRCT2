@@ -133,35 +133,45 @@ namespace OpenRCT2
         return nullptr;
     }
 
-    std::vector<ObjectEntryIndex> findAllPeepAnimationsIndexesForType(const AnimationPeepType type)
+    std::vector<ObjectEntryIndex> findAllPeepAnimationsIndexesForType(const AnimationPeepType type, bool randomOnly)
     {
         std::vector<ObjectEntryIndex> output{};
         auto& objManager = GetContext()->GetObjectManager();
         for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
         {
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
-            if (animObj != nullptr && animObj->GetPeepType() == type)
-                output.push_back(i);
+            if (animObj == nullptr || animObj->GetPeepType() != type)
+                continue;
+
+            if (randomOnly && animObj->ShouldExcludeFromRandomPlacement())
+                continue;
+
+            output.push_back(i);
         }
         return output;
     }
 
-    std::vector<PeepAnimationsObject*> findAllPeepAnimationsObjectForType(const AnimationPeepType type)
+    std::vector<PeepAnimationsObject*> findAllPeepAnimationsObjectForType(const AnimationPeepType type, bool randomOnly)
     {
         std::vector<PeepAnimationsObject*> output{};
         auto& objManager = GetContext()->GetObjectManager();
         for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
         {
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(i);
-            if (animObj != nullptr && animObj->GetPeepType() == type)
-                output.push_back(animObj);
+            if (animObj == nullptr || animObj->GetPeepType() != type)
+                continue;
+
+            if (randomOnly && animObj->ShouldExcludeFromRandomPlacement())
+                continue;
+
+            output.push_back(animObj);
         }
         return output;
     }
 
     ObjectEntryIndex findRandomPeepAnimationsIndexForType(const AnimationPeepType type)
     {
-        auto costumes = findAllPeepAnimationsIndexesForType(type);
+        auto costumes = findAllPeepAnimationsIndexesForType(type, true);
         if (costumes.empty())
             return OBJECT_ENTRY_INDEX_NULL;
 

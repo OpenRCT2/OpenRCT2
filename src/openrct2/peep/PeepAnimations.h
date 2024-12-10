@@ -70,8 +70,9 @@ namespace OpenRCT2
     ObjectEntryIndex findPeepAnimationsIndexForType(const AnimationPeepType type);
     PeepAnimationsObject* findPeepAnimationsObjectForType(const AnimationPeepType type);
 
-    std::vector<ObjectEntryIndex> findAllPeepAnimationsIndexesForType(const AnimationPeepType type);
-    std::vector<PeepAnimationsObject*> findAllPeepAnimationsObjectForType(const AnimationPeepType type);
+    std::vector<ObjectEntryIndex> findAllPeepAnimationsIndexesForType(const AnimationPeepType type, bool randomOnly = false);
+    std::vector<PeepAnimationsObject*> findAllPeepAnimationsObjectForType(
+        const AnimationPeepType type, bool randomOnly = false);
 
     ObjectEntryIndex findRandomPeepAnimationsIndexForType(const AnimationPeepType type);
 

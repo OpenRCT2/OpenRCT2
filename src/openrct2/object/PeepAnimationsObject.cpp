@@ -58,11 +58,8 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
     Guard::Assert(root.is_object(), "PeepAnimationsObject::ReadJson expects parameter root to be an object");
     PopulateTablesFromJson(context, root);
 
-    Guard::Assert(root["peepType"].is_string(), "PeepAnimationsObject::ReadJson expects peepType to be a string");
-    _peepType = animationPeepTypeMap[Json::GetString(root["peepType"])];
-
-    Guard::Assert(root["isSlowWalking"].is_boolean(), "PeepAnimationsObject::ReadJson expects isSlowWalking to be a boolean");
-    _slowWalking = Json::GetBoolean(root["isSlowWalking"]);
+    Guard::Assert(root["properties"].is_object(), "PeepAnimationsObject::ReadJson expects properties to be an object");
+    ReadProperties(root["properties"]);
 
     auto& requiredAnimationMap = getAnimationsByPeepType(_peepType);
     _animationGroups.clear();
@@ -145,6 +142,21 @@ PeepAnimations PeepAnimationsObject::ReadAnimations(const EnumMap<PeepAnimationT
     }
 
     return group;
+}
+
+void PeepAnimationsObject::ReadProperties(json_t& props)
+{
+    Guard::Assert(props["peepType"].is_string(), "PeepAnimationsObject::ReadProperties expects peepType to be a string");
+    _peepType = animationPeepTypeMap[Json::GetString(props["peepType"])];
+
+    Guard::Assert(
+        props["isSlowWalking"].is_boolean(), "PeepAnimationsObject::ReadProperties expects isSlowWalking to be a boolean");
+    _slowWalking = Json::GetBoolean(props["isSlowWalking"], false);
+
+    Guard::Assert(
+        props["noRandomPlacement"].is_boolean(),
+        "PeepAnimationsObject::ReadProperties expects noRandomPlacement to be a boolean");
+    _noRandomPlacement = Json::GetBoolean(props["noRandomPlacement"], false);
 }
 
 std::string PeepAnimationsObject::GetCostumeName() const
