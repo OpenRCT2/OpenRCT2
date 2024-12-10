@@ -72,44 +72,7 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         Guard::Assert(groupJson["animations"].is_object(), "PeepAnimationsObject::ReadJson expects animations to be an array");
 
-        PeepAnimations group{};
-        for (auto& [typeStr, typeEnum] : requiredAnimationMap)
-        {
-            if (!groupJson["animations"].contains(typeStr))
-            {
-                // Successive animation groups can copy the basic animations from the primary group
-                if (!_animationGroups.empty())
-                {
-                    auto& referenceAnim = _animationGroups[0][typeEnum];
-                    if (referenceAnim.imageTableOffset != 0)
-                    {
-                        LOG_VERBOSE("Copying animation '%s' from primary group", typeStr);
-                        std::vector<uint8_t> sequence = referenceAnim.frame_offsets;
-                        group[typeEnum] = {
-                            .imageTableOffset = referenceAnim.imageTableOffset,
-                            .frame_offsets = sequence,
-                        };
-                        continue;
-                    }
-                }
-
-                // No primary animation bail us out -- error here!
-                LOG_ERROR("Required animation does not exist: %s", typeStr);
-                continue;
-            }
-
-            // The `.data()` here is a workaround for older versions of nlohmann-json.
-            // TODO: remove when we no longer support Ubuntu 22.04 (Jammy).
-            auto& animJson = animations[typeStr.data()];
-
-            // Store animation sequence in vector
-            auto sequence = animJson["sequence"].get<std::vector<uint8_t>>();
-
-            group[typeEnum] = {
-                .imageTableOffset = Json::GetNumber<uint16_t>(animJson["offset"]),
-                .frame_offsets = sequence,
-            };
-        }
+        PeepAnimations group = ReadAnimations(requiredAnimationMap, groupJson["animations"]);
 
         // Is this animation group replacing a legacy group?
         if (groupJson.contains("legacyPosition"))
@@ -138,6 +101,50 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         _animationGroups.push_back(group);
     }
+}
+
+PeepAnimations PeepAnimationsObject::ReadAnimations(const EnumMap<PeepAnimationType>& requiredAnimationMap, json_t& animations)
+{
+    PeepAnimations group{};
+    for (auto& [typeStr, typeEnum] : requiredAnimationMap)
+    {
+        if (!animations.contains(typeStr))
+        {
+            // Successive animation groups can copy the basic animations from the primary group
+            if (!_animationGroups.empty())
+            {
+                auto& referenceAnim = _animationGroups[0][typeEnum];
+                if (referenceAnim.imageTableOffset != 0)
+                {
+                    LOG_VERBOSE("Copying animation '%s' from primary group", typeStr);
+                    std::vector<uint8_t> sequence = referenceAnim.frame_offsets;
+                    group[typeEnum] = {
+                        .imageTableOffset = referenceAnim.imageTableOffset,
+                        .frame_offsets = sequence,
+                    };
+                    continue;
+                }
+            }
+
+            // No primary animation bail us out -- error here!
+            LOG_ERROR("Required animation does not exist: %s", typeStr);
+            continue;
+        }
+
+        // The `.data()` here is a workaround for older versions of nlohmann-json.
+        // TODO: remove when we no longer support Ubuntu 22.04 (Jammy).
+        auto& animJson = animations[typeStr.data()];
+
+        // Store animation sequence in vector
+        auto sequence = animJson["sequence"].get<std::vector<uint8_t>>();
+
+        group[typeEnum] = {
+            .imageTableOffset = Json::GetNumber<uint16_t>(animJson["offset"]),
+            .frame_offsets = sequence,
+        };
+    }
+
+    return group;
 }
 
 std::string PeepAnimationsObject::GetCostumeName() const

@@ -30,6 +30,7 @@ public:
     static constexpr ObjectType kObjectType = ObjectType::PeepAnimations;
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
+    OpenRCT2::PeepAnimations ReadAnimations(const EnumMap<PeepAnimationType>& requiredAnimationMap, json_t& animations);
     void Load() override;
     void Unload() override;
 
