@@ -875,21 +875,30 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateOverview()
         {
-            _guestAnimationFrame++;
-            _guestAnimationFrame %= 24;
-
-            // Update pickup animation, can only happen in this tab.
-            picked_peep_frame++;
-            picked_peep_frame %= 48;
-
-            WidgetInvalidate(*this, WIDX_TAB_1);
-            WidgetInvalidate(*this, WIDX_TAB_2);
-
             const auto peep = GetGuest();
             if (peep == nullptr)
             {
                 return;
             }
+
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+            // Overview tab animation offset
+            _guestAnimationFrame++;
+            _guestAnimationFrame %= 24;
+
+            // Get pickup animation length
+            const auto& pickAnim = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging);
+            const auto pickAnimLength = pickAnim.frame_offsets.size();
+
+            // Update pickup animation, can only happen in this tab.
+            picked_peep_frame++;
+            picked_peep_frame %= pickAnimLength * 4;
+
+            WidgetInvalidate(*this, WIDX_TAB_1);
+            WidgetInvalidate(*this, WIDX_TAB_2);
+
             if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
             {
                 peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
