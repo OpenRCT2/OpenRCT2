@@ -3025,7 +3025,7 @@ STR_5896    :Nieudany zapis trasy!
 STR_5898    :{BLACK}Nie można załadować trasy, plik może być {newline}uszkodzony lub niedostępny!
 STR_5899    :Włącz/Wyłącz okno debugowania rysowania
 STR_5900    :Użyj oryginalnego kodu rysowania
-STR_5901    :Wyświetlaj wysokość segmentów
+STR_5901    :Wyświetl wysokość segmentów
 STR_5902    :Pokaż ścianki ograniczające
 STR_5903    :Pokaż okno debugowania rysowania
 STR_5904    :Resetuj datę
@@ -3782,3 +3782,4 @@ STR_6706    :{WINDOW_COLOUR_2}Bieżący plik obrazu: {BLACK}{STRING}
 STR_6707    :(brak)
 STR_6708    :Siła wygładzania
 STR_6709    :Wprowadź siłę wygładzania pomiędzy {COMMA16} a {COMMA16}:
+STR_6710    :Włącz stabilne sortowanie

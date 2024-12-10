@@ -100,6 +100,7 @@ STR_0095    :Montanha-Russa Alpina
 STR_0096    :Montanha-Russa de Madeira Clássica
 STR_0097    :Montanha-Russa em Pé Clássica
 STR_0098    :Montanha-Russa acelerada por LSM
+STR_0099    :Montanha-Russa Tornado de Madeira Clássica
 STR_0512    :Uma montanha russa compacta com subida de elevação em espiral e quedas suaves e retorcidas
 STR_0513    :Uma montanha russa de looping onde passageiros andam em pé
 STR_0514    :Trens suspensos abaixo do trilho da montanha-russa balançam para fora nas curvas
@@ -185,6 +186,7 @@ STR_0605    :Passageiros descem de tobogã por um trilho de aço sinuoso, freand
 STR_0606    :Uma montanha-russa de madeira de estilo mais antigo com um trajeto rápido e duro, com muito ‘tempo no ar’, alguma força G lateral e projetada para um sentimento de ‘perda de controle’
 STR_0607    :Uma montanha-russa de aço intensa e de estilo antigo onde os passageiros andam em pé
 STR_0608    :Os trens da montanha-russa são acelerados por motores síncronos lineares, acelerando por curvas e giros estreitos
+STR_0609    :Uma montanha-russa de madeira de estilo antigo com um trajeto rápido e duro utilizando trens articulados, muito ‘tempo no ar’ e trilhos em espiral
 STR_0767    :Visitante {INT32}
 STR_0768    :Faxineiro {INT32}
 STR_0769    :Mecânico {INT32}
@@ -3780,3 +3782,4 @@ STR_6706    :{WINDOW_COLOUR_2}Arquivo de imagem atual: {BLACK}{STRING}
 STR_6707    :(nenhum selecionado)
 STR_6708    :Intensidade da Suavização
 STR_6709    :Digite a intensidade da suavização entre {COMMA16} e {COMMA16}
+STR_6710    :Ordenação estável
