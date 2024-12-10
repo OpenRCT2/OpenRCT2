@@ -604,7 +604,6 @@ namespace OpenRCT2
             std::string ReadString()
             {
                 std::string buffer;
-                buffer.reserve(64);
                 while (true)
                 {
                     char c{};
@@ -615,7 +614,6 @@ namespace OpenRCT2
                     }
                     buffer.push_back(c);
                 }
-                buffer.shrink_to_fit();
                 return buffer;
             }
 
