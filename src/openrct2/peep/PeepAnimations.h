@@ -19,6 +19,7 @@
 
 class PeepAnimationsObject;
 enum class RCT12PeepAnimationGroup : uint8_t;
+enum class StaffType : uint8_t;
 
 namespace OpenRCT2
 {
@@ -32,6 +33,7 @@ namespace OpenRCT2
     };
 
     const EnumMap<PeepAnimationType>& getAnimationsByPeepType(AnimationPeepType peepType);
+    AnimationPeepType getAnimationPeepType(StaffType staffType);
 
     struct SpriteBounds
     {

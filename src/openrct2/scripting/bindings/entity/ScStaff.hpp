@@ -60,6 +60,7 @@ namespace OpenRCT2::Scripting
         void colour_set(uint8_t value);
 
         std::vector<std::string> availableCostumes_get() const;
+        std::vector<std::string> getCostumeStrings() const;
         std::string costume_get() const;
         void costume_set(const DukValue& value);
 

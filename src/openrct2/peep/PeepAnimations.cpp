@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../drawing/Drawing.h"
 #include "../entity/Peep.h"
+#include "../entity/Staff.h"
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
@@ -107,6 +108,22 @@ namespace OpenRCT2
             case AnimationPeepType::Entertainer:
             default:
                 return availableEntertainerAnimations;
+        }
+    }
+
+    AnimationPeepType getAnimationPeepType(StaffType staffType)
+    {
+        switch (staffType)
+        {
+            case StaffType::Handyman:
+                return AnimationPeepType::Handyman;
+            case StaffType::Mechanic:
+                return AnimationPeepType::Mechanic;
+            case StaffType::Security:
+                return AnimationPeepType::Security;
+            case StaffType::Entertainer:
+            default:
+                return AnimationPeepType::Entertainer;
         }
     }
 

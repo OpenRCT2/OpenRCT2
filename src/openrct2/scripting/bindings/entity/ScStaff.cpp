@@ -38,6 +38,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScStaff::animationOffset_get, &ScStaff::animationOffset_set, "animationOffset");
         dukglue_register_property(ctx, &ScStaff::animationLength_get, nullptr, "animationLength");
         dukglue_register_method(ctx, &ScStaff::getAnimationSpriteIds, "getAnimationSpriteIds");
+        dukglue_register_method(ctx, &ScStaff::getCostumeStrings, "getCostumeStrings");
     }
 
     Staff* ScStaff::GetStaff() const
@@ -124,18 +125,8 @@ namespace OpenRCT2::Scripting
     static const std::vector<AnimationGroupResult> costumesByStaffType(StaffType staffType)
     {
         // TODO: shouldn't get hit repeatedly, but cache these if (and only if) it's too slow
-        switch (staffType)
-        {
-            case StaffType::Handyman:
-                return getAnimationGroupsByPeepType(AnimationPeepType::Handyman);
-            case StaffType::Mechanic:
-                return getAnimationGroupsByPeepType(AnimationPeepType::Mechanic);
-            case StaffType::Security:
-                return getAnimationGroupsByPeepType(AnimationPeepType::Security);
-            case StaffType::Entertainer:
-            default:
-                return getAnimationGroupsByPeepType(AnimationPeepType::Entertainer);
-        }
+        auto animPeepType = getAnimationPeepType(staffType);
+        return getAnimationGroupsByPeepType(animPeepType);
     }
 
     std::vector<std::string> ScStaff::availableCostumes_get() const
@@ -148,6 +139,19 @@ namespace OpenRCT2::Scripting
             {
                 availableCostumes.push_back(std::string(costume.scriptName));
             }
+        }
+        return availableCostumes;
+    }
+
+    std::vector<std::string> ScStaff::getCostumeStrings() const
+    {
+        auto peep = GetStaff();
+        auto animPeepType = getAnimationPeepType(peep->AssignedStaffType);
+
+        std::vector<std::string> availableCostumes{};
+        for (auto& costume : getAvailableCostumeStrings(animPeepType))
+        {
+            availableCostumes.push_back(costume.friendlyName);
         }
         return availableCostumes;
     }
