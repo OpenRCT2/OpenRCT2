@@ -171,7 +171,14 @@ namespace OpenRCT2
 
     ObjectEntryIndex findRandomPeepAnimationsIndexForType(const AnimationPeepType type)
     {
+        // Get available costumes, excluding from random placement as requested
         auto costumes = findAllPeepAnimationsIndexesForType(type, true);
+
+        // No costumes? Try again without respecting the random placement flag
+        if (costumes.empty())
+            costumes = findAllPeepAnimationsIndexesForType(type);
+
+        // Still no costumes available? Bail out
         if (costumes.empty())
             return OBJECT_ENTRY_INDEX_NULL;
 
