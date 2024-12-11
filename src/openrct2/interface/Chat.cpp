@@ -207,6 +207,21 @@ void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColor)
     }
 }
 
+/**
+ * strftime wrapper which appends to an existing string.
+ */
+static size_t StrCatFTime(char* buffer, size_t bufferSize, const char* format, const struct tm* tp)
+{
+    size_t stringLen = strnlen(buffer, bufferSize);
+    if (stringLen < bufferSize)
+    {
+        char* dst = buffer + stringLen;
+        size_t dstMaxSize = bufferSize - stringLen;
+        return strftime(dst, dstMaxSize, format, tp);
+    }
+    return 0;
+}
+
 void ChatAddHistory(std::string_view s)
 {
     // Format a timestamp

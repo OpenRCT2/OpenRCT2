@@ -12,8 +12,6 @@
 #include "../core/Money.hpp"
 #include "../core/StringTypes.h"
 
-#include <ctime>
-
 int32_t StrLogicalCmp(char const* a, char const* b);
 char* SafeStrCpy(char* destination, const char* source, size_t num);
 char* SafeStrCat(char* destination, const char* source, size_t size);
@@ -47,8 +45,6 @@ constexpr T AddClamp(T value, T valueToAdd)
 uint8_t Lerp(uint8_t a, uint8_t b, float t);
 float FLerp(float a, float b, float t);
 uint8_t SoftLight(uint8_t a, uint8_t b);
-
-size_t StrCatFTime(char* buffer, size_t bufferSize, const char* format, const struct tm* tp);
 
 template<typename T>
 [[nodiscard]] constexpr uint64_t EnumToFlag(T v)
