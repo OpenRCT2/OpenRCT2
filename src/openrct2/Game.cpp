@@ -9,16 +9,13 @@
 
 #include "Game.h"
 
-#include "Cheats.h"
 #include "Context.h"
 #include "Diagnostic.h"
-#include "Editor.h"
 #include "FileClassifier.h"
 #include "GameState.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
-#include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
 #include "actions/GameSetSpeedAction.h"
@@ -28,32 +25,20 @@
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
-#include "core/Money.hpp"
 #include "core/Path.hpp"
-#include "core/SawyerCoding.h"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
 #include "entity/Peep.h"
-#include "entity/Staff.h"
-#include "interface/Colour.h"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"
-#include "management/Finance.h"
-#include "management/Marketing.h"
 #include "management/Research.h"
 #include "network/network.h"
 #include "object/Object.h"
-#include "object/ObjectEntryManager.h"
-#include "object/ObjectList.h"
-#include "object/WaterEntry.h"
 #include "platform/Platform.h"
 #include "rct12/CSStringConverter.h"
 #include "ride/Ride.h"
-#include "ride/RideRatings.h"
 #include "ride/Station.h"
-#include "ride/Track.h"
-#include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "scenes/title/TitleScene.h"
@@ -63,13 +48,8 @@
 #include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Banner.h"
-#include "world/Climate.h"
 #include "world/Entrance.h"
-#include "world/Footpath.h"
 #include "world/Map.h"
-#include "world/MapAnimation.h"
-#include "world/Park.h"
-#include "world/Scenery.h"
 #include "world/tile_element/SurfaceElement.h"
 
 #include <cstdio>
@@ -689,7 +669,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         default:
             GameUnloadScripts();
-            ResetAllEntities();
+            FreeAllEntities();
             OpenRCT2Finish();
             break;
     }
