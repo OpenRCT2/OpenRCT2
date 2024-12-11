@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <random>
+#include <sstream>
 
 namespace OpenRCT2
 {
@@ -215,6 +216,40 @@ namespace OpenRCT2
         }
 
         return groups;
+    }
+
+    std::vector<AvailableCostume> getAvailableCostumeStrings(const AnimationPeepType type)
+    {
+        auto availCostumeIndexes = findAllPeepAnimationsIndexesForType(type);
+        auto availCostumeObjects = findAllPeepAnimationsObjectForType(type);
+
+        auto availableCostumes = std::vector<AvailableCostume>{};
+        for (auto i = 0u; i < availCostumeObjects.size(); i++)
+        {
+            auto baseName = availCostumeObjects[i]->GetCostumeName();
+            auto inlineImageId = availCostumeObjects[i]->GetInlineImageId();
+
+            // std::format doesn't appear to be available on macOS <13.3
+            std::stringstream out{};
+            out << "{INLINE_SPRITE}";
+            for (auto b = 0; b < 32; b += 8)
+                out << '{' << ((inlineImageId >> b) & 0xFF) << '}';
+            out << ' ';
+            out << baseName;
+
+            availableCostumes.push_back({
+                .index = availCostumeIndexes[i],
+                .object = availCostumeObjects[i],
+                .rawName = baseName,
+                .friendlyName = out.str(),
+            });
+        }
+
+        std::sort(availableCostumes.begin(), availableCostumes.end(), [](const auto& a, const auto& b) {
+            return a.rawName < b.rawName;
+        });
+
+        return availableCostumes;
     }
 
     // Adapted from CarEntry.cpp

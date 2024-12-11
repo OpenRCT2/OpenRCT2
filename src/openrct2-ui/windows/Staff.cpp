@@ -38,7 +38,6 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
-#include <sstream>
 
 using namespace OpenRCT2::Numerics;
 
@@ -131,14 +130,6 @@ namespace OpenRCT2::Ui::Windows
         _staffStatsWidgets,
     };
 
-    struct AvailableCostume
-    {
-        ObjectEntryIndex index;
-        PeepAnimationsObject* object;
-        std::string rawName;
-        std::string friendlyName;
-    };
-
     class StaffWindow final : public Window
     {
     private:
@@ -152,39 +143,7 @@ namespace OpenRCT2::Ui::Windows
             number = entityId.ToUnderlying();
 
             if (GetStaff()->AssignedStaffType == StaffType::Entertainer)
-                InitialiseCostumeList();
-        }
-
-        void InitialiseCostumeList()
-        {
-            auto availCostumeIndexes = findAllPeepAnimationsIndexesForType(AnimationPeepType::Entertainer);
-            auto availCostumeObjects = findAllPeepAnimationsObjectForType(AnimationPeepType::Entertainer);
-
-            _availableCostumes = {};
-            for (auto i = 0u; i < availCostumeObjects.size(); i++)
-            {
-                auto baseName = availCostumeObjects[i]->GetCostumeName();
-                auto inlineImageId = availCostumeObjects[i]->GetInlineImageId();
-
-                // std::format doesn't appear to be available on macOS <13.3
-                std::stringstream out{};
-                out << "{INLINE_SPRITE}";
-                for (auto b = 0; b < 32; b += 8)
-                    out << '{' << ((inlineImageId >> b) & 0xFF) << '}';
-                out << ' ';
-                out << baseName;
-
-                _availableCostumes.push_back({
-                    .index = availCostumeIndexes[i],
-                    .object = availCostumeObjects[i],
-                    .rawName = baseName,
-                    .friendlyName = out.str(),
-                });
-            }
-
-            std::sort(_availableCostumes.begin(), _availableCostumes.end(), [](const auto& a, const auto& b) {
-                return a.rawName < b.rawName;
-            });
+                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
         }
 
         void OnOpen() override
@@ -200,7 +159,7 @@ namespace OpenRCT2::Ui::Windows
         void OnLanguageChange() override
         {
             if (GetStaff()->AssignedStaffType == StaffType::Entertainer)
-                InitialiseCostumeList();
+                _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
