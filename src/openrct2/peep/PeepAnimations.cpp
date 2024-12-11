@@ -13,7 +13,7 @@
 #include "../drawing/Drawing.h"
 #include "../entity/Peep.h"
 
-#include <random>
+#include <algorithm>
 
 namespace OpenRCT2
 {
