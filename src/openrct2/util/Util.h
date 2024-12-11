@@ -12,10 +12,6 @@
 #include "../core/Money.hpp"
 #include "../core/StringTypes.h"
 
-int32_t StrLogicalCmp(char const* a, char const* b);
-char* SafeStrCpy(char* destination, const char* source, size_t num);
-char* SafeStrCat(char* destination, const char* source, size_t size);
-
 uint32_t UtilRand();
 float UtilRandNormalDistributed();
 

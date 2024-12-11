@@ -775,7 +775,7 @@ namespace OpenRCT2::Ui::Windows
                         width_limit /= 2;
                         // Draw ride type
                         StringId rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
-                        SafeStrCpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
+                        String::SafeStrCpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
                         auto ft = Formatter();
                         ft.Add<const char*>(itemBuffer);
                         DrawTextEllipsised(
@@ -784,7 +784,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Draw text
-                    SafeStrCpy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
+                    String::SafeStrCpy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
                     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
                     {
                         while (*buffer != 0 && *buffer != 9)
@@ -826,7 +826,7 @@ namespace OpenRCT2::Ui::Windows
             if (strcmp(_filter_string, c) == 0)
                 return;
 
-            SafeStrCpy(_filter_string, c, sizeof(_filter_string));
+            String::SafeStrCpy(_filter_string, c, sizeof(_filter_string));
 
             FilterUpdateCounts();
 

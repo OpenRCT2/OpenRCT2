@@ -146,8 +146,8 @@ TEST_F(StringTest, ToUpper_Japanese)
 
 TEST_F(StringTest, StrLogicalCmp)
 {
-    auto res_logical_1 = StrLogicalCmp("foo1", "foo1_2");
-    auto res_logical_2 = StrLogicalCmp("foo1_2", "foo1");
+    auto res_logical_1 = String::StrLogicalCmp("foo1", "foo1_2");
+    auto res_logical_2 = String::StrLogicalCmp("foo1_2", "foo1");
     auto res_1 = strcmp("foo1", "foo1_2");
     auto res_2 = strcmp("foo1_2", "foo1");
     // We only care if sign is correct, actual values might not be.
@@ -155,22 +155,22 @@ TEST_F(StringTest, StrLogicalCmp)
     EXPECT_GE(res_2 * res_logical_2, 1);
     EXPECT_NE(res_logical_1, res_logical_2);
 
-    EXPECT_GT(StrLogicalCmp("foo12", "foo1"), 0);
-    EXPECT_LT(StrLogicalCmp("foo12", "foo13"), 0);
-    EXPECT_EQ(StrLogicalCmp("foo13", "foo13"), 0);
+    EXPECT_GT(String::StrLogicalCmp("foo12", "foo1"), 0);
+    EXPECT_LT(String::StrLogicalCmp("foo12", "foo13"), 0);
+    EXPECT_EQ(String::StrLogicalCmp("foo13", "foo13"), 0);
 
-    EXPECT_EQ(StrLogicalCmp("foo13", "FOO13"), 0);
+    EXPECT_EQ(String::StrLogicalCmp("foo13", "FOO13"), 0);
 
-    EXPECT_LT(StrLogicalCmp("A", "b"), 0);
-    EXPECT_LT(StrLogicalCmp("a", "B"), 0);
-    EXPECT_GT(StrLogicalCmp("B", "a"), 0);
-    EXPECT_GT(StrLogicalCmp("b", "A"), 0);
+    EXPECT_LT(String::StrLogicalCmp("A", "b"), 0);
+    EXPECT_LT(String::StrLogicalCmp("a", "B"), 0);
+    EXPECT_GT(String::StrLogicalCmp("B", "a"), 0);
+    EXPECT_GT(String::StrLogicalCmp("b", "A"), 0);
 
     // ^ is used at the start of a ride name to move it to the end of the list
-    EXPECT_LT(StrLogicalCmp("A", "^"), 0);
-    EXPECT_LT(StrLogicalCmp("a", "^"), 0);
-    EXPECT_LT(StrLogicalCmp("!", "A"), 0);
-    EXPECT_LT(StrLogicalCmp("!", "a"), 0);
+    EXPECT_LT(String::StrLogicalCmp("A", "^"), 0);
+    EXPECT_LT(String::StrLogicalCmp("a", "^"), 0);
+    EXPECT_LT(String::StrLogicalCmp("!", "A"), 0);
+    EXPECT_LT(String::StrLogicalCmp("!", "a"), 0);
 }
 
 TEST_F(StringTest, IEqualsU8String)

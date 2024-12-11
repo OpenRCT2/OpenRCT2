@@ -122,15 +122,15 @@ namespace OpenRCT2::Ui::Windows
         switch (Config::Get().general.LoadSaveSort)
         {
             case Sort::NameAscending:
-                return StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
+                return String::StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
             case Sort::NameDescending:
-                return -StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
+                return -String::StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
             case Sort::DateDescending:
                 return -difftime(a.date_modified, b.date_modified) < 0;
             case Sort::DateAscending:
                 return difftime(a.date_modified, b.date_modified) < 0;
         }
-        return StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
+        return String::StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
     }
 
     static void SetAndSaveConfigPath(u8string& config_str, u8string_view path)
@@ -265,7 +265,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         char pathBuffer[MAX_PATH];
-        SafeStrCpy(pathBuffer, path, sizeof(pathBuffer));
+        String::SafeStrCpy(pathBuffer, path, sizeof(pathBuffer));
 
         // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
         // no windows are open (besides the toolbars and LoadSave window).
@@ -502,7 +502,7 @@ namespace OpenRCT2::Ui::Windows
         void PopulateList(int32_t includeNewItem, const u8string& directory, std::string_view extensionPattern)
         {
             const auto absoluteDirectory = Path::GetAbsolute(directory);
-            SafeStrCpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
+            String::SafeStrCpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
             // Note: This compares the pointers, not values
             _extensionPattern = extensionPattern;
 
@@ -535,7 +535,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 // Remove the separator at the end of the path, if present
-                SafeStrCpy(_parentDirectory, absoluteDirectory.c_str(), std::size(_parentDirectory));
+                String::SafeStrCpy(_parentDirectory, absoluteDirectory.c_str(), std::size(_parentDirectory));
                 if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR
                     || _parentDirectory[strlen(_parentDirectory) - 1] == '/')
                     _parentDirectory[strlen(_parentDirectory) - 1] = '\0';
@@ -961,7 +961,7 @@ namespace OpenRCT2::Ui::Windows
                 includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
 
                 char directory[MAX_PATH];
-                SafeStrCpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
+                String::SafeStrCpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
                 PopulateList(includeNewItem, directory, _extensionPattern);
                 InitScrollWidgets();

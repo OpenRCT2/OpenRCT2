@@ -24,6 +24,7 @@
 #include <openrct2/actions/StaffHireNewAction.h>
 #include <openrct2/actions/StaffSetColourAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -516,7 +517,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             std::sort(_staffList.begin(), _staffList.end(), [](const auto& a, const auto& b) {
-                return StrLogicalCmp(a.Name.c_str(), b.Name.c_str()) < 0;
+                return String::StrLogicalCmp(a.Name.c_str(), b.Name.c_str()) < 0;
             });
         }
 

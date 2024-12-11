@@ -31,6 +31,7 @@
 #include "core/Money.hpp"
 #include "core/Path.hpp"
 #include "core/SawyerCoding.h"
+#include "core/String.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
 #include "entity/Peep.h"
@@ -173,7 +174,7 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
     if (length > 0)
     {
         auto temp = RCT2StringToUTF8(buffer, RCT2LanguageId::EnglishUK);
-        SafeStrCpy(buffer, temp.data(), length);
+        String::SafeStrCpy(buffer, temp.data(), length);
     }
 }
 

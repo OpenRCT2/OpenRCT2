@@ -18,6 +18,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
@@ -809,7 +810,7 @@ namespace OpenRCT2::Ui::Windows
         void SortListByName()
         {
             std::sort(_rideList.begin(), _rideList.end(), [](const auto& lhs, const auto& rhs) {
-                return !(0 <= StrLogicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
+                return !(0 <= String::StrLogicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
             });
         }
 

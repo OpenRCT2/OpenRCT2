@@ -184,4 +184,8 @@ namespace OpenRCT2::String
 
     // Escapes special characters in a string to the percentage equivalent that can be used in URLs.
     std::string URLEncode(std::string_view value);
+
+    int32_t StrLogicalCmp(char const* a, char const* b);
+    char* SafeStrCpy(char* destination, const char* source, size_t num);
+    char* SafeStrCat(char* destination, const char* source, size_t size);
 } // namespace OpenRCT2::String

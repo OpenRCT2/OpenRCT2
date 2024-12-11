@@ -22,6 +22,7 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../core/String.hpp"
 #include "../drawing/LightFX.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
@@ -2663,7 +2664,7 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
     ft.Rewind();
     peep_b->FormatNameTo(ft);
     OpenRCT2::FormatStringLegacy(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
-    return StrLogicalCmp(nameA, nameB);
+    return String::StrLogicalCmp(nameA, nameB);
 }
 
 /**

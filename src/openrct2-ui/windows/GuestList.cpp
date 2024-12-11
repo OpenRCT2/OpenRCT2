@@ -958,7 +958,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
             }
-            return StrLogicalCmp(a.Name, b.Name) < 0;
+            return String::StrLogicalCmp(a.Name, b.Name) < 0;
         }
 
         static GuestItem::CompareFunc GetGuestCompareFunc()

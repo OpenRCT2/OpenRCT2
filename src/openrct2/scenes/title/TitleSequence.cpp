@@ -380,7 +380,7 @@ namespace OpenRCT2::Title
                 {
                     auto entityID = EntityId::FromUnderlying(atoi(parts[1].data()) & 0xFFFF);
                     auto followCommand = FollowEntityCommand{ entityID };
-                    SafeStrCpy(followCommand.Follow.SpriteName, parts[2].data(), kUserStringMaxLength);
+                    String::SafeStrCpy(followCommand.Follow.SpriteName, parts[2].data(), kUserStringMaxLength);
                     command = followCommand;
                 }
                 else if (String::IEquals(token, "WAIT"))
@@ -399,7 +399,7 @@ namespace OpenRCT2::Title
                 else if (String::IEquals(token, "LOADSC"))
                 {
                     auto loadScenarioCommand = LoadScenarioCommand{};
-                    SafeStrCpy(loadScenarioCommand.Scenario, parts[1].data(), sizeof(loadScenarioCommand.Scenario));
+                    String::SafeStrCpy(loadScenarioCommand.Scenario, parts[1].data(), sizeof(loadScenarioCommand.Scenario));
                     command = loadScenarioCommand;
                 }
             }

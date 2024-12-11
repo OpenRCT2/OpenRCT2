@@ -11,6 +11,7 @@
 
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../core/String.hpp"
 #include "../util/Util.h"
 #include "Formatting.h"
 #include "StringIds.h"
@@ -46,7 +47,7 @@ void CurrencyLoadCustomCurrencyConfig()
     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = Config::Get().general.CustomCurrencyAffix;
     if (!Config::Get().general.CustomCurrencySymbol.empty())
     {
-        SafeStrCpy(
+        String::SafeStrCpy(
             CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
             Config::Get().general.CustomCurrencySymbol.c_str(), kCurrencySymbolMaxSize);
     }

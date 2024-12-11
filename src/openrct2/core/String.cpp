@@ -9,6 +9,7 @@
 
 #include "../Diagnostic.h"
 
+#include <cassert>
 #include <cctype>
 #include <cwctype>
 #include <iomanip>
@@ -493,7 +494,7 @@ namespace OpenRCT2::String
             size_t newStringSize = (nextCh - 1) - firstNonWhitespace;
 
 #ifdef DEBUG
-            size_t currentStringSize = String::SizeOf(str);
+            size_t currentStringSize = SizeOf(str);
             Guard::Assert(newStringSize < currentStringSize, GUARD_LINE);
 #endif
 
@@ -652,7 +653,7 @@ namespace OpenRCT2::String
             return std::string(src);
         }
 
-        return String::ToUtf8(dstW);
+        return ToUtf8(dstW);
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
         str.toUpper();
@@ -720,5 +721,125 @@ namespace OpenRCT2::String
         }
 
         return escaped.str();
+    }
+
+    /* Case insensitive logical compare */
+    // Example:
+    // - Guest 10
+    // - Guest 99
+    // - Guest 100
+    // - John v2.0
+    // - John v2.1
+    int32_t StrLogicalCmp(const char* s1, const char* s2)
+    {
+        for (;;)
+        {
+            if (*s2 == '\0')
+                return *s1 != '\0';
+            if (*s1 == '\0')
+                return -1;
+            if (!(isdigit(static_cast<unsigned char>(*s1)) && isdigit(static_cast<unsigned char>(*s2))))
+            {
+                if (toupper(*s1) != toupper(*s2))
+                    return toupper(*s1) - toupper(*s2);
+
+                ++s1;
+                ++s2;
+            }
+            else
+            {
+                char *lim1, *lim2;
+                unsigned long n1 = strtoul(s1, &lim1, 10);
+                unsigned long n2 = strtoul(s2, &lim2, 10);
+                if (n1 > n2)
+                    return 1;
+                if (n1 < n2)
+                    return -1;
+
+                s1 = lim1;
+                s2 = lim2;
+            }
+        }
+    }
+
+    char* SafeStrCpy(char* destination, const char* source, size_t size)
+    {
+        assert(destination != nullptr);
+        assert(source != nullptr);
+
+        if (size == 0)
+            return destination;
+
+        char* result = destination;
+
+        bool truncated = false;
+        const char* sourceLimit = source + size - 1;
+        const char* ch = source;
+        uint32_t codepoint;
+        while ((codepoint = UTF8GetNext(ch, &ch)) != 0)
+        {
+            if (ch <= sourceLimit)
+            {
+                destination = UTF8WriteCodepoint(destination, codepoint);
+            }
+            else
+            {
+                truncated = true;
+            }
+        }
+        *destination = 0;
+
+        if (truncated)
+        {
+            LOG_WARNING("Truncating string \"%s\" to %d bytes.", result, size);
+        }
+        return result;
+    }
+
+    char* SafeStrCat(char* destination, const char* source, size_t size)
+    {
+        assert(destination != nullptr);
+        assert(source != nullptr);
+
+        if (size == 0)
+        {
+            return destination;
+        }
+
+        char* result = destination;
+
+        size_t i;
+        for (i = 0; i < size; i++)
+        {
+            if (*destination == '\0')
+            {
+                break;
+            }
+
+            destination++;
+        }
+
+        bool terminated = false;
+        for (; i < size; i++)
+        {
+            if (*source != '\0')
+            {
+                *destination++ = *source++;
+            }
+            else
+            {
+                *destination = *source;
+                terminated = true;
+                break;
+            }
+        }
+
+        if (!terminated)
+        {
+            result[size - 1] = '\0';
+            LOG_WARNING("Truncating string \"%s\" to %d bytes.", result, size);
+        }
+
+        return result;
     }
 } // namespace OpenRCT2::String
