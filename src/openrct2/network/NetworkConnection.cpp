@@ -17,6 +17,8 @@
     #include "Socket.h"
     #include "network.h"
 
+    #include <sfl/small_vector.hpp>
+
 using namespace OpenRCT2;
 
 static constexpr size_t kNetworkDisconnectReasonBufSize = 256;
@@ -101,7 +103,7 @@ NetworkReadPacket NetworkConnection::ReadPacket()
     return NetworkReadPacket::MoreData;
 }
 
-static std::vector<uint8_t> serializePacket(const NetworkPacket& packet)
+static sfl::small_vector<uint8_t, 512> serializePacket(const NetworkPacket& packet)
 {
     // NOTE: For compatibility reasons for the master server we need to add sizeof(Header.Id) to the size.
     // Previously the Id field was not part of the header rather part of the body.
@@ -114,7 +116,7 @@ static std::vector<uint8_t> serializePacket(const NetworkPacket& packet)
     header.Size = Convert::HostToNetwork(header.Size);
     header.Id = ByteSwapBE(header.Id);
 
-    std::vector<uint8_t> buffer;
+    sfl::small_vector<uint8_t, 512> buffer;
     buffer.reserve(sizeof(header) + packet.Data.size());
 
     buffer.insert(buffer.end(), reinterpret_cast<uint8_t*>(&header), reinterpret_cast<uint8_t*>(&header) + sizeof(header));
