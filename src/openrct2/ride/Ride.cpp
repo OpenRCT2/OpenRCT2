@@ -5946,6 +5946,10 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
     if (subtype != OBJECT_ENTRY_INDEX_NULL && !GetGameState().Cheats.enableAllDrawableTrackPieces)
     {
         const auto* rideEntry = GetRideEntryByIndex(subtype);
+        if (rideEntry == nullptr)
+        {
+            return { false, STR_UNKNOWN_RIDE };
+        }
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
         {
             if (RideCheckTrackContainsInversions(trackElement, &problematicTrackElement))
