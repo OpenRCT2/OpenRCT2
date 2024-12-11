@@ -15,6 +15,13 @@ namespace OpenRCT2
 {
     struct RideManager
     {
+    private:
+        GameState_t& _gameState;
+
+    public:
+        RideManager();
+        RideManager(GameState_t& gameState);
+
         const Ride* operator[](RideId id) const
         {
             return GetRide(id);
