@@ -155,16 +155,16 @@ bool NetworkConnection::IsValid() const
 
 void NetworkConnection::SendQueuedData()
 {
-    // Send queued packets.
     if (_outboundBuffer.empty())
     {
         return;
     }
 
-    size_t sent = Socket->SendData(_outboundBuffer.data(), _outboundBuffer.size());
-    if (sent > 0)
+    const auto bytesSent = Socket->SendData(_outboundBuffer.data(), _outboundBuffer.size());
+
+    if (bytesSent > 0)
     {
-        _outboundBuffer.erase(_outboundBuffer.begin(), _outboundBuffer.begin() + sent);
+        _outboundBuffer.erase(_outboundBuffer.begin(), _outboundBuffer.begin() + bytesSent);
     }
 }
 
