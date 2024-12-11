@@ -54,7 +54,7 @@ static std::vector<std::string> GetCommandLineArgs(int argc, wchar_t** argvW)
     std::vector<std::string> argv;
     for (int i = 0; i < argc; i++)
     {
-        argv.push_back(String::ToUtf8(argvW[i]));
+        argv.push_back(String::toUtf8(argvW[i]));
     }
     return argv;
 }

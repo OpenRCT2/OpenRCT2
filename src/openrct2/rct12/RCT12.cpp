@@ -568,7 +568,7 @@ std::string RCT12RemoveFormattingUTF8(std::string_view s)
     {
         if (!RCT12IsFormatChar(codepoint))
         {
-            String::AppendCodepoint(result, codepoint);
+            String::appendCodepoint(result, codepoint);
         }
     }
 
@@ -657,7 +657,7 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
         }
         else
         {
-            String::AppendCodepoint(result, codepoint);
+            String::appendCodepoint(result, codepoint);
         }
     }
     return result;

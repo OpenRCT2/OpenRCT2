@@ -1495,7 +1495,7 @@ static int32_t ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& conso
     }
 
     u8string savePath = {};
-    if (String::IndexOf(argv[0].c_str(), '/') == SIZE_MAX && String::IndexOf(argv[0].c_str(), '\\') == SIZE_MAX)
+    if (String::indexOf(argv[0].c_str(), '/') == SIZE_MAX && String::indexOf(argv[0].c_str(), '\\') == SIZE_MAX)
     {
         // no / or \ was included. File should be in save dir.
         auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
@@ -1506,8 +1506,8 @@ static int32_t ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& conso
     {
         savePath = argv[0];
     }
-    if (!String::EndsWith(savePath, ".sv6", true) && !String::EndsWith(savePath, ".sc6", true)
-        && !String::EndsWith(savePath, ".park", true))
+    if (!String::endsWith(savePath, ".sv6", true) && !String::endsWith(savePath, ".sc6", true)
+        && !String::endsWith(savePath, ".park", true))
     {
         savePath += ".park";
     }
@@ -1570,7 +1570,7 @@ static int32_t ConsoleCommandReplayStartRecord(InteractiveConsole& console, cons
 
     std::string name = argv[0];
 
-    if (!String::EndsWith(name, ".parkrep", true))
+    if (!String::endsWith(name, ".parkrep", true))
     {
         name += ".parkrep";
     }
@@ -1713,7 +1713,7 @@ static int32_t ConsoleCommandReplayNormalise(InteractiveConsole& console, const 
     std::string inputFile = argv[0];
     std::string outputFile = argv[1];
 
-    if (!String::EndsWith(outputFile, ".parkrep", true))
+    if (!String::endsWith(outputFile, ".parkrep", true))
     {
         outputFile += ".parkrep";
     }
@@ -2187,7 +2187,7 @@ void InteractiveConsole::WriteFormatLine(const char* format, ...)
 {
     va_list list;
     va_start(list, format);
-    auto buffer = String::Format_VA(format, list);
+    auto buffer = String::formatVA(format, list);
     va_end(list);
     WriteLine(buffer);
 }

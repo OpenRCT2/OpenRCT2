@@ -62,10 +62,10 @@ void TextComposition::HandleMessage(const SDL_Event* e)
     {
         case SDL_TEXTEDITING:
             // When inputting Korean characters, `edit.length` is always zero
-            String::Set(_imeBuffer, sizeof(_imeBuffer), e->edit.text);
+            String::set(_imeBuffer, sizeof(_imeBuffer), e->edit.text);
             _imeStart = e->edit.start;
             _imeLength = e->edit.length;
-            _imeActive = ((e->edit.length != 0 || String::SizeOf(e->edit.text) != 0) && _imeBuffer[0] != '\0');
+            _imeActive = ((e->edit.length != 0 || String::sizeOf(e->edit.text) != 0) && _imeBuffer[0] != '\0');
             break;
         case SDL_TEXTINPUT:
             // will receive an `SDL_TEXTINPUT` event when a composition is committed
@@ -446,5 +446,5 @@ void TextComposition::Delete()
 
 void TextComposition::RecalculateLength()
 {
-    _session.Length = String::LengthOf(_session.Buffer->c_str());
+    _session.Length = String::lengthOf(_session.Buffer->c_str());
 }

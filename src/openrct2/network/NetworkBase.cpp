@@ -1151,8 +1151,8 @@ void NetworkBase::AppendLog(std::ostream& fs, std::string_view s)
         auto tmInfo = localtime(&timer);
         if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0)
         {
-            String::Append(buffer, sizeof(buffer), std::string(s).c_str());
-            String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
+            String::append(buffer, sizeof(buffer), std::string(s).c_str());
+            String::append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
             fs.write(buffer, strlen(buffer));
         }
@@ -2135,7 +2135,7 @@ NetworkPlayer* NetworkBase::AddPlayer(const std::string& name, const std::string
                 player->Group = GetDefaultGroup();
                 if (!name.empty())
                 {
-                    player->SetName(MakePlayerNameUnique(String::Trim(name)));
+                    player->SetName(MakePlayerNameUnique(String::trim(name)));
                 }
             }
             else
@@ -2152,7 +2152,7 @@ NetworkPlayer* NetworkBase::AddPlayer(const std::string& name, const std::string
             player = std::make_unique<NetworkPlayer>();
             player->Id = newid;
             player->Group = GetDefaultGroup();
-            player->SetName(String::Trim(std::string(name)));
+            player->SetName(String::trim(std::string(name)));
         }
 
         addedplayer = player.get();
@@ -2175,7 +2175,7 @@ std::string NetworkBase::MakePlayerNameUnique(const std::string& name)
         // Check if there is already a player with this name in the server
         for (const auto& player : player_list)
         {
-            if (String::IEquals(player->Name, new_name))
+            if (String::iequals(player->Name, new_name))
             {
                 unique = false;
                 break;

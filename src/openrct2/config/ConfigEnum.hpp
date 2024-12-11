@@ -64,7 +64,7 @@ public:
     {
         for (const auto& entry : _entries)
         {
-            if (OpenRCT2::String::IEquals(entry.Key, key))
+            if (OpenRCT2::String::iequals(entry.Key, key))
             {
                 return entry.Value;
             }

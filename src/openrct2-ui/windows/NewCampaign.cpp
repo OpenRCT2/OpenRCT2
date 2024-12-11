@@ -14,6 +14,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/actions/ParkMarketingAction.h>
 #include <openrct2/core/BitSet.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Marketing.h>
@@ -101,7 +102,7 @@ namespace OpenRCT2::Ui::Windows
             if (rideB != nullptr)
                 rideBName = rideB->GetName();
 
-            return StrLogicalCmp(rideAName.c_str(), rideBName.c_str()) < 0;
+            return String::logicalCmp(rideAName.c_str(), rideBName.c_str()) < 0;
         }
 
         /**

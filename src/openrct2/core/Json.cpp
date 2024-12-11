@@ -37,7 +37,7 @@ namespace OpenRCT2::Json
         }
         catch (const json_t::exception& e)
         {
-            throw JsonException(String::StdFormat(
+            throw JsonException(String::stdFormat(
                 "Unable to parse JSON file (%.*s)\n\t%s", static_cast<int>(path.length()), path.data(), e.what()));
         }
 

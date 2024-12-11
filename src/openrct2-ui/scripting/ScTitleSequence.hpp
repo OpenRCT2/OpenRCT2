@@ -110,7 +110,7 @@ namespace OpenRCT2::Scripting
                 }
                 else if constexpr (std::is_same_v<T, LoadScenarioCommand>)
                 {
-                    obj.Set("scenario", String::ToStringView(command.Scenario, sizeof(command.Scenario)));
+                    obj.Set("scenario", String::toStringView(command.Scenario, sizeof(command.Scenario)));
                 }
             },
             value);
@@ -170,7 +170,7 @@ namespace OpenRCT2::Scripting
             case TitleScript::LoadSc:
             {
                 auto loadScenarioCommand = LoadScenarioCommand{};
-                String::Set(
+                String::set(
                     loadScenarioCommand.Scenario, sizeof(loadScenarioCommand.Scenario), value["scenario"].as_c_string());
                 command = loadScenarioCommand;
                 break;

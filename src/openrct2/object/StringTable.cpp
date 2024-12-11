@@ -65,7 +65,7 @@ void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, O
 
             if (!StringIsBlank(stringAsUtf8.data()))
             {
-                stringAsUtf8 = String::Trim(stringAsUtf8);
+                stringAsUtf8 = String::trim(stringAsUtf8);
                 StringTableEntry entry{};
                 entry.Id = id;
                 entry.LanguageId = languageId;
@@ -166,7 +166,7 @@ void StringTable::Sort()
         {
             if (a.LanguageId == b.LanguageId)
             {
-                return String::Compare(a.Text, b.Text, true) < 0;
+                return String::compare(a.Text, b.Text, true) < 0;
             }
 
             for (const auto& language : languageOrder)

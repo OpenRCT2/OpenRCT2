@@ -25,7 +25,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/world/Scenery.h>
 
 namespace OpenRCT2::Ui::Windows

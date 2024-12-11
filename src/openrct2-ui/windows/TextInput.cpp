@@ -18,7 +18,6 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/util/Util.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -110,7 +109,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetText(std::string_view text, size_t maxLength)
         {
-            text = String::UTF8TruncateCodePoints(text, maxLength);
+            text = String::utf8TruncateCodePoints(text, maxLength);
             _buffer = u8string{ text };
             _maxInputLength = maxLength;
             SetTexboxSession(ContextStartTextInput(_buffer, maxLength));
@@ -292,7 +291,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // IME composition
-            if (!String::IsNullOrEmpty(textInput->ImeBuffer))
+            if (!String::isNullOrEmpty(textInput->ImeBuffer))
             {
                 IMEComposition(cursorX, cursorY);
             }

@@ -34,7 +34,7 @@ namespace OpenRCT2
         }
         else
         {
-            size_t numBytes = String::SizeOf(str) + 1;
+            size_t numBytes = String::sizeOf(str) + 1;
             Write(str, numBytes);
         }
     }

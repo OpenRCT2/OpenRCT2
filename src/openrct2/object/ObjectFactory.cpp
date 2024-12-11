@@ -188,7 +188,7 @@ public:
     {
         _wasVerbose = true;
 
-        if (!String::IsNullOrEmpty(text))
+        if (!String::isNullOrEmpty(text))
         {
             LOG_VERBOSE("[%s] Info (%d): %s", _identifier.c_str(), code, text);
         }
@@ -198,7 +198,7 @@ public:
     {
         _wasWarning = true;
 
-        if (!String::IsNullOrEmpty(text))
+        if (!String::isNullOrEmpty(text))
         {
             Console::Error::WriteLine("[%s] Warning (%d): %s", _identifier.c_str(), code, text);
         }
@@ -208,7 +208,7 @@ public:
     {
         _wasError = true;
 
-        if (!String::IsNullOrEmpty(text))
+        if (!String::isNullOrEmpty(text))
         {
             Console::Error::WriteLine("[%s] Error (%d): %s", _identifier.c_str(), code, text);
         }

@@ -144,11 +144,11 @@ namespace OpenRCT2::Platform
 
     bool HandleSpecialCommandLineArgument(const char* argument)
     {
-        if (String::Equals(argument, "-NSDocumentRevisionsDebugMode"))
+        if (String::equals(argument, "-NSDocumentRevisionsDebugMode"))
         {
             return true;
         }
-        if (String::StartsWith(argument, "-psn_"))
+        if (String::startsWith(argument, "-psn_"))
         {
             return true;
         }

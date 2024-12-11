@@ -20,7 +20,6 @@
 #include <openrct2/network/NetworkAction.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <utility>
 
 namespace OpenRCT2::Ui::Windows

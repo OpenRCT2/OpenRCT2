@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
@@ -25,7 +26,6 @@
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <vector>
 
 namespace OpenRCT2::Ui::Windows
@@ -445,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
 
                         // Draw scenario name
                         char buffer[64];
-                        SafeStrCpy(buffer, scenario->Name, sizeof(buffer));
+                        String::safeUtf8Copy(buffer, scenario->Name, sizeof(buffer));
                         StringId format = isDisabled ? static_cast<StringId>(STR_STRINGID)
                                                      : (isHighlighted ? highlighted_format : unhighlighted_format);
                         auto ft = Formatter();

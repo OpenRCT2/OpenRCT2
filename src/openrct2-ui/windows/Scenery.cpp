@@ -1301,13 +1301,13 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInName(const Object& object)
         {
-            return String::Contains(object.GetName(), _filteredSceneryTab.Filter, true);
+            return String::contains(object.GetName(), _filteredSceneryTab.Filter, true);
         }
 
         bool IsFilterInAuthors(const Object& object)
         {
             for (auto author : object.GetAuthors())
-                if (String::Contains(author, _filteredSceneryTab.Filter, true))
+                if (String::contains(author, _filteredSceneryTab.Filter, true))
                     return true;
 
             return false;
@@ -1315,13 +1315,13 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInIdentifier(const Object& object)
         {
-            return String::Contains(object.GetIdentifier(), _filteredSceneryTab.Filter, true);
+            return String::contains(object.GetIdentifier(), _filteredSceneryTab.Filter, true);
         }
 
         bool IsFilterInFilename(const Object& object)
         {
             auto repoItem = ObjectRepositoryFindObjectByEntry(&(object.GetObjectEntry()));
-            return String::Contains(repoItem->Path, _filteredSceneryTab.Filter, true);
+            return String::contains(repoItem->Path, _filteredSceneryTab.Filter, true);
         }
 
         void SortTabs()

@@ -208,7 +208,7 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
     for (const auto& jEntry : jEntries)
     {
         auto entryName = Json::GetString(jEntry);
-        if (String::StartsWith(entryName, "$DAT:"))
+        if (String::startsWith(entryName, "$DAT:"))
         {
             if (entryName.length() != kDatEntryLength)
             {

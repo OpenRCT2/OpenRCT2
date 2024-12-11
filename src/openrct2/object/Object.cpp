@@ -389,7 +389,7 @@ ObjectVersion VersionTuple(std::string_view version)
         return std::make_tuple(0, 0, 0);
     }
 
-    auto nums = String::Split(version, ".");
+    auto nums = String::split(version, ".");
     uint16_t versions[VersionNumFields] = {};
     if (nums.size() > VersionNumFields)
     {

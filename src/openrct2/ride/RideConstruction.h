@@ -11,6 +11,7 @@
 
 #include "../Identifiers.h"
 #include "../core/FlagHolder.hpp"
+#include "../core/Money.hpp"
 #include "../world/Location.hpp"
 #include "Station.h"
 #include "Track.h"

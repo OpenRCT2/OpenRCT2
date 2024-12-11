@@ -21,7 +21,6 @@
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
-#include <openrct2/util/Util.h>
 #include <vector>
 
 namespace OpenRCT2::Ui::Windows

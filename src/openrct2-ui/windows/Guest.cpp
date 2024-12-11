@@ -22,6 +22,7 @@
 #include <openrct2/actions/GuestSetNameAction.h>
 #include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
@@ -1831,14 +1832,14 @@ namespace OpenRCT2::Ui::Windows
                 if (peep->GetNextIsSurface())
                 {
                     OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SURFACE, nullptr);
-                    SafeStrCat(buffer, buffer2, sizeof(buffer));
+                    String::safeConcat(buffer, buffer2, sizeof(buffer));
                 }
                 if (peep->GetNextIsSloped())
                 {
                     auto ft2 = Formatter();
                     ft2.Add<int32_t>(peep->GetNextDirection());
                     OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
-                    SafeStrCat(buffer, buffer2, sizeof(buffer));
+                    String::safeConcat(buffer, buffer2, sizeof(buffer));
                 }
                 DrawText(dpi, screenCoords, {}, buffer);
             }

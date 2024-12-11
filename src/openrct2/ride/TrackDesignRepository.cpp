@@ -104,7 +104,7 @@ protected:
 private:
     bool IsTrackReadOnly(const std::string& path) const
     {
-        return String::StartsWith(path, SearchPaths[0]) || String::StartsWith(path, SearchPaths[1]);
+        return String::startsWith(path, SearchPaths[0]) || String::startsWith(path, SearchPaths[1]);
     }
 };
 
@@ -154,7 +154,7 @@ public:
                     entryIsNotSeparate = true;
             }
 
-            if (entryIsNotSeparate || String::IEquals(item.ObjectEntry, entry))
+            if (entryIsNotSeparate || String::iequals(item.ObjectEntry, entry))
             {
                 count++;
             }
@@ -188,7 +188,7 @@ public:
                     entryIsNotSeparate = true;
             }
 
-            if (entryIsNotSeparate || String::IEquals(item.ObjectEntry, entry))
+            if (entryIsNotSeparate || String::iequals(item.ObjectEntry, entry))
             {
                 TrackDesignFileRef ref;
                 ref.name = GetNameFromTrackPath(item.Path);
@@ -281,7 +281,7 @@ private:
             {
                 return a.RideType < b.RideType;
             }
-            return StrLogicalCmp(a.Name.c_str(), b.Name.c_str()) < 0;
+            return String::logicalCmp(a.Name.c_str(), b.Name.c_str()) < 0;
         });
     }
 

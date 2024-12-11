@@ -60,7 +60,7 @@ protected:
         for (auto& ride : GetRideManager())
         {
             auto thisName = ride.GetName();
-            if (String::StartsWith(thisName, u8string{ name }, true))
+            if (String::startsWith(thisName, u8string{ name }, true))
             {
                 return &ride;
             }

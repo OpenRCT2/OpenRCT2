@@ -11,7 +11,6 @@
 
 #include "../core/Imaging.h"
 #include "../core/Json.hpp"
-#include "../util/Util.h"
 
 #include <cstring>
 #include <stdexcept>

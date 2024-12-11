@@ -255,12 +255,12 @@ namespace OpenRCT2::Imaging
 
     IMAGE_FORMAT GetImageFormatFromPath(std::string_view path)
     {
-        if (String::EndsWith(path, ".png", true))
+        if (String::endsWith(path, ".png", true))
         {
             return IMAGE_FORMAT::PNG;
         }
 
-        if (String::EndsWith(path, ".bmp", true))
+        if (String::endsWith(path, ".bmp", true))
         {
             return IMAGE_FORMAT::BITMAP;
         }

@@ -413,7 +413,7 @@ namespace OpenRCT2
 
             CrashInit();
 
-            if (String::Equals(Config::Get().general.LastRunVersion, OPENRCT2_VERSION))
+            if (String::equals(Config::Get().general.LastRunVersion, OPENRCT2_VERSION))
             {
                 gOpenRCT2ShowChangelog = false;
             }
@@ -717,7 +717,7 @@ namespace OpenRCT2
 
             try
             {
-                if (String::IEquals(Path::GetExtension(path), ".sea"))
+                if (String::iequals(Path::GetExtension(path), ".sea"))
                 {
                     auto data = DecryptSea(fs::u8path(path));
                     auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
@@ -1104,7 +1104,7 @@ namespace OpenRCT2
 
                 case StartupAction::Edit:
                 {
-                    if (String::SizeOf(gOpenRCT2StartupActionPath) == 0)
+                    if (String::sizeOf(gOpenRCT2StartupActionPath) == 0)
                     {
                         Editor::Load();
                         nextScene = GetGameScene();
@@ -1186,7 +1186,7 @@ namespace OpenRCT2
             {
                 _versionCheckFuture = std::async(std::launch::async, [this] {
                     _newVersionInfo = GetLatestVersion();
-                    if (!String::StartsWith(gVersionInfoTag, _newVersionInfo.tag))
+                    if (!String::startsWith(gVersionInfoTag, _newVersionInfo.tag))
                     {
                         _hasNewVersionInfo = true;
                     }

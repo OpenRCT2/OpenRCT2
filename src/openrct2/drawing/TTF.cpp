@@ -218,7 +218,7 @@ TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text)
         // Check if entry is a hit
         if (entry->surface == nullptr)
             break;
-        if (entry->font == font && String::Equals(entry->text, text))
+        if (entry->font == font && String::equals(entry->text, text))
         {
             _ttfSurfaceCacheHitCount++;
             entry->lastUseTick = gCurrentDrawCount;
@@ -292,7 +292,7 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
         // Check if entry is a hit
         if (entry->text.empty())
             break;
-        if (entry->font == font && String::Equals(entry->text, text))
+        if (entry->font == font && String::equals(entry->text, text))
         {
             _ttfGetWidthCacheHitCount++;
             entry->lastUseTick = gCurrentDrawCount;

@@ -5117,7 +5117,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Sort available music by the alphabetical order
             std::stable_sort(musicOrder.begin(), musicOrder.end(), [](const ObjectEntryIndex& a, const ObjectEntryIndex& b) {
-                return String::Compare(GetMusicString(b), GetMusicString(a), false) > 0;
+                return String::compare(GetMusicString(b), GetMusicString(a), false) > 0;
             });
 
             // Setup dropdown list

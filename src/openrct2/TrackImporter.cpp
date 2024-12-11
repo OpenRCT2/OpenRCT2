@@ -33,6 +33,6 @@ namespace OpenRCT2::TrackImporter
 
     bool ExtensionIsRCT1(const std::string& extension)
     {
-        return String::IEquals(extension, ".td4");
+        return String::iequals(extension, ".td4");
     }
 } // namespace OpenRCT2::TrackImporter

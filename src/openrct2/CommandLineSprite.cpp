@@ -263,7 +263,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
     if (argc == 0)
         return -1;
 
-    if (String::IEquals(argv[0], "details"))
+    if (String::iequals(argv[0], "details"))
     {
         if (argc < 2)
         {
@@ -310,7 +310,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "export"))
+    if (String::iequals(argv[0], "export"))
     {
         if (argc < 4)
         {
@@ -344,7 +344,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "exportall"))
+    if (String::iequals(argv[0], "exportall"))
     {
         if (argc < 3)
         {
@@ -389,7 +389,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "exportalldat"))
+    if (String::iequals(argv[0], "exportalldat"))
     {
         if (argc < 3)
         {
@@ -450,7 +450,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "create"))
+    if (String::iequals(argv[0], "create"))
     {
         if (argc < 2)
         {
@@ -465,7 +465,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "append"))
+    if (String::iequals(argv[0], "append"))
     {
         if (argc != 3 && argc != 5)
         {
@@ -518,7 +518,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "build"))
+    if (String::iequals(argv[0], "build"))
     {
         if (argc < 3)
         {
@@ -600,7 +600,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "combine"))
+    if (String::iequals(argv[0], "combine"))
     {
         return CommandLineForSpriteCombine(argv, argc);
     }

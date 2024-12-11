@@ -139,7 +139,7 @@ public:
         if (_usingRCTClassic && base == DIRBASE::RCT2 && did == DIRID::DATA)
         {
             // Special case, handle RCT Classic css ogg files
-            if (String::StartsWith(fileName, "css", true) && String::EndsWith(fileName, ".dat", true))
+            if (String::startsWith(fileName, "css", true) && String::endsWith(fileName, ".dat", true))
             {
                 alternativeFilename = fileName.substr(0, fileName.size() - 3);
                 alternativeFilename.append("ogg");
