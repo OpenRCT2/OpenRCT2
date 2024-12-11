@@ -18,7 +18,6 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/util/Util.h>
 
 namespace OpenRCT2::Ui::Windows
 {

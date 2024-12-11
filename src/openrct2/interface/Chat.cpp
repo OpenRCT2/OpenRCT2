@@ -19,7 +19,6 @@
 #include "../localisation/Formatting.h"
 #include "../network/network.h"
 #include "../platform/Platform.h"
-#include "../util/Util.h"
 #include "../world/Location.hpp"
 
 using namespace OpenRCT2;

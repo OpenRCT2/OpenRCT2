@@ -27,7 +27,6 @@
 #include "../../scenario/Scenario.h"
 #include "../../scenario/ScenarioRepository.h"
 #include "../../ui/UiContext.h"
-#include "../../util/Util.h"
 #include "../../windows/Intent.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"

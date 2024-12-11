@@ -20,7 +20,6 @@
     #include <openrct2/core/String.hpp>
     #include <openrct2/localisation/Formatter.h>
     #include <openrct2/localisation/Formatting.h>
-    #include <openrct2/util/Util.h>
 
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui::Windows;

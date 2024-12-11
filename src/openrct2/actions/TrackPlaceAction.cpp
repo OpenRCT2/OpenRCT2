@@ -11,6 +11,7 @@
 
 #include "../Diagnostic.h"
 #include "../GameState.h"
+#include "../core/Money.hpp"
 #include "../core/Numerics.hpp"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"

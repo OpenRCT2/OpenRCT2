@@ -54,7 +54,6 @@
 #include "../object/StationObject.h"
 #include "../rct2/RCT2.h"
 #include "../ride/RideConstruction.h"
-#include "../util/Util.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"

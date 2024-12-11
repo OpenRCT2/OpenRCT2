@@ -19,7 +19,6 @@
     #include <openrct2/core/String.hpp>
     #include <openrct2/interface/Chat.h>
     #include <openrct2/network/network.h>
-    #include <openrct2/util/Util.h>
     #include <openrct2/windows/Intent.h>
 
 namespace OpenRCT2::Ui::Windows

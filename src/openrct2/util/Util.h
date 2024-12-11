@@ -10,7 +10,9 @@
 #pragma once
 
 #include "../core/Money.hpp"
-#include "../core/StringTypes.h"
+
+#include <limits>
+#include <type_traits>
 
 uint32_t UtilRand();
 float UtilRandNormalDistributed();

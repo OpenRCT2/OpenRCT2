@@ -24,7 +24,6 @@
 #include "../../core/Zip.h"
 #include "../../scenario/ScenarioRepository.h"
 #include "../../scenario/ScenarioSources.h"
-#include "../../util/Util.h"
 
 #include <array>
 #include <memory>

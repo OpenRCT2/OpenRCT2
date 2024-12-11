@@ -9,7 +9,6 @@
 
 #include "StringReader.h"
 
-#include "../util/Util.h"
 #include "String.hpp"
 
 using namespace OpenRCT2;

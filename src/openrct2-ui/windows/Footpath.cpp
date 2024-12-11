@@ -36,7 +36,6 @@
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>

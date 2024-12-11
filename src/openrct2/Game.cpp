@@ -61,7 +61,6 @@
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
-#include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Banner.h"
 #include "world/Climate.h"

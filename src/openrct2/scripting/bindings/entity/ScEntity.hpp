@@ -15,7 +15,6 @@
     #include "../../../entity/EntityList.h"
     #include "../../../entity/EntityRegistry.h"
     #include "../../../entity/Peep.h"
-    #include "../../../util/Util.h"
     #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 

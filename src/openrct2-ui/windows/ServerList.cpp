@@ -25,7 +25,6 @@
     #include <openrct2/network/network.h>
     #include <openrct2/platform/Platform.h>
     #include <openrct2/sprites.h>
-    #include <openrct2/util/Util.h>
     #include <tuple>
 
 namespace OpenRCT2::Ui::Windows

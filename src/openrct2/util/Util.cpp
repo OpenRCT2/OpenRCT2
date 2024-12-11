@@ -9,18 +9,7 @@
 
 #include "Util.h"
 
-#include "../Diagnostic.h"
-#include "../core/Guard.hpp"
-#include "../core/Path.hpp"
-#include "../core/UTF8.h"
-#include "../interface/Window.h"
-#include "../platform/Platform.h"
-#include "../scenes/title/TitleScene.h"
-
 #include <algorithm>
-#include <cassert>
-#include <cctype>
-#include <cmath>
 #include <random>
 
 uint32_t UtilRand()

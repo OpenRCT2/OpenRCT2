@@ -26,7 +26,6 @@
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <vector>
 
 namespace OpenRCT2::Ui::Windows

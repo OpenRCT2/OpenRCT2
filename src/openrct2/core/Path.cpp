@@ -11,7 +11,6 @@
 
 #include "../localisation/Language.h"
 #include "../platform/Platform.h"
-#include "../util/Util.h"
 #include "File.h"
 #include "FileSystem.hpp"
 #include "Memory.hpp"
