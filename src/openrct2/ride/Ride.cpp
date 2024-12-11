@@ -110,9 +110,6 @@ const StringId kRideInspectionIntervalNames[] = {
 };
 // clang-format on
 
-// This is the highest used index + 1 of the GameState_t::Rides array.
-static size_t _endOfUsedRange = 0;
-
 // A special instance of Ride that is used to draw previews such as the track designs.
 static Ride _previewRide{};
 
@@ -151,9 +148,11 @@ RideId GetNextFreeRideId()
 Ride* RideAllocateAtIndex(RideId index)
 {
     const auto idx = index.ToUnderlying();
-    _endOfUsedRange = std::max<size_t>(idx + 1, _endOfUsedRange);
 
-    auto result = &GetGameState().Rides[idx];
+    auto& gs = GetGameState();
+    gs.RidesEndOfUsedRange = std::max<size_t>(idx + 1, gs.RidesEndOfUsedRange);
+
+    auto result = &gs.Rides[idx];
     assert(result->id == RideId::GetNull());
 
     // Initialize the ride to all the defaults.
@@ -181,19 +180,19 @@ static void RideReset(Ride& ride)
 
 void RideDelete(RideId id)
 {
-    auto& gameState = GetGameState();
+    auto& gs = GetGameState();
     const auto idx = id.ToUnderlying();
 
-    assert(idx < gameState.Rides.size());
-    assert(gameState.Rides[idx].type != RIDE_TYPE_NULL);
+    assert(idx < gs.Rides.size());
+    assert(gs.Rides[idx].type != RIDE_TYPE_NULL);
 
-    auto& ride = gameState.Rides[idx];
+    auto& ride = gs.Rides[idx];
     RideReset(ride);
 
     // Shrink maximum ride size.
-    while (_endOfUsedRange > 0 && gameState.Rides[_endOfUsedRange - 1].id.IsNull())
+    while (gs.RidesEndOfUsedRange > 0 && gs.Rides[gs.RidesEndOfUsedRange - 1].id.IsNull())
     {
-        _endOfUsedRange--;
+        gs.RidesEndOfUsedRange--;
     }
 }
 
@@ -930,7 +929,7 @@ void RideInitAll()
 {
     auto& gameState = GetGameState();
     std::for_each(std::begin(gameState.Rides), std::end(gameState.Rides), RideReset);
-    _endOfUsedRange = 0;
+    gameState.RidesEndOfUsedRange = 0;
 }
 
 /**

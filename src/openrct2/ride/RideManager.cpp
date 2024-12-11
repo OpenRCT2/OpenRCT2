@@ -17,7 +17,7 @@ namespace OpenRCT2
     {
         auto& gameState = GetGameState();
         size_t count = 0;
-        for (size_t i = 0; i < _endOfUsedRange; i++)
+        for (size_t i = 0; i < gameState.RidesEndOfUsedRange; i++)
         {
             if (!gameState.Rides[i].id.IsNull())
             {
@@ -29,17 +29,20 @@ namespace OpenRCT2
 
     RideManager::Iterator RideManager::begin()
     {
-        return RideManager::Iterator(*this, 0u, _endOfUsedRange);
+        auto& gameState = GetGameState();
+        return RideManager::Iterator(*this, 0u, gameState.RidesEndOfUsedRange);
     }
 
     RideManager::Iterator RideManager::end()
     {
-        return RideManager::Iterator(*this, _endOfUsedRange, _endOfUsedRange);
+        auto& gameState = GetGameState();
+        return RideManager::Iterator(*this, gameState.RidesEndOfUsedRange, gameState.RidesEndOfUsedRange);
     }
 
     RideManager::Iterator RideManager::get(RideId rideId)
     {
-        return RideManager::Iterator(*this, rideId.ToUnderlying(), _endOfUsedRange);
+        auto& gameState = GetGameState();
+        return RideManager::Iterator(*this, rideId.ToUnderlying(), gameState.RidesEndOfUsedRange);
     }
 
     RideManager GetRideManager()
