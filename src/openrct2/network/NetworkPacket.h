@@ -13,6 +13,7 @@
 #include "NetworkTypes.h"
 
 #include <memory>
+#include <sfl/small_vector.hpp>
 #include <vector>
 
 #pragma pack(push, 1)
@@ -76,7 +77,7 @@ struct NetworkPacket final
 
 public:
     PacketHeader Header{};
-    std::vector<uint8_t> Data;
+    sfl::small_vector<uint8_t, 512> Data;
     size_t BytesTransferred = 0;
     size_t BytesRead = 0;
 };

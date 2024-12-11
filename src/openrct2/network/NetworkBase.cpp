@@ -501,13 +501,13 @@ void NetworkBase::Flush()
 {
     if (GetMode() == NETWORK_MODE_CLIENT)
     {
-        _serverConnection->SendQueuedPackets();
+        _serverConnection->SendQueuedData();
     }
     else
     {
         for (auto& it : client_connection_list)
         {
-            it->SendQueuedPackets();
+            it->SendQueuedData();
         }
     }
 }
@@ -2014,7 +2014,7 @@ void NetworkBase::ProcessDisconnectedClients()
         }
 
         // Make sure to send all remaining packets out before disconnecting.
-        connection->SendQueuedPackets();
+        connection->SendQueuedData();
         connection->Socket->Disconnect();
 
         ServerClientDisconnected(connection);
