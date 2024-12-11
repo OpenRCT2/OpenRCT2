@@ -41,19 +41,14 @@ public:
     NetworkConnection() noexcept;
 
     NetworkReadPacket ReadPacket();
-    void QueuePacket(NetworkPacket&& packet, bool front = false);
-    void QueuePacket(const NetworkPacket& packet, bool front = false)
-    {
-        auto copy = packet;
-        return QueuePacket(std::move(copy), front);
-    }
+    void QueuePacket(const NetworkPacket& packet, bool front = false);
 
     // This will not immediately disconnect the client. The disconnect
     // will happen post-tick.
     void Disconnect() noexcept;
 
     bool IsValid() const;
-    void SendQueuedPackets();
+    void SendQueuedData();
     void ResetLastPacketTime() noexcept;
     bool ReceivedPacketRecently() const noexcept;
 
@@ -62,12 +57,11 @@ public:
     void SetLastDisconnectReason(const StringId string_id, void* args = nullptr);
 
 private:
-    std::deque<NetworkPacket> _outboundPackets;
+    std::vector<uint8_t> _outboundBuffer;
     uint32_t _lastPacketTime = 0;
     std::string _lastDisconnectReason;
 
     void RecordPacketStats(const NetworkPacket& packet, bool sending);
-    bool SendPacket(NetworkPacket& packet);
 };
 
 #endif // DISABLE_NETWORK
