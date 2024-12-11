@@ -14,51 +14,10 @@
     #include "../../../entity/PatrolArea.h"
     #include "../../../entity/Staff.h"
     #include "../../../peep/PeepAnimationData.h"
+    #include "../../../peep/PeepAnimations.h"
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<PeepAnimationType> availableHandymanAnimations({
-        { "walking", PeepAnimationType::Walking },
-        { "watchRide", PeepAnimationType::WatchRide },
-        { "hanging", PeepAnimationType::Hanging },
-        { "staffMower", PeepAnimationType::StaffMower },
-        { "staffSweep", PeepAnimationType::StaffSweep },
-        { "drowning", PeepAnimationType::Drowning },
-        { "staffWatering", PeepAnimationType::StaffWatering },
-        { "staffEmptyBin", PeepAnimationType::StaffEmptyBin },
-    });
-
-    static const DukEnumMap<PeepAnimationType> availableMechanicAnimations({
-        { "walking", PeepAnimationType::Walking },
-        { "watchRide", PeepAnimationType::WatchRide },
-        { "hanging", PeepAnimationType::Hanging },
-        { "drowning", PeepAnimationType::Drowning },
-        { "staffAnswerCall", PeepAnimationType::StaffAnswerCall },
-        { "staffAnswerCall2", PeepAnimationType::StaffAnswerCall2 },
-        { "staffCheckBoard", PeepAnimationType::StaffCheckBoard },
-        { "staffFix", PeepAnimationType::StaffFix },
-        { "staffFix2", PeepAnimationType::StaffFix2 },
-        { "staffFixGround", PeepAnimationType::StaffFixGround },
-        { "staffFix3", PeepAnimationType::StaffFix3 },
-    });
-
-    static const DukEnumMap<PeepAnimationType> availableSecurityAnimations({
-        { "walking", PeepAnimationType::Walking },
-        { "watchRide", PeepAnimationType::WatchRide },
-        { "hanging", PeepAnimationType::Hanging },
-        { "drowning", PeepAnimationType::Drowning },
-    });
-
-    static const DukEnumMap<PeepAnimationType> availableEntertainerAnimations({
-        { "walking", PeepAnimationType::Walking },
-        { "watchRide", PeepAnimationType::WatchRide },
-        { "wave", PeepAnimationType::EatFood }, // NB: this not a typo
-        { "hanging", PeepAnimationType::Hanging },
-        { "drowning", PeepAnimationType::Drowning },
-        { "joy", PeepAnimationType::Joy },
-        { "wave2", PeepAnimationType::Wave2 },
-    });
-
     ScStaff::ScStaff(EntityId Id)
         : ScPeep(Id)
     {
@@ -293,18 +252,23 @@ namespace OpenRCT2::Scripting
 
     const DukEnumMap<PeepAnimationType>& ScStaff::animationsByStaffType(StaffType staffType) const
     {
+        AnimationPeepType animPeepType{};
         switch (staffType)
         {
             case StaffType::Handyman:
-                return availableHandymanAnimations;
+                animPeepType = AnimationPeepType::Handyman;
+                break;
             case StaffType::Mechanic:
-                return availableMechanicAnimations;
+                animPeepType = AnimationPeepType::Mechanic;
+                break;
             case StaffType::Security:
-                return availableSecurityAnimations;
+                animPeepType = AnimationPeepType::Security;
+                break;
             case StaffType::Entertainer:
             default:
-                return availableEntertainerAnimations;
+                animPeepType = AnimationPeepType::Entertainer;
         }
+        return getAnimationsByPeepType(animPeepType);
     }
 
     std::vector<std::string> ScStaff::availableAnimations_get() const

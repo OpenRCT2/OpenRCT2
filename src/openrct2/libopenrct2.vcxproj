@@ -329,9 +329,6 @@
     <ClInclude Include="object\EntranceEntry.h" />
     <ClInclude Include="object\EntranceObject.h" />
     <ClInclude Include="object\FootpathEntry.h" />
-    <ClInclude Include="object\PathAdditionEntry.h" />
-    <ClInclude Include="object\PathAdditionObject.h" />
-    <ClInclude Include="object\PeepNamesObject.h" />
     <ClInclude Include="object\FootpathObject.h" />
     <ClInclude Include="object\FootpathRailingsObject.h" />
     <ClInclude Include="object\FootpathSurfaceObject.h" />
@@ -349,6 +346,9 @@
     <ClInclude Include="object\ObjectRepository.h" />
     <ClInclude Include="object\ObjectType.h" />
     <ClInclude Include="object\ObjectTypes.h" />
+    <ClInclude Include="object\PathAdditionEntry.h" />
+    <ClInclude Include="object\PathAdditionObject.h" />
+    <ClInclude Include="object\PeepNamesObject.h" />
     <ClInclude Include="object\ResourceTable.h" />
     <ClInclude Include="object\RideObject.h" />
     <ClInclude Include="object\SceneryGroupEntry.h" />
@@ -391,6 +391,7 @@
     <ClInclude Include="peep\Guest.h" />
     <ClInclude Include="peep\GuestPathfinding.h" />
     <ClInclude Include="peep\PeepAnimationData.h" />
+    <ClInclude Include="peep\PeepAnimations.h" />
     <ClInclude Include="peep\PeepSpriteIds.h" />
     <ClInclude Include="peep\PeepThoughts.h" />
     <ClInclude Include="peep\RideUseSystem.h" />
@@ -864,7 +865,6 @@
     <ClCompile Include="object\BannerObject.cpp" />
     <ClCompile Include="object\DefaultObjects.cpp" />
     <ClCompile Include="object\EntranceObject.cpp" />
-    <ClCompile Include="object\PathAdditionObject.cpp" />
     <ClCompile Include="object\FootpathObject.cpp" />
     <ClCompile Include="object\FootpathRailingsObject.cpp" />
     <ClCompile Include="object\FootpathSurfaceObject.cpp" />
@@ -878,11 +878,12 @@
     <ClCompile Include="object\ObjectManager.cpp" />
     <ClCompile Include="object\ObjectRepository.cpp" />
     <ClCompile Include="object\ObjectTypes.cpp" />
+    <ClCompile Include="object\PathAdditionObject.cpp" />
     <ClCompile Include="object\PeepNamesObject.cpp" />
     <ClCompile Include="object\ResourceTable.cpp" />
     <ClCompile Include="object\RideObject.cpp" />
-    <ClCompile Include="object\SceneryGroupObject.cpp" />
     <ClCompile Include="object\ScenarioTextObject.cpp" />
+    <ClCompile Include="object\SceneryGroupObject.cpp" />
     <ClCompile Include="object\SmallSceneryObject.cpp" />
     <ClCompile Include="object\StationObject.cpp" />
     <ClCompile Include="object\StringTable.cpp" />
@@ -1006,6 +1007,7 @@
     <ClCompile Include="park\ParkFile.cpp" />
     <ClCompile Include="peep\GuestPathfinding.cpp" />
     <ClCompile Include="peep\PeepAnimationData.cpp" />
+    <ClCompile Include="peep\PeepAnimations.cpp" />
     <ClCompile Include="peep\PeepThoughts.cpp" />
     <ClCompile Include="peep\RideUseSystem.cpp" />
     <ClCompile Include="PlatformEnvironment.cpp" />
