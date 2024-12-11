@@ -20,6 +20,7 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
+#include <openrct2/ride/RideManager.hpp>
 #include <string>
 
 using namespace OpenRCT2;

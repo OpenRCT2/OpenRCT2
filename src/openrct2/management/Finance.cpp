@@ -19,6 +19,7 @@
 #include "../localisation/Localisation.Date.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
+#include "../ride/RideManager.hpp"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"

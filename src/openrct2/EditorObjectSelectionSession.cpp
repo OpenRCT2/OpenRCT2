@@ -24,6 +24,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "ride/RideData.h"
+#include "ride/RideManager.hpp"
 #include "ride/TrainManager.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"

@@ -57,6 +57,7 @@
 #include "../rct12/EntryList.h"
 #include "../rct12/ScenarioPatcher.h"
 #include "../ride/RideData.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrainManager.h"

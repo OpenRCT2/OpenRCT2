@@ -17,6 +17,7 @@
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../world/Park.h"
 

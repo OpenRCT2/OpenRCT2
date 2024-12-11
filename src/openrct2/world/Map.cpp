@@ -40,6 +40,7 @@
 #include "../profiling/Profiling.h"
 #include "../ride/RideConstruction.h"
 #include "../ride/RideData.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"

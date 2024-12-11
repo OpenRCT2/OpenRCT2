@@ -49,6 +49,7 @@
 #include "../rct1/RCT1.h"
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/Track.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
