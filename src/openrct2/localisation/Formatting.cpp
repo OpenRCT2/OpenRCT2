@@ -914,7 +914,7 @@ namespace OpenRCT2
 
         FormatStringLegacy(dest, size, format, args);
 
-        std::string upperString = String::ToUpper(dest);
+        std::string upperString = String::toUpper(dest);
 
         if (upperString.size() + 1 >= size)
         {

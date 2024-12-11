@@ -87,7 +87,7 @@ void AssetPackManager::Scan(const fs::path& directory)
         if (!entry.is_directory())
         {
             auto path = entry.path().u8string();
-            if (String::EndsWith(path, ".parkap", true))
+            if (String::endsWith(path, ".parkap", true))
             {
                 AddAssetPack(path);
             }

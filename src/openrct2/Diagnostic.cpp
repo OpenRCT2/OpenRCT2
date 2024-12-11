@@ -94,11 +94,11 @@ void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
     if (_log_levels[EnumValue(diagnosticLevel)])
     {
         // Level
-        auto prefix = String::StdFormat("%s: ", _level_strings[EnumValue(diagnosticLevel)]);
+        auto prefix = String::stdFormat("%s: ", _level_strings[EnumValue(diagnosticLevel)]);
 
         // Message
         va_start(args, format);
-        auto msg = String::Format_VA(format, args);
+        auto msg = String::formatVA(format, args);
         va_end(args);
 
         DiagnosticPrint(diagnosticLevel, prefix, msg);
@@ -115,16 +115,16 @@ void DiagnosticLogWithLocation(
         std::string prefix;
         if (_log_location_enabled)
         {
-            prefix = String::StdFormat("%s[%s:%d (%s)]: ", _level_strings[EnumValue(diagnosticLevel)], file, line, function);
+            prefix = String::stdFormat("%s[%s:%d (%s)]: ", _level_strings[EnumValue(diagnosticLevel)], file, line, function);
         }
         else
         {
-            prefix = String::StdFormat("%s: ", _level_strings[EnumValue(diagnosticLevel)]);
+            prefix = String::stdFormat("%s: ", _level_strings[EnumValue(diagnosticLevel)]);
         }
 
         // Message
         va_start(args, format);
-        auto msg = String::Format_VA(format, args);
+        auto msg = String::formatVA(format, args);
         va_end(args);
 
         DiagnosticPrint(diagnosticLevel, prefix, msg);

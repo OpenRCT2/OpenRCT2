@@ -117,7 +117,7 @@ namespace OpenRCT2::Platform
                 return std::find(_prohibitedCharacters.begin(), _prohibitedCharacters.end(), ch) != _prohibitedCharacters.end();
             },
             '_');
-        sanitised = String::Trim(sanitised);
+        sanitised = String::trim(sanitised);
         return sanitised;
     }
 

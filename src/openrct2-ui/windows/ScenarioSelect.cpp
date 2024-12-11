@@ -445,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
 
                         // Draw scenario name
                         char buffer[64];
-                        String::SafeStrCpy(buffer, scenario->Name, sizeof(buffer));
+                        String::safeUtf8Copy(buffer, scenario->Name, sizeof(buffer));
                         StringId format = isDisabled ? static_cast<StringId>(STR_STRINGID)
                                                      : (isHighlighted ? highlighted_format : unhighlighted_format);
                         auto ft = Formatter();

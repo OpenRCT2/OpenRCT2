@@ -121,15 +121,15 @@ namespace OpenRCT2::Ui::Windows
         switch (Config::Get().general.LoadSaveSort)
         {
             case Sort::NameAscending:
-                return String::StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
+                return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
             case Sort::NameDescending:
-                return -String::StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
+                return -String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
             case Sort::DateDescending:
                 return -difftime(a.date_modified, b.date_modified) < 0;
             case Sort::DateAscending:
                 return difftime(a.date_modified, b.date_modified) < 0;
         }
-        return String::StrLogicalCmp(a.name.c_str(), b.name.c_str()) < 0;
+        return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
     }
 
     static void SetAndSaveConfigPath(u8string& config_str, u8string_view path)
@@ -264,7 +264,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         char pathBuffer[MAX_PATH];
-        String::SafeStrCpy(pathBuffer, path, sizeof(pathBuffer));
+        String::safeUtf8Copy(pathBuffer, path, sizeof(pathBuffer));
 
         // Closing this will cause a Ride window to pop up, so we have to do this to ensure that
         // no windows are open (besides the toolbars and LoadSave window).
@@ -330,7 +330,7 @@ namespace OpenRCT2::Ui::Windows
 
             case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
                 SetAndSaveConfigPath(Config::Get().general.LastSaveLandscapeDirectory, pathBuffer);
-                gameState.ScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
+                gameState.ScenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                 if (ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2))
                 {
                     gCurrentLoadedPath = pathBuffer;
@@ -351,7 +351,7 @@ namespace OpenRCT2::Ui::Windows
                 int32_t parkFlagsBackup = gameState.Park.Flags;
                 gameState.Park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
                 gameState.EditorStep = EditorStep::Invalid;
-                gameState.ScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
+                gameState.ScenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
                 int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.SavePluginData ? 3 : 2);
                 gameState.Park.Flags = parkFlagsBackup;
 
@@ -388,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
                 SetAndSaveConfigPath(Config::Get().general.LastSaveTrackDirectory, pathBuffer);
 
                 const auto withExtension = Path::WithExtension(pathBuffer, ".td6");
-                String::Set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());
+                String::set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());
 
                 RCT2::T6Exporter t6Export{ *_trackDesign };
 
@@ -501,7 +501,7 @@ namespace OpenRCT2::Ui::Windows
         void PopulateList(int32_t includeNewItem, const u8string& directory, std::string_view extensionPattern)
         {
             const auto absoluteDirectory = Path::GetAbsolute(directory);
-            String::SafeStrCpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
+            String::safeUtf8Copy(_directory, absoluteDirectory.c_str(), std::size(_directory));
             // Note: This compares the pointers, not values
             _extensionPattern = extensionPattern;
 
@@ -534,7 +534,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 // Remove the separator at the end of the path, if present
-                String::SafeStrCpy(_parentDirectory, absoluteDirectory.c_str(), std::size(_parentDirectory));
+                String::safeUtf8Copy(_parentDirectory, absoluteDirectory.c_str(), std::size(_parentDirectory));
                 if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR
                     || _parentDirectory[strlen(_parentDirectory) - 1] == '/')
                     _parentDirectory[strlen(_parentDirectory) - 1] = '\0';
@@ -559,7 +559,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Disable the Up button if the current directory is the root directory
-                if (String::IsNullOrEmpty(_parentDirectory) && !drives)
+                if (String::isNullOrEmpty(_parentDirectory) && !drives)
                     disabled_widgets |= (1uLL << WIDX_UP);
                 else
                     disabled_widgets &= ~(1uLL << WIDX_UP);
@@ -585,7 +585,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // List all files with the wanted extensions
                 bool showExtension = false;
-                for (const u8string& extToken : String::Split(extensionPattern, ";"))
+                for (const u8string& extToken : String::split(extensionPattern, ";"))
                 {
                     const u8string filter = Path::Combine(directory, extToken);
                     auto scanner = Path::ScanDirectory(filter, false);
@@ -960,7 +960,7 @@ namespace OpenRCT2::Ui::Windows
                 includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
 
                 char directory[MAX_PATH];
-                String::SafeStrCpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
+                String::safeUtf8Copy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
                 PopulateList(includeNewItem, directory, _extensionPattern);
                 InitScrollWidgets();

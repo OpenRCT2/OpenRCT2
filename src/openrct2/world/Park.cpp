@@ -324,7 +324,7 @@ namespace OpenRCT2::Park
         AwardReset();
 
         gameState.ScenarioName.clear();
-        gameState.ScenarioDetails = String::ToStd(LanguageGetString(STR_NO_DETAILS_YET));
+        gameState.ScenarioDetails = String::toStd(LanguageGetString(STR_NO_DETAILS_YET));
     }
 
     void Update(GameState_t& gameState, const Date& date)

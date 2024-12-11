@@ -149,11 +149,11 @@ namespace OpenRCT2::RCT1
         ParkLoadResult Load(const u8string& path) override
         {
             const auto extension = Path::GetExtension(path);
-            if (String::IEquals(extension, ".sc4"))
+            if (String::iequals(extension, ".sc4"))
             {
                 return LoadScenario(path);
             }
-            if (String::IEquals(extension, ".sv4"))
+            if (String::iequals(extension, ".sv4"))
             {
                 return LoadSavedGame(path);
             }
@@ -260,7 +260,7 @@ namespace OpenRCT2::RCT1
                 desc.title = name.c_str();
             }
 
-            String::Set(dst->InternalName, sizeof(dst->InternalName), desc.title);
+            String::set(dst->InternalName, sizeof(dst->InternalName), desc.title);
 
             if (!desc.textObjectId.empty())
             {
@@ -282,8 +282,8 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            String::Set(dst->Name, sizeof(dst->Name), name.c_str());
-            String::Set(dst->Details, sizeof(dst->Details), details.c_str());
+            String::set(dst->Name, sizeof(dst->Name), name.c_str());
+            String::set(dst->Details, sizeof(dst->Details), details.c_str());
 
             return true;
         }
@@ -2340,7 +2340,7 @@ namespace OpenRCT2::RCT1
 
         void ImportScenarioNameDetails(GameState_t& gameState)
         {
-            std::string name = String::ToStd(_s4.ScenarioName);
+            std::string name = String::toStd(_s4.ScenarioName);
             std::string parkName;
             std::string details;
 

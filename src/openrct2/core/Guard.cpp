@@ -74,7 +74,7 @@ namespace OpenRCT2::Guard
         std::string formattedMessage;
         if (message != nullptr)
         {
-            formattedMessage = String::Format_VA(message, args);
+            formattedMessage = String::formatVA(message, args);
             Console::Error::WriteLine(formattedMessage.c_str());
             _lastAssertMessage = std::make_optional(formattedMessage);
         }
@@ -139,7 +139,7 @@ namespace OpenRCT2::Guard
             sb.Append("\n");
             sb.Append(formattedMessage);
         }
-        return String::ToWideChar({ sb.GetBuffer(), sb.GetLength() });
+        return String::toWideChar({ sb.GetBuffer(), sb.GetLength() });
     }
 
     static void ForceCrash()

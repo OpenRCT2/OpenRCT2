@@ -794,7 +794,7 @@ namespace OpenRCT2::Ui::Windows
                 Formatter ft;
                 peep.FormatNameTo(ft);
                 OpenRCT2::FormatStringLegacy(name, sizeof(name), STR_STRINGID, ft.Data());
-                if (!String::Contains(name, _filterName.c_str(), true))
+                if (!String::contains(name, _filterName.c_str(), true))
                 {
                     return false;
                 }
@@ -957,7 +957,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
             }
-            return String::StrLogicalCmp(a.Name, b.Name) < 0;
+            return String::logicalCmp(a.Name, b.Name) < 0;
         }
 
         static GuestItem::CompareFunc GetGuestCompareFunc()

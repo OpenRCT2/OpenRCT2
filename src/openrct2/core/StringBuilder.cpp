@@ -27,9 +27,9 @@ void StringBuilder::Append(int32_t codepoint)
 
 void StringBuilder::Append(codepoint_t codepoint)
 {
-    size_t codepointLength = String::GetCodepointLength(codepoint);
+    size_t codepointLength = String::getCodepointLength(codepoint);
     std::basic_string<utf8> data(codepointLength, {});
-    String::WriteCodepoint(data.data(), codepoint);
+    String::writeCodepoint(data.data(), codepoint);
     _buffer.insert(_buffer.end(), data.begin(), data.end());
 }
 

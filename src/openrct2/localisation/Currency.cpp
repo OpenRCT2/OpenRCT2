@@ -47,7 +47,7 @@ void CurrencyLoadCustomCurrencyConfig()
     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = Config::Get().general.CustomCurrencyAffix;
     if (!Config::Get().general.CustomCurrencySymbol.empty())
     {
-        String::SafeStrCpy(
+        String::safeUtf8Copy(
             CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
             Config::Get().general.CustomCurrencySymbol.c_str(), kCurrencySymbolMaxSize);
     }

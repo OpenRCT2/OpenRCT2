@@ -28,7 +28,7 @@ exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator* enumerator)
     const utf8* uri;
     if (enumerator->TryPopString(&uri))
     {
-        if (String::StartsWith(uri, "openrct2://"))
+        if (String::startsWith(uri, "openrct2://"))
         {
             const utf8* uriCommand = uri + 11;
             return HandleUri(uriCommand);
@@ -42,7 +42,7 @@ exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator* enumerator)
 static exitcode_t HandleUri(const std::string& uri)
 {
     exitcode_t result = EXITCODE_CONTINUE;
-    auto args = String::Split(uri, "/");
+    auto args = String::split(uri, "/");
     if (!args.empty())
     {
 #ifndef DISABLE_NETWORK

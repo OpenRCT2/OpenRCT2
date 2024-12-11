@@ -77,8 +77,8 @@ namespace OpenRCT2
         }
 
 #ifdef _WIN32
-        auto pathW = String::ToWideChar(path);
-        auto modeW = String::ToWideChar(mode);
+        auto pathW = String::toWideChar(path);
+        auto modeW = String::toWideChar(mode);
         _file = _wfopen(pathW.c_str(), modeW.c_str());
 #else
         if (fileMode == FILE_MODE_OPEN)
@@ -97,7 +97,7 @@ namespace OpenRCT2
 #endif
         if (_file == nullptr)
         {
-            throw IOException(String::StdFormat("Unable to open '%s'", path));
+            throw IOException(String::stdFormat("Unable to open '%s'", path));
         }
 
 #ifdef _WIN32

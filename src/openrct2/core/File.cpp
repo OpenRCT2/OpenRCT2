@@ -71,7 +71,7 @@ namespace OpenRCT2::File
         auto fsize = Platform::GetFileSize(path);
         if (fsize > SIZE_MAX)
         {
-            u8string message = String::StdFormat(
+            u8string message = String::stdFormat(
                 "'%s' exceeds maximum length of %lld bytes.", u8string(path).c_str(), SIZE_MAX);
             throw IOException(message);
         }

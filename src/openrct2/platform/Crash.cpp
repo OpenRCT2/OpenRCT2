@@ -76,7 +76,7 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
                      L"post?format=minidump&token=" BACKTRACE_TOKEN);
     std::map<std::wstring, std::wstring> parameters;
     parameters[L"product_name"] = L"openrct2";
-    parameters[L"version"] = String::ToWideChar(gVersionInfoFull);
+    parameters[L"version"] = String::toWideChar(gVersionInfoFull);
     // In case of releases this can be empty
     if (wcslen(_wszCommitSha1Short) > 0)
     {
@@ -84,13 +84,13 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
     }
     else
     {
-        parameters[L"commit"] = String::ToWideChar(gVersionInfoFull);
+        parameters[L"commit"] = String::toWideChar(gVersionInfoFull);
     }
 
     auto assertMsg = Guard::GetLastAssertMessage();
     if (assertMsg.has_value())
     {
-        parameters[L"assert_failure"] = String::ToWideChar(assertMsg.value());
+        parameters[L"assert_failure"] = String::toWideChar(assertMsg.value());
     }
 
     int timeout = 10000;
@@ -173,7 +173,7 @@ static bool OnCrash(
     wprintf(L"Commit: %s\n", _wszCommitSha1Short);
 
     bool savedGameDumped = false;
-    auto saveFilePathUTF8 = String::ToUtf8(saveFilePath);
+    auto saveFilePathUTF8 = String::toUtf8(saveFilePath);
     try
     {
         PrepareMapForSave();
@@ -199,7 +199,7 @@ static bool OnCrash(
         _uploadFiles[L"attachment_park.park"] = saveFilePath;
     }
 
-    auto configFilePathUTF8 = String::ToUtf8(configFilePath);
+    auto configFilePathUTF8 = String::toUtf8(configFilePath);
     if (Config::SaveToPath(configFilePathUTF8))
     {
         _uploadFiles[L"attachment_config.ini"] = configFilePath;
@@ -219,14 +219,14 @@ static bool OnCrash(
         std::string screenshotPath = ScreenshotDump();
         if (!screenshotPath.empty())
         {
-            auto screenshotPathW = String::ToWideChar(screenshotPath.c_str());
+            auto screenshotPathW = String::toWideChar(screenshotPath.c_str());
             _uploadFiles[L"attachment_screenshot.png"] = screenshotPathW;
         }
     }
 
     if (with_record)
     {
-        auto parkReplayPathW = String::ToWideChar(gSilentRecordingName);
+        auto parkReplayPathW = String::toWideChar(gSilentRecordingName);
         bool record_copied = CopyFileW(parkReplayPathW.c_str(), recordFilePathNew, true);
         if (record_copied)
         {
@@ -321,7 +321,7 @@ static std::wstring GetDumpDirectory()
     auto env = GetContext()->GetPlatformEnvironment();
     auto crashPath = env->GetDirectoryPath(DIRBASE::USER, DIRID::CRASH);
 
-    auto result = String::ToWideChar(crashPath);
+    auto result = String::toWideChar(crashPath);
     return result;
 }
 
@@ -345,14 +345,14 @@ CExceptionHandler CrashInit()
 void CrashRegisterAdditionalFile(const std::string& key, const std::string& path)
 {
 #ifdef USE_BREAKPAD
-    _uploadFiles[String::ToWideChar(key.c_str())] = String::ToWideChar(path.c_str());
+    _uploadFiles[String::toWideChar(key.c_str())] = String::toWideChar(path.c_str());
 #endif // USE_BREAKPAD
 }
 
 void CrashUnregisterAdditionalFile(const std::string& key)
 {
 #ifdef USE_BREAKPAD
-    auto it = _uploadFiles.find(String::ToWideChar(key.c_str()));
+    auto it = _uploadFiles.find(String::toWideChar(key.c_str()));
     if (it != _uploadFiles.end())
     {
         _uploadFiles.erase(it);

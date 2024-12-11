@@ -809,7 +809,7 @@ namespace OpenRCT2::Ui::Windows
         void SortListByName()
         {
             std::sort(_rideList.begin(), _rideList.end(), [](const auto& lhs, const auto& rhs) {
-                return !(0 <= String::StrLogicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
+                return !(0 <= String::logicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
             });
         }
 

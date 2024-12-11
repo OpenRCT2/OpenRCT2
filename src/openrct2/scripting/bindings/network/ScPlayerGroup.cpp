@@ -64,7 +64,7 @@ namespace OpenRCT2::Scripting
 
     static std::string TransformPermissionKeyToInternal(const std::string& s)
     {
-        return "PERMISSION_" + String::ToUpper(s);
+        return "PERMISSION_" + String::toUpper(s);
     }
     #endif
 

@@ -163,7 +163,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_SYMBOL_TEXT:
-                    String::SafeStrCpy(
+                    String::safeUtf8Copy(
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
                         kCurrencySymbolMaxSize);
 

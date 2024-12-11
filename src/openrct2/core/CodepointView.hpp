@@ -79,7 +79,7 @@ namespace OpenRCT2
         };
 
         CodepointView(std::string_view str)
-            : _str(String::UTF8Truncate(str, str.size()))
+            : _str(String::utf8Truncate(str, str.size()))
         {
         }
 

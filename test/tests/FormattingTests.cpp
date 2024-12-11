@@ -39,7 +39,7 @@ TEST_F(FmtStringTests, iteration)
     auto fmt = FmtString("{BLACK}Guests: {INT32}");
     for (const auto& t : fmt)
     {
-        actual += String::StdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
+        actual += String::stdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
     }
 
     ASSERT_EQ("[31:{BLACK}][1:Guests: ][8:{INT32}]", actual);
@@ -52,7 +52,7 @@ TEST_F(FmtStringTests, iteration_escaped)
     auto fmt = FmtString("This is an {{ESCAPED}} string.");
     for (const auto& t : fmt)
     {
-        actual += String::StdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
+        actual += String::stdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
     }
 
     ASSERT_EQ("[1:This is an ][2:{{][1:ESCAPED][2:}}][1: string.]", actual);

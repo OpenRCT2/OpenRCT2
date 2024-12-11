@@ -140,7 +140,7 @@ namespace OpenRCT2::Config
             int32_t i = 0;
             for (const auto& langDesc : LanguagesDescriptors)
             {
-                if (String::Equals(key.c_str(), langDesc.locale))
+                if (String::equals(key.c_str(), langDesc.locale))
                 {
                     return i;
                 }
@@ -441,7 +441,7 @@ namespace OpenRCT2::Config
 
             // Trim any whitespace before or after the player's name,
             // to avoid people pretending to be someone else
-            playerName = String::Trim(playerName);
+            playerName = String::trim(playerName);
 
             auto model = &_config.network;
             model->PlayerName = std::move(playerName);
@@ -774,7 +774,7 @@ namespace OpenRCT2::Config
             return false;
         }
         int32_t exit_status = Platform::Execute(
-            String::StdFormat(
+            String::stdFormat(
                 "%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath.c_str(), targetPath.c_str()),
             &output);
         LOG_INFO("Exit status %d", exit_status);

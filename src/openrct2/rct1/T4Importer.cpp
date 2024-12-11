@@ -44,7 +44,7 @@ namespace OpenRCT2::RCT1
         bool Load(const utf8* path) override
         {
             const auto extension = Path::GetExtension(path);
-            if (String::IEquals(extension, ".td4"))
+            if (String::iequals(extension, ".td4"))
             {
                 _name = GetNameFromTrackPath(path);
                 auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);

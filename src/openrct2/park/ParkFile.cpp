@@ -217,15 +217,15 @@ namespace OpenRCT2
 
                 std::string name;
                 ReadWriteStringTable(cs, name, "en-GB");
-                String::Set(entry.Name, sizeof(entry.Name), name.c_str());
-                String::Set(entry.InternalName, sizeof(entry.InternalName), name.c_str());
+                String::set(entry.Name, sizeof(entry.Name), name.c_str());
+                String::set(entry.InternalName, sizeof(entry.InternalName), name.c_str());
 
                 std::string parkName;
                 ReadWriteStringTable(cs, parkName, "en-GB");
 
                 std::string scenarioDetails;
                 ReadWriteStringTable(cs, scenarioDetails, "en-GB");
-                String::Set(entry.Details, sizeof(entry.Details), scenarioDetails.c_str());
+                String::set(entry.Details, sizeof(entry.Details), scenarioDetails.c_str());
 
                 entry.ObjectiveType = cs.Read<uint8_t>();
                 entry.ObjectiveArg1 = cs.Read<uint8_t>();
@@ -754,12 +754,12 @@ namespace OpenRCT2
                     for (const auto* ori : ExportObjectsList)
                     {
                         auto extension = Path::GetExtension(ori->Path);
-                        if (String::IEquals(extension, ".dat"))
+                        if (String::iequals(extension, ".dat"))
                         {
                             cs.Write(DESCRIPTOR_DAT);
                             cs.Write(&ori->ObjectEntry, sizeof(RCTObjectEntry));
                         }
-                        else if (String::IEquals(extension, ".parkobj"))
+                        else if (String::iequals(extension, ".parkobj"))
                         {
                             cs.Write(DESCRIPTOR_PARKOBJ);
                             cs.Write(ori->Identifier);

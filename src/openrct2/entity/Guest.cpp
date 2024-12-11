@@ -604,7 +604,7 @@ int32_t Guest::GetEasterEggNameId() const
 
     for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
     {
-        if (String::IEquals(buffer, gPeepEasterEggNames[i]))
+        if (String::iequals(buffer, gPeepEasterEggNames[i]))
             return static_cast<int32_t>(i);
     }
 
@@ -751,7 +751,7 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
     FormatNameTo(ft);
     FormatStringLegacy(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
-    return String::IEquals(buffer, gPeepEasterEggNames[index]);
+    return String::iequals(buffer, gPeepEasterEggNames[index]);
 }
 
 void Guest::UpdateMotivesIdle()

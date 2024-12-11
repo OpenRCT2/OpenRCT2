@@ -517,7 +517,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             std::sort(_staffList.begin(), _staffList.end(), [](const auto& a, const auto& b) {
-                return String::StrLogicalCmp(a.Name.c_str(), b.Name.c_str()) < 0;
+                return String::logicalCmp(a.Name.c_str(), b.Name.c_str()) < 0;
             });
         }
 

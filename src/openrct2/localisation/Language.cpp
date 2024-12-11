@@ -62,7 +62,7 @@ uint8_t LanguageGetIDFromLocale(const char* locale)
     uint8_t i = 0;
     for (const auto& langDesc : LanguagesDescriptors)
     {
-        if (String::Equals(locale, langDesc.locale))
+        if (String::equals(locale, langDesc.locale))
         {
             return i;
         }

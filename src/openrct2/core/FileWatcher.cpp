@@ -128,7 +128,7 @@ FileWatcher::FileWatcher(u8string_view directoryPath)
 #ifdef _WIN32
     _path = fs::u8path(directoryPath);
     _directoryHandle = CreateFileW(
-        String::ToWideChar(directoryPath).c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+        String::toWideChar(directoryPath).c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
         nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
     if (_directoryHandle == INVALID_HANDLE_VALUE)
     {

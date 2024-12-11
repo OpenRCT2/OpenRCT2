@@ -102,7 +102,7 @@ namespace OpenRCT2::Ui::Windows
             if (rideB != nullptr)
                 rideBName = rideB->GetName();
 
-            return String::StrLogicalCmp(rideAName.c_str(), rideBName.c_str()) < 0;
+            return String::logicalCmp(rideAName.c_str(), rideBName.c_str()) < 0;
         }
 
         /**

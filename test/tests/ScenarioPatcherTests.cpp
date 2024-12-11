@@ -41,7 +41,7 @@ TEST(FetchAndApplyScenarioPatch, expected_json_format)
     for (const fs::directory_entry& entry : fs::directory_iterator(scenarioPatches, ec))
     {
         auto path = entry.path().u8string();
-        if (OpenRCT2::String::EndsWith(path, ".parkpatch"))
+        if (OpenRCT2::String::endsWith(path, ".parkpatch"))
         {
             OpenRCT2::RCT12::ApplyScenarioPatch(path, dummySHA);
         }

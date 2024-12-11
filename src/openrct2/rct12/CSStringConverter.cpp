@@ -227,7 +227,7 @@ static std::string DecodeConvertWithTable(std::string_view src, TConvertFunc fun
     {
         u16.push_back(func(cc));
     }
-    return String::ToUtf8(u16);
+    return String::toUtf8(u16);
 }
 
 std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId)
@@ -240,5 +240,5 @@ std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId)
     }
 
     auto decoded = DecodeToMultiByte(src);
-    return String::ConvertToUtf8(decoded, codePage);
+    return String::convertToUtf8(decoded, codePage);
 }

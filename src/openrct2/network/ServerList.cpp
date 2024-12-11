@@ -65,7 +65,7 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
         return a.Players > b.Players ? -1 : 1;
     }
 
-    return String::Compare(a.Name, b.Name, true);
+    return String::compare(a.Name, b.Name, true);
 }
 
 bool ServerListEntry::IsVersionValid() const noexcept
@@ -119,7 +119,7 @@ void ServerList::Sort()
             [](const ServerListEntry& a, const ServerListEntry& b) {
                 if (a.Favourite == b.Favourite)
                 {
-                    return String::IEquals(a.Address, b.Address);
+                    return String::iequals(a.Address, b.Address);
                 }
                 return false;
             }),

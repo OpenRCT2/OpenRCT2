@@ -213,7 +213,7 @@ public:
     void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
     {
         auto pattern = path + "\\*";
-        auto wPattern = String::ToWideChar(pattern.c_str());
+        auto wPattern = String::toWideChar(pattern.c_str());
 
         WIN32_FIND_DATAW findData;
         HANDLE hFile = FindFirstFileW(wPattern.c_str(), &findData);
@@ -235,7 +235,7 @@ private:
     {
         DirectoryChild result;
 
-        result.Name = String::ToUtf8(child->cFileName);
+        result.Name = String::toUtf8(child->cFileName);
         if (child->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
         {
             result.Type = DIRECTORY_CHILD_TYPE::DC_DIRECTORY;
@@ -272,7 +272,7 @@ public:
             for (int32_t i = 0; i < count; i++)
             {
                 const struct dirent* node = namelist[i];
-                if (!String::Equals(node->d_name, ".") && !String::Equals(node->d_name, ".."))
+                if (!String::equals(node->d_name, ".") && !String::equals(node->d_name, ".."))
                 {
                     children.push_back(CreateChild(path.c_str(), node));
                 }

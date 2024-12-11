@@ -15,7 +15,7 @@ using namespace OpenRCT2;
 
 UTF8StringReader::UTF8StringReader(const utf8* text)
 {
-    text = String::SkipBOM(text);
+    text = String::skipBOM(text);
 
     _text = text;
     _current = text;
@@ -26,7 +26,7 @@ bool UTF8StringReader::TryPeek(codepoint_t* outCodepoint)
     if (_current == nullptr)
         return false;
 
-    codepoint_t codepoint = String::GetNextCodepoint(_current);
+    codepoint_t codepoint = String::getNextCodepoint(_current);
     *outCodepoint = codepoint;
     return true;
 }
@@ -36,7 +36,7 @@ bool UTF8StringReader::TryRead(codepoint_t* outCodepoint)
     if (_current == nullptr)
         return false;
 
-    codepoint_t codepoint = String::GetNextCodepoint(_current, &_current);
+    codepoint_t codepoint = String::getNextCodepoint(_current, &_current);
     *outCodepoint = codepoint;
     if (codepoint == 0)
     {
