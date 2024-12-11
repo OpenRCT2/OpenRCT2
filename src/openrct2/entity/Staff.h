@@ -20,6 +20,16 @@ class PatrolArea;
 
 using colour_t = uint8_t;
 
+enum class StaffType : uint8_t
+{
+    Handyman,
+    Mechanic,
+    Security,
+    Entertainer,
+
+    Count
+};
+
 struct Staff : Peep
 {
     static constexpr auto cEntityType = EntityType::Staff;

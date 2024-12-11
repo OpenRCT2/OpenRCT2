@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../world/Map.h"
-#include "Peep.h"
+#include "Staff.h"
 
 #include <variant>
 

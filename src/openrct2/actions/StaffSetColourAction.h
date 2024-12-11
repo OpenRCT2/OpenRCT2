@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../entity/Staff.h"
 #include "GameAction.h"
 
 class StaffSetColourAction final : public GameActionBase<GameCommand::SetStaffColour>
