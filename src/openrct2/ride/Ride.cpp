@@ -69,6 +69,7 @@
 #include "RideConstruction.h"
 #include "RideData.h"
 #include "RideEntry.h"
+#include "RideManager.hpp"
 #include "ShopItem.h"
 #include "Station.h"
 #include "Track.h"
@@ -133,40 +134,6 @@ static void RideInspectionUpdate(Ride& ride);
 static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus);
 static void RideMusicUpdate(Ride& ride);
 static void RideShopConnected(const Ride& ride);
-
-RideManager GetRideManager()
-{
-    return {};
-}
-
-size_t RideManager::size() const
-{
-    auto& gameState = GetGameState();
-    size_t count = 0;
-    for (size_t i = 0; i < _endOfUsedRange; i++)
-    {
-        if (!gameState.Rides[i].id.IsNull())
-        {
-            count++;
-        }
-    }
-    return count;
-}
-
-RideManager::Iterator RideManager::begin()
-{
-    return RideManager::Iterator(*this, 0u, _endOfUsedRange);
-}
-
-RideManager::Iterator RideManager::end()
-{
-    return RideManager::Iterator(*this, _endOfUsedRange, _endOfUsedRange);
-}
-
-RideManager::Iterator RideManager::get(RideId rideId)
-{
-    return RideManager::Iterator(*this, rideId.ToUnderlying(), _endOfUsedRange);
-}
 
 RideId GetNextFreeRideId()
 {

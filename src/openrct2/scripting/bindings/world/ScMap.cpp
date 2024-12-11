@@ -22,6 +22,7 @@
     #include "../../../entity/Particle.h"
     #include "../../../entity/Staff.h"
     #include "../../../ride/Ride.h"
+    #include "../../../ride/RideManager.hpp"
     #include "../../../ride/TrainManager.h"
     #include "../../../world/Map.h"
     #include "../../Duktape.hpp"

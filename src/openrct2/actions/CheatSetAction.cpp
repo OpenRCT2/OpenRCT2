@@ -23,6 +23,7 @@
 #include "../network/network.h"
 #include "../object/PathAdditionEntry.h"
 #include "../ride/Ride.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"

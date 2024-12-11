@@ -426,6 +426,7 @@
     <ClInclude Include="ride\RideConstruction.h" />
     <ClInclude Include="ride\RideData.h" />
     <ClInclude Include="ride\RideEntry.h" />
+    <ClInclude Include="ride\RideManager.h" />
     <ClInclude Include="ride\RideRatings.h" />
     <ClInclude Include="ride\RideStringIds.h" />
     <ClInclude Include="ride\RideTypes.h" />
@@ -1038,6 +1039,7 @@
     <ClCompile Include="ride\RideAudio.cpp" />
     <ClCompile Include="ride\RideConstruction.cpp" />
     <ClCompile Include="ride\RideData.cpp" />
+    <ClCompile Include="ride\RideManager.cpp" />
     <ClCompile Include="ride\RideRatings.cpp" />
     <ClCompile Include="ride\ShopItem.cpp" />
     <ClCompile Include="ride\Station.cpp" />

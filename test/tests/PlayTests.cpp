@@ -26,6 +26,7 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideManager.hpp>
 #include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>

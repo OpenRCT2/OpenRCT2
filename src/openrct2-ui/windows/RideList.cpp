@@ -22,6 +22,7 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
+#include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/RideRatings.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>

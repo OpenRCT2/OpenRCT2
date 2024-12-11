@@ -19,6 +19,7 @@
 #include <openrct2/management/Marketing.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
+#include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
 
 namespace OpenRCT2::Ui::Windows
