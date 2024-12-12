@@ -387,7 +387,7 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
     }
 }
 
-void MaskScalar(
+static void MaskScalarImpl(
     uint32_t width, uint32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     uint32_t maskWrap, uint32_t colourWrap, uint32_t dstWrap)
 {
@@ -406,6 +406,20 @@ void MaskScalar(
         maskSrc += maskWrap;
         colourSrc += colourWrap;
         dst += dstWrap;
+    }
+}
+
+void MaskScalar(
+    uint32_t width, uint32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    uint32_t maskWrap, uint32_t colourWrap, uint32_t dstWrap)
+{
+    if (width == 32) [[likely]]
+    {
+        MaskScalarImpl(32, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
+    }
+    else
+    {
+        MaskScalarImpl(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
     }
 }
 
