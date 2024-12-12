@@ -412,8 +412,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 min_width = _info.Desc.MinWidth.value_or(0);
                 min_height = _info.Desc.MinHeight.value_or(0);
-                max_width = _info.Desc.MaxWidth.value_or(std::numeric_limits<uint16_t>::max());
-                max_height = _info.Desc.MaxHeight.value_or(std::numeric_limits<uint16_t>::max());
+                max_width = _info.Desc.MaxWidth.value_or(std::numeric_limits<int16_t>::max());
+                max_height = _info.Desc.MaxHeight.value_or(std::numeric_limits<int16_t>::max());
             }
             RefreshWidgets();
         }

@@ -521,7 +521,9 @@ namespace OpenRCT2::Ui::Windows
                 || p == WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH)
             {
                 flags |= WF_RESIZABLE;
-                WindowSetResize(*this, WW_OTHER_TABS, WH_OTHER_TABS, 2000, 2000);
+                WindowSetResize(
+                    *this, WW_OTHER_TABS, WH_OTHER_TABS, std::numeric_limits<uint16_t>::max(),
+                    std::numeric_limits<int16_t>::max());
             }
             else
             {
