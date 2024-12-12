@@ -15,17 +15,17 @@
     #include <immintrin.h>
 
 void MaskSse4_1(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
-    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+    uint32_t width, uint32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    uint32_t maskWrap, uint32_t colourWrap, uint32_t dstWrap)
 {
     if (width == 32)
     {
         const __m128i zero128 = {};
-        for (int32_t yy = 0; yy < height; yy++)
+        for (uint32_t yy = 0; yy < height; yy++)
         {
-            int32_t colourStep = yy * (colourWrap + 32);
-            int32_t maskStep = yy * (maskWrap + 32);
-            int32_t dstStep = yy * (dstWrap + 32);
+            uint32_t colourStep = yy * (colourWrap + 32);
+            uint32_t maskStep = yy * (maskWrap + 32);
+            uint32_t dstStep = yy * (dstWrap + 32);
 
             // first half
             const __m128i colour1 = _mm_lddqu_si128(reinterpret_cast<const __m128i*>(colourSrc + colourStep));
@@ -62,8 +62,8 @@ void MaskSse4_1(
     #endif
 
 void MaskSse4_1(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
-    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+    uint32_t width, uint32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    uint32_t maskWrap, uint32_t colourWrap, uint32_t dstWrap)
 {
     OpenRCT2::Guard::Fail("SSE 4.1 function called on a CPU that doesn't support SSE 4.1");
 }

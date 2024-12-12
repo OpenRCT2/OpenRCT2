@@ -693,8 +693,8 @@ static auto GetMaskFunction()
 static const auto MaskFunc = GetMaskFunction();
 
 void MaskFn(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
-    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+    uint32_t width, uint32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    uint32_t maskWrap, uint32_t colourWrap, uint32_t dstWrap)
 {
     MaskFunc(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }

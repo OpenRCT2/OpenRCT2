@@ -15,16 +15,16 @@
     #include <immintrin.h>
 
 void MaskAvx2(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
-    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+    uint32_t width, uint32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    uint32_t maskWrap, uint32_t colourWrap, uint32_t dstWrap)
 {
     if (width == 32)
     {
-        const int32_t maskWrapSIMD = maskWrap + 32;
-        const int32_t colourWrapSIMD = colourWrap + 32;
-        const int32_t dstWrapSIMD = dstWrap + 32;
+        const uint32_t maskWrapSIMD = maskWrap + 32;
+        const uint32_t colourWrapSIMD = colourWrap + 32;
+        const uint32_t dstWrapSIMD = dstWrap + 32;
         const __m256i zero = {};
-        for (int32_t yy = 0; yy < height; yy++)
+        for (uint32_t yy = 0; yy < height; yy++)
         {
             const __m256i colour = _mm256_lddqu_si256(reinterpret_cast<const __m256i*>(colourSrc + yy * colourWrapSIMD));
             const __m256i mask = _mm256_lddqu_si256(reinterpret_cast<const __m256i*>(maskSrc + yy * maskWrapSIMD));
@@ -48,8 +48,8 @@ void MaskAvx2(
     #endif
 
 void MaskAvx2(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
-    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+    uint32_t width, uint32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    uint32_t maskWrap, uint32_t colourWrap, uint32_t dstWrap)
 {
     OpenRCT2::Guard::Fail("AVX2 function called on a CPU that doesn't support AVX2");
 }
