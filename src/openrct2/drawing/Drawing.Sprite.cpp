@@ -396,10 +396,8 @@ void MaskScalar(
         for (int32_t xx = 0; xx < width; xx++)
         {
             uint8_t colour = (*colourSrc) & (*maskSrc);
-            if (colour != 0)
-            {
-                *dst = colour;
-            }
+            uint8_t currentDst = *dst;
+            *dst = colour != 0 ? colour : currentDst;
 
             maskSrc++;
             colourSrc++;
