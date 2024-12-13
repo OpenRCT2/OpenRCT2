@@ -110,6 +110,7 @@ namespace OpenRCT2::CommandLine
     extern const CommandLineCommand RootCommands[];
     extern const CommandLineCommand ScreenshotCommands[];
     extern const CommandLineCommand SpriteCommands[];
+    extern const CommandLineCommand BenchGfxCommands[];
     extern const CommandLineCommand SimulateCommands[];
     extern const CommandLineCommand ParkInfoCommands[];
 
