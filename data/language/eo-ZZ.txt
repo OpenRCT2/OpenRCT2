@@ -3782,3 +3782,4 @@ STR_6706    :{WINDOW_COLOUR_2}Nuna bildodosiero: {BLACK}{STRING}
 STR_6707    :(neniu elektita)
 STR_6708    :Glata forteco
 STR_6709    :Entajpu glatan fortecon inter {COMMA16} kaj {COMMA16}
+STR_6710    :Stabila ordigo
