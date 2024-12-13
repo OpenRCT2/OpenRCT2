@@ -387,7 +387,6 @@ static void BenchgfxRenderScreenshots(const char* inputPath, std::unique_ptr<ICo
         return;
     }
 
-    gIntroState = IntroState::None;
     gScreenFlags = SCREEN_FLAGS_PLAYING;
 
     // Create Viewport and DPI for every rotation and zoom.
@@ -441,9 +440,6 @@ static void BenchgfxRenderScreenshots(const char* inputPath, std::unique_ptr<ICo
         }
 
         const double average = totalTime / static_cast<double>(totalRenderCount);
-        const auto engineStringId = DrawingEngineStringIds[EnumValue(DrawingEngine::Software)];
-        const auto engineName = FormatStringID(engineStringId, nullptr);
-        std::printf("Engine: %s\n", engineName.c_str());
         std::printf("Render Count: %u\n", totalRenderCount);
         for (ZoomLevel zoom{ 0 }; zoom < ZoomLevel::max(); zoom++)
         {

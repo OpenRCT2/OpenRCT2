@@ -10,11 +10,13 @@
 #include "../interface/Screenshot.h"
 #include "CommandLine.hpp"
 
+using namespace OpenRCT2;
+
 static exitcode_t HandleBenchGfx(CommandLineArgEnumerator* argEnumerator);
 
 const CommandLineCommand CommandLine::BenchGfxCommands[]{
     // Main commands
-    DefineCommand("", "<file> [iterations count]", nullptr, HandleBenchGfx), CommandTableEnd
+    DefineCommand("", "<file> [iterations count]", nullptr, HandleBenchGfx), kCommandTableEnd
 };
 
 static exitcode_t HandleBenchGfx(CommandLineArgEnumerator* argEnumerator)
