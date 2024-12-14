@@ -22,6 +22,7 @@
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Text.h>
@@ -37,7 +38,6 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <span>
 #include <string>

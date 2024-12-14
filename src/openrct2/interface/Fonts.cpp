@@ -11,11 +11,11 @@
 
 #include "../Diagnostic.h"
 #include "../config/Config.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/String.hpp"
 #include "../drawing/TTF.h"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
-#include "../util/Util.h"
 #include "FontFamilies.h"
 
 using namespace OpenRCT2;

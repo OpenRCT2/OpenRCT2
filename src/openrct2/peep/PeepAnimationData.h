@@ -1,7 +1,7 @@
 #pragma once
 
+#include "../core/EnumUtils.hpp"
 #include "../entity/Peep.h"
-#include "../util/Util.h"
 #include "PeepAnimations.h"
 
 #include <span>

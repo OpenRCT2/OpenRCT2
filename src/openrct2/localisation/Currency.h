@@ -9,9 +9,10 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
+#include "../core/Money.hpp"
 #include "../core/StringTypes.h"
 #include "../localisation/StringIdType.h"
-#include "../util/Util.h"
 #include "CurrencyTypes.h"
 
 constexpr size_t kCurrencySymbolMaxSize = 8;

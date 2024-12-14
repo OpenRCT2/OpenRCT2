@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "core/EnumUtils.hpp"
 #include "object/Object.h"
-#include "util/Util.h"
 
 #include <vector>
 

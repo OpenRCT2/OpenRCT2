@@ -11,12 +11,12 @@
 
 #include "../../Game.h"
 #include "../../GameState.h"
+#include "../../core/EnumUtils.hpp"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.Date.h"
 #include "../../object/SmallSceneryEntry.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
-#include "../../util/Util.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"

@@ -10,9 +10,9 @@
 #include "Colour.h"
 
 #include "../core/EnumMap.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../drawing/Drawing.h"
 #include "../sprites.h"
-#include "../util/Util.h"
 
 #include <cmath>
 

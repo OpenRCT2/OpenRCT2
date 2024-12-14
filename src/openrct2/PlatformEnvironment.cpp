@@ -12,11 +12,11 @@
 #include "Diagnostic.h"
 #include "OpenRCT2.h"
 #include "config/Config.h"
+#include "core/EnumUtils.hpp"
 #include "core/File.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "platform/Platform.h"
-#include "util/Util.h"
 
 using namespace OpenRCT2;
 

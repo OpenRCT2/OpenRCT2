@@ -20,6 +20,7 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/FixedPoint.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Speed.hpp"

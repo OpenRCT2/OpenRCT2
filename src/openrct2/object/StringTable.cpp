@@ -10,13 +10,13 @@
 #include "StringTable.h"
 
 #include "../Context.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
 #include "../rct12/CSStringConverter.h"
-#include "../util/Util.h"
 #include "Object.h"
 
 using namespace OpenRCT2;

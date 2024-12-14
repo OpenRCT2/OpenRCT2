@@ -9,7 +9,8 @@
 
 #pragma once
 
-#include "../util/Util.h"
+#include "../core/EnumUtils.hpp"
+#include "../core/Money.hpp"
 #include "../world/Map.h"
 #include "Peep.h"
 

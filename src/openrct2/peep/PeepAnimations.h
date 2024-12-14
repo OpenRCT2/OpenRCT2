@@ -10,9 +10,9 @@
 #pragma once
 
 #include "../core/EnumMap.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../drawing/ImageIndexType.h"
 #include "../entity/Peep.h"
-#include "../util/Util.h"
 
 namespace OpenRCT2
 {

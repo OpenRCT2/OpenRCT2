@@ -10,9 +10,9 @@
 #include "Currency.h"
 
 #include "../config/Config.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
-#include "../util/Util.h"
 #include "Formatting.h"
 #include "StringIds.h"
 

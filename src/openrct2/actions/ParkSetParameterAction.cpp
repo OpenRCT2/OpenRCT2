@@ -11,9 +11,9 @@
 
 #include "../Diagnostic.h"
 #include "../GameState.h"
+#include "../core/EnumUtils.hpp"
 #include "../interface/Window.h"
 #include "../ride/ShopItem.h"
-#include "../util/Util.h"
 #include "../world/Park.h"
 
 using namespace OpenRCT2;

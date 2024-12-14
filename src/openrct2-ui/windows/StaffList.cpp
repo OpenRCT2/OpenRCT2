@@ -24,6 +24,7 @@
 #include <openrct2/actions/StaffHireNewAction.h>
 #include <openrct2/actions/StaffSetColourAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityList.h>

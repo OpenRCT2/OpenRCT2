@@ -9,9 +9,9 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
 #include "../core/Imaging.h"
 #include "../core/JsonFwd.hpp"
-#include "../util/Util.h"
 #include "Drawing.h"
 
 #include <string_view>

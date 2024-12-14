@@ -18,6 +18,7 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/EnumUtils.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.Date.h"

@@ -11,9 +11,9 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/SawyerCoding.h"
 #include "../object/Object.h"
-#include "../util/Util.h"
 #include "ObjectLimits.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"

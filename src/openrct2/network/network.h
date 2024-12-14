@@ -11,6 +11,7 @@
 
 #include "../Game.h"
 #include "../core/JsonFwd.hpp"
+#include "../core/Money.hpp"
 #include "../localisation/StringIds.h"
 #include "NetworkTypes.h"
 

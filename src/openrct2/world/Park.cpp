@@ -35,6 +35,7 @@
 #include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
 #include "Map.h"

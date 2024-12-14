@@ -13,9 +13,9 @@
 
     #include <algorithm>
     #include <openrct2/Diagnostic.h>
+    #include <openrct2/core/EnumUtils.hpp>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/interface/Colour.h>
-    #include <openrct2/util/Util.h>
     #include <openrct2/world/Location.hpp>
     #include <stdexcept>
     #include <vector>

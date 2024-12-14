@@ -21,6 +21,7 @@
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../sprites.h"
+#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Location.hpp"
 #include "LightFX.h"

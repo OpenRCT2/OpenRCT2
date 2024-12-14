@@ -21,6 +21,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Vehicle.h"
+#include "../util/Util.h"
 #include "../world/Map.h"
 #include "../world/tile_element/TileElement.h"
 #include "Drawing.h"

@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../core/EnumUtils.hpp"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"

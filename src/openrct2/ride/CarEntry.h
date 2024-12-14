@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
 #include "../entity/Yaw.hpp"
-#include "../util/Util.h"
 #include "../world/Location.hpp"
 
 #include <array>

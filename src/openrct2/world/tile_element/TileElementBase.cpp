@@ -9,7 +9,7 @@
 
 #include "TileElementBase.h"
 
-#include "../../util/Util.h"
+#include "../../core/EnumUtils.hpp"
 #include "../Map.h"
 #include "BannerElement.h"
 #include "EntranceElement.h"

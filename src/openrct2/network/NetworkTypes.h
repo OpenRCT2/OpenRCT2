@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../core/Endianness.h"
+#include "../core/EnumUtils.hpp"
 #include "../ride/RideTypes.h"
-#include "../util/Util.h"
 
 enum
 {

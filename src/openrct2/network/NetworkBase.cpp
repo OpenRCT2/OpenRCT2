@@ -36,6 +36,7 @@
 #include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
+#include "../util/Util.h"
 #include "../world/Location.hpp"
 #include "network.h"
 
@@ -72,6 +73,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     #include "../actions/GameAction.h"
     #include "../config/Config.h"
     #include "../core/Console.hpp"
+    #include "../core/EnumUtils.hpp"
     #include "../core/FileStream.h"
     #include "../core/MemoryStream.h"
     #include "../core/Path.hpp"
@@ -82,7 +84,6 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
     #include "../scenario/Scenario.h"
-    #include "../util/Util.h"
     #include "../world/Park.h"
     #include "NetworkAction.h"
     #include "NetworkConnection.h"

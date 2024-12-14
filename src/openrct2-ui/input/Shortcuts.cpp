@@ -30,6 +30,7 @@
 #include <openrct2/actions/TileModifyAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/network/network.h>
@@ -39,7 +40,6 @@
 #include <openrct2/ride/TrackPaint.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Park.h>

@@ -64,6 +64,7 @@
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/sprites.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
