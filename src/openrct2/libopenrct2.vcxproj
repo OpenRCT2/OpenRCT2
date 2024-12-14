@@ -196,7 +196,7 @@
     <ClInclude Include="core\Diagnostics.hpp" />
     <ClInclude Include="core\Endianness.h" />
     <ClInclude Include="core\EnumMap.hpp" />
-    <ClInclude Include="core\EnumUtils.h" />
+    <ClInclude Include="core\EnumUtils.hpp" />
     <ClInclude Include="core\File.h" />
     <ClInclude Include="core\FileIndex.hpp" />
     <ClInclude Include="core\FileScanner.h" />
@@ -757,7 +757,6 @@
     <ClCompile Include="core\Crypt.OpenRCT2.cpp" />
     <ClCompile Include="core\Crypt.OpenSSL.cpp" />
     <ClCompile Include="core\Diagnostics.cpp" />
-    <ClCompile Include="core\EnumUtils.cpp" />
     <ClCompile Include="core\File.cpp" />
     <ClCompile Include="core\FileScanner.cpp" />
     <ClCompile Include="core\FileStream.cpp" />
