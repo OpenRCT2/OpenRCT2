@@ -498,7 +498,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t type;
 
     public:
-        void PopulateList(int32_t includeNewItem, const u8string& directory, std::string_view extensionPattern)
+        void PopulateList(bool includeNewItem, const u8string& directory, std::string_view extensionPattern)
         {
             const auto absoluteDirectory = Path::GetAbsolute(directory);
             String::safeUtf8Copy(_directory, absoluteDirectory.c_str(), std::size(_directory));
@@ -926,11 +926,9 @@ namespace OpenRCT2::Ui::Windows
             if (_listItems[selectedItem].type == FileType::directory)
             {
                 // The selected item is a folder
-                int32_t includeNewItem;
-
                 no_list_items = 0;
                 selected_list_item = -1;
-                includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
+                bool includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
 
                 char directory[MAX_PATH];
                 String::safeUtf8Copy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
