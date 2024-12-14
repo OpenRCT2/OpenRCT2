@@ -73,16 +73,16 @@ namespace OpenRCT2::Ui::Windows
     static Widget window_loadsave_widgets[] =
     {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({               0,  WH - 1}, {      WW,   1 }, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
-        MakeWidget({               4,      36}, {      84,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // WIDX_DEFAULT
-        MakeWidget({              88,      36}, {      84,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_UP                                  ), // WIDX_UP
-        MakeWidget({             172,      36}, {      87,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // WIDX_NEW_FOLDER
-        MakeWidget({             259,      36}, {      87,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FILE                            ), // WIDX_NEW_FILE
-        MakeWidget({               4,      55}, {     170,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_NAME
-        MakeWidget({(WW - 5) / 2 + 1,      55}, {     170,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_DATE
-        MakeWidget({               4,      68}, {     342, 303 }, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                            ), // WIDX_SCROLL
-        MakeWidget({               4, WH - 26}, { WW - 63,  14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                             ), // WIDX_FILENAME_TEXTBOX
-        MakeWidget({         WW - 55, WH - 26}, {      50,  14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_OK                                                     ), // WIDX_OK
+        MakeWidget({               0,  WH - 1}, {       WW,   1 }, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
+        MakeWidget({               4,      36}, {       84,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // WIDX_DEFAULT
+        MakeWidget({              88,      36}, {       84,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_UP                                  ), // WIDX_UP
+        MakeWidget({             172,      36}, {       87,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // WIDX_NEW_FOLDER
+        MakeWidget({             259,      36}, {       87,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FILE                            ), // WIDX_NEW_FILE
+        MakeWidget({               4,      55}, {      170,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_NAME
+        MakeWidget({(WW - 5) / 2 + 1,      55}, {      170,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_DATE
+        MakeWidget({               4,      68}, {      342, 303 }, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                            ), // WIDX_SCROLL
+        MakeWidget({              64, WH - 26}, { WW - 133,  14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                             ), // WIDX_FILENAME_TEXTBOX
+        MakeWidget({         WW - 65, WH - 26}, {       60,  14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_OK                                                     ), // WIDX_OK
         kWidgetsEnd,
     };
     // clang-format on
@@ -777,8 +777,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 window_loadsave_widgets[WIDX_SCROLL].bottom -= 26;
 
+                // Get 'Filename:' string width
+                auto label = LanguageGetString(STR_FILENAME);
+                auto labelWidth = GfxGetStringWidth(label, FontStyle::Medium);
+
                 window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].top = height - 26;
                 window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 12;
+                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].left = 4 + labelWidth + 6;
                 window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].right = width - 63 + 4;
 
                 window_loadsave_widgets[WIDX_OK].top = height - 26;
@@ -814,7 +819,7 @@ namespace OpenRCT2::Ui::Windows
                 id = STR_DOWN;
 
             // Draw name button indicator.
-            Widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
+            auto& sort_name_widget = widgets[WIDX_SORT_NAME];
             ft = Formatter();
             ft.Add<StringId>(id);
             DrawTextBasic(
@@ -829,12 +834,19 @@ namespace OpenRCT2::Ui::Windows
             else
                 id = STR_NONE;
 
-            Widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
+            auto& sort_date_widget = widgets[WIDX_SORT_DATE];
             ft = Formatter();
             ft.Add<StringId>(id);
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ sort_date_widget.left + 5, sort_date_widget.top + 1 }, STR_DATE, ft,
                 { COLOUR_GREY });
+
+            // 'Filename:' label
+            if (_type & LOADSAVETYPE_SAVE)
+            {
+                auto& widget = widgets[WIDX_FILENAME_TEXTBOX];
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 5, widget.top + 2 }, STR_FILENAME, ft, { COLOUR_GREY });
+            }
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
