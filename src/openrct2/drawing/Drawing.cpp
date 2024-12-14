@@ -55,9 +55,11 @@ uint8_t PaletteMap::operator[](size_t index) const
 
 uint8_t PaletteMap::Blend(uint8_t src, uint8_t dst) const
 {
+#ifdef _DEBUG
     // src = 0 would be transparent so there is no blend palette for that, hence (src - 1)
     assert(src != 0 && (src - 1) < _numMaps);
     assert(dst < _mapLength);
+#endif
     auto idx = ((src - 1) * 256) + dst;
     return _data[idx];
 }
