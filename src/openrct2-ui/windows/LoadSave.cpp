@@ -64,7 +64,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SORT_NAME,
         WIDX_SORT_DATE,
         WIDX_SCROLL,
-        WIDX_BROWSE,
     };
 
     // clang-format off
@@ -79,7 +78,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({               4,      55}, {170,  14}, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_NAME
         MakeWidget({(WW - 5) / 2 + 1,      55}, {170,  14}, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_DATE
         MakeWidget({               4,      68}, {342, 303}, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                            ), // WIDX_SCROLL
-        MakeWidget({               4, WH - 24}, {197,  19}, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // WIDX_BROWSE
         kWidgetsEnd,
     };
     // clang-format on
@@ -673,13 +671,6 @@ namespace OpenRCT2::Ui::Windows
         {
             widgets = window_loadsave_widgets;
 
-            const auto uiContext = OpenRCT2::GetContext()->GetUiContext();
-            if (!uiContext->HasFilePicker())
-            {
-                disabled_widgets |= (1uLL << WIDX_BROWSE);
-                window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
-            }
-
             // TODO: Split LOADSAVETYPE_* into two proper enum classes (one for load/save, the other for the type)
             const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
             const auto path = GetDir(type);
@@ -745,9 +736,6 @@ namespace OpenRCT2::Ui::Windows
 
             window_loadsave_widgets[WIDX_SCROLL].right = width - 5;
             window_loadsave_widgets[WIDX_SCROLL].bottom = height - 30;
-
-            window_loadsave_widgets[WIDX_BROWSE].top = height - 24;
-            window_loadsave_widgets[WIDX_BROWSE].bottom = height - 6;
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -823,23 +811,6 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_NEW_FOLDER:
                     WindowTextInputRawOpen(this, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "", 64);
                     break;
-
-                case WIDX_BROWSE:
-                {
-                    u8string path = OpenSystemFileBrowser(isSave);
-                    if (!path.empty())
-                    {
-                        Select(path.c_str());
-                    }
-                    else
-                    {
-                        // If user cancels file dialog, refresh list
-                        PopulateList(isSave, _directory, _extensionPattern);
-                        InitScrollWidgets();
-                        no_list_items = static_cast<uint16_t>(_listItems.size());
-                    }
-                }
-                break;
 
                 case WIDX_SORT_NAME:
                     if (Config::Get().general.LoadSaveSort == Sort::NameAscending)
