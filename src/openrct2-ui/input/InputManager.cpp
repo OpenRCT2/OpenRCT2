@@ -219,6 +219,16 @@ void InputManager::Process(const InputEvent& e)
                 return;
             }
 
+            w = WindowFindByClass(WindowClass::Loadsave);
+            if (w != nullptr)
+            {
+                if (e.State == InputEventState::Release)
+                {
+                    OpenRCT2::Ui::Windows::WindowLoadSaveInputKey(w, e.Button);
+                }
+                return;
+            }
+
             if (OpenRCT2::Ui::Windows::IsUsingWidgetTextBox())
             {
                 return;

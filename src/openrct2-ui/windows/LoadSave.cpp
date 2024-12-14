@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <SDL_keycode.h>
 #include <ctime>
 #include <iterator>
 #include <memory>
@@ -65,6 +66,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SORT_DATE,
         WIDX_SCROLL,
         WIDX_FILENAME_TEXTBOX,
+        WIDX_OK,
     };
 
     // clang-format off
@@ -79,7 +81,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({               4,      55}, {     170,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_NAME
         MakeWidget({(WW - 5) / 2 + 1,      55}, {     170,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_DATE
         MakeWidget({               4,      68}, {     342, 303 }, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                            ), // WIDX_SCROLL
-        MakeWidget({               4, WH - 25}, { WW - 10,  14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                             ), // WIDX_FILENAME_TEXTBOX
+        MakeWidget({               4, WH - 26}, { WW - 63,  14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                             ), // WIDX_FILENAME_TEXTBOX
+        MakeWidget({         WW - 55, WH - 26}, {      50,  14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_OK                                                     ), // WIDX_OK
         kWidgetsEnd,
     };
     // clang-format on
@@ -689,6 +692,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 widgets[WIDX_FILENAME_TEXTBOX].type = WindowWidgetType::TextBox;
                 widgets[WIDX_FILENAME_TEXTBOX].string = _currentFilename;
+                widgets[WIDX_OK].type = WindowWidgetType::Button;
 
                 // Set current filename
                 auto filename = Path::GetFileNameWithoutExtension(gCurrentLoadedPath);
@@ -700,6 +704,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 widgets[WIDX_FILENAME_TEXTBOX].type = WindowWidgetType::Empty;
+                widgets[WIDX_OK].type = WindowWidgetType::Empty;
             }
 
             // Populate file list
@@ -770,7 +775,16 @@ namespace OpenRCT2::Ui::Windows
 
             if (_type & LOADSAVETYPE_SAVE)
             {
-                window_loadsave_widgets[WIDX_SCROLL].bottom -= 25;
+                window_loadsave_widgets[WIDX_SCROLL].bottom -= 26;
+
+                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].top = height - 26;
+                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 12;
+                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].right = width - 63 + 4;
+
+                window_loadsave_widgets[WIDX_OK].top = height - 26;
+                window_loadsave_widgets[WIDX_OK].bottom = height - 12;
+                window_loadsave_widgets[WIDX_OK].left = width - 55;
+                window_loadsave_widgets[WIDX_OK].right = width - 5;
             }
         }
 
@@ -885,7 +899,23 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FILENAME_TEXTBOX:
                     WindowStartTextbox(*this, widgetIndex, _currentFilename, sizeof(_currentFilename));
                     break;
+
+                case WIDX_OK:
+                {
+                    const u8string path = Path::WithExtension(
+                        Path::Combine(_directory, _currentFilename), RemovePatternWildcard(_extensionPattern));
+
+                    if (File::Exists(path))
+                        WindowOverwritePromptOpen(_currentFilename, path);
+                    else
+                        Select(path.c_str());
+                }
             }
+        }
+
+        void OnReturnPressed()
+        {
+            OnMouseUp(WIDX_OK);
         }
 
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
@@ -931,6 +961,16 @@ namespace OpenRCT2::Ui::Windows
                     else
                         Select(path.c_str());
                     break;
+                }
+
+                case WIDX_FILENAME_TEXTBOX:
+                {
+                    std::string tempText = text.data();
+                    const char* cStr = tempText.c_str();
+                    if (strcmp(_currentFilename, cStr) == 0)
+                        return;
+
+                    String::safeUtf8Copy(_currentFilename, cStr, sizeof(_currentFilename));
                 }
             }
         }
@@ -1119,6 +1159,18 @@ namespace OpenRCT2::Ui::Windows
         }
 
         return w;
+    }
+
+    void WindowLoadSaveInputKey(WindowBase* w, uint32_t keycode)
+    {
+        if (keycode == SDLK_RETURN || keycode == SDLK_KP_ENTER)
+        {
+            if (w->classification == WindowClass::Loadsave)
+            {
+                auto loadSaveWindow = static_cast<LoadSaveWindow*>(w);
+                loadSaveWindow->OnReturnPressed();
+            }
+        }
     }
 
 #pragma region Overwrite prompt

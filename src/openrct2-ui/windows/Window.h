@@ -127,6 +127,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* LoadsaveOpen(
         int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
         TrackDesign* trackDesign);
+    void WindowLoadSaveInputKey(WindowBase* w, uint32_t keycode);
+
     WindowBase* TrackPlaceOpen(const struct TrackDesignFileRef* tdFileRef);
     WindowBase* TrackManageOpen(struct TrackDesignFileRef* tdFileRef);
 
