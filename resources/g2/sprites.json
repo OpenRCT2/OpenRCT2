@@ -325,6 +325,9 @@
         "path": "icons/colour_invisible_pressed.png"
     },
     {
+        "path": "icons/folder.png"
+    },
+    {
         "path": "loader/loader_hybrid_supports.png",
         "y": 10
     },

@@ -26,6 +26,7 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/Platform.h>
@@ -33,6 +34,7 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
+#include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -86,10 +88,10 @@ namespace OpenRCT2::Ui::Windows
 
     static WindowBase* WindowOverwritePromptOpen(const std::string_view name, const std::string_view path);
 
-    enum
+    enum class FileType : uint8_t
     {
-        TYPE_DIRECTORY,
-        TYPE_FILE,
+        directory,
+        file,
     };
 
     struct LoadSaveListItem
@@ -99,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
         time_t date_modified{ 0 };
         std::string date_formatted{};
         std::string time_formatted{};
-        uint8_t type{ 0 };
+        FileType type{};
         bool loaded{ false };
     };
 
@@ -116,7 +118,7 @@ namespace OpenRCT2::Ui::Windows
     static bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b)
     {
         if (a.type != b.type)
-            return a.type - b.type < 0;
+            return EnumValue(a.type) - EnumValue(b.type) < 0;
 
         switch (Config::Get().general.LoadSaveSort)
         {
@@ -525,7 +527,7 @@ namespace OpenRCT2::Ui::Windows
                         LoadSaveListItem newListItem;
                         newListItem.path = std::string(1, 'A' + x) + ":" PATH_SEPARATOR;
                         newListItem.name = newListItem.path;
-                        newListItem.type = TYPE_DIRECTORY;
+                        newListItem.type = FileType::directory;
 
                         _listItems.push_back(std::move(newListItem));
                     }
@@ -577,7 +579,7 @@ namespace OpenRCT2::Ui::Windows
                     LoadSaveListItem newListItem;
                     newListItem.path = Path::Combine(absoluteDirectory, subDir);
                     newListItem.name = std::move(subDir);
-                    newListItem.type = TYPE_DIRECTORY;
+                    newListItem.type = FileType::directory;
                     newListItem.loaded = false;
 
                     _listItems.push_back(std::move(newListItem));
@@ -593,7 +595,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         LoadSaveListItem newListItem;
                         newListItem.path = scanner->GetPath();
-                        newListItem.type = TYPE_FILE;
+                        newListItem.type = FileType::file;
                         newListItem.date_modified = Platform::FileGetModifiedTime(newListItem.path.c_str());
 
                         // Cache a human-readable version of the modified date.
@@ -950,7 +952,7 @@ namespace OpenRCT2::Ui::Windows
             if (selectedItem >= no_list_items)
                 return;
 
-            if (_listItems[selectedItem].type == TYPE_DIRECTORY)
+            if (_listItems[selectedItem].type == FileType::directory)
             {
                 // The selected item is a folder
                 int32_t includeNewItem;
@@ -967,9 +969,8 @@ namespace OpenRCT2::Ui::Windows
 
                 no_list_items = static_cast<uint16_t>(_listItems.size());
             }
-            else
+            else // FileType::file
             {
-                // TYPE_FILE
                 // Load or overwrite
                 if ((_type & 0x01) == LOADSAVETYPE_SAVE)
                     WindowOverwritePromptOpen(_listItems[selectedItem].name, _listItems[selectedItem].path);
@@ -1011,15 +1012,21 @@ namespace OpenRCT2::Ui::Windows
                     DrawTextBasic(dpi, { 0, y }, stringId, ft);
                 }
 
+                // Folders get a folder icon
+                if (_listItems[i].type == FileType::directory)
+                {
+                    GfxDrawSprite(dpi, ImageId(SPR_G2_FOLDER), { 1, y });
+                }
+
                 // Print filename
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<char*>(_listItems[i].name.c_str());
-                int32_t max_file_width = widgets[WIDX_SORT_NAME].width() - 10;
-                DrawTextEllipsised(dpi, { 10, y }, max_file_width, stringId, ft);
+                int32_t max_file_width = widgets[WIDX_SORT_NAME].width() - 15;
+                DrawTextEllipsised(dpi, { 15, y }, max_file_width, stringId, ft);
 
                 // Print formatted modified date, if this is a file
-                if (_listItems[i].type == TYPE_FILE)
+                if (_listItems[i].type == FileType::file)
                 {
                     ft = Formatter();
                     ft.Add<StringId>(STR_STRING);
