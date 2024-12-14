@@ -59,7 +59,6 @@ bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 bool gPaintStableSort;
 
-static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
 static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uint32_t viewFlags);
 
