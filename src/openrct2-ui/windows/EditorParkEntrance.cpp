@@ -341,6 +341,15 @@ namespace OpenRCT2::Ui::Windows
             HideConstructionRights();
         }
 
+        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        {
+            auto numRows = _entranceTypes.size() / kNumColumns;
+            if (_entranceTypes.size() % kNumColumns > 0)
+                numRows++;
+
+            return ScreenSize(kImageSize * kNumColumns, kImageSize * numRows);
+        }
+
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             auto highlighted = ScrollGetEntranceListItemAt(screenCoords);
