@@ -249,7 +249,7 @@ namespace OpenRCT2::Ui::Windows
             min_width = kWindowWidth;
             min_height = kWindowHeight;
             max_width = kWindowWidth;
-            max_height = 43 + kImageSize * GetNumRows();
+            max_height = static_cast<int16_t>(43 + kImageSize * GetNumRows());
 
             pressed_widgets |= 1LL << WIDX_TAB;
 
