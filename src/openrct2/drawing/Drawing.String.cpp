@@ -592,8 +592,8 @@ static void TTFProcessFormatCode(DrawPixelInfo& dpi, const FmtString::Token& tok
         }
         case FormatToken::InlineSprite:
         {
-            auto imageId = ImageId::FromUInt32(token.parameter);
-            auto g1 = GfxGetG1Element(imageId.GetIndex());
+            auto imageId = ImageId(token.parameter);
+            auto g1 = GfxGetG1Element(imageId);
             if (g1 != nullptr && g1->width <= 32 && g1->height <= 32)
             {
                 if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
