@@ -10,8 +10,8 @@
 #include "Diagnostic.h"
 
 #include "core/Console.hpp"
+#include "core/EnumUtils.hpp"
 #include "core/String.hpp"
-#include "util/Util.h"
 
 #include <cstdarg>
 #include <cstdio>

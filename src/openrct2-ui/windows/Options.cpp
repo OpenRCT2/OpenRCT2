@@ -27,6 +27,7 @@
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/File.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
@@ -44,7 +45,6 @@
 #include <openrct2/scenes/title/TitleSequenceManager.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
-#include <openrct2/util/Util.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;

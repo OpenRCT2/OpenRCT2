@@ -9,7 +9,7 @@
 
 #include "ObjectTypes.h"
 
-#include "../util/Util.h"
+#include "../core/EnumUtils.hpp"
 #include "Object.h"
 
 #include <algorithm>

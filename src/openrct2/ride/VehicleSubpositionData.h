@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../util/Util.h"
+#include "../core/EnumUtils.hpp"
 #include "Track.h"
 
 #include <cstdint>

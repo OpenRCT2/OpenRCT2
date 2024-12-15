@@ -29,6 +29,7 @@
 #include "../actions/StaffSetCostumeAction.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"

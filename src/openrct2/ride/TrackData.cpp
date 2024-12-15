@@ -9,8 +9,8 @@
 
 #include "TrackData.h"
 
+#include "../core/EnumUtils.hpp"
 #include "../localisation/StringIds.h"
-#include "../util/Util.h"
 #include "Track.h"
 #include "TrackPaint.h"
 

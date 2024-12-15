@@ -9,9 +9,9 @@
 
 #pragma once
 
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/ride/RideTypes.h>
 #include <openrct2/ride/Track.h>
-#include <openrct2/util/Util.h>
 
 namespace OpenRCT2
 {

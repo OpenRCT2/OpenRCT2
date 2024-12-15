@@ -196,6 +196,7 @@
     <ClInclude Include="core\Diagnostics.hpp" />
     <ClInclude Include="core\Endianness.h" />
     <ClInclude Include="core\EnumMap.hpp" />
+    <ClInclude Include="core\EnumUtils.hpp" />
     <ClInclude Include="core\File.h" />
     <ClInclude Include="core\FileIndex.hpp" />
     <ClInclude Include="core\FileScanner.h" />

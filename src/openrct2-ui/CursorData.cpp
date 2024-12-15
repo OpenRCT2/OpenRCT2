@@ -10,8 +10,8 @@
 #include "CursorData.h"
 
 #include <cassert>
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/interface/Cursors.h>
-#include <openrct2/util/Util.h>
 
 namespace OpenRCT2::Ui
 {

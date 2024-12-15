@@ -11,10 +11,11 @@
 
 // Structures shared between both RCT1 and RCT2.
 
+#include "../core/EnumUtils.hpp"
+#include "../core/Money.hpp"
 #include "../management/Research.h"
 #include "../object/Object.h"
 #include "../ride/RideTypes.h"
-#include "../util/Util.h"
 #include "../world/tile_element/TileElementType.h"
 #include "Limits.h"
 
