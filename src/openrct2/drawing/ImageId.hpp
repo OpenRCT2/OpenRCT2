@@ -75,26 +75,6 @@ private:
     uint8_t _flags = 0;
 
 public:
-    [[nodiscard]] static ImageId FromUInt32(uint32_t value)
-    {
-        ImageId result;
-        result._index = value & MASK_INDEX;
-        if (value & FLAG_SECONDARY)
-            result._primary = (value & MASK_PRIMARY) >> SHIFT_PRIMARY;
-        else
-            result._primary = (value & MASK_REMAP) >> SHIFT_REMAP;
-        if (value & FLAG_SECONDARY)
-            result._secondary = (value & MASK_SECONDARY) >> SHIFT_SECONDARY;
-        if (value & FLAG_PRIMARY)
-            result._flags |= NEW_FLAG_PRIMARY;
-        if (value & FLAG_BLEND)
-            result._flags |= NEW_FLAG_BLEND;
-        if (value & FLAG_SECONDARY)
-            result._flags |= NEW_FLAG_SECONDARY;
-        assert(result.ToUInt32() == value);
-        return result;
-    }
-
     ImageId() = default;
 
     explicit constexpr ImageId(ImageIndex index)
