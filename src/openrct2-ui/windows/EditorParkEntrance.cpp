@@ -360,9 +360,9 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            auto numRows = GetNumRows();
+            auto scrollHeight = static_cast<int32_t>(GetNumRows() * kImageSize);
 
-            return ScreenSize(kImageSize * kNumColumns, kImageSize * numRows);
+            return ScreenSize(kImageSize * kNumColumns, scrollHeight);
         }
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
