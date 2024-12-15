@@ -251,14 +251,17 @@ Section "Uninstall"
     Delete "$INSTDIR\licence.txt"
     Delete "$INSTDIR\readme.txt"
     Delete "$INSTDIR\contributors.md"
+    Delete "$INSTDIR\known_issues.txt"
     Delete "$INSTDIR\PRIVACY.md"
     Delete "$INSTDIR\scripting.md"
     Delete "$INSTDIR\openrct2.d.ts"
+    Delete "$INSTDIR\OGLdpf.log"
+    Delete "$INSTDIR\curl-ca-bundle.crt"
     Delete "$INSTDIR\${OPENRCT2_EXE}"
     Delete "$INSTDIR\${OPENRCT2_COM}"
     Delete "$INSTDIR\INSTALL.LOG"
 
-    ; Data files
+    ; Remove data files
     RMDir /r "$INSTDIR\data"
 
     ; Remove remaining directories
