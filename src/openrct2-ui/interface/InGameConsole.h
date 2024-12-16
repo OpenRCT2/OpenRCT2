@@ -30,6 +30,7 @@ namespace OpenRCT2::Ui
 
         bool _isInitialised = false;
         bool _isOpen = false;
+        bool _isCommandAwaitingCompletion = false;
         ScreenCoordsXY _consoleTopLeft;
         ScreenCoordsXY _consoleBottomRight;
         ScreenCoordsXY _lastMainViewport;
