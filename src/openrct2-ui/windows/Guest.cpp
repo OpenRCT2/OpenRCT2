@@ -1608,14 +1608,17 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        std::pair<StringId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
+        std::pair<ImageId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
         {
             auto parkName = GetGameState().Park.Name.c_str();
 
+            // Default item image
+            auto& itemDesc = GetShopItemDescriptor(item);
+            auto itemImage = ImageId(itemDesc.Image);
+
             // Default arguments
             auto ft = Formatter();
-            ft.Add<uint32_t>(GetShopItemDescriptor(item).Image);
-            ft.Add<StringId>(GetShopItemDescriptor(item).Naming.Display);
+            ft.Add<StringId>(itemDesc.Naming.Display);
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(parkName);
 
@@ -1624,8 +1627,7 @@ namespace OpenRCT2::Ui::Windows
             switch (item)
             {
                 case ShopItem::Balloon:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.BalloonColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.BalloonColour);
                     break;
                 case ShopItem::Photo:
                     invRide = GetRide(guest.Photo1RideRef);
@@ -1638,8 +1640,7 @@ namespace OpenRCT2::Ui::Windows
 
                     break;
                 case ShopItem::Umbrella:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.UmbrellaColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.UmbrellaColour);
                     break;
                 case ShopItem::Voucher:
                     switch (guest.VoucherType)
@@ -1677,12 +1678,10 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case ShopItem::Hat:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.HatColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.HatColour);
                     break;
                 case ShopItem::TShirt:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.TshirtColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.TshirtColour);
                     break;
                 case ShopItem::Photo2:
                     invRide = GetRide(guest.Photo2RideRef);
@@ -1716,7 +1715,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            return std::make_pair(STR_GUEST_ITEM_FORMAT, ft);
+            return std::make_pair(itemImage, ft);
         }
 
         void OnDrawInventory(DrawPixelInfo& dpi)
@@ -1736,9 +1735,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            Widget* pageBackgroundWidget = &widgets[WIDX_PAGE_BACKGROUND];
-            auto screenCoords = windowPos + ScreenCoordsXY{ pageBackgroundWidget->left + 4, pageBackgroundWidget->top + 2 };
-            int32_t itemNameWidth = pageBackgroundWidget->width() - 8;
+            auto& widget = widgets[WIDX_PAGE_BACKGROUND];
+            auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 4, widget.top + 2 };
+            int32_t itemNameWidth = widget.width() - 8;
 
             int32_t maxY = windowPos.y + height - 22;
             int32_t numItems = 0;
@@ -1753,8 +1752,13 @@ namespace OpenRCT2::Ui::Windows
                 if (!guest->HasItem(item))
                     continue;
 
-                auto [stringId, ft] = InventoryFormatItem(*guest, item);
-                screenCoords.y += DrawTextWrapped(dpi, screenCoords, itemNameWidth, stringId, ft);
+                auto [imageId, ft] = InventoryFormatItem(*guest, item);
+                GfxDrawSprite(dpi, imageId, screenCoords);
+
+                screenCoords.x += 16;
+                screenCoords.y += DrawTextWrapped(dpi, screenCoords, itemNameWidth, STR_BLACK_STRING, ft);
+
+                screenCoords.x -= 16;
                 numItems++;
             }
 
