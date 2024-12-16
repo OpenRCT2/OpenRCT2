@@ -4143,11 +4143,11 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     }
                     case RIDE_MECHANIC_STATUS_HEADING:
-                        stringId = STR_MEHCANIC_IS_HEADING_FOR_THE_RIDE;
+                        stringId = STR_MECHANIC_IS_HEADING_FOR_THE_RIDE;
                         break;
                     case RIDE_MECHANIC_STATUS_FIXING:
                     case RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES:
-                        stringId = STR_MEHCANIC_IS_FIXING_THE_RIDE;
+                        stringId = STR_MECHANIC_IS_FIXING_THE_RIDE;
                         break;
                     default:
                         stringId = STR_EMPTY;
