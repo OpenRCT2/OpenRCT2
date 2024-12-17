@@ -202,7 +202,8 @@ namespace OpenRCT2::Ui
 
         auto colour = w.colours[widget.colour];
 
-        if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
+        // Dead code?
+        if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
         {
             // Draw border with no fill
             GfxFillRectInset(dpi, rect, colour, press | INSET_RECT_FLAG_FILL_NONE);
@@ -288,7 +289,8 @@ namespace OpenRCT2::Ui
         // Check if the button is pressed down
         if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
         {
-            if (static_cast<int32_t>(widget.image.ToUInt32()) == -2)
+            // Dead code?
+            if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
             {
                 // Draw border with no fill
                 GfxFillRectInset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
@@ -821,7 +823,7 @@ namespace OpenRCT2::Ui
         const auto& widget = w.widgets[widgetIndex];
 
         // Get the image
-        if (widget.image.ToUInt32() == kSpriteIdNull)
+        if (widget.image.GetIndex() == kSpriteIdNull)
             return;
         auto image = widget.image;
 

@@ -106,7 +106,7 @@ namespace OpenRCT2::Ui::Windows
                 auto dukImage = desc["image"];
                 if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
                 {
-                    result.Image = ImageId::FromUInt32(ImageFromDuk(dukImage));
+                    result.Image = ImageId(ImageFromDuk(dukImage));
                     result.HasBorder = false;
                 }
                 else
@@ -208,13 +208,13 @@ namespace OpenRCT2::Ui::Windows
             auto dukImage = desc["image"];
             if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
             {
-                result.imageFrameBase = ImageId::FromUInt32(ImageFromDuk(dukImage));
+                result.imageFrameBase = ImageId(ImageFromDuk(dukImage));
                 result.imageFrameCount = 0;
                 result.imageFrameDuration = 0;
             }
             else if (dukImage.type() == DukValue::Type::OBJECT)
             {
-                result.imageFrameBase = ImageId::FromUInt32(dukImage["frameBase"].as_uint());
+                result.imageFrameBase = ImageId(dukImage["frameBase"].as_uint());
                 result.imageFrameCount = AsOrDefault(dukImage["frameCount"], 0);
                 result.imageFrameDuration = AsOrDefault(dukImage["frameDuration"], 0);
 

@@ -145,7 +145,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // Image item
                         auto image = UseImages ? _dropdownItemsImages[i]
-                                               : ImageId::FromUInt32(static_cast<uint32_t>(gDropdownItems[i].Args));
+                                               : ImageId(static_cast<uint32_t>(gDropdownItems[i].Args));
                         if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                             image = image.WithIndexOffset(1);
                         GfxDrawSprite(dpi, image, screenCoords);
@@ -512,7 +512,7 @@ static constexpr colour_t kColoursDropdownOrder[] = {
                                                                : ImageId(SPR_PALETTE_BTN, orderedColour);
 
             gDropdownItems[i].Format = Dropdown::FormatColourPicker;
-            gDropdownItems[i].Args = (i << 32) | imageId.ToUInt32();
+            Dropdown::SetImage(i, imageId);
         }
 
         // Show dropdown
