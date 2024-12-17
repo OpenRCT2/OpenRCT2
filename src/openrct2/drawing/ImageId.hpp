@@ -102,22 +102,6 @@ public:
     {
     }
 
-    [[nodiscard]] constexpr uint32_t ToUInt32() const
-    {
-        auto result = (_index & MASK_INDEX);
-        result |= (_primary << SHIFT_REMAP) & MASK_REMAP;
-        if (_flags & NEW_FLAG_PRIMARY)
-            result |= FLAG_PRIMARY;
-        if (_flags & NEW_FLAG_SECONDARY)
-        {
-            result |= (_secondary << SHIFT_SECONDARY) & MASK_SECONDARY;
-            result |= FLAG_SECONDARY;
-        }
-        if (_flags & NEW_FLAG_BLEND)
-            result |= FLAG_BLEND;
-        return result;
-    }
-
     bool HasValue() const
     {
         return GetIndex() != ImageIndexUndefined;
