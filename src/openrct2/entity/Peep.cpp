@@ -244,6 +244,19 @@ void PeepUpdateAll()
     }
 }
 
+void PeepUpdateAllBoundingBoxes()
+{
+    for (auto* peep : EntityList<Guest>())
+    {
+        peep->UpdateSpriteBoundingBox();
+    }
+
+    for (auto* peep : EntityList<Staff>())
+    {
+        peep->UpdateSpriteBoundingBox();
+    }
+}
+
 /*
  * rct2: 0x68F3AE
  * Set peep state to falling if path below has gone missing, return true if current path is valid, false if peep starts falling.
@@ -360,7 +373,7 @@ void Peep::UpdateCurrentAnimationType()
 
 void Peep::UpdateSpriteBoundingBox()
 {
-    const& auto spriteBounds = GetSpriteBounds(AnimationGroup, AnimationType);
+    const auto& spriteBounds = GetSpriteBounds(AnimationGroup, AnimationType);
     SpriteData.Width = spriteBounds.sprite_width;
     SpriteData.HeightMin = spriteBounds.sprite_height_negative;
     SpriteData.HeightMax = spriteBounds.sprite_height_positive;

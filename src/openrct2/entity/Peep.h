@@ -436,6 +436,7 @@ extern const bool gAnimationGroupToSlowWalkMap[48];
 
 int32_t PeepGetStaffCount();
 void PeepUpdateAll();
+void PeepUpdateAllBoundingBoxes();
 void PeepProblemWarningsUpdate();
 void PeepStopCrowdNoise();
 void PeepUpdateCrowdNoise();
