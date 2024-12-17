@@ -30,6 +30,7 @@
 #include <cstring>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 static uint8_t _bakedLightTexture_lantern_0[32 * 32];
 static uint8_t _bakedLightTexture_lantern_1[64 * 64];

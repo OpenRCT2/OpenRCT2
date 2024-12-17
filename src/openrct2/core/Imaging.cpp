@@ -189,7 +189,7 @@ namespace OpenRCT2::Imaging
 
             if (image.Depth == 8)
             {
-                if (image.Palette == nullptr)
+                if (!image.Palette.has_value())
                 {
                     throw std::runtime_error("Expected a palette for 8-bit image.");
                 }

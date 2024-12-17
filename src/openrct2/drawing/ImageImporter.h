@@ -93,7 +93,7 @@ namespace OpenRCT2::Drawing
     ImageImportMeta createImageImportMetaFromJson(json_t& input);
 } // namespace OpenRCT2::Drawing
 
-constexpr GamePalette StandardPalette = { {
+constexpr OpenRCT2::Drawing::GamePalette StandardPalette = { {
     // 0 (Unused/Transparent)
     { 0, 0, 0, 255 },
 
