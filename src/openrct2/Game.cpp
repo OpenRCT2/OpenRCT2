@@ -337,6 +337,9 @@ void GameFixSaveVars()
     UpdateConsolidatedPatrolAreas();
 
     MapCountRemainingLandRights();
+
+    // Update sprite bounds, rather than relying on stored data
+    PeepUpdateAllBoundingBoxes();
 }
 
 void GameLoadInit()
