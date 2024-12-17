@@ -5,6 +5,7 @@
 - Improved: [#23404] Folders are now paired with an icon in the load/save window.
 - Fix: [#23286] Currency formatted incorrectly in the in game console.
 - Fix: [#23348] Console set commands don't print output properly.
+- Fix: [#23376] Peeps with balloons, hats and umbrellas may leave artifacts on screen.
 
 0.4.17 (2024-12-08)
 ------------------------------------------------------------------------

@@ -999,6 +999,15 @@ namespace OpenRCT2
                     continue;
 
                 anim.bounds = inferMaxAnimationDimensions(anim);
+
+                // Balloons, hats and umbrellas are painted separately, so the inference
+                // algorithm doesn't account for those. We manually compensate for these here.
+                // Between 8-12 pixels are needed, depending on rotation, so we're generalising.
+                auto pag = PeepAnimationGroup(groupKey);
+                if (pag == PeepAnimationGroup::Balloon || pag == PeepAnimationGroup::Hat || pag == PeepAnimationGroup::Umbrella)
+                {
+                    anim.bounds.sprite_height_negative += 12;
+                }
             }
         }
     }
