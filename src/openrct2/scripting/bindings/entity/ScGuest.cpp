@@ -923,7 +923,9 @@ namespace OpenRCT2::Scripting
 
         const auto& animationGroup = GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
         peep->AnimationImageIdOffset = animationGroup.frame_offsets[offset];
+        peep->Invalidate();
         peep->UpdateSpriteBoundingBox();
+        peep->Invalidate();
     }
 
     uint8_t ScGuest::animationOffset_get() const
