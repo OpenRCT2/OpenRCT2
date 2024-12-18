@@ -3,6 +3,7 @@
 - Improved: [#23260] Add diagonal (block) brakes to LSM Launched Roller Coaster.
 - Improved: [#23350] Increased the maximum width of the ride graph window.
 - Improved: [#23404] Folders are now paired with an icon in the load/save window.
+- Improved: [#23431] Opaque water and Corkscrew Roller Coaster boosters now show up if RCT1 isn’t linked. 
 - Change: [#23413] The max number of park entrance objects has been raised to 255.
 - Fix: [#22742, #22793] In game console does not handle format tokens properly.
 - Fix: [#23286] Currency formatted incorrectly in the in game console.

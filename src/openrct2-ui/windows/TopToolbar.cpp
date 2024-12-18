@@ -1083,12 +1083,6 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::SetChecked(DDIDX_HIGHLIGHT_PATH_ISSUES, true);
 
         gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
-
-        // Opaque water relies on RCT1 sprites.
-        if (!IsCsgLoaded())
-        {
-            Dropdown::SetDisabled(DDIDX_TRANSPARENT_WATER, true);
-        }
     }
 
     void TopToolbar::ViewMenuDropdown(int16_t dropdownIndex)

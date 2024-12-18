@@ -34249,5 +34249,59 @@
         "x": -19,
         "y": -14,
         "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/booster_ne_sw_1.png",
+        "x": -26,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/booster_nw_se_1.png",
+        "x": -24,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/booster_ne_sw_2.png",
+        "x": -8,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/corkscrew/booster_nw_se_2.png",
+        "x": -25,
+        "y": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "surface/opaque_water_overlay_1.png",
+        "x": -32,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "surface/opaque_water_overlay_2.png",
+        "x": -32,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "surface/opaque_water_overlay_3.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "surface/opaque_water_overlay_4.png",
+        "x": -32,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "surface/opaque_water_overlay_5.png",
+        "x": -32,
+        "y": 15,
+        "palette": "keep"
     }
 ]
