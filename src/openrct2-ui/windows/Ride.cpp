@@ -280,9 +280,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  7,  50}, {302, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                    ),
         MakeWidget        ({297,  51}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                ),
         MakeWidget        ({  7, 137}, {302, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP  ),
-        MakeWidget        ({  7, 154}, {302, 43}, WindowWidgetType::Scroll,   WindowColour::Secondary, STR_EMPTY                                         ),
-        MakeSpinnerWidgets({  7, 203}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP      ),
-        MakeSpinnerWidgets({164, 203}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP),
+        MakeWidget        ({  7, 162}, {302, 178}, WindowWidgetType::Scroll,   WindowColour::Secondary, STR_EMPTY                                         ),
+        MakeSpinnerWidgets({  7, 344}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP      ),
+        MakeSpinnerWidgets({164, 344}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP),
         kWidgetsEnd,
     };
 
