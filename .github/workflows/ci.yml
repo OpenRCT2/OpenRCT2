@@ -234,7 +234,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: g2-${{ needs.build_variables.outputs.name }}.dat
-          path: bin/data/g2.dat
+          path: bin/data
       - name: Build artifacts
         run: |
           . scripts/setenv -q
