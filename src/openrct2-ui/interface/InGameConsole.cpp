@@ -233,9 +233,9 @@ void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat
 {
     // Include text colour format only for special cases
     // The draw function handles the default text colour differently
-    auto colourCodepoint = "";
+    std::string colourCodepoint = "";
     if (colourFormat != FormatToken::ColourWindow2)
-        colourCodepoint = "{WINDOW_COLOUR_2}";
+        colourCodepoint = FormatTokenToStringWithBraces(colourFormat);
 
     std::string line;
     std::size_t splitPos = 0;
