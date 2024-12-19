@@ -578,27 +578,31 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(clipDpi, spriteId, screenCoords);
 
             auto* guest = peep->As<Guest>();
-            if (guest != nullptr)
+            if (guest == nullptr)
+                return;
+
+            // There are only 6 walking frames available for each item.
+            auto itemFrame = (_guestAnimationFrame / 4) % 6;
+
+            if (guest->AnimationGroup == PeepAnimationGroup::Hat)
             {
-                // If holding a balloon
-                if (animationFrame >= kPeepSpriteBalloonStateWatchRideId
-                    && animationFrame < kPeepSpriteBalloonStateSittingIdleId + 4)
-                {
-                    GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
-                }
+                auto itemOffset = kPeepSpriteHatItemStart + 1;
+                auto imageId = ImageId(itemOffset + itemFrame * 4, guest->HatColour);
+                GfxDrawSprite(clipDpi, imageId, screenCoords);
+            }
 
-                // If holding umbrella
-                if (animationFrame >= kPeepSpriteUmbrellaStateWalkingId
-                    && animationFrame < kPeepSpriteUmbrellaStateSittingIdleId + 4)
-                {
-                    GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
-                }
+            if (guest->AnimationGroup == PeepAnimationGroup::Balloon)
+            {
+                auto itemOffset = kPeepSpriteBalloonItemStart + 1;
+                auto imageId = ImageId(itemOffset + itemFrame * 4, guest->BalloonColour);
+                GfxDrawSprite(clipDpi, imageId, screenCoords);
+            }
 
-                // If wearing hat
-                if (animationFrame >= kPeepSpriteHatStateWatchRideId && animationFrame < kPeepSpriteHatStateSittingIdleId + 4)
-                {
-                    GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
-                }
+            if (guest->AnimationGroup == PeepAnimationGroup::Umbrella)
+            {
+                auto itemOffset = kPeepSpriteUmbrellaItemStart + 1;
+                auto imageId = ImageId(itemOffset + itemFrame * 4, guest->UmbrellaColour);
+                GfxDrawSprite(clipDpi, imageId, screenCoords);
             }
         }
 

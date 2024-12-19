@@ -37,13 +37,23 @@ void PeepAnimationsObject::Load()
     _imageOffsetId = LoadImages();
 
     // Set loaded image offsets for all animations
-    for (auto& group : _animationGroups)
+    for (auto groupKey = 0u; groupKey < _animationGroups.size(); groupKey++)
     {
+        auto& group = _animationGroups[groupKey];
         auto& requiredAnimationMap = getAnimationsByPeepType(_peepType);
         for (auto& [typeStr, typeEnum] : requiredAnimationMap)
         {
             group[typeEnum].base_image = _imageOffsetId + group[typeEnum].imageTableOffset;
             group[typeEnum].bounds = inferMaxAnimationDimensions(group[typeEnum]);
+
+            // Balloons, hats and umbrellas are painted separately, so the inference
+            // algorithm doesn't account for those. We manually compensate for these here.
+            // Between 8-12 pixels are needed, depending on rotation, so we're generalising.
+            auto pag = PeepAnimationGroup(groupKey);
+            if (pag == PeepAnimationGroup::Balloon || pag == PeepAnimationGroup::Hat || pag == PeepAnimationGroup::Umbrella)
+            {
+                group[typeEnum].bounds.sprite_height_negative += 12;
+            }
         }
     }
 }

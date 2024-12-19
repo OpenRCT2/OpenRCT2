@@ -2909,8 +2909,6 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     auto& objManager = GetContext()->GetObjectManager();
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
-    // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
-    //  bound_box_offset_z to make sure peeps are drawn on top of railways
     uint32_t baseImageId = animObj->GetPeepAnimation(AnimationGroup, actionAnimationGroup).base_image;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
@@ -2921,33 +2919,46 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
 
     auto imageId = ImageId(baseImageId, TshirtColour, TrousersColour);
 
+    // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
+    // bound_box_offset_z to make sure peeps are drawn on top of railways
     auto bb = BoundBoxXYZ{ { 0, 0, z + 5 }, { 1, 1, 11 } };
     auto offset = CoordsXYZ{ 0, 0, z };
     PaintAddImageAsParent(session, imageId, { 0, 0, z }, bb);
 
     auto* guest = As<Guest>();
-    if (guest != nullptr)
+    if (guest == nullptr)
+        return;
+
+    // There are only 6 walking frames available for each item,
+    // as well as 1 sprite for sitting and 1 for standing still.
+    auto itemFrame = imageOffset % 6;
+    if (actionAnimationGroup == PeepAnimationType::WatchRide)
+        itemFrame = 6;
+    else if (actionAnimationGroup == PeepAnimationType::SittingIdle)
+        itemFrame = 7;
+
+    if (AnimationGroup == PeepAnimationGroup::Hat)
     {
-        if (baseImageId >= kPeepSpriteHatStateWatchRideId && baseImageId < (kPeepSpriteHatStateSittingIdleId + 4))
-        {
-            imageId = ImageId(baseImageId + 32, guest->HatColour);
-            PaintAddImageAsChild(session, imageId, offset, bb);
-            return;
-        }
+        auto itemOffset = kPeepSpriteHatItemStart;
+        imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->HatColour);
+        PaintAddImageAsChild(session, imageId, offset, bb);
+        return;
+    }
 
-        if (baseImageId >= kPeepSpriteBalloonStateWatchRideId && baseImageId < (kPeepSpriteBalloonStateSittingIdleId + 4))
-        {
-            imageId = ImageId(baseImageId + 32, guest->BalloonColour);
-            PaintAddImageAsChild(session, imageId, offset, bb);
-            return;
-        }
+    if (AnimationGroup == PeepAnimationGroup::Balloon)
+    {
+        auto itemOffset = kPeepSpriteBalloonItemStart;
+        imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->BalloonColour);
+        PaintAddImageAsChild(session, imageId, offset, bb);
+        return;
+    }
 
-        if (baseImageId >= kPeepSpriteUmbrellaStateWalkingId && baseImageId < (kPeepSpriteUmbrellaStateSittingIdleId + 4))
-        {
-            imageId = ImageId(baseImageId + 32, guest->UmbrellaColour);
-            PaintAddImageAsChild(session, imageId, offset, bb);
-            return;
-        }
+    if (AnimationGroup == PeepAnimationGroup::Umbrella)
+    {
+        auto itemOffset = kPeepSpriteUmbrellaItemStart;
+        imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->UmbrellaColour);
+        PaintAddImageAsChild(session, imageId, offset, bb);
+        return;
     }
 }
 
