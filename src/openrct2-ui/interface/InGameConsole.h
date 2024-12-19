@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui
         ScreenCoordsXY _consoleBottomRight;
         ScreenCoordsXY _lastMainViewport;
 
-        std::vector<std::string> _consoleLines;
+        std::vector<std::pair<std::string, FormatToken>> _consoleLines;
         u8string _consoleCurrentLine;
 
         int32_t _consoleCaretTicks;
