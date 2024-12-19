@@ -8,7 +8,6 @@
 - Fix: [#23348] Console set commands don't print output properly.
 - Fix: [#23376] Peeps with balloons, hats and umbrellas may leave artifacts on screen.
 
-
 0.4.17 (2024-12-08)
 ------------------------------------------------------------------------
 - Feature: [#23166] Add Galician translation.
