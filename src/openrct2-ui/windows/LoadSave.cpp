@@ -925,11 +925,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnReturnPressed()
-        {
-            OnMouseUp(WIDX_OK);
-        }
-
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             if (text.empty())
@@ -1175,13 +1170,20 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowLoadSaveInputKey(WindowBase* w, uint32_t keycode)
     {
+        if (w->classification != WindowClass::Loadsave)
+        {
+            return;
+        }
+
+        auto loadSaveWindow = static_cast<LoadSaveWindow*>(w);
+
         if (keycode == SDLK_RETURN || keycode == SDLK_KP_ENTER)
         {
-            if (w->classification == WindowClass::Loadsave)
-            {
-                auto loadSaveWindow = static_cast<LoadSaveWindow*>(w);
-                loadSaveWindow->OnReturnPressed();
-            }
+            loadSaveWindow->OnMouseUp(WIDX_OK);
+        }
+        else if (keycode == SDLK_ESCAPE)
+        {
+            loadSaveWindow->Close();
         }
     }
 
@@ -1265,6 +1267,25 @@ namespace OpenRCT2::Ui::Windows
         return WindowCreate<OverwritePromptWindow>(
             WindowClass::LoadsaveOverwritePrompt, OVERWRITE_WW, OVERWRITE_WH,
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN, name, path);
+    }
+
+    void WindowLoadSaveOverwritePromptInputKey(WindowBase* w, uint32_t keycode)
+    {
+        if (w->classification != WindowClass::LoadsaveOverwritePrompt)
+        {
+            return;
+        }
+
+        auto promptWindow = static_cast<OverwritePromptWindow*>(w);
+
+        if (keycode == SDLK_RETURN || keycode == SDLK_KP_ENTER)
+        {
+            promptWindow->OnMouseUp(WIDX_OVERWRITE_OVERWRITE);
+        }
+        else if (keycode == SDLK_ESCAPE)
+        {
+            promptWindow->OnMouseUp(WIDX_OVERWRITE_CANCEL);
+        }
     }
 
 #pragma endregion
