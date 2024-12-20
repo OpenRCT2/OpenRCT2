@@ -5485,6 +5485,37 @@ void Vehicle::ApplyStopBlockBrake()
     }
 }
 
+void Vehicle::ApplyCableLiftBlockBrake(bool brakeClosed)
+{
+    // If we are already on the cable lift, ignore the brake
+    if (status == Vehicle::Status::TravellingCableLift)
+        return;
+
+    if (brakeClosed)
+        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
+
+    // Slow down if travelling faster than 4mph
+    if (velocity > kBlockBrakeBaseSpeed)
+    {
+        velocity -= velocity >> 3;
+        acceleration = 0;
+    }
+    // Once moving slow enough, keep moving forward until lined up with the catch car
+    else if (track_progress <= 18)
+    {
+        velocity = kBlockBrakeBaseSpeed;
+        acceleration = 0;
+    }
+    // Once in position, stop, and wait for the catch car
+    if (velocity > 0 && track_progress >= 18)
+    {
+        velocity = 0;
+        acceleration = 0;
+        if (!brakeClosed)
+            SetState(Vehicle::Status::WaitingForCableLift, sub_state);
+    }
+}
+
 /**
  *
  *  rct2: 0x006DAC43
@@ -5519,6 +5550,21 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
     {
         case TrackElemType::BlockBrakes:
         case TrackElemType::DiagBlockBrakes:
+
+            // Check if this brake is the start of a cable lift
+            if (curRide->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
+            {
+                CoordsXYE track;
+                int32_t zUnused;
+                int32_t direction;
+                if (TrackBlockGetNextFromZero(TrackLocation, *curRide, GetTrackDirection(), &track, &zUnused, &direction, false)
+                    && track.element != nullptr && track.element->AsTrack()->HasCableLift())
+                {
+                    ApplyCableLiftBlockBrake(curRide->IsBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed());
+                    return;
+                }
+            }
+
             if (curRide->IsBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed())
                 ApplyStopBlockBrake();
             else
@@ -5577,56 +5623,13 @@ void Vehicle::UpdateVelocity()
     _vehicleVelocityF64E0C = (nextVelocity >> 10) * 42;
 }
 
-static void block_brakes_open_previous_section(
-    const Ride& ride, const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement)
+static void BlockBrakesOpenPreviousSection(const Ride& ride, const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement)
 {
-    auto location = vehicleTrackLocation;
-    TrackBeginEnd trackBeginEnd, slowTrackBeginEnd;
-    TileElement slowTileElement = *tileElement;
-    bool counter = true;
-    CoordsXY slowLocation = location;
-    do
-    {
-        if (!TrackBlockGetPrevious({ location, tileElement }, &trackBeginEnd))
-        {
-            return;
-        }
-        if (trackBeginEnd.begin_x == vehicleTrackLocation.x && trackBeginEnd.begin_y == vehicleTrackLocation.y
-            && tileElement == trackBeginEnd.begin_element)
-        {
-            return;
-        }
-
-        location.x = trackBeginEnd.end_x;
-        location.y = trackBeginEnd.end_y;
-        location.z = trackBeginEnd.begin_z;
-        tileElement = trackBeginEnd.begin_element;
-
-        // #2081: prevent infinite loop
-        counter = !counter;
-        if (counter)
-        {
-            TrackBlockGetPrevious({ slowLocation, &slowTileElement }, &slowTrackBeginEnd);
-            slowLocation.x = slowTrackBeginEnd.end_x;
-            slowLocation.y = slowTrackBeginEnd.end_y;
-            slowTileElement = *(slowTrackBeginEnd.begin_element);
-            if (slowLocation == location && slowTileElement.GetBaseZ() == tileElement->GetBaseZ()
-                && slowTileElement.GetType() == tileElement->GetType()
-                && slowTileElement.GetDirection() == tileElement->GetDirection())
-            {
-                return;
-            }
-        }
-    } while (!(trackBeginEnd.begin_element->AsTrack()->IsBlockStart()));
-
-    // Get the start of the track block instead of the end
-    location = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
-    auto trackOrigin = MapGetTrackElementAtOfTypeSeq(location, trackBeginEnd.begin_element->AsTrack()->GetTrackType(), 0);
-    if (trackOrigin == nullptr)
-    {
+    CoordsXYZ location = vehicleTrackLocation;
+    TrackElement* trackElement = TrackGetPreviousBlock(location, tileElement);
+    if (trackElement == nullptr)
         return;
-    }
-    auto trackElement = trackOrigin->AsTrack();
+
     SetBrakeClosedMultiTile(*trackElement, location, false);
     MapInvalidateElement(location, reinterpret_cast<TileElement*>(trackElement));
 
@@ -6921,7 +6924,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
                 }
             }
             MapInvalidateElement(TrackLocation, tileElement);
-            block_brakes_open_previous_section(curRide, TrackLocation, tileElement);
+            BlockBrakesOpenPreviousSection(curRide, TrackLocation, tileElement);
             if (TrackTypeIsBlockBrakes(trackType))
             {
                 BlockBrakeSetLinkedBrakesClosed(TrackLocation, *tileElement->AsTrack(), true);
