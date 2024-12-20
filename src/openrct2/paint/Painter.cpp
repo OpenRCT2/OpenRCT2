@@ -203,5 +203,4 @@ void Painter::ReleaseSession(PaintSession* session)
 Painter::~Painter()
 {
     _paintSessionPool.clear();
-    _paintSessionPool.clear();
 }
