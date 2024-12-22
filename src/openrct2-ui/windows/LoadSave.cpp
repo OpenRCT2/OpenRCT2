@@ -67,6 +67,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SCROLL,
         WIDX_FILENAME_TEXTBOX,
         WIDX_OK,
+        WIDX_BROWSE,
     };
 
     // clang-format off
@@ -81,8 +82,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({               4,      55}, {      170,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_NAME
         MakeWidget({(WW - 5) / 2 + 1,      55}, {      170,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_DATE
         MakeWidget({               4,      68}, {      342, 303 }, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                            ), // WIDX_SCROLL
-        MakeWidget({              64, WH - 26}, { WW - 133,  14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                             ), // WIDX_FILENAME_TEXTBOX
-        MakeWidget({         WW - 65, WH - 26}, {       60,  14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_OK                                                     ), // WIDX_OK
+        MakeWidget({              64, WH - 50}, { WW - 133,  14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                             ), // WIDX_FILENAME_TEXTBOX
+        MakeWidget({         WW - 65, WH - 50}, {       60,  14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_OK                                                     ), // WIDX_OK
+        MakeWidget({               4, WH - 24}, {      197,  19 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // WIDX_BROWSE
         kWidgetsEnd,
     };
     // clang-format on
@@ -677,6 +679,13 @@ namespace OpenRCT2::Ui::Windows
         {
             widgets = window_loadsave_widgets;
 
+            const auto uiContext = OpenRCT2::GetContext()->GetUiContext();
+            if (!uiContext->HasFilePicker())
+            {
+                disabled_widgets |= (1uLL << WIDX_BROWSE);
+                window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
+            }
+
             // TODO: Split LOADSAVETYPE_* into two proper enum classes (one for load/save, the other for the type)
             const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
             const auto path = GetDir(type);
@@ -771,26 +780,30 @@ namespace OpenRCT2::Ui::Windows
             window_loadsave_widgets[WIDX_SORT_NAME].right = window_loadsave_widgets[WIDX_SORT_DATE].left - 1;
 
             window_loadsave_widgets[WIDX_SCROLL].right = width - 5;
-            window_loadsave_widgets[WIDX_SCROLL].bottom = height - 5;
+            window_loadsave_widgets[WIDX_SCROLL].bottom = height - 30;
 
             if (_type & LOADSAVETYPE_SAVE)
             {
-                window_loadsave_widgets[WIDX_SCROLL].bottom -= 26;
+                window_loadsave_widgets[WIDX_SCROLL].bottom -= 18;
 
                 // Get 'Filename:' string width
                 auto label = LanguageGetString(STR_FILENAME);
                 auto labelWidth = GfxGetStringWidth(label, FontStyle::Medium);
 
-                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].top = height - 26;
-                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 12;
+                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].top = height - 42;
+                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 30;
                 window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].left = 4 + labelWidth + 6;
                 window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].right = width - 63 + 4;
 
-                window_loadsave_widgets[WIDX_OK].top = height - 26;
-                window_loadsave_widgets[WIDX_OK].bottom = height - 12;
+                window_loadsave_widgets[WIDX_OK].top = height - 42;
+                window_loadsave_widgets[WIDX_OK].bottom = height - 30;
                 window_loadsave_widgets[WIDX_OK].left = width - 55;
                 window_loadsave_widgets[WIDX_OK].right = width - 5;
             }
+
+            // 'Use system file browser'
+            window_loadsave_widgets[WIDX_BROWSE].top = height - 24;
+            window_loadsave_widgets[WIDX_BROWSE].bottom = height - 6;
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -873,6 +886,23 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_NEW_FOLDER:
                     WindowTextInputRawOpen(this, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "", 64);
                     break;
+
+                case WIDX_BROWSE:
+                {
+                    u8string path = OpenSystemFileBrowser(isSave);
+                    if (!path.empty())
+                    {
+                        Select(path.c_str());
+                    }
+                    else
+                    {
+                        // If user cancels file dialog, refresh list
+                        PopulateList(isSave, _directory, _extensionPattern);
+                        InitScrollWidgets();
+                        no_list_items = static_cast<uint16_t>(_listItems.size());
+                    }
+                }
+                break;
 
                 case WIDX_SORT_NAME:
                     if (Config::Get().general.LoadSaveSort == Sort::NameAscending)
