@@ -2352,12 +2352,12 @@ bool Guest::HasRidden(const Ride& ride) const
     return OpenRCT2::RideUse::GetHistory().Contains(Id, ride.id);
 }
 
-void Guest::SetHasRiddenRideType(int32_t rideType)
+void Guest::SetHasRiddenRideType(ride_type_t rideType)
 {
     OpenRCT2::RideUse::GetTypeHistory().Add(Id, rideType);
 }
 
-bool Guest::HasRiddenRideType(int32_t rideType) const
+bool Guest::HasRiddenRideType(ride_type_t rideType) const
 {
     return OpenRCT2::RideUse::GetTypeHistory().Contains(Id, rideType);
 }

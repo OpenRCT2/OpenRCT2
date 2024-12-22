@@ -31,7 +31,7 @@
 using namespace OpenRCT2;
 
 RideCreateAction::RideCreateAction(
-    int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2, ObjectEntryIndex entranceObjectIndex)
+    ride_type_t rideType, ObjectEntryIndex subType, colour_t colour1, colour_t colour2, ObjectEntryIndex entranceObjectIndex)
     : _rideType(rideType)
     , _subType(subType)
     , _entranceObjectIndex(entranceObjectIndex)
@@ -49,12 +49,12 @@ void RideCreateAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit("colour2", _colour2);
 }
 
-int32_t RideCreateAction::GetRideType() const
+ride_type_t RideCreateAction::GetRideType() const
 {
     return _rideType;
 }
 
-int32_t RideCreateAction::GetRideObject() const
+ObjectEntryIndex RideCreateAction::GetRideObject() const
 {
     return _subType;
 }

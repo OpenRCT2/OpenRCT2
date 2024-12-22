@@ -225,7 +225,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
 bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
 {
     bool selectionShouldBeExpanded;
-    int32_t rideTypeIterator, rideTypeIteratorMax;
+    ride_type_t rideTypeIterator, rideTypeIteratorMax;
     auto& gameState = GetGameState();
 
     {

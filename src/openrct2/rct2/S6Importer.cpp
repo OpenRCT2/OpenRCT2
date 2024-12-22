@@ -701,7 +701,7 @@ namespace OpenRCT2::RCT2
             *dst = {};
             dst->id = rideIndex;
 
-            ObjectEntryIndex rideType = src->Type;
+            auto rideType = src->Type;
             auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->Subtype);
             if (RCT2RideTypeNeedsConversion(src->Type))
             {

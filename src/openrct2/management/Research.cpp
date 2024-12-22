@@ -561,7 +561,7 @@ bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index)
     }
 }
 
-bool RideTypeIsInvented(uint32_t rideType)
+bool RideTypeIsInvented(ride_type_t rideType)
 {
     return RideTypeIsValid(rideType) ? _researchedRideTypes[rideType] : false;
 }
@@ -574,7 +574,7 @@ bool RideEntryIsInvented(ObjectEntryIndex rideEntryIndex)
     return _researchedRideEntries[rideEntryIndex];
 }
 
-void RideTypeSetInvented(uint32_t rideType)
+void RideTypeSetInvented(ride_type_t rideType)
 {
     if (RideTypeIsValid(rideType))
     {

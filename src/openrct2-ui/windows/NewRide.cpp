@@ -601,7 +601,7 @@ namespace OpenRCT2::Ui::Windows
             return _lastTrackDesignCount;
         }
 
-        void UpdateVehicleAvailability(ObjectEntryIndex rideType)
+        void UpdateVehicleAvailability(ride_type_t rideType)
         {
             _vehicleAvailability.clear();
             if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))

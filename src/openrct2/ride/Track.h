@@ -714,7 +714,7 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     uint16_t flags);
 
 TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank);
-TrackRoll TrackGetActualBank2(int32_t rideType, bool isInverted, TrackRoll bank);
+TrackRoll TrackGetActualBank2(ride_type_t rideType, bool isInverted, TrackRoll bank);
 TrackRoll TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement);
 
 ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
