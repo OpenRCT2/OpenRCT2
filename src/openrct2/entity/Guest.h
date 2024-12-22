@@ -346,8 +346,8 @@ public:
     void SpendMoney(money64 amount, ExpenditureType type);
     void SetHasRidden(const Ride& ride);
     bool HasRidden(const Ride& ride) const;
-    void SetHasRiddenRideType(int32_t rideType);
-    bool HasRiddenRideType(int32_t rideType) const;
+    void SetHasRiddenRideType(ride_type_t rideType);
+    bool HasRiddenRideType(ride_type_t rideType) const;
     void SetParkEntryTime(int32_t entryTime);
     int32_t GetParkEntryTime() const;
     void CheckIfLost();

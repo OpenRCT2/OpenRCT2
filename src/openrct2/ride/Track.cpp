@@ -534,7 +534,7 @@ TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank)
     return bank;
 }
 
-TrackRoll TrackGetActualBank2(int32_t rideType, bool isInverted, TrackRoll bank)
+TrackRoll TrackGetActualBank2(ride_type_t rideType, bool isInverted, TrackRoll bank)
 {
     if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::hasInvertedVariant))
     {

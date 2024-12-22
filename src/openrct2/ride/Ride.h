@@ -996,7 +996,7 @@ int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed);
 void FixInvalidVehicleSpriteSizes();
 bool RideEntryHasCategory(const RideObjectEntry& rideEntry, uint8_t category);
 
-int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType);
+ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSubType);
 
 void DetermineRideEntranceAndExitLocations();
 void RideClearLeftoverEntrances(const Ride& ride);

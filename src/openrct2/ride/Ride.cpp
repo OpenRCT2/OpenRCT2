@@ -5479,9 +5479,9 @@ bool RideEntryHasCategory(const RideObjectEntry& rideEntry, uint8_t category)
     return GetRideTypeDescriptor(rideType).Category == category;
 }
 
-int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType)
+ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSubType)
 {
-    int32_t subType = rideSubType;
+    auto subType = rideSubType;
 
     if (subType == OBJECT_ENTRY_INDEX_NULL)
     {

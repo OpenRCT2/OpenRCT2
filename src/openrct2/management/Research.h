@@ -132,11 +132,11 @@ void ResearchInsertRideEntry(ObjectEntryIndex entryIndex, bool researched);
 bool ResearchInsertSceneryGroupEntry(ObjectEntryIndex entryIndex, bool researched);
 
 bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index);
-void RideTypeSetInvented(uint32_t rideType);
+void RideTypeSetInvented(ride_type_t rideType);
 void RideEntrySetInvented(ObjectEntryIndex rideEntryIndex);
 void ScenerySetInvented(const ScenerySelection& sceneryItem);
 void ScenerySetNotInvented(const ScenerySelection& sceneryItem);
-bool RideTypeIsInvented(uint32_t rideType);
+bool RideTypeIsInvented(ride_type_t rideType);
 bool RideEntryIsInvented(ObjectEntryIndex rideEntryIndex);
 bool SceneryGroupIsInvented(int32_t sgIndex);
 void SceneryGroupSetInvented(int32_t sgIndex);

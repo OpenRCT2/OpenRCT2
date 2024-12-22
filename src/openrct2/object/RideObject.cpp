@@ -528,7 +528,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         for (size_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
         {
-            ObjectEntryIndex rideType = RIDE_TYPE_NULL;
+            auto rideType = RIDE_TYPE_NULL;
 
             if (i < numRideTypes)
             {
