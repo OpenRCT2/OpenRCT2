@@ -702,6 +702,8 @@ bool TrackCircuitIteratorsMatch(const TrackCircuitIterator* firstIt, const Track
 void TrackGetBack(const CoordsXYE& input, CoordsXYE* output);
 void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);
 
+TrackElement* TrackGetPreviousBlock(CoordsXYZ& location, TileElement* tileElement);
+
 bool TrackElementIsCovered(OpenRCT2::TrackElemType trackElementType);
 OpenRCT2::TrackElemType UncoverTrackElement(OpenRCT2::TrackElemType trackElementType);
 bool TrackTypeIsStation(OpenRCT2::TrackElemType trackType);
