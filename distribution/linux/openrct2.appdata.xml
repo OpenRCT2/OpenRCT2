@@ -34,10 +34,10 @@
     <p xml:lang="ca">
         L’OpenRCT2 és una reimplementació de codi obert del RollerCoaster Tycoon 2 (RCT2).
         El joc consisteix en construir i mantenir un parc d’atraccions i gestionar-ne també
-        les paradetes i instal·lacions. El jugador ha d’obtenir beneficis i mantenir una bona
-        reputació del seu parc i alhora fer que els seus visitants siguin feliços. L’OpenRCT2
-        permet jugar en escenaris o en mode lliure. Als escenaris, el jugador ha de completar
-        alguns objectius en un determinat període de temps, mentre que al mode lliure pot
+        les paradetes i instal·lacions. El jugador ha d’obtenir beneficis, mantenir la bona
+        reputació del parc i alhora fer que els seus visitants siguin feliços. L’OpenRCT2
+        permet jugar escenaris o jugar en mode lliure. Als escenaris, el jugador ha de completar
+        uns objectius en un determinat període de temps, mentre que al mode lliure pot
         construir amb més flexibilitat, fins i tot sense restriccions.
     </p>
     <p xml:lang="de">
@@ -102,7 +102,7 @@
       OpenRCT2 features many changes compared to the original RollerCoaster Tycoon 2 game. A few of them are listed here.
     </p>
     <p xml:lang="ca">
-        L’OpenRCT2 té molts canvis respecte al joc RollerCoaster Tycoon 2 original, com ara:
+        L’OpenRCT2 té alguns canvis respecte al joc RollerCoaster Tycoon 2 original, com ara:
     </p>
     <p xml:lang="de">
         OpenRCT2 hat viele Änderungen im Verleich mit dem Originalspiel RollerCoaster Tycoon 2. Hier sind einige von ihnen aufgelistet.
@@ -134,7 +134,7 @@
       <li xml:lang="pt">Customização por temas da interface de usuário.</li>
 
       <li>Fast-forwarding gameplay.</li>
-      <li xml:lang="ca">Diferents velocitats de joc disponibles durant la partida</li>
+      <li xml:lang="ca">Diferents velocitats de joc</li>
       <li xml:lang="de">Spielsimulation beschleunigen.</li>
       <li xml:lang="fr">Jeu en avance rapide</li>
       <li xml:lang="gl">Avance rápido no xogo.</li> 
@@ -152,7 +152,7 @@
       <li xml:lang="pt">Suporte multijogador.</li>
 
       <li>Multilingual. Improved translations.</li>
-      <li xml:lang="ca">Traduït a diversos idiomes i amb traduccions millorades</li>
+      <li xml:lang="ca">Traduccions a diversos idiomes i correccions de les traduccions originals</li>
       <li xml:lang="de">Mehrsprachig. Verbesserte Übersetzungen.</li>
       <li xml:lang="fr">Multilingue, traductions améliorées</li>
       <li xml:lang="gl">Traducido a varias linguas e con traducións melloradas.</li>  
@@ -235,6 +235,7 @@
     <screenshot type="default">
       <image>https://camo.githubusercontent.com/f513bc551e2c9e04e292724113ea4789726d23921d286f21dad39a6e955b5a56/68747470733a2f2f692e696d6775722e636f6d2f6537434b3553632e706e67</image>
       <caption>Amusement park featuring an inverted roller coaster, a river rapids ride and custom scenery</caption>
+      <caption xml:lang="ca">Parc d’atraccions amb una muntanya russa invertida, ràpids amb bots inflables i decoracions temàtiques.</caption>
       <caption xml:lang="de">Freizeitpark mit einer umgekehrten Achterbahn, einer Stromschnellenattraktion und einer eigens errichteten Szenerie</caption>
       <caption xml:lang="fr">Parc d’attraction comprenant des montagnes russes inversées, des rapides de la rivière ainsi que du décor personnalisé</caption>
       <caption xml:lang="gl">Parque de atraccións con montañas rusas invertidas, un percorrido de rápidos e escenarios personalizados.</caption>  
