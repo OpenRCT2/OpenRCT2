@@ -1756,6 +1756,7 @@ namespace OpenRCT2::Ui::Windows
                 GfxDrawSprite(dpi, imageId, screenCoords);
 
                 screenCoords.x += 16;
+                screenCoords.y += 1;
                 screenCoords.y += DrawTextWrapped(dpi, screenCoords, itemNameWidth, STR_BLACK_STRING, ft);
 
                 screenCoords.x -= 16;
