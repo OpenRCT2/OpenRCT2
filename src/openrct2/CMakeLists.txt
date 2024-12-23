@@ -15,18 +15,6 @@ if (APPLE)
     set_source_files_properties(${OPENRCT2_CORE_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c++ -fmodules")
 endif ()
 
-if (ENABLE_SCRIPTING)
-    include_directories("${CMAKE_CURRENT_LIST_DIR}/../thirdparty/duktape")
-
-    # duktape is third party, ignore all warnings
-    set(OPENRCT2_DUKTAPE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/duktape/duktape.cpp")
-    if (MSVC)
-        set_source_files_properties(${OPENRCT2_DUKTAPE_SOURCES} PROPERTIES COMPILE_FLAGS "/w")
-    else ()
-        set_source_files_properties(${OPENRCT2_DUKTAPE_SOURCES} PROPERTIES COMPILE_FLAGS "-w")
-    endif ()
-endif ()
-
 add_library(${PROJECT_NAME} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${OPENRCT2_DUKTAPE_SOURCES})
 if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13")
 	message(WARNING "Buggy GCC 12 detected! Disabling some warnings")
@@ -40,6 +28,23 @@ if (APPLE)
 endif ()
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
+
+if (ENABLE_SCRIPTING)
+    include(ExternalProject)
+    externalproject_add(quickjs
+        GIT_REPOSITORY      https://github.com/quickjs-ng/quickjs.git
+        GIT_TAG             706ba05fa6fc984e07e6b8b47d028a8ac729fd13
+        CMAKE_ARGS          "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+        SOURCE_DIR          "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/quickjs-ng"
+        INSTALL_COMMAND     ""
+        BUILD_BYPRODUCTS    "quickjs-prefix/src/quickjs-build/libqjs.a"
+    )
+    externalproject_get_property(quickjs SOURCE_DIR)
+    target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SOURCE_DIR})
+    externalproject_get_property(quickjs BINARY_DIR)
+    target_link_libraries(${PROJECT_NAME} ${BINARY_DIR}/libqjs.a)
+    add_dependencies(${PROJECT_NAME} quickjs)
+endif ()
 
 if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
     if (WIN32)
