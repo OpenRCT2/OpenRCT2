@@ -23,7 +23,7 @@ endif ()
 set_target_properties(libopenrct2 PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(libopenrct2)
 
-if (ENABLE_SCRIPTING)
+if (ENABLE_SCRIPTING OR ENABLE_SCRIPTING_REFACTOR) #TODO (mber) remove refactor build option.
     include(ExternalProject)
     externalproject_add(quickjs
         GIT_REPOSITORY      https://github.com/quickjs-ng/quickjs.git
@@ -34,7 +34,7 @@ if (ENABLE_SCRIPTING)
         BUILD_BYPRODUCTS    "quickjs-prefix/src/quickjs-build/libqjs.a"
     )
     externalproject_get_property(quickjs SOURCE_DIR)
-    target_include_directories(libopenrct2 SYSTEM PRIVATE ${SOURCE_DIR})
+    target_include_directories(libopenrct2 SYSTEM PUBLIC ${SOURCE_DIR})
     externalproject_get_property(quickjs BINARY_DIR)
     target_link_libraries(libopenrct2 ${BINARY_DIR}/libqjs.a)
     add_dependencies(libopenrct2 quickjs)
