@@ -1737,7 +1737,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto& widget = widgets[WIDX_PAGE_BACKGROUND];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 4, widget.top + 2 };
-            int32_t itemNameWidth = widget.width() - 8;
+            int32_t itemNameWidth = widget.width() - 24;
 
             int32_t maxY = windowPos.y + height - 22;
             int32_t numItems = 0;
