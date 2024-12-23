@@ -397,9 +397,13 @@ endif ()
 if (DISABLE_TTF)
     target_compile_options(libopenrct2 PUBLIC -DNO_TTF)
 endif ()
-if (ENABLE_SCRIPTING)
-    target_compile_options(libopenrct2 PUBLIC -DENABLE_SCRIPTING)
-endif ()
+
+# TODO (mber) Temporary build for quickjs refactor. Revert.
+#if (ENABLE_SCRIPTING)
+#    target_compile_options(libopenrct2 PUBLIC -DENABLE_SCRIPTING)
+#endif ()
+target_compile_options(libopenrct2 PUBLIC -DENABLE_SCRIPTING_REFACTOR)
+
 if (ENABLE_ASAN)
     target_compile_options(libopenrct2 PUBLIC -fsanitize=address)
     target_link_options(libopenrct2 PUBLIC -fsanitize=address)
