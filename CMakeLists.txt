@@ -391,10 +391,12 @@ if(NOT DISABLE_GUI)
     include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
 endif()
 
-# graphics files (g2.dat and font.dat) 
+# TODO (mber) Temporary build for quickjs refactor. Revert.
+target_compile_options(libopenrct2 PUBLIC -DENABLE_SCRIPTING_REFACTOR)
+
+# graphics files (g2.dat and font.dat)
 if (NOT CMAKE_CROSSCOMPILING)
     set(graphics_files "g2" "fonts" "tracks")
-    
     foreach(graphics_file ${graphics_files})
         set(output_file "${graphics_file}.dat")
         set(json_file "${ROOT_DIR}/resources/${graphics_file}/sprites.json")
