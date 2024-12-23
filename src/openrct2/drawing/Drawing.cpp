@@ -1059,7 +1059,7 @@ void UpdatePaletteEffects()
             int32_t n = kPaletteLengthWaterSparkles;
             for (int32_t i = 0; i < n; i++)
             {
-                auto& vd = gGamePalette[kPaletteOffsetWaterSparkles];
+                auto& vd = gGamePalette[kPaletteOffsetWaterSparkles + i];
                 vd.Blue = vs[0];
                 vd.Green = vs[1];
                 vd.Red = vs[2];
