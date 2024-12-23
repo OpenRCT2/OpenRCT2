@@ -1634,7 +1634,7 @@ namespace OpenRCT2::Ui::Windows
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
+                        ft.Increment(2);
                         invRide->FormatNameTo(ft);
                     }
 
@@ -1647,7 +1647,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         case VOUCHER_TYPE_PARK_ENTRY_FREE:
                             ft.Rewind();
-                            ft.Increment(6);
+                            ft.Increment(2);
                             ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
                             ft.Add<StringId>(STR_STRING);
                             ft.Add<const char*>(parkName);
@@ -1657,21 +1657,21 @@ namespace OpenRCT2::Ui::Windows
                             if (invRide != nullptr)
                             {
                                 ft.Rewind();
-                                ft.Increment(6);
+                                ft.Increment(2);
                                 ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
                                 invRide->FormatNameTo(ft);
                             }
                             break;
                         case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
                             ft.Rewind();
-                            ft.Increment(6);
+                            ft.Increment(2);
                             ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
                             ft.Add<StringId>(STR_STRING);
                             ft.Add<const char*>(parkName);
                             break;
                         case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
                             ft.Rewind();
-                            ft.Increment(6);
+                            ft.Increment(2);
                             ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
                             ft.Add<StringId>(GetShopItemDescriptor(guest.VoucherShopItem).Naming.Singular);
                             break;
@@ -1688,7 +1688,7 @@ namespace OpenRCT2::Ui::Windows
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
+                        ft.Increment(2);
                         invRide->FormatNameTo(ft);
                     }
                     break;
@@ -1697,7 +1697,7 @@ namespace OpenRCT2::Ui::Windows
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
+                        ft.Increment(2);
                         invRide->FormatNameTo(ft);
                     }
                     break;
@@ -1706,7 +1706,7 @@ namespace OpenRCT2::Ui::Windows
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
+                        ft.Increment(2);
                         invRide->FormatNameTo(ft);
                     }
                     break;
