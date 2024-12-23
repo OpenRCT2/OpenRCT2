@@ -33,7 +33,7 @@ endif ()
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 
-if (ENABLE_SCRIPTING)
+if (ENABLE_SCRIPTING OR ENABLE_SCRIPTING_REFACTOR) #TODO (mber) remove refactor build option.
     include(ExternalProject)
     externalproject_add(quickjs
         GIT_REPOSITORY      https://github.com/quickjs-ng/quickjs.git
@@ -44,7 +44,7 @@ if (ENABLE_SCRIPTING)
         BUILD_BYPRODUCTS    "quickjs-prefix/src/quickjs-build/libqjs.a"
     )
     externalproject_get_property(quickjs SOURCE_DIR)
-    target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SOURCE_DIR})
+    target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${SOURCE_DIR})
     externalproject_get_property(quickjs BINARY_DIR)
     target_link_libraries(${PROJECT_NAME} ${BINARY_DIR}/libqjs.a)
     add_dependencies(${PROJECT_NAME} quickjs)
