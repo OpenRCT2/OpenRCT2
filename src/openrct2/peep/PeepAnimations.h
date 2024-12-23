@@ -53,6 +53,7 @@ namespace OpenRCT2
     struct PeepAnimations
     {
     public:
+        bool isSlowWalking = false;
         RCT12PeepAnimationGroup legacyPosition;
         std::string scriptName{};
 

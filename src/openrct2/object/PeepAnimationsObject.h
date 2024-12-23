@@ -24,7 +24,6 @@ private:
     ImageIndex _imageOffsetId;
     std::vector<OpenRCT2::PeepAnimations> _animationGroups;
     OpenRCT2::AnimationPeepType _peepType;
-    bool _slowWalking;
     bool _noRandomPlacement;
 
 public:
@@ -49,10 +48,7 @@ public:
     RCT12PeepAnimationGroup GetLegacyPosition(PeepAnimationGroup animGroup) const;
     std::string_view GetScriptName(PeepAnimationGroup animGroup) const;
 
-    bool IsSlowWalking() const
-    {
-        return _slowWalking;
-    };
+    bool IsSlowWalking(PeepAnimationGroup animGroup) const;
 
     bool ShouldExcludeFromRandomPlacement() const
     {

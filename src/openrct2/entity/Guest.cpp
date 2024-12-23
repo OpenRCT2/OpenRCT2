@@ -6769,9 +6769,11 @@ void Guest::SetAnimationGroup(PeepAnimationGroup new_sprite_type)
     if (IsActionInterruptable())
         Action = PeepActionType::Walking;
 
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    Guard::Assert(EnumValue(new_sprite_type) < std::size(gAnimationGroupToSlowWalkMap));
-    if (gAnimationGroupToSlowWalkMap[EnumValue(new_sprite_type)])
+    if (animObj->IsSlowWalking(new_sprite_type))
     {
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }

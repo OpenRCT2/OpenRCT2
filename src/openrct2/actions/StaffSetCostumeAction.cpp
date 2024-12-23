@@ -89,7 +89,7 @@ GameActions::Result StaffSetCostumeAction::Execute() const
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(_costume);
 
     staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    if (animObj->IsSlowWalking())
+    if (animObj->IsSlowWalking(PeepAnimationGroup::Normal))
         staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
 
     staff->AnimationFrameNum = 0;

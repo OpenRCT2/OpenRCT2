@@ -95,16 +95,12 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
             group.legacyPosition = RCT12PeepAnimationGroup::Invalid;
         }
 
+        // Should we play back the walking animation more slowly?
+        group.isSlowWalking = Json::GetBoolean(groupJson["isSlowWalking"], false);
+
         // Do we have a preferred way of addressing this object in scripts?
-        if (groupJson.contains("scriptName"))
-        {
-            group.scriptName = Json::GetString(groupJson["scriptName"]);
-        }
         // If not, just use the object identifier.
-        else
-        {
-            group.scriptName = GetIdentifier();
-        }
+        group.scriptName = Json::GetString(groupJson["scriptName"], std::string(GetIdentifier()));
 
         _animationGroups.push_back(group);
     }
@@ -160,10 +156,6 @@ void PeepAnimationsObject::ReadProperties(json_t& props)
     _peepType = animationPeepTypeMap[Json::GetString(props["peepType"])];
 
     Guard::Assert(
-        props["isSlowWalking"].is_boolean(), "PeepAnimationsObject::ReadProperties expects isSlowWalking to be a boolean");
-    _slowWalking = Json::GetBoolean(props["isSlowWalking"], false);
-
-    Guard::Assert(
         props["noRandomPlacement"].is_boolean(),
         "PeepAnimationsObject::ReadProperties expects noRandomPlacement to be a boolean");
     _noRandomPlacement = Json::GetBoolean(props["noRandomPlacement"], false);
@@ -207,6 +199,11 @@ RCT12PeepAnimationGroup PeepAnimationsObject::GetLegacyPosition(PeepAnimationGro
 std::string_view PeepAnimationsObject::GetScriptName(PeepAnimationGroup animGroup) const
 {
     return _animationGroups[EnumValue(animGroup)].scriptName;
+}
+
+bool PeepAnimationsObject::IsSlowWalking(PeepAnimationGroup animGroup) const
+{
+    return _animationGroups[EnumValue(animGroup)].isSlowWalking;
 }
 
 void PeepAnimationsObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const

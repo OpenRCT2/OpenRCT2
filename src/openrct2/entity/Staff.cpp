@@ -29,6 +29,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../object/SceneryGroupEntry.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/TerrainSurfaceObject.h"
@@ -1650,8 +1651,11 @@ void Staff::Tick128UpdateStaff()
     if (Action < PeepActionType::Idle)
         Action = PeepActionType::Walking;
 
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    if (gAnimationGroupToSlowWalkMap[EnumValue(newAnimationGroup)])
+    if (animObj->IsSlowWalking(newAnimationGroup))
     {
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }

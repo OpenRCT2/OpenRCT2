@@ -422,8 +422,6 @@ enum
     PATHING_RIDE_ENTRANCE = 1 << 3,
 };
 
-extern const bool gAnimationGroupToSlowWalkMap[48];
-
 int32_t PeepGetStaffCount();
 void PeepUpdateAll();
 void PeepUpdateAllBoundingBoxes();
