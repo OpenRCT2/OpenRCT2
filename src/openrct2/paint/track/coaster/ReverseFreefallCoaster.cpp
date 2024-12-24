@@ -427,7 +427,7 @@ static void PaintReverseFreefallRCOnridePhoto(
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverseFreefallRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionReverseFreefallRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -444,6 +444,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverseFreefallRC(OpenRCT2::TrackElemT
         case TrackElemType::OnRidePhoto:
             return PaintReverseFreefallRCOnridePhoto;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

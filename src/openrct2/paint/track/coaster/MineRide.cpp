@@ -5590,7 +5590,7 @@ static void MineRideTrackDiagRightBank(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineRide(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMineRide(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -5737,6 +5737,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineRide(OpenRCT2::TrackElemType track
         case TrackElemType::DiagRightBank:
             return MineRideTrackDiagRightBank;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

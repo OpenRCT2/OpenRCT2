@@ -19009,7 +19009,7 @@ static void TwisterRCTrackRightLargeZeroGRollDown(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwisterRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionTwisterRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -19531,6 +19531,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwisterRC(OpenRCT2::TrackElemType trac
             return TwisterRCTrackRightLargeZeroGRollDown;
 
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

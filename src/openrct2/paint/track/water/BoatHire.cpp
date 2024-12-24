@@ -1232,7 +1232,7 @@ static void PaintBoatHireTrackSBendRight(
 /**
  * rct2: 0x008B0D60
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionBoatHire(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionBoatHire(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1284,6 +1284,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionBoatHire(OpenRCT2::TrackElemType track
             return PaintBoatHireTrackSBendRight;
 
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

@@ -13285,7 +13285,7 @@ static void WoodenRCTrackRightLargeHalfLoopDown(
 }
 
 template<bool isClassic>
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -13600,16 +13600,16 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::Tra
         case TrackElemType::RightLargeHalfLoopDown:
             return WoodenRCTrackRightLargeHalfLoopDown<isClassic>;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWoodenRC(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<false>(trackType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRCFallback(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionClassicWoodenRCFallback(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<true>(trackType);
 }

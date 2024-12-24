@@ -1086,7 +1086,7 @@ static void PaintMiniGolfHoleE(
 /**
  * rct2: 0x0087EDC4
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMiniGolf(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1128,6 +1128,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(OpenRCT2::TrackElemType track
         case TrackElemType::MinigolfHoleE:
             return PaintMiniGolfHoleE;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

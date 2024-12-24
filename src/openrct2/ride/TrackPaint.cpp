@@ -2001,24 +2001,13 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             session.SupportColours = ConstructionMarker;
         }
 
-        if (ride->type >= RIDE_TYPE_COUNT)
-        {
-            return;
-        }
-
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
         bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RtdFlag::hasInvertedVariant);
         const auto trackDrawerEntry = getTrackDrawerEntry(rtd, isInverted, TrackElementIsCovered(trackType));
 
-        if (trackDrawerEntry.trackStyle != TrackStyle::null)
-        {
-            trackType = UncoverTrackElement(trackType);
-            TRACK_PAINT_FUNCTION paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
-            if (paintFunction != nullptr)
-            {
-                paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
-            }
-        }
+        trackType = UncoverTrackElement(trackType);
+        TrackPaintFunction paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
+        paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
     }
 }
 
@@ -2099,4 +2088,10 @@ void DrawSBendRightSupports(
                 session, supportType, MetalSupportPlace::Centre, direction, specialA, height, session.SupportColours);
             break;
     }
+}
+
+void TrackPaintFunctionDummy(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
 }

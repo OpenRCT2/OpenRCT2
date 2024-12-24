@@ -1380,7 +1380,7 @@ static void ReverserRCTrackRightReverser(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionReverserRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1421,6 +1421,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(OpenRCT2::TrackElemType tra
         case TrackElemType::RightReverser:
             return ReverserRCTrackRightReverser;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

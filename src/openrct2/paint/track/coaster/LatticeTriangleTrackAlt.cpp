@@ -252,7 +252,7 @@ static void LatticeTriangleTrackAltDiagBrake(
         session, 3, height, direction, trackSequence, images[trackElement.IsBrakeClosed()], supportType.metal);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrackAlt(TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLatticeTriangleTrackAlt(TrackElemType trackType)
 {
     switch (trackType)
     {

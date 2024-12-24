@@ -146,11 +146,11 @@ static void PaintCrookedHouse(
     PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCrookedHouse(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintCrookedHouse;

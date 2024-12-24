@@ -481,7 +481,7 @@ static void PaintVirginiaReelTrackRightQuarterTurn1Tile(
 /**
  * rct2: 0x00811184
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionVirginiaReel(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionVirginiaReel(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -518,6 +518,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionVirginiaReel(OpenRCT2::TrackElemType t
             return PaintVirginiaReelTrackRightQuarterTurn1Tile;
 
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

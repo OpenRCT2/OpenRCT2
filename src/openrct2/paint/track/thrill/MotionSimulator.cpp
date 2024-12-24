@@ -145,13 +145,13 @@ static void PaintMotionSimulator(
  *
  *  rct2: 0x00763520
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMotionsimulator(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMotionsimulator(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
         case TrackElemType::FlatTrack2x2:
             return PaintMotionSimulator;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

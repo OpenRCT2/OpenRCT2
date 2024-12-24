@@ -108,11 +108,11 @@ static void PaintDodgems(
 /**
  * rct2:
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionDodgems(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionDodgems(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack4x4)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintDodgems;

@@ -175,11 +175,11 @@ static void PaintMerryGoRound(
     PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMerryGoRound(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMerryGoRound(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintMerryGoRound;

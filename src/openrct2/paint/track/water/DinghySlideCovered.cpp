@@ -964,7 +964,7 @@ static void DinghySlideTrackCovered60DegDownTo25DegDown(
         session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlideCovered(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionDinghySlideCovered(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1007,6 +1007,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlideCovered(OpenRCT2::TrackElem
         case TrackElemType::RightQuarterTurn3Tiles:
             return DinghySlideTrackCoveredRightQuarterTurn3;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

@@ -100,4 +100,4 @@ enum class TrackStyle : uint8_t
     null = 255,
 };
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunction(TrackStyle trackStyle, OpenRCT2::TrackElemType trackType);
+TrackPaintFunction GetTrackPaintFunction(TrackStyle trackStyle, OpenRCT2::TrackElemType trackType);
