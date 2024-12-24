@@ -100,6 +100,7 @@ STR_0095    :Muntanya russa alpina
 STR_0096    :Muntanya russa clàssica de fusta
 STR_0097    :Muntanya russa a peu dret clàssica
 STR_0098    :Muntanya russa d’impuls LSM
+STR_0099    :Muntanya russa Tornado clàssica de fusta
 STR_0607    :Una muntanya russa d’estil antic i d’acer molt intensa on els passatgers van com si estiguessin de peu.
 STR_0608    :Els cotxes acceleren amb motors síncrons lineals i circulen a gran velocitat per girs i corbes tancades.
 STR_0512    :Muntanya russa compacta amb una pujada en espiral i caigudes sinuoses suaus.
@@ -185,6 +186,7 @@ STR_0603    :Una muntanya russa de fusta amb una via d’acer, el que permet une
 STR_0604    :Els passatgers van en fila per una via monorail estreta i passen a gran velocitat per tirabuixons i inversions.
 STR_0605    :Els passatgers baixen per una via d’acer sinuosa, frenant per a controlar la velocitat.
 STR_0606    :Una muntanya russa d’estil antic i de fusta, on els cotxes es mouen de pressa amb gran part al descobert, algunes accelerades laterals i dissenyada perquè els passatgers es sentin com si l’atracció estigués fora de control.
+STR_0609    :Una muntanya russa de fusta d’estil antic amb un recorregut ràpid i dur amb cotxes articulats, molt de temps a l’aire i vies amb moltes corbes.
 STR_0767    :Visitant {INT32}
 STR_0768    :Encarregat de neteja {INT32}
 STR_0769    :Mecànic {INT32}
@@ -3785,4 +3787,4 @@ STR_6706    :{WINDOW_COLOUR_2}Fitxer d’imatge actual: {BLACK}{STRING}
 STR_6707    :(cap de seleccionat)
 STR_6708    :Força suau
 STR_6709    :Escriviu una força suau entre {COMMA16} i {COMMA16}
-
+STR_6710    :Ordre estable

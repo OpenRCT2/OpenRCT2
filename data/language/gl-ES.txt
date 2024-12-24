@@ -32,9 +32,9 @@ STR_0027    :Coches de choque
 STR_0028    :Barco pirata
 STR_0029    :Barco basculante invertido
 STR_0030    :posto de comida
-STR_0031    :Posición descoñecida (1D)
+STR_0031    :Posto descoñecido (1D)
 STR_0032    :Posto de bebidas
-STR_0033    :Posición descoñecida (1F)
+STR_0033    :Posto descoñecido (1F)
 STR_0034    :Tenda
 STR_0035    :Carrusel
 STR_0036    :Posición descoñecida (22)
@@ -100,6 +100,7 @@ STR_0095    :Montaña Rusa Alpina
 STR_0096    :Montaña rusa clásica de madeira
 STR_0097    :Montaña rusa clásica de pé
 STR_0098    :Montaña Rusa de Lanzamento LSM
+STR_0099    :Montaña Rusa de Madeira Clásica de Xiros
 STR_0512    :Unha pequena montaña rusa de aceiro cunha subida en espiral e coches con asentos en liña.
 STR_0513    :Unha montaña rusa na que os pasaxeiros permanecen de pé.
 STR_0514    :Os coches suspendidos baixo os carrís balanceanse lateralmente ao virar en curva.
@@ -185,6 +186,7 @@ STR_0605    :Os pasaxeiros baixan por unha sinuosa vía de aceiro, freando para 
 STR_0606    :Unha montaña rusa de madeira de estilo antigo cun paseo rápido e áspero, con moitas caídas, algunhas forzas G laterais e deseñada para ofrecer unha experiencia "descontrolada".
 STR_0607    :Unha montaña rusa en espiral de aceiro de estilo vintage intenso con xinetes montando de pé.
 STR_0608    :Os trens da montaña rusa son acelerados por motores lineais síncronos, percorrendo a gran velocidade curvas pechadas e viraxes pronunciadas
+STR_0609    :Unha montaña rusa de madeira de estilo antigo con unha viaxe rápida e intensa, que conta con trens articulados, moitos momentos de caída libre e un percorrido con xiros
 STR_0767    :Visitante {INT32}
 STR_0768    :Manitas {INT32}
 STR_0769    :Mecánica {INT32}
@@ -3781,3 +3783,4 @@ STR_6706    :{WINDOW_COLOUR_2}Arquivo de imaxe actual: {BLACK}{STRING}
 STR_6707    :(Ningún escollido)
 STR_6708    :Intensidade de suavizado
 STR_6709    :Introduce a intensidade de suavizado entre {COMMA16} e {COMMA16}
+STR_6710    :Ordenación estable
