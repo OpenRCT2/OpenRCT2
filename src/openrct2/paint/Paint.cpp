@@ -633,6 +633,25 @@ void PaintSessionArrange(PaintSessionCore& session)
     return _paintArrangeFuncsLegacy[session.CurrentRotation](session);
 }
 
+static inline void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags)
+{
+    AttachedPaintStruct* attached_ps = ps->Attached;
+    for (; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
+    {
+        const auto screenCoords = ps->ScreenPos + attached_ps->RelativePos;
+
+        auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
+        if (attached_ps->IsMasked)
+        {
+            GfxDrawSpriteRawMasked(dpi, screenCoords, imageId, attached_ps->ColourImageId);
+        }
+        else
+        {
+            GfxDrawSprite(dpi, imageId, screenCoords);
+        }
+    }
+}
+
 static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
 {
     auto screenPos = ps->ScreenPos;
@@ -649,7 +668,6 @@ static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
             }
         }
     }
-
     auto imageId = PaintPSColourifyImage(ps, ps->image_id, session.ViewFlags);
     if (gPaintBoundingBoxes)
     {
@@ -658,6 +676,15 @@ static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     else
     {
         GfxDrawSprite(session.DPI, imageId, screenPos);
+    }
+
+    if (ps->Children != nullptr)
+    {
+        PaintDrawStruct(session, ps->Children);
+    }
+    else
+    {
+        PaintAttachedPS(session.DPI, ps, session.ViewFlags);
     }
 }
 
@@ -671,30 +698,7 @@ void PaintDrawStructs(PaintSession& session)
 
     for (PaintStruct* ps = session.PaintHead; ps != nullptr; ps = ps->NextQuadrantEntry)
     {
-        // Paint parent node.
         PaintDrawStruct(session, ps);
-
-        // Paint children.
-        for (auto* psChild = ps->Children; psChild != nullptr; psChild = psChild->NextQuadrantEntry)
-        {
-            PaintDrawStruct(session, psChild);
-        }
-
-        // Paint attached.
-        for (auto* psAttached = ps->Attached; psAttached != nullptr; psAttached = psAttached->NextEntry)
-        {
-            const auto screenCoords = ps->ScreenPos + psAttached->RelativePos;
-
-            auto imageId = PaintPSColourifyImage(ps, psAttached->image_id, session.ViewFlags);
-            if (psAttached->IsMasked)
-            {
-                GfxDrawSpriteRawMasked(session.DPI, screenCoords, imageId, psAttached->ColourImageId);
-            }
-            else
-            {
-                GfxDrawSprite(session.DPI, imageId, screenCoords);
-            }
-        }
     }
 }
 
