@@ -542,7 +542,7 @@ static void PaintGoKartsTrackRightQuarterTurn1Tile(
 /**
  * rct2: 0x0074A668
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionGoKarts(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionGoKarts(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -573,6 +573,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionGoKarts(OpenRCT2::TrackElemType trackT
         case TrackElemType::RightQuarterTurn1Tile:
             return PaintGoKartsTrackRightQuarterTurn1Tile;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

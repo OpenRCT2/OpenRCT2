@@ -20,7 +20,7 @@ constexpr RideTypeDescriptor TopSpinRTD =
     .Category = RIDE_CATEGORY_THRILL,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionTopspin,
+        .trackStyle = TrackStyle::topSpin,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),

@@ -20,7 +20,7 @@ constexpr RideTypeDescriptor CinemaRTD =
     .Category = RIDE_CATEGORY_THRILL,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunction3dCinema,
+        .trackStyle = TrackStyle::_3DCinema,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),

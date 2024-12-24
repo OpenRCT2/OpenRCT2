@@ -170,11 +170,11 @@ static void PaintTwist(
 /**
  * rct2: 0x0076D658
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwist(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionTwist(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintTwist;

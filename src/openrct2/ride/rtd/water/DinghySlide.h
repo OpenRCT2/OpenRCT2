@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
-            .Drawer = GetTrackPaintFunctionDinghySlide,
+            .trackStyle = TrackStyle::dinghySlide,
             .supportType = MetalSupportType::Tubes,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve },
             .extraTrackGroups = {},
@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
             .tooltip = STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP,
         }, 
         {
-            .Drawer = GetTrackPaintFunctionDinghySlideCovered,
+            .trackStyle = TrackStyle::dinghySlideCovered,
             .supportType = MetalSupportType::Tubes,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::curve, TrackGroup::sBend, TrackGroup::curveSmall },
             .extraTrackGroups = {},

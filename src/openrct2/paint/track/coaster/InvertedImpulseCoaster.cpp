@@ -759,7 +759,7 @@ static void InvertedImpulseRCTrackRightQuarterTurn190DegDown(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionInvertedImpulseRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -814,6 +814,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(OpenRCT2::TrackElemT
         case TrackElemType::RightQuarterTurn1TileDown90:
             return InvertedImpulseRCTrackRightQuarterTurn190DegDown;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

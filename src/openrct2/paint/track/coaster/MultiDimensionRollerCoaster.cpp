@@ -14961,7 +14961,7 @@ static void MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMultiDimensionRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -15169,6 +15169,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(OpenRCT2::TrackElemTy
         case TrackElemType::DiagBlockBrakes:
             return MultiDimensionRCTrackDiagBlockBrakes;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

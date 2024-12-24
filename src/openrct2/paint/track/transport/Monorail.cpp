@@ -1234,7 +1234,7 @@ static void PaintMonorailTrackDiag25DegDownToFlat(
 /**
  * rct2: 0x008ADF34
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorail(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMonorail(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1301,6 +1301,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorail(OpenRCT2::TrackElemType track
         case TrackElemType::DiagDown25ToFlat:
             return PaintMonorailTrackDiag25DegDownToFlat;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

@@ -18433,7 +18433,7 @@ static void LatticeTriangleTrackDiagBooster(
     TrackPaintUtilDiagTilesPaintExtra(session, 3, height, direction, trackSequence, images, supportType.metal);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -18925,6 +18925,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackEl
         case TrackElemType::DiagBooster:
             return LatticeTriangleTrackDiagBooster;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

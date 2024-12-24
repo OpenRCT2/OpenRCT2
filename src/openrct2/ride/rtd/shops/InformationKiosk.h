@@ -19,7 +19,7 @@ constexpr RideTypeDescriptor InformationKioskRTD =
     .Category = RIDE_CATEGORY_SHOP,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x1B,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionShop,
+        .trackStyle = TrackStyle::shop,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),

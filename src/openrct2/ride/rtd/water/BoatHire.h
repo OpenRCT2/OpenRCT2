@@ -21,7 +21,7 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .Category = RIDE_CATEGORY_WATER,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionBoatHire,
+        .trackStyle = TrackStyle::boatHire,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::sBend},
         .extraTrackGroups = {},
     }),

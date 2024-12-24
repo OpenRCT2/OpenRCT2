@@ -82,13 +82,13 @@ static void PaintFacility(
 }
 
 /* 0x00762D44 */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFacility(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionFacility(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
         case TrackElemType::FlatTrack1x1A:
             return PaintFacility;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

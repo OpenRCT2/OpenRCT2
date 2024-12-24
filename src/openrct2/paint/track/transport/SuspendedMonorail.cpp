@@ -2023,7 +2023,7 @@ static void SuspendedMonorailTrackDiag25DegDownToFlat(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedMonorail(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSuspendedMonorail(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -2080,6 +2080,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedMonorail(OpenRCT2::TrackElemT
         case TrackElemType::DiagDown25ToFlat:
             return SuspendedMonorailTrackDiag25DegDownToFlat;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

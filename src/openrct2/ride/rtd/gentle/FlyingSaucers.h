@@ -20,7 +20,7 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
     .Category = RIDE_CATEGORY_GENTLE,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionFlyingSaucers,
+        .trackStyle = TrackStyle::flyingSaucers,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),

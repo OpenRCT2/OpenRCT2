@@ -8344,7 +8344,7 @@ static void LayDownRCTrackHalfLoopInvertedUp(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRCInverted(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLayDownRCInverted(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -8552,6 +8552,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRCInverted(OpenRCT2::TrackElemT
         case TrackElemType::FlyerHalfLoopInvertedUp:
             return LayDownRCTrackHalfLoopInvertedUp;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

@@ -19382,7 +19382,7 @@ static void CorkscrewRCTrackRightLargeZeroGRollDown(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -19927,6 +19927,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType tr
             return CorkscrewRCTrackRightLargeZeroGRollDown;
 
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

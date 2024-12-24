@@ -19,7 +19,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .Category = RIDE_CATEGORY_THRILL,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionEnterprise,
+        .trackStyle = TrackStyle::enterprise,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),

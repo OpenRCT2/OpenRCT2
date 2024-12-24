@@ -20,7 +20,7 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
     .Category = RIDE_CATEGORY_GENTLE,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionMerryGoRound,
+        .trackStyle = TrackStyle::merryGoRound,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),
