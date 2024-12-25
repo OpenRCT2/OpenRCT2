@@ -9,12 +9,11 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../actions/CustomAction.h"
     #include "../core/FileWatcher.h"
     #include "../management/Finance.h"
-    #include "../world/Location.hpp"
     #include "HookEngine.h"
     #include "Plugin.h"
 
@@ -27,9 +26,8 @@
     #include <unordered_map>
     #include <unordered_set>
     #include <vector>
+    #include <quickjs.h>
 
-struct duk_hthread;
-typedef struct duk_hthread duk_context;
 
 class GameAction;
 namespace OpenRCT2::GameActions
@@ -104,34 +102,13 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    class DukContext
-    {
-    private:
-        duk_context* _context{};
-
-    public:
-        DukContext();
-        DukContext(DukContext&) = delete;
-        DukContext(DukContext&& src) noexcept
-            : _context(std::move(src._context))
-        {
-            src._context = {};
-        }
-        ~DukContext();
-
-        operator duk_context*()
-        {
-            return _context;
-        }
-    };
-
     using IntervalHandle = uint32_t;
     struct ScriptInterval
     {
         std::shared_ptr<Plugin> Owner;
         uint32_t Delay{};
         int64_t LastTimestamp{};
-        DukValue Callback;
+        JSValue Callback;
         bool Repeat{};
         bool Deleted{};
     };
@@ -141,7 +118,8 @@ namespace OpenRCT2::Scripting
     private:
         InteractiveConsole& _console;
         IPlatformEnvironment& _env;
-        DukContext _context;
+        JSRuntime* _runtime = nullptr;
+        JSContext* _context = nullptr;
         bool _initialised{};
         bool _hotReloadingInitialised{};
         bool _transientPluginsEnabled{};
@@ -152,8 +130,8 @@ namespace OpenRCT2::Scripting
         uint32_t _lastHotReloadCheckTick{};
         HookEngine _hookEngine;
         ScriptExecutionInfo _execInfo;
-        DukValue _sharedStorage;
-        DukValue _parkStorage;
+        JSValue _sharedStorage{};
+        JSValue _parkStorage{};
 
         uint32_t _lastIntervalTimestamp{};
         std::map<IntervalHandle, ScriptInterval> _intervals;
@@ -168,8 +146,8 @@ namespace OpenRCT2::Scripting
         {
             std::shared_ptr<Plugin> Owner;
             std::string Name;
-            DukValue Query;
-            DukValue Execute;
+            JSValue Query;
+            JSValue Execute;
         };
 
         std::unordered_map<std::string, CustomActionInfo> _customActions;
@@ -180,8 +158,9 @@ namespace OpenRCT2::Scripting
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
         ScriptEngine(ScriptEngine&) = delete;
+        ~ScriptEngine();
 
-        duk_context* GetContext()
+        JSContext* GetContext()
         {
             return _context;
         }
@@ -193,11 +172,11 @@ namespace OpenRCT2::Scripting
         {
             return _execInfo;
         }
-        DukValue GetSharedStorage()
+        JSValue GetSharedStorage()
         {
             return _sharedStorage;
         }
-        DukValue GetParkStorage()
+        JSValue GetParkStorage()
         {
             return _parkStorage;
         }
@@ -230,11 +209,11 @@ namespace OpenRCT2::Scripting
         void StopUnloadRegisterAllPlugins();
         void Tick();
         std::future<void> Eval(const std::string& s);
-        DukValue ExecutePluginCall(
-            const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args,
+        JSValue ExecutePluginCall(
+            const std::shared_ptr<Plugin>& plugin, JSValue func, const std::vector<JSValue>& args,
             bool isGameStateMutable);
-        DukValue ExecutePluginCall(
-            std::shared_ptr<Plugin> plugin, const DukValue& func, const DukValue& thisValue, const std::vector<DukValue>& args,
+        JSValue ExecutePluginCall(
+            std::shared_ptr<Plugin> plugin, JSValue func, JSValue thisValue, const std::vector<JSValue>& args,
             bool isGameStateMutable);
 
         void LogPluginInfo(std::string_view message);
@@ -250,15 +229,15 @@ namespace OpenRCT2::Scripting
 
         [[nodiscard]] GameActions::Result QueryOrExecuteCustomGameAction(const CustomAction& action, bool isExecute);
         bool RegisterCustomAction(
-            const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
+            const std::shared_ptr<Plugin>& plugin, std::string_view action, JSValue query, JSValue execute);
         void RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute);
         [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(
-            const std::string& actionid, const DukValue& args, const std::string& pluginName);
-        [[nodiscard]] DukValue GameActionResultToDuk(const GameAction& action, const GameActions::Result& result);
+            const std::string& actionid, JSValue args, const std::string& pluginName);
+        [[nodiscard]] JSValue GameActionResultToDuk(const GameAction& action, const GameActions::Result& result);
 
         void SaveSharedStorage();
 
-        IntervalHandle AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, DukValue&& callback);
+        IntervalHandle AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, JSValue callback);
         void RemoveInterval(const std::shared_ptr<Plugin>& plugin, IntervalHandle handle);
 
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
@@ -290,7 +269,7 @@ namespace OpenRCT2::Scripting
         void AutoReloadPlugins();
         void ProcessREPL();
         void RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin);
-        [[nodiscard]] GameActions::Result DukToGameActionResult(const DukValue& d);
+        [[nodiscard]] GameActions::Result DukToGameActionResult(JSValue d);
 
         void InitSharedStorage();
         void LoadSharedStorage();
@@ -307,7 +286,8 @@ namespace OpenRCT2::Scripting
     void ThrowIfGameStateNotMutable();
     int32_t GetTargetAPIVersion();
 
-    std::string Stringify(const DukValue& value);
+    std::string Stringify(JSValue value);
+    std::string ProcessString(JSValue value);
 
 } // namespace OpenRCT2::Scripting
 
