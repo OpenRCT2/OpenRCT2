@@ -27,7 +27,7 @@ if (ENABLE_SCRIPTING OR ENABLE_SCRIPTING_REFACTOR) #TODO (mber) remove refactor 
     include(ExternalProject)
     externalproject_add(quickjs
         GIT_REPOSITORY      https://github.com/quickjs-ng/quickjs.git
-        GIT_TAG             706ba05fa6fc984e07e6b8b47d028a8ac729fd13
+        GIT_TAG             3c9afc9943323ee9c7dbd123c0cd991448f4b6c2
         CMAKE_ARGS          "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
         SOURCE_DIR          "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/quickjs-ng"
         INSTALL_COMMAND     ""
