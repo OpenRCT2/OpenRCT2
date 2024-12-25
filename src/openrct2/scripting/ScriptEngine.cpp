@@ -70,15 +70,14 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-/* TODO (mber) ExpressionStringifier
 struct ExpressionStringifier final
 {
 private:
     std::stringstream _ss;
-    duk_context* _context{};
+    JSContext* _context{};
     int32_t _indent{};
 
-    ExpressionStringifier(duk_context* ctx)
+    ExpressionStringifier(JSContext* ctx)
         : _context(ctx)
     {
     }
@@ -98,7 +97,7 @@ private:
         _ss << "\n" << std::string(_indent, ' ');
     }
 
-    void Stringify(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
+    void Stringify(const JSValue val, bool canStartWithNewLine, int32_t nestLevel)
     {
         if (nestLevel >= 8)
         {
@@ -106,73 +105,78 @@ private:
             return;
         }
 
-        switch (val.type())
+        if (JS_IsUndefined(val))
         {
-            case DukValue::Type::UNDEFINED:
-                _ss << "undefined";
-                break;
-            case DukValue::Type::NULLREF:
-                _ss << "null";
-                break;
-            case DukValue::Type::BOOLEAN:
-                StringifyBoolean(val);
-                break;
-            case DukValue::Type::NUMBER:
-                StringifyNumber(val);
-                break;
-            case DukValue::Type::STRING:
-                _ss << "'" << val.as_string() << "'";
-                break;
-            case DukValue::Type::OBJECT:
-                if (val.is_function())
-                {
-                    StringifyFunction(val);
-                }
-                else if (val.is_array())
-                {
-                    StringifyArray(val, canStartWithNewLine, nestLevel);
-                }
-                else
-                {
-                    StringifyObject(val, canStartWithNewLine, nestLevel);
-                }
-                break;
-            case DukValue::Type::BUFFER:
-                _ss << "[Buffer]";
-                break;
-            case DukValue::Type::POINTER:
-                _ss << "[Pointer]";
-                break;
-            case DukValue::Type::LIGHTFUNC:
-                _ss << "[LightFunc]";
-                break;
+            _ss << "undefined";
+        }
+        else if (JS_IsNull(val))
+        {
+            _ss << "null";
+        }
+        else if (JS_IsUninitialized(val))
+        {
+            _ss << "uninitialized";
+        }
+        else if (JS_IsBool(val))
+        {
+            _ss << (JS_VALUE_GET_BOOL(val) ? "true" : "false");
+        }
+        else if (JS_IsNumber(val))
+        {
+            StringifyNumber(val);
+        }
+        else if (JS_IsString(val))
+        {
+            StringifyString(val);
+        }
+        else if (JS_IsObject(val))
+        {
+            if (JS_IsFunction(_context, val))
+            {
+                StringifyFunction(val);
+            }
+            else if (JS_IsArray(_context, val))
+            {
+                StringifyArray(val, canStartWithNewLine, nestLevel);
+            }
+            else if (JS_IsError(_context, val))
+            {
+                StringifyError(val);
+            }
+            else
+            {
+                StringifyObject(val, canStartWithNewLine, nestLevel);
+            }
+        }
+        else if (JS_IsArrayBuffer(val))
+        {
+            _ss << "[Buffer]";
+        }
+        else
+        {
+            _ss << "[Unknown Value]";
         }
     }
 
-    void StringifyArray(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
+    void StringifyArray(const JSValue val, bool canStartWithNewLine, int32_t nestLevel)
     {
-        constexpr auto maxItemsToShow = 4;
+        constexpr int64_t maxItemsToShow = 4;
 
-        val.push();
-        auto arrayLen = duk_get_length(_context, -1);
-        if (arrayLen == 0)
+        int64_t arrayLen;
+        if (JS_GetLength(_context, val, &arrayLen) == -1)
+        {
+            _ss << "[error printing array]";
+        }
+        else if (arrayLen == 0)
         {
             _ss << "[]";
         }
         else if (arrayLen == 1)
         {
             _ss << "[ ";
-            for (duk_uarridx_t i = 0; i < arrayLen; i++)
-            {
-                if (duk_get_prop_index(_context, -1, i))
-                {
-                    if (i != 0)
-                    {
-                        _ss << ", ";
-                    }
-                    Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
-                }
-            }
+            JSValue prop = JS_GetPropertyInt64(_context, val, 0);
+            Stringify(prop, false, nestLevel + 1);
+            JS_FreeValue(_context, prop);
             _ss << " ]";
         }
         else
@@ -184,7 +188,7 @@ private:
             }
             _ss << "[ ";
             PushIndent(2);
-            for (duk_uarridx_t i = 0; i < arrayLen; i++)
+            for (int64_t i = 0; i < arrayLen; i++)
             {
                 if (i != 0)
                 {
@@ -205,10 +209,9 @@ private:
                     break;
                 }
 
-                if (duk_get_prop_index(_context, -1, i))
-                {
-                    Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
-                }
+                JSValue prop = JS_GetPropertyInt64(_context, val, i);
+                Stringify(prop, false, nestLevel + 1);
+                JS_FreeValue(_context, prop);
             }
             _ss << " ]";
             PopIndent(2);
@@ -217,44 +220,37 @@ private:
                 PopIndent();
             }
         }
-        duk_pop(_context);
     }
 
-    void StringifyObject(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
+    void StringifyObject(const JSValue val, bool canStartWithNewLine, int32_t nestLevel)
     {
-        auto numEnumerables = GetNumEnumerablesOnObject(val);
-        if (numEnumerables == 0)
+        JSPropertyEnum* props;
+        uint32_t propsLen;
+        JS_GetOwnPropertyNames(_context, &props, &propsLen, val, JS_GPN_STRING_MASK | JS_GPN_SYMBOL_MASK | JS_GPN_PRIVATE_MASK);
+
+        if (propsLen == 0)
         {
             _ss << "{}";
         }
-        else if (numEnumerables == 1)
+        else if (propsLen == 1)
         {
             _ss << "{ ";
 
-            val.push();
-            duk_enum(_context, -1, 0);
-            auto index = 0;
-            while (duk_next(_context, -1, 1))
+            const char* key = JS_AtomToCString(_context, props[0].atom);
+            if (key)
             {
-                if (index != 0)
-                {
-                    _ss << ", ";
-                }
-                auto value = DukValue::take_from_stack(_context, -1);
-                auto key = DukValue::take_from_stack(_context, -1);
-                if (key.type() == DukValue::Type::STRING)
-                {
-                    _ss << key.as_string() << ": ";
-                }
-                else
-                {
-                    // For some reason the key was not a string
-                    _ss << "?: ";
-                }
-                Stringify(value, true, nestLevel + 1);
-                index++;
+                _ss << key << ": ";
+                JS_FreeCString(_context, key);
             }
-            duk_pop_2(_context);
+            else
+            {
+                // For some reason the key was not a string
+                _ss << "?: ";
+            }
+
+            JSValue prop = JS_GetProperty(_context,val, props[0].atom);
+            Stringify(prop, true, nestLevel + 1);
+            JS_FreeValue(_context, prop);
 
             _ss << " }";
         }
@@ -269,31 +265,29 @@ private:
             _ss << "{ ";
             PushIndent(2);
 
-            val.push();
-            duk_enum(_context, -1, 0);
-            auto index = 0;
-            while (duk_next(_context, -1, 1))
+            for(uint32_t i = 0; i < propsLen; i++)
             {
-                if (index != 0)
+                if (i != 0)
                 {
                     _ss << ",";
                     LineFeed();
                 }
-                auto value = DukValue::take_from_stack(_context, -1);
-                auto key = DukValue::take_from_stack(_context, -1);
-                if (key.type() == DukValue::Type::STRING)
+                const char* key = JS_AtomToCString(_context, props[i].atom);
+                if (key)
                 {
-                    _ss << key.as_string() << ": ";
+                    _ss << key << ": ";
+                    JS_FreeCString(_context, key);
                 }
                 else
                 {
                     // For some reason the key was not a string
                     _ss << "?: ";
                 }
-                Stringify(value, true, nestLevel + 1);
-                index++;
+
+                JSValue prop = JS_GetProperty(_context,val, props[i].atom);
+                Stringify(prop, true, nestLevel + 1);
+                JS_FreeValue(_context, prop);
             }
-            duk_pop_2(_context);
 
             PopIndent(2);
             _ss << " }";
@@ -303,57 +297,89 @@ private:
                 PopIndent();
             }
         }
+
+        JS_FreePropertyEnum(_context, props, propsLen);
     }
 
-    void StringifyFunction(const DukValue& val)
+    void StringifyFunction(const JSValue val)
     {
-        val.push();
-        if (duk_is_c_function(_context, -1))
+        if (JS_IsConstructor(_context, val))
         {
-            _ss << "[Native Function]";
-        }
-        else if (duk_is_ecmascript_function(_context, -1))
-        {
-            _ss << "[ECMAScript Function]";
+            _ss << "[Constructor]";
         }
         else
         {
             _ss << "[Function]";
         }
-        duk_pop(_context);
     }
 
-    void StringifyBoolean(const DukValue& val)
+    void StringifyString(const JSValue val)
     {
-        _ss << (val.as_bool() ? "true" : "false");
-    }
-
-    void StringifyNumber(const DukValue& val)
-    {
-        const auto d = val.as_double();
-        const duk_int_t i = val.as_int();
-        if (AlmostEqual<double>(d, i))
+        const char* str = JS_ToCString(_context, val);
+        if (str)
         {
-            _ss << std::to_string(i);
+            _ss << "'" << str << "'";
+            JS_FreeCString(_context, str);
         }
         else
         {
-            _ss << std::to_string(d);
+            _ss << "[error printing string]";
         }
     }
 
-    size_t GetNumEnumerablesOnObject(const DukValue& val)
+    void StringifyNumber(const JSValue val)
     {
-        size_t count = 0;
-        val.push();
-        duk_enum(_context, -1, 0);
-        while (duk_next(_context, -1, 0))
+        if (val.tag == JS_TAG_INT)
         {
-            count++;
-            duk_pop(_context);
+            _ss << std::to_string(JS_VALUE_GET_INT(val));
         }
-        duk_pop_2(_context);
-        return count;
+        else if (val.tag == JS_TAG_FLOAT64)
+        {
+            const double d = JS_VALUE_GET_FLOAT64(val);
+            const int64_t i = static_cast<int64_t>(d);
+            if (AlmostEqual<double>(d, i))
+            {
+                _ss << std::to_string(i);
+            }
+            else
+            {
+                _ss << std::to_string(d);
+            }
+        }
+    }
+
+    void StringifyError(const JSValue val)
+    {
+        const char* str = JS_ToCString(_context, val);
+        if (str)
+        {
+            _ss << str;
+            JS_FreeCString(_context, str);
+        }
+        else
+        {
+            _ss << "[error]";
+        }
+        JSValue stackVal = JS_GetPropertyStr(_context, val, "stack");
+        if (!JS_IsUndefined(stackVal))
+        {
+            const char* stackStr = JS_ToCString(_context, stackVal);
+            if (stackStr)
+            {
+                LineFeed();
+                std::string_view view(stackStr);
+                if (view.ends_with('\n'))
+                    view = view.substr(0, view.length() - 1);
+                _ss << view;
+                JS_FreeCString(_context, stackStr);
+            }
+            else
+            {
+                LineFeed();
+                _ss << "[no stack trace]";
+            }
+        }
+        JS_FreeValue(_context, stackVal);
     }
 
     // Taken from http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
@@ -369,14 +395,13 @@ private:
     }
 
 public:
-    static std::string StringifyExpression(const DukValue& val)
+    static std::string StringifyExpression(JSContext* ctx, const JSValue val)
     {
-        ExpressionStringifier instance(val.context());
+        ExpressionStringifier instance(ctx);
         instance.Stringify(val, false, 0);
         return instance._ss.str();
     }
 };
-*/
 
 ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env)
     : _console(console)
@@ -984,39 +1009,12 @@ void ScriptEngine::ProcessREPL()
         if (JS_IsException(res))
         {
             JSValue exceptionVal = JS_GetException(_context);
-            const char* str = JS_ToCString(_context, exceptionVal);
-            if (str)
-            {
-                _console.WriteLineError(str);
-                JS_FreeCString(_context, str);
-            }
-            else
-            {
-                _console.WriteLineError("[exception]\n");
-            }
-            if (JS_IsError(_context, exceptionVal))
-            {
-                JSValue stackVal = JS_GetPropertyStr(_context, exceptionVal, "stack");
-                if (!JS_IsUndefined(stackVal))
-                {
-                    const char* stackStr = JS_ToCString(_context, stackVal);
-                    if (stackStr)
-                    {
-                        _console.WriteLineError(stackStr);
-                        JS_FreeCString(_context, stackStr);
-                    }
-                    else
-                    {
-                        _console.WriteLineError("[exception]\n");
-                    }
-                }
-                JS_FreeValue(_context, stackVal);
-            }
+            _console.WriteLineError(Stringify(_context, exceptionVal));
             JS_FreeValue(_context, exceptionVal);
         }
         else if (!JS_IsUndefined(res))
         {
-            _console.WriteLine(Stringify(res));
+            _console.WriteLine(Stringify(_context, res));
         }
         JS_FreeValue(_context, res);
 
@@ -1890,10 +1888,9 @@ void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
     */
 }
 
-std::string OpenRCT2::Scripting::Stringify(const JSValue val)
+std::string OpenRCT2::Scripting::Stringify(JSContext* ctx, const JSValue val)
 {
-    return "TODO (mber) ...";
-    // return ExpressionStringifier::StringifyExpression(val);
+    return ExpressionStringifier::StringifyExpression(ctx, val);
 }
 
 std::string OpenRCT2::Scripting::ProcessString(const JSValue value)
