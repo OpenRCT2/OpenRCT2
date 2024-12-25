@@ -286,7 +286,7 @@ namespace OpenRCT2::Scripting
     void ThrowIfGameStateNotMutable();
     int32_t GetTargetAPIVersion();
 
-    std::string Stringify(JSValue value);
+    std::string Stringify(JSContext* context, JSValue value);
     std::string ProcessString(JSValue value);
 
 } // namespace OpenRCT2::Scripting
