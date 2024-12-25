@@ -47,6 +47,11 @@ struct VehicleInfo
     uint8_t direction;     // 0x06
     uint8_t Pitch;         // 0x07
     uint8_t bank_rotation; // 0x08
+
+    bool IsInvalid() const
+    {
+        return x == 0 && y == 0 && z == 0 && direction == 0 && Pitch == 0 && bank_rotation == 0;
+    }
 };
 
 struct SoundIdVolume;
@@ -230,13 +235,14 @@ struct Vehicle : EntityBase
     Ride* GetRide() const;
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
+    uint16_t GetTrackProgress() const;
     void UpdateAnimationAnimalFlying();
     void EnableCollisionsForTrain();
     /**
      * Instantly moves the specific car forward or backwards along the track.
      */
     void MoveRelativeDistance(int32_t distance);
-    void MoveToTrack(CoordsXYZ xyz, uint8_t direction, OpenRCT2::TrackElemType trackType);
+    void UpdateTrackChange();
     OpenRCT2::TrackElemType GetTrackType() const
     {
         return static_cast<OpenRCT2::TrackElemType>(TrackTypeAndDirection >> 2);
@@ -280,7 +286,6 @@ struct Vehicle : EntityBase
 
 private:
     const VehicleInfo* GetMoveInfo() const;
-    uint16_t GetTrackProgress() const;
     void CableLiftUpdate();
     bool CableLiftUpdateTrackMotionForwards();
     bool CableLiftUpdateTrackMotionBackwards();

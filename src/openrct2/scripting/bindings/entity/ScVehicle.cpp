@@ -9,6 +9,7 @@
 
 #include "ScVehicle.hpp"
 
+#include "../../../world/tile_element/TrackElement.h"
 #include "../ride/ScRide.hpp"
 
 #ifdef ENABLE_SCRIPTING
@@ -88,6 +89,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
         dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
         dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
+        dukglue_register_method(ctx, &ScVehicle::moveToTrack, "moveToTrack");
     }
 
     Vehicle* ScVehicle::GetVehicle() const
@@ -408,7 +410,9 @@ namespace OpenRCT2::Scripting
             auto z = AsOrDefault(value["z"], 0);
             auto direction = AsOrDefault(value["direction"], 0);
             auto trackType = static_cast<TrackElemType>(AsOrDefault(value["trackType"], 0));
-            vehicle->MoveToTrack(CoordsXYZ(x, y, z), direction, trackType);
+            vehicle->TrackLocation = CoordsXYZ(x, y, z);
+            vehicle->SetTrackDirection(direction);
+            vehicle->SetTrackType(static_cast<TrackElemType>(trackType));
         }
     }
 
@@ -544,6 +548,37 @@ namespace OpenRCT2::Scripting
         {
             vehicle->MoveRelativeDistance(value);
         }
+    }
+
+    void ScVehicle::moveToTrack(const DukValue& dukPosition, int32_t elementIndex)
+    {
+        auto vehicle = GetVehicle();
+        if (vehicle == nullptr)
+            return;
+
+        auto position = FromDuk<CoordsXY>(dukPosition);
+        auto el = MapGetNthElementAt(position, elementIndex);
+        if (el == nullptr)
+            return;
+
+        auto origin = GetTrackSegmentOrigin(CoordsXYE(position, el));
+        if (!origin)
+            return;
+
+        auto trackEl = el->AsTrack();
+
+        vehicle->TrackLocation.x = origin->x;
+        vehicle->TrackLocation.y = origin->y;
+        vehicle->TrackLocation.z = origin->z;
+        vehicle->SetTrackDirection(origin->direction);
+        vehicle->SetTrackType(trackEl->GetTrackType());
+
+        // Clip track progress to avoid being out of bounds of current piece
+        uint16_t trackTotalProgress = vehicle->GetTrackProgress();
+        if (trackTotalProgress && vehicle->track_progress >= trackTotalProgress)
+            vehicle->track_progress = trackTotalProgress - 1;
+
+        vehicle->UpdateTrackChange();
     }
 } // namespace OpenRCT2::Scripting
 
