@@ -2736,7 +2736,7 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType)
+    static void WindowRideConstructionUpdateDisabledPieces(ride_type_t rideType)
     {
         RideTrackGroups disabledGroups{};
         const auto& rtd = GetRideTypeDescriptor(rideType);

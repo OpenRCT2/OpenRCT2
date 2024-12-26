@@ -2007,7 +2007,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* rideEntry = ride.GetRideEntry();
 
             bool selectionShouldBeExpanded;
-            int32_t rideTypeIterator, rideTypeIteratorMax;
+            ride_type_t rideTypeIterator, rideTypeIteratorMax;
 
             const auto& gameState = GetGameState();
             const auto& rtd = ride.GetRideTypeDescriptor();

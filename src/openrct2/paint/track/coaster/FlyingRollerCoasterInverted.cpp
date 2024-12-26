@@ -9099,7 +9099,7 @@ static void FlyingRCTrackFlyerHalfLoopDown(
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRCInverted(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionFlyingRCInverted(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {

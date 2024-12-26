@@ -7177,7 +7177,7 @@ namespace OpenRCT2::AlpineRC
         }
     }
 
-    TRACK_PAINT_FUNCTION GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
+    TrackPaintFunction GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
     {
         switch (trackType)
         {
@@ -7348,7 +7348,7 @@ namespace OpenRCT2::AlpineRC
             case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
                 return TrackRightQuarterTurn3Tile25DegDownToRightBank;
             default:
-                return nullptr;
+                return TrackPaintFunctionDummy;
         }
     }
 

@@ -1016,7 +1016,7 @@ static void AirPoweredVerticalRCTrackOnridePhoto(
     TrackPaintUtilOnridePhotoPaint2(session, direction, trackElement, height);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionAirPoweredVerticalRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1063,6 +1063,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionAirPoweredVerticalRC(OpenRCT2::TrackEl
         case TrackElemType::OnRidePhoto:
             return AirPoweredVerticalRCTrackOnridePhoto;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

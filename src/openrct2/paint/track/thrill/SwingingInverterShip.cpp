@@ -188,11 +188,11 @@ static void PaintSwingingInverterShip(
     PaintUtilSetGeneralSupportHeight(session, height + 176);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingInverterShip(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSwingingInverterShip(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack1x4B)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintSwingingInverterShip;

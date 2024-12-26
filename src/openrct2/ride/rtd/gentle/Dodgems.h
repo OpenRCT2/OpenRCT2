@@ -21,7 +21,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
     .Category = RIDE_CATEGORY_GENTLE,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionDodgems,
+        .trackStyle = TrackStyle::dodgems,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),

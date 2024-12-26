@@ -738,7 +738,7 @@ static void PaintCarRideTrackLogBumps(
 /**
  * rct2: 0x006F7000
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCarRide(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCarRide(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -793,6 +793,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCarRide(OpenRCT2::TrackElemType trackT
             return PaintCarRideTrackSpinningTunnel;
 
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

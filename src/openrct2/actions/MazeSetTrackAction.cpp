@@ -172,7 +172,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         }
 
         auto ride = GetRide(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_CRASH_TYPE_NONE)
+        if (ride == nullptr || !RideTypeIsValid(ride->type))
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
             res.Error = GameActions::Status::NoClearance;

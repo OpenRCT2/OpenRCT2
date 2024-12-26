@@ -18531,7 +18531,7 @@ namespace OpenRCT2::SingleRailRC
         PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
-    TRACK_PAINT_FUNCTION GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
+    TrackPaintFunction GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
     {
         switch (trackType)
         {
@@ -19015,7 +19015,7 @@ namespace OpenRCT2::SingleRailRC
             case TrackElemType::Down25Brakes:
                 return Track25DegDownBrakes;
             default:
-                return nullptr;
+                return TrackPaintFunctionDummy;
         }
     }
 

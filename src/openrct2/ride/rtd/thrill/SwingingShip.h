@@ -20,7 +20,7 @@ constexpr RideTypeDescriptor SwingingShipRTD =
     .Category = RIDE_CATEGORY_THRILL,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x5,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionSwingingShip,
+        .trackStyle = TrackStyle::swingingShip,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),

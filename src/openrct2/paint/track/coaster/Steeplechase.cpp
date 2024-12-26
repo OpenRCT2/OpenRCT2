@@ -2238,7 +2238,7 @@ static void SteeplechaseTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSteeplechase(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSteeplechase(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -2302,6 +2302,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSteeplechase(OpenRCT2::TrackElemType t
         case TrackElemType::DiagBlockBrakes:
             return SteeplechaseTrackDiagBrakes;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

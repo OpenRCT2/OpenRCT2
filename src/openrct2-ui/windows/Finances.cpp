@@ -522,7 +522,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 flags |= WF_RESIZABLE;
                 WindowSetResize(
-                    *this, WW_OTHER_TABS, WH_OTHER_TABS, std::numeric_limits<uint16_t>::max(),
+                    *this, WW_OTHER_TABS, WH_OTHER_TABS, std::numeric_limits<int16_t>::max(),
                     std::numeric_limits<int16_t>::max());
             }
             else

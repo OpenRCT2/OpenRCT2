@@ -157,7 +157,7 @@ static void PaintRotoDropTowerSection(
 /**
  * rct2: 0x00886074
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionRotoDrop(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionRotoDrop(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -167,6 +167,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionRotoDrop(OpenRCT2::TrackElemType track
         case TrackElemType::TowerSection:
             return PaintRotoDropTowerSection;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

@@ -20,7 +20,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .Category = RIDE_CATEGORY_GENTLE,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4C,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionFerrisWheel,
+        .trackStyle = TrackStyle::ferrisWheel,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),

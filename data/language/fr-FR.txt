@@ -101,6 +101,8 @@ STR_0094    :Montagnes russes à rail unique
 STR_0095    :Montagnes russes alpines
 STR_0096    :Montagnes russes en bois classiques
 STR_0097    :Montagnes russes debout classiques
+STR_0098    :Montagnes russes lancées LSM
+STR_0099    :Montagnes russes tornado en bois
 STR_0512    :Des voitures individuelles descendent des pentes régulières en virage
 STR_0513    :Grand huit que les passagers parcourent debout
 STR_0514    :Des voitures suspendues sous la voie se balancent dans les virages des montagnes russes
@@ -183,8 +185,10 @@ STR_0602    :Train de montagnes russes propulsé hors de la station par des mote
 STR_0603    :Train de montagnes russes en bois avec des rails en acier, permettant des grandes chutes et des inversions.
 STR_0604    :Les passagers parcourent une voie à rail unique dans des voitures mono-places, à travers des inversions et des virages serrés
 STR_0605    :Les passagers dévalent une voie en acier sinueuse, freinant pour contrôler leur vitesse
-STR_0606    :Une montagne russe en bois au style ancien, rapide et turbulente, avec de nombreux moments en suspension, quelques forces latérales et conçues pour paraître hors de contrôle
+STR_0606    :Des montagnes russes en bois au style ancien, rapides et turbulentes, avec de nombreux moments en suspension, quelques forces latérales et conçues pour paraître hors de contrôle
 STR_0607    :Les passagers parcourent debout une montagne russe en acier intense au style ancien, ponctuée d’inversions
+STR_0608    :Les trains sont propulsés par des moteurs linéaires synchrones et foncent à travers des virages serrés
+STR_0609    :Des montagnes russes en bois au style ancien, rapides et turbulentes, équipées de trains articulés, avec de nombreux de suspension et un tracé sinueux
 STR_0767    :Visiteur {INT32}
 STR_0768    :Agent d’entretien {INT32}
 STR_0769    :Mécanicien {INT32}
@@ -1917,8 +1921,8 @@ STR_2670    :Défil.
 STR_2680    :Toutes les recherches effectuées
 STR_2684    :Un grand groupe de visiteurs arrive
 STR_2685    :Paramètres de bruit Simplex
-STR_2686    :Graves :
-STR_2687    :Aigus :
+STR_2686    :Altitude min. :
+STR_2687    :Altitude max. :
 STR_2688    :Fréquence de base :
 STR_2689    :Octaves :
 STR_2690    :Génération de carte
@@ -2611,8 +2615,8 @@ STR_5357    :{BLACK}Tolérance nausée :
 STR_5358    :{BLACK}Toilettes :
 STR_5359    :Supprimer visiteurs
 STR_5360    :Supprimer tous les visiteurs de la carte
-STR_5361    :Donner à tous les visiteurs :
-STR_5362    :{BLACK}Définir l’intensité préférée des visiteurs à :
+STR_5361    :Ajouter à l’inventaire des visiteurs
+STR_5362    :{BLACK}Intensité d’attraction préférée :
 STR_5363    :Plus de 1
 STR_5364    :Moins de 15
 STR_5365    :{BLACK}Vitesse du personnel :
@@ -2642,7 +2646,7 @@ STR_5457    :Désactiver la limite de support
 STR_5458    :Pivoter dans le sens horaire
 STR_5459    :Pivoter dans le sens anti-horaire
 STR_5460    :Pivoter dans le sens anti-horaire
-STR_5461    :Paramètre des visiteurs
+STR_5461    :Définir les paramètres pour tous les visiteurs
 STR_5462    :{CURRENCY}
 STR_5463    :But : Amusez-vous !
 STR_5464    :Général
@@ -3174,9 +3178,9 @@ STR_6041    :{BLACK}Pas de mécanicien à embaucher !
 STR_6042    :Charger carte de hauteur
 STR_6043    :Sélectionner carte d’élévation
 STR_6044    :Lisser carte d’élévation
-STR_6045    :Force
+STR_6045    :Force :
 STR_6046    :Normaliser la carte d’élévation
-STR_6047    :Lisser les cases
+STR_6047    :Lisser les bords des cases
 STR_6048    :Erreur carte d’élévation
 STR_6049    :Erreur de lecture du PNG
 STR_6050    :Erreur de lecture du bitmap
@@ -3618,7 +3622,7 @@ STR_6537    :Permettre l’utilisation d’allées normales{NEWLINE}dans les fil
 STR_6538    :Affiche les allées normales dans le menu déroulant des files d’attente de la fenêtre des allées
 STR_6539    :Freins serrés
 STR_6540    :{WINDOW_COLOUR_2}Remerciements particuliers aux entreprises suivantes pour l’autorisation d’utilisation de leur image :
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Contributions
 STR_6543    :Contributions…
 STR_6544    :Un emprunt ne peut pas être négatif !
@@ -3738,3 +3742,53 @@ STR_6657    :Terrain libre
 STR_6658    :Définir ce terrain comme n’appartenant pas au parc ni disponible à l’achat
 STR_6659    :Les visiteurs ignorent les prix
 STR_6660    :Les visiteurs ignoreront le prix des attractions et des boutiques
+STR_6661    :Complètement aléatoire
+STR_6662    :Couleurs aléatoires pour chaque train et véhicule
+STR_6663    :Triche de date
+STR_6664    :Afficher les options de triche de date
+STR_6665    :Triche de nature/météo
+STR_6666    :Afficher les options de triche de nature et de météo
+STR_6667    :Faune
+STR_6668    :Triche d’employés
+STR_6669    :Afficher les options de triche pour les employés
+STR_6670    :Comportement des visiteurs
+STR_6671    :Afficher le « vrai » nom des employés
+STR_6672    :Alterner entre afficher le « vrai » nom des employés et le numéro d’employé
+STR_6673    :Translucide
+STR_6674    :{MONTH}, année {COMMA16}
+STR_6675    :Noms des visiteurs
+STR_6676    :Au moins un objet de noms de visiteurs doit être sélectionné
+STR_6677    :Ajouter des plages au bord de l’eau
+STR_6678    :Source de la carte d’altitude :
+STR_6679    :Monde plat
+STR_6680    :Bruit Simplex
+STR_6681    :Fichier de carte d’altitude
+STR_6682    :Générateur de carte - Générateur
+STR_6683    :Générateur de carte - Terrain
+STR_6684    :Générateur de carte - Eau
+STR_6685    :Générateur de carte - Forêts
+STR_6686    :Proportion d’arbres :
+STR_6687    :Altitude min. d’arbres :
+STR_6688    :Altitude max. d’arbres :
+STR_6689    :{UINT16}%
+STR_6690    :Altitude minimale
+STR_6691    :Entrez une altitude minimale comprise entre {COMMA16} et {COMMA16}
+STR_6692    :Altitude maximale
+STR_6693    :Entrez une altitude maximale comprise entre {COMMA16} et {COMMA16}
+STR_6694    :Altitude minimale pour les arbres
+STR_6695    :Entrez une altitude minimale pour les arbres comprise entre {COMMA16} et {COMMA16}
+STR_6696    :Altitude maximale pour les arbres
+STR_6697    :Entrez une altitude maximale pour les arbres comprise entre {COMMA16} et {COMMA16}
+STR_6698    :Proportion d’arbres
+STR_6699    :Entrez une proportion d’arbres comprise entre {COMMA16} et {COMMA16}
+STR_6700    :Fréquence de base Simplex
+STR_6701    :Entrez une fréquence de base comprise entre {COMMA2DP32} et {COMMA2DP32}
+STR_6702    :Octaves Simplex
+STR_6703    :Entrez des octaves comprises entre {COMMA16} et {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Parcourir…
+STR_6706    :{WINDOW_COLOUR_2}Fichier d’image actuel : {BLACK}{STRING}
+STR_6707    :(aucun sélectionné)
+STR_6708    :Puissance du lissage
+STR_6709    :Entrez une puissance du lissage comprise entre {COMMA16} et {COMMA16}
+STR_6710    :Tri stable

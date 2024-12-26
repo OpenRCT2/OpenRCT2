@@ -663,7 +663,7 @@ static void ChairliftPaintRightQuarterTurn1Tile(
 }
 
 /* 0x008AAA0C */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionChairlift(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionChairlift(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -694,6 +694,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionChairlift(OpenRCT2::TrackElemType trac
         case TrackElemType::RightQuarterTurn1Tile:
             return ChairliftPaintRightQuarterTurn1Tile;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

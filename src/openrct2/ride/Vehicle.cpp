@@ -6996,7 +6996,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
         // Update VehicleFlags::CarIsInverted flag
         ClearFlag(VehicleFlags::CarIsInverted);
         {
-            int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
+            auto rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
             if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::hasInvertedVariant))
             {
                 if (tileElement->AsTrack()->IsInverted())

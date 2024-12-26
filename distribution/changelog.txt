@@ -1,9 +1,14 @@
 0.4.18 (in development)
 ------------------------------------------------------------------------
 - Improved: [#23042] [Plugin] Add API for play sound effects.
+- Improved: [#23200] Add banked sloped turns and many other pieces to the Stand-Up and Classic Stand-Up Roller Coaster.
 - Improved: [#23260] Add diagonal (block) brakes to LSM Launched Roller Coaster.
 - Improved: [#23350] Increased the maximum width of the ride graph window.
 - Improved: [#23404] Folders are now paired with an icon in the load/save window.
+- Improved: [#23431] Opaque water and Corkscrew Roller Coaster boosters now show up if RCT1 isn’t linked. 
+- Change: [#23413] The max number of park entrance objects has been raised to 255.
+- Fix: [#1122] Trains spawned on a cable lift hill will fall down and crash (original bug).
+- Fix: [#22742, #22793] In game console does not handle format tokens properly.
 - Fix: [#23286] Currency formatted incorrectly in the in game console.
 - Fix: [#23348] Console set commands don't print output properly.
 - Fix: [#23376] Peeps with balloons, hats and umbrellas may leave artifacts on screen.

@@ -19,7 +19,7 @@ constexpr RideTypeDescriptor CashMachineRTD =
     .Category = RIDE_CATEGORY_SHOP,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionShop,
+        .trackStyle = TrackStyle::shop,
         .enabledTrackGroups = {},
         .extraTrackGroups = {},
     }),

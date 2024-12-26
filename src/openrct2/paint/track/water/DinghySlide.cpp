@@ -1060,7 +1060,7 @@ static void DinghySlideTrackLeftQuarterTurn3(
     DinghySlideTrackRightQuarterTurn3(session, ride, trackSequence, (direction + 1) % 4, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionDinghySlide(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1107,6 +1107,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(OpenRCT2::TrackElemType tr
         case TrackElemType::RightQuarterTurn3Tiles:
             return DinghySlideTrackRightQuarterTurn3;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

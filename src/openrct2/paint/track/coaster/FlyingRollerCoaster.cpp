@@ -856,7 +856,7 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown(
         session, ride, 6 - trackSequence, direction, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionFlyingRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {

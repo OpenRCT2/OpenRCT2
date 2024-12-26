@@ -97,8 +97,6 @@ namespace OpenRCT2::Graph
             kDashLength, PALETTE_INDEX_10);
         GfxDrawDashedLine(dpi, { { bounds.GetLeft(), coords.y }, coords }, kDashLength, PALETTE_INDEX_10);
 
-        Formatter ft;
-        ft.Add<money64>(value);
         DrawText(dpi, coords - ScreenCoordsXY{ 0, 16 }, { textCol, TextAlignment::CENTRE }, text);
 
         GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 2, 2 } }, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);

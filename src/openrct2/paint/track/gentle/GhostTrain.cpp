@@ -562,7 +562,7 @@ static void PaintGhostTrainTrackBrakes(
 /**
  * rct2: 0x00770924
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionGhostTrain(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionGhostTrain(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -604,6 +604,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionGhostTrain(OpenRCT2::TrackElemType tra
         case TrackElemType::SpinningTunnel:
             return PaintGhostTrainTrackSpinningTunnel;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

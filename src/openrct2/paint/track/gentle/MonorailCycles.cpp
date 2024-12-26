@@ -610,7 +610,7 @@ static void PaintMonorailCyclesTrackSBendRight(
 /**
  * rct2: 0x0088ac88
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorailCycles(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMonorailCycles(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -637,6 +637,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorailCycles(OpenRCT2::TrackElemType
         case TrackElemType::RightQuarterTurn3Tiles:
             return PaintMonorailCyclesTrackRightQuarterTurn3Tiles;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }
