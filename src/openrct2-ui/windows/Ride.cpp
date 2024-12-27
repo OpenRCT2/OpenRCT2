@@ -752,7 +752,7 @@ namespace OpenRCT2::Ui::Windows
             rideId = ride.id;
         }
 
-        virtual void OnOpen() override
+        void OnOpen() override
         {
             widgets = PageWidgets[WINDOW_RIDE_PAGE_MAIN];
             hold_down_widgets = PageHoldDownWidgets[WINDOW_RIDE_PAGE_MAIN];
@@ -778,7 +778,7 @@ namespace OpenRCT2::Ui::Windows
             PopulateVehicleTypeDropdown(*ride, true);
         }
 
-        virtual void OnClose() override
+        void OnClose() override
         {
             switch (page)
             {
@@ -790,7 +790,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual void OnResize() override
+        void OnResize() override
         {
             switch (page)
             {
@@ -826,7 +826,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual void OnUpdate() override
+        void OnUpdate() override
         {
             switch (page)
             {
@@ -863,7 +863,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        virtual void OnPrepareDraw() override
+        void OnPrepareDraw() override
         {
             switch (page)
             {
@@ -899,7 +899,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(DrawPixelInfo& dpi) override
         {
             switch (page)
             {
@@ -936,7 +936,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        virtual OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
+        OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
         {
             switch (page)
             {
@@ -947,7 +947,7 @@ namespace OpenRCT2::Ui::Windows
             }
             return { fallback, {} };
         }
-        virtual void OnMouseDown(WidgetIndex widgetIndex) override
+        void OnMouseDown(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -980,7 +980,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual void OnMouseUp(WidgetIndex widgetIndex) override
+        void OnMouseUp(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -1016,7 +1016,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+        void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
         {
             switch (page)
             {
@@ -1043,7 +1043,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             switch (page)
             {
@@ -1058,7 +1058,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
             switch (page)
             {
@@ -1069,7 +1069,7 @@ namespace OpenRCT2::Ui::Windows
             }
             return {};
         }
-        virtual void OnScrollSelect(int32_t scrollIndex, int32_t scrollAreaType) override
+        void OnScrollSelect(int32_t scrollIndex, int32_t scrollAreaType) override
         {
             switch (page)
             {
@@ -1078,7 +1078,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
             switch (page)
             {
@@ -1096,7 +1096,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (page)
             {
@@ -1108,7 +1108,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+        void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
             switch (page)
             {
@@ -1120,7 +1120,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual void OnToolAbort(WidgetIndex widgetIndex) override
+        void OnToolAbort(WidgetIndex widgetIndex) override
         {
             switch (page)
             {
@@ -1129,7 +1129,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        virtual void OnViewportRotate() override
+        void OnViewportRotate() override
         {
             switch (page)
             {
