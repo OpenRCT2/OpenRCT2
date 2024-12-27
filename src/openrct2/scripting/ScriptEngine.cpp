@@ -248,7 +248,7 @@ private:
                 _ss << "?: ";
             }
 
-            JSValue prop = JS_GetProperty(_context,val, props[0].atom);
+            JSValue prop = JS_GetProperty(_context, val, props[0].atom);
             Stringify(prop, true, nestLevel + 1);
             JS_FreeValue(_context, prop);
 
@@ -265,7 +265,7 @@ private:
             _ss << "{ ";
             PushIndent(2);
 
-            for(uint32_t i = 0; i < propsLen; i++)
+            for (uint32_t i = 0; i < propsLen; i++)
             {
                 if (i != 0)
                 {
@@ -284,7 +284,7 @@ private:
                     _ss << "?: ";
                 }
 
-                JSValue prop = JS_GetProperty(_context,val, props[i].atom);
+                JSValue prop = JS_GetProperty(_context, val, props[i].atom);
                 Stringify(prop, true, nestLevel + 1);
                 JS_FreeValue(_context, prop);
             }
@@ -417,87 +417,16 @@ void ScriptEngine::Initialise()
     _runtime = JS_NewRuntime();
     if (!_runtime)
         throw "QuickJS: cannot allocate JS runtime\n";
-    _context = JS_NewContext(_runtime);
-    if (!_context)
-        throw "QuickJS: cannot allocate JS context\n";
 
     #ifndef NDEBUG
     // Dump JS engine memory leaks
     JS_SetDumpFlags(_runtime, 0x4000);
     #endif
 
-    /* TODO (mber) register C functions
-    const JSContext* ctx = _context;
-    ScCheats::Register(ctx);
-    ScClimate::Register(ctx);
-    ScClimateState::Register(ctx);
-    ScConfiguration::Register(ctx);
-    ScConsole::Register(ctx);
-    ScContext::Register(ctx);
-    ScDate::Register(ctx);
-    ScDisposable::Register(ctx);
-    ScMap::Register(ctx);
-    ScNetwork::Register(ctx);
-    ScObjectManager::Register(ctx);
-    ScInstalledObject::Register(ctx);
-    ScObject::Register(ctx);
-    ScSceneryObject::Register(ctx);
-    ScSmallSceneryObject::Register(ctx);
-    ScLargeSceneryObject::Register(ctx);
-    ScLargeSceneryObjectTile::Register(ctx);
-    ScWallObject::Register(ctx);
-    ScFootpathAdditionObject::Register(ctx);
-    ScBannerObject::Register(ctx);
-    ScSceneryGroupObject::Register(ctx);
-    ScPark::Register(ctx);
-    ScParkMessage::Register(ctx);
-    ScPlayer::Register(ctx);
-    ScPlayerGroup::Register(ctx);
-    ScProfiler::Register(ctx);
-    ScResearch::Register(ctx);
-    ScRide::Register(ctx);
-    ScRideStation::Register(ctx);
-    ScRideObject::Register(ctx);
-    ScRideObjectVehicle::Register(ctx);
-    ScTile::Register(ctx);
-    ScTileElement::Register(ctx);
-    ScTrackIterator::Register(ctx);
-    ScTrackSegment::Register(ctx);
-    ScEntity::Register(ctx);
-    ScLitter::Register(ctx);
-    ScVehicle::Register(ctx);
-    ScCrashedVehicleParticle::Register(ctx);
-    ScPeep::Register(ctx);
-    ScGuest::Register(ctx);
-    ScThought::Register(ctx);
-    #ifndef DISABLE_NETWORK
-    ScSocket::Register(ctx);
-    ScListener::Register(ctx);
-    #endif
-    ScScenario::Register(ctx);
-    ScScenarioObjective::Register(ctx);
-    ScPatrolArea::Register(ctx);
-    ScStaff::Register(ctx);
-    ScHandyman::Register(ctx);
-    ScMechanic::Register(ctx);
-    ScSecurity::Register(ctx);
-    ScPlugin::Register(ctx);
-
-    dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
-    dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
-    dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
-    dukglue_register_global(ctx, std::make_shared<ScContext>(_execInfo, _hookEngine), "context");
-    dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
-    dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
-    dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
-    dukglue_register_global(ctx, std::make_shared<ScPark>(ctx), "park");
-    dukglue_register_global(ctx, std::make_shared<ScPlugin>(), "pluginManager");
-    dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
-    dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
-    dukglue_register_global(ctx, std::make_shared<ScObjectManager>(), "objectManager");
-    */
-
-    RegisterConstants();
+    _replContext = JS_NewContext(_runtime);
+    if (!_replContext)
+        throw "QuickJS: cannot allocate REPL JS context\n";
+    InitialiseContext(_replContext);
 
     _initialised = true;
     _transientPluginsEnabled = false;
@@ -507,12 +436,86 @@ void ScriptEngine::Initialise()
     ClearParkStorage();
 }
 
+void ScriptEngine::InitialiseContext(JSContext* ctx)
+{
+    // TODO (mber) register C functions
+    // ScCheats::Register(ctx);
+    // ScClimate::Register(ctx);
+    // ScClimateState::Register(ctx);
+    // ScConfiguration::Register(ctx);
+    // ScConsole::Register(ctx);
+    // ScContext::Register(ctx);
+    // ScDate::Register(ctx);
+    // ScDisposable::Register(ctx);
+    // ScMap::Register(ctx);
+    // ScNetwork::Register(ctx);
+    // ScObjectManager::Register(ctx);
+    // ScInstalledObject::Register(ctx);
+    // ScObject::Register(ctx);
+    // ScSceneryObject::Register(ctx);
+    // ScSmallSceneryObject::Register(ctx);
+    // ScLargeSceneryObject::Register(ctx);
+    // ScLargeSceneryObjectTile::Register(ctx);
+    // ScWallObject::Register(ctx);
+    // ScFootpathAdditionObject::Register(ctx);
+    // ScBannerObject::Register(ctx);
+    // ScSceneryGroupObject::Register(ctx);
+    // ScPark::Register(ctx);
+    // ScParkMessage::Register(ctx);
+    // ScPlayer::Register(ctx);
+    // ScPlayerGroup::Register(ctx);
+    // ScProfiler::Register(ctx);
+    // ScResearch::Register(ctx);
+    // ScRide::Register(ctx);
+    // ScRideStation::Register(ctx);
+    // ScRideObject::Register(ctx);
+    // ScRideObjectVehicle::Register(ctx);
+    // ScTile::Register(ctx);
+    // ScTileElement::Register(ctx);
+    // ScTrackIterator::Register(ctx);
+    // ScTrackSegment::Register(ctx);
+    // ScEntity::Register(ctx);
+    // ScLitter::Register(ctx);
+    // ScVehicle::Register(ctx);
+    // ScCrashedVehicleParticle::Register(ctx);
+    // ScPeep::Register(ctx);
+    // ScGuest::Register(ctx);
+    // ScThought::Register(ctx);
+    // #ifndef DISABLE_NETWORK
+    // ScSocket::Register(ctx);
+    // ScListener::Register(ctx);
+    // #endif
+    // ScScenario::Register(ctx);
+    // ScScenarioObjective::Register(ctx);
+    // ScPatrolArea::Register(ctx);
+    // ScStaff::Register(ctx);
+    // ScHandyman::Register(ctx);
+    // ScMechanic::Register(ctx);
+    // ScSecurity::Register(ctx);
+    // ScPlugin::Register(ctx);
+    //
+    // dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
+    // dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
+    // dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
+    // dukglue_register_global(ctx, std::make_shared<ScContext>(_execInfo, _hookEngine), "context");
+    // dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
+    // dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
+    // dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
+    // dukglue_register_global(ctx, std::make_shared<ScPark>(ctx), "park");
+    // dukglue_register_global(ctx, std::make_shared<ScPlugin>(), "pluginManager");
+    // dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
+    // dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
+    // dukglue_register_global(ctx, std::make_shared<ScObjectManager>(), "objectManager");
+
+    RegisterConstants(ctx);
+}
+
 ScriptEngine::~ScriptEngine()
 {
-    if (_context)
+    if (_replContext)
     {
-        JS_FreeContext(_context);
-        _context = nullptr;
+        JS_FreeContext(_replContext);
+        _replContext = nullptr;
     }
     if (_runtime)
     {
@@ -521,59 +524,49 @@ ScriptEngine::~ScriptEngine()
     }
 }
 
-/* TODO (mber) constant builder
 class ConstantBuilder
 {
 private:
-    duk_context* _ctx;
-    DukValue _obj;
+    JSContext* _ctx;
+    JSValue _obj;
 
 public:
-    ConstantBuilder(duk_context* ctx)
+    ConstantBuilder(JSContext* ctx)
         : _ctx(ctx)
     {
-        duk_push_global_object(_ctx);
-        _obj = DukValue::take_from_stack(_ctx);
+        _obj = JS_GetGlobalObject(_ctx);
     }
 
     ConstantBuilder& Namespace(std::string_view ns)
     {
-        auto flags = DUK_DEFPROP_ENUMERABLE | DUK_DEFPROP_HAVE_WRITABLE | DUK_DEFPROP_HAVE_ENUMERABLE
-            | DUK_DEFPROP_HAVE_CONFIGURABLE | DUK_DEFPROP_HAVE_VALUE;
-
         // Create a new object for namespace
-        duk_push_global_object(_ctx);
-        duk_push_lstring(_ctx, ns.data(), ns.size());
-        duk_push_object(_ctx);
-
         // Keep a reference to the namespace object
-        duk_dup_top(_ctx);
-        _obj = DukValue::take_from_stack(_ctx);
+        JS_FreeValue(_ctx, _obj);
+        _obj = JS_NewObject(_ctx);
 
         // Place the namespace object into the global context
-        duk_def_prop(_ctx, -3, flags);
-        duk_pop(_ctx);
+        JSValue global = JS_GetGlobalObject(_ctx);
+        JS_SetPropertyStr(_ctx, global, std::string(ns).c_str(), JS_DupValue(_ctx, _obj));
+        JS_FreeValue(_ctx, global);
 
         return *this;
     }
 
     ConstantBuilder& Constant(std::string_view name, int32_t value)
     {
-        auto flags = DUK_DEFPROP_ENUMERABLE | DUK_DEFPROP_HAVE_WRITABLE | DUK_DEFPROP_HAVE_ENUMERABLE
-            | DUK_DEFPROP_HAVE_CONFIGURABLE | DUK_DEFPROP_HAVE_VALUE;
-        _obj.push();
-        duk_push_lstring(_ctx, name.data(), name.size());
-        duk_push_int(_ctx, value);
-        duk_def_prop(_ctx, -3, flags);
-        duk_pop(_ctx);
+        JS_SetPropertyStr(_ctx, _obj, std::string(name).c_str(), JS_NewInt32(_ctx, value));
         return *this;
     }
-};*/
 
-void ScriptEngine::RegisterConstants()
+    ~ConstantBuilder()
+    {
+        JS_FreeValue(_ctx, _obj);
+    }
+};
+
+void ScriptEngine::RegisterConstants(JSContext* ctx)
 {
-    /* TODO (mber) constant builder
-    ConstantBuilder builder(_context);
+    ConstantBuilder builder(ctx);
     builder.Namespace("TrackSlope")
         .Constant("None", EnumValue(TrackPitch::None))
         .Constant("Up25", EnumValue(TrackPitch::Up25))
@@ -587,7 +580,6 @@ void ScriptEngine::RegisterConstants()
         .Constant("BankLeft", EnumValue(TrackRoll::Left))
         .Constant("BankRight", EnumValue(TrackRoll::Right))
         .Constant("UpsideDown", EnumValue(TrackRoll::UpsideDown));
-        */
 }
 
 void ScriptEngine::RefreshPlugins()
@@ -685,7 +677,7 @@ void ScriptEngine::RegisterPlugin(std::string_view path)
 {
     try
     {
-        auto plugin = std::make_shared<Plugin>(_context, path);
+        auto plugin = std::make_shared<Plugin>(_replContext, path);
 
         // We must load the plugin to get the metadata for it
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
@@ -749,7 +741,7 @@ void ScriptEngine::LoadTransientPlugins()
 
 void ScriptEngine::LoadPlugin(const std::string& path)
 {
-    auto plugin = std::make_shared<Plugin>(_context, path);
+    auto plugin = std::make_shared<Plugin>(_replContext, path);
     LoadPlugin(plugin);
 }
 
@@ -1005,18 +997,18 @@ void ScriptEngine::ProcessREPL()
         auto promise = std::move(std::get<0>(item));
         auto command = std::move(std::get<1>(item));
 
-        JSValue res = JS_Eval(_context, command.c_str(), command.length(), "<repl>", JS_EVAL_TYPE_GLOBAL);
+        JSValue res = JS_Eval(_replContext, command.c_str(), command.length(), "<repl>", JS_EVAL_TYPE_GLOBAL);
         if (JS_IsException(res))
         {
-            JSValue exceptionVal = JS_GetException(_context);
-            _console.WriteLineError(Stringify(_context, exceptionVal));
-            JS_FreeValue(_context, exceptionVal);
+            JSValue exceptionVal = JS_GetException(_replContext);
+            _console.WriteLineError(Stringify(_replContext, exceptionVal));
+            JS_FreeValue(_replContext, exceptionVal);
         }
         else if (!JS_IsUndefined(res))
         {
-            _console.WriteLine(Stringify(_context, res));
+            _console.WriteLine(Stringify(_replContext, res));
         }
-        JS_FreeValue(_context, res);
+        JS_FreeValue(_replContext, res);
 
         // Signal the promise so caller can continue
         promise.set_value();
@@ -1094,7 +1086,7 @@ void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::str
 
 void ScriptEngine::AddNetworkPlugin(std::string_view code)
 {
-    auto plugin = std::make_shared<Plugin>(_context, std::string());
+    auto plugin = std::make_shared<Plugin>(_replContext, std::string());
     plugin->SetCode(code);
     _plugins.push_back(plugin);
 }

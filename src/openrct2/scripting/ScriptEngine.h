@@ -22,12 +22,11 @@
     #include <memory>
     #include <mutex>
     #include <queue>
+    #include <quickjs.h>
     #include <string>
     #include <unordered_map>
     #include <unordered_set>
     #include <vector>
-    #include <quickjs.h>
-
 
 class GameAction;
 namespace OpenRCT2::GameActions
@@ -119,7 +118,7 @@ namespace OpenRCT2::Scripting
         InteractiveConsole& _console;
         IPlatformEnvironment& _env;
         JSRuntime* _runtime = nullptr;
-        JSContext* _context = nullptr;
+        JSContext* _replContext = nullptr;
         bool _initialised{};
         bool _hotReloadingInitialised{};
         bool _transientPluginsEnabled{};
@@ -162,7 +161,7 @@ namespace OpenRCT2::Scripting
 
         JSContext* GetContext()
         {
-            return _context;
+            return _replContext;
         }
         HookEngine& GetHookEngine()
         {
@@ -204,14 +203,14 @@ namespace OpenRCT2::Scripting
         void SetParkStorageFromJSON(std::string_view value);
 
         void Initialise();
+        static void InitialiseContext(JSContext* ctx);
         void LoadTransientPlugins();
         void UnloadTransientPlugins();
         void StopUnloadRegisterAllPlugins();
         void Tick();
         std::future<void> Eval(const std::string& s);
         JSValue ExecutePluginCall(
-            const std::shared_ptr<Plugin>& plugin, JSValue func, const std::vector<JSValue>& args,
-            bool isGameStateMutable);
+            const std::shared_ptr<Plugin>& plugin, JSValue func, const std::vector<JSValue>& args, bool isGameStateMutable);
         JSValue ExecutePluginCall(
             std::shared_ptr<Plugin> plugin, JSValue func, JSValue thisValue, const std::vector<JSValue>& args,
             bool isGameStateMutable);
@@ -248,7 +247,7 @@ namespace OpenRCT2::Scripting
     #endif
 
     private:
-        void RegisterConstants();
+        static void RegisterConstants(JSContext* ctx);
         void RefreshPlugins();
         std::vector<std::string> GetPluginFiles() const;
         void UnregisterPlugin(std::string_view path);
