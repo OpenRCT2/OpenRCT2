@@ -31,6 +31,7 @@
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/object/SceneryGroupObject.h>
 #include <openrct2/platform/Platform.h>
@@ -1334,6 +1335,24 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        StringId GetAnimationPeepTypeStringId(AnimationPeepType type)
+        {
+            switch (type)
+            {
+                case AnimationPeepType::Handyman:
+                    return STR_HANDYMAN_PLURAL;
+                case AnimationPeepType::Mechanic:
+                    return STR_MECHANIC_PLURAL;
+                case AnimationPeepType::Security:
+                    return STR_SECURITY_GUARD_PLURAL;
+                case AnimationPeepType::Entertainer:
+                    return STR_ENTERTAINER_PLURAL;
+                case AnimationPeepType::Guest:
+                default:
+                    return STR_GUESTS;
+            }
+        }
+
         void DrawDebugData(DrawPixelInfo& dpi)
         {
             ObjectListItem* listItem = &_listItems[selected_list_item];
@@ -1350,6 +1369,14 @@ namespace OpenRCT2::Ui::Windows
             if (GetSelectedObjectType() == ObjectType::Ride)
             {
                 auto stringId = GetRideTypeStringId(listItem->repositoryItem);
+                DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+            }
+
+            // Draw peep animation object type
+            if (GetSelectedObjectType() == ObjectType::PeepAnimations)
+            {
+                auto* animObj = reinterpret_cast<PeepAnimationsObject*>(_loadedObject.get());
+                auto stringId = GetAnimationPeepTypeStringId(animObj->GetPeepType());
                 DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             }
 
