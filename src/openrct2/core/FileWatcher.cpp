@@ -17,6 +17,7 @@
 #ifdef _WIN32
     #include <windows.h>
 #elif defined(__linux__)
+    #include <chrono>
     #include <fcntl.h>
     #include <sys/inotify.h>
     #include <sys/types.h>
@@ -251,7 +252,8 @@ void FileWatcher::WatchDirectory()
         }
 
         // Sleep for 1/2 second
-        usleep(500000);
+        using namespace std::chrono_literals;
+        usleep(std::chrono::microseconds(1s).count() / 2);
     }
 #elif defined(__APPLE__)
     if (_stream)
