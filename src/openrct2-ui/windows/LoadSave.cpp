@@ -704,8 +704,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SAVE].type = WindowWidgetType::Button;
 
                 // Set current filename
-                auto filename = Path::GetFileNameWithoutExtension(gCurrentLoadedPath);
-                String::set(_currentFilename, sizeof(_currentFilename), filename.c_str());
+                String::set(_currentFilename, sizeof(_currentFilename), _defaultPath.c_str());
 
                 // Focus textbox
                 WindowStartTextbox(*this, WIDX_FILENAME_TEXTBOX, _currentFilename, sizeof(_currentFilename));
