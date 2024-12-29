@@ -85,6 +85,10 @@ struct WindowBase
     virtual void OnOpen()
     {
     }
+    virtual bool CanClose()
+    {
+        return true;
+    }
     virtual void OnClose()
     {
     }

@@ -300,6 +300,12 @@ namespace OpenRCT2::Ui::Windows
             VisibleListRefresh();
         }
 
+        bool CanClose() override
+        {
+            // Prevent window closure when selection is invalid
+            return EditorObjectSelectionWindowCheck();
+        }
+
         /**
          *
          * rct2: 0x006AB199
