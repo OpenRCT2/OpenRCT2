@@ -66,7 +66,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SORT_DATE,
         WIDX_SCROLL,
         WIDX_FILENAME_TEXTBOX,
-        WIDX_OK,
+        WIDX_SAVE,
         WIDX_BROWSE,
     };
 
@@ -83,7 +83,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({(WW - 5) / 2 + 1,      55}, {      170,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_DATE
         MakeWidget({               4,      68}, {      342, 303 }, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                            ), // WIDX_SCROLL
         MakeWidget({              64, WH - 50}, { WW - 133,  14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                             ), // WIDX_FILENAME_TEXTBOX
-        MakeWidget({         WW - 65, WH - 50}, {       60,  14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_OK                                                     ), // WIDX_OK
+        MakeWidget({         WW - 65, WH - 50}, {       60,  14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_FILEBROWSER_SAVE_BUTTON                                ), // WIDX_SAVE
         MakeWidget({               4, WH - 24}, {      197,  19 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // WIDX_BROWSE
         kWidgetsEnd,
     };
@@ -701,7 +701,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 widgets[WIDX_FILENAME_TEXTBOX].type = WindowWidgetType::TextBox;
                 widgets[WIDX_FILENAME_TEXTBOX].string = _currentFilename;
-                widgets[WIDX_OK].type = WindowWidgetType::Button;
+                widgets[WIDX_SAVE].type = WindowWidgetType::Button;
 
                 // Set current filename
                 auto filename = Path::GetFileNameWithoutExtension(gCurrentLoadedPath);
@@ -713,7 +713,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 widgets[WIDX_FILENAME_TEXTBOX].type = WindowWidgetType::Empty;
-                widgets[WIDX_OK].type = WindowWidgetType::Empty;
+                widgets[WIDX_SAVE].type = WindowWidgetType::Empty;
             }
 
             // Populate file list
@@ -786,19 +786,23 @@ namespace OpenRCT2::Ui::Windows
             {
                 window_loadsave_widgets[WIDX_SCROLL].bottom -= 18;
 
+                // Get 'Save' button string width
+                auto saveLabel = LanguageGetString(STR_FILEBROWSER_SAVE_BUTTON);
+                auto saveLabelWidth = GfxGetStringWidth(saveLabel, FontStyle::Medium) + 16;
+
+                window_loadsave_widgets[WIDX_SAVE].top = height - 42;
+                window_loadsave_widgets[WIDX_SAVE].bottom = height - 30;
+                window_loadsave_widgets[WIDX_SAVE].left = width - saveLabelWidth - 5;
+                window_loadsave_widgets[WIDX_SAVE].right = width - 5;
+
                 // Get 'Filename:' string width
-                auto label = LanguageGetString(STR_FILENAME);
-                auto labelWidth = GfxGetStringWidth(label, FontStyle::Medium);
+                auto filenameLabel = LanguageGetString(STR_FILENAME);
+                auto filenameLabelWidth = GfxGetStringWidth(filenameLabel, FontStyle::Medium);
 
                 window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].top = height - 42;
                 window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 30;
-                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].left = 4 + labelWidth + 6;
-                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].right = width - 63 + 4;
-
-                window_loadsave_widgets[WIDX_OK].top = height - 42;
-                window_loadsave_widgets[WIDX_OK].bottom = height - 30;
-                window_loadsave_widgets[WIDX_OK].left = width - 55;
-                window_loadsave_widgets[WIDX_OK].right = width - 5;
+                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].left = 4 + filenameLabelWidth + 6;
+                window_loadsave_widgets[WIDX_FILENAME_TEXTBOX].right = window_loadsave_widgets[WIDX_SAVE].left - 5;
             }
 
             // 'Use system file browser'
@@ -942,7 +946,7 @@ namespace OpenRCT2::Ui::Windows
                     WindowStartTextbox(*this, widgetIndex, _currentFilename, sizeof(_currentFilename));
                     break;
 
-                case WIDX_OK:
+                case WIDX_SAVE:
                 {
                     const u8string path = Path::WithExtension(
                         Path::Combine(_directory, _currentFilename), RemovePatternWildcard(_extensionPattern));
@@ -1209,7 +1213,7 @@ namespace OpenRCT2::Ui::Windows
 
         if (keycode == SDLK_RETURN || keycode == SDLK_KP_ENTER)
         {
-            loadSaveWindow->OnMouseUp(WIDX_OK);
+            loadSaveWindow->OnMouseUp(WIDX_SAVE);
         }
         else if (keycode == SDLK_ESCAPE)
         {

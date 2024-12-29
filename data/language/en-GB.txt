@@ -3786,3 +3786,4 @@ STR_6708    :Smooth Strength
 STR_6709    :Enter Smooth Strength between {COMMA16} and {COMMA16}
 STR_6710    :Stable sort
 STR_6711    :Filename:
+STR_6712    :Save
