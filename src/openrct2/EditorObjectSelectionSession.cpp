@@ -750,6 +750,10 @@ int32_t EditorRemoveUnusedObjects()
                 if (objectType == ObjectType::PeepNames)
                     continue;
 
+                // Avoid deleting peep animation objects, as it ensures we don't delete the last ones for a kind of peep.
+                if (objectType == ObjectType::PeepAnimations)
+                    continue;
+
                 // It’s hard to determine exactly if a scenery group is used, so do not remove these automatically.
                 if (objectType == ObjectType::SceneryGroup)
                     continue;
