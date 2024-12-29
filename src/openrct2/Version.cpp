@@ -64,7 +64,9 @@ NewVersionInfo GetLatestVersion()
 #ifndef DISABLE_HTTP
     auto now = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     auto then = Config::Get().general.LastVersionCheckTime;
-    if (then < now - 24 * 60 * 60)
+    using namespace std::chrono_literals;
+
+    if (then < now - std::chrono::seconds(24h).count())
     {
         Http::Request request;
         request.url = "https://api.github.com/repos/OpenRCT2/OpenRCT2/releases/latest";

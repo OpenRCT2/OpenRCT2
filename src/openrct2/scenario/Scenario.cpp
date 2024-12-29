@@ -64,6 +64,8 @@
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
+#include <chrono>
+
 using namespace OpenRCT2;
 
 const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
@@ -254,22 +256,24 @@ void ScenarioAutosaveCheck()
     uint32_t timeSinceSave = Platform::GetTicks() - gLastAutoSaveUpdate;
 
     bool shouldSave = false;
+    using namespace std::chrono_literals;
+
     switch (Config::Get().general.AutosaveFrequency)
     {
         case AUTOSAVE_EVERY_MINUTE:
-            shouldSave = timeSinceSave >= 1 * 60 * 1000;
+            shouldSave = timeSinceSave >= std::chrono::milliseconds(1min).count();
             break;
         case AUTOSAVE_EVERY_5MINUTES:
-            shouldSave = timeSinceSave >= 5 * 60 * 1000;
+            shouldSave = timeSinceSave >= std::chrono::milliseconds(5min).count();
             break;
         case AUTOSAVE_EVERY_15MINUTES:
-            shouldSave = timeSinceSave >= 15 * 60 * 1000;
+            shouldSave = timeSinceSave >= std::chrono::milliseconds(15min).count();
             break;
         case AUTOSAVE_EVERY_30MINUTES:
-            shouldSave = timeSinceSave >= 30 * 60 * 1000;
+            shouldSave = timeSinceSave >= std::chrono::milliseconds(30min).count();
             break;
         case AUTOSAVE_EVERY_HOUR:
-            shouldSave = timeSinceSave >= 60 * 60 * 1000;
+            shouldSave = timeSinceSave >= std::chrono::milliseconds(1h).count();
             break;
     }
 
