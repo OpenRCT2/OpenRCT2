@@ -79,6 +79,6 @@ constexpr RideTypeDescriptor MonorailRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_Monorail,
+    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_Monorail,
 };
 // clang-format on

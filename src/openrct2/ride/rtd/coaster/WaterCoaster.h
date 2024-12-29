@@ -97,7 +97,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_BoatHire,
+    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,

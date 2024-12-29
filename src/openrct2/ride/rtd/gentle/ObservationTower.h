@@ -68,6 +68,6 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_ObservationTower,
+    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_ObservationTower,
 };
 // clang-format on

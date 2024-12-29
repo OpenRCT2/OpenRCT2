@@ -37,6 +37,7 @@
 #include "TrackStyle.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetaData;
 
 /* rct2: 0x007667AC */
@@ -1969,7 +1970,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             }
         }
 
-        if (LightFXIsAvailable())
+        if (LightFx::IsAvailable())
         {
             uint8_t zOffset = 16;
             const auto& rtd = ride->GetRideTypeDescriptor();
@@ -1979,9 +1980,9 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
 
             const auto* originElement = ride->GetOriginElement(StationIndex::FromUnderlying(0));
             if (originElement != nullptr && originElement->GetTrackType() == TrackElemType::FlatTrack1x1B)
-                LightFxAddKioskLights(session.MapPosition, height, zOffset);
+                LightFx::AddKioskLights(session.MapPosition, height, zOffset);
             else if (RideTypeDescriptors[ride->type].HasFlag(RtdFlag::isShopOrFacility))
-                LightFxAddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
+                LightFx::AddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
 
         session.InteractionType = ViewportInteractionItem::Ride;

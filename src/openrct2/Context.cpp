@@ -521,7 +521,7 @@ namespace OpenRCT2
                 {
                     return false;
                 }
-                LightFXInit();
+                Drawing::LightFx::Init();
             }
 
             ViewportInitAll();

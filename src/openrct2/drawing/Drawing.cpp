@@ -32,6 +32,7 @@
 #include <numeric>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 static auto _defaultPaletteMapping = []() {
     std::array<uint8_t, 256> res;
@@ -898,9 +899,9 @@ void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, int3
         uint8_t g = colour.Green;
         uint8_t r = colour.Red;
 
-        if (LightFXIsAvailable())
+        if (LightFx::IsAvailable())
         {
-            LightFXApplyPaletteFilter(i, &r, &g, &b);
+            LightFx::ApplyPaletteFilter(i, &r, &g, &b);
         }
         else
         {
