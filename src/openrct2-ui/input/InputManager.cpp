@@ -209,12 +209,35 @@ void InputManager::Process(const InputEvent& e)
 
         if (e.DeviceKind == InputDeviceKind::Keyboard)
         {
+            // TODO: replace with event
             auto w = WindowFindByClass(WindowClass::Textinput);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
                 {
                     OpenRCT2::Ui::Windows::WindowTextInputKey(w, e.Button);
+                }
+                return;
+            }
+
+            // TODO: replace with event
+            w = WindowFindByClass(WindowClass::LoadsaveOverwritePrompt);
+            if (w != nullptr)
+            {
+                if (e.State == InputEventState::Release)
+                {
+                    OpenRCT2::Ui::Windows::WindowLoadSaveOverwritePromptInputKey(w, e.Button);
+                }
+                return;
+            }
+
+            // TODO: replace with event
+            w = WindowFindByClass(WindowClass::Loadsave);
+            if (w != nullptr)
+            {
+                if (e.State == InputEventState::Release)
+                {
+                    OpenRCT2::Ui::Windows::WindowLoadSaveInputKey(w, e.Button);
                 }
                 return;
             }

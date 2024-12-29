@@ -1183,7 +1183,7 @@ namespace OpenRCT2::Ui
         if (OpenRCT2::Ui::Windows::TextBoxCaretIsFlashed())
         {
             auto colour = ColourMapA[w.colours[1].colour].mid_light;
-            auto y = topLeft.y + (widget.height() - 1);
+            auto y = topLeft.y + 1 + widget.height() - 4;
             GfxFillRect(dpi, { { curX, y }, { curX + width, y } }, colour + 5);
         }
     }
