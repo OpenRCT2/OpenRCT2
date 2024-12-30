@@ -5694,7 +5694,7 @@ void Guest::UpdateQueuing()
                 case PeepAnimationGroup::Chicken:
                 case PeepAnimationGroup::Lemonade:
                 case PeepAnimationGroup::Pretzel:
-                case PeepAnimationGroup::SuJongkwa:
+                case PeepAnimationGroup::Sujeonggwa:
                 case PeepAnimationGroup::Juice:
                 case PeepAnimationGroup::FunnelCake:
                 case PeepAnimationGroup::Noodles:
@@ -6827,8 +6827,8 @@ static ItemPref item_order_preference[] = {
     { ShopItem::WontonSoup,       PeepAnimationGroup::Soup        },
     { ShopItem::MeatballSoup,     PeepAnimationGroup::Soup        },
     { ShopItem::FruitJuice,       PeepAnimationGroup::Juice       },
-    { ShopItem::SoybeanMilk,      PeepAnimationGroup::SuJongkwa   },
-    { ShopItem::Sujeonggwa,       PeepAnimationGroup::SuJongkwa   },
+    { ShopItem::SoybeanMilk,      PeepAnimationGroup::Sujeonggwa   },
+    { ShopItem::Sujeonggwa,       PeepAnimationGroup::Sujeonggwa   },
     { ShopItem::SubSandwich,      PeepAnimationGroup::Sandwich    },
     { ShopItem::RoastSausage,     PeepAnimationGroup::Sausage     },
     { ShopItem::Balloon,          PeepAnimationGroup::Balloon     },

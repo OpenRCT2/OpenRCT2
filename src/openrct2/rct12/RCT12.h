@@ -1028,7 +1028,7 @@ enum class RCT12PeepAnimationGroup : uint8_t
     Watching = 38,
     Pretzel = 39,
     Sunglasses = 40,
-    SuJongkwa = 41,
+    Sujeonggwa = 41,
     Juice = 42,
     FunnelCake = 43,
     Noodles = 44,

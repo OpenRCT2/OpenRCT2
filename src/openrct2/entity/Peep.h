@@ -264,7 +264,7 @@ enum class PeepAnimationGroup : uint8_t
     Watching = 23,
     Pretzel = 24,
     Sunglasses = 25,
-    SuJongkwa = 26,
+    Sujeonggwa = 26,
     Juice = 27,
     FunnelCake = 28,
     Noodles = 29,

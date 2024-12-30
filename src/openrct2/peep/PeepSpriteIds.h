@@ -247,9 +247,9 @@ namespace OpenRCT2
         kPeepSpriteSunglassesStateWatchRideId = 10713,
         kPeepSpriteSunglassesStateSittingIdleId = 10709,
 
-        kPeepSpriteSuJongkwaStateWalkingId = 9509,
-        kPeepSpriteSuJongkwaStateWatchRideId = 9629,
-        kPeepSpriteSuJongkwaStateSittingIdleId = 9581,
+        kPeepSpriteSujeonggwaStateWalkingId = 9509,
+        kPeepSpriteSujeonggwaStateWatchRideId = 9629,
+        kPeepSpriteSujeonggwaStateSittingIdleId = 9581,
 
         kPeepSpriteJuiceStateWalkingId = 9677,
         kPeepSpriteJuiceStateWatchRideId = 9797,
