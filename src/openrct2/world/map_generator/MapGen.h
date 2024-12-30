@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../core/StringTypes.h"
-#include "Location.hpp"
+#include "../../core/StringTypes.h"
+#include "../Location.hpp"
 
 enum class MapGenAlgorithm : uint8_t
 {

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "Location.hpp"
+#include "../Location.hpp"
 
 enum
 {
