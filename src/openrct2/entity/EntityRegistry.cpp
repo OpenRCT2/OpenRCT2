@@ -583,12 +583,12 @@ uint16_t RemoveFloatingEntities()
 
 void EntitySetFlashing(EntityBase* entity, bool flashing)
 {
-    assert(entity->Id.ToUnderlying() < kMaxEntities);
+    assert(entity->Id.ToUnderlying() < OpenRCT2::Limits::kMaxEntities);
     _entityFlashingList[entity->Id.ToUnderlying()] = flashing;
 }
 
 bool EntityGetFlashing(EntityBase* entity)
 {
-    assert(entity->Id.ToUnderlying() < kMaxEntities);
+    assert(entity->Id.ToUnderlying() < OpenRCT2::Limits::kMaxEntities);
     return _entityFlashingList[entity->Id.ToUnderlying()];
 }
