@@ -1274,7 +1274,7 @@ static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused
 
     auto bannerCount = GetNumBanners();
 
-    console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_ENTITIES);
+    console.WriteFormatLine("Sprites: %d/%d", spriteCount, OpenRCT2::Limits::kMaxEntities);
     console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, MAX_TILE_ELEMENTS);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, OpenRCT2::Limits::kMaxRidesInPark);

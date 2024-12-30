@@ -39,7 +39,7 @@ void StaffFireAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result StaffFireAction::Query() const
 {
-    if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
+    if (_spriteId.ToUnderlying() >= OpenRCT2::Limits::kMaxEntities || _spriteId.IsNull())
     {
         LOG_ERROR("Invalid spriteId %u", _spriteId);
         return GameActions::Result(

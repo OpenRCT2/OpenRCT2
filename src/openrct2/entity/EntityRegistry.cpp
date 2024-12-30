@@ -44,7 +44,7 @@ using namespace OpenRCT2;
 static std::array<std::list<EntityId>, EnumValue(EntityType::Count)> gEntityLists;
 static std::vector<EntityId> _freeIdList;
 
-static bool _entityFlashingList[MAX_ENTITIES];
+static bool _entityFlashingList[Limits::kMaxEntities];
 
 static constexpr const uint32_t kSpatialIndexSize = (kMaximumMapSizeTechnical * kMaximumMapSizeTechnical) + 1;
 static constexpr uint32_t kSpatialIndexNullBucket = kSpatialIndexSize - 1;
@@ -114,7 +114,7 @@ EntityBase* TryGetEntity(EntityId entityIndex)
 {
     auto& gameState = GetGameState();
     const auto idx = entityIndex.ToUnderlying();
-    return idx >= MAX_ENTITIES ? nullptr : &gameState.Entities[idx].base;
+    return idx >= OpenRCT2::Limits::kMaxEntities ? nullptr : &gameState.Entities[idx].base;
 }
 
 EntityBase* GetEntity(EntityId entityIndex)
@@ -123,7 +123,8 @@ EntityBase* GetEntity(EntityId entityIndex)
     {
         return nullptr;
     }
-    Guard::Assert(entityIndex.ToUnderlying() < MAX_ENTITIES, "Tried getting entity %u", entityIndex.ToUnderlying());
+    Guard::Assert(
+        entityIndex.ToUnderlying() < OpenRCT2::Limits::kMaxEntities, "Tried getting entity %u", entityIndex.ToUnderlying());
     return TryGetEntity(entityIndex);
 }
 
@@ -143,7 +144,7 @@ static void ResetEntityLists()
 static void ResetFreeIds()
 {
     _freeIdList.clear();
-    _freeIdList.resize(MAX_ENTITIES);
+    _freeIdList.resize(OpenRCT2::Limits::kMaxEntities);
 
     // List needs to be back to front to simplify removing
     auto nextId = 0;
@@ -165,7 +166,7 @@ const std::list<EntityId>& GetEntityList(const EntityType id)
 void ResetAllEntities()
 {
     // Free all associated Entity pointers prior to zeroing memory
-    for (int32_t i = 0; i < MAX_ENTITIES; ++i)
+    for (int32_t i = 0; i < OpenRCT2::Limits::kMaxEntities; ++i)
     {
         auto* spr = GetEntity(EntityId::FromUnderlying(i));
         if (spr == nullptr)
@@ -179,7 +180,7 @@ void ResetAllEntities()
     std::fill(std::begin(gameState.Entities), std::end(gameState.Entities), Entity_t());
     OpenRCT2::RideUse::GetHistory().Clear();
     OpenRCT2::RideUse::GetTypeHistory().Clear();
-    for (int32_t i = 0; i < MAX_ENTITIES; ++i)
+    for (int32_t i = 0; i < OpenRCT2::Limits::kMaxEntities; ++i)
     {
         auto* spr = GetEntity(EntityId::FromUnderlying(i));
         if (spr == nullptr)
@@ -210,7 +211,7 @@ void ResetEntitySpatialIndices()
     {
         vec.clear();
     }
-    for (EntityId::UnderlyingType i = 0; i < MAX_ENTITIES; i++)
+    for (EntityId::UnderlyingType i = 0; i < OpenRCT2::Limits::kMaxEntities; i++)
     {
         auto* entity = GetEntity(EntityId::FromUnderlying(i));
         if (entity != nullptr && entity->Type != EntityType::Null)
@@ -582,12 +583,12 @@ uint16_t RemoveFloatingEntities()
 
 void EntitySetFlashing(EntityBase* entity, bool flashing)
 {
-    assert(entity->Id.ToUnderlying() < MAX_ENTITIES);
+    assert(entity->Id.ToUnderlying() < kMaxEntities);
     _entityFlashingList[entity->Id.ToUnderlying()] = flashing;
 }
 
 bool EntityGetFlashing(EntityBase* entity)
 {
-    assert(entity->Id.ToUnderlying() < MAX_ENTITIES);
+    assert(entity->Id.ToUnderlying() < kMaxEntities);
     return _entityFlashingList[entity->Id.ToUnderlying()];
 }

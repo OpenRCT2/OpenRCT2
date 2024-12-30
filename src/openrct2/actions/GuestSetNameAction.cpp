@@ -58,7 +58,7 @@ void GuestSetNameAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result GuestSetNameAction::Query() const
 {
-    if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
+    if (_spriteIndex.ToUnderlying() >= OpenRCT2::Limits::kMaxEntities || _spriteIndex.IsNull())
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_ERR_VALUE_OUT_OF_RANGE);
     }
