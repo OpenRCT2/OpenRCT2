@@ -624,8 +624,7 @@ namespace OpenRCT2::Drawing::LightFx
     }
 
     static void Add3DLight(
-        const uint32_t lightHash, const Qualifier qualifier, const uint8_t id, const CoordsXYZ& loc,
-        const LightType lightType)
+        const uint32_t lightHash, const Qualifier qualifier, const uint8_t id, const CoordsXYZ& loc, const LightType lightType)
     {
         if (LightListCurrentCountBack == 15999)
         {
@@ -793,10 +792,8 @@ namespace OpenRCT2::Drawing::LightFx
         uint8_t relativeRotation = (4 - GetCurrentRotation()) % 4;
         CoordsXY lanternOffset1 = CoordsXY(0, 16).Rotate(relativeRotation);
         CoordsXY lanternOffset2 = CoordsXY(16, 0).Rotate(relativeRotation);
-        Add3DLightMagicFromDrawingTile(
-            mapPosition, lanternOffset1.x, lanternOffset1.y, height + zOffset, LightType::Lantern3);
-        Add3DLightMagicFromDrawingTile(
-            mapPosition, lanternOffset2.x, lanternOffset2.y, height + zOffset, LightType::Lantern3);
+        Add3DLightMagicFromDrawingTile(mapPosition, lanternOffset1.x, lanternOffset1.y, height + zOffset, LightType::Lantern3);
+        Add3DLightMagicFromDrawingTile(mapPosition, lanternOffset2.x, lanternOffset2.y, height + zOffset, LightType::Lantern3);
         Add3DLightMagicFromDrawingTile(mapPosition, 8, 32, height, LightType::Spot1);
         Add3DLightMagicFromDrawingTile(mapPosition, 32, 8, height, LightType::Spot1);
         Add3DLightMagicFromDrawingTile(mapPosition, -32, 8, height, LightType::Spot1);
@@ -1062,4 +1059,4 @@ namespace OpenRCT2::Drawing::LightFx
             }
         }
     }
-}
+} // namespace OpenRCT2::Drawing::LightFx

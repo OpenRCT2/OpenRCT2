@@ -83,4 +83,4 @@ namespace OpenRCT2::Drawing::LightFx
     void RenderToTexture(
         void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height, const uint32_t* palette,
         const uint32_t* lightPalette);
-} // namespace OpenRCT2::Drawing::LightFX
+} // namespace OpenRCT2::Drawing::LightFx
