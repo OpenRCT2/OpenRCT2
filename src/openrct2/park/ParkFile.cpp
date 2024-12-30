@@ -1698,7 +1698,7 @@ namespace OpenRCT2
             }
             else
             {
-                cs.Write(static_cast<const char*>(entity.Name));
+                cs.Write(entity.Name);
             }
 
             cs.ReadWrite(entity.NextLoc);

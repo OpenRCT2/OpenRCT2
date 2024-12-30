@@ -950,7 +950,7 @@ namespace OpenRCT2::Ui::Windows
                 // Compare name
                 if constexpr (!TRealNames)
                 {
-                    if (peepA->Name == nullptr && peepB->Name == nullptr)
+                    if (peepA->Name.empty() && peepB->Name.empty())
                     {
                         // Simple ID comparison for when both peeps use a number or a generated name
                         return peepA->PeepId < peepB->PeepId;
