@@ -3789,6 +3789,10 @@ static ResultWithMessage RideInitialiseCableLiftTrack(const Ride& ride, bool isA
 
     if (isApplying)
     {
+        // In case circuit is incomplete, find the start of the track in order to ensure all tiles connected
+        // to the station are cleared
+        RideGetStartOfTrack(&stationTile);
+
         TrackCircuitIterator it;
         TrackCircuitIteratorBegin(&it, stationTile);
         while (TrackCircuitIteratorNext(&it))
@@ -3797,18 +3801,6 @@ static ResultWithMessage RideInitialiseCableLiftTrack(const Ride& ride, bool isA
             GetTrackElementOriginAndApplyChanges(
                 { { it.current, tileElement->GetBaseZ() }, tileElement->GetDirection() },
                 tileElement->AsTrack()->GetTrackType(), 0, &tileElement, TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE);
-        }
-        // If circuit is incomplete, iterate backwards to clear all tiles connected to the station
-        if (!it.looped)
-        {
-            TrackCircuitIteratorBegin(&it, stationTile);
-            while (TrackCircuitIteratorPrevious(&it))
-            {
-                TileElement* tileElement = it.current.element;
-                GetTrackElementOriginAndApplyChanges(
-                    { { it.current, tileElement->GetBaseZ() }, tileElement->GetDirection() },
-                    tileElement->AsTrack()->GetTrackType(), 0, &tileElement, TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE);
-            }
         }
     }
 
