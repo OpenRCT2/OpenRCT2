@@ -49,5 +49,11 @@ namespace OpenRCT2::World::MapGenerator
         bool normalize_height = true;
     };
 
+    class HeightMap;
+
     void generate(Settings* settings);
+    void resetSurfaces(Settings* settings);
+    void setWaterLevel(int32_t waterLevel);
+    void setMapHeight(Settings* settings, const HeightMap& heightMap);
+
 } // namespace OpenRCT2::World::MapGenerator

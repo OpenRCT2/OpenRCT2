@@ -13,6 +13,10 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
+    struct Settings;
+
     void NoiseRand();
     float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
+
+    void generateSimplexMap(Settings* settings);
 } // namespace OpenRCT2::World::MapGenerator
