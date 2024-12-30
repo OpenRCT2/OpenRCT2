@@ -36,6 +36,9 @@ namespace OpenRCT2
 {
     struct GameState_t
     {
+        GameState_t() = default;
+        GameState_t(const GameState_t&) = default;
+
         ::OpenRCT2::Park::ParkData Park{};
         std::string PluginStorage;
         uint32_t CurrentTicks{};

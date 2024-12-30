@@ -129,14 +129,14 @@ namespace OpenRCT2::Random
             seed(seed_value);
         }
 
-        RotateEngine(RotateEngine& r)
+        RotateEngine(const RotateEngine& r)
         {
             s0 = r.s0;
             s1 = r.s1;
         }
 
         template<typename TSseq, typename = typename std::enable_if<!std::is_same<TSseq, RotateEngine>::value>::type>
-        explicit RotateEngine(TSseq& seed_seq)
+        explicit RotateEngine(const TSseq& seed_seq)
         {
             seed(seed_seq);
         }
