@@ -63,18 +63,30 @@ void Painter::Paint(IDrawingEngine& de)
         de.PaintWeather();
     }
 
-    auto* replayManager = GetContext()->GetReplayManager();
-    const char* text = nullptr;
+    auto* ctx = GetContext();
 
-    if (replayManager->IsReplaying() && !gSilentReplays)
-        text = "Replaying...";
-    else if (replayManager->ShouldDisplayNotice())
-        text = "Recording...";
-    else if (replayManager->IsNormalising())
-        text = "Normalising...";
+    {
+        auto* replayManager = ctx->GetReplayManager();
+        const char* text = nullptr;
 
-    if (text != nullptr)
-        PaintReplayNotice(*dpi, text);
+        if (replayManager->IsReplaying() && !gSilentReplays)
+            text = "Replaying...";
+        else if (replayManager->ShouldDisplayNotice())
+            text = "Recording...";
+        else if (replayManager->IsNormalising())
+            text = "Normalising...";
+
+        if (text != nullptr)
+            PaintReplayNotice(*dpi, text);
+    }
+
+    {
+        auto& backgroundJobs = ctx->GetBackgroundJobsMgr();
+        if (backgroundJobs.CountPending() > 0 || backgroundJobs.CountProcessing() > 0)
+        {
+            PaintBusyStatus(*dpi);
+        }
+    }
 
     if (Config::Get().general.ShowFPS)
     {
@@ -203,4 +215,32 @@ void Painter::ReleaseSession(PaintSession* session)
 Painter::~Painter()
 {
     _paintSessionPool.clear();
+}
+
+void Painter::PaintBusyStatus(DrawPixelInfo& dpi)
+{
+    // Blink this text.
+    if (gCurrentRealTimeTicks & 0x4)
+        return;
+
+    char buffer[64]{};
+    FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}...");
+
+    const int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
+
+    // Figure out where counter should be rendered
+    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 14);
+    screenCoords.x = screenCoords.x - (stringWidth / 2);
+
+    // Move counter below toolbar if buttons are centred
+    const bool isTitle = gScreenFlags == SCREEN_FLAGS_TITLE_DEMO;
+    if (!isTitle && Config::Get().interface.ToolbarButtonsCentred)
+    {
+        screenCoords.y = kTopToolbarHeight + 16;
+    }
+
+    DrawText(dpi, screenCoords, { COLOUR_WHITE }, buffer);
+
+    // Make area dirty so the text doesn't get drawn over the last
+    GfxSetDirtyBlocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { dpi.lastStringPos.x + 16, screenCoords.y + 16 } });
 }

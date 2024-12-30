@@ -52,6 +52,7 @@ namespace OpenRCT2
 
         private:
             void PaintReplayNotice(DrawPixelInfo& dpi, const char* text);
+            void PaintBusyStatus(DrawPixelInfo& dpi);
             void PaintFPS(DrawPixelInfo& dpi);
             void MeasureFPS();
         };
