@@ -628,6 +628,7 @@
     <ClInclude Include="world\map_generator\MapHelpers.h" />
     <ClInclude Include="world\map_generator\PngTerrainGenerator.h" />
     <ClInclude Include="world\map_generator\SimplexNoise.h" />
+    <ClInclude Include="world\map_generator\TreePlacement.h" />
     <ClInclude Include="world\tile_element\BannerElement.h" />
     <ClInclude Include="world\tile_element\EntranceElement.h" />
     <ClInclude Include="world\tile_element\LargeSceneryElement.h" />
@@ -1126,6 +1127,7 @@
     <ClCompile Include="world\map_generator\MapHelpers.cpp" />
     <ClCompile Include="world\map_generator\PngTerrainGenerator.cpp" />
     <ClCompile Include="world\map_generator\SimplexNoise.cpp" />
+    <ClCompile Include="world\map_generator\TreePlacement.cpp" />
     <ClCompile Include="world\tile_element\BannerElement.cpp" />
     <ClCompile Include="world\tile_element\EntranceElement.cpp" />
     <ClCompile Include="world\tile_element\LargeSceneryElement.cpp" />
