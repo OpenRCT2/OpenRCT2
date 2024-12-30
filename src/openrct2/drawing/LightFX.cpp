@@ -56,14 +56,14 @@ namespace OpenRCT2::Drawing::LightFx
 
     struct LightListEntry
     {
-        CoordsXYZ Position;
-        ScreenCoordsXY ViewCoords;
-        LightType Type;
-        uint8_t LightIntensity;
-        uint32_t LightHash;
-        Qualifier Qualifier;
-        uint8_t LightID;
-        uint8_t LightLinger;
+        CoordsXYZ position;
+        ScreenCoordsXY viewCoords;
+        LightType type;
+        uint8_t lightIntensity;
+        uint32_t lightHash;
+        Qualifier qualifier;
+        uint8_t lightID;
+        uint8_t lightLinger;
     };
 
     static LightListEntry _LightListA[16000];
@@ -193,16 +193,16 @@ namespace OpenRCT2::Drawing::LightFx
     {
         for (uint32_t light = 0; light < LightListCurrentCountFront; light++)
         {
-            LightListEntry* entry = &_LightListFront[light];
+            LightListEntry& entry = _LightListFront[light];
 
-            if (entry->Position.z == 0x7FFF)
+            if (entry.position.z == 0x7FFF)
             {
-                entry->LightIntensity = 0xFF;
+                entry.lightIntensity = 0xFF;
                 continue;
             }
 
-            int32_t posOnScreenX = entry->ViewCoords.x - _current_view_x_front;
-            int32_t posOnScreenY = entry->ViewCoords.y - _current_view_y_front;
+            int32_t posOnScreenX = entry.viewCoords.x - _current_view_x_front;
+            int32_t posOnScreenY = entry.viewCoords.y - _current_view_y_front;
 
             posOnScreenX = _current_view_zoom_front.ApplyInversedTo(posOnScreenX);
             posOnScreenY = _current_view_zoom_front.ApplyInversedTo(posOnScreenY);
@@ -210,7 +210,7 @@ namespace OpenRCT2::Drawing::LightFx
             if ((posOnScreenX < -128) || (posOnScreenY < -128) || (posOnScreenX > _pixelInfo.width + 128)
                 || (posOnScreenY > _pixelInfo.height + 128))
             {
-                entry->Type = LightType::None;
+                entry.type = LightType::None;
                 continue;
             }
 
@@ -280,7 +280,7 @@ namespace OpenRCT2::Drawing::LightFx
                 int32_t totalSamplePoints = 5;
                 int32_t startSamplePoint = 1;
 
-                if (entry->Qualifier == Qualifier::Map)
+                if (entry.qualifier == Qualifier::Map)
                 {
                     startSamplePoint = 0;
                     totalSamplePoints = 1;
@@ -300,8 +300,8 @@ namespace OpenRCT2::Drawing::LightFx
                         // based on GetMapCoordinatesFromPosWindow
                         DrawPixelInfo dpi;
                         dpi.zoom_level = _current_view_zoom_front;
-                        dpi.x = _current_view_zoom_front.ApplyInversedTo(entry->ViewCoords.x + offsetPattern[0 + pat * 2]);
-                        dpi.y = _current_view_zoom_front.ApplyInversedTo(entry->ViewCoords.y + offsetPattern[1 + pat * 2]);
+                        dpi.x = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.x + offsetPattern[0 + pat * 2]);
+                        dpi.y = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.y + offsetPattern[1 + pat * 2]);
                         dpi.height = 1;
                         dpi.width = 1;
 
@@ -328,10 +328,10 @@ namespace OpenRCT2::Drawing::LightFx
                         baseHeight = tileElement->GetBaseZ();
                     }
 
-                    minDist = (baseHeight - entry->Position.z) / 2;
+                    minDist = (baseHeight - entry.position.z) / 2;
 
-                    int32_t deltaX = mapCoord.x - entry->Position.x;
-                    int32_t deltaY = mapCoord.y - entry->Position.y;
+                    int32_t deltaX = mapCoord.x - entry.position.x;
+                    int32_t deltaY = mapCoord.y - entry.position.y;
 
                     int32_t projDot = (dirVecX * deltaX + dirVecY * deltaY) / 1000;
 
@@ -377,25 +377,25 @@ namespace OpenRCT2::Drawing::LightFx
 
                 if (lightIntensityOccluded == 0)
                 {
-                    entry->Type = LightType::None;
+                    entry.type = LightType::None;
                     continue;
                 }
 
-                entry->LightIntensity = static_cast<uint8_t>(
-                    std::min<uint32_t>(0xFF, (entry->LightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100)));
+                entry.lightIntensity = static_cast<uint8_t>(
+                    std::min<uint32_t>(0xFF, (entry.lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100)));
             }
 
             if (_current_view_zoom_front > ZoomLevel{ 0 })
             {
                 const int8_t zoomNumber = static_cast<int8_t>(_current_view_zoom_front);
-                entry->LightIntensity -= 5 * zoomNumber;
-                if (GetLightTypeSize(entry->Type) < zoomNumber)
+                entry.lightIntensity -= 5 * zoomNumber;
+                if (GetLightTypeSize(entry.type) < zoomNumber)
                 {
-                    entry->Type = LightType::None;
+                    entry.type = LightType::None;
                     continue;
                 }
 
-                entry->Type = SetLightTypeSize(entry->Type, GetLightTypeSize(entry->Type) - zoomNumber);
+                entry.type = SetLightTypeSize(entry.type, GetLightTypeSize(entry.type) - zoomNumber);
             }
         }
     }
@@ -463,12 +463,12 @@ namespace OpenRCT2::Drawing::LightFx
             int32_t bufWriteWidth, bufWriteHeight;
             uint32_t bufReadSkip, bufWriteSkip;
 
-            LightListEntry* entry = &_LightListFront[light];
+            LightListEntry& entry = _LightListFront[light];
 
-            int32_t inRectCentreX = entry->ViewCoords.x;
-            int32_t inRectCentreY = entry->ViewCoords.y;
+            int32_t inRectCentreX = entry.viewCoords.x;
+            int32_t inRectCentreY = entry.viewCoords.y;
 
-            if (entry->Position.z != 0x7FFF)
+            if (entry.position.z != 0x7FFF)
             {
                 inRectCentreX -= _current_view_x_front;
                 inRectCentreY -= _current_view_y_front;
@@ -476,7 +476,7 @@ namespace OpenRCT2::Drawing::LightFx
                 inRectCentreY = _current_view_zoom_front.ApplyInversedTo(inRectCentreY);
             }
 
-            switch (entry->Type)
+            switch (entry.type)
             {
                 case LightType::Lantern0:
                     bufReadWidth = 32;
@@ -580,7 +580,7 @@ namespace OpenRCT2::Drawing::LightFx
             bufReadSkip = bufReadWidth - bufWriteWidth;
             bufWriteSkip = _pixelInfo.width - bufWriteWidth;
 
-            if (entry->LightIntensity == 0xFF)
+            if (entry.lightIntensity == 0xFF)
             {
                 for (int32_t y = 0; y < bufWriteHeight; y++)
                 {
@@ -601,7 +601,7 @@ namespace OpenRCT2::Drawing::LightFx
                 {
                     for (int32_t x = 0; x < bufWriteWidth; x++)
                     {
-                        *bufWriteBase = std::min(0xFF, *bufWriteBase + (((*bufReadBase) * (1 + entry->LightIntensity)) >> 8));
+                        *bufWriteBase = std::min(0xFF, *bufWriteBase + (((*bufReadBase) * (1 + entry.lightIntensity)) >> 8));
                         bufWriteBase++;
                         bufReadBase++;
                     }
@@ -635,36 +635,36 @@ namespace OpenRCT2::Drawing::LightFx
 
         for (uint32_t i = 0; i < LightListCurrentCountBack; i++)
         {
-            LightListEntry* entry = &_LightListBack[i];
-            if (entry->LightHash != lightHash)
+            LightListEntry& entry = _LightListBack[i];
+            if (entry.lightHash != lightHash)
                 continue;
-            if (entry->Qualifier != qualifier)
+            if (entry.qualifier != qualifier)
                 continue;
-            if (entry->LightID != id)
+            if (entry.lightID != id)
                 continue;
 
-            entry->Position = loc;
-            entry->ViewCoords = Translate3DTo2DWithZ(GetCurrentRotation(), loc);
-            entry->Type = lightType;
-            entry->LightIntensity = 0xFF;
-            entry->LightHash = lightHash;
-            entry->Qualifier = qualifier;
-            entry->LightID = id;
-            entry->LightLinger = 1;
+            entry.position = loc;
+            entry.viewCoords = Translate3DTo2DWithZ(GetCurrentRotation(), loc);
+            entry.type = lightType;
+            entry.lightIntensity = 0xFF;
+            entry.lightHash = lightHash;
+            entry.qualifier = qualifier;
+            entry.lightID = id;
+            entry.lightLinger = 1;
 
             return;
         }
 
         LightListEntry* entry = &_LightListBack[LightListCurrentCountBack++];
 
-        entry->Position = loc;
-        entry->ViewCoords = Translate3DTo2DWithZ(GetCurrentRotation(), loc);
-        entry->Type = lightType;
-        entry->LightIntensity = 0xFF;
-        entry->LightHash = lightHash;
-        entry->Qualifier = qualifier;
-        entry->LightID = id;
-        entry->LightLinger = 1;
+        entry->position = loc;
+        entry->viewCoords = Translate3DTo2DWithZ(GetCurrentRotation(), loc);
+        entry->type = lightType;
+        entry->lightIntensity = 0xFF;
+        entry->lightHash = lightHash;
+        entry->qualifier = qualifier;
+        entry->lightID = id;
+        entry->lightLinger = 1;
 
         //  LOG_WARNING("new 3d light");
     }
