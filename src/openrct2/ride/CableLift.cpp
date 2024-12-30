@@ -327,6 +327,8 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             SetTrackDirection(output.begin_direction);
             SetTrackType(output.begin_element->AsTrack()->GetTrackType());
 
+            // Doesn't check for diagonal block brakes because there is no diagonal cable lift piece,
+            // no way for a cable lift to start from a diagonal brake.
             if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation
                 || output.begin_element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
             {
