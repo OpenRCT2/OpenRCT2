@@ -177,6 +177,7 @@ namespace OpenRCT2
 
                 // Post-tick game actions.
                 GameActions::ProcessQueue();
+                UpdateEntitiesSpatialIndex();
             }
         }
 
