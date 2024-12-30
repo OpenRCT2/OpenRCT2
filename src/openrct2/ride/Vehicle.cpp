@@ -5564,15 +5564,13 @@ void Vehicle::UpdateVelocity()
     }
     if (HasFlag(VehicleFlags::StoppedOnHoldingBrake))
     {
-        vertical_drop_countdown--;
-        if (vertical_drop_countdown == -70)
+        if (vertical_drop_countdown > 0)
         {
             ClearFlag(VehicleFlags::StoppedOnHoldingBrake);
-        }
-        if (vertical_drop_countdown >= 0)
-        {
+
             nextVelocity = 0;
             acceleration = 0;
+            vertical_drop_countdown--;
         }
     }
     velocity = nextVelocity;
@@ -7060,6 +7058,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     SetTrackDirection(location.direction);
     SetTrackType(trackType);
     PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
+    ClearFlag(VehicleFlags::StoppedOnHoldingBrake);
     if (trackType == TrackElemType::OnRidePhoto)
     {
         trigger_on_ride_photo(TrackLocation, tileElement);
@@ -7470,6 +7469,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
     SetTrackType(trackType);
     SetTrackDirection(direction);
     PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
+    ClearFlag(VehicleFlags::StoppedOnHoldingBrake);
 
     // There are two bytes before the move info list
     uint16_t trackTotalProgress = GetTrackProgress();
