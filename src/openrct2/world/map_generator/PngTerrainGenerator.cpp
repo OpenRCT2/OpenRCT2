@@ -18,6 +18,7 @@
 #include "../tile_element/SurfaceElement.h"
 #include "MapGen.h"
 #include "MapHelpers.h"
+#include "SurfaceSelection.h"
 
 #include <algorithm>
 

@@ -12,25 +12,18 @@
 #include "../../Context.h"
 #include "../../GameState.h"
 #include "../../object/ObjectManager.h"
-#include "../../object/TerrainEdgeObject.h"
-#include "../../object/TerrainSurfaceObject.h"
 #include "../../util/Util.h"
 #include "../tile_element/Slope.h"
 #include "../tile_element/SurfaceElement.h"
 #include "MapHelpers.h"
 #include "PngTerrainGenerator.h"
 #include "SimplexNoise.h"
+#include "SurfaceSelection.h"
 #include "TreePlacement.h"
 
 #include <vector>
 
 using namespace OpenRCT2;
-
-// Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
-static constexpr std::string_view BaseTerrain[] = {
-    "rct2.terrain_surface.grass", "rct2.terrain_surface.sand", "rct2.terrain_surface.sand_brown",
-    "rct2.terrain_surface.dirt",  "rct2.terrain_surface.ice",
-};
 
 static void MapGenGenerateBlank(MapGenSettings* settings);
 static void MapGenGenerateSimplex(MapGenSettings* settings);
@@ -85,60 +78,6 @@ static void SetHeight(int32_t x, int32_t y, int32_t height)
 {
     if (x >= 0 && y >= 0 && x < _heightSize.x && y < _heightSize.y)
         _height[x + y * _heightSize.x] = height;
-}
-
-ObjectEntryIndex MapGenSurfaceTextureId(MapGenSettings* settings)
-{
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-
-    const auto selectedFloor = TerrainSurfaceObject::GetById(settings->landTexture);
-    std::string_view surfaceTexture = selectedFloor != nullptr ? selectedFloor->GetIdentifier() : "";
-
-    if (surfaceTexture.empty())
-    {
-        std::vector<std::string_view> availableTerrains;
-        std::copy_if(std::begin(BaseTerrain), std::end(BaseTerrain), std::back_inserter(availableTerrains), [&](auto terrain) {
-            return objectManager.GetLoadedObject(ObjectEntryDescriptor(terrain)) != nullptr;
-        });
-
-        if (availableTerrains.empty())
-            // Fall back to the first available surface texture that is available in the park
-            surfaceTexture = TerrainSurfaceObject::GetById(0)->GetIdentifier();
-        else
-            surfaceTexture = availableTerrains[UtilRand() % availableTerrains.size()];
-    }
-
-    auto surfaceTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(surfaceTexture));
-    return surfaceTextureId;
-}
-
-ObjectEntryIndex MapGenEdgeTextureId(MapGenSettings* settings, ObjectEntryIndex surfaceTextureId)
-{
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-
-    const auto selectedEdge = TerrainEdgeObject::GetById(settings->edgeTexture);
-    std::string_view edgeTexture = selectedEdge != nullptr ? selectedEdge->GetIdentifier() : "";
-
-    if (edgeTexture.empty())
-    {
-        auto surfaceObject = objectManager.GetLoadedObject(ObjectType::TerrainSurface, surfaceTextureId);
-        auto surfaceTexture = surfaceObject->GetIdentifier();
-
-        // Base edge type on surface type
-        if (surfaceTexture == "rct2.terrain_surface.dirt")
-            edgeTexture = "rct2.terrain_edge.wood_red";
-        else if (surfaceTexture == "rct2.terrain_surface.ice")
-            edgeTexture = "rct2.terrain_edge.ice";
-        else
-            edgeTexture = "rct2.terrain_edge.rock";
-
-        // Fall back to the first available edge texture that is available in the park
-        if (objectManager.GetLoadedObject(ObjectEntryDescriptor(edgeTexture)) == nullptr)
-            edgeTexture = TerrainEdgeObject::GetById(0)->GetIdentifier();
-    }
-
-    auto edgeTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(edgeTexture));
-    return edgeTextureId;
 }
 
 static void MapGenResetSurfaces(MapGenSettings* settings)
@@ -202,20 +141,9 @@ static void MapGenGenerateSimplex(MapGenSettings* settings)
 
 static void MapGenAddBeaches(MapGenSettings* settings)
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-
-    // Figure out what beach texture to use
-    std::vector<std::string_view> availableBeachTextures;
-    if (objectManager.GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand")) != nullptr)
-        availableBeachTextures.push_back("rct2.terrain_surface.sand");
-    if (objectManager.GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand_brown")) != nullptr)
-        availableBeachTextures.push_back("rct2.terrain_surface.sand_brown");
-
-    if (availableBeachTextures.empty())
+    auto beachTextureId = MapGenBeachTextureId();
+    if (beachTextureId == OBJECT_ENTRY_INDEX_NULL)
         return;
-
-    std::string_view beachTexture = availableBeachTextures[UtilRand() % availableBeachTextures.size()];
-    auto beachTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(beachTexture));
 
     // Add sandy beaches
     const auto& mapSize = settings->mapSize;
