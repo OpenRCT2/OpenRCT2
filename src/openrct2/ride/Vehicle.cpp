@@ -5491,9 +5491,6 @@ void Vehicle::ApplyCableLiftBlockBrake(bool brakeClosed)
     if (status == Vehicle::Status::TravellingCableLift)
         return;
 
-    if (brakeClosed)
-        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
-
     // Slow down if travelling faster than 4mph
     if (velocity > kBlockBrakeBaseSpeed)
     {
@@ -5513,6 +5510,8 @@ void Vehicle::ApplyCableLiftBlockBrake(bool brakeClosed)
         acceleration = 0;
         if (!brakeClosed)
             SetState(Vehicle::Status::WaitingForCableLift, sub_state);
+        else
+            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
     }
 }
 
@@ -5549,8 +5548,6 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
     switch (trackType)
     {
         case TrackElemType::BlockBrakes:
-        case TrackElemType::DiagBlockBrakes:
-
             // Check if this brake is the start of a cable lift
             if (curRide->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
             {
@@ -5561,10 +5558,11 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
                     && track.element != nullptr && track.element->AsTrack()->HasCableLift())
                 {
                     ApplyCableLiftBlockBrake(curRide->IsBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed());
-                    return;
+                    break;
                 }
             }
-
+            [[fallthrough]];
+        case TrackElemType::DiagBlockBrakes:
             if (curRide->IsBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed())
                 ApplyStopBlockBrake();
             else
