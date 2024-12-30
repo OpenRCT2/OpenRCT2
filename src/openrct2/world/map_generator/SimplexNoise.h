@@ -11,5 +11,8 @@
 
 #include <cstdint>
 
-void NoiseRand();
-float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
+namespace OpenRCT2::World::MapGenerator
+{
+    void NoiseRand();
+    float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
+} // namespace OpenRCT2::World::MapGenerator

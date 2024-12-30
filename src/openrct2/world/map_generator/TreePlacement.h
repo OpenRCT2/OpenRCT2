@@ -7,6 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-struct MapGenSettings;
+namespace OpenRCT2::World::MapGenerator
+{
+    struct Settings;
 
-void MapGenPlaceTrees(MapGenSettings* settings);
+    void placeTrees(Settings* settings);
+} // namespace OpenRCT2::World::MapGenerator

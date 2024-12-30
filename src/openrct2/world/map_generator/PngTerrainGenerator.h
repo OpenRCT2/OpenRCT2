@@ -11,8 +11,11 @@
 
 #include "../../core/StringTypes.h"
 
-struct MapGenSettings;
+namespace OpenRCT2::World::MapGenerator
+{
+    struct Settings;
 
-bool MapGenLoadHeightmapImage(const utf8* path);
-void MapGenUnloadHeightmapImage();
-void MapGenGenerateFromHeightmapImage(MapGenSettings* settings);
+    bool LoadHeightmapImage(const utf8* path);
+    void UnloadHeightmapImage();
+    void GenerateFromHeightmapImage(Settings* settings);
+} // namespace OpenRCT2::World::MapGenerator

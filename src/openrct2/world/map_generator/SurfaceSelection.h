@@ -11,8 +11,11 @@
 
 #include "../../object/ObjectTypes.h"
 
-struct MapGenSettings;
+namespace OpenRCT2::World::MapGenerator
+{
+    struct Settings;
 
-ObjectEntryIndex MapGenSurfaceTextureId(MapGenSettings* settings);
-ObjectEntryIndex MapGenEdgeTextureId(MapGenSettings* settings, ObjectEntryIndex surfaceTextureId);
-ObjectEntryIndex MapGenBeachTextureId();
+    ObjectEntryIndex generateSurfaceTextureId(Settings* settings);
+    ObjectEntryIndex generateEdgeTextureId(Settings* settings, ObjectEntryIndex surfaceTextureId);
+    ObjectEntryIndex generateBeachTextureId();
+} // namespace OpenRCT2::World::MapGenerator
