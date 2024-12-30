@@ -624,6 +624,7 @@
     <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
     <ClInclude Include="world\TilePointerIndex.hpp" />
+    <ClInclude Include="world\map_generator\HeightMap.hpp" />
     <ClInclude Include="world\map_generator\MapGen.h" />
     <ClInclude Include="world\map_generator\MapHelpers.h" />
     <ClInclude Include="world\map_generator\PngTerrainGenerator.h" />

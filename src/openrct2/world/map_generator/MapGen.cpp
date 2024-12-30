@@ -15,6 +15,7 @@
 #include "../../util/Util.h"
 #include "../tile_element/Slope.h"
 #include "../tile_element/SurfaceElement.h"
+#include "HeightMap.hpp"
 #include "MapHelpers.h"
 #include "PngTerrainGenerator.h"
 #include "SimplexNoise.h"
@@ -58,8 +59,8 @@ namespace OpenRCT2::World::MapGenerator
     }
 
     static void setWaterLevel(int32_t waterLevel);
-    static void smoothHeight(int32_t iterations);
-    static void setHeight(Settings* settings);
+    static void smoothHeightMap(int32_t iterations, HeightMap& heightMap);
+    static void setMapHeight(Settings* settings, const HeightMap& heightMap);
 
     static void resetSurfaces(Settings* settings)
     {
@@ -91,24 +92,7 @@ namespace OpenRCT2::World::MapGenerator
         setWaterLevel(settings->waterLevel);
     }
 
-    static TileCoordsXY _heightSize;
-    static uint8_t* _height;
-
-    static int32_t getHeight(int32_t x, int32_t y)
-    {
-        if (x >= 0 && y >= 0 && x < _heightSize.x && y < _heightSize.y)
-            return _height[x + y * _heightSize.x];
-
-        return 0;
-    }
-
-    static void setHeight(int32_t x, int32_t y, int32_t height)
-    {
-        if (x >= 0 && y >= 0 && x < _heightSize.x && y < _heightSize.y)
-            _height[x + y * _heightSize.x] = height;
-    }
-
-    static void generateSimplexNoise(Settings* settings);
+    static void generateSimplexNoise(Settings* settings, HeightMap& heightMap);
 
     static void generateSimplexMap(Settings* settings)
     {
@@ -116,16 +100,13 @@ namespace OpenRCT2::World::MapGenerator
 
         // Create the temporary height map and initialise
         auto& mapSize = settings->mapSize;
-        _heightSize = { mapSize.x * 2, mapSize.y * 2 };
-        _height = new uint8_t[_heightSize.y * _heightSize.x];
-        std::fill_n(_height, _heightSize.y * _heightSize.x, 0x00);
+        auto heightMap = HeightMap(mapSize.x * 2, mapSize.y * 2);
 
-        generateSimplexNoise(settings);
-        smoothHeight(2 + (UtilRand() % 6));
+        generateSimplexNoise(settings, heightMap);
+        smoothHeightMap(2 + (UtilRand() % 6), heightMap);
 
         // Set the game map to the height map
-        setHeight(settings);
-        delete[] _height;
+        setMapHeight(settings, heightMap);
 
         if (settings->smoothTileEdges)
         {
@@ -179,54 +160,46 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Smooths the height map.
      */
-    static void smoothHeight(int32_t iterations)
+    static void smoothHeightMap(int32_t iterations, HeightMap& heightMap)
     {
-        int32_t i, x, y, xx, yy, avg;
-        int32_t arraySize = _heightSize.y * _heightSize.x * sizeof(uint8_t);
-        uint8_t* copyHeight = new uint8_t[arraySize];
-
-        for (i = 0; i < iterations; i++)
+        for (auto i = 0; i < iterations; i++)
         {
-            std::memcpy(copyHeight, _height, arraySize);
-            for (y = 1; y < _heightSize.y - 1; y++)
+            auto copyHeight = heightMap;
+            for (auto y = 1; y < heightMap.height - 1; y++)
             {
-                for (x = 1; x < _heightSize.x - 1; x++)
+                for (auto x = 1; x < heightMap.width - 1; x++)
                 {
-                    avg = 0;
-                    for (yy = -1; yy <= 1; yy++)
+                    auto avg = 0;
+                    for (auto yy = -1; yy <= 1; yy++)
                     {
-                        for (xx = -1; xx <= 1; xx++)
+                        for (auto xx = -1; xx <= 1; xx++)
                         {
-                            avg += copyHeight[(y + yy) * _heightSize.x + (x + xx)];
+                            avg += copyHeight[{ y + yy, x + xx }];
                         }
                     }
                     avg /= 9;
-                    setHeight(x, y, avg);
+                    heightMap[{ x, y }] = avg;
                 }
             }
         }
-
-        delete[] copyHeight;
     }
 
     /**
      * Sets the height of the actual game map tiles to the height map.
      */
-    static void setHeight(Settings* settings)
+    static void setMapHeight(Settings* settings, const HeightMap& heightMap)
     {
-        int32_t x, y, heightX, heightY;
-
-        for (y = 1; y < _heightSize.y / 2 - 1; y++)
+        for (auto y = 1; y < heightMap.height / 2 - 1; y++)
         {
-            for (x = 1; x < _heightSize.x / 2 - 1; x++)
+            for (auto x = 1; x < heightMap.width / 2 - 1; x++)
             {
-                heightX = x * 2;
-                heightY = y * 2;
+                auto heightX = x * 2;
+                auto heightY = y * 2;
 
-                uint8_t q00 = getHeight(heightX + 0, heightY + 0);
-                uint8_t q01 = getHeight(heightX + 0, heightY + 1);
-                uint8_t q10 = getHeight(heightX + 1, heightY + 0);
-                uint8_t q11 = getHeight(heightX + 1, heightY + 1);
+                uint8_t q00 = heightMap[{ heightX + 0, heightY + 0 }];
+                uint8_t q01 = heightMap[{ heightX + 0, heightY + 1 }];
+                uint8_t q10 = heightMap[{ heightX + 1, heightY + 0 }];
+                uint8_t q11 = heightMap[{ heightX + 1, heightY + 1 }];
 
                 uint8_t baseHeight = (q00 + q01 + q10 + q11) / 4;
 
@@ -257,23 +230,23 @@ namespace OpenRCT2::World::MapGenerator
         }
     }
 
-    static void generateSimplexNoise(Settings* settings)
+    static void generateSimplexNoise(Settings* settings, HeightMap& heightMap)
     {
-        float freq = settings->simplex_base_freq / 100.0f * (1.0f / _heightSize.x);
+        float freq = settings->simplex_base_freq / 100.0f * (1.0f / heightMap.width);
         int32_t octaves = settings->simplex_octaves;
 
         int32_t low = settings->heightmapLow / 2;
         int32_t high = settings->heightmapHigh / 2 - low;
 
         NoiseRand();
-        for (int32_t y = 0; y < _heightSize.y; y++)
+        for (int32_t y = 0; y < heightMap.height; y++)
         {
-            for (int32_t x = 0; x < _heightSize.x; x++)
+            for (int32_t x = 0; x < heightMap.width; x++)
             {
                 float noiseValue = std::clamp(FractalNoise(x, y, freq, octaves, 2.0f, 0.65f), -1.0f, 1.0f);
                 float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
 
-                setHeight(x, y, low + static_cast<int32_t>(normalisedNoiseValue * high));
+                heightMap[{ x, y }] = low + static_cast<int32_t>(normalisedNoiseValue * high);
             }
         }
     }
