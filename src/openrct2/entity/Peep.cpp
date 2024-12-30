@@ -72,6 +72,9 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+using namespace OpenRCT2::Drawing;
+
+using OpenRCT2::Drawing::LightFx::LightType;
 
 static uint8_t _backupAnimationImageIdOffset;
 static TileElement* _peepRideEntranceExitElement;
@@ -2849,7 +2852,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    if (LightFXIsAvailable())
+    if (LightFx::IsAvailable())
     {
         if (Is<Staff>())
         {
@@ -2872,7 +2875,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
                     return;
             }
 
-            LightFXAdd3DLight(*this, 0, loc, LightType::Spot1);
+            LightFx::Add3DLight(*this, 0, loc, LightType::Spot1);
         }
     }
 

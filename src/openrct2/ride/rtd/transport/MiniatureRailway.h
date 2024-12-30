@@ -76,6 +76,6 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_MiniatureRailway,
+    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_MiniatureRailway,
 };
 // clang-format on

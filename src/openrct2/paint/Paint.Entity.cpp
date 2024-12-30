@@ -32,6 +32,8 @@
 
 #include <cassert>
 
+using namespace OpenRCT2::Drawing;
+
 /**
  * Paint Quadrant
  *  rct2: 0x0069E8B0
@@ -124,9 +126,9 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         {
             case EntityType::Vehicle:
                 spr->As<Vehicle>()->Paint(session, image_direction);
-                if (LightFXForVehiclesIsAvailable())
+                if (LightFx::ForVehiclesIsAvailable())
                 {
-                    LightFXAddLightsMagicVehicle(spr->As<Vehicle>());
+                    LightFx::AddLightsMagicVehicle(spr->As<Vehicle>());
                 }
                 break;
             case EntityType::Guest:
