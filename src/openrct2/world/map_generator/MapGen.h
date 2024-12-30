@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../core/StringTypes.h"
+#include "../../object/ObjectTypes.h"
 #include "../Location.hpp"
 
 enum class MapGenAlgorithm : uint8_t
@@ -49,5 +50,6 @@ struct MapGenSettings
 };
 
 void MapGenGenerate(MapGenSettings* settings);
-bool MapGenLoadHeightmapImage(const utf8* path);
-void MapGenUnloadHeightmapImage();
+
+ObjectEntryIndex MapGenSurfaceTextureId(MapGenSettings* settings);
+ObjectEntryIndex MapGenEdgeTextureId(MapGenSettings* settings, ObjectEntryIndex surfaceTextureId);

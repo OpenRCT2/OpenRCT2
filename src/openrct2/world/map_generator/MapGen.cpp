@@ -14,9 +14,7 @@
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../core/Guard.hpp"
-#include "../../core/Imaging.h"
 #include "../../core/String.hpp"
-#include "../../localisation/StringIds.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/ObjectList.h"
 #include "../../object/ObjectManager.h"
@@ -25,31 +23,19 @@
 #include "../../object/TerrainSurfaceObject.h"
 #include "../../platform/Platform.h"
 #include "../../util/Util.h"
-#include "../../world/tile_element/Slope.h"
-#include "../../world/tile_element/SmallSceneryElement.h"
-#include "../../world/tile_element/SurfaceElement.h"
-#include "../../world/tile_element/TileElement.h"
 #include "../Map.h"
 #include "../Scenery.h"
+#include "../tile_element/Slope.h"
+#include "../tile_element/SmallSceneryElement.h"
+#include "../tile_element/SurfaceElement.h"
+#include "../tile_element/TileElement.h"
 #include "MapHelpers.h"
+#include "PngTerrainGenerator.h"
+#include "SimplexNoise.h"
 
-#include <cmath>
-#include <cstring>
-#include <iterator>
 #include <vector>
 
 using namespace OpenRCT2;
-
-#pragma region Height map struct
-
-static struct
-{
-    uint32_t width = 0;
-    uint32_t height = 0;
-    std::vector<uint8_t> mono_bitmap;
-} _heightMapData;
-
-#pragma endregion Height map struct
 
 #pragma region Random objects
 
@@ -97,7 +83,6 @@ static constexpr std::string_view BaseTerrain[] = {
 
 static void MapGenGenerateBlank(MapGenSettings* settings);
 static void MapGenGenerateSimplex(MapGenSettings* settings);
-static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings);
 
 static void MapGenPlaceTrees(MapGenSettings* settings);
 static void MapGenAddBeaches(MapGenSettings* settings);
@@ -133,7 +118,6 @@ static void MapGenSetWaterLevel(int32_t waterLevel);
 static void MapGenSmoothHeight(int32_t iterations);
 static void MapGenSetHeight(MapGenSettings* settings);
 
-static float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
 static void MapGenSimplex(MapGenSettings* settings);
 
 static TileCoordsXY _heightSize;
@@ -153,7 +137,7 @@ static void SetHeight(int32_t x, int32_t y, int32_t height)
         _height[x + y * _heightSize.x] = height;
 }
 
-static ObjectEntryIndex MapGenSurfaceTextureId(MapGenSettings* settings)
+ObjectEntryIndex MapGenSurfaceTextureId(MapGenSettings* settings)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
@@ -178,7 +162,7 @@ static ObjectEntryIndex MapGenSurfaceTextureId(MapGenSettings* settings)
     return surfaceTextureId;
 }
 
-static ObjectEntryIndex MapGenEdgeTextureId(MapGenSettings* settings, ObjectEntryIndex surfaceTextureId)
+ObjectEntryIndex MapGenEdgeTextureId(MapGenSettings* settings, ObjectEntryIndex surfaceTextureId)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
@@ -557,141 +541,6 @@ static void MapGenSetHeight(MapGenSettings* settings)
     }
 }
 
-#pragma region Noise
-
-/**
- * Simplex Noise Algorithm with Fractional Brownian Motion
- * Based on:
- *   - https://code.google.com/p/simplexnoise/
- *   - https://code.google.com/p/fractalterraingeneration/wiki/Fractional_Brownian_Motion
- */
-
-static float Generate(float x, float y);
-static int32_t FastFloor(float x);
-static float Grad(int32_t hash, float x, float y);
-
-static uint8_t perm[512];
-
-static void NoiseRand()
-{
-    for (auto& i : perm)
-    {
-        i = UtilRand() & 0xFF;
-    }
-}
-
-static float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence)
-{
-    float total = 0.0f;
-    float amplitude = persistence;
-    for (int32_t i = 0; i < octaves; i++)
-    {
-        total += Generate(x * frequency, y * frequency) * amplitude;
-        frequency *= lacunarity;
-        amplitude *= persistence;
-    }
-    return total;
-}
-
-static float Generate(float x, float y)
-{
-    const float F2 = 0.366025403f; // F2 = 0.5*(sqrt(3.0)-1.0)
-    const float G2 = 0.211324865f; // G2 = (3.0-sqrt(3.0))/6.0
-
-    float n0, n1, n2; // Noise contributions from the three corners
-
-    // Skew the input space to determine which simplex cell we're in
-    float s = (x + y) * F2; // Hairy factor for 2D
-    float xs = x + s;
-    float ys = y + s;
-    int32_t i = FastFloor(xs);
-    int32_t j = FastFloor(ys);
-
-    float t = static_cast<float>(i + j) * G2;
-    float X0 = i - t; // Unskew the cell origin back to (x,y) space
-    float Y0 = j - t;
-    float x0 = x - X0; // The x,y distances from the cell origin
-    float y0 = y - Y0;
-
-    // For the 2D case, the simplex shape is an equilateral triangle.
-    // Determine which simplex we are in.
-    int32_t i1, j1; // Offsets for second (middle) corner of simplex in (i,j) coords
-    if (x0 > y0)
-    {
-        i1 = 1;
-        j1 = 0;
-    } // lower triangle, XY order: (0,0)->(1,0)->(1,1)
-    else
-    {
-        i1 = 0;
-        j1 = 1;
-    } // upper triangle, YX order: (0,0)->(0,1)->(1,1)
-
-    // A step of (1,0) in (i,j) means a step of (1-c,-c) in (x,y), and
-    // a step of (0,1) in (i,j) means a step of (-c,1-c) in (x,y), where
-    // c = (3-sqrt(3))/6
-
-    float x1 = x0 - i1 + G2; // Offsets for middle corner in (x,y) unskewed coords
-    float y1 = y0 - j1 + G2;
-    float x2 = x0 - 1.0f + 2.0f * G2; // Offsets for last corner in (x,y) unskewed coords
-    float y2 = y0 - 1.0f + 2.0f * G2;
-
-    // Wrap the integer indices at 256, to avoid indexing perm[] out of bounds
-    int32_t ii = i % 256;
-    int32_t jj = j % 256;
-
-    // Calculate the contribution from the three corners
-    float t0 = 0.5f - x0 * x0 - y0 * y0;
-    if (t0 < 0.0f)
-    {
-        n0 = 0.0f;
-    }
-    else
-    {
-        t0 *= t0;
-        n0 = t0 * t0 * Grad(perm[ii + perm[jj]], x0, y0);
-    }
-
-    float t1 = 0.5f - x1 * x1 - y1 * y1;
-    if (t1 < 0.0f)
-    {
-        n1 = 0.0f;
-    }
-    else
-    {
-        t1 *= t1;
-        n1 = t1 * t1 * Grad(perm[ii + i1 + perm[jj + j1]], x1, y1);
-    }
-
-    float t2 = 0.5f - x2 * x2 - y2 * y2;
-    if (t2 < 0.0f)
-    {
-        n2 = 0.0f;
-    }
-    else
-    {
-        t2 *= t2;
-        n2 = t2 * t2 * Grad(perm[ii + 1 + perm[jj + 1]], x2, y2);
-    }
-
-    // Add contributions from each corner to get the final noise value.
-    // The result is scaled to return values in the interval [-1,1].
-    return 40.0f * (n0 + n1 + n2); // TODO: The scale factor is preliminary!
-}
-
-static int32_t FastFloor(float x)
-{
-    return (x > 0) ? (static_cast<int32_t>(x)) : ((static_cast<int32_t>(x)) - 1);
-}
-
-static float Grad(int32_t hash, float x, float y)
-{
-    int32_t h = hash & 7;    // Convert low 3 bits of hash code
-    float u = h < 4 ? x : y; // into 8 simple gradient directions,
-    float v = h < 4 ? y : x; // and compute the dot product with (x,y).
-    return ((h & 1) != 0 ? -u : u) + ((h & 2) != 0 ? -2.0f * v : 2.0f * v);
-}
-
 static void MapGenSimplex(MapGenSettings* settings)
 {
     float freq = settings->simplex_base_freq / 100.0f * (1.0f / _heightSize.x);
@@ -712,239 +561,3 @@ static void MapGenSimplex(MapGenSettings* settings)
         }
     }
 }
-
-#pragma endregion
-
-#pragma region Heightmap
-
-/**
- * Return the tile coordinate that matches the given pixel of a heightmap
- */
-static TileCoordsXY MapgenHeightmapCoordToTileCoordsXY(uint32_t x, uint32_t y)
-{
-    // The height map does not include the empty tiles around the map, so we add 1.
-    return TileCoordsXY(static_cast<int32_t>(y + 1), static_cast<int32_t>(x + 1));
-}
-
-bool MapGenLoadHeightmapImage(const utf8* path)
-{
-    auto format = Imaging::GetImageFormatFromPath(path);
-    if (format == IMAGE_FORMAT::PNG)
-    {
-        // Promote to 32-bit
-        format = IMAGE_FORMAT::PNG_32;
-    }
-
-    try
-    {
-        auto image = Imaging::ReadFromFile(path, format);
-        auto width = std::min<uint32_t>(image.Width, kMaximumMapSizePractical);
-        auto height = std::min<uint32_t>(image.Height, kMaximumMapSizePractical);
-        if (width != image.Width || height != image.Height)
-        {
-            ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIGHT_MAP_TOO_BIG, {});
-        }
-
-        // Allocate memory for the height map values, one byte pixel
-        _heightMapData.mono_bitmap.resize(width * height);
-        _heightMapData.width = width;
-        _heightMapData.height = height;
-
-        // Copy average RGB value to mono bitmap
-        constexpr auto numChannels = 4;
-        const auto pitch = image.Stride;
-        const auto pixels = image.Pixels.data();
-        for (uint32_t x = 0; x < _heightMapData.width; x++)
-        {
-            for (uint32_t y = 0; y < _heightMapData.height; y++)
-            {
-                const auto red = pixels[x * numChannels + y * pitch];
-                const auto green = pixels[x * numChannels + y * pitch + 1];
-                const auto blue = pixels[x * numChannels + y * pitch + 2];
-                _heightMapData.mono_bitmap[x + y * _heightMapData.width] = (red + green + blue) / 3;
-            }
-        }
-        return true;
-    }
-    catch (const std::exception& e)
-    {
-        switch (format)
-        {
-            case IMAGE_FORMAT::BITMAP:
-                ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP, {});
-                break;
-            case IMAGE_FORMAT::PNG_32:
-                ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
-                break;
-            default:
-                LOG_ERROR("Unable to load height map image: %s", e.what());
-                break;
-        }
-        return false;
-    }
-}
-
-/**
- * Frees the memory used to store the selected height map
- */
-void MapGenUnloadHeightmapImage()
-{
-    _heightMapData.mono_bitmap.clear();
-    _heightMapData.width = 0;
-    _heightMapData.height = 0;
-}
-
-/**
- * Applies box blur to the surface N times
- */
-static void MapGenSmoothHeightmap(std::vector<uint8_t>& src, int32_t strength)
-{
-    // Create buffer to store one channel
-    std::vector<uint8_t> dest(src.size());
-
-    for (int32_t i = 0; i < strength; i++)
-    {
-        // Calculate box blur value to all pixels of the surface
-        for (uint32_t y = 0; y < _heightMapData.height; y++)
-        {
-            for (uint32_t x = 0; x < _heightMapData.width; x++)
-            {
-                uint32_t heightSum = 0;
-
-                // Loop over neighbour pixels, all of them have the same weight
-                for (int8_t offsetX = -1; offsetX <= 1; offsetX++)
-                {
-                    for (int8_t offsetY = -1; offsetY <= 1; offsetY++)
-                    {
-                        // Clamp x and y so they stay within the image
-                        // This assumes the height map is not tiled, and increases the weight of the edges
-                        const int32_t readX = std::clamp<int32_t>(x + offsetX, 0, _heightMapData.width - 1);
-                        const int32_t readY = std::clamp<int32_t>(y + offsetY, 0, _heightMapData.height - 1);
-                        heightSum += src[readX + readY * _heightMapData.width];
-                    }
-                }
-
-                // Take average
-                dest[x + y * _heightMapData.width] = heightSum / 9;
-            }
-        }
-
-        // Now apply the blur to the source pixels
-        for (uint32_t y = 0; y < _heightMapData.height; y++)
-        {
-            for (uint32_t x = 0; x < _heightMapData.width; x++)
-            {
-                src[x + y * _heightMapData.width] = dest[x + y * _heightMapData.width];
-            }
-        }
-    }
-}
-
-static void MapGenGenerateFromHeightmapImage(MapGenSettings* settings)
-{
-    Guard::Assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
-    Guard::Assert(settings->heightmapHigh != settings->heightmapLow, "Low and high setting cannot be the same");
-
-    // Make a copy of the original height map that we can edit
-    auto dest = _heightMapData.mono_bitmap;
-
-    // Get technical map size, +2 for the black tiles around the map
-    auto maxWidth = static_cast<int32_t>(_heightMapData.width + 2);
-    auto maxHeight = static_cast<int32_t>(_heightMapData.height + 2);
-    MapInit({ maxHeight, maxWidth });
-
-    if (settings->smooth_height_map)
-    {
-        MapGenSmoothHeightmap(dest, settings->smooth_strength);
-    }
-
-    uint8_t maxValue = 255;
-    uint8_t minValue = 0;
-
-    if (settings->normalize_height)
-    {
-        // Get highest and lowest pixel value
-        maxValue = 0;
-        minValue = 0xff;
-        for (uint32_t y = 0; y < _heightMapData.height; y++)
-        {
-            for (uint32_t x = 0; x < _heightMapData.width; x++)
-            {
-                uint8_t value = dest[x + y * _heightMapData.width];
-                maxValue = std::max(maxValue, value);
-                minValue = std::min(minValue, value);
-            }
-        }
-
-        if (minValue == maxValue)
-        {
-            ContextShowError(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE, {});
-            return;
-        }
-    }
-
-    Guard::Assert(maxValue > minValue, "Input range is invalid");
-    Guard::Assert(settings->heightmapHigh > settings->heightmapLow, "Output range is invalid");
-
-    const auto surfaceTextureId = MapGenSurfaceTextureId(settings);
-    const auto edgeTextureId = MapGenEdgeTextureId(settings, surfaceTextureId);
-
-    const uint8_t rangeIn = maxValue - minValue;
-    const uint8_t rangeOut = (settings->heightmapHigh - settings->heightmapLow) * 2;
-
-    for (uint32_t y = 0; y < _heightMapData.height; y++)
-    {
-        for (uint32_t x = 0; x < _heightMapData.width; x++)
-        {
-            // The x and y axis are flipped in the world, so this uses y for x and x for y.
-            auto tileCoords = MapgenHeightmapCoordToTileCoordsXY(x, y);
-            auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords);
-            if (surfaceElement == nullptr)
-                continue;
-
-            // Read value from bitmap, and convert its range
-            uint8_t value = dest[x + y * _heightMapData.width];
-            value = static_cast<uint8_t>(static_cast<float>(value - minValue) / rangeIn * rangeOut)
-                + (settings->heightmapLow * 2);
-            surfaceElement->BaseHeight = value;
-
-            // Floor to even number
-            surfaceElement->BaseHeight /= 2;
-            surfaceElement->BaseHeight *= 2;
-            surfaceElement->ClearanceHeight = surfaceElement->BaseHeight;
-
-            // Set textures
-            surfaceElement->SetSurfaceObjectIndex(surfaceTextureId);
-            surfaceElement->SetEdgeObjectIndex(edgeTextureId);
-
-            // Set water level
-            if (surfaceElement->BaseHeight < settings->waterLevel)
-            {
-                surfaceElement->SetWaterHeight(settings->waterLevel * kCoordsZStep);
-            }
-        }
-    }
-
-    // Smooth tile edges
-    if (settings->smoothTileEdges)
-    {
-        // Keep smoothing the entire map until no tiles are changed anymore
-        while (true)
-        {
-            uint32_t numTilesChanged = 0;
-            for (uint32_t y = 0; y < _heightMapData.height; y++)
-            {
-                for (uint32_t x = 0; x < _heightMapData.width; x++)
-                {
-                    auto tileCoords = MapgenHeightmapCoordToTileCoordsXY(x, y);
-                    numTilesChanged += TileSmooth(tileCoords);
-                }
-            }
-
-            if (numTilesChanged == 0)
-                break;
-        }
-    }
-}
-
-#pragma endregion
