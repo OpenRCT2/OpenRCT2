@@ -81,7 +81,7 @@ void Painter::Paint(IDrawingEngine& de)
     }
 
     {
-        auto& backgroundJobs = ctx->GetBackgroundJobsMgr();
+        auto& backgroundJobs = ctx->GetBackgroundJobs();
         if (backgroundJobs.CountPending() > 0 || backgroundJobs.CountProcessing() > 0)
         {
             PaintBusyStatus(*dpi);

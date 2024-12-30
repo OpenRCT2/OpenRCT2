@@ -604,7 +604,7 @@ void GameAutosave()
         File::Copy(path, backupPath, true);
     }
 
-    auto& backgroundJobs = ctx->GetBackgroundJobsMgr();
+    auto& backgroundJobs = ctx->GetBackgroundJobs();
 
     // Pretty annoying situation, GameState_t is too big for stack and unique_ptr can not be copied,
     // so we have to use shared_ptr here.
