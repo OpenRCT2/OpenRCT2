@@ -9,11 +9,11 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
-    #include "Duktape.hpp"
+    #include <quickjs.h>
 
-    #include <memory>
+    #include <optional>
     #include <string>
     #include <string_view>
     #include <vector>
@@ -49,13 +49,13 @@ namespace OpenRCT2::Scripting
         PluginType Type{};
         int32_t MinApiVersion{};
         std::optional<int32_t> TargetApiVersion{};
-        DukValue Main;
+        JSValue Main;
     };
 
     class Plugin
     {
     private:
-        duk_context* _context{};
+        JSContext* _context{};
         std::string _path;
         PluginMetadata _metadata{};
         std::string _code;
@@ -102,7 +102,7 @@ namespace OpenRCT2::Scripting
         int32_t GetTargetAPIVersion() const;
 
         Plugin() = default;
-        Plugin(duk_context* context, std::string_view path);
+        Plugin(JSContext* context, std::string_view path);
         Plugin(const Plugin&) = delete;
         Plugin(Plugin&&) = delete;
 
@@ -120,9 +120,9 @@ namespace OpenRCT2::Scripting
     private:
         void LoadCodeFromFile();
 
-        static PluginMetadata GetMetadata(const DukValue& dukMetadata);
+        static PluginMetadata GetMetadata(JSValue dukMetadata);
         static PluginType ParsePluginType(std::string_view type);
-        static void CheckForLicence(const DukValue& dukLicence, std::string_view pluginName);
+        static void CheckForLicence(JSValue dukLicence, std::string_view pluginName);
     };
 } // namespace OpenRCT2::Scripting
 

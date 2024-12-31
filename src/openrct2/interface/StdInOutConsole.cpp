@@ -67,7 +67,7 @@ void StdInOutConsole::Start()
 
 std::future<void> StdInOutConsole::Eval(const std::string& s)
 {
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
     auto& scriptEngine = OpenRCT2::GetContext()->GetScriptEngine();
     return scriptEngine.Eval(s);
 #else
@@ -82,7 +82,7 @@ std::future<void> StdInOutConsole::Eval(const std::string& s)
 
 void StdInOutConsole::ProcessEvalQueue()
 {
-#ifndef ENABLE_SCRIPTING
+#ifndef ENABLE_SCRIPTING_REFACTOR
     while (_evalQueue.size() > 0)
     {
         auto item = std::move(_evalQueue.front());

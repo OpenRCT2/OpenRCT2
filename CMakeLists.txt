@@ -52,7 +52,7 @@ endif ()
 include(cmake/platform.cmake)
 include(CMakeDependentOption)
 
-# vcpkg includes its own copy of duktapeConfig.cmake; only include ours as needed.
+# vcpkg includes its own copy of *.cmake; only include ours as needed.
 if (NOT MSVC)
     include(FindPkgConfig)
     set(CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
@@ -397,9 +397,13 @@ endif ()
 if (DISABLE_TTF)
     target_compile_options(libopenrct2 PUBLIC -DNO_TTF)
 endif ()
-if (ENABLE_SCRIPTING)
-    target_compile_options(libopenrct2 PUBLIC -DENABLE_SCRIPTING)
-endif ()
+
+# TODO (mber) Temporary build for quickjs refactor. Revert.
+#if (ENABLE_SCRIPTING)
+#    target_compile_options(libopenrct2 PUBLIC -DENABLE_SCRIPTING)
+#endif ()
+target_compile_options(libopenrct2 PUBLIC -DENABLE_SCRIPTING_REFACTOR)
+
 if (ENABLE_ASAN)
     target_compile_options(libopenrct2 PUBLIC -fsanitize=address)
     target_link_options(libopenrct2 PUBLIC -fsanitize=address)

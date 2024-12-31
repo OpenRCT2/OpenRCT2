@@ -7,14 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "Plugin.h"
 
     #include "../Diagnostic.h"
     #include "../OpenRCT2.h"
     #include "../core/File.h"
-    #include "Duktape.hpp"
     #include "ScriptEngine.h"
 
     #include <fstream>
@@ -22,7 +21,7 @@
 
 using namespace OpenRCT2::Scripting;
 
-Plugin::Plugin(duk_context* context, std::string_view path)
+Plugin::Plugin(JSContext* context, std::string_view path)
     : _context(context)
     , _path(path)
 {
@@ -35,6 +34,9 @@ void Plugin::SetCode(std::string_view code)
 
 void Plugin::Load()
 {
+    // TODO (mber) plugins
+    throw std::runtime_error("Plugin::Load() not implemented");
+    /*
     if (!_path.empty())
     {
         LoadCodeFromFile();
@@ -73,10 +75,12 @@ void Plugin::Load()
 
     _metadata = GetMetadata(DukValue::take_from_stack(_context));
     _hasLoaded = true;
+    */
 }
 
 void Plugin::Start()
 {
+    /*
     if (!_hasLoaded)
     {
         throw std::runtime_error("Plugin has not been loaded.");
@@ -99,6 +103,7 @@ void Plugin::Start()
         throw std::runtime_error("[" + _metadata.Name + "] " + val);
     }
     duk_pop(_context);
+    */
 }
 
 void Plugin::StopBegin()
@@ -114,10 +119,14 @@ void Plugin::StopEnd()
 
 void Plugin::ThrowIfStopping() const
 {
+    // TODO (mber) find out how to do something similar in quickjs.
+    throw std::runtime_error("ThrowIfStopping() not implemented");
+    /*
     if (IsStopping())
     {
         duk_error(_context, DUK_ERR_ERROR, "Plugin is stopping.");
     }
+    */
 }
 
 void Plugin::Unload()
@@ -139,15 +148,18 @@ void Plugin::LoadCodeFromFile()
     _code = File::ReadAllText(_path);
 }
 
-static std::string TryGetString(const DukValue& value, const std::string& message)
+/*
+static std::string TryGetString(const JSValue value, const std::string& message)
 {
     if (value.type() != DukValue::Type::STRING)
         throw std::runtime_error(message);
     return value.as_string();
 }
+*/
 
-PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
+PluginMetadata Plugin::GetMetadata(const JSValue dukMetadata)
 {
+    /*
     PluginMetadata metadata;
     if (dukMetadata.type() == DukValue::Type::OBJECT)
     {
@@ -191,6 +203,8 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
         metadata.Main = dukMetadata["main"];
     }
     return metadata;
+    */
+    return PluginMetadata{};
 }
 
 PluginType Plugin::ParsePluginType(std::string_view type)
@@ -204,10 +218,12 @@ PluginType Plugin::ParsePluginType(std::string_view type)
     throw std::invalid_argument("Unknown plugin type.");
 }
 
-void Plugin::CheckForLicence(const DukValue& dukLicence, std::string_view pluginName)
+void Plugin::CheckForLicence(const JSValue dukLicence, std::string_view pluginName)
 {
+    /*
     if (dukLicence.type() != DukValue::Type::STRING || dukLicence.as_string().empty())
         LOG_ERROR("Plugin %s does not specify a licence", std::string(pluginName).c_str());
+    */
 }
 
 int32_t Plugin::GetTargetAPIVersion() const
