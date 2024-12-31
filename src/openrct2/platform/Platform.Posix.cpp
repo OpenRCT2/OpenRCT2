@@ -161,7 +161,7 @@ namespace OpenRCT2::Platform
         // Return exit code
         return pclose(fpipe);
     #else
-        LOG_WARNING("Emscripten cannot execute processes. The commandline was '%s'.", command.c_str());
+        LOG_WARNING("Emscripten cannot execute processes. The commandline was '%s'.", std::string(command).c_str());
         return -1;
     #endif // __EMSCRIPTEN__
     }

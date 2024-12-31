@@ -114,7 +114,19 @@ if (NOT DISABLE_GOOGLE_BENCHMARK)
 endif ()
 
 # Third party libraries
-if (MSVC)
+if (CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+    target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${ICU_INCLUDE_DIR})
+    set(USE_FLAGS "${EMSCRIPTEN_FLAGS}")
+    set(SHARED_FLAGS "-fexceptions")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS} ${SHARED_FLAGS}")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS} ${SHARED_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${EMSCRIPTEN_LDFLAGS} --bind ${SHARED_FLAGS}")
+    find_package(SpeexDSP REQUIRED)
+    if (NOT DISABLE_VORBIS)
+        PKG_CHECK_MODULES(OGG REQUIRED IMPORTED_TARGET ogg)
+        PKG_CHECK_MODULES(VORBISFILE REQUIRED IMPORTED_TARGET vorbisfile vorbisenc vorbis)
+    endif ()
+elseif (MSVC)
     find_package(png 1.6 REQUIRED)
     find_package(zlib REQUIRED)
 
@@ -142,7 +154,7 @@ if (STATIC)
                                      ${ZLIB_STATIC_LIBRARIES}
                                      ${LIBZIP_STATIC_LIBRARIES})
 else ()
-    if (NOT MSVC)
+    if (NOT MSVC AND NOT CMAKE_SYSTEM_NAME MATCHES "Emscripten")
         target_link_libraries(${PROJECT_NAME}
                                      PkgConfig::PNG
                                      PkgConfig::ZLIB
@@ -171,7 +183,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(${PROJECT_NAME} Threads::Threads)
 
-if (NOT MINGW AND NOT MSVC)
+if (NOT MINGW AND NOT MSVC AND NOT CMAKE_SYSTEM_NAME MATCHES "Emscripten")
     if (APPLE AND NOT MACOS_USE_DEPENDENCIES)
         execute_process(COMMAND brew --prefix icu4c OUTPUT_VARIABLE HOMEBREW_PREFIX_ICU OUTPUT_STRIP_TRAILING_WHITESPACE)
         # Needed for linking with non-broken icu on Apple platforms
@@ -249,7 +261,7 @@ if (NOT OPENRCT2_COMMIT_SHA1_SHORT STREQUAL "HEAD" AND NOT OPENRCT2_COMMIT_SHA1_
         OPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
 endif()
 
-if((X86 OR X86_64) AND NOT MSVC)
+if((X86 OR X86_64) AND NOT MSVC AND NOT CMAKE_SYSTEM_NAME MATCHES "Emscripten")
     set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/drawing/SSE41Drawing.cpp PROPERTIES COMPILE_FLAGS -msse4.1)
     set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/drawing/AVX2Drawing.cpp PROPERTIES COMPILE_FLAGS -mavx2)
 endif()

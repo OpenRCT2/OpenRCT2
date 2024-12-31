@@ -46,6 +46,10 @@
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+#endif
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
@@ -218,6 +222,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PATH_TO_RCT1_BUTTON,
         WIDX_PATH_TO_RCT1_CLEAR,
         WIDX_ASSET_PACKS,
+#ifdef __EMSCRIPTEN__
+        WIDX_EXPORT_EMSCRIPTEN_DATA,
+        WIDX_IMPORT_EMSCRIPTEN_DATA,
+#endif
     };
 
     // clang-format off
@@ -404,6 +412,10 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
         MakeWidget        ({289, 160}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
         MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               STR_NONE                                     ), // Asset packs
+#ifdef __EMSCRIPTEN__
+        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     STR_NONE                                     ), // Emscripten data export
+        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     STR_NONE                                     ), // Emscripten data import
+#endif
         kWidgetsEnd,
     };
 
@@ -1973,6 +1985,14 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_ASSET_PACKS:
                     ContextOpenWindow(WindowClass::AssetPacks);
                     break;
+#ifdef __EMSCRIPTEN__
+                case WIDX_EXPORT_EMSCRIPTEN_DATA:
+                    MAIN_THREAD_EM_ASM({ Module.funcs.export(); });
+                    break;
+                case WIDX_IMPORT_EMSCRIPTEN_DATA:
+                    MAIN_THREAD_EM_ASM({ Module.funcs.import(); });
+                    break;
+#endif
             }
         }
 

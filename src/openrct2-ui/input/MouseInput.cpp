@@ -605,6 +605,7 @@ static void InputViewportDragContinue()
         }
     }
 
+#ifndef __EMSCRIPTEN__
     const CursorState* cursorState = ContextGetCursorState();
     if (cursorState->touch || Config::Get().general.InvertViewportDrag)
     {
@@ -614,6 +615,9 @@ static void InputViewportDragContinue()
     {
         ContextSetCursorPosition(gInputDragLast);
     }
+#else
+    gInputDragLast = newDragCoords;
+#endif
 }
 
 static void InputViewportDragEnd()

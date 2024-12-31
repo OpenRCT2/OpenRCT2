@@ -11,7 +11,18 @@ option(DISABLE_VORBIS   "Disable OGG/VORBIS support.")
 option(DISABLE_OPENGL   "Disable OpenGL support.")
 
 # Third party libraries
-if (MSVC)
+if (CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+    set(USE_FLAGS "${EMSCRIPTEN_FLAGS}")
+    set(SHARED_FLAGS "-fexceptions")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS} ${SHARED_FLAGS}")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS} ${SHARED_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${EMSCRIPTEN_LDFLAGS} --bind ${SHARED_FLAGS}")
+    find_package(SpeexDSP REQUIRED)
+    if (NOT DISABLE_VORBIS)
+        PKG_CHECK_MODULES(OGG REQUIRED IMPORTED_TARGET ogg)
+        PKG_CHECK_MODULES(VORBISFILE REQUIRED IMPORTED_TARGET vorbisfile vorbisenc vorbis)
+    endif ()
+elseif (MSVC)
     find_package(SDL2 REQUIRED)
     find_library(SPEEX_LDFLAGS libspeexdsp)
     if (NOT DISABLE_FLAC)
@@ -33,7 +44,7 @@ else ()
     endif ()
 endif ()
 
-if (NOT DISABLE_OPENGL)
+if (NOT DISABLE_OPENGL AND NOT CMAKE_SYSTEM_NAME MATCHES "Emscripten")
     # GL doesn't work nicely with macOS, while find_package doesn't work with multiarch on Ubuntu.
     if (APPLE)
         find_package(OpenGL REQUIRED)
@@ -61,7 +72,12 @@ SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 ipo_set_target_properties(${PROJECT_NAME})
 
 # mingw builds cannot use the PkgConfig imported targets
-if (NOT MSVC AND NOT WIN32)
+if (CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+    target_link_libraries(${PROJECT_NAME} "libopenrct2"
+                                    ${SPEEXDSP_LIBRARIES}
+                                    ${ICU_DATA_LIBRARIES}
+                                    ${ICU_DT_LIBRARY_RELEASE})
+elseif (NOT MSVC AND NOT WIN32)
     target_link_libraries(${PROJECT_NAME} "libopenrct2"
                                     PkgConfig::SDL2
                                     PkgConfig::SPEEX)

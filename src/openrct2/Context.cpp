@@ -1201,9 +1201,21 @@ namespace OpenRCT2
             {
                 SwitchToStartUpScene();
             }
-
+#ifdef __EMSCRIPTEN__
+            emscripten_set_main_loop_arg(
+                [](void* vctx) {
+                    auto ctx = reinterpret_cast<Context*>(vctx);
+                    if (ctx->_finished)
+                    {
+                        emscripten_cancel_main_loop();
+                    }
+                    ctx->RunFrame();
+                },
+                this, 0, 1);
+#else
             _stdInOutConsole.Start();
             RunGameLoop();
+#endif
         }
 
         bool ShouldDraw()
@@ -1229,6 +1241,7 @@ namespace OpenRCT2
         /**
          * Run the main game loop until the finished flag is set.
          */
+#ifndef __EMSCRIPTEN__
         void RunGameLoop()
         {
             PROFILED_FUNCTION();
@@ -1236,22 +1249,14 @@ namespace OpenRCT2
             LOG_VERBOSE("begin openrct2 loop");
             _finished = false;
 
-#ifndef __EMSCRIPTEN__
             _variableFrame = ShouldRunVariableFrame();
             do
             {
                 RunFrame();
             } while (!_finished);
-#else
-            emscripten_set_main_loop_arg(
-                [](void* vctx) -> {
-                    auto ctx = reinterpret_cast<Context*>(vctx);
-                    ctx->RunFrame();
-                },
-                this, 0, 1);
-#endif // __EMSCRIPTEN__
             LOG_VERBOSE("finish openrct2 loop");
         }
+#endif // __EMSCRIPTEN__
 
         void RunFrame()
         {

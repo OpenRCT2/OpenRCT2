@@ -35,8 +35,10 @@
 #elif defined(__riscv)
     #define OPENRCT2_ARCHITECTURE "RISC-V"
 #endif
-#ifdef __EMSCRIPTEN__
-    #define OPENRCT2_ARCHITECTURE "Emscripten"
+#ifdef __wasm32__
+    #define OPENRCT2_ARCHITECTURE "wasm32"
+#elif defined(__wasm64__)
+    #define OPENRCT2_ARCHITECTURE "wasm64"
 #endif
 
 #ifndef OPENRCT2_ARCHITECTURE

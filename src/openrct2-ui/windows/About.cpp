@@ -21,6 +21,10 @@
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+#endif
+
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t WW = 400;
@@ -119,7 +123,22 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindowView(WV_NEW_VERSION_INFO);
                     break;
                 case WIDX_COPY_BUILD_INFO:
+#ifndef __EMSCRIPTEN__
                     SDL_SetClipboardText(gVersionInfoFull);
+#else
+                    MAIN_THREAD_EM_ASM(
+                        {
+                            try
+                            {
+                                navigator.clipboard.writeText(UTF8ToString($0));
+                            }
+                            catch (e)
+                            {
+                                // Ignore
+                            };
+                        },
+                        gVersionInfoFull);
+#endif
                     break;
                 case WIDX_CONTRIBUTORS_BUTTON:
                     ContextOpenWindowView(WV_CONTRIBUTORS);
