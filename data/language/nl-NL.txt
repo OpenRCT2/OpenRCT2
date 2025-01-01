@@ -3781,3 +3781,6 @@ STR_6706    :{WINDOW_COLOUR_2}Geselecteerd bestand: {BLACK}{STRING}
 STR_6707    :(n.v.t.)
 STR_6708    :Afrondsterkte
 STR_6709    :Voer een afrondsterkte in tussen {COMMA16} en {COMMA16}
+STR_6710    :Stabiel sorteren
+STR_6711    :Bestandsnaam:
+STR_6712    :Opslaan
