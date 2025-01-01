@@ -34,6 +34,8 @@
     #define OPENRCT2_ARCHITECTURE "mips"
 #elif defined(__riscv)
     #define OPENRCT2_ARCHITECTURE "RISC-V"
+#elif defined(__loongarch__)
+    #define OPENRCT2_ARCHITECTURE "LoongArch"
 #endif
 #ifdef __EMSCRIPTEN__
     #define OPENRCT2_ARCHITECTURE "Emscripten"
