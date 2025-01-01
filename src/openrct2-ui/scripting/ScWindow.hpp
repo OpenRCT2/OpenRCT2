@@ -362,7 +362,8 @@ namespace OpenRCT2::Scripting
     private:
         WindowBase* GetWindow() const
         {
-            return WindowFindByNumber(_class, _number);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            return windowMgr->FindByNumber(_class, _number);
         }
     };
 } // namespace OpenRCT2::Scripting

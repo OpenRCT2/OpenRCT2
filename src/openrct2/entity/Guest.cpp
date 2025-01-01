@@ -51,6 +51,8 @@
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../sprites.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -1450,7 +1452,9 @@ void Guest::CheckCantFindRide()
         return;
 
     GuestHeadingToRideId = RideId::GetNull();
-    WindowBase* w = WindowFindByNumber(WindowClass::Peep, Id);
+
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, Id);
 
     if (w != nullptr)
     {
@@ -3142,7 +3146,8 @@ static void PeepLeavePark(Guest* peep)
 
     peep->InsertNewThought(PeepThoughtType::GoHome);
 
-    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, peep->Id);
     if (w != nullptr)
         w->OnPrepareDraw();
     WindowInvalidateByNumber(WindowClass::Peep, peep->Id);

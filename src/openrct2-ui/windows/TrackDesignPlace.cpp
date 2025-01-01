@@ -301,18 +301,20 @@ namespace OpenRCT2::Ui::Windows
                     Audio::Play3D(Audio::SoundId::PlaceItem, trackLoc);
 
                     _currentRideIndex = rideId;
+
+                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
                     if (TrackDesignAreEntranceAndExitPlaced())
                     {
                         auto intent = Intent(WindowClass::Ride);
                         intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                         ContextOpenIntent(&intent);
-                        auto wnd = WindowFindByClass(WindowClass::TrackDesignPlace);
+                        auto* wnd = windowMgr->FindByClass(WindowClass::TrackDesignPlace);
                         WindowClose(*wnd);
                     }
                     else
                     {
                         RideInitialiseConstructionWindow(*getRide);
-                        auto wnd = WindowFindByClass(WindowClass::RideConstruction);
+                        auto* wnd = windowMgr->FindByClass(WindowClass::RideConstruction);
                         wnd->OnMouseUp(WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                     }
                 }
@@ -746,7 +748,8 @@ namespace OpenRCT2::Ui::Windows
 
     void TrackPlaceClearProvisionalTemporarily()
     {
-        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(WindowFindByClass(WindowClass::TrackDesignPlace));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignPlace));
         if (trackPlaceWnd != nullptr)
         {
             trackPlaceWnd->ClearProvisionalTemporarily();
@@ -755,7 +758,8 @@ namespace OpenRCT2::Ui::Windows
 
     void TrackPlaceRestoreProvisional()
     {
-        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(WindowFindByClass(WindowClass::TrackDesignPlace));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignPlace));
         if (trackPlaceWnd != nullptr)
         {
             trackPlaceWnd->RestoreProvisional();

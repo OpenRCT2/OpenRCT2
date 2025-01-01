@@ -286,53 +286,6 @@ void WindowCloseByNumber(WindowClass cls, EntityId number)
 }
 
 /**
- * Finds the first window with the specified window class.
- *  rct2: 0x006EA8A0
- * @param cls (cl) with bit 15 set
- * @returns the window or NULL if no window was found.
- */
-WindowBase* WindowFindByClass(WindowClass cls)
-{
-    for (auto& w : g_window_list)
-    {
-        if (w->flags & WF_DEAD)
-            continue;
-        if (w->classification == cls)
-        {
-            return w.get();
-        }
-    }
-    return nullptr;
-}
-
-/**
- * Finds the first window with the specified window class and number.
- *  rct2: 0x006EA8A0
- * @param cls (cl) without bit 15 set
- * @param number (dx)
- * @returns the window or NULL if no window was found.
- */
-WindowBase* WindowFindByNumber(WindowClass cls, rct_windownumber number)
-{
-    for (auto& w : g_window_list)
-    {
-        if (w->flags & WF_DEAD)
-            continue;
-        if (w->classification == cls && w->number == number)
-        {
-            return w.get();
-        }
-    }
-    return nullptr;
-}
-
-// TODO: Use variant for this once the window framework is done.
-WindowBase* WindowFindByNumber(WindowClass cls, EntityId id)
-{
-    return WindowFindByNumber(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
-}
-
-/**
  * Closes the top-most window
  *
  *  rct2: 0x006E403C
@@ -389,80 +342,6 @@ void WindowCloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls
     WindowCloseByCondition([cls, number](WindowBase* w) -> bool {
         return (!(w->number == number && w->classification == cls) && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)));
     });
-}
-
-/**
- *
- *  rct2: 0x006EA845
- */
-WindowBase* WindowFindFromPoint(const ScreenCoordsXY& screenCoords)
-{
-    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-    {
-        auto& w = *it;
-        if (w->flags & WF_DEAD)
-            continue;
-
-        if (screenCoords.x < w->windowPos.x || screenCoords.x >= w->windowPos.x + w->width || screenCoords.y < w->windowPos.y
-            || screenCoords.y >= w->windowPos.y + w->height)
-            continue;
-
-        if (w->flags & WF_NO_BACKGROUND)
-        {
-            auto widgetIndex = WindowFindWidgetFromPoint(*w.get(), screenCoords);
-            if (widgetIndex == -1)
-                continue;
-        }
-
-        return w.get();
-    }
-
-    return nullptr;
-}
-
-/**
- *
- *  rct2: 0x006EA594
- * x (ax)
- * y (bx)
- * returns widget_index (edx)
- * EDI NEEDS TO BE SET TO w->widgets[widget_index] AFTER
- */
-WidgetIndex WindowFindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords)
-{
-    // Invalidate the window
-    w.OnPrepareDraw();
-
-    // Find the widget at point x, y
-    WidgetIndex widget_index = -1;
-    for (int32_t i = 0;; i++)
-    {
-        const auto& widget = w.widgets[i];
-        if (widget.type == WindowWidgetType::Last)
-        {
-            break;
-        }
-
-        if (widget.type != WindowWidgetType::Empty && widget.IsVisible())
-        {
-            if (screenCoords.x >= w.windowPos.x + widget.left && screenCoords.x <= w.windowPos.x + widget.right
-                && screenCoords.y >= w.windowPos.y + widget.top && screenCoords.y <= w.windowPos.y + widget.bottom)
-            {
-                widget_index = i;
-            }
-        }
-    }
-
-    // Return next widget if a dropdown
-    if (widget_index != -1)
-    {
-        const auto& widget = w.widgets[widget_index];
-        if (widget.type == WindowWidgetType::DropdownMenu)
-            widget_index++;
-    }
-
-    // Return the widget index
-    return widget_index;
 }
 
 /**
@@ -630,7 +509,8 @@ WindowBase* WindowBringToFront(WindowBase& w)
 
 WindowBase* WindowBringToFrontByClassWithFlags(WindowClass cls, uint16_t flags)
 {
-    WindowBase* w = WindowFindByClass(cls);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByClass(cls);
     if (w != nullptr)
     {
         w->flags |= flags;
@@ -654,9 +534,8 @@ WindowBase* WindowBringToFrontByClass(WindowClass cls)
  */
 WindowBase* WindowBringToFrontByNumber(WindowClass cls, rct_windownumber number)
 {
-    WindowBase* w;
-
-    w = WindowFindByNumber(cls, number);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByNumber(cls, number);
     if (w != nullptr)
     {
         w->flags |= WF_WHITE_BORDER_MASK;
@@ -1179,7 +1058,8 @@ void ToolCancel()
                 gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number, gCurrentToolWidget.widget_index);
 
             // Abort tool event
-            WindowBase* w = WindowFindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            WindowBase* w = windowMgr->FindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
             if (w != nullptr)
                 w->OnToolAbort(gCurrentToolWidget.widget_index);
         }
@@ -1195,32 +1075,33 @@ void WindowResizeGui(int32_t width, int32_t height)
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
-    WindowBase* titleWind = WindowFindByClass(WindowClass::TitleMenu);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* titleWind = windowMgr->FindByClass(WindowClass::TitleMenu);
     if (titleWind != nullptr)
     {
         titleWind->windowPos.x = (width - titleWind->width) / 2;
         titleWind->windowPos.y = height - 182;
     }
 
-    WindowBase* versionWind = WindowFindByClass(WindowClass::TitleVersion);
+    WindowBase* versionWind = windowMgr->FindByClass(WindowClass::TitleVersion);
     if (versionWind != nullptr)
         versionWind->windowPos.y = height - 30;
 
-    WindowBase* exitWind = WindowFindByClass(WindowClass::TitleExit);
+    WindowBase* exitWind = windowMgr->FindByClass(WindowClass::TitleExit);
     if (exitWind != nullptr)
     {
         exitWind->windowPos.x = width - 40;
         exitWind->windowPos.y = height - 64;
     }
 
-    WindowBase* optionsWind = WindowFindByClass(WindowClass::TitleOptions);
+    WindowBase* optionsWind = windowMgr->FindByClass(WindowClass::TitleOptions);
     if (optionsWind != nullptr)
     {
         optionsWind->windowPos.x = width - 80;
     }
 
     // Keep options window centred after a resize
-    WindowBase* optionsWindow = WindowFindByClass(WindowClass::Options);
+    WindowBase* optionsWindow = windowMgr->FindByClass(WindowClass::Options);
     if (optionsWindow != nullptr)
     {
         optionsWindow->windowPos.x = (ContextGetWidth() - optionsWindow->width) / 2;
@@ -1228,7 +1109,7 @@ void WindowResizeGui(int32_t width, int32_t height)
     }
 
     // Keep progress bar window centred after a resize
-    WindowBase* ProgressWindow = WindowFindByClass(WindowClass::ProgressWindow);
+    WindowBase* ProgressWindow = windowMgr->FindByClass(WindowClass::ProgressWindow);
     if (ProgressWindow != nullptr)
     {
         ProgressWindow->windowPos.x = (ContextGetWidth() - ProgressWindow->width) / 2;
@@ -1258,13 +1139,15 @@ void WindowResizeGuiScenarioEditor(int32_t width, int32_t height)
         }
     }
 
-    WindowBase* topWind = WindowFindByClass(WindowClass::TopToolbar);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
+    WindowBase* topWind = windowMgr->FindByClass(WindowClass::TopToolbar);
     if (topWind != nullptr)
     {
         topWind->width = std::max(640, width);
     }
 
-    WindowBase* bottomWind = WindowFindByClass(WindowClass::BottomToolbar);
+    WindowBase* bottomWind = windowMgr->FindByClass(WindowClass::BottomToolbar);
     if (bottomWind != nullptr)
     {
         bottomWind->windowPos.y = height - 32;

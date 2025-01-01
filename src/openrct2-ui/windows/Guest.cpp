@@ -37,6 +37,8 @@
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
@@ -643,7 +645,8 @@ namespace OpenRCT2::Ui::Windows
                     pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error != GameActions::Status::Ok)
                             return;
-                        WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
+                        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                        WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
                             ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);

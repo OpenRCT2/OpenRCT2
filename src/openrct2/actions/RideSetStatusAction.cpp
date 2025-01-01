@@ -202,7 +202,8 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
             //            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
-            WindowBase* constructionWindow = WindowFindByNumber(WindowClass::RideConstruction, _rideIndex.ToUnderlying());
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            WindowBase* constructionWindow = windowMgr->FindByNumber(WindowClass::RideConstruction, _rideIndex.ToUnderlying());
             if (constructionWindow != nullptr)
             {
                 WindowClose(*constructionWindow);

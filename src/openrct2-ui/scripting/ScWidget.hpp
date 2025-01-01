@@ -22,6 +22,8 @@
     #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/IconNames.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
+    #include <openrct2/ui/UiContext.h>
+    #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Scripting
 {
@@ -393,7 +395,8 @@ namespace OpenRCT2::Scripting
             if (_class == WindowClass::MainWindow)
                 return WindowGetMain();
 
-            return WindowFindByNumber(_class, _number);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            return windowMgr->FindByNumber(_class, _number);
         }
 
         Widget* GetWidget() const

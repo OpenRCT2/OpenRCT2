@@ -38,6 +38,8 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <span>
 #include <string>
@@ -1706,8 +1708,6 @@ namespace OpenRCT2::Ui::Windows
 
     bool EditorObjectSelectionWindowCheck()
     {
-        WindowBase* w;
-
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
         if (missingObjectType == ObjectType::None)
         {
@@ -1716,7 +1716,9 @@ namespace OpenRCT2::Ui::Windows
         }
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
-        w = WindowFindByClass(WindowClass::EditorObjectSelection);
+
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {
             // Click tab with missing object

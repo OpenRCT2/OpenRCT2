@@ -42,6 +42,12 @@ namespace OpenRCT2::Ui
         virtual void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) = 0;
         virtual void UpdateMouseWheel() = 0;
         virtual WindowBase* GetOwner(const Viewport* viewport) = 0;
+
+        virtual WindowBase* FindByClass(WindowClass cls) = 0;
+        virtual WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) = 0;
+        virtual WindowBase* FindByNumber(WindowClass cls, EntityId id) = 0;
+        virtual WindowBase* FindFromPoint(const ScreenCoordsXY& screenCoords) = 0;
+        virtual WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) = 0;
     };
 
     std::unique_ptr<IWindowManager> CreateDummyWindowManager();

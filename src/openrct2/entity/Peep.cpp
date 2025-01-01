@@ -48,6 +48,8 @@
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/ConstructionClearance.h"
@@ -589,7 +591,8 @@ void PeepDecrementNumRiders(Peep* peep)
  */
 void PeepWindowStateUpdate(Peep* peep)
 {
-    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
     if (w != nullptr)
         w->OnPrepareDraw();
 

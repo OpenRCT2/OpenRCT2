@@ -24,6 +24,8 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -274,7 +276,8 @@ namespace OpenRCT2::Ui::Windows
         bool IsStaffWindowOpen()
         {
             // If staff window for this patrol area was closed, tool is no longer active
-            auto staffWindow = WindowFindByNumber(WindowClass::Peep, _staffId);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto staffWindow = windowMgr->FindByNumber(WindowClass::Peep, _staffId);
             return staffWindow != nullptr;
         }
 
@@ -303,7 +306,8 @@ namespace OpenRCT2::Ui::Windows
 
     EntityId WindowPatrolAreaGetCurrentStaffId()
     {
-        auto current = reinterpret_cast<PatrolAreaWindow*>(WindowFindByClass(WindowClass::PatrolArea));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto current = reinterpret_cast<PatrolAreaWindow*>(windowMgr->FindByClass(WindowClass::PatrolArea));
         return current != nullptr ? current->GetStaffId() : EntityId::GetNull();
     }
 } // namespace OpenRCT2::Ui::Windows

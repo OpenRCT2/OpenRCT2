@@ -31,6 +31,8 @@
 #include <openrct2/network/network.h>
 #include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -375,7 +377,9 @@ namespace OpenRCT2::Ui::Windows
                     pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error != GameActions::Status::Ok)
                             return;
-                        WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
+
+                        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                        WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
                             ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);

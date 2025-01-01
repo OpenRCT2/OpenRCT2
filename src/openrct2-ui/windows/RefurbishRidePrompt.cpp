@@ -14,6 +14,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
@@ -101,10 +103,10 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* RideRefurbishPromptOpen(const Ride& ride)
     {
-        WindowBase* w;
         RefurbishRidePromptWindow* newWindow;
 
-        w = WindowFindByClass(WindowClass::DemolishRidePrompt);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::DemolishRidePrompt);
         if (w != nullptr)
         {
             auto windowPos = w->windowPos;

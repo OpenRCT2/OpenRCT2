@@ -36,6 +36,8 @@
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -1238,7 +1240,8 @@ namespace OpenRCT2::Ui::Windows
                     Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                 }
 
-                auto* self = static_cast<FootpathWindow*>(WindowFindByClass(WindowClass::Footpath));
+                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                auto* self = static_cast<FootpathWindow*>(windowMgr->FindByClass(WindowClass::Footpath));
                 if (self == nullptr)
                 {
                     return;
@@ -1638,7 +1641,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutTurnLeft()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1651,7 +1655,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutTurnRight()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1664,7 +1669,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutSlopeDown()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1677,7 +1683,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutSlopeUp()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1690,7 +1697,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutDemolishCurrent()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1703,7 +1711,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowFootpathKeyboardShortcutBuildCurrent()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
         {
             auto* footpathWindow = static_cast<FootpathWindow*>(w);
@@ -1720,7 +1729,8 @@ namespace OpenRCT2::Ui::Windows
      */
     void ToggleFootpathWindow()
     {
-        if (WindowFindByClass(WindowClass::Footpath) == nullptr)
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        if (windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
         {
             ContextOpenWindow(WindowClass::Footpath);
         }

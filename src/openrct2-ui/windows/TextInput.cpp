@@ -18,6 +18,8 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -363,7 +365,8 @@ namespace OpenRCT2::Ui::Windows
 
         WindowBase* GetParentWindow() const
         {
-            return HasParentWindow() ? WindowFindByNumber(_parentWidget.window.classification, _parentWidget.window.number)
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            return HasParentWindow() ? windowMgr->FindByNumber(_parentWidget.window.classification, _parentWidget.window.number)
                                      : nullptr;
         }
     };
@@ -422,7 +425,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // The window can be potentially closed within a callback, we need to check if its still alive.
-        w = WindowFindByNumber(wndClass, wndNumber);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        w = windowMgr->FindByNumber(wndClass, wndNumber);
         if (w != nullptr)
             w->Invalidate();
     }

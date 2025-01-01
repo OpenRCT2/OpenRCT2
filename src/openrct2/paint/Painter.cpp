@@ -28,6 +28,7 @@
 #include "../scenes/intro/IntroScene.h"
 #include "../scenes/title/TitleScene.h"
 #include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../world/TileInspector.h"
 
 using namespace OpenRCT2;
@@ -105,7 +106,8 @@ static bool ShouldShowFPS()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return true;
 
-    return WindowFindByClass(WindowClass::TopToolbar);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    return windowMgr->FindByClass(WindowClass::TopToolbar);
 }
 
 void Painter::PaintFPS(DrawPixelInfo& dpi)

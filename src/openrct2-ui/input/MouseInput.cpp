@@ -35,6 +35,8 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
@@ -244,7 +246,8 @@ static void InputScrollDragContinue(const ScreenCoordsXY& screenCoords, WindowBa
  */
 static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState state)
 {
-    WindowBase* w = WindowFindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
     if (w == nullptr)
     {
         ContextShowCursor();
@@ -283,9 +286,11 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
     Widget* widget;
     WidgetIndex widgetIndex;
 
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
     // Get window and widget under cursor position
-    w = WindowFindFromPoint(screenCoords);
-    widgetIndex = w == nullptr ? -1 : WindowFindWidgetFromPoint(*w, screenCoords);
+    w = windowMgr->FindFromPoint(screenCoords);
+    widgetIndex = w == nullptr ? -1 : windowMgr->FindWidgetFromPoint(*w, screenCoords);
     widget = widgetIndex == -1 ? nullptr : &w->widgets[widgetIndex];
 
     switch (_inputState)
@@ -338,7 +343,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
             InputStateWidgetPressed(screenCoords, state, widgetIndex, w, widget);
             break;
         case InputState::PositioningWindow:
-            w = WindowFindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
+            w = windowMgr->FindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
             if (w == nullptr)
             {
                 _inputState = InputState::Reset;
@@ -371,7 +376,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
             InputStateWidgetPressed(screenCoords, state, widgetIndex, w, widget);
             break;
         case InputState::ViewportLeft:
-            w = WindowFindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
+            w = windowMgr->FindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
             if (w == nullptr)
             {
                 _inputState = InputState::Reset;
@@ -396,7 +401,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                         break;
                     }
 
-                    w = WindowFindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
+                    w = windowMgr->FindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                     if (w == nullptr)
                     {
                         break;
@@ -410,7 +415,8 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                     {
                         if ((_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
                         {
-                            w = WindowFindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
+                            w = windowMgr->FindByNumber(
+                                gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                             if (w != nullptr)
                             {
                                 w->OnToolUp(gCurrentToolWidget.widget_index, screenCoords);
@@ -446,7 +452,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
             }
             break;
         case InputState::Resizing:
-            w = WindowFindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
+            w = windowMgr->FindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
             if (w == nullptr)
             {
                 _inputState = InputState::Reset;
@@ -560,7 +566,8 @@ static void InputViewportDragContinue()
     if (differentialCoords.x == 0 && differentialCoords.y == 0)
         return;
 
-    w = WindowFindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    w = windowMgr->FindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
 
     // #3294: Window can be closed during a drag session, so just finish
     //        the session if the window no longer exists
@@ -768,7 +775,8 @@ static void InputScrollPartUpdateHThumb(WindowBase& w, WidgetIndex widgetIndex, 
     const auto& widget = w.widgets[widgetIndex];
     auto& scroll = w.scrolls[scroll_id];
 
-    if (WindowFindByNumber(w.classification, w.number) != nullptr)
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
     {
         int32_t newLeft;
         newLeft = scroll.contentWidth;
@@ -807,7 +815,8 @@ static void InputScrollPartUpdateVThumb(WindowBase& w, WidgetIndex widgetIndex, 
     const auto& widget = w.widgets[widgetIndex];
     auto& scroll = w.scrolls[scroll_id];
 
-    if (WindowFindByNumber(w.classification, w.number) != nullptr)
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
     {
         int32_t newTop;
         newTop = scroll.contentHeight;
@@ -843,7 +852,8 @@ static void InputScrollPartUpdateVThumb(WindowBase& w, WidgetIndex widgetIndex, 
  */
 static void InputScrollPartUpdateHLeft(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id)
 {
-    if (WindowFindByNumber(w.classification, w.number) != nullptr)
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
     {
         auto& scroll = w.scrolls[scroll_id];
         scroll.flags |= HSCROLLBAR_LEFT_PRESSED;
@@ -861,7 +871,9 @@ static void InputScrollPartUpdateHLeft(WindowBase& w, WidgetIndex widgetIndex, i
 static void InputScrollPartUpdateHRight(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id)
 {
     const auto& widget = w.widgets[widgetIndex];
-    if (WindowFindByNumber(w.classification, w.number) != nullptr)
+
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
     {
         auto& scroll = w.scrolls[scroll_id];
         scroll.flags |= HSCROLLBAR_RIGHT_PRESSED;
@@ -886,7 +898,8 @@ static void InputScrollPartUpdateHRight(WindowBase& w, WidgetIndex widgetIndex, 
  */
 static void InputScrollPartUpdateVTop(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id)
 {
-    if (WindowFindByNumber(w.classification, w.number) != nullptr)
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
     {
         auto& scroll = w.scrolls[scroll_id];
         scroll.flags |= VSCROLLBAR_UP_PRESSED;
@@ -904,7 +917,9 @@ static void InputScrollPartUpdateVTop(WindowBase& w, WidgetIndex widgetIndex, in
 static void InputScrollPartUpdateVBottom(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id)
 {
     const auto& widget = w.widgets[widgetIndex];
-    if (WindowFindByNumber(w.classification, w.number) != nullptr)
+
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
     {
         auto& scroll = w.scrolls[scroll_id];
         scroll.flags |= VSCROLLBAR_DOWN_PRESSED;
@@ -1000,7 +1015,8 @@ static void InputWidgetOverChangeCheck(WindowClass windowClass, rct_windownumber
  */
 static void InputWidgetOverFlatbuttonInvalidate()
 {
-    WindowBase* w = WindowFindByNumber(gHoverWidget.window_classification, gHoverWidget.window_number);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByNumber(gHoverWidget.window_classification, gHoverWidget.window_number);
     if (w != nullptr)
     {
         w->OnPrepareDraw();
@@ -1030,7 +1046,8 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, W
     WindowCloseByClass(WindowClass::Tooltip);
 
     // Window might have changed position in the list, therefore find it again
-    w = WindowFindByNumber(windowClass, windowNumber);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    w = windowMgr->FindByNumber(windowClass, windowNumber);
     if (w == nullptr)
         return;
 
@@ -1061,7 +1078,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, W
             _dragWidget.window_number = windowNumber;
             if (_inputFlags & INPUT_FLAG_TOOL_ACTIVE)
             {
-                w = WindowFindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
+                w = windowMgr->FindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                 if (w != nullptr)
                 {
                     InputSetFlag(INPUT_FLAG_4, true);
@@ -1122,17 +1139,17 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, W
  */
 void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
 {
-    WindowBase* window;
-
     CursorID cursorId = CursorID::Arrow;
     auto ft = Formatter();
     ft.Add<StringId>(STR_NONE);
     SetMapTooltip(ft);
-    window = WindowFindFromPoint(screenCoords);
+
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* window = windowMgr->FindFromPoint(screenCoords);
 
     if (window != nullptr)
     {
-        WidgetIndex widgetId = WindowFindWidgetFromPoint(*window, screenCoords);
+        WidgetIndex widgetId = windowMgr->FindWidgetFromPoint(*window, screenCoords);
         if (widgetId != -1)
         {
             switch (window->widgets[widgetId].type)
@@ -1205,7 +1222,8 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
 {
     if (_inputFlags & INPUT_FLAG_TOOL_ACTIVE)
     {
-        WindowBase* w = WindowFindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
 
         if (w == nullptr)
             ToolCancel();
@@ -1286,7 +1304,8 @@ void InputStateWidgetPressed(
     cursor_w_number = gPressedWidget.window_number;
     WidgetIndex cursor_widgetIndex = gPressedWidget.widget_index;
 
-    WindowBase* cursor_w = WindowFindByNumber(cursor_w_class, cursor_w_number);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* cursor_w = windowMgr->FindByNumber(cursor_w_class, cursor_w_number);
     if (cursor_w == nullptr)
     {
         _inputState = InputState::Reset;
@@ -1407,11 +1426,11 @@ void InputStateWidgetPressed(
                     if (dropdownCleanup)
                     {
                         // Update w as it will be invalid after closing the dropdown window
-                        w = WindowFindByNumber(wClass, wNumber);
+                        w = windowMgr->FindByNumber(wClass, wNumber);
                     }
                     else
                     {
-                        cursor_w = WindowFindByNumber(cursor_w_class, cursor_w_number);
+                        cursor_w = windowMgr->FindByNumber(cursor_w_class, cursor_w_number);
                         if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
                         {
                             _inputFlags &= ~INPUT_FLAG_WIDGET_PRESSED;
@@ -1591,7 +1610,8 @@ void SetCursor(CursorID cursor_id)
  */
 void InvalidateScroll()
 {
-    WindowBase* w = WindowFindByNumber(gPressedWidget.window_classification, gPressedWidget.window_number);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByNumber(gPressedWidget.window_classification, gPressedWidget.window_number);
     if (w != nullptr)
     {
         // Reset to basic scroll

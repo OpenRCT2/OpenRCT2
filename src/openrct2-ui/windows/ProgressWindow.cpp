@@ -16,6 +16,8 @@
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <random>
 #include <sstream>
 
@@ -235,8 +237,10 @@ namespace OpenRCT2::Ui::Windows
     {
         ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
 
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
         ProgressWindow* window;
-        if ((window = static_cast<ProgressWindow*>(WindowFindByClass(WindowClass::ProgressWindow))) != nullptr)
+        if ((window = static_cast<ProgressWindow*>(windowMgr->FindByClass(WindowClass::ProgressWindow))) != nullptr)
         {
             WindowBringToFront(*window);
         }
@@ -254,7 +258,8 @@ namespace OpenRCT2::Ui::Windows
 
     void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount, StringId format)
     {
-        auto window = WindowFindByClass(WindowClass::ProgressWindow);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto window = windowMgr->FindByClass(WindowClass::ProgressWindow);
         if (window == nullptr)
         {
             return;
@@ -266,7 +271,8 @@ namespace OpenRCT2::Ui::Windows
     // Closes the window, deliberately *without* executing the callback.
     void ProgressWindowClose()
     {
-        auto window = WindowFindByClass(WindowClass::ProgressWindow);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto window = windowMgr->FindByClass(WindowClass::ProgressWindow);
         if (window == nullptr)
         {
             return;

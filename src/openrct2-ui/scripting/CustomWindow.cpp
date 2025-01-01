@@ -1097,7 +1097,8 @@ namespace OpenRCT2::Ui::Windows
         static rct_windownumber GetNewWindowNumber()
         {
             auto result = _nextWindowNumber++;
-            while (WindowFindByNumber(WindowClass::Custom, result) != nullptr)
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            while (windowMgr->FindByNumber(WindowClass::Custom, result) != nullptr)
             {
                 result++;
             }

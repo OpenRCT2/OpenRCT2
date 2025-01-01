@@ -12,6 +12,8 @@
 #include <openrct2/Context.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/network/network.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -135,8 +137,10 @@ namespace OpenRCT2::Ui::Windows
     {
         ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
 
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
         NetworkStatusWindow* window;
-        if ((window = static_cast<NetworkStatusWindow*>(WindowFindByClass(WindowClass::NetworkStatus))) != nullptr)
+        if ((window = static_cast<NetworkStatusWindow*>(windowMgr->FindByClass(WindowClass::NetworkStatus))) != nullptr)
         {
             WindowBringToFront(*window);
         }
@@ -154,7 +158,8 @@ namespace OpenRCT2::Ui::Windows
     // force close
     void WindowNetworkStatusClose()
     {
-        auto window = WindowFindByClass(WindowClass::NetworkStatus);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto window = windowMgr->FindByClass(WindowClass::NetworkStatus);
         if (window == nullptr)
         {
             return;

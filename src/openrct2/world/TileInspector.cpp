@@ -16,6 +16,8 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../windows/TileInspectorGlobals.h"
 #include "Banner.h"
 #include "Footpath.h"
@@ -84,7 +86,8 @@ namespace OpenRCT2::TileInspector
     static bool IsTileSelected(const CoordsXY& loc)
     {
         // Return true for everyone who has the window open and tile selected
-        auto* window = WindowFindByClass(WindowClass::TileInspector);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         return window != nullptr && loc == windowTileInspectorTile.ToCoordsXY();
     }
 

@@ -69,6 +69,26 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
+        WindowBase* FindByClass(WindowClass cls) override
+        {
+            return nullptr;
+        }
+        WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) override
+        {
+            return nullptr;
+        }
+        WindowBase* FindByNumber(WindowClass cls, EntityId id) override
+        {
+            return nullptr;
+        }
+        WindowBase* FindFromPoint(const ScreenCoordsXY& screenCoords) override
+        {
+            return nullptr;
+        }
+        WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) override
+        {
+            return -1;
+        }
     };
 
     std::unique_ptr<IWindowManager> CreateDummyWindowManager()

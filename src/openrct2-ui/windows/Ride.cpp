@@ -64,6 +64,8 @@
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -1146,7 +1148,8 @@ namespace OpenRCT2::Ui::Windows
 
             if (newPage == WINDOW_RIDE_PAGE_VEHICLE)
             {
-                auto constructionWindow = WindowFindByClass(WindowClass::RideConstruction);
+                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                auto constructionWindow = windowMgr->FindByClass(WindowClass::RideConstruction);
                 if (constructionWindow != nullptr && constructionWindow->number == number)
                 {
                     WindowCloseByClass(WindowClass::RideConstruction);
@@ -1640,7 +1643,8 @@ namespace OpenRCT2::Ui::Windows
                     if (ride != nullptr)
                     {
                         RideConstructionStart(*ride);
-                        if (WindowFindByNumber(WindowClass::RideConstruction, ride->id.ToUnderlying()) != nullptr)
+                        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                        if (windowMgr->FindByNumber(WindowClass::RideConstruction, ride->id.ToUnderlying()) != nullptr)
                         {
                             Close();
                             return;
@@ -7156,7 +7160,8 @@ namespace OpenRCT2::Ui::Windows
             view++;
         }
 
-        auto* w = static_cast<RideWindow*>(WindowFindByNumber(WindowClass::Ride, ride->id.ToUnderlying()));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* w = static_cast<RideWindow*>(windowMgr->FindByNumber(WindowClass::Ride, ride->id.ToUnderlying()));
         if (w != nullptr)
         {
             w->Invalidate();
@@ -7177,7 +7182,8 @@ namespace OpenRCT2::Ui::Windows
                         continue;
 
                     numPeepsLeft--;
-                    WindowBase* w2 = WindowFindByNumber(WindowClass::Peep, vehicle->peep[i]);
+
+                    WindowBase* w2 = windowMgr->FindByNumber(WindowClass::Peep, vehicle->peep[i]);
                     if (w2 == nullptr)
                     {
                         auto intent = Intent(WindowClass::Peep);
@@ -7191,7 +7197,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             w = static_cast<RideWindow*>(
-                openedPeepWindow ? WindowFindByNumber(WindowClass::Ride, ride->id.ToUnderlying())
+                openedPeepWindow ? windowMgr->FindByNumber(WindowClass::Ride, ride->id.ToUnderlying())
                                  : WindowBringToFrontByNumber(WindowClass::Ride, ride->id.ToUnderlying()));
         }
 
@@ -7208,7 +7214,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideInvalidateVehicle(const Vehicle& vehicle)
     {
-        auto* w = static_cast<RideWindow*>(WindowFindByNumber(WindowClass::Ride, vehicle.ride.ToUnderlying()));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* w = static_cast<RideWindow*>(windowMgr->FindByNumber(WindowClass::Ride, vehicle.ride.ToUnderlying()));
         if (w == nullptr)
             return;
 
@@ -7225,7 +7232,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRidePaintResetVehicle(RideId rideIndex)
     {
-        auto w = static_cast<RideWindow*>(WindowFindByNumber(WindowClass::Ride, rideIndex.ToUnderlying()));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto w = static_cast<RideWindow*>(windowMgr->FindByNumber(WindowClass::Ride, rideIndex.ToUnderlying()));
         if (w != nullptr)
         {
             if (w->page == 4) // WINDOW_RIDE_PAGE_COLOUR
