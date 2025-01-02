@@ -1546,6 +1546,7 @@ namespace OpenRCT2::Ui::Windows
                 // The window needs to be open while using the map
                 _heightmapLoaded = true;
                 _heightmapFilename = fs::u8path(path).filename().string();
+                _settings.algorithm = MapGenerator::Algorithm::heightmapImage;
                 SetPage(WINDOW_MAPGEN_PAGE_BASE);
             }
         }
