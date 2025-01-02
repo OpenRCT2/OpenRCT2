@@ -31,6 +31,7 @@
 using namespace OpenRCT2;
 
 static uint16_t _virtualFloorBaseSize = 5 * 32;
+static CoordsXY _virtualFloorBaseSizeXY = { _virtualFloorBaseSize, _virtualFloorBaseSize };
 static uint16_t _virtualFloorHeight = 0;
 static CoordsXYZ _virtualFloorLastMinPos;
 static CoordsXYZ _virtualFloorLastMaxPos;
@@ -187,12 +188,12 @@ bool VirtualFloorTileIsFloor(const CoordsXY& loc)
     }
 
     // Check if map selection (usually single tiles) are enabled
-    //  and if the current tile is near or on them
-    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) && loc.x >= gMapSelectPositionA.x - _virtualFloorBaseSize
-        && loc.y >= gMapSelectPositionA.y - _virtualFloorBaseSize && loc.x <= gMapSelectPositionB.x + _virtualFloorBaseSize
-        && loc.y <= gMapSelectPositionB.y + _virtualFloorBaseSize)
+    // and if the current tile is near or on them
+    // (short-circuit to false otherwise - we don't want to show a second
+    //  virtual floor from e. g. an open ride construction window)
+    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
     {
-        return true;
+        return loc >= gMapSelectPositionA - _virtualFloorBaseSizeXY && loc <= gMapSelectPositionB + _virtualFloorBaseSizeXY;
     }
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
