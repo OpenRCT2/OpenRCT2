@@ -9,6 +9,7 @@
 - Change: [#23413] The max number of park entrance objects has been raised to 255.
 - Fix: [#1122] Trains spawned on a cable lift hill will fall down and crash (original bug).
 - Fix: [#22742, #22793] In game console does not handle format tokens properly.
+- Fix: [#23135] Map generator tree placement has noticable patterns.
 - Fix: [#23286] Currency formatted incorrectly in the in game console.
 - Fix: [#23348] Console set commands don't print output properly.
 - Fix: [#23376] Peeps with balloons, hats and umbrellas may leave artifacts on screen.

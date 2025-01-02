@@ -147,6 +147,9 @@ namespace OpenRCT2::World::MapGenerator
         // Place trees
         float treeToLandRatio = static_cast<float>(settings->treeToLandRatio) / 100.0f;
 
+        // Randomise simplex noise
+        NoiseRand();
+
         auto& gameState = GetGameState();
         for (int32_t y = 1; y < gameState.MapSize.y - 1; y++)
         {
