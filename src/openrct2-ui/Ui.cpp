@@ -50,7 +50,7 @@ int main(int argc, const char** argv)
 #ifdef __EMSCRIPTEN__
     MAIN_THREAD_EM_ASM({
         specialHTMLTargets["!canvas"] = Module.canvas;
-        Module.canvas.addEventListener("contextmenu", (e) = > { e.preventDefault(); });
+        Module.canvas.addEventListener("contextmenu", function(e) { e.preventDefault(); });
     });
 #endif
     std::unique_ptr<IContext> context;
