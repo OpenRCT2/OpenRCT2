@@ -19,6 +19,7 @@
 #include "MapGen.h"
 
 #include <algorithm>
+#include <iterator>
 
 namespace OpenRCT2::World::MapGenerator
 {
