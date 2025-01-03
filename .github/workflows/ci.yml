@@ -342,26 +342,10 @@ jobs:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-Windows-mingw-${{ matrix.platform }}
           path: bin/openrct2.exe
           if-no-files-found: error
-  macos-cmake:
-    name: macOS (${{ matrix.arch }}) using CMake
-    runs-on: macos-14
+  macos-x64-cmake:
+    name: macOS x64 using CMake
+    runs-on: macos-13
     needs: [check-code-formatting, build_variables]
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [x64, arm64]
-        include:
-          - arch: arm64
-            cache_key: macos-arm64
-            # Note: only build/run tests on the native architecture of the CI agent
-            # GitHub macos-12 agents are all Intel, but as of 2024-04-25 new images, e.g. macos-14 (current macos-latest) are arm64
-            # See https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
-            build_flags: -DARCH="arm64" -DWITH_TESTS=on
-            run_tests: true
-          - arch: x64
-            cache_key: macos-x64
-            build_flags: -DARCH="x86_64"
-            run_tests: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -380,18 +364,21 @@ jobs:
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.13
         with:
-          key: ${{ matrix.cache_key }}
+          key: macos-x64
       - name: Configure ccache
         run: |
           # See https://github.com/hendrikmuhs/ccache-action/issues/146
           ccache --set-config=compiler_check=content
+
       - name: Install GCC problem matcher
         uses: ammaraskar/gcc-problem-matcher@master
-      - name: Build OpenRCT2
+
+      - name: Build OpenRCT2 (x64)
         run: |
-          # NB: GitHub comes with `pkg-config` preinstalled on macOS images
-          HOMEBREW_NO_ANALYTICS=1 brew install ninja
-          . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=on ${{ matrix.build_flags }}
+          brew install ninja
+          . scripts/setenv -q
+          build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=on -DARCH="x86_64"
+
       - name: Build artifacts
         run: |
           . scripts/setenv
@@ -400,52 +387,123 @@ jobs:
           echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
           cd artifacts
           zip -rqy openrct2-macos.zip OpenRCT2.app
+
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v4
         with:
-          name: OpenRCT2-${{ runner.os }}-${{ matrix.arch }}-cmake
+          name: OpenRCT2-macos-x64-cmake
           path: artifacts/openrct2-macos.zip
           if-no-files-found: error
+
       - name: Run Tests
-        if: ${{matrix.run_tests}}
         run: . scripts/setenv -q && run-tests
+
       - name: Test Summary
         uses: test-summary/action@v2
         with:
           paths: "artifacts/test-**.xml"
-        if: ${{matrix.run_tests}}
-  macos-universal:
-    name: macOS universal app bundle
+
+  macos-arm64-cmake:
+    name: macOS arm64 using CMake
     runs-on: macos-14
-    needs: [macos-cmake, build_variables]
+    needs: [check-code-formatting, build_variables]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: download x64 app bundle
+
+      - name: Install OpenSSL 3
+        run: |
+          brew install openssl@3
+
+      - name: Set CMake variables for OpenSSL
+        run: |
+          echo "OPENSSL_ROOT_DIR=$(brew --prefix openssl@3)" >> $GITHUB_ENV
+          echo "OPENSSL_LIBRARIES=$(brew --prefix openssl@3)/lib" >> $GITHUB_ENV
+          echo "OPENSSL_INCLUDE_DIR=$(brew --prefix openssl@3)/include" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=$(brew --prefix openssl@3)/lib/pkgconfig:\$PKG_CONFIG_PATH" >> $GITHUB_ENV
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2.13
+        with:
+          key: macos-arm64
+      - name: Configure ccache
+        run: |
+          # See https://github.com/hendrikmuhs/ccache-action/issues/146
+          ccache --set-config=compiler_check=content
+
+      - name: Install GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
+
+      - name: Build OpenRCT2 (arm64)
+        run: |
+          brew install ninja
+          . scripts/setenv -q
+          build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=on -DARCH="arm64" -DWITH_TESTS=on
+
+      - name: Build artifacts
+        run: |
+          . scripts/setenv
+          mkdir -p artifacts
+          mv bin/OpenRCT2.app artifacts
+          echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
+          cd artifacts
+          zip -rqy openrct2-macos.zip OpenRCT2.app
+
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenRCT2-macos-arm64-cmake
+          path: artifacts/openrct2-macos.zip
+          if-no-files-found: error
+
+      - name: Run Tests
+        run: . scripts/setenv -q && run-tests
+
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "artifacts/test-**.xml"
+
+  macos-universal:
+    name: macOS universal app bundle
+    runs-on: macos-14
+    needs: [macos-x64-cmake, macos-arm64-cmake, build_variables]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download x64 app bundle
         uses: actions/download-artifact@v4
         with:
-          name: OpenRCT2-${{ runner.os }}-x64-cmake
+          name: OpenRCT2-macos-x64-cmake
           path: macos_universal/x64
-      - name: download arm64 app bundle
+
+      - name: Download arm64 app bundle
         uses: actions/download-artifact@v4
         with:
-          name: OpenRCT2-${{ runner.os }}-arm64-cmake
+          name: OpenRCT2-macos-arm64-cmake
           path: macos_universal/arm64
+
       - name: Make Universal app bundle
         run: |
           . scripts/setenv
           cd macos_universal
+          echo "Unzipping x64 artifact..."
           unzip x64/openrct2-macos.zip -d x64
+          echo "Unzipping arm64 artifact..."
           unzip arm64/openrct2-macos.zip -d arm64
-          create-macos-universal
+          echo "Combining x64 + arm64 into a universal .app..."
+          create-macos-universal  # Your custom script to lipo or combine binaries
+
       - name: Create artifact
         run: |
           . scripts/setenv
           mkdir -p artifacts
           mv macos_universal/OpenRCT2-universal.app artifacts/OpenRCT2.app
-          echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
+          echo "Compressing universal .app..."
           cd artifacts
           zip -rqy OpenRCT2-${{ needs.build_variables.outputs.name }}-macos-universal.zip OpenRCT2.app
+
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v4
         with:
