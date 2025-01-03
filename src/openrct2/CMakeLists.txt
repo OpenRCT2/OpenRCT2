@@ -46,18 +46,23 @@ if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
         target_link_libraries(${PROJECT_NAME} bcrypt)
     else ()
         if (APPLE AND NOT MACOS_USE_DEPENDENCIES)
-            # note - we are not yet compatible with openssl3, which is now default brew version
-            execute_process(COMMAND brew --prefix openssl@1.1 OUTPUT_VARIABLE HOMEBREW_PREFIX_OPENSSL OUTPUT_STRIP_TRAILING_WHITESPACE)
+            # Use the newer openssl@3 from Homebrew
+            execute_process(
+                COMMAND brew --prefix openssl@3
+                OUTPUT_VARIABLE HOMEBREW_PREFIX_OPENSSL
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+            )
             # Needed for linking with non-broken OpenSSL on Apple platforms
             list(APPEND CMAKE_PREFIX_PATH "${HOMEBREW_PREFIX_OPENSSL}")
         endif ()
-        find_package(OpenSSL 1.0.0 REQUIRED)
+
+        find_package(OpenSSL 3.0.0 REQUIRED)
 
         target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${OPENSSL_INCLUDE_DIR})
 
         if(STATIC)
             target_link_libraries(${PROJECT_NAME} ${SSL_STATIC_LIBRARIES})
-        else ()
+        else()
             target_link_libraries(${PROJECT_NAME} ${OPENSSL_LIBRARIES})
         endif()
     endif()
@@ -87,15 +92,15 @@ if (NOT DISABLE_TTF)
     if (UNIX AND NOT APPLE AND NOT MSVC)
         PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
     endif ()
-        
+
     if (MSVC)
         find_package(freetype REQUIRED)
     else ()
         PKG_CHECK_MODULES(FREETYPE REQUIRED IMPORTED_TARGET freetype2)
     endif ()
-        
+
     target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${FREETYPE_INCLUDE_DIRS})
-        
+
     if (UNIX AND NOT APPLE)
         target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
     endif ()
@@ -179,9 +184,9 @@ if (NOT MINGW AND NOT MSVC)
     endif ()
     # For unicode code page conversion.
     find_package(ICU 59.0 REQUIRED COMPONENTS uc)
-        
+
     target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${ICU_INCLUDE_DIRS})
-        
+
     if (STATIC)
         target_link_libraries(${PROJECT_NAME} ${ICU_STATIC_LIBRARIES})
     else ()
@@ -192,7 +197,7 @@ endif ()
 if (NOT DISABLE_TTF)
     if (STATIC)
         target_link_libraries(${PROJECT_NAME} ${FREETYPE_STATIC_LIBRARIES})
-            
+
         if (UNIX AND NOT APPLE)
             target_link_libraries(${PROJECT_NAME} ${FONTCONFIG_STATIC_LIBRARIES})
         endif ()
@@ -202,7 +207,7 @@ if (NOT DISABLE_TTF)
         else ()
             target_link_libraries(${PROJECT_NAME} ${FREETYPE_LIBRARIES})
         endif ()
-            
+
         if (UNIX AND NOT APPLE)
             target_link_libraries(${PROJECT_NAME} ${FONTCONFIG_LIBRARIES})
         endif ()
