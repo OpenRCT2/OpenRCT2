@@ -650,8 +650,8 @@ public:
     /**
      * Finds the first window with the specified window class.
      *  rct2: 0x006EA8A0
-     * @param cls (cl) with bit 15 set
-     * @returns the window or NULL if no window was found.
+     * @param WindowClass enum
+     * @returns the window or nullptr if no window was found.
      */
     WindowBase* FindByClass(WindowClass cls) override
     {
@@ -670,9 +670,9 @@ public:
     /**
      * Finds the first window with the specified window class and number.
      *  rct2: 0x006EA8A0
-     * @param cls (cl) without bit 15 set
-     * @param number (dx)
-     * @returns the window or NULL if no window was found.
+     * @param WindowClass enum
+     * @param window number
+     * @returns the window or nullptr if no window was found.
      */
     WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) override
     {
@@ -728,8 +728,7 @@ public:
      *  rct2: 0x006EA594
      * x (ax)
      * y (bx)
-     * returns widget_index (edx)
-     * EDI NEEDS TO BE SET TO w->widgets[widget_index] AFTER
+     * returns widget_index if found, -1 otherwise
      */
     WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) override
     {
