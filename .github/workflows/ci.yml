@@ -365,6 +365,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install OpenSSL 3
+        run: |
+          brew install openssl@3
+
+      - name: Set CMake variables for OpenSSL
+        run: |
+          echo "OPENSSL_ROOT_DIR=$(brew --prefix openssl@3)" >> $GITHUB_ENV
+          echo "OPENSSL_LIBRARIES=$(brew --prefix openssl@3)/lib" >> $GITHUB_ENV
+          echo "OPENSSL_INCLUDE_DIR=$(brew --prefix openssl@3)/include" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=$(brew --prefix openssl@3)/lib/pkgconfig:\$PKG_CONFIG_PATH" >> $GITHUB_ENV
+
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.13
         with:
