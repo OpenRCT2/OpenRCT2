@@ -54,7 +54,7 @@ void PreloaderScene::Tick()
 
     gInUpdateCode = false;
 
-    if (_jobs.CountPending() == 0 && _jobs.CountProcessing() == 0)
+    if (!_jobs.IsBusy())
     {
         // Make sure the job is fully completed.
         _jobs.Join();

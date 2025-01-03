@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <atomic>
 #include <condition_variable>
 #include <deque>
 #include <functional>
@@ -28,8 +27,8 @@ private:
         TaskData(std::function<void()> workFn, std::function<void()> completionFn);
     };
 
-    std::atomic_bool _shouldStop = { false };
-    std::atomic<size_t> _processing = { 0 };
+    bool _shouldStop = false;
+    size_t _processing = 0;
     std::vector<std::thread> _threads;
     std::deque<TaskData> _pending;
     std::deque<TaskData> _completed;
@@ -45,8 +44,7 @@ public:
 
     void AddTask(std::function<void()> workFn, std::function<void()> completionFn = nullptr);
     void Join(std::function<void()> reportFn = nullptr);
-    size_t CountPending();
-    size_t CountProcessing();
+    bool IsBusy();
 
 private:
     void ProcessQueue();
