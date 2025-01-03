@@ -8,6 +8,7 @@
 - Improved: [#23431] Opaque water and Corkscrew Roller Coaster boosters now show up if RCT1 isn’t linked. 
 - Change: [#23413] The max number of park entrance objects has been raised to 255.
 - Fix: [#1122] Trains spawned on a cable lift hill will fall down and crash (original bug).
+- Fix: [#19780] Guest screams loop on long drops.
 - Fix: [#22742, #22793] In game console does not handle format tokens properly.
 - Fix: [#23135] Map generator tree placement has noticable patterns.
 - Fix: [#23286] Currency formatted incorrectly in the in game console.

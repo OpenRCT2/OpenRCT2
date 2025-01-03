@@ -1185,7 +1185,11 @@ struct SoundIdVolume
     uint8_t volume;
 };
 
-static SoundIdVolume Sub6D7AC0(
+/**
+ *
+ *  rct2: 0x006D7AC0
+ */
+static SoundIdVolume VehicleSoundFadeInOut(
     OpenRCT2::Audio::SoundId currentSoundId, uint8_t currentVolume, OpenRCT2::Audio::SoundId targetSoundId,
     uint8_t targetVolume)
 {
@@ -4919,12 +4923,12 @@ void Vehicle::UpdateSound()
     }
 
     // Friction sound
-    auto soundIdVolume = Sub6D7AC0(sound1_id, sound1_volume, frictionSound.id, frictionSound.volume);
+    auto soundIdVolume = VehicleSoundFadeInOut(sound1_id, sound1_volume, frictionSound.id, frictionSound.volume);
     sound1_id = soundIdVolume.id;
     sound1_volume = soundIdVolume.volume;
 
     // Scream sound
-    soundIdVolume = Sub6D7AC0(sound2_id, sound2_volume, screamSound.id, screamSound.volume);
+    soundIdVolume = VehicleSoundFadeInOut(sound2_id, sound2_volume, screamSound.id, screamSound.volume);
     sound2_id = soundIdVolume.id;
     sound2_volume = soundIdVolume.volume;
 
