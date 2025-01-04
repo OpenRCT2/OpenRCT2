@@ -252,6 +252,9 @@ namespace OpenRCT2::Config
             model->InvisibleSupports = reader->GetBoolean("invisible_supports", true);
 
             model->LastVersionCheckTime = reader->GetInt64("last_version_check_time", 0);
+
+            model->FileBrowserWidth = reader->GetInt32("file_browser_width", 0);
+            model->FileBrowserHeight = reader->GetInt32("file_browser_height", 0);
         }
     }
 
@@ -338,6 +341,8 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("invisible_paths", model->InvisiblePaths);
         writer->WriteBoolean("invisible_supports", model->InvisibleSupports);
         writer->WriteInt64("last_version_check_time", model->LastVersionCheckTime);
+        writer->WriteInt32("file_browser_width", model->FileBrowserWidth);
+        writer->WriteInt32("file_browser_height", model->FileBrowserHeight);
     }
 
     static void ReadInterface(IIniReader* reader)

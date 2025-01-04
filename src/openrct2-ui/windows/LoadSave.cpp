@@ -46,9 +46,9 @@ namespace OpenRCT2::Ui::Windows
 {
 #pragma region Widgets
 
-    static constexpr StringId WINDOW_TITLE = STR_NONE;
-    static constexpr int32_t WW = 350;
-    static constexpr int32_t WH = 400;
+    static constexpr ScreenSize kWindowSizeInit = { 350, 400 };
+    static constexpr ScreenSize kWindowSizeMin = { kWindowSizeInit.width, kWindowSizeInit.height / 2 };
+    static constexpr ScreenSize kWindowSizeMax = kWindowSizeInit * 2;
 
     static constexpr uint16_t DATE_TIME_GAP = 2;
 
@@ -70,10 +70,13 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BROWSE,
     };
 
+    static constexpr int16_t WW = kWindowSizeInit.width;
+    static constexpr int16_t WH = kWindowSizeInit.height;
+
     // clang-format off
     static Widget window_loadsave_widgets[] =
     {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+        WINDOW_SHIM(STR_NONE, WW, WH),
         MakeWidget({               0,  WH - 1}, {       WW,   1 }, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
         MakeWidget({               4,      36}, {       84,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // WIDX_DEFAULT
         MakeWidget({              88,      36}, {       84,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_UP                                  ), // WIDX_UP
@@ -724,16 +727,18 @@ namespace OpenRCT2::Ui::Windows
             // Reset window dimensions
             InitScrollWidgets();
             ComputeMaxDateWidth();
-            min_width = WW;
-            min_height = WH / 2;
-            max_width = WW * 2;
-            max_height = WH * 2;
+
+            min_width = kWindowSizeMin.width;
+            min_height = kWindowSizeMin.height;
+            max_width = kWindowSizeMax.width;
+            max_height = kWindowSizeMax.height;
         }
 
         void OnClose() override
         {
             _listItems.clear();
             WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
+            Config::Save();
 
             // Unpause the game if not on title scene, nor in network play.
             if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && NetworkGetMode() == NETWORK_MODE_NONE)
@@ -755,6 +760,10 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
                 height = min_height;
             }
+
+            auto& config = Config::Get().general;
+            config.FileBrowserWidth = width;
+            config.FileBrowserHeight = height;
         }
 
         void OnUpdate() override
@@ -1145,11 +1154,12 @@ namespace OpenRCT2::Ui::Windows
         _type = type;
         _defaultPath = defaultPath;
 
+        auto& config = Config::Get().general;
         bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
 
         // Bypass the lot?
         auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
-        if (Config::Get().general.UseNativeBrowseDialog && hasFilePicker)
+        if (config.UseNativeBrowseDialog && hasFilePicker)
         {
             const u8string path = OpenSystemFileBrowser(isSave);
             if (!path.empty())
@@ -1164,8 +1174,20 @@ namespace OpenRCT2::Ui::Windows
         auto* w = static_cast<LoadSaveWindow*>(WindowBringToFrontByClass(WindowClass::Loadsave));
         if (w == nullptr)
         {
+            if (config.FileBrowserWidth < kWindowSizeMin.width || config.FileBrowserHeight < kWindowSizeMin.height
+                || config.FileBrowserWidth > kWindowSizeMax.width || config.FileBrowserHeight > kWindowSizeMax.height)
+            {
+                config.FileBrowserWidth = kWindowSizeInit.width;
+                config.FileBrowserHeight = kWindowSizeInit.height;
+                Config::Save();
+            }
+
+            auto width = config.FileBrowserWidth;
+            auto height = config.FileBrowserHeight;
+
             w = WindowCreate<LoadSaveWindow>(
-                WindowClass::Loadsave, WW, WH, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN, type);
+                WindowClass::Loadsave, width, height, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
+                type);
         }
 
         switch (type & 0x0E)
