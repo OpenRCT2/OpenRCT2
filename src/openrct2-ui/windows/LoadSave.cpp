@@ -131,13 +131,13 @@ namespace OpenRCT2::Ui::Windows
 
         switch (Config::Get().general.LoadSaveSort)
         {
-            case Sort::NameAscending:
+            case FileBrowserSort::NameAscending:
                 return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
-            case Sort::NameDescending:
+            case FileBrowserSort::NameDescending:
                 return -String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
-            case Sort::DateDescending:
+            case FileBrowserSort::DateDescending:
                 return -difftime(a.date_modified, b.date_modified) < 0;
-            case Sort::DateAscending:
+            case FileBrowserSort::DateAscending:
                 return difftime(a.date_modified, b.date_modified) < 0;
         }
         return String::logicalCmp(a.name.c_str(), b.name.c_str()) < 0;
@@ -838,9 +838,9 @@ namespace OpenRCT2::Ui::Windows
 
             // Name button text
             StringId id = STR_NONE;
-            if (Config::Get().general.LoadSaveSort == Sort::NameAscending)
+            if (Config::Get().general.LoadSaveSort == FileBrowserSort::NameAscending)
                 id = STR_UP;
-            else if (Config::Get().general.LoadSaveSort == Sort::NameDescending)
+            else if (Config::Get().general.LoadSaveSort == FileBrowserSort::NameDescending)
                 id = STR_DOWN;
 
             // Draw name button indicator.
@@ -852,9 +852,9 @@ namespace OpenRCT2::Ui::Windows
                 { COLOUR_GREY });
 
             // Date button text
-            if (Config::Get().general.LoadSaveSort == Sort::DateAscending)
+            if (Config::Get().general.LoadSaveSort == FileBrowserSort::DateAscending)
                 id = STR_UP;
-            else if (Config::Get().general.LoadSaveSort == Sort::DateDescending)
+            else if (Config::Get().general.LoadSaveSort == FileBrowserSort::DateDescending)
                 id = STR_DOWN;
             else
                 id = STR_NONE;
@@ -917,13 +917,13 @@ namespace OpenRCT2::Ui::Windows
                 break;
 
                 case WIDX_SORT_NAME:
-                    if (Config::Get().general.LoadSaveSort == Sort::NameAscending)
+                    if (Config::Get().general.LoadSaveSort == FileBrowserSort::NameAscending)
                     {
-                        Config::Get().general.LoadSaveSort = Sort::NameDescending;
+                        Config::Get().general.LoadSaveSort = FileBrowserSort::NameDescending;
                     }
                     else
                     {
-                        Config::Get().general.LoadSaveSort = Sort::NameAscending;
+                        Config::Get().general.LoadSaveSort = FileBrowserSort::NameAscending;
                     }
                     Config::Save();
                     SortList();
@@ -931,13 +931,13 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_SORT_DATE:
-                    if (Config::Get().general.LoadSaveSort == Sort::DateDescending)
+                    if (Config::Get().general.LoadSaveSort == FileBrowserSort::DateDescending)
                     {
-                        Config::Get().general.LoadSaveSort = Sort::DateAscending;
+                        Config::Get().general.LoadSaveSort = FileBrowserSort::DateAscending;
                     }
                     else
                     {
-                        Config::Get().general.LoadSaveSort = Sort::DateDescending;
+                        Config::Get().general.LoadSaveSort = FileBrowserSort::DateDescending;
                     }
                     Config::Save();
                     SortList();

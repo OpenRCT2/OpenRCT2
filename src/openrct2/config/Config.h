@@ -109,7 +109,7 @@ namespace OpenRCT2::Config
 
         // Loading and saving
         bool ConfirmationPrompt;
-        Sort LoadSaveSort;
+        FileBrowserSort LoadSaveSort;
         u8string LastSaveGameDirectory;
         u8string LastSaveLandscapeDirectory;
         u8string LastSaveScenarioDirectory;

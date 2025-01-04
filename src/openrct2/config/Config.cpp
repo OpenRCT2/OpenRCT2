@@ -111,11 +111,11 @@ namespace OpenRCT2::Config
         ConfigEnumEntry<TemperatureUnit>("FAHRENHEIT", TemperatureUnit::Fahrenheit),
     });
 
-    static const auto Enum_Sort = ConfigEnum<Sort>({
-        ConfigEnumEntry<Sort>("NAME_ASCENDING", Sort::NameAscending),
-        ConfigEnumEntry<Sort>("NAME_DESCENDING", Sort::NameDescending),
-        ConfigEnumEntry<Sort>("DATE_ASCENDING", Sort::DateAscending),
-        ConfigEnumEntry<Sort>("DATE_DESCENDING", Sort::DateDescending),
+    static const auto Enum_FileBrowserSort = ConfigEnum<FileBrowserSort>({
+        ConfigEnumEntry<FileBrowserSort>("NAME_ASCENDING", FileBrowserSort::NameAscending),
+        ConfigEnumEntry<FileBrowserSort>("NAME_DESCENDING", FileBrowserSort::NameDescending),
+        ConfigEnumEntry<FileBrowserSort>("DATE_ASCENDING", FileBrowserSort::DateAscending),
+        ConfigEnumEntry<FileBrowserSort>("DATE_DESCENDING", FileBrowserSort::DateDescending),
     });
 
     static const auto Enum_VirtualFloorStyle = ConfigEnum<VirtualFloorStyles>({
@@ -200,7 +200,7 @@ namespace OpenRCT2::Config
             model->DefaultInspectionInterval = reader->GetInt32("default_inspection_interval", 2);
             model->LastRunVersion = reader->GetString("last_run_version", "");
             model->InvertViewportDrag = reader->GetBoolean("invert_viewport_drag", false);
-            model->LoadSaveSort = reader->GetEnum<Sort>("load_save_sort", Sort::NameAscending, Enum_Sort);
+            model->LoadSaveSort = reader->GetEnum<FileBrowserSort>("load_save_sort", FileBrowserSort::NameAscending, Enum_FileBrowserSort);
             model->MinimizeFullscreenFocusLoss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
             model->DisableScreensaver = reader->GetBoolean("disable_screensaver", true);
 
@@ -298,7 +298,7 @@ namespace OpenRCT2::Config
         writer->WriteInt32("default_inspection_interval", model->DefaultInspectionInterval);
         writer->WriteString("last_run_version", model->LastRunVersion);
         writer->WriteBoolean("invert_viewport_drag", model->InvertViewportDrag);
-        writer->WriteEnum<Sort>("load_save_sort", model->LoadSaveSort, Enum_Sort);
+        writer->WriteEnum<FileBrowserSort>("load_save_sort", model->LoadSaveSort, Enum_FileBrowserSort);
         writer->WriteBoolean("minimize_fullscreen_focus_loss", model->MinimizeFullscreenFocusLoss);
         writer->WriteBoolean("disable_screensaver", model->DisableScreensaver);
         writer->WriteBoolean("day_night_cycle", model->DayNightCycle);
