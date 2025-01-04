@@ -1256,13 +1256,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OVERWRITE_CANCEL
     };
 
+    // clang-format off
     static Widget window_overwrite_prompt_widgets[] = {
         WINDOW_SHIM_WHITE(STR_FILEBROWSER_OVERWRITE_TITLE, OVERWRITE_WW, OVERWRITE_WH),
-        { WindowWidgetType::Button, 0, 10, 94, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_FILEBROWSER_OVERWRITE_TITLE, STR_NONE },
-        { WindowWidgetType::Button, 0, OVERWRITE_WW - 95, OVERWRITE_WW - 11, OVERWRITE_WH - 20, OVERWRITE_WH - 9,
-          STR_SAVE_PROMPT_CANCEL, STR_NONE },
+        MakeWidget({                10, OVERWRITE_WH - 20 }, { 84, 11 }, WindowWidgetType::Button, WindowColour::Primary, STR_FILEBROWSER_OVERWRITE_TITLE),
+        MakeWidget({ OVERWRITE_WW - 95, OVERWRITE_WH - 20 }, { 85, 11 }, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
         kWidgetsEnd,
     };
+    // clang-format on
 
     class OverwritePromptWindow final : public Window
     {
