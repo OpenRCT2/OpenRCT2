@@ -200,7 +200,8 @@ namespace OpenRCT2::Config
             model->DefaultInspectionInterval = reader->GetInt32("default_inspection_interval", 2);
             model->LastRunVersion = reader->GetString("last_run_version", "");
             model->InvertViewportDrag = reader->GetBoolean("invert_viewport_drag", false);
-            model->LoadSaveSort = reader->GetEnum<FileBrowserSort>("load_save_sort", FileBrowserSort::NameAscending, Enum_FileBrowserSort);
+            model->LoadSaveSort = reader->GetEnum<FileBrowserSort>(
+                "load_save_sort", FileBrowserSort::NameAscending, Enum_FileBrowserSort);
             model->MinimizeFullscreenFocusLoss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
             model->DisableScreensaver = reader->GetBoolean("disable_screensaver", true);
 
@@ -255,6 +256,8 @@ namespace OpenRCT2::Config
 
             model->FileBrowserWidth = reader->GetInt32("file_browser_width", 0);
             model->FileBrowserHeight = reader->GetInt32("file_browser_height", 0);
+            model->FileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
+            model->FileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
         }
     }
 
@@ -343,6 +346,8 @@ namespace OpenRCT2::Config
         writer->WriteInt64("last_version_check_time", model->LastVersionCheckTime);
         writer->WriteInt32("file_browser_width", model->FileBrowserWidth);
         writer->WriteInt32("file_browser_height", model->FileBrowserHeight);
+        writer->WriteBoolean("file_browser_show_size_column", model->FileBrowserShowSizeColumn);
+        writer->WriteBoolean("file_browser_show_date_column", model->FileBrowserShowDateColumn);
     }
 
     static void ReadInterface(IIniReader* reader)

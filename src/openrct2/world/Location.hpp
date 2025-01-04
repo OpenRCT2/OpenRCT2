@@ -50,6 +50,11 @@ struct ScreenSize
     {
         return ScreenSize{ width * scalar, height * scalar };
     }
+
+    constexpr ScreenSize operator/(int32_t scalar) const
+    {
+        return ScreenSize{ width / scalar, height / scalar };
+    }
 };
 
 struct ScreenCoordsXY

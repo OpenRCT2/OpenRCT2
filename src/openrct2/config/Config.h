@@ -119,6 +119,8 @@ namespace OpenRCT2::Config
         int64_t LastVersionCheckTime;
         int16_t FileBrowserWidth;
         int16_t FileBrowserHeight;
+        bool FileBrowserShowSizeColumn;
+        bool FileBrowserShowDateColumn;
     };
 
     struct Interface

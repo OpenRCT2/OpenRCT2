@@ -23,6 +23,8 @@ enum class FileBrowserSort : int32_t
 {
     NameAscending,
     NameDescending,
+    SizeAscending,
+    SizeDescending,
     DateAscending,
     DateDescending,
 };
