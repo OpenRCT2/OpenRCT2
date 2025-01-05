@@ -80,19 +80,19 @@ namespace OpenRCT2::Ui::Windows
     static Widget window_loadsave_widgets[] =
     {
         WINDOW_SHIM(STR_NONE, WW, WH),
-        MakeWidget({               0,  WH - 1}, {       WW,   1 }, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
-        MakeWidget({               4,      36}, {       84,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // WIDX_DEFAULT
-        MakeWidget({              88,      36}, {       84,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_UP                                  ), // WIDX_UP
-        MakeWidget({             172,      36}, {       87,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // WIDX_NEW_FOLDER
-        MakeWidget({             259,      36}, {       87,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FILE                            ), // WIDX_NEW_FILE
-        MakeWidget({               4,      55}, {      160,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_NAME
-        MakeWidget({(WW - 5) / 3 + 1,      55}, {      160,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_SIZE
-        MakeWidget({(WW - 5) / 3 + 1,      55}, {      160,  14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_DATE
-        MakeWidget({       (WW - 19),      55}, {       14,  14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_DROPDOWN_GLYPH                                         ), // WIDX_SORT_CUSTOMISE
-        MakeWidget({               4,      68}, {      342, 303 }, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                            ), // WIDX_SCROLL
-        MakeWidget({              64, WH - 50}, { WW - 133,  14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                             ), // WIDX_FILENAME_TEXTBOX
-        MakeWidget({         WW - 65, WH - 50}, {       60,  14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_FILEBROWSER_SAVE_BUTTON                                ), // WIDX_SAVE
-        MakeWidget({               4, WH - 24}, {      197,  19 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // WIDX_BROWSE
+        MakeWidget({                0,      15 }, {       WW,  WH - 15 }, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
+        MakeWidget({                4,      36 }, {       84,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // WIDX_DEFAULT
+        MakeWidget({               88,      36 }, {       84,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_UP                                  ), // WIDX_UP
+        MakeWidget({              172,      36 }, {       87,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // WIDX_NEW_FOLDER
+        MakeWidget({              259,      36 }, {       87,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_ACTION_NEW_FILE                            ), // WIDX_NEW_FILE
+        MakeWidget({                4,      55 }, {      160,       14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_NAME
+        MakeWidget({ (WW - 5) / 3 + 1,      55 }, {      160,       14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_SIZE
+        MakeWidget({ (WW - 5) / 3 + 1,      55 }, {      160,       14 }, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // WIDX_SORT_DATE
+        MakeWidget({        (WW - 19),      55 }, {       14,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_DROPDOWN_GLYPH                                         ), // WIDX_SORT_CUSTOMISE
+        MakeWidget({                4,      68 }, {      342,      303 }, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                            ), // WIDX_SCROLL
+        MakeWidget({               64, WH - 50 }, { WW - 133,       14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                             ), // WIDX_FILENAME_TEXTBOX
+        MakeWidget({          WW - 65, WH - 50 }, {       60,       14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_FILEBROWSER_SAVE_BUTTON                                ), // WIDX_SAVE
+        MakeWidget({                4, WH - 24 }, {      197,       19 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // WIDX_BROWSE
         kWidgetsEnd,
     };
     // clang-format on
