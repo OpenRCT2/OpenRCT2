@@ -638,6 +638,7 @@ bool TrackTypeIsBrakes(OpenRCT2::TrackElemType trackType)
         case TrackElemType::Brakes:
         case TrackElemType::DiagBrakes:
         case TrackElemType::Down25Brakes:
+        case TrackElemType::DiagDown25Brakes:
             return true;
         default:
             return false;
