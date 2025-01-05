@@ -15,7 +15,6 @@
 - Fix: [#23286] Currency formatted incorrectly in the in game console.
 - Fix: [#23348] Console set commands don't print output properly.
 - Fix: [#23376] Peeps with balloons, hats and umbrellas may leave artifacts on screen.
-- Fix: [#23486] Object selection minimum requirements can be bypassed with close window hotkey.
 - Fix: [#23496] Newly spawned vehicles are invisible when spawned while the game is paused.
 - Fix: [#23509] Map generator window reverts to flatland after selecting a heightmap image.
 - Fix: [objects#359] Fix water colours in Hover Cars preview image.
