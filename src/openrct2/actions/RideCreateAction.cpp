@@ -28,6 +28,8 @@
 #include "../scenario/Scenario.h"
 #include "../world/Park.h"
 
+#include <algorithm>
+
 using namespace OpenRCT2;
 
 RideCreateAction::RideCreateAction(
@@ -147,18 +149,8 @@ GameActions::Result RideCreateAction::Execute() const
     ride->overall_view.SetNull();
     ride->SetNameToDefault();
 
-    for (auto& station : ride->GetStations())
-    {
-        station.Start.SetNull();
-        station.Entrance.SetNull();
-        station.Exit.SetNull();
-        station.TrainAtStation = RideStation::kNoTrain;
-        station.QueueTime = 0;
-        station.SegmentLength = 0;
-        station.QueueLength = 0;
-        station.Length = 0;
-        station.Height = 0;
-    }
+    // Default initialize all stations.
+    std::ranges::fill(ride->GetStations(), RideStation{});
 
     ride->status = RideStatus::Closed;
     ride->NumTrains = 1;
