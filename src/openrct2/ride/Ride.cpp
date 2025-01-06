@@ -1046,12 +1046,12 @@ const RideStation& Ride::GetStation(StationIndex stationIndex) const
     return stations[stationIndex.ToUnderlying()];
 }
 
-std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& Ride::GetStations()
+std::span<RideStation> Ride::GetStations()
 {
     return stations;
 }
 
-const std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& Ride::GetStations() const
+std::span<const RideStation> Ride::GetStations() const
 {
     return stations;
 }

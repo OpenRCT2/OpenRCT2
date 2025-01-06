@@ -2352,7 +2352,7 @@ void ShiftMap(const TileCoordsXY& amount)
     // Rides
     for (auto& ride : GetRideManager())
     {
-        auto& stations = ride.GetStations();
+        auto stations = ride.GetStations();
         for (auto& station : stations)
         {
             shiftIfNotNull(station.Start, amountToMove);
