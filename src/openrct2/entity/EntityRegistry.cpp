@@ -531,6 +531,8 @@ static void FreeEntity(EntityBase& entity)
     else if (guest != nullptr)
     {
         guest->SetName({});
+        guest->GuestNextInQueue = EntityId::GetNull();
+
         OpenRCT2::RideUse::GetHistory().RemoveHandle(guest->Id);
         OpenRCT2::RideUse::GetTypeHistory().RemoveHandle(guest->Id);
     }
