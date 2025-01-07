@@ -148,6 +148,7 @@ enum class TrackGroup : uint8_t
     inclinedBrakes,
     diagBooster,
 
+    diagSlopeSteepLong,
     diveLoop,
 
     count,

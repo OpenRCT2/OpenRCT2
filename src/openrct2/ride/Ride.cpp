@@ -4791,7 +4791,7 @@ struct NecessarySpriteGroup
 OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(const RideObjectEntry& rideEntry)
 {
     // TODO: Use a std::span when C++20 available as 6 is due to jagged array
-    static const std::array<NecessarySpriteGroup, 6> trackPieceRequiredSprites[] = {
+    static const std::array<NecessarySpriteGroup, 9> trackPieceRequiredSprites[] = {
         { SpriteGroupType::SlopeFlat, SpritePrecision::None },     // TrackGroup::flat
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TrackGroup::straight
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TrackGroup::stationEnd
@@ -4946,8 +4946,10 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBlockBrakes
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4 },  // TrackGroup::inclinedBrakes
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBooster
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4 },  // TrackGroup::diveLoop TODO
+        { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16, SpritePrecision::Sprites4, SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8, SpriteGroupType::Slopes50, SpritePrecision::Sprites4 },  // TrackGroup::slopeSteepLong
+        { SpriteGroupType::Slopes50, SpritePrecision::Sprites4, SpriteGroupType::Slopes60Banked22, SpritePrecision::Sprites8, SpriteGroupType::Slopes50Banked45, SpritePrecision::Sprites8, SpriteGroupType::Slopes50Banked67, SpritePrecision::Sprites8, SpriteGroupType::Slopes50Banked90, SpritePrecision::Sprites8, SpriteGroupType::Corkscrews, SpritePrecision::Sprites4, SpriteGroupType::Slopes25InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 },  // TrackGroup::diveLoop
     };
+
     static_assert(std::size(trackPieceRequiredSprites) == EnumValue(TrackGroup::count));
 
     // Only check default vehicle; it's assumed the others will have correct sprites if this one does (I've yet to find an
