@@ -9253,13 +9253,13 @@
     },
     {
         "path": "track/bm/dive_loop_45_left_2_2.png",
-        "x": -11,
+        "x": -12,
         "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/bm/dive_loop_45_left_2_3.png",
-        "x": -25,
+        "x": -26,
         "y": -23,
         "palette": "keep"
     },
@@ -9313,8 +9313,8 @@
     },
     {
         "path": "track/bm/dive_loop_45_left_4_4.png",
-        "x": -24,
-        "y": -21,
+        "x": -25,
+        "y": -22,
         "palette": "keep"
     },
     {
@@ -9332,7 +9332,7 @@
     {
         "path": "track/bm/dive_loop_45_right_1_3.png",
         "x": -32,
-        "y": -20,
+        "y": -21,
         "palette": "keep"
     },
     {
@@ -9385,8 +9385,8 @@
     },
     {
         "path": "track/bm/dive_loop_45_right_3_4.png",
-        "x": -24,
-        "y": -21,
+        "x": -25,
+        "y": -22,
         "palette": "keep"
     },
     {
@@ -9398,7 +9398,7 @@
     {
         "path": "track/bm/dive_loop_45_right_4_2.png",
         "x": -9,
-        "y": -97,
+        "y": -89,
         "palette": "keep"
     },
     {
@@ -9412,7 +9412,8 @@
         "x": -24,
         "y": -22,
         "palette": "keep"
-    },
+    }
+,
     {
         "path": "track/railway/quarter_turn_3_tiles_sw_se_part_3.png",
         "x": -8,
@@ -36658,7 +36659,7 @@
     {
         "path": "track/raptor/dive_loop_45_left_2_1.png",
         "x": -3,
-        "y": 12,
+        "y": 9,
         "palette": "keep"
     },
     {
@@ -36754,7 +36755,7 @@
     {
         "path": "track/raptor/dive_loop_45_right_2_1.png",
         "x": -5,
-        "y": 12,
+        "y": 9,
         "palette": "keep"
     },
     {
