@@ -3549,6 +3549,37 @@ namespace OpenRCT2::TrackMetaData
         return -(73 + progress);
     }
 
+    static int32_t EvaluatorDiveLoopUp(const int16_t progress)
+    {
+            return 385 - 2 * progress;
+    }
+
+    static int32_t EvaluatorDiveLoopDown(const int16_t progress)
+    {
+            return 67 + 2 * progress;
+    }
+
+    static int32_t EvaluatorDiveLoopUpLeft(const int16_t progress)
+    {
+        return 380 - 2 * progress;
+    }
+
+    static int32_t EvaluatorDiveLoopUpRight(const int16_t progress)
+    {
+        return 2 * progress - 380;
+    }
+
+    static int32_t EvaluatorDiveLoopDownLeft(const int16_t progress)
+    {
+        return -(62 + 2 * progress);
+    }
+
+    static int32_t EvaluatorDiveLoopDownRight(const int16_t progress)
+    {
+        return 62 + 2 * progress;
+    }
+
+
     static int32_t EvaluatorWaterSplash(const int16_t progress)
     {
         if (progress < 32)
@@ -3891,9 +3922,13 @@ namespace OpenRCT2::TrackMetaData
                 return EvaluatorConst<0>;
             case TrackElemType::FlatToUp60LongBase:
             case TrackElemType::Down60ToFlatLongBase:
+            case TrackElemType::DiagFlatToUp60LongBase:
+            case TrackElemType::DiagDown60ToFlatLongBase:
                 return EvaluatorConst<0>;
             case TrackElemType::Up60ToFlatLongBase:
             case TrackElemType::FlatToDown60LongBase:
+            case TrackElemType::DiagUp60ToFlatLongBase:
+            case TrackElemType::DiagFlatToDown60LongBase:
                 return EvaluatorConst<0>;
             case TrackElemType::ReverseFreefallSlope:
             case TrackElemType::AirThrustVerticalDownToLevel:
@@ -3980,6 +4015,14 @@ namespace OpenRCT2::TrackMetaData
                 return EvaluatorLargeZeroGRollDownLeft;
             case TrackElemType::RightLargeZeroGRollDown:
                 return EvaluatorLargeZeroGRollDownRight;
+            case TrackElemType::LeftEighthDiveLoopUpToOrthogonal:
+                return EvaluatorDiveLoopUpLeft;
+            case TrackElemType::RightEighthDiveLoopUpToOrthogonal:
+                return EvaluatorDiveLoopUpRight;
+            case TrackElemType::LeftEighthDiveLoopDownToDiag:
+                return EvaluatorDiveLoopDownLeft;
+            case TrackElemType::RightEighthDiveLoopDownToDiag:
+                return EvaluatorDiveLoopDownRight;
             case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
                 return EvaluatorConst<90>;
             case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
@@ -4279,6 +4322,12 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::Up60ToFlatLongBase:
             case TrackElemType::FlatToDown60LongBase:
                 return EvaluatorConst<-160>;
+            case TrackElemType::DiagFlatToUp60LongBase:
+            case TrackElemType::DiagDown60ToFlatLongBase:
+                return EvaluatorConst<180>;
+            case TrackElemType::DiagUp60ToFlatLongBase:
+            case TrackElemType::DiagFlatToDown60LongBase:
+                return EvaluatorConst<-180>;
             case TrackElemType::ReverseFreefallSlope:
             case TrackElemType::AirThrustVerticalDownToLevel:
                 return EvaluatorConst<120>;
@@ -4368,6 +4417,12 @@ namespace OpenRCT2::TrackMetaData
             case TrackElemType::LeftLargeZeroGRollDown:
             case TrackElemType::RightLargeZeroGRollDown:
                 return EvaluatorLargeZeroGRollDown;
+            case TrackElemType::LeftEighthDiveLoopUpToOrthogonal:
+            case TrackElemType::RightEighthDiveLoopUpToOrthogonal:
+                return EvaluatorDiveLoopUp;
+            case TrackElemType::LeftEighthDiveLoopDownToDiag:
+            case TrackElemType::RightEighthDiveLoopDownToDiag:
+                return EvaluatorDiveLoopDown;
             case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
             case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
             case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
