@@ -2617,7 +2617,7 @@ STR_5368    :Reset crash status
 STR_5371    :Object selection
 STR_5372    :Invert right mouse dragging
 STR_5373    :Name {STRINGID}
-STR_5374    :Date {STRINGID}
+STR_5374    :Date modified {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Name already exists
@@ -3787,3 +3787,8 @@ STR_6709    :Enter Smooth Strength between {COMMA16} and {COMMA16}
 STR_6710    :Stable sort
 STR_6711    :Filename:
 STR_6712    :Save
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Filename
+STR_6715    :Date modified
+STR_6716    :File size
+STR_6717    :File size {STRINGID}
