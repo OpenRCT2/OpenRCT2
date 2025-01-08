@@ -6797,8 +6797,8 @@
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_left_3_2.png",
-        "x": 0,
-        "y": -24,
+        "x": -14,
+        "y": -27,
         "palette": "keep"
     },
     {
@@ -6846,12 +6846,12 @@
     {
         "path": "track/lattice_triangle/dive_loop_45_right_1_2.png",
         "x": -32,
-        "y": -24,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_right_1_3.png",
-        "x": -32,
+        "x": -28,
         "y": -21,
         "palette": "keep"
     },
@@ -9277,8 +9277,8 @@
     },
     {
         "path": "track/bm/dive_loop_45_left_3_2.png",
-        "x": 0,
-        "y": -27,
+        "x": -19,
+        "y": -29,
         "palette": "keep"
     },
     {
@@ -9326,12 +9326,12 @@
     {
         "path": "track/bm/dive_loop_45_right_1_2.png",
         "x": -32,
-        "y": -28,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/bm/dive_loop_45_right_1_3.png",
-        "x": -32,
+        "x": -30,
         "y": -21,
         "palette": "keep"
     },
@@ -9412,8 +9412,7 @@
         "x": -24,
         "y": -22,
         "palette": "keep"
-    }
-,
+    },
     {
         "path": "track/railway/quarter_turn_3_tiles_sw_se_part_3.png",
         "x": -8,
@@ -20085,8 +20084,8 @@
     },
     {
         "path": "track/corkscrew/dive_loop_45_left_3_2.png",
-        "x": 0,
-        "y": -29,
+        "x": -19,
+        "y": -31,
         "palette": "keep"
     },
     {
@@ -20134,12 +20133,12 @@
     {
         "path": "track/corkscrew/dive_loop_45_right_1_2.png",
         "x": -32,
-        "y": -29,
+        "y": -31,
         "palette": "keep"
     },
     {
         "path": "track/corkscrew/dive_loop_45_right_1_3.png",
-        "x": -32,
+        "x": -31,
         "y": -15,
         "palette": "keep"
     },
@@ -36659,7 +36658,7 @@
     {
         "path": "track/raptor/dive_loop_45_left_2_1.png",
         "x": -3,
-        "y": 9,
+        "y": 12,
         "palette": "keep"
     },
     {
@@ -36688,8 +36687,8 @@
     },
     {
         "path": "track/raptor/dive_loop_45_left_3_2.png",
-        "x": 0,
-        "y": -14,
+        "x": -12,
+        "y": -23,
         "palette": "keep"
     },
     {
@@ -36737,12 +36736,12 @@
     {
         "path": "track/raptor/dive_loop_45_right_1_2.png",
         "x": -32,
-        "y": -14,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/raptor/dive_loop_45_right_1_3.png",
-        "x": -32,
+        "x": -24,
         "y": -12,
         "palette": "keep"
     },
@@ -36755,7 +36754,7 @@
     {
         "path": "track/raptor/dive_loop_45_right_2_1.png",
         "x": -5,
-        "y": 9,
+        "y": 12,
         "palette": "keep"
     },
     {

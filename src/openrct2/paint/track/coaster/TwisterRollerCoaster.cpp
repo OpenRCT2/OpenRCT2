@@ -20072,7 +20072,7 @@ static void TwisterRCTrackLeftEighthDiveLoopUpToOrthogonal(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 9)),
-                        { -16, -16, height }, { { 2, 2, height + 12 }, { 28, 28, 1 } });
+                        { -16, -16, height }, { { 2, 2, height + 4 }, { 28, 28, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 4, session.SupportColours);
                     break;
@@ -20246,7 +20246,7 @@ static void TwisterRCTrackRightEighthDiveLoopUpToOrthogonal(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_BM_TRACK_DIVE_LOOP + 17)),
-                        { -16, -16, height }, { { 2, 2, height + 12 }, { 28, 28, 1 } });
+                        { -16, -16, height }, { { 2, 2, height + 4 }, { 28, 28, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 4, session.SupportColours);
                     break;

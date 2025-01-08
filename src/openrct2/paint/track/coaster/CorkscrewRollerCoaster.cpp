@@ -20473,7 +20473,7 @@ static void CorkscrewRCTrackLeftEighthDiveLoopUpToOrthogonal(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 9)),
-                        { -16, -16, height }, { { 2, 2, height + 12 }, { 28, 28, 1 } });
+                        { -16, -16, height }, { { 2, 2, height + 6 }, { 28, 28, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 6, session.SupportColours);
                     break;
@@ -20647,7 +20647,7 @@ static void CorkscrewRCTrackRightEighthDiveLoopUpToOrthogonal(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_CORKSCREW_TRACK_DIVE_LOOP + 17)),
-                        { -16, -16, height }, { { 2, 2, height + 12 }, { 28, 28, 1 } });
+                        { -16, -16, height }, { { 2, 2, height + 6 }, { 28, 28, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 6, session.SupportColours);
                     break;
