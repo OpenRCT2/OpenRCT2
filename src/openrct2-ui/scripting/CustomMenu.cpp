@@ -16,6 +16,8 @@
     #include <openrct2-ui/UiContext.h>
     #include <openrct2-ui/input/ShortcutManager.h>
     #include <openrct2/Input.h>
+    #include <openrct2/ui/UiContext.h>
+    #include <openrct2/ui/WindowManager.h>
     #include <openrct2/world/Map.h>
 
 using namespace OpenRCT2;
@@ -266,7 +268,8 @@ namespace OpenRCT2::Scripting
                 customTool.onUp = dukValue["onUp"];
                 customTool.onFinish = dukValue["onFinish"];
 
-                auto toolbarWindow = WindowFindByClass(WindowClass::TopToolbar);
+                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                auto toolbarWindow = windowMgr->FindByClass(WindowClass::TopToolbar);
                 if (toolbarWindow != nullptr)
                 {
                     // Use a widget that does not exist on top toolbar but also make sure it isn't -1 as that

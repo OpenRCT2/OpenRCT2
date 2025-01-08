@@ -26,6 +26,8 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <vector>
 
@@ -992,7 +994,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowGuestListRefreshList()
     {
-        auto* w = WindowFindByClass(WindowClass::GuestList);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* w = windowMgr->FindByClass(WindowClass::GuestList);
         if (w != nullptr)
         {
             static_cast<GuestListWindow*>(w)->RefreshList();

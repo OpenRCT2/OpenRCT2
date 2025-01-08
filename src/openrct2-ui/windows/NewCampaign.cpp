@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/ParkMarketingAction.h>
 #include <openrct2/core/BitSet.hpp>
@@ -22,6 +23,8 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -421,7 +424,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowCampaignRefreshRides()
     {
-        auto w = static_cast<NewCampaignWindow*>(WindowFindByClass(WindowClass::NewCampaign));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto w = static_cast<NewCampaignWindow*>(windowMgr->FindByClass(WindowClass::NewCampaign));
         if (w != nullptr)
         {
             w->RefreshRides();

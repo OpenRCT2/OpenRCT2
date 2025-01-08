@@ -119,11 +119,11 @@ static int32_t ride_check_if_construction_allowed(Ride& ride)
 
 static WindowBase* ride_create_or_find_construction_window(RideId rideIndex)
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowManager = GetContext()->GetUiContext()->GetWindowManager();
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
     intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
     windowManager->BroadcastIntent(intent);
-    return WindowFindByClass(WindowClass::RideConstruction);
+    return windowManager->FindByClass(WindowClass::RideConstruction);
 }
 
 /**
@@ -238,7 +238,8 @@ void RideClearForConstruction(Ride& ride)
     ride.RemoveVehicles();
     RideClearBlockedTiles(ride);
 
-    auto w = WindowFindByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto w = windowMgr->FindByNumber(WindowClass::Ride, ride.id.ToUnderlying());
     if (w != nullptr)
         w->OnResize();
 }
@@ -832,13 +833,14 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
     auto stationIndex = entranceElement->GetStationIndex();
 
     // Get or create construction window for ride
-    auto constructionWindow = WindowFindByClass(WindowClass::RideConstruction);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto constructionWindow = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (constructionWindow == nullptr)
     {
         if (!RideInitialiseConstructionWindow(*ride))
             return false;
 
-        constructionWindow = WindowFindByClass(WindowClass::RideConstruction);
+        constructionWindow = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (constructionWindow == nullptr)
             return false;
     }

@@ -18,6 +18,8 @@
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
@@ -341,13 +343,16 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    if (WindowFindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+                {
+                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    if (windowMgr->FindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                     {
                         auto action = GetClearAction();
                         GameActions::Execute(&action);
                         gCurrentToolId = Tool::Bulldozer;
                     }
                     break;
+                }
             }
         }
 

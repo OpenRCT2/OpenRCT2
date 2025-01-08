@@ -16,6 +16,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -96,8 +98,9 @@ namespace OpenRCT2::Ui::Windows
         std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
 
         auto& im = GetInputManager();
+        auto* wm = GetContext()->GetUiContext()->GetWindowManager();
         if (_cursorHoldDuration < 25 || stringId == STR_NONE || im.IsModifierKeyPressed(ModifierKey::ctrl)
-            || im.IsModifierKeyPressed(ModifierKey::shift) || WindowFindByClass(WindowClass::Error) != nullptr)
+            || im.IsModifierKeyPressed(ModifierKey::shift) || wm->FindByClass(WindowClass::Error) != nullptr)
         {
             WindowCloseByClass(WindowClass::MapTooltip);
         }
@@ -114,7 +117,8 @@ namespace OpenRCT2::Ui::Windows
         const CursorState* state = ContextGetCursorState();
         auto pos = state->position + ScreenCoordsXY{ -width / 2, 15 };
 
-        if (auto w = WindowFindByClass(WindowClass::MapTooltip))
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        if (auto w = windowMgr->FindByClass(WindowClass::MapTooltip))
         {
             w->Invalidate();
             w->windowPos = pos;

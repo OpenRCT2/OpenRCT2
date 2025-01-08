@@ -324,15 +324,17 @@ namespace OpenRCT2::Editor
             return;
         }
 
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
         switch (GetGameState().EditorStep)
         {
             case EditorStep::ObjectSelection:
-                if (WindowFindByClass(WindowClass::EditorObjectSelection) != nullptr)
+                if (windowMgr->FindByClass(WindowClass::EditorObjectSelection) != nullptr)
                 {
                     return;
                 }
 
-                if (WindowFindByClass(WindowClass::InstallTrack) != nullptr)
+                if (windowMgr->FindByClass(WindowClass::InstallTrack) != nullptr)
                 {
                     return;
                 }
@@ -345,7 +347,7 @@ namespace OpenRCT2::Editor
                 ContextOpenWindow(WindowClass::EditorObjectSelection);
                 break;
             case EditorStep::InventionsListSetUp:
-                if (WindowFindByClass(WindowClass::EditorInventionList) != nullptr)
+                if (windowMgr->FindByClass(WindowClass::EditorInventionList) != nullptr)
                 {
                     return;
                 }
@@ -353,7 +355,7 @@ namespace OpenRCT2::Editor
                 ContextOpenWindow(WindowClass::EditorInventionList);
                 break;
             case EditorStep::OptionsSelection:
-                if (WindowFindByClass(WindowClass::EditorScenarioOptions) != nullptr)
+                if (windowMgr->FindByClass(WindowClass::EditorScenarioOptions) != nullptr)
                 {
                     return;
                 }
@@ -361,7 +363,7 @@ namespace OpenRCT2::Editor
                 ContextOpenWindow(WindowClass::EditorScenarioOptions);
                 break;
             case EditorStep::ObjectiveSelection:
-                if (WindowFindByClass(WindowClass::EditorObjectiveOptions) != nullptr)
+                if (windowMgr->FindByClass(WindowClass::EditorObjectiveOptions) != nullptr)
                 {
                     return;
                 }

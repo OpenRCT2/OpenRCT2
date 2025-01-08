@@ -46,6 +46,8 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Entrance.h>
@@ -210,7 +212,8 @@ namespace OpenRCT2::Ui::Windows
     /* move to ride.c */
     static void CloseRideWindowForConstruction(RideId rideId)
     {
-        WindowBase* w = WindowFindByNumber(WindowClass::Ride, rideId.ToUnderlying());
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByNumber(WindowClass::Ride, rideId.ToUnderlying());
         if (w != nullptr && w->page == 1)
             WindowClose(*w);
     }
@@ -2812,7 +2815,8 @@ namespace OpenRCT2::Ui::Windows
     {
         if (_rideConstructionState == RideConstructionState::State0)
         {
-            auto w = WindowFindByClass(WindowClass::RideConstruction);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto w = windowMgr->FindByClass(WindowClass::RideConstruction);
             if (w != nullptr)
             {
                 if (RideAreAllPossibleEntrancesAndExitsBuilt(ride).Successful)
@@ -2829,7 +2833,8 @@ namespace OpenRCT2::Ui::Windows
 
     static void WindowRideConstructionDoEntranceExitCheck()
     {
-        auto w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto w = windowMgr->FindByClass(WindowClass::RideConstruction);
         auto ride = GetRide(_currentRideIndex);
         if (w == nullptr || ride == nullptr)
         {
@@ -2838,7 +2843,7 @@ namespace OpenRCT2::Ui::Windows
 
         if (_rideConstructionState == RideConstructionState::State0)
         {
-            w = WindowFindByClass(WindowClass::RideConstruction);
+            w = windowMgr->FindByClass(WindowClass::RideConstruction);
             if (w != nullptr)
             {
                 if (!RideAreAllPossibleEntrancesAndExitsBuilt(*ride).Successful)
@@ -3064,8 +3069,8 @@ namespace OpenRCT2::Ui::Windows
         {
             return;
         }
-
-        auto window = static_cast<RideConstructionWindow*>(WindowFindByClass(WindowClass::RideConstruction));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto window = static_cast<RideConstructionWindow*>(windowMgr->FindByClass(WindowClass::RideConstruction));
         if (!window)
         {
             return;
@@ -3296,7 +3301,8 @@ namespace OpenRCT2::Ui::Windows
         const auto& rtd = ride->GetRideTypeDescriptor();
         if (rtd.specialType != RtdSpecialType::maze)
         {
-            auto window = static_cast<RideConstructionWindow*>(WindowFindByClass(WindowClass::RideConstruction));
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto window = static_cast<RideConstructionWindow*>(windowMgr->FindByClass(WindowClass::RideConstruction));
             if (!window)
             {
                 return;
@@ -3598,7 +3604,9 @@ namespace OpenRCT2::Ui::Windows
                 _currentTrackSelectionFlags = 0;
                 auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
                 ContextBroadcastIntent(&intent);
-                w = WindowFindByClass(WindowClass::RideConstruction);
+
+                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                w = windowMgr->FindByClass(WindowClass::RideConstruction);
                 if (w == nullptr)
                     break;
 
@@ -3630,8 +3638,8 @@ namespace OpenRCT2::Ui::Windows
                         || errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND || errorText == STR_TOO_HIGH_FOR_SUPPORTS
                         || zAttempts == (numAttempts - 1) || z < 0)
                     {
-                        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, state->position.x);
-                        w = WindowFindByClass(WindowClass::RideConstruction);
+                        Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, state->position.x);
+                        w = windowMgr->FindByClass(WindowClass::RideConstruction);
                         if (w != nullptr)
                         {
                             ToolSet(*w, WIDX_CONSTRUCT, Tool::Crosshair);
@@ -3663,7 +3671,9 @@ namespace OpenRCT2::Ui::Windows
             _currentTrackBegin.z = z;
             _currentTrackSelectionFlags = 0;
             WindowRideConstructionUpdateActiveElements();
-            w = WindowFindByClass(WindowClass::RideConstruction);
+
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            w = windowMgr->FindByClass(WindowClass::RideConstruction);
             if (w == nullptr)
                 break;
 
@@ -3716,7 +3726,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutTurnLeft()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
         {
             return;
@@ -3966,7 +3977,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutTurnRight()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
         {
             return;
@@ -4219,7 +4231,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutUseTrackDefault()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
         {
             return;
@@ -4249,7 +4262,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutSlopeDown()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
         {
             return;
@@ -4359,7 +4373,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutSlopeUp()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_STRAIGHT) || w->widgets[WIDX_STRAIGHT].type == WindowWidgetType::Empty)
         {
             return;
@@ -4469,7 +4484,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutChainLiftToggle()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_CHAIN_LIFT)
             || w->widgets[WIDX_CHAIN_LIFT].type == WindowWidgetType::Empty)
         {
@@ -4481,7 +4497,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutBankLeft()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT)
             || w->widgets[WIDX_BANK_STRAIGHT].type == WindowWidgetType::Empty)
         {
@@ -4517,7 +4534,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutBankRight()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_BANK_STRAIGHT)
             || w->widgets[WIDX_BANK_STRAIGHT].type == WindowWidgetType::Empty)
         {
@@ -4553,7 +4571,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutPreviousTrack()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_PREVIOUS_SECTION)
             || w->widgets[WIDX_PREVIOUS_SECTION].type == WindowWidgetType::Empty)
         {
@@ -4565,7 +4584,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutNextTrack()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_NEXT_SECTION)
             || w->widgets[WIDX_NEXT_SECTION].type == WindowWidgetType::Empty)
         {
@@ -4577,7 +4597,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutBuildCurrent()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_CONSTRUCT) || w->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
         {
             return;
@@ -4588,7 +4609,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowRideConstructionKeyboardShortcutDemolishCurrent()
     {
-        WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr || WidgetIsDisabled(*w, WIDX_DEMOLISH) || w->widgets[WIDX_DEMOLISH].type == WindowWidgetType::Empty)
         {
             return;

@@ -44,6 +44,7 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -778,7 +779,8 @@ namespace OpenRCT2::Ui::Windows
         void ApplyFootpathPressed()
         {
             // Footpath button pressed down
-            if (WindowFindByClass(WindowClass::Footpath) == nullptr)
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            if (windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
                 pressed_widgets &= ~(1uLL << WIDX_PATH);
             else
                 pressed_widgets |= (1uLL << WIDX_PATH);
@@ -1139,7 +1141,9 @@ namespace OpenRCT2::Ui::Windows
                     w->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
                     break;
                 case DDIDX_VIEW_CLIPPING:
-                    if (WindowFindByClass(WindowClass::ViewClipping) == nullptr)
+                {
+                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    if (windowMgr->FindByClass(WindowClass::ViewClipping) == nullptr)
                     {
                         ContextOpenWindow(WindowClass::ViewClipping);
                     }
@@ -1149,6 +1153,7 @@ namespace OpenRCT2::Ui::Windows
                         w->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
                     }
                     break;
+                }
                 case DDIDX_HIGHLIGHT_PATH_ISSUES:
                     w->viewport->flags ^= VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES;
                     break;
@@ -1506,7 +1511,8 @@ namespace OpenRCT2::Ui::Windows
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
             colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, TOP_TOOLBAR_DEBUG_COUNT);
 
-        Dropdown::SetChecked(DDIDX_DEBUG_PAINT, WindowFindByClass(WindowClass::DebugPaint) != nullptr);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        Dropdown::SetChecked(DDIDX_DEBUG_PAINT, windowMgr->FindByClass(WindowClass::DebugPaint) != nullptr);
     }
 
     void TopToolbar::DebugMenuDropdown(int16_t dropdownIndex)
@@ -1523,7 +1529,9 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case DDIDX_DEBUG_PAINT:
-                    if (WindowFindByClass(WindowClass::DebugPaint) == nullptr)
+                {
+                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    if (windowMgr->FindByClass(WindowClass::DebugPaint) == nullptr)
                     {
                         ContextOpenWindow(WindowClass::DebugPaint);
                     }
@@ -1532,6 +1540,7 @@ namespace OpenRCT2::Ui::Windows
                         WindowCloseByClass(WindowClass::DebugPaint);
                     }
                     break;
+                }
             }
         }
     }

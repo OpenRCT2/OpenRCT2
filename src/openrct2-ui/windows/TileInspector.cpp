@@ -33,6 +33,8 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Entrance.h>
@@ -2436,14 +2438,16 @@ static uint64_t PageDisabledWidgets[] = {
 
     void WindowTileInspectorClearClipboard()
     {
-        auto* window = WindowFindByClass(WindowClass::TileInspector);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         if (window != nullptr)
             static_cast<TileInspector*>(window)->ClearClipboard();
     }
 
     void WindowTileInspectorKeyboardShortcutToggleInvisibility()
     {
-        auto* window = WindowFindByClass(WindowClass::TileInspector);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         if (window != nullptr)
             static_cast<TileInspector*>(window)->ToggleInvisibility();
     }

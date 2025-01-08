@@ -45,6 +45,8 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Footpath.h>
@@ -467,8 +469,9 @@ namespace OpenRCT2::Ui
 
         if (!(InputTestFlag(INPUT_FLAG_6)) || !(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
         {
-            if (WindowFindByClass(WindowClass::RideConstruction) == nullptr
-                && WindowFindByClass(WindowClass::Footpath) == nullptr)
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            if (windowMgr->FindByClass(WindowClass::RideConstruction) == nullptr
+                && windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
             {
                 info.interactionType = ViewportInteractionItem::None;
                 return info;
@@ -634,7 +637,8 @@ namespace OpenRCT2::Ui
      */
     static void ViewportInteractionRemoveFootpath(const PathElement& pathElement, const CoordsXY& mapCoords)
     {
-        WindowBase* w = WindowFindByClass(WindowClass::Footpath);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
         if (w != nullptr)
             FootpathUpdateProvisional();
 
@@ -761,7 +765,8 @@ namespace OpenRCT2::Ui
 
     static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int32_t maxDistance)
     {
-        auto* w = WindowFindFromPoint(screenCoords);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* w = windowMgr->FindFromPoint(screenCoords);
         if (w == nullptr)
             return nullptr;
 
@@ -785,7 +790,8 @@ namespace OpenRCT2::Ui
      */
     CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords)
     {
-        WindowBase* window = WindowFindFromPoint(screenCoords);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* window = windowMgr->FindFromPoint(screenCoords);
         if (window == nullptr || window->viewport == nullptr)
         {
             CoordsXY ret{};

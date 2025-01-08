@@ -40,6 +40,8 @@
 #include <openrct2/ride/TrackPaint.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Park.h>
@@ -87,8 +89,10 @@ static void ShortcutRotateConstructionObject()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
     // Rotate scenery
-    WindowBase* w = WindowFindByClass(WindowClass::Scenery);
+    WindowBase* w = windowMgr->FindByClass(WindowClass::Scenery);
     if (w != nullptr && !WidgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
         && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WindowWidgetType::Empty)
     {
@@ -97,7 +101,7 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate construction track piece
-    w = WindowFindByClass(WindowClass::RideConstruction);
+    w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && !WidgetIsDisabled(*w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
         && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WindowWidgetType::Empty)
     {
@@ -110,7 +114,7 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate track design preview
-    w = WindowFindByClass(WindowClass::TrackDesignList);
+    w = windowMgr->FindByClass(WindowClass::TrackDesignList);
     if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WindowWidgetType::Empty)
     {
@@ -119,7 +123,7 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate track design placement
-    w = WindowFindByClass(WindowClass::TrackDesignPlace);
+    w = windowMgr->FindByClass(WindowClass::TrackDesignPlace);
     if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WindowWidgetType::Empty)
     {
@@ -128,7 +132,7 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate park entrance
-    w = WindowFindByClass(WindowClass::EditorParkEntrance);
+    w = windowMgr->FindByClass(WindowClass::EditorParkEntrance);
     if (w != nullptr && !WidgetIsDisabled(*w, WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON)
         && w->widgets[WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON].type != WindowWidgetType::Empty)
     {
@@ -137,7 +141,7 @@ static void ShortcutRotateConstructionObject()
     }
 
     // Rotate selected element in tile inspector
-    w = WindowFindByClass(WindowClass::TileInspector);
+    w = windowMgr->FindByClass(WindowClass::TileInspector);
     if (w != nullptr && !WidgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WindowWidgetType::Empty)
     {
@@ -148,9 +152,11 @@ static void ShortcutRotateConstructionObject()
 
 static void ShortcutRemoveTopBottomToolbarToggle()
 {
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
     {
-        if (WindowFindByClass(WindowClass::TitleLogo) != nullptr)
+        if (windowMgr->FindByClass(WindowClass::TitleLogo) != nullptr)
         {
             WindowCloseByClass(WindowClass::TitleLogo);
             WindowCloseByClass(WindowClass::TitleOptions);
@@ -165,7 +171,7 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     }
     else
     {
-        if (WindowFindByClass(WindowClass::TopToolbar) != nullptr)
+        if (windowMgr->FindByClass(WindowClass::TopToolbar) != nullptr)
         {
             WindowCloseByClass(WindowClass::Dropdown);
             WindowCloseByClass(WindowClass::TopToolbar);
@@ -366,7 +372,8 @@ static void ShortcutOpenCheatWindow()
         return;
 
     // Check if window is already open
-    WindowBase* window = WindowFindByClass(WindowClass::Cheats);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Cheats);
     if (window != nullptr)
     {
         WindowClose(*window);
@@ -434,11 +441,12 @@ static void ShortcutOpenSceneryPicker()
         || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && GetGameState().EditorStep != EditorStep::LandscapeEditor))
         return;
 
-    WindowBase* window_scenery = WindowFindByClass(WindowClass::Scenery);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* window_scenery = windowMgr->FindByClass(WindowClass::Scenery);
     if (window_scenery == nullptr)
         ToggleSceneryWindow();
 
-    window_scenery = WindowFindByClass(WindowClass::Scenery);
+    window_scenery = windowMgr->FindByClass(WindowClass::Scenery);
     if (window_scenery != nullptr && !WidgetIsDisabled(*window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
         && !gWindowSceneryEyedropperEnabled)
     {
@@ -469,7 +477,8 @@ static void ShortcutScaleDown()
 // Tile inspector shortcuts
 static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 {
-    auto w = WindowFindByClass(WindowClass::TileInspector);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto w = windowMgr->FindByClass(WindowClass::TileInspector);
     if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
     {
         w->OnMouseUp(widgetIndex);
@@ -478,7 +487,8 @@ static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 
 static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 {
-    auto w = WindowFindByClass(WindowClass::TileInspector);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto w = windowMgr->FindByClass(WindowClass::TileInspector);
     if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
     {
         w->OnMouseDown(widgetIndex);
@@ -487,7 +497,8 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 
 static void ShortcutToggleWallSlope()
 {
-    WindowBase* window = WindowFindByClass(WindowClass::TileInspector);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::TileInspector);
     if (window == nullptr)
     {
         return;
@@ -518,7 +529,8 @@ static void ShortcutToggleWallSlope()
 
 static void ShortcutIncreaseElementHeight()
 {
-    WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByClass(WindowClass::TileInspector);
     if (w != nullptr)
     {
         int action = -1;
@@ -557,7 +569,8 @@ static void ShortcutIncreaseElementHeight()
 
 static void ShortcutDecreaseElementHeight()
 {
-    WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByClass(WindowClass::TileInspector);
     if (w != nullptr)
     {
         int action = -1;
@@ -620,7 +633,8 @@ static void ShortcutConstructionTurnLeft()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutTurnLeft();
@@ -635,7 +649,9 @@ static void ShortcutConstructionTurnRight()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutTurnRight();
@@ -651,7 +667,8 @@ static void ShortcutConstructionSlopeUp()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutSlopeUp();
@@ -667,7 +684,8 @@ static void ShortcutConstructionBuildCurrent()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutBuildCurrent();
@@ -683,7 +701,8 @@ static void ShortcutConstructionSlopeDown()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutSlopeDown();
@@ -699,7 +718,8 @@ static void ShortcutConstructionDemolishCurrent()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    WindowBase* window = WindowFindByClass(WindowClass::Footpath);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
     if (window != nullptr)
     {
         WindowFootpathKeyboardShortcutDemolishCurrent();
@@ -743,7 +763,8 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::kInterfaceCancelConstruction, STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE, "ESCAPE", []() {
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
-            auto window = WindowFindByClass(WindowClass::Error);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto window = windowMgr->FindByClass(WindowClass::Error);
             if (window != nullptr)
             {
                 WindowClose(*window);
@@ -879,7 +900,8 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::kDebugTogglePaintDebugWindow, STR_SHORTCUT_DEBUG_PAINT_TOGGLE, []() {
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
-            auto window = WindowFindByClass(WindowClass::DebugPaint);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto window = windowMgr->FindByClass(WindowClass::DebugPaint);
             if (window != nullptr)
             {
                 WindowClose(*window);

@@ -21,6 +21,8 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -386,7 +388,8 @@ namespace OpenRCT2::Ui::Windows
 
             pressed_widgets = pressedWidgets | (1 << widgetIndex);
 
-            if (WindowFindByClass(WindowClass::Dropdown) == nullptr)
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            if (windowMgr->FindByClass(WindowClass::Dropdown) == nullptr)
             {
                 _classIndex = -1;
                 _buttonIndex = -1;

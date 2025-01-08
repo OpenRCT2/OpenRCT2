@@ -35,6 +35,8 @@
 #include <openrct2/management/Finance.h>
 #include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
@@ -200,7 +202,8 @@ namespace OpenRCT2::Ui::Windows
                 InvalidateWidget(WIDX_STAFF_LIST_HANDYMEN_TAB + _selectedTab);
 
                 // Enable highlighting of these staff members in map window
-                if (WindowFindByClass(WindowClass::Map) != nullptr)
+                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                if (windowMgr->FindByClass(WindowClass::Map) != nullptr)
                 {
                     for (auto peep : EntityList<Staff>())
                     {
@@ -765,7 +768,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowStaffListRefresh()
     {
-        auto* window = WindowFindByClass(WindowClass::StaffList);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->FindByClass(WindowClass::StaffList);
         if (window != nullptr)
         {
             static_cast<StaffListWindow*>(window)->RefreshList();
