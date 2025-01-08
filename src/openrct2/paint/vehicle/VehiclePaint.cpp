@@ -2023,8 +2023,8 @@ static void VehiclePitchUp42BankedLeft135(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-	imageDirection=(imageDirection+8)%32;
-        int32_t boundingBoxNum = YawTo4(imageDirection)+13*4+144;
+        imageDirection = (imageDirection + 8) % 32;
+        int32_t boundingBoxNum = YawTo4(imageDirection) + 13 * 4 + 144;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 13);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2039,7 +2039,7 @@ static void VehiclePitchUp42BankedRight135(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-        int32_t boundingBoxNum = YawTo4(imageDirection)+3*4+144;
+        int32_t boundingBoxNum = YawTo4(imageDirection) + 3 * 4 + 144;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 3);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2048,7 +2048,6 @@ static void VehiclePitchUp42BankedRight135(
         VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
-
 
 // 6D49DC
 static void VehiclePitchUp42(
@@ -2093,9 +2092,6 @@ static void VehiclePitchUp42(
             VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
-
-
-
 
 // 6D4A31
 static void VehiclePitchUp60Unbanked(
@@ -2782,7 +2778,7 @@ static void VehiclePitchDown42BankedLeft135(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-        int32_t boundingBoxNum = YawTo4(imageDirection)+8*4+144;
+        int32_t boundingBoxNum = YawTo4(imageDirection) + 8 * 4 + 144;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 8);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2797,8 +2793,8 @@ static void VehiclePitchDown42BankedRight135(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-	imageDirection=(imageDirection+8)%32;
-        int32_t boundingBoxNum = YawTo4(imageDirection)+18*4+144;
+        imageDirection = (imageDirection + 8) % 32;
+        int32_t boundingBoxNum = YawTo4(imageDirection) + 18 * 4 + 144;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 18);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -2807,9 +2803,6 @@ static void VehiclePitchDown42BankedRight135(
         VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
-
-
-
 
 static void VehiclePitchDown42(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
@@ -3570,8 +3563,6 @@ static void VehiclePitchUp50BankedRight90(
     }
 }
 
-
-
 static void VehiclePitchUp50(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
@@ -3602,7 +3593,6 @@ static void VehiclePitchUp50(
             VehiclePitchUp50Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
-
 
 #pragma endregion
 
@@ -3846,7 +3836,6 @@ static void VehiclePitchDown50Unbanked(
     }
 }
 
-
 static void VehiclePitchDown50BankedLeft45(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
@@ -3876,8 +3865,6 @@ static void VehiclePitchDown50BankedRight45(
         VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
-
-
 
 static void VehiclePitchDown50BankedLeft67(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
@@ -3944,7 +3931,7 @@ static void VehiclePitchDown50BankedLeft135(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-        int32_t boundingBoxNum = (YawTo4(imageDirection))+4*4+144;
+        int32_t boundingBoxNum = (YawTo4(imageDirection)) + 4 * 4 + 144;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 4);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -3959,7 +3946,7 @@ static void VehiclePitchDown50BankedRight135(
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-        int32_t boundingBoxNum = (YawTo4(imageDirection))+4*4+144;
+        int32_t boundingBoxNum = (YawTo4(imageDirection)) + 4 * 4 + 144;
         int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 4);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
@@ -3968,8 +3955,6 @@ static void VehiclePitchDown50BankedRight135(
         VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
-
-
 
 static void VehiclePitchDown50(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)

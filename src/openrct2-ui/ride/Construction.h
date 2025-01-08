@@ -133,7 +133,7 @@ namespace OpenRCT2
         TrackElemType::RightLargeZeroGRollUp,
         TrackElemType::RightLargeZeroGRollDown,
         TrackElemType::LeftEighthDiveLoopUpToOrthogonal,
-        TrackElemType::LeftEighthDiveLoopDownToDiag, 
+        TrackElemType::LeftEighthDiveLoopDownToDiag,
         TrackElemType::RightEighthDiveLoopUpToOrthogonal,
         TrackElemType::RightEighthDiveLoopDownToDiag,
         TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp,

@@ -610,10 +610,10 @@ namespace OpenRCT2
         DiagUp60ToFlatLongBase = 342,
         DiagFlatToDown60LongBase = 343,
         DiagDown60ToFlatLongBase = 344,
-	LeftEighthDiveLoopUpToOrthogonal = 345,
-	RightEighthDiveLoopUpToOrthogonal = 346,
-	LeftEighthDiveLoopDownToDiag = 347,
-	RightEighthDiveLoopDownToDiag = 348,
+        LeftEighthDiveLoopUpToOrthogonal = 345,
+        RightEighthDiveLoopUpToOrthogonal = 346,
+        LeftEighthDiveLoopDownToDiag = 347,
+        RightEighthDiveLoopDownToDiag = 348,
 
         Count = 349,
 

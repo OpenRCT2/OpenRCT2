@@ -541,8 +541,9 @@ namespace OpenRCT2::Ui::Windows
                     if (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
                         && !(
                             IsTrackEnabled(TrackGroup::slopeSteepLong)
-                            && !(TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection) && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))
-))
+                            && !(
+                                TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)
+                                && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))))
                     {
                         disabledWidgets |= (1uLL << WIDX_LEVEL);
                     }
@@ -555,7 +556,9 @@ namespace OpenRCT2::Ui::Windows
                     if (!IsTrackEnabled(TrackGroup::flatToSteepSlope)
                         && !(
                             IsTrackEnabled(TrackGroup::slopeSteepLong)
-                            && !(TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection) && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))))
+                            && !(
+                                TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection)
+                                && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))))
                     {
                         disabledWidgets |= (1uLL << WIDX_LEVEL);
                     }
@@ -567,7 +570,8 @@ namespace OpenRCT2::Ui::Windows
             }
             if (_previousTrackPitchEnd == TrackPitch::None)
             {
-                if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::slopeSteepLong) && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))
+                if (!IsTrackEnabled(TrackGroup::flatToSteepSlope) && !IsTrackEnabled(TrackGroup::slopeSteepLong)
+                    && !IsTrackEnabled(TrackGroup::diagSlopeSteepLong))
                 {
                     disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP);
                 }

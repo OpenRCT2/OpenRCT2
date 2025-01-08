@@ -3551,12 +3551,12 @@ namespace OpenRCT2::TrackMetaData
 
     static int32_t EvaluatorDiveLoopUp(const int16_t progress)
     {
-            return 385 - 2 * progress;
+        return 385 - 2 * progress;
     }
 
     static int32_t EvaluatorDiveLoopDown(const int16_t progress)
     {
-            return 67 + 2 * progress;
+        return 67 + 2 * progress;
     }
 
     static int32_t EvaluatorDiveLoopUpLeft(const int16_t progress)
@@ -3578,7 +3578,6 @@ namespace OpenRCT2::TrackMetaData
     {
         return 62 + 2 * progress;
     }
-
 
     static int32_t EvaluatorWaterSplash(const int16_t progress)
     {
@@ -4827,7 +4826,7 @@ namespace OpenRCT2::TrackMetaData
         STR_EMPTY,                         // TrackElemType::DiagDown60ToFlatLongBase,
         STR_DIVE_LOOP_LEFT,                // TrackElemType::LeftEighthDiveLoopUpToOrthogonal
         STR_DIVE_LOOP_RIGHT,               // TrackElemType::RightEighthDiveLoopUpToOrthogonal
-        STR_DIVE_LOOP_LEFT,                // TrackElemType::LeftEighthDiveLoopDownToDiag 
+        STR_DIVE_LOOP_LEFT,                // TrackElemType::LeftEighthDiveLoopDownToDiag
         STR_DIVE_LOOP_RIGHT,               // TrackElemType::RightEighthDiveLoopDownToDiag
     };
     static_assert(std::size(RideConfigurationStringIds) == EnumValue(TrackElemType::Count));
@@ -12107,7 +12106,6 @@ namespace OpenRCT2::TrackMetaData
         .clearance = { -96, 32, 0, 64, { 0b0010, 0 }, 0 },
         .allowedWallEdges = 0b0000,
     };
-    
 
     static constexpr SequenceData kSequenceDescriptorsByElement[] = {
         /* TrackElemType::Flat */ { 1, { kFlatSeq0 } },
@@ -13005,15 +13003,47 @@ namespace OpenRCT2::TrackMetaData
         /* TrackElemType::InclinedBrakes */
         { 1, { kDown25Seq0 } },
         /* TrackElemType::DiagBooster */ { 4, { kDiagFlatSeq0, kDiagFlatSeq1, kDiagFlatSeq2, kDiagFlatSeq3 } },
-        /* TrackElemType::DiagFlatToUp60LongBase */ { 10, { kDiagFlatToUp60LongBaseSeq0, kDiagFlatToUp60LongBaseSeq1, kDiagFlatToUp60LongBaseSeq2, kDiagFlatToUp60LongBaseSeq3, kDiagFlatToUp60LongBaseSeq4, kDiagFlatToUp60LongBaseSeq5, kDiagFlatToUp60LongBaseSeq6, kDiagFlatToUp60LongBaseSeq7, kDiagFlatToUp60LongBaseSeq8, kDiagFlatToUp60LongBaseSeq9 } },
-        /* TrackElemType::DiagUp60ToFlatLongBase */ { 10, { kDiagUp60ToFlatLongBaseSeq0, kDiagUp60ToFlatLongBaseSeq1, kDiagUp60ToFlatLongBaseSeq2, kDiagUp60ToFlatLongBaseSeq3, kDiagUp60ToFlatLongBaseSeq4, kDiagUp60ToFlatLongBaseSeq5, kDiagUp60ToFlatLongBaseSeq6, kDiagUp60ToFlatLongBaseSeq7, kDiagUp60ToFlatLongBaseSeq8, kDiagUp60ToFlatLongBaseSeq9 } },
-        /* TrackElemType::DiagFlatToDown60LongBase */ { 10, { kDiagFlatToDown60LongBaseSeq0, kDiagFlatToDown60LongBaseSeq1, kDiagFlatToDown60LongBaseSeq2, kDiagFlatToDown60LongBaseSeq3, kDiagFlatToDown60LongBaseSeq4, kDiagFlatToDown60LongBaseSeq5, kDiagFlatToDown60LongBaseSeq6, kDiagFlatToDown60LongBaseSeq7, kDiagFlatToDown60LongBaseSeq8, kDiagFlatToDown60LongBaseSeq9 } },
-        /* TrackElemType::DiagDown60ToFlatLongBase */ { 10, { kDiagDown60ToFlatLongBaseSeq0, kDiagDown60ToFlatLongBaseSeq1, kDiagDown60ToFlatLongBaseSeq2, kDiagDown60ToFlatLongBaseSeq3, kDiagDown60ToFlatLongBaseSeq4, kDiagDown60ToFlatLongBaseSeq5, kDiagDown60ToFlatLongBaseSeq6, kDiagDown60ToFlatLongBaseSeq7, kDiagDown60ToFlatLongBaseSeq8, kDiagDown60ToFlatLongBaseSeq9 } },
-        /* TrackElemType::LeftEighthDiveLoopUpToOrthogonal */ { 6, { kLeftEighthDiveLoopUpToOrthogonalSeq0, kLeftEighthDiveLoopUpToOrthogonalSeq1, kLeftEighthDiveLoopUpToOrthogonalSeq2, kLeftEighthDiveLoopUpToOrthogonalSeq3, kLeftEighthDiveLoopUpToOrthogonalSeq4, kLeftEighthDiveLoopUpToOrthogonalSeq5 } },
-        /* TrackElemType::RightEighthDiveLoopUpToOrthogonal */ { 6, { kRightEighthDiveLoopUpToOrthogonalSeq0, kRightEighthDiveLoopUpToOrthogonalSeq1, kRightEighthDiveLoopUpToOrthogonalSeq2, kRightEighthDiveLoopUpToOrthogonalSeq3, kRightEighthDiveLoopUpToOrthogonalSeq4, kRightEighthDiveLoopUpToOrthogonalSeq5 } },
-        /* TrackElemType::LeftEighthDiveLoopDownToDiag */ { 6, { kLeftEighthDiveLoopDownToDiagSeq0, kLeftEighthDiveLoopDownToDiagSeq1, kLeftEighthDiveLoopDownToDiagSeq2, kLeftEighthDiveLoopDownToDiagSeq3, kLeftEighthDiveLoopDownToDiagSeq4, kLeftEighthDiveLoopDownToDiagSeq5 } },
-        /* TrackElemType::RightEighthDiveLoopDownToDiag */ { 6, { kRightEighthDiveLoopDownToDiagSeq0, kRightEighthDiveLoopDownToDiagSeq1, kRightEighthDiveLoopDownToDiagSeq2, kRightEighthDiveLoopDownToDiagSeq3, kRightEighthDiveLoopDownToDiagSeq4, kRightEighthDiveLoopDownToDiagSeq5 } },
-};
+        /* TrackElemType::DiagFlatToUp60LongBase */
+        { 10,
+          { kDiagFlatToUp60LongBaseSeq0, kDiagFlatToUp60LongBaseSeq1, kDiagFlatToUp60LongBaseSeq2, kDiagFlatToUp60LongBaseSeq3,
+            kDiagFlatToUp60LongBaseSeq4, kDiagFlatToUp60LongBaseSeq5, kDiagFlatToUp60LongBaseSeq6, kDiagFlatToUp60LongBaseSeq7,
+            kDiagFlatToUp60LongBaseSeq8, kDiagFlatToUp60LongBaseSeq9 } },
+        /* TrackElemType::DiagUp60ToFlatLongBase */
+        { 10,
+          { kDiagUp60ToFlatLongBaseSeq0, kDiagUp60ToFlatLongBaseSeq1, kDiagUp60ToFlatLongBaseSeq2, kDiagUp60ToFlatLongBaseSeq3,
+            kDiagUp60ToFlatLongBaseSeq4, kDiagUp60ToFlatLongBaseSeq5, kDiagUp60ToFlatLongBaseSeq6, kDiagUp60ToFlatLongBaseSeq7,
+            kDiagUp60ToFlatLongBaseSeq8, kDiagUp60ToFlatLongBaseSeq9 } },
+        /* TrackElemType::DiagFlatToDown60LongBase */
+        { 10,
+          { kDiagFlatToDown60LongBaseSeq0, kDiagFlatToDown60LongBaseSeq1, kDiagFlatToDown60LongBaseSeq2,
+            kDiagFlatToDown60LongBaseSeq3, kDiagFlatToDown60LongBaseSeq4, kDiagFlatToDown60LongBaseSeq5,
+            kDiagFlatToDown60LongBaseSeq6, kDiagFlatToDown60LongBaseSeq7, kDiagFlatToDown60LongBaseSeq8,
+            kDiagFlatToDown60LongBaseSeq9 } },
+        /* TrackElemType::DiagDown60ToFlatLongBase */
+        { 10,
+          { kDiagDown60ToFlatLongBaseSeq0, kDiagDown60ToFlatLongBaseSeq1, kDiagDown60ToFlatLongBaseSeq2,
+            kDiagDown60ToFlatLongBaseSeq3, kDiagDown60ToFlatLongBaseSeq4, kDiagDown60ToFlatLongBaseSeq5,
+            kDiagDown60ToFlatLongBaseSeq6, kDiagDown60ToFlatLongBaseSeq7, kDiagDown60ToFlatLongBaseSeq8,
+            kDiagDown60ToFlatLongBaseSeq9 } },
+        /* TrackElemType::LeftEighthDiveLoopUpToOrthogonal */
+        { 6,
+          { kLeftEighthDiveLoopUpToOrthogonalSeq0, kLeftEighthDiveLoopUpToOrthogonalSeq1, kLeftEighthDiveLoopUpToOrthogonalSeq2,
+            kLeftEighthDiveLoopUpToOrthogonalSeq3, kLeftEighthDiveLoopUpToOrthogonalSeq4,
+            kLeftEighthDiveLoopUpToOrthogonalSeq5 } },
+        /* TrackElemType::RightEighthDiveLoopUpToOrthogonal */
+        { 6,
+          { kRightEighthDiveLoopUpToOrthogonalSeq0, kRightEighthDiveLoopUpToOrthogonalSeq1,
+            kRightEighthDiveLoopUpToOrthogonalSeq2, kRightEighthDiveLoopUpToOrthogonalSeq3,
+            kRightEighthDiveLoopUpToOrthogonalSeq4, kRightEighthDiveLoopUpToOrthogonalSeq5 } },
+        /* TrackElemType::LeftEighthDiveLoopDownToDiag */
+        { 6,
+          { kLeftEighthDiveLoopDownToDiagSeq0, kLeftEighthDiveLoopDownToDiagSeq1, kLeftEighthDiveLoopDownToDiagSeq2,
+            kLeftEighthDiveLoopDownToDiagSeq3, kLeftEighthDiveLoopDownToDiagSeq4, kLeftEighthDiveLoopDownToDiagSeq5 } },
+        /* TrackElemType::RightEighthDiveLoopDownToDiag */
+        { 6,
+          { kRightEighthDiveLoopDownToDiagSeq0, kRightEighthDiveLoopDownToDiagSeq1, kRightEighthDiveLoopDownToDiagSeq2,
+            kRightEighthDiveLoopDownToDiagSeq3, kRightEighthDiveLoopDownToDiagSeq4, kRightEighthDiveLoopDownToDiagSeq5 } },
+    };
 
     static constexpr auto BuildDescriptorTable()
     {
