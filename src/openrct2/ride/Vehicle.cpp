@@ -5566,8 +5566,6 @@ void Vehicle::UpdateVelocity()
     {
         if (vertical_drop_countdown > 0)
         {
-            ClearFlag(VehicleFlags::StoppedOnHoldingBrake);
-
             nextVelocity = 0;
             acceleration = 0;
             vertical_drop_countdown--;
