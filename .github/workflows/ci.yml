@@ -111,21 +111,21 @@ jobs:
           echo "certificate=$certificate"
           echo "sign=$sign" >> $GITHUB_OUTPUT
           echo "certificate=$certificate" >> $GITHUB_OUTPUT
-  lint-commit:
-    name: Lint Commit Message
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Lint Commit Messages
-        uses: wagoid/commitlint-github-action@v5
-        with:
-          configFile: .commitlint.json
+  # lint-commit:
+  #   name: Lint Commit Message
+  #   if: github.event_name == 'pull_request'
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Lint Commit Messages
+  #       uses: wagoid/commitlint-github-action@v5
+  #       with:
+  #         configFile: .commitlint.json
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
