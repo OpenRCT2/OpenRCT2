@@ -518,16 +518,18 @@ jobs:
   linux-docker:
     name: Ubuntu Linux (Docker)
     needs: [check-code-formatting, build_variables]
-    if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout image
+        if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
         uses: actions/checkout@v4
         with:
           repository: OpenRCT2/openrct2-docker
       - name: Build image
+        if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
         run: docker build -t openrct2/openrct2-cli:develop develop/cli
       - name: Push image
+        if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
         env:
           OPENRCT2_DOCKER_USER: ${{ secrets.OPENRCT2_DOCKER_USER }}
           OPENRCT2_DOCKER_PASS: ${{ secrets.OPENRCT2_DOCKER_PASS }}
