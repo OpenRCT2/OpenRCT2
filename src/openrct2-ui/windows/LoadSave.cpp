@@ -51,6 +51,9 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSizeMin = kWindowSizeInit / 2;
     static constexpr ScreenSize kWindowSizeMax = kWindowSizeInit * 2;
 
+    static constexpr int kKibiByte = 1024;
+    static constexpr int kMebiByte = kKibiByte * 1024;
+
     static constexpr uint16_t kDateTimeGap = 2;
 
     enum
@@ -625,14 +628,14 @@ namespace OpenRCT2::Ui::Windows
 
                         // File size
                         newListItem.fileSizeBytes = Platform::GetFileSize(newListItem.path.c_str());
-                        if (newListItem.fileSizeBytes > (1024 * 1024))
+                        if (newListItem.fileSizeBytes > kMebiByte)
                         {
-                            newListItem.fileSizeFormatted = newListItem.fileSizeBytes / (1024 * 1024);
+                            newListItem.fileSizeFormatted = newListItem.fileSizeBytes / kMebiByte;
                             newListItem.fileSizeUnit = STR_SIZE_MEGABYTE;
                         }
-                        else if (newListItem.fileSizeBytes > 1024)
+                        else if (newListItem.fileSizeBytes > kKibiByte)
                         {
-                            newListItem.fileSizeFormatted = newListItem.fileSizeBytes / 1024;
+                            newListItem.fileSizeFormatted = newListItem.fileSizeBytes / kKibiByte;
                             newListItem.fileSizeUnit = STR_SIZE_KILOBYTE;
                         }
                         else
