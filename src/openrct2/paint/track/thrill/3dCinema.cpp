@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -121,11 +121,11 @@ static void Paint3dCinema(
     PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunction3dCinema(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunction3dCinema(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return Paint3dCinema;

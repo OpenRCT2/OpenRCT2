@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,9 @@
 #include "Paint.TileElement.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
+
+using OpenRCT2::Drawing::LightFx::LightType;
 
 static ImageIndex GetEdgeImageOffset(edge_t edge)
 {
@@ -270,7 +273,7 @@ void PaintLampLightEffects(PaintSession& session, const PathElement& pathEl, uin
 {
     PROFILED_FUNCTION();
 
-    if (LightFXIsAvailable())
+    if (LightFx::IsAvailable())
     {
         if (pathEl.HasAddition() && !(pathEl.IsBroken()))
         {
@@ -279,19 +282,19 @@ void PaintLampLightEffects(PaintSession& session, const PathElement& pathEl, uin
             {
                 if (!(pathEl.GetEdges() & EDGE_NE))
                 {
-                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SE))
                 {
-                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_SW))
                 {
-                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 23, LightType::Lantern3);
                 }
                 if (!(pathEl.GetEdges() & EDGE_NW))
                 {
-                    LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 23, LightType::Lantern3);
+                    LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 23, LightType::Lantern3);
                 }
             }
         }

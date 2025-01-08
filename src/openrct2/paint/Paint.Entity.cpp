@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,8 @@
 #include "vehicle/VehiclePaint.h"
 
 #include <cassert>
+
+using namespace OpenRCT2::Drawing;
 
 /**
  * Paint Quadrant
@@ -124,9 +126,9 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         {
             case EntityType::Vehicle:
                 spr->As<Vehicle>()->Paint(session, image_direction);
-                if (LightFXForVehiclesIsAvailable())
+                if (LightFx::ForVehiclesIsAvailable())
                 {
-                    LightFXAddLightsMagicVehicle(spr->As<Vehicle>());
+                    LightFx::AddLightsMagicVehicle(spr->As<Vehicle>());
                 }
                 break;
             case EntityType::Guest:

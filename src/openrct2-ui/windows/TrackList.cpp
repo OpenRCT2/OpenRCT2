@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,7 +87,7 @@ namespace OpenRCT2::Ui::Windows
             _filteredTrackIds.clear();
 
             // Nothing to filter, so fill the list with all indices
-            if (String::LengthOf(_filterString) == 0)
+            if (String::lengthOf(_filterString) == 0)
             {
                 for (uint16_t i = 0; i < _trackDesigns.size(); i++)
                     _filteredTrackIds.push_back(i);
@@ -96,12 +96,12 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Convert filter to uppercase
-            const auto filterStringUpper = String::ToUpper(_filterString);
+            const auto filterStringUpper = String::toUpper(_filterString);
 
             // Fill the set with indices for tracks that match the filter
             for (uint16_t i = 0; i < _trackDesigns.size(); i++)
             {
-                const auto trackNameUpper = String::ToUpper(_trackDesigns[i].name);
+                const auto trackNameUpper = String::toUpper(_trackDesigns[i].name);
                 if (trackNameUpper.find(filterStringUpper) != std::string::npos)
                 {
                     _filteredTrackIds.push_back(i);
@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            String::Set(_filterString, sizeof(_filterString), "");
+            String::set(_filterString, sizeof(_filterString), "");
             _trackListWidgets[WIDX_FILTER_STRING].string = _filterString;
             widgets = _trackListWidgets;
 
@@ -313,7 +313,7 @@ namespace OpenRCT2::Ui::Windows
                             selected_list_item = _filteredTrackIds[selected_list_item - 1] + 1;
                     }
 
-                    String::Set(_filterString, sizeof(_filterString), "");
+                    String::set(_filterString, sizeof(_filterString), "");
                     FilterList();
                     Invalidate();
                     break;
@@ -363,10 +363,10 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_FILTER_STRING)
                 return;
 
-            if (String::Equals(_filterString, std::string(text).c_str()))
+            if (String::equals(_filterString, std::string(text).c_str()))
                 return;
 
-            String::Set(_filterString, sizeof(_filterString), std::string(text).c_str());
+            String::set(_filterString, sizeof(_filterString), std::string(text).c_str());
 
             FilterList();
 

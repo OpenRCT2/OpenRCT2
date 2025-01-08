@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -42,6 +42,7 @@
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
@@ -50,6 +51,7 @@
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../sprites.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/Footpath.h"
@@ -603,7 +605,7 @@ int32_t Guest::GetEasterEggNameId() const
 
     for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
     {
-        if (String::IEquals(buffer, gPeepEasterEggNames[i]))
+        if (String::iequals(buffer, gPeepEasterEggNames[i]))
             return static_cast<int32_t>(i);
     }
 
@@ -750,7 +752,7 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
     FormatNameTo(ft);
     FormatStringLegacy(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
-    return String::IEquals(buffer, gPeepEasterEggNames[index]);
+    return String::iequals(buffer, gPeepEasterEggNames[index]);
 }
 
 void Guest::UpdateMotivesIdle()
@@ -2350,12 +2352,12 @@ bool Guest::HasRidden(const Ride& ride) const
     return OpenRCT2::RideUse::GetHistory().Contains(Id, ride.id);
 }
 
-void Guest::SetHasRiddenRideType(int32_t rideType)
+void Guest::SetHasRiddenRideType(ride_type_t rideType)
 {
     OpenRCT2::RideUse::GetTypeHistory().Add(Id, rideType);
 }
 
-bool Guest::HasRiddenRideType(int32_t rideType) const
+bool Guest::HasRiddenRideType(ride_type_t rideType) const
 {
     return OpenRCT2::RideUse::GetTypeHistory().Contains(Id, rideType);
 }

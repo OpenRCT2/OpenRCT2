@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,11 +10,13 @@
 #include "Colour.h"
 
 #include "../core/EnumMap.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../drawing/Drawing.h"
 #include "../sprites.h"
-#include "../util/Util.h"
 
 #include <cmath>
+
+using namespace OpenRCT2::Drawing;
 
 ColourShadeMap ColourMapA[COLOUR_COUNT] = {};
 
@@ -169,9 +171,9 @@ static uint8_t FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
 
 static void InitBlendColourMap()
 {
-    for (size_t i = 0; i < PALETTE_SIZE; i++)
+    for (size_t i = 0; i < kGamePaletteSize; i++)
     {
-        for (size_t j = i; j < PALETTE_SIZE; j++)
+        for (size_t j = i; j < kGamePaletteSize; j++)
         {
             uint8_t red = (gPalette[i].Red + gPalette[j].Red) / 2;
             uint8_t green = (gPalette[i].Green + gPalette[j].Green) / 2;

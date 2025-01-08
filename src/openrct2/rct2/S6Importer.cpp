@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../core/Console.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../core/FileStream.h"
 #include "../core/IStream.hpp"
 #include "../core/MemoryStream.h"
@@ -70,7 +71,6 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
-#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/MapAnimation.h"
@@ -127,11 +127,11 @@ namespace OpenRCT2::RCT2
         ParkLoadResult Load(const u8string& path) override
         {
             const auto extension = Path::GetExtension(path);
-            if (String::IEquals(extension, ".sc6"))
+            if (String::iequals(extension, ".sc6"))
             {
                 return LoadScenario(path);
             }
-            if (String::IEquals(extension, ".sv6"))
+            if (String::iequals(extension, ".sv6"))
             {
                 return LoadSavedGame(path);
             }
@@ -197,7 +197,7 @@ namespace OpenRCT2::RCT2
             if (!path.empty())
             {
                 auto extension = Path::GetExtension(path);
-                _isSV7 = String::IEquals(extension, ".sv7");
+                _isSV7 = String::iequals(extension, ".sv7");
             }
 
             chunkReader.ReadChunk(&_s6.Objects, sizeof(_s6.Objects));
@@ -255,16 +255,16 @@ namespace OpenRCT2::RCT2
             dst->ObjectiveArg3 = _s6.Info.ObjectiveArg3;
             dst->Highscore = nullptr;
 
-            if (String::IsNullOrEmpty(_s6.Info.Name))
+            if (String::isNullOrEmpty(_s6.Info.Name))
             {
                 // If the scenario doesn't have a name, set it to the filename
-                String::Set(dst->Name, sizeof(dst->Name), Path::GetFileNameWithoutExtension(dst->Path).c_str());
+                String::set(dst->Name, sizeof(dst->Name), Path::GetFileNameWithoutExtension(dst->Path).c_str());
             }
             else
             {
                 // Normalise the name to make the scenario as recognisable as possible.
                 auto normalisedName = ScenarioSources::NormaliseName(_s6.Info.Name);
-                String::Set(dst->Name, sizeof(dst->Name), normalisedName.c_str());
+                String::set(dst->Name, sizeof(dst->Name), normalisedName.c_str());
             }
 
             // Look up and store information regarding the origins of this scenario.
@@ -291,8 +291,8 @@ namespace OpenRCT2::RCT2
             }
 
             // dst->name will be translated later so keep the untranslated name here
-            String::Set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
-            String::Set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
+            String::set(dst->InternalName, sizeof(dst->InternalName), dst->Name);
+            String::set(dst->Details, sizeof(dst->Details), _s6.Info.Details);
 
             if (!desc.textObjectId.empty())
             {
@@ -312,8 +312,8 @@ namespace OpenRCT2::RCT2
                     auto name = textObject->GetScenarioName();
                     auto details = textObject->GetScenarioDetails();
 
-                    String::Set(dst->Name, sizeof(dst->Name), name.c_str());
-                    String::Set(dst->Details, sizeof(dst->Details), details.c_str());
+                    String::set(dst->Name, sizeof(dst->Name), name.c_str());
+                    String::set(dst->Details, sizeof(dst->Details), details.c_str());
                 }
             }
 
@@ -534,7 +534,7 @@ namespace OpenRCT2::RCT2
             {
                 // For savegames the filename can be arbitrary, so we have no choice but to rely on the name provided
                 gameState.ScenarioFileName = std::string(
-                    String::ToStringView(_s6.ScenarioFilename, std::size(_s6.ScenarioFilename)));
+                    String::toStringView(_s6.ScenarioFilename, std::size(_s6.ScenarioFilename)));
             }
             gCurrentRealTimeTicks = 0;
 
@@ -701,7 +701,7 @@ namespace OpenRCT2::RCT2
             *dst = {};
             dst->id = rideIndex;
 
-            ObjectEntryIndex rideType = src->Type;
+            auto rideType = src->Type;
             auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->Subtype);
             if (RCT2RideTypeNeedsConversion(src->Type))
             {
@@ -1139,26 +1139,26 @@ namespace OpenRCT2::RCT2
             // and the corrected filename.
 
             // In this park, peep_spawns[0] is incorrect, and peep_spawns[1] is correct.
-            if (String::Equals(_s6.ScenarioFilename, "WW South America - Rio Carnival.SC6")
-                || String::Equals(_s6.ScenarioFilename, "South America - Rio Carnival.SC6"))
+            if (String::equals(_s6.ScenarioFilename, "WW South America - Rio Carnival.SC6")
+                || String::equals(_s6.ScenarioFilename, "South America - Rio Carnival.SC6"))
             {
                 _s6.PeepSpawns[0] = { 2160, 3167, 6, 1 };
                 _s6.PeepSpawns[1].x = RCT12_PEEP_SPAWN_UNDEFINED;
             }
             // In this park, peep_spawns[0] is correct. Just clear the other.
             else if (
-                String::Equals(_s6.ScenarioFilename, "Great Wall of China Tourism Enhancement.SC6")
-                || String::Equals(_s6.ScenarioFilename, "Asia - Great Wall of China Tourism Enhancement.SC6"))
+                String::equals(_s6.ScenarioFilename, "Great Wall of China Tourism Enhancement.SC6")
+                || String::equals(_s6.ScenarioFilename, "Asia - Great Wall of China Tourism Enhancement.SC6"))
             {
                 _s6.PeepSpawns[1].x = RCT12_PEEP_SPAWN_UNDEFINED;
             }
             // Amity Airfield has peeps entering from the corner of the tile, instead of the middle.
-            else if (String::Equals(_s6.ScenarioFilename, "Amity Airfield.SC6"))
+            else if (String::equals(_s6.ScenarioFilename, "Amity Airfield.SC6"))
             {
                 _s6.PeepSpawns[0].y = 1296;
             }
             // #9926: Africa - Oasis has peeps spawning on the edge underground near the entrance
-            else if (String::Equals(_s6.ScenarioFilename, "Africa - Oasis.SC6"))
+            else if (String::equals(_s6.ScenarioFilename, "Africa - Oasis.SC6"))
             {
                 _s6.PeepSpawns[0].y = 2128;
                 _s6.PeepSpawns[0].z = 7;

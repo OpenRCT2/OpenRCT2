@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -528,7 +528,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         for (size_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
         {
-            ObjectEntryIndex rideType = RIDE_TYPE_NULL;
+            auto rideType = RIDE_TYPE_NULL;
 
             if (i < numRideTypes)
             {

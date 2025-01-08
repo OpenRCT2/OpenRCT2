@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1300,9 +1300,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::PaletteWater).WithBlended(true);
         PaintAddImageAsParent(session, image_id, { 0, 0, waterHeight }, { 32, 32, -1 });
 
-        const bool transparent = !IsCsgLoaded() || Config::Get().general.TransparentWater
+        const bool transparent = Config::Get().general.TransparentWater
             || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-        const uint32_t overlayStart = transparent ? SPR_WATER_OVERLAY : SPR_RCT1_WATER_OVERLAY;
+        const uint32_t overlayStart = transparent ? EnumValue(SPR_WATER_OVERLAY) : EnumValue(SPR_G2_OPAQUE_WATER_OVERLAY);
         PaintAttachToPreviousPS(session, ImageId(overlayStart + image_offset), 0, 0);
 
         if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))

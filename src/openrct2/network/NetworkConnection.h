@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,6 @@
     #include "NetworkTypes.h"
     #include "Socket.h"
 
-    #include <deque>
     #include <memory>
     #include <string_view>
     #include <vector>
@@ -41,19 +40,14 @@ public:
     NetworkConnection() noexcept;
 
     NetworkReadPacket ReadPacket();
-    void QueuePacket(NetworkPacket&& packet, bool front = false);
-    void QueuePacket(const NetworkPacket& packet, bool front = false)
-    {
-        auto copy = packet;
-        return QueuePacket(std::move(copy), front);
-    }
+    void QueuePacket(const NetworkPacket& packet, bool front = false);
 
     // This will not immediately disconnect the client. The disconnect
     // will happen post-tick.
     void Disconnect() noexcept;
 
     bool IsValid() const;
-    void SendQueuedPackets();
+    void SendQueuedData();
     void ResetLastPacketTime() noexcept;
     bool ReceivedPacketRecently() const noexcept;
 
@@ -62,12 +56,11 @@ public:
     void SetLastDisconnectReason(const StringId string_id, void* args = nullptr);
 
 private:
-    std::deque<NetworkPacket> _outboundPackets;
+    std::vector<uint8_t> _outboundBuffer;
     uint32_t _lastPacketTime = 0;
     std::string _lastDisconnectReason;
 
     void RecordPacketStats(const NetworkPacket& packet, bool sending);
-    bool SendPacket(NetworkPacket& packet);
 };
 
 #endif // DISABLE_NETWORK

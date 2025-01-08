@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,6 @@
 #include "../../../ride/Ride.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../util/Util.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
@@ -109,11 +108,11 @@ static void PaintDodgems(
 /**
  * rct2:
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionDodgems(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionDodgems(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack4x4)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintDodgems;

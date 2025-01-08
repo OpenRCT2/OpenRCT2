@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -245,7 +245,7 @@ exitcode_t HandleNoCommand(CommandLineArgEnumerator* enumerator)
     const char* parkUri;
     if (enumerator->TryPopString(&parkUri) && parkUri[0] != '-')
     {
-        String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
+        String::set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
         gOpenRCT2StartupAction = StartupAction::Open;
     }
 
@@ -266,7 +266,7 @@ exitcode_t HandleCommandEdit(CommandLineArgEnumerator* enumerator)
         Console::Error::WriteLine("Expected path or URL to a saved park.");
         return EXITCODE_FAIL;
     }
-    String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
+    String::set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
     gOpenRCT2StartupAction = StartupAction::Edit;
     return EXITCODE_CONTINUE;
@@ -302,11 +302,11 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
     }
 
     gOpenRCT2StartupAction = StartupAction::Open;
-    String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
+    String::set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
     gNetworkStart = NETWORK_MODE_SERVER;
     gNetworkStartPort = _port;
-    gNetworkStartAddress = String::ToStd(_address);
+    gNetworkStartAddress = String::toStd(_address);
 
     return EXITCODE_CONTINUE;
 }

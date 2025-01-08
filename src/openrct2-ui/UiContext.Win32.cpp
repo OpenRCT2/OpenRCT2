@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -98,7 +98,7 @@ namespace OpenRCT2::Ui
         void ShowMessageBox(SDL_Window* window, const std::string& message) override
         {
             HWND hwnd = GetHWND(window);
-            std::wstring messageW = String::ToWideChar(message);
+            std::wstring messageW = String::toWideChar(message);
             MessageBoxW(hwnd, messageW.c_str(), L"OpenRCT2", MB_OK);
         }
 
@@ -115,13 +115,13 @@ namespace OpenRCT2::Ui
 
         void OpenFolder(const std::string& path) override
         {
-            std::wstring pathW = String::ToWideChar(path);
+            std::wstring pathW = String::toWideChar(path);
             ShellExecuteW(NULL, L"open", pathW.c_str(), NULL, NULL, SW_SHOWNORMAL);
         }
 
         void OpenURL(const std::string& url) override
         {
-            std::wstring urlW = String::ToWideChar(url);
+            std::wstring urlW = String::toWideChar(url);
             ShellExecuteW(NULL, L"open", urlW.c_str(), NULL, NULL, SW_SHOWNORMAL);
         }
 
@@ -151,13 +151,13 @@ namespace OpenRCT2::Ui
                     DWORD flags;
                     if (SUCCEEDED(fileDialog->GetOptions(&flags)) && SUCCEEDED(fileDialog->SetOptions(flags | flagsToSet)))
                     {
-                        fileDialog->SetTitle(String::ToWideChar(desc.Title).c_str());
-                        fileDialog->SetFileName(String::ToWideChar(Path::GetFileName(desc.DefaultFilename)).c_str());
+                        fileDialog->SetTitle(String::toWideChar(desc.Title).c_str());
+                        fileDialog->SetFileName(String::toWideChar(Path::GetFileName(desc.DefaultFilename)).c_str());
 
                         // Set default directory (optional, don't fail the operation if it fails to set)
                         ComPtr<IShellItem> defaultDirectory;
                         if (SUCCEEDED(SHCreateItemFromParsingName(
-                                String::ToWideChar(desc.InitialDirectory).c_str(), nullptr,
+                                String::toWideChar(desc.InitialDirectory).c_str(), nullptr,
                                 IID_PPV_ARGS(defaultDirectory.GetAddressOf()))))
                         {
                             fileDialog->SetFolder(defaultDirectory.Get());
@@ -185,7 +185,7 @@ namespace OpenRCT2::Ui
                                 PWSTR filePath = nullptr;
                                 if (SUCCEEDED(resultItem->GetDisplayName(SIGDN_FILESYSPATH, &filePath)))
                                 {
-                                    resultFilename = String::ToUtf8(filePath);
+                                    resultFilename = String::toUtf8(filePath);
                                     CoTaskMemFree(filePath);
                                 }
                             }
@@ -238,8 +238,8 @@ namespace OpenRCT2::Ui
             std::vector<COMDLG_FILTERSPEC> result;
             for (const auto& filter : filters)
             {
-                outFiltersStorage.emplace_back(String::ToWideChar(filter.Name));
-                outFiltersStorage.emplace_back(String::ToWideChar(filter.Pattern));
+                outFiltersStorage.emplace_back(String::toWideChar(filter.Name));
+                outFiltersStorage.emplace_back(String::toWideChar(filter.Pattern));
             }
 
             for (auto it = outFiltersStorage.begin(); it != outFiltersStorage.end();)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../PlatformEnvironment.h"
 #include "../core/Console.hpp"
 #include "../core/DataSerialiser.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/FileIndex.hpp"
 #include "../core/FileStream.h"
 #include "../core/Guard.hpp"
@@ -32,7 +33,6 @@
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "../scenario/ScenarioRepository.h"
-#include "../util/Util.h"
 #include "Object.h"
 #include "ObjectFactory.h"
 #include "ObjectList.h"
@@ -98,11 +98,11 @@ public:
     {
         std::unique_ptr<Object> object;
         auto extension = Path::GetExtension(path);
-        if (String::IEquals(extension, ".json"))
+        if (String::iequals(extension, ".json"))
         {
             object = ObjectFactory::CreateObjectFromJsonFile(_objectRepository, path, false);
         }
-        else if (String::IEquals(extension, ".parkobj"))
+        else if (String::iequals(extension, ".parkobj"))
         {
             object = ObjectFactory::CreateObjectFromZipFile(_objectRepository, path, false);
         }
@@ -169,7 +169,7 @@ protected:
 private:
     bool IsTrackReadOnly(const std::string& path) const
     {
-        return String::StartsWith(path, SearchPaths[0]) || String::StartsWith(path, SearchPaths[1]);
+        return String::startsWith(path, SearchPaths[0]) || String::startsWith(path, SearchPaths[1]);
     }
 };
 
@@ -264,11 +264,11 @@ public:
         Guard::ArgumentNotNull(ori, GUARD_LINE);
 
         auto extension = Path::GetExtension(ori->Path);
-        if (String::IEquals(extension, ".json"))
+        if (String::iequals(extension, ".json"))
         {
             return ObjectFactory::CreateObjectFromJsonFile(*this, ori->Path, !gOpenRCT2NoGraphics);
         }
-        if (String::IEquals(extension, ".parkobj"))
+        if (String::iequals(extension, ".parkobj"))
         {
             return ObjectFactory::CreateObjectFromZipFile(*this, ori->Path, !gOpenRCT2NoGraphics);
         }
@@ -364,7 +364,7 @@ private:
     void SortItems()
     {
         std::sort(_items.begin(), _items.end(), [](const ObjectRepositoryItem& a, const ObjectRepositoryItem& b) -> bool {
-            return String::Compare(a.Name, b.Name) < 0;
+            return String::compare(a.Name, b.Name) < 0;
         });
 
         // Fix the IDs
@@ -595,7 +595,7 @@ private:
         while (File::Exists(fullPath))
         {
             counter++;
-            fullPath = Path::Combine(userObjPath, String::StdFormat("%s-%02X%s", fileName.c_str(), counter, extension));
+            fullPath = Path::Combine(userObjPath, String::stdFormat("%s-%02X%s", fileName.c_str(), counter, extension));
         }
 
         return fullPath;
@@ -622,7 +622,7 @@ private:
             }
 
             // Convert to UTF-8 filename
-            return String::ConvertToUtf8(normalisedName, OpenRCT2::CodePage::CP_1252);
+            return String::convertToUtf8(normalisedName, OpenRCT2::CodePage::CP_1252);
         }
         else
         {
@@ -635,7 +635,7 @@ private:
         const ObjectRepositoryItem* item = FindObject(entry);
         if (item == nullptr)
         {
-            throw std::runtime_error(String::StdFormat("Unable to find object '%.8s'", entry->name));
+            throw std::runtime_error(String::stdFormat("Unable to find object '%.8s'", entry->name));
         }
 
         // Read object data from file

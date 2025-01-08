@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -702,6 +702,8 @@ bool TrackCircuitIteratorsMatch(const TrackCircuitIterator* firstIt, const Track
 void TrackGetBack(const CoordsXYE& input, CoordsXYE* output);
 void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);
 
+TrackElement* TrackGetPreviousBlock(CoordsXYZ& location, TileElement* tileElement);
+
 bool TrackElementIsCovered(OpenRCT2::TrackElemType trackElementType);
 OpenRCT2::TrackElemType UncoverTrackElement(OpenRCT2::TrackElemType trackElementType);
 bool TrackTypeIsStation(OpenRCT2::TrackElemType trackType);
@@ -714,7 +716,7 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     uint16_t flags);
 
 TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank);
-TrackRoll TrackGetActualBank2(int32_t rideType, bool isInverted, TrackRoll bank);
+TrackRoll TrackGetActualBank2(ride_type_t rideType, bool isInverted, TrackRoll bank);
 TrackRoll TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement);
 
 ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);

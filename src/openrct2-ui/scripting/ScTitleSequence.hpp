@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -110,7 +110,7 @@ namespace OpenRCT2::Scripting
                 }
                 else if constexpr (std::is_same_v<T, LoadScenarioCommand>)
                 {
-                    obj.Set("scenario", String::ToStringView(command.Scenario, sizeof(command.Scenario)));
+                    obj.Set("scenario", String::toStringView(command.Scenario, sizeof(command.Scenario)));
                 }
             },
             value);
@@ -170,7 +170,7 @@ namespace OpenRCT2::Scripting
             case TitleScript::LoadSc:
             {
                 auto loadScenarioCommand = LoadScenarioCommand{};
-                String::Set(
+                String::set(
                     loadScenarioCommand.Scenario, sizeof(loadScenarioCommand.Scenario), value["scenario"].as_c_string());
                 command = loadScenarioCommand;
                 break;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,13 +14,13 @@
 #include "../ParkImporter.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../core/JobPool.h"
 #include "../core/Memory.hpp"
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
-#include "../util/Util.h"
 #include "BannerSceneryEntry.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"

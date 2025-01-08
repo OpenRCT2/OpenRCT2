@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,21 +14,22 @@
 class RideCreateAction final : public GameActionBase<GameCommand::CreateRide>
 {
 private:
-    ObjectEntryIndex _rideType{ OBJECT_ENTRY_INDEX_NULL };
+    ride_type_t _rideType{ RIDE_TYPE_NULL };
     ObjectEntryIndex _subType{ OBJECT_ENTRY_INDEX_NULL };
     ObjectEntryIndex _entranceObjectIndex{ OBJECT_ENTRY_INDEX_NULL };
-    uint8_t _colour1{ 0xFF };
-    uint8_t _colour2{ 0xFF };
+    colour_t _colour1{ COLOUR_NULL };
+    colour_t _colour2{ COLOUR_NULL };
 
 public:
     RideCreateAction() = default;
     RideCreateAction(
-        int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2, ObjectEntryIndex entranceStyleIndex);
+        ride_type_t rideType, ObjectEntryIndex subType, colour_t colour1, colour_t colour2,
+        ObjectEntryIndex entranceStyleIndex);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    int32_t GetRideType() const;
-    int32_t GetRideObject() const;
+    ride_type_t GetRideType() const;
+    ObjectEntryIndex GetRideObject() const;
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;

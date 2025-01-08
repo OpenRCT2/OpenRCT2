@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -130,7 +130,7 @@ namespace OpenRCT2::Ui::Windows
     bool TextBoxCaretIsFlashed();
     const WidgetIdentifier& GetCurrentTextBox();
 
-    void WindowResize(WindowBase& w, int32_t dw, int32_t dh);
+    void WindowResize(WindowBase& w, int16_t dw, int16_t dh);
     void WindowInitScrollWidgets(WindowBase& w);
     void WindowUpdateScrollWidgets(WindowBase& w);
 
@@ -139,7 +139,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
     void WindowRelocateWindows(int32_t width, int32_t height);
 
-    void WindowSetResize(WindowBase& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
+    void WindowSetResize(WindowBase& w, int16_t minWidth, int16_t minHeight, int16_t maxWidth, int16_t maxHeight);
     bool WindowCanResize(const WindowBase& w);
 
     void InvalidateAllWindowsAfterInput();

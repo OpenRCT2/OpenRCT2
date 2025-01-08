@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,6 @@
 
 #include "../Diagnostic.h"
 #include "../platform/Platform.h"
-#include "../util/Util.h"
 #include "File.h"
 #include "FileStream.h"
 #include "String.hpp"
@@ -72,7 +71,7 @@ namespace OpenRCT2::File
         auto fsize = Platform::GetFileSize(path);
         if (fsize > SIZE_MAX)
         {
-            u8string message = String::StdFormat(
+            u8string message = String::stdFormat(
                 "'%s' exceeds maximum length of %lld bytes.", u8string(path).c_str(), SIZE_MAX);
             throw IOException(message);
         }

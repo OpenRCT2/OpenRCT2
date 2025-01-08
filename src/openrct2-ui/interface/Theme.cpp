@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -273,7 +273,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
     {
         for (const auto& desc : WindowThemeDescriptors)
         {
-            if (String::Equals(desc.WindowClassSZ, windowClassSZ))
+            if (String::equals(desc.WindowClassSZ, windowClassSZ))
             {
                 return &desc;
             }
@@ -625,7 +625,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
             for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
             {
                 const auto& theme = ThemeManager::AvailableThemes[i];
-                if (String::Equals(name, theme.Name))
+                if (String::equals(name, theme.Name))
                 {
                     if (theme.Path.empty())
                     {
@@ -752,7 +752,7 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
         for (size_t i = 0; i < count; i++)
         {
             const utf8* tn = ThemeManagerGetAvailableThemeName(i);
-            if (String::IEquals(tn, name))
+            if (String::iequals(tn, name))
             {
                 return i;
             }

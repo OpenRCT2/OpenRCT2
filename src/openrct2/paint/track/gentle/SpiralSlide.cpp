@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -253,11 +253,11 @@ static void PaintSpiralSlide(
 /**
  * rct2: 0x0074840C
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpiralSlide(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSpiralSlide(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack2x2)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintSpiralSlide;

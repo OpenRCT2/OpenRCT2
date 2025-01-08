@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -106,7 +106,7 @@ namespace OpenRCT2::Ui::Windows
                 auto dukImage = desc["image"];
                 if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
                 {
-                    result.Image = ImageId::FromUInt32(ImageFromDuk(dukImage));
+                    result.Image = ImageId(ImageFromDuk(dukImage));
                     result.HasBorder = false;
                 }
                 else
@@ -208,13 +208,13 @@ namespace OpenRCT2::Ui::Windows
             auto dukImage = desc["image"];
             if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
             {
-                result.imageFrameBase = ImageId::FromUInt32(ImageFromDuk(dukImage));
+                result.imageFrameBase = ImageId(ImageFromDuk(dukImage));
                 result.imageFrameCount = 0;
                 result.imageFrameDuration = 0;
             }
             else if (dukImage.type() == DukValue::Type::OBJECT)
             {
-                result.imageFrameBase = ImageId::FromUInt32(dukImage["frameBase"].as_uint());
+                result.imageFrameBase = ImageId(dukImage["frameBase"].as_uint());
                 result.imageFrameCount = AsOrDefault(dukImage["frameCount"], 0);
                 result.imageFrameDuration = AsOrDefault(dukImage["frameDuration"], 0);
 
@@ -412,8 +412,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 min_width = _info.Desc.MinWidth.value_or(0);
                 min_height = _info.Desc.MinHeight.value_or(0);
-                max_width = _info.Desc.MaxWidth.value_or(std::numeric_limits<uint16_t>::max());
-                max_height = _info.Desc.MaxHeight.value_or(std::numeric_limits<uint16_t>::max());
+                max_width = _info.Desc.MaxWidth.value_or(std::numeric_limits<int16_t>::max());
+                max_height = _info.Desc.MaxHeight.value_or(std::numeric_limits<int16_t>::max());
             }
             RefreshWidgets();
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,7 +44,7 @@ namespace OpenRCT2::RCT1
         bool Load(const utf8* path) override
         {
             const auto extension = Path::GetExtension(path);
-            if (String::IEquals(extension, ".td4"))
+            if (String::iequals(extension, ".td4"))
             {
                 _name = GetNameFromTrackPath(path);
                 auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);

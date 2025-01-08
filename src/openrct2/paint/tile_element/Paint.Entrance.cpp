@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,6 +35,9 @@
 #include "Segment.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
+
+using OpenRCT2::Drawing::LightFx::LightType;
 
 static void PaintRideEntranceExitScrollingText(
     PaintSession& session, const EntranceElement& entranceEl, const StationObject& stationObj, Direction direction,
@@ -84,26 +87,26 @@ static void PaintRideEntranceExitLightEffects(PaintSession& session, int32_t hei
 {
     PROFILED_FUNCTION();
 
-    if (LightFXIsAvailable())
+    if (LightFx::IsAvailable())
     {
         if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
         {
-            LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, height + 45, LightType::Lantern3);
+            LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, height + 45, LightType::Lantern3);
         }
 
         switch (entranceEl.GetDirection())
         {
             case 0:
-                LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 16, LightType::Lantern2);
                 break;
             case 1:
-                LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 16, LightType::Lantern2);
                 break;
             case 2:
-                LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 16, LightType::Lantern2);
                 break;
             case 3:
-                LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 16, LightType::Lantern2);
                 break;
         }
     }
@@ -258,9 +261,9 @@ static void PaintParkEntranceLightEffects(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
-    if (LightFXIsAvailable())
+    if (LightFx::IsAvailable())
     {
-        LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, 155, LightType::Lantern3);
+        LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, 155, LightType::Lantern3);
     }
 }
 

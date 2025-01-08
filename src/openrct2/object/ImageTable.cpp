@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -90,7 +90,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     {
         result.push_back(std::make_unique<RequiredImage>());
     }
-    else if (String::StartsWith(s, "$CSG"))
+    else if (String::startsWith(s, "$CSG"))
     {
         auto rangeStart = s.find('[');
         auto rangeEnd = s.find(']');
@@ -119,7 +119,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             }
         }
     }
-    else if (String::StartsWith(s, "$G1"))
+    else if (String::startsWith(s, "$G1"))
     {
         auto rangeStart = s.find('[');
         auto rangeEnd = s.find(']');
@@ -134,7 +134,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             }
         }
     }
-    else if (String::StartsWith(s, "$RCT2:OBJDATA/"))
+    else if (String::startsWith(s, "$RCT2:OBJDATA/"))
     {
         auto name = s.substr(14);
         auto rangeStart = name.find('[');
@@ -147,7 +147,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             result = LoadObjectImages(context, name, range);
         }
     }
-    else if (String::StartsWith(s, "$LGX:"))
+    else if (String::startsWith(s, "$LGX:"))
     {
         auto name = s.substr(5);
         auto rangeStart = name.find('[');
@@ -179,7 +179,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         }
         catch (const std::exception& e)
         {
-            auto msg = String::StdFormat("Unable to load image '%s': %s", s.c_str(), e.what());
+            auto msg = String::stdFormat("Unable to load image '%s': %s", s.c_str(), e.what());
             context->LogWarning(ObjectError::BadImageTable, msg.c_str());
             result.push_back(std::make_unique<RequiredImage>());
         }
@@ -214,7 +214,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     }
     catch (const std::exception& e)
     {
-        auto msg = String::StdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
+        auto msg = String::stdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
         context->LogWarning(ObjectError::BadImageTable, msg.c_str());
         result.push_back(std::make_unique<RequiredImage>());
     }
@@ -273,7 +273,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
     }
     else
     {
-        auto msg = String::StdFormat("Unable to load Gx '%s'", path.c_str());
+        auto msg = String::stdFormat("Unable to load Gx '%s'", path.c_str());
         context->LogWarning(ObjectError::BadImageTable, msg.c_str());
         for (size_t i = 0; i < range.size(); i++)
         {
@@ -349,7 +349,7 @@ std::vector<int32_t> ImageTable::ParseRange(std::string s)
     if (s.length() >= 3 && s[0] == '[' && s[s.length() - 1] == ']')
     {
         s = s.substr(1, s.length() - 2);
-        auto parts = String::Split(s, "..");
+        auto parts = String::split(s, "..");
         if (parts.size() == 1)
         {
             result.push_back(std::stoi(parts[0]));
@@ -407,7 +407,7 @@ std::string ImageTable::FindLegacyObject(const std::string& name)
         while (scanner->Next())
         {
             auto currentName = Path::GetFileName(scanner->GetPathRelative());
-            if (String::IEquals(currentName, name) || String::IEquals(currentName, altName))
+            if (String::iequals(currentName, name) || String::iequals(currentName, altName))
             {
                 objectPath = scanner->GetPath();
                 break;

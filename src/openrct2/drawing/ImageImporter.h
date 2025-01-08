@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,9 +9,9 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
 #include "../core/Imaging.h"
 #include "../core/JsonFwd.hpp"
-#include "../util/Util.h"
 #include "Drawing.h"
 
 #include <string_view>
@@ -93,7 +93,7 @@ namespace OpenRCT2::Drawing
     ImageImportMeta createImageImportMetaFromJson(json_t& input);
 } // namespace OpenRCT2::Drawing
 
-constexpr GamePalette StandardPalette = { {
+constexpr OpenRCT2::Drawing::GamePalette StandardPalette = { {
     // 0 (Unused/Transparent)
     { 0, 0, 0, 255 },
 

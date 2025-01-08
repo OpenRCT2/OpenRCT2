@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,9 +51,9 @@ const CommandLineCommand CommandLine::SpriteCommands[]
 
 static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
 {
-    if (String::IEquals(_mode, SZ_CLOSEST))
+    if (String::iequals(_mode, SZ_CLOSEST))
         gSpriteMode = ImportMode::Closest;
-    else if (String::IEquals(_mode, SZ_DITHERING))
+    else if (String::iequals(_mode, SZ_DITHERING))
         gSpriteMode = ImportMode::Dithering;
     Memory::Free(_mode);
 

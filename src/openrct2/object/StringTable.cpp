@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,13 +10,13 @@
 #include "StringTable.h"
 
 #include "../Context.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
 #include "../rct12/CSStringConverter.h"
-#include "../util/Util.h"
 #include "Object.h"
 
 using namespace OpenRCT2;
@@ -65,7 +65,7 @@ void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, O
 
             if (!StringIsBlank(stringAsUtf8.data()))
             {
-                stringAsUtf8 = String::Trim(stringAsUtf8);
+                stringAsUtf8 = String::trim(stringAsUtf8);
                 StringTableEntry entry{};
                 entry.Id = id;
                 entry.LanguageId = languageId;
@@ -166,7 +166,7 @@ void StringTable::Sort()
         {
             if (a.LanguageId == b.LanguageId)
             {
-                return String::Compare(a.Text, b.Text, true) < 0;
+                return String::compare(a.Text, b.Text, true) < 0;
             }
 
             for (const auto& language : languageOrder)

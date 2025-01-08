@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,7 +20,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     .Category = RIDE_CATEGORY_ROLLERCOASTER,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionAirPoweredVerticalRC,
+        .trackStyle = TrackStyle::airPoweredVerticalCoaster,
         .supportType = WoodenSupportType::Truss,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHillSteep, TrackGroup::liftHillCurve, TrackGroup::flatRollBanking, TrackGroup::curve, TrackGroup::brakes, TrackGroup::reverseFreefall, TrackGroup::slopeToFlat, TrackGroup::onridePhoto},
         .extraTrackGroups = {TrackGroup::booster},

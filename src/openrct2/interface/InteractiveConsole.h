@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../localisation/FormatCodes.h"
 
+#include <atomic>
 #include <cstdint>
 #include <string>
 
@@ -30,6 +31,9 @@ enum class ConsoleInput : uint8_t
 
 class InteractiveConsole
 {
+private:
+    std::atomic_flag _commandExecuting;
+
 public:
     virtual ~InteractiveConsole()
     {
@@ -40,6 +44,11 @@ public:
     void WriteLineError(const std::string& s);
     void WriteLineWarning(const std::string& s);
     void WriteFormatLine(const char* format, ...);
+
+    void BeginAsyncExecution();
+    void EndAsyncExecution();
+
+    bool IsExecuting();
 
     virtual void Clear() = 0;
     virtual void Close() = 0;

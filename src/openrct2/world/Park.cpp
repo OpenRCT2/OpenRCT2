@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,7 @@
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
@@ -324,7 +325,7 @@ namespace OpenRCT2::Park
         AwardReset();
 
         gameState.ScenarioName.clear();
-        gameState.ScenarioDetails = String::ToStd(LanguageGetString(STR_NO_DETAILS_YET));
+        gameState.ScenarioDetails = String::toStd(LanguageGetString(STR_NO_DETAILS_YET));
     }
 
     void Update(GameState_t& gameState, const Date& date)

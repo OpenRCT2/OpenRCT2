@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -166,15 +166,13 @@ PaintSession* Painter::CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags, uin
     else
     {
         // Create new one in pool.
-        _paintSessionPool.emplace_back(std::make_unique<PaintSession>());
-        session = _paintSessionPool.back().get();
+        session = &_paintSessionPool.emplace_back();
     }
 
     session->DPI = dpi;
     session->ViewFlags = viewFlags;
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;
-    session->PaintEntryChain = _paintStructPool.Create();
     session->Flags = 0;
     session->CurrentRotation = rotation;
 
@@ -197,15 +195,12 @@ void Painter::ReleaseSession(PaintSession* session)
 {
     PROFILED_FUNCTION();
 
-    session->PaintEntryChain.Clear();
+    session->paintEntries.clear();
+
     _freePaintSessions.push_back(session);
 }
 
 Painter::~Painter()
 {
-    for (auto&& session : _paintSessionPool)
-    {
-        ReleaseSession(session.get());
-    }
     _paintSessionPool.clear();
 }

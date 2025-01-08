@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,7 +37,7 @@ namespace OpenRCT2::Json
         }
         catch (const json_t::exception& e)
         {
-            throw JsonException(String::StdFormat(
+            throw JsonException(String::stdFormat(
                 "Unable to parse JSON file (%.*s)\n\t%s", static_cast<int>(path.length()), path.data(), e.what()));
         }
 

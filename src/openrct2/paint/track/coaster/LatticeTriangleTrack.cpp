@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18433,7 +18433,7 @@ static void LatticeTriangleTrackDiagBooster(
     TrackPaintUtilDiagTilesPaintExtra(session, 3, height, direction, trackSequence, images, supportType.metal);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -18925,6 +18925,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrack(OpenRCT2::TrackEl
         case TrackElemType::DiagBooster:
             return LatticeTriangleTrackDiagBooster;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

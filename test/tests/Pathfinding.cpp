@@ -1,9 +1,4 @@
 #include "TestData.h"
-#include "openrct2/core/StringReader.h"
-#include "openrct2/entity/Guest.h"
-#include "openrct2/peep/GuestPathfinding.h"
-#include "openrct2/ride/Station.h"
-#include "openrct2/scenario/Scenario.h"
 
 #include <gtest/gtest.h>
 #include <memory>
@@ -12,7 +7,13 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/core/StringReader.h>
+#include <openrct2/entity/Guest.h>
+#include <openrct2/peep/GuestPathfinding.h>
 #include <openrct2/platform/Platform.h>
+#include <openrct2/ride/RideManager.hpp>
+#include <openrct2/ride/Station.h>
+#include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
@@ -59,7 +60,7 @@ protected:
         for (auto& ride : GetRideManager())
         {
             auto thisName = ride.GetName();
-            if (String::StartsWith(thisName, u8string{ name }, true))
+            if (String::startsWith(thisName, u8string{ name }, true))
             {
                 return &ride;
             }

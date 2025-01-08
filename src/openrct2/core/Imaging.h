@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include <functional>
 #include <istream>
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <vector>
 
@@ -37,7 +38,7 @@ struct Image
 
     // Data
     std::vector<uint8_t> Pixels;
-    std::unique_ptr<GamePalette> Palette;
+    std::optional<OpenRCT2::Drawing::GamePalette> Palette;
     uint32_t Stride{};
 };
 

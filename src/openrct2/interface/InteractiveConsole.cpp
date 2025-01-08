@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,7 @@
 #include "../Version.h"
 #include "../actions/CheatSetAction.h"
 #include "../actions/ClimateSetAction.h"
+#include "../actions/GameSetSpeedAction.h"
 #include "../actions/ParkSetDateAction.h"
 #include "../actions/ParkSetParameterAction.h"
 #include "../actions/RideFreezeRatingAction.h"
@@ -29,6 +30,7 @@
 #include "../actions/StaffSetCostumeAction.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -55,6 +57,7 @@
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -93,9 +96,9 @@ static int32_t ConsoleParseInt(const std::string& src, bool* valid);
 static double ConsoleParseDouble(const std::string& src, bool* valid);
 
 static void ConsoleWriteAllCommands(InteractiveConsole& console);
-static int32_t ConsoleCommandVariables(InteractiveConsole& console, const arguments_t& argv);
-static int32_t ConsoleCommandWindows(InteractiveConsole& console, const arguments_t& argv);
-static int32_t ConsoleCommandHelp(InteractiveConsole& console, const arguments_t& argv);
+static void ConsoleCommandVariables(InteractiveConsole& console, const arguments_t& argv);
+static void ConsoleCommandWindows(InteractiveConsole& console, const arguments_t& argv);
+static void ConsoleCommandHelp(InteractiveConsole& console, const arguments_t& argv);
 
 static bool InvalidArguments(bool* invalid, bool arguments);
 
@@ -125,32 +128,28 @@ static double ConsoleParseDouble(const std::string& src, bool* valid)
     return value;
 }
 
-static int32_t ConsoleCommandClear(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandClear(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     console.Clear();
-    return 0;
 }
 
-static int32_t ConsoleCommandClose(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandClose(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     console.Close();
-    return 0;
 }
 
-static int32_t ConsoleCommandHide(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandHide(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     console.Hide();
-    return 0;
 }
 
-static int32_t ConsoleCommandEcho(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandEcho(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
         console.WriteLine(argv[0]);
-    return 0;
 }
 
-static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
     {
@@ -189,7 +188,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                     console.WriteFormatLine("rides set nausea <ride id> <nausea value>");
                     console.WriteFormatLine("rides set price <ride id / all [type]> <price>");
                 }
-                return 0;
+                return;
             }
             if (argv[1] == "type")
             {
@@ -455,10 +454,9 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
     {
         console.WriteFormatLine("subcommands: list, set");
     }
-    return 0;
 }
 
-static int32_t ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
     {
@@ -487,7 +485,7 @@ static int32_t ConsoleCommandStaff(InteractiveConsole& console, const arguments_
                     // that don't work well with the console, so manually skip past them.
                     console.WriteFormatLine("        costume %i: %s", i, costume_name + 7);
                 }
-                return 0;
+                return;
             }
             if (argv[1] == "energy")
             {
@@ -515,23 +513,23 @@ static int32_t ConsoleCommandStaff(InteractiveConsole& console, const arguments_
                 if (!int_valid[0])
                 {
                     console.WriteLineError("Invalid staff ID");
-                    return 1;
+                    return;
                 }
                 auto staff = GetEntity<Staff>(EntityId::FromUnderlying(int_val[0]));
                 if (staff == nullptr)
                 {
                     console.WriteLineError("Invalid staff ID");
-                    return 1;
+                    return;
                 }
                 if (staff->AssignedStaffType != StaffType::Entertainer)
                 {
                     console.WriteLineError("Specified staff is not entertainer");
-                    return 1;
+                    return;
                 }
                 if (!int_valid[1] || int_val[1] < 0 || int_val[1] >= static_cast<uint8_t>(EntertainerCostume::Count))
                 {
                     console.WriteLineError("Invalid costume ID");
-                    return 1;
+                    return;
                 }
 
                 EntertainerCostume costume = static_cast<EntertainerCostume>(int_val[1]);
@@ -544,10 +542,9 @@ static int32_t ConsoleCommandStaff(InteractiveConsole& console, const arguments_
     {
         console.WriteFormatLine("subcommands: list, set");
     }
-    return 0;
 }
 
-static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& argv)
 {
     auto& gameState = GetGameState();
 
@@ -559,32 +556,39 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "park_value")
         {
-            console.WriteFormatLine("park_value %d", gameState.Park.Value / 10);
+            console.WriteLine(FormatString("park_value {CURRENCY2DP}", gameState.Park.Value));
         }
         else if (argv[0] == "company_value")
         {
-            console.WriteFormatLine("company_value %d", gameState.CompanyValue / 10);
+            console.WriteLine(FormatString("company_value {CURRENCY2DP}", gameState.CompanyValue));
         }
         else if (argv[0] == "money")
         {
-            console.WriteFormatLine("money %d.%d0", gameState.Cash / 10, gameState.Cash % 10);
+            console.WriteLine(FormatString("money {CURRENCY2DP}", gameState.Cash));
         }
         else if (argv[0] == "scenario_initial_cash")
         {
-            console.WriteFormatLine("scenario_initial_cash %d", gameState.InitialCash / 10);
+            console.WriteLine(FormatString("scenario_initial_cash {CURRENCY2DP}", gameState.InitialCash));
         }
         else if (argv[0] == "current_loan")
         {
-            console.WriteFormatLine("current_loan %d", gameState.BankLoan / 10);
+            console.WriteLine(FormatString("current_loan {CURRENCY2DP}", gameState.BankLoan));
         }
         else if (argv[0] == "max_loan")
         {
-            console.WriteFormatLine("max_loan %d", gameState.MaxBankLoan / 10);
+            console.WriteLine(FormatString("max_loan {CURRENCY2DP}", gameState.MaxBankLoan));
         }
         else if (argv[0] == "guest_initial_cash")
         {
-            console.WriteFormatLine(
-                "guest_initial_cash %d.%d0", gameState.GuestInitialCash / 10, gameState.GuestInitialCash % 10);
+            console.WriteLine(FormatString("guest_initial_cash {CURRENCY2DP}", gameState.GuestInitialCash));
+        }
+        else if (argv[0] == "land_rights_cost")
+        {
+            console.WriteLine(FormatString("land_rights_cost {CURRENCY2DP}", gameState.LandPrice));
+        }
+        else if (argv[0] == "construction_rights_cost")
+        {
+            console.WriteLine(FormatString("construction_rights_cost {CURRENCY2DP}", gameState.ConstructionRightsPrice));
         }
         else if (argv[0] == "guest_initial_happiness")
         {
@@ -664,16 +668,6 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         {
             console.WriteFormatLine("park_open %d", (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN) != 0);
         }
-        else if (argv[0] == "land_rights_cost")
-        {
-            console.WriteFormatLine("land_rights_cost %d.%d0", gameState.LandPrice / 10, gameState.LandPrice % 10);
-        }
-        else if (argv[0] == "construction_rights_cost")
-        {
-            console.WriteFormatLine(
-                "construction_rights_cost %d.%d0", gameState.ConstructionRightsPrice / 10,
-                gameState.ConstructionRightsPrice % 10);
-        }
         else if (argv[0] == "climate")
         {
             console.WriteFormatLine(
@@ -747,9 +741,24 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
             console.WriteLineWarning("Invalid variable.");
         }
     }
-    return 0;
 }
-static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t& argv)
+
+template<typename TAction, typename... TArgs>
+static void ConsoleSetVariableAction(InteractiveConsole& console, std::string var, TArgs&&... args)
+{
+    auto action = TAction(std::forward<TArgs>(args)...);
+    action.SetCallback([&console, var](const GameAction*, const GameActions::Result* res) {
+        if (res->Error != GameActions::Status::Ok)
+            console.WriteLineError(String::stdFormat("set %s command failed, likely due to permissions.", var.c_str()));
+        else
+            console.Execute(String::stdFormat("get %s", var.c_str()));
+        console.EndAsyncExecution();
+    });
+    console.BeginAsyncExecution();
+    GameActions::Execute(&action);
+}
+
+static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& argv)
 {
     if (argv.size() > 1)
     {
@@ -775,255 +784,130 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
             }
         }
 
+        std::string varName = argv[0];
+
         auto& gameState = GetGameState();
-        if (argv[0] == "money" && InvalidArguments(&invalidArgs, double_valid[0]))
+        if (varName == "money" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             money64 money = ToMoney64FromGBP(double_val[0]);
             if (gameState.Cash != money)
             {
-                auto cheatSetAction = CheatSetAction(CheatType::SetMoney, money);
-                cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                    if (res->Error != GameActions::Status::Ok)
-                        console.WriteLineError("set money command failed, likely due to permissions.");
-                    else
-                        console.Execute("get money");
-                });
-                GameActions::Execute(&cheatSetAction);
+                ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::SetMoney, money);
             }
             else
             {
                 console.Execute("get money");
             }
         }
-        else if (argv[0] == "scenario_initial_cash" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "scenario_initial_cash" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::InitialCash, std::clamp(ToMoney64FromGBP(int_val[0]), 0.00_GBP, 1000000.00_GBP));
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set scenario_initial_cash command failed, likely due to permissions.");
-                else
-                    console.Execute("get scenario_initial_cash");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::InitialCash,
+                std::clamp(ToMoney64FromGBP(int_val[0]), 0.00_GBP, 1000000.00_GBP));
         }
-        else if (argv[0] == "current_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "current_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             auto amount = std::clamp(
                 ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gameState.MaxBankLoan);
-            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::InitialLoan, amount);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set current_loan command failed, likely due to permissions.");
-                else
-                    console.Execute("get current_loan");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(console, varName, ScenarioSetSetting::InitialLoan, amount);
         }
-        else if (argv[0] == "max_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "max_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             auto amount = std::clamp(
                 ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, 5000000.00_GBP);
-            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::MaximumLoanSize, amount);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set max_loan command failed, likely due to permissions.");
-                else
-                    console.Execute("get max_loan");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(console, varName, ScenarioSetSetting::MaximumLoanSize, amount);
         }
-        else if (argv[0] == "guest_initial_cash" && InvalidArguments(&invalidArgs, double_valid[0]))
+        else if (varName == "guest_initial_cash" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::AverageCashPerGuest, std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 1000.00_GBP));
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set guest_initial_cash command failed, likely due to permissions.");
-                else
-                    console.Execute("get guest_initial_cash");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::AverageCashPerGuest,
+                std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 1000.00_GBP));
         }
-        else if (argv[0] == "guest_initial_happiness" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "guest_initial_happiness" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::GuestInitialHappiness,
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::GuestInitialHappiness,
                 Park::CalculateGuestInitialHappiness(static_cast<uint8_t>(int_val[0])));
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set guest_initial_happiness command failed, likely due to permissions.");
-                else
-                    console.Execute("get guest_initial_happiness");
-            });
-            GameActions::Execute(&scenarioSetSetting);
         }
-        else if (argv[0] == "guest_initial_hunger" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "guest_initial_hunger" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::GuestInitialHunger, (std::clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set guest_initial_hunger command failed, likely due to permissions.");
-                else
-                    console.Execute("get guest_initial_happiness");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::GuestInitialHunger,
+                (std::clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1);
         }
-        else if (argv[0] == "guest_initial_thirst" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "guest_initial_thirst" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::GuestInitialThirst, (std::clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set guest_initial_thirst command failed, likely due to permissions.");
-                else
-                    console.Execute("get guest_initial_thirst");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::GuestInitialThirst,
+                (std::clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1);
         }
-        else if (argv[0] == "guest_prefer_less_intense_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "guest_prefer_less_intense_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::GuestsPreferLessIntenseRides, int_val[0]);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set guest_prefer_less_intense_rides command failed, likely due to permissions.");
-                else
-                    console.Execute("get guest_prefer_less_intense_rides");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::GuestsPreferLessIntenseRides, int_val[0]);
         }
-        else if (argv[0] == "guest_prefer_more_intense_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "guest_prefer_more_intense_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::GuestsPreferMoreIntenseRides, int_val[0]);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set guest_prefer_more_intense_rides command failed, likely due to permissions.");
-                else
-                    console.Execute("get guest_prefer_more_intense_rides");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::GuestsPreferMoreIntenseRides, int_val[0]);
         }
-        else if (argv[0] == "forbid_marketing_campaigns" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "forbid_marketing_campaigns" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::ForbidMarketingCampaigns, int_val[0]);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set forbid_marketing_campaigns command failed, likely due to permissions.");
-                else
-                    console.Execute("get forbid_marketing_campaigns");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::ForbidMarketingCampaigns, int_val[0]);
         }
-        else if (argv[0] == "forbid_landscape_changes" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "forbid_landscape_changes" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::ForbidLandscapeChanges, int_val[0]);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set forbid_landscape_changes command failed, likely due to permissions.");
-                else
-                    console.Execute("get forbid_landscape_changes");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::ForbidLandscapeChanges, int_val[0]);
         }
-        else if (argv[0] == "forbid_tree_removal" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "forbid_tree_removal" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::ForbidTreeRemoval, int_val[0]);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set forbid_tree_removal command failed, likely due to permissions.");
-                else
-                    console.Execute("get forbid_tree_removal");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::ForbidTreeRemoval, int_val[0]);
         }
-        else if (argv[0] == "forbid_high_construction" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "forbid_high_construction" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::ForbidHighConstruction, int_val[0]);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set forbid_high_construction command failed, likely due to permissions.");
-                else
-                    console.Execute("get forbid_high_construction");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::ForbidHighConstruction, int_val[0]);
         }
-        else if (argv[0] == "pay_for_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "pay_for_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             SET_FLAG(gameState.Park.Flags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
             console.Execute("get pay_for_rides");
         }
-        else if (argv[0] == "no_money" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "no_money" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto cheatSetAction = CheatSetAction(CheatType::NoMoney, int_val[0] != 0);
-            cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set no_money command failed, likely due to permissions.");
-                else
-                    console.Execute("get no_money");
-            });
-            GameActions::Execute(&cheatSetAction);
+            ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::NoMoney, int_val[0] != 0);
         }
-        else if (argv[0] == "difficult_park_rating" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "difficult_park_rating" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::ParkRatingHigherDifficultyLevel, int_val[0]);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set difficult_park_rating command failed, likely due to permissions.");
-                else
-                    console.Execute("get difficult_park_rating");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::ParkRatingHigherDifficultyLevel, int_val[0]);
         }
-        else if (argv[0] == "difficult_guest_generation" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "difficult_guest_generation" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::GuestGenerationHigherDifficultyLevel, int_val[0]);
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set difficult_guest_generation command failed, likely due to permissions.");
-                else
-                    console.Execute("get difficult_guest_generation");
-            });
-            GameActions::Execute(&scenarioSetSetting);
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::GuestGenerationHigherDifficultyLevel, int_val[0]);
         }
-        else if (argv[0] == "park_open" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "park_open" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            auto parkSetParameter = ParkSetParameterAction((int_val[0] == 1) ? ParkParameter::Open : ParkParameter::Close);
-            parkSetParameter.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set park_open command failed, likely due to permissions.");
-                else
-                    console.Execute("get park_open");
-            });
-            GameActions::Execute(&parkSetParameter);
+            ConsoleSetVariableAction<ParkSetParameterAction>(
+                console, varName, (int_val[0] == 1) ? ParkParameter::Open : ParkParameter::Close);
         }
-        else if (argv[0] == "land_rights_cost" && InvalidArguments(&invalidArgs, double_valid[0]))
+        else if (varName == "land_rights_cost" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
-            auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::CostToBuyLand, std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set land_rights_cost command failed, likely due to permissions.");
-                else
-                    console.Execute("get land_rights_cost");
-            });
-            GameActions::Execute(&scenarioSetSetting);
-        }
-        else if (argv[0] == "construction_rights_cost" && InvalidArguments(&invalidArgs, double_valid[0]))
-        {
-            auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::CostToBuyConstructionRights,
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::CostToBuyLand,
                 std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
-            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                if (res->Error != GameActions::Status::Ok)
-                    console.WriteLineError("set construction_rights_cost command failed, likely due to permissions.");
-                else
-                    console.Execute("get construction_rights_cost");
-            });
-            GameActions::Execute(&scenarioSetSetting);
         }
-        else if (argv[0] == "climate")
+        else if (varName == "construction_rights_cost" && InvalidArguments(&invalidArgs, double_valid[0]))
+        {
+            ConsoleSetVariableAction<ScenarioSetSettingAction>(
+                console, varName, ScenarioSetSetting::CostToBuyConstructionRights,
+                std::clamp(ToMoney64FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
+        }
+        else if (varName == "climate")
         {
             uint8_t newClimate = static_cast<uint8_t>(ClimateType::Count);
             invalidArgs = true;
@@ -1051,24 +935,20 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
             }
             else
             {
-                auto gameAction = ClimateSetAction(ClimateType{ newClimate });
-                GameActions::Execute(&gameAction);
-
-                console.Execute("get climate");
+                ConsoleSetVariableAction<ClimateSetAction>(console, varName, ClimateType{ newClimate });
             }
         }
-        else if (argv[0] == "game_speed" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "game_speed" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            gGameSpeed = std::clamp(int_val[0], 1, 8);
-            console.Execute("get game_speed");
+            ConsoleSetVariableAction<GameSetSpeedAction>(console, varName, std::clamp(int_val[0], 1, 8));
         }
-        else if (argv[0] == "console_small_font" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "console_small_font" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             Config::Get().interface.ConsoleSmallFont = (int_val[0] != 0);
             Config::Save();
             console.Execute("get console_small_font");
         }
-        else if (argv[0] == "location" && InvalidArguments(&invalidArgs, int_valid[0] && int_valid[1]))
+        else if (varName == "location" && InvalidArguments(&invalidArgs, int_valid[0] && int_valid[1]))
         {
             WindowBase* w = WindowGetMain();
             if (w != nullptr)
@@ -1080,7 +960,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
                 console.Execute("get location");
             }
         }
-        else if (argv[0] == "window_scale" && InvalidArguments(&invalidArgs, double_valid[0]))
+        else if (varName == "window_scale" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             float newScale = static_cast<float>(0.001 * std::trunc(1000 * double_val[0]));
             Config::Get().general.WindowScale = std::clamp(newScale, 0.5f, 5.0f);
@@ -1090,78 +970,57 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
             ContextUpdateCursorScale();
             console.Execute("get window_scale");
         }
-        else if (argv[0] == "window_limit" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "window_limit" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             WindowSetWindowLimit(int_val[0]);
             console.Execute("get window_limit");
         }
-        else if (argv[0] == "render_weather_effects" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "render_weather_effects" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             Config::Get().general.RenderWeatherEffects = (int_val[0] != 0);
             Config::Save();
             console.Execute("get render_weather_effects");
         }
-        else if (argv[0] == "render_weather_gloom" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "render_weather_gloom" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             Config::Get().general.RenderWeatherGloom = (int_val[0] != 0);
             Config::Save();
             console.Execute("get render_weather_gloom");
         }
-        else if (argv[0] == "cheat_sandbox_mode" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "cheat_sandbox_mode" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             if (GetGameState().Cheats.sandboxMode != (int_val[0] != 0))
             {
-                auto cheatSetAction = CheatSetAction(CheatType::SandboxMode, int_val[0] != 0);
-                cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                    if (res->Error != GameActions::Status::Ok)
-                        console.WriteLineError("Network error: Permission denied!");
-                    else
-                        console.Execute("get cheat_sandbox_mode");
-                });
-                GameActions::Execute(&cheatSetAction);
+                ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::SandboxMode, int_val[0] != 0);
             }
             else
             {
                 console.Execute("get cheat_sandbox_mode");
             }
         }
-        else if (argv[0] == "cheat_disable_clearance_checks" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "cheat_disable_clearance_checks" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             if (GetGameState().Cheats.disableClearanceChecks != (int_val[0] != 0))
             {
-                auto cheatSetAction = CheatSetAction(CheatType::DisableClearanceChecks, int_val[0] != 0);
-                cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                    if (res->Error != GameActions::Status::Ok)
-                        console.WriteLineError("Network error: Permission denied!");
-                    else
-                        console.Execute("get cheat_disable_clearance_checks");
-                });
-                GameActions::Execute(&cheatSetAction);
+                ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::DisableClearanceChecks, int_val[0] != 0);
             }
             else
             {
                 console.Execute("get cheat_disable_clearance_checks");
             }
         }
-        else if (argv[0] == "cheat_disable_support_limits" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "cheat_disable_support_limits" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             if (GetGameState().Cheats.disableSupportLimits != (int_val[0] != 0))
             {
-                auto cheatSetAction = CheatSetAction(CheatType::DisableSupportLimits, int_val[0] != 0);
-                cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
-                    if (res->Error != GameActions::Status::Ok)
-                        console.WriteLineError("Network error: Permission denied!");
-                    else
-                        console.Execute("get cheat_disable_support_limits");
-                });
-                GameActions::Execute(&cheatSetAction);
+                ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::DisableSupportLimits, int_val[0] != 0);
             }
             else
             {
                 console.Execute("get cheat_disable_support_limits");
             }
         }
-        else if (argv[0] == "current_rotation" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "current_rotation" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             uint8_t currentRotation = GetCurrentRotation();
             int32_t newRotation = int_val[0];
@@ -1175,7 +1034,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
             }
             console.Execute("get current_rotation");
         }
-        else if (argv[0] == "host_timescale" && InvalidArguments(&invalidArgs, double_valid[0]))
+        else if (varName == "host_timescale" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             float newScale = static_cast<float>(double_val[0]);
 
@@ -1184,7 +1043,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
             console.Execute("get host_timescale");
         }
 #ifndef NO_TTF
-        else if (argv[0] == "enable_hinting" && InvalidArguments(&invalidArgs, int_valid[0]))
+        else if (varName == "enable_hinting" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             Config::Get().fonts.EnableHinting = (int_val[0] != 0);
             Config::Save();
@@ -1207,10 +1066,9 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
     {
         console.WriteLineError("Value required.");
     }
-    return 0;
 }
 
-static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandLoadObject(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
     {
@@ -1226,7 +1084,7 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
         if (ori == nullptr)
         {
             console.WriteLineError("Could not find the object.");
-            return 1;
+            return;
         }
 
         const RCTObjectEntry* entry = &ori->ObjectEntry;
@@ -1234,14 +1092,14 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
         if (loadedObject != nullptr)
         {
             console.WriteLineError("Object is already in scenario.");
-            return 1;
+            return;
         }
 
         loadedObject = ObjectManagerLoadObject(entry);
         if (loadedObject == nullptr)
         {
             console.WriteLineError("Unable to load object.");
-            return 1;
+            return;
         }
         auto groupIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
 
@@ -1284,8 +1142,6 @@ static int32_t ConsoleCommandLoadObject(InteractiveConsole& console, const argum
         GfxInvalidateScreen();
         console.WriteLine("Object file loaded.");
     }
-
-    return 0;
 }
 
 constexpr std::array _objectTypeNames = {
@@ -1311,7 +1167,7 @@ constexpr std::array _objectTypeNames = {
 };
 static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
 
-static int32_t ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     for (auto objectType : getAllObjectTypes())
     {
@@ -1326,11 +1182,9 @@ static int32_t ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_u
         console.WriteFormatLine(
             "%s: %d/%d", _objectTypeNames[EnumValue(objectType)], entryGroupIndex, getObjectEntryGroupCount(objectType));
     }
-
-    return 0;
 }
 
-static int32_t ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
     {
@@ -1392,24 +1246,21 @@ static int32_t ConsoleCommandOpen(InteractiveConsole& console, const arguments_t
             console.WriteLineError("Invalid window.");
         }
     }
-    return 0;
 }
 
-static int32_t ConsoleCommandRemoveUnusedObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandRemoveUnusedObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     int32_t result = EditorRemoveUnusedObjects();
     console.WriteFormatLine("%d unused object entries have been removed.", result);
-    return 0;
 }
 
-static int32_t ConsoleCommandRemoveFloatingObjects(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandRemoveFloatingObjects(InteractiveConsole& console, const arguments_t& argv)
 {
     uint16_t result = RemoveFloatingEntities();
     console.WriteFormatLine("Removed %d flying objects", result);
-    return 0;
 }
 
-static int32_t ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     const auto& tileElements = GetTileElements();
     const auto tileElementCount = tileElements.size();
@@ -1428,24 +1279,23 @@ static int32_t ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unu
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, OpenRCT2::Limits::kMaxRidesInPark);
     console.WriteFormatLine("Images: %zu/%zu", ImageListGetUsedCount(), ImageListGetMaximum());
-    return 0;
 }
 
-static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     int32_t year = 0;
     int32_t month = 0;
     int32_t day = 0;
     if (argv.size() < 1 || argv.size() > 3)
     {
-        return -1;
+        return;
     }
 
     // All cases involve providing a year, so grab that first
     year = atoi(argv[0].c_str());
     if (year < 1 || year > kMaxYear)
     {
-        return -1;
+        return;
     }
 
     // YYYY (no month provided, preserve existing month)
@@ -1461,7 +1311,7 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
         month -= 2;
         if (month < 1 || month > MONTH_COUNT)
         {
-            return -1;
+            return;
         }
     }
 
@@ -1477,27 +1327,25 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
         day = atoi(argv[2].c_str());
         if (day < 1 || day > Date::GetDaysInMonth(month - 1))
         {
-            return -1;
+            return;
         }
     }
 
     auto setDateAction = ParkSetDateAction(year - 1, month - 1, day - 1);
     GameActions::Execute(&setDateAction);
     WindowInvalidateByClass(WindowClass::BottomToolbar);
-
-    return 1;
 }
 
-static int32_t ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     if (argv.size() < 1)
     {
         console.WriteLine("Parameters required <filename>");
-        return 0;
+        return;
     }
 
     u8string savePath = {};
-    if (String::IndexOf(argv[0].c_str(), '/') == SIZE_MAX && String::IndexOf(argv[0].c_str(), '\\') == SIZE_MAX)
+    if (String::indexOf(argv[0].c_str(), '/') == SIZE_MAX && String::indexOf(argv[0].c_str(), '\\') == SIZE_MAX)
     {
         // no / or \ was included. File should be in save dir.
         auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
@@ -1508,8 +1356,8 @@ static int32_t ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& conso
     {
         savePath = argv[0];
     }
-    if (!String::EndsWith(savePath, ".sv6", true) && !String::EndsWith(savePath, ".sc6", true)
-        && !String::EndsWith(savePath, ".park", true))
+    if (!String::endsWith(savePath, ".sv6", true) && !String::endsWith(savePath, ".sc6", true)
+        && !String::endsWith(savePath, ".park", true))
     {
         savePath += ".park";
     }
@@ -1521,10 +1369,9 @@ static int32_t ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& conso
     {
         console.WriteFormatLine("Loading Park %s failed", savePath.c_str());
     }
-    return 1;
 }
 
-static int32_t ConsoleCommandSavePark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandSavePark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     if (argv.size() < 1)
     {
@@ -1534,45 +1381,43 @@ static int32_t ConsoleCommandSavePark([[maybe_unused]] InteractiveConsole& conso
     {
         SaveGameCmd(argv[0].c_str());
     }
-    return 1;
 }
 
-static int32_t ConsoleCommandSay(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandSay(InteractiveConsole& console, const arguments_t& argv)
 {
     if (NetworkGetMode() == NETWORK_MODE_NONE || NetworkGetStatus() != NETWORK_STATUS_CONNECTED
         || NetworkGetAuthstatus() != NetworkAuth::Ok)
     {
         console.WriteFormatLine("This command only works in multiplayer mode.");
-        return 0;
+        return;
     }
 
     if (!argv.empty())
     {
         NetworkSendChat(argv[0].c_str());
-        return 1;
+        return;
     }
 
     console.WriteFormatLine("Input your message");
-    return 0;
 }
 
-static int32_t ConsoleCommandReplayStartRecord(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandReplayStartRecord(InteractiveConsole& console, const arguments_t& argv)
 {
     if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
-        return 0;
+        return;
     }
 
     if (argv.size() < 1)
     {
         console.WriteFormatLine("Parameters required <replay_name> [<max_ticks = 0xFFFFFFFF>]");
-        return 0;
+        return;
     }
 
     std::string name = argv[0];
 
-    if (!String::EndsWith(name, ".parkrep", true))
+    if (!String::endsWith(name, ".parkrep", true))
     {
         name += ".parkrep";
     }
@@ -1596,26 +1441,22 @@ static int32_t ConsoleCommandReplayStartRecord(InteractiveConsole& console, cons
         const char* logFmt = "Replay recording started: (%s) %s";
         console.WriteFormatLine(logFmt, info.Name.c_str(), info.FilePath.c_str());
         Console::WriteLine(logFmt, info.Name.c_str(), info.FilePath.c_str());
-
-        return 1;
     }
-
-    return 0;
 }
 
-static int32_t ConsoleCommandReplayStopRecord(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandReplayStopRecord(InteractiveConsole& console, const arguments_t& argv)
 {
     if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
-        return 0;
+        return;
     }
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
     if (!replayManager->IsRecording() && !replayManager->IsNormalising())
     {
         console.WriteFormatLine("Replay currently not recording");
-        return 0;
+        return;
     }
 
     OpenRCT2::ReplayRecordInfo info;
@@ -1631,25 +1472,21 @@ static int32_t ConsoleCommandReplayStopRecord(InteractiveConsole& console, const
         console.WriteFormatLine(
             logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
         Console::WriteLine(logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
-
-        return 1;
     }
-
-    return 0;
 }
 
-static int32_t ConsoleCommandReplayStart(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandReplayStart(InteractiveConsole& console, const arguments_t& argv)
 {
     if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
-        return 0;
+        return;
     }
 
     if (argv.size() < 1)
     {
         console.WriteFormatLine("Parameters required <replay_name>");
-        return 0;
+        return;
     }
 
     std::string name = argv[0];
@@ -1673,49 +1510,40 @@ static int32_t ConsoleCommandReplayStart(InteractiveConsole& console, const argu
 
         console.WriteFormatLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
         Console::WriteLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
-
-        return 1;
     }
-
-    return 0;
 }
 
-static int32_t ConsoleCommandReplayStop(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandReplayStop(InteractiveConsole& console, const arguments_t& argv)
 {
     if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
-        return 0;
+        return;
     }
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
     if (replayManager->StopPlayback())
     {
         console.WriteFormatLine("Stopped replay");
-        return 1;
     }
-
-    return 0;
 }
 
-static int32_t ConsoleCommandReplayNormalise(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandReplayNormalise(InteractiveConsole& console, const arguments_t& argv)
 {
     if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
-        return 0;
     }
 
     if (argv.size() < 2)
     {
         console.WriteFormatLine("Parameters required <replay_input> <replay_output>");
-        return 0;
     }
 
     std::string inputFile = argv[0];
     std::string outputFile = argv[1];
 
-    if (!String::EndsWith(outputFile, ".parkrep", true))
+    if (!String::endsWith(outputFile, ".parkrep", true))
     {
         outputFile += ".parkrep";
     }
@@ -1727,13 +1555,10 @@ static int32_t ConsoleCommandReplayNormalise(InteractiveConsole& console, const 
     if (replayManager->NormaliseReplay(inputFile, outputFile))
     {
         console.WriteFormatLine("Stopped replay");
-        return 1;
     }
-
-    return 0;
 }
 
-static int32_t ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_t& argv)
 {
     int32_t desyncType = 0;
     if (argv.size() >= 1)
@@ -1782,45 +1607,40 @@ static int32_t ConsoleCommandMpDesync(InteractiveConsole& console, const argumen
             break;
         }
     }
-    return 0;
 }
 
 #pragma warning(push)
 #pragma warning(disable : 4702) // unreachable code
-static int32_t ConsoleCommandAbort([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandAbort([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     std::abort();
-    return 0;
 }
 
-static int32_t ConsoleCommandDereference([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandDereference([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnull-dereference"
     // Dereference a nullptr to induce a crash to be caught by crash handler, on supported platforms
     uint8_t* myptr = nullptr;
     *myptr = 42;
-    return 0;
 #pragma GCC diagnostic pop
 }
 
-static int32_t ConsoleCommandTerminate([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandTerminate([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     std::terminate();
-    return 0;
 }
 #pragma warning(pop)
 
-static int32_t ConsoleCommandAssert([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandAssert([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     if (!argv.empty())
         Guard::Assert(false, "%s", argv[0].c_str());
     else
         Guard::Assert(false);
-    return 0;
 }
 
-static int32_t ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     if (argv.size() < 2)
     {
@@ -1842,7 +1662,7 @@ static int32_t ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& co
         console.WriteLine("message is the message to display, wrapped in quotes for multiple words");
         console.WriteLine("assoc is the associated id of ride/peep/tile/etc. If the selected ItemType doesn't need an assoc "
                           "(Null, Money, Award, Graph), you can leave this field blank");
-        return 1;
+        return;
     }
 
     auto type = atoi(argv[0].c_str());
@@ -1860,52 +1680,43 @@ static int32_t ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& co
         if (News::CheckIfItemRequiresAssoc(itemType))
         {
             console.WriteLine("Selected ItemType requires an assoc");
-            return 0;
+            return;
         }
     }
 
     News::AddItemToQueue(itemType, msg, assoc);
     console.WriteLine("Successfully added News Item");
-    return 0;
 }
 
-static int32_t ConsoleCommandProfilerReset(
-    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandProfilerReset([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     OpenRCT2::Profiling::ResetData();
-    return 0;
 }
-static int32_t ConsoleCommandProfilerStart(
-    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandProfilerStart([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     if (!OpenRCT2::Profiling::IsEnabled())
         console.WriteLine("Started profiler");
     OpenRCT2::Profiling::Enable();
-    return 0;
 }
 
-static int32_t ConsoleCommandProfilerExportCSV(
+static void ConsoleCommandProfilerExportCSV(
     [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     if (argv.size() < 1)
     {
         console.WriteLineError("Missing argument: <file path>");
-        return 1;
     }
 
     const auto& csvFilePath = argv[0];
     if (!OpenRCT2::Profiling::ExportCSV(csvFilePath))
     {
         console.WriteFormatLine("Unable to export CSV file to %s", csvFilePath.c_str());
-        return 1;
     }
 
     console.WriteFormatLine("Wrote file CSV file: \"%s\"", csvFilePath.c_str());
-    return 0;
 }
 
-static int32_t ConsoleCommandProfilerStop(
-    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandProfilerStop([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     if (OpenRCT2::Profiling::IsEnabled())
         console.WriteLine("Stopped profiler");
@@ -1916,16 +1727,14 @@ static int32_t ConsoleCommandProfilerStop(
     {
         return ConsoleCommandProfilerExportCSV(console, argv);
     }
-
-    return 0;
 }
 
-static int32_t ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_t& argv)
 {
     if (argv.size() < 3)
     {
         console.WriteLineError("Need arguments: <x> <y> <z> <colour>");
-        return 1;
+        return;
     }
     int32_t x = kCoordsXYStep * atof(argv[0].c_str());
     int32_t y = kCoordsXYStep * atof(argv[1].c_str());
@@ -1934,10 +1743,9 @@ static int32_t ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_
     if (argv.size() > 3)
         col = atoi(argv[3].c_str());
     Balloon::Create({ x, y, z }, col, false);
-    return 0;
 }
 
-using console_command_func = int32_t (*)(InteractiveConsole& console, const arguments_t& argv);
+using console_command_func = void (*)(InteractiveConsole& console, const arguments_t& argv);
 struct ConsoleCommand
 {
     const utf8* command;
@@ -2050,25 +1858,23 @@ static constexpr ConsoleCommand console_command_table[] = {
       "profiler_exportcsv <output file>" },
 };
 
-static int32_t ConsoleCommandWindows(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandWindows(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     for (auto s : console_window_table)
     {
         console.WriteLine(s);
     }
-    return 0;
 }
 
-static int32_t ConsoleCommandVariables(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+static void ConsoleCommandVariables(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     for (auto s : console_variable_table)
     {
         console.WriteLine(s);
     }
-    return 0;
 }
 
-static int32_t ConsoleCommandHelp(InteractiveConsole& console, const arguments_t& argv)
+static void ConsoleCommandHelp(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
     {
@@ -2085,7 +1891,6 @@ static int32_t ConsoleCommandHelp(InteractiveConsole& console, const arguments_t
     {
         ConsoleWriteAllCommands(console);
     }
-    return 0;
 }
 
 static void ConsoleWriteAllCommands(InteractiveConsole& console)
@@ -2152,7 +1957,6 @@ void InteractiveConsole::Execute(const std::string& s)
         return;
 
     bool validCommand = false;
-
     for (const auto& c : console_command_table)
     {
         if (argv[0] == c.command)
@@ -2189,7 +1993,22 @@ void InteractiveConsole::WriteFormatLine(const char* format, ...)
 {
     va_list list;
     va_start(list, format);
-    auto buffer = String::Format_VA(format, list);
+    auto buffer = String::formatVA(format, list);
     va_end(list);
     WriteLine(buffer);
+}
+
+void InteractiveConsole::BeginAsyncExecution()
+{
+    OpenRCT2::Guard::Assert(!_commandExecuting.test_and_set(), "Command already executing asynchronously");
+}
+
+void InteractiveConsole::EndAsyncExecution()
+{
+    _commandExecuting.clear();
+}
+
+bool InteractiveConsole::IsExecuting()
+{
+    return _commandExecuting.test();
 }

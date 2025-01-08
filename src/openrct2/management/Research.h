@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -132,11 +132,11 @@ void ResearchInsertRideEntry(ObjectEntryIndex entryIndex, bool researched);
 bool ResearchInsertSceneryGroupEntry(ObjectEntryIndex entryIndex, bool researched);
 
 bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index);
-void RideTypeSetInvented(uint32_t rideType);
+void RideTypeSetInvented(ride_type_t rideType);
 void RideEntrySetInvented(ObjectEntryIndex rideEntryIndex);
 void ScenerySetInvented(const ScenerySelection& sceneryItem);
 void ScenerySetNotInvented(const ScenerySelection& sceneryItem);
-bool RideTypeIsInvented(uint32_t rideType);
+bool RideTypeIsInvented(ride_type_t rideType);
 bool RideEntryIsInvented(ObjectEntryIndex rideEntryIndex);
 bool SceneryGroupIsInvented(int32_t sgIndex);
 void SceneryGroupSetInvented(int32_t sgIndex);

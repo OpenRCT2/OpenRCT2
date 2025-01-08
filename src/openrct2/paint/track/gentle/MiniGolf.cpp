@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1086,7 +1086,7 @@ static void PaintMiniGolfHoleE(
 /**
  * rct2: 0x0087EDC4
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMiniGolf(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1128,6 +1128,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(OpenRCT2::TrackElemType track
         case TrackElemType::MinigolfHoleE:
             return PaintMiniGolfHoleE;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

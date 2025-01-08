@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19009,7 +19009,7 @@ static void TwisterRCTrackRightLargeZeroGRollDown(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwisterRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionTwisterRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -19531,6 +19531,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwisterRC(OpenRCT2::TrackElemType trac
             return TwisterRCTrackRightLargeZeroGRollDown;
 
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

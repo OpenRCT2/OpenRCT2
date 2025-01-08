@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,7 +34,6 @@
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
@@ -602,7 +601,7 @@ namespace OpenRCT2::Ui::Windows
             return _lastTrackDesignCount;
         }
 
-        void UpdateVehicleAvailability(ObjectEntryIndex rideType)
+        void UpdateVehicleAvailability(ride_type_t rideType)
         {
             _vehicleAvailability.clear();
             if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::listVehiclesSeparately))
@@ -757,13 +756,13 @@ namespace OpenRCT2::Ui::Windows
         bool IsFilterInRideType(const RideObjectEntry& rideEntry)
         {
             auto rideTypeName = GetRideNaming(rideEntry.ride_type[0], rideEntry).Name;
-            return String::Contains(u8string_view(LanguageGetString(rideTypeName)), _filter, true);
+            return String::contains(u8string_view(LanguageGetString(rideTypeName)), _filter, true);
         }
 
         bool IsFilterInRideName(const RideObjectEntry& rideEntry)
         {
             auto rideName = rideEntry.naming.Name;
-            return String::Contains(u8string_view(LanguageGetString(rideName)), _filter, true);
+            return String::contains(u8string_view(LanguageGetString(rideName)), _filter, true);
         }
 
         bool IsFilterInAuthors(const RideObject& rideObject)
@@ -771,7 +770,7 @@ namespace OpenRCT2::Ui::Windows
             auto& authors = rideObject.GetAuthors();
 
             for (auto& author : authors)
-                if (String::Contains(author, _filter, true))
+                if (String::contains(author, _filter, true))
                     return true;
 
             return false;
@@ -781,14 +780,14 @@ namespace OpenRCT2::Ui::Windows
         {
             auto objectName = rideObject.GetObjectEntry().GetName();
 
-            return String::Contains(objectName, _filter, true);
+            return String::contains(objectName, _filter, true);
         }
 
         bool IsFilterInFilename(const RideObject& rideObject)
         {
             auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObject.GetObjectEntry()));
 
-            return String::Contains(repoItem->Path, _filter, true);
+            return String::contains(repoItem->Path, _filter, true);
         }
 
         void SetPressedTab()

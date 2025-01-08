@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Window.h"
@@ -23,7 +24,6 @@
 #include "../ride/RideData.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
-#include "../util/Util.h"
 #include "../world/Park.h"
 
 using namespace OpenRCT2;
@@ -225,7 +225,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
 bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
 {
     bool selectionShouldBeExpanded;
-    int32_t rideTypeIterator, rideTypeIteratorMax;
+    ride_type_t rideTypeIterator, rideTypeIteratorMax;
     auto& gameState = GetGameState();
 
     {

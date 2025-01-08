@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -738,7 +738,7 @@ static void PaintCarRideTrackLogBumps(
 /**
  * rct2: 0x006F7000
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCarRide(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCarRide(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -793,6 +793,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCarRide(OpenRCT2::TrackElemType trackT
             return PaintCarRideTrackSpinningTunnel;
 
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

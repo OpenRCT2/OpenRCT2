@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -120,7 +120,7 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiC
 {
     _drawingContext = new X8DrawingContext(this);
     _bitsDPI.DrawingEngine = this;
-    LightFXSetAvailable(true);
+    LightFx::SetAvailable(true);
     _lastLightFXenabled = Config::Get().general.EnableLightFx;
 }
 
@@ -339,9 +339,9 @@ void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pi
 
     ConfigureDirtyGrid();
 
-    if (LightFXIsAvailable())
+    if (LightFx::IsAvailable())
     {
-        LightFXUpdateBuffers(*dpi);
+        LightFx::UpdateBuffers(*dpi);
     }
 }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -521,7 +521,9 @@ namespace OpenRCT2::Ui::Windows
                 || p == WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH)
             {
                 flags |= WF_RESIZABLE;
-                WindowSetResize(*this, WW_OTHER_TABS, WH_OTHER_TABS, 2000, 2000);
+                WindowSetResize(
+                    *this, WW_OTHER_TABS, WH_OTHER_TABS, std::numeric_limits<int16_t>::max(),
+                    std::numeric_limits<int16_t>::max());
             }
             else
             {

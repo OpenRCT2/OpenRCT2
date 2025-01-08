@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@ constexpr uint16_t kMaxBannerObjects = 255;
 constexpr uint16_t kMaxPathObjects = 255;
 constexpr uint16_t kMaxPathAdditionObjects = 255;
 constexpr uint16_t kMaxSceneryGroupObjects = 255;
-constexpr uint16_t kMaxParkEntranceObjects = 4;
+constexpr uint16_t kMaxParkEntranceObjects = 255;
 constexpr uint16_t kMaxWaterObjects = 1;
 constexpr uint16_t kMaxScenarioTextObjects = 1;
 constexpr uint16_t kMaxTerrainSurfaceObjects = 255;

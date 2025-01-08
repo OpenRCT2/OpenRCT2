@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,8 +10,9 @@
 #include "Currency.h"
 
 #include "../config/Config.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
-#include "../util/Util.h"
+#include "../core/String.hpp"
 #include "Formatting.h"
 #include "StringIds.h"
 
@@ -46,7 +47,7 @@ void CurrencyLoadCustomCurrencyConfig()
     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = Config::Get().general.CustomCurrencyAffix;
     if (!Config::Get().general.CustomCurrencySymbol.empty())
     {
-        SafeStrCpy(
+        String::safeUtf8Copy(
             CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode,
             Config::Get().general.CustomCurrencySymbol.c_str(), kCurrencySymbolMaxSize);
     }

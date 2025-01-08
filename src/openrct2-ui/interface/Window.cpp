@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -918,7 +918,7 @@ namespace OpenRCT2::Ui::Windows
         return _currentTextBox;
     }
 
-    void WindowResize(WindowBase& w, int32_t dw, int32_t dh)
+    void WindowResize(WindowBase& w, int16_t dw, int16_t dh)
     {
         if (dw == 0 && dh == 0)
             return;
@@ -927,8 +927,8 @@ namespace OpenRCT2::Ui::Windows
         w.Invalidate();
 
         // Clamp new size to minimum and maximum
-        w.width = std::clamp<int32_t>(w.width + dw, w.min_width, w.max_width);
-        w.height = std::clamp<int32_t>(w.height + dh, w.min_height, w.max_height);
+        w.width = std::clamp<int16_t>(w.width + dw, w.min_width, w.max_width);
+        w.height = std::clamp<int16_t>(w.height + dh, w.min_height, w.max_height);
 
         w.OnResize();
         w.OnPrepareDraw();
@@ -1251,7 +1251,7 @@ namespace OpenRCT2::Ui::Windows
         });
     }
 
-    void WindowSetResize(WindowBase& w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight)
+    void WindowSetResize(WindowBase& w, int16_t minWidth, int16_t minHeight, int16_t maxWidth, int16_t maxHeight)
     {
         w.min_width = minWidth;
         w.min_height = minHeight;
@@ -1259,8 +1259,8 @@ namespace OpenRCT2::Ui::Windows
         w.max_height = maxHeight;
 
         // Clamp width and height to minimum and maximum
-        int32_t width = std::clamp<int32_t>(w.width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
-        int32_t height = std::clamp<int32_t>(w.height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
+        int16_t width = std::clamp<int16_t>(w.width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
+        int16_t height = std::clamp<int16_t>(w.height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
 
         // Resize window if size has changed
         if (w.width != width || w.height != height)

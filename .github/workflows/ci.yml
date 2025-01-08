@@ -111,25 +111,25 @@ jobs:
           echo "certificate=$certificate"
           echo "sign=$sign" >> $GITHUB_OUTPUT
           echo "certificate=$certificate" >> $GITHUB_OUTPUT
-  lint-commit:
-    name: Lint Commit Message
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Lint Commit Messages
-        uses: wagoid/commitlint-github-action@v5
-        with:
-          configFile: .commitlint.json
+  # lint-commit:
+  #   name: Lint Commit Message
+  #   if: github.event_name == 'pull_request'
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Lint Commit Messages
+  #       uses: wagoid/commitlint-github-action@v5
+  #       with:
+  #         configFile: .commitlint.json
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
-    container: openrct2/openrct2-build:17-format
+    container: openrct2/openrct2-build:18-format
     defaults:
       run:
         shell: sh
@@ -234,7 +234,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: g2-${{ needs.build_variables.outputs.name }}.dat
-          path: bin/data/g2.dat
+          path: bin/data
       - name: Build artifacts
         run: |
           . scripts/setenv -q
@@ -310,7 +310,7 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:14-mingw
+    container: openrct2/openrct2-build:18-mingw
     strategy:
       fail-fast: false
       matrix:
@@ -453,12 +453,12 @@ jobs:
           - platform: x86_64
             distro: Ubuntu
             release: noble
-            image: openrct2/openrct2-build:16-noble
+            image: openrct2/openrct2-build:18-noble
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
           - platform: x86_64
             distro: Debian
             release: bookworm
-            image: openrct2/openrct2-build:16-bookworm
+            image: openrct2/openrct2-build:18-bookworm
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
     steps:
       - name: Checkout
@@ -518,16 +518,18 @@ jobs:
   linux-docker:
     name: Ubuntu Linux (Docker)
     needs: [check-code-formatting, build_variables]
-    if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout image
+        if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
         uses: actions/checkout@v4
         with:
           repository: OpenRCT2/openrct2-docker
       - name: Build image
+        if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
         run: docker build -t openrct2/openrct2-cli:develop develop/cli
       - name: Push image
+        if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
         env:
           OPENRCT2_DOCKER_USER: ${{ secrets.OPENRCT2_DOCKER_USER }}
           OPENRCT2_DOCKER_PASS: ${{ secrets.OPENRCT2_DOCKER_PASS }}
@@ -544,7 +546,7 @@ jobs:
     name: Ubuntu Linux (noble, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:16-noble
+    container: openrct2/openrct2-build:18-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -560,7 +562,7 @@ jobs:
     name: Ubuntu Linux (debug) using clang, coverage enabled
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:16-noble
+    container: openrct2/openrct2-build:18-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -601,7 +603,7 @@ jobs:
     name: Android
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:14-android
+    container: openrct2/openrct2-build:18-android
     steps:
       - name: Checkout
         uses: actions/checkout@v4

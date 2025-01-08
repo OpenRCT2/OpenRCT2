@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -209,12 +209,35 @@ void InputManager::Process(const InputEvent& e)
 
         if (e.DeviceKind == InputDeviceKind::Keyboard)
         {
+            // TODO: replace with event
             auto w = WindowFindByClass(WindowClass::Textinput);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
                 {
                     OpenRCT2::Ui::Windows::WindowTextInputKey(w, e.Button);
+                }
+                return;
+            }
+
+            // TODO: replace with event
+            w = WindowFindByClass(WindowClass::LoadsaveOverwritePrompt);
+            if (w != nullptr)
+            {
+                if (e.State == InputEventState::Release)
+                {
+                    OpenRCT2::Ui::Windows::WindowLoadSaveOverwritePromptInputKey(w, e.Button);
+                }
+                return;
+            }
+
+            // TODO: replace with event
+            w = WindowFindByClass(WindowClass::Loadsave);
+            if (w != nullptr)
+            {
+                if (e.State == InputEventState::Release)
+                {
+                    OpenRCT2::Ui::Windows::WindowLoadSaveInputKey(w, e.Button);
                 }
                 return;
             }

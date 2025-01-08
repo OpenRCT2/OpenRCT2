@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,16 +35,6 @@ namespace OpenRCT2::GameActions
 {
     class Result;
 }
-
-enum class StaffType : uint8_t
-{
-    Handyman,
-    Mechanic,
-    Security,
-    Entertainer,
-
-    Count
-};
 
 enum class PeepState : uint8_t
 {
@@ -446,6 +436,7 @@ extern const bool gAnimationGroupToSlowWalkMap[48];
 
 int32_t PeepGetStaffCount();
 void PeepUpdateAll();
+void PeepUpdateAllBoundingBoxes();
 void PeepProblemWarningsUpdate();
 void PeepStopCrowdNoise();
 void PeepUpdateCrowdNoise();

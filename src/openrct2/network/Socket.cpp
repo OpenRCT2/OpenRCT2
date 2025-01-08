@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -368,9 +368,7 @@ public:
         {
             throw std::runtime_error("Socket not listening.");
         }
-        struct sockaddr_storage client_addr
-        {
-        };
+        struct sockaddr_storage client_addr{};
         socklen_t client_len = sizeof(struct sockaddr_storage);
 
         std::unique_ptr<ITcpSocket> tcpSocket;

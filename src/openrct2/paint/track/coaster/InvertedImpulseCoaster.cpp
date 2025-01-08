@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -759,7 +759,7 @@ static void InvertedImpulseRCTrackRightQuarterTurn190DegDown(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionInvertedImpulseRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -814,6 +814,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(OpenRCT2::TrackElemT
         case TrackElemType::RightQuarterTurn1TileDown90:
             return InvertedImpulseRCTrackRightQuarterTurn190DegDown;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

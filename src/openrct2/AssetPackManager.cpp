@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,7 +87,7 @@ void AssetPackManager::Scan(const fs::path& directory)
         if (!entry.is_directory())
         {
             auto path = entry.path().u8string();
-            if (String::EndsWith(path, ".parkap", true))
+            if (String::endsWith(path, ".parkap", true))
             {
                 AddAssetPack(path);
             }

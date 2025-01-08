@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -492,7 +492,7 @@ namespace OpenRCT2::Ui::Windows
                             std::string url = "https://github.com/OpenRCT2/OpenRCT2/issues/new?"
                                               "assignees=&labels=bug&template=bug_report.yaml";
                             // Automatically fill the "OpenRCT2 build" input
-                            auto versionStr = String::URLEncode(gVersionInfoFull);
+                            auto versionStr = String::urlEncode(gVersionInfoFull);
                             url.append("&f299dd2a20432827d99b648f73eb4649b23f8ec98d158d6f82b81e43196ee36b=" + versionStr);
                             OpenRCT2::GetContext()->GetUiContext()->OpenURL(url);
                         }
@@ -1083,12 +1083,6 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::SetChecked(DDIDX_HIGHLIGHT_PATH_ISSUES, true);
 
         gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
-
-        // Opaque water relies on RCT1 sprites.
-        if (!IsCsgLoaded())
-        {
-            Dropdown::SetDisabled(DDIDX_TRANSPARENT_WATER, true);
-        }
     }
 
     void TopToolbar::ViewMenuDropdown(int16_t dropdownIndex)

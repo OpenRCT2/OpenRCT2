@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -172,7 +172,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         }
 
         auto ride = GetRide(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_CRASH_TYPE_NONE)
+        if (ride == nullptr || !RideTypeIsValid(ride->type))
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
             res.Error = GameActions::Status::NoClearance;

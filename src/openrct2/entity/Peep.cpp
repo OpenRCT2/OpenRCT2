@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,9 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
+#include "../core/String.hpp"
 #include "../drawing/LightFX.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
@@ -46,7 +48,6 @@
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
-#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/ConstructionClearance.h"
@@ -71,6 +72,9 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
+using namespace OpenRCT2::Drawing;
+
+using OpenRCT2::Drawing::LightFx::LightType;
 
 static uint8_t _backupAnimationImageIdOffset;
 static TileElement* _peepRideEntranceExitElement;
@@ -243,6 +247,19 @@ void PeepUpdateAll()
     }
 }
 
+void PeepUpdateAllBoundingBoxes()
+{
+    for (auto* peep : EntityList<Guest>())
+    {
+        peep->UpdateSpriteBoundingBox();
+    }
+
+    for (auto* peep : EntityList<Staff>())
+    {
+        peep->UpdateSpriteBoundingBox();
+    }
+}
+
 /*
  * rct2: 0x68F3AE
  * Set peep state to falling if path below has gone missing, return true if current path is valid, false if peep starts falling.
@@ -352,19 +369,17 @@ void Peep::UpdateCurrentAnimationType()
 
     AnimationType = newAnimationType;
 
+    Invalidate();
     UpdateSpriteBoundingBox();
+    Invalidate();
 }
 
 void Peep::UpdateSpriteBoundingBox()
 {
-    Invalidate();
-
-    const SpriteBounds* spriteBounds = &GetSpriteBounds(AnimationGroup, AnimationType);
-    SpriteData.Width = spriteBounds->sprite_width;
-    SpriteData.HeightMin = spriteBounds->sprite_height_negative;
-    SpriteData.HeightMax = spriteBounds->sprite_height_positive;
-
-    Invalidate();
+    const auto& spriteBounds = GetSpriteBounds(AnimationGroup, AnimationType);
+    SpriteData.Width = spriteBounds.sprite_width;
+    SpriteData.HeightMin = spriteBounds.sprite_height_negative;
+    SpriteData.HeightMax = spriteBounds.sprite_height_positive;
 }
 
 /* rct2: 0x00693BE5 */
@@ -2663,7 +2678,7 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
     ft.Rewind();
     peep_b->FormatNameTo(ft);
     OpenRCT2::FormatStringLegacy(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
-    return StrLogicalCmp(nameA, nameB);
+    return String::logicalCmp(nameA, nameB);
 }
 
 /**
@@ -2837,7 +2852,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    if (LightFXIsAvailable())
+    if (LightFx::IsAvailable())
     {
         if (Is<Staff>())
         {
@@ -2860,7 +2875,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
                     return;
             }
 
-            LightFXAdd3DLight(*this, 0, loc, LightType::Spot1);
+            LightFx::Add3DLight(*this, 0, loc, LightType::Spot1);
         }
     }
 

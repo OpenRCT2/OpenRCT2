@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -188,11 +188,11 @@ static void PaintSwingingInverterShip(
     PaintUtilSetGeneralSupportHeight(session, height + 176);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingInverterShip(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSwingingInverterShip(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack1x4B)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintSwingingInverterShip;

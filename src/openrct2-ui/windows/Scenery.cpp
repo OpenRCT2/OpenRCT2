@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -49,6 +49,7 @@
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/sprites.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -1301,13 +1302,13 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInName(const Object& object)
         {
-            return String::Contains(object.GetName(), _filteredSceneryTab.Filter, true);
+            return String::contains(object.GetName(), _filteredSceneryTab.Filter, true);
         }
 
         bool IsFilterInAuthors(const Object& object)
         {
             for (auto author : object.GetAuthors())
-                if (String::Contains(author, _filteredSceneryTab.Filter, true))
+                if (String::contains(author, _filteredSceneryTab.Filter, true))
                     return true;
 
             return false;
@@ -1315,13 +1316,13 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInIdentifier(const Object& object)
         {
-            return String::Contains(object.GetIdentifier(), _filteredSceneryTab.Filter, true);
+            return String::contains(object.GetIdentifier(), _filteredSceneryTab.Filter, true);
         }
 
         bool IsFilterInFilename(const Object& object)
         {
             auto repoItem = ObjectRepositoryFindObjectByEntry(&(object.GetObjectEntry()));
-            return String::Contains(repoItem->Path, _filteredSceneryTab.Filter, true);
+            return String::contains(repoItem->Path, _filteredSceneryTab.Filter, true);
         }
 
         void SortTabs()

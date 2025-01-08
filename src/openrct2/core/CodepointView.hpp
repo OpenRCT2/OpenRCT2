@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -79,7 +79,7 @@ namespace OpenRCT2
         };
 
         CodepointView(std::string_view str)
-            : _str(String::UTF8Truncate(str, str.size()))
+            : _str(String::utf8Truncate(str, str.size()))
         {
         }
 

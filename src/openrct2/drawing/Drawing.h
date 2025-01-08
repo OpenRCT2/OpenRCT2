@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,18 +14,22 @@
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
+#include "ColourPalette.h"
 #include "Font.h"
 #include "ImageId.hpp"
 #include "Text.h"
 
+#include <array>
 #include <cassert>
 #include <memory>
 #include <optional>
+#include <span>
 #include <vector>
 
 struct ScreenCoordsXY;
 struct ScreenLine;
 struct ScreenRect;
+
 namespace OpenRCT2
 {
     struct IPlatformEnvironment;
@@ -36,47 +40,6 @@ namespace OpenRCT2::Drawing
 {
     struct IDrawingEngine;
 }
-
-struct PaletteBGRA
-{
-    uint8_t Blue{};
-    uint8_t Green{};
-    uint8_t Red{};
-    uint8_t Alpha{};
-};
-
-constexpr auto PALETTE_SIZE = 256u;
-
-struct GamePalette
-{
-    PaletteBGRA Colour[PALETTE_SIZE]{};
-
-    PaletteBGRA& operator[](size_t idx)
-    {
-        assert(idx < PALETTE_SIZE);
-        if (idx >= PALETTE_SIZE)
-        {
-            static PaletteBGRA dummy;
-            return dummy;
-        }
-
-        return Colour[idx];
-    }
-
-    const PaletteBGRA operator[](size_t idx) const
-    {
-        assert(idx < PALETTE_SIZE);
-        if (idx >= PALETTE_SIZE)
-            return {};
-
-        return Colour[idx];
-    }
-
-    explicit operator uint8_t*()
-    {
-        return reinterpret_cast<uint8_t*>(Colour);
-    }
-};
 
 struct G1Element
 {
@@ -388,39 +351,39 @@ struct TranslucentWindowPalette
 struct PaletteMap
 {
 private:
-    uint8_t* _data{};
-    uint32_t _dataLength{};
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint16_t _numMaps;
-#pragma clang diagnostic pop
-    uint16_t _mapLength;
+    std::span<uint8_t> _data{};
+#ifdef _DEBUG
+    // We only require those fields for the asserts in debug builds.
+    size_t _numMaps{};
+    size_t _mapLength{};
+#endif
 
 public:
-    static const PaletteMap& GetDefault();
+    static PaletteMap GetDefault();
 
-    PaletteMap() = default;
+    constexpr PaletteMap() = default;
 
-    PaletteMap(uint8_t* data, uint16_t numMaps, uint16_t mapLength)
-        : _data(data)
-        , _dataLength(numMaps * mapLength)
+    constexpr PaletteMap(uint8_t* data, size_t numMaps, size_t mapLength)
+        : _data{ data, numMaps * mapLength }
+#ifdef _DEBUG
         , _numMaps(numMaps)
         , _mapLength(mapLength)
+#endif
     {
     }
 
-    template<std::size_t TSize>
-    PaletteMap(uint8_t (&map)[TSize])
+    constexpr PaletteMap(std::span<uint8_t> map)
         : _data(map)
-        , _dataLength(static_cast<uint32_t>(std::size(map)))
+#ifdef _DEBUG
         , _numMaps(1)
-        , _mapLength(static_cast<uint16_t>(std::size(map)))
+        , _mapLength(map.size())
+#endif
     {
     }
 
-    bool operator==(const PaletteMap& lhs) const;
     uint8_t& operator[](size_t index);
     uint8_t operator[](size_t index) const;
+
     uint8_t Blend(uint8_t src, uint8_t dst) const;
     void Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, size_t length);
 };
@@ -428,7 +391,7 @@ public:
 struct DrawSpriteArgs
 {
     ImageId Image;
-    const PaletteMap& PalMap;
+    PaletteMap PalMap;
     const G1Element& SourceImage;
     int32_t SrcX;
     int32_t SrcY;
@@ -528,8 +491,8 @@ constexpr uint8_t kPaletteTotalOffsets = 192;
 
 constexpr int8_t kMaxScrollingTextModes = 38;
 
-extern GamePalette gPalette;
-extern uint8_t gGamePalette[256 * 4];
+extern OpenRCT2::Drawing::GamePalette gPalette;
+extern OpenRCT2::Drawing::GamePalette gGamePalette;
 extern uint32_t gPaletteEffectFrame;
 
 extern uint8_t gTextPalette[];
@@ -642,7 +605,7 @@ void MaskFn(
 
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
-void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
+void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, int32_t start_index, int32_t num_colours);
 void UpdatePaletteEffects();
 
 void RefreshVideo();

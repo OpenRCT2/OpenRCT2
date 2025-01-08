@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,6 +25,7 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
 #include "../entity/EntityRegistry.h"
@@ -69,6 +70,7 @@
 #include "RideConstruction.h"
 #include "RideData.h"
 #include "RideEntry.h"
+#include "RideManager.hpp"
 #include "ShopItem.h"
 #include "Station.h"
 #include "Track.h"
@@ -109,9 +111,6 @@ const StringId kRideInspectionIntervalNames[] = {
 };
 // clang-format on
 
-// This is the highest used index + 1 of the GameState_t::Rides array.
-static size_t _endOfUsedRange = 0;
-
 // A special instance of Ride that is used to draw previews such as the track designs.
 static Ride _previewRide{};
 
@@ -134,40 +133,6 @@ static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus);
 static void RideMusicUpdate(Ride& ride);
 static void RideShopConnected(const Ride& ride);
 
-RideManager GetRideManager()
-{
-    return {};
-}
-
-size_t RideManager::size() const
-{
-    auto& gameState = GetGameState();
-    size_t count = 0;
-    for (size_t i = 0; i < _endOfUsedRange; i++)
-    {
-        if (!gameState.Rides[i].id.IsNull())
-        {
-            count++;
-        }
-    }
-    return count;
-}
-
-RideManager::Iterator RideManager::begin()
-{
-    return RideManager::Iterator(*this, 0u, _endOfUsedRange);
-}
-
-RideManager::Iterator RideManager::end()
-{
-    return RideManager::Iterator(*this, _endOfUsedRange, _endOfUsedRange);
-}
-
-RideManager::Iterator RideManager::get(RideId rideId)
-{
-    return RideManager::Iterator(*this, rideId.ToUnderlying(), _endOfUsedRange);
-}
-
 RideId GetNextFreeRideId()
 {
     auto& gameState = GetGameState();
@@ -184,9 +149,11 @@ RideId GetNextFreeRideId()
 Ride* RideAllocateAtIndex(RideId index)
 {
     const auto idx = index.ToUnderlying();
-    _endOfUsedRange = std::max<size_t>(idx + 1, _endOfUsedRange);
 
-    auto result = &GetGameState().Rides[idx];
+    auto& gs = GetGameState();
+    gs.RidesEndOfUsedRange = std::max<size_t>(idx + 1, gs.RidesEndOfUsedRange);
+
+    auto result = &gs.Rides[idx];
     assert(result->id == RideId::GetNull());
 
     // Initialize the ride to all the defaults.
@@ -214,19 +181,19 @@ static void RideReset(Ride& ride)
 
 void RideDelete(RideId id)
 {
-    auto& gameState = GetGameState();
+    auto& gs = GetGameState();
     const auto idx = id.ToUnderlying();
 
-    assert(idx < gameState.Rides.size());
-    assert(gameState.Rides[idx].type != RIDE_TYPE_NULL);
+    assert(idx < gs.Rides.size());
+    assert(gs.Rides[idx].type != RIDE_TYPE_NULL);
 
-    auto& ride = gameState.Rides[idx];
+    auto& ride = gs.Rides[idx];
     RideReset(ride);
 
     // Shrink maximum ride size.
-    while (_endOfUsedRange > 0 && gameState.Rides[_endOfUsedRange - 1].id.IsNull())
+    while (gs.RidesEndOfUsedRange > 0 && gs.Rides[gs.RidesEndOfUsedRange - 1].id.IsNull())
     {
-        _endOfUsedRange--;
+        gs.RidesEndOfUsedRange--;
     }
 }
 
@@ -963,7 +930,7 @@ void RideInitAll()
 {
     auto& gameState = GetGameState();
     std::for_each(std::begin(gameState.Rides), std::end(gameState.Rides), RideReset);
-    _endOfUsedRange = 0;
+    gameState.RidesEndOfUsedRange = 0;
 }
 
 /**
@@ -3699,6 +3666,23 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
  */
 void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackElement& firstBlock)
 {
+    // If the ride has a cable lift, we don't want to fetch the cable lift element and the block preceding it
+    TrackElement* cableLiftTileElement = nullptr;
+    TrackElement* cableLiftPreviousBlock = nullptr;
+    if (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
+    {
+        cableLiftTileElement = MapGetTrackElementAt(CableLiftLoc);
+        if (cableLiftTileElement != nullptr)
+        {
+            cableLiftTileElement = MapGetTrackElementAt(CableLiftLoc);
+            if (cableLiftTileElement != nullptr)
+            {
+                CoordsXYZ location = CableLiftLoc;
+                cableLiftPreviousBlock = TrackGetPreviousBlock(location, reinterpret_cast<TileElement*>(cableLiftTileElement));
+            }
+        }
+    }
+
     for (int32_t i = 0; i < NumTrains; i++)
     {
         auto train = GetEntity<Vehicle>(vehicles[i]);
@@ -3728,6 +3712,14 @@ void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
                 break;
             }
 
+            // Setting the first block before the cable lift to the same state as the cable lift ensures that any train which
+            // would be placed on the cable lift will instead stop on the block before it. As there can only be one cable lift
+            // per ride and there must always be at least one block left free, there will be enough blocks remaining. This fixes
+            // the bug in #1122.
+            if (cableLiftTileElement != nullptr && cableLiftPreviousBlock != nullptr)
+            {
+                cableLiftPreviousBlock->SetBrakeClosed(cableLiftTileElement->IsBrakeClosed());
+            }
             firstBlock.SetBrakeClosed(true);
             for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
             {
@@ -3754,6 +3746,12 @@ void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
                 car->SetState(Vehicle::Status::MovingToEndOfStation, car->sub_state);
             }
         }
+    }
+
+    // After all trains are in position, set the block preceding the cable lift to open.
+    if (cableLiftPreviousBlock != nullptr)
+    {
+        cableLiftPreviousBlock->SetBrakeClosed(false);
     }
 }
 
@@ -5512,9 +5510,9 @@ bool RideEntryHasCategory(const RideObjectEntry& rideEntry, uint8_t category)
     return GetRideTypeDescriptor(rideType).Category == category;
 }
 
-int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType)
+ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSubType)
 {
-    int32_t subType = rideSubType;
+    auto subType = rideSubType;
 
     if (subType == OBJECT_ENTRY_INDEX_NULL)
     {
@@ -5946,6 +5944,10 @@ ResultWithMessage Ride::ChangeStatusCheckTrackValidity(const CoordsXYE& trackEle
     if (subtype != OBJECT_ENTRY_INDEX_NULL && !GetGameState().Cheats.enableAllDrawableTrackPieces)
     {
         const auto* rideEntry = GetRideEntryByIndex(subtype);
+        if (rideEntry == nullptr)
+        {
+            return { false, STR_UNKNOWN_RIDE };
+        }
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
         {
             if (RideCheckTrackContainsInversions(trackElement, &problematicTrackElement))

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,8 +34,10 @@
 #include "Station.h"
 #include "TrackData.h"
 #include "TrackDesign.h"
+#include "TrackStyle.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetaData;
 
 /* rct2: 0x007667AC */
@@ -1968,7 +1970,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             }
         }
 
-        if (LightFXIsAvailable())
+        if (LightFx::IsAvailable())
         {
             uint8_t zOffset = 16;
             const auto& rtd = ride->GetRideTypeDescriptor();
@@ -1978,9 +1980,9 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
 
             const auto* originElement = ride->GetOriginElement(StationIndex::FromUnderlying(0));
             if (originElement != nullptr && originElement->GetTrackType() == TrackElemType::FlatTrack1x1B)
-                LightFxAddKioskLights(session.MapPosition, height, zOffset);
+                LightFx::AddKioskLights(session.MapPosition, height, zOffset);
             else if (RideTypeDescriptors[ride->type].HasFlag(RtdFlag::isShopOrFacility))
-                LightFxAddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
+                LightFx::AddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
 
         session.InteractionType = ViewportInteractionItem::Ride;
@@ -2000,24 +2002,13 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
             session.SupportColours = ConstructionMarker;
         }
 
-        if (ride->type >= RIDE_TYPE_COUNT)
-        {
-            return;
-        }
-
         const auto& rtd = GetRideTypeDescriptor(trackElement.GetRideType());
         bool isInverted = trackElement.IsInverted() && rtd.HasFlag(RtdFlag::hasInvertedVariant);
         const auto trackDrawerEntry = getTrackDrawerEntry(rtd, isInverted, TrackElementIsCovered(trackType));
 
-        if (trackDrawerEntry.Drawer != nullptr)
-        {
-            trackType = UncoverTrackElement(trackType);
-            TRACK_PAINT_FUNCTION paintFunction = trackDrawerEntry.Drawer(trackType);
-            if (paintFunction != nullptr)
-            {
-                paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
-            }
-        }
+        trackType = UncoverTrackElement(trackType);
+        TrackPaintFunction paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
+        paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
     }
 }
 
@@ -2098,4 +2089,10 @@ void DrawSBendRightSupports(
                 session, supportType, MetalSupportPlace::Centre, direction, specialA, height, session.SupportColours);
             break;
     }
+}
+
+void TrackPaintFunctionDummy(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
 }

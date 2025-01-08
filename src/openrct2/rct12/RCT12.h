@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,10 +11,11 @@
 
 // Structures shared between both RCT1 and RCT2.
 
+#include "../core/EnumUtils.hpp"
+#include "../core/Money.hpp"
 #include "../management/Research.h"
 #include "../object/Object.h"
 #include "../ride/RideTypes.h"
-#include "../util/Util.h"
 #include "../world/tile_element/TileElementType.h"
 #include "Limits.h"
 

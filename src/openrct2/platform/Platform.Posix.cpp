@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,7 @@ namespace OpenRCT2::Platform
 {
     std::string GetEnvironmentVariable(std::string_view name)
     {
-        return String::ToStd(getenv(std::string(name).c_str()));
+        return String::toStd(getenv(std::string(name).c_str()));
     }
 
     std::string GetEnvironmentPath(const char* name)
@@ -113,7 +113,7 @@ namespace OpenRCT2::Platform
 
     bool FindApp(std::string_view app, std::string* output)
     {
-        return Execute(String::StdFormat("which %s 2> /dev/null", std::string(app).c_str()), output) == 0;
+        return Execute(String::stdFormat("which %s 2> /dev/null", std::string(app).c_str()), output) == 0;
     }
 
     int32_t Execute(std::string_view command, std::string* output)
@@ -169,9 +169,7 @@ namespace OpenRCT2::Platform
     uint64_t GetLastModified(std::string_view path)
     {
         uint64_t lastModified = 0;
-        struct stat statInfo
-        {
-        };
+        struct stat statInfo{};
         if (stat(std::string(path).c_str(), &statInfo) == 0)
         {
             lastModified = statInfo.st_mtime;
@@ -182,9 +180,7 @@ namespace OpenRCT2::Platform
     uint64_t GetFileSize(std::string_view path)
     {
         uint64_t size = 0;
-        struct stat statInfo
-        {
-        };
+        struct stat statInfo{};
         if (stat(std::string(path).c_str(), &statInfo) == 0)
         {
             size = statInfo.st_size;
@@ -223,7 +219,7 @@ namespace OpenRCT2::Platform
                 // Find a file which matches by name (case insensitive)
                 for (int32_t i = 0; i < count; i++)
                 {
-                    if (String::IEquals(files[i]->d_name, fileName.c_str()))
+                    if (String::iequals(files[i]->d_name, fileName.c_str()))
                     {
                         result = Path::Combine(directory, std::string(files[i]->d_name));
                         break;

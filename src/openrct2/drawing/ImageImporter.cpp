@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,6 @@
 
 #include "../core/Imaging.h"
 #include "../core/Json.hpp"
-#include "../util/Util.h"
 
 #include <cstring>
 #include <stdexcept>
@@ -307,7 +306,7 @@ namespace OpenRCT2::Drawing
     {
         if (!IsTransparentPixel(colour))
         {
-            for (uint32_t i = 0; i < PALETTE_SIZE; i++)
+            for (uint32_t i = 0; i < kGamePaletteSize; i++)
             {
                 if (static_cast<int16_t>(palette[i].Red) == colour[0] && static_cast<int16_t>(palette[i].Green) == colour[1]
                     && static_cast<int16_t>(palette[i].Blue) == colour[2])
@@ -365,7 +364,7 @@ namespace OpenRCT2::Drawing
     {
         auto smallestError = static_cast<uint32_t>(-1);
         auto bestMatch = PALETTE_TRANSPARENT;
-        for (uint32_t x = 0; x < PALETTE_SIZE; x++)
+        for (uint32_t x = 0; x < kGamePaletteSize; x++)
         {
             if (IsChangablePixel(x))
             {

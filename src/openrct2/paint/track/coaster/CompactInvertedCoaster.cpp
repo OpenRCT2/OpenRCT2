@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9800,7 +9800,7 @@ static void CompactInvertedRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCompactInvertedRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -10031,6 +10031,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCompactInvertedRC(OpenRCT2::TrackElemT
         case TrackElemType::DiagBlockBrakes:
             return CompactInvertedRCTrackDiagBlockBrakes;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

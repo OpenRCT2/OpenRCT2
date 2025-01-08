@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,7 +54,7 @@ static std::vector<std::string> GetCommandLineArgs(int argc, wchar_t** argvW)
     std::vector<std::string> argv;
     for (int i = 0; i < argc; i++)
     {
-        argv.push_back(String::ToUtf8(argvW[i]));
+        argv.push_back(String::toUtf8(argvW[i]));
     }
     return argv;
 }

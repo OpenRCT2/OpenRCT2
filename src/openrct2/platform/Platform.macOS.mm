@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -144,11 +144,11 @@ namespace OpenRCT2::Platform
 
     bool HandleSpecialCommandLineArgument(const char* argument)
     {
-        if (String::Equals(argument, "-NSDocumentRevisionsDebugMode"))
+        if (String::equals(argument, "-NSDocumentRevisionsDebugMode"))
         {
             return true;
         }
-        if (String::StartsWith(argument, "-psn_"))
+        if (String::startsWith(argument, "-psn_"))
         {
             return true;
         }

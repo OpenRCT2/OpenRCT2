@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -214,7 +214,7 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
         image.Height = dpi.height;
         image.Depth = 8;
         image.Stride = dpi.LineStride();
-        image.Palette = std::make_unique<GamePalette>(StandardPalette);
+        image.Palette = StandardPalette;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(outPath, image, IMAGE_FORMAT::PNG);
         return true;
@@ -263,7 +263,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
     if (argc == 0)
         return -1;
 
-    if (String::IEquals(argv[0], "details"))
+    if (String::iequals(argv[0], "details"))
     {
         if (argc < 2)
         {
@@ -310,7 +310,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "export"))
+    if (String::iequals(argv[0], "export"))
     {
         if (argc < 4)
         {
@@ -344,7 +344,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "exportall"))
+    if (String::iequals(argv[0], "exportall"))
     {
         if (argc < 3)
         {
@@ -389,7 +389,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "exportalldat"))
+    if (String::iequals(argv[0], "exportalldat"))
     {
         if (argc < 3)
         {
@@ -450,7 +450,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "create"))
+    if (String::iequals(argv[0], "create"))
     {
         if (argc < 2)
         {
@@ -465,7 +465,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "append"))
+    if (String::iequals(argv[0], "append"))
     {
         if (argc != 3 && argc != 5)
         {
@@ -518,7 +518,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "build"))
+    if (String::iequals(argv[0], "build"))
     {
         if (argc < 3)
         {
@@ -600,7 +600,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "combine"))
+    if (String::iequals(argv[0], "combine"))
     {
         return CommandLineForSpriteCombine(argv, argc);
     }

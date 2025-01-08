@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include "../core/BitSet.hpp"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../core/FileStream.h"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
@@ -57,6 +58,7 @@
 #include "../rct12/EntryList.h"
 #include "../rct12/ScenarioPatcher.h"
 #include "../ride/RideData.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrainManager.h"
@@ -64,7 +66,6 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
-#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
@@ -148,11 +149,11 @@ namespace OpenRCT2::RCT1
         ParkLoadResult Load(const u8string& path) override
         {
             const auto extension = Path::GetExtension(path);
-            if (String::IEquals(extension, ".sc4"))
+            if (String::iequals(extension, ".sc4"))
             {
                 return LoadScenario(path);
             }
-            if (String::IEquals(extension, ".sv4"))
+            if (String::iequals(extension, ".sv4"))
             {
                 return LoadSavedGame(path);
             }
@@ -259,7 +260,7 @@ namespace OpenRCT2::RCT1
                 desc.title = name.c_str();
             }
 
-            String::Set(dst->InternalName, sizeof(dst->InternalName), desc.title);
+            String::set(dst->InternalName, sizeof(dst->InternalName), desc.title);
 
             if (!desc.textObjectId.empty())
             {
@@ -281,8 +282,8 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            String::Set(dst->Name, sizeof(dst->Name), name.c_str());
-            String::Set(dst->Details, sizeof(dst->Details), details.c_str());
+            String::set(dst->Name, sizeof(dst->Name), name.c_str());
+            String::set(dst->Details, sizeof(dst->Details), details.c_str());
 
             return true;
         }
@@ -2339,7 +2340,7 @@ namespace OpenRCT2::RCT1
 
         void ImportScenarioNameDetails(GameState_t& gameState)
         {
-            std::string name = String::ToStd(_s4.ScenarioName);
+            std::string name = String::toStd(_s4.ScenarioName);
             std::string parkName;
             std::string details;
 

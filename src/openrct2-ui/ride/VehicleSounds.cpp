@@ -15,6 +15,7 @@
 #include <openrct2/profiling/Profiling.h>
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <sfl/static_vector.hpp>
 
@@ -468,7 +469,7 @@ namespace OpenRCT2::Audio
         volume = volume / 8;
         volume = std::max(volume - 0x1FFF, -10000);
 
-        if (sound.Channel != nullptr && sound.Channel->IsDone())
+        if (sound.Channel != nullptr && sound.Channel->IsDone() && IsLoopingSound(sound.Id))
         {
             sound.Id = SoundId::Null;
             sound.Channel = nullptr;

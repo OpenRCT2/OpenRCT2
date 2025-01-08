@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -168,7 +168,7 @@ namespace OpenRCT2::TitleSequenceManager
         auto filename = Path::GetFileName(path);
         for (size_t i = 0; i < std::size(PredefinedSequences); i++)
         {
-            if (String::IEquals(filename, PredefinedSequences[i].Filename))
+            if (String::iequals(filename, PredefinedSequences[i].Filename))
             {
                 return i;
             }
@@ -184,7 +184,7 @@ namespace OpenRCT2::TitleSequenceManager
             {
                 return a.PredefinedIndex < b.PredefinedIndex;
             }
-            return String::Compare(a.Name, b.Name, true) < 0;
+            return String::compare(a.Name, b.Name, true) < 0;
         });
     }
 
@@ -215,7 +215,7 @@ namespace OpenRCT2::TitleSequenceManager
     {
         Item item{};
 
-        if (String::IEquals(Path::GetExtension(scanPath), u8".txt"))
+        if (String::iequals(Path::GetExtension(scanPath), u8".txt"))
         {
             // If we are given a .txt file, set the path to the containing directory
             item.Path = Path::GetDirectory(scanPath);
@@ -268,7 +268,7 @@ namespace OpenRCT2::TitleSequenceManager
     {
         for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
         {
-            if (String::IEquals(name, pseq.ConfigId))
+            if (String::iequals(name, pseq.ConfigId))
             {
                 return true;
             }
@@ -307,7 +307,7 @@ namespace OpenRCT2::TitleSequenceManager
         const auto filename = Path::GetFileName(item->Path);
         for (const auto& pseq : PredefinedSequences)
         {
-            if (String::IEquals(filename, pseq.Filename))
+            if (String::iequals(filename, pseq.Filename))
             {
                 return pseq.ConfigId;
             }
@@ -332,7 +332,7 @@ namespace OpenRCT2::TitleSequenceManager
         for (size_t i = 0; i < count; i++)
         {
             const utf8* cid = GetConfigID(i);
-            if (String::Equals(cid, configId))
+            if (String::equals(cid, configId))
             {
                 return i;
             }
@@ -346,7 +346,7 @@ namespace OpenRCT2::TitleSequenceManager
         for (size_t i = 0; i < count; i++)
         {
             const utf8* tn = GetName(i);
-            if (String::Equals(tn, name))
+            if (String::equals(tn, name))
             {
                 return i;
             }

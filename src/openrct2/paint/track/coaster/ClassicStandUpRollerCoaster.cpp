@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1388,7 +1388,7 @@ static void classicStandUpRCTrackDiagRightBankTo25DegDown(
     classicStandUpRCTrackDiag25DegUpToLeftBank(session, ride, trackSequence, direction, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemType trackType)
 {
     if (!IsCsgLoaded())
     {
@@ -1471,6 +1471,85 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemTy
             return classicStandUpRCTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
             return classicStandUpRCTrackDiagRightBank;
+
+        case TrackElemType::Up25ToLeftBankedUp25:
+        case TrackElemType::Up25ToRightBankedUp25:
+        case TrackElemType::LeftBankedUp25ToUp25:
+        case TrackElemType::RightBankedUp25ToUp25:
+        case TrackElemType::Down25ToLeftBankedDown25:
+        case TrackElemType::Down25ToRightBankedDown25:
+        case TrackElemType::LeftBankedDown25ToDown25:
+        case TrackElemType::RightBankedDown25ToDown25:
+        case TrackElemType::LeftBankedFlatToLeftBankedUp25:
+        case TrackElemType::RightBankedFlatToRightBankedUp25:
+        case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
+        case TrackElemType::RightBankedUp25ToRightBankedFlat:
+        case TrackElemType::LeftBankedFlatToLeftBankedDown25:
+        case TrackElemType::RightBankedFlatToRightBankedDown25:
+        case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
+        case TrackElemType::RightBankedDown25ToRightBankedFlat:
+        case TrackElemType::Down25LeftBanked:
+        case TrackElemType::Down25RightBanked:
+        case TrackElemType::FlatToLeftBankedUp25:
+        case TrackElemType::FlatToRightBankedUp25:
+        case TrackElemType::LeftBankedUp25ToFlat:
+        case TrackElemType::RightBankedUp25ToFlat:
+        case TrackElemType::FlatToLeftBankedDown25:
+        case TrackElemType::FlatToRightBankedDown25:
+        case TrackElemType::LeftBankedDown25ToFlat:
+        case TrackElemType::RightBankedDown25ToFlat:
+        case TrackElemType::Up25LeftBanked:
+        case TrackElemType::Up25RightBanked:
+        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
+        case TrackElemType::RightBankedQuarterTurn3TileUp25:
+        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
+        case TrackElemType::RightBankedQuarterTurn3TileDown25:
+        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
+        case TrackElemType::RightBankedQuarterTurn5TileUp25:
+        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
+        case TrackElemType::RightBankedQuarterTurn5TileDown25:
+        case TrackElemType::DiagUp25ToLeftBankedUp25:
+        case TrackElemType::DiagUp25ToRightBankedUp25:
+        case TrackElemType::DiagLeftBankedUp25ToUp25:
+        case TrackElemType::DiagRightBankedUp25ToUp25:
+        case TrackElemType::DiagDown25ToLeftBankedDown25:
+        case TrackElemType::DiagDown25ToRightBankedDown25:
+        case TrackElemType::DiagLeftBankedDown25ToDown25:
+        case TrackElemType::DiagRightBankedDown25ToDown25:
+        case TrackElemType::DiagLeftBankedFlatToLeftBankedUp25:
+        case TrackElemType::DiagRightBankedFlatToRightBankedUp25:
+        case TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat:
+        case TrackElemType::DiagRightBankedUp25ToRightBankedFlat:
+        case TrackElemType::DiagLeftBankedFlatToLeftBankedDown25:
+        case TrackElemType::DiagRightBankedFlatToRightBankedDown25:
+        case TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat:
+        case TrackElemType::DiagRightBankedDown25ToRightBankedFlat:
+        case TrackElemType::DiagUp25LeftBanked:
+        case TrackElemType::DiagUp25RightBanked:
+        case TrackElemType::DiagDown25LeftBanked:
+        case TrackElemType::DiagDown25RightBanked:
+        case TrackElemType::DiagFlatToLeftBankedUp25:
+        case TrackElemType::DiagFlatToRightBankedUp25:
+        case TrackElemType::DiagLeftBankedUp25ToFlat:
+        case TrackElemType::DiagRightBankedUp25ToFlat:
+        case TrackElemType::DiagFlatToLeftBankedDown25:
+        case TrackElemType::DiagFlatToRightBankedDown25:
+        case TrackElemType::DiagLeftBankedDown25ToFlat:
+        case TrackElemType::DiagRightBankedDown25ToFlat:
+        case TrackElemType::LeftEighthBankToDiagUp25:
+        case TrackElemType::RightEighthBankToDiagUp25:
+        case TrackElemType::LeftEighthBankToDiagDown25:
+        case TrackElemType::RightEighthBankToDiagDown25:
+        case TrackElemType::LeftEighthBankToOrthogonalUp25:
+        case TrackElemType::RightEighthBankToOrthogonalUp25:
+        case TrackElemType::LeftEighthBankToOrthogonalDown25:
+        case TrackElemType::RightEighthBankToOrthogonalDown25:
+        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
+        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
+        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
+            return TrackPaintFunctionDummy;
+
         default:
             return GetTrackPaintFunctionStandUpRC(trackType);
     }

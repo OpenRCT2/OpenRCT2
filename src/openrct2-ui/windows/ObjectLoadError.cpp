@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -208,7 +208,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto& entry = _entries[_currentDownloadIndex];
-            auto name = String::Trim(std::string(entry.GetName()));
+            auto name = String::trim(std::string(entry.GetName()));
             LOG_VERBOSE("Downloading object: [%s]:", name.c_str());
             _currentDownloadIndex++;
             UpdateProgress({ name, _lastDownloadSource, _currentDownloadIndex, _entries.size() });
@@ -541,7 +541,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto name = entry.GetName();
                 char buffer[256];
-                String::Set(buffer, sizeof(buffer), name.data(), name.size());
+                String::set(buffer, sizeof(buffer), name.data(), name.size());
                 DrawText(dpi, screenCoords, { COLOUR_DARK_GREEN }, buffer);
 
                 if (entry.Generation == ObjectGeneration::DAT)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -4789,7 +4789,7 @@ static void SuspendedSwingingRCTrackBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedSwingingRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionSuspendedSwingingRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -4898,6 +4898,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSuspendedSwingingRC(OpenRCT2::TrackEle
         case TrackElemType::BlockBrakes:
             return SuspendedSwingingRCTrackBlockBrakes;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

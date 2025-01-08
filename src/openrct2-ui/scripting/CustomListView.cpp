@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,9 +17,9 @@
 
     #include <numeric>
     #include <openrct2/Context.h>
+    #include <openrct2/core/String.hpp>
     #include <openrct2/localisation/Formatter.h>
     #include <openrct2/localisation/Formatting.h>
-    #include <openrct2/util/Util.h>
 
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui::Windows;
@@ -305,7 +305,7 @@ bool CustomListView::SortItem(size_t indexA, size_t indexB, int32_t column)
 {
     const auto& cellA = Items[indexA].Cells[column];
     const auto& cellB = Items[indexB].Cells[column];
-    return StrLogicalCmp(cellA.c_str(), cellB.c_str()) < 0;
+    return String::logicalCmp(cellA.c_str(), cellB.c_str()) < 0;
 }
 
 void CustomListView::SortItems(int32_t column)

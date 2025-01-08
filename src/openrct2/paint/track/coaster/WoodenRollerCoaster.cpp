@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -6545,10 +6545,9 @@ static void WoodenRCTrackWaterSplash(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const bool transparent = !IsCsgLoaded() || Config::Get().general.TransparentWater
-        || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+    const bool transparent = Config::Get().general.TransparentWater || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
     const auto waterMask = ImageId(SPR_WATER_MASK).WithRemap(FilterPaletteID::PaletteWater).WithBlended(true);
-    const auto waterOverlay = ImageId(transparent ? SPR_WATER_OVERLAY : SPR_RCT1_WATER_OVERLAY);
+    const auto waterOverlay = ImageId(transparent ? EnumValue(SPR_WATER_OVERLAY) : EnumValue(SPR_G2_OPAQUE_WATER_OVERLAY));
 
     switch (trackSequence)
     {
@@ -13286,7 +13285,7 @@ static void WoodenRCTrackRightLargeHalfLoopDown(
 }
 
 template<bool isClassic>
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -13601,16 +13600,16 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClassicWoodenRC(OpenRCT2::Tra
         case TrackElemType::RightLargeHalfLoopDown:
             return WoodenRCTrackRightLargeHalfLoopDown<isClassic>;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWoodenRC(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<false>(trackType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRCFallback(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionClassicWoodenRCFallback(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionWoodenAndClassicWoodenRC<true>(trackType);
 }

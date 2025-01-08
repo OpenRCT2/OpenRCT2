@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7177,7 +7177,7 @@ namespace OpenRCT2::AlpineRC
         }
     }
 
-    TRACK_PAINT_FUNCTION GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
+    TrackPaintFunction GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
     {
         switch (trackType)
         {
@@ -7348,7 +7348,7 @@ namespace OpenRCT2::AlpineRC
             case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
                 return TrackRightQuarterTurn3Tile25DegDownToRightBank;
             default:
-                return nullptr;
+                return TrackPaintFunctionDummy;
         }
     }
 

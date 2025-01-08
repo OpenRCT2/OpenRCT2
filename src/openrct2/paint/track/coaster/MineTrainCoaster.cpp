@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7327,7 +7327,7 @@ static void MineTrainRCTrack60DegDownToFlatLongBase(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMineTrainRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -7530,6 +7530,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(OpenRCT2::TrackElemType tr
         case TrackElemType::Down60ToFlatLongBase:
             return MineTrainRCTrack60DegDownToFlatLongBase;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

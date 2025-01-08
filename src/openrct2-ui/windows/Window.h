@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -127,6 +127,9 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* LoadsaveOpen(
         int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
         TrackDesign* trackDesign);
+    void WindowLoadSaveInputKey(WindowBase* w, uint32_t keycode);
+    void WindowLoadSaveOverwritePromptInputKey(WindowBase* w, uint32_t keycode);
+
     WindowBase* TrackPlaceOpen(const struct TrackDesignFileRef* tdFileRef);
     WindowBase* TrackManageOpen(struct TrackDesignFileRef* tdFileRef);
 

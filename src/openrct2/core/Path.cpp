@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,6 @@
 
 #include "../localisation/Language.h"
 #include "../platform/Platform.h"
-#include "../util/Util.h"
 #include "File.h"
 #include "FileSystem.hpp"
 #include "Memory.hpp"
@@ -121,7 +120,7 @@ namespace OpenRCT2::Path
 
     bool Equals(u8string_view a, u8string_view b)
     {
-        return Platform::ShouldIgnoreCase() ? String::IEquals(a, b) : String::Equals(a, b);
+        return Platform::ShouldIgnoreCase() ? String::iequals(a, b) : String::equals(a, b);
     }
 
     u8string ResolveCasing(u8string_view path)

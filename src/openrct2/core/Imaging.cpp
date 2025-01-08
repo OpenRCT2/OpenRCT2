@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -189,7 +189,7 @@ namespace OpenRCT2::Imaging
 
             if (image.Depth == 8)
             {
-                if (image.Palette == nullptr)
+                if (!image.Palette.has_value())
                 {
                     throw std::runtime_error("Expected a palette for 8-bit image.");
                 }
@@ -255,12 +255,12 @@ namespace OpenRCT2::Imaging
 
     IMAGE_FORMAT GetImageFormatFromPath(std::string_view path)
     {
-        if (String::EndsWith(path, ".png", true))
+        if (String::endsWith(path, ".png", true))
         {
             return IMAGE_FORMAT::PNG;
         }
 
-        if (String::EndsWith(path, ".bmp", true))
+        if (String::endsWith(path, ".bmp", true))
         {
             return IMAGE_FORMAT::BITMAP;
         }

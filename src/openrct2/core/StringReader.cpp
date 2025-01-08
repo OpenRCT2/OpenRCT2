@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,14 +9,13 @@
 
 #include "StringReader.h"
 
-#include "../util/Util.h"
 #include "String.hpp"
 
 using namespace OpenRCT2;
 
 UTF8StringReader::UTF8StringReader(const utf8* text)
 {
-    text = String::SkipBOM(text);
+    text = String::skipBOM(text);
 
     _text = text;
     _current = text;
@@ -27,7 +26,7 @@ bool UTF8StringReader::TryPeek(codepoint_t* outCodepoint)
     if (_current == nullptr)
         return false;
 
-    codepoint_t codepoint = String::GetNextCodepoint(_current);
+    codepoint_t codepoint = String::getNextCodepoint(_current);
     *outCodepoint = codepoint;
     return true;
 }
@@ -37,7 +36,7 @@ bool UTF8StringReader::TryRead(codepoint_t* outCodepoint)
     if (_current == nullptr)
         return false;
 
-    codepoint_t codepoint = String::GetNextCodepoint(_current, &_current);
+    codepoint_t codepoint = String::getNextCodepoint(_current, &_current);
     *outCodepoint = codepoint;
     if (codepoint == 0)
     {

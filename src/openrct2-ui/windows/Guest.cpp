@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,6 +22,8 @@
 #include <openrct2/actions/GuestSetNameAction.h>
 #include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/EnumUtils.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
@@ -31,6 +33,7 @@
 #include <openrct2/peep/PeepAnimationData.h>
 #include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/ride/RideData.h>
+#include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -1605,14 +1608,17 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        std::pair<StringId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
+        std::pair<ImageId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
         {
             auto parkName = GetGameState().Park.Name.c_str();
 
+            // Default item image
+            auto& itemDesc = GetShopItemDescriptor(item);
+            auto itemImage = ImageId(itemDesc.Image);
+
             // Default arguments
             auto ft = Formatter();
-            ft.Add<uint32_t>(GetShopItemDescriptor(item).Image);
-            ft.Add<StringId>(GetShopItemDescriptor(item).Naming.Display);
+            ft.Add<StringId>(itemDesc.Naming.Display);
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(parkName);
 
@@ -1621,29 +1627,27 @@ namespace OpenRCT2::Ui::Windows
             switch (item)
             {
                 case ShopItem::Balloon:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.BalloonColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.BalloonColour);
                     break;
                 case ShopItem::Photo:
                     invRide = GetRide(guest.Photo1RideRef);
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
+                        ft.Increment(2);
                         invRide->FormatNameTo(ft);
                     }
 
                     break;
                 case ShopItem::Umbrella:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.UmbrellaColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.UmbrellaColour);
                     break;
                 case ShopItem::Voucher:
                     switch (guest.VoucherType)
                     {
                         case VOUCHER_TYPE_PARK_ENTRY_FREE:
                             ft.Rewind();
-                            ft.Increment(6);
+                            ft.Increment(2);
                             ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
                             ft.Add<StringId>(STR_STRING);
                             ft.Add<const char*>(parkName);
@@ -1653,40 +1657,38 @@ namespace OpenRCT2::Ui::Windows
                             if (invRide != nullptr)
                             {
                                 ft.Rewind();
-                                ft.Increment(6);
+                                ft.Increment(2);
                                 ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
                                 invRide->FormatNameTo(ft);
                             }
                             break;
                         case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
                             ft.Rewind();
-                            ft.Increment(6);
+                            ft.Increment(2);
                             ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
                             ft.Add<StringId>(STR_STRING);
                             ft.Add<const char*>(parkName);
                             break;
                         case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
                             ft.Rewind();
-                            ft.Increment(6);
+                            ft.Increment(2);
                             ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
                             ft.Add<StringId>(GetShopItemDescriptor(guest.VoucherShopItem).Naming.Singular);
                             break;
                     }
                     break;
                 case ShopItem::Hat:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.HatColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.HatColour);
                     break;
                 case ShopItem::TShirt:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.TshirtColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.TshirtColour);
                     break;
                 case ShopItem::Photo2:
                     invRide = GetRide(guest.Photo2RideRef);
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
+                        ft.Increment(2);
                         invRide->FormatNameTo(ft);
                     }
                     break;
@@ -1695,7 +1697,7 @@ namespace OpenRCT2::Ui::Windows
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
+                        ft.Increment(2);
                         invRide->FormatNameTo(ft);
                     }
                     break;
@@ -1704,7 +1706,7 @@ namespace OpenRCT2::Ui::Windows
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
+                        ft.Increment(2);
                         invRide->FormatNameTo(ft);
                     }
                     break;
@@ -1713,7 +1715,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            return std::make_pair(STR_GUEST_ITEM_FORMAT, ft);
+            return std::make_pair(itemImage, ft);
         }
 
         void OnDrawInventory(DrawPixelInfo& dpi)
@@ -1733,9 +1735,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            Widget* pageBackgroundWidget = &widgets[WIDX_PAGE_BACKGROUND];
-            auto screenCoords = windowPos + ScreenCoordsXY{ pageBackgroundWidget->left + 4, pageBackgroundWidget->top + 2 };
-            int32_t itemNameWidth = pageBackgroundWidget->width() - 8;
+            auto& widget = widgets[WIDX_PAGE_BACKGROUND];
+            auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 4, widget.top + 2 };
+            int32_t itemNameWidth = widget.width() - 24;
 
             int32_t maxY = windowPos.y + height - 22;
             int32_t numItems = 0;
@@ -1750,8 +1752,14 @@ namespace OpenRCT2::Ui::Windows
                 if (!guest->HasItem(item))
                     continue;
 
-                auto [stringId, ft] = InventoryFormatItem(*guest, item);
-                screenCoords.y += DrawTextWrapped(dpi, screenCoords, itemNameWidth, stringId, ft);
+                auto [imageId, ft] = InventoryFormatItem(*guest, item);
+                GfxDrawSprite(dpi, imageId, screenCoords);
+
+                screenCoords.x += 16;
+                screenCoords.y += 1;
+                screenCoords.y += DrawTextWrapped(dpi, screenCoords, itemNameWidth, STR_BLACK_STRING, ft);
+
+                screenCoords.x -= 16;
                 numItems++;
             }
 
@@ -1830,14 +1838,14 @@ namespace OpenRCT2::Ui::Windows
                 if (peep->GetNextIsSurface())
                 {
                     OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SURFACE, nullptr);
-                    SafeStrCat(buffer, buffer2, sizeof(buffer));
+                    String::safeConcat(buffer, buffer2, sizeof(buffer));
                 }
                 if (peep->GetNextIsSloped())
                 {
                     auto ft2 = Formatter();
                     ft2.Add<int32_t>(peep->GetNextDirection());
                     OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
-                    SafeStrCat(buffer, buffer2, sizeof(buffer));
+                    String::safeConcat(buffer, buffer2, sizeof(buffer));
                 }
                 DrawText(dpi, screenCoords, {}, buffer);
             }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -367,7 +367,7 @@ namespace OpenRCT2::ScenarioSources
             for (size_t j = 0; j < std::size(ScenarioTitlesBySource[i]); j++)
             {
                 const ScenarioTitleDescriptor* desc = &ScenarioTitlesBySource[i][j];
-                if (String::IEquals(name, desc->Title))
+                if (String::iequals(name, desc->Title))
                 {
                     outDesc->title = desc->Title;
                     outDesc->id = desc->Id;
@@ -445,13 +445,13 @@ namespace OpenRCT2::ScenarioSources
         }
 
         // Trim (for the sake of the above and WW / TT scenarios)
-        normalisedName = String::TrimStart(normalisedName);
+        normalisedName = String::trimStart(normalisedName);
 
         // American scenario titles should be converted to British name
         // Don't worry, names will be translated using language packs later
         for (const ScenarioAlias& alias : ScenarioAliases)
         {
-            if (String::Equals(alias.Alternative, normalisedName))
+            if (String::equals(alias.Alternative, normalisedName))
             {
                 LOG_VERBOSE("Found alias: %s; will treat as: %s", normalisedName.c_str(), alias.Original);
                 return u8string(alias.Original);

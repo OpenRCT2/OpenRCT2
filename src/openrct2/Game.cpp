@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,7 @@
 #include "core/Money.hpp"
 #include "core/Path.hpp"
 #include "core/SawyerCoding.h"
+#include "core/String.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
 #include "entity/Peep.h"
@@ -60,7 +61,6 @@
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
-#include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Banner.h"
 #include "world/Climate.h"
@@ -173,7 +173,7 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
     if (length > 0)
     {
         auto temp = RCT2StringToUTF8(buffer, RCT2LanguageId::EnglishUK);
-        SafeStrCpy(buffer, temp.data(), length);
+        String::safeUtf8Copy(buffer, temp.data(), length);
     }
 }
 
@@ -337,6 +337,9 @@ void GameFixSaveVars()
     UpdateConsolidatedPatrolAreas();
 
     MapCountRemainingLandRights();
+
+    // Update sprite bounds, rather than relying on stored data
+    PeepUpdateAllBoundingBoxes();
 }
 
 void GameLoadInit()

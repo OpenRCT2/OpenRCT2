@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,109 +10,13 @@
 #include "PeepAnimationData.h"
 
 #include "../drawing/Drawing.h"
+#include "PeepAnimations.h"
 #include "PeepSpriteIds.h"
 
-#include <algorithm>
 #include <array>
 
 namespace OpenRCT2
 {
-    // Adapted from CarEntry.cpp
-    static SpriteBounds inferMaxAnimationDimensions(const PeepAnimation& anim)
-    {
-        constexpr uint8_t kWidth = 200;
-        constexpr uint8_t kHeight = 200;
-        constexpr uint8_t kCentreX = kWidth / 2;
-        constexpr uint8_t kCentreY = kHeight / 2;
-
-        uint8_t bitmap[kHeight][kWidth] = { 0 };
-
-        DrawPixelInfo dpi = {
-            .bits = reinterpret_cast<uint8_t*>(bitmap),
-            .x = -(kWidth / 2),
-            .y = -(kHeight / 2),
-            .width = kWidth,
-            .height = kHeight,
-            .pitch = 0,
-            .zoom_level = ZoomLevel{ 0 },
-        };
-
-        const auto numImages = *(std::max_element(anim.frame_offsets.begin(), anim.frame_offsets.end())) + 1;
-        for (int32_t i = 0; i < numImages; ++i)
-        {
-            GfxDrawSpriteSoftware(dpi, ImageId(anim.base_image + i), { 0, 0 });
-        }
-
-        int32_t spriteWidth = -1;
-        for (int32_t i = kCentreX - 1; i != 0; --i)
-        {
-            for (int32_t j = 0; j < kWidth; j++)
-            {
-                if (bitmap[j][kCentreX - i] != 0)
-                {
-                    spriteWidth = i;
-                    break;
-                }
-            }
-
-            if (spriteWidth != -1)
-                break;
-
-            for (int32_t j = 0; j < kWidth; j++)
-            {
-                if (bitmap[j][kCentreX + i] != 0)
-                {
-                    spriteWidth = i;
-                    break;
-                }
-            }
-
-            if (spriteWidth != -1)
-                break;
-        }
-        spriteWidth++;
-
-        int32_t spriteHeightNegative = -1;
-        for (int32_t i = kCentreY - 1; i != 0; --i)
-        {
-            for (int32_t j = 0; j < kWidth; j++)
-            {
-                if (bitmap[kCentreY - i][j] != 0)
-                {
-                    spriteHeightNegative = i;
-                    break;
-                }
-            }
-
-            if (spriteHeightNegative != -1)
-                break;
-        }
-        spriteHeightNegative++;
-
-        int32_t spriteHeightPositive = -1;
-        for (int32_t i = kCentreY - 1; i != 0; --i)
-        {
-            for (int32_t j = 0; j < kWidth; j++)
-            {
-                if (bitmap[kCentreY + i][j] != 0)
-                {
-                    spriteHeightPositive = i;
-                    break;
-                }
-            }
-
-            if (spriteHeightPositive != -1)
-                break;
-        }
-        spriteHeightPositive++;
-
-        return {
-            .sprite_width = static_cast<uint8_t>(spriteWidth),
-            .sprite_height_negative = static_cast<uint8_t>(spriteHeightNegative),
-            .sprite_height_positive = static_cast<uint8_t>(spriteHeightPositive),
-        };
-    }
-
     // clang-format off
 
     // Define animation sequences for Normal sprites
@@ -1095,8 +999,16 @@ namespace OpenRCT2
                     continue;
 
                 anim.bounds = inferMaxAnimationDimensions(anim);
+
+                // Balloons, hats and umbrellas are painted separately, so the inference
+                // algorithm doesn't account for those. We manually compensate for these here.
+                // Between 8-12 pixels are needed, depending on rotation, so we're generalising.
+                auto pag = PeepAnimationGroup(groupKey);
+                if (pag == PeepAnimationGroup::Balloon || pag == PeepAnimationGroup::Hat || pag == PeepAnimationGroup::Umbrella)
+                {
+                    anim.bounds.sprite_height_negative += 12;
+                }
             }
         }
     }
-
 } // namespace OpenRCT2

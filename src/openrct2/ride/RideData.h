@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,11 +21,11 @@
 
 #include "../audio/audio.h"
 #include "../core/BitSet.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../drawing/ImageIndexType.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
 #include "../paint/track/Support.h"
-#include "../util/Util.h"
 #include "Ride.h"
 #include "RideAudio.h"
 #include "RideConstruction.h"
@@ -34,7 +34,7 @@
 #include "RideStringIds.h"
 #include "ShopItem.h"
 #include "Track.h"
-#include "TrackPaint.h"
+#include "TrackStyle.h"
 #include "Vehicle.h"
 
 enum class ResearchCategory : uint8_t;
@@ -288,7 +288,7 @@ enum class RideConstructionWindowContext : uint8_t
 
 struct TrackDrawerEntry
 {
-    TRACK_PAINT_FUNCTION_GETTER Drawer = nullptr;
+    TrackStyle trackStyle = TrackStyle::null;
     SupportType supportType{};
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
     RideTrackGroups enabledTrackGroups{};
@@ -649,7 +649,7 @@ constexpr RideTypeDescriptor DummyRTD =
 };
 // clang-format on
 
-constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideType)
+constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ride_type_t rideType)
 {
     if (rideType >= std::size(RideTypeDescriptors))
         return DummyRTD;
@@ -657,7 +657,7 @@ constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideT
     return RideTypeDescriptors[rideType];
 }
 
-constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
+constexpr bool RideTypeIsValid(ride_type_t rideType)
 {
     return rideType < std::size(RideTypeDescriptors);
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,26 +75,6 @@ private:
     uint8_t _flags = 0;
 
 public:
-    [[nodiscard]] static ImageId FromUInt32(uint32_t value)
-    {
-        ImageId result;
-        result._index = value & MASK_INDEX;
-        if (value & FLAG_SECONDARY)
-            result._primary = (value & MASK_PRIMARY) >> SHIFT_PRIMARY;
-        else
-            result._primary = (value & MASK_REMAP) >> SHIFT_REMAP;
-        if (value & FLAG_SECONDARY)
-            result._secondary = (value & MASK_SECONDARY) >> SHIFT_SECONDARY;
-        if (value & FLAG_PRIMARY)
-            result._flags |= NEW_FLAG_PRIMARY;
-        if (value & FLAG_BLEND)
-            result._flags |= NEW_FLAG_BLEND;
-        if (value & FLAG_SECONDARY)
-            result._flags |= NEW_FLAG_SECONDARY;
-        assert(result.ToUInt32() == value);
-        return result;
-    }
-
     ImageId() = default;
 
     explicit constexpr ImageId(ImageIndex index)
@@ -120,22 +100,6 @@ public:
     constexpr ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour)
         : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour).WithTertiary(tertiaryColour))
     {
-    }
-
-    [[nodiscard]] constexpr uint32_t ToUInt32() const
-    {
-        auto result = (_index & MASK_INDEX);
-        result |= (_primary << SHIFT_REMAP) & MASK_REMAP;
-        if (_flags & NEW_FLAG_PRIMARY)
-            result |= FLAG_PRIMARY;
-        if (_flags & NEW_FLAG_SECONDARY)
-        {
-            result |= (_secondary << SHIFT_SECONDARY) & MASK_SECONDARY;
-            result |= FLAG_SECONDARY;
-        }
-        if (_flags & NEW_FLAG_BLEND)
-            result |= FLAG_BLEND;
-        return result;
     }
 
     bool HasValue() const

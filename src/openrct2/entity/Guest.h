@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -346,8 +346,8 @@ public:
     void SpendMoney(money64 amount, ExpenditureType type);
     void SetHasRidden(const Ride& ride);
     bool HasRidden(const Ride& ride) const;
-    void SetHasRiddenRideType(int32_t rideType);
-    bool HasRiddenRideType(int32_t rideType) const;
+    void SetHasRiddenRideType(ride_type_t rideType);
+    bool HasRiddenRideType(ride_type_t rideType) const;
     void SetParkEntryTime(int32_t entryTime);
     int32_t GetParkEntryTime() const;
     void CheckIfLost();

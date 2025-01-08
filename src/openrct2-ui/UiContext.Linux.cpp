@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -103,14 +103,14 @@ namespace OpenRCT2::Ui
             {
                 case DIALOG_TYPE::KDIALOG:
                 {
-                    std::string cmd = String::StdFormat(
+                    std::string cmd = String::stdFormat(
                         "%s --title \"OpenRCT2\" --msgbox \"%s\"", executablePath.c_str(), message.c_str());
                     Platform::Execute(cmd);
                     break;
                 }
                 case DIALOG_TYPE::ZENITY:
                 {
-                    std::string cmd = String::StdFormat(
+                    std::string cmd = String::stdFormat(
                         "%s --title=\"OpenRCT2\" --info --text=\"%s\"", executablePath.c_str(), message.c_str());
                     Platform::Execute(cmd);
                     break;
@@ -123,13 +123,13 @@ namespace OpenRCT2::Ui
 
         void OpenFolder(const std::string& path) override
         {
-            std::string cmd = String::StdFormat("xdg-open %s", EscapePathForShell(path).c_str());
+            std::string cmd = String::stdFormat("xdg-open %s", EscapePathForShell(path).c_str());
             Platform::Execute(cmd);
         }
 
         void OpenURL(const std::string& url) override
         {
-            std::string cmd = String::StdFormat("xdg-open %s", url.c_str());
+            std::string cmd = String::stdFormat("xdg-open %s", url.c_str());
             Platform::Execute(cmd);
         }
 
@@ -145,7 +145,7 @@ namespace OpenRCT2::Ui
                 {
                     std::string action = (desc.Type == FileDialogType::Open) ? "--getopenfilename" : "--getsavefilename";
                     std::string filter = GetKDialogFilterString(desc.Filters);
-                    std::string cmd = String::StdFormat(
+                    std::string cmd = String::stdFormat(
                         "%s --title '%s' %s %s '%s'", executablePath.c_str(), desc.Title.c_str(), action.c_str(),
                         directory.c_str(), filter.c_str());
                     std::string output;
@@ -164,7 +164,7 @@ namespace OpenRCT2::Ui
                         flags = "--confirm-overwrite --save";
                     }
                     std::string filters = GetZenityFilterString(desc.Filters);
-                    std::string cmd = String::StdFormat(
+                    std::string cmd = String::stdFormat(
                         "%s %s --filename=%s %s --title='%s' / %s", executablePath.c_str(), action.c_str(), directory.c_str(),
                         flags.c_str(), desc.Title.c_str(), filters.c_str());
                     std::string output;
@@ -204,14 +204,14 @@ namespace OpenRCT2::Ui
             {
                 if (desc.Type == FileDialogType::Open && access(result.c_str(), F_OK) == -1)
                 {
-                    std::string msg = String::StdFormat(
+                    std::string msg = String::stdFormat(
                         "\"%s\" not found: %s, please choose another file\n", result.c_str(), strerror(errno));
                     ShowMessageBox(window, msg);
                     return ShowFileDialog(window, desc);
                 }
                 if (desc.Type == FileDialogType::Save && access(result.c_str(), F_OK) != -1 && dtype == DIALOG_TYPE::KDIALOG)
                 {
-                    std::string cmd = String::StdFormat("%s --yesno \"Overwrite %s?\"", executablePath.c_str(), result.c_str());
+                    std::string cmd = String::stdFormat("%s --yesno \"Overwrite %s?\"", executablePath.c_str(), result.c_str());
                     if (Platform::Execute(cmd) != 0)
                     {
                         result = std::string();
@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui
                 case DIALOG_TYPE::KDIALOG:
                 {
                     std::string output;
-                    std::string cmd = String::StdFormat(
+                    std::string cmd = String::stdFormat(
                         "%s --title '%s' --getexistingdirectory /", executablePath.c_str(), title.c_str());
                     if (Platform::Execute(cmd, &output) == 0)
                     {
@@ -242,7 +242,7 @@ namespace OpenRCT2::Ui
                 case DIALOG_TYPE::ZENITY:
                 {
                     std::string output;
-                    std::string cmd = String::StdFormat(
+                    std::string cmd = String::stdFormat(
                         "%s --title='%s' --file-selection --directory /", executablePath.c_str(), title.c_str());
                     if (Platform::Execute(cmd, &output) == 0)
                     {
@@ -299,12 +299,12 @@ namespace OpenRCT2::Ui
                 case DIALOG_TYPE::ZENITY:
                 {
                     auto sb = StringBuilder();
-                    sb.Append(String::StdFormat("zenity --list --column '' --width=%d --height=%d", width, height));
+                    sb.Append(String::stdFormat("zenity --list --column '' --width=%d --height=%d", width, height));
                     for (const auto& option : options)
                     {
-                        sb.Append(String::StdFormat(" '%s'", option.c_str()));
+                        sb.Append(String::stdFormat(" '%s'", option.c_str()));
                     }
-                    sb.Append(String::StdFormat(" --title '%s' --text '%s'", title.c_str(), text.c_str()));
+                    sb.Append(String::stdFormat(" --title '%s' --text '%s'", title.c_str(), text.c_str()));
 
                     std::string buff;
                     Platform::Execute(sb.GetBuffer(), &buff);
@@ -313,11 +313,11 @@ namespace OpenRCT2::Ui
                 case DIALOG_TYPE::KDIALOG:
                 {
                     auto sb = StringBuilder();
-                    sb.Append(String::StdFormat("kdialog --geometry %dx%d --title '%s' --menu ", width, height, title.c_str()));
-                    sb.Append(String::StdFormat(" '%s'", text.c_str()));
+                    sb.Append(String::stdFormat("kdialog --geometry %dx%d --title '%s' --menu ", width, height, title.c_str()));
+                    sb.Append(String::stdFormat(" '%s'", text.c_str()));
                     for (const auto& option : options)
                     {
-                        sb.Append(String::StdFormat(" '%s' '%s'", option.c_str(), option.c_str()));
+                        sb.Append(String::stdFormat(" '%s' '%s'", option.c_str(), option.c_str()));
                     }
 
                     std::string buff;

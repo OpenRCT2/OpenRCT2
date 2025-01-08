@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -206,7 +206,53 @@ static void LatticeTriangleTrackAltDiagBooster(
     TrackPaintUtilDiagTilesPaintExtra(session, 3, height, direction, trackSequence, images, supportType.metal);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrackAlt(TrackElemType trackType)
+static void LatticeTriangleTrackAltDiagBlockBrake(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
+        {
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BLOCK_BRAKE_OPEN_ALT_1,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BLOCK_BRAKE_OPEN_ALT_2,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BLOCK_BRAKE_OPEN_ALT_3,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BLOCK_BRAKE_OPEN_ALT_4,
+        },
+        {
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BLOCK_BRAKE_CLOSED_ALT_1,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BLOCK_BRAKE_CLOSED_ALT_2,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BLOCK_BRAKE_CLOSED_ALT_3,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BLOCK_BRAKE_CLOSED_ALT_4,
+        },
+    };
+
+    TrackPaintUtilDiagTilesPaintExtra(
+        session, 3, height, direction, trackSequence, images[trackElement.IsBrakeClosed()], supportType.metal);
+}
+
+static void LatticeTriangleTrackAltDiagBrake(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    constexpr ImageIndex images[2][kNumOrthogonalDirections] = {
+        {
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKE_OPEN_ALT_1,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKE_OPEN_ALT_2,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKE_OPEN_ALT_3,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKE_OPEN_ALT_4,
+        },
+        {
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKE_CLOSED_ALT_1,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKE_CLOSED_ALT_2,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKE_CLOSED_ALT_3,
+            SPR_G2_LATTICE_TRIANGLE_TRACK_DIAG_BRAKE_CLOSED_ALT_4,
+        },
+    };
+
+    TrackPaintUtilDiagTilesPaintExtra(
+        session, 3, height, direction, trackSequence, images[trackElement.IsBrakeClosed()], supportType.metal);
+}
+
+TrackPaintFunction GetTrackPaintFunctionLatticeTriangleTrackAlt(TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -224,6 +270,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLatticeTriangleTrackAlt(TrackElemType 
             return LatticeTriangleTrackAltPoweredLift;
         case TrackElemType::DiagBooster:
             return LatticeTriangleTrackAltDiagBooster;
+        case TrackElemType::DiagBlockBrakes:
+            return LatticeTriangleTrackAltDiagBlockBrake;
+        case TrackElemType::DiagBrakes:
+            return LatticeTriangleTrackAltDiagBrake;
 
         default:
             return GetTrackPaintFunctionLatticeTriangleTrack(trackType);

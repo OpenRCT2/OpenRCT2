@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,7 +41,7 @@ TEST(FetchAndApplyScenarioPatch, expected_json_format)
     for (const fs::directory_entry& entry : fs::directory_iterator(scenarioPatches, ec))
     {
         auto path = entry.path().u8string();
-        if (OpenRCT2::String::EndsWith(path, ".parkpatch"))
+        if (OpenRCT2::String::endsWith(path, ".parkpatch"))
         {
             OpenRCT2::RCT12::ApplyScenarioPatch(path, dummySHA);
         }

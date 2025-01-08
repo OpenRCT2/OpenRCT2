@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,7 +25,10 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
-#include <openrct2/world/MapGen.h>
+#include <openrct2/world/map_generator/MapGen.h>
+#include <openrct2/world/map_generator/PngTerrainGenerator.h>
+
+using namespace OpenRCT2::World;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -267,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         ResizeDirection _resizeDirection{ ResizeDirection::Both };
         bool _mapWidthAndHeightLinked{ true };
-        MapGenSettings _settings{};
+        MapGenerator::Settings _settings{};
         bool _randomTerrain = true;
         bool _heightmapLoaded = false;
         std::string _heightmapFilename{};
@@ -371,17 +374,17 @@ namespace OpenRCT2::Ui::Windows
 
         void GenerateMap()
         {
-            if (_settings.algorithm == MapGenAlgorithm::heightmapImage && !_heightmapLoaded)
+            if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage && !_heightmapLoaded)
                 return;
 
-            MapGenSettings mapgenSettings = _settings;
+            MapGenerator::Settings mapgenSettings = _settings;
             if (_randomTerrain)
             {
                 mapgenSettings.landTexture = -1;
                 mapgenSettings.edgeTexture = -1;
             }
 
-            MapGenGenerate(&mapgenSettings);
+            MapGenerator::generate(&mapgenSettings);
             GfxInvalidateScreen();
         }
 
@@ -391,9 +394,9 @@ namespace OpenRCT2::Ui::Windows
         {
             SharedMouseUp(widgetIndex);
 
-            if (_settings.algorithm == MapGenAlgorithm::simplexNoise)
+            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise)
                 SimplexMouseUp(widgetIndex);
-            else if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
+            else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
                 HeightmapMouseUp(widgetIndex);
 
             switch (widgetIndex)
@@ -414,10 +417,10 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseMouseDown(WidgetIndex widgetIndex, Widget* widget)
         {
-            if (_settings.algorithm == MapGenAlgorithm::simplexNoise)
+            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise)
                 SimplexMouseDown(widgetIndex, widget);
 
-            else if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
+            else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
                 HeightmapMouseDown(widgetIndex, widget);
 
             switch (widgetIndex)
@@ -481,7 +484,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_SOURCE_DROPDOWN:
-                    _settings.algorithm = MapGenAlgorithm(dropdownIndex);
+                    _settings.algorithm = MapGenerator::Algorithm(dropdownIndex);
                     Invalidate();
                     break;
             }
@@ -489,9 +492,9 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseTextInput(WidgetIndex widgetIndex, int32_t value)
         {
-            if (_settings.algorithm == MapGenAlgorithm::simplexNoise)
+            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise)
                 SimplexTextInput(widgetIndex, value);
-            else if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
+            else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
                 HeightmapTextInput(widgetIndex, value);
 
             switch (widgetIndex)
@@ -522,7 +525,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
             SetWidgetDisabled(WIDX_MAP_SIZE_LINK, _settings.mapSize.x != _settings.mapSize.y);
 
-            bool isHeightMapImage = _settings.algorithm == MapGenAlgorithm::heightmapImage;
+            bool isHeightMapImage = _settings.algorithm == MapGenerator::Algorithm::heightmapImage;
             SetWidgetDisabled(WIDX_MAP_SIZE_Y, isHeightMapImage);
             SetWidgetDisabled(WIDX_MAP_SIZE_Y_UP, isHeightMapImage);
             SetWidgetDisabled(WIDX_MAP_SIZE_Y_DOWN, isHeightMapImage);
@@ -551,19 +554,19 @@ namespace OpenRCT2::Ui::Windows
             auto& sourceWidget = widgets[WIDX_HEIGHTMAP_SOURCE];
             switch (_settings.algorithm)
             {
-                case MapGenAlgorithm::blank:
+                case MapGenerator::Algorithm::blank:
                     sourceWidget.text = STR_HEIGHTMAP_FLATLAND;
                     ToggleSimplexWidgets(false);
                     ToggleHeightmapWidgets(false);
                     break;
 
-                case MapGenAlgorithm::simplexNoise:
+                case MapGenerator::Algorithm::simplexNoise:
                     sourceWidget.text = STR_HEIGHTMAP_SIMPLEX_NOISE;
                     ToggleSimplexWidgets(true);
                     ToggleHeightmapWidgets(false);
                     break;
 
-                case MapGenAlgorithm::heightmapImage:
+                case MapGenerator::Algorithm::heightmapImage:
                     sourceWidget.text = STR_HEIGHTMAP_FILE;
                     ToggleSimplexWidgets(false);
                     ToggleHeightmapWidgets(true);
@@ -603,10 +606,10 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
-            if (_settings.algorithm == MapGenAlgorithm::simplexNoise)
+            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise)
                 SimplexDraw(dpi);
 
-            else if (_settings.algorithm == MapGenAlgorithm::heightmapImage)
+            else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
                 HeightmapDraw(dpi);
 
             const auto enabledColour = colours[1];
@@ -753,7 +756,7 @@ namespace OpenRCT2::Ui::Windows
 
             SetPressedTab();
 
-            const bool isFlatland = _settings.algorithm == MapGenAlgorithm::blank;
+            const bool isFlatland = _settings.algorithm == MapGenerator::Algorithm::blank;
 
             SetWidgetDisabled(WIDX_TREE_LAND_RATIO, !_settings.trees);
             SetWidgetDisabled(WIDX_TREE_LAND_RATIO_UP, !_settings.trees);
@@ -801,7 +804,7 @@ namespace OpenRCT2::Ui::Windows
                 STR_RIDE_LENGTH_ENTRY, ft, { textColour });
 
             // Maximum tree altitude, label and value
-            const bool isFlatland = _settings.algorithm == MapGenAlgorithm::blank;
+            const bool isFlatland = _settings.algorithm == MapGenerator::Algorithm::blank;
             const auto maxTreeTextColour = _settings.trees && !isFlatland ? enabledColour : disabledColour;
 
             DrawTextBasic(
@@ -1232,10 +1235,10 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetEnabled(WIDX_WALL_TEXTURE, !_randomTerrain);
 
             // Max land height option is irrelevant for flatland
-            SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH, _settings.algorithm != MapGenAlgorithm::blank);
+            SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH, _settings.algorithm != MapGenerator::Algorithm::blank);
 
             // Only offer terrain edge smoothing if we don't use flatland terrain
-            SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.algorithm != MapGenAlgorithm::blank);
+            SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.algorithm != MapGenerator::Algorithm::blank);
             SetPressedTab();
         }
 
@@ -1395,7 +1398,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnClose() override
         {
-            MapGenUnloadHeightmapImage();
+            MapGenerator::UnloadHeightmapImage();
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -1454,7 +1457,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            bool isHeightMapImage = _settings.algorithm == MapGenAlgorithm::heightmapImage;
+            bool isHeightMapImage = _settings.algorithm == MapGenerator::Algorithm::heightmapImage;
             SetWidgetDisabled(WIDX_MAP_GENERATE, isHeightMapImage && !_heightmapLoaded);
 
             switch (page)
@@ -1534,7 +1537,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (result == MODAL_RESULT_OK)
             {
-                if (!MapGenLoadHeightmapImage(path))
+                if (!MapGenerator::LoadHeightmapImage(path))
                 {
                     // TODO: Display error popup
                     return;
@@ -1543,6 +1546,7 @@ namespace OpenRCT2::Ui::Windows
                 // The window needs to be open while using the map
                 _heightmapLoaded = true;
                 _heightmapFilename = fs::u8path(path).filename().string();
+                _settings.algorithm = MapGenerator::Algorithm::heightmapImage;
                 SetPage(WINDOW_MAPGEN_PAGE_BASE);
             }
         }

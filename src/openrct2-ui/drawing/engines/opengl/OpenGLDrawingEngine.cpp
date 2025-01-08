@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,6 @@
     #include <openrct2/drawing/Weather.h>
     #include <openrct2/interface/Screenshot.h>
     #include <openrct2/ui/UiContext.h>
-    #include <openrct2/util/Util.h>
     #include <openrct2/world/Climate.h>
 
 using namespace OpenRCT2;
@@ -207,7 +206,7 @@ public:
     {
         _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
         _bitsDPI.DrawingEngine = this;
-        LightFXSetAvailable(false);
+        LightFx::SetAvailable(false);
     }
 
     ~OpenGLDrawingEngine() override

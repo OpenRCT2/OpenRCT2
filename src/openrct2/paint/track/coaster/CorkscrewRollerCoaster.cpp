@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9889,35 +9889,24 @@ static void CorkscrewRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (!IsCsgLoaded())
-    {
-        CorkscrewRCTrackBrakes(session, ride, trackSequence, direction, height, trackElement, supportType);
-        return;
-    }
-
-    uint32_t sprite_ne_sw_behind = SPR_CSG_BEGIN + 56213;
-    uint32_t sprite_nw_se_behind = SPR_CSG_BEGIN + 56214;
-    uint32_t sprite_ne_sw_after = SPR_CSG_BEGIN + 56215;
-    uint32_t sprite_nw_se_after = SPR_CSG_BEGIN + 56216;
-
     switch (direction)
     {
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(sprite_ne_sw_behind), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_BOOSTER_NE_SW_1), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(sprite_ne_sw_after), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_BOOSTER_NE_SW_2), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(sprite_nw_se_behind), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_BOOSTER_NW_SE_1), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(sprite_nw_se_after), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(SPR_G2_CORKSCREW_BOOSTER_NW_SE_2), { 0, 0, height },
                 { { 0, 27, height }, { 32, 1, 26 } });
             break;
     }
@@ -19393,7 +19382,7 @@ static void CorkscrewRCTrackRightLargeZeroGRollDown(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -19938,6 +19927,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(OpenRCT2::TrackElemType tr
             return CorkscrewRCTrackRightLargeZeroGRollDown;
 
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

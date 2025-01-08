@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14365,7 +14365,7 @@ namespace OpenRCT2::HybridRC
         PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
-    TRACK_PAINT_FUNCTION GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
+    TrackPaintFunction GetTrackPaintFunction(OpenRCT2::TrackElemType trackType)
     {
         switch (trackType)
         {
@@ -14801,7 +14801,7 @@ namespace OpenRCT2::HybridRC
                 return Track25DegDownBrakes;
 
             default:
-                return nullptr;
+                return TrackPaintFunctionDummy;
         }
     }
 } // namespace OpenRCT2::HybridRC

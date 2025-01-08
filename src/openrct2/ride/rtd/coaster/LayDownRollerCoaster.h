@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
-            .Drawer = GetTrackPaintFunctionCorkscrewRC,
+            .trackStyle = TrackStyle::corkscrewRollerCoaster,
             .supportType = MetalSupportType::TubesInverted,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::corkscrewUninverted, TrackGroup::slopeSteepLong, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeRollBanking, TrackGroup::slopeCurveBanked, TrackGroup::slopeCurveLarge },
             .extraTrackGroups = { TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::booster },
@@ -29,7 +29,7 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
     ),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor(
         {
-            .Drawer = GetTrackPaintFunctionLayDownRCInverted,
+            .trackStyle = TrackStyle::layDownRollerCoasterInverted,
             .supportType = MetalSupportType::TubesInverted,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistInverted, TrackGroup::flyingHalfLoopInvertedDown, TrackGroup::corkscrewInverted },
             .extraTrackGroups = { TrackGroup::flyingHalfLoopInvertedUp, TrackGroup::stationEnd, TrackGroup::liftHill },
@@ -98,12 +98,12 @@ constexpr RideTypeDescriptor LayDownRollerCoasterAltRTD =
     .Category = RIDE_CATEGORY_NONE,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
-        .Drawer = nullptr,
+        .trackStyle = TrackStyle::null,
         .enabledTrackGroups = {  },
         .extraTrackGroups = {  },
     }),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = nullptr,
+        .trackStyle = TrackStyle::null,
         .enabledTrackGroups = {  },
         .extraTrackGroups = {  },
     }),

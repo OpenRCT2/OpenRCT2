@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -90,7 +90,7 @@ private:
 
     void WriteLine()
     {
-        _stream->Write(PLATFORM_NEWLINE, String::SizeOf(PLATFORM_NEWLINE));
+        _stream->Write(PLATFORM_NEWLINE, String::sizeOf(PLATFORM_NEWLINE));
     }
 
     void WriteLine(const std::string& line)
@@ -102,7 +102,7 @@ private:
 
 void IIniWriter::WriteString(const std::string& name, const utf8* value)
 {
-    WriteString(name, String::ToStd(value));
+    WriteString(name, String::toStd(value));
 }
 
 std::unique_ptr<IIniWriter> CreateIniWriter(OpenRCT2::IStream* stream)

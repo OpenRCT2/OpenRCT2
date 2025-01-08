@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,13 +18,14 @@
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
+#include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/RideRatings.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
@@ -808,7 +809,7 @@ namespace OpenRCT2::Ui::Windows
         void SortListByName()
         {
             std::sort(_rideList.begin(), _rideList.end(), [](const auto& lhs, const auto& rhs) {
-                return !(0 <= StrLogicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
+                return !(0 <= String::logicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
             });
         }
 

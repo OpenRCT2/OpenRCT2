@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -70,14 +70,14 @@ namespace OpenRCT2::Collections
     static bool Contains(TCollection& collection, const char* item, bool ignoreCase = false)
     {
         return Contains(
-            collection, item, [ignoreCase](const char* a, const char* b) { return String::Equals(a, b, ignoreCase); });
+            collection, item, [ignoreCase](const char* a, const char* b) { return String::equals(a, b, ignoreCase); });
     }
 
     template<typename TCollection>
     static size_t IndexOf(TCollection& collection, const char* item, bool ignoreCase = false)
     {
         return IndexOf(
-            collection, item, [ignoreCase](const char* a, const char* b) { return String::Equals(a, b, ignoreCase); });
+            collection, item, [ignoreCase](const char* a, const char* b) { return String::equals(a, b, ignoreCase); });
     }
 
 #pragma endregion

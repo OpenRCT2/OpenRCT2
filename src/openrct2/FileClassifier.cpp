@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -201,25 +201,25 @@ static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* 
 FileExtension GetFileExtensionType(u8string_view path)
 {
     auto extension = Path::GetExtension(path);
-    if (String::IEquals(extension, ".dat") || String::IEquals(extension, ".pob"))
+    if (String::iequals(extension, ".dat") || String::iequals(extension, ".pob"))
         return FileExtension::DAT;
-    if (String::IEquals(extension, ".sc4"))
+    if (String::iequals(extension, ".sc4"))
         return FileExtension::SC4;
-    if (String::IEquals(extension, ".sv4"))
+    if (String::iequals(extension, ".sv4"))
         return FileExtension::SV4;
-    if (String::IEquals(extension, ".td4"))
+    if (String::iequals(extension, ".td4"))
         return FileExtension::TD4;
-    if (String::IEquals(extension, ".sc6"))
+    if (String::iequals(extension, ".sc6"))
         return FileExtension::SC6;
-    if (String::IEquals(extension, ".sea"))
+    if (String::iequals(extension, ".sea"))
         return FileExtension::SC6;
-    if (String::IEquals(extension, ".sv6"))
+    if (String::iequals(extension, ".sv6"))
         return FileExtension::SV6;
-    if (String::IEquals(extension, ".sv7"))
+    if (String::iequals(extension, ".sv7"))
         return FileExtension::SV6;
-    if (String::IEquals(extension, ".td6"))
+    if (String::iequals(extension, ".td6"))
         return FileExtension::TD6;
-    if (String::IEquals(extension, ".park"))
+    if (String::iequals(extension, ".park"))
         return FileExtension::PARK;
     return FileExtension::Unknown;
 }

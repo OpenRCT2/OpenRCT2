@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,6 @@
 #include "../localisation/Formatting.h"
 #include "../network/network.h"
 #include "../platform/Platform.h"
-#include "../util/Util.h"
 #include "../world/Location.hpp"
 
 using namespace OpenRCT2;
@@ -205,6 +204,21 @@ void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColor)
             GfxFillRect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PALETTE_INDEX_56);
         }
     }
+}
+
+/**
+ * strftime wrapper which appends to an existing string.
+ */
+static size_t StrCatFTime(char* buffer, size_t bufferSize, const char* format, const struct tm* tp)
+{
+    size_t stringLen = strnlen(buffer, bufferSize);
+    if (stringLen < bufferSize)
+    {
+        char* dst = buffer + stringLen;
+        size_t dstMaxSize = bufferSize - stringLen;
+        return strftime(dst, dstMaxSize, format, tp);
+    }
+    return 0;
 }
 
 void ChatAddHistory(std::string_view s)

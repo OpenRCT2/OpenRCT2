@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,11 +12,11 @@
 #include "Diagnostic.h"
 #include "OpenRCT2.h"
 #include "config/Config.h"
+#include "core/EnumUtils.hpp"
 #include "core/File.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "platform/Platform.h"
-#include "util/Util.h"
 
 using namespace OpenRCT2;
 
@@ -139,7 +139,7 @@ public:
         if (_usingRCTClassic && base == DIRBASE::RCT2 && did == DIRID::DATA)
         {
             // Special case, handle RCT Classic css ogg files
-            if (String::StartsWith(fileName, "css", true) && String::EndsWith(fileName, ".dat", true))
+            if (String::startsWith(fileName, "css", true) && String::endsWith(fileName, ".dat", true))
             {
                 alternativeFilename = fileName.substr(0, fileName.size() - 3);
                 alternativeFilename.append("ogg");

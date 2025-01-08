@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ Range<int32_t> ResourceTable::ParseRange(std::string_view s)
     if (s.length() >= 3 && s[0] == '[' && s[s.length() - 1] == ']')
     {
         s = s.substr(1, s.length() - 2);
-        auto parts = String::Split(s, "..");
+        auto parts = String::split(s, "..");
         if (parts.size() == 1)
         {
             result = Range<int32_t>(std::stoi(parts[0]));
@@ -71,44 +71,44 @@ ResourceTable::SourceInfo ResourceTable::ParseSource(std::string_view source)
         }
     }
 
-    if (String::StartsWith(base, "$LGX:"))
+    if (String::startsWith(base, "$LGX:"))
     {
         info.Kind = SourceKind::Gx;
         info.Path = fileName;
     }
-    else if (String::StartsWith(base, "$G1"))
+    else if (String::startsWith(base, "$G1"))
     {
         auto env = GetContext()->GetPlatformEnvironment();
         auto dataPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
         info.Kind = SourceKind::G1;
         // info.Path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, "g1.dat");
     }
-    else if (String::StartsWith(base, "$CSG"))
+    else if (String::startsWith(base, "$CSG"))
     {
         auto env = GetContext()->GetPlatformEnvironment();
         auto dataPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
         info.Kind = SourceKind::Csg;
         // info.Path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, "g1.dat");
     }
-    else if (String::StartsWith(base, "$RCT1:DATA/"))
+    else if (String::startsWith(base, "$RCT1:DATA/"))
     {
         auto env = GetContext()->GetPlatformEnvironment();
         info.Kind = SourceKind::Data;
         info.Path = env->FindFile(DIRBASE::RCT1, DIRID::DATA, fileName);
     }
-    else if (String::StartsWith(base, "$RCT2:DATA/"))
+    else if (String::startsWith(base, "$RCT2:DATA/"))
     {
         auto env = GetContext()->GetPlatformEnvironment();
         info.Kind = SourceKind::Data;
         info.Path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, fileName);
     }
-    else if (String::StartsWith(base, "$RCT2:OBJDATA/"))
+    else if (String::startsWith(base, "$RCT2:OBJDATA/"))
     {
         auto env = GetContext()->GetPlatformEnvironment();
         info.Kind = SourceKind::ObjData;
         info.Path = env->FindFile(DIRBASE::RCT2, DIRID::OBJECT, fileName);
     }
-    else if (!String::StartsWith(base, "$"))
+    else if (!String::startsWith(base, "$"))
     {
         info.Path = base;
     }

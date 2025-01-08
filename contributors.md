@@ -246,6 +246,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Mike Harvey (harvito)
 * Robert Yan (lewyche)
 * Tom Matalenas (tmatale)
+* Brendan Heinonen (staticinvocation)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -292,7 +293,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Norwegian - Hugo Wallenburg (Goddesen)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
 * Portuguese (BR) - (kaudy), (renansimoes), Tulio Paschoalin Leao (tupaschoal)
-* Russian - (Soosisya)
+* Russian - (Soosisya), (andOlga)
 * Spanish - Josué Acevedo (Wirlie), Diego Mateos (dimateos), (frenchiveruti), (mdtrooper), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
 * Ukrainian - (CsyeCokTheSolly), (Veydzher), (Saba4ara)

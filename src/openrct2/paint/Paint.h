@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,8 @@
 #include "tile_element/Paint.Tunnel.h"
 
 #include <mutex>
+#include <sfl/segmented_vector.hpp>
+#include <sfl/static_vector.hpp>
 #include <thread>
 
 struct EntityBase;
@@ -122,56 +124,6 @@ struct SupportHeight
 // the quadrant index is based on the x and y components combined.
 static constexpr int32_t MaxPaintQuadrants = kMaximumMapSizeTechnical * 2;
 
-/**
- * A pool of PaintEntry instances that can be rented out.
- * The internal implementation uses an unrolled linked list so that each
- * paint session can quickly allocate a new paint entry until it requires
- * another node / block of paint entries. Only the node allocation needs to
- * be thread safe.
- */
-class PaintEntryPool
-{
-    static constexpr size_t NodeSize = 512;
-
-public:
-    struct Node
-    {
-        Node* Next{};
-        size_t Count{};
-        PaintEntry PaintStructs[NodeSize]{};
-    };
-
-    struct Chain
-    {
-        PaintEntryPool* Pool{};
-        Node* Head{};
-        Node* Current{};
-
-        Chain() = default;
-        Chain(PaintEntryPool* pool);
-        Chain(Chain&& chain);
-        ~Chain();
-
-        Chain& operator=(Chain&& chain) noexcept;
-
-        PaintEntry* Allocate();
-        void Clear();
-        size_t GetCount() const;
-    };
-
-private:
-    std::vector<Node*> _available;
-    std::mutex _mutex;
-
-    Node* AllocateNode();
-
-public:
-    ~PaintEntryPool();
-
-    Chain Create();
-    void FreeNodes(Node* head);
-};
-
 struct PaintSessionCore
 {
     PaintStruct* PaintHead;
@@ -207,51 +159,71 @@ struct PaintSessionCore
     ViewportInteractionItem InteractionType;
 };
 
+struct PaintNodeStorage
+{
+    // 1024 is typically enough to cover the column, after its full it will use dynamicPaintEntries.
+    sfl::static_vector<PaintEntry, 1024> fixedPaintEntries;
+
+    // This has to be wrapped in optional as it allocates memory before it is used.
+    std::optional<sfl::segmented_vector<PaintEntry, 256>> dynamicPaintEntries;
+
+    PaintEntry* allocate()
+    {
+        if (!fixedPaintEntries.full())
+        {
+            return &fixedPaintEntries.emplace_back();
+        }
+
+        if (!dynamicPaintEntries.has_value())
+        {
+            dynamicPaintEntries.emplace();
+        }
+
+        return &dynamicPaintEntries->emplace_back();
+    }
+
+    void clear()
+    {
+        fixedPaintEntries.clear();
+        dynamicPaintEntries.reset();
+    }
+};
+
 struct PaintSession : public PaintSessionCore
 {
     DrawPixelInfo DPI;
-    PaintEntryPool::Chain PaintEntryChain;
+    PaintNodeStorage paintEntries;
 
     PaintStruct* AllocateNormalPaintEntry() noexcept
     {
-        auto* entry = PaintEntryChain.Allocate();
-        if (entry != nullptr)
-        {
-            LastPS = entry->AsBasic();
-            return LastPS;
-        }
-        return nullptr;
+        auto* entry = paintEntries.allocate();
+        LastPS = entry->AsBasic();
+        return LastPS;
     }
 
     AttachedPaintStruct* AllocateAttachedPaintEntry() noexcept
     {
-        auto* entry = PaintEntryChain.Allocate();
-        if (entry != nullptr)
-        {
-            LastAttachedPS = entry->AsAttached();
-            return LastAttachedPS;
-        }
-        return nullptr;
+        auto* entry = paintEntries.allocate();
+        LastAttachedPS = entry->AsAttached();
+        return LastAttachedPS;
     }
 
     PaintStringStruct* AllocateStringPaintEntry() noexcept
     {
-        auto* entry = PaintEntryChain.Allocate();
-        if (entry != nullptr)
+        auto* entry = paintEntries.allocate();
+
+        auto* string = entry->AsString();
+        if (LastPSString == nullptr)
         {
-            auto* string = entry->AsString();
-            if (LastPSString == nullptr)
-            {
-                PSStringHead = string;
-            }
-            else
-            {
-                LastPSString->NextEntry = string;
-            }
-            LastPSString = string;
-            return LastPSString;
+            PSStringHead = string;
         }
-        return nullptr;
+        else
+        {
+            LastPSString->NextEntry = string;
+        }
+
+        LastPSString = string;
+        return LastPSString;
     }
 };
 

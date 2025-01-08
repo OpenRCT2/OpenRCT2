@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -213,7 +213,7 @@ public:
     void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
     {
         auto pattern = path + "\\*";
-        auto wPattern = String::ToWideChar(pattern.c_str());
+        auto wPattern = String::toWideChar(pattern.c_str());
 
         WIN32_FIND_DATAW findData;
         HANDLE hFile = FindFirstFileW(wPattern.c_str(), &findData);
@@ -235,7 +235,7 @@ private:
     {
         DirectoryChild result;
 
-        result.Name = String::ToUtf8(child->cFileName);
+        result.Name = String::toUtf8(child->cFileName);
         if (child->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
         {
             result.Type = DIRECTORY_CHILD_TYPE::DC_DIRECTORY;
@@ -272,7 +272,7 @@ public:
             for (int32_t i = 0; i < count; i++)
             {
                 const struct dirent* node = namelist[i];
-                if (!String::Equals(node->d_name, ".") && !String::Equals(node->d_name, ".."))
+                if (!String::equals(node->d_name, ".") && !String::equals(node->d_name, ".."))
                 {
                     children.push_back(CreateChild(path.c_str(), node));
                 }
@@ -303,9 +303,7 @@ private:
             // Get the full path of the file
             auto path = Path::Combine(directory, node->d_name);
 
-            struct stat statInfo
-            {
-            };
+            struct stat statInfo{};
             int32_t statRes = stat(path.c_str(), &statInfo);
             if (statRes != -1)
             {

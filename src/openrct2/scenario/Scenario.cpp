@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,7 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
@@ -49,6 +50,7 @@
 #include "../rct1/RCT1.h"
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/Track.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -61,6 +63,8 @@
 #include "../world/tile_element/TrackElement.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
+
+#include <chrono>
 
 using namespace OpenRCT2;
 
@@ -252,22 +256,24 @@ void ScenarioAutosaveCheck()
     uint32_t timeSinceSave = Platform::GetTicks() - gLastAutoSaveUpdate;
 
     bool shouldSave = false;
+    using namespace std::chrono_literals;
+
     switch (Config::Get().general.AutosaveFrequency)
     {
         case AUTOSAVE_EVERY_MINUTE:
-            shouldSave = timeSinceSave >= 1 * 60 * 1000;
+            shouldSave = timeSinceSave >= std::chrono::milliseconds(1min).count();
             break;
         case AUTOSAVE_EVERY_5MINUTES:
-            shouldSave = timeSinceSave >= 5 * 60 * 1000;
+            shouldSave = timeSinceSave >= std::chrono::milliseconds(5min).count();
             break;
         case AUTOSAVE_EVERY_15MINUTES:
-            shouldSave = timeSinceSave >= 15 * 60 * 1000;
+            shouldSave = timeSinceSave >= std::chrono::milliseconds(15min).count();
             break;
         case AUTOSAVE_EVERY_30MINUTES:
-            shouldSave = timeSinceSave >= 30 * 60 * 1000;
+            shouldSave = timeSinceSave >= std::chrono::milliseconds(30min).count();
             break;
         case AUTOSAVE_EVERY_HOUR:
-            shouldSave = timeSinceSave >= 60 * 60 * 1000;
+            shouldSave = timeSinceSave >= std::chrono::milliseconds(1h).count();
             break;
     }
 

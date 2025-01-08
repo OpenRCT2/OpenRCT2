@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,6 +36,7 @@
 #include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
+#include "../util/Util.h"
 #include "../world/Location.hpp"
 #include "network.h"
 
@@ -49,7 +50,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kNetworkStreamVersion = 0;
+constexpr uint8_t kNetworkStreamVersion = 4;
 
 const std::string kNetworkStreamID = std::string(OPENRCT2_VERSION) + "-" + std::to_string(kNetworkStreamVersion);
 
@@ -72,6 +73,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     #include "../actions/GameAction.h"
     #include "../config/Config.h"
     #include "../core/Console.hpp"
+    #include "../core/EnumUtils.hpp"
     #include "../core/FileStream.h"
     #include "../core/MemoryStream.h"
     #include "../core/Path.hpp"
@@ -82,7 +84,6 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
     #include "../scenario/Scenario.h"
-    #include "../util/Util.h"
     #include "../world/Park.h"
     #include "NetworkAction.h"
     #include "NetworkConnection.h"
@@ -501,13 +502,13 @@ void NetworkBase::Flush()
 {
     if (GetMode() == NETWORK_MODE_CLIENT)
     {
-        _serverConnection->SendQueuedPackets();
+        _serverConnection->SendQueuedData();
     }
     else
     {
         for (auto& it : client_connection_list)
         {
-            it->SendQueuedPackets();
+            it->SendQueuedData();
         }
     }
 }
@@ -1151,8 +1152,8 @@ void NetworkBase::AppendLog(std::ostream& fs, std::string_view s)
         auto tmInfo = localtime(&timer);
         if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0)
         {
-            String::Append(buffer, sizeof(buffer), std::string(s).c_str());
-            String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
+            String::append(buffer, sizeof(buffer), std::string(s).c_str());
+            String::append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
             fs.write(buffer, strlen(buffer));
         }
@@ -2014,7 +2015,7 @@ void NetworkBase::ProcessDisconnectedClients()
         }
 
         // Make sure to send all remaining packets out before disconnecting.
-        connection->SendQueuedPackets();
+        connection->SendQueuedData();
         connection->Socket->Disconnect();
 
         ServerClientDisconnected(connection);
@@ -2135,7 +2136,7 @@ NetworkPlayer* NetworkBase::AddPlayer(const std::string& name, const std::string
                 player->Group = GetDefaultGroup();
                 if (!name.empty())
                 {
-                    player->SetName(MakePlayerNameUnique(String::Trim(name)));
+                    player->SetName(MakePlayerNameUnique(String::trim(name)));
                 }
             }
             else
@@ -2152,7 +2153,7 @@ NetworkPlayer* NetworkBase::AddPlayer(const std::string& name, const std::string
             player = std::make_unique<NetworkPlayer>();
             player->Id = newid;
             player->Group = GetDefaultGroup();
-            player->SetName(String::Trim(std::string(name)));
+            player->SetName(String::trim(std::string(name)));
         }
 
         addedplayer = player.get();
@@ -2175,7 +2176,7 @@ std::string NetworkBase::MakePlayerNameUnique(const std::string& name)
         // Check if there is already a player with this name in the server
         for (const auto& player : player_list)
         {
-            if (String::IEquals(player->Name, new_name))
+            if (String::iequals(player->Name, new_name))
             {
                 unique = false;
                 break;

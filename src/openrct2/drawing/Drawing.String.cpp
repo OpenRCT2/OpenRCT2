@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -592,8 +592,8 @@ static void TTFProcessFormatCode(DrawPixelInfo& dpi, const FmtString::Token& tok
         }
         case FormatToken::InlineSprite:
         {
-            auto imageId = ImageId::FromUInt32(token.parameter);
-            auto g1 = GfxGetG1Element(imageId.GetIndex());
+            auto imageId = ImageId(token.parameter);
+            auto g1 = GfxGetG1Element(imageId);
             if (g1 != nullptr && g1->width <= 32 && g1->height <= 32)
             {
                 if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))

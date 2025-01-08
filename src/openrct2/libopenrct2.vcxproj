@@ -196,6 +196,7 @@
     <ClInclude Include="core\Diagnostics.hpp" />
     <ClInclude Include="core\Endianness.h" />
     <ClInclude Include="core\EnumMap.hpp" />
+    <ClInclude Include="core\EnumUtils.hpp" />
     <ClInclude Include="core\File.h" />
     <ClInclude Include="core\FileIndex.hpp" />
     <ClInclude Include="core\FileScanner.h" />
@@ -237,6 +238,7 @@
     <ClInclude Include="core\ZipStream.hpp" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Diagnostic.h" />
+    <ClInclude Include="drawing\ColourPalette.h" />
     <ClInclude Include="drawing\Drawing.h" />
     <ClInclude Include="drawing\Font.h" />
     <ClInclude Include="drawing\IDrawingContext.h" />
@@ -329,9 +331,6 @@
     <ClInclude Include="object\EntranceEntry.h" />
     <ClInclude Include="object\EntranceObject.h" />
     <ClInclude Include="object\FootpathEntry.h" />
-    <ClInclude Include="object\PathAdditionEntry.h" />
-    <ClInclude Include="object\PathAdditionObject.h" />
-    <ClInclude Include="object\PeepNamesObject.h" />
     <ClInclude Include="object\FootpathObject.h" />
     <ClInclude Include="object\FootpathRailingsObject.h" />
     <ClInclude Include="object\FootpathSurfaceObject.h" />
@@ -349,6 +348,9 @@
     <ClInclude Include="object\ObjectRepository.h" />
     <ClInclude Include="object\ObjectType.h" />
     <ClInclude Include="object\ObjectTypes.h" />
+    <ClInclude Include="object\PathAdditionEntry.h" />
+    <ClInclude Include="object\PathAdditionObject.h" />
+    <ClInclude Include="object\PeepNamesObject.h" />
     <ClInclude Include="object\ResourceTable.h" />
     <ClInclude Include="object\RideObject.h" />
     <ClInclude Include="object\SceneryGroupEntry.h" />
@@ -391,6 +393,7 @@
     <ClInclude Include="peep\Guest.h" />
     <ClInclude Include="peep\GuestPathfinding.h" />
     <ClInclude Include="peep\PeepAnimationData.h" />
+    <ClInclude Include="peep\PeepAnimations.h" />
     <ClInclude Include="peep\PeepSpriteIds.h" />
     <ClInclude Include="peep\PeepThoughts.h" />
     <ClInclude Include="peep\RideUseSystem.h" />
@@ -426,6 +429,7 @@
     <ClInclude Include="ride\RideConstruction.h" />
     <ClInclude Include="ride\RideData.h" />
     <ClInclude Include="ride\RideEntry.h" />
+    <ClInclude Include="ride\RideManager.h" />
     <ClInclude Include="ride\RideRatings.h" />
     <ClInclude Include="ride\RideStringIds.h" />
     <ClInclude Include="ride\RideTypes.h" />
@@ -527,6 +531,7 @@
     <ClInclude Include="ride\TrackDesign.h" />
     <ClInclude Include="ride\TrackDesignRepository.h" />
     <ClInclude Include="ride\TrackPaint.h" />
+    <ClInclude Include="ride\TrackStyle.h" />
     <ClInclude Include="ride\TrainManager.h" />
     <ClInclude Include="ride\Vehicle.h" />
     <ClInclude Include="ride\VehicleColour.h" />
@@ -611,8 +616,6 @@
     <ClInclude Include="world\Location.hpp" />
     <ClInclude Include="world\Map.h" />
     <ClInclude Include="world\MapAnimation.h" />
-    <ClInclude Include="world\MapGen.h" />
-    <ClInclude Include="world\MapHelpers.h" />
     <ClInclude Include="world\Park.h" />
     <ClInclude Include="world\QuarterTile.h" />
     <ClInclude Include="world\Scenery.h" />
@@ -621,6 +624,13 @@
     <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
     <ClInclude Include="world\TilePointerIndex.hpp" />
+    <ClInclude Include="world\map_generator\HeightMap.hpp" />
+    <ClInclude Include="world\map_generator\MapGen.h" />
+    <ClInclude Include="world\map_generator\MapHelpers.h" />
+    <ClInclude Include="world\map_generator\PngTerrainGenerator.h" />
+    <ClInclude Include="world\map_generator\SimplexNoise.h" />
+    <ClInclude Include="world\map_generator\SurfaceSelection.h" />
+    <ClInclude Include="world\map_generator\TreePlacement.h" />
     <ClInclude Include="world\tile_element\BannerElement.h" />
     <ClInclude Include="world\tile_element\EntranceElement.h" />
     <ClInclude Include="world\tile_element\LargeSceneryElement.h" />
@@ -863,7 +873,6 @@
     <ClCompile Include="object\BannerObject.cpp" />
     <ClCompile Include="object\DefaultObjects.cpp" />
     <ClCompile Include="object\EntranceObject.cpp" />
-    <ClCompile Include="object\PathAdditionObject.cpp" />
     <ClCompile Include="object\FootpathObject.cpp" />
     <ClCompile Include="object\FootpathRailingsObject.cpp" />
     <ClCompile Include="object\FootpathSurfaceObject.cpp" />
@@ -877,11 +886,12 @@
     <ClCompile Include="object\ObjectManager.cpp" />
     <ClCompile Include="object\ObjectRepository.cpp" />
     <ClCompile Include="object\ObjectTypes.cpp" />
+    <ClCompile Include="object\PathAdditionObject.cpp" />
     <ClCompile Include="object\PeepNamesObject.cpp" />
     <ClCompile Include="object\ResourceTable.cpp" />
     <ClCompile Include="object\RideObject.cpp" />
-    <ClCompile Include="object\SceneryGroupObject.cpp" />
     <ClCompile Include="object\ScenarioTextObject.cpp" />
+    <ClCompile Include="object\SceneryGroupObject.cpp" />
     <ClCompile Include="object\SmallSceneryObject.cpp" />
     <ClCompile Include="object\StationObject.cpp" />
     <ClCompile Include="object\StringTable.cpp" />
@@ -1005,6 +1015,7 @@
     <ClCompile Include="park\ParkFile.cpp" />
     <ClCompile Include="peep\GuestPathfinding.cpp" />
     <ClCompile Include="peep\PeepAnimationData.cpp" />
+    <ClCompile Include="peep\PeepAnimations.cpp" />
     <ClCompile Include="peep\PeepThoughts.cpp" />
     <ClCompile Include="peep\RideUseSystem.cpp" />
     <ClCompile Include="PlatformEnvironment.cpp" />
@@ -1038,6 +1049,7 @@
     <ClCompile Include="ride\RideAudio.cpp" />
     <ClCompile Include="ride\RideConstruction.cpp" />
     <ClCompile Include="ride\RideData.cpp" />
+    <ClCompile Include="ride\RideManager.cpp" />
     <ClCompile Include="ride\RideRatings.cpp" />
     <ClCompile Include="ride\ShopItem.cpp" />
     <ClCompile Include="ride\Station.cpp" />
@@ -1047,6 +1059,7 @@
     <ClCompile Include="ride\TrackDesignRepository.cpp" />
     <ClCompile Include="ride\TrackDesignSave.cpp" />
     <ClCompile Include="ride\TrackPaint.cpp" />
+    <ClCompile Include="ride\TrackStyle.cpp" />
     <ClCompile Include="ride\TrainManager.cpp" />
     <ClCompile Include="ride\Vehicle.cpp" />
     <ClCompile Include="ride\VehicleData.cpp" />
@@ -1107,13 +1120,17 @@
     <ClCompile Include="world\Footpath.cpp" />
     <ClCompile Include="world\Map.cpp" />
     <ClCompile Include="world\MapAnimation.cpp" />
-    <ClCompile Include="world\MapGen.cpp" />
-    <ClCompile Include="world\MapHelpers.cpp" />
     <ClCompile Include="world\Park.cpp" />
     <ClCompile Include="world\QuarterTile.cpp" />
     <ClCompile Include="world\Scenery.cpp" />
     <ClCompile Include="world\SurfaceData.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
+    <ClCompile Include="world\map_generator\MapGen.cpp" />
+    <ClCompile Include="world\map_generator\MapHelpers.cpp" />
+    <ClCompile Include="world\map_generator\PngTerrainGenerator.cpp" />
+    <ClCompile Include="world\map_generator\SimplexNoise.cpp" />
+    <ClCompile Include="world\map_generator\SurfaceSelection.cpp" />
+    <ClCompile Include="world\map_generator\TreePlacement.cpp" />
     <ClCompile Include="world\tile_element\BannerElement.cpp" />
     <ClCompile Include="world\tile_element\EntranceElement.cpp" />
     <ClCompile Include="world\tile_element\LargeSceneryElement.cpp" />

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,7 +20,7 @@ constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
    .Category = RIDE_CATEGORY_ROLLERCOASTER,
    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
    .TrackPaintFunctions = TrackDrawerDescriptor({
-       .Drawer = GetTrackPaintFunctionClassicWoodenTwisterRC,
+       .trackStyle = TrackStyle::classicWoodenTwisterRollerCoaster,
        .supportType = WoodenSupportType::Truss,
        .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeSteepLong, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::slopeCurveSteep, TrackGroup::slopeCurveBanked },
        .extraTrackGroups = { TrackGroup::verticalLoop, TrackGroup::waterSplash, TrackGroup::booster, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge },

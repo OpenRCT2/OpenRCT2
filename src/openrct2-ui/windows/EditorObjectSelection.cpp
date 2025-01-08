@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,6 +22,7 @@
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Text.h>
@@ -37,7 +38,6 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <span>
 #include <string>
@@ -298,6 +298,12 @@ namespace OpenRCT2::Ui::Windows
             disabled_widgets |= 1u << WIDX_FILTER_RIDE_TAB_FRAME;
 
             VisibleListRefresh();
+        }
+
+        bool CanClose() override
+        {
+            // Prevent window closure when selection is invalid
+            return EditorObjectSelectionWindowCheck();
         }
 
         /**
@@ -775,7 +781,7 @@ namespace OpenRCT2::Ui::Windows
                         width_limit /= 2;
                         // Draw ride type
                         StringId rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
-                        SafeStrCpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
+                        String::safeUtf8Copy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
                         auto ft = Formatter();
                         ft.Add<const char*>(itemBuffer);
                         DrawTextEllipsised(
@@ -784,7 +790,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Draw text
-                    SafeStrCpy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
+                    String::safeUtf8Copy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
                     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
                     {
                         while (*buffer != 0 && *buffer != 9)
@@ -826,7 +832,7 @@ namespace OpenRCT2::Ui::Windows
             if (strcmp(_filter_string, c) == 0)
                 return;
 
-            SafeStrCpy(_filter_string, c, sizeof(_filter_string));
+            String::safeUtf8Copy(_filter_string, c, sizeof(_filter_string));
 
             FilterUpdateCounts();
 
@@ -1404,13 +1410,13 @@ namespace OpenRCT2::Ui::Windows
 
         bool FilterCompatibilityObject(const ObjectRepositoryItem& item, uint8_t objectFlag)
         {
-            // Only show compat objects if they are not selected already.
+            // Only show compat objects if they are selected already.
             return !(item.Flags & ObjectItemFlags::IsCompatibilityObject) || (objectFlag & ObjectSelectionFlags::Selected);
         }
 
         static bool IsFilterInName(const ObjectRepositoryItem& item, std::string_view filter)
         {
-            return String::Contains(item.Name, filter, true);
+            return String::contains(item.Name, filter, true);
         }
 
         static bool IsFilterInRideType(const ObjectRepositoryItem& item, std::string_view filter)
@@ -1418,7 +1424,7 @@ namespace OpenRCT2::Ui::Windows
             if (item.Type == ObjectType::Ride)
             {
                 auto rideTypeName = LanguageGetString(GetRideTypeStringId(&item));
-                if (String::Contains(rideTypeName, filter, true))
+                if (String::contains(rideTypeName, filter, true))
                     return true;
             }
             return false;
@@ -1426,14 +1432,14 @@ namespace OpenRCT2::Ui::Windows
 
         static bool IsFilterInFilename(const ObjectRepositoryItem& item, std::string_view filter)
         {
-            return String::Contains(item.Path, filter, true);
+            return String::contains(item.Path, filter, true);
         }
 
         static bool IsFilterInAuthor(const ObjectRepositoryItem& item, std::string_view filter)
         {
             for (auto& author : item.Authors)
             {
-                if (String::Contains(author, filter, true))
+                if (String::contains(author, filter, true))
                 {
                     return true;
                 }
@@ -1622,7 +1628,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto rideTypeA = LanguageGetString(GetRideTypeStringId(a.repositoryItem));
         auto rideTypeB = LanguageGetString(GetRideTypeStringId(b.repositoryItem));
-        int32_t result = String::Compare(rideTypeA, rideTypeB);
+        int32_t result = String::compare(rideTypeA, rideTypeB);
         return result != 0 ? result < 0 : VisibleListSortRideName(a, b);
     }
 

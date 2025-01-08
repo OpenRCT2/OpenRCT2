@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -255,13 +255,13 @@ static void PaintMagicCarpet(
     PaintUtilSetGeneralSupportHeight(session, height + 176);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMagicCarpet(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionMagicCarpet(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
         case TrackElemType::FlatTrack1x4A:
             return PaintMagicCarpet;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,6 +87,15 @@ namespace OpenRCT2::Ui::Windows
                     _entranceTypes.push_back({ objectIndex, legacyData->string_idx, legacyData->image_id });
                 }
             }
+        }
+
+        size_t GetNumRows()
+        {
+            auto numRows = _entranceTypes.size() / kNumColumns;
+            if (_entranceTypes.size() % kNumColumns > 0)
+                numRows++;
+
+            return numRows;
         }
 
         void PaintPreview(DrawPixelInfo& dpi, ImageIndex imageStart, ScreenCoordsXY screenCoords, Direction direction)
@@ -221,7 +230,7 @@ namespace OpenRCT2::Ui::Windows
             if (column >= 5)
                 return OBJECT_ENTRY_INDEX_NULL;
 
-            size_t index = column + (row * 5);
+            size_t index = column + (row * kNumColumns);
             if (index >= _entranceTypes.size())
                 return OBJECT_ENTRY_INDEX_NULL;
 
@@ -234,14 +243,14 @@ namespace OpenRCT2::Ui::Windows
             widgets = _widgets;
 
             InitScrollWidgets();
+            InitParkEntranceItems();
 
             list_information_type = 0;
             min_width = kWindowWidth;
             min_height = kWindowHeight;
             max_width = kWindowWidth;
-            max_height = kWindowHeight;
+            max_height = static_cast<int16_t>(43 + kImageSize * GetNumRows());
 
-            InitParkEntranceItems();
             pressed_widgets |= 1LL << WIDX_TAB;
 
             ToolSet(*this, WIDX_LIST, Tool::EntranceDown);
@@ -272,6 +281,14 @@ namespace OpenRCT2::Ui::Windows
         {
             if (gCurrentToolWidget.window_classification != classification)
                 Close();
+        }
+
+        void OnPrepareDraw() override
+        {
+            ResizeFrameWithPage();
+
+            widgets[WIDX_LIST].right = width - 30;
+            widgets[WIDX_LIST].bottom = height - 5;
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -339,6 +356,13 @@ namespace OpenRCT2::Ui::Windows
             HideGridlines();
             HideLandRights();
             HideConstructionRights();
+        }
+
+        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        {
+            auto scrollHeight = static_cast<int32_t>(GetNumRows() * kImageSize);
+
+            return ScreenSize(kImageSize * kNumColumns, scrollHeight);
         }
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override

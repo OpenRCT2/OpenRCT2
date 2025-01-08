@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -193,7 +193,7 @@ public:
 
             if (Config::Get().general.EnableLightFx)
             {
-                auto& lightPalette = LightFXGetPalette();
+                auto& lightPalette = LightFx::GetPalette();
                 for (int32_t i = 0; i < 256; i++)
                 {
                     const auto& src = lightPalette[i];
@@ -238,7 +238,7 @@ private:
             int32_t pitch;
             if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
             {
-                LightFXRenderToTexture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+                LightFx::RenderToTexture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
                 SDL_UnlockTexture(_screenTexture);
             }
         }

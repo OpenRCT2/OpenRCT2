@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -182,7 +182,7 @@ protected:
 private:
     static std::unique_ptr<IStream> GetStreamFromRCT2Scenario(const std::string& path)
     {
-        if (String::IEquals(Path::GetExtension(path), ".sea"))
+        if (String::iequals(Path::GetExtension(path), ".sea"))
         {
             auto data = DecryptSea(fs::u8path(path));
             auto ms = std::make_unique<MemoryStream>();
@@ -208,12 +208,12 @@ private:
             std::unique_ptr<IParkImporter> importer;
             std::string extension = Path::GetExtension(path);
 
-            if (String::IEquals(extension, ".park"))
+            if (String::iequals(extension, ".park"))
             {
                 importer = ParkImporter::CreateParkFile(objRepository);
                 importer->LoadScenario(path, true);
             }
-            else if (String::IEquals(extension, ".sc4"))
+            else if (String::iequals(extension, ".sc4"))
             {
                 importer = ParkImporter::CreateS4();
                 importer->LoadScenario(path, true);
@@ -309,7 +309,7 @@ public:
             const auto scenarioFilename = Path::GetFileName(scenario.Path);
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::IEquals(filename, scenarioFilename))
+            if (String::iequals(filename, scenarioFilename))
             {
                 return &scenario;
             }
@@ -327,7 +327,7 @@ public:
                 continue;
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::IEquals(name, scenario->InternalName))
+            if (String::iequals(name, scenario->InternalName))
             {
                 return &_scenarios[i];
             }
@@ -361,19 +361,19 @@ public:
             const std::string scenarioExtension = Path::GetExtension(scenarioFileName);
 
             // Check if this is an RCTC scenario that corresponds to a known RCT1/2 scenario or vice versa, see #12626
-            if (String::IEquals(scenarioExtension, ".sea"))
+            if (String::iequals(scenarioExtension, ".sea"))
             {
                 // Get scenario using RCT2 style name of RCTC scenario
                 scenario = GetByFilename((scenarioBaseName + ".sc6").c_str());
             }
-            else if (String::IEquals(scenarioExtension, ".sc6"))
+            else if (String::iequals(scenarioExtension, ".sc6"))
             {
                 // Get scenario using RCTC style name of RCT2 scenario
                 scenario = GetByFilename((scenarioBaseName + ".sea").c_str());
             }
             // GameState_t::ScenarioFileName .Park scenarios is the full file path instead of just <scenarioName.park>, so need
             // to convert
-            else if (String::IEquals(scenarioExtension, ".park"))
+            else if (String::iequals(scenarioExtension, ".park"))
             {
                 scenario = GetByFilename((scenarioBaseName + ".park").c_str());
             }
@@ -417,7 +417,7 @@ private:
             const auto scenarioFilename = Path::GetFileName(scenario.Path);
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::IEquals(filename, scenarioFilename))
+            if (String::iequals(filename, scenarioFilename))
             {
                 return &scenario;
             }
@@ -474,7 +474,7 @@ private:
     {
         auto filename = Path::GetFileName(entry.Path);
 
-        if (!String::Equals(filename, ""))
+        if (!String::equals(filename, ""))
         {
             auto existingEntry = GetByFilename(filename.c_str());
             if (existingEntry != nullptr)
@@ -602,7 +602,7 @@ private:
                     bool notFound = true;
                     for (auto& highscore : _highscores)
                     {
-                        if (String::IEquals(scBasic.Path, highscore->fileName))
+                        if (String::iequals(scBasic.Path, highscore->fileName))
                         {
                             notFound = false;
 

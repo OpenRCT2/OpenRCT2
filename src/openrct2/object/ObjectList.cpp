@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,9 +11,9 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/SawyerCoding.h"
 #include "../object/Object.h"
-#include "../util/Util.h"
 #include "ObjectLimits.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"

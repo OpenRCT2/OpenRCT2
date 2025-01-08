@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,7 @@
 #include "actions/LandSetRightsAction.h"
 #include "actions/ResultWithMessage.h"
 #include "audio/audio.h"
+#include "core/EnumUtils.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "entity/EntityList.h"
@@ -39,7 +40,6 @@
 #include "scenario/Scenario.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
-#include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
 #include "world/Entrance.h"
@@ -399,57 +399,49 @@ namespace OpenRCT2::Editor
      */
     std::pair<ObjectType, StringId> CheckObjectSelection()
     {
-        bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
+        constexpr std::pair<ObjectType, StringId> kBasicCheckPairs[] = {
+            { ObjectType::Ride, STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::Station, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::TerrainSurface, STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::TerrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED },
+        };
 
-        if (!isTrackDesignerManager)
+        for (auto& pair : kBasicCheckPairs)
         {
-            if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(false))
+            if (!EditorCheckObjectGroupAtLeastOneSelected(pair.first))
             {
-                return { ObjectType::FootpathSurface, STR_AT_LEAST_ONE_FOOTPATH_NON_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
-            }
-            if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(true))
-            {
-                return { ObjectType::FootpathSurface, STR_AT_LEAST_ONE_FOOTPATH_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
-            }
-            if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::FootpathRailings))
-            {
-                return { ObjectType::FootpathRailings, STR_AT_LEAST_ONE_FOOTPATH_RAILING_OBJECT_MUST_BE_SELECTED };
+                return { pair.first, pair.second };
             }
         }
 
-        if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::Ride))
+        // No checks beyond this point apply to the track designer or track designs manager.
+        const bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
+        if (isTrackDesignerManager)
         {
-            return { ObjectType::Ride, STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED };
-        }
-        if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::Station))
-        {
-            return { ObjectType::Station, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED };
+            return { ObjectType::None, STR_NONE };
         }
 
-        if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::TerrainSurface))
+        if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(false))
         {
-            return { ObjectType::TerrainSurface, STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED };
+            return { ObjectType::FootpathSurface, STR_AT_LEAST_ONE_FOOTPATH_NON_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
         }
-        if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::TerrainEdge))
+        if (!EditorCheckObjectGroupAtLeastOneSurfaceSelected(true))
         {
-            return { ObjectType::TerrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED };
+            return { ObjectType::FootpathSurface, STR_AT_LEAST_ONE_FOOTPATH_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED };
         }
 
-        if (!isTrackDesignerManager)
+        constexpr std::pair<ObjectType, StringId> kParkCheckPairs[] = {
+            { ObjectType::FootpathRailings, STR_AT_LEAST_ONE_FOOTPATH_RAILING_OBJECT_MUST_BE_SELECTED },
+            { ObjectType::ParkEntrance, STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED },
+            { ObjectType::Water, STR_WATER_TYPE_MUST_BE_SELECTED },
+            { ObjectType::PeepNames, STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED },
+        };
+
+        for (auto& pair : kParkCheckPairs)
         {
-            if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::ParkEntrance))
+            if (!EditorCheckObjectGroupAtLeastOneSelected(pair.first))
             {
-                return { ObjectType::ParkEntrance, STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED };
-            }
-
-            if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::Water))
-            {
-                return { ObjectType::Water, STR_WATER_TYPE_MUST_BE_SELECTED };
-            }
-
-            if (!EditorCheckObjectGroupAtLeastOneSelected(ObjectType::PeepNames))
-            {
-                return { ObjectType::PeepNames, STR_AT_LEAST_ONE_PEEP_NAMES_OBJECT_MUST_BE_SELECTED };
+                return { pair.first, pair.second };
             }
         }
 

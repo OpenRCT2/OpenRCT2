@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -62,7 +62,7 @@ uint8_t LanguageGetIDFromLocale(const char* locale)
     uint8_t i = 0;
     for (const auto& langDesc : LanguagesDescriptors)
     {
-        if (String::Equals(locale, langDesc.locale))
+        if (String::equals(locale, langDesc.locale))
         {
             return i;
         }

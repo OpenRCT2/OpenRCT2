@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,6 +28,7 @@
     #include "Socket.h"
     #include "network.h"
 
+    #include <chrono>
     #include <cstring>
     #include <iterator>
     #include <memory>
@@ -45,8 +46,9 @@ enum class MasterServerStatus
 };
 
     #ifndef DISABLE_HTTP
-constexpr int32_t kMasterServerRegisterTime = 120 * 1000; // 2 minutes
-constexpr int32_t kMasterServerHeartbeatTime = 60 * 1000; // 1 minute
+using namespace std::chrono_literals;
+constexpr int32_t kMasterServerRegisterTime = std::chrono::milliseconds(2min).count();
+constexpr int32_t kMasterServerHeartbeatTime = std::chrono::milliseconds(1min).count();
     #endif
 
 class NetworkServerAdvertiser final : public INetworkServerAdvertiser
@@ -119,7 +121,7 @@ private:
                 {
                     std::string sender = endpoint->GetHostname();
                     LOG_VERBOSE("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
-                    if (String::Equals(buffer, kNetworkLanBroadcastMsg))
+                    if (String::equals(buffer, kNetworkLanBroadcastMsg))
                     {
                         auto body = GetBroadcastJson();
                         auto bodyDump = body.dump();

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -523,6 +523,58 @@ void TrackGetFront(const CoordsXYE& input, CoordsXYE* output)
     *output = lastTrack;
 }
 
+TrackElement* TrackGetPreviousBlock(CoordsXYZ& location, TileElement* tileElement)
+{
+    CoordsXYZ startLocation = location;
+    TrackBeginEnd trackBeginEnd, slowTrackBeginEnd;
+    TileElement slowTileElement = *tileElement;
+    bool counter = true;
+    CoordsXY slowLocation = location;
+    do
+    {
+        if (!TrackBlockGetPrevious({ location, tileElement }, &trackBeginEnd))
+        {
+            return nullptr;
+        }
+        if (trackBeginEnd.begin_x == startLocation.x && trackBeginEnd.begin_y == startLocation.y
+            && tileElement == trackBeginEnd.begin_element)
+        {
+            return nullptr;
+        }
+
+        location.x = trackBeginEnd.end_x;
+        location.y = trackBeginEnd.end_y;
+        location.z = trackBeginEnd.begin_z;
+        tileElement = trackBeginEnd.begin_element;
+
+        // #2081: prevent infinite loop
+        counter = !counter;
+        if (counter)
+        {
+            TrackBlockGetPrevious({ slowLocation, &slowTileElement }, &slowTrackBeginEnd);
+            slowLocation.x = slowTrackBeginEnd.end_x;
+            slowLocation.y = slowTrackBeginEnd.end_y;
+            slowTileElement = *(slowTrackBeginEnd.begin_element);
+            if (slowLocation == location && slowTileElement.GetBaseZ() == tileElement->GetBaseZ()
+                && slowTileElement.GetType() == tileElement->GetType()
+                && slowTileElement.GetDirection() == tileElement->GetDirection())
+            {
+                return nullptr;
+            }
+        }
+    } while (!(trackBeginEnd.begin_element->AsTrack()->IsBlockStart()));
+
+    // Get the start of the track block instead of the end
+    location = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
+    auto trackOrigin = MapGetTrackElementAtOfTypeSeq(location, trackBeginEnd.begin_element->AsTrack()->GetTrackType(), 0);
+    if (trackOrigin == nullptr)
+    {
+        return nullptr;
+    }
+
+    return trackOrigin->AsTrack();
+}
+
 TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank)
 {
     auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
@@ -534,7 +586,7 @@ TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank)
     return bank;
 }
 
-TrackRoll TrackGetActualBank2(int32_t rideType, bool isInverted, TrackRoll bank)
+TrackRoll TrackGetActualBank2(ride_type_t rideType, bool isInverted, TrackRoll bank)
 {
     if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::hasInvertedVariant))
     {

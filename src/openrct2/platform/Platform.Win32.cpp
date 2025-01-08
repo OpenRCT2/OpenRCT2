@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,7 +60,7 @@ namespace OpenRCT2::Platform
     std::string GetEnvironmentVariable(std::string_view name)
     {
         std::wstring result;
-        auto wname = String::ToWideChar(name);
+        auto wname = String::toWideChar(name);
         wchar_t wvalue[256];
         auto valueSize = GetEnvironmentVariableW(wname.c_str(), wvalue, static_cast<DWORD>(std::size(wvalue)));
         if (valueSize < std::size(wvalue))
@@ -74,7 +74,7 @@ namespace OpenRCT2::Platform
             result = wlvalue;
             delete[] wlvalue;
         }
-        return String::ToUtf8(result);
+        return String::toUtf8(result);
     }
 
     static std::string GetHomePathViaEnvironment()
@@ -188,7 +188,7 @@ namespace OpenRCT2::Platform
             LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, static_cast<int>(std::size(date)), nullptr);
         if (charsWritten != 0)
         {
-            result = String::ToUtf8(std::wstring_view(date, charsWritten - 1));
+            result = String::toUtf8(std::wstring_view(date, charsWritten - 1));
         }
         return result;
     }
@@ -203,7 +203,7 @@ namespace OpenRCT2::Platform
             LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, static_cast<int>(std::size(time)));
         if (charsWritten != 0)
         {
-            result = String::ToUtf8(std::wstring_view(time, charsWritten - 1));
+            result = String::toUtf8(std::wstring_view(time, charsWritten - 1));
         }
         return result;
     }
@@ -302,7 +302,7 @@ namespace OpenRCT2::Platform
         wchar_t* wpath = nullptr;
         if (SUCCEEDED(SHGetKnownFolderPath(rfid, KF_FLAG_CREATE, nullptr, &wpath)))
         {
-            path = String::ToUtf8(wpath);
+            path = String::toUtf8(wpath);
         }
         CoTaskMemFree(wpath);
         return path;
@@ -319,7 +319,7 @@ namespace OpenRCT2::Platform
             wExePath = std::make_unique<wchar_t[]>(wExePathCapacity);
             size = GetModuleFileNameW(hModule, wExePath.get(), wExePathCapacity);
         } while (size >= wExePathCapacity);
-        return String::ToUtf8(wExePath.get());
+        return String::toUtf8(wExePath.get());
     }
 
     u8string StrDecompToPrecomp(u8string_view input)
@@ -357,7 +357,7 @@ namespace OpenRCT2::Platform
     static std::wstring GetProdIDName(std::string_view extension)
     {
         auto progIdName = std::string(OPENRCT2_NAME) + std::string(extension);
-        auto progIdNameW = String::ToWideChar(progIdName);
+        auto progIdNameW = String::toWideChar(progIdName);
         return progIdNameW;
     }
 
@@ -373,10 +373,10 @@ namespace OpenRCT2::Platform
         GetModuleFileNameW(nullptr, exePathW, static_cast<DWORD>(std::size(exePathW)));
         GetModuleFileNameW(GetDLLModule(), dllPathW, static_cast<DWORD>(std::size(dllPathW)));
 
-        auto extensionW = String::ToWideChar(extension);
-        auto fileTypeTextW = String::ToWideChar(fileTypeText);
-        auto commandTextW = String::ToWideChar(commandText);
-        auto commandArgsW = String::ToWideChar(commandArgs);
+        auto extensionW = String::toWideChar(extension);
+        auto fileTypeTextW = String::toWideChar(fileTypeText);
+        auto commandTextW = String::toWideChar(commandText);
+        auto commandArgsW = String::toWideChar(commandArgs);
         auto progIdNameW = GetProdIDName(extension);
 
         HKEY hKey = nullptr;
@@ -457,7 +457,7 @@ namespace OpenRCT2::Platform
         if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
         {
             // [hRootKey\.ext]
-            RegDeleteTreeW(hRootKey, String::ToWideChar(extension).c_str());
+            RegDeleteTreeW(hRootKey, String::toWideChar(extension).c_str());
 
             // [hRootKey\OpenRCT2.ext]
             auto progIdName = GetProdIDName(extension);
@@ -504,7 +504,7 @@ namespace OpenRCT2::Platform
     uint64_t GetLastModified(std::string_view path)
     {
         uint64_t lastModified = 0;
-        auto pathW = String::ToWideChar(path);
+        auto pathW = String::toWideChar(path);
         auto hFile = CreateFileW(pathW.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
         if (hFile != INVALID_HANDLE_VALUE)
         {
@@ -522,7 +522,7 @@ namespace OpenRCT2::Platform
     uint64_t GetFileSize(std::string_view path)
     {
         uint64_t size = 0;
-        auto pathW = String::ToWideChar(path);
+        auto pathW = String::toWideChar(path);
         WIN32_FILE_ATTRIBUTE_DATA attributes;
         if (GetFileAttributesExW(pathW.c_str(), GetFileExInfoStandard, &attributes) != FALSE)
         {
@@ -570,7 +570,7 @@ namespace OpenRCT2::Platform
         DWORD usernameLength = UNLEN + 1;
         if (GetUserNameW(usernameW, &usernameLength))
         {
-            result = String::ToUtf8(usernameW);
+            result = String::toUtf8(usernameW);
         }
         return result;
     }
@@ -634,7 +634,7 @@ namespace OpenRCT2::Platform
             return Platform::GetCurrencyValue(nullptr);
         }
 
-        return Platform::GetCurrencyValue(String::ToUtf8(currCode).c_str());
+        return Platform::GetCurrencyValue(String::toUtf8(currCode).c_str());
     }
 
     MeasurementFormat GetLocaleMeasurementFormat()
@@ -760,7 +760,7 @@ namespace OpenRCT2::Platform
         result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, reinterpret_cast<LPBYTE>(wSteamPath), &size);
         if (result == ERROR_SUCCESS)
         {
-            auto utf8SteamPath = String::ToUtf8(wSteamPath);
+            auto utf8SteamPath = String::toUtf8(wSteamPath);
             outPath = Path::Combine(utf8SteamPath, u8"steamapps", u8"common");
         }
         free(wSteamPath);
@@ -810,7 +810,7 @@ namespace OpenRCT2::Platform
     time_t FileGetModifiedTime(u8string_view path)
     {
         WIN32_FILE_ATTRIBUTE_DATA data{};
-        auto wPath = String::ToWideChar(path);
+        auto wPath = String::toWideChar(path);
         auto result = GetFileAttributesExW(wPath.c_str(), GetFileExInfoStandard, &data);
         if (result != FALSE)
         {

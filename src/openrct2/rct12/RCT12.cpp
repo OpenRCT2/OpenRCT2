@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -568,7 +568,7 @@ std::string RCT12RemoveFormattingUTF8(std::string_view s)
     {
         if (!RCT12IsFormatChar(codepoint))
         {
-            String::AppendCodepoint(result, codepoint);
+            String::appendCodepoint(result, codepoint);
         }
     }
 
@@ -657,7 +657,7 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
         }
         else
         {
-            String::AppendCodepoint(result, codepoint);
+            String::appendCodepoint(result, codepoint);
         }
     }
     return result;

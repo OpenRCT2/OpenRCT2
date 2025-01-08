@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -82,13 +82,13 @@ static void PaintFacility(
 }
 
 /* 0x00762D44 */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFacility(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionFacility(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
         case TrackElemType::FlatTrack1x1A:
             return PaintFacility;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

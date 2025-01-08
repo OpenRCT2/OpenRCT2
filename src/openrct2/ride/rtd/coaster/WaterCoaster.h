@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
-            .Drawer = GetTrackPaintFunctionWaterRC,
+            .trackStyle = TrackStyle::waterCoaster,
             .supportType = MetalSupportType::Fork,
             .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::onridePhoto, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
             .extraTrackGroups = {TrackGroup::flatToSteepSlope},
@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
             .tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP,
         },
         {
-            .Drawer = GetTrackPaintFunctionSplashBoats,
+            .trackStyle = TrackStyle::splashBoats,
             .supportType = WoodenSupportType::Truss,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::curve, TrackGroup::sBend },
             .extraTrackGroups = {},
@@ -97,7 +97,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_BoatHire,
+    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,

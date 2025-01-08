@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -5801,7 +5801,7 @@ static void JuniorRCTrackOnRidePhoto(
 
 /* 0x008AAA0C */
 template<JuniorRCSubType TSubType>
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRCTemplate(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionJuniorRCTemplate(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -6026,16 +6026,16 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRCTemplate(OpenRCT2::TrackElemTy
         case TrackElemType::OnRidePhoto:
             return JuniorRCTrackOnRidePhoto;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionJuniorRC(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::Junior>(trackType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRC(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionWaterRC(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::WaterCoaster>(trackType);
 }

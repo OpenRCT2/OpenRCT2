@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,7 +59,6 @@ bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 bool gPaintStableSort;
 
-static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
 static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uint32_t viewFlags);
 
@@ -634,7 +633,26 @@ void PaintSessionArrange(PaintSessionCore& session)
     return _paintArrangeFuncsLegacy[session.CurrentRotation](session);
 }
 
-static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
+static inline void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags)
+{
+    AttachedPaintStruct* attached_ps = ps->Attached;
+    for (; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
+    {
+        const auto screenCoords = ps->ScreenPos + attached_ps->RelativePos;
+
+        auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
+        if (attached_ps->IsMasked)
+        {
+            GfxDrawSpriteRawMasked(dpi, screenCoords, imageId, attached_ps->ColourImageId);
+        }
+        else
+        {
+            GfxDrawSprite(dpi, imageId, screenCoords);
+        }
+    }
+}
+
+static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
 {
     auto screenPos = ps->ScreenPos;
     if (ps->InteractionItem == ViewportInteractionItem::Entity)
@@ -650,7 +668,6 @@ static void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
             }
         }
     }
-
     auto imageId = PaintPSColourifyImage(ps, ps->image_id, session.ViewFlags);
     if (gPaintBoundingBoxes)
     {
@@ -682,30 +699,6 @@ void PaintDrawStructs(PaintSession& session)
     for (PaintStruct* ps = session.PaintHead; ps != nullptr; ps = ps->NextQuadrantEntry)
     {
         PaintDrawStruct(session, ps);
-    }
-}
-
-/**
- *
- *  rct2: 0x00688596
- *  Part of 0x688485
- */
-static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags)
-{
-    AttachedPaintStruct* attached_ps = ps->Attached;
-    for (; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
-    {
-        const auto screenCoords = ps->ScreenPos + attached_ps->RelativePos;
-
-        auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
-        if (attached_ps->IsMasked)
-        {
-            GfxDrawSpriteRawMasked(dpi, screenCoords, imageId, attached_ps->ColourImageId);
-        }
-        else
-        {
-            GfxDrawSprite(dpi, imageId, screenCoords);
-        }
     }
 }
 
@@ -1040,135 +1033,4 @@ void PaintDrawMoneyStructs(DrawPixelInfo& dpi, PaintStringStruct* ps)
             dpi, buffer, { COLOUR_BLACK }, ps->ScreenPos, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontStyle::Medium);
     } while ((ps = ps->NextEntry) != nullptr);
-}
-
-PaintEntryPool::Chain::Chain(PaintEntryPool* pool)
-    : Pool(pool)
-{
-}
-
-PaintEntryPool::Chain::Chain(Chain&& chain)
-{
-    *this = std::move(chain);
-}
-
-PaintEntryPool::Chain::~Chain()
-{
-    Clear();
-}
-
-PaintEntryPool::Chain& PaintEntryPool::Chain::operator=(Chain&& chain) noexcept
-{
-    Clear();
-    Pool = chain.Pool;
-    Head = chain.Head;
-    Current = chain.Current;
-    chain.Pool = nullptr;
-    chain.Head = nullptr;
-    chain.Current = nullptr;
-    return *this;
-}
-
-PaintEntry* PaintEntryPool::Chain::Allocate()
-{
-    if (Pool == nullptr)
-    {
-        return nullptr;
-    }
-
-    if (Current == nullptr)
-    {
-        assert(Head == nullptr);
-        Head = Pool->AllocateNode();
-        if (Head == nullptr)
-        {
-            // Unable to allocate any more nodes
-            return nullptr;
-        }
-        Current = Head;
-    }
-    else if (Current->Count >= NodeSize)
-    {
-        // We need another node
-        Current->Next = Pool->AllocateNode();
-        if (Current->Next == nullptr)
-        {
-            // Unable to allocate any more nodes
-            return nullptr;
-        }
-        Current = Current->Next;
-    }
-
-    assert(Current->Count < NodeSize);
-    return &Current->PaintStructs[Current->Count++];
-}
-
-void PaintEntryPool::Chain::Clear()
-{
-    if (Pool != nullptr)
-    {
-        Pool->FreeNodes(Head);
-        Head = nullptr;
-        Current = nullptr;
-    }
-    assert(Head == nullptr);
-    assert(Current == nullptr);
-}
-
-size_t PaintEntryPool::Chain::GetCount() const
-{
-    size_t count = 0;
-    auto current = Head;
-    while (current != nullptr)
-    {
-        count += current->Count;
-        current = current->Next;
-    }
-    return count;
-}
-
-PaintEntryPool::~PaintEntryPool()
-{
-    for (auto node : _available)
-    {
-        delete node;
-    }
-    _available.clear();
-}
-
-PaintEntryPool::Node* PaintEntryPool::AllocateNode()
-{
-    std::lock_guard<std::mutex> lock(_mutex);
-
-    PaintEntryPool::Node* result;
-    if (_available.size() > 0)
-    {
-        result = _available.back();
-        _available.pop_back();
-    }
-    else
-    {
-        result = new (std::nothrow) PaintEntryPool::Node();
-    }
-    return result;
-}
-
-PaintEntryPool::Chain PaintEntryPool::Create()
-{
-    return PaintEntryPool::Chain(this);
-}
-
-void PaintEntryPool::FreeNodes(PaintEntryPool::Node* head)
-{
-    std::lock_guard<std::mutex> lock(_mutex);
-
-    auto node = head;
-    while (node != nullptr)
-    {
-        auto next = node->Next;
-        node->Next = nullptr;
-        node->Count = 0;
-        _available.push_back(node);
-        node = next;
-    }
 }

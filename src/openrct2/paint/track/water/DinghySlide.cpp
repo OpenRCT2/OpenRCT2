@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1060,7 +1060,7 @@ static void DinghySlideTrackLeftQuarterTurn3(
     DinghySlideTrackRightQuarterTurn3(session, ride, trackSequence, (direction + 1) % 4, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionDinghySlide(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1107,6 +1107,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(OpenRCT2::TrackElemType tr
         case TrackElemType::RightQuarterTurn3Tiles:
             return DinghySlideTrackRightQuarterTurn3;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

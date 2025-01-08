@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../../GameState.h"
 #include "../../config/Config.h"
 #include "../../core/CodepointView.hpp"
+#include "../../core/EnumUtils.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../core/UTF8.h"
 #include "../../interface/Viewport.h"
@@ -22,7 +23,6 @@
 #include "../../profiling/Profiling.h"
 #include "../../ride/Ride.h"
 #include "../../ride/TrackDesign.h"
-#include "../../util/Util.h"
 #include "../../world/Banner.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"

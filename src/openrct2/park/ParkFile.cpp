@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,6 +46,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/RideUseSystem.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
@@ -216,15 +217,15 @@ namespace OpenRCT2
 
                 std::string name;
                 ReadWriteStringTable(cs, name, "en-GB");
-                String::Set(entry.Name, sizeof(entry.Name), name.c_str());
-                String::Set(entry.InternalName, sizeof(entry.InternalName), name.c_str());
+                String::set(entry.Name, sizeof(entry.Name), name.c_str());
+                String::set(entry.InternalName, sizeof(entry.InternalName), name.c_str());
 
                 std::string parkName;
                 ReadWriteStringTable(cs, parkName, "en-GB");
 
                 std::string scenarioDetails;
                 ReadWriteStringTable(cs, scenarioDetails, "en-GB");
-                String::Set(entry.Details, sizeof(entry.Details), scenarioDetails.c_str());
+                String::set(entry.Details, sizeof(entry.Details), scenarioDetails.c_str());
 
                 entry.ObjectiveType = cs.Read<uint8_t>();
                 entry.ObjectiveArg1 = cs.Read<uint8_t>();
@@ -753,12 +754,12 @@ namespace OpenRCT2
                     for (const auto* ori : ExportObjectsList)
                     {
                         auto extension = Path::GetExtension(ori->Path);
-                        if (String::IEquals(extension, ".dat"))
+                        if (String::iequals(extension, ".dat"))
                         {
                             cs.Write(DESCRIPTOR_DAT);
                             cs.Write(&ori->ObjectEntry, sizeof(RCTObjectEntry));
                         }
-                        else if (String::IEquals(extension, ".parkobj"))
+                        else if (String::iequals(extension, ".parkobj"))
                         {
                             cs.Write(DESCRIPTOR_PARKOBJ);
                             cs.Write(ori->Identifier);

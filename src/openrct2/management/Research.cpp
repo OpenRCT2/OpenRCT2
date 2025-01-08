@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../actions/ParkSetResearchFundingAction.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../interface/Window.h"
@@ -35,7 +36,6 @@
 #include "../ride/RideEntry.h"
 #include "../ride/TrackData.h"
 #include "../scenario/Scenario.h"
-#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -561,7 +561,7 @@ bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index)
     }
 }
 
-bool RideTypeIsInvented(uint32_t rideType)
+bool RideTypeIsInvented(ride_type_t rideType)
 {
     return RideTypeIsValid(rideType) ? _researchedRideTypes[rideType] : false;
 }
@@ -574,7 +574,7 @@ bool RideEntryIsInvented(ObjectEntryIndex rideEntryIndex)
     return _researchedRideEntries[rideEntryIndex];
 }
 
-void RideTypeSetInvented(uint32_t rideType)
+void RideTypeSetInvented(ride_type_t rideType)
 {
     if (RideTypeIsValid(rideType))
     {

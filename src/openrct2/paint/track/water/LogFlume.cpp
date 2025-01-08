@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1003,7 +1003,7 @@ static void LogFlumeTrack60Down25(
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLogFlume(OpenRCT2::TrackElemType trackType)
+TrackPaintFunction GetTrackPaintFunctionLogFlume(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1047,6 +1047,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLogFlume(OpenRCT2::TrackElemType track
         case TrackElemType::Down60ToDown25:
             return LogFlumeTrack60Down25;
         default:
-            return nullptr;
+            return TrackPaintFunctionDummy;
     }
 }

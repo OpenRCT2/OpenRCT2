@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -188,7 +188,7 @@ public:
     {
         _wasVerbose = true;
 
-        if (!String::IsNullOrEmpty(text))
+        if (!String::isNullOrEmpty(text))
         {
             LOG_VERBOSE("[%s] Info (%d): %s", _identifier.c_str(), code, text);
         }
@@ -198,7 +198,7 @@ public:
     {
         _wasWarning = true;
 
-        if (!String::IsNullOrEmpty(text))
+        if (!String::isNullOrEmpty(text))
         {
             Console::Error::WriteLine("[%s] Warning (%d): %s", _identifier.c_str(), code, text);
         }
@@ -208,7 +208,7 @@ public:
     {
         _wasError = true;
 
-        if (!String::IsNullOrEmpty(text))
+        if (!String::isNullOrEmpty(text))
         {
             Console::Error::WriteLine("[%s] Error (%d): %s", _identifier.c_str(), code, text);
         }
