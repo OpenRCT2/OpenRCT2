@@ -134,6 +134,7 @@ build_assets
 fi
 
 emcmake cmake ../ \
+	-G Ninja \
 	-DDISABLE_NETWORK=ON \
 	-DDISABLE_HTTP=ON \
 	-DDISABLE_TTF=ON \
@@ -150,7 +151,7 @@ emcmake cmake ../ \
 	-DEMSCRIPTEN_FLAGS="-s USE_SDL=2 -s USE_BZIP2=1 -s USE_LIBPNG=1 -pthread -O3" \
 	-DEMSCRIPTEN_LDFLAGS="-Wno-pthreads-mem-growth -s ASYNCIFY -s FULL_ES3 -s SAFE_HEAP=0 -s ALLOW_MEMORY_GROWTH=1 -s MAXIMUM_MEMORY=4GB -s INITIAL_MEMORY=2GB -s MAX_WEBGL_VERSION=2 -s PTHREAD_POOL_SIZE=120 -pthread -s EXPORTED_RUNTIME_METHODS=FS,callMain,UTF8ToString,stringToNewUTF8 -lidbfs.js --use-preload-plugins -s MODULARIZE=1 -s 'EXPORT_NAME=\"OPENRCT2_WEB\"'"
 
-emmake make -j$(nproc)
+emmake ninja -j$(nproc)
 
 rm -rf www/
 mkdir -p www/
