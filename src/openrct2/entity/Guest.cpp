@@ -1669,9 +1669,6 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
 
-    uint16_t consumptionTime = shopItemDescriptor.ConsumptionTime;
-    TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
-
     if (shopItem == ShopItem::Photo)
         Photo1RideRef = ride.id;
 
@@ -7552,16 +7549,22 @@ void Guest::SetItemFlags(uint64_t itemFlags)
 void Guest::RemoveAllItems()
 {
     ItemFlags = 0;
+    TimeToConsume = 0;
 }
 
 void Guest::RemoveItem(ShopItem item)
 {
     ItemFlags &= ~EnumToFlag(item);
+    TimeToConsume = 0;
 }
 
 void Guest::GiveItem(ShopItem item)
 {
     ItemFlags |= EnumToFlag(item);
+
+    const auto& shopItemDescriptor = GetShopItemDescriptor(item);
+    uint16_t consumptionTime = shopItemDescriptor.ConsumptionTime;
+    TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
 }
 
 bool Guest::HasItem(ShopItem peepItem) const
