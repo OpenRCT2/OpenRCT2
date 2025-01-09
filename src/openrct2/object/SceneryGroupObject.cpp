@@ -154,51 +154,12 @@ void SceneryGroupObject::ReadJson(IReadObjectContext* context, json_t& root)
     if (properties.is_object())
     {
         _legacyType.priority = Json::GetNumber<uint8_t>(properties["priority"], 40);
-        _legacyType.entertainer_costumes = ReadJsonEntertainerCostumes(properties["entertainerCostumes"]);
+        _legacyType.entertainer_costumes = 0;
 
         _items = ReadJsonEntries(context, properties["entries"]);
     }
 
     PopulateTablesFromJson(context, root);
-}
-
-uint32_t SceneryGroupObject::ReadJsonEntertainerCostumes(json_t& jCostumes)
-{
-    uint32_t costumes = 0;
-    for (auto& jCostume : jCostumes)
-    {
-        auto entertainer = ParseEntertainerCostume(Json::GetString(jCostume));
-        auto peepSprite = EntertainerCostumeToSprite(entertainer);
-        costumes |= 1 << (static_cast<uint8_t>(peepSprite));
-    }
-    return costumes;
-}
-
-EntertainerCostume SceneryGroupObject::ParseEntertainerCostume(const std::string& s)
-{
-    if (s == "panda")
-        return EntertainerCostume::Panda;
-    if (s == "tiger")
-        return EntertainerCostume::Tiger;
-    if (s == "elephant")
-        return EntertainerCostume::Elephant;
-    if (s == "roman")
-        return EntertainerCostume::Roman;
-    if (s == "gorilla")
-        return EntertainerCostume::Gorilla;
-    if (s == "snowman")
-        return EntertainerCostume::Snowman;
-    if (s == "knight")
-        return EntertainerCostume::Knight;
-    if (s == "astronaut")
-        return EntertainerCostume::Astronaut;
-    if (s == "bandit")
-        return EntertainerCostume::Bandit;
-    if (s == "sheriff")
-        return EntertainerCostume::Sheriff;
-    if (s == "pirate")
-        return EntertainerCostume::Pirate;
-    return EntertainerCostume::Panda;
 }
 
 std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObjectContext* context, json_t& jEntries)

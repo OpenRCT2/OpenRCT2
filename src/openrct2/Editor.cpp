@@ -36,6 +36,7 @@
 #include "object/DefaultObjects.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
+#include "peep/PeepAnimations.h"
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
 #include "ui/UiContext.h"
@@ -444,6 +445,23 @@ namespace OpenRCT2::Editor
             if (!EditorCheckObjectGroupAtLeastOneSelected(pair.first))
             {
                 return { pair.first, pair.second };
+            }
+        }
+
+        using OpenRCT2::AnimationPeepType;
+        constexpr std::pair<AnimationPeepType, StringId> kPeepCheckPairs[] = {
+            { AnimationPeepType::Guest, STR_AT_LEAST_ONE_GUEST_PEEP_ANIMATIONS_OBJECT_MUST_BE_SELECTED },
+            { AnimationPeepType::Handyman, STR_AT_LEAST_ONE_HANDYMAN_PEEP_ANIMATIONS_OBJECT_MUST_BE_SELECTED },
+            { AnimationPeepType::Mechanic, STR_AT_LEAST_ONE_MECHANIC_PEEP_ANIMATIONS_OBJECT_MUST_BE_SELECTED },
+            { AnimationPeepType::Security, STR_AT_LEAST_ONE_SECURITY_PEEP_ANIMATIONS_OBJECT_MUST_BE_SELECTED },
+            { AnimationPeepType::Entertainer, STR_AT_LEAST_ONE_ENTERTAINER_PEEP_ANIMATIONS_OBJECT_MUST_BE_SELECTED },
+        };
+
+        for (auto& pair : kPeepCheckPairs)
+        {
+            if (!EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(EnumValue(pair.first)))
+            {
+                return { ObjectType::PeepAnimations, pair.second };
             }
         }
 

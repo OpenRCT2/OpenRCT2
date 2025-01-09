@@ -16,11 +16,11 @@ class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffC
 {
 private:
     EntityId _spriteIndex{ EntityId::GetNull() };
-    EntertainerCostume _costume = EntertainerCostume::Count;
+    ObjectEntryIndex _costume = OBJECT_ENTRY_INDEX_NULL;
 
 public:
     StaffSetCostumeAction() = default;
-    StaffSetCostumeAction(EntityId spriteIndex, EntertainerCostume costume);
+    StaffSetCostumeAction(EntityId spriteIndex, ObjectEntryIndex costume);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

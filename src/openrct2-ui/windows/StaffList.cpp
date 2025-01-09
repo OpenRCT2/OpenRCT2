@@ -33,7 +33,9 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Finance.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/ObjectLimits.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -147,12 +149,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_STAFF_LIST_HIRE_BUTTON:
                 {
                     auto staffType = GetSelectedStaffType();
-                    auto costume = EntertainerCostume::Count;
-                    if (staffType == StaffType::Entertainer)
-                    {
-                        costume = GetRandomEntertainerCostume();
-                    }
-                    HireNewMember(staffType, costume);
+                    HireNewMember(staffType);
                     break;
                 }
                 case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
@@ -192,26 +189,29 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            _tabAnimationIndex++;
-            if (_tabAnimationIndex >= 24)
+            auto animPeepType = AnimationPeepType(static_cast<uint8_t>(_selectedTab) + 1);
+            auto* animObj = findPeepAnimationsObjectForType(animPeepType);
+            if (animObj != nullptr)
             {
-                _tabAnimationIndex = 0;
-            }
-            else
-            {
-                InvalidateWidget(WIDX_STAFF_LIST_HANDYMEN_TAB + _selectedTab);
+                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
+                _tabAnimationIndex++;
 
-                // Enable highlighting of these staff members in map window
-                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
-                if (windowMgr->FindByClass(WindowClass::Map) != nullptr)
+                if (_tabAnimationIndex >= anim.frame_offsets.size() * 4)
+                    _tabAnimationIndex = 0;
+
+                InvalidateWidget(WIDX_STAFF_LIST_HANDYMEN_TAB + _selectedTab);
+            }
+
+            // Enable highlighting of these staff members in map window
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            if (windowMgr->FindByClass(WindowClass::Map) != nullptr)
+            {
+                for (auto peep : EntityList<Staff>())
                 {
-                    for (auto peep : EntityList<Staff>())
+                    EntitySetFlashing(peep, false);
+                    if (peep->AssignedStaffType == GetSelectedStaffType())
                     {
-                        EntitySetFlashing(peep, false);
-                        if (peep->AssignedStaffType == GetSelectedStaffType())
-                        {
-                            EntitySetFlashing(peep, true);
-                        }
+                        EntitySetFlashing(peep, true);
                     }
                 }
             }
@@ -461,7 +461,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        GfxDrawSprite(dpi, ImageId(GetEntertainerCostumeSprite(peep->AnimationGroup)), { staffOrderIcon_x, y });
+                        GfxDrawSprite(dpi, GetCostumeInlineSprite(peep->AnimationObjectIndex), { staffOrderIcon_x, y });
                     }
                 }
 
@@ -529,7 +529,7 @@ namespace OpenRCT2::Ui::Windows
         /**
          * Hires a new staff member of the given type.
          */
-        void HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
+        void HireNewMember(StaffType staffType)
         {
             bool autoPosition = Config::Get().general.AutoStaffPlacement;
             if (GetInputManager().IsModifierKeyPressed(ModifierKey::shift))
@@ -552,7 +552,14 @@ namespace OpenRCT2::Ui::Windows
                 staffOrders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
             }
 
-            auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType, staffOrders);
+            auto animPeepType = AnimationPeepType(static_cast<uint8_t>(staffType) + 1);
+            ObjectEntryIndex costume;
+            if (staffType == StaffType::Entertainer)
+                costume = findRandomPeepAnimationsIndexForType(animPeepType);
+            else
+                costume = findPeepAnimationsIndexForType(animPeepType);
+
+            auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, costume, staffOrders);
             hireStaffAction.SetCallback([=](const GameAction*, const GameActions::Result* res) -> void {
                 if (res->Error != GameActions::Status::Ok)
                     return;
@@ -604,34 +611,48 @@ namespace OpenRCT2::Ui::Windows
         void DrawTabImages(DrawPixelInfo& dpi) const
         {
             const auto& gameState = GetGameState();
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, PeepAnimationGroup::Handyman, gameState.StaffHandymanColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, PeepAnimationGroup::Mechanic, gameState.StaffMechanicColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, PeepAnimationGroup::Security, gameState.StaffSecurityColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, PeepAnimationGroup::EntertainerElephant);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.StaffHandymanColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.StaffMechanicColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.StaffSecurityColour);
+            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::Entertainer);
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepAnimationGroup type, colour_t colour) const
+        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
         {
+            PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
+            if (animObj == nullptr)
+                return;
+
             auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
             const auto& widget = widgets[widgetIndex];
-            auto imageId = (_selectedTab == tabIndex ? (_tabAnimationIndex & ~3) : 0);
-            imageId += GetPeepAnimation(type).base_image + 1;
+
+            auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;
+            auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
+            auto imageId = anim.base_image + 1 + anim.frame_offsets[frame] * 4;
+
             GfxDrawSprite(
                 dpi, ImageId(imageId, colour),
                 windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepAnimationGroup type) const
+        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, AnimationPeepType type) const
         {
+            PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
+            if (animObj == nullptr)
+                return;
+
             auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
             const auto& widget = widgets[widgetIndex];
+
             DrawPixelInfo clippedDpi;
             if (ClipDrawPixelInfo(
                     clippedDpi, dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
                     widget.right - widget.left - 1, widget.bottom - widget.top - 1))
             {
-                auto imageId = (_selectedTab == 3 ? (_tabAnimationIndex & ~3) : 0);
-                imageId += GetPeepAnimation(type).base_image + 1;
+                auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;
+                auto& anim = animObj->GetPeepAnimation(PeepAnimationGroup::Normal);
+                auto imageId = anim.base_image + 1 + anim.frame_offsets[frame] * 4;
+
                 GfxDrawSprite(clippedDpi, ImageId(imageId), { 15, 23 });
             }
         }
@@ -686,19 +707,6 @@ namespace OpenRCT2::Ui::Windows
             return closestPeep;
         }
 
-        static EntertainerCostume GetRandomEntertainerCostume()
-        {
-            auto result = EntertainerCostume::Panda;
-            EntertainerCostume costumeList[EnumValue(EntertainerCostume::Count)];
-            int32_t numCostumes = StaffGetAvailableEntertainerCostumeList(costumeList);
-            if (numCostumes > 0)
-            {
-                int32_t index = UtilRand() % numCostumes;
-                result = costumeList[index];
-            }
-            return result;
-        }
-
         static constexpr StaffNamingConvention GetStaffNamingConvention(StaffType type)
         {
             switch (type)
@@ -728,36 +736,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        static uint32_t GetEntertainerCostumeSprite(PeepAnimationGroup type)
+        static ImageId GetCostumeInlineSprite(ObjectEntryIndex index)
         {
-            switch (type)
-            {
-                case PeepAnimationGroup::EntertainerPanda:
-                    return SPR_STAFF_COSTUME_PANDA;
-                case PeepAnimationGroup::EntertainerTiger:
-                    return SPR_STAFF_COSTUME_TIGER;
-                case PeepAnimationGroup::EntertainerElephant:
-                    return SPR_STAFF_COSTUME_ELEPHANT;
-                case PeepAnimationGroup::EntertainerRoman:
-                    return SPR_STAFF_COSTUME_ROMAN;
-                case PeepAnimationGroup::EntertainerGorilla:
-                    return SPR_STAFF_COSTUME_GORILLA;
-                case PeepAnimationGroup::EntertainerSnowman:
-                    return SPR_STAFF_COSTUME_SNOWMAN;
-                case PeepAnimationGroup::EntertainerKnight:
-                    return SPR_STAFF_COSTUME_KNIGHT;
-                case PeepAnimationGroup::EntertainerAstronaut:
-                    return SPR_STAFF_COSTUME_ASTRONAUT;
-                case PeepAnimationGroup::EntertainerBandit:
-                    return SPR_STAFF_COSTUME_BANDIT;
-                case PeepAnimationGroup::EntertainerSheriff:
-                    return SPR_STAFF_COSTUME_SHERIFF;
-                case PeepAnimationGroup::EntertainerPirate:
-                    return SPR_STAFF_COSTUME_PIRATE;
-                case PeepAnimationGroup::Normal:
-                default:
-                    return SPR_PEEP_SMALL_FACE_HAPPY;
-            }
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(index);
+            return ImageId(animObj->GetInlineImageId());
         }
     };
 

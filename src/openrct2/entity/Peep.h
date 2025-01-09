@@ -234,54 +234,43 @@ enum PeepNextFlags
 enum class PeepAnimationGroup : uint8_t
 {
     Normal = 0,
-    Handyman = 1,
-    Mechanic = 2,
-    Security = 3,
-    EntertainerPanda = 4,
-    EntertainerTiger = 5,
-    EntertainerElephant = 6,
-    EntertainerRoman = 7,
-    EntertainerGorilla = 8,
-    EntertainerSnowman = 9,
-    EntertainerKnight = 10,
-    EntertainerAstronaut = 11,
-    EntertainerBandit = 12,
-    EntertainerSheriff = 13,
-    EntertainerPirate = 14,
-    IceCream = 15,
-    Chips = 16,
-    Burger = 17,
-    Drink = 18,
-    Balloon = 19,
-    Candyfloss = 20,
-    Umbrella = 21,
-    Pizza = 22,
-    SecurityAlt = 23,
-    Popcorn = 24,
-    ArmsCrossed = 25,
-    HeadDown = 26,
-    Nauseous = 27,
-    VeryNauseous = 28,
-    RequireToilet = 29,
-    Hat = 30,
-    HotDog = 31,
-    Tentacle = 32,
-    ToffeeApple = 33,
-    Doughnut = 34,
-    Coffee = 35,
-    Chicken = 36,
-    Lemonade = 37,
-    Watching = 38,
-    Pretzel = 39,
-    Sunglasses = 40,
-    SuJongkwa = 41,
-    Juice = 42,
-    FunnelCake = 43,
-    Noodles = 44,
-    Sausage = 45,
-    Soup = 46,
-    Sandwich = 47,
-    Count = 48,
+
+    // Security staff
+    Alternate = 1,
+
+    // Guest variations
+    IceCream = 1,
+    Chips = 2,
+    Burger = 3,
+    Drink = 4,
+    Balloon = 5,
+    Candyfloss = 6,
+    Umbrella = 7,
+    Pizza = 8,
+    Popcorn = 9,
+    ArmsCrossed = 10,
+    HeadDown = 11,
+    Nauseous = 12,
+    VeryNauseous = 13,
+    RequireToilet = 14,
+    Hat = 15,
+    HotDog = 16,
+    Tentacle = 17,
+    ToffeeApple = 18,
+    Doughnut = 19,
+    Coffee = 20,
+    Chicken = 21,
+    Lemonade = 22,
+    Watching = 23,
+    Pretzel = 24,
+    Sunglasses = 25,
+    Sujeonggwa = 26,
+    Juice = 27,
+    FunnelCake = 28,
+    Noodles = 29,
+    Sausage = 30,
+    Soup = 31,
+    Sandwich = 32,
 
     Invalid = 255
 };
@@ -313,6 +302,7 @@ struct Peep : EntityBase
         PeepRideSubState RideSubState;
         PeepUsingBinSubState UsingBinSubState;
     };
+    ObjectEntryIndex AnimationObjectIndex;
     PeepAnimationGroup AnimationGroup;
     uint8_t TshirtColour;
     uint8_t TrousersColour;
@@ -431,8 +421,6 @@ enum
     PATHING_RIDE_EXIT = 1 << 2,
     PATHING_RIDE_ENTRANCE = 1 << 3,
 };
-
-extern const bool gAnimationGroupToSlowWalkMap[48];
 
 int32_t PeepGetStaffCount();
 void PeepUpdateAll();

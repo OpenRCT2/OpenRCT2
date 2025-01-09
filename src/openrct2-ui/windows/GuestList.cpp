@@ -21,7 +21,7 @@
 #include <openrct2/entity/Guest.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepThoughts.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
@@ -653,7 +653,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // Tab 1 image
             auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
-            i += GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
+            auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
+            i += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
             GfxDrawSprite(
                 dpi, ImageId(i, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 });

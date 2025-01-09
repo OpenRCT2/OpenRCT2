@@ -50,9 +50,9 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../object/ScenarioTextObject.h"
 #include "../park/Legacy.h"
-#include "../peep/PeepAnimationData.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
@@ -206,6 +206,9 @@ namespace OpenRCT2::RCT1
             ImportScenarioNameDetails(gameState);
             ImportScenarioObjective(gameState);
             ImportSavedView(gameState);
+
+            ConvertPeepAnimationTypeToObjects(gameState);
+            ResetPeepSpriteBounds(gameState);
 
             if (_isScenario)
             {
@@ -1264,6 +1267,30 @@ namespace OpenRCT2::RCT1
             }
         }
 
+        void ResetPeepSpriteBounds([[maybe_unused]] GameState_t& gameState)
+        {
+            // TODO: Entities are currently read from the global state, change this once entities are stored
+            // in the passed gameState.
+            auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
+            for (auto* peep : EntityList<Guest>())
+            {
+                const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
+                peep->SpriteData.Width = spriteBounds.sprite_width;
+                peep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;
+                peep->SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+            }
+
+            auto& objManager = GetContext()->GetObjectManager();
+            for (auto* peep : EntityList<Staff>())
+            {
+                animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+                const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
+                peep->SpriteData.Width = spriteBounds.sprite_width;
+                peep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;
+                peep->SpriteData.HeightMax = spriteBounds.sprite_height_positive;
+            }
+        }
+
         void SetVehicleColours(::Vehicle* dst, const RCT1::Vehicle* src)
         {
             const auto& srcRide = _s4.Rides[src->Ride];
@@ -1319,8 +1346,10 @@ namespace OpenRCT2::RCT1
 
         void ImportPeep(::Peep* dst, const RCT1::Peep* src)
         {
-            // Peep vs. staff (including which kind)
-            dst->AnimationGroup = RCT1::GetPeepAnimationGroup(src->AnimationGroup);
+            dst->AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
+            auto rct12AnimGroup = RCT1::GetPeepAnimationGroup(src->AnimationGroup);
+            dst->AnimationGroup = static_cast<::PeepAnimationGroup>(rct12AnimGroup);
+
             dst->Action = static_cast<PeepActionType>(src->Action);
             dst->SpecialSprite = src->SpecialSprite;
             dst->NextAnimationType = static_cast<PeepAnimationType>(src->NextAnimationType);
@@ -1329,10 +1358,7 @@ namespace OpenRCT2::RCT1
             dst->AnimationType = static_cast<PeepAnimationType>(src->AnimationType);
             dst->AnimationFrameNum = src->AnimationFrameNum;
 
-            const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->AnimationGroup, dst->AnimationType);
-            dst->SpriteData.Width = spriteBounds->sprite_width;
-            dst->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
-            dst->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
+            // Peep sprite bounds used to be set here. These are now set in a finishing step after loading peep anim objects.
 
             dst->MoveTo({ src->x, src->y, src->z });
 
@@ -1533,6 +1559,10 @@ namespace OpenRCT2::RCT1
             SourceDescriptor desc;
             if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && !desc.textObjectId.empty())
                 AppendRequiredObjects(result, ObjectType::ScenarioText, std::vector<std::string_view>({ desc.textObjectId }));
+
+            // Add all legacy peep animation objects
+            auto animObjects = GetLegacyPeepAnimationObjects(result);
+            AppendRequiredObjects(result, ObjectType::PeepAnimations, animObjects);
 
             return result;
         }

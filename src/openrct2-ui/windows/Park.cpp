@@ -28,7 +28,7 @@
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/management/Award.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -1289,7 +1289,9 @@ namespace OpenRCT2::Ui::Windows
                     spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
                 GfxDrawSprite(dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
 
-                ImageId peepImage(GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
+                auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
+                ImageId peepImage(
+                    animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
                 if (page == WINDOW_PARK_PAGE_GUESTS)
                     peepImage = peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
 

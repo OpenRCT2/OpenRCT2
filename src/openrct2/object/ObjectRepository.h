@@ -63,6 +63,10 @@ struct ObjectRepositoryItem
     {
         uint8_t Flags{};
     } FootpathSurfaceInfo;
+    struct
+    {
+        uint8_t PeepType{};
+    } PeepAnimationsInfo;
 
     [[nodiscard]] ObjectSourceGame GetFirstSourceGame() const
     {

@@ -22,12 +22,12 @@ class StaffHireNewAction final : public GameActionBase<GameCommand::HireNewStaff
 private:
     bool _autoPosition{};
     uint8_t _staffType{ EnumValue(StaffType::Count) };
-    EntertainerCostume _entertainerType{ EntertainerCostume::Count };
+    ObjectEntryIndex _costumeIndex;
     uint32_t _staffOrders{};
 
 public:
     StaffHireNewAction() = default;
-    StaffHireNewAction(bool autoPosition, StaffType staffType, EntertainerCostume entertainerType, uint32_t staffOrders);
+    StaffHireNewAction(bool autoPosition, StaffType staffType, ObjectEntryIndex costumeIndex, uint32_t staffOrders);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

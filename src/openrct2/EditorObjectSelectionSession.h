@@ -29,6 +29,7 @@ extern std::vector<uint8_t> _objectSelectionFlags;
 extern uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 
 bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType);
+bool EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(uint8_t peepType);
 bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue);
 void EditorObjectFlagsFree();
 void UnloadUnselectedObjects();

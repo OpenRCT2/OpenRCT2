@@ -33,10 +33,12 @@
 #include "../network/network.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/MusicObject.h"
+#include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"
-#include "../peep/PeepAnimationData.h"
+#include "../peep/PeepAnimations.h"
 #include "../peep/PeepThoughts.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
@@ -5692,7 +5694,7 @@ void Guest::UpdateQueuing()
                 case PeepAnimationGroup::Chicken:
                 case PeepAnimationGroup::Lemonade:
                 case PeepAnimationGroup::Pretzel:
-                case PeepAnimationGroup::SuJongkwa:
+                case PeepAnimationGroup::Sujeonggwa:
                 case PeepAnimationGroup::Juice:
                 case PeepAnimationGroup::FunnelCake:
                 case PeepAnimationGroup::Noodles:
@@ -6767,9 +6769,11 @@ void Guest::SetAnimationGroup(PeepAnimationGroup new_sprite_type)
     if (IsActionInterruptable())
         Action = PeepActionType::Walking;
 
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    Guard::Assert(EnumValue(new_sprite_type) < std::size(gAnimationGroupToSlowWalkMap));
-    if (gAnimationGroupToSlowWalkMap[EnumValue(new_sprite_type)])
+    if (animObj->IsSlowWalking(new_sprite_type))
     {
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
@@ -6823,8 +6827,8 @@ static ItemPref item_order_preference[] = {
     { ShopItem::WontonSoup,       PeepAnimationGroup::Soup        },
     { ShopItem::MeatballSoup,     PeepAnimationGroup::Soup        },
     { ShopItem::FruitJuice,       PeepAnimationGroup::Juice       },
-    { ShopItem::SoybeanMilk,      PeepAnimationGroup::SuJongkwa   },
-    { ShopItem::Sujeonggwa,       PeepAnimationGroup::SuJongkwa   },
+    { ShopItem::SoybeanMilk,      PeepAnimationGroup::Sujeonggwa   },
+    { ShopItem::Sujeonggwa,       PeepAnimationGroup::Sujeonggwa   },
     { ShopItem::SubSandwich,      PeepAnimationGroup::Sandwich    },
     { ShopItem::RoastSausage,     PeepAnimationGroup::Sausage     },
     { ShopItem::Balloon,          PeepAnimationGroup::Balloon     },
@@ -7142,6 +7146,8 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     auto& gameState = GetGameState();
     Guest* peep = CreateEntity<Guest>();
+
+    peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Guest);
     peep->AnimationGroup = PeepAnimationGroup::Normal;
     peep->OutsideOfPark = true;
     peep->State = PeepState::Falling;
@@ -7154,10 +7160,13 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->FavouriteRide = RideId::GetNull();
     peep->FavouriteRideRating = 0;
 
-    const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-    peep->SpriteData.Width = spriteBounds->sprite_width;
-    peep->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
-    peep->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+    const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
+    peep->SpriteData.Width = spriteBounds.sprite_width;
+    peep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;
+    peep->SpriteData.HeightMax = spriteBounds.sprite_height_positive;
     peep->Orientation = 0;
 
     peep->MoveTo(coords);

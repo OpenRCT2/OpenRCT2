@@ -31,6 +31,7 @@
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/object/SceneryGroupObject.h>
 #include <openrct2/platform/Platform.h>
@@ -178,6 +179,11 @@ namespace OpenRCT2::Ui::Windows
         { STR_OBJECT_SELECTION_WATER,             ObjectType::Water,            FILTER_NONE, SPR_TAB_WATER,           1, 1 },
     };
 
+    static ObjectSubTab kPeepObjectSubTabs[] = {
+        { STR_OBJECT_SELECTION_PEEP_ANIMATIONS,   ObjectType::PeepAnimations,   FILTER_NONE, SPR_G2_PEEP_ANIMATIONS, 1, 1 },
+        { STR_OBJECT_SELECTION_PEEP_NAMES,        ObjectType::PeepNames,        FILTER_NONE, SPR_TAB_GUESTS_0,       1, 1 },
+    };
+
     static constexpr ObjectPageDesc ObjectSelectionPages[] = {
         { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::Ride,            SPR_TAB_RIDE_16,         kRideObjectSubTabs },
         { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::SceneryGroup,    SPR_TAB_SCENERY_STATUES, kSceneryObjectSubTabs },
@@ -185,7 +191,7 @@ namespace OpenRCT2::Ui::Windows
         { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,    SPR_TAB_PARK,            kEntrancesObjectSubTabs },
         { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,  SPR_G2_TAB_LAND,         kTerrainObjectSubTabs },
         { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,           SPR_TAB_MUSIC_0,         {} },
-        { STR_OBJECT_SELECTION_PEEP_NAMES,                ObjectType::PeepNames,       SPR_TAB_GUESTS_0,        {} },
+        { STR_OBJECT_SELECTION_PEEP_NAMES,                ObjectType::PeepNames,       SPR_TAB_GUESTS_0,        kPeepObjectSubTabs },
     };
     // clang-format on
 
@@ -1329,6 +1335,24 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        StringId GetAnimationPeepTypeStringId(AnimationPeepType type)
+        {
+            switch (type)
+            {
+                case AnimationPeepType::Handyman:
+                    return STR_HANDYMAN_PLURAL;
+                case AnimationPeepType::Mechanic:
+                    return STR_MECHANIC_PLURAL;
+                case AnimationPeepType::Security:
+                    return STR_SECURITY_GUARD_PLURAL;
+                case AnimationPeepType::Entertainer:
+                    return STR_ENTERTAINER_PLURAL;
+                case AnimationPeepType::Guest:
+                default:
+                    return STR_GUESTS;
+            }
+        }
+
         void DrawDebugData(DrawPixelInfo& dpi)
         {
             ObjectListItem* listItem = &_listItems[selected_list_item];
@@ -1345,6 +1369,14 @@ namespace OpenRCT2::Ui::Windows
             if (GetSelectedObjectType() == ObjectType::Ride)
             {
                 auto stringId = GetRideTypeStringId(listItem->repositoryItem);
+                DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+            }
+
+            // Draw peep animation object type
+            if (GetSelectedObjectType() == ObjectType::PeepAnimations)
+            {
+                auto* animObj = reinterpret_cast<PeepAnimationsObject*>(_loadedObject.get());
+                auto stringId = GetAnimationPeepTypeStringId(animObj->GetPeepType());
                 DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             }
 

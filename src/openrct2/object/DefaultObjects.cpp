@@ -147,6 +147,12 @@ const std::string_view DefaultSelectedObjects[] = {
 
     // Peep name objects
     "rct2.peep_names.original",
+
+    // Peep animation objects
+    "rct2.peep_animations.guest",
+    "rct2.peep_animations.handyman",
+    "rct2.peep_animations.mechanic",
+    "rct2.peep_animations.security",
 };
 
 const std::string_view DesignerSelectedObjects[] = {
