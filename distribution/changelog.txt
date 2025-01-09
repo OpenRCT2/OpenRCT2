@@ -1,6 +1,7 @@
 0.4.19 (in development)
 ------------------------------------------------------------------------
 - Improved: [#23540] The file browser now optionally shows a file size column.
+- Fix: [#21794] Lay-down coaster cars reverse on first frames of downwards corkscrew.
 
 0.4.18 (2025-01-08)
 ------------------------------------------------------------------------
