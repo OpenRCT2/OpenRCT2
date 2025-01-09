@@ -7056,7 +7056,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     SetTrackDirection(location.direction);
     SetTrackType(trackType);
     PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
-    if (HasFlag(VehicleFlags::StoppedOnHoldingBrake) && vertical_drop_countdown == 0)
+    if (HasFlag(VehicleFlags::StoppedOnHoldingBrake) && vertical_drop_countdown <= 0)
     {
         ClearFlag(VehicleFlags::StoppedOnHoldingBrake);
     }
@@ -7470,7 +7470,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
     SetTrackType(trackType);
     SetTrackDirection(direction);
     PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
-    if (HasFlag(VehicleFlags::StoppedOnHoldingBrake) && vertical_drop_countdown == 0)
+    if (HasFlag(VehicleFlags::StoppedOnHoldingBrake) && vertical_drop_countdown <= 0)
     {
         ClearFlag(VehicleFlags::StoppedOnHoldingBrake);
     }
