@@ -10,45 +10,33 @@ build_ext() {
 	cd ext/
 	# Pin versions - to prevent sudden breakage
 	if [ ! -d "speexdsp" ]; then
-		git clone https://gitlab.xiph.org/xiph/speexdsp.git --depth 1
+		git clone https://gitlab.xiph.org/xiph/speexdsp.git --depth 1 --branch SpeexDSP-1.2.1
         cd speexdsp
-		git fetch --depth=1 origin dbd421d149a9c362ea16150694b75b63d757a521
-		git checkout dbd421d149a9c362ea16150694b75b63d757a521
         cd ..
     fi
 	if [ ! -d "icu" ]; then
-		git clone https://github.com/unicode-org/icu.git --depth 1
+		git clone https://github.com/unicode-org/icu.git --depth 1 --branch release-76-1
         cd icu
-		git fetch --depth=1 origin ba012a74a11405a502b6890e710bfb58cef7a2c7
-		git checkout ba012a74a11405a502b6890e710bfb58cef7a2c7
         cd ..
 	fi
 	if [ ! -d "libzip" ]; then
-		git clone https://github.com/nih-at/libzip.git --depth 1
+		git clone https://github.com/nih-at/libzip.git --depth 1 --branch v1.11.2
         cd libzip
-		git fetch --depth=1 origin 8352d224d458d86949fd9148dd33332f50a25c7f
-		git checkout 8352d224d458d86949fd9148dd33332f50a25c7f
         cd ..
 	fi
 	if [ ! -d "zlib" ]; then
-		git clone https://github.com/madler/zlib.git --depth 1
+		git clone https://github.com/madler/zlib.git --depth 1 --branch v1.3.1
         cd zlib
-		git fetch --depth=1 origin ef24c4c7502169f016dcd2a26923dbaf3216748c
-		git checkout ef24c4c7502169f016dcd2a26923dbaf3216748c
         cd ..
 	fi
 	if [ ! -d "vorbis" ]; then
-		git clone https://gitlab.xiph.org/xiph/vorbis.git --depth 1
+		git clone https://gitlab.xiph.org/xiph/vorbis.git --depth 1 --branch v1.3.7
         cd vorbis
-		git fetch --depth=1 origin bb4047de4c05712bf1fd49b9584c360b8e4e0adf
-		git checkout bb4047de4c05712bf1fd49b9584c360b8e4e0adf
         cd ..
 	fi
 	if [ ! -d "ogg" ]; then
-		git clone https://gitlab.xiph.org/xiph/ogg.git --depth 1
+		git clone https://gitlab.xiph.org/xiph/ogg.git --depth 1 --branch v1.3.5
         cd ogg
-		git fetch --depth=1 origin 7cf42ea17aef7bc1b7b21af70724840a96c2e7d0
-		git checkout 7cf42ea17aef7bc1b7b21af70724840a96c2e7d0
         cd ..
 	fi
 	if [ ! -d "$JSON_DIR" ]; then
