@@ -722,17 +722,18 @@ public:
         return (SDL_SetClipboardText(target) == 0);
 #else
         return (
-            MAIN_THREAD_EM_ASM_INT({
-                try
+            MAIN_THREAD_EM_ASM_INT(
                 {
-                    navigator.clipboard.writeText(UTF8ToString($0));
-                    return 0;
-                }
-                catch (e)
-                {
-                    return -1;
-                };
-            })
+                    try
+                    {
+                        navigator.clipboard.writeText(UTF8ToString($0));
+                        return 0;
+                    }
+                    catch (e)
+                    {
+                        return -1;
+                    };
+                }, target)
             == 0);
 #endif
     }
