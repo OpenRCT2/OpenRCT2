@@ -40,7 +40,6 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/scenes/title/TitleSequencePlayer.h>
 #include <openrct2/scripting/ScriptEngine.h>

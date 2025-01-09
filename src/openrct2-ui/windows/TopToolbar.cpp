@@ -37,7 +37,6 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
