@@ -150,7 +150,11 @@ GameActions::Result RideCreateAction::Execute() const
     ride->SetNameToDefault();
 
     // Default initialize all stations.
-    std::ranges::fill(ride->GetStations(), RideStation{});
+    RideStation station{};
+    station.Start.SetNull();
+    station.Entrance.SetNull();
+    station.Exit.SetNull();
+    std::ranges::fill(ride->GetStations(), station);
 
     ride->status = RideStatus::Closed;
     ride->NumTrains = 1;
