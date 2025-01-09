@@ -29,16 +29,6 @@ build_ext() {
         cd zlib
         cd ..
 	fi
-	if [ ! -d "vorbis" ]; then
-		git clone https://gitlab.xiph.org/xiph/vorbis.git --depth 1 --branch v1.3.7
-        cd vorbis
-        cd ..
-	fi
-	if [ ! -d "ogg" ]; then
-		git clone https://gitlab.xiph.org/xiph/ogg.git --depth 1 --branch v1.3.5
-        cd ogg
-        cd ..
-	fi
 	if [ ! -d "$JSON_DIR" ]; then
 		echo "$JSON_DIR does not exist. Set in build_emscripten.sh or install the nlohmann-json headers!"
 		exit 1
@@ -78,22 +68,6 @@ build_ext() {
 	cd build/
 	emcmake cmake ../ -DZLIB_INCLUDE_DIR="$ZLIB_ROOT" -DZLIB_LIBRARY="$ZLIB_ROOT/libz.a"
 	emmake make zip -j$(nproc)
-	emmake make install
-	cd $START_DIR/ext/
-
-	cd ogg
-	mkdir -p build/
-	cd build/
-	emcmake cmake ../
-	emmake make -j$(nproc)
-	emmake make install
-	cd $START_DIR/ext/
-
-	cd vorbis
-	mkdir -p build/
-	cd build/
-	emcmake cmake ../
-	emmake make -j$(nproc)
 	emmake make install
 
 	cd $START_DIR
