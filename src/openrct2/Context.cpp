@@ -44,7 +44,6 @@
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Chat.h"
-#include "interface/InteractiveConsole.h"
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
 #include "localisation/Formatter.h"
