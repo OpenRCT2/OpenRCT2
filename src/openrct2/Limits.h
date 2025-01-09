@@ -12,6 +12,7 @@
 
 namespace OpenRCT2::Limits
 {
+    constexpr uint16_t kMaxEntities = 65535;
     constexpr uint16_t kMaxRidesInPark = 1000;
     constexpr uint16_t kMaxStationsPerRide = 255;
     constexpr uint8_t kCustomerHistorySize = RCT12::Limits::kCustomerHistorySize;

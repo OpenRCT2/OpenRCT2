@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
+#include "../core/StringTypes.h"
 #include "../entity/EntityBase.h"
 #include "../localisation/StringIdType.h"
 #include "../ride/RideTypes.h"
@@ -18,8 +19,6 @@
 
 #include <array>
 #include <optional>
-#include <string>
-#include <string_view>
 
 constexpr uint8_t kPeepMinEnergy = 32;
 constexpr uint8_t kPeepMaxEnergy = 128;
@@ -302,7 +301,7 @@ struct Staff;
 
 struct Peep : EntityBase
 {
-    char* Name;
+    u8string Name;
     CoordsXYZ NextLoc;
     uint8_t NextFlags;
     PeepState State;

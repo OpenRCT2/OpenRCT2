@@ -1050,7 +1050,7 @@ namespace OpenRCT2::RCT2
                     auto ride = GetRide(rideId);
                     if (ride != nullptr)
                     {
-                        ride->measurement = std::make_unique<RideMeasurement>();
+                        ride->measurement = RideMeasurement{};
                         ImportRideMeasurement(*ride->measurement, src);
                     }
                 }

@@ -187,7 +187,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
         snapshot.SerialiseSprites(
-            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); }, MAX_ENTITIES, true);
+            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); },
+            OpenRCT2::Limits::kMaxEntities, true);
 
         // LOG_INFO("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
@@ -213,7 +214,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     std::vector<EntitySnapshot> BuildSpriteList(GameStateSnapshot_t& snapshot) const
     {
         std::vector<EntitySnapshot> spriteList;
-        spriteList.resize(MAX_ENTITIES);
+        spriteList.resize(OpenRCT2::Limits::kMaxEntities);
 
         for (auto& sprite : spriteList)
         {
@@ -222,7 +223,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         }
 
         snapshot.SerialiseSprites(
-            [&spriteList](const EntityId index) { return &spriteList[index.ToUnderlying()]; }, MAX_ENTITIES, false);
+            [&spriteList](const EntityId index) { return &spriteList[index.ToUnderlying()]; }, OpenRCT2::Limits::kMaxEntities,
+            false);
 
         return spriteList;
     }

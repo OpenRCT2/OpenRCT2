@@ -160,6 +160,7 @@ namespace OpenRCT2
         // We keep track of this to perform certain operations differently.
         std::thread::id _mainThreadId{};
         Timer _forcedUpdateTimer;
+        JobPool _backgroundJobs{ 2 };
 
     public:
         // Singleton of Context.
@@ -224,6 +225,8 @@ namespace OpenRCT2
             GfxUnloadG2();
             GfxUnloadG1();
             Audio::Close();
+
+            _backgroundJobs.Join();
 
             Instance = nullptr;
         }
@@ -1534,6 +1537,11 @@ namespace OpenRCT2
         float GetTimeScale() const override
         {
             return _timeScale;
+        }
+
+        JobPool& GetBackgroundJobs() override
+        {
+            return _backgroundJobs;
         }
     };
 

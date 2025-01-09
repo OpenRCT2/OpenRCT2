@@ -306,7 +306,7 @@ public:
     uint16_t holes{};
     uint8_t sheltered_eighths{};
 
-    std::unique_ptr<RideMeasurement> measurement;
+    std::optional<RideMeasurement> measurement;
 
 private:
     void Update();

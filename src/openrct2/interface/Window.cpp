@@ -1311,7 +1311,7 @@ void WindowInitAll()
 
 void WindowFollowSprite(WindowBase& w, EntityId spriteIndex)
 {
-    if (spriteIndex.ToUnderlying() < MAX_ENTITIES || spriteIndex.IsNull())
+    if (spriteIndex.ToUnderlying() < OpenRCT2::Limits::kMaxEntities || spriteIndex.IsNull())
     {
         w.viewport_smart_follow_sprite = spriteIndex;
     }

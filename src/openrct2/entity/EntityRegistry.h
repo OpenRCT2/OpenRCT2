@@ -27,8 +27,6 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-constexpr uint16_t MAX_ENTITIES = 65535;
-
 EntityBase* GetEntity(EntityId sprite_idx);
 
 template<typename T>

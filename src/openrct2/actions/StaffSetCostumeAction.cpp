@@ -64,7 +64,7 @@ void StaffSetCostumeAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result StaffSetCostumeAction::Query() const
 {
-    if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
+    if (_spriteIndex.ToUnderlying() >= OpenRCT2::Limits::kMaxEntities || _spriteIndex.IsNull())
     {
         LOG_ERROR("Invalid sprite index %u", _spriteIndex);
         return GameActions::Result(

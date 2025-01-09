@@ -1618,7 +1618,7 @@ static constexpr StringId _staffNames[] = {
 
 void Peep::FormatNameTo(Formatter& ft) const
 {
-    if (Name == nullptr)
+    if (Name.empty())
     {
         auto& gameState = GetGameState();
         const bool showGuestNames = gameState.Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -1657,7 +1657,7 @@ void Peep::FormatNameTo(Formatter& ft) const
     }
     else
     {
-        ft.Add<StringId>(STR_STRING).Add<const char*>(Name);
+        ft.Add<StringId>(STR_STRING).Add<const char*>(Name.c_str());
     }
 }
 
@@ -1672,21 +1672,12 @@ bool Peep::SetName(std::string_view value)
 {
     if (value.empty())
     {
-        std::free(Name);
-        Name = nullptr;
+        Name.clear();
         return true;
     }
 
-    auto newNameMemory = static_cast<char*>(std::malloc(value.size() + 1));
-    if (newNameMemory != nullptr)
-    {
-        std::memcpy(newNameMemory, value.data(), value.size());
-        newNameMemory[value.size()] = '\0';
-        std::free(Name);
-        Name = newNameMemory;
-        return true;
-    }
-    return false;
+    Name.assign(value);
+    return true;
 }
 
 bool Peep::IsActionWalking() const
@@ -2658,7 +2649,7 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
         return static_cast<int32_t>(peep_a->Type) - static_cast<int32_t>(peep_b->Type);
     }
 
-    if (peep_a->Name == nullptr && peep_b->Name == nullptr)
+    if (peep_a->Name.empty() && peep_b->Name.empty())
     {
         if (GetGameState().Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
@@ -2812,7 +2803,7 @@ void Peep::Serialise(DataSerialiser& stream)
     EntityBase::Serialise(stream);
     if (stream.IsLoading())
     {
-        Name = nullptr;
+        Name.clear();
     }
     stream << NextLoc;
     stream << NextFlags;

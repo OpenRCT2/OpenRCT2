@@ -2070,8 +2070,9 @@ void RideMeasurementsUpdate()
     // For each ride measurement
     for (auto& ride : GetRideManager())
     {
-        auto measurement = ride.measurement.get();
-        if (measurement != nullptr && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) && ride.status != RideStatus::Simulating)
+        auto& measurement = ride.measurement;
+        if (measurement.has_value() && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+            && ride.status != RideStatus::Simulating)
         {
             if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)
             {
@@ -2115,7 +2116,7 @@ static void RideFreeOldMeasurements()
         numRideMeasurements = 0;
         for (auto& ride : GetRideManager())
         {
-            if (ride.measurement != nullptr)
+            if (ride.measurement.has_value())
             {
                 if (lruRide == nullptr || ride.measurement->last_use_tick > lruRide->measurement->last_use_tick)
                 {
@@ -2126,7 +2127,7 @@ static void RideFreeOldMeasurements()
         }
         if (numRideMeasurements > kMaxRideMeasurements && lruRide != nullptr)
         {
-            lruRide->measurement = {};
+            lruRide->measurement.reset();
             numRideMeasurements--;
         }
     } while (numRideMeasurements > kMaxRideMeasurements);
@@ -2143,21 +2144,20 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
     }
 
     // Check if a measurement already exists for this ride
-    if (measurement == nullptr)
+    if (!measurement.has_value())
     {
-        measurement = std::make_unique<RideMeasurement>();
+        measurement = RideMeasurement{};
         if (rtd.HasFlag(RtdFlag::hasGForces))
         {
             measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
         }
         RideFreeOldMeasurements();
-        assert(measurement != nullptr);
     }
 
     measurement->last_use_tick = GetGameState().CurrentTicks;
     if (measurement->flags & 1)
     {
-        return { measurement.get(), { STR_EMPTY, {} } };
+        return { &measurement.value(), { STR_EMPTY, {} } };
     }
 
     auto ft = Formatter();

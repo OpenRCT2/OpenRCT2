@@ -221,7 +221,7 @@ void Ride::RemoveVehicles()
  */
 void RideClearForConstruction(Ride& ride)
 {
-    ride.measurement = {};
+    ride.measurement.reset();
 
     ride.lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;

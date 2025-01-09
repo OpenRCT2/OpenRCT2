@@ -36,6 +36,9 @@ namespace OpenRCT2
 {
     struct GameState_t
     {
+        GameState_t() = default;
+        GameState_t(const GameState_t&) = default;
+
         ::OpenRCT2::Park::ParkData Park{};
         std::string PluginStorage;
         uint32_t CurrentTicks{};
@@ -90,9 +93,9 @@ namespace OpenRCT2
         std::string ScenarioFileName;
 
         std::vector<Banner> Banners;
-        Entity_t Entities[MAX_ENTITIES]{};
+        std::array<Entity_t, Limits::kMaxEntities> Entities{};
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
-        std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> Rides{};
+        std::array<Ride, Limits::kMaxRidesInPark> Rides{};
         size_t RidesEndOfUsedRange{};
         ::RideRatingUpdateStates RideRatingUpdateStates;
         std::vector<TileElement> TileElements;

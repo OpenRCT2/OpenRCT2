@@ -437,7 +437,7 @@ void GameNotifyMapChanged()
  */
 void ResetAllSpriteQuadrantPlacements()
 {
-    for (EntityId::UnderlyingType i = 0; i < MAX_ENTITIES; i++)
+    for (EntityId::UnderlyingType i = 0; i < OpenRCT2::Limits::kMaxEntities; i++)
     {
         auto* spr = GetEntity(EntityId::FromUnderlying(i));
         if (spr != nullptr && spr->Type != EntityType::Null)
@@ -590,7 +590,8 @@ void GameAutosave()
     int32_t autosavesToKeep = Config::Get().general.AutosaveAmount;
     LimitAutosaveCount(autosavesToKeep - 1, (gScreenFlags & SCREEN_FLAGS_EDITOR));
 
-    auto env = GetContext()->GetPlatformEnvironment();
+    auto* ctx = GetContext();
+    auto env = ctx->GetPlatformEnvironment();
     auto autosaveDir = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, subDirectory), u8"autosave");
     Path::CreateDirectory(autosaveDir);
 
@@ -603,10 +604,20 @@ void GameAutosave()
         File::Copy(path, backupPath, true);
     }
 
-    auto& gameState = GetGameState();
+    auto& backgroundJobs = ctx->GetBackgroundJobs();
 
-    if (!ScenarioSave(gameState, path, saveFlags))
-        Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
+    // Pretty annoying situation, GameState_t is too big for stack and unique_ptr can not be copied,
+    // so we have to use shared_ptr here.
+    std::shared_ptr<GameState_t> gameState = std::make_unique<GameState_t>(GetGameState());
+    backgroundJobs.AddTask([gameState, path, saveFlags]() {
+        //
+        if (!ScenarioSave(*gameState, path, saveFlags))
+        {
+            Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
+        }
+        // Allow to show activity, its usually too fast.
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    });
 }
 
 static void GameLoadOrQuitNoSavePromptCallback(int32_t result, const utf8* path)

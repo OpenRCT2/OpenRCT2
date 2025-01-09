@@ -47,7 +47,7 @@ void PeepPickupAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result PeepPickupAction::Query() const
 {
-    if (_entityId.ToUnderlying() >= MAX_ENTITIES || _entityId.IsNull())
+    if (_entityId.ToUnderlying() >= OpenRCT2::Limits::kMaxEntities || _entityId.IsNull())
     {
         LOG_ERROR("Failed to pick up peep for sprite %d", _entityId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
