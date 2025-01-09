@@ -99,26 +99,8 @@ build_ext() {
 	cd $START_DIR
 }
 
-build_assets() {
-	mkdir temp/
-	cd temp/
-	cmake ../../ -DMACOS_BUNDLE=off -DDISABLE_NETWORK=on -DDISABLE_GUI=off
-	make openrct2-cli -j$(nproc)
-	make g2 -j$(nproc)
-	DESTDIR=. make install
-	mkdir -p ../static/assets/
-	cp -r usr/local/share/openrct2/* ../static/assets/
-	cd ../static/assets
-	zip -r ../assets.zip *
-	cd ../
-	rm -rf assets/
-
-	cd $START_DIR
-}
-
 if [ "$1" != "skip" ] ; then
 build_ext
-build_assets
 fi
 
 emcmake cmake ../ \
