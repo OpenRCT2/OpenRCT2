@@ -21,10 +21,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 
-#ifdef __EMSCRIPTEN__
-    #include <emscripten.h>
-#endif
-
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t WW = 400;

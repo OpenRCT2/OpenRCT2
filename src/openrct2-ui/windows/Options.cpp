@@ -413,8 +413,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({289, 160}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
         MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               STR_NONE                                     ), // Asset packs
 #ifdef __EMSCRIPTEN__
-        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     STR_NONE                                     ), // Emscripten data export
-        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     STR_NONE                                     ), // Emscripten data import
+        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                    STR_NONE                                     ), // Emscripten data export
+        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                    STR_NONE                                     ), // Emscripten data import
 #endif
         kWidgetsEnd,
     };

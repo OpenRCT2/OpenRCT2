@@ -19,10 +19,6 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UTF8.h>
 
-#ifdef __EMSCRIPTEN__
-    #include <emscripten.h>
-#endif
-
 #ifdef __MACOSX__
     // macOS uses COMMAND rather than CTRL for many keyboard shortcuts
     #define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
