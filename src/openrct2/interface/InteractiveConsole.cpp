@@ -45,6 +45,7 @@
 #include "../interface/Colour.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatting.h"
+#include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
@@ -1147,28 +1148,28 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
     }
 }
 
-constexpr std::array _objectTypeNames = {
-    "Rides",
-    "Small Scenery",
-    "Large Scenery",
-    "Walls",
-    "Banners",
-    "Paths",
-    "Path Additions",
-    "Scenery groups",
-    "Park entrances",
-    "Water",
-    "Scenario Text",
-    "Terrain Surface",
-    "Terrain Edges",
-    "Stations",
-    "Music",
-    "Footpath Surface",
-    "Footpath Railings",
-    "Audio",
-    "Peep Names",
-    "Peep Animations",
-};
+constexpr auto _objectTypeNames = std::to_array<StringId>({
+    STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS,
+    STR_OBJECT_SELECTION_SMALL_SCENERY,
+    STR_OBJECT_SELECTION_LARGE_SCENERY,
+    STR_OBJECT_SELECTION_WALLS_FENCES,
+    STR_OBJECT_SELECTION_PATH_SIGNS,
+    STR_OBJECT_SELECTION_FOOTPATHS,
+    STR_OBJECT_SELECTION_PATH_EXTRAS,
+    STR_OBJECT_SELECTION_SCENERY_GROUPS,
+    STR_OBJECT_SELECTION_PARK_ENTRANCE,
+    STR_OBJECT_SELECTION_WATER,
+    STR_OBJECT_SELECTION_SCENARIO_TEXTS,
+    STR_OBJECT_SELECTION_TERRAIN_SURFACES,
+    STR_OBJECT_SELECTION_TERRAIN_EDGES,
+    STR_OBJECT_SELECTION_STATIONS,
+    STR_OBJECT_SELECTION_MUSIC,
+    STR_OBJECT_SELECTION_FOOTPATH_SURFACES,
+    STR_OBJECT_SELECTION_FOOTPATH_RAILINGS,
+    STR_OBJECT_SELECTION_MUSIC,
+    STR_OBJECT_SELECTION_PEEP_NAMES,
+    STR_OBJECT_SELECTION_PEEP_ANIMATIONS,
+});
 static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
 
 static void ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
@@ -1183,8 +1184,11 @@ static void ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unus
                 break;
             }
         }
-        console.WriteFormatLine(
-            "%s: %d/%d", _objectTypeNames[EnumValue(objectType)], entryGroupIndex, getObjectEntryGroupCount(objectType));
+
+        const auto objectStringId = _objectTypeNames[EnumValue(objectType)];
+        const auto* objectString = LanguageGetString(objectStringId);
+
+        console.WriteFormatLine("%s: %d/%d", objectString, entryGroupIndex, getObjectEntryGroupCount(objectType));
     }
 }
 

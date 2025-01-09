@@ -2201,7 +2201,7 @@ STR_3188    :Path Signs
 STR_3189    :Legacy footpaths
 STR_3190    :Path Extras
 STR_3191    :Scenery Groups
-STR_3192    :Park Entrance
+STR_3192    :Park Entrances
 STR_3193    :Water
 STR_3195    :Invention List
 STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
@@ -3787,3 +3787,4 @@ STR_6720    :At least one handyman peep animations object must be selected
 STR_6721    :At least one mechanic peep animations object must be selected
 STR_6722    :At least one security peep animations object must be selected
 STR_6723    :At least one entertainer peep animations object must be selected
+STR_6724    :Scenario Texts
