@@ -2279,17 +2279,17 @@ const std::vector<std::string_view> peepAnimObjects = {
     "rct2.peep_animations.handyman",
     "rct2.peep_animations.mechanic",
     "rct2.peep_animations.security",
+    "rct2.peep_animations.entertainer_panda",
+    "rct2.peep_animations.entertainer_elephant",
+    "rct2.peep_animations.entertainer_tiger",
     "rct2.peep_animations.entertainer_astronaut",
     "rct2.peep_animations.entertainer_bandit",
-    "rct2.peep_animations.entertainer_elephant",
     "rct2.peep_animations.entertainer_gorilla",
     "rct2.peep_animations.entertainer_knight",
-    "rct2.peep_animations.entertainer_panda",
     "rct2.peep_animations.entertainer_pirate",
     "rct2.peep_animations.entertainer_roman",
     "rct2.peep_animations.entertainer_sheriff",
     "rct2.peep_animations.entertainer_snowman",
-    "rct2.peep_animations.entertainer_tiger",
 };
 
 const std::vector<std::string_view>& GetLegacyPeepAnimationObjects(const ObjectList& entryList)
