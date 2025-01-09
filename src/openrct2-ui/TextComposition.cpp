@@ -174,21 +174,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 case SDLK_c:
                     if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && _session.Length)
                     {
-#ifndef __EMSCRIPTEN__
-                        SDL_SetClipboardText(_session.Buffer->c_str());
-#else
-                        MAIN_THREAD_EM_ASM(
-                            {
-                                try
-                                {
-                                    navigator.clipboard.writeText(UTF8ToString($0));
-                                }
-                                catch (e)
-                                {
-                                };
-                            },
-                            _session.Buffer->c_str());
-#endif
+                        OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
                         ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, STR_NONE, {});
                     }
                     break;

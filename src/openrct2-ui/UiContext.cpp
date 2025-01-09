@@ -733,8 +733,7 @@ public:
                     {
                         return -1;
                     };
-                },
-                gVersionInfoFull)
+                })
             == 0);
 #endif
     }
