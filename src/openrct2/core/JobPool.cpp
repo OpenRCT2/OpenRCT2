@@ -12,14 +12,14 @@
 #include <cassert>
 
 JobPool::TaskData::TaskData(std::function<void()> workFn, std::function<void()> completionFn)
-    : WorkFn(workFn)
-    , CompletionFn(completionFn)
+    : WorkFn(std::move(workFn))
+    , CompletionFn(std::move(completionFn))
 {
 }
 
 JobPool::JobPool(size_t maxThreads)
 {
-    maxThreads = std::min<size_t>(maxThreads, std::thread::hardware_concurrency());
+    maxThreads = std::min<size_t>(maxThreads, std::max(1u, std::thread::hardware_concurrency()));
     for (size_t n = 0; n < maxThreads; n++)
     {
         _threads.emplace_back(&JobPool::ProcessQueue, this);
@@ -31,8 +31,8 @@ JobPool::~JobPool()
     {
         unique_lock lock(_mutex);
         _shouldStop = true;
-        _condPending.notify_all();
     }
+    _condPending.notify_all();
 
     for (auto& th : _threads)
     {
@@ -43,8 +43,10 @@ JobPool::~JobPool()
 
 void JobPool::AddTask(std::function<void()> workFn, std::function<void()> completionFn)
 {
-    unique_lock lock(_mutex);
-    _pending.emplace_back(workFn, completionFn);
+    {
+        unique_lock lock(_mutex);
+        _pending.emplace_back(workFn, completionFn);
+    }
     _condPending.notify_one();
 }
 
@@ -59,7 +61,7 @@ void JobPool::Join(std::function<void()> reportFn)
         // Dispatch all completion callbacks if there are any.
         while (!_completed.empty())
         {
-            auto taskData = _completed.front();
+            auto taskData = std::move(_completed.front());
             _completed.pop_front();
 
             if (taskData.CompletionFn)
@@ -89,16 +91,10 @@ void JobPool::Join(std::function<void()> reportFn)
     }
 }
 
-size_t JobPool::CountPending()
+bool JobPool::IsBusy()
 {
     unique_lock lock(_mutex);
-    return _pending.size();
-}
-
-size_t JobPool::CountProcessing()
-{
-    unique_lock lock(_mutex);
-    return _processing;
+    return _processing != 0 || !_pending.empty();
 }
 
 void JobPool::ProcessQueue()
@@ -113,7 +109,7 @@ void JobPool::ProcessQueue()
         {
             _processing++;
 
-            auto taskData = _pending.front();
+            auto taskData = std::move(_pending.front());
             _pending.pop_front();
 
             lock.unlock();
