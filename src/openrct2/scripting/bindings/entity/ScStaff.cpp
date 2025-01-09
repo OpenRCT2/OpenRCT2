@@ -166,7 +166,6 @@ namespace OpenRCT2::Scripting
 
         auto& costumes = costumesByStaffType(peep->AssignedStaffType);
 
-        // Find the peep's current costume in the list
         auto costume = std::find_if(costumes.begin(), costumes.end(), [peep](auto& candidate) {
             return candidate.objectId == peep->AnimationObjectIndex;
         });
@@ -195,14 +194,12 @@ namespace OpenRCT2::Scripting
         // Split by type passed so as to not break old plugins
         if (value.type() == DukValue::Type::STRING)
         {
-            // Find the peep's current costume by string
             costume = std::find_if(costumes.begin(), costumes.end(), [value](auto& candidate) {
                 return candidate.scriptName == value.as_string();
             });
         }
         else if (value.type() == DukValue::Type::NUMBER)
         {
-            // Find the peep's current costume by legacy number
             auto target = RCT12PeepAnimationGroup(value.as_uint() + EnumValue(RCT12PeepAnimationGroup::EntertainerPanda));
             costume = std::find_if(
                 costumes.begin(), costumes.end(), [target](auto& candidate) { return candidate.legacyPosition == target; });

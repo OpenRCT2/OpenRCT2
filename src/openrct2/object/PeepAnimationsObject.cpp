@@ -81,7 +81,6 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         PeepAnimations group = ReadAnimations(requiredAnimationMap, groupJson["animations"]);
 
-        // Is this animation group replacing a legacy group?
         if (groupJson.contains("legacyPosition"))
         {
             auto position = Json::GetNumber<uint8_t>(groupJson["legacyPosition"]);
@@ -95,11 +94,7 @@ void PeepAnimationsObject::ReadJson(IReadObjectContext* context, json_t& root)
             group.legacyPosition = RCT12PeepAnimationGroup::Invalid;
         }
 
-        // Should we play back the walking animation more slowly?
         group.isSlowWalking = Json::GetBoolean(groupJson["isSlowWalking"], false);
-
-        // Do we have a preferred way of addressing this object in scripts?
-        // If not, just use the object identifier.
         group.scriptName = Json::GetString(groupJson["scriptName"], std::string(GetIdentifier()));
 
         _animationGroups.push_back(group);

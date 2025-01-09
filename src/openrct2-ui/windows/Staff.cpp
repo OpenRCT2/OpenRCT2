@@ -800,7 +800,7 @@ namespace OpenRCT2::Ui::Windows
             auto numCostumes = _availableCostumes.size();
             for (auto i = 0u; i < numCostumes; i++)
             {
-                // TODO: refactor this hack
+                // TODO: rework interface to dropdown arguments so memcpy won't be needed
                 auto* nameStr = _availableCostumes[i].friendlyName.c_str();
                 std::memcpy(&gDropdownItems[i].Args, &nameStr, sizeof(const char*));
                 gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;

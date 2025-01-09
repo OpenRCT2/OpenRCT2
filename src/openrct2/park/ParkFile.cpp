@@ -387,7 +387,6 @@ namespace OpenRCT2
 
                 if (version < kPeepAnimationObjectsVersion)
                 {
-                    // Add all legacy peep animation objects
                     auto animObjects = GetLegacyPeepAnimationObjects(requiredObjects);
                     AppendRequiredObjects(requiredObjects, ObjectType::PeepAnimations, animObjects);
                 }

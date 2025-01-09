@@ -552,7 +552,6 @@ namespace OpenRCT2::Ui::Windows
                 staffOrders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
             }
 
-            // Select a (random) costume for this staff member
             auto animPeepType = AnimationPeepType(static_cast<uint8_t>(staffType) + 1);
             ObjectEntryIndex costume;
             if (staffType == StaffType::Entertainer)

@@ -250,7 +250,6 @@ void SetupInUseSelectionFlags()
         Editor::SetSelectedObject(ObjectType::Music, ride.music, ObjectSelectionFlags::InUse);
     }
 
-    // Figure out what peep animations are in use
     ObjectEntryIndex lastIndex = OBJECT_ENTRY_INDEX_NULL;
     for (auto* peep : EntityList<Guest>())
     {
