@@ -20,7 +20,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t WW = 200;
-    static constexpr int32_t WH = 100;
+    static constexpr int32_t WH = 88;
 
     enum WindowRideRefurbishWidgetIdx
     {
@@ -90,6 +90,11 @@ namespace OpenRCT2::Ui::Windows
                 ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
                 DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
             }
+        }
+
+        void OnPrepareDraw() override
+        {
+            ResizeFrame();
         }
 
         void OnResize() override

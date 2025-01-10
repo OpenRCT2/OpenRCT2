@@ -73,17 +73,17 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr StringId WINDOW_TITLE = STR_STAFF;
-    static constexpr int32_t WW = 320;
+    static constexpr int32_t WW = 308;
     static constexpr int32_t _windowBodyMinHeight = 256;
     static constexpr int32_t _windowBodyMaxHeight = 436;
-    static constexpr int32_t WH = _windowBodyMinHeight + 14;
-    constexpr int32_t MAX_WW = 500;
-    constexpr int32_t MAX_WH = _windowBodyMaxHeight + 14;
+    static constexpr int32_t kWindowBodyHeight = _windowBodyMinHeight + 14;
+    constexpr int32_t MAX_WW = 488;
+    constexpr int32_t kWindowBodyHeightMax = _windowBodyMaxHeight + 14;
 
     // clang-format off
     static constexpr Widget _staffListWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({  0, 43}, {    WW, WH - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                     ), // tab content panel
+        WINDOW_SHIM(WINDOW_TITLE, WW, kWindowBodyHeight),
+        MakeWidget({  0, 43}, {    WW, kWindowBodyHeight - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                     ), // tab content panel
         MakeTab   ({  3, 17},                                                                          STR_STAFF_HANDYMEN_TAB_TIP                         ), // handymen tab
         MakeTab   ({ 34, 17},                                                                          STR_STAFF_MECHANICS_TAB_TIP                        ), // mechanics tab
         MakeTab   ({ 65, 17},                                                                          STR_STAFF_SECURITY_TAB_TIP                         ), // security guards tab
@@ -127,9 +127,9 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
             min_width = WW;
-            min_height = WH;
+            minBodyheight = kWindowBodyHeight;
             max_width = MAX_WW;
-            max_height = MAX_WH;
+            maxBodyHeight = kWindowBodyHeightMax;
 
             RefreshList();
         }
@@ -173,15 +173,15 @@ namespace OpenRCT2::Ui::Windows
         void OnResize() override
         {
             min_width = WW;
-            min_height = WH;
+            minBodyheight = kWindowBodyHeight;
             if (width < min_width)
             {
                 width = min_width;
                 Invalidate();
             }
-            if (height < min_height)
+            if (bodyHeight < minBodyheight)
             {
-                height = min_height;
+                bodyHeight = minBodyheight;
                 Invalidate();
             }
             ResizeFrameWithPage();
@@ -282,7 +282,7 @@ namespace OpenRCT2::Ui::Windows
 
             ResizeFrameWithPage();
             widgets[WIDX_STAFF_LIST_LIST].right = width - 4;
-            widgets[WIDX_STAFF_LIST_LIST].bottom = height - 15;
+            widgets[WIDX_STAFF_LIST_LIST].bottom = height() - 15;
             widgets[WIDX_STAFF_LIST_QUICK_FIRE].left = width - 77;
             widgets[WIDX_STAFF_LIST_QUICK_FIRE].right = width - 54;
             widgets[WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON].left = width - 53;
@@ -748,7 +748,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* StaffListOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<StaffListWindow>(WindowClass::StaffList, WW, WH, WF_10 | WF_RESIZABLE);
+        return windowMgr->FocusOrCreate<StaffListWindow>(WindowClass::StaffList, WW, kWindowBodyHeight, WF_10 | WF_RESIZABLE);
     }
 
     void WindowStaffListRefresh()

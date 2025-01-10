@@ -30,12 +30,11 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr int32_t kWindowWidth = 400;
-    static constexpr int32_t kWindowBodyHeight = 76;
-    static constexpr int32_t kWindowHeight = kWindowBodyHeight + 14;
+    static constexpr int32_t kWindowBodyHeight = 78;
 
     // clang-format off
     static constexpr Widget kProgressWindowWidgets[] = {
-        MakeWidget({                0, 0}, {    kWindowWidth, kWindowHeight}, WindowWidgetType::Frame,    WindowColour::Primary                                     ), // panel / background
+        MakeWidget({                0, 0}, {    kWindowWidth, kWindowBodyHeight}, WindowWidgetType::Frame,    WindowColour::Primary                                     ), // panel / background
         MakeWidget({                1, 1}, {kWindowWidth - 3,            14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_STRINGID,  STR_WINDOW_TITLE_TIP), // title bar
         MakeWidget({kWindowWidth - 12, 2}, {              11,            12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,   STR_CLOSE_WINDOW_TIP), // close x button
     };
@@ -89,9 +88,9 @@ namespace OpenRCT2::Ui::Windows
 
             frame_no = 0;
             min_width = kWindowWidth;
-            min_height = kWindowBodyHeight + widgets[WIDX_TITLE].bottom;
+            minBodyheight = kWindowBodyHeight;
             max_width = min_width;
-            max_height = min_height;
+            maxBodyHeight = kWindowBodyHeight;
 
             ApplyStyle();
         }
@@ -179,7 +178,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.bottom + 1 };
 
             DrawPixelInfo clipDPI;
-            if (!ClipDrawPixelInfo(clipDPI, dpi, screenCoords, width - 3, height - widget.bottom - 3))
+            if (!ClipDrawPixelInfo(clipDPI, dpi, screenCoords, width - 3, height() - widget.bottom - 3))
                 return;
 
             auto& variant = kVehicleStyles[style];
@@ -246,7 +245,7 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             window = windowMgr->Create<ProgressWindow>(
-                WindowClass::ProgressWindow, kWindowWidth, kWindowHeight,
+                WindowClass::ProgressWindow, kWindowWidth, kWindowBodyHeight,
                 WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
 

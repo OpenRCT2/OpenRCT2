@@ -34,7 +34,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_LAND;
-    static constexpr int32_t WH = 160;
+    static constexpr int32_t WH = 148;
     static constexpr int32_t WW = 98;
 
     enum WindowLandWidgetIdx : WidgetIndex

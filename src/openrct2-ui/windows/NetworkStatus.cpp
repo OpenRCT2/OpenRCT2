@@ -42,9 +42,9 @@ namespace OpenRCT2::Ui::Windows
 
             frame_no = 0;
             min_width = 320;
-            min_height = 76 + widgets[WIDX_TITLE].bottom;
+            minBodyheight = 76;
             max_width = min_width;
-            max_height = min_height;
+            maxBodyHeight = minBodyheight;
 
             page = 0;
             list_information_type = 0;
@@ -104,7 +104,7 @@ namespace OpenRCT2::Ui::Windows
             _buffer.assign("{WHITE}");
             _buffer += _windowNetworkStatusText;
             GfxClipString(_buffer.data(), widgets[WIDX_BACKGROUND].right - 50, FontStyle::Medium);
-            ScreenCoordsXY screenCoords(windowPos.x + (width / 2), windowPos.y + (height / 2));
+            ScreenCoordsXY screenCoords(windowPos.x + (width / 2), windowPos.y + (height() / 2));
             screenCoords.x -= GfxGetStringWidth(_buffer, FontStyle::Medium) / 2;
             DrawText(dpi, screenCoords, { COLOUR_BLACK }, _buffer.c_str());
         }
@@ -145,7 +145,7 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             window = windowMgr->Create<NetworkStatusWindow>(
-                WindowClass::NetworkStatus, 400, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+                WindowClass::NetworkStatus, 400, 78, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
 
         window->SetCloseCallBack(onClose);

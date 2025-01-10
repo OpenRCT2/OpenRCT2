@@ -61,7 +61,7 @@ namespace OpenRCT2
     static WidgetRef _dragWidget;
     static uint8_t _dragScrollIndex;
     static int32_t _originalWindowWidth;
-    static int32_t _originalWindowHeight;
+    static int32_t _originalWindowBodyHeight;
 
     static uint8_t _currentScrollIndex;
     static uint8_t _currentScrollArea;
@@ -511,7 +511,7 @@ namespace OpenRCT2
         _dragWidget.window_number = w.number;
         _dragWidget.widget_index = widgetIndex;
         _originalWindowWidth = w.width;
-        _originalWindowHeight = w.height;
+        _originalWindowBodyHeight = w.bodyHeight;
     }
 
     static void InputWindowResizeContinue(WindowBase& w, const ScreenCoordsXY& screenCoords)
@@ -520,9 +520,9 @@ namespace OpenRCT2
         {
             auto differentialCoords = screenCoords - gInputDragLast;
             int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w.width;
-            int32_t targetHeight = _originalWindowHeight + differentialCoords.y - w.height;
+            int32_t targetBodyHeight = _originalWindowBodyHeight + differentialCoords.y - w.bodyHeight;
 
-            WindowResize(w, targetWidth, targetHeight);
+            WindowResize(w, targetWidth, targetBodyHeight);
         }
     }
 
@@ -1074,7 +1074,8 @@ namespace OpenRCT2
             case WindowWidgetType::Frame:
             case WindowWidgetType::Resize:
                 if (WindowCanResize(*w)
-                    && (screenCoords.x >= w->windowPos.x + w->width - 19 && screenCoords.y >= w->windowPos.y + w->height - 19))
+                    && (screenCoords.x >= w->windowPos.x + w->width - 19
+                        && screenCoords.y >= w->windowPos.y + w->height() - 19))
                     InputWindowResizeBegin(*w, widgetIndex, screenCoords);
                 break;
             case WindowWidgetType::Viewport:
@@ -1174,16 +1175,13 @@ namespace OpenRCT2
 
                     case WindowWidgetType::Frame:
                     case WindowWidgetType::Resize:
-                        if (!(window->flags & WF_RESIZABLE))
-                            break;
-
-                        if (window->min_width == window->max_width && window->min_height == window->max_height)
+                        if (!window->canBeResized())
                             break;
 
                         if (screenCoords.x < window->windowPos.x + window->width - 0x13)
                             break;
 
-                        if (screenCoords.y < window->windowPos.y + window->height - 0x13)
+                        if (screenCoords.y < window->windowPos.y + window->height() - 0x13)
                             break;
 
                         cursorId = CursorID::DiagonalArrows;

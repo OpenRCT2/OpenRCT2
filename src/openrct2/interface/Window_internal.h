@@ -45,11 +45,12 @@ namespace OpenRCT2
         std::vector<Widget> widgets{};
         ScreenCoordsXY windowPos;
         int16_t width{};
-        int16_t height{};
+        int16_t titleBarHeight{};
+        int16_t bodyHeight{};
         int16_t min_width{};
         int16_t max_width{};
-        int16_t min_height{};
-        int16_t max_height{};
+        int16_t minBodyheight{};
+        int16_t maxBodyHeight{};
         union
         {
             rct_windownumber number{};
@@ -86,6 +87,21 @@ namespace OpenRCT2
         virtual ~WindowBase() = default;
 
         WindowBase& operator=(const WindowBase&) = delete;
+
+        constexpr int16_t height() const
+        {
+            return titleBarHeight + bodyHeight;
+        }
+
+        void setHeight(int16_t newHeight)
+        {
+            bodyHeight = newHeight - titleBarHeight;
+        }
+
+        constexpr bool canBeResized() const
+        {
+            return (flags & WF_RESIZABLE) && (min_width != max_width || minBodyheight != maxBodyHeight);
+        }
 
         // Events
         virtual void OnOpen()

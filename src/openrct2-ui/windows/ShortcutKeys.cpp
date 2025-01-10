@@ -25,10 +25,10 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr StringId WINDOW_TITLE = STR_SHORTCUTS_TITLE;
     static constexpr int32_t WW = 420;
-    static constexpr int32_t WH = 280;
+    static constexpr int32_t WH = 268;
 
     static constexpr int32_t WW_SC_MAX = 1200;
-    static constexpr int32_t WH_SC_MAX = 800;
+    static constexpr int32_t kWindowBodyHeightMax = 788;
 
     enum WindowShortcutWidgetIdx
     {
@@ -191,9 +191,9 @@ namespace OpenRCT2::Ui::Windows
             InitialiseList();
 
             min_width = WW;
-            min_height = WH;
+            minBodyheight = WH;
             max_width = WW_SC_MAX;
-            max_height = WH_SC_MAX;
+            maxBodyHeight = kWindowBodyHeightMax;
         }
 
         void OnClose() override
@@ -204,7 +204,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, min_width, min_height, max_width, max_height);
+            WindowSetResize(*this, min_width, minBodyheight, max_width, maxBodyHeight);
         }
 
         void OnUpdate() override
@@ -245,9 +245,9 @@ namespace OpenRCT2::Ui::Windows
         {
             ResizeFrameWithPage();
             widgets[WIDX_SCROLL].right = width - 5;
-            widgets[WIDX_SCROLL].bottom = height - 19;
-            widgets[WIDX_RESET].top = height - 16;
-            widgets[WIDX_RESET].bottom = height - 5;
+            widgets[WIDX_SCROLL].bottom = height() - 19;
+            widgets[WIDX_RESET].top = height() - 16;
+            widgets[WIDX_RESET].bottom = height() - 5;
             WindowAlignTabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size()));
 
             // Set selected tab

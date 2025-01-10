@@ -29,8 +29,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr ScreenCoordsXY kInGameSize = { 94, 94 };
-    static constexpr ScreenCoordsXY kEditorSize = { 280, 104 };
+    static constexpr ScreenCoordsXY kInGameSize = { 94, 82 };
+    static constexpr ScreenCoordsXY kEditorSize = { 280, 92 };
 
     static constexpr StringId WINDOW_TITLE = STR_LAND_RIGHTS;
     static constexpr int32_t WW = kInGameSize.x;
@@ -382,7 +382,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto dimensions = GetModeDimensions();
             width = dimensions.x;
-            height = dimensions.y;
+            bodyHeight = dimensions.y;
 
             if (windowPos.x + width > ContextGetWidth())
                 windowPos.x = ContextGetWidth() - width;

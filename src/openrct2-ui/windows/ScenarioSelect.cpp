@@ -33,7 +33,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId kWindowTitle = STR_SELECT_SCENARIO;
     static constexpr int32_t kWindowWidth = 734;
-    static constexpr int32_t kWindowHeight = 384;
+    static constexpr int32_t kWindowBodyHeight = 372;
     static constexpr int32_t kSidebarWidth = 180;
     static constexpr int32_t kTabWidth = 92;
     static constexpr int32_t kTabHeight = 34;
@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<utf8*>(shortPath.c_str());
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ kTabWidth + 3, height - 3 - 11 }, STR_STRING, ft, { colours[1] });
+                    dpi, windowPos + ScreenCoordsXY{ kTabWidth + 3, height() - 3 - 11 }, STR_STRING, ft, { colours[1] });
             }
 
             // Scenario name
@@ -290,7 +290,7 @@ namespace OpenRCT2::Ui::Windows
             ResizeFrameWithPage();
             const int32_t bottomMargin = Config::Get().general.DebuggingTools ? 17 : 5;
             widgets[WIDX_SCENARIOLIST].right = width - 179;
-            widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
+            widgets[WIDX_SCENARIOLIST].bottom = height() - bottomMargin;
         }
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override

@@ -27,7 +27,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
-    static constexpr int32_t WH = 300;
+    static constexpr int32_t WH = 288;
     static constexpr int32_t WW = 400;
 
     enum WindowNewsWidgetIdx

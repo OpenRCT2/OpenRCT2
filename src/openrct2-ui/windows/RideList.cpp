@@ -33,7 +33,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = kStringIdNone;
-    static constexpr int32_t WH = 240;
+    static constexpr int32_t WH = 228;
     static constexpr int32_t WW = 340;
 
     enum
@@ -180,9 +180,9 @@ namespace OpenRCT2::Ui::Windows
             selected_list_item = -1;
             frame_no = 0;
             min_width = 340;
-            min_height = 240;
+            minBodyheight = 228;
             max_width = 400;
-            max_height = 700;
+            maxBodyHeight = 688;
             RefreshList();
 
             list_information_type = 0;
@@ -202,10 +202,10 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
                 width = min_width;
             }
-            if (height < min_height)
+            if (bodyHeight < minBodyheight)
             {
                 Invalidate();
-                height = min_height;
+                bodyHeight = minBodyheight;
             }
 
             widgets[WIDX_SORT].left = width - 60;
@@ -469,7 +469,7 @@ namespace OpenRCT2::Ui::Windows
             ResizeFrameWithPage();
 
             widgets[WIDX_LIST].right = width - 26;
-            widgets[WIDX_LIST].bottom = height - 15;
+            widgets[WIDX_LIST].bottom = height() - 15;
             widgets[WIDX_OPEN_CLOSE_ALL].right = width - 2;
             widgets[WIDX_OPEN_CLOSE_ALL].left = width - 25;
             widgets[WIDX_CLOSE_LIGHT].right = width - 7;

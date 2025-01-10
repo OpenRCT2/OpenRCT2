@@ -37,7 +37,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr StringId WINDOW_TITLE = STR_VIEWPORT_NO;
     static constexpr int32_t WW = 200;
-    static constexpr int32_t WH = 200;
+    static constexpr int32_t WH = 188;
 
     static constexpr ScreenSize VIEWPORT_BUTTON = { 24, 24 };
 
@@ -79,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(_viewportWidgets);
 
             // Create viewport
-            ViewportCreate(this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
+            ViewportCreate(this, windowPos, width, bodyHeight, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
             if (viewport == nullptr)
             {
                 Close();
@@ -99,9 +99,9 @@ namespace OpenRCT2::Ui::Windows
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
 
             min_width = WW;
-            min_height = WH;
+            minBodyheight = WH;
             max_width = WW;
-            max_height = WH;
+            maxBodyHeight = WH;
         }
 
         void OnUpdate() override
@@ -151,7 +151,7 @@ namespace OpenRCT2::Ui::Windows
                     if (mainWindow != nullptr)
                     {
                         auto info = GetMapCoordinatesFromPos(
-                            { windowPos.x + (width / 2), windowPos.y + (height / 2) }, kViewportInteractionItemAll);
+                            { windowPos.x + (width / 2), windowPos.y + (height() / 2) }, kViewportInteractionItemAll);
                         WindowScrollToLocation(*mainWindow, { info.Loc, TileElementHeight(info.Loc) });
                     }
                     break;
@@ -180,12 +180,12 @@ namespace OpenRCT2::Ui::Windows
             int32_t screenHeight = ContextGetHeight();
 
             max_width = (screenWidth * 4) / 5;
-            max_height = (screenHeight * 4) / 5;
+            maxBodyHeight = (screenHeight * 4) / 5;
 
             min_width = WW;
-            min_height = WH;
+            minBodyheight = WH;
 
-            WindowSetResize(*this, min_width, min_height, max_width, max_height);
+            WindowSetResize(*this, min_width, minBodyheight, max_width, maxBodyHeight);
         }
 
         void OnPrepareDraw() override

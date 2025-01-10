@@ -83,9 +83,9 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Measurements
 
     static constexpr int32_t kCostPerWeekOffset = 309;
-    static constexpr int32_t WH_SUMMARY = 297;
-    static constexpr int32_t WH_RESEARCH = 195;
-    static constexpr int32_t WH_OTHER_TABS = 245;
+    static constexpr int32_t kBodyHeightSummary = 297;
+    static constexpr int32_t kBodyHeightResearch = 195;
+    static constexpr int32_t kBodyHeightOtherTabs = 245;
     static constexpr int32_t WW_RESEARCH = 320;
     static constexpr int32_t WW_OTHER_TABS = 530;
     static constexpr int32_t RSH_SUMMARY = 266;
@@ -111,29 +111,29 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget _windowFinancesSummaryWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, WH_SUMMARY + 12),
+        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, kBodyHeightSummary + 12),
         MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
         MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_FINANCES_SUMMARY_LOAN_VALUE), // NB: 3 widgets.
     };
 
     static constexpr Widget _windowFinancesCashWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kBodyHeightOtherTabs),
     };
 
     static constexpr Widget _windowFinancesParkValueWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_PARK_VALUE_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        MAIN_FINANCES_WIDGETS(STR_PARK_VALUE_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kBodyHeightOtherTabs),
     };
 
     static constexpr Widget _windowFinancesProfitWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_PROFIT_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        MAIN_FINANCES_WIDGETS(STR_PROFIT_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kBodyHeightOtherTabs),
     };
 
     static constexpr Widget _windowFinancesMarketingWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_MARKETING, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
+        MAIN_FINANCES_WIDGETS(STR_MARKETING, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kBodyHeightOtherTabs),
         MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
         MakeWidget({3, 47}, { WW_OTHER_TABS - 6, 206}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
         MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
@@ -146,7 +146,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget _windowFinancesResearchWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_RESEARCH_FUNDING, RSW_RESEARCH, RSH_RESEARCH, WW_RESEARCH, WH_RESEARCH),
+        MAIN_FINANCES_WIDGETS(STR_RESEARCH_FUNDING, RSW_RESEARCH, RSH_RESEARCH, WW_RESEARCH, kBodyHeightResearch),
         MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_FUNDING_                                                             ),
         MakeWidget({  8,  59}, {             160,  14}, WindowWidgetType::DropdownMenu, WindowColour::Tertiary, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
         MakeWidget({156,  60}, {              11,  12}, WindowWidgetType::Button,   WindowColour::Tertiary, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
@@ -494,13 +494,13 @@ namespace OpenRCT2::Ui::Windows
             if (p == WINDOW_FINANCES_PAGE_RESEARCH)
             {
                 width = WW_RESEARCH;
-                height = widgets[WIDX_TITLE].height() + WH_RESEARCH;
+                bodyHeight = kBodyHeightResearch;
                 flags &= ~WF_RESIZABLE;
             }
             else if (p == WINDOW_FINANCES_PAGE_SUMMARY)
             {
                 width = WW_OTHER_TABS;
-                height = widgets[WIDX_TITLE].height() + WH_SUMMARY;
+                bodyHeight = kBodyHeightSummary;
                 flags &= ~WF_RESIZABLE;
             }
             else if (
@@ -509,13 +509,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 flags |= WF_RESIZABLE;
                 WindowSetResize(
-                    *this, WW_OTHER_TABS, widgets[WIDX_TITLE].height() + WH_OTHER_TABS, std::numeric_limits<int16_t>::max(),
+                    *this, WW_OTHER_TABS, kBodyHeightOtherTabs, std::numeric_limits<int16_t>::max(),
                     std::numeric_limits<int16_t>::max());
             }
             else
             {
                 width = WW_OTHER_TABS;
-                height = widgets[WIDX_TITLE].height() + WH_OTHER_TABS;
+                bodyHeight = kBodyHeightOtherTabs;
                 flags &= ~WF_RESIZABLE;
             }
             OnResize();
@@ -882,7 +882,8 @@ namespace OpenRCT2::Ui::Windows
     static FinancesWindow* FinancesWindowOpen(uint8_t page)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY + 12, WF_10);
+        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(
+            WindowClass::Finances, WW_OTHER_TABS, kBodyHeightSummary + 12, WF_10);
 
         if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
             window->SetPage(page);
@@ -893,7 +894,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* FinancesOpen()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY + 12, WF_10);
+        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, kBodyHeightSummary + 12, WF_10);
     }
 
     WindowBase* FinancesResearchOpen()

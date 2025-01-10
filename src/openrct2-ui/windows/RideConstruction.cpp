@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
     static std::pair<bool, OpenRCT2::TrackElemType> WindowRideConstructionUpdateStateGetTrackElement();
 
     static constexpr StringId kWindowTitle = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
-    static constexpr int32_t WH = 394;
+    static constexpr int32_t WH = 382;
     static constexpr int32_t WW = 210;
 
     static constexpr uint16_t kArrowPulseDuration = 200;

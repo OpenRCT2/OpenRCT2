@@ -30,7 +30,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_SET_PATROL_AREA;
-    static constexpr int32_t WH = 54;
+    static constexpr int32_t WH = 42;
     static constexpr int32_t WW = 104;
 
     enum WindowPatrolAreaWidgetIdx

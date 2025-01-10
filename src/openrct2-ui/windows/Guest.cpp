@@ -198,9 +198,9 @@ namespace OpenRCT2::Ui::Windows
             _marqueePosition = 0;
             picked_peep_frame = 0;
             min_width = width;
-            min_height = 157;
+            minBodyheight = 145;
             max_width = 500;
-            max_height = 450;
+            maxBodyHeight = 438;
             selected_list_item = -1;
         }
 
@@ -421,11 +421,10 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeCommon()
         {
             // Get page specific min and max size
-            auto titleBarHeight = widgets[WIDX_TITLE].height();
-            int32_t minWidth = _guestWindowPageSizes[page][0].width + titleBarHeight;
-            int32_t minHeight = _guestWindowPageSizes[page][0].height + titleBarHeight;
-            int32_t maxWidth = _guestWindowPageSizes[page][1].width + titleBarHeight;
-            int32_t maxHeight = _guestWindowPageSizes[page][1].height + titleBarHeight;
+            int32_t minWidth = _guestWindowPageSizes[page][0].width;
+            int32_t minHeight = _guestWindowPageSizes[page][0].height;
+            int32_t maxWidth = _guestWindowPageSizes[page][1].width;
+            int32_t maxHeight = _guestWindowPageSizes[page][1].height;
 
             // Ensure min size is large enough for all tabs to fit
             for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
@@ -848,10 +847,10 @@ namespace OpenRCT2::Ui::Windows
             }
 
             widgets[WIDX_VIEWPORT].right = width - 26;
-            widgets[WIDX_VIEWPORT].bottom = height - 14;
+            widgets[WIDX_VIEWPORT].bottom = height() - 14;
 
-            widgets[WIDX_ACTION_LBL].top = height - 12;
-            widgets[WIDX_ACTION_LBL].bottom = height - 3;
+            widgets[WIDX_ACTION_LBL].top = height() - 12;
+            widgets[WIDX_ACTION_LBL].bottom = height() - 3;
             widgets[WIDX_ACTION_LBL].right = width - 24;
 
             widgets[WIDX_MARQUEE].right = width - 24;
@@ -1301,7 +1300,7 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDrawRides()
         {
             widgets[WIDX_RIDE_SCROLL].right = width - 4;
-            widgets[WIDX_RIDE_SCROLL].bottom = height - 15;
+            widgets[WIDX_RIDE_SCROLL].bottom = height() - 15;
         }
 
         void OnDrawRides(DrawPixelInfo& dpi)
@@ -1751,7 +1750,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 4, widget.top + 2 };
             int32_t itemNameWidth = widget.width() - 24;
 
-            int32_t maxY = windowPos.y + height - 22;
+            int32_t maxY = windowPos.y + height() - 22;
             int32_t numItems = 0;
 
             DrawTextBasic(dpi, screenCoords, STR_CARRYING);

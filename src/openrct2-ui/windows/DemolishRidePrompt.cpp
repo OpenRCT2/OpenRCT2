@@ -21,7 +21,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t WW = 200;
-    static constexpr int32_t WH = 100;
+    static constexpr int32_t WH = 88;
 
     enum WindowRideDemolishWidgetIdx
     {

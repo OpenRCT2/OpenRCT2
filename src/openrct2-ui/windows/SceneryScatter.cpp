@@ -209,7 +209,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->FindByClass(WindowClass::SceneryScatter);
         if (window == nullptr)
         {
-            window = windowMgr->Create<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100, 0);
+            window = windowMgr->Create<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 88, 0);
         }
 
         return window;

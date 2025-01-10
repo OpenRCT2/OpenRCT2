@@ -47,9 +47,9 @@ namespace OpenRCT2::Ui::Windows
 {
 #pragma region Widgets
 
-    static constexpr ScreenSize kWindowSizeInit = { 400, 350 };
-    static constexpr ScreenSize kWindowSizeMin = kWindowSizeInit / 2;
-    static constexpr ScreenSize kWindowSizeMax = kWindowSizeInit * 2;
+    static constexpr ScreenSize kWindowSizeInit = { 400, 338 };
+    static constexpr ScreenSize kWindowBodySizeMin = kWindowSizeInit / 2;
+    static constexpr ScreenSize kWindowBodySizeMax = kWindowSizeInit * 2;
 
     static constexpr int kKibiByte = 1024;
     static constexpr int kMebiByte = kKibiByte * 1024;
@@ -761,10 +761,10 @@ namespace OpenRCT2::Ui::Windows
             InitScrollWidgets();
             ComputeMaxDateWidth();
 
-            min_width = kWindowSizeMin.width;
-            min_height = kWindowSizeMin.height;
-            max_width = kWindowSizeMax.width;
-            max_height = kWindowSizeMax.height;
+            min_width = kWindowBodySizeMin.width;
+            minBodyheight = kWindowBodySizeMin.height;
+            max_width = kWindowBodySizeMax.width;
+            maxBodyHeight = kWindowBodySizeMax.height;
         }
 
         void OnClose() override
@@ -786,11 +786,13 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, kWindowSizeMin.width, kWindowSizeMin.height, kWindowSizeMax.width, kWindowSizeMax.height);
+            WindowSetResize(
+                *this, kWindowBodySizeMin.width, kWindowBodySizeMin.height, kWindowBodySizeMax.width,
+                kWindowBodySizeMax.height);
 
             auto& config = Config::Get().general;
             config.FileBrowserWidth = width;
-            config.FileBrowserHeight = height;
+            config.FileBrowserHeight = bodyHeight;
         }
 
         void OnUpdate() override
@@ -866,7 +868,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             widgets[WIDX_SCROLL].right = width - 5;
-            widgets[WIDX_SCROLL].bottom = height - 30;
+            widgets[WIDX_SCROLL].bottom = height() - 30;
 
             if (_type & LOADSAVETYPE_SAVE)
             {
@@ -877,8 +879,8 @@ namespace OpenRCT2::Ui::Windows
                 auto saveLabelWidth = GfxGetStringWidth(saveLabel, FontStyle::Medium) + 16;
 
                 widgets[WIDX_SAVE].type = WindowWidgetType::Button;
-                widgets[WIDX_SAVE].top = height - 42;
-                widgets[WIDX_SAVE].bottom = height - 30;
+                widgets[WIDX_SAVE].top = height() - 42;
+                widgets[WIDX_SAVE].bottom = height() - 30;
                 widgets[WIDX_SAVE].left = width - saveLabelWidth - 5;
                 widgets[WIDX_SAVE].right = width - 5;
 
@@ -887,8 +889,8 @@ namespace OpenRCT2::Ui::Windows
                 auto filenameLabelWidth = GfxGetStringWidth(filenameLabel, FontStyle::Medium);
 
                 widgets[WIDX_FILENAME_TEXTBOX].type = WindowWidgetType::TextBox;
-                widgets[WIDX_FILENAME_TEXTBOX].top = height - 42;
-                widgets[WIDX_FILENAME_TEXTBOX].bottom = height - 30;
+                widgets[WIDX_FILENAME_TEXTBOX].top = height() - 42;
+                widgets[WIDX_FILENAME_TEXTBOX].bottom = height() - 30;
                 widgets[WIDX_FILENAME_TEXTBOX].left = 4 + filenameLabelWidth + 6;
                 widgets[WIDX_FILENAME_TEXTBOX].right = widgets[WIDX_SAVE].left - 5;
             }
@@ -899,8 +901,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // 'Use system file browser'
-            widgets[WIDX_BROWSE].top = height - 24;
-            widgets[WIDX_BROWSE].bottom = height - 6;
+            widgets[WIDX_BROWSE].top = height() - 24;
+            widgets[WIDX_BROWSE].bottom = height() - 6;
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -1345,8 +1347,8 @@ namespace OpenRCT2::Ui::Windows
         auto* w = static_cast<LoadSaveWindow*>(windowMgr->BringToFrontByClass(WindowClass::Loadsave));
         if (w == nullptr)
         {
-            if (config.FileBrowserWidth < kWindowSizeMin.width || config.FileBrowserHeight < kWindowSizeMin.height
-                || config.FileBrowserWidth > kWindowSizeMax.width || config.FileBrowserHeight > kWindowSizeMax.height)
+            if (config.FileBrowserWidth < kWindowBodySizeMin.width || config.FileBrowserHeight < kWindowBodySizeMin.height
+                || config.FileBrowserWidth > kWindowBodySizeMax.width || config.FileBrowserHeight > kWindowBodySizeMax.height)
             {
                 config.FileBrowserWidth = kWindowSizeInit.width;
                 config.FileBrowserHeight = kWindowSizeInit.height;
@@ -1482,7 +1484,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<StringId>(STR_STRING);
             ft.Add<char*>(_name.c_str());
 
-            ScreenCoordsXY stringCoords(windowPos.x + width / 2, windowPos.y + (height / 2) - 3);
+            ScreenCoordsXY stringCoords(windowPos.x + width / 2, windowPos.y + (height() / 2) - 3);
             DrawTextWrapped(dpi, stringCoords, width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
         }
     };

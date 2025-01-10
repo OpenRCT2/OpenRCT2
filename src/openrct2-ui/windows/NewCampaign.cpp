@@ -27,7 +27,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = kStringIdNone;
-    static constexpr int32_t WH = 109;
+    static constexpr int32_t WH = 97;
     static constexpr int32_t WW = 350;
 
     constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;

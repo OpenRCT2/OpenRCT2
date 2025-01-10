@@ -23,7 +23,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t WW = 250;
-    static constexpr int32_t WH = 90;
+    static constexpr int32_t WH = 78;
 
     enum WindowTextInputWidgetIdx
     {
@@ -169,8 +169,8 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             // Change window size if required.
-            int32_t newHeight = CalculateWindowHeight(_buffer.data());
-            if (newHeight != height)
+            int32_t newHeight = CalculateWindowBodyHeight(_buffer.data());
+            if (newHeight != bodyHeight)
             {
                 WindowSetResize(*this, WW, newHeight, WW, newHeight);
             }
@@ -301,12 +301,12 @@ namespace OpenRCT2::Ui::Windows
             Close();
         }
 
-        static int32_t CalculateWindowHeight(std::string_view text)
+        static int32_t CalculateWindowBodyHeight(std::string_view text)
         {
             // String length needs to add 12 either side of box +13 for cursor when max length.
             int32_t numLines{};
             GfxWrapString(text, WW - (24 + 13), FontStyle::Medium, nullptr, &numLines);
-            return numLines * 10 + 78 + _textInputWidgets[WIDX_TITLE].height();
+            return numLines * 10 + WH;
         }
 
         void OnResize() override
@@ -373,7 +373,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::Textinput);
 
-        auto height = TextInputWindow::CalculateWindowHeight(existing_text);
+        auto height = TextInputWindow::CalculateWindowBodyHeight(existing_text);
         auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
@@ -388,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
         std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
     {
         auto* windowMgr = GetWindowManager();
-        auto height = TextInputWindow::CalculateWindowHeight(initialValue);
+        auto height = TextInputWindow::CalculateWindowBodyHeight(initialValue);
         auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
