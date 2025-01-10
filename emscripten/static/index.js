@@ -6,9 +6,6 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-
-// assets_version should be updated when assets need to be re-downloaded on the client
-const assets_version = "0.4.17-1";
 (async () =>
 {
     await new Promise(res => window.addEventListener("DOMContentLoaded", res));
@@ -159,10 +156,15 @@ async function updateAssets() {
     let currentVersion = "";
     try {
         currentVersion = Module.FS.readFile("/OpenRCT2/version", {encoding: "utf8"});
-    } catch(e) {};
-    console.log("Found asset version", currentVersion);
+        console.log("Found asset version", currentVersion);
+    } catch(e) {
+        console.log("No asset version found");
+    };
 
-    if (currentVersion !== assets_version || assets_version === "DEV")
+    const assets_version = Module.ccall("GetVersion", "string");
+
+    //Always pull assets on a debug build
+    if (currentVersion !== assets_version || assets_version.includes("DEBUG"))
     {
         console.log("Updating assets to", assets_version);
         document.getElementById("loadingWebassembly").innerText = "Asset update found. Downloading...";
