@@ -33,7 +33,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Widgets
 
     static constexpr int32_t WW = 600;
-    static constexpr int32_t WH = 400;
+    static constexpr int32_t WH = 388;
     static constexpr StringId WINDOW_TITLE = STR_INVENTION_LIST;
 
     enum
@@ -156,9 +156,9 @@ namespace OpenRCT2::Ui::Windows
             _selectedResearchItem = nullptr;
 
             min_width = WW;
-            min_height = WH;
+            minBodyheight = WH;
             max_width = WW * 2;
-            max_height = WH * 2;
+            maxBodyHeight = WH * 2;
         }
 
         void OnClose() override
@@ -205,10 +205,10 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
                 width = min_width;
             }
-            if (height < min_height)
+            if (bodyHeight < minBodyheight)
             {
                 Invalidate();
-                height = min_height;
+                bodyHeight = minBodyheight;
             }
         }
 
@@ -455,7 +455,7 @@ namespace OpenRCT2::Ui::Windows
 
             ResizeFrameWithPage();
 
-            int16_t scrollListHeight = (height - 88) / 2;
+            int16_t scrollListHeight = (height() - 88) / 2;
 
             widgets[WIDX_PRE_RESEARCHED_SCROLL].bottom = 60 + scrollListHeight;
             widgets[WIDX_PRE_RESEARCHED_SCROLL].right = width - 229;
@@ -467,18 +467,18 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].left = width - 169;
             widgets[WIDX_PREVIEW].right = width - 56;
 
-            widgets[WIDX_MOVE_ITEMS_TO_TOP].top = height - 57;
-            widgets[WIDX_MOVE_ITEMS_TO_TOP].bottom = height - 44;
+            widgets[WIDX_MOVE_ITEMS_TO_TOP].top = height() - 57;
+            widgets[WIDX_MOVE_ITEMS_TO_TOP].bottom = height() - 44;
             widgets[WIDX_MOVE_ITEMS_TO_TOP].left = width - 225;
             widgets[WIDX_MOVE_ITEMS_TO_TOP].right = width - 6;
 
-            widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].top = height - 42;
-            widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].bottom = height - 29;
+            widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].top = height() - 42;
+            widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].bottom = height() - 29;
             widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].left = width - 225;
             widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].right = width - 6;
 
-            widgets[WIDX_RANDOM_SHUFFLE].top = height - 27;
-            widgets[WIDX_RANDOM_SHUFFLE].bottom = height - 14;
+            widgets[WIDX_RANDOM_SHUFFLE].top = height() - 27;
+            widgets[WIDX_RANDOM_SHUFFLE].bottom = height() - 14;
             widgets[WIDX_RANDOM_SHUFFLE].left = width - 225;
             widgets[WIDX_RANDOM_SHUFFLE].right = width - 6;
         }
@@ -487,7 +487,7 @@ namespace OpenRCT2::Ui::Windows
         std::optional<InventionListItem> GetResearchItemAt(const ScreenCoordsXY& screenCoords)
         {
             if (windowPos.x <= screenCoords.x && windowPos.y < screenCoords.y && windowPos.x + width > screenCoords.x
-                && windowPos.y + height > screenCoords.y)
+                && windowPos.y + height() > screenCoords.y)
             {
                 auto* windowMgr = GetWindowManager();
                 WidgetIndex widgetIndex = windowMgr->FindWidgetFromPoint(*this, screenCoords);

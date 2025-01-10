@@ -82,7 +82,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kMinimumWindowWidth = 316;
 
     static constexpr StringId WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
-    static constexpr int32_t WH = 207;
+    static constexpr int32_t WH = 195;
     static constexpr int32_t WW = kMinimumWindowWidth;
 
     enum
@@ -755,9 +755,9 @@ namespace OpenRCT2::Ui::Windows
             picked_peep_frame = 0;
             DisableTabs();
             min_width = kMinimumWindowWidth;
-            min_height = 180;
+            minBodyheight = 168;
             max_width = 500;
-            max_height = 450;
+            maxBodyHeight = 438;
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -2370,20 +2370,20 @@ namespace OpenRCT2::Ui::Windows
             const int32_t offset = gameState.Cheats.allowArbitraryRideTypeChanges ? 15 : 0;
             // Anchor main page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
-            widgets[WIDX_VIEWPORT].bottom = height - (14 + offset);
+            widgets[WIDX_VIEWPORT].bottom = height() - (14 + offset);
             widgets[WIDX_STATUS].right = width - 26;
-            widgets[WIDX_STATUS].top = height - (13 + offset);
-            widgets[WIDX_STATUS].bottom = height - (3 + offset);
+            widgets[WIDX_STATUS].top = height() - (13 + offset);
+            widgets[WIDX_STATUS].bottom = height() - (3 + offset);
             widgets[WIDX_VIEW].right = width - 60;
             widgets[WIDX_VIEW_DROPDOWN].right = width - 61;
             widgets[WIDX_VIEW_DROPDOWN].left = width - 71;
             widgets[WIDX_RIDE_TYPE].right = width - 26;
-            widgets[WIDX_RIDE_TYPE].top = height - 17;
-            widgets[WIDX_RIDE_TYPE].bottom = height - 4;
+            widgets[WIDX_RIDE_TYPE].top = height() - 17;
+            widgets[WIDX_RIDE_TYPE].bottom = height() - 4;
             widgets[WIDX_RIDE_TYPE_DROPDOWN].left = width - 37;
             widgets[WIDX_RIDE_TYPE_DROPDOWN].right = width - 27;
-            widgets[WIDX_RIDE_TYPE_DROPDOWN].top = height - 16;
-            widgets[WIDX_RIDE_TYPE_DROPDOWN].bottom = height - 5;
+            widgets[WIDX_RIDE_TYPE_DROPDOWN].top = height() - 16;
+            widgets[WIDX_RIDE_TYPE_DROPDOWN].bottom = height() - 5;
 
             if (!gameState.Cheats.allowArbitraryRideTypeChanges)
             {
@@ -2938,7 +2938,7 @@ namespace OpenRCT2::Ui::Windows
             if (minimumPreviewStart > widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top)
             {
                 auto heightIncrease = minimumPreviewStart - widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top;
-                height += heightIncrease;
+                bodyHeight += heightIncrease;
                 ResizeFrameWithPage();
 
                 for (auto i = EnumValue(WIDX_VEHICLE_TRAINS_PREVIEW); i <= WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE; i++)
@@ -5210,7 +5210,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (isMusicActivated)
             {
-                widgets[WIDX_MUSIC_DATA].bottom = height - 11;
+                widgets[WIDX_MUSIC_DATA].bottom = height() - 11;
 
                 if (hasPreviewImage)
                 {
@@ -6035,7 +6035,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Anchor graph widget
             auto x = width - 4;
-            auto y = height - kButtonFaceHeight - 8;
+            auto y = height() - kButtonFaceHeight - 8;
 
             widgets[WIDX_GRAPH].right = x;
             widgets[WIDX_GRAPH].bottom = y;
@@ -6451,7 +6451,7 @@ namespace OpenRCT2::Ui::Windows
 
         void IncomeResize()
         {
-            auto newHeight = widgets[WIDX_TITLE].bottom + 180;
+            auto newHeight = 180;
             WindowSetResize(*this, kMinimumWindowWidth, newHeight, kMinimumWindowWidth, newHeight);
         }
 

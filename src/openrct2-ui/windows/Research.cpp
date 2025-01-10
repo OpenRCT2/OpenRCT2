@@ -27,9 +27,9 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WH_DEVELOPMENT = 196;
+    static constexpr int32_t kBodyHeightDevelopment = 184;
     static constexpr int32_t WW_DEVELOPMENT = 300;
-    static constexpr int32_t WH_FUNDING = 207;
+    static constexpr int32_t kBodyHeightFunding = 195;
     static constexpr int32_t WW_FUNDING = 320;
 
     enum
@@ -69,7 +69,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget window_research_development_widgets[] = {
-        WINDOW_SHIM(STR_RESEARCH_AND_DEVELOPMENT, WW_DEVELOPMENT, WH_DEVELOPMENT),
+        WINDOW_SHIM(STR_RESEARCH_AND_DEVELOPMENT, WW_DEVELOPMENT, kBodyHeightDevelopment),
         MakeWidget({  0,  43}, {     WW_DEVELOPMENT, 153}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
         MakeTab   ({  3,  17},                                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
         MakeTab   ({ 34,  17},                                                                                                  STR_FINANCES_RESEARCH_TIP       ),
@@ -79,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr Widget window_research_funding_widgets[] = {
-        WINDOW_SHIM(STR_RESEARCH_FUNDING, WW_FUNDING, WH_FUNDING),
+        WINDOW_SHIM(STR_RESEARCH_FUNDING, WW_FUNDING, kBodyHeightFunding),
         MakeWidget({  0,  43}, {     WW_FUNDING, 164}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                                    ),
         MakeTab   ({  3,  17},                                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP            ),
         MakeTab   ({ 34,  17},                                                                                                      STR_FINANCES_RESEARCH_TIP                   ),
@@ -123,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
         {
             SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
             width = WW_DEVELOPMENT;
-            height = WH_DEVELOPMENT;
+            bodyHeight = kBodyHeightDevelopment;
             ResearchUpdateUncompletedTypes();
         }
 
@@ -142,12 +142,12 @@ namespace OpenRCT2::Ui::Windows
             if (newPageIndex == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
             {
                 width = WW_DEVELOPMENT;
-                height = WH_DEVELOPMENT;
+                bodyHeight = kBodyHeightDevelopment;
             }
             else
             {
                 width = WW_FUNDING;
-                height = WH_FUNDING;
+                bodyHeight = kBodyHeightFunding;
             }
             OnResize();
 
@@ -306,7 +306,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ResearchOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, WH_FUNDING, WF_10);
+        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, kBodyHeightFunding, WF_10);
         window->SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
         return window;
     }

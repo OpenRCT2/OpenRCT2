@@ -360,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
         void DrawStepText(DrawPixelInfo& dpi)
         {
             int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
-            int16_t stateY = height - 0x0C + windowPos.y;
+            int16_t stateY = height() - 0x0C + windowPos.y;
             auto colour = colours[2].withFlag(ColourFlag::translucent, false).withFlag(ColourFlag::withOutline, true);
             DrawTextBasic(
                 dpi, { stateX, stateY }, kEditorStepNames[EnumValue(GetGameState().EditorStep)], {},
@@ -399,7 +399,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<EditorBottomToolbarWindow>(
             WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - 32), ContextGetWidth(), 32,
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
+            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
 
         return window;
     }

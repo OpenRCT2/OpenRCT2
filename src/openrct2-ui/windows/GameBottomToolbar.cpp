@@ -503,8 +503,8 @@ namespace OpenRCT2::Ui::Windows
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
 
             // Reset dimensions as appropriate -- in case we're switching languages.
-            height = line_height * 2 + 12;
-            windowPos.y = ContextGetHeight() - height;
+            bodyHeight = line_height * 2 + 12;
+            windowPos.y = ContextGetHeight() - bodyHeight;
 
             // Change height of widgets in accordance with line height.
             widgets[WIDX_LEFT_OUTSET].bottom = widgets[WIDX_MIDDLE_OUTSET].bottom = widgets[WIDX_RIGHT_OUTSET].bottom
@@ -520,7 +520,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_GUESTS].top = 1;
                 widgets[WIDX_GUESTS].bottom = line_height + 7;
                 widgets[WIDX_PARK_RATING].top = line_height + 8;
-                widgets[WIDX_PARK_RATING].bottom = height - 1;
+                widgets[WIDX_PARK_RATING].bottom = height() - 1;
             }
             else
             {
@@ -529,7 +529,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_GUESTS].top = widgets[WIDX_MONEY].bottom + 1;
                 widgets[WIDX_GUESTS].bottom = widgets[WIDX_GUESTS].top + line_height;
                 widgets[WIDX_PARK_RATING].top = widgets[WIDX_GUESTS].bottom - 1;
-                widgets[WIDX_PARK_RATING].bottom = height - 1;
+                widgets[WIDX_PARK_RATING].bottom = height() - 1;
             }
 
             // Reposition right widgets in accordance with line height, too.
@@ -693,7 +693,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<GameBottomToolbar>(
             WindowClass::BottomToolbar, ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height,
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
+            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
 
         return window;
     }

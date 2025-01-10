@@ -51,7 +51,7 @@ namespace OpenRCT2::Title
         bool _initialLoadCommand = true;
 
         int32_t _previousWindowWidth = 0;
-        int32_t _previousWindowHeight = 0;
+        int32_t _previousWindowBodyHeight = 0;
         ScreenCoordsXY _previousViewPosition = {};
 
     public:
@@ -451,7 +451,7 @@ namespace OpenRCT2::Title
             if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
             {
                 _previousWindowWidth = w->width;
-                _previousWindowHeight = w->height;
+                _previousWindowBodyHeight = w->bodyHeight;
                 _previousViewPosition = w->savedViewPos;
             }
         }
@@ -464,10 +464,10 @@ namespace OpenRCT2::Title
             WindowBase* w = WindowGetMain();
             if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
             {
-                if (w->width != _previousWindowWidth || w->height != _previousWindowHeight)
+                if (w->width != _previousWindowWidth || w->height() != _previousWindowBodyHeight)
                 {
                     w->savedViewPos.x += (_previousWindowWidth - w->width) / 2;
-                    w->savedViewPos.y += (_previousWindowHeight - w->height) / 2;
+                    w->savedViewPos.y += (_previousWindowBodyHeight - w->bodyHeight) / 2;
                 }
             }
         }
