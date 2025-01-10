@@ -733,7 +733,8 @@ public:
                     {
                         return -1;
                     };
-                }, target)
+                },
+                target)
             == 0);
 #endif
     }
