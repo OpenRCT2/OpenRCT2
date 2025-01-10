@@ -310,17 +310,3 @@ discord-rpc
 
 # CMake
 cmake-build-*/
-
-# Emscripten
-src/thirdparty/nlohmann/
-emscripten/ext/
-emscripten/www/
-emscripten/temp/
-emscripten/Makefile
-emscripten/CMake*
-emscripten/cmake*
-emscripten/*.a
-emscripten/*.js
-emscripten/*.wasm
-emscripten/static/assets*
-emscripten-output/
