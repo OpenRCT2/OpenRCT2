@@ -1,6 +1,6 @@
 0.4.19 (in development)
 ------------------------------------------------------------------------
-- Feature: [#23328] Introducing peep animation objects, enabling custom entertainer customes.
+- Feature: [#23328] Introducing peep animation objects, enabling custom entertainer costumes.
 - Improved: [#23328] The costume list in the staff window is now ordered alphabetically.
 - Improved: [#23540] The file browser now optionally shows a file size column.
 - Change: [#23328] All RCT2 entertainer costumes are now available in legacy parks.
