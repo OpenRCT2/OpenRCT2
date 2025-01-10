@@ -51,6 +51,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/ConstructionClearance.h>
 #include <openrct2/world/Entrance.h>
+#include <openrct2/world/Map.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/PathElement.h>
@@ -1051,13 +1052,13 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_NEXT_SECTION:
                     VirtualFloorInvalidate();
                     RideSelectNextSection();
-                    if (!isToolActive(WindowClass::Scenery))
+                    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_PREVIOUS_SECTION:
                     VirtualFloorInvalidate();
                     RideSelectPreviousSection();
-                    if (!isToolActive(WindowClass::Scenery))
+                    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_LEFT_CURVE:
@@ -3163,7 +3164,7 @@ namespace OpenRCT2::Ui::Windows
                         // Invalidate previous track piece (we may not be changing height!)
                         VirtualFloorInvalidate();
 
-                        if (!isToolActive(WindowClass::Scenery))
+                        if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                         {
                             // Set height to where the next track piece would begin
                             VirtualFloorSetHeight(_currentTrackBegin.z);
@@ -4766,7 +4767,7 @@ namespace OpenRCT2::Ui::Windows
         // Invalidate previous track piece (we may not be changing height!)
         VirtualFloorInvalidate();
 
-        if (!isToolActive(WindowClass::Scenery))
+        if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
         {
             // Set height to where the next track piece would begin
             VirtualFloorSetHeight(trackPos.z - zBegin + zEnd);
