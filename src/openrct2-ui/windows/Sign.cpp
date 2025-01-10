@@ -33,7 +33,7 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WINDOW_TITLE = STR_SIGN;
     static constexpr int32_t WW = 113;
-    static constexpr int32_t WH = 96;
+    static constexpr int32_t WH = 84;
 
     enum WindowSignWidgetIdx
     {

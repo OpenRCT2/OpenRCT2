@@ -30,11 +30,11 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    #define WWIDTH_MIN 500
-    #define WHEIGHT_MIN 300
-    #define WWIDTH_MAX 1200
-    #define WHEIGHT_MAX 800
-    #define ITEM_HEIGHT (3 + 9 + 3)
+    static constexpr int32_t kWindowWidthMin = 500;
+    static constexpr int32_t kWindowBodyHeightMin = 288;
+    static constexpr int32_t kWindowWidthMax = 1200;
+    static constexpr int32_t kWindowBodyHeightMax = 788;
+    static constexpr int32_t kItemHeight = (3 + 9 + 3);
 
     constexpr size_t MaxPlayerNameLength = 32;
 
@@ -102,14 +102,14 @@ namespace OpenRCT2::Ui::Windows
             selected_list_item = -1;
             frame_no = 0;
             min_width = 320;
-            min_height = 90;
+            minBodyheight = 78;
             max_width = min_width;
-            max_height = min_height;
+            maxBodyHeight = minBodyheight;
 
             page = 0;
             list_information_type = 0;
 
-            WindowSetResize(*this, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
+            WindowSetResize(*this, kWindowWidthMin, kWindowBodyHeightMin, kWindowWidthMax, kWindowBodyHeightMax);
 
             no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
@@ -166,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
+            WindowSetResize(*this, kWindowWidthMin, kWindowBodyHeightMin, kWindowWidthMax, kWindowBodyHeightMax);
         }
 
         void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            return { 0, no_list_items * ITEM_HEIGHT };
+            return { 0, no_list_items * kItemHeight };
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -248,7 +248,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& listWidget = widgets[WIDX_LIST];
 
-            int32_t itemIndex = screenCoords.y / ITEM_HEIGHT;
+            int32_t itemIndex = screenCoords.y / kItemHeight;
             bool showNetworkVersionTooltip = false;
             if (itemIndex < 0 || itemIndex >= no_list_items)
             {
@@ -331,7 +331,7 @@ namespace OpenRCT2::Ui::Windows
 
             ft = Formatter();
             ft.Add<uint32_t>(_numPlayersOnline);
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, height - 15 }, _statusText, ft, { COLOUR_WHITE });
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, height() - 15 }, _statusText, ft, { COLOUR_WHITE });
         }
 
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
@@ -356,7 +356,7 @@ namespace OpenRCT2::Ui::Windows
                 if (highlighted)
                 {
                     GfxFilterRect(
-                        dpi, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + ITEM_HEIGHT },
+                        dpi, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + kItemHeight },
                         FilterPaletteID::PaletteDarken1);
                     _version = serverDetails.Version;
                 }
@@ -428,7 +428,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.x = right - numPlayersStringWidth;
                 DrawText(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, { colours[1] }, players);
 
-                screenCoords.y += ITEM_HEIGHT;
+                screenCoords.y += kItemHeight;
             }
         }
 
@@ -525,7 +525,7 @@ namespace OpenRCT2::Ui::Windows
 
             int32_t margin = 6;
             int32_t buttonHeight = 13;
-            int32_t buttonTop = height - margin - buttonHeight - 13;
+            int32_t buttonTop = height() - margin - buttonHeight - 13;
             int32_t buttonBottom = buttonTop + buttonHeight;
             int32_t listBottom = buttonTop - margin;
 
@@ -553,7 +553,7 @@ namespace OpenRCT2::Ui::Windows
             return window;
 
         window = windowMgr->Create<ServerListWindow>(
-            WindowClass::ServerList, WWIDTH_MIN, WHEIGHT_MIN, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::ServerList, kWindowWidthMin, kWindowBodyHeightMin, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
 
         return window;
     }

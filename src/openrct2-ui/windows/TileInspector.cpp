@@ -221,12 +221,12 @@ namespace OpenRCT2::Ui::Windows
 
     // Window sizes
     static constexpr int32_t WW = 400;
-    static constexpr int32_t WH = 170;
+    static constexpr int32_t kWindowBodyHeight = 158;
 
     constexpr int32_t MIN_WW = WW;
     constexpr int32_t MAX_WW = WW;
-    constexpr int32_t MIN_WH = 130;
-    constexpr int32_t MAX_WH = 800;
+    constexpr int32_t kWindowBodyHeightMin = 118;
+    constexpr int32_t kWindowBodyHeightMax = 788;
 
     // Button space for top buttons
     constexpr auto ToolbarButtonAnchor = ScreenCoordsXY{ WW - 27, 17 };
@@ -277,8 +277,8 @@ namespace OpenRCT2::Ui::Windows
     #define GBBB(GROUPTOP, row)     (GBBT((GROUPTOP), row) + PropertyButtonSize.height)
 
     #define MAIN_TILE_INSPECTOR_WIDGETS \
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-        MakeWidget({3, 57}, {WW - 6, WH - PADDING_BOTTOM - 58}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), /* Element list */ \
+        WINDOW_SHIM(WINDOW_TITLE, WW, kWindowBodyHeight), \
+        MakeWidget({3, 57}, {WW - 6, kWindowBodyHeight - PADDING_BOTTOM - 58}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), /* Element list */ \
         /* X and Y spinners */          \
         MakeWidget        ({ 4, 24}, {38, 14}, WindowWidgetType::Label,   WindowColour::Secondary,  STR_TILE_INSPECTOR_X_LABEL), \
         MakeSpinnerWidgets({20, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner X (3 widgets) */ \
@@ -514,9 +514,9 @@ static uint64_t PageDisabledWidgets[] = {
         void OnOpen() override
         {
             min_width = MIN_WW;
-            min_height = MIN_WH;
+            minBodyheight = kWindowBodyHeightMin;
             max_width = MAX_WW;
-            max_height = MAX_WH;
+            maxBodyHeight = kWindowBodyHeightMax;
 
             windowTileInspectorSelectedIndex = -1;
             SetPage(TileInspectorPage::Default);
@@ -761,10 +761,10 @@ static uint64_t PageDisabledWidgets[] = {
                 Invalidate();
                 width = min_width;
             }
-            if (height < min_height)
+            if (bodyHeight < minBodyheight)
             {
                 Invalidate();
-                height = min_height;
+                bodyHeight = minBodyheight;
             }
             ResizeFrame();
         }
@@ -1772,14 +1772,14 @@ static uint64_t PageDisabledWidgets[] = {
             if (tileInspectorPage != TileInspectorPage::Default)
             {
                 auto index = EnumValue(tileInspectorPage) - 1;
-                height -= PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
-                min_height -= PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
+                bodyHeight -= PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
+                minBodyheight -= PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
             }
             if (p != TileInspectorPage::Default)
             {
                 auto index = EnumValue(p) - 1;
-                height += PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
-                min_height += PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
+                bodyHeight += PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
+                minBodyheight += PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
             }
             tileInspectorPage = p;
             auto pageIndex = EnumValue(p);
@@ -2140,13 +2140,13 @@ static uint64_t PageDisabledWidgets[] = {
             // Paste button
             SetWidgetDisabledAndInvalidate(WIDX_BUTTON_PASTE, !(_tileSelected && _elementCopied));
 
-            widgets[WIDX_BACKGROUND].bottom = height - 1;
+            widgets[WIDX_BACKGROUND].bottom = height() - 1;
 
             if (tileInspectorPage == TileInspectorPage::Default)
             {
                 widgets[WIDX_GROUPBOX_DETAILS].type = WindowWidgetType::Empty;
                 widgets[WIDX_GROUPBOX_PROPERTIES].type = WindowWidgetType::Empty;
-                widgets[WIDX_LIST].bottom = height - PADDING_BOTTOM;
+                widgets[WIDX_LIST].bottom = height() - PADDING_BOTTOM;
             }
             else
             {
@@ -2154,10 +2154,10 @@ static uint64_t PageDisabledWidgets[] = {
                 widgets[WIDX_GROUPBOX_PROPERTIES].type = WindowWidgetType::Groupbox;
                 auto pageIndex = EnumValue(tileInspectorPage) - 1;
                 widgets[WIDX_GROUPBOX_DETAILS].text = PageGroupBoxSettings[pageIndex].string_id;
-                widgets[WIDX_GROUPBOX_DETAILS].top = height - PageGroupBoxSettings[pageIndex].details_top_offset;
-                widgets[WIDX_GROUPBOX_DETAILS].bottom = height - PageGroupBoxSettings[pageIndex].details_bottom_offset;
-                widgets[WIDX_GROUPBOX_PROPERTIES].top = height - PageGroupBoxSettings[pageIndex].properties_top_offset;
-                widgets[WIDX_GROUPBOX_PROPERTIES].bottom = height - PageGroupBoxSettings[pageIndex].properties_bottom_offset;
+                widgets[WIDX_GROUPBOX_DETAILS].top = height() - PageGroupBoxSettings[pageIndex].details_top_offset;
+                widgets[WIDX_GROUPBOX_DETAILS].bottom = height() - PageGroupBoxSettings[pageIndex].details_bottom_offset;
+                widgets[WIDX_GROUPBOX_PROPERTIES].top = height() - PageGroupBoxSettings[pageIndex].properties_top_offset;
+                widgets[WIDX_GROUPBOX_PROPERTIES].bottom = height() - PageGroupBoxSettings[pageIndex].properties_bottom_offset;
                 widgets[WIDX_LIST].bottom = widgets[WIDX_GROUPBOX_DETAILS].top - GROUPBOX_PADDING;
             }
 
@@ -2442,7 +2442,8 @@ static uint64_t PageDisabledWidgets[] = {
         auto* windowMgr = GetWindowManager();
         WindowBase* window = windowMgr->BringToFrontByClass(WindowClass::TileInspector);
         if (window == nullptr)
-            window = windowMgr->Create<TileInspector>(WindowClass::TileInspector, ScreenCoordsXY(0, 29), WW, WH, WF_RESIZABLE);
+            window = windowMgr->Create<TileInspector>(
+                WindowClass::TileInspector, ScreenCoordsXY(0, 29), WW, kWindowBodyHeight, WF_RESIZABLE);
         return window;
     }
 

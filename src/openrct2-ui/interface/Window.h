@@ -91,4 +91,6 @@ namespace OpenRCT2::Ui::Windows
     void WindowZoomIn(WindowBase& w, bool atCursor);
     void WindowZoomOut(WindowBase& w, bool atCursor);
     void MainWindowZoom(bool zoomIn, bool atCursor);
+
+    int16_t GetTitleBarHeight();
 } // namespace OpenRCT2::Ui::Windows

@@ -425,9 +425,9 @@ namespace OpenRCT2::Ui::Windows
             if (_info.Desc.IsResizable())
             {
                 min_width = _info.Desc.MinWidth.value_or(0);
-                min_height = _info.Desc.MinHeight.value_or(0);
+                minBodyheight = _info.Desc.MinHeight.value_or(0);
                 max_width = _info.Desc.MaxWidth.value_or(std::numeric_limits<int16_t>::max());
-                max_height = _info.Desc.MaxHeight.value_or(std::numeric_limits<int16_t>::max());
+                maxBodyHeight = _info.Desc.MaxHeight.value_or(std::numeric_limits<int16_t>::max());
             }
             RefreshWidgets();
         }
@@ -444,10 +444,10 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
                 width = min_width;
             }
-            if (height < min_height)
+            if (bodyHeight < minBodyheight)
             {
                 Invalidate();
-                height = min_height;
+                bodyHeight = minBodyheight;
             }
             UpdateViewport();
         }
@@ -493,9 +493,8 @@ namespace OpenRCT2::Ui::Windows
 
             // Having the content panel visible for transparent windows makes the borders darker than they should be
             // For now just hide it if there are no tabs and the window is not resizable
-            auto canResize = (flags & WF_RESIZABLE) != 0 && (min_width != max_width || min_height != max_height);
             auto numTabs = _info.Desc.Tabs.size();
-            if (canResize || numTabs != 0)
+            if (canBeResized() || numTabs != 0)
             {
                 widgets[WIDX_CONTENT_PANEL].flags &= ~WIDGET_FLAGS::IS_HIDDEN;
             }

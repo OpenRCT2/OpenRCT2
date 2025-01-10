@@ -49,7 +49,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr StringId WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
     static constexpr int32_t WW = 180;
-    static constexpr int32_t WH = 155;
+    static constexpr int32_t WH = 143;
 
     // clang-format off
     static constexpr Widget _viewClippingWidgets[] = {

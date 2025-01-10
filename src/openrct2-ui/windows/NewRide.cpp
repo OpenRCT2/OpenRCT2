@@ -43,8 +43,8 @@ using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WindowTitle = kStringIdNone;
-    static constexpr int32_t WindowBodyHeight = 368;
-    static constexpr int32_t WindowHeight = 382;
+    static constexpr int32_t kWindowBodyHeight = 370;
+    static constexpr int32_t kWindowBodyHeightResearch = 182;
     static constexpr int32_t WindowWidth = 601;
     static constexpr int32_t RideListItemsMax = 384;
     static constexpr int32_t RideTabCount = 6;
@@ -210,7 +210,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget window_new_ride_widgets[] = {
-        WINDOW_SHIM(WindowTitle, WindowWidth, WindowHeight),
+        WINDOW_SHIM(WindowTitle, WindowWidth, kWindowBodyHeight),
         MakeWidget({  0,  43},             {601, 339},         WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
         MakeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
         MakeTab   ({ 34,  17},                                                                                      STR_GENTLE_RIDES_TIP                                          ),
@@ -427,7 +427,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 RideSelection item = _newRideVars.HighlightedRide;
                 if (item.Type != kRideTypeNull || item.EntryIndex != kObjectEntryIndexNull)
-                    DrawRideInformation(dpi, item, windowPos + ScreenCoordsXY{ 3, height - 64 }, width - 6);
+                    DrawRideInformation(dpi, item, windowPos + ScreenCoordsXY{ 3, height() - 64 }, width - 6);
             }
             else
             {
@@ -805,7 +805,7 @@ namespace OpenRCT2::Ui::Windows
 
         void RefreshWidgetSizing()
         {
-            int32_t newWidth{}, newHeight{};
+            int32_t newWidth{}, newBodyHeight{};
 
             if (_currentTab < SHOP_TAB)
             {
@@ -838,7 +838,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::Empty;
 
                 newWidth = WindowWidth;
-                newHeight = WindowBodyHeight + widgets[WIDX_TITLE].bottom;
+                newBodyHeight = kWindowBodyHeight;
             }
             else
             {
@@ -852,17 +852,17 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::FlatBtn;
 
                 newWidth = 300;
-                newHeight = 182 + widgets[WIDX_TITLE].bottom;
+                newBodyHeight = kWindowBodyHeightResearch;
             }
 
             // Handle new window size
-            if (width != newWidth || height != newHeight)
+            if (width != newWidth || bodyHeight != newBodyHeight)
             {
                 Invalidate();
 
                 // Resize widgets to new window size
                 width = newWidth;
-                height = newHeight;
+                bodyHeight = newBodyHeight;
                 ResizeFrameWithPage();
                 widgets[WIDX_GROUP_BY_TRACK_TYPE].left = newWidth - 8 - GroupByTrackTypeWidth;
                 widgets[WIDX_GROUP_BY_TRACK_TYPE].right = newWidth - 8;
@@ -1084,7 +1084,7 @@ namespace OpenRCT2::Ui::Windows
         windowMgr->CloseByClass(WindowClass::TrackDesignPlace);
 
         window = windowMgr->Create<NewRideWindow>(
-            WindowClass::ConstructRide, WindowWidth, WindowHeight, WF_10 | WF_AUTO_POSITION);
+            WindowClass::ConstructRide, WindowWidth, kWindowBodyHeight, WF_10 | WF_AUTO_POSITION);
         return window;
     }
 

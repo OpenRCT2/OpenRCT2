@@ -42,11 +42,12 @@ namespace OpenRCT2::Ui::Windows
             int32_t textHeight = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::Small));
 
             width = textWidth + 5;
-            height = textHeight + 4;
+            titleBarHeight = 0;
+            bodyHeight = textHeight + 4;
 
             SetWidgets(_tooltipWidgets);
             widgets[WIDX_BACKGROUND].right = width;
-            widgets[WIDX_BACKGROUND].bottom = height;
+            widgets[WIDX_BACKGROUND].bottom = height();
 
             UpdatePosition(screenCoords);
         }
@@ -64,12 +65,12 @@ namespace OpenRCT2::Ui::Windows
             const int32_t cursorMargin = 4;
             const int32_t cursorOffset = cursorHeight + cursorMargin;
 
-            const int32_t maxY = screenHeight - height;
+            const int32_t maxY = screenHeight - height();
 
             if (screenCoords.y + cursorOffset > maxY)
             {
                 // Display the tooltip above the cursor if there is not enough space below.
-                screenCoords.y -= (height + cursorMargin);
+                screenCoords.y -= (height() + cursorMargin);
             }
             else
             {
@@ -100,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t left = windowPos.x;
             int32_t top = windowPos.y;
             int32_t right = windowPos.x + width - 1;
-            int32_t bottom = windowPos.y + height - 1;
+            int32_t bottom = windowPos.y + height() - 1;
 
             // Background
             GfxFilterRect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
@@ -158,11 +159,12 @@ namespace OpenRCT2::Ui::Windows
         auto tooltipWindow = std::make_unique<TooltipWindow>(message, screenCoords);
         auto windowPos = tooltipWindow->windowPos;
         auto width = tooltipWindow->width;
-        auto height = tooltipWindow->height;
+        auto bodyHeight = tooltipWindow->bodyHeight;
 
         auto* windowMgr = GetWindowManager();
         windowMgr->Create(
-            std::move(tooltipWindow), WindowClass::Tooltip, windowPos, width, height, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+            std::move(tooltipWindow), WindowClass::Tooltip, windowPos, width, bodyHeight,
+            WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_NO_TITLE_BAR);
     }
 
     void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)

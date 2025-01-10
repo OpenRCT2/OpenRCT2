@@ -118,7 +118,7 @@ namespace OpenRCT2::Ui::Windows
     }
 
     static constexpr StringId WINDOW_TITLE = STR_OBJECT_SELECTION;
-    static constexpr int32_t WH = 400;
+    static constexpr int32_t WH = 388;
     static constexpr int32_t WW = 600;
     static constexpr auto kFilterWidth = 150;
     static constexpr auto kPreviewSize = 113;
@@ -291,9 +291,9 @@ namespace OpenRCT2::Ui::Windows
             selected_tab = 0;
             selected_list_item = -1;
             min_width = WW;
-            min_height = WH;
+            minBodyheight = WH;
             max_width = 1200;
-            max_height = 1000;
+            maxBodyHeight = 1000;
 
             _listSortType = RIDE_SORT_TYPE;
             _listSortDescending = false;
@@ -851,7 +851,7 @@ namespace OpenRCT2::Ui::Windows
             // Resize widgets
             ResizeFrameWithPage();
             widgets[WIDX_LIST].right = width - 309;
-            widgets[WIDX_LIST].bottom = height - 14;
+            widgets[WIDX_LIST].bottom = height() - 14;
             widgets[WIDX_PREVIEW].left = width - 209;
             widgets[WIDX_PREVIEW].right = width - 96;
             widgets[WIDX_RELOAD_OBJECT].left = width - 9 - 24;
@@ -1069,7 +1069,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw number of selected items
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
             {
-                auto screenPos = windowPos + ScreenCoordsXY{ 3, height - 13 };
+                auto screenPos = windowPos + ScreenCoordsXY{ 3, height() - 13 };
 
                 auto numSelected = _numSelectedObjectsForType[EnumValue(GetSelectedObjectType())];
                 auto totalSelectable = getObjectEntryGroupCount(GetSelectedObjectType());
@@ -1353,7 +1353,7 @@ namespace OpenRCT2::Ui::Windows
         void DrawDebugData(DrawPixelInfo& dpi)
         {
             ObjectListItem* listItem = &_listItems[selected_list_item];
-            auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (kListRowHeight * 6) };
+            auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height() - (kListRowHeight * 6) };
 
             // Draw fallback image warning
             if (_loadedObject && _loadedObject->UsesFallbackImages())

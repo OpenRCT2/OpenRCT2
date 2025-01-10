@@ -190,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<MultiplayerWindow>(
-                WindowClass::Multiplayer, 320, 144, WF_10 | WF_RESIZABLE | WF_AUTO_POSITION);
+                WindowClass::Multiplayer, 320, 132, WF_10 | WF_RESIZABLE | WF_AUTO_POSITION);
         }
 
         return window;
@@ -404,14 +404,14 @@ namespace OpenRCT2::Ui::Windows
             case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
             {
                 widgets[WIDX_LIST].right = width - 4;
-                widgets[WIDX_LIST].bottom = height - 0x0F;
+                widgets[WIDX_LIST].bottom = height() - 0x0F;
                 WindowAlignTabs(this, WIDX_TAB1, WIDX_TAB4);
                 break;
             }
             case WINDOW_MULTIPLAYER_PAGE_GROUPS:
             {
                 widgets[WIDX_PERMISSIONS_LIST].right = width - 4;
-                widgets[WIDX_PERMISSIONS_LIST].bottom = height - 0x0F;
+                widgets[WIDX_PERMISSIONS_LIST].bottom = height() - 0x0F;
                 WindowAlignTabs(this, WIDX_TAB1, WIDX_TAB4);
 
                 // select other group if one is removed
@@ -674,7 +674,7 @@ namespace OpenRCT2::Ui::Windows
     void MultiplayerWindow::InformationPaint(DrawPixelInfo& dpi)
     {
         DrawPixelInfo clippedDPI;
-        if (ClipDrawPixelInfo(clippedDPI, dpi, windowPos, width, height))
+        if (ClipDrawPixelInfo(clippedDPI, dpi, windowPos, width, height()))
         {
             auto screenCoords = ScreenCoordsXY{ 3, 50 };
             int32_t newWidth = width - 6;

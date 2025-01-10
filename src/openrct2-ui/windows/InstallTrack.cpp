@@ -46,7 +46,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr StringId WINDOW_TITLE = STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE;
     static constexpr int32_t WW = 380;
-    static constexpr int32_t WH = 460;
+    static constexpr int32_t WH = 448;
     constexpr int32_t PREVIEW_BUTTONS_LEFT = WW - 25;
     constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
 

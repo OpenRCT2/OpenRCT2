@@ -55,7 +55,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto stringCoords = windowPos + ScreenCoordsXY{ width / 2, height / 2 };
+            auto stringCoords = windowPos + ScreenCoordsXY{ width / 2, height() / 2 };
             DrawTextWrapped(dpi, stringCoords, width, STR_MAP_TOOLTIP_STRINGID, _mapTooltipArgs, { TextAlignment::CENTRE });
         }
     };
@@ -123,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
             w->Invalidate();
             w->windowPos = pos;
             w->width = width;
-            w->height = height;
+            w->bodyHeight = height;
         }
         else
         {
