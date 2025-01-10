@@ -835,6 +835,9 @@ public:
         std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
         uint32_t flags) override
     {
+        if (Config::Get().interface.EnlargedUi)
+            height += 12;
+
         if (flags & WF_AUTO_POSITION)
         {
             if (flags & WF_CENTRE_SCREEN)

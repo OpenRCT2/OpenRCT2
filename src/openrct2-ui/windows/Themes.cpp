@@ -272,9 +272,9 @@ namespace OpenRCT2::Ui::Windows
             _classIndex = -1;
             _buttonIndex = -1;
             min_width = 320;
-            min_height = 107;
+            min_height = 95 + widgets[WIDX_THEMES_TITLE].height();
             max_width = 320;
-            max_height = 107;
+            max_height = 95 + widgets[WIDX_THEMES_TITLE].height();
         }
 
         void OnResize() override
@@ -282,9 +282,9 @@ namespace OpenRCT2::Ui::Windows
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
             {
                 min_width = 320;
-                min_height = 107;
+                min_height = 95 + widgets[WIDX_THEMES_TITLE].height();
                 max_width = 320;
-                max_height = 107;
+                max_height = 95 + widgets[WIDX_THEMES_TITLE].height();
 
                 if (width < min_width)
                 {
@@ -310,9 +310,9 @@ namespace OpenRCT2::Ui::Windows
             else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES)
             {
                 min_width = 320;
-                min_height = 122;
+                min_height = 110 + widgets[WIDX_THEMES_TITLE].height();
                 max_width = 320;
-                max_height = 122;
+                max_height = 110 + widgets[WIDX_THEMES_TITLE].height();
 
                 if (width < min_width)
                 {
@@ -338,9 +338,9 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 min_width = 320;
-                min_height = 270;
+                min_height = 268 + widgets[WIDX_THEMES_TITLE].height();
                 max_width = 320;
-                max_height = 450;
+                max_height = 438 + widgets[WIDX_THEMES_TITLE].height();
 
                 if (width < min_width)
                 {

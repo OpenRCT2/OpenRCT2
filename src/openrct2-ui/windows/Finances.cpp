@@ -82,9 +82,10 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Measurements
 
-    static constexpr int32_t WH_SUMMARY = 309;
-    static constexpr int32_t WH_RESEARCH = 207;
-    static constexpr int32_t WH_OTHER_TABS = 257;
+    static constexpr int32_t kCostPerWeekOffset = 309;
+    static constexpr int32_t WH_SUMMARY = 297;
+    static constexpr int32_t WH_RESEARCH = 195;
+    static constexpr int32_t WH_OTHER_TABS = 245;
     static constexpr int32_t WW_RESEARCH = 320;
     static constexpr int32_t WW_OTHER_TABS = 530;
     static constexpr int32_t RSH_SUMMARY = 266;
@@ -110,7 +111,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget _windowFinancesSummaryWidgets[] =
     {
-        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
+        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, WH_SUMMARY + 12),
         MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
         MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_FINANCES_SUMMARY_LOAN_VALUE), // NB: 3 widgets.
     };
@@ -493,13 +494,13 @@ namespace OpenRCT2::Ui::Windows
             if (p == WINDOW_FINANCES_PAGE_RESEARCH)
             {
                 width = WW_RESEARCH;
-                height = WH_RESEARCH;
+                height = widgets[WIDX_TITLE].height() + WH_RESEARCH;
                 flags &= ~WF_RESIZABLE;
             }
             else if (p == WINDOW_FINANCES_PAGE_SUMMARY)
             {
                 width = WW_OTHER_TABS;
-                height = WH_SUMMARY;
+                height = widgets[WIDX_TITLE].height() + WH_SUMMARY;
                 flags &= ~WF_RESIZABLE;
             }
             else if (
@@ -508,13 +509,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 flags |= WF_RESIZABLE;
                 WindowSetResize(
-                    *this, WW_OTHER_TABS, WH_OTHER_TABS, std::numeric_limits<int16_t>::max(),
+                    *this, WW_OTHER_TABS, widgets[WIDX_TITLE].height() + WH_OTHER_TABS, std::numeric_limits<int16_t>::max(),
                     std::numeric_limits<int16_t>::max());
             }
             else
             {
                 width = WW_OTHER_TABS;
-                height = WH_OTHER_TABS;
+                height = widgets[WIDX_TITLE].height() + WH_OTHER_TABS;
                 flags &= ~WF_RESIZABLE;
             }
             OnResize();
@@ -702,7 +703,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDrawMarketing(DrawPixelInfo& dpi)
         {
-            auto screenCoords = windowPos + ScreenCoordsXY{ 8, 62 };
+            auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_TAB_1].top + 40 };
             int32_t noCampaignsActive = 1;
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
             {
@@ -757,9 +758,7 @@ namespace OpenRCT2::Ui::Windows
             if (noCampaignsActive)
             {
                 DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
-                screenCoords.y += kListRowHeight;
             }
-            screenCoords.y += 34;
 
             // Draw campaign button text
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
@@ -768,12 +767,11 @@ namespace OpenRCT2::Ui::Windows
                 if (campaignButton->type != WindowWidgetType::Empty)
                 {
                     // Draw button text
+                    screenCoords = windowPos + ScreenCoordsXY{ campaignButton->left, campaignButton->textTop() };
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, kMarketingCampaignNames[i][0]);
                     auto ft = Formatter();
                     ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
-                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);
-
-                    screenCoords.y += kButtonFaceHeight + 2;
+                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ kCostPerWeekOffset, 0 }, STR_MARKETING_PER_WEEK, ft);
                 }
             }
         }
@@ -884,7 +882,7 @@ namespace OpenRCT2::Ui::Windows
     static FinancesWindow* FinancesWindowOpen(uint8_t page)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY + 12, WF_10);
 
         if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
             window->SetPage(page);
@@ -895,7 +893,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* FinancesOpen()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY + 12, WF_10);
     }
 
     WindowBase* FinancesResearchOpen()
