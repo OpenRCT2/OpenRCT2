@@ -1160,17 +1160,6 @@ STR_1773    :每个游乐设施只能建造一个照相区域
 STR_1774    :每个游乐设施只能建造一个牵引轨道
 STR_1777    :设施音乐
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00}熊猫服装
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00}老虎服装
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00}大象服装
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00}罗马服装
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00}大猩猩服装
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00}雪人服装
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00}骑士服装
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00}宇航员服装
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00}土匪服装
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00}警长服装
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00}海盗服装
 STR_1790    :选择这种员工的制服颜色
 STR_1791    :{WINDOW_COLOUR_2}制服的颜色：
 STR_1792    :正在回应{STRINGID}的故障呼叫

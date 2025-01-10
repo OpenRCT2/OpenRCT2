@@ -1160,17 +1160,6 @@ STR_1773    :每個遊樂設施只可建造一個即時照相區域
 STR_1774    :每個遊樂設施只可建造一個纜索坡道
 STR_1777    :音樂
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 熊貓服裝
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} 老虎服裝
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} 大象服裝
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} 羅馬服裝
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} 哥斯拉服裝
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} 雪人服裝
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} 騎士服裝
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} 太空人服裝
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} 土匪服裝
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} 警長服裝
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} 海盜服裝
 STR_1790    :選擇這種員工的制服顏色
 STR_1791    :{WINDOW_COLOUR_2}制服的顏色:
 STR_1792    :回應{STRINGID}的故障呼叫中

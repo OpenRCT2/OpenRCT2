@@ -1160,17 +1160,6 @@ STR_1773    :Csak egy élményfotó-szakasz engedélyezett játékonként
 STR_1774    :Csak egy kábeles felvonószakasz engedélyezett játékonként
 STR_1777    :Játékok zenéje
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda jelmez
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigris jelmez
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefánt jelmez
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Római jelmez
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla jelmez
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Hóember jelmez
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Lovag jelmez
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Űrhajós jelmez
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandita jelmez
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Seriff jelmez
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Kalóz jelmez
 STR_1790    :A választott típusú alkalmazottak által viselt egyenruha színének kiválasztása
 STR_1791    :{WINDOW_COLOUR_2}Egyenruha színe:
 STR_1792    :{STRINGID} segélykérésére válaszol

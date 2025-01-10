@@ -1164,17 +1164,6 @@ STR_1773    :Nur unu sur-atrakcia fotoparto estas permesita po atrakcio
 STR_1774    :Nur unu kablolifta monteto estas permesita po atrakcio
 STR_1777    :Muziko de atrakcio
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandokostumo
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigrokostumo
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefantokostumo
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romianokostumo
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilokostumo
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Neĝhomokostumo
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Kavalirokostumo
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaŭtokostumo
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Banditokostumo
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Ŝerifokostumo
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratokostumo
 STR_1790    :Elekti uniformkoloron de tiaj dungitoj
 STR_1791    :{WINDOW_COLOUR_2}Uniformkoloro:
 STR_1792    :Reagas al paneovoko de {STRINGID}

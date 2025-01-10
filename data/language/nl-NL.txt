@@ -1163,17 +1163,6 @@ STR_1773    :Een attractie mag maar één actiefotogedeelte hebben
 STR_1774    :Een attractie mag maar één kabellift hebben
 STR_1777    :Attractiemuziek
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandapak
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tijgerpak
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Olifantenpak
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romeins kostuum
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorillapak
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Sneeuwpoppak
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Ridderkostuum
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronautenpak
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandietenkostuum
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriffkostuum
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratenkostuum
 STR_1790    :Selecteer de uniformkleur voor dit type werknemer
 STR_1791    :{WINDOW_COLOUR_2}Uniformkleur:
 STR_1792    :Gaat {STRINGID} repareren

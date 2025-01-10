@@ -1164,17 +1164,6 @@ STR_1773    :Vain yksi valokuvaosio sallittu per laite
 STR_1774    :Vain yksi nostomäki sallittu per laite
 STR_1777    :{WINDOW_COLOUR_2}Musiikki
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandapuku
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiikeripuku
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Norsupuku
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Roomalaispuku
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorillapuku
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Lumimiespuku
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Ritaripuku
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronauttipuku
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Rosvopuku
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Seriffipuku
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Merirosvopuku
 STR_1790    :Valitse virka-asun väri tälle henkilöstötyypille
 STR_1791    :{WINDOW_COLOUR_2}Virka-asun väri:
 STR_1792    :Matkalla korjaamaan laitetta {STRINGID}

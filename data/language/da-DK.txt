@@ -1162,17 +1162,6 @@ STR_1773    :Kun en on-ride foto sektion, tilladt per forlystelse
 STR_1774    :Kun et trækspil er tilladt per forlystelse.
 STR_1777    :Forlystelses musik
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda kostume
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger kostume
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefant kostume
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Gladiator kostume
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla kostume
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snemands kostume
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Ridder kostume
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut kostume
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandit kostume
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff kostume
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirat kostume
 STR_1790    :vælg uniforms farve for denne type personale
 STR_1791    :{WINDOW_COLOUR_2}Uniforms farve:
 STR_1792    :Reagerer på et kald til {STRINGID} på grund af nedbrud
