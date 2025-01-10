@@ -921,7 +921,8 @@ namespace OpenRCT2::Ui::Windows
 
                 auto ft = Formatter();
                 ft.Add<const char*>(normalisedPathC);
-                DrawTextEllipsised(dpi, windowPos + ScreenCoordsXY{ 4, 20 }, width - 8, STR_STRING, ft);
+                DrawTextEllipsised(
+                    dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_TITLE].height() + 8 }, width - 8, STR_STRING, ft);
             }
 
             const auto drawButtonCaption = [dpi, this](
