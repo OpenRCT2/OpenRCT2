@@ -37,10 +37,10 @@
 #elif defined(__loongarch__)
     #define OPENRCT2_ARCHITECTURE "LoongArch"
 #endif
-#ifdef __wasm32__
-    #define OPENRCT2_ARCHITECTURE "wasm32"
-#elif defined(__wasm64__)
+#ifdef __wasm64__
     #define OPENRCT2_ARCHITECTURE "wasm64"
+#elif defined(__wasm32__)
+    #define OPENRCT2_ARCHITECTURE "wasm32"
 #endif
 
 #ifndef OPENRCT2_ARCHITECTURE
