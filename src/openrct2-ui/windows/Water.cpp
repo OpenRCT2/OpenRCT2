@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,8 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -252,7 +254,8 @@ namespace OpenRCT2::Ui::Windows
          */
         void WaterToolDrag(const ScreenCoordsXY& screenPos)
         {
-            auto* window = WindowFindFromPoint(screenPos);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* window = windowMgr->FindFromPoint(screenPos);
             if (window == nullptr || window->viewport == nullptr)
                 return;
 

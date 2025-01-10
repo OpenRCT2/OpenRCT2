@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -765,7 +765,8 @@ bool Ride::FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const
     if (rtd.specialType == RtdSpecialType::maze)
         return false;
 
-    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == id)
     {
         RideConstructionInvalidateCurrentTrack();
@@ -2700,7 +2701,9 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
         return { false };
 
     RideId rideIndex = input.element->AsTrack()->GetRideIndex();
-    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
         RideConstructionInvalidateCurrentTrack();
 
@@ -2764,7 +2767,8 @@ static bool RideCheckTrackContainsInversions(const CoordsXYE& input, CoordsXYE* 
             return true;
     }
 
-    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
@@ -2824,7 +2828,8 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
     if (rtd.specialType == RtdSpecialType::maze)
         return true;
 
-    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
@@ -2865,7 +2870,8 @@ static bool RideCheckTrackContainsBanked(const CoordsXYE& input, CoordsXYE* outp
  */
 static int32_t RideCheckStationLength(const CoordsXYE& input, CoordsXYE* output)
 {
-    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0
         && _currentRideIndex == input.element->AsTrack()->GetRideIndex())
     {
@@ -2927,7 +2933,8 @@ static bool RideCheckStartAndEndIsStation(const CoordsXYE& input)
     if (ride == nullptr)
         return false;
 
-    auto w = WindowFindByClass(WindowClass::RideConstruction);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && rideIndex == _currentRideIndex)
     {
         RideConstructionInvalidateCurrentTrack();
@@ -3986,7 +3993,8 @@ void Ride::ConstructMissingEntranceOrExit() const
             return;
         }
 
-        w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w != nullptr)
             w->OnMouseUp(entranceOrExit);
     }
@@ -5022,7 +5030,8 @@ static int32_t RideGetTrackLength(const Ride& ride)
 
     RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
 
-    WindowBase* w = WindowFindByClass(WindowClass::RideConstruction);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
     {
         RideConstructionInvalidateCurrentTrack();

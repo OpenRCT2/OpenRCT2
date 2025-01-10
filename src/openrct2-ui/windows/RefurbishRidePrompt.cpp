@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
@@ -101,10 +103,10 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* RideRefurbishPromptOpen(const Ride& ride)
     {
-        WindowBase* w;
         RefurbishRidePromptWindow* newWindow;
 
-        w = WindowFindByClass(WindowClass::DemolishRidePrompt);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::DemolishRidePrompt);
         if (w != nullptr)
         {
             auto windowPos = w->windowPos;

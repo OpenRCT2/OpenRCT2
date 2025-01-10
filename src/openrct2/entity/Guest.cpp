@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,10 +33,12 @@
 #include "../network/network.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/MusicObject.h"
+#include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"
-#include "../peep/PeepAnimationData.h"
+#include "../peep/PeepAnimations.h"
 #include "../peep/PeepThoughts.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
@@ -51,6 +53,8 @@
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../sprites.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -1450,7 +1454,9 @@ void Guest::CheckCantFindRide()
         return;
 
     GuestHeadingToRideId = RideId::GetNull();
-    WindowBase* w = WindowFindByNumber(WindowClass::Peep, Id);
+
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, Id);
 
     if (w != nullptr)
     {
@@ -1664,9 +1670,6 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
-
-    uint16_t consumptionTime = shopItemDescriptor.ConsumptionTime;
-    TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
 
     if (shopItem == ShopItem::Photo)
         Photo1RideRef = ride.id;
@@ -3142,7 +3145,8 @@ static void PeepLeavePark(Guest* peep)
 
     peep->InsertNewThought(PeepThoughtType::GoHome);
 
-    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, peep->Id);
     if (w != nullptr)
         w->OnPrepareDraw();
     WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
@@ -5690,7 +5694,7 @@ void Guest::UpdateQueuing()
                 case PeepAnimationGroup::Chicken:
                 case PeepAnimationGroup::Lemonade:
                 case PeepAnimationGroup::Pretzel:
-                case PeepAnimationGroup::SuJongkwa:
+                case PeepAnimationGroup::Sujeonggwa:
                 case PeepAnimationGroup::Juice:
                 case PeepAnimationGroup::FunnelCake:
                 case PeepAnimationGroup::Noodles:
@@ -6765,9 +6769,11 @@ void Guest::SetAnimationGroup(PeepAnimationGroup new_sprite_type)
     if (IsActionInterruptable())
         Action = PeepActionType::Walking;
 
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    Guard::Assert(EnumValue(new_sprite_type) < std::size(gAnimationGroupToSlowWalkMap));
-    if (gAnimationGroupToSlowWalkMap[EnumValue(new_sprite_type)])
+    if (animObj->IsSlowWalking(new_sprite_type))
     {
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
@@ -6821,8 +6827,8 @@ static ItemPref item_order_preference[] = {
     { ShopItem::WontonSoup,       PeepAnimationGroup::Soup        },
     { ShopItem::MeatballSoup,     PeepAnimationGroup::Soup        },
     { ShopItem::FruitJuice,       PeepAnimationGroup::Juice       },
-    { ShopItem::SoybeanMilk,      PeepAnimationGroup::SuJongkwa   },
-    { ShopItem::Sujeonggwa,       PeepAnimationGroup::SuJongkwa   },
+    { ShopItem::SoybeanMilk,      PeepAnimationGroup::Sujeonggwa   },
+    { ShopItem::Sujeonggwa,       PeepAnimationGroup::Sujeonggwa   },
     { ShopItem::SubSandwich,      PeepAnimationGroup::Sandwich    },
     { ShopItem::RoastSausage,     PeepAnimationGroup::Sausage     },
     { ShopItem::Balloon,          PeepAnimationGroup::Balloon     },
@@ -7140,6 +7146,8 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     auto& gameState = GetGameState();
     Guest* peep = CreateEntity<Guest>();
+
+    peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Guest);
     peep->AnimationGroup = PeepAnimationGroup::Normal;
     peep->OutsideOfPark = true;
     peep->State = PeepState::Falling;
@@ -7152,10 +7160,13 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->FavouriteRide = RideId::GetNull();
     peep->FavouriteRideRating = 0;
 
-    const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
-    peep->SpriteData.Width = spriteBounds->sprite_width;
-    peep->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
-    peep->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+    const auto& spriteBounds = animObj->GetSpriteBounds(peep->AnimationGroup, peep->AnimationType);
+    peep->SpriteData.Width = spriteBounds.sprite_width;
+    peep->SpriteData.HeightMin = spriteBounds.sprite_height_negative;
+    peep->SpriteData.HeightMax = spriteBounds.sprite_height_positive;
     peep->Orientation = 0;
 
     peep->MoveTo(coords);
@@ -7547,16 +7558,22 @@ void Guest::SetItemFlags(uint64_t itemFlags)
 void Guest::RemoveAllItems()
 {
     ItemFlags = 0;
+    TimeToConsume = 0;
 }
 
 void Guest::RemoveItem(ShopItem item)
 {
     ItemFlags &= ~EnumToFlag(item);
+    TimeToConsume = 0;
 }
 
 void Guest::GiveItem(ShopItem item)
 {
     ItemFlags |= EnumToFlag(item);
+
+    const auto& shopItemDescriptor = GetShopItemDescriptor(item);
+    uint16_t consumptionTime = shopItemDescriptor.ConsumptionTime;
+    TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
 }
 
 bool Guest::HasItem(ShopItem peepItem) const

@@ -1,3 +1,28 @@
+openrct2 (0.4.18-develop-1) unstable; urgency=medium
+
+ * Improved: [#23200] Add banked sloped turns and many other pieces to the Stand-Up and Classic Stand-Up Roller Coaster.
+ * Improved: [#23260] Add diagonal (block) brakes to LSM Launched Roller Coaster.
+ * Improved: [#23350] Increased the maximum width of the ride graph window.
+ * Improved: [#23404] Folders are now paired with an icon in the load/save window.
+ * Improved: [#23405] Filenames can now be input directly into the file browser (load/save) window.
+ * Improved: [#23431] Opaque water and Corkscrew Roller Coaster boosters now show up if RCT1 isn’t linked.
+ * Improved: [objects#369] Updated Russian translation.
+ * Change: [#23413] The max number of park entrance objects has been raised to 255.
+ * Fix: [#1122] Trains spawned on a cable lift hill will fall down and crash (original bug).
+ * Fix: [#19780] Guest screams loop on long drops.
+ * Fix: [#22742, #22793] In game console does not handle format tokens properly.
+ * Fix: [#23135] Map generator tree placement has noticable patterns.
+ * Fix: [#23286] Currency formatted incorrectly in the in game console.
+ * Fix: [#23348] Console set commands don't print output properly.
+ * Fix: [#23376] Peeps with balloons, hats and umbrellas may leave artifacts on screen.
+ * Fix: [#23486] Object selection minimum requirements can be bypassed with close window hotkey.
+ * Fix: [#23496] Newly spawned vehicles are invisible when spawned while the game is paused.
+ * Fix: [#23509] Map generator window reverts to flatland after selecting a heightmap image.
+ * Fix: [objects#359] Fix water colours in Hover Cars preview image.
+ * Fix: [objects#361] Fix water colours in River Styx boats preview image.
+ * Fix: [objects#362] Fix water colours in Neptune Ride preview image.
+ * Fix: [objects#363] Fix water colours in Harpies Trains preview image.
+
 openrct2 (0.4.17-develop-1) unstable; urgency=medium
 
  * Feature: [#23166] Add Galician translation.

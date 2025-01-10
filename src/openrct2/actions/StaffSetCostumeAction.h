@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,11 +16,11 @@ class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffC
 {
 private:
     EntityId _spriteIndex{ EntityId::GetNull() };
-    EntertainerCostume _costume = EntertainerCostume::Count;
+    ObjectEntryIndex _costume = OBJECT_ENTRY_INDEX_NULL;
 
 public:
     StaffSetCostumeAction() = default;
-    StaffSetCostumeAction(EntityId spriteIndex, EntertainerCostume costume);
+    StaffSetCostumeAction(EntityId spriteIndex, ObjectEntryIndex costume);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

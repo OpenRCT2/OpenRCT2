@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,8 @@
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
@@ -275,6 +277,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
@@ -282,7 +285,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_SET_LAND_RIGHTS:
                 {
-                    if (!WindowFindByClass(WindowClass::LandRights))
+                    if (!windowMgr->FindByClass(WindowClass::LandRights))
                         ContextOpenWindow(WindowClass::LandRights);
                     else
                         WindowCloseByClass(WindowClass::LandRights);
@@ -290,7 +293,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_BUILD_PARK_ENTRANCE:
                 {
-                    if (!WindowFindByClass(WindowClass::EditorParkEntrance))
+                    if (!windowMgr->FindByClass(WindowClass::EditorParkEntrance))
                         ContextOpenWindow(WindowClass::EditorParkEntrance);
                     else
                         WindowCloseByClass(WindowClass::EditorParkEntrance);
@@ -354,6 +357,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
             // the flickering frequency is reduced by 4, compared to the original
             // it was done due to inability to reproduce original frequency
             // and decision that the original one looks too fast
@@ -362,12 +367,12 @@ namespace OpenRCT2::Ui::Windows
 
             // Handle guest map flashing
             _flashingFlags &= ~MapFlashingFlags::FlashGuests;
-            if (WindowFindByClass(WindowClass::GuestList) != nullptr)
+            if (windowMgr->FindByClass(WindowClass::GuestList) != nullptr)
                 _flashingFlags |= MapFlashingFlags::FlashGuests;
 
             // Handle staff map flashing
             _flashingFlags &= ~MapFlashingFlags::FlashStaff;
-            if (WindowFindByClass(WindowClass::StaffList) != nullptr)
+            if (windowMgr->FindByClass(WindowClass::StaffList) != nullptr)
                 _flashingFlags |= MapFlashingFlags::FlashStaff;
 
             if (GetCurrentRotation() != _rotation)
@@ -596,18 +601,20 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
             // Set the pressed widgets
             pressed_widgets = 0;
             SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
             pressed_widgets |= (1uLL << (WIDX_PEOPLE_TAB + selected_tab));
 
-            if (WindowFindByClass(WindowClass::EditorParkEntrance))
+            if (windowMgr->FindByClass(WindowClass::EditorParkEntrance))
                 pressed_widgets |= (1uLL << WIDX_BUILD_PARK_ENTRANCE);
 
-            if (WindowFindByClass(WindowClass::LandRights))
+            if (windowMgr->FindByClass(WindowClass::LandRights))
                 pressed_widgets |= (1uLL << WIDX_SET_LAND_RIGHTS);
 
-            if (WindowFindByClass(WindowClass::Mapgen))
+            if (windowMgr->FindByClass(WindowClass::Mapgen))
                 pressed_widgets |= (1uLL << WIDX_MAP_GENERATOR);
 
             // Set disabled widgets

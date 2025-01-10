@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -138,6 +138,16 @@ struct Widget
     {
         moveRight(coords.x - left);
         moveDown(coords.y - top);
+    }
+
+    void moveToX(int16_t x)
+    {
+        moveRight(x - left);
+    }
+
+    void moveToY(int16_t y)
+    {
+        moveDown(y - top);
     }
 
     bool IsVisible() const
@@ -322,17 +332,17 @@ constexpr int32_t WC_TRACK_DESIGN_PLACE__WIDX_ROTATE = 3;
 constexpr int32_t WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON = 6;
 constexpr int32_t WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 = 22;
 constexpr int32_t WC_STAFF__WIDX_PICKUP = 9;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE = 13;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_COPY = 16;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE = 15;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_SORT = 14;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE = 10;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP = 11;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN = 12;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE = 5;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE = 6;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE = 8;
-constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE = 9;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE = 15;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_COPY = 18;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE = 17;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_SORT = 16;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE = 12;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP = 13;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN = 14;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE = 6;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE = 7;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE = 10;
+constexpr int32_t WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE = 11;
 constexpr int32_t WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE = EnumValue(TileInspectorPage::Surface);
 constexpr int32_t WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_INCREASE = 27;
 constexpr int32_t WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_DECREASE = 28;
@@ -483,11 +493,6 @@ void WindowCloseAll();
 void WindowCloseAllExceptClass(WindowClass cls);
 void WindowCloseAllExceptFlags(uint16_t flags);
 void WindowCloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls);
-WindowBase* WindowFindByClass(WindowClass cls);
-WindowBase* WindowFindByNumber(WindowClass cls, rct_windownumber number);
-WindowBase* WindowFindByNumber(WindowClass cls, EntityId id);
-WindowBase* WindowFindFromPoint(const ScreenCoordsXY& screenCoords);
-WidgetIndex WindowFindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords);
 void WindowInvalidateByClass(WindowClass cls);
 void WindowInvalidateByNumber(WindowClass cls, rct_windownumber number);
 void WindowInvalidateByNumber(WindowClass cls, EntityId id);

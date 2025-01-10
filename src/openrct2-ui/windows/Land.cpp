@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,6 +28,8 @@
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -399,15 +401,19 @@ namespace OpenRCT2::Ui::Windows
          */
         void LandToolDrag(const ScreenCoordsXY& screenPos)
         {
-            auto* window = WindowFindFromPoint(screenPos);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* window = windowMgr->FindFromPoint(screenPos);
             if (window == nullptr)
                 return;
-            WidgetIndex widget_index = WindowFindWidgetFromPoint(*window, screenPos);
+
+            WidgetIndex widget_index = windowMgr->FindWidgetFromPoint(*window, screenPos);
             if (widget_index == -1)
                 return;
+
             const auto& widget = window->widgets[widget_index];
             if (widget.type != WindowWidgetType::Viewport)
                 return;
+
             const auto* selectedViewport = window->viewport;
             if (selectedViewport == nullptr)
                 return;

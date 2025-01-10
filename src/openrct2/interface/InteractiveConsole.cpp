@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,6 +45,7 @@
 #include "../interface/Colour.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Formatting.h"
+#include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
@@ -53,6 +54,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
@@ -476,14 +478,15 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
             {
                 console.WriteFormatLine("staff set energy <staff id> <value 0-255>");
                 console.WriteFormatLine("staff set costume <staff id> <costume id>");
-                for (int32_t i = 0; i < static_cast<uint8_t>(EntertainerCostume::Count); i++)
+
+                auto _availableCostumeIndexes = findAllPeepAnimationsIndexesForType(AnimationPeepType::Entertainer);
+                auto _availableCostumeObjects = findAllPeepAnimationsObjectForType(AnimationPeepType::Entertainer);
+
+                for (auto i = 0u; i < _availableCostumeIndexes.size(); i++)
                 {
-                    char costume_name[128] = { 0 };
-                    StringId costume = StaffCostumeNames[i];
-                    OpenRCT2::FormatStringLegacy(costume_name, 128, STR_STRINGID, &costume);
-                    // That's a terrible hack here. Costume names include inline sprites
-                    // that don't work well with the console, so manually skip past them.
-                    console.WriteFormatLine("        costume %i: %s", i, costume_name + 7);
+                    auto index = _availableCostumeIndexes[i];
+                    auto name = _availableCostumeObjects[i]->GetCostumeName();
+                    console.WriteFormatLine("        costume %i: %s", index, name.c_str());
                 }
                 return;
             }
@@ -526,13 +529,14 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                     console.WriteLineError("Specified staff is not entertainer");
                     return;
                 }
-                if (!int_valid[1] || int_val[1] < 0 || int_val[1] >= static_cast<uint8_t>(EntertainerCostume::Count))
+                auto& objManager = GetContext()->GetObjectManager();
+                if (!int_valid[1] || int_val[1] < 0 || objManager.GetLoadedObject<PeepAnimationsObject>(int_val[1]) == nullptr)
                 {
                     console.WriteLineError("Invalid costume ID");
                     return;
                 }
 
-                EntertainerCostume costume = static_cast<EntertainerCostume>(int_val[1]);
+                auto costume = static_cast<ObjectEntryIndex>(int_val[1]);
                 auto staffSetCostumeAction = StaffSetCostumeAction(EntityId::FromUnderlying(int_val[0]), costume);
                 GameActions::Execute(&staffSetCostumeAction);
             }
@@ -1144,27 +1148,28 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
     }
 }
 
-constexpr std::array _objectTypeNames = {
-    "Rides",
-    "Small Scenery",
-    "Large Scenery",
-    "Walls",
-    "Banners",
-    "Paths",
-    "Path Additions",
-    "Scenery groups",
-    "Park entrances",
-    "Water",
-    "Scenario Text",
-    "Terrain Surface",
-    "Terrain Edges",
-    "Stations",
-    "Music",
-    "Footpath Surface",
-    "Footpath Railings",
-    "Audio",
-    "Guest Names",
-};
+constexpr auto _objectTypeNames = std::to_array<StringId>({
+    STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS,
+    STR_OBJECT_SELECTION_SMALL_SCENERY,
+    STR_OBJECT_SELECTION_LARGE_SCENERY,
+    STR_OBJECT_SELECTION_WALLS_FENCES,
+    STR_OBJECT_SELECTION_PATH_SIGNS,
+    STR_OBJECT_SELECTION_FOOTPATHS,
+    STR_OBJECT_SELECTION_PATH_EXTRAS,
+    STR_OBJECT_SELECTION_SCENERY_GROUPS,
+    STR_OBJECT_SELECTION_PARK_ENTRANCE,
+    STR_OBJECT_SELECTION_WATER,
+    STR_OBJECT_SELECTION_SCENARIO_TEXTS,
+    STR_OBJECT_SELECTION_TERRAIN_SURFACES,
+    STR_OBJECT_SELECTION_TERRAIN_EDGES,
+    STR_OBJECT_SELECTION_STATIONS,
+    STR_OBJECT_SELECTION_MUSIC,
+    STR_OBJECT_SELECTION_FOOTPATH_SURFACES,
+    STR_OBJECT_SELECTION_FOOTPATH_RAILINGS,
+    STR_OBJECT_SELECTION_MUSIC,
+    STR_OBJECT_SELECTION_PEEP_NAMES,
+    STR_OBJECT_SELECTION_PEEP_ANIMATIONS,
+});
 static_assert(_objectTypeNames.size() == EnumValue(ObjectType::Count));
 
 static void ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
@@ -1179,8 +1184,11 @@ static void ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unus
                 break;
             }
         }
-        console.WriteFormatLine(
-            "%s: %d/%d", _objectTypeNames[EnumValue(objectType)], entryGroupIndex, getObjectEntryGroupCount(objectType));
+
+        const auto objectStringId = _objectTypeNames[EnumValue(objectType)];
+        const auto* objectString = LanguageGetString(objectStringId);
+
+        console.WriteFormatLine("%s: %d/%d", objectString, entryGroupIndex, getObjectEntryGroupCount(objectType));
     }
 }
 

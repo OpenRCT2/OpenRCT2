@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -975,6 +975,7 @@ enum : ImageIndex
     SPR_G2_ICON_PALETTE_INVISIBLE,
     SPR_G2_ICON_PALETTE_INVISIBLE_PRESSED,
     SPR_G2_FOLDER,
+    SPR_G2_PEEP_ANIMATIONS,
 
     // G2 Loading progress
 

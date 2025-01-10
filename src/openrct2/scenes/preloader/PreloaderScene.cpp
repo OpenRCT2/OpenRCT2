@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,7 +54,7 @@ void PreloaderScene::Tick()
 
     gInUpdateCode = false;
 
-    if (_jobs.CountPending() == 0 && _jobs.CountProcessing() == 0)
+    if (!_jobs.IsBusy())
     {
         // Make sure the job is fully completed.
         _jobs.Join();

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,9 +14,12 @@
 #include <cstdint>
 #include <optional>
 #include <string_view>
+#include <vector>
 
 namespace OpenRCT2
 {
+    struct GameState_t;
+
     enum class TrackElemType : uint16_t;
 
     namespace RCT2
@@ -24,6 +27,7 @@ namespace OpenRCT2
         struct FootpathMapping;
     }
 } // namespace OpenRCT2
+
 struct ObjectEntryDescriptor;
 class ObjectList;
 using ride_type_t = uint16_t;
@@ -35,6 +39,9 @@ void UpdateFootpathsFromMapping(
     ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
     ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
     const OpenRCT2::RCT2::FootpathMapping* footpathMapping);
+
+const std::vector<std::string_view>& GetLegacyPeepAnimationObjects(const ObjectList& entryList);
+void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState);
 
 /**
  * If new pieces get added to existing ride types, this could cause existing parks to change appearance,

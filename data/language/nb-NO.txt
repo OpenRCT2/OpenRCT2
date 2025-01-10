@@ -1158,17 +1158,6 @@ STR_1773    :Kun én fotoseksjon tillatt per bane
 STR_1774    :Kun ett kabeltrekk tillatt per bane
 STR_1777    :Attraksjonsmusikk
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda-kostyme
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger-kostyme
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefant-kostyme
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romer-kostyme
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla-kostyme
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snømann-kostyme
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Ridder-kostyme
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut-kostyme
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Banditt-kostyme
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff-kostyme
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirat-kostyme
 STR_1790    :Velg uniform-farge for denne typen personale
 STR_1791    :{WINDOW_COLOUR_2}Uniform-farge:
 STR_1792    :Svarer på {STRINGID} beskjed om sammenbrudd

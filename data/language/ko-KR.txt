@@ -1166,17 +1166,6 @@ STR_1773    :한 놀이기구에는 하나의 탑승 사진 섹션만 만들 수
 STR_1774    :한 놀이기구에는 하나의 케이블 리프트만 만들 수 있습니다
 STR_1777    :놀이기구 음악
 STR_1778    :{STRINGID} - -
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 판다 복장
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} 호랑이 복장
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} 코끼리 복장
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} 로마 전사 복장
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} 고릴라 복장
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} 눈사람 복장
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} 기사 복장
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} 우주비행사 복장
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} 산적 복장
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} 보안관 복장
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} 해적 복장
 STR_1790    :이 직종의 유니폼 색상을 선택하세요
 STR_1791    :{WINDOW_COLOUR_2}유니폼 색상:
 STR_1792    :{STRINGID} 고장 연락을 받음

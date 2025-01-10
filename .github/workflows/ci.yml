@@ -34,7 +34,7 @@ env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
-  OPENRCT2_VERSION: 0.4.17
+  OPENRCT2_VERSION: 0.4.18
 
 # https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
 concurrency:
@@ -111,21 +111,21 @@ jobs:
           echo "certificate=$certificate"
           echo "sign=$sign" >> $GITHUB_OUTPUT
           echo "certificate=$certificate" >> $GITHUB_OUTPUT
-  lint-commit:
-    name: Lint Commit Message
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Lint Commit Messages
-        uses: wagoid/commitlint-github-action@v5
-        with:
-          configFile: .commitlint.json
+  # lint-commit:
+  #   name: Lint Commit Message
+  #   if: github.event_name == 'pull_request'
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Lint Commit Messages
+  #       uses: wagoid/commitlint-github-action@v5
+  #       with:
+  #         configFile: .commitlint.json
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
@@ -518,16 +518,18 @@ jobs:
   linux-docker:
     name: Ubuntu Linux (Docker)
     needs: [check-code-formatting, build_variables]
-    if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout image
+        if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
         uses: actions/checkout@v4
         with:
           repository: OpenRCT2/openrct2-docker
       - name: Build image
+        if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
         run: docker build -t openrct2/openrct2-cli:develop develop/cli
       - name: Push image
+        if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop'
         env:
           OPENRCT2_DOCKER_USER: ${{ secrets.OPENRCT2_DOCKER_USER }}
           OPENRCT2_DOCKER_PASS: ${{ secrets.OPENRCT2_DOCKER_PASS }}

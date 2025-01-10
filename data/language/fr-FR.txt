@@ -1169,17 +1169,6 @@ STR_1773    :Une seule section photo sur le vif autorisée par attraction
 STR_1774    :Une seule remontée à chaîne autorisée par attraction
 STR_1777    :Musique de l’attraction
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Costume de panda
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Costume de tigre
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Costume d’éléphant
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Costume romain
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Costume de gorille
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Costume de bonhomme de neige
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Costume de chevalier
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Costume d’astronaute
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Costume de bandit
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Costume de shérif
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Costume de pirate
 STR_1790    :Sélectionnez la couleur de l’uniforme pour ce type d’employé
 STR_1791    :{WINDOW_COLOUR_2}Couleur d’uniforme :
 STR_1792    :Va réparer {STRINGID}

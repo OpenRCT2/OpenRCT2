@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,7 @@
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -121,10 +122,12 @@ namespace OpenRCT2::Ui::Windows
         {
             WindowBase* windowToOpen = nullptr;
 
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
             switch (widgetIndex)
             {
                 case WIDX_START_NEW_GAME:
-                    windowToOpen = WindowFindByClass(WindowClass::ScenarioSelect);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::ScenarioSelect);
                     if (windowToOpen != nullptr)
                     {
                         WindowBringToFront(*windowToOpen);
@@ -137,7 +140,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_CONTINUE_SAVED_GAME:
-                    windowToOpen = WindowFindByClass(WindowClass::Loadsave);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::Loadsave);
                     if (windowToOpen != nullptr)
                     {
                         WindowBringToFront(*windowToOpen);
@@ -151,7 +154,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_MULTIPLAYER:
-                    windowToOpen = WindowFindByClass(WindowClass::ServerList);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::ServerList);
                     if (windowToOpen != nullptr)
                     {
                         WindowBringToFront(*windowToOpen);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,7 +57,7 @@ static const wchar_t* _wszCommitSha1Short = WSZ("");
 static const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 static std::map<std::wstring, std::wstring> _uploadFiles;
 
-    #define BACKTRACE_TOKEN "024ed66e0e296ab22777d1292e1d945d78584f350c92fc76c2af843a7db002c9"
+    #define BACKTRACE_TOKEN "164d73675f52d093fe24de22fa205b2f30cf8cfc1ed1c6f043df301b59e16d1d"
 
 using namespace OpenRCT2;
 

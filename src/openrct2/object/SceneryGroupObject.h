@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,8 +15,6 @@
 #include <vector>
 
 struct ObjectRepositoryItem;
-
-enum class EntertainerCostume : uint8_t;
 
 class SceneryGroupObject final : public Object
 {
@@ -47,7 +45,5 @@ public:
 
 private:
     static std::vector<ObjectEntryDescriptor> ReadItems(OpenRCT2::IStream* stream);
-    static uint32_t ReadJsonEntertainerCostumes(json_t& jCostumes);
-    static EntertainerCostume ParseEntertainerCostume(const std::string& s);
     static std::vector<ObjectEntryDescriptor> ReadJsonEntries(IReadObjectContext* context, json_t& jEntries);
 };

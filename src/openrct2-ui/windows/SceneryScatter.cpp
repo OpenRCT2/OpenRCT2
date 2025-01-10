@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,8 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Scenery.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -206,7 +208,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* SceneryScatterOpen()
     {
         // Check if window is already open
-        auto* window = WindowFindByClass(WindowClass::SceneryScatter);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->FindByClass(WindowClass::SceneryScatter);
         if (window == nullptr)
         {
             window = WindowCreate<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100, 0);

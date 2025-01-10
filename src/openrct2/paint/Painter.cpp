@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,25 +9,19 @@
 
 #include "Painter.h"
 
-#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ReplayManager.h"
 #include "../config/Config.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
-#include "../interface/Chat.h"
-#include "../interface/InteractiveConsole.h"
-#include "../interface/Widget.h"
-#include "../interface/Window.h"
-#include "../localisation/FormatCodes.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Language.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenes/intro/IntroScene.h"
-#include "../scenes/title/TitleScene.h"
 #include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../world/TileInspector.h"
 
 using namespace OpenRCT2;
@@ -105,7 +99,8 @@ static bool ShouldShowFPS()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return true;
 
-    return WindowFindByClass(WindowClass::TopToolbar);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    return windowMgr->FindByClass(WindowClass::TopToolbar);
 }
 
 void Painter::PaintFPS(DrawPixelInfo& dpi)

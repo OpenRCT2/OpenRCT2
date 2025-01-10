@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,6 +34,8 @@
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
@@ -1098,7 +1100,8 @@ namespace OpenRCT2::Ui::Windows
      */
     void WindowNewRideFocus(RideSelection rideItem)
     {
-        auto w = static_cast<NewRideWindow*>(WindowFindByClass(WindowClass::ConstructRide));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto w = static_cast<NewRideWindow*>(windowMgr->FindByClass(WindowClass::ConstructRide));
         if (!w)
         {
             return;

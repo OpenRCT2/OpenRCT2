@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1097,7 +1097,8 @@ namespace OpenRCT2::Ui::Windows
         static rct_windownumber GetNewWindowNumber()
         {
             auto result = _nextWindowNumber++;
-            while (WindowFindByNumber(WindowClass::Custom, result) != nullptr)
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            while (windowMgr->FindByNumber(WindowClass::Custom, result) != nullptr)
             {
                 result++;
             }

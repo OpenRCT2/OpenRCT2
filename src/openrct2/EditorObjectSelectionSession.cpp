@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,8 @@
 #include "GameState.h"
 #include "OpenRCT2.h"
 #include "drawing/Drawing.h"
+#include "entity/Guest.h"
+#include "entity/Staff.h"
 #include "localisation/Formatter.h"
 #include "management/Research.h"
 #include "object/DefaultObjects.h"
@@ -246,6 +248,24 @@ void SetupInUseSelectionFlags()
         Editor::SetSelectedObject(ObjectType::Ride, ride.subtype, ObjectSelectionFlags::InUse);
         Editor::SetSelectedObject(ObjectType::Station, ride.entrance_style, ObjectSelectionFlags::InUse);
         Editor::SetSelectedObject(ObjectType::Music, ride.music, ObjectSelectionFlags::InUse);
+    }
+
+    ObjectEntryIndex lastIndex = OBJECT_ENTRY_INDEX_NULL;
+    for (auto* peep : EntityList<Guest>())
+    {
+        if (peep->AnimationObjectIndex == lastIndex)
+            continue;
+
+        lastIndex = peep->AnimationObjectIndex;
+        Editor::SetSelectedObject(ObjectType::PeepAnimations, lastIndex, ObjectSelectionFlags::InUse);
+    }
+    for (auto* peep : EntityList<Staff>())
+    {
+        if (peep->AnimationObjectIndex == lastIndex)
+            continue;
+
+        lastIndex = peep->AnimationObjectIndex;
+        Editor::SetSelectedObject(ObjectType::PeepAnimations, lastIndex, ObjectSelectionFlags::InUse);
     }
 
     // Apply selected object status for hacked vehicles that may not have an associated ride
@@ -666,6 +686,23 @@ bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType)
     return false;
 }
 
+bool EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(uint8_t peepType)
+{
+    auto numObjects = std::min(ObjectRepositoryGetItemsCount(), _objectSelectionFlags.size());
+    const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
+
+    for (size_t i = 0; i < numObjects; i++)
+    {
+        const auto isAnimObjectType = items[i].Type == ObjectType::PeepAnimations;
+        const bool isSelected = _objectSelectionFlags[i] & ObjectSelectionFlags::Selected;
+        if (isAnimObjectType && isSelected && items[i].PeepAnimationsInfo.PeepType == peepType)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue)
 {
     auto numObjects = std::min(ObjectRepositoryGetItemsCount(), _objectSelectionFlags.size());
@@ -710,6 +747,10 @@ int32_t EditorRemoveUnusedObjects()
 
                 // Avoid the used peep names object being deleted as no in-use checks are performed.
                 if (objectType == ObjectType::PeepNames)
+                    continue;
+
+                // Avoid deleting peep animation objects, as it ensures we don't delete the last ones for a kind of peep.
+                if (objectType == ObjectType::PeepAnimations)
                     continue;
 
                 // It’s hard to determine exactly if a scenery group is used, so do not remove these automatically.

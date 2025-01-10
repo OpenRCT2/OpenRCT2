@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,6 +29,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
 
 using namespace OpenRCT2;
@@ -436,7 +437,8 @@ void WindowAllWheelInput()
     // Check window cursor is over
     if (!(InputTestFlag(INPUT_FLAG_5)))
     {
-        WindowBase* w = WindowFindFromPoint(cursorState->position);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindFromPoint(cursorState->position);
         if (w != nullptr)
         {
             // Check if main window
@@ -447,7 +449,7 @@ void WindowAllWheelInput()
             }
 
             // Check scroll view, cursor is over
-            WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*w, cursorState->position);
+            WidgetIndex widgetIndex = windowMgr->FindWidgetFromPoint(*w, cursorState->position);
             if (widgetIndex != -1)
             {
                 const auto& widget = w->widgets[widgetIndex];
@@ -867,7 +869,8 @@ namespace OpenRCT2::Ui::Windows
     {
         if (_usingWidgetTextBox)
         {
-            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            WindowBase* w = windowMgr->FindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
             _currentTextBox.window.classification = WindowClass::Null;
             _currentTextBox.window.number = 0;
             ContextStopTextInput();
@@ -892,7 +895,8 @@ namespace OpenRCT2::Ui::Windows
         if (_usingWidgetTextBox)
         {
             _textBoxFrameNo = 0;
-            WindowBase* w = WindowFindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            WindowBase* w = windowMgr->FindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
             WidgetInvalidate(*w, _currentTextBox.widget_index);
             w->OnTextInput(_currentTextBox.widget_index, _textBoxInput);
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,6 +36,7 @@
 #include "ObjectLimits.h"
 #include "ObjectList.h"
 #include "PathAdditionObject.h"
+#include "PeepAnimationsObject.h"
 #include "PeepNamesObject.h"
 #include "RideObject.h"
 #include "ScenarioTextObject.h"
@@ -390,6 +391,9 @@ namespace OpenRCT2::ObjectFactory
             case ObjectType::PeepNames:
                 result = std::make_unique<PeepNamesObject>();
                 break;
+            case ObjectType::PeepAnimations:
+                result = std::make_unique<PeepAnimationsObject>();
+                break;
             default:
                 throw std::runtime_error("Invalid object type");
         }
@@ -434,6 +438,8 @@ namespace OpenRCT2::ObjectFactory
             return ObjectType::Audio;
         if (s == "peep_names")
             return ObjectType::PeepNames;
+        if (s == "peep_animations")
+            return ObjectType::PeepAnimations;
         return ObjectType::None;
     }
 

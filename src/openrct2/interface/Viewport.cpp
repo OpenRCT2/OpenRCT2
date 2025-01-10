@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1725,7 +1725,8 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
  */
 InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t flags)
 {
-    WindowBase* window = WindowFindFromPoint(screenCoords);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* window = windowMgr->FindFromPoint(screenCoords);
     return GetMapCoordinatesFromPosWindow(window, screenCoords, flags);
 }
 
@@ -1813,7 +1814,8 @@ void ViewportInvalidate(const Viewport* viewport, const ScreenRect& screenRect)
 
 static Viewport* ViewportFindFromPoint(const ScreenCoordsXY& screenCoords)
 {
-    WindowBase* w = WindowFindFromPoint(screenCoords);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindFromPoint(screenCoords);
     if (w == nullptr)
         return nullptr;
 
@@ -1841,8 +1843,10 @@ static Viewport* ViewportFindFromPoint(const ScreenCoordsXY& screenCoords)
  */
 std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewport** viewport)
 {
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
     // This will get the tile location but we will need the more accuracy
-    WindowBase* window = WindowFindFromPoint(screenCoords);
+    WindowBase* window = windowMgr->FindFromPoint(screenCoords);
     if (window == nullptr || window->viewport == nullptr)
     {
         return std::nullopt;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -352,6 +352,7 @@ namespace OpenRCT2::RCT2
             DetermineFlatRideStatus();
             ImportTileElements(gameState);
             ImportEntities();
+            ConvertPeepAnimationTypeToObjects(gameState);
 
             gameState.InitialCash = ToMoney64(_s6.InitialCash);
             gameState.BankLoan = ToMoney64(_s6.CurrentLoan);
@@ -1647,7 +1648,11 @@ namespace OpenRCT2::RCT2
             dst->NextFlags = src->NextFlags;
             dst->State = static_cast<PeepState>(src->State);
             dst->SubState = src->SubState;
+
+            // TODO
+            dst->AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
             dst->AnimationGroup = static_cast<PeepAnimationGroup>(src->AnimationGroup);
+
             dst->TshirtColour = src->TshirtColour;
             dst->TrousersColour = src->TrousersColour;
             dst->DestinationX = src->DestinationX;
@@ -1769,12 +1774,12 @@ namespace OpenRCT2::RCT2
         void ImportEntityCommonProperties(EntityBase* dst, const RCT12EntityBase* src)
         {
             dst->Type = GetEntityTypeFromRCT2Sprite(src);
-            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
             dst->Id = EntityId::FromUnderlying(src->EntityIndex);
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
             dst->SpriteData.Width = src->SpriteWidth;
+            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
             dst->SpriteData.HeightMax = src->SpriteHeightPositive;
             dst->SpriteData.SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
             dst->Orientation = src->EntityDirection;
@@ -1899,6 +1904,9 @@ namespace OpenRCT2::RCT2
             if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && !desc.textObjectId.empty())
                 AppendRequiredObjects(
                     objectList, ObjectType::ScenarioText, std::vector<std::string_view>({ desc.textObjectId }));
+
+            auto animObjects = GetLegacyPeepAnimationObjects(objectList);
+            AppendRequiredObjects(objectList, ObjectType::PeepAnimations, animObjects);
 
             return objectList;
         }

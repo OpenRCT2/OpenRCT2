@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,8 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../windows/TileInspectorGlobals.h"
 #include "Banner.h"
 #include "Footpath.h"
@@ -84,7 +86,8 @@ namespace OpenRCT2::TileInspector
     static bool IsTileSelected(const CoordsXY& loc)
     {
         // Return true for everyone who has the window open and tile selected
-        auto* window = WindowFindByClass(WindowClass::TileInspector);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         return window != nullptr && loc == windowTileInspectorTile.ToCoordsXY();
     }
 

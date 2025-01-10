@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,7 +44,6 @@
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Chat.h"
-#include "interface/InteractiveConsole.h"
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
 #include "localisation/Formatter.h"
@@ -57,7 +56,6 @@
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
 #include "park/ParkFile.h"
-#include "peep/PeepAnimationData.h"
 #include "platform/Crash.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
@@ -1017,7 +1015,6 @@ namespace OpenRCT2
             GfxLoadG2();
             GfxLoadCsg();
             FontSpriteInitialiseCharacters();
-            inferMaxPeepSpriteDimensions();
             return true;
         }
 

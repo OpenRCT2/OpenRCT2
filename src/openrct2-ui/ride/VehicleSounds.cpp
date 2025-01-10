@@ -469,7 +469,7 @@ namespace OpenRCT2::Audio
         volume = volume / 8;
         volume = std::max(volume - 0x1FFF, -10000);
 
-        if (sound.Channel != nullptr && sound.Channel->IsDone())
+        if (sound.Channel != nullptr && sound.Channel->IsDone() && IsLoopingSound(sound.Id))
         {
             sound.Id = SoundId::Null;
             sound.Channel = nullptr;

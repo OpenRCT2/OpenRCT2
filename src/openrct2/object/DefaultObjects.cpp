@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -147,6 +147,12 @@ const std::string_view DefaultSelectedObjects[] = {
 
     // Peep name objects
     "rct2.peep_names.original",
+
+    // Peep animation objects
+    "rct2.peep_animations.guest",
+    "rct2.peep_animations.handyman",
+    "rct2.peep_animations.mechanic",
+    "rct2.peep_animations.security",
 };
 
 const std::string_view DesignerSelectedObjects[] = {

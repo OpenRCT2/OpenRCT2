@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,6 +25,8 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 
@@ -442,9 +444,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowMazeConstructionUpdatePressedWidgets()
     {
-        WindowBase* w;
-
-        w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr)
             return;
 

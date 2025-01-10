@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -403,7 +403,7 @@ public:
 
             case INTENT_ACTION_REFRESH_RIDE_LIST:
             {
-                auto window = WindowFindByClass(WindowClass::RideList);
+                auto window = FindByClass(WindowClass::RideList);
                 if (window != nullptr)
                 {
                     WindowRideListRefreshList(window);
@@ -419,7 +419,7 @@ public:
             case INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS:
             {
                 auto rideIndex = intent.GetUIntExtra(INTENT_EXTRA_RIDE_ID);
-                auto w = WindowFindByClass(WindowClass::RideConstruction);
+                auto w = FindByClass(WindowClass::RideConstruction);
                 if (w == nullptr || w->number != rideIndex)
                 {
                     WindowCloseConstructionWindows();
@@ -519,7 +519,7 @@ public:
             {
                 rct_windownumber bannerIndex = static_cast<rct_windownumber>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
 
-                WindowBase* w = WindowFindByNumber(WindowClass::Banner, bannerIndex);
+                WindowBase* w = FindByNumber(WindowClass::Banner, bannerIndex);
                 if (w != nullptr)
                 {
                     w->Invalidate();
@@ -645,6 +645,126 @@ public:
             }
         }
         return nullptr;
+    }
+
+    /**
+     * Finds the first window with the specified window class.
+     *  rct2: 0x006EA8A0
+     * @param WindowClass enum
+     * @returns the window or nullptr if no window was found.
+     */
+    WindowBase* FindByClass(WindowClass cls) override
+    {
+        for (auto& w : g_window_list)
+        {
+            if (w->flags & WF_DEAD)
+                continue;
+            if (w->classification == cls)
+            {
+                return w.get();
+            }
+        }
+        return nullptr;
+    }
+
+    /**
+     * Finds the first window with the specified window class and number.
+     *  rct2: 0x006EA8A0
+     * @param WindowClass enum
+     * @param window number
+     * @returns the window or nullptr if no window was found.
+     */
+    WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) override
+    {
+        for (auto& w : g_window_list)
+        {
+            if (w->flags & WF_DEAD)
+                continue;
+            if (w->classification == cls && w->number == number)
+            {
+                return w.get();
+            }
+        }
+        return nullptr;
+    }
+
+    // TODO: Use variant for this once the window framework is done.
+    WindowBase* FindByNumber(WindowClass cls, EntityId id) override
+    {
+        return FindByNumber(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
+    }
+
+    /**
+     *
+     *  rct2: 0x006EA845
+     */
+    WindowBase* FindFromPoint(const ScreenCoordsXY& screenCoords) override
+    {
+        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+        {
+            auto& w = *it;
+            if (w->flags & WF_DEAD)
+                continue;
+
+            if (screenCoords.x < w->windowPos.x || screenCoords.x >= w->windowPos.x + w->width
+                || screenCoords.y < w->windowPos.y || screenCoords.y >= w->windowPos.y + w->height)
+                continue;
+
+            if (w->flags & WF_NO_BACKGROUND)
+            {
+                auto widgetIndex = FindWidgetFromPoint(*w.get(), screenCoords);
+                if (widgetIndex == -1)
+                    continue;
+            }
+
+            return w.get();
+        }
+
+        return nullptr;
+    }
+
+    /**
+     *
+     *  rct2: 0x006EA594
+     * x (ax)
+     * y (bx)
+     * returns widget_index if found, -1 otherwise
+     */
+    WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) override
+    {
+        // Invalidate the window
+        w.OnPrepareDraw();
+
+        // Find the widget at point x, y
+        WidgetIndex widget_index = -1;
+        for (int32_t i = 0;; i++)
+        {
+            const auto& widget = w.widgets[i];
+            if (widget.type == WindowWidgetType::Last)
+            {
+                break;
+            }
+
+            if (widget.type != WindowWidgetType::Empty && widget.IsVisible())
+            {
+                if (screenCoords.x >= w.windowPos.x + widget.left && screenCoords.x <= w.windowPos.x + widget.right
+                    && screenCoords.y >= w.windowPos.y + widget.top && screenCoords.y <= w.windowPos.y + widget.bottom)
+                {
+                    widget_index = i;
+                }
+            }
+        }
+
+        // Return next widget if a dropdown
+        if (widget_index != -1)
+        {
+            const auto& widget = w.widgets[widget_index];
+            if (widget.type == WindowWidgetType::DropdownMenu)
+                widget_index++;
+        }
+
+        // Return the widget index
+        return widget_index;
     }
 };
 

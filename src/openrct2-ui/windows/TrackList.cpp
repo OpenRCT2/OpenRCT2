@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,6 +24,8 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <vector>
 
@@ -774,7 +776,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowTrackDesignListReloadTracks()
     {
-        auto* trackListWindow = static_cast<TrackListWindow*>(WindowFindByClass(WindowClass::TrackDesignList));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignList));
         if (trackListWindow != nullptr)
         {
             trackListWindow->ReloadTrackDesigns();
@@ -783,7 +786,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowTrackDesignListSetBeingUpdated(const bool beingUpdated)
     {
-        auto* trackListWindow = static_cast<TrackListWindow*>(WindowFindByClass(WindowClass::TrackDesignList));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* trackListWindow = static_cast<TrackListWindow*>(windowMgr->FindByClass(WindowClass::TrackDesignList));
         if (trackListWindow != nullptr)
         {
             trackListWindow->SetIsBeingUpdated(beingUpdated);

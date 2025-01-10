@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,8 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -547,7 +549,8 @@ namespace OpenRCT2::Ui::Windows
 
     void ChangeShortcutWindow::NotifyShortcutKeysWindow()
     {
-        auto w = WindowFindByClass(WindowClass::KeyboardShortcutList);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto w = windowMgr->FindByClass(WindowClass::KeyboardShortcutList);
         if (w != nullptr)
         {
             static_cast<ShortcutKeysWindow*>(w)->RefreshBindings();
@@ -603,7 +606,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RESET_PROMPT_RESET:
                 {
-                    auto w = WindowFindByClass(WindowClass::KeyboardShortcutList);
+                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    auto w = windowMgr->FindByClass(WindowClass::KeyboardShortcutList);
                     if (w != nullptr)
                     {
                         static_cast<ShortcutKeysWindow*>(w)->ResetAllOnActiveTab();

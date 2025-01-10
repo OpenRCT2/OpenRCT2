@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,6 +22,8 @@
     #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/IconNames.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
+    #include <openrct2/ui/UiContext.h>
+    #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Scripting
 {
@@ -393,7 +395,8 @@ namespace OpenRCT2::Scripting
             if (_class == WindowClass::MainWindow)
                 return WindowGetMain();
 
-            return WindowFindByNumber(_class, _number);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            return windowMgr->FindByNumber(_class, _number);
         }
 
         Widget* GetWidget() const

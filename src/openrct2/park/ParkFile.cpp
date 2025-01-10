@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -383,6 +383,12 @@ namespace OpenRCT2
                 {
                     AppendRequiredObjects(
                         requiredObjects, ObjectType::PeepNames, std::vector<std::string_view>({ "rct2.peep_names.original" }));
+                }
+
+                if (version < kPeepAnimationObjectsVersion)
+                {
+                    auto animObjects = GetLegacyPeepAnimationObjects(requiredObjects);
+                    AppendRequiredObjects(requiredObjects, ObjectType::PeepAnimations, animObjects);
                 }
 
                 RequiredObjects = std::move(requiredObjects);
@@ -1718,6 +1724,12 @@ namespace OpenRCT2
 
             cs.ReadWrite(entity.State);
             cs.ReadWrite(entity.SubState);
+
+            if (version >= kPeepAnimationObjectsVersion)
+                cs.ReadWrite(entity.AnimationObjectIndex);
+            else
+                entity.AnimationObjectIndex = OBJECT_ENTRY_INDEX_NULL;
+
             cs.ReadWrite(entity.AnimationGroup);
 
             if (version <= 1)
@@ -2568,7 +2580,7 @@ namespace OpenRCT2
 
     void ParkFile::ReadWriteEntitiesChunk(GameState_t& gameState, OrcaStream& os)
     {
-        os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [this, &os](OrcaStream::ChunkStream& cs) {
+        os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [this, &gameState, &os](OrcaStream::ChunkStream& cs) {
             if (cs.GetMode() == OrcaStream::Mode::READING)
             {
                 ResetAllEntities();
@@ -2580,6 +2592,12 @@ namespace OpenRCT2
                 ReadEntitiesOfTypes<
                     Vehicle, Guest, Staff, Litter, SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud,
                     CrashSplashParticle, ExplosionFlare, JumpingFountain, Balloon, Duck>(os, cs);
+
+                auto version = os.GetHeader().TargetVersion;
+                if (version < kPeepAnimationObjectsVersion)
+                {
+                    ConvertPeepAnimationTypeToObjects(gameState);
+                }
             }
             else
             {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,9 +36,10 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
+#include "../object/ObjectManager.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../paint/Paint.h"
 #include "../peep/GuestPathfinding.h"
-#include "../peep/PeepAnimationData.h"
 #include "../peep/PeepSpriteIds.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
@@ -48,6 +49,8 @@
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/ConstructionClearance.h"
@@ -121,12 +124,6 @@ static PeepAnimationType PeepActionToAnimationGroupMap[] = {
     PeepAnimationType::DrawPicture,
     PeepAnimationType::BeingWatched,
     PeepAnimationType::WithdrawMoney,
-};
-
-const bool gAnimationGroupToSlowWalkMap[] = {
-    false, false, false, false, false, false, false, false, false, false, false, true, false, false, true,  true,
-    true,  true,  true,  false, true,  false, true,  true,  true,  false, false, true, true,  false, false, true,
-    true,  true,  true,  true,  true,  true,  false, true,  false, true,  true,  true, true,  true,  true,  true,
 };
 
 template<>
@@ -357,10 +354,6 @@ PeepAnimationType Peep::GetAnimationType()
  */
 void Peep::UpdateCurrentAnimationType()
 {
-    if (EnumValue(AnimationGroup) >= EnumValue(PeepAnimationGroup::Count))
-    {
-        return;
-    }
     PeepAnimationType newAnimationType = GetAnimationType();
     if (AnimationType == newAnimationType)
     {
@@ -376,7 +369,10 @@ void Peep::UpdateCurrentAnimationType()
 
 void Peep::UpdateSpriteBoundingBox()
 {
-    const auto& spriteBounds = GetSpriteBounds(AnimationGroup, AnimationType);
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
+    const auto& spriteBounds = animObj->GetSpriteBounds(AnimationGroup, AnimationType);
     SpriteData.Width = spriteBounds.sprite_width;
     SpriteData.HeightMin = spriteBounds.sprite_height_negative;
     SpriteData.HeightMax = spriteBounds.sprite_height_positive;
@@ -469,7 +465,10 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
 bool Peep::UpdateActionAnimation()
 {
-    const PeepAnimation& peepAnimation = GetPeepAnimation(AnimationGroup, AnimationType);
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
+    const PeepAnimation& peepAnimation = animObj->GetPeepAnimation(AnimationGroup, AnimationType);
     AnimationFrameNum++;
 
     // If last frame of action
@@ -527,8 +526,11 @@ std::optional<CoordsXY> Peep::UpdateWalkingAction(const CoordsXY& differenceLoc,
 
 void Peep::UpdateWalkingAnimation()
 {
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
     WalkingAnimationFrameNum++;
-    const PeepAnimation& peepAnimation = GetPeepAnimation(AnimationGroup, AnimationType);
+    const PeepAnimation& peepAnimation = animObj->GetPeepAnimation(AnimationGroup, AnimationType);
     if (WalkingAnimationFrameNum >= peepAnimation.frame_offsets.size())
     {
         WalkingAnimationFrameNum = 0;
@@ -589,7 +591,8 @@ void PeepDecrementNumRiders(Peep* peep)
  */
 void PeepWindowStateUpdate(Peep* peep)
 {
-    WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
     if (w != nullptr)
         w->OnPrepareDraw();
 
@@ -1734,10 +1737,14 @@ void Peep::SwitchNextAnimationType()
     {
         Invalidate();
         AnimationType = NextAnimationType;
-        const SpriteBounds* spriteBounds = &GetSpriteBounds(AnimationGroup, NextAnimationType);
-        SpriteData.Width = spriteBounds->sprite_width;
-        SpriteData.HeightMin = spriteBounds->sprite_height_negative;
-        SpriteData.HeightMax = spriteBounds->sprite_height_positive;
+
+        auto& objManager = GetContext()->GetObjectManager();
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
+        const auto& spriteBounds = animObj->GetSpriteBounds(AnimationGroup, NextAnimationType);
+        SpriteData.Width = spriteBounds.sprite_width;
+        SpriteData.HeightMin = spriteBounds.sprite_height_negative;
+        SpriteData.HeightMax = spriteBounds.sprite_height_positive;
         Invalidate();
     }
 }
@@ -2893,9 +2900,10 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         imageOffset = 0;
     }
 
-    // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
-    //  bound_box_offset_z to make sure peeps are drawn on top of railways
-    uint32_t baseImageId = GetPeepAnimation(AnimationGroup, actionAnimationGroup).base_image;
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
+    uint32_t baseImageId = animObj->GetPeepAnimation(AnimationGroup, actionAnimationGroup).base_image;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
     if (actionAnimationGroup != PeepAnimationType::Hanging)
@@ -2905,33 +2913,46 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
 
     auto imageId = ImageId(baseImageId, TshirtColour, TrousersColour);
 
+    // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
+    // bound_box_offset_z to make sure peeps are drawn on top of railways
     auto bb = BoundBoxXYZ{ { 0, 0, z + 5 }, { 1, 1, 11 } };
     auto offset = CoordsXYZ{ 0, 0, z };
     PaintAddImageAsParent(session, imageId, { 0, 0, z }, bb);
 
     auto* guest = As<Guest>();
-    if (guest != nullptr)
+    if (guest == nullptr)
+        return;
+
+    // There are only 6 walking frames available for each item,
+    // as well as 1 sprite for sitting and 1 for standing still.
+    auto itemFrame = imageOffset % 6;
+    if (actionAnimationGroup == PeepAnimationType::WatchRide)
+        itemFrame = 6;
+    else if (actionAnimationGroup == PeepAnimationType::SittingIdle)
+        itemFrame = 7;
+
+    if (AnimationGroup == PeepAnimationGroup::Hat)
     {
-        if (baseImageId >= kPeepSpriteHatStateWatchRideId && baseImageId < (kPeepSpriteHatStateSittingIdleId + 4))
-        {
-            imageId = ImageId(baseImageId + 32, guest->HatColour);
-            PaintAddImageAsChild(session, imageId, offset, bb);
-            return;
-        }
+        auto itemOffset = kPeepSpriteHatItemStart;
+        imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->HatColour);
+        PaintAddImageAsChild(session, imageId, offset, bb);
+        return;
+    }
 
-        if (baseImageId >= kPeepSpriteBalloonStateWatchRideId && baseImageId < (kPeepSpriteBalloonStateSittingIdleId + 4))
-        {
-            imageId = ImageId(baseImageId + 32, guest->BalloonColour);
-            PaintAddImageAsChild(session, imageId, offset, bb);
-            return;
-        }
+    if (AnimationGroup == PeepAnimationGroup::Balloon)
+    {
+        auto itemOffset = kPeepSpriteBalloonItemStart;
+        imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->BalloonColour);
+        PaintAddImageAsChild(session, imageId, offset, bb);
+        return;
+    }
 
-        if (baseImageId >= kPeepSpriteUmbrellaStateWalkingId && baseImageId < (kPeepSpriteUmbrellaStateSittingIdleId + 4))
-        {
-            imageId = ImageId(baseImageId + 32, guest->UmbrellaColour);
-            PaintAddImageAsChild(session, imageId, offset, bb);
-            return;
-        }
+    if (AnimationGroup == PeepAnimationGroup::Umbrella)
+    {
+        auto itemOffset = kPeepSpriteUmbrellaItemStart;
+        imageId = ImageId(itemOffset + (imageDirection >> 3) + itemFrame * 4, guest->UmbrellaColour);
+        PaintAddImageAsChild(session, imageId, offset, bb);
+        return;
     }
 }
 

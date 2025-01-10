@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -50,7 +50,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kNetworkStreamVersion = 4;
+constexpr uint8_t kNetworkStreamVersion = 1;
 
 const std::string kNetworkStreamID = std::string(OPENRCT2_VERSION) + "-" + std::to_string(kNetworkStreamVersion);
 

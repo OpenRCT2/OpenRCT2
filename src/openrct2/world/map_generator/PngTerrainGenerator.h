@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,15 +9,13 @@
 
 #pragma once
 
-#include "Location.hpp"
+#include "../../core/StringTypes.h"
 
-enum
+namespace OpenRCT2::World::MapGenerator
 {
-    SLOPE_S_THRESHOLD_FLAGS = (1 << 0),
-    SLOPE_W_THRESHOLD_FLAGS = (1 << 1),
-    SLOPE_N_THRESHOLD_FLAGS = (1 << 2),
-    SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
-};
+    struct Settings;
 
-int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b);
-int32_t TileSmooth(const TileCoordsXY& tileCoords);
+    bool LoadHeightmapImage(const utf8* path);
+    void UnloadHeightmapImage();
+    void GenerateFromHeightmapImage(Settings* settings);
+} // namespace OpenRCT2::World::MapGenerator

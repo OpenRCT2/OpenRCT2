@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,15 @@
 
 #include "Legacy.h"
 
+#include "../Context.h"
+#include "../Diagnostic.h"
+#include "../entity/EntityList.h"
+#include "../entity/Guest.h"
+#include "../entity/Staff.h"
+#include "../object/ObjectLimits.h"
 #include "../object/ObjectList.h"
+#include "../object/ObjectManager.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
@@ -2264,6 +2272,94 @@ void UpdateFootpathsFromMapping(
         railingIndex = railingCount++;
     }
     pathToRailingsMap[entryIndex] = railingIndex;
+}
+
+const std::vector<std::string_view> peepAnimObjects = {
+    "rct2.peep_animations.guest",
+    "rct2.peep_animations.handyman",
+    "rct2.peep_animations.mechanic",
+    "rct2.peep_animations.security",
+    "rct2.peep_animations.entertainer_panda",
+    "rct2.peep_animations.entertainer_elephant",
+    "rct2.peep_animations.entertainer_tiger",
+    "rct2.peep_animations.entertainer_astronaut",
+    "rct2.peep_animations.entertainer_bandit",
+    "rct2.peep_animations.entertainer_gorilla",
+    "rct2.peep_animations.entertainer_knight",
+    "rct2.peep_animations.entertainer_pirate",
+    "rct2.peep_animations.entertainer_roman",
+    "rct2.peep_animations.entertainer_sheriff",
+    "rct2.peep_animations.entertainer_snowman",
+};
+
+const std::vector<std::string_view>& GetLegacyPeepAnimationObjects(const ObjectList& entryList)
+{
+    return peepAnimObjects;
+}
+
+using AnimObjectConversionTable = std::map<RCT12PeepAnimationGroup, std::pair<ObjectEntryIndex, PeepAnimationGroup>>;
+
+static AnimObjectConversionTable BuildPeepAnimObjectConversionTable()
+{
+    auto& objectManager = GetContext()->GetObjectManager();
+
+    AnimObjectConversionTable table{};
+    for (auto i = 0u; i < kMaxPeepAnimationsObjects; i++)
+    {
+        auto object = objectManager.GetLoadedObject<PeepAnimationsObject>(i);
+        if (object == nullptr)
+            continue;
+
+        for (auto j = 0u; j < object->GetNumAnimationGroups(); j++)
+        {
+            auto pag = PeepAnimationGroup(j);
+            auto legacyPosition = object->GetLegacyPosition(pag);
+            if (legacyPosition == RCT12PeepAnimationGroup::Invalid)
+                continue;
+
+            table[legacyPosition] = { i, pag };
+        }
+    }
+
+    return table;
+}
+
+template<typename TPeepType>
+static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable& table)
+{
+    if (peep->AnimationObjectIndex != OBJECT_ENTRY_INDEX_NULL)
+        return false;
+
+    // TODO: catch missings
+    auto legacyPAG = RCT12PeepAnimationGroup(peep->AnimationGroup);
+    auto& conversion = table[legacyPAG];
+    peep->AnimationObjectIndex = conversion.first;
+    peep->AnimationGroup = static_cast<PeepAnimationGroup>(conversion.second);
+    return true;
+}
+
+void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState)
+{
+    // First, build a conversion table based on the currently selected objects
+    auto table = BuildPeepAnimObjectConversionTable();
+
+    auto numConverted = 0u;
+
+    // Convert all guests
+    for (auto* guest : EntityList<Guest>())
+    {
+        if (ConvertPeepAnimationType(guest, table))
+            numConverted++;
+    }
+
+    // Convert all staff members
+    for (auto* staff : EntityList<Staff>())
+    {
+        if (ConvertPeepAnimationType(staff, table))
+            numConverted++;
+    }
+
+    LOG_INFO("Converted %d peep entities", numConverted);
 }
 
 bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)

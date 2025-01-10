@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,6 +33,8 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Entrance.h>
@@ -77,9 +79,11 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TITLE,
         WIDX_CLOSE,
         WIDX_LIST,
+        WIDX_SPINNER_X_LABEL,
         WIDX_SPINNER_X,
         WIDX_SPINNER_X_INCREASE,
         WIDX_SPINNER_X_DECREASE,
+        WIDX_SPINNER_Y_LABEL,
         WIDX_SPINNER_Y,
         WIDX_SPINNER_Y_INCREASE,
         WIDX_SPINNER_Y_DECREASE,
@@ -260,8 +264,10 @@ namespace OpenRCT2::Ui::Windows
     #define MAIN_TILE_INSPECTOR_WIDGETS \
         WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
         MakeWidget({3, 57}, {WW - 6, WH - PADDING_BOTTOM - 58}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), /* Element list */ \
-        /* X and Y spinners */ \
+        /* X and Y spinners */          \
+        MakeWidget        ({ 4, 24}, {38, 14}, WindowWidgetType::Label,   WindowColour::Secondary,  STR_TILE_INSPECTOR_X_LABEL), \
         MakeSpinnerWidgets({20, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner X (3 widgets) */ \
+        MakeWidget        ({74, 24}, {38, 14}, WindowWidgetType::Label,   WindowColour::Secondary,  STR_TILE_INSPECTOR_Y_LABEL), \
         MakeSpinnerWidgets({90, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner Y (3 widgets) */ \
         /* Top buttons */ \
         MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 0,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, ImageId(SPR_DEMOLISH),     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */         \
@@ -1044,25 +1050,25 @@ static uint64_t PageDisabledWidgets[] = {
             ScreenCoordsXY screenCoords(windowPos.x, windowPos.y);
 
             // Draw coordinates
-            DrawText(dpi, screenCoords + ScreenCoordsXY(5, 24), { colours[1] }, "X:");
-            DrawText(dpi, screenCoords + ScreenCoordsXY(74, 24), { colours[1] }, "Y:");
+            auto yOffset = widgets[WIDX_SPINNER_X_LABEL].top;
             if (_tileSelected)
             {
                 auto tileCoords = TileCoordsXY{ _toolMap };
                 auto ft = Formatter();
                 ft.Add<int32_t>(tileCoords.x);
                 DrawTextBasic(
-                    dpi, screenCoords + ScreenCoordsXY{ 43, 24 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
+                    dpi, screenCoords + ScreenCoordsXY{ 43, yOffset }, STR_FORMAT_INTEGER, ft,
+                    { colours[1], TextAlignment::RIGHT });
                 ft = Formatter();
                 ft.Add<int32_t>(tileCoords.y);
                 DrawTextBasic(
-                    dpi, screenCoords + ScreenCoordsXY{ 113, 24 }, STR_FORMAT_INTEGER, ft,
+                    dpi, screenCoords + ScreenCoordsXY{ 113, yOffset }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::RIGHT });
             }
             else
             {
-                DrawText(dpi, screenCoords + ScreenCoordsXY(43 - 7, 24), { colours[1] }, "-");
-                DrawText(dpi, screenCoords + ScreenCoordsXY(113 - 7, 24), { colours[1] }, "-");
+                DrawText(dpi, screenCoords + ScreenCoordsXY(43 - 7, yOffset), { colours[1] }, "-");
+                DrawText(dpi, screenCoords + ScreenCoordsXY(113 - 7, yOffset), { colours[1] }, "-");
             }
 
             if (windowTileInspectorSelectedIndex != -1)
@@ -2436,14 +2442,16 @@ static uint64_t PageDisabledWidgets[] = {
 
     void WindowTileInspectorClearClipboard()
     {
-        auto* window = WindowFindByClass(WindowClass::TileInspector);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         if (window != nullptr)
             static_cast<TileInspector*>(window)->ClearClipboard();
     }
 
     void WindowTileInspectorKeyboardShortcutToggleInvisibility()
     {
-        auto* window = WindowFindByClass(WindowClass::TileInspector);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         if (window != nullptr)
             static_cast<TileInspector*>(window)->ToggleInvisibility();
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,12 +22,12 @@ class StaffHireNewAction final : public GameActionBase<GameCommand::HireNewStaff
 private:
     bool _autoPosition{};
     uint8_t _staffType{ EnumValue(StaffType::Count) };
-    EntertainerCostume _entertainerType{ EntertainerCostume::Count };
+    ObjectEntryIndex _costumeIndex;
     uint32_t _staffOrders{};
 
 public:
     StaffHireNewAction() = default;
-    StaffHireNewAction(bool autoPosition, StaffType staffType, EntertainerCostume entertainerType, uint32_t staffOrders);
+    StaffHireNewAction(bool autoPosition, StaffType staffType, ObjectEntryIndex costumeIndex, uint32_t staffOrders);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

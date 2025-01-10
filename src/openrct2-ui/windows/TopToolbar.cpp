@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,13 +37,13 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -778,7 +778,8 @@ namespace OpenRCT2::Ui::Windows
         void ApplyFootpathPressed()
         {
             // Footpath button pressed down
-            if (WindowFindByClass(WindowClass::Footpath) == nullptr)
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            if (windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
                 pressed_widgets &= ~(1uLL << WIDX_PATH);
             else
                 pressed_widgets |= (1uLL << WIDX_PATH);
@@ -1139,7 +1140,9 @@ namespace OpenRCT2::Ui::Windows
                     w->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
                     break;
                 case DDIDX_VIEW_CLIPPING:
-                    if (WindowFindByClass(WindowClass::ViewClipping) == nullptr)
+                {
+                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    if (windowMgr->FindByClass(WindowClass::ViewClipping) == nullptr)
                     {
                         ContextOpenWindow(WindowClass::ViewClipping);
                     }
@@ -1149,6 +1152,7 @@ namespace OpenRCT2::Ui::Windows
                         w->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
                     }
                     break;
+                }
                 case DDIDX_HIGHLIGHT_PATH_ISSUES:
                     w->viewport->flags ^= VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES;
                     break;
@@ -1506,7 +1510,8 @@ namespace OpenRCT2::Ui::Windows
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
             colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, TOP_TOOLBAR_DEBUG_COUNT);
 
-        Dropdown::SetChecked(DDIDX_DEBUG_PAINT, WindowFindByClass(WindowClass::DebugPaint) != nullptr);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        Dropdown::SetChecked(DDIDX_DEBUG_PAINT, windowMgr->FindByClass(WindowClass::DebugPaint) != nullptr);
     }
 
     void TopToolbar::DebugMenuDropdown(int16_t dropdownIndex)
@@ -1523,7 +1528,9 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case DDIDX_DEBUG_PAINT:
-                    if (WindowFindByClass(WindowClass::DebugPaint) == nullptr)
+                {
+                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    if (windowMgr->FindByClass(WindowClass::DebugPaint) == nullptr)
                     {
                         ContextOpenWindow(WindowClass::DebugPaint);
                     }
@@ -1532,6 +1539,7 @@ namespace OpenRCT2::Ui::Windows
                         WindowCloseByClass(WindowClass::DebugPaint);
                     }
                     break;
+                }
             }
         }
     }

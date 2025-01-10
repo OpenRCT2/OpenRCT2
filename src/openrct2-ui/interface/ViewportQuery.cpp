@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,10 @@
 #include "Window.h"
 
 #include <algorithm>
+#include <openrct2/Context.h>
 #include <openrct2/core/Numerics.hpp>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/PathElement.h>
@@ -36,7 +39,8 @@ namespace OpenRCT2::Ui
      */
     CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
     {
-        WindowBase* window = WindowFindFromPoint(screenCoords);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* window = windowMgr->FindFromPoint(screenCoords);
         if (window == nullptr || window->viewport == nullptr)
         {
             CoordsXY position{};
@@ -134,7 +138,8 @@ namespace OpenRCT2::Ui
     CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
     {
         // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
-        WindowBase* window = WindowFindFromPoint(screenCoords);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* window = windowMgr->FindFromPoint(screenCoords);
         if (window == nullptr || window->viewport == nullptr)
         {
             CoordsXY ret{};

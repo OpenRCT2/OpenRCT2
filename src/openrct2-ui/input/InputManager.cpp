@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,6 +24,7 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Ui;
 
@@ -209,8 +210,10 @@ void InputManager::Process(const InputEvent& e)
 
         if (e.DeviceKind == InputDeviceKind::Keyboard)
         {
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
             // TODO: replace with event
-            auto w = WindowFindByClass(WindowClass::Textinput);
+            auto w = windowMgr->FindByClass(WindowClass::Textinput);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -221,7 +224,7 @@ void InputManager::Process(const InputEvent& e)
             }
 
             // TODO: replace with event
-            w = WindowFindByClass(WindowClass::LoadsaveOverwritePrompt);
+            w = windowMgr->FindByClass(WindowClass::LoadsaveOverwritePrompt);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -232,7 +235,7 @@ void InputManager::Process(const InputEvent& e)
             }
 
             // TODO: replace with event
-            w = WindowFindByClass(WindowClass::Loadsave);
+            w = windowMgr->FindByClass(WindowClass::Loadsave);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
@@ -421,7 +424,8 @@ bool InputManager::HasTextInputFocus() const
     if (OpenRCT2::Ui::Windows::IsUsingWidgetTextBox() || gChatOpen)
         return true;
 
-    auto w = WindowFindByClass(WindowClass::Textinput);
+    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto w = windowMgr->FindByClass(WindowClass::Textinput);
     if (w != nullptr)
         return true;
 

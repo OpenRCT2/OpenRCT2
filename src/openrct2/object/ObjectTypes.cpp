@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,17 +34,18 @@ constexpr std::array kAllObjectTypes = {
     ObjectType::FootpathRailings,
     ObjectType::Audio,
     ObjectType::PeepNames,
+    ObjectType::PeepAnimations,
 };
 
 static_assert(kAllObjectTypes.size() == EnumValue(ObjectType::Count));
 
 // Object types that can be saved in a park file.
 static constexpr std::array<const ObjectType, kNumTransientObjectTypes> kTransientObjectTypes = {
-    ObjectType::Ride,         ObjectType::SmallScenery, ObjectType::LargeScenery,    ObjectType::Walls,
-    ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathAdditions,   ObjectType::SceneryGroup,
-    ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
-    ObjectType::Station,      ObjectType::Music,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
-    ObjectType::PeepNames,
+    ObjectType::Ride,         ObjectType::SmallScenery,   ObjectType::LargeScenery,    ObjectType::Walls,
+    ObjectType::Banners,      ObjectType::Paths,          ObjectType::PathAdditions,   ObjectType::SceneryGroup,
+    ObjectType::ParkEntrance, ObjectType::Water,          ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
+    ObjectType::Station,      ObjectType::Music,          ObjectType::FootpathSurface, ObjectType::FootpathRailings,
+    ObjectType::PeepNames,    ObjectType::PeepAnimations,
 };
 
 // Object types that cannot be saved in a park file.

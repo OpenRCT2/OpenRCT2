@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -983,6 +983,61 @@ enum class RCT12PeepType : uint8_t
     Staff,
 
     Invalid = 0xFF
+};
+
+enum class RCT12PeepAnimationGroup : uint8_t
+{
+    Normal = 0,
+    Handyman = 1,
+    Mechanic = 2,
+    Security = 3,
+    EntertainerPanda = 4,
+    EntertainerTiger = 5,
+    EntertainerElephant = 6,
+    EntertainerRoman = 7,
+    EntertainerGorilla = 8,
+    EntertainerSnowman = 9,
+    EntertainerKnight = 10,
+    EntertainerAstronaut = 11,
+    EntertainerBandit = 12,
+    EntertainerSheriff = 13,
+    EntertainerPirate = 14,
+    IceCream = 15,
+    Chips = 16,
+    Burger = 17,
+    Drink = 18,
+    Balloon = 19,
+    Candyfloss = 20,
+    Umbrella = 21,
+    Pizza = 22,
+    SecurityAlt = 23,
+    Popcorn = 24,
+    ArmsCrossed = 25,
+    HeadDown = 26,
+    Nauseous = 27,
+    VeryNauseous = 28,
+    RequireToilet = 29,
+    Hat = 30,
+    HotDog = 31,
+    Tentacle = 32,
+    ToffeeApple = 33,
+    Doughnut = 34,
+    Coffee = 35,
+    Chicken = 36,
+    Lemonade = 37,
+    Watching = 38,
+    Pretzel = 39,
+    Sunglasses = 40,
+    Sujeonggwa = 41,
+    Juice = 42,
+    FunnelCake = 43,
+    Noodles = 44,
+    Sausage = 45,
+    Soup = 46,
+    Sandwich = 47,
+    Count = 48,
+
+    Invalid = 255
 };
 
 struct RCT12EntityBase

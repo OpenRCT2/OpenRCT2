@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,11 +21,13 @@
 #include <openrct2/entity/Guest.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepThoughts.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <vector>
 
@@ -651,7 +653,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // Tab 1 image
             auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
-            i += GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
+            auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
+            i += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
             GfxDrawSprite(
                 dpi, ImageId(i, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 });
@@ -992,7 +995,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowGuestListRefreshList()
     {
-        auto* w = WindowFindByClass(WindowClass::GuestList);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* w = windowMgr->FindByClass(WindowClass::GuestList);
         if (w != nullptr)
         {
             static_cast<GuestListWindow*>(w)->RefreshList();

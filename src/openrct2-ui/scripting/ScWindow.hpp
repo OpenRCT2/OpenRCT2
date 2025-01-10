@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -362,7 +362,8 @@ namespace OpenRCT2::Scripting
     private:
         WindowBase* GetWindow() const
         {
-            return WindowFindByNumber(_class, _number);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            return windowMgr->FindByNumber(_class, _number);
         }
     };
 } // namespace OpenRCT2::Scripting

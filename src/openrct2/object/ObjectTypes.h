@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,12 +40,13 @@ enum class ObjectType : uint8_t
     FootpathRailings,
     Audio,
     PeepNames,
+    PeepAnimations,
 
     Count,
     None = 255
 };
 
-static constexpr size_t kNumTransientObjectTypes = 17;
+static constexpr size_t kNumTransientObjectTypes = 18;
 static constexpr size_t kNumIntransientObjectTypes = 2;
 
 bool ObjectTypeIsTransient(ObjectType type);

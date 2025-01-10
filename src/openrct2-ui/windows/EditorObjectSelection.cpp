@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,7 @@
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/object/SceneryGroupObject.h>
 #include <openrct2/platform/Platform.h>
@@ -38,6 +39,8 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <span>
 #include <string>
@@ -176,6 +179,11 @@ namespace OpenRCT2::Ui::Windows
         { STR_OBJECT_SELECTION_WATER,             ObjectType::Water,            FILTER_NONE, SPR_TAB_WATER,           1, 1 },
     };
 
+    static ObjectSubTab kPeepObjectSubTabs[] = {
+        { STR_OBJECT_SELECTION_PEEP_ANIMATIONS,   ObjectType::PeepAnimations,   FILTER_NONE, SPR_G2_PEEP_ANIMATIONS, 1, 1 },
+        { STR_OBJECT_SELECTION_PEEP_NAMES,        ObjectType::PeepNames,        FILTER_NONE, SPR_TAB_GUESTS_0,       1, 1 },
+    };
+
     static constexpr ObjectPageDesc ObjectSelectionPages[] = {
         { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::Ride,            SPR_TAB_RIDE_16,         kRideObjectSubTabs },
         { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::SceneryGroup,    SPR_TAB_SCENERY_STATUES, kSceneryObjectSubTabs },
@@ -183,7 +191,7 @@ namespace OpenRCT2::Ui::Windows
         { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,    SPR_TAB_PARK,            kEntrancesObjectSubTabs },
         { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,  SPR_G2_TAB_LAND,         kTerrainObjectSubTabs },
         { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,           SPR_TAB_MUSIC_0,         {} },
-        { STR_OBJECT_SELECTION_PEEP_NAMES,                ObjectType::PeepNames,       SPR_TAB_GUESTS_0,        {} },
+        { STR_OBJECT_SELECTION_PEEP_NAMES,                ObjectType::PeepNames,       SPR_TAB_GUESTS_0,        kPeepObjectSubTabs },
     };
     // clang-format on
 
@@ -226,7 +234,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget         ({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
         MakeWidget         ({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
         MakeWidget         ({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
-        MakeWidget         ({350, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
+        MakeWidget         ({340, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
         MakeDropdownWidgets({470, 22}, {114,  14}, WindowWidgetType::DropdownMenu, WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
         MakeWidget         ({  4, 45}, {211,  14}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                                  ),
         MakeWidget         ({218, 45}, { 70,  14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
@@ -850,11 +858,13 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LIST].bottom = height - 14;
             widgets[WIDX_PREVIEW].left = width - 209;
             widgets[WIDX_PREVIEW].right = width - 96;
-            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, 22 }, { kFilterWidth, 14 });
-            widgets[WIDX_INSTALL_TRACK].left = width - 250;
-            widgets[WIDX_INSTALL_TRACK].right = width - 137;
             widgets[WIDX_RELOAD_OBJECT].left = width - 9 - 24;
             widgets[WIDX_RELOAD_OBJECT].right = width - 9;
+
+            auto& dropdownWidget = widgets[WIDX_FILTER_DROPDOWN];
+            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, dropdownWidget.top }, { kFilterWidth, 14 });
+            auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
+            installTrackWidget.moveToX(dropdownWidget.left - installTrackWidget.width() - 10);
 
             // Set pressed widgets
             pressed_widgets |= 1uLL << WIDX_PREVIEW;
@@ -862,7 +872,6 @@ namespace OpenRCT2::Ui::Windows
 
             // Set window title and buttons
             auto& titleWidget = widgets[WIDX_TITLE];
-            auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
             {
                 titleWidget.text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
@@ -1327,6 +1336,24 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        StringId GetAnimationPeepTypeStringId(AnimationPeepType type)
+        {
+            switch (type)
+            {
+                case AnimationPeepType::Handyman:
+                    return STR_HANDYMAN_PLURAL;
+                case AnimationPeepType::Mechanic:
+                    return STR_MECHANIC_PLURAL;
+                case AnimationPeepType::Security:
+                    return STR_SECURITY_GUARD_PLURAL;
+                case AnimationPeepType::Entertainer:
+                    return STR_ENTERTAINER_PLURAL;
+                case AnimationPeepType::Guest:
+                default:
+                    return STR_GUESTS;
+            }
+        }
+
         void DrawDebugData(DrawPixelInfo& dpi)
         {
             ObjectListItem* listItem = &_listItems[selected_list_item];
@@ -1343,6 +1370,14 @@ namespace OpenRCT2::Ui::Windows
             if (GetSelectedObjectType() == ObjectType::Ride)
             {
                 auto stringId = GetRideTypeStringId(listItem->repositoryItem);
+                DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+            }
+
+            // Draw peep animation object type
+            if (GetSelectedObjectType() == ObjectType::PeepAnimations)
+            {
+                auto* animObj = reinterpret_cast<PeepAnimationsObject*>(_loadedObject.get());
+                auto stringId = GetAnimationPeepTypeStringId(animObj->GetPeepType());
                 DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             }
 
@@ -1706,8 +1741,6 @@ namespace OpenRCT2::Ui::Windows
 
     bool EditorObjectSelectionWindowCheck()
     {
-        WindowBase* w;
-
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
         if (missingObjectType == ObjectType::None)
         {
@@ -1716,7 +1749,9 @@ namespace OpenRCT2::Ui::Windows
         }
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
-        w = WindowFindByClass(WindowClass::EditorObjectSelection);
+
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {
             // Click tab with missing object

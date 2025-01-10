@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,13 +30,16 @@
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/network/network.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
@@ -558,8 +561,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            int32_t animationFrame = GetPeepAnimation(peep->AnimationGroup).base_image + 1;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
+            int32_t animationFrame = animObj->GetPeepAnimation(peep->AnimationGroup).base_image + 1;
             int32_t animationFrameOffset = 0;
 
             if (page == WINDOW_GUEST_OVERVIEW)
@@ -573,27 +578,31 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(clipDpi, spriteId, screenCoords);
 
             auto* guest = peep->As<Guest>();
-            if (guest != nullptr)
+            if (guest == nullptr)
+                return;
+
+            // There are only 6 walking frames available for each item.
+            auto itemFrame = (_guestAnimationFrame / 4) % 6;
+
+            if (guest->AnimationGroup == PeepAnimationGroup::Hat)
             {
-                // If holding a balloon
-                if (animationFrame >= kPeepSpriteBalloonStateWatchRideId
-                    && animationFrame < kPeepSpriteBalloonStateSittingIdleId + 4)
-                {
-                    GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
-                }
+                auto itemOffset = kPeepSpriteHatItemStart + 1;
+                auto imageId = ImageId(itemOffset + itemFrame * 4, guest->HatColour);
+                GfxDrawSprite(clipDpi, imageId, screenCoords);
+            }
 
-                // If holding umbrella
-                if (animationFrame >= kPeepSpriteUmbrellaStateWalkingId
-                    && animationFrame < kPeepSpriteUmbrellaStateSittingIdleId + 4)
-                {
-                    GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
-                }
+            if (guest->AnimationGroup == PeepAnimationGroup::Balloon)
+            {
+                auto itemOffset = kPeepSpriteBalloonItemStart + 1;
+                auto imageId = ImageId(itemOffset + itemFrame * 4, guest->BalloonColour);
+                GfxDrawSprite(clipDpi, imageId, screenCoords);
+            }
 
-                // If wearing hat
-                if (animationFrame >= kPeepSpriteHatStateWatchRideId && animationFrame < kPeepSpriteHatStateSittingIdleId + 4)
-                {
-                    GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
-                }
+            if (guest->AnimationGroup == PeepAnimationGroup::Umbrella)
+            {
+                auto itemOffset = kPeepSpriteUmbrellaItemStart + 1;
+                auto imageId = ImageId(itemOffset + itemFrame * 4, guest->UmbrellaColour);
+                GfxDrawSprite(clipDpi, imageId, screenCoords);
             }
         }
 
@@ -643,7 +652,8 @@ namespace OpenRCT2::Ui::Windows
                     pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error != GameActions::Status::Ok)
                             return;
-                        WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
+                        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                        WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
                             ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
@@ -869,21 +879,30 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateOverview()
         {
-            _guestAnimationFrame++;
-            _guestAnimationFrame %= 24;
-
-            // Update pickup animation, can only happen in this tab.
-            picked_peep_frame++;
-            picked_peep_frame %= 48;
-
-            WidgetInvalidate(*this, WIDX_TAB_1);
-            WidgetInvalidate(*this, WIDX_TAB_2);
-
             const auto peep = GetGuest();
             if (peep == nullptr)
             {
                 return;
             }
+
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+            // Overview tab animation offset
+            _guestAnimationFrame++;
+            _guestAnimationFrame %= 24;
+
+            // Get pickup animation length
+            const auto& pickAnim = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging);
+            const auto pickAnimLength = pickAnim.frame_offsets.size();
+
+            // Update pickup animation, can only happen in this tab.
+            picked_peep_frame++;
+            picked_peep_frame %= pickAnimLength * 4;
+
+            WidgetInvalidate(*this, WIDX_TAB_1);
+            WidgetInvalidate(*this, WIDX_TAB_2);
+
             if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
             {
                 peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
@@ -958,7 +977,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto baseImageId = GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging).base_image;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+            auto baseImageId = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging).base_image;
             baseImageId += picked_peep_frame >> 2;
             gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
         }

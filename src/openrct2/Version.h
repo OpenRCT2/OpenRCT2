@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,7 @@
 #include <string>
 
 #define OPENRCT2_NAME "OpenRCT2"
-#define OPENRCT2_VERSION "0.4.17"
+#define OPENRCT2_VERSION "0.4.18"
 
 #if defined(__amd64__) || defined(_M_AMD64)
     #define OPENRCT2_ARCHITECTURE "x86-64"
@@ -34,6 +34,8 @@
     #define OPENRCT2_ARCHITECTURE "mips"
 #elif defined(__riscv)
     #define OPENRCT2_ARCHITECTURE "RISC-V"
+#elif defined(__loongarch__)
+    #define OPENRCT2_ARCHITECTURE "LoongArch"
 #endif
 #ifdef __wasm32__
     #define OPENRCT2_ARCHITECTURE "wasm32"

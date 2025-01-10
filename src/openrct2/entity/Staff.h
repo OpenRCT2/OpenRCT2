@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -155,12 +155,8 @@ enum class EntertainerCostume : uint8_t
     Count
 };
 
-extern const StringId StaffCostumeNames[EnumValue(EntertainerCostume::Count)];
-
 colour_t StaffGetColour(StaffType staffType);
 OpenRCT2::GameActions::Result StaffSetColour(StaffType staffType, colour_t value);
-uint32_t StaffGetAvailableEntertainerCostumes();
-int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList);
 
 money64 GetStaffWage(StaffType type);
 PeepAnimationGroup EntertainerCostumeToSprite(EntertainerCostume entertainerType);

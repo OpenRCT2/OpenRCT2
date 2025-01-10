@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,7 +36,7 @@ static constexpr std::array<int32_t, EnumValue(ObjectType::Count)> kObjectEntryG
     kMaxScenarioTextObjects, // scenario text
     kMaxTerrainSurfaceObjects, kMaxTerrainEdgeObjects,     kMaxStationObjects,
     kMaxMusicObjects,          kMaxFootpathSurfaceObjects, kMaxFootpathRailingsObjects,
-    kMaxAudioObjects,          kMaxPeepNamesObjects,
+    kMaxAudioObjects,          kMaxPeepNamesObjects,       kMaxPeepAnimationsObjects,
 };
 static_assert(std::size(kObjectEntryGroupCounts) == EnumValue(ObjectType::Count));
 

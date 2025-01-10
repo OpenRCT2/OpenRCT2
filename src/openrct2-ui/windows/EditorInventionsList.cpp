@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -25,6 +26,8 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Scenery.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -489,7 +492,9 @@ namespace OpenRCT2::Ui::Windows
             if (windowPos.x <= screenCoords.x && windowPos.y < screenCoords.y && windowPos.x + width > screenCoords.x
                 && windowPos.y + height > screenCoords.y)
             {
-                WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*this, screenCoords);
+                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                WidgetIndex widgetIndex = windowMgr->FindWidgetFromPoint(*this, screenCoords);
+
                 auto& widget = widgets[widgetIndex];
                 if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
                 {
@@ -612,7 +617,9 @@ namespace OpenRCT2::Ui::Windows
 
         CursorID OnCursor(const WidgetIndex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
         {
-            auto* inventionListWindow = static_cast<InventionListWindow*>(WindowFindByClass(WindowClass::EditorInventionList));
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* inventionListWindow = static_cast<InventionListWindow*>(
+                windowMgr->FindByClass(WindowClass::EditorInventionList));
             if (inventionListWindow != nullptr)
             {
                 auto res = inventionListWindow->GetResearchItemAt(screenCoords);
@@ -629,7 +636,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMoved(const ScreenCoordsXY& screenCoords) override
         {
-            auto* inventionListWindow = static_cast<InventionListWindow*>(WindowFindByClass(WindowClass::EditorInventionList));
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* inventionListWindow = static_cast<InventionListWindow*>(
+                windowMgr->FindByClass(WindowClass::EditorInventionList));
             if (inventionListWindow == nullptr)
             {
                 Close();
@@ -695,7 +704,8 @@ namespace OpenRCT2::Ui::Windows
 
     static const ResearchItem* WindowEditorInventionsListDragGetItem()
     {
-        auto* wnd = static_cast<InventionDragWindow*>(WindowFindByClass(WindowClass::EditorInventionListDrag));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* wnd = static_cast<InventionDragWindow*>(windowMgr->FindByClass(WindowClass::EditorInventionListDrag));
         if (wnd == nullptr)
         {
             return nullptr;

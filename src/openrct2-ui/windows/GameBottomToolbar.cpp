@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,7 +25,8 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
@@ -285,7 +286,10 @@ namespace OpenRCT2::Ui::Windows
                         clipCoords.y += 3;
                     }
 
-                    uint32_t image_id_base = GetPeepAnimation(peep->AnimationGroup).base_image;
+                    auto& objManager = GetContext()->GetObjectManager();
+                    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+                    uint32_t image_id_base = animObj->GetPeepAnimation(peep->AnimationGroup).base_image;
                     image_id_base += frame_no & 0xFFFFFFFC;
                     image_id_base++;
 

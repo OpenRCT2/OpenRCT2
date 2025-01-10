@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -76,7 +76,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 29;
+    static constexpr uint16_t VERSION = 30;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -159,6 +159,9 @@ protected:
             }
             case ObjectType::FootpathSurface:
                 ds << item.FootpathSurfaceInfo.Flags;
+                break;
+            case ObjectType::PeepAnimations:
+                ds << item.PeepAnimationsInfo.PeepType;
                 break;
             default:
                 // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup

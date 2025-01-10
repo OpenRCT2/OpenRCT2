@@ -1161,17 +1161,6 @@ STR_1773    :Bara en fotosektion tillåten per åktur
 STR_1774    :Bara en uppskjutskulle tillåten per åktur
 STR_1777    :Musik för åkturer
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandadräkt
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigerdräkt
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefantdräkt
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romersk dräkt
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilladräkt
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snögubbedräkt
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Riddardräkt
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronautdräkt
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Banditdräkt
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriffdräkt
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratdräkt
 STR_1790    :Välj uniformfärg för den här sortens personal
 STR_1791    :{WINDOW_COLOUR_2}Uniformfärg:
 STR_1792    :Svarar på radioanrop om {STRINGID}
