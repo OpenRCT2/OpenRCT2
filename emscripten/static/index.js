@@ -13,6 +13,10 @@
     {
         document.getElementById("loadingWebassembly").innerText = "Error! SharedArrayBuffer is not defined. This page required the CORP and COEP response headers.";
     }
+    if (!window.WebAssembly)
+    {
+        document.getElementById("loadingWebassembly").innerText = "Error! This page requires WebAssembly. Please upgrade your browser or enable WebAssembly support.";
+    }
 
     window.Module = await window.OPENRCT2_WEB(
         {
@@ -160,8 +164,12 @@ async function updateAssets() {
     } catch(e) {
         console.log("No asset version found");
     };
-
-    const assets_version = Module.ccall("GetVersion", "string");
+    let assetsVersion = "DEBUG";
+    try {
+        assetsVersion = Module.ccall("GetVersion", "string");
+    } catch(e) {
+        console.warn("Could not call 'GetVersion'! Is it added to EXPORTED_FUNCTIONS? Is ccall added to EXPORTED_RUNTIME_METHODS?");
+    };
 
     //Always pull assets on a debug build
     if (currentVersion !== assets_version || assets_version.includes("DEBUG"))
