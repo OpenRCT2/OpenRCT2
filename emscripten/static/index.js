@@ -172,16 +172,16 @@ async function updateAssets() {
     };
 
     //Always pull assets on a debug build
-    if (currentVersion !== assets_version || assets_version.includes("DEBUG"))
+    if (currentVersion !== assetsVersion || assetsVersion.includes("DEBUG"))
     {
-        console.log("Updating assets to", assets_version);
+        console.log("Updating assets to", assetsVersion);
         document.getElementById("loadingWebassembly").innerText = "Asset update found. Downloading...";
         await clearDatabase("/OpenRCT2/");
         await extractZip(await (await fetch("assets.zip")).blob(), () =>
         {
             return "/OpenRCT2/";
         });
-        Module.FS.writeFile("/OpenRCT2/version", assets_version.toString());
+        Module.FS.writeFile("/OpenRCT2/version", assetsVersion.toString());
     }
 }
 
