@@ -234,7 +234,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget         ({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
         MakeWidget         ({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
         MakeWidget         ({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
-        MakeWidget         ({350, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
+        MakeWidget         ({340, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
         MakeDropdownWidgets({470, 22}, {114,  14}, WindowWidgetType::DropdownMenu, WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
         MakeWidget         ({  4, 45}, {211,  14}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                                  ),
         MakeWidget         ({218, 45}, { 70,  14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
@@ -858,11 +858,13 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LIST].bottom = height - 14;
             widgets[WIDX_PREVIEW].left = width - 209;
             widgets[WIDX_PREVIEW].right = width - 96;
-            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, 22 }, { kFilterWidth, 14 });
-            widgets[WIDX_INSTALL_TRACK].left = width - 250;
-            widgets[WIDX_INSTALL_TRACK].right = width - 137;
             widgets[WIDX_RELOAD_OBJECT].left = width - 9 - 24;
             widgets[WIDX_RELOAD_OBJECT].right = width - 9;
+
+            auto& dropdownWidget = widgets[WIDX_FILTER_DROPDOWN];
+            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, dropdownWidget.top }, { kFilterWidth, 14 });
+            auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
+            installTrackWidget.moveToX(dropdownWidget.left - installTrackWidget.width() - 10);
 
             // Set pressed widgets
             pressed_widgets |= 1uLL << WIDX_PREVIEW;
@@ -870,7 +872,6 @@ namespace OpenRCT2::Ui::Windows
 
             // Set window title and buttons
             auto& titleWidget = widgets[WIDX_TITLE];
-            auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
             {
                 titleWidget.text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
