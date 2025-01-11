@@ -691,8 +691,8 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
             if (w != nullptr)
             {
                 Viewport* viewport = WindowGetViewport(w);
-                auto info = GetMapCoordinatesFromPos(
-                    { viewport->ViewWidth() / 2, viewport->ViewHeight() / 2 }, EnumsToFlags(ViewportInteractionItem::Terrain));
+                auto info = GetMapCoordinatesFromPosWindow(
+                    w, { viewport->width / 2, viewport->height / 2 }, EnumsToFlags(ViewportInteractionItem::Terrain));
 
                 auto tileMapCoord = TileCoordsXY(info.Loc);
                 console.WriteFormatLine("location %d %d", tileMapCoord.x, tileMapCoord.y);
