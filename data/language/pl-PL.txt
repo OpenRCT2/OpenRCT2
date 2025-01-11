@@ -1093,7 +1093,7 @@ STR_1698    :Można to umieścić jedynie na ścieżce kolejki
 STR_1699    :Za dużo ludzi w grze
 STR_1700    :Zatrudnij dozorcę
 STR_1701    :Zatrudnij mechanika
-STR_1702    :Zatrudnij ochroniarza
+STR_1702    :Zatrudnij strażnika
 STR_1703    :Zatrudnij komika
 STR_1704    :Nie można zatrudnić nowych pracowników…
 STR_1705    :Zwolnij pracownika
@@ -2000,7 +2000,7 @@ STR_2804    :Podświetl tych pracowników na mapie
 STR_2805    :Pokaż plan parku
 STR_2806    :{RED}Goście skarżą się na fatalny stan ścieżek w twoim parku{NEWLINE}Sprawdź gdzie znajdują się twoi dozorcy i rozważ lepszą organizacje ich pracy
 STR_2807    :{RED}Goście skarżą się na śmieci leżące na ziemi w twoim parku{NEWLINE}Sprawdź gdzie znajdują się twoi dozorcy i rozważ lepszą organizację ich pracy
-STR_2808    :{RED}Goście skarzą się na wandalizm w twoim parku{NEWLINE}Sprawdź gdzie znajdują się twoi ochroniarze i rozważ poprawę organizacji ich pracy
+STR_2808    :{RED}Goście skarzą się na wandalizm w twoim parku{NEWLINE}Sprawdź gdzie znajdują się twoi strażnicy i rozważ poprawę organizacji ich pracy
 STR_2809    :{RED}Goście są głodni i nie mogą znaleźć miejsca gdzie mogliby kupić coś do jedzenia
 STR_2810    :{RED}Goście są spragnieni i nie mogą znaleźć miejsca gdzie mogliby kupić jakieś napoje
 STR_2811    :{RED}Goście się skarżą, że w twoim parku bardzo ciężko jest znaleźć toaletę
@@ -2201,7 +2201,7 @@ STR_3188    :Znaki drogowe
 STR_3189    :Klasyczne ścieżki
 STR_3190    :Dodatki drogowe
 STR_3191    :Grupa scenerii
-STR_3192    :Wejście do parku
+STR_3192    :Wejścia do parku
 STR_3193    :Woda
 STR_3195    :Lista wynalazków
 STR_3196    :{WINDOW_COLOUR_2}Grupa badawcza: {BLACK}{STRINGID}
@@ -3736,8 +3736,8 @@ STR_6671    :Pokazuj „prawdziwe” imiona pracowników
 STR_6672    :Przełącz między pokazywaniem imion pracowników a numerami
 STR_6673    :Przezroczyste
 STR_6674    :{MONTH}, Rok {COMMA16}
-STR_6675    :Imiona gości
-STR_6676    :Co najmniej jeden obiekt z nazwami gości musi być wybrany
+STR_6675    :Imiona postaci
+STR_6676    :Należy wybrać co najmniej jeden obiekt z nazwami postaci
 STR_6677    :Dodaj plaże wokół zbiorników wodnych
 STR_6678    :Źródło mapy wysokości:
 STR_6679    :Równina
@@ -3779,3 +3779,10 @@ STR_6714    :Nazwa pliku
 STR_6715    :Data modyfikacji
 STR_6716    :Rozmiar pliku
 STR_6717    :Rozmiar {STRINGID}
+STR_6718    :Animacje postaci
+STR_6719    :Należy wybrać co najmniej jeden obiekt animacji gościa
+STR_6720    :Należy wybrać co najmniej jeden obiekt animacji dozorcy
+STR_6721    :Należy wybrać co najmniej jeden obiekt animacji mechanika
+STR_6722    :Należy wybrać co najmniej jeden obiekt animacji strażnika
+STR_6723    :Należy wybrać co najmniej jeden obiekt animacji komika
+STR_6724    :Teksty scenariuszy
