@@ -55,10 +55,11 @@ namespace OpenRCT2::Console
         char buffer[4096];
         std::vsnprintf(buffer, sizeof(buffer), format, args);
         auto ctx = OpenRCT2::GetContext();
+        auto timestamp = Platform::GetTimestamp();
         if (ctx != nullptr)
-            ctx->WriteLine(buffer);
+            ctx->WriteLine(timestamp + " " + buffer);
         else
-            std::printf("%s\n", buffer);
+            std::printf("%s %s\n", timestamp.c_str(), buffer);
 
         va_end(args);
     }
@@ -102,10 +103,11 @@ namespace OpenRCT2::Console
             char buffer[4096];
             std::vsnprintf(buffer, sizeof(buffer), format, args);
             auto ctx = OpenRCT2::GetContext();
+            auto timestamp = Platform::GetTimestamp();
             if (ctx != nullptr)
-                ctx->WriteErrorLine(buffer);
+                ctx->WriteErrorLine(timestamp + " " + buffer);
             else
-                std::printf("%s\n", buffer);
+                std::printf("%s %s\n", timestamp.c_str(), buffer);
         }
     } // namespace Error
 } // namespace OpenRCT2::Console

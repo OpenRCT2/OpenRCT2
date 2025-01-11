@@ -91,6 +91,15 @@ namespace OpenRCT2::Platform
         return outTime;
     }
 
+    std::string GetTimestamp()
+    {
+        auto time = std::time(nullptr);
+        auto localTime = std::localtime(&time);
+        char buf[20];
+        std::strftime(buf, sizeof(buf), "%Y-%m-%dT%H:%M:%S", localTime);
+        return std::string(buf);
+    }
+
     bool IsRCT2Path(std::string_view path)
     {
         auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));

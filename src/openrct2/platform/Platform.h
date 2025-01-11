@@ -69,6 +69,7 @@ namespace OpenRCT2::Platform
     TemperatureUnit GetLocaleTemperatureFormat();
     RealWorldTime GetTimeLocal();
     RealWorldDate GetDateLocal();
+    std::string GetTimestamp();
 
     bool FindApp(std::string_view app, std::string* output);
     int32_t Execute(std::string_view command, std::string* output = nullptr);
