@@ -9,6 +9,7 @@
 - Fix: [#23508] Simultaneous virtual floors shown for ride and footpath.
 - Fix: [#23581] [Plugin] Food/drink items given to guests have no consumption duration set.
 - Fix: [#23591] “Install new track” button in Track Designs Manager is misaligned.
+- Fix: [#23368] Wrong refund amount for Giga Coaster tracks at or above 96m.
 
 0.4.18 (2025-01-08)
 ------------------------------------------------------------------------
