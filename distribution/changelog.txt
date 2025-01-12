@@ -6,10 +6,10 @@
 - Change: [#23328] All RCT2 entertainer costumes are now available in legacy parks.
 - Fix: [#1479] Incorrect values provided by the in game console “get location” command.
 - Fix: [#21794] Lay-down coaster cars reverse on first frames of downwards corkscrew.
+- Fix: [#23368] Incorrect refund amount for Giga Coaster tracks at or above 96m.
 - Fix: [#23508] Simultaneous virtual floors shown for ride and footpath.
 - Fix: [#23581] [Plugin] Food/drink items given to guests have no consumption duration set.
 - Fix: [#23591] “Install new track” button in Track Designs Manager is misaligned.
-- Fix: [#23368] Wrong refund amount for Giga Coaster tracks at or above 96m.
 
 0.4.18 (2025-01-08)
 ------------------------------------------------------------------------
