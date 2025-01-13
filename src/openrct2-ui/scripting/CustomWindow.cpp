@@ -218,6 +218,21 @@ namespace OpenRCT2::Ui::Windows
                 result.imageFrameCount = AsOrDefault(dukImage["frameCount"], 0);
                 result.imageFrameDuration = AsOrDefault(dukImage["frameDuration"], 0);
 
+                if (dukImage["primaryColour"].type() == DukValue::Type::NUMBER)
+                {
+                    result.imageFrameBase = result.imageFrameBase.WithPrimary(dukImage["primaryColour"].as_uint());
+
+                    if (dukImage["secondaryColour"].type() == DukValue::Type::NUMBER)
+                    {
+                        result.imageFrameBase = result.imageFrameBase.WithSecondary(dukImage["secondaryColour"].as_uint());
+
+                        if (dukImage["tertiaryColour"].type() == DukValue::Type::NUMBER)
+                        {
+                            result.imageFrameBase = result.imageFrameBase.WithTertiary(dukImage["tertiaryColour"].as_uint());
+                        }
+                    }
+                }
+
                 auto dukCoord = dukImage["offset"];
                 if (dukCoord.type() == DukValue::Type::OBJECT)
                 {

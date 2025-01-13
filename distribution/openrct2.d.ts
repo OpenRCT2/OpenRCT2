@@ -4874,6 +4874,9 @@ declare global {
         frameBase: number;
         frameCount?: number;
         frameDuration?: number;
+        primaryColour?: number;
+        secondaryColour?: number;
+        tertiaryColour?: number;
         offset?: ScreenCoordsXY;
     }
 
