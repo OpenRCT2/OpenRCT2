@@ -2335,6 +2335,21 @@ static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable&
     auto& conversion = table[legacyPAG];
     peep->AnimationObjectIndex = conversion.first;
     peep->AnimationGroup = static_cast<PeepAnimationGroup>(conversion.second);
+
+    if (!peep->template Is<Staff>())
+        return true;
+
+    // NB: 'EatFood' used to be supported, but turned out to be unused in C++ code.
+    // Assigned sprites were found to be identical to those of 'Wave2', hence the mapping.
+    // However, it appears to have been used by JavaScript plugins, still, hence the
+    // need to convert any existing sprites.
+    if (peep->AnimationType == PeepAnimationType::EatFood)
+        peep->AnimationType = PeepAnimationType::Wave2;
+
+    // NB: this is likely unnecessary, but a precautionary measure considering the above.
+    if (peep->NextAnimationType == PeepAnimationType::EatFood)
+        peep->NextAnimationType = PeepAnimationType::Wave2;
+
     return true;
 }
 
