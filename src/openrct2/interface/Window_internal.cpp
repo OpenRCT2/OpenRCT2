@@ -25,6 +25,12 @@ void WindowBase::RemoveViewport()
     viewport = nullptr;
 }
 
+void WindowBase::SetWidgets(const std::span<const Widget> newWidgets)
+{
+    widgets.clear();
+    widgets.insert(widgets.end(), newWidgets.begin(), newWidgets.end());
+}
+
 CursorID WindowBase::OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
 {
     return CursorID::Arrow;
