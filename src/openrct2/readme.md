@@ -30,11 +30,11 @@
 
 - **localisation**
 
-  String IDs, currency and date logic.
+  String IDs, currency, and date logic.
 
 - **management**
 
-  Park management logic such as finance, marketing and research.
+  Park management logic such as finance, marketing, and research.
 
 - **network**
 
@@ -70,7 +70,7 @@
 
 - **ride**
 
-  Data and logic for rides, vehicles and track.
+  Data and logic for rides, vehicles, and track.
 
 - **scenario**
 
@@ -90,4 +90,4 @@
 
 - **world**
 
-  World objects and mechanics such as the climate, landscape, sprites and park.
+  World objects and mechanics such as the climate, landscape, sprites, and park.
