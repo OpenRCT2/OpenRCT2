@@ -7280,6 +7280,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->ResetPathfindGoal();
     peep->RemoveAllItems();
     peep->GuestHeadingToRideId = RideId::GetNull();
+    peep->GuestNextInQueue = EntityId::GetNull();
     peep->LitterCount = 0;
     peep->DisgustingCount = 0;
     peep->VandalismSeen = 0;

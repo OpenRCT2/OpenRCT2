@@ -20,6 +20,7 @@
 #include <array>
 #include <cstdint>
 #include <optional>
+#include <span>
 #include <stack>
 #include <type_traits>
 #include <vector>
@@ -468,15 +469,8 @@ namespace OpenRCT2
                 }
             }
 
-            template<typename TArr, size_t TArrSize, typename TFunc>
-            void ReadWriteArray(TArr (&arr)[TArrSize], TFunc f)
-            {
-                auto& arr2 = *(reinterpret_cast<std::array<TArr, TArrSize>*>(arr));
-                ReadWriteArray(arr2, f);
-            }
-
-            template<typename TArr, size_t TArrSize, typename TFunc>
-            void ReadWriteArray(std::array<TArr, TArrSize>& arr, TFunc f)
+            template<typename TArr, typename TFunc>
+            void ReadWriteArray(std::span<TArr> arr, TFunc f)
             {
                 if (_mode == Mode::READING)
                 {
@@ -487,7 +481,7 @@ namespace OpenRCT2
                     }
                     for (size_t i = 0; i < count; i++)
                     {
-                        if (i < TArrSize)
+                        if (i < arr.size())
                         {
                             f(arr[i]);
                         }
@@ -507,6 +501,18 @@ namespace OpenRCT2
                     }
                     EndArray();
                 }
+            }
+
+            template<typename TArr, size_t TArrSize, typename TFunc>
+            void ReadWriteArray(TArr (&arr)[TArrSize], TFunc f)
+            {
+                ReadWriteArray(std::span<TArr>{ arr, TArrSize }, f);
+            }
+
+            template<typename TArr, size_t TArrSize, typename TFunc>
+            void ReadWriteArray(std::array<TArr, TArrSize>& arr, TFunc f)
+            {
+                ReadWriteArray(std::span<TArr>{ arr.begin(), arr.end() }, f);
             }
 
             template<typename T>

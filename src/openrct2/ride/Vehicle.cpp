@@ -2308,7 +2308,7 @@ static void test_finish(Ride& ride)
     ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     ride.lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 
-    auto& rideStations = ride.GetStations();
+    auto rideStations = ride.GetStations();
     for (int32_t i = ride.num_stations - 1; i >= 1; i--)
     {
         if (rideStations[i - 1].SegmentTime != 0)
