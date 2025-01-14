@@ -41,7 +41,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BACKGROUND,
     };
 
-    static Widget window_dropdown_widgets[] = {
+    static constexpr Widget window_dropdown_widgets[] = {
         MakeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
         kWidgetsEnd,
     };
@@ -75,7 +75,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_dropdown_widgets;
+            SetWidgets(window_dropdown_widgets);
 
             // Input state
             gDropdownHighlightedIndex = -1;
@@ -295,8 +295,8 @@ namespace OpenRCT2::Ui::Windows
                 boundedScreenPos.x = std::max(0, screenWidth - ddWidth);
             if (screenPos.y + ddHeight > screenHeight)
                 boundedScreenPos.y = std::max(0, screenHeight - ddHeight);
-            window_dropdown_widgets[WIDX_BACKGROUND].right = ddWidth;
-            window_dropdown_widgets[WIDX_BACKGROUND].bottom = ddHeight;
+            widgets[WIDX_BACKGROUND].right = ddWidth;
+            widgets[WIDX_BACKGROUND].bottom = ddHeight;
 
             Invalidate();
             width = ddWidth + 1;

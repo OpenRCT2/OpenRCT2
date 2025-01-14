@@ -45,7 +45,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget PatrolAreaWidgets[] = {
+    static constexpr Widget PatrolAreaWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0)                                  ), // preview box
         MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_PATROL_AREA_TIP), // decrement size
@@ -59,7 +59,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = PatrolAreaWidgets;
+            SetWidgets(PatrolAreaWidgets);
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -133,7 +133,7 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             SetWidgetPressed(WIDX_PREVIEW, true);
-            PatrolAreaWidgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
+            widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
         void OnDraw(DrawPixelInfo& dpi) override

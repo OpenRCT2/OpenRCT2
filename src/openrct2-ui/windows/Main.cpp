@@ -19,7 +19,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     // clang-format off
-    static Widget _mainWidgets[] = {
+    static constexpr Widget _mainWidgets[] = {
         MakeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::Primary),
         kWidgetsEnd,
     };
@@ -30,9 +30,9 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            _mainWidgets[0].right = width;
-            _mainWidgets[0].bottom = height;
-            widgets = _mainWidgets;
+            SetWidgets(_mainWidgets);
+            widgets[0].right = width;
+            widgets[0].bottom = height;
 
             ViewportCreate(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
             if (viewport != nullptr)

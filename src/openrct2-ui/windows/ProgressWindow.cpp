@@ -34,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kWindowHeight = 90;
 
     // clang-format off
-    static Widget kProgressWindowWidgets[] = {
+    static constexpr Widget kProgressWindowWidgets[] = {
         MakeWidget({                0, 0}, {    kWindowWidth, kWindowHeight}, WindowWidgetType::Frame,    WindowColour::Primary                                     ), // panel / background
         MakeWidget({                1, 1}, {kWindowWidth - 3,            14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_STRINGID,  STR_WINDOW_TITLE_TIP), // title bar
         MakeWidget({kWindowWidth - 12, 2}, {              11,            12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,   STR_CLOSE_WINDOW_TIP), // close x button
@@ -85,7 +85,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = kProgressWindowWidgets;
+            SetWidgets(kProgressWindowWidgets);
             WindowInitScrollWidgets(*this);
 
             frame_no = 0;

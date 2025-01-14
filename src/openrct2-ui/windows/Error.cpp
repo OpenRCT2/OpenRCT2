@@ -30,7 +30,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kMaxWidth = 250;
     static constexpr auto kPadding = 4;
 
-    static Widget window_error_widgets[] = {
+    static constexpr Widget window_error_widgets[] = {
         MakeWidget({ 0, 0 }, { 200, 42 }, WindowWidgetType::Frame, WindowColour::Primary),
         kWidgetsEnd,
     };
@@ -53,10 +53,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            window_error_widgets[WIDX_BACKGROUND].right = width - 1;
-            window_error_widgets[WIDX_BACKGROUND].bottom = height - 1;
+            SetWidgets(window_error_widgets);
 
-            widgets = window_error_widgets;
+            widgets[WIDX_BACKGROUND].right = width - 1;
+            widgets[WIDX_BACKGROUND].bottom = height - 1;
+
             _staleCount = 0;
 
             if (!gDisableErrorWindowSound)

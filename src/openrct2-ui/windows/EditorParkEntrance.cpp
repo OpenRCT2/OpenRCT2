@@ -240,7 +240,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _widgets;
+            SetWidgets(_widgets);
 
             InitScrollWidgets();
             InitParkEntranceItems();

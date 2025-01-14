@@ -67,7 +67,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Widgets
 
     // clang-format off
-    static Widget window_research_development_widgets[] = {
+    static constexpr Widget window_research_development_widgets[] = {
         WINDOW_SHIM(STR_RESEARCH_AND_DEVELOPMENT, WW_DEVELOPMENT, WH_DEVELOPMENT),
         MakeWidget({  0,  43}, {     WW_DEVELOPMENT, 153}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
         MakeTab   ({  3,  17},                                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
@@ -78,7 +78,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget window_research_funding_widgets[] = {
+    static constexpr Widget window_research_funding_widgets[] = {
         WINDOW_SHIM(STR_RESEARCH_FUNDING, WW_FUNDING, WH_FUNDING),
         MakeWidget({  0,  43}, {     WW_FUNDING, 164}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                                    ),
         MakeTab   ({  3,  17},                                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP            ),
@@ -97,7 +97,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget *window_research_page_widgets[] = {
+    static constexpr std::span<const Widget> window_research_page_widgets[] = {
         window_research_development_widgets,
         window_research_funding_widgets,
     };
@@ -122,7 +122,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
+            SetWidgets(window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT]);
             width = WW_DEVELOPMENT;
             height = WH_DEVELOPMENT;
             ResearchUpdateUncompletedTypes();
@@ -135,7 +135,7 @@ namespace OpenRCT2::Ui::Windows
             RemoveViewport();
 
             hold_down_widgets = 0;
-            widgets = window_research_page_widgets[newPageIndex];
+            SetWidgets(window_research_page_widgets[newPageIndex]);
             disabled_widgets = 0;
             pressed_widgets = 0;
 
@@ -230,11 +230,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            auto* targetWidgets = window_research_page_widgets[page];
-
-            if (widgets != targetWidgets)
+            auto targetWidgets = window_research_page_widgets[page];
+            // NOTE: Not the correct way.
+            if (widgets.size() != targetWidgets.size())
             {
-                widgets = targetWidgets;
+                SetWidgets(targetWidgets);
                 InitScrollWidgets();
             }
 

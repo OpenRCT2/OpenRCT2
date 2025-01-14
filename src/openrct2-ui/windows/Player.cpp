@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 3, 17 }),                                                                                                       \
         MakeTab({ 34, 17 })
 
-    static Widget window_player_overview_widgets[] = {
+    static constexpr Widget window_player_overview_widgets[] = {
         WINDOW_PLAYER_COMMON_WIDGETS,
         MakeWidget({  3, 46}, {175, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                           ), // Permission group
         MakeWidget({167, 47}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                       ),
@@ -67,12 +67,12 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget window_player_statistics_widgets[] = {
+    static constexpr Widget window_player_statistics_widgets[] = {
         WINDOW_PLAYER_COMMON_WIDGETS,
         kWidgetsEnd,
     };
 
-    static Widget *window_player_page_widgets[] = {
+    static constexpr std::span<const Widget> window_player_page_widgets[] = {
         window_player_overview_widgets,
         window_player_statistics_widgets,
     };
@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
 
             Invalidate();
 
-            widgets = window_player_page_widgets[WINDOW_PLAYER_PAGE_OVERVIEW];
+            SetWidgets(window_player_page_widgets[WINDOW_PLAYER_PAGE_OVERVIEW]);
             hold_down_widgets = 0;
             pressed_widgets = 0;
         }
@@ -221,7 +221,7 @@ namespace OpenRCT2::Ui::Windows
 
             hold_down_widgets = 0;
             pressed_widgets = 0;
-            widgets = window_player_page_widgets[newPage];
+            SetWidgets(window_player_page_widgets[newPage]);
             Invalidate();
             OnResize();
             OnPrepareDraw();
@@ -376,9 +376,11 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (window_player_page_widgets[page] != widgets)
+            auto newWidgets = window_player_page_widgets[page];
+            // NOTE: Not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = window_player_page_widgets[page];
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -406,7 +408,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewport != nullptr)
             {
-                Widget* viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
+                Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
 
                 viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
                 viewport->width = viewportWidget->width();
@@ -435,7 +437,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t groupindex = NetworkGetGroupIndex(NetworkGetPlayerGroup(player));
             if (groupindex != -1)
             {
-                Widget* widget = &window_player_overview_widgets[WIDX_GROUP];
+                Widget* widget = &widgets[WIDX_GROUP];
 
                 thread_local std::string _buffer;
                 _buffer.assign("{WINDOW_COLOUR_2}");
@@ -594,9 +596,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawStatistics()
         {
-            if (window_player_page_widgets[page] != widgets)
+            auto newWidgets = window_player_page_widgets[page];
+            // NOTE: Not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = window_player_page_widgets[page];
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 

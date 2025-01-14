@@ -52,7 +52,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_game_bottom_toolbar_widgets[] =
+    static constexpr Widget window_game_bottom_toolbar_widgets[] =
     {
         MakeWidget({  0,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Left outset panel
         MakeWidget({  2,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Left inset panel
@@ -342,7 +342,7 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawMiddlePanel(DrawPixelInfo& dpi)
         {
-            Widget* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
+            Widget* middleOutsetWidget = &widgets[WIDX_MIDDLE_OUTSET];
 
             GfxFillRectInset(
                 dpi,
@@ -411,14 +411,14 @@ namespace OpenRCT2::Ui::Windows
     public:
         GameBottomToolbar()
         {
-            widgets = window_game_bottom_toolbar_widgets;
+            SetWidgets(window_game_bottom_toolbar_widgets);
 
             frame_no = 0;
             InitScrollWidgets();
 
             // Reset the middle widget to not show by default.
             // If it is required to be shown news_update will reshow it.
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
+            widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -536,56 +536,55 @@ namespace OpenRCT2::Ui::Windows
             int32_t x = ContextGetWidth();
             width = x;
             x--;
-            window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right = x;
+            widgets[WIDX_RIGHT_OUTSET].right = x;
             x -= 2;
-            window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].right = x;
+            widgets[WIDX_RIGHT_INSET].right = x;
             x -= 137;
-            window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].left = x;
+            widgets[WIDX_RIGHT_INSET].left = x;
             x -= 2;
-            window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left = x;
+            widgets[WIDX_RIGHT_OUTSET].left = x;
             x--;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right = x;
+            widgets[WIDX_MIDDLE_OUTSET].right = x;
             x -= 2;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].right = x;
+            widgets[WIDX_MIDDLE_INSET].right = x;
             x -= 3;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].right = x;
+            widgets[WIDX_NEWS_LOCATE].right = x;
             x -= 23;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].left = x;
-            window_game_bottom_toolbar_widgets[WIDX_DATE].left = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 2;
-            window_game_bottom_toolbar_widgets[WIDX_DATE].right = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right
-                - 2;
+            widgets[WIDX_NEWS_LOCATE].left = x;
+            widgets[WIDX_DATE].left = widgets[WIDX_RIGHT_OUTSET].left + 2;
+            widgets[WIDX_DATE].right = widgets[WIDX_RIGHT_OUTSET].right - 2;
 
-            window_game_bottom_toolbar_widgets[WIDX_LEFT_INSET].type = WindowWidgetType::Empty;
-            window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WindowWidgetType::Empty;
+            widgets[WIDX_LEFT_INSET].type = WindowWidgetType::Empty;
+            widgets[WIDX_RIGHT_INSET].type = WindowWidgetType::Empty;
 
             if (News::IsQueueEmpty())
             {
                 if (!(ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
                 {
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Empty;
-                    window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
-                    window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
+                    widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Empty;
+                    widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
+                    widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
                 }
                 else
                 {
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
-                    window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
-                    window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 0;
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 0;
+                    widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
+                    widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
+                    widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
+                    widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_MIDDLE_OUTSET].colour = 0;
+                    widgets[WIDX_MIDDLE_INSET].colour = 0;
                 }
             }
             else
             {
                 News::Item* newsItem = News::GetItem(0);
-                window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-                window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
-                window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::FlatBtn;
-                window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
-                window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 2;
-                window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 2;
+                widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
+                widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_MIDDLE_OUTSET].colour = 2;
+                widgets[WIDX_MIDDLE_INSET].colour = 2;
                 disabled_widgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
                 disabled_widgets &= ~(1uLL << WIDX_NEWS_LOCATE);
 
@@ -598,7 +597,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!(newsItem->TypeHasSubject()))
                 {
                     disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
-                    window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
+                    widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
                 }
 
                 if (newsItem->HasButton())
@@ -611,9 +610,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            auto leftWidget = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET];
-            auto rightWidget = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET];
-            auto middleWidget = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
+            auto leftWidget = widgets[WIDX_LEFT_OUTSET];
+            auto rightWidget = widgets[WIDX_RIGHT_OUTSET];
+            auto middleWidget = widgets[WIDX_MIDDLE_OUTSET];
 
             // Draw panel grey backgrounds
             auto leftTop = windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };

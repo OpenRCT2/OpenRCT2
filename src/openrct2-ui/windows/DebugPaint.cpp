@@ -34,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t WINDOW_HEIGHT = 8 + (15 * 6) + 8;
 
     // clang-format off
-    static Widget window_debug_paint_widgets[] = {
+    static constexpr Widget window_debug_paint_widgets[] = {
         MakeWidget({0,          0}, {WINDOW_WIDTH, WINDOW_HEIGHT}, WindowWidgetType::Frame,    WindowColour::Primary                                        ),
         MakeWidget({8, 8 + 15 * 0}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
         MakeWidget({8, 8 + 15 * 1}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_debug_paint_widgets;
+            SetWidgets(window_debug_paint_widgets);
 
             InitScrollWidgets();
             WindowPushOthersBelow(*this);

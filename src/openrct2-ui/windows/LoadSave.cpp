@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int16_t WH = kWindowSizeInit.height;
 
     // clang-format off
-    static Widget window_loadsave_widgets[] =
+    static constexpr Widget window_loadsave_widgets[] =
     {
         WINDOW_SHIM(STR_NONE, WW, WH),
         MakeWidget({                0,      15 }, {       WW,  WH - 15 }, WindowWidgetType::Resize,      WindowColour::Secondary                                                             ), // WIDX_RESIZE
@@ -713,7 +713,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_loadsave_widgets;
+            SetWidgets(window_loadsave_widgets);
 
             const auto uiContext = OpenRCT2::GetContext()->GetUiContext();
             if (!uiContext->HasFilePicker())
@@ -1422,7 +1422,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_overwrite_prompt_widgets[] = {
+    static constexpr Widget window_overwrite_prompt_widgets[] = {
         WINDOW_SHIM_WHITE(STR_FILEBROWSER_OVERWRITE_TITLE, OVERWRITE_WW, OVERWRITE_WH),
         MakeWidget({                10, OVERWRITE_WH - 20 }, { 84, 11 }, WindowWidgetType::Button, WindowColour::Primary, STR_FILEBROWSER_OVERWRITE_TITLE),
         MakeWidget({ OVERWRITE_WW - 95, OVERWRITE_WH - 20 }, { 85, 11 }, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
@@ -1444,7 +1444,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_overwrite_prompt_widgets;
+            SetWidgets(window_overwrite_prompt_widgets);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override

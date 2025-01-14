@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _inventionListWidgets[] = {
+    static constexpr Widget _inventionListWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
         MakeTab   ({  3,  17}                                                                                               ),
@@ -67,7 +67,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget _inventionListDragWidgets[] = {
+    static constexpr Widget _inventionListDragWidgets[] = {
         MakeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary),
         kWidgetsEnd,
     };
@@ -154,7 +154,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ResearchRidesSetup();
 
-            widgets = _inventionListWidgets;
+            SetWidgets(_inventionListWidgets);
             InitScrollWidgets();
             selected_tab = 0;
             _selectedResearchItem = nullptr;
@@ -611,7 +611,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _inventionListDragWidgets;
+            SetWidgets(_inventionListDragWidgets);
             colours[1] = COLOUR_WHITE;
         }
 

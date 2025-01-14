@@ -40,7 +40,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget WindowAssetPacksWidgets[] = {
+    static constexpr Widget WindowAssetPacksWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_HIGH_PRIORITY),
         MakeWidget({ 0, 0 }, { 0, 147 }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL),
@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = WindowAssetPacksWidgets;
+            SetWidgets(WindowAssetPacksWidgets);
             WindowInitScrollWidgets(*this);
         }
 

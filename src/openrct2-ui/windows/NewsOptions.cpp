@@ -72,7 +72,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget WindowNewsOptionsWidgets[] = {
+    static constexpr Widget WindowNewsOptionsWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::Secondary), // Tab content panel
         MakeTab   ({ 3, 17}                                                                 ), // Park tab
@@ -96,7 +96,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = WindowNewsOptionsWidgets;
+            SetWidgets(WindowNewsOptionsWidgets);
             InitScrollWidgets();
             colours[0] = COLOUR_GREY;
             colours[1] = COLOUR_LIGHT_BLUE;

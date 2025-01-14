@@ -123,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_editor_scenario_options_financial_widgets[] = {
+    static constexpr Widget window_editor_scenario_options_financial_widgets[] = {
         WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
         MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                            ),
         MakeTab           ({  3,  17},                                                                                          STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
@@ -139,7 +139,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget window_editor_scenario_options_guests_widgets[] = {
+    static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
         WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
         MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WindowWidgetType::Resize,   WindowColour::Secondary),
         MakeRemapWidget   ({  3,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
@@ -154,7 +154,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget window_editor_scenario_options_park_widgets[] = {
+    static constexpr Widget window_editor_scenario_options_park_widgets[] = {
         WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
         MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                  ),
         MakeRemapWidget   ({  3,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
@@ -175,7 +175,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget *window_editor_scenario_options_widgets[] = {
+    static constexpr std::span<const Widget> window_editor_scenario_options_widgets[] = {
         window_editor_scenario_options_financial_widgets,
         window_editor_scenario_options_guests_widgets,
         window_editor_scenario_options_park_widgets,
@@ -218,7 +218,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_editor_scenario_options_widgets[WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL];
+            SetWidgets(window_editor_scenario_options_widgets[WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL]);
             hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets
                 [WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL];
             WindowInitScrollWidgets(*this);
@@ -361,7 +361,7 @@ namespace OpenRCT2::Ui::Windows
             page = newPage;
             frame_no = 0;
             hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
-            widgets = window_editor_scenario_options_widgets[page];
+            SetWidgets(window_editor_scenario_options_widgets[page]);
             Invalidate();
             OnResize();
             OnPrepareDraw();
@@ -561,10 +561,11 @@ namespace OpenRCT2::Ui::Windows
 
         void FinancialPrepareDraw()
         {
-            Widget* newWidgets = window_editor_scenario_options_widgets[page];
-            if (widgets != newWidgets)
+            auto newWidgets = window_editor_scenario_options_widgets[page];
+            // NOTE: This might not work all the time, we need to deal with this properly by watching when the page changes.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 WindowInitScrollWidgets(*this);
             }
 
@@ -841,10 +842,11 @@ namespace OpenRCT2::Ui::Windows
 
         void GuestsPrepareDraw()
         {
-            Widget* newWidgets = window_editor_scenario_options_widgets[page];
-            if (widgets != newWidgets)
+            auto newWidgets = window_editor_scenario_options_widgets[page];
+            // NOTE: This might not work all the time, we need to deal with this properly by watching when the page changes.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 WindowInitScrollWidgets(*this);
             }
 
@@ -1147,10 +1149,11 @@ namespace OpenRCT2::Ui::Windows
 
         void ParkPrepareDraw()
         {
-            Widget* newWidgets = window_editor_scenario_options_widgets[page];
-            if (widgets != newWidgets)
+            auto newWidgets = window_editor_scenario_options_widgets[page];
+            // NOTE: This might not work all the time, we need to deal with this properly by watching when the page changes.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 WindowInitScrollWidgets(*this);
             }
 

@@ -124,7 +124,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_footpath_widgets[] = {
+    static constexpr Widget window_footpath_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW_WINDOW, WH_WINDOW),
 
         // Type group
@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_footpath_widgets;
+            SetWidgets(window_footpath_widgets);
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersRight(*this);
@@ -275,13 +275,13 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_FOOTPATH_TYPE:
-                    WindowFootpathShowFootpathTypesDialog(&window_footpath_widgets[widgetIndex], false);
+                    WindowFootpathShowFootpathTypesDialog(&widgets[widgetIndex], false);
                     break;
                 case WIDX_QUEUELINE_TYPE:
-                    WindowFootpathShowFootpathTypesDialog(&window_footpath_widgets[widgetIndex], true);
+                    WindowFootpathShowFootpathTypesDialog(&widgets[widgetIndex], true);
                     break;
                 case WIDX_RAILINGS_TYPE:
-                    WindowFootpathShowRailingsTypesDialog(&window_footpath_widgets[widgetIndex]);
+                    WindowFootpathShowRailingsTypesDialog(&widgets[widgetIndex]);
                     break;
                 case WIDX_DIRECTION_NW:
                     WindowFootpathMousedownDirection(0);
@@ -452,17 +452,17 @@ namespace OpenRCT2::Ui::Windows
                                                                   : (1uLL << WIDX_FOOTPATH_TYPE);
 
             // Enable / disable construct button
-            window_footpath_widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
+            widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
                 ? WindowWidgetType::ImgBtn
                 : WindowWidgetType::Empty;
 
             if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
             {
-                window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
             }
             else
             {
-                window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
+                widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
             }
         }
 

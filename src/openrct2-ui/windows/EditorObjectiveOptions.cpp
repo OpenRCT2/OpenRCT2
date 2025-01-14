@@ -117,7 +117,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab   ({  3,  17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP         ), \
         MakeTab   ({ 34,  17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP           )
 
-    static Widget window_editor_objective_options_main_widgets[] = {
+    static constexpr Widget window_editor_objective_options_main_widgets[] = {
         MAIN_OBJECTIVE_OPTIONS_WIDGETS,
         MakeWidget        ({ 98,  48}, {344,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
@@ -131,13 +131,13 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget window_editor_objective_options_rides_widgets[] = {
+    static constexpr Widget window_editor_objective_options_rides_widgets[] = {
         MAIN_OBJECTIVE_OPTIONS_WIDGETS,
         MakeWidget({  3,  60}, {374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
         kWidgetsEnd,
     };
 
-    static Widget *window_editor_objective_options_widgets[] = {
+    static constexpr std::span<const Widget> window_editor_objective_options_widgets[] = {
         window_editor_objective_options_main_widgets,
         window_editor_objective_options_rides_widgets,
     };
@@ -167,7 +167,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_editor_objective_options_main_widgets;
+            SetWidgets(window_editor_objective_options_main_widgets);
             pressed_widgets = 0;
             hold_down_widgets = window_editor_objective_options_page_hold_down_widgets
                 [WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
@@ -321,7 +321,7 @@ namespace OpenRCT2::Ui::Windows
             _rideableRides.clear();
             selected_list_item = -1;
             hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[newPage];
-            widgets = window_editor_objective_options_widgets[newPage];
+            SetWidgets(window_editor_objective_options_widgets[newPage]);
             Invalidate();
             UpdateDisabledWidgets();
             OnResize();
@@ -820,9 +820,10 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& gameState = GetGameState();
             auto widgetsToSet = window_editor_objective_options_widgets[page];
-            if (widgets != widgetsToSet)
+            // NOTE: Need to do this properly.
+            if (widgets.size() != widgetsToSet.size())
             {
-                widgets = widgetsToSet;
+                SetWidgets(widgetsToSet);
                 InitScrollWidgets();
             }
 
@@ -832,12 +833,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 case OBJECTIVE_GUESTS_BY:
                 case OBJECTIVE_PARK_VALUE_BY:
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Spinner;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Button;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Button;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Spinner;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Button;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Button;
+                    widgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Spinner;
+                    widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Button;
+                    widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Button;
+                    widgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Spinner;
+                    widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Button;
+                    widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Button;
                     break;
                 case OBJECTIVE_GUESTS_AND_RATING:
                 case OBJECTIVE_MONTHLY_RIDE_INCOME:
@@ -845,26 +846,25 @@ namespace OpenRCT2::Ui::Windows
                 case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
                 case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
                 case OBJECTIVE_MONTHLY_FOOD_INCOME:
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Spinner;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Button;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Button;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Empty;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Empty;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Spinner;
+                    widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Button;
+                    widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Button;
+                    widgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Empty;
+                    widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Empty;
                     break;
                 default:
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Empty;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Empty;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Empty;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Empty;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Empty;
-                    window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Empty;
+                    widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Empty;
+                    widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Empty;
                     break;
             }
 
-            window_editor_objective_options_main_widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-                ? WindowWidgetType::Empty
-                : WindowWidgetType::CloseBox;
+            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
+                                                                                     : WindowWidgetType::CloseBox;
 
             AnchorBorderWidgets();
         }
@@ -1110,18 +1110,18 @@ namespace OpenRCT2::Ui::Windows
          */
         void OnPrepareDrawRides()
         {
-            Widget* widgetsToSet = window_editor_objective_options_widgets[page];
-            if (widgets != widgetsToSet)
+            auto widgetsToSet = window_editor_objective_options_widgets[page];
+            // NOTE: Need to do this properly.
+            if (widgets.size() != widgetsToSet.size())
             {
-                widgets = widgetsToSet;
+                SetWidgets(widgetsToSet);
                 InitScrollWidgets();
             }
 
             SetPressedTab();
 
-            window_editor_objective_options_main_widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-                ? WindowWidgetType::Empty
-                : WindowWidgetType::CloseBox;
+            widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
+                                                                                     : WindowWidgetType::CloseBox;
 
             AnchorBorderWidgets();
         }

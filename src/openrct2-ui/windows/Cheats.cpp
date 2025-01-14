@@ -219,7 +219,7 @@ static constexpr int32_t TAB_START = 3;
     MakeTab   ({158, 17}, STR_RIDE_CHEATS_TIP                           ), /* tab 4 */ \
     MakeTab   ({189, 17}, STR_WEATHER_NATURE_CHEATS_TIP                 )  /* tab 7 */
 
-static Widget window_cheats_money_widgets[] =
+static constexpr Widget window_cheats_money_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({ 11,  48}, CHEAT_BUTTON,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY), // No money
@@ -231,7 +231,7 @@ static Widget window_cheats_money_widgets[] =
     kWidgetsEnd,
 };
 
-static Widget window_cheats_date_widgets[] =
+static constexpr Widget window_cheats_date_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5,  48}, {238, 99} ,    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_DATE_SET  ), // Date group
@@ -243,7 +243,7 @@ static Widget window_cheats_date_widgets[] =
     kWidgetsEnd,
 };
 
-static Widget window_cheats_guests_widgets[] =
+static constexpr Widget window_cheats_guests_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget({ 11,  48}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_LARGE_TRAM_GUESTS,     STR_CHEAT_LARGE_TRAM_GUESTS_TIP), // large tram
@@ -282,7 +282,7 @@ static Widget window_cheats_guests_widgets[] =
     kWidgetsEnd,
 };
 
-static Widget window_cheats_staff_widgets[] =
+static constexpr Widget window_cheats_staff_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5, 357-309}, {238,  35},   WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                           ), // Staff group
@@ -300,7 +300,7 @@ static Widget window_cheats_staff_widgets[] =
     kWidgetsEnd,
 };
 
-static Widget window_cheats_park_widgets[] =
+static constexpr Widget window_cheats_park_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5,  48}, {238,  60},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
@@ -323,7 +323,7 @@ static Widget window_cheats_park_widgets[] =
     kWidgetsEnd,
 };
 
-static Widget window_cheats_rides_widgets[] =
+static constexpr Widget window_cheats_rides_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget({ 11,  48}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_FIX_ALL_RIDES,                        STR_CHEAT_FIX_ALL_RIDES_TIP                    ), // Fix all rides
@@ -352,7 +352,7 @@ static Widget window_cheats_rides_widgets[] =
     kWidgetsEnd,
 };
 
-static Widget window_cheats_weather_widgets[] =
+static constexpr Widget window_cheats_weather_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5,  48}, {238,  50},   WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_CHEAT_WEATHER_GROUP                                      ), // Weather group
@@ -365,7 +365,7 @@ static Widget window_cheats_weather_widgets[] =
     kWidgetsEnd,
 };
 
-static Widget *window_cheats_page_widgets[] =
+static constexpr std::span<const Widget> window_cheats_page_widgets[] =
 {
     window_cheats_money_widgets,
     window_cheats_date_widgets,
@@ -512,10 +512,11 @@ static StringId window_cheats_page_titles[] = {
 
         void OnPrepareDraw() override
         {
-            auto* targetWidgets = window_cheats_page_widgets[page];
-            if (widgets != targetWidgets)
+            auto targetWidgets = window_cheats_page_widgets[page];
+            // NOTE: Not the right way to do this.
+            if (widgets.size() != targetWidgets.size())
             {
-                widgets = targetWidgets;
+                SetWidgets(targetWidgets);
                 WindowInitScrollWidgets(*this);
             }
 
@@ -592,11 +593,16 @@ static StringId window_cheats_page_titles[] = {
             }
 
             // Current weather
-            window_cheats_weather_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.ClimateCurrent.Weather)];
+            if (page == WINDOW_CHEATS_PAGE_WEATHER)
+            {
+                widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.ClimateCurrent.Weather)];
+            }
 
             // Staff speed
-            window_cheats_staff_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(
-                gameState.Cheats.selectedStaffSpeed)];
+            if (page == WINDOW_CHEATS_PAGE_STAFF)
+            {
+                widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gameState.Cheats.selectedStaffSpeed)];
+            }
 
             if (gScreenFlags & SCREEN_FLAGS_EDITOR)
             {
@@ -753,7 +759,7 @@ static StringId window_cheats_page_titles[] = {
 
             hold_down_widgets = window_cheats_page_hold_down_widgets[p];
             pressed_widgets = 0;
-            widgets = window_cheats_page_widgets[p];
+            SetWidgets(window_cheats_page_widgets[p]);
 
             auto maxY = 0;
             auto* widget = &widgets[WIDX_TAB_CONTENT];

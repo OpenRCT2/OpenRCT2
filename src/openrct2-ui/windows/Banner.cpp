@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
         STR_TEXT_COLOUR_PALESILVER,
     };
 
-    static Widget window_banner_widgets[] = {
+    static constexpr Widget window_banner_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, 0x0FFFFFFFE                                        ), // tab content panel
         MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
@@ -83,10 +83,10 @@ namespace OpenRCT2::Ui::Windows
 
         void CreateViewport()
         {
-            Widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
+            const auto& viewportWidget = window_banner_widgets[WIDX_VIEWPORT];
             ViewportCreate(
-                this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-                (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, Focus(_bannerViewPos));
+                this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 },
+                (viewportWidget.width()) - 1, (viewportWidget.height()) - 1, Focus(_bannerViewPos));
 
             if (viewport != nullptr)
                 viewport->flags = Config::Get().general.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
@@ -131,7 +131,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_banner_widgets;
+            SetWidgets(window_banner_widgets);
             WindowInitScrollWidgets(*this);
         }
 
@@ -279,13 +279,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            Widget* colourBtn = &window_banner_widgets[WIDX_MAIN_COLOUR];
-            colourBtn->type = WindowWidgetType::Empty;
+            Widget& colourBtn = widgets[WIDX_MAIN_COLOUR];
+            colourBtn.type = WindowWidgetType::Empty;
 
             auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
             if (bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
             {
-                colourBtn->type = WindowWidgetType::ColourBtn;
+                colourBtn.type = WindowWidgetType::ColourBtn;
             }
             pressed_widgets &= ~(1uLL << WIDX_BANNER_NO_ENTRY);
             disabled_widgets &= ~(
@@ -296,9 +296,9 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)
                     | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
             }
-            colourBtn->image = GetColourButtonImage(banner->colour);
-            Widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
-            dropDownWidget->text = BannerColouredTextFormats[banner->text_colour];
+            colourBtn.image = GetColourButtonImage(banner->colour);
+            Widget& dropDownWidget = widgets[WIDX_TEXT_COLOUR_DROPDOWN];
+            dropDownWidget.text = BannerColouredTextFormats[banner->text_colour];
         }
 
         void OnResize() override

@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_land_rights_widgets[] = {
+    static constexpr Widget window_land_rights_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget     ({ 27, 17}, { 44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary, ImageId(SPR_LAND_TOOL_SIZE_0)                                                   ), // preview box
         MakeRemapWidget({ 28, 18}, { 16, 16}, WindowWidgetType::TrnBtn, WindowColour::Primary, SPR_LAND_TOOL_DECREASE,          STR_ADJUST_SMALLER_LAND_RIGHTS_TIP             ), // decrement size
@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_land_rights_widgets;
+            SetWidgets(window_land_rights_widgets);
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -287,23 +287,23 @@ namespace OpenRCT2::Ui::Windows
             if (gLandRemainingOwnershipSales == 0)
             {
                 SetWidgetDisabled(WIDX_BUY_LAND_RIGHTS, true);
-                window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_RIGHTS_FOR_SALE_TIP;
+                widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_RIGHTS_FOR_SALE_TIP;
             }
             else
             {
                 SetWidgetDisabled(WIDX_BUY_LAND_RIGHTS, false);
-                window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_BUY_LAND_RIGHTS_TIP;
+                widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_BUY_LAND_RIGHTS_TIP;
             }
 
             if (gLandRemainingConstructionSales == 0)
             {
                 SetWidgetDisabled(WIDX_BUY_CONSTRUCTION_RIGHTS, true);
-                window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_NO_CONSTRUCTION_RIGHTS_FOR_SALE_TIP;
+                widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_NO_CONSTRUCTION_RIGHTS_FOR_SALE_TIP;
             }
             else
             {
                 SetWidgetDisabled(WIDX_BUY_CONSTRUCTION_RIGHTS, false);
-                window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_BUY_CONSTRUCTION_RIGHTS_TIP;
+                widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_BUY_CONSTRUCTION_RIGHTS_TIP;
             }
 
             // Position land size tool
@@ -359,7 +359,7 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             SetWidgetPressed(WIDX_PREVIEW, true);
-            window_land_rights_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
+            widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
 
             if (width != GetModeDimensions().x)
                 OnResize();

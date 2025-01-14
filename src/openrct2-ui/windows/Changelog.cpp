@@ -125,7 +125,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = _windowChangelogWidgets;
+            SetWidgets(_windowChangelogWidgets);
 
             WindowInitScrollWidgets(*this);
             min_width = MIN_WW;

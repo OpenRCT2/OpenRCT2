@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
         MakeRemapWidget({ 94, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE)
 
     // clang-format off
-    static Widget _windowAboutOpenRCT2Widgets[] = {
+    static constexpr Widget _windowAboutOpenRCT2Widgets[] = {
         WIDGETS_MAIN,
         MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
         MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // OpenRCT2 Logo
@@ -77,12 +77,12 @@ namespace OpenRCT2::Ui::Windows
     };
     // clang-format on
 
-    static Widget _windowAboutRCT2Widgets[] = {
+    static constexpr Widget _windowAboutRCT2Widgets[] = {
         WIDGETS_MAIN,
         kWidgetsEnd,
     };
 
-    static Widget* _windowAboutPageWidgets[] = {
+    static constexpr std::span<const Widget> _windowAboutPageWidgets[] = {
         _windowAboutOpenRCT2Widgets,
         _windowAboutRCT2Widgets,
     };
@@ -92,7 +92,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _windowAboutOpenRCT2Widgets;
+            SetWidgets(_windowAboutOpenRCT2Widgets);
 
             WindowInitScrollWidgets(*this);
             SetPage(WINDOW_ABOUT_PAGE_OPENRCT2);
@@ -174,7 +174,7 @@ namespace OpenRCT2::Ui::Windows
             page = p;
             frame_no = 0;
             pressed_widgets = 0;
-            widgets = _windowAboutPageWidgets[p];
+            SetWidgets(_windowAboutPageWidgets[p]);
 
             switch (p)
             {
@@ -215,7 +215,6 @@ namespace OpenRCT2::Ui::Windows
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
             {
                 widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
-                _windowAboutOpenRCT2Widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
             }
 
             // Draw the rest of the text

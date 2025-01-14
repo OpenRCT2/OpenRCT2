@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 158, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP), \
         MakeTab({ 189, 17 }, STR_OPTIONS_ADVANCED)
 
-    static Widget window_options_display_widgets[] = {
+    static constexpr Widget window_options_display_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget        ({  5,  53}, {300, 170}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
         MakeWidget        ({ 10,  67}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
@@ -263,7 +263,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t kFrameRenderingStart = 53;
     constexpr int32_t kFrameEffectStart = 163;
 
-    static Widget window_options_rendering_widgets[] = {
+    static constexpr Widget window_options_rendering_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget({  5,  kFrameRenderingStart + 0}, {300, 108}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_RENDERING_GROUP                                       ), // Rendering group
         MakeWidget({ 10, kFrameRenderingStart + 15}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TILE_SMOOTHING,         STR_TILE_SMOOTHING_TIP        ), // Landscape smoothing
@@ -284,7 +284,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget window_options_culture_widgets[] = {
+    static constexpr Widget window_options_culture_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget({ 10,  53}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_LANGUAGE,   STR_LANGUAGE_TIP           ), // language
         MakeWidget({155,  53}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                         ),
@@ -307,7 +307,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget window_options_audio_widgets[] = {
+    static constexpr Widget window_options_audio_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget({ 10,  53}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                ), // Audio device
         MakeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
@@ -328,7 +328,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t kThemesGroupStart = 193;
     constexpr int32_t kToolbarGroupStart = 245;
 
-    static Widget window_options_controls_and_interface_widgets[] = {
+    static constexpr Widget window_options_controls_and_interface_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget({  5, kControlsGroupStart +  0},  {300,137}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                                ), // Controls group
         MakeWidget({ 10, kControlsGroupStart + 13},  {290, 14}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SCREEN_EDGE_SCROLLING,      STR_SCREEN_EDGE_SCROLLING_TIP     ), // Edge scrolling
@@ -364,7 +364,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t kScenarioOptionsGroupStart = kScenarioGroupStart + 55;
     constexpr int32_t kTweaksStart = kScenarioOptionsGroupStart + 39;
 
-    static Widget window_options_misc_widgets[] = {
+    static constexpr Widget window_options_misc_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget(         {  5, kTitleSequenceStart +  0}, {300, 31}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                        ),
         MakeDropdownWidgets({ 10, kTitleSequenceStart + 15}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRINGID,               STR_TITLE_SEQUENCE_TIP), // Title sequence dropdown
@@ -389,7 +389,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget window_options_advanced_widgets[] = {
+    static constexpr Widget window_options_advanced_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget        ({ 10,  54}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
         MakeWidget        ({ 10,  69}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
@@ -407,7 +407,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget *window_options_page_widgets[] = {
+    static constexpr std::span<const Widget> window_options_page_widgets[] = {
         window_options_display_widgets,
         window_options_rendering_widgets,
         window_options_culture_widgets,
@@ -425,7 +425,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_options_display_widgets;
+            SetWidgets(window_options_display_widgets);
             page = WINDOW_OPTIONS_PAGE_DISPLAY;
             frame_no = 0;
             InitScrollWidgets();
@@ -647,9 +647,11 @@ namespace OpenRCT2::Ui::Windows
 
         void CommonPrepareDrawBefore()
         {
-            if (window_options_page_widgets[page] != widgets)
+            auto newWidgets = window_options_page_widgets[page];
+            // NOTE: Not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = window_options_page_widgets[page];
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
             SetPressedTab();
@@ -2083,7 +2085,7 @@ namespace OpenRCT2::Ui::Windows
             page = p;
             frame_no = 0;
             pressed_widgets = 0;
-            widgets = window_options_page_widgets[page];
+            SetWidgets(window_options_page_widgets[page]);
 
             Invalidate();
             OnResize();
