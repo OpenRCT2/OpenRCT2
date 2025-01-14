@@ -68,7 +68,7 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
     // clang-format off
-    static Widget _trackPlaceWidgets[] = {
+    static constexpr Widget _trackPlaceWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({173,  83}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),              STR_ROTATE_90_TIP                         ),
         MakeWidget({173,  59}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_MIRROR_ARROW),              STR_MIRROR_IMAGE_TIP                      ),
@@ -103,7 +103,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _trackPlaceWidgets;
+            SetWidgets(_trackPlaceWidgets);
             WindowInitScrollWidgets(*this);
             ToolSet(*this, WIDX_PRICE, Tool::Crosshair);
             InputSetFlag(INPUT_FLAG_6, true);

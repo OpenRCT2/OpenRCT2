@@ -21,7 +21,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr uint8_t kTextOffset = 8;
 
-    static Widget _widgets[] = {
+    static constexpr Widget _widgets[] = {
         kWidgetsEnd,
     };
 
@@ -29,7 +29,7 @@ namespace OpenRCT2::Ui::Windows
     {
         void OnOpen() override
         {
-            widgets = _widgets;
+            SetWidgets(_widgets);
         }
 
         void OnDraw(DrawPixelInfo& dpi) override

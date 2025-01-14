@@ -100,7 +100,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 189, 17 }, STR_PARK_AWARDS_TAB_TIP)                                          /* tab 7 */
 
     // clang-format off
-    static Widget _entranceWidgets[] = {
+    static constexpr Widget _entranceWidgets[] = {
         MAIN_PARK_WIDGETS(230),
         MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
         MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
@@ -113,40 +113,40 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget _ratingWidgets[] = {
+    static constexpr Widget _ratingWidgets[] = {
         MAIN_PARK_WIDGETS(255),
         kWidgetsEnd,
     };
 
-    static Widget _guestsWidgets[] = {
+    static constexpr Widget _guestsWidgets[] = {
         MAIN_PARK_WIDGETS(255),
         kWidgetsEnd,
     };
 
-    static Widget _priceWidgets[] = {
+    static constexpr Widget _priceWidgets[] = {
         MAIN_PARK_WIDGETS(230),
         MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
         MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
         kWidgetsEnd,
     };
 
-    static Widget _statsWidgets[] = {
+    static constexpr Widget _statsWidgets[] = {
         MAIN_PARK_WIDGETS(230),
         kWidgetsEnd,
     };
 
-    static Widget _objectiveWidgets[] = {
+    static constexpr Widget _objectiveWidgets[] = {
         MAIN_PARK_WIDGETS(230),
         MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
         kWidgetsEnd,
     };
 
-    static Widget _awardsWidgets[] = {
+    static constexpr Widget _awardsWidgets[] = {
         MAIN_PARK_WIDGETS(230),
         kWidgetsEnd,
     };
 
-    static std::array<Widget*, WINDOW_PARK_PAGE_COUNT> _pagedWidgets = {
+    static std::span<const Widget> _pagedWidgets[] = {
         _entranceWidgets,
         _ratingWidgets,
         _guestsWidgets,
@@ -523,7 +523,7 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDrawEntrance()
         {
             const auto& gameState = GetGameState();
-            widgets = _pagedWidgets[page];
+            SetWidgets(_pagedWidgets[page]);
             InitScrollWidgets();
 
             SetPressedTab();
@@ -701,10 +701,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawRating()
         {
-            auto* ratingWidgets = _pagedWidgets[page];
-            if (ratingWidgets != widgets)
+            auto newWidgets = _pagedWidgets[page];
+            // NOTE: Not the correct way to do this.
+            if (newWidgets.size() != widgets.size())
             {
-                widgets = ratingWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -777,10 +778,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawGuests()
         {
-            auto* guestsWidgets = _pagedWidgets[page];
-            if (widgets != guestsWidgets)
+            auto newWidgets = _pagedWidgets[page];
+            // NOTE: Not the correct way to do this.
+            if (newWidgets.size() != widgets.size())
             {
-                widgets = guestsWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -887,10 +889,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawPrice()
         {
-            auto* priceWidgets = _pagedWidgets[page];
-            if (widgets != priceWidgets)
+            auto newWidgets = _pagedWidgets[page];
+            // NOTE: Not the correct way to do this.
+            if (newWidgets.size() != widgets.size())
             {
-                widgets = priceWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -979,10 +982,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawStats()
         {
-            auto* statsWidgets = _pagedWidgets[page];
-            if (widgets != statsWidgets)
+            auto newWidgets = _pagedWidgets[page];
+            // NOTE: Not the correct way to do this.
+            if (newWidgets.size() != widgets.size())
             {
-                widgets = statsWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -1179,10 +1183,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawAwards()
         {
-            auto* awardsWidgets = _pagedWidgets[page];
-            if (widgets != awardsWidgets)
+            auto newWidgets = _pagedWidgets[page];
+            // NOTE: Not the correct way to do this.
+            if (newWidgets.size() != widgets.size())
             {
-                widgets = awardsWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -1233,7 +1238,7 @@ namespace OpenRCT2::Ui::Windows
             RemoveViewport();
 
             hold_down_widgets = _pagedHoldDownWidgets[newPage];
-            widgets = _pagedWidgets[newPage];
+            SetWidgets(_pagedWidgets[newPage]);
             SetDisabledTabs();
             Invalidate();
 

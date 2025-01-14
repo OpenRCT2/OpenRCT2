@@ -229,7 +229,7 @@ namespace OpenRCT2::Ui::Windows
     static bool _window_editor_object_selection_widgets_initialised;
 
     // clang-format off
-    static std::vector<Widget> _window_editor_object_selection_widgets = {
+    static constexpr Widget _window_editor_object_selection_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget         ({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
         MakeWidget         ({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
@@ -1140,18 +1140,16 @@ namespace OpenRCT2::Ui::Windows
     private:
         void InitWidgets()
         {
-            auto& targetWidgets = _window_editor_object_selection_widgets;
+            SetWidgets(_window_editor_object_selection_widgets);
             if (!_window_editor_object_selection_widgets_initialised)
             {
                 _window_editor_object_selection_widgets_initialised = true;
-                auto tabWidget = targetWidgets[targetWidgets.size() - 2];
+                auto tabWidget = widgets[widgets.size() - 2];
                 for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
                 {
-                    targetWidgets.insert(targetWidgets.end() - 1, tabWidget);
+                    widgets.insert(widgets.end() - 1, tabWidget);
                 }
             }
-
-            widgets = targetWidgets.data();
         }
 
         void SetPage(int32_t _page)

@@ -93,7 +93,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 65, 17 }, STR_STAFF_STATS_TIP)                                                /* Tab 3 */
 
     // clang-format off
-    static Widget _staffOverviewWidgets[] = {
+    static constexpr Widget _staffOverviewWidgets[] = {
         MAIN_STAFF_WIDGETS,
         MakeWidget     ({      3,      47}, {162, 120}, WindowWidgetType::Viewport,      WindowColour::Secondary                                        ), // Viewport
         MakeWidget     ({      3, WH - 13}, {162,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                        ), // Label at bottom of viewport
@@ -106,7 +106,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     //0x9AF910
-    static Widget _staffOptionsWidgets[] = {
+    static constexpr Widget _staffOptionsWidgets[] = {
         MAIN_STAFF_WIDGETS,
         MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 1
         MakeWidget     ({      5,  67}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 2
@@ -119,12 +119,12 @@ namespace OpenRCT2::Ui::Windows
     // clang-format on
 
     // 0x9AF9F4
-    static Widget _staffStatsWidgets[] = {
+    static constexpr Widget _staffStatsWidgets[] = {
         MAIN_STAFF_WIDGETS,
         kWidgetsEnd,
     };
 
-    static Widget* window_staff_page_widgets[] = {
+    static constexpr std::span<const Widget> window_staff_page_widgets[] = {
         _staffOverviewWidgets,
         _staffOptionsWidgets,
         _staffStatsWidgets,
@@ -341,9 +341,11 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::Staff));
 
-            if (window_staff_page_widgets[page] != widgets)
+            auto newWidgets = window_staff_page_widgets[page];
+            // NOTE: Not the correct way to do this.
+            if (newWidgets.size() != widgets.size())
             {
-                widgets = window_staff_page_widgets[page];
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
             SetPressedTab();
@@ -1132,7 +1134,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             pressed_widgets = 0;
             hold_down_widgets = 0;
-            widgets = window_staff_page_widgets[page];
+            SetWidgets(window_staff_page_widgets[page]);
 
             RemoveViewport();
 

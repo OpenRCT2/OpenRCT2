@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _rideListWidgets[] = {
+    static constexpr Widget _rideListWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ), // tab page background
         MakeWidget({315, 60}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
@@ -174,7 +174,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _rideListWidgets;
+            SetWidgets(_rideListWidgets);
             WindowInitScrollWidgets(*this);
             page = PAGE_RIDES;
             selected_list_item = -1;

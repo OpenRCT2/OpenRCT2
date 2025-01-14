@@ -19,7 +19,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_EXIT,
     };
 
-    static Widget _titleExitWidgets[] = {
+    static constexpr Widget _titleExitWidgets[] = {
         MakeWidget({ 0, 0 }, { 40, 64 }, WindowWidgetType::ImgBtn, WindowColour::Tertiary, ImageId(SPR_MENU_EXIT), STR_EXIT),
         kWidgetsEnd,
     };
@@ -28,7 +28,7 @@ namespace OpenRCT2::Ui::Windows
     {
         void OnOpen() override
         {
-            widgets = _titleExitWidgets;
+            SetWidgets(_titleExitWidgets);
             InitScrollWidgets();
         }
 

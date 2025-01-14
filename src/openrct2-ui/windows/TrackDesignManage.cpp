@@ -40,14 +40,14 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _trackManageWidgets[] = {
+    static constexpr Widget _trackManageWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({ 10, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_RENAME),
         MakeWidget({130, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
         kWidgetsEnd,
     };
 
-    static Widget _trackDeletePromptWidgets[] = {
+    static constexpr Widget _trackDeletePromptWidgets[] = {
         WINDOW_SHIM(STR_DELETE_FILE, WW_DELETE_PROMPT, WH_DELETE_PROMPT),
         MakeWidget({ 10, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
         MakeWidget({130, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL             ),
@@ -120,7 +120,7 @@ namespace OpenRCT2::Ui::Windows
 
     void TrackDesignManageWindow::OnOpen()
     {
-        widgets = _trackManageWidgets;
+        SetWidgets(_trackManageWidgets);
         WindowInitScrollWidgets(*this);
 
         WindowTrackDesignListSetBeingUpdated(true);
@@ -205,7 +205,7 @@ namespace OpenRCT2::Ui::Windows
 
     void TrackDeletePromptWindow::OnOpen()
     {
-        widgets = _trackDeletePromptWidgets;
+        SetWidgets(_trackDeletePromptWidgets);
         WindowInitScrollWidgets(*this);
     }
 

@@ -43,7 +43,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _shortcutWidgets[] = {
+    static constexpr Widget _shortcutWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
         MakeWidget({4,    47}, {412, 215}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_shortcut_change_widgets[] = {
+    static constexpr Widget window_shortcut_change_widgets[] = {
         WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
         MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
         kWidgetsEnd,
@@ -100,7 +100,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_shortcut_change_widgets;
+            SetWidgets(window_shortcut_change_widgets);
             WindowInitScrollWidgets(*this);
         }
 
@@ -450,19 +450,18 @@ namespace OpenRCT2::Ui::Windows
 
         void InitialiseWidgets()
         {
-            _widgets.clear();
-            _widgets.insert(_widgets.begin(), std::begin(_shortcutWidgets), std::end(_shortcutWidgets) - 1);
+            widgets.clear();
+            widgets.insert(widgets.begin(), std::begin(_shortcutWidgets), std::end(_shortcutWidgets) - 1);
 
             int32_t x = 3;
             for (size_t i = 0; i < _tabs.size(); i++)
             {
                 auto tab = MakeTab({ x, 17 }, STR_NONE);
-                _widgets.push_back(tab);
+                widgets.push_back(tab);
                 x += 31;
             }
 
-            _widgets.push_back(kWidgetsEnd);
-            widgets = _widgets.data();
+            widgets.push_back(kWidgetsEnd);
 
             WindowInitScrollWidgets(*this);
         }
@@ -581,7 +580,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_RESET_PROMPT_CANCEL
     };
 
-    static Widget WindowResetShortcutKeysPromptWidgets[] = {
+    static constexpr Widget WindowResetShortcutKeysPromptWidgets[] = {
         WINDOW_SHIM_WHITE(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
         MakeWidget(
             { 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WindowWidgetType::LabelCentred, WindowColour::Primary,
@@ -597,7 +596,7 @@ namespace OpenRCT2::Ui::Windows
     {
         void OnOpen() override
         {
-            widgets = WindowResetShortcutKeysPromptWidgets;
+            SetWidgets(WindowResetShortcutKeysPromptWidgets);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override

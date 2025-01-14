@@ -209,7 +209,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize GroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
 
     // clang-format off
-    static Widget window_new_ride_widgets[] = {
+    static constexpr Widget window_new_ride_widgets[] = {
         WINDOW_SHIM(WindowTitle, WindowWidth, WindowHeight),
         MakeWidget({  0,  43},             {601, 339},         WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
         MakeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
@@ -300,7 +300,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_new_ride_widgets;
+            SetWidgets(window_new_ride_widgets);
             PopulateRideList();
             InitScrollWidgets();
             _filter.clear();

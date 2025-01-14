@@ -40,7 +40,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _savePromptWidgets[] = {
+    static constexpr Widget _savePromptWidgets[] = {
         WINDOW_SHIM_WHITE(STR_NONE, WW_SAVE, WH_SAVE),
         MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, STR_EMPTY                ), // question/label
         MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
@@ -60,7 +60,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _quitPromptWidgets[] = {
+    static constexpr Widget _quitPromptWidgets[] = {
         WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
         MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
         MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL), // cancel
@@ -98,7 +98,10 @@ namespace OpenRCT2::Ui::Windows
         {
             bool canSave = !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER));
 
-            widgets = canSave ? _savePromptWidgets : _quitPromptWidgets;
+            if (canSave)
+                SetWidgets(_savePromptWidgets);
+            else
+                SetWidgets(_quitPromptWidgets);
 
             InitScrollWidgets();
 

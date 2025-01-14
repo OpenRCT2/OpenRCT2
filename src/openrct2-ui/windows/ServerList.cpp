@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _serverListWidgets[] = {
+    static constexpr Widget _serverListWidgets[] = {
         MakeWidget({  0,  0}, {341,  91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
         MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
         MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
@@ -95,8 +95,8 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             _playerName = Config::Get().network.PlayerName;
-            widgets = _serverListWidgets;
-            _serverListWidgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
+            SetWidgets(_serverListWidgets);
+            widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
             InitScrollWidgets();
             no_list_items = 0;
             selected_list_item = -1;

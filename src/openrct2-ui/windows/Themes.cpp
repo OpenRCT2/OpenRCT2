@@ -78,7 +78,7 @@ namespace OpenRCT2::Ui::Windows
     const uint16_t kWindowHeaderWidth = 152;
 
     // clang-format off
-    static Widget _themesWidgets[] = {
+    static constexpr Widget _themesWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  0, 43}, {320,  64},               WindowWidgetType::Resize,       WindowColour::Secondary                                                                                ), // tab content panel
         MakeTab   ({  3, 17},                                                                                    STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
@@ -265,7 +265,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = _themesWidgets;
+            SetWidgets(_themesWidgets);
 
             WindowThemesInitVars();
 

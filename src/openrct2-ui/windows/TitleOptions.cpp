@@ -18,7 +18,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OPTIONS,
     };
 
-    static Widget _windowTitleOptionsWidgets[] = {
+    static constexpr Widget _windowTitleOptionsWidgets[] = {
         MakeWidget({ 0, 0 }, { 80, 15 }, WindowWidgetType::Button, WindowColour::Tertiary, STR_OPTIONS, STR_OPTIONS_TIP),
         kWidgetsEnd,
     };
@@ -28,7 +28,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _windowTitleOptionsWidgets;
+            SetWidgets(_windowTitleOptionsWidgets);
             WindowInitScrollWidgets(*this);
         }
 

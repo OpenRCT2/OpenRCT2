@@ -48,7 +48,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     // 0x9AEE00
-    static Widget _signWidgets[] = {
+    static constexpr Widget _signWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary                                                        ), // Viewport
         MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
@@ -86,7 +86,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _signWidgets;
+            SetWidgets(_signWidgets);
             WindowInitScrollWidgets(*this);
         }
 

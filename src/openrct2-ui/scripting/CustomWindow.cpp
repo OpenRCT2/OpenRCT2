@@ -474,7 +474,7 @@ namespace OpenRCT2::Ui::Windows
             // Since the plugin may alter widget positions and sizes during an update event,
             // we need to force an update for all list view scrollbars
             WidgetIndex widgetIndex = 0;
-            for (auto widget = widgets; widget->type != WindowWidgetType::Last; widget++)
+            for (auto* widget = widgets.data(); widget->type != WindowWidgetType::Last; widget++)
             {
                 if (widget->type == WindowWidgetType::Scroll)
                 {
@@ -511,7 +511,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<const char*>(desc.Title.c_str());
 
             size_t scrollIndex = 0;
-            for (auto widget = widgets; widget->type != WindowWidgetType::Last; widget++)
+            for (auto widget = widgets.data(); widget->type != WindowWidgetType::Last; widget++)
             {
                 if (widget->type == WindowWidgetType::Scroll)
                 {
@@ -780,7 +780,7 @@ namespace OpenRCT2::Ui::Windows
         std::optional<WidgetIndex> GetViewportWidgetIndex()
         {
             WidgetIndex widgetIndex = 0;
-            for (auto widget = widgets; widget->type != WindowWidgetType::Last; widget++)
+            for (auto widget = widgets.data(); widget->type != WindowWidgetType::Last; widget++)
             {
                 if (widget->type == WindowWidgetType::Viewport)
                 {
@@ -944,7 +944,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             widgetList.push_back(kWidgetsEnd);
-            widgets = widgetList.data();
+            SetWidgets(widgetList);
 
             WindowInitScrollWidgets(*this);
             UpdateViewport();

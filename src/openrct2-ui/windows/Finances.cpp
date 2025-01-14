@@ -108,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 127, 17 }, STR_FINANCES_SHOW_MARKETING_TAB_TIP),                              \
         MakeTab({ 158, 17 }, STR_FINANCES_RESEARCH_TIP)
 
-    static Widget _windowFinancesSummaryWidgets[] =
+    static constexpr Widget _windowFinancesSummaryWidgets[] =
     {
         MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
         MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
@@ -116,25 +116,25 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget _windowFinancesCashWidgets[] =
+    static constexpr Widget _windowFinancesCashWidgets[] =
     {
         MAIN_FINANCES_WIDGETS(STR_FINANCIAL_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
         kWidgetsEnd,
     };
 
-    static Widget _windowFinancesParkValueWidgets[] =
+    static constexpr Widget _windowFinancesParkValueWidgets[] =
     {
         MAIN_FINANCES_WIDGETS(STR_PARK_VALUE_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
         kWidgetsEnd,
     };
 
-    static Widget _windowFinancesProfitWidgets[] =
+    static constexpr Widget _windowFinancesProfitWidgets[] =
     {
         MAIN_FINANCES_WIDGETS(STR_PROFIT_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
         kWidgetsEnd,
     };
 
-    static Widget _windowFinancesMarketingWidgets[] =
+    static constexpr Widget _windowFinancesMarketingWidgets[] =
     {
         MAIN_FINANCES_WIDGETS(STR_MARKETING, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
         MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
@@ -148,7 +148,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget _windowFinancesResearchWidgets[] =
+    static constexpr Widget _windowFinancesResearchWidgets[] =
     {
         MAIN_FINANCES_WIDGETS(STR_RESEARCH_FUNDING, RSW_RESEARCH, RSH_RESEARCH, WW_RESEARCH, WH_RESEARCH),
         MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_FUNDING_                                                             ),
@@ -166,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
     };
     // clang-format on
 
-    static Widget* _windowFinancesPageWidgets[] = {
+    static constexpr std::span<const Widget> _windowFinancesPageWidgets[] = {
         _windowFinancesSummaryWidgets,   // WINDOW_FINANCES_PAGE_SUMMARY
         _windowFinancesCashWidgets,      // WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH
         _windowFinancesParkValueWidgets, // WINDOW_FINANCES_PAGE_VALUE_GRAPH
@@ -314,11 +314,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            auto* targetWidgets = _windowFinancesPageWidgets[page];
-
-            if (widgets != targetWidgets)
+            auto targetWidgets = _windowFinancesPageWidgets[page];
+            // NOTE: Not the correct way to do this.
+            if (widgets.size() != targetWidgets.size())
             {
-                widgets = targetWidgets;
+                SetWidgets(targetWidgets);
                 WindowInitScrollWidgets(*this);
             }
 
@@ -345,17 +345,17 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                    graphPageWidget = &_windowFinancesParkValueWidgets[WIDX_PAGE_BACKGROUND];
+                    graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = false;
                     _graphProps.series = GetGameState().Park.ValueHistory;
                     break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
-                    graphPageWidget = &_windowFinancesProfitWidgets[WIDX_PAGE_BACKGROUND];
+                    graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = true;
                     _graphProps.series = GetGameState().WeeklyProfitHistory;
                     break;
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
-                    graphPageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
+                    graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = true;
                     _graphProps.series = GetGameState().CashHistory;
                     break;
@@ -500,7 +500,7 @@ namespace OpenRCT2::Ui::Windows
 
             hold_down_widgets = _windowFinancesPageHoldDownWidgets[p];
             pressed_widgets = 0;
-            widgets = _windowFinancesPageWidgets[p];
+            SetWidgets(_windowFinancesPageWidgets[p]);
             SetDisabledTabs();
             Invalidate();
 
@@ -688,14 +688,14 @@ namespace OpenRCT2::Ui::Windows
             int32_t y = std::max(1, numActiveCampaigns) * kListRowHeight + 92;
 
             // Update group box positions
-            _windowFinancesMarketingWidgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
-            _windowFinancesMarketingWidgets[WIDX_CAMPAIGNS_AVAILABLE_GROUP].top = y - 13;
+            widgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
+            widgets[WIDX_CAMPAIGNS_AVAILABLE_GROUP].top = y - 13;
 
             // Update new campaign button visibility
             y += 3;
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
             {
-                auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
+                auto campaignButton = &widgets[WIDX_CAMPAIGN_1 + i];
                 auto marketingCampaign = MarketingGetCampaign(i);
                 if (marketingCampaign == nullptr && MarketingIsCampaignTypeApplicable(i))
                 {

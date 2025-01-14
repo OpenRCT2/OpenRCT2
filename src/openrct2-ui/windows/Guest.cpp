@@ -113,7 +113,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 189, 17 }, STR_DEBUG_TIP)                                                     /* Tab 7 */
 
     // clang-format off
-    static Widget _guestWindowWidgetsOverview[] = {
+    static constexpr Widget _guestWindowWidgetsOverview[] = {
         MAIN_GUEST_WIDGETS,
         MakeWidget({  3,  45}, {164, 12}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Thought marquee
         MakeWidget({  3,  57}, {164, 87}, WindowWidgetType::Viewport,      WindowColour::Secondary                                               ), // Viewport
@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
     };
     // clang-format on
 
-    static Widget _guestWindowWidgetsStats[] = {
+    static constexpr Widget _guestWindowWidgetsStats[] = {
         MAIN_GUEST_WIDGETS,
         MakeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19), // Happiness
         MakeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19), // Energy
@@ -137,34 +137,34 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static Widget _guestWindowWidgetsRides[] = {
+    static constexpr Widget _guestWindowWidgetsRides[] = {
         MAIN_GUEST_WIDGETS,
         MakeWidget({ 3, 57 }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
         kWidgetsEnd,
     };
 
-    static Widget _guestWindowWidgetsFinance[] = {
+    static constexpr Widget _guestWindowWidgetsFinance[] = {
         MAIN_GUEST_WIDGETS,
         kWidgetsEnd,
     };
 
-    static Widget _guestWindowWidgetsThoughts[] = {
+    static constexpr Widget _guestWindowWidgetsThoughts[] = {
         MAIN_GUEST_WIDGETS,
         kWidgetsEnd,
     };
 
-    static Widget _guestWindowWidgetsInventory[] = {
+    static constexpr Widget _guestWindowWidgetsInventory[] = {
         MAIN_GUEST_WIDGETS,
         kWidgetsEnd,
     };
 
-    static Widget _guestWindowWidgetsDebug[] = {
+    static constexpr Widget _guestWindowWidgetsDebug[] = {
         MAIN_GUEST_WIDGETS,
         kWidgetsEnd,
     };
 
     // clang-format off
-    static constexpr std::array _guestWindowPageWidgets = {
+    static constexpr std::span<const Widget> _guestWindowPageWidgets[] = {
         _guestWindowWidgetsOverview,
         _guestWindowWidgetsStats,
         _guestWindowWidgetsRides,
@@ -173,7 +173,7 @@ namespace OpenRCT2::Ui::Windows
         _guestWindowWidgetsInventory,
         _guestWindowWidgetsDebug,
     };
-    static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
+    static_assert(std::size(_guestWindowPageWidgets) == WINDOW_GUEST_PAGE_COUNT);
     // clang-format on
 
     static constexpr std::array _guestWindowPageSizes = {
@@ -199,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _guestWindowWidgetsOverview;
+            SetWidgets(_guestWindowWidgetsOverview);
             page = WINDOW_GUEST_OVERVIEW;
             frame_no = 0;
             _marqueePosition = 0;
@@ -448,9 +448,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawCommon()
         {
-            if (_guestWindowPageWidgets[page] != widgets)
+            auto newWidgets = _guestWindowPageWidgets[page];
+            // NOTE: Not the correct way to do this.
+            if (newWidgets.size() != widgets.size())
             {
-                widgets = _guestWindowPageWidgets[page];
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -521,7 +523,7 @@ namespace OpenRCT2::Ui::Windows
 
             hold_down_widgets = 0;
             pressed_widgets = 0;
-            widgets = _guestWindowPageWidgets[page];
+            SetWidgets(_guestWindowPageWidgets[page]);
             DisableWidgets();
             Invalidate();
             OnResize();

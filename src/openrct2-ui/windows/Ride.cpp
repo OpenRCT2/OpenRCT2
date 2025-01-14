@@ -256,7 +256,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 282, 17 }, STR_CUSTOMER_INFORMATION_TIP)
 
     // 0x009ADC34
-    static Widget _mainWidgets[] = {
+    static constexpr Widget _mainWidgets[] = {
         MAIN_RIDE_WIDGETS,
         MakeWidget({  3,  60}, {288, 107}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                  ),
         MakeWidget({ 35,  46}, {222,  12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary, kWidgetContentEmpty,                 STR_VIEW_SELECTION         ),
@@ -277,7 +277,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // 0x009ADDA8
-    static Widget _vehicleWidgets[] = {
+    static constexpr Widget _vehicleWidgets[] = {
         MAIN_RIDE_WIDGETS,
         MakeWidget        ({  7,  50}, {302, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                    ),
         MakeWidget        ({297,  51}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                ),
@@ -289,7 +289,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // 0x009ADEFC
-    static Widget _operatingWidgets[] = {
+    static constexpr Widget _operatingWidgets[] = {
         MAIN_RIDE_WIDGETS,
         MakeSpinnerWidgets({157,  61}, {152, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_ARG_18_STRINGID                                                                 ), // NB: 3 widgets
         MakeSpinnerWidgets({157,  75}, {152, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_LIFT_HILL_CHAIN_SPEED_VALUE                                                     ), // NB: 3 widgets
@@ -312,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // 0x009AE190
-    static Widget _maintenanceWidgets[] = {
+    static constexpr Widget _maintenanceWidgets[] = {
         MAIN_RIDE_WIDGETS,
         MakeWidget({107,  71}, {202, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY,          STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
         MakeWidget({297,  72}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
@@ -325,7 +325,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // 0x009AE2A4
-    static Widget _colourWidgets[] = {
+    static constexpr Widget _colourWidgets[] = {
         MAIN_RIDE_WIDGETS,
         MakeWidget({  3,  47}, { 68, 47}, WindowWidgetType::Spinner,   WindowColour::Secondary                                                                    ),
         MakeWidget({ 74,  49}, {239, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary, STR_ARG_14_STRINGID                                               ),
@@ -353,7 +353,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // 0x009AE4C8
-    static Widget _musicWidgets[] = {
+    static constexpr Widget _musicWidgets[] = {
         MAIN_RIDE_WIDGETS,
         MakeWidget({  7, 47}, {302,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
         MakeWidget({  7, 62}, {302,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY                                     ),
@@ -364,7 +364,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // 0x009AE5DC
-    static Widget _measurementWidgets[] = {
+    static constexpr Widget _measurementWidgets[] = {
         MAIN_RIDE_WIDGETS,
         MakeWidget({288, 194}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_FLOPPY),                STR_SAVE_TRACK_DESIGN),
         MakeWidget({  4, 127}, {154, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_SELECT_NEARBY_SCENERY                       ),
@@ -375,7 +375,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // 0x009AE710
-    static Widget _graphsWidgets[] = {
+    static constexpr Widget _graphsWidgets[] = {
         MAIN_RIDE_WIDGETS,
         MakeWidget({  3,  46}, {306, 112}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_HORIZONTAL,       STR_LOGGING_DATA_FROM_TIP                               ),
         MakeWidget({  3, 163}, { 73,  14}, WindowWidgetType::Button, WindowColour::Secondary, STR_RIDE_STATS_VELOCITY, STR_SHOW_GRAPH_OF_VELOCITY_AGAINST_TIME_TIP             ),
@@ -386,7 +386,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // 0x009AE844
-    static Widget _incomeWidgets[] = {
+    static constexpr Widget _incomeWidgets[] = {
         MAIN_RIDE_WIDGETS,
         MakeWidget        ({ 19,  50}, {126, 14}, WindowWidgetType::Label,    WindowColour::Secondary                                                                    ),
         MakeSpinnerWidgets({147,  50}, {162, 14}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_ARG_6_CURRENCY2DP                                             ), // NB: 3 widgets
@@ -398,7 +398,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // 0x009AE9C8
-    static Widget _customerWidgets[] = {
+    static constexpr Widget _customerWidgets[] = {
         MAIN_RIDE_WIDGETS,
         MakeWidget({289,  54}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION), STR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION_TIP),
         MakeWidget({289,  78}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION),             STR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION_TIP            ),
@@ -406,7 +406,7 @@ namespace OpenRCT2::Ui::Windows
         kWidgetsEnd,
     };
 
-    static const std::array PageWidgets = {
+    static constexpr std::span<const Widget> PageWidgets[] = {
         _mainWidgets,
         _vehicleWidgets,
         _operatingWidgets,
@@ -756,7 +756,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = PageWidgets[WINDOW_RIDE_PAGE_MAIN];
+            SetWidgets(PageWidgets[WINDOW_RIDE_PAGE_MAIN]);
             hold_down_widgets = PageHoldDownWidgets[WINDOW_RIDE_PAGE_MAIN];
 
             page = WINDOW_RIDE_PAGE_MAIN;
@@ -1177,7 +1177,7 @@ namespace OpenRCT2::Ui::Windows
 
             hold_down_widgets = PageHoldDownWidgets[page];
             pressed_widgets = 0;
-            widgets = PageWidgets[page];
+            SetWidgets(PageWidgets[page]);
             DisableTabs();
             Invalidate();
 
@@ -2329,10 +2329,11 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t i, widgetHeight;
 
-            auto* newWidgets = PageWidgets[page];
-            if (widgets != newWidgets)
+            auto newWidgets = PageWidgets[page];
+            // NOTE: This is not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -2793,10 +2794,11 @@ namespace OpenRCT2::Ui::Windows
             StringId stringId;
             int32_t carsPerTrain;
 
-            auto* newWidgets = PageWidgets[page];
-            if (widgets != newWidgets)
+            auto newWidgets = PageWidgets[page];
+            // NOTE: This is not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -3487,10 +3489,11 @@ namespace OpenRCT2::Ui::Windows
         {
             StringId format, caption, tooltip;
 
-            auto* newWidgets = PageWidgets[page];
-            if (widgets != newWidgets)
+            auto newWidgets = PageWidgets[page];
+            // NOTE: This is not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -4022,9 +4025,10 @@ namespace OpenRCT2::Ui::Windows
         void MaintenanceOnPrepareDraw()
         {
             auto newWidgets = PageWidgets[page];
-            if (widgets != newWidgets)
+            // NOTE: This is not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -4605,9 +4609,10 @@ namespace OpenRCT2::Ui::Windows
             VehicleColour vehicleColour;
 
             auto newWidgets = PageWidgets[page];
-            if (widgets != newWidgets)
+            // NOTE: This is not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -5218,9 +5223,10 @@ namespace OpenRCT2::Ui::Windows
         void MusicOnPrepareDraw()
         {
             auto newWidgets = PageWidgets[page];
-            if (widgets != newWidgets)
+            // NOTE: This is not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -5614,9 +5620,10 @@ namespace OpenRCT2::Ui::Windows
         void MeasurementsOnPrepareDraw()
         {
             auto newWidgets = PageWidgets[page];
-            if (widgets != newWidgets)
+            // NOTE: This is not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -6059,9 +6066,10 @@ namespace OpenRCT2::Ui::Windows
         void GraphsOnPrepareDraw()
         {
             auto newWidgets = PageWidgets[page];
-            if (widgets != newWidgets)
+            // NOTE: This is not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -6574,9 +6582,10 @@ namespace OpenRCT2::Ui::Windows
         void IncomeOnPrepareDraw()
         {
             auto newWidgets = PageWidgets[page];
-            if (widgets != newWidgets)
+            // NOTE: This is not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
@@ -6857,9 +6866,10 @@ namespace OpenRCT2::Ui::Windows
         void CustomerOnPrepareDraw()
         {
             auto newWidgets = PageWidgets[page];
-            if (widgets != newWidgets)
+            // NOTE: This is not the correct way to do this.
+            if (widgets.size() != newWidgets.size())
             {
-                widgets = newWidgets;
+                SetWidgets(newWidgets);
                 InitScrollWidgets();
             }
 
