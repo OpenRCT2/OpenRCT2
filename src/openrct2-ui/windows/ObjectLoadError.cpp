@@ -290,7 +290,6 @@ namespace OpenRCT2::Ui::Windows
     #ifndef DISABLE_HTTP
         MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_DOWNLOAD_ALL,  STR_DOWNLOAD_ALL_TIP ), // Download all button
     #endif
-        kWidgetsEnd,
     };
     // clang-format on
 

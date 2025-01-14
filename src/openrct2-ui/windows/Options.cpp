@@ -257,7 +257,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 11, 176}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
         MakeWidget        ({ 11, 191}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
         MakeWidget        ({ 11, 206}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
-        kWidgetsEnd,
     };
 
     constexpr int32_t kFrameRenderingStart = 53;
@@ -281,7 +280,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({40, kFrameEffectStart + 45}, {251, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ENABLE_LIGHTING_VEHICLES, STR_ENABLE_LIGHTING_VEHICLES_TIP), // Enable light fx for vehicles
         MakeWidget({10, kFrameEffectStart + 60}, {281, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RENDER_WEATHER_EFFECTS,   STR_RENDER_WEATHER_EFFECTS_TIP  ), // Render weather effects
         MakeWidget({25, kFrameEffectStart + 75}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DISABLE_LIGHTNING_EFFECT, STR_DISABLE_LIGHTNING_EFFECT_TIP), // Disable lightning effect
-        kWidgetsEnd,
     };
 
     static constexpr Widget window_options_culture_widgets[] = {
@@ -304,7 +302,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, 128}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DATE_FORMAT,        STR_DATE_FORMAT_TIP        ), // Date format
         MakeWidget({155, 128}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                     ),
         MakeWidget({288, 129}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP        ),
-        kWidgetsEnd,
     };
 
     static constexpr Widget window_options_audio_widgets[] = {
@@ -321,7 +318,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({155,  68}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Master volume
         MakeWidget({155,  83}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
         MakeWidget({155,  98}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Music volume
-        kWidgetsEnd,
     };
 
     constexpr int32_t kControlsGroupStart = 53;
@@ -356,7 +352,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
         MakeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
         MakeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
-        kWidgetsEnd,
     };
 
     constexpr int32_t kTitleSequenceStart = 53;
@@ -386,7 +381,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, kTweaksStart + 77}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
         MakeWidget({175, kTweaksStart + 76}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Default inspection time dropdown
         MakeWidget({288, kTweaksStart + 77}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
-        kWidgetsEnd,
     };
 
     static constexpr Widget window_options_advanced_widgets[] = {
@@ -404,7 +398,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
         MakeWidget        ({289, 160}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
         MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               STR_NONE                                     ), // Asset packs
-        kWidgetsEnd,
     };
 
     static constexpr std::span<const Widget> window_options_page_widgets[] = {
@@ -670,9 +663,10 @@ namespace OpenRCT2::Ui::Windows
         {
             // Automatically adjust window height to fit widgets
             int32_t y = 0;
-            for (auto widget = &widgets[WIDX_PAGE_START]; widget->type != WindowWidgetType::Last; widget++)
+            for (WidgetIndex widgetIdx = WIDX_PAGE_START; widgetIdx < widgets.size(); widgetIdx++)
             {
-                y = std::max<int32_t>(y, widget->bottom);
+                const auto& widget = widgets[widgetIdx];
+                y = std::max<int32_t>(y, widget.bottom);
             }
             height = y + 6;
             ResizeFrameWithPage();

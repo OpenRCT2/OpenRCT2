@@ -64,7 +64,6 @@ namespace OpenRCT2::Ui::Windows
         MakeRemapWidget(
             { 67, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,
             STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP), // footpaths
-        kWidgetsEnd,
     };
 
     class CleanSceneryWindow final : public Window

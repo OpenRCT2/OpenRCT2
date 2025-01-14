@@ -74,7 +74,6 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_multiplayer_information_widgets[] = {
         MAIN_MULTIPLAYER_WIDGETS,
-        kWidgetsEnd,
     };
 
     static constexpr Widget window_multiplayer_players_widgets[] = {
@@ -84,7 +83,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({259, 46}, {100,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_LAST_ACTION), // Player name
         MakeWidget({359, 46}, { 42,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PING       ), // Player name
         MakeWidget({  3, 60}, {334, 177}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL), // list
-        kWidgetsEnd,
     };
 
     static constexpr Widget window_multiplayer_groups_widgets[] = {
@@ -97,7 +95,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 72, 80}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // selected group
         MakeWidget({236, 81}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
         MakeWidget({  3, 94}, {314, 207}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL   ), // permissions list
-        kWidgetsEnd,
     };
 
     static constexpr Widget window_multiplayer_options_widgets[] = {
@@ -105,7 +102,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({3, 50}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
         MakeWidget({3, 64}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
         MakeWidget({3, 78}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP),
-        kWidgetsEnd,
     };
 
     static std::span<const Widget> window_multiplayer_page_widgets[] = {

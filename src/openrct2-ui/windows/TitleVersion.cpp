@@ -21,17 +21,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr uint8_t kTextOffset = 8;
 
-    static constexpr Widget _widgets[] = {
-        kWidgetsEnd,
-    };
-
     class TitleVersionWindow final : public Window
     {
-        void OnOpen() override
-        {
-            SetWidgets(_widgets);
-        }
-
         void OnDraw(DrawPixelInfo& dpi) override
         {
             // Write name and version information

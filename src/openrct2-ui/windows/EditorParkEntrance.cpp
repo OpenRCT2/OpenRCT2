@@ -63,7 +63,6 @@ namespace OpenRCT2::Ui::Windows
         MakeTab        ({                 3, 17 },                                                                                           STR_NONE                                         ),
         MakeWidget     ({                 2, 45 }, { kScrollWidth, kScrollHeight      }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                                  ),
         MakeWidget     ({ kWindowWidth - 26, 59 }, {           24,            24      }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 ),
-        kWidgetsEnd,
     };
     // clang-format on
 

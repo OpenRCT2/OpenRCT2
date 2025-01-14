@@ -55,7 +55,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
         MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kWidgetContentEmpty,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
         MakeWidget({     17, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kWidgetContentEmpty,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
-        kWidgetsEnd,
     };
     // clang-format on
 

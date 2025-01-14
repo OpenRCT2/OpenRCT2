@@ -122,7 +122,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({167,  69}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_GUEST_TIP           ), // Rename Button
         MakeWidget({167,  93}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
         MakeWidget({167, 117}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_TRACK_PEEP), STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -134,33 +133,27 @@ namespace OpenRCT2::Ui::Windows
         MakeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100), // Thirst
         MakeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 47, 100), // Nausea
         MakeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 62, 100), // Toilet
-        kWidgetsEnd,
     };
 
     static constexpr Widget _guestWindowWidgetsRides[] = {
         MAIN_GUEST_WIDGETS,
         MakeWidget({ 3, 57 }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
-        kWidgetsEnd,
     };
 
     static constexpr Widget _guestWindowWidgetsFinance[] = {
         MAIN_GUEST_WIDGETS,
-        kWidgetsEnd,
     };
 
     static constexpr Widget _guestWindowWidgetsThoughts[] = {
         MAIN_GUEST_WIDGETS,
-        kWidgetsEnd,
     };
 
     static constexpr Widget _guestWindowWidgetsInventory[] = {
         MAIN_GUEST_WIDGETS,
-        kWidgetsEnd,
     };
 
     static constexpr Widget _guestWindowWidgetsDebug[] = {
         MAIN_GUEST_WIDGETS,
-        kWidgetsEnd,
     };
 
     // clang-format off

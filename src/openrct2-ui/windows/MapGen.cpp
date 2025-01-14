@@ -140,7 +140,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 10, 125}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
         MakeWidget        ({ 10, 141}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
         MakeSpinnerWidgets({179, 157}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
-        kWidgetsEnd,
     };
 
     static constexpr Widget TerrainWidgets[] = {
@@ -151,14 +150,12 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({236,  88}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
         MakeWidget        ({ 10, 106}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
         MakeWidget        ({ 10, 122}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
-        kWidgetsEnd,
     };
 
     static constexpr Widget WaterWidgets[] = {
         SHARED_WIDGETS(STR_MAPGEN_CAPTION_WATER),
         MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // NB: 3 widgets
         MakeWidget        ({ 10,  70}, {195, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_BEACHES_WATER_BODIES),
-        kWidgetsEnd,
     };
 
     static constexpr Widget ForestsWidgets[] = {
@@ -167,7 +164,6 @@ namespace OpenRCT2::Ui::Windows
         MakeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
         MakeSpinnerWidgets({179,  88}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
         MakeSpinnerWidgets({179, 106}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
-        kWidgetsEnd,
     };
 
     static std::span<const Widget> PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {

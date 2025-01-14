@@ -87,7 +87,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
         MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
         MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -185,7 +184,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Remove unused checkboxes
-            while (checkboxWidget->type != WindowWidgetType::Last)
+            while (checkboxWidgetIndex < widgets.size())
             {
                 checkboxWidget->type = WindowWidgetType::Empty;
                 checkboxWidgetIndex++;

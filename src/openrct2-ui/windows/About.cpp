@@ -73,13 +73,11 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
         MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
         MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON), // "contributors" button
-        kWidgetsEnd,
     };
     // clang-format on
 
     static constexpr Widget _windowAboutRCT2Widgets[] = {
         WIDGETS_MAIN,
-        kWidgetsEnd,
     };
 
     static constexpr std::span<const Widget> _windowAboutPageWidgets[] = {

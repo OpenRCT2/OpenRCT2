@@ -43,7 +43,6 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_dropdown_widgets[] = {
         MakeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-        kWidgetsEnd,
     };
 
     int32_t gDropdownNumItems;

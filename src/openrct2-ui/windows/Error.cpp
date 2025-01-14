@@ -32,7 +32,6 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_error_widgets[] = {
         MakeWidget({ 0, 0 }, { 200, 42 }, WindowWidgetType::Frame, WindowColour::Primary),
-        kWidgetsEnd,
     };
 
     class ErrorWindow final : public Window

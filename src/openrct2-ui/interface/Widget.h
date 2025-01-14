@@ -30,7 +30,6 @@ namespace OpenRCT2::Ui
     ImageId GetColourButtonImage(colour_t colour);
     Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex);
 
-    constexpr auto kWidgetsEnd = Widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
     constexpr uint32_t kWidgetContentEmpty = 0xFFFFFFFF;
     constexpr auto kBarBlink = (1u << 31);
     constexpr uint8_t kScrollBarWidth = 10;

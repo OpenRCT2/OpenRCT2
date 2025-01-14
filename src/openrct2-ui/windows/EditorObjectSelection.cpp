@@ -251,8 +251,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget         ({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Secondary,  SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
         MakeTab            ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
         // Copied object type times...
-
-        kWidgetsEnd,
     };
     // clang-format on
 

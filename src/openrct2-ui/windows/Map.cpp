@@ -145,7 +145,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  4,  70}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_PEEP_SPAWN),   STR_SET_STARTING_POSITIONS_TIP  ),
         MakeWidget        ({ 28,  94}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
         MakeWidget        ({110, 118}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_MAP_GEN_BTN),  STR_MAP_GENERATOR_TIP           ),
-        kWidgetsEnd,
     };
     // clang-format on
 

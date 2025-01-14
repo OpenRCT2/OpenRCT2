@@ -24,7 +24,6 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget window_map_tooltip_widgets[] = {
         MakeWidget({0, 0}, {200, 30}, WindowWidgetType::ImgBtn, WindowColour::Primary),
-        kWidgetsEnd,
     };
     // clang-format on
 

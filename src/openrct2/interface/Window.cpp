@@ -401,12 +401,7 @@ void WindowInvalidateAll()
  */
 void WidgetInvalidate(WindowBase& w, WidgetIndex widgetIndex)
 {
-#ifdef DEBUG
-    for (int32_t i = 0; i <= widgetIndex; i++)
-    {
-        assert(w.widgets[i].type != WindowWidgetType::Last);
-    }
-#endif
+    assert(widgetIndex < w.widgets.size());
 
     const auto& widget = w.widgets[widgetIndex];
     if (widget.left == -2)

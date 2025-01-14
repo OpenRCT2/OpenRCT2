@@ -737,13 +737,9 @@ public:
 
         // Find the widget at point x, y
         WidgetIndex widget_index = -1;
-        for (int32_t i = 0;; i++)
+        for (int32_t i = 0; i < w.widgets.size(); i++)
         {
             const auto& widget = w.widgets[i];
-            if (widget.type == WindowWidgetType::Last)
-            {
-                break;
-            }
 
             if (widget.type != WindowWidgetType::Empty && widget.IsVisible())
             {

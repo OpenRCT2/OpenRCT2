@@ -39,7 +39,6 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_SHIM(STR_NONE, WW, WH),
         MakeWidget({ 170, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_CANCEL),
         MakeWidget({ 10, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_OK),
-        kWidgetsEnd,
     };
 
     class TextInputWindow final : public Window

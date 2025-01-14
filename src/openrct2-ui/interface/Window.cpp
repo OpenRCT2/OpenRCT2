@@ -877,7 +877,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 WidgetInvalidate(*w, _currentTextBox.widget_index);
             }
-            _currentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
+            _currentTextBox.widget_index = kWidgetIndexNull;
         }
     }
 

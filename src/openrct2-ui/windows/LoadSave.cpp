@@ -96,7 +96,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({               64, WH - 50 }, { WW - 133,       14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                             ), // WIDX_FILENAME_TEXTBOX
         MakeWidget({          WW - 65, WH - 50 }, {       60,       14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_FILEBROWSER_SAVE_BUTTON                                ), // WIDX_SAVE
         MakeWidget({                4, WH - 24 }, {      197,       19 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // WIDX_BROWSE
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -1426,7 +1425,6 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_SHIM_WHITE(STR_FILEBROWSER_OVERWRITE_TITLE, OVERWRITE_WW, OVERWRITE_WH),
         MakeWidget({                10, OVERWRITE_WH - 20 }, { 84, 11 }, WindowWidgetType::Button, WindowColour::Primary, STR_FILEBROWSER_OVERWRITE_TITLE),
         MakeWidget({ OVERWRITE_WW - 95, OVERWRITE_WH - 20 }, { 85, 11 }, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
-        kWidgetsEnd,
     };
     // clang-format on
 

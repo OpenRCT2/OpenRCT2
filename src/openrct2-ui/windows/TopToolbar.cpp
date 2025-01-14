@@ -264,7 +264,6 @@ namespace OpenRCT2::Ui::Windows
         MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MULTIPLAYER, STR_SHOW_MULTIPLAYER_STATUS_TIP   ), // Network
         MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_TOOLBAR_CHAT_TIP              ), // Chat
         MakeWidget     ({  0, 0}, {10,                     1}, WindowWidgetType::Empty,  WindowColour::Primary                                                                   ), // Artificial widget separator
-        kWidgetsEnd,
     };
     // clang-format on
 

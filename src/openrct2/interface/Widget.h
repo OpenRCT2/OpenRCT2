@@ -15,6 +15,8 @@ struct WindowBase;
 
 using WidgetIndex = int16_t;
 
+constexpr WidgetIndex kWidgetIndexNull = -1;
+
 enum class WindowWidgetType : uint8_t
 {
     Empty = 0,
@@ -41,7 +43,6 @@ enum class WindowWidgetType : uint8_t
     ProgressBar = 29,
     Custom = 28,
     TextBox = 27,
-    Last = 26,
 };
 
 constexpr uint8_t kCloseButtonWidth = 10;

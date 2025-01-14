@@ -48,7 +48,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
         MakeWidget({4,    47}, {412, 215}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
         MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -65,7 +64,6 @@ namespace OpenRCT2::Ui::Windows
     static constexpr Widget window_shortcut_change_widgets[] = {
         WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
         MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -461,8 +459,6 @@ namespace OpenRCT2::Ui::Windows
                 x += 31;
             }
 
-            widgets.push_back(kWidgetsEnd);
-
             WindowInitScrollWidgets(*this);
         }
 
@@ -589,7 +585,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget(
             { RESET_PROMPT_WW - 95, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary,
             STR_SAVE_PROMPT_CANCEL),
-        kWidgetsEnd,
     };
 
     class ResetShortcutKeysPrompt final : public Window
