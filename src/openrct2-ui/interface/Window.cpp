@@ -1309,18 +1309,19 @@ namespace OpenRCT2::Ui::Windows
         for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
         {
             auto& widget = w.widgets[widgetIndex];
-            if (widget.IsVisible())
+            if (!widget.IsVisible())
             {
-                // Check if widget is outside the draw region
-                if (w.windowPos.x + widget.left < dpi.x + dpi.width && w.windowPos.x + widget.right >= dpi.x)
+                continue;
+            }
+
+            // Check if widget is outside the draw region
+            if (w.windowPos.x + widget.left < dpi.x + dpi.width && w.windowPos.x + widget.right >= dpi.x)
+            {
+                if (w.windowPos.y + widget.top < dpi.y + dpi.height && w.windowPos.y + widget.bottom >= dpi.y)
                 {
-                    if (w.windowPos.y + widget.top < dpi.y + dpi.height && w.windowPos.y + widget.bottom >= dpi.y)
-                    {
-                        w.OnDrawWidget(widgetIndex, dpi);
-                    }
+                    w.OnDrawWidget(widgetIndex, dpi);
                 }
             }
-            widgetIndex++;
         }
 
         // todo: something missing here too? Between 006EC32B and 006EC369
