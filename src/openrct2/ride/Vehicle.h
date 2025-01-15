@@ -104,7 +104,7 @@ struct Vehicle : EntityBase
         Stopping1B,
         UnloadingPassengers1C,
         StoppedByBlockBrakes,
-        WaterSlideWaiting
+        WaterSlideWaiting,
     };
 
     Type SubType;
@@ -240,9 +240,9 @@ struct Vehicle : EntityBase
     void UpdateAnimationAnimalFlying();
     void EnableCollisionsForTrain();
 
-    void WaterSlideSetWaiting();
-    void WaterSlideRespawnVehicle();
-    void WaterSlideSetReady();
+    void waterSlideSetWaiting();
+    void waterSlideRespawnVehicle();
+    void waterSlideSetReady();
 
     /**
      * Instantly moves the specific car forward or backwards along the track.

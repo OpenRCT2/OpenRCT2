@@ -2567,7 +2567,7 @@ static ResultWithMessage RideModeCheckValidStationNumbers(const Ride& ride)
             if (numStations >= 2)
                 return { true };
             return { false, STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE };
-        case RideMode::WaterSlide:
+        case RideMode::waterSlide:
             if (numStations == 2)
                 return { true };
             return { false, STR_UNABLE_TO_OPERATE_WITHOUT_TWO_STATIONS_IN_THIS_MODE };
@@ -3659,10 +3659,10 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
 
                 if (mode == RideMode::waterSlide)
                 {
-                    vehicle->WaterSlideSetWaiting();
+                    vehicle->waterSlideSetWaiting();
                     if (i == 0)
                     {
-                        vehicle->WaterSlideRespawnVehicle();
+                        vehicle->waterSlideRespawnVehicle();
                     }
                 }
                 else
@@ -3791,6 +3791,24 @@ void Ride::VehicleRespawnTrain(const Ride& ride, Vehicle* trainHead, CoordsXYZ t
 
         vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
     }
+}
+
+static bool RideGetStationTile(const Ride& ride, CoordsXYE* output)
+{
+    for (const auto& station : ride.getStations())
+    {
+        CoordsXYZ trackStart = station.GetStart();
+        if (trackStart.IsNull())
+            continue;
+
+        TileElement* tileElement = MapGetTrackElementAtOfType(trackStart, TrackElemType::EndStation);
+        if (tileElement == nullptr)
+            continue;
+
+        *output = { trackStart.x, trackStart.y, tileElement };
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -5004,7 +5022,7 @@ static int32_t RideGetTrackLength(const Ride& ride)
     for (const auto& station : ride.getStations())
     {
         trackStart = station.GetStart();
-        if (trackStart.IsNull() || station.Entrance.IsNull())
+        if (trackStart.IsNull() || (ride.mode == RideMode::waterSlide && station.Entrance.IsNull()))
             continue;
 
         tileElement = MapGetFirstElementAt(trackStart);
@@ -5149,7 +5167,7 @@ void Ride::updateMaxVehicles()
                     trainLength += carEntry.spacing;
                 }
                 maxNumTrains = std::min(
-                    (RideGetTrackLength(*this) / (trainLength >> 9)) + 2, int32_t(OpenRCT2::Limits::MaxTrainsPerRide));
+                    (RideGetTrackLength(*this) / (trainLength >> 9)) + 2, int32_t(OpenRCT2::Limits::kMaxTrainsPerRide));
                 break;
             }
             default:

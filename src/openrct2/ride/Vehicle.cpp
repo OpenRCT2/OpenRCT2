@@ -3503,9 +3503,9 @@ void Vehicle::UpdateUnloadingPassengers()
         UpdateTestFinish();
     }
 
-    if (curRide->mode == RideMode::WaterSlide)
+    if (curRide->mode == RideMode::waterSlide)
     {
-        this->WaterSlideSetWaiting();
+        waterSlideSetWaiting();
         return;
     }
 
@@ -4524,7 +4524,7 @@ void Vehicle::UpdateWaterSlideWaiting()
     auto prevTrain = GetEntity<Vehicle>(GetHead()->prev_vehicle_on_ride)->GetHead();
     if ((prevTrain != nullptr && prevTrain->status == Status::Travelling) || GetRide()->numTrains == 1)
     {
-        WaterSlideRespawnVehicle();
+        waterSlideRespawnVehicle();
     }
 }
 
@@ -9003,7 +9003,7 @@ void Vehicle::EnableCollisionsForTrain()
     }
 }
 
-void Vehicle::WaterSlideSetWaiting()
+void Vehicle::waterSlideSetWaiting()
 {
     for (auto vehicle = GetHead(); vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
@@ -9014,18 +9014,18 @@ void Vehicle::WaterSlideSetWaiting()
 
     // Bypass station count check for test results
     // If this is not done, each boat has to cycle twice before results appear
-    if (!(GetRide()->lifecycle_flags & RIDE_LIFECYCLE_TESTED) && (HasFlag(VehicleFlags::Testing)))
+    if (!(GetRide()->lifecycleFlags & RIDE_LIFECYCLE_TESTED) && (HasFlag(VehicleFlags::Testing)))
     {
         UpdateTestFinish();
     }
 }
 
-void Vehicle::WaterSlideRespawnVehicle()
+void Vehicle::waterSlideRespawnVehicle()
 {
     RideStation* entranceStation = nullptr;
-    for (auto& station : GetRide()->GetStations())
+    for (auto& station : GetRide()->getStations())
     {
-        if (!station.Entrance.IsNull() && station.TrainAtStation == RideStation::NO_TRAIN)
+        if (!station.Entrance.IsNull() && station.TrainAtStation == RideStation::kNoTrain)
         {
             entranceStation = &station;
             break;
@@ -9040,7 +9040,7 @@ void Vehicle::WaterSlideRespawnVehicle()
     }
 }
 
-void Vehicle::WaterSlideSetReady()
+void Vehicle::waterSlideSetReady()
 {
     for (auto vehicle = GetHead(); vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
