@@ -3790,3 +3790,5 @@ STR_6723    :At least one entertainer peep animations object must be selected
 STR_6724    :Scenario Texts
 STR_6725    :X:
 STR_6726    :Y:
+STR_6727    :Dive Loop (left)
+STR_6728    :Dive Loop (right)
