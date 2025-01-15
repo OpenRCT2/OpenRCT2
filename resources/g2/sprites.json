@@ -25091,6 +25091,624 @@
         "palette": "keep"
     },
     {
+        "path": "track/go_karts/flat_diag_1_1.png",
+        "x": 0,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_1_2.png",
+        "x": 0,
+        "y": 22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_1_3.png",
+        "x": -16,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_1_4.png",
+        "x": -22,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_1_5.png",
+        "x": -16,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_1_6.png",
+        "x": -16,
+        "y": 22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_2_1.png",
+        "x": -23,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_2_2.png",
+        "x": -23,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_1.png",
+        "x": 0,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_2.png",
+        "x": 0,
+        "y": 21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_3.png",
+        "x": -16,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_4.png",
+        "x": -22,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_5.png",
+        "x": -16,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_6.png",
+        "x": -16,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_2_1.png",
+        "x": -23,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_2_2.png",
+        "x": -23,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_1.png",
+        "x": -16,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_2.png",
+        "x": -16,
+        "y": 21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_3.png",
+        "x": -16,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_4.png",
+        "x": -16,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_5.png",
+        "x": 0,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_6.png",
+        "x": 0,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_4_1.png",
+        "x": -23,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_4_2.png",
+        "x": -23,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_1.png",
+        "x": 0,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_2.png",
+        "x": 0,
+        "y": 18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_3.png",
+        "x": -21,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_4.png",
+        "x": -32,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_5.png",
+        "x": -16,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_6.png",
+        "x": -16,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_2_1.png",
+        "x": -18,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_2_2.png",
+        "x": -23,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_1.png",
+        "x": -16,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_2.png",
+        "x": -16,
+        "y": 18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_3.png",
+        "x": -16,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_4.png",
+        "x": -22,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_5.png",
+        "x": 0,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_6.png",
+        "x": 0,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_4_1.png",
+        "x": -23,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_4_2.png",
+        "x": -23,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_1.png",
+        "x": 0,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_2.png",
+        "x": 0,
+        "y": 18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_3.png",
+        "x": -21,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_4.png",
+        "x": -32,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_5.png",
+        "x": -16,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_6.png",
+        "x": -16,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_2_1.png",
+        "x": -18,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_2_2.png",
+        "x": -23,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_1.png",
+        "x": -16,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_2.png",
+        "x": -16,
+        "y": 18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_3.png",
+        "x": -16,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_4.png",
+        "x": -16,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_5.png",
+        "x": 0,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_6.png",
+        "x": 0,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_4.png",
+        "x": -23,
+        "y": -34,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_1.png",
+        "x": 0,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_2.png",
+        "x": 0,
+        "y": 17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_3.png",
+        "x": -19,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_4.png",
+        "x": -32,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_5.png",
+        "x": -16,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_6.png",
+        "x": -16,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_2_1.png",
+        "x": -20,
+        "y": 13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_2_2.png",
+        "x": -23,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_1.png",
+        "x": -16,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_2.png",
+        "x": -16,
+        "y": 17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_3.png",
+        "x": -16,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_4.png",
+        "x": -16,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_5.png",
+        "x": 0,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_6.png",
+        "x": 0,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_4_1.png",
+        "x": -23,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_4_2.png",
+        "x": -23,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_1.png",
+        "x": 0,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_2.png",
+        "x": 0,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_3.png",
+        "x": -16,
+        "y": -40,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_4.png",
+        "x": -16,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_5.png",
+        "x": -16,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_6.png",
+        "x": -16,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_2_1.png",
+        "x": -23,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_2_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_1.png",
+        "x": -16,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_2.png",
+        "x": -16,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_3.png",
+        "x": -16,
+        "y": -40,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_4.png",
+        "x": -16,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_5.png",
+        "x": 0,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_6.png",
+        "x": 0,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_4_1.png",
+        "x": -23,
+        "y": -50,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_4_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_1.png",
+        "x": 0,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_2.png",
+        "x": 0,
+        "y": 5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_3.png",
+        "x": -16,
+        "y": -61,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_4.png",
+        "x": -32,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_5.png",
+        "x": -16,
+        "y": -61,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_6.png",
+        "x": -16,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_2_1.png",
+        "x": -23,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_2_2.png",
+        "x": -23,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_1.png",
+        "x": -16,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_2.png",
+        "x": -16,
+        "y": 5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_3.png",
+        "x": -16,
+        "y": -61,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_4.png",
+        "x": -16,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_5.png",
+        "x": 0,
+        "y": -61,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_6.png",
+        "x": 0,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_4_1.png",
+        "x": -23,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_4_2.png",
+        "x": -23,
+        "y": -50,
+        "palette": "keep"
+    },
+    {
         "path": "track/go_karts/s_bend_left_1_1.png",
         "x": -32,
         "y": -7,
