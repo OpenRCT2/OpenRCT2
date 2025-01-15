@@ -1706,7 +1706,7 @@ static void PaintGoKartsTrackLeftQuarterTurn1Tile(
             break;
         case 3:
             imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SW_NW);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 24, 24, 1 } });
 
             imageId = session.TrackColours.WithIndex(SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SW_NW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 29, height + 2 }, { 1, 1, 3 } });
