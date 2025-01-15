@@ -512,7 +512,7 @@ static bool vehicle_move_info_valid(
         case VehicleTrackSubposition::GoKartsRightLane:
         case VehicleTrackSubposition::GoKartsMovingToRightLane:
         case VehicleTrackSubposition::GoKartsMovingToLeftLane:
-            size = 208;
+            size = 1204;
             break;
         case VehicleTrackSubposition::MiniGolfPathA9: // VehicleTrackSubposition::MiniGolfStart9
         case VehicleTrackSubposition::MiniGolfBallPathA10:
@@ -7052,7 +7052,12 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     if ((carEntry->flags & CAR_ENTRY_FLAG_GO_KART) && TrackSubposition < VehicleTrackSubposition::GoKartsMovingToRightLane)
     {
         trackType = tileElement->AsTrack()->GetTrackType();
-        if (trackType == TrackElemType::Flat
+        if (trackType == TrackElemType::Flat || trackType == TrackElemType::LeftQuarterTurn3Tiles
+            || trackType == TrackElemType::RightQuarterTurn3Tiles || trackType == TrackElemType::LeftQuarterTurn5Tiles
+            || trackType == TrackElemType::RightQuarterTurn5Tiles || trackType == TrackElemType::LeftEighthToDiag
+            || trackType == TrackElemType::RightEighthToDiag || trackType == TrackElemType::LeftEighthToOrthogonal
+            || trackType == TrackElemType::RightEighthToOrthogonal || trackType == TrackElemType::SBendLeft
+            || trackType == TrackElemType::SBendRight
             || ((curRide.lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && tileElement->AsTrack()->IsStation()))
         {
             UpdateGoKartAttemptSwitchLanes();
