@@ -1724,6 +1724,9 @@ enum : StringId
     STR_DIVE_LOOP_LEFT = 6727,
     STR_DIVE_LOOP_RIGHT = 6728,
 
+    STR_RIDE_MODE_WATER_SLIDE = 6729,
+    STR_UNABLE_TO_OPERATE_WITHOUT_TWO_STATIONS_IN_THIS_MODE = 6731,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
