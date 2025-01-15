@@ -9,6 +9,7 @@
 - Fix: [#21794] Lay-down coaster cars reverse on first frames of downwards corkscrew.
 - Fix: [#23368] Incorrect refund amount when deleting track pieces at or above 96m.
 - Fix: [#23508] Simultaneous virtual floors shown for ride and footpath.
+- Fix: [#23512] Holding brakes are skipped if they’re too close together.
 - Fix: [#23581] [Plugin] Food/drink items given to guests have no consumption duration set.
 - Fix: [#23591] “Install new track” button in Track Designs Manager is misaligned.
 - Fix: [#23618] Can no longer build diagonal brakes & block brakes on Steeplechase, Inverted Lay-down, & Inverted Multi-Dim roller coasters.
