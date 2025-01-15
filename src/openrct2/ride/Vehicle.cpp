@@ -507,9 +507,11 @@ static bool vehicle_move_info_valid(
             break;
         case VehicleTrackSubposition::GoKartsLeftLane:
         case VehicleTrackSubposition::GoKartsRightLane:
+            size = 1204;
+            break;
         case VehicleTrackSubposition::GoKartsMovingToRightLane:
         case VehicleTrackSubposition::GoKartsMovingToLeftLane:
-            size = 1204;
+            size = 568;
             break;
         case VehicleTrackSubposition::MiniGolfPathA9: // VehicleTrackSubposition::MiniGolfStart9
         case VehicleTrackSubposition::MiniGolfBallPathA10:
