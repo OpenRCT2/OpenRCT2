@@ -2961,6 +2961,22 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
             case TrackElemType::DiagDown25ToDown60:
             case TrackElemType::DiagDown60ToDown25:
             case TrackElemType::DiagDown60:
+            case TrackElemType::LeftQuarterTurn3TilesUp25:
+            case TrackElemType::RightQuarterTurn3TilesUp25:
+            case TrackElemType::LeftQuarterTurn3TilesDown25:
+            case TrackElemType::RightQuarterTurn3TilesDown25:
+            case TrackElemType::LeftQuarterTurn5TilesUp25:
+            case TrackElemType::RightQuarterTurn5TilesUp25:
+            case TrackElemType::LeftQuarterTurn5TilesDown25:
+            case TrackElemType::RightQuarterTurn5TilesDown25:
+            case TrackElemType::LeftEighthToDiagUp25:
+            case TrackElemType::RightEighthToDiagUp25:
+            case TrackElemType::LeftEighthToDiagDown25:
+            case TrackElemType::RightEighthToDiagDown25:
+            case TrackElemType::LeftEighthToOrthogonalUp25:
+            case TrackElemType::RightEighthToOrthogonalUp25:
+            case TrackElemType::LeftEighthToOrthogonalDown25:
+            case TrackElemType::RightEighthToOrthogonalDown25:
             case TrackElemType::SBendLeft:
             case TrackElemType::SBendRight:
                 return true;

@@ -845,6 +845,421 @@ static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, 4>, kNumOrtho
     }
 };
 
+// clang-format off
+static constexpr std::array<std::array<std::array<ImageIndex, 2>, 4>, kNumOrthogonalDirections>
+kGoKartsLeftQuarterTurn3TilesUp25Sprites = {
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 0, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 1,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 2, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 3,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 4, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 5,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 6, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 7,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 8, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 9,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 10, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 11,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 12, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 13,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 14, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 15,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 16, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 17,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 18, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 19,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 20, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 21,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 22, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 23,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 24, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 25,
+};
+// clang-format on
+
+static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, 4>, kNumOrthogonalDirections>
+    kGoKartsLeftQuarterTurn3TilesUp25BoundBoxes = { {
+        { {
+            { { { { 0, 2, 0 }, { 32, 26, 1 } }, { { 0, 2, 38 }, { 32, 26, 1 } } } },
+            { { { { 0, 16, 0 }, { 16, 16, 0 } }, { { 0, 16, 22 }, { 16, 16, 1 } } } },
+            { { { { 16, 0, 0 }, { 16, 16, 0 } }, { { 16, 0, 22 }, { 16, 16, 1 } } } },
+            { { { { 0, 0, 0 }, { 32, 32, 1 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 28, 32, 1 } }, { { 0, 0, 38 }, { 28, 32, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 16, 16, 0 } }, { { 0, 0, 22 }, { 16, 16, 1 } } } },
+            { { { { 0, 0, 0 }, { 32, 28, 1 } }, { { 0, 0, 38 }, { 32, 28, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 32, 32, 1 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { {} },
+            { { { { 0, 16, 0 }, { 16, 16, 0 } }, { { 0, 16, 22 }, { 16, 16, 1 } } } },
+            { { { { 2, 0, 0 }, { 26, 32, 1 } }, { { 2, 0, 38 }, { 26, 32, 1 } } } },
+        } },
+        { {
+            { { { { 2, 0, 0 }, { 26, 32, 1 } }, { { 2, 0, 38 }, { 26, 32, 1 } } } },
+            { {} },
+            { { { { 16, 16, 0 }, { 32, 32, 0 } }, { { 16, 16, 22 }, { 32, 32, 1 } } } },
+            { { { { 0, 2, 0 }, { 32, 26, 1 } }, { { 0, 2, 38 }, { 32, 26, 1 } } } },
+        } },
+    } };
+
+// clang-format off
+static constexpr std::array<std::array<std::array<ImageIndex, 2>, 4>, kNumOrthogonalDirections>
+kGoKartsRightQuarterTurn3TilesUp25Sprites = {
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 26, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 27,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 28, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 29,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 30, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 31,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 32, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 33,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 34, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 35,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 36, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 37,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 38, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 39,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 40, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 41,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 42, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 43,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 44, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 45,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 46, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 47,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 48, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 49,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 50, SPR_G2_GO_KARTS_TRACK_GENTLE_SMALL_CURVE + 51,
+};
+// clang-format on
+
+static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, 4>, kNumOrthogonalDirections>
+    kGoKartsRightQuarterTurn3TilesUp25BoundBoxes = flipTrackSequenceBoundBoxesXAxis(
+        kGoKartsLeftQuarterTurn3TilesUp25BoundBoxes);
+
+// clang-format off
+static constexpr std::array<std::array<std::array<ImageIndex, 2>, 7>, kNumOrthogonalDirections>
+kGoKartsLeftQuarterTurn5TilesUp25Sprites = {
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 0, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 1,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 2, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 3,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 4, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 5,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 6, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 7,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 8, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 9,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 10, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 11,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 12, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 13,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 14, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 15,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 16, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 17,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 18, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 19,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 20, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 21,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 22, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 23,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 24, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 25,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 26, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 27,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 28, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 29,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 30, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 31,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 32, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 33,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 34, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 35,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 36, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 37,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 38, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 39,
+};
+// clang-format on
+
+static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, 7>, kNumOrthogonalDirections>
+    kGoKartsLeftQuarterTurn5TilesUp25BoundBoxes = { {
+        { {
+            { { { { 0, 2, 0 }, { 32, 26, 1 } }, { { 0, 2, 38 }, { 32, 26, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 32, 16, 1 } }, { { 0, 0, 38 }, { 32, 16, 1 } } } },
+            { { { { 0, 16, 0 }, { 16, 16, 1 } }, { { 0, 16, 38 }, { 16, 16, 1 } } } },
+            { {} },
+            { { { { 16, 0, 0 }, { 16, 32, 1 } }, { { 16, 0, 38 }, { 16, 32, 1 } } } },
+            { { { { 0, 0, 0 }, { 32, 32, 1 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 28, 32, 1 } }, { { 0, 0, 38 }, { 28, 32, 1 } } } },
+            { {} },
+            { { { { -16, -16, 0 }, { 32, 32, 1 } }, { { -16, -16, 38 }, { 32, 32, 1 } } } },
+            { { { { 0, 16, 0 }, { 32, 32, 1 } }, { { 0, 16, 38 }, { 32, 32, 1 } } } },
+            { {} },
+            { { { { -16, -16, 8 }, { 32, 32, 1 } }, { { -16, -16, 38 }, { 32, 32, 1 } } } },
+            { { { { 0, 0, 0 }, { 32, 28, 1 } }, { { 0, 0, 38 }, { 32, 28, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 32, 32, 1 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { {} },
+            { { { { 0, 16, 0 }, { 32, 16, 1 } }, { { 0, 16, 38 }, { 32, 16, 1 } } } },
+            { { { { 16, 0, 0 }, { 16, 16, 1 } }, { { 16, 0, 38 }, { 16, 16, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 16, 32, 1 } }, { { 0, 0, 38 }, { 16, 32, 1 } } } },
+            { { { { 2, 0, 0 }, { 26, 32, 1 } }, { { 2, 0, 38 }, { 26, 32, 1 } } } },
+        } },
+        { {
+            { { { { 2, 0, 0 }, { 26, 32, 1 } }, { { 2, 0, 38 }, { 26, 32, 1 } } } },
+            { {} },
+            { { { { 16, 0, 0 }, { 16, 32, 1 } }, { { 16, 0, 38 }, { 16, 32, 1 } } } },
+            { { { { 0, 0, 0 }, { 16, 16, 1 } }, { { 0, 0, 38 }, { 16, 16, 1 } } } },
+            { {} },
+            { { { { 0, 16, 0 }, { 32, 16, 1 } }, { { 0, 16, 38 }, { 32, 16, 1 } } } },
+            { { { { 0, 2, 0 }, { 32, 26, 1 } }, { { 0, 2, 38 }, { 32, 26, 1 } } } },
+        } },
+    } };
+
+// clang-format off
+static constexpr std::array<std::array<std::array<ImageIndex, 2>, 7>, kNumOrthogonalDirections>
+kGoKartsRightQuarterTurn5TilesUp25Sprites = {
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 40, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 41,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 42, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 43,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 44, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 45,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 46, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 47,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 48, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 49,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 50, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 51,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 52, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 53,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 54, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 55,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 56, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 57,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 58, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 59,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 60, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 61,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 62, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 63,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 64, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 65,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 66, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 67,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 68, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 69,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 70, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 71,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 72, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 73,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 74, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 75,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 76, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 77,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 78, SPR_G2_GO_KARTS_TRACK_GENTLE_MEDIUM_CURVE + 79,
+};
+// clang-format on
+
+static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, 7>, kNumOrthogonalDirections>
+    kGoKartsRightQuarterTurn5TilesUp25BoundBoxes = flipTrackSequenceBoundBoxesXAxis(
+        kGoKartsLeftQuarterTurn5TilesUp25BoundBoxes);
+
+// clang-format off
+static constexpr std::array<std::array<std::array<ImageIndex, 2>, 5>, kNumOrthogonalDirections>
+kGoKartsLeftEighthToDiagUp25Sprites = {
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 0,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 1,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 2, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 3,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 4,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 5,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 6,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 7,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 8, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 9,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 10, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 11,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 12, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 13,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 14, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 15,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 16, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 17,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 18, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 19,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 20, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 21,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 22, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 23,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 24, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 25,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 26, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 27,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 28, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 29,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 30, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 31,
+};
+// clang-format on
+
+static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, 5>, kNumOrthogonalDirections>
+    kGoKartsLeftEighthToDiagUp25BoundBoxes = { {
+        { {
+            { { { { 0, 2, 0 }, { 32, 26, 1 } }, { { 0, 2, 38 }, { 32, 26, 1 } } } },
+            { { { { 0, 0, 0 }, { 32, 16, 1 } }, { { 0, 0, 38 }, { 32, 16, 1 } } } },
+            { { { { 0, 16, 0 }, { 16, 16, 0 } }, { { 0, 16, 38 }, { 16, 16, 1 } } } },
+            { {} },
+            { { { { 16, 16, 0 }, { 16, 16, 1 } }, { { 16, 16, 38 }, { 16, 16, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 28, 32, 1 } }, { { 0, 0, 38 }, { 28, 32, 1 } } } },
+            { { { { 0, 0, 0 }, { 16, 34, 1 } }, { { 0, 0, 38 }, { 16, 34, 1 } } } },
+            { { { { 16, 16, 0 }, { 32, 32, 1 } }, { { 16, 16, 38 }, { 32, 32, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 32, 32, 1 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 64, 32, 1 } }, { { 0, 0, 38 }, { 64, 32, 1 } } } },
+            { { { { 0, 0, 0 }, { 32, 32, 1 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { { { { 16, 0, 0 }, { 16, 16, 1 } }, { { 16, 0, 38 }, { 16, 16, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 16, 16, 1 } }, { { 0, 0, 38 }, { 16, 16, 1 } } } },
+        } },
+        { {
+            { { { { 2, 0, 0 }, { 26, 32, 1 } }, { { 2, 0, 38 }, { 26, 32, 1 } } } },
+            { { { { 16, 0, 0 }, { 16, 32, 1 } }, { { 16, 0, 38 }, { 16, 32, 1 } } } },
+            { { { { -16, -16, 0 }, { 32, 32, 1 } }, { { -16, -16, 38 }, { 32, 32, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 32, 32, 1 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+        } },
+    } };
+
+// clang-format off
+static constexpr std::array<std::array<std::array<ImageIndex, 2>, 5>, kNumOrthogonalDirections>
+kGoKartsRightEighthToDiagUp25Sprites = {
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 32,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 33,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 34, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 35,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 36,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 37,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 38,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 39,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 40, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 41,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 42, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 43,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 44, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 45,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 46, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 47,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 48, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 49,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 50, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 51,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 52, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 53,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 54, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 55,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 56, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 57,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 58, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 59,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 60, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 61,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 62, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 63,
+};
+// clang-format on
+
+static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, 5>, kNumOrthogonalDirections>
+    kGoKartsRightEighthToDiagUp25BoundBoxes = flipTrackSequenceBoundBoxesXAxis(kGoKartsLeftEighthToDiagUp25BoundBoxes);
+
+// clang-format off
+static constexpr std::array<std::array<std::array<ImageIndex, 2>, 5>, kNumOrthogonalDirections>
+kGoKartsLeftEighthToOrthogonalUp25Sprites = {
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 64,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 65,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 66, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 67,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 68,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 69,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 70,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 71,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 72, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 73,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 74, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 75,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 76, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 77,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 78, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 79,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 80, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 81,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 82, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 83,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 84, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 85,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 86, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 87,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 88, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 89,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 90, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 91,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 92, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 93,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 94, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 95,
+};
+// clang-format on
+
+static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, 5>, kNumOrthogonalDirections>
+    kGoKartsLeftEighthToOrthogonalUp25BoundBoxes = { {
+        { {
+            { { { { 0, 0, 0 }, { 32, 32, 0 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { { { { 16, 16, 0 }, { 32, 32, 1 } }, { { 16, 16, 38 }, { 32, 32, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 32, 28, 1 } }, { { 0, 0, 38 }, { 32, 28, 1 } } } },
+            { { { { 0, 0, 0 }, { 48, 28, 1 } }, { { 0, 0, 38 }, { 32, 28, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 32, 32, 0 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { { { { 16, 0, 0 }, { 16, 16, 1 } }, { { 16, 0, 38 }, { 16, 16, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 28, 32, 1 } }, { { 0, 0, 38 }, { 28, 32, 1 } } } },
+            { { { { 2, 0, 0 }, { 26, 32, 1 } }, { { 2, 0, 38 }, { 26, 32, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 32, 32, 0 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { { { { -16, -16, 0 }, { 32, 32, 1 } }, { { -16, -16, 38 }, { 32, 32, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 32, 32, 1 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { { { { 0, 2, 0 }, { 32, 26, 1 } }, { { 0, 2, 38 }, { 32, 26, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 16, 16, 0 } }, { { 0, 0, 38 }, { 16, 16, 0 } } } },
+            { { { { 0, 16, 0 }, { 16, 16, 1 } }, { { 0, 16, 38 }, { 16, 16, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 32, 32, 1 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { { { { 0, 0, 0 }, { 28, 32, 1 } }, { { 0, 0, 38 }, { 28, 32, 1 } } } },
+        } },
+    } };
+
+// clang-format off
+static constexpr std::array<std::array<std::array<ImageIndex, 2>, 5>, kNumOrthogonalDirections>
+kGoKartsRightEighthToOrthogonalUp25Sprites = {
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 96,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 97,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 98, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 99,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 100,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 101,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 102,  SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 103,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 104, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 105,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 106, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 107,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 108, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 109,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 110, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 111,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 112, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 113,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 114, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 115,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 116, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 117,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 118, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 119,
+
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 120, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 121,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 122, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 123,
+    kImageIndexUndefined, kImageIndexUndefined,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 124, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 125,
+    SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 126, SPR_G2_GO_KARTS_TRACK_GENTLE_LARGE_CURVE + 127,
+};
+// clang-format on
+
+static constexpr std::array<std::array<std::array<BoundBoxXYZ, 2>, 5>, kNumOrthogonalDirections>
+    kGoKartsRightEighthToOrthogonalUp25BoundBoxes = { {
+        { {
+            { { { { 0, 0, 0 }, { 32, 32, 0 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { { { { -16, -16, 0 }, { 32, 32, 1 } }, { { -16, -16, 38 }, { 32, 32, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 32, 32, 1 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { { { { 2, 0, 0 }, { 26, 32, 1 } }, { { 2, 0, 38 }, { 26, 32, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 32, 32, 0 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { { { { 0, 16, 0 }, { 16, 16, 1 } }, { { 0, 16, 38 }, { 16, 16, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 32, 28, 1 } }, { { 0, 0, 38 }, { 32, 28, 1 } } } },
+            { { { { 0, 0, 0 }, { 32, 28, 1 } }, { { 0, 0, 38 }, { 32, 28, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 32, 32, 0 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { { { { 16, 16, 0 }, { 32, 32, 1 } }, { { 16, 16, 38 }, { 32, 32, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 28, 32, 1 } }, { { 0, 0, 38 }, { 28, 32, 1 } } } },
+            { { { { 0, 0, 0 }, { 28, 48, 1 } }, { { 0, 0, 38 }, { 28, 32, 1 } } } },
+        } },
+        { {
+            { { { { 0, 0, 0 }, { 16, 16, 0 } }, { { 0, 0, 38 }, { 16, 16, 1 } } } },
+            { { { { 16, 0, 0 }, { 16, 16, 1 } }, { { 16, 0, 38 }, { 16, 16, 1 } } } },
+            { {} },
+            { { { { 0, 0, 0 }, { 32, 32, 1 } }, { { 0, 0, 38 }, { 32, 32, 1 } } } },
+            { { { { 0, 2, 0 }, { 32, 26, 1 } }, { { 0, 2, 38 }, { 32, 26, 1 } } } },
+        } },
+    } };
+
 static constexpr std::array<std::array<std::array<ImageIndex, 3>, 4>, kNumOrthogonalDirections> kGoKartsSBendLeftSprites = {
     SPR_G2_GO_KARTS_TRACK_S_BEND + 0,  SPR_G2_GO_KARTS_TRACK_S_BEND + 1,  kImageIndexUndefined,
     SPR_G2_GO_KARTS_TRACK_S_BEND + 2,  SPR_G2_GO_KARTS_TRACK_S_BEND + 3,  kImageIndexUndefined,
@@ -1827,6 +2242,452 @@ static void TrackDiagDown60(
         supportType);
 }
 
+static void TrackLeftQuarterTurn3TilesUp25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn3TilesUp25Sprites[direction][trackSequence][0]), height,
+        { 0, 0, 0 }, kGoKartsLeftQuarterTurn3TilesUp25BoundBoxes[direction][trackSequence][0]);
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn3TilesUp25Sprites[direction][trackSequence][1]), height,
+        { 0, 0, 0 }, kGoKartsLeftQuarterTurn3TilesUp25BoundBoxes[direction][trackSequence][1]);
+
+    static constexpr std::array<WoodenSupportSubType, 4> woodenSupportSubTypes = {
+        WoodenSupportSubType::NeSw,
+        WoodenSupportSubType::Null,
+        WoodenSupportSubType::Corner3,
+        WoodenSupportSubType::NeSw,
+    };
+    static constexpr std::array<WoodenSupportTransitionType, 4> woodenSupportTransitionTypes = {
+        WoodenSupportTransitionType::Up25Deg,
+        WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::Up25Deg,
+    };
+    static constexpr std::array woodenSupportExtraRotation = {
+        0,
+        0,
+        0,
+        -1,
+    };
+    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
+    if (woodenSupportSubType != WoodenSupportSubType::Null)
+    {
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
+            height, session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+    }
+
+    if (trackSequence == 0 && (direction == 0 || direction == 3))
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+    }
+    else if (trackSequence == 3 && (direction == 2 || direction == 3))
+    {
+        PaintUtilPushTunnelRotated(session, DirectionPrev(direction), height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+    }
+
+    static constexpr std::array<int32_t, 4> blockedSegments = {
+        kSegmentsAll,
+        kSegmentsAll,
+        EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
+        kSegmentsAll,
+    };
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+
+    static constexpr std::array generalSupportHeights = { 72, 56, 56, 72 };
+    PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence]);
+}
+
+static void TrackRightQuarterTurn3TilesUp25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsRightQuarterTurn3TilesUp25Sprites[direction][trackSequence][0]), height,
+        { 0, 0, 0 }, kGoKartsRightQuarterTurn3TilesUp25BoundBoxes[direction][trackSequence][0]);
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsRightQuarterTurn3TilesUp25Sprites[direction][trackSequence][1]), height,
+        { 0, 0, 0 }, kGoKartsRightQuarterTurn3TilesUp25BoundBoxes[direction][trackSequence][1]);
+
+    static constexpr std::array<WoodenSupportSubType, 4> woodenSupportSubTypes = {
+        WoodenSupportSubType::NeSw,
+        WoodenSupportSubType::Null,
+        WoodenSupportSubType::Corner2,
+        WoodenSupportSubType::NeSw,
+    };
+    static constexpr std::array<WoodenSupportTransitionType, 4> woodenSupportTransitionTypes = {
+        WoodenSupportTransitionType::Up25Deg,
+        WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::Up25Deg,
+    };
+    static constexpr std::array woodenSupportExtraRotation = {
+        0,
+        0,
+        0,
+        1,
+    };
+    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
+    if (woodenSupportSubType != WoodenSupportSubType::Null)
+    {
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
+            height, session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+    }
+
+    if (trackSequence == 0 && (direction == 0 || direction == 3))
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+    }
+    else if (trackSequence == 3 && (direction == 0 || direction == 1))
+    {
+        PaintUtilPushTunnelRotated(session, DirectionNext(direction), height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+    }
+
+    static constexpr std::array<int32_t, 4> blockedSegments = {
+        kSegmentsAll,
+        kSegmentsAll,
+        EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
+        kSegmentsAll,
+    };
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+
+    static constexpr std::array generalSupportHeights = { 72, 56, 56, 72 };
+    PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence]);
+}
+
+static void TrackLeftQuarterTurn3TilesDown25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    TrackRightQuarterTurn3TilesUp25(
+        session, ride, kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence], DirectionNext(direction), height,
+        trackElement, supportType);
+}
+
+static void TrackRightQuarterTurn3TilesDown25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    TrackLeftQuarterTurn3TilesUp25(
+        session, ride, kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence], DirectionPrev(direction), height,
+        trackElement, supportType);
+}
+
+static void TrackLeftQuarterTurn5TilesUp25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesUp25Sprites[direction][trackSequence][0]), height,
+        { 0, 0, 0 }, kGoKartsLeftQuarterTurn5TilesUp25BoundBoxes[direction][trackSequence][0]);
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsLeftQuarterTurn5TilesUp25Sprites[direction][trackSequence][1]), height,
+        { 0, 0, 0 }, kGoKartsLeftQuarterTurn5TilesUp25BoundBoxes[direction][trackSequence][1]);
+
+    static constexpr std::array<WoodenSupportSubType, 7> woodenSupportSubTypes = {
+        WoodenSupportSubType::NeSw, WoodenSupportSubType::Null,    WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
+        WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw,
+    };
+    static constexpr std::array<WoodenSupportTransitionType, 7> woodenSupportTransitionTypes = {
+        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::None,
+    };
+    static constexpr std::array woodenSupportHeight = { 0, 0, 0, -16, 0, 0, 0 };
+    static constexpr std::array woodenSupportExtraRotation = { 0, 0, 0, 0, 0, 0, -1 };
+    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
+    if (woodenSupportSubType != WoodenSupportSubType::Null)
+    {
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
+            height + woodenSupportHeight[trackSequence], session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+    }
+
+    if (trackSequence == 0 && (direction == 0 || direction == 3))
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+    }
+    else if (trackSequence == 6 && (direction == 2 || direction == 3))
+    {
+        PaintUtilPushTunnelRotated(session, DirectionPrev(direction), height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+    }
+
+    static constexpr std::array<int32_t, 7> blockedSegments = {
+        kSegmentsAll,
+        EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight),
+        EnumsToFlags(
+            PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+            PaintSegment::bottomLeft),
+        EnumsToFlags(
+            PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
+            PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+        EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight),
+        EnumsToFlags(
+            PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
+            PaintSegment::bottomRight),
+        kSegmentsAll,
+    };
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+
+    static constexpr std::array generalSupportHeights = { 72, 72, 72, 64, 72, 72, 72 };
+    PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence]);
+}
+
+static void TrackRightQuarterTurn5TilesUp25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsRightQuarterTurn5TilesUp25Sprites[direction][trackSequence][0]), height,
+        { 0, 0, 0 }, kGoKartsRightQuarterTurn5TilesUp25BoundBoxes[direction][trackSequence][0]);
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsRightQuarterTurn5TilesUp25Sprites[direction][trackSequence][1]), height,
+        { 0, 0, 0 }, kGoKartsRightQuarterTurn5TilesUp25BoundBoxes[direction][trackSequence][1]);
+
+    static constexpr std::array<WoodenSupportSubType, 7> woodenSupportSubTypes = {
+        WoodenSupportSubType::NeSw, WoodenSupportSubType::Null,    WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
+        WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NeSw,
+    };
+    static constexpr std::array<WoodenSupportTransitionType, 7> woodenSupportTransitionTypes = {
+        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::None,
+    };
+    static constexpr std::array woodenSupportHeight = { 0, 0, 0, -16, 0, 0, 0 };
+    static constexpr std::array woodenSupportExtraRotation = { 0, 0, 0, 0, 0, 0, 1 };
+    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
+    if (woodenSupportSubType != WoodenSupportSubType::Null)
+    {
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, woodenSupportSubType, (direction + woodenSupportExtraRotation[trackSequence]) & 3,
+            height + woodenSupportHeight[trackSequence], session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+    }
+
+    if (trackSequence == 0 && (direction == 0 || direction == 3))
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+    }
+    else if (trackSequence == 6 && (direction == 2 || direction == 3))
+    {
+        PaintUtilPushTunnelRotated(session, DirectionNext(direction), height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+    }
+
+    static constexpr std::array<int32_t, 7> blockedSegments = {
+        kSegmentsAll,
+        EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight),
+        EnumsToFlags(
+            PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+            PaintSegment::bottomRight),
+        EnumsToFlags(
+            PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
+            PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+        EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight),
+        EnumsToFlags(
+            PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
+            PaintSegment::bottomRight),
+        kSegmentsAll,
+    };
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+
+    static constexpr std::array generalSupportHeights = { 72, 72, 72, 64, 72, 72, 72 };
+    PaintUtilSetGeneralSupportHeight(session, height + generalSupportHeights[trackSequence]);
+}
+
+static void TrackLeftQuarterTurn5TilesDown25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    TrackRightQuarterTurn5TilesUp25(
+        session, ride, kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence], DirectionNext(direction), height,
+        trackElement, supportType);
+}
+
+static void TrackRightQuarterTurn5TilesDown25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    TrackLeftQuarterTurn5TilesUp25(
+        session, ride, kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence], DirectionPrev(direction), height,
+        trackElement, supportType);
+}
+
+static void TrackLeftEighthToDiagUp25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsLeftEighthToDiagUp25Sprites[direction][trackSequence][0]), height,
+        { 0, 0, 0 }, kGoKartsLeftEighthToDiagUp25BoundBoxes[direction][trackSequence][0]);
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsLeftEighthToDiagUp25Sprites[direction][trackSequence][1]), height,
+        { 0, 0, 0 }, kGoKartsLeftEighthToDiagUp25BoundBoxes[direction][trackSequence][1]);
+
+    static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
+        WoodenSupportSubType::NeSw,    WoodenSupportSubType::NeSw,    WoodenSupportSubType::Corner1,
+        WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner2,
+    };
+    static constexpr std::array<WoodenSupportTransitionType, 5> woodenSupportTransitionTypes = {
+        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None,
+    };
+    static constexpr std::array woodenSupportHeight = { 0, 0, -16, 0, 0 };
+    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
+    if (woodenSupportSubType != WoodenSupportSubType::Null)
+    {
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, woodenSupportSubType, direction, height + woodenSupportHeight[trackSequence],
+            session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+    }
+
+    if (trackSequence == 0 && (direction == 0 || direction == 3))
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+    }
+
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
+}
+
+static void TrackRightEighthToDiagUp25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsRightEighthToDiagUp25Sprites[direction][trackSequence][0]), height,
+        { 0, 0, 0 }, kGoKartsRightEighthToDiagUp25BoundBoxes[direction][trackSequence][0]);
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsRightEighthToDiagUp25Sprites[direction][trackSequence][1]), height,
+        { 0, 0, 0 }, kGoKartsRightEighthToDiagUp25BoundBoxes[direction][trackSequence][1]);
+
+    static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
+        WoodenSupportSubType::NeSw,    WoodenSupportSubType::NeSw,    WoodenSupportSubType::Corner0,
+        WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner3,
+    };
+    static constexpr std::array<WoodenSupportTransitionType, 5> woodenSupportTransitionTypes = {
+        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None,
+    };
+    static constexpr std::array woodenSupportHeight = { 0, 0, -16, 0, 0 };
+    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
+    if (woodenSupportSubType != WoodenSupportSubType::Null)
+    {
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, woodenSupportSubType, direction, height + woodenSupportHeight[trackSequence],
+            session.SupportColours, woodenSupportTransitionTypes[trackSequence]);
+    }
+
+    if (trackSequence == 0 && (direction == 0 || direction == 3))
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+    }
+
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
+}
+
+static void TrackLeftEighthToOrthogonalUp25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsLeftEighthToOrthogonalUp25Sprites[direction][trackSequence][0]), height,
+        { 0, 0, 0 }, kGoKartsLeftEighthToOrthogonalUp25BoundBoxes[direction][trackSequence][0]);
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsLeftEighthToOrthogonalUp25Sprites[direction][trackSequence][1]), height,
+        { 0, 0, 0 }, kGoKartsLeftEighthToOrthogonalUp25BoundBoxes[direction][trackSequence][1]);
+
+    static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
+        WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
+        WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw,
+    };
+    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
+    if (woodenSupportSubType != WoodenSupportSubType::Null)
+    {
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
+            WoodenSupportTransitionType::None);
+    }
+
+    if (trackSequence == 4 && (direction == 1 || direction == 2))
+    {
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+    }
+
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
+}
+
+static void TrackRightEighthToOrthogonalUp25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsRightEighthToOrthogonalUp25Sprites[direction][trackSequence][0]),
+        height, { 0, 0, 0 }, kGoKartsRightEighthToOrthogonalUp25BoundBoxes[direction][trackSequence][0]);
+    PaintAddImageAsParentHeight(
+        session, session.TrackColours.WithIndex(kGoKartsRightEighthToOrthogonalUp25Sprites[direction][trackSequence][1]),
+        height, { 0, 0, 0 }, kGoKartsRightEighthToOrthogonalUp25BoundBoxes[direction][trackSequence][1]);
+
+    static constexpr std::array<WoodenSupportSubType, 5> woodenSupportSubTypes = {
+        WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
+        WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe,
+    };
+    const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
+    if (woodenSupportSubType != WoodenSupportSubType::Null)
+    {
+        WoodenASupportsPaintSetupRotated(
+            session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
+            WoodenSupportTransitionType::None);
+    }
+
+    if (trackSequence == 4 && (direction == 0 || direction == 1))
+    {
+        PaintUtilPushTunnelRotated(session, DirectionNext(direction), height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+    }
+
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
+}
+
+static void TrackLeftEighthToDiagDown25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    static constexpr std::array map = { 4, 3, 1, 2, 0 };
+    TrackRightEighthToOrthogonalUp25(
+        session, ride, map[trackSequence], DirectionNext(direction), height, trackElement, supportType);
+}
+
+static void TrackRightEighthToDiagDown25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    static constexpr std::array map = { 4, 3, 1, 2, 0 };
+    TrackLeftEighthToOrthogonalUp25(
+        session, ride, map[trackSequence], DirectionReverse(direction), height, trackElement, supportType);
+}
+
+static void TrackLeftEighthToOrthogonalDown25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    TrackRightEighthToDiagUp25(
+        session, ride, mapLeftEighthTurnToOrthogonal[trackSequence], DirectionReverse(direction), height, trackElement,
+        supportType);
+}
+
+static void TrackRightEighthToOrthogonalDown25(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType)
+{
+    TrackLeftEighthToDiagUp25(
+        session, ride, mapLeftEighthTurnToOrthogonal[trackSequence], DirectionPrev(direction), height, trackElement,
+        supportType);
+}
+
 static void TrackSBendLeft(
     PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
     const TrackElement& trackElement, const SupportType supportType)
@@ -2006,6 +2867,44 @@ TrackPaintFunction GetTrackPaintFunctionGoKarts(OpenRCT2::TrackElemType trackTyp
             return TrackDiagDown60ToDown25;
         case TrackElemType::DiagDown60:
             return TrackDiagDown60;
+
+        // Small gentle turns
+        case TrackElemType::LeftQuarterTurn3TilesUp25:
+            return TrackLeftQuarterTurn3TilesUp25;
+        case TrackElemType::RightQuarterTurn3TilesUp25:
+            return TrackRightQuarterTurn3TilesUp25;
+        case TrackElemType::LeftQuarterTurn3TilesDown25:
+            return TrackLeftQuarterTurn3TilesDown25;
+        case TrackElemType::RightQuarterTurn3TilesDown25:
+            return TrackRightQuarterTurn3TilesDown25;
+
+        // Medium gentle turns
+        case TrackElemType::LeftQuarterTurn5TilesUp25:
+            return TrackLeftQuarterTurn5TilesUp25;
+        case TrackElemType::RightQuarterTurn5TilesUp25:
+            return TrackRightQuarterTurn5TilesUp25;
+        case TrackElemType::LeftQuarterTurn5TilesDown25:
+            return TrackLeftQuarterTurn5TilesDown25;
+        case TrackElemType::RightQuarterTurn5TilesDown25:
+            return TrackRightQuarterTurn5TilesDown25;
+
+        // Large gentle turns
+        case TrackElemType::LeftEighthToDiagUp25:
+            return TrackLeftEighthToDiagUp25;
+        case TrackElemType::RightEighthToDiagUp25:
+            return TrackRightEighthToDiagUp25;
+        case TrackElemType::LeftEighthToDiagDown25:
+            return TrackLeftEighthToDiagDown25;
+        case TrackElemType::RightEighthToDiagDown25:
+            return TrackRightEighthToDiagDown25;
+        case TrackElemType::LeftEighthToOrthogonalUp25:
+            return TrackLeftEighthToOrthogonalUp25;
+        case TrackElemType::RightEighthToOrthogonalUp25:
+            return TrackRightEighthToOrthogonalUp25;
+        case TrackElemType::LeftEighthToOrthogonalDown25:
+            return TrackLeftEighthToOrthogonalDown25;
+        case TrackElemType::RightEighthToOrthogonalDown25:
+            return TrackRightEighthToOrthogonalDown25;
 
         // S bends
         case TrackElemType::SBendLeft:
