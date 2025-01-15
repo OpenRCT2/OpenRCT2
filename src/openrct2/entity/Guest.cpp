@@ -4131,7 +4131,7 @@ void Guest::UpdateRideEnterVehicle()
             vehicle->Invalidate();
             if (ride->mode == RideMode::waterSlide)
             {
-                vehicle->WaterSlideSetReady();
+                vehicle->waterSlideSetReady();
             }
 
             MoveTo({ kLocationNull, 0, 0 });
