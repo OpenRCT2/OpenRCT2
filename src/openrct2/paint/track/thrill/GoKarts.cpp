@@ -540,6 +540,565 @@ static void PaintGoKartsTrackRightQuarterTurn1Tile(
     PaintGoKartsTrackLeftQuarterTurn1Tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement, supportType);
 }
 
+static void TrackUp60(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (direction)
+    {
+        case 0:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 16), { 0, 0, height },
+                { { 0, 1, height }, { 32, 1, 1 } });
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 17), { 0, 0, height },
+                { { 0, 0, height + 86 }, { 32, 32, 1 } });
+            break;
+        case 1:
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 18), { 0, 0, height },
+                { { 28, 4, height }, { 2, 24, 77 } });
+            break;
+        case 2:
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 19), { 0, 0, height },
+                { { 28, 4, height }, { 2, 24, 77 } });
+            break;
+        case 3:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 20), { 0, 0, height },
+                { { 0, 1, height }, { 32, 1, 1 } });
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 21), { 0, 0, height },
+                { { 0, 0, height + 86 }, { 32, 32, 1 } });
+            break;
+    }
+    if (direction == 0 || direction == 3)
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+    }
+    else
+    {
+        PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
+    }
+    WoodenASupportsPaintSetupRotated(
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        WoodenSupportTransitionType::Up60Deg);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 104);
+}
+
+static void TrackUp25ToUp60(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (direction)
+    {
+        case 0:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 0), { 0, 0, height },
+                { { 0, 0, height }, { 32, 32, 0 } });
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 1), { 0, 0, height },
+                { { 0, 0, height + 54 }, { 32, 32, 1 } });
+            break;
+        case 1:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 2), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 3), { 0, 0, height },
+                { { 28, 4, height }, { 2, 24, 56 } });
+            break;
+        case 2:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 4), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 5), { 0, 0, height },
+                { { 28, 4, height }, { 2, 24, 56 } });
+            break;
+        case 3:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 6), { 0, 0, height },
+                { { 0, 0, height }, { 32, 32, 0 } });
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 7), { 0, 0, height },
+                { { 0, 0, height + 54 }, { 32, 32, 1 } });
+            break;
+    }
+    WoodenASupportsPaintSetupRotated(
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        WoodenSupportTransitionType::Up25DegToUp60Deg);
+    if (direction == 0 || direction == 3)
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+    }
+    else
+    {
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+    }
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
+}
+
+static void TrackUp60ToUp25(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (direction)
+    {
+        case 0:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 8), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 9), { 0, 0, height },
+                { { 0, 6, height + 54 }, { 32, 20, 1 } });
+            break;
+        case 1:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 10), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 11), { 0, 0, height },
+                { { 28, 4, height }, { 2, 24, 56 } });
+            break;
+        case 2:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 12), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
+            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 13), { 0, 0, height },
+                { { 28, 4, height }, { 2, 24, 56 } });
+            break;
+        case 3:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 14), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_STEEP + 15), { 0, 0, height },
+                { { 0, 6, height + 54 }, { 32, 20, 1 } });
+            break;
+    }
+    WoodenASupportsPaintSetupRotated(
+        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        WoodenSupportTransitionType::Up60DegToUp25Deg);
+    if (direction == 0 || direction == 3)
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+    }
+    else
+    {
+        PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+    }
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 72);
+}
+
+static void TrackDown60(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    TrackUp60(session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
+}
+
+static void TrackDown25ToDown60(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    TrackUp60ToUp25(session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
+}
+
+static void TrackDown60ToDown25(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    TrackUp25ToUp60(session, ride, trackSequence, DirectionReverse(direction), height, trackElement, supportType);
+}
+
+static void TrackFlatToUp60LongBase(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 0),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 1),
+                        { 0, 0, height }, { { 0, 6, height + 30 }, { 32, 20, 1 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 8),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 9),
+                        { 0, 0, height }, { { 0, 6, height + 30 }, { 32, 20, 1 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 16),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 17),
+                        { 0, 0, height }, { { 0, 6, height + 30 }, { 32, 20, 1 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 24),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 25),
+                        { 0, 0, height }, { { 0, 6, height + 30 }, { 32, 20, 1 } });
+                    break;
+            }
+            WoodenASupportsPaintSetupRotated(
+                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq0);
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+            }
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 2),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 3),
+                        { 0, 0, height }, { { 0, 6, height + 38 }, { 32, 20, 1 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 10),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 11),
+                        { 0, 0, height }, { { 0, 6, height + 38 }, { 32, 20, 1 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 18),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 19),
+                        { 0, 0, height }, { { 0, 6, height + 38 }, { 32, 20, 1 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 26),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 27),
+                        { 0, 0, height }, { { 0, 6, height + 38 }, { 32, 20, 1 } });
+                    break;
+            }
+            WoodenASupportsPaintSetupRotated(
+                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq1);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 48);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 4),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 5),
+                        { 0, 0, height }, { { 0, 6, height + 46 }, { 32, 20, 1 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 13),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 12),
+                        { 0, 0, height }, { { 0, 6, height + 46 }, { 32, 20, 1 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 21),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 20),
+                        { 0, 0, height }, { { 0, 6, height + 46 }, { 32, 20, 1 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 28),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 29),
+                        { 0, 0, height }, { { 0, 6, height + 46 }, { 32, 20, 1 } });
+                    break;
+            }
+            WoodenASupportsPaintSetupRotated(
+                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq2);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 64);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 6),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 7),
+                        { 0, 0, height }, { { 0, 6, height + 70 }, { 32, 20, 1 } });
+                    break;
+                case 1:
+                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 14),
+                        { 0, 0, height }, { { 28, 4, height - 16 }, { 2, 24, 56 } });
+                    break;
+                case 2:
+                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 22),
+                        { 0, 0, height }, { { 28, 4, height - 16 }, { 2, 24, 56 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 30),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 31),
+                        { 0, 0, height }, { { 0, 6, height + 70 }, { 32, 20, 1 } });
+                    break;
+            }
+            WoodenASupportsPaintSetupRotated(
+                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq3);
+            switch (direction)
+            {
+                case 1:
+                    PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    break;
+                case 2:
+                    PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            break;
+    }
+}
+
+static void TrackUp60ToFlatLongBase(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 32),
+                        { 0, 0, height }, { { 0, 1, height }, { 32, 1, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 33),
+                        { 0, 0, height }, { { 0, 6, height + 70 }, { 32, 20, 1 } });
+                    break;
+                case 1:
+                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 40),
+                        { 0, 0, height }, { { 28, 4, height }, { 2, 24, 70 } });
+                    break;
+                case 2:
+                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 48),
+                        { 0, 0, height }, { { 28, 4, height }, { 2, 24, 70 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 56),
+                        { 0, 0, height }, { { 0, 1, height }, { 32, 1, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 57),
+                        { 0, 0, height }, { { 0, 6, height + 70 }, { 32, 20, 1 } });
+                    break;
+            }
+            WoodenASupportsPaintSetupRotated(
+                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq0);
+            if (direction == 0 || direction == 3)
+            {
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
+            }
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 34),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 35),
+                        { 0, 0, height }, { { 0, 6, height + 46 }, { 32, 20, 1 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 42),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 43),
+                        { 0, 0, height }, { { 0, 6, height + 46 }, { 32, 20, 1 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 50),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 51),
+                        { 0, 0, height }, { { 0, 6, height + 46 }, { 32, 20, 1 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 58),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 59),
+                        { 0, 0, height }, { { 0, 6, height + 46 }, { 32, 20, 1 } });
+                    break;
+            }
+            WoodenASupportsPaintSetupRotated(
+                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq1);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 80);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 36),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 37),
+                        { 0, 0, height }, { { 0, 6, height + 38 }, { 32, 20, 1 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 44),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 45),
+                        { 0, 0, height }, { { 0, 6, height + 38 }, { 32, 20, 1 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 52),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 53),
+                        { 0, 0, height }, { { 0, 6, height + 38 }, { 32, 20, 1 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 60),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 61),
+                        { 0, 0, height }, { { 0, 6, height + 38 }, { 32, 20, 1 } });
+                    break;
+            }
+            WoodenASupportsPaintSetupRotated(
+                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq2);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 56);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 38),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 39),
+                        { 0, 0, height }, { { 0, 6, height + 30 }, { 32, 20, 1 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 46),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 47),
+                        { 0, 0, height }, { { 0, 6, height + 30 }, { 32, 20, 1 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 54),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 55),
+                        { 0, 0, height }, { { 0, 6, height + 30 }, { 32, 20, 1 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 62),
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours.WithIndex(SPR_G2_GO_KARTS_TRACK_FLAT_TO_STEEP + 63),
+                        { 0, 0, height }, { { 0, 6, height + 30 }, { 32, 20, 1 } });
+                    break;
+            }
+            WoodenASupportsPaintSetupRotated(
+                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq3);
+            switch (direction)
+            {
+                case 1:
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    break;
+                case 2:
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    break;
+            }
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
+            PaintUtilSetGeneralSupportHeight(session, height + 40);
+            break;
+    }
+}
+
+static void TrackFlatToDown60LongBase(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    TrackUp60ToFlatLongBase(session, ride, 3 - trackSequence, DirectionReverse(direction), height, trackElement, supportType);
+}
+
+static void TrackDown60ToFlatLongBase(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    TrackFlatToUp60LongBase(session, ride, 3 - trackSequence, DirectionReverse(direction), height, trackElement, supportType);
+}
+
 static void TrackLeftQuarterTurn3Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -1867,6 +2426,30 @@ TrackPaintFunction GetTrackPaintFunctionGoKarts(OpenRCT2::TrackElemType trackTyp
             return PaintGoKartsTrackRightQuarterTurn1Tile;
 
         // Added by OpenRCT2
+
+        // Steep
+        case TrackElemType::Up60:
+            return TrackUp60;
+        case TrackElemType::Up25ToUp60:
+            return TrackUp25ToUp60;
+        case TrackElemType::Up60ToUp25:
+            return TrackUp60ToUp25;
+        case TrackElemType::Down60:
+            return TrackDown60;
+        case TrackElemType::Down25ToDown60:
+            return TrackDown25ToDown60;
+        case TrackElemType::Down60ToDown25:
+            return TrackDown60ToDown25;
+
+        // Flat to steep
+        case TrackElemType::FlatToUp60LongBase:
+            return TrackFlatToUp60LongBase;
+        case TrackElemType::Up60ToFlatLongBase:
+            return TrackUp60ToFlatLongBase;
+        case TrackElemType::FlatToDown60LongBase:
+            return TrackFlatToDown60LongBase;
+        case TrackElemType::Down60ToFlatLongBase:
+            return TrackDown60ToFlatLongBase;
 
         // Small turns
         case TrackElemType::LeftQuarterTurn3Tiles:
