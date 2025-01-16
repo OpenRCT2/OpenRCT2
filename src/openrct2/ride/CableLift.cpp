@@ -72,7 +72,7 @@ Vehicle* CableLiftSegmentCreate(
     z += ride.GetRideTypeDescriptor().Heights.VehicleZOffset;
 
     current->MoveTo({ 16, 16, z });
-    current->SetTrackType(TrackElemType::CableLiftHill);
+    current->SetTrackType(TrackElemType::CableLiftHill, false);
     current->SetTrackDirection(current->Orientation >> 3);
     current->track_progress = 164;
     current->Flags = VehicleFlags::CollisionDisabled;
@@ -249,7 +249,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         uint16_t trackTotalProgress = GetTrackProgress();
         if (trackProgress >= trackTotalProgress)
         {
-            TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
+            TileElement* trackElement = MapGetTrackElementAtOfTypeSeqCovered(TrackLocation, trackType, 0, IsOnCoveredTrack());
 
             CoordsXYE output;
             int32_t outputZ;
@@ -260,12 +260,13 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
             if (!TrackBlockGetNext(&input, &output, &outputZ, &outputDirection))
                 return false;
 
-            if (TrackPitchAndRollEnd(trackType) != TrackPitchAndRollStart(output.element->AsTrack()->GetTrackType()))
+            const auto& outputTrackElement = *(output.element->AsTrack());
+            if (TrackPitchAndRollEnd(trackType) != TrackPitchAndRollStart(outputTrackElement.GetTrackType()))
                 return false;
 
             TrackLocation = { output, outputZ };
             SetTrackDirection(outputDirection);
-            SetTrackType(output.element->AsTrack()->GetTrackType());
+            SetTrackType(outputTrackElement.GetTrackType(), outputTrackElement.IsCovered());
             trackProgress = 0;
         }
 
@@ -312,7 +313,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         if (static_cast<int16_t>(trackProgress) == -1)
         {
             auto trackType = GetTrackType();
-            TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
+            TileElement* trackElement = MapGetTrackElementAtOfTypeSeqCovered(TrackLocation, trackType, 0, IsOnCoveredTrack());
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
             TrackBeginEnd output;
@@ -325,7 +326,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
 
             TrackLocation = { output.begin_x, output.begin_y, output.begin_z };
             SetTrackDirection(output.begin_direction);
-            SetTrackType(output.begin_element->AsTrack()->GetTrackType());
+            SetTrackType(output.begin_element->AsTrack()->GetTrackType(), output.begin_element->AsTrack()->IsCovered());
 
             if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation)
             {

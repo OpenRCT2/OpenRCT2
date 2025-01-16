@@ -1935,7 +1935,8 @@ TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, OpenRCT2::Tra
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, int32_t sequence)
+TileElement* MapGetTrackElementAtOfTypeSeqCovered(
+    const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, int32_t sequence, bool isCovered)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     auto trackTilePos = TileCoordsXYZ{ trackPos };
@@ -1950,6 +1951,8 @@ TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, OpenRCT2::
         if (tileElement->AsTrack()->GetTrackType() != trackType)
             continue;
         if (tileElement->AsTrack()->GetSequenceIndex() != sequence)
+            continue;
+        if (tileElement->AsTrack()->IsCovered() != isCovered)
             continue;
 
         return tileElement;
@@ -1981,7 +1984,8 @@ TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, OpenRCT2::T
     return nullptr;
 }
 
-TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, int32_t sequence)
+TrackElement* MapGetTrackElementAtOfTypeSeqCovered(
+    const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, int32_t sequence, bool isCovered)
 {
     auto tileElement = MapGetFirstElementAt(location);
     if (tileElement != nullptr)
@@ -1998,6 +2002,8 @@ TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, OpenRCT2
                 if (trackElement->GetTrackType() != trackType)
                     continue;
                 if (trackElement->GetSequenceIndex() != sequence)
+                    continue;
+                if (trackElement->IsCovered() != isCovered)
                     continue;
                 return trackElement;
             }

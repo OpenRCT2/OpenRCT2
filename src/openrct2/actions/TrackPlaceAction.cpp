@@ -415,7 +415,10 @@ GameActions::Result TrackPlaceAction::Query() const
     }
 
     money64 price = rtd.BuildCosts.TrackPrice;
-    price *= ted.priceModifier;
+    auto priceModifier = ted.priceModifier;
+    if (_trackPlaceFlags.has(LiftHillAndInverted::covered))
+        priceModifier += 4096;
+    price *= priceModifier;
 
     price >>= 16;
     res.Cost = costs + supportCosts + price;
@@ -585,6 +588,8 @@ GameActions::Result TrackPlaceAction::Execute() const
         trackElement->SetClearanceZ(clearanceZ);
         trackElement->SetDirection(_origin.direction);
         trackElement->SetHasChain(_trackPlaceFlags.has(LiftHillAndInverted::liftHill));
+        trackElement->SetInverted(_trackPlaceFlags.has(LiftHillAndInverted::inverted));
+        trackElement->SetCovered(_trackPlaceFlags.has(LiftHillAndInverted::covered));
         trackElement->SetSequenceIndex(blockIndex);
         trackElement->SetRideIndex(_rideIndex);
         trackElement->SetTrackType(_trackType);
@@ -627,10 +632,6 @@ GameActions::Result TrackPlaceAction::Execute() const
             trackElement->SetSeatRotation(_seatRotation);
         }
 
-        if (_trackPlaceFlags.has(LiftHillAndInverted::inverted))
-        {
-            trackElement->SetInverted(true);
-        }
         trackElement->SetColourScheme(static_cast<RideColourScheme>(_colour));
 
         entranceDirections = ted.sequences[0].flags;
@@ -744,7 +745,10 @@ GameActions::Result TrackPlaceAction::Execute() const
     }
 
     money64 price = rtd.BuildCosts.TrackPrice;
-    price *= ted.priceModifier;
+    auto priceModifier = ted.priceModifier;
+    if (_trackPlaceFlags.has(LiftHillAndInverted::covered))
+        priceModifier += 4096;
+    price *= priceModifier;
 
     price >>= 16;
     res.Cost = costs + supportCosts + price;

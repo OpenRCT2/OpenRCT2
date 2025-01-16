@@ -30,6 +30,7 @@ enum
     TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT = 1 << 4,
     TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED = 1 << 5,
     TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE = 1 << 6,
+    TRACK_ELEMENT_FLAGS2_COVERED = 1 << 7,
 };
 
 enum
@@ -148,6 +149,9 @@ public:
 
     bool IsStation() const;
     bool IsBlockStart() const;
+
+    bool IsCovered() const;
+    void SetCovered(bool covered);
 };
 static_assert(sizeof(TrackElement) == kTileElementSize);
 

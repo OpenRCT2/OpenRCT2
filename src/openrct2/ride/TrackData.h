@@ -108,7 +108,6 @@ namespace OpenRCT2::TrackMetaData
 
         uint8_t pieceLength;
         TrackCurveChain curveChain;
-        OpenRCT2::TrackElemType alternativeType;
         // Price Modifier should be used as in the following calculation:
         // (RideTrackPrice * TED::PriceModifier) / 65536
         uint32_t priceModifier;

@@ -255,8 +255,11 @@ namespace OpenRCT2::RCT1
                 {
                     _stream.SetPosition(_stream.GetPosition() - 1);
                     _stream.Read(&t4TrackElement, sizeof(TD46TrackElement));
+                    auto convertedType = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->trackAndVehicle.rtdIndex);
                     TrackDesignTrackElement trackElement{};
-                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->trackAndVehicle.rtdIndex);
+                    trackElement.type = convertedType.trackType;
+                    if (convertedType.isCovered)
+                        trackElement.SetFlag(TrackDesignTrackElementFlag::isCovered);
                     ConvertFromTD46Flags(trackElement, t4TrackElement.Flags);
                     td->trackElements.push_back(trackElement);
                 }

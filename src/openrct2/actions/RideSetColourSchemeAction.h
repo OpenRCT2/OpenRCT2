@@ -16,11 +16,13 @@ class RideSetColourSchemeAction final : public GameActionBase<GameCommand::SetCo
 private:
     CoordsXYZD _loc;
     OpenRCT2::TrackElemType _trackType{};
+    bool _isCovered{};
     uint16_t _newColourScheme{};
 
 public:
     RideSetColourSchemeAction() = default;
-    RideSetColourSchemeAction(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, uint16_t newColourScheme);
+    RideSetColourSchemeAction(
+        const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, bool isCovered, uint16_t newColourScheme);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

@@ -51,6 +51,7 @@ namespace OpenRCT2
     {
         liftHill,
         inverted,
+        covered,
     };
     using SelectedLiftAndInverted = FlagHolder<uint32_t, LiftHillAndInverted>;
 } // namespace OpenRCT2

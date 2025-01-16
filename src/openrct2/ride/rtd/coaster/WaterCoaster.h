@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         {
             .trackStyle = TrackStyle::splashBoats,
             .supportType = WoodenSupportType::Truss,
-            .enabledTrackGroups = { TrackGroup::straight, TrackGroup::curve, TrackGroup::sBend },
+            .enabledTrackGroups = { TrackGroup::stationEnd, TrackGroup::straight, TrackGroup::curve, TrackGroup::sBend, TrackGroup::onridePhoto },
             .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL,
             .tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP,

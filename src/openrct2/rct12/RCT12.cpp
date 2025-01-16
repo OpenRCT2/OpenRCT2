@@ -663,36 +663,36 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
     return result;
 }
 
-OpenRCT2::TrackElemType RCT12FlatTrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType)
+OpenRCT2::OldTrackElemType RCT12FlatTrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType)
 {
     switch (origTrackType)
     {
         case OpenRCT2::RCT12::TrackElemType::FlatTrack1x4A_Alias:
-            return TrackElemType::FlatTrack1x4A;
+            return OldTrackElemType::FlatTrack1x4A;
         case OpenRCT2::RCT12::TrackElemType::FlatTrack2x2_Alias:
-            return TrackElemType::FlatTrack2x2;
+            return OldTrackElemType::FlatTrack2x2;
         case OpenRCT2::RCT12::TrackElemType::FlatTrack4x4_Alias:
-            return TrackElemType::FlatTrack4x4;
+            return OldTrackElemType::FlatTrack4x4;
         case OpenRCT2::RCT12::TrackElemType::FlatTrack2x4_Alias:
-            return TrackElemType::FlatTrack2x4;
+            return OldTrackElemType::FlatTrack2x4;
         case OpenRCT2::RCT12::TrackElemType::FlatTrack1x5_Alias:
-            return TrackElemType::FlatTrack1x5;
+            return OldTrackElemType::FlatTrack1x5;
         case OpenRCT2::RCT12::TrackElemType::FlatTrack1x1A_Alias:
-            return TrackElemType::FlatTrack1x1A;
+            return OldTrackElemType::FlatTrack1x1A;
         case OpenRCT2::RCT12::TrackElemType::FlatTrack1x4B_Alias:
-            return TrackElemType::FlatTrack1x4B;
+            return OldTrackElemType::FlatTrack1x4B;
         case OpenRCT2::RCT12::TrackElemType::FlatTrack1x1B_Alias:
-            return TrackElemType::FlatTrack1x1B;
+            return OldTrackElemType::FlatTrack1x1B;
         case OpenRCT2::RCT12::TrackElemType::FlatTrack1x4C_Alias:
-            return TrackElemType::FlatTrack1x4C;
+            return OldTrackElemType::FlatTrack1x4C;
         case OpenRCT2::RCT12::TrackElemType::FlatTrack3x3_Alias:
-            return TrackElemType::FlatTrack3x3;
+            return OldTrackElemType::FlatTrack3x3;
         default:
-            return static_cast<OpenRCT2::TrackElemType>(origTrackType);
+            return static_cast<OpenRCT2::OldTrackElemType>(origTrackType);
     }
 }
 
-OpenRCT2::RCT12::TrackElemType OpenRCT2FlatTrackTypeToRCT12(OpenRCT2::TrackElemType origTrackType)
+OpenRCT2::RCT12::TrackElemType OpenRCT2FlatAndCoveredTrackTypeToRCT12(OpenRCT2::TrackElemType origTrackType, bool isCovered)
 {
     switch (origTrackType)
     {
@@ -717,7 +717,10 @@ OpenRCT2::RCT12::TrackElemType OpenRCT2FlatTrackTypeToRCT12(OpenRCT2::TrackElemT
         case TrackElemType::FlatTrack3x3:
             return OpenRCT2::RCT12::TrackElemType::FlatTrack3x3_Alias;
         default:
-            return static_cast<OpenRCT2::RCT12::TrackElemType>(origTrackType);
+        {
+            auto oldType = NewTrackElementToOld(origTrackType, isCovered);
+            return static_cast<OpenRCT2::RCT12::TrackElemType>(oldType);
+        }
     }
 }
 

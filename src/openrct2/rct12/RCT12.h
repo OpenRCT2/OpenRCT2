@@ -15,6 +15,7 @@
 #include "../core/Money.hpp"
 #include "../management/Research.h"
 #include "../object/Object.h"
+#include "../park/Legacy.h"
 #include "../ride/RideTypes.h"
 #include "../world/tile_element/TileElementType.h"
 #include "Limits.h"
@@ -1249,8 +1250,8 @@ RideId RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
 bool IsLikelyUTF8(std::string_view s);
 std::string RCT12RemoveFormattingUTF8(std::string_view s);
 std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);
-OpenRCT2::TrackElemType RCT12FlatTrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType);
-OpenRCT2::RCT12::TrackElemType OpenRCT2FlatTrackTypeToRCT12(OpenRCT2::TrackElemType origTrackType);
+OpenRCT2::OldTrackElemType RCT12FlatTrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType);
+OpenRCT2::RCT12::TrackElemType OpenRCT2FlatAndCoveredTrackTypeToRCT12(OpenRCT2::TrackElemType origTrackType, bool isCovered);
 std::string_view GetStationIdentifierFromStyle(uint8_t style);
 uint8_t GetStationStyleFromIdentifier(u8string_view identifier);
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);

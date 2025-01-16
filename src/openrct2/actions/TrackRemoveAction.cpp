@@ -164,6 +164,7 @@ GameActions::Result TrackRemoveAction::Query() const
 
     money64 supportCosts = 0;
 
+    bool isCovered = false;
     for (uint8_t i = 0; i < ted.numSequences; i++)
     {
         const auto& trackBlock = ted.sequences[i].clearance;
@@ -214,9 +215,11 @@ GameActions::Result TrackRemoveAction::Query() const
             return GameActions::Result(
                 GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
         }
+        const auto& trackElement = *(tileElement->AsTrack());
+        isCovered = trackElement.IsCovered();
 
         int32_t entranceDirections = ted.sequences[0].flags;
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (trackElement.GetSequenceIndex() == 0))
         {
             const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, 0);
             if (!removeElementResult.Successful)
@@ -234,7 +237,7 @@ GameActions::Result TrackRemoveAction::Query() const
                 GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        int16_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;
+        int16_t _support_height = trackElement.BaseHeight - surfaceElement->BaseHeight;
         if (_support_height < 0)
         {
             _support_height = 10;
@@ -244,7 +247,10 @@ GameActions::Result TrackRemoveAction::Query() const
     }
 
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.priceModifier;
+    auto priceModifier = ted.priceModifier;
+    if (isCovered)
+        priceModifier += 4096;
+    price *= priceModifier;
     price >>= 16;
     price = supportCosts + price;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
@@ -344,6 +350,7 @@ GameActions::Result TrackRemoveAction::Execute() const
 
     money64 supportCosts = 0;
 
+    bool isCovered = false;
     for (uint8_t i = 0; i < ted.numSequences; i++)
     {
         const auto& trackBlock = ted.sequences[i].clearance;
@@ -390,9 +397,11 @@ GameActions::Result TrackRemoveAction::Execute() const
             return GameActions::Result(
                 GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
         }
+        const auto& trackElement = *(tileElement->AsTrack());
+        isCovered = trackElement.IsCovered();
 
         int32_t entranceDirections = ted.sequences[0].flags;
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (trackElement.GetSequenceIndex() == 0))
         {
             const auto removeElementResult = TrackRemoveStationElement({ mapLoc, _origin.direction }, rideIndex, 0);
             if (!removeElementResult.Successful)
@@ -410,7 +419,7 @@ GameActions::Result TrackRemoveAction::Execute() const
                 GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        int16_t _support_height = tileElement->BaseHeight - surfaceElement->BaseHeight;
+        int16_t _support_height = trackElement.BaseHeight - surfaceElement->BaseHeight;
         if (_support_height < 0)
         {
             _support_height = 10;
@@ -501,7 +510,10 @@ GameActions::Result TrackRemoveAction::Execute() const
     }
 
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.priceModifier;
+    auto priceModifier = ted.priceModifier;
+    if (isCovered)
+        priceModifier += 4096;
+    price *= priceModifier;
     price >>= 16;
     price = supportCosts + price;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)

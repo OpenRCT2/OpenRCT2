@@ -1719,7 +1719,9 @@ namespace OpenRCT2::RCT1
                     auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
                     auto rct1RideType = _s4.Rides[src2->GetRideIndex()].Type;
 
-                    dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
+                    auto convertedType = RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType);
+                    dst2->SetTrackType(convertedType.trackType);
+                    dst2->SetCovered(convertedType.isCovered);
                     dst2->SetRideType(rideType);
                     dst2->SetSequenceIndex(src2->GetSequenceIndex());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
@@ -2822,13 +2824,14 @@ namespace OpenRCT2::RCT1
         {
             dst->BoatLocation.SetNull();
             dst->SetTrackDirection(src->GetTrackDirection());
-            dst->SetTrackType(RCT1TrackTypeToOpenRCT2(src->GetTrackType(), ride->type));
+            auto convertedTrackType = RCT1TrackTypeToOpenRCT2(src->GetTrackType(), ride->type);
+            dst->SetTrackType(convertedTrackType.trackType, convertedTrackType.isCovered);
         }
         else
         {
             dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.ToCoordsXY();
             dst->SetTrackDirection(0);
-            dst->SetTrackType(OpenRCT2::TrackElemType::Flat);
+            dst->SetTrackType(OpenRCT2::TrackElemType::Flat, false);
         }
         dst->track_progress = src->TrackProgress;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;

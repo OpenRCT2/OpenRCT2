@@ -21,9 +21,10 @@
 using namespace OpenRCT2;
 
 RideSetColourSchemeAction::RideSetColourSchemeAction(
-    const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, uint16_t newColourScheme)
+    const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, bool isCovered, uint16_t newColourScheme)
     : _loc(location)
     , _trackType(trackType)
+    , _isCovered(isCovered)
     , _newColourScheme(newColourScheme)
 {
 }
@@ -33,6 +34,7 @@ void RideSetColourSchemeAction::AcceptParameters(GameActionParameterVisitor& vis
     visitor.Visit(_loc);
     visitor.Visit("trackType", _trackType);
     visitor.Visit("colourScheme", _newColourScheme);
+    visitor.Visit("covered", _isCovered);
 }
 
 uint16_t RideSetColourSchemeAction::GetActionFlags() const
@@ -44,7 +46,7 @@ void RideSetColourSchemeAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_newColourScheme);
+    stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_isCovered) << DS_TAG(_newColourScheme);
 }
 
 GameActions::Result RideSetColourSchemeAction::Query() const
@@ -54,7 +56,7 @@ GameActions::Result RideSetColourSchemeAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_OFF_EDGE_OF_MAP);
     }
     // Find the relevant track piece, prefer sequence 0 (logic copied from GetTrackElementOriginAndApplyChanges)
-    auto trackElement = MapGetTrackElementAtOfTypeSeq(_loc, _trackType, 0);
+    auto trackElement = MapGetTrackElementAtOfTypeSeqCovered(_loc, _trackType, 0, _isCovered);
     if (trackElement == nullptr)
     {
         trackElement = MapGetTrackElementAtOfType(_loc, _trackType);
@@ -78,7 +80,8 @@ GameActions::Result RideSetColourSchemeAction::Execute() const
     res.Expenditure = ExpenditureType::RideConstruction;
     res.ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
 
-    GetTrackElementOriginAndApplyChanges(_loc, _trackType, _newColourScheme, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
+    GetTrackElementOriginAndApplyChanges(
+        _loc, _trackType, _newColourScheme, _isCovered, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
 
     return res;
 }

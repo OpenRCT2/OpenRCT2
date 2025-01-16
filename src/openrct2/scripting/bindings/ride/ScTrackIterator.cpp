@@ -31,12 +31,13 @@ std::shared_ptr<ScTrackIterator> ScTrackIterator::FromElement(const CoordsXY& po
         return nullptr;
 
     auto trackEl = el->AsTrack();
-    return std::make_shared<ScTrackIterator>(*origin, trackEl->GetTrackType(), trackEl->GetRideIndex());
+    return std::make_shared<ScTrackIterator>(*origin, trackEl->GetTrackType(), trackEl->IsCovered(), trackEl->GetRideIndex());
 }
 
-ScTrackIterator::ScTrackIterator(const CoordsXYZD& position, OpenRCT2::TrackElemType type, RideId ride)
+ScTrackIterator::ScTrackIterator(const CoordsXYZD& position, OpenRCT2::TrackElemType type, bool covered, RideId ride)
     : _position(position)
     , _type(type)
+    , _covered(covered)
     , _ride(ride)
 {
 }
@@ -78,7 +79,7 @@ DukValue ScTrackIterator::previousPosition_get() const
     const auto& seq0 = ted.sequences[0].clearance;
     auto pos = _position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
 
-    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeqCovered(pos, _type, 0, _covered);
     if (el == nullptr)
         return ToDuk(ctx, nullptr);
 
@@ -98,7 +99,7 @@ DukValue ScTrackIterator::nextPosition_get() const
     const auto& seq0 = ted.sequences[0].clearance;
     auto pos = _position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
 
-    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeqCovered(pos, _type, 0, _covered);
     if (el == nullptr)
         return ToDuk(ctx, nullptr);
 
@@ -117,7 +118,7 @@ bool ScTrackIterator::previous()
     const auto& seq0 = ted.sequences[0].clearance;
     auto pos = _position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
 
-    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeqCovered(pos, _type, 0, _covered);
     if (el == nullptr)
         return false;
 
@@ -131,6 +132,7 @@ bool ScTrackIterator::previous()
         {
             _position = *origin;
             _type = prev.element->AsTrack()->GetTrackType();
+            _covered = prev.element->AsTrack()->IsCovered();
             return true;
         }
     }
@@ -143,7 +145,7 @@ bool ScTrackIterator::next()
     const auto& seq0 = ted.sequences[0].clearance;
     auto pos = _position + CoordsXYZ(seq0.x, seq0.y, seq0.z);
 
-    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeqCovered(pos, _type, 0, _covered);
     if (el == nullptr)
         return false;
 
@@ -158,6 +160,7 @@ bool ScTrackIterator::next()
         {
             _position = *origin;
             _type = next.element->AsTrack()->GetTrackType();
+            _covered = next.element->AsTrack()->IsCovered();
             return true;
         }
     }
