@@ -192,10 +192,11 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
     int32_t z = trackElement.element->GetBaseZ();
     auto trackType = trackElement.element->AsTrack()->GetTrackType();
+    auto isCovered = trackElement.element->AsTrack()->IsCovered();
     uint8_t direction = trackElement.element->GetDirection();
     _saveDirection = direction;
     auto newCoords = GetTrackElementOriginAndApplyChanges(
-        { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
+        { trackElement, z, direction }, trackType, isCovered, 0, &trackElement.element, 0);
 
     if (!newCoords.has_value())
     {
@@ -260,8 +261,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         z = trackElement.element->GetBaseZ();
         direction = trackElement.element->GetDirection();
         trackType = trackElement.element->AsTrack()->GetTrackType();
+        isCovered = trackElement.element->AsTrack()->IsCovered();
         newCoords = GetTrackElementOriginAndApplyChanges(
-            { trackElement, z, direction }, trackType, 0, &trackElement.element, 0);
+            { trackElement, z, direction }, trackType, isCovered, 0, &trackElement.element, 0);
 
         if (!newCoords.has_value())
         {

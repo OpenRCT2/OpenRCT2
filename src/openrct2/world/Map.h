@@ -241,9 +241,11 @@ std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
 
 TrackElement* MapGetTrackElementAt(const CoordsXYZ& trackPos);
 TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType);
-TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, int32_t sequence);
+TileElement* MapGetTrackElementAtOfTypeSeqCovered(
+    const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, int32_t sequence, bool isCovered);
 TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType);
-TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, int32_t sequence);
+TrackElement* MapGetTrackElementAtOfTypeSeqCovered(
+    const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, int32_t sequence, bool isCovered);
 TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, RideId rideIndex);
 TileElement* MapGetTrackElementAtFromRide(const CoordsXYZ& trackPos, RideId rideIndex);
 TileElement* MapGetTrackElementAtWithDirectionFromRide(const CoordsXYZD& trackPos, RideId rideIndex);

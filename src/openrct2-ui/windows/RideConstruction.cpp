@@ -2350,8 +2350,9 @@ namespace OpenRCT2::Ui::Windows
             // The direction is reset by ride_initialise_construction_window(), but we need it to remove flat rides properly.
             Direction currentDirection = _currentTrackPieceDirection;
             OpenRCT2::TrackElemType type = _currentTrackPieceType;
+            auto isCovered = _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces);
             auto newCoords = GetTrackElementOriginAndApplyChanges(
-                { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+                { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, isCovered, 0, &tileElement, 0);
             if (!newCoords.has_value())
             {
                 WindowRideConstructionUpdateActiveElements();
@@ -2381,8 +2382,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 direction = _currentTrackPieceDirection;
                 type = _currentTrackPieceType;
+                isCovered = _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces);
                 newCoords = GetTrackElementOriginAndApplyChanges(
-                    { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
+                    { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, isCovered, 0, &tileElement, 0);
 
                 if (!newCoords.has_value())
                 {
@@ -2509,9 +2511,10 @@ namespace OpenRCT2::Ui::Windows
         {
             TileElement* tileElement;
 
+            auto isCovered = _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces);
             if (GetTrackElementOriginAndApplyChanges(
-                    { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
-                    &tileElement, 0)
+                    { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType,
+                    isCovered, 0, &tileElement, 0)
                 != std::nullopt)
             {
                 auto trackSetBrakeSpeed = TrackSetBrakeSpeedAction(
@@ -2564,9 +2567,10 @@ namespace OpenRCT2::Ui::Windows
 
         void RideSelectedTrackSetSeatRotation(int32_t seatRotation)
         {
+            auto isCovered = _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces);
             GetTrackElementOriginAndApplyChanges(
                 { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType,
-                seatRotation, nullptr, TRACK_ELEMENT_SET_SEAT_ROTATION);
+                isCovered, seatRotation, nullptr, TRACK_ELEMENT_SET_SEAT_ROTATION);
             WindowRideConstructionUpdateActiveElements();
         }
 
@@ -3089,9 +3093,10 @@ namespace OpenRCT2::Ui::Windows
         if (_rideConstructionState == RideConstructionState::Selected)
         {
             TileElement* tileElement;
+            auto isCovered = _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces);
             if (GetTrackElementOriginAndApplyChanges(
-                    { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType, 0,
-                    &tileElement, 0)
+                    { _currentTrackBegin, static_cast<Direction>(_currentTrackPieceDirection & 3) }, _currentTrackPieceType,
+                    isCovered, 0, &tileElement, 0)
                 != std::nullopt)
             {
                 _selectedTrackType = tileElement->AsTrack()->GetTrackType();
@@ -3212,8 +3217,9 @@ namespace OpenRCT2::Ui::Windows
                 type = _currentTrackPieceType;
                 uint16_t flags = _currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW ? TRACK_ELEMENT_SET_HIGHLIGHT_TRUE
                                                                                           : TRACK_ELEMENT_SET_HIGHLIGHT_FALSE;
+                auto isCovered = _currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces);
                 auto newCoords = GetTrackElementOriginAndApplyChanges(
-                    { _currentTrackBegin, static_cast<Direction>(direction) }, type, 0, nullptr, flags);
+                    { _currentTrackBegin, static_cast<Direction>(direction) }, type, isCovered, 0, nullptr, flags);
                 if (!newCoords.has_value())
                 {
                     RideConstructionRemoveGhosts();

@@ -5621,7 +5621,9 @@ static void block_brakes_open_previous_section(
 
     // Get the start of the track block instead of the end
     location = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
-    auto trackOrigin = MapGetTrackElementAtOfTypeSeq(location, trackBeginEnd.begin_element->AsTrack()->GetTrackType(), 0);
+    auto trackOrigin = MapGetTrackElementAtOfTypeSeqCovered(
+        location, trackBeginEnd.begin_element->AsTrack()->GetTrackType(), 0,
+        trackBeginEnd.begin_element->AsTrack()->IsCovered());
     if (trackOrigin == nullptr)
     {
         return;
@@ -6011,7 +6013,7 @@ void Vehicle::UpdateAnimationAnimalFlying()
     if (animation_frame == 0)
     {
         auto trackType = GetTrackType();
-        TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
+        TileElement* trackElement = MapGetTrackElementAtOfTypeSeqCovered(TrackLocation, trackType, 0, IsOnCoveredTrack());
         if (trackElement != nullptr && trackElement->AsTrack()->HasChain())
         {
             // start flapping, bird
@@ -6758,7 +6760,7 @@ void Vehicle::Sub6DBF3E()
     TileElement* tileElement = nullptr;
     if (MapIsLocationValid(TrackLocation))
     {
-        tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
+        tileElement = MapGetTrackElementAtOfTypeSeqCovered(TrackLocation, trackType, 0, IsOnCoveredTrack());
     }
 
     if (tileElement == nullptr)
@@ -6834,7 +6836,7 @@ uint8_t Vehicle::ChooseBrakeSpeed() const
 {
     if (!TrackTypeIsBrakes(GetTrackType()))
         return brake_speed;
-    auto trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
+    auto trackElement = MapGetTrackElementAtOfTypeSeqCovered(TrackLocation, GetTrackType(), 0, IsOnCoveredTrack());
     if (trackElement != nullptr)
     {
         if (trackElement->AsTrack()->IsBrakeClosed())
@@ -6890,7 +6892,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     CoordsXYZD location = {};
 
     auto pitchAndRollEnd = TrackPitchAndRollEnd(trackType);
-    TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
+    TileElement* tileElement = MapGetTrackElementAtOfTypeSeqCovered(TrackLocation, trackType, 0, IsOnCoveredTrack());
 
     if (tileElement == nullptr)
     {
@@ -7325,7 +7327,7 @@ static PitchAndRoll PitchAndRollEnd(
 bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, const Ride& curRide, uint16_t* progress)
 {
     auto pitchAndRollStart = TrackPitchAndRollStart(trackType);
-    TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
+    TileElement* tileElement = MapGetTrackElementAtOfTypeSeqCovered(TrackLocation, trackType, 0, IsOnCoveredTrack());
 
     if (tileElement == nullptr)
         return false;
@@ -7848,7 +7850,7 @@ Loc6DC462:
         uint16_t trackTotalProgress = GetTrackProgress();
         if (track_progress + 1 >= trackTotalProgress)
         {
-            tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
+            tileElement = MapGetTrackElementAtOfTypeSeqCovered(TrackLocation, GetTrackType(), 0, IsOnCoveredTrack());
             {
                 CoordsXYE output;
                 int32_t outZ{};
@@ -8044,7 +8046,7 @@ Loc6DC462:
 Loc6DCA9A:
     if (track_progress == 0)
     {
-        tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
+        tileElement = MapGetTrackElementAtOfTypeSeqCovered(TrackLocation, GetTrackType(), 0, IsOnCoveredTrack());
         {
             TrackBeginEnd trackBeginEnd;
             if (!TrackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
@@ -8742,7 +8744,9 @@ void Vehicle::UpdateCrossings() const
     int32_t direction{};
 
     CoordsXYE xyElement = { frontVehicle->TrackLocation,
-                            MapGetTrackElementAtOfTypeSeq(frontVehicle->TrackLocation, frontVehicle->GetTrackType(), 0) };
+                            MapGetTrackElementAtOfTypeSeqCovered(
+                                frontVehicle->TrackLocation, frontVehicle->GetTrackType(), 0,
+                                frontVehicle->IsOnCoveredTrack()) };
     int32_t curZ = frontVehicle->TrackLocation.z;
 
     if (xyElement.element != nullptr && status != Vehicle::Status::Arriving)
@@ -8810,7 +8814,8 @@ void Vehicle::UpdateCrossings() const
     }
 
     xyElement = { backVehicle->TrackLocation,
-                  MapGetTrackElementAtOfTypeSeq(backVehicle->TrackLocation, backVehicle->GetTrackType(), 0) };
+                  MapGetTrackElementAtOfTypeSeqCovered(
+                      backVehicle->TrackLocation, backVehicle->GetTrackType(), 0, backVehicle->IsOnCoveredTrack()) };
     if (xyElement.element == nullptr)
     {
         return;

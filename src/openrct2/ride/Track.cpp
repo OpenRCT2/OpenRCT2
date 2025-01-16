@@ -566,7 +566,9 @@ TrackElement* TrackGetPreviousBlock(CoordsXYZ& location, TileElement* tileElemen
 
     // Get the start of the track block instead of the end
     location = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
-    auto trackOrigin = MapGetTrackElementAtOfTypeSeq(location, trackBeginEnd.begin_element->AsTrack()->GetTrackType(), 0);
+    auto trackOrigin = MapGetTrackElementAtOfTypeSeqCovered(
+        location, trackBeginEnd.begin_element->AsTrack()->GetTrackType(), 0,
+        trackBeginEnd.begin_element->AsTrack()->IsCovered());
     if (trackOrigin == nullptr)
     {
         return nullptr;

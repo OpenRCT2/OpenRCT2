@@ -249,7 +249,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         uint16_t trackTotalProgress = GetTrackProgress();
         if (trackProgress >= trackTotalProgress)
         {
-            TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
+            TileElement* trackElement = MapGetTrackElementAtOfTypeSeqCovered(TrackLocation, trackType, 0, IsOnCoveredTrack());
 
             CoordsXYE output;
             int32_t outputZ;
@@ -313,7 +313,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         if (static_cast<int16_t>(trackProgress) == -1)
         {
             auto trackType = GetTrackType();
-            TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
+            TileElement* trackElement = MapGetTrackElementAtOfTypeSeqCovered(TrackLocation, trackType, 0, IsOnCoveredTrack());
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
             TrackBeginEnd output;

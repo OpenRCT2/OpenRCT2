@@ -705,8 +705,8 @@ bool TrackTypeIsBlockBrakes(OpenRCT2::TrackElemType trackType);
 bool TrackTypeIsBooster(OpenRCT2::TrackElemType trackType);
 
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
-    const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, TileElement** output_element,
-    uint16_t flags);
+    const CoordsXYZD& location, OpenRCT2::TrackElemType type, bool isCovered, uint16_t extra_params,
+    TileElement** output_element, uint16_t flags);
 
 TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank);
 TrackRoll TrackGetActualBank2(ride_type_t rideType, bool isInverted, TrackRoll bank);

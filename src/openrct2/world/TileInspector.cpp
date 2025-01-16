@@ -719,6 +719,7 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             auto type = trackElement->AsTrack()->GetTrackType();
+            auto covered = trackElement->AsTrack()->IsCovered();
             int16_t originX = loc.x;
             int16_t originY = loc.y;
             int16_t originZ = trackElement->GetBaseZ();
@@ -753,7 +754,7 @@ namespace OpenRCT2::TileInspector
                 offsets.y = trackBlock2.y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, i);
+                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeqCovered(elem, type, i, covered);
                 if (nextTrackElement == nullptr)
                 {
                     LOG_ERROR("Track map element part not found!");
@@ -801,6 +802,7 @@ namespace OpenRCT2::TileInspector
             }
 
             auto type = trackElement->AsTrack()->GetTrackType();
+            auto covered = trackElement->AsTrack()->IsCovered();
             int16_t originX = loc.x;
             int16_t originY = loc.y;
             int16_t originZ = trackElement->GetBaseZ();
@@ -835,7 +837,7 @@ namespace OpenRCT2::TileInspector
                 offsets.y = trackBlock2.y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, i);
+                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeqCovered(elem, type, i, covered);
                 if (nextTrackElement == nullptr)
                 {
                     LOG_ERROR("Track map element part not found!");

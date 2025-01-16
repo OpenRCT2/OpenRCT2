@@ -2985,7 +2985,8 @@ static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement
         int32_t direction = trackBeginEnd.begin_direction;
         trackType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
         auto newCoords = GetTrackElementOriginAndApplyChanges(
-            { trackCoords, static_cast<Direction>(direction) }, trackType, 0, &returnPos.element, 0);
+            { trackCoords, static_cast<Direction>(direction) }, trackType, trackBeginEnd.begin_element->AsTrack()->IsCovered(),
+            0, &returnPos.element, 0);
         returnPos = newCoords.has_value() ? CoordsXYE{ newCoords.value(), returnPos.element }
                                           : CoordsXYE{ trackCoords, returnPos.element };
     };
@@ -3056,8 +3057,8 @@ void SetBrakeClosedMultiTile(TrackElement& trackElement, const CoordsXY& trackLo
         case TrackElemType::DiagBrakes:
         case TrackElemType::DiagBlockBrakes:
             GetTrackElementOriginAndApplyChanges(
-                { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(), isClosed,
-                nullptr, TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
+                { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(),
+                trackElement.IsCovered(), isClosed, nullptr, TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
             break;
         default:
             trackElement.SetBrakeClosed(isClosed);
@@ -3541,8 +3542,9 @@ static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
                 [[fallthrough]];
             case TrackElemType::DiagBlockBrakes:
             {
-                TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(
-                    { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z }, trackType, 0);
+                TileElement* tileElement = MapGetTrackElementAtOfTypeSeqCovered(
+                    { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z }, trackType, 0,
+                    trackElement->IsCovered());
 
                 if (tileElement != nullptr)
                 {
@@ -3859,7 +3861,8 @@ static ResultWithMessage RideInitialiseCableLiftTrack(const Ride& ride, bool isA
             auto tmpLoc = CoordsXYZ{ it.current, tileElement->GetBaseZ() };
             auto direction = tileElement->GetDirection();
             trackType = tileElement->AsTrack()->GetTrackType();
-            GetTrackElementOriginAndApplyChanges({ tmpLoc, direction }, trackType, 0, &tileElement, flags);
+            GetTrackElementOriginAndApplyChanges(
+                { tmpLoc, direction }, trackType, tileElement->AsTrack()->IsCovered(), 0, &tileElement, flags);
         }
     }
     return { true };
