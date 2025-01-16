@@ -280,16 +280,16 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
     }
 }
 
-static OpenRCT2::TrackElemType toTrackType(const u8string_view trackTypeString)
+static std::pair<OpenRCT2::TrackElemType, bool> toTrackType(const u8string_view trackTypeString)
 {
     if (trackTypeString == "flat")
-        return OpenRCT2::TrackElemType::Flat;
+        return { OpenRCT2::TrackElemType::Flat, false };
     else if (trackTypeString == "flat_covered")
-        return OpenRCT2::TrackElemType::FlatCovered;
+        return { OpenRCT2::TrackElemType::Flat, true };
     else
     {
         OpenRCT2::Guard::Assert(0, "Unsupported track type conversion");
-        return OpenRCT2::TrackElemType::None;
+        return { OpenRCT2::TrackElemType::None, false };
     }
 }
 
@@ -349,10 +349,11 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
                     continue;
 
                 auto* trackElement = tileElement->AsTrack();
-                if (trackElement->GetTrackType() != fromTrackType)
+                if (trackElement->GetTrackType() != fromTrackType.first || trackElement->IsCovered() != fromTrackType.second)
                     continue;
 
-                trackElement->SetTrackType(destinationTrackType);
+                trackElement->SetTrackType(destinationTrackType.first);
+                trackElement->SetCovered(destinationTrackType.second);
             } while (!(tileElement++)->IsLastForTile());
         }
     }

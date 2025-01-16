@@ -275,7 +275,7 @@ using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideM
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
 using RideLocationFunction = CoordsXY (*)(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
 using RideUpdateFunction = void (*)(Ride& ride);
-using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const OpenRCT2::TrackElemType trackType);
+using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const OpenRCT2::TrackElemType trackType, bool isCovered);
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 
@@ -352,8 +352,8 @@ enum class RtdFlag : uint8_t
 
     noTestMode,
 
-    // Set on rides with two varieties, like the u and o shapes of the dinghy slide
-    // and the dry and submerged track of the water coaster.
+    // Set on rides with two varieties that make it behave differently, like the u and o shapes of the dinghy slide
+    // and the dry and submerged track of the water coaster. Do not use when the changes are just cosmetic.
     hasCoveredPieces,
 
     // Used only by maze, spiral slide and shops

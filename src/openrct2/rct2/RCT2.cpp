@@ -97,7 +97,7 @@ namespace OpenRCT2::RCT2
         return MinMaxCarsPerTrain & 0xF;
     }
 
-    OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(
+    ConvertedTrackTypeResult RCT2TrackTypeToOpenRCT2(
         OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType, bool isFlatRide)
     {
         auto originalClass = OriginalRideClass::Regular;
@@ -109,31 +109,38 @@ namespace OpenRCT2::RCT2
         return RCT2TrackTypeToOpenRCT2(origTrackType, originalClass);
     }
 
-    OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(
+    ConvertedTrackTypeResult RCT2TrackTypeToOpenRCT2(
         OpenRCT2::RCT12::TrackElemType origTrackType, OriginalRideClass originalClass)
     {
+        OldTrackElemType oldOpenRCT2Type;
         switch (originalClass)
         {
             case OriginalRideClass::FlatRide:
-                return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
+                oldOpenRCT2Type = RCT12FlatTrackTypeToOpenRCT2(origTrackType);
+                break;
             case OriginalRideClass::WildMouse:
                 // Boosters share their ID with the Spinning Control track.
                 if (origTrackType == OpenRCT2::RCT12::TrackElemType::RotationControlToggleAlias)
-                    return OpenRCT2::TrackElemType::RotationControlToggle;
-                return static_cast<OpenRCT2::TrackElemType>(origTrackType);
+                    return { OpenRCT2::TrackElemType::RotationControlToggle, false };
+
+                oldOpenRCT2Type = static_cast<OpenRCT2::OldTrackElemType>(origTrackType);
+                break;
             case OriginalRideClass::Regular:
             default:
-                return static_cast<OpenRCT2::TrackElemType>(origTrackType);
+                oldOpenRCT2Type = static_cast<OpenRCT2::OldTrackElemType>(origTrackType);
+                break;
         }
+
+        return OldTrackElementToNew(oldOpenRCT2Type);
     }
 
-    OpenRCT2::RCT12::TrackElemType OpenRCT2TrackTypeToRCT2(OpenRCT2::TrackElemType origTrackType)
+    OpenRCT2::RCT12::TrackElemType OpenRCT2TrackTypeToRCT2(OpenRCT2::TrackElemType origTrackType, bool isCovered)
     {
         if (origTrackType == TrackElemType::RotationControlToggle)
             return OpenRCT2::RCT12::TrackElemType::RotationControlToggleAlias;
 
         // This function is safe to run this way round.
-        return OpenRCT2FlatTrackTypeToRCT12(origTrackType);
+        return OpenRCT2FlatAndCoveredTrackTypeToRCT12(origTrackType, isCovered);
     }
 
     static FootpathMapping _footpathMappings[] = {

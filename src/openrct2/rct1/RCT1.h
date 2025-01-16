@@ -11,6 +11,7 @@
 
 #include "../Diagnostic.h"
 #include "../core/FixedPoint.hpp"
+#include "../park/Legacy.h"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
 #include "../world/Park.h"
@@ -1299,5 +1300,6 @@ namespace OpenRCT2::RCT1
         RCT1_PATH_SUPPORT_TYPE_BAMBOO,
     };
 
-    OpenRCT2::TrackElemType RCT1TrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType);
+    OpenRCT2::ConvertedTrackTypeResult RCT1TrackTypeToOpenRCT2(
+        OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType);
 } // namespace OpenRCT2::RCT1

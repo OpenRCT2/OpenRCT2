@@ -249,10 +249,7 @@ DukValue ScTrackSegment::getMirrorElement() const
 DukValue ScTrackSegment::getAlternativeElement() const
 {
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
-    const auto& ted = GetTrackElementDescriptor(_type);
-    if (ted.alternativeType == TrackElemType::None)
-        return ToDuk(ctx, nullptr);
-    return ToDuk<int32_t>(ctx, EnumValue(ted.alternativeType));
+    return ToDuk(ctx, nullptr);
 }
 
 int32_t ScTrackSegment::getPriceModifier() const

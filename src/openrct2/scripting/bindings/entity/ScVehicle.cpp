@@ -408,7 +408,19 @@ namespace OpenRCT2::Scripting
             auto z = AsOrDefault(value["z"], 0);
             vehicle->TrackLocation = CoordsXYZ(x, y, z);
             vehicle->SetTrackDirection(AsOrDefault(value["direction"], 0));
-            vehicle->SetTrackType(static_cast<TrackElemType>(AsOrDefault(value["trackType"], 0)));
+
+            if (GetTargetAPIVersion() < kApiVersionCoveredPieceDeduplication)
+            {
+                auto oldValue = static_cast<OldTrackElemType>(AsOrDefault(value["trackType"], 0));
+                auto convertedValue = OldTrackElementToNew(oldValue);
+                vehicle->SetTrackType(convertedValue.trackType, convertedValue.isCovered);
+            }
+            else
+            {
+                auto trackType = static_cast<TrackElemType>(AsOrDefault(value["trackType"], 0));
+                bool onCoveredTrack = AsOrDefault(value["onCoveredTrack"], false);
+                vehicle->SetTrackType(trackType, onCoveredTrack);
+            }
         }
     }
 

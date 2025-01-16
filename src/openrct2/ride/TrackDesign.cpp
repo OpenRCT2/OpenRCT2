@@ -245,6 +245,10 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         {
             track.SetFlag(TrackDesignTrackElementFlag::isInverted);
         }
+        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasCoveredPieces) && element->IsCovered())
+        {
+            track.SetFlag(TrackDesignTrackElementFlag::isCovered);
+        }
 
         trackElements.push_back(track);
 
@@ -1606,6 +1610,10 @@ static GameActions::Result TrackDesignPlaceRide(
                 if (track.HasFlag(TrackDesignTrackElementFlag::isInverted))
                 {
                     liftHillAndAlternativeState.set(LiftHillAndInverted::inverted);
+                }
+                if (track.HasFlag(TrackDesignTrackElementFlag::isCovered))
+                {
+                    liftHillAndAlternativeState.set(LiftHillAndInverted::covered);
                 }
 
                 uint8_t flags = GAME_COMMAND_FLAG_APPLY;

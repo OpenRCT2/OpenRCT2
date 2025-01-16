@@ -1496,12 +1496,15 @@ namespace OpenRCT2::RCT1
     }
     // clang-format on
 
-    OpenRCT2::TrackElemType RCT1TrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType)
+    ConvertedTrackTypeResult RCT1TrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType)
     {
+        OldTrackElemType oldOpenRCT2Type;
         if (GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isFlatRide))
-            return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
+            oldOpenRCT2Type = RCT12FlatTrackTypeToOpenRCT2(origTrackType);
+        else
+            oldOpenRCT2Type = static_cast<OpenRCT2::OldTrackElemType>(origTrackType);
 
-        return static_cast<OpenRCT2::TrackElemType>(origTrackType);
+        return OpenRCT2::OldTrackElementToNew(oldOpenRCT2Type);
     }
 
     bool VehicleTypeIsReversed(const VehicleType vehicleType)

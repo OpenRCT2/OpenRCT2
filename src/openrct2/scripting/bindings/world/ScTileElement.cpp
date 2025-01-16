@@ -16,6 +16,7 @@
     #include "../../../entity/EntityRegistry.h"
     #include "../../../object/LargeSceneryEntry.h"
     #include "../../../object/WallSceneryEntry.h"
+    #include "../../../park/Legacy.h"
     #include "../../../ride/Ride.h"
     #include "../../../ride/RideData.h"
     #include "../../../ride/Track.h"
@@ -423,7 +424,15 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsTrack();
         if (el != nullptr)
         {
-            duk_push_int(ctx, EnumValue(el->GetTrackType()));
+            if (GetTargetAPIVersion() < kApiVersionCoveredPieceDeduplication)
+            {
+                auto oldValue = NewTrackElementToOld(el->GetTrackType(), el->IsCovered());
+                duk_push_int(ctx, EnumValue(oldValue));
+            }
+            else
+            {
+                duk_push_int(ctx, EnumValue(el->GetTrackType()));
+            }
         }
         else
         {
@@ -443,7 +452,18 @@ namespace OpenRCT2::Scripting
             return;
         }
 
-        el->SetTrackType(static_cast<TrackElemType>(value));
+        if (GetTargetAPIVersion() < kApiVersionCoveredPieceDeduplication)
+        {
+            auto oldValue = static_cast<OldTrackElemType>(value);
+            auto convertedValue = OldTrackElementToNew(oldValue);
+            el->SetTrackType(convertedValue.trackType);
+            el->SetCovered(convertedValue.isCovered);
+        }
+        else
+        {
+            el->SetTrackType(static_cast<TrackElemType>(value));
+        }
+
         Invalidate();
     }
 

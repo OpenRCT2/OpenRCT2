@@ -3289,7 +3289,7 @@ static Vehicle* VehicleCreateCar(
         dodgemPos.z += rtd.Heights.VehicleZOffset;
 
         vehicle->SetTrackDirection(0);
-        vehicle->SetTrackType(trackElement->GetTrackType());
+        vehicle->SetTrackType(trackElement->GetTrackType(), trackElement->IsCovered());
         vehicle->track_progress = 0;
         vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
         vehicle->Flags = 0;
@@ -3384,7 +3384,7 @@ static Vehicle* VehicleCreateCar(
         vehicle->current_station = trackElement->GetStationIndex();
 
         vehicle->MoveTo(chosenLoc);
-        vehicle->SetTrackType(trackElement->GetTrackType());
+        vehicle->SetTrackType(trackElement->GetTrackType(), trackElement->IsCovered());
         vehicle->SetTrackDirection(vehicle->Orientation >> 3);
         vehicle->track_progress = 31;
         if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF)

@@ -2682,6 +2682,7 @@ namespace OpenRCT2::Ui::Windows
             tempTrackTileElement.AsTrack()->SetRideType(currentRide->type);
             tempTrackTileElement.AsTrack()->SetHasCableLift(false);
             tempTrackTileElement.AsTrack()->SetInverted(liftHillAndInvertedState.has(LiftHillAndInverted::inverted));
+            tempTrackTileElement.AsTrack()->SetCovered(liftHillAndInvertedState.has(LiftHillAndInverted::covered));
             tempTrackTileElement.AsTrack()->SetColourScheme(RideColourScheme::main);
             // Skipping seat rotation, should not be necessary for a temporary piece.
             tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
@@ -4909,6 +4910,10 @@ namespace OpenRCT2::Ui::Windows
         {
             liftHillAndInvertedState.set(LiftHillAndInverted::inverted);
         }
+        if (_currentTrackAlternative.has(AlternativeTrackFlag::alternativePieces))
+        {
+            liftHillAndInvertedState.set(LiftHillAndInverted::covered);
+        }
 
         auto ride = GetRide(rideIndex);
         if (ride == nullptr)
@@ -4971,13 +4976,16 @@ namespace OpenRCT2::Ui::Windows
             auto availableGroups = trackDrawerDescriptor.Covered.enabledTrackGroups;
             const auto& ted = GetTrackElementDescriptor(trackType);
 
-            auto coveredVariant = ted.alternativeType;
             // this method limits the track element types that can be used
-            if (coveredVariant != TrackElemType::None && (availableGroups.get(EnumValue(ted.definition.group))))
+            if (availableGroups.get(EnumValue(ted.definition.group)))
             {
-                trackType = coveredVariant;
                 if (!GetGameState().Cheats.enableChainLiftOnAllTrack)
                     liftHillAndInvertedState.unset(LiftHillAndInverted::liftHill);
+            }
+            else
+            {
+                liftHillAndInvertedState.unset(LiftHillAndInverted::covered);
+                _currentTrackAlternative.unset(AlternativeTrackFlag::alternativePieces);
             }
         }
 

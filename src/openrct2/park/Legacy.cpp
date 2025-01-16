@@ -2916,3 +2916,112 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
 
     return false;
 }
+
+OpenRCT2::ConvertedTrackTypeResult OpenRCT2::OldTrackElementToNew(OpenRCT2::OldTrackElemType trackElementType)
+{
+    switch (trackElementType)
+    {
+        case OldTrackElemType::FlatCovered:
+            return { TrackElemType::Flat, true };
+        case OldTrackElemType::Up25Covered:
+            return { TrackElemType::Up25, true };
+        case OldTrackElemType::Up60Covered:
+            return { TrackElemType::Up60, true };
+        case OldTrackElemType::FlatToUp25Covered:
+            return { TrackElemType::FlatToUp25, true };
+        case OldTrackElemType::Up25ToUp60Covered:
+            return { TrackElemType::Up25ToUp60, true };
+        case OldTrackElemType::Up60ToUp25Covered:
+            return { TrackElemType::Up60ToUp25, true };
+        case OldTrackElemType::Up25ToFlatCovered:
+            return { TrackElemType::Up25ToFlat, true };
+        case OldTrackElemType::Down25Covered:
+            return { TrackElemType::Down25, true };
+        case OldTrackElemType::Down60Covered:
+            return { TrackElemType::Down60, true };
+        case OldTrackElemType::FlatToDown25Covered:
+            return { TrackElemType::FlatToDown25, true };
+        case OldTrackElemType::Down25ToDown60Covered:
+            return { TrackElemType::Down25ToDown60, true };
+        case OldTrackElemType::Down60ToDown25Covered:
+            return { TrackElemType::Down60ToDown25, true };
+        case OldTrackElemType::Down25ToFlatCovered:
+            return { TrackElemType::Down25ToFlat, true };
+        case OldTrackElemType::LeftQuarterTurn5TilesCovered:
+            return { TrackElemType::LeftQuarterTurn5Tiles, true };
+        case OldTrackElemType::RightQuarterTurn5TilesCovered:
+            return { TrackElemType::RightQuarterTurn5Tiles, true };
+        case OldTrackElemType::SBendLeftCovered:
+            return { TrackElemType::SBendLeft, true };
+        case OldTrackElemType::SBendRightCovered:
+            return { TrackElemType::SBendRight, true };
+        case OldTrackElemType::LeftQuarterTurn3TilesCovered:
+            return { TrackElemType::LeftQuarterTurn3Tiles, true };
+        case OldTrackElemType::RightQuarterTurn3TilesCovered:
+            return { TrackElemType::RightQuarterTurn3Tiles, true };
+        default:
+        {
+            uint16_t asInt = EnumValue(trackElementType);
+            if (asInt >= EnumValue(OldTrackElemType::FirstCoveredElement))
+                asInt -= kNumLegacyCoveredElements;
+
+            return { static_cast<OpenRCT2::TrackElemType>(asInt), false };
+        }
+    }
+}
+
+OpenRCT2::OldTrackElemType OpenRCT2::NewTrackElementToOld(OpenRCT2::TrackElemType trackElementType, bool isCovered)
+{
+    if (isCovered)
+    {
+        switch (trackElementType)
+        {
+            case TrackElemType::Flat:
+                return OpenRCT2::OldTrackElemType::FlatCovered;
+            case TrackElemType::Up25:
+                return OpenRCT2::OldTrackElemType::Up25Covered;
+            case TrackElemType::Up60:
+                return OpenRCT2::OldTrackElemType::Up60Covered;
+            case TrackElemType::FlatToUp25:
+                return OpenRCT2::OldTrackElemType::FlatToUp25Covered;
+            case TrackElemType::Up25ToUp60:
+                return OpenRCT2::OldTrackElemType::Up25ToUp60Covered;
+            case TrackElemType::Up60ToUp25:
+                return OpenRCT2::OldTrackElemType::Up60ToUp25Covered;
+            case TrackElemType::Up25ToFlat:
+                return OpenRCT2::OldTrackElemType::Up25ToFlatCovered;
+            case TrackElemType::Down25:
+                return OpenRCT2::OldTrackElemType::Down25Covered;
+            case TrackElemType::Down60:
+                return OpenRCT2::OldTrackElemType::Down60Covered;
+            case TrackElemType::FlatToDown25:
+                return OpenRCT2::OldTrackElemType::FlatToDown25Covered;
+            case TrackElemType::Down25ToDown60:
+                return OpenRCT2::OldTrackElemType::Down25ToDown60Covered;
+            case TrackElemType::Down60ToDown25:
+                return OpenRCT2::OldTrackElemType::Down60ToDown25Covered;
+            case TrackElemType::Down25ToFlat:
+                return OpenRCT2::OldTrackElemType::Down25ToFlatCovered;
+            case TrackElemType::LeftQuarterTurn5Tiles:
+                return OpenRCT2::OldTrackElemType::LeftQuarterTurn5TilesCovered;
+            case TrackElemType::RightQuarterTurn5Tiles:
+                return OpenRCT2::OldTrackElemType::RightQuarterTurn5TilesCovered;
+            case TrackElemType::SBendLeft:
+                return OpenRCT2::OldTrackElemType::SBendLeftCovered;
+            case TrackElemType::SBendRight:
+                return OpenRCT2::OldTrackElemType::SBendRightCovered;
+            case TrackElemType::LeftQuarterTurn3Tiles:
+                return OpenRCT2::OldTrackElemType::LeftQuarterTurn3TilesCovered;
+            case TrackElemType::RightQuarterTurn3Tiles:
+                return OpenRCT2::OldTrackElemType::RightQuarterTurn3TilesCovered;
+            default:
+                break;
+        }
+    }
+
+    uint16_t asInt = EnumValue(trackElementType);
+    if (asInt >= EnumValue(OldTrackElemType::FirstCoveredElement))
+        asInt += kNumLegacyCoveredElements;
+
+    return static_cast<OpenRCT2::OldTrackElemType>(asInt);
+}

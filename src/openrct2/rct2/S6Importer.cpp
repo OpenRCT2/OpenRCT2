@@ -1023,8 +1023,9 @@ namespace OpenRCT2::RCT2
             dst.State = src.State;
             if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(RideTypeDescriptors))
             {
-                dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
+                auto convertedType = RCT2TrackTypeToOpenRCT2(
                     src.ProximityTrackType, _s6.Rides[src.CurrentRide].Type, IsFlatRide(src.CurrentRide));
+                dst.ProximityTrackType = convertedType.trackType;
             }
             else
             {
@@ -1349,10 +1350,10 @@ namespace OpenRCT2::RCT2
 
                     auto rideType = _s6.Rides[src2->GetRideIndex()].Type;
                     auto oldTrackType = src2->GetTrackType();
-                    OpenRCT2::TrackElemType trackType = RCT2TrackTypeToOpenRCT2(
-                        oldTrackType, rideType, IsFlatRide(src2->GetRideIndex()));
+                    auto convertedType = RCT2TrackTypeToOpenRCT2(oldTrackType, rideType, IsFlatRide(src2->GetRideIndex()));
 
-                    dst2->SetTrackType(trackType);
+                    dst2->SetTrackType(convertedType.trackType);
+                    dst2->SetCovered(convertedType.isCovered);
                     dst2->SetRideType(rideType);
                     dst2->SetSequenceIndex(src2->GetSequenceIndex());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
@@ -1363,20 +1364,20 @@ namespace OpenRCT2::RCT2
                     dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetHasGreenLight(src2->HasGreenLight());
                     // Brakes import as closed to preserve legacy behaviour
-                    dst2->SetBrakeClosed(src2->BlockBrakeClosed() || (trackType == TrackElemType::Brakes));
+                    dst2->SetBrakeClosed(src2->BlockBrakeClosed() || (convertedType.trackType == TrackElemType::Brakes));
                     dst2->SetIsIndestructible(src2->IsIndestructible());
                     // Skipping IsHighlighted()
 
                     // Import block brakes to keep legacy behaviour
-                    if (trackType == TrackElemType::BlockBrakes)
+                    if (convertedType.trackType == TrackElemType::BlockBrakes)
                     {
                         dst2->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
                     }
-                    else if (TrackTypeHasSpeedSetting(trackType))
+                    else if (TrackTypeHasSpeedSetting(convertedType.trackType))
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                     }
-                    else if (trackType == TrackElemType::OnRidePhoto)
+                    else if (convertedType.trackType == TrackElemType::OnRidePhoto)
                     {
                         dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                     }
@@ -1941,7 +1942,7 @@ namespace OpenRCT2::RCT2
             // Skipping OriginalRideClass::WildMouse - this is handled specifically.
             auto originalClass = IsFlatRide(src->Ride) ? OriginalRideClass::FlatRide : OriginalRideClass::Regular;
             auto convertedType = RCT2TrackTypeToOpenRCT2(src->GetTrackType(), originalClass);
-            dst->SetTrackType(convertedType);
+            dst->SetTrackType(convertedType.trackType, convertedType.isCovered);
             // RotationControlToggle and Booster are saved as the same track piece ID
             // Which one the vehicle is using must be determined
             if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::RotationControlToggleAlias)
@@ -1954,7 +1955,7 @@ namespace OpenRCT2::RCT2
                     dst->TrackLocation, TrackElemType::RotationControlToggle, 0);
 
                 if (tileElement2 != nullptr)
-                    dst->SetTrackType(TrackElemType::RotationControlToggle);
+                    dst->SetTrackType(TrackElemType::RotationControlToggle, false);
             }
             else if (src->GetTrackType() == OpenRCT2::RCT12::TrackElemType::BlockBrakes)
             {
@@ -1965,7 +1966,7 @@ namespace OpenRCT2::RCT2
         {
             dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.ToCoordsXY();
             dst->SetTrackDirection(0);
-            dst->SetTrackType(OpenRCT2::TrackElemType::Flat);
+            dst->SetTrackType(OpenRCT2::TrackElemType::Flat, false);
         }
 
         dst->next_vehicle_on_train = EntityId::FromUnderlying(src->NextVehicleOnTrain);

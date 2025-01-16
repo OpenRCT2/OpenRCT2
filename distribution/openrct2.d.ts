@@ -122,6 +122,7 @@ declare global {
      */
     interface CarTrackLocation extends CoordsXYZD {
         trackType: number;
+        onCoveredTrack: boolean;
     }
 
     /**
@@ -2360,6 +2361,7 @@ declare global {
 
         /**
          * Track segment representing the covered/flume variant of the track segment.
+         * @deprecated
          */
         readonly alternateTypeSegment: number | null;
 

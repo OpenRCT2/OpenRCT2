@@ -786,7 +786,7 @@ bool Vehicle::OpenRestraints()
     return restraintsOpen;
 }
 
-void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::TrackElemType trackType)
+void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::TrackElemType trackType, bool isCovered)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
     uint16_t trackFlags = ted.flags;
@@ -797,7 +797,7 @@ void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::T
     }
 }
 
-void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::TrackElemType trackType)
+void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::TrackElemType trackType, bool isCovered)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
     uint16_t trackFlags = ted.flags;
@@ -808,9 +808,9 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::
     }
 }
 
-void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const OpenRCT2::TrackElemType trackType)
+void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const OpenRCT2::TrackElemType trackType, bool isCovered)
 {
-    if (trackType >= TrackElemType::FlatCovered && trackType <= TrackElemType::RightQuarterTurn3TilesCovered)
+    if (isCovered)
     {
         ride.special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
     }
@@ -923,7 +923,7 @@ void Vehicle::UpdateMeasurements()
         }
 
         const auto& rtd = curRide->GetRideTypeDescriptor();
-        rtd.UpdateMeasurementsSpecialElements(*curRide, trackElemType);
+        rtd.UpdateMeasurementsSpecialElements(*curRide, trackElemType, IsOnCoveredTrack());
 
         switch (trackElemType)
         {
@@ -2441,7 +2441,7 @@ void Vehicle::UpdateTravellingBoatHireSetup()
     var_35 = 0;
     // No longer on a track so reset to 0 for import/export
     SetTrackDirection(0);
-    SetTrackType(TrackElemType::Flat);
+    SetTrackType(TrackElemType::Flat, false);
     SetState(Vehicle::Status::TravellingBoat);
     remaining_distance += 27924;
 
@@ -3613,7 +3613,7 @@ void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const
         {
             auto trackElement = MapGetTrackElementAt(TrackLocation);
             if (trackElement != nullptr)
-                SetTrackType(trackElement->GetTrackType());
+                SetTrackType(trackElement->GetTrackType(), trackElement->IsCovered());
 
             SetTrackDirection(curRide->boat_hire_return_direction);
             BoatLocation.SetNull();
@@ -5650,7 +5650,6 @@ int32_t Vehicle::GetSwingAmount() const
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
         case TrackElemType::LeftQuarterTurn5TilesUp25:
         case TrackElemType::LeftQuarterTurn5TilesDown25:
-        case TrackElemType::LeftQuarterTurn5TilesCovered:
         case TrackElemType::LeftHalfBankedHelixUpLarge:
         case TrackElemType::LeftHalfBankedHelixDownLarge:
         case TrackElemType::LeftQuarterBankedHelixLargeUp:
@@ -5666,7 +5665,6 @@ int32_t Vehicle::GetSwingAmount() const
         case TrackElemType::BankedRightQuarterTurn5Tiles:
         case TrackElemType::RightQuarterTurn5TilesUp25:
         case TrackElemType::RightQuarterTurn5TilesDown25:
-        case TrackElemType::RightQuarterTurn5TilesCovered:
         case TrackElemType::RightHalfBankedHelixUpLarge:
         case TrackElemType::RightHalfBankedHelixDownLarge:
         case TrackElemType::RightQuarterBankedHelixLargeUp:
@@ -5679,7 +5677,6 @@ int32_t Vehicle::GetSwingAmount() const
             return -14;
 
         case TrackElemType::SBendLeft:
-        case TrackElemType::SBendLeftCovered:
             // Loc6D67EF
             if (track_progress < 48)
             {
@@ -5688,7 +5685,6 @@ int32_t Vehicle::GetSwingAmount() const
             return -15;
 
         case TrackElemType::SBendRight:
-        case TrackElemType::SBendRightCovered:
             // Loc6D67CC
             if (track_progress < 48)
             {
@@ -5700,7 +5696,6 @@ int32_t Vehicle::GetSwingAmount() const
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
         case TrackElemType::LeftQuarterTurn3TilesUp25:
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-        case TrackElemType::LeftQuarterTurn3TilesCovered:
         case TrackElemType::LeftHalfBankedHelixUpSmall:
         case TrackElemType::LeftHalfBankedHelixDownSmall:
         case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
@@ -5715,7 +5710,6 @@ int32_t Vehicle::GetSwingAmount() const
         case TrackElemType::RightBankedQuarterTurn3Tiles:
         case TrackElemType::RightQuarterTurn3TilesUp25:
         case TrackElemType::RightQuarterTurn3TilesDown25:
-        case TrackElemType::RightQuarterTurn3TilesCovered:
         case TrackElemType::RightHalfBankedHelixUpSmall:
         case TrackElemType::RightHalfBankedHelixDownSmall:
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
@@ -7041,21 +7035,22 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     }
 
     // Loc6DB500
+    auto& trackElement = *(tileElement->AsTrack());
     // Update VehicleFlags::OnLiftHill
     ClearFlag(VehicleFlags::OnLiftHill);
-    if (tileElement->AsTrack()->HasChain())
+    if (trackElement.HasChain())
     {
         SetFlag(VehicleFlags::OnLiftHill);
     }
 
-    trackType = tileElement->AsTrack()->GetTrackType();
+    trackType = trackElement.GetTrackType();
     if (trackType != TrackElemType::Brakes)
     {
-        target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
+        target_seat_rotation = trackElement.GetSeatRotation();
     }
     SetTrackDirection(location.direction);
-    SetTrackType(trackType);
-    PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
+    SetTrackType(trackType, trackElement.IsCovered());
+    PopulateBrakeSpeed(TrackLocation, trackElement);
     if (HasFlag(VehicleFlags::StoppedOnHoldingBrake) && vertical_drop_countdown <= 0)
     {
         ClearFlag(VehicleFlags::StoppedOnHoldingBrake);
@@ -7461,15 +7456,16 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(TrackElemType trackType, con
         }
     }
 
-    trackType = tileElement->AsTrack()->GetTrackType();
+    auto& trackElement = *(tileElement->AsTrack());
+    trackType = trackElement.GetTrackType();
     if (trackType != TrackElemType::Brakes)
     {
         target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
     direction &= 3;
-    SetTrackType(trackType);
+    SetTrackType(trackType, trackElement.IsCovered());
     SetTrackDirection(direction);
-    PopulateBrakeSpeed(TrackLocation, *tileElement->AsTrack());
+    PopulateBrakeSpeed(TrackLocation, trackElement);
     if (HasFlag(VehicleFlags::StoppedOnHoldingBrake) && vertical_drop_countdown <= 0)
     {
         ClearFlag(VehicleFlags::StoppedOnHoldingBrake);
@@ -7903,9 +7899,10 @@ Loc6DC462:
             }
 
             ClearFlag(VehicleFlags::OnLiftHill);
-            SetTrackType(tileElement->AsTrack()->GetTrackType());
+            auto& trackElement = *(tileElement->AsTrack());
+            SetTrackType(trackElement.GetTrackType(), trackElement.IsCovered());
             SetTrackDirection(direction);
-            brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+            brake_speed = trackElement.GetBrakeBoosterSpeed();
             track_progress = 0;
         }
         else
@@ -8088,9 +8085,10 @@ Loc6DCA9A:
             }
         }
 
-        SetTrackType(tileElement->AsTrack()->GetTrackType());
+        const auto& trackElement = *(tileElement->AsTrack());
+        SetTrackType(trackElement.GetTrackType(), trackElement.IsCovered());
         SetTrackDirection(direction);
-        brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+        brake_speed = trackElement.GetBrakeBoosterSpeed();
 
         // There are two bytes before the move info list
         track_progress = GetTrackProgress();
@@ -8971,5 +8969,17 @@ void Vehicle::Serialise(DataSerialiser& stream)
 
 bool Vehicle::IsOnCoveredTrack() const
 {
-    return TrackElementIsCovered(GetTrackType());
+    return HasFlag(VehicleFlags::OnCoveredTrack);
+}
+
+void Vehicle::SetTrackType(OpenRCT2::TrackElemType trackType, bool isCovered)
+{
+    // set the upper 14 bits to 0, then set track type
+    TrackTypeAndDirection &= ~VehicleTrackTypeMask;
+    TrackTypeAndDirection |= EnumValue(trackType) << 2;
+
+    if (isCovered)
+        SetFlag(VehicleFlags::OnCoveredTrack);
+    else
+        ClearFlag(VehicleFlags::OnCoveredTrack);
 }

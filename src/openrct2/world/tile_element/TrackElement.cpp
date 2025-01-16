@@ -302,3 +302,15 @@ void TrackElement::SetHighlight(bool on)
     if (on)
         Flags2 |= TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
 }
+
+bool TrackElement::IsCovered() const
+{
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_COVERED);
+}
+
+void TrackElement::SetCovered(bool covered)
+{
+    Flags2 &= ~TRACK_ELEMENT_FLAGS2_COVERED;
+    if (covered)
+        Flags2 |= TRACK_ELEMENT_FLAGS2_COVERED;
+}

@@ -1157,6 +1157,13 @@ namespace OpenRCT2
                                 {
                                     auto* trackElement = it.element->AsTrack();
                                     auto trackType = trackElement->GetTrackType();
+                                    if (os.GetHeader().TargetVersion < kCoveredTrackDeduplicationVersion)
+                                    {
+                                        auto convertedType = OldTrackElementToNew(static_cast<OldTrackElemType>(trackType));
+                                        trackType = convertedType.trackType;
+                                        trackElement->SetTrackType(trackType);
+                                        trackElement->SetCovered(convertedType.isCovered);
+                                    }
                                     if (TrackTypeMustBeMadeInvisible(
                                             trackElement->GetRideType(), trackType, os.GetHeader().TargetVersion))
                                     {
@@ -2209,6 +2216,11 @@ namespace OpenRCT2
         else
         {
             cs.ReadWrite(entity.BlockBrakeSpeed);
+        }
+        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion < kCoveredTrackDeduplicationVersion)
+        {
+            auto convertedType = OldTrackElementToNew(static_cast<OldTrackElemType>(entity.GetTrackType()));
+            entity.SetTrackType(convertedType.trackType, convertedType.isCovered);
         }
     }
 

@@ -1021,11 +1021,11 @@ namespace OpenRCT2::RCT2
         FlatRide,
     };
 
-    OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(
+    ConvertedTrackTypeResult RCT2TrackTypeToOpenRCT2(
         OpenRCT2::RCT12::TrackElemType origTrackType, ride_type_t rideType, bool isFlatRide);
-    OpenRCT2::TrackElemType RCT2TrackTypeToOpenRCT2(
+    ConvertedTrackTypeResult RCT2TrackTypeToOpenRCT2(
         OpenRCT2::RCT12::TrackElemType origTrackType, OriginalRideClass originalClass);
-    OpenRCT2::RCT12::TrackElemType OpenRCT2TrackTypeToRCT2(OpenRCT2::TrackElemType origTrackType);
+    OpenRCT2::RCT12::TrackElemType OpenRCT2TrackTypeToRCT2(OpenRCT2::TrackElemType origTrackType, bool isCovered);
 
     struct FootpathMapping
     {

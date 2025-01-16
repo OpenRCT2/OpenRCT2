@@ -163,7 +163,10 @@ namespace OpenRCT2::RCT2
                     {
                         auto rideType = td->trackAndVehicle.rtdIndex;
                         const bool isFlatRide = GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isFlatRide);
-                        trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.Type, rideType, isFlatRide);
+                        auto convertedType = RCT2TrackTypeToOpenRCT2(t6TrackElement.Type, rideType, isFlatRide);
+                        trackType = convertedType.trackType;
+                        if (convertedType.isCovered)
+                            trackElement.SetFlag(TrackDesignTrackElementFlag::isCovered);
                     }
 
                     trackElement.type = trackType;
