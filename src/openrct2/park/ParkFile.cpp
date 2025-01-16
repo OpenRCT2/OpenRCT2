@@ -568,8 +568,8 @@ namespace OpenRCT2
                 auto& rideRatings = gameState.RideRatingUpdateStates;
                 if (os.GetHeader().TargetVersion >= 21)
                 {
-                    cs.ReadWriteArray(rideRatings, [this, &cs](RideRatingUpdateState& calcData) {
-                        ReadWriteRideRatingCalculationData(cs, calcData);
+                    cs.ReadWriteArray(rideRatings, [this, &cs, &os](RideRatingUpdateState& calcData) {
+                        ReadWriteRideRatingCalculationData(cs, os, calcData);
                         return true;
                     });
                 }
@@ -582,7 +582,7 @@ namespace OpenRCT2
                         RideRatingResetUpdateStates();
                     }
                     auto& rideRatingUpdateState = rideRatings[0];
-                    ReadWriteRideRatingCalculationData(cs, rideRatingUpdateState);
+                    ReadWriteRideRatingCalculationData(cs, os, rideRatingUpdateState);
                 }
 
                 if (os.GetHeader().TargetVersion >= 14)
@@ -596,7 +596,7 @@ namespace OpenRCT2
             }
         }
 
-        void ReadWriteRideRatingCalculationData(OrcaStream::ChunkStream& cs, RideRatingUpdateState& calcData)
+        void ReadWriteRideRatingCalculationData(OrcaStream::ChunkStream& cs, OrcaStream& os, RideRatingUpdateState& calcData)
         {
             cs.ReadWrite(calcData.AmountOfBrakes);
             cs.ReadWrite(calcData.Proximity);
@@ -613,6 +613,11 @@ namespace OpenRCT2
             cs.ReadWrite(calcData.AmountOfBrakes);
             cs.ReadWrite(calcData.AmountOfReversers);
             cs.ReadWrite(calcData.StationFlags);
+            if (os.GetHeader().TargetVersion < kCoveredTrackDeduplicationVersion)
+            {
+                auto convertedType = OldTrackElementToNew(static_cast<OldTrackElemType>(calcData.ProximityTrackType));
+                calcData.ProximityTrackType = convertedType.trackType;
+            }
         }
 
         void ReadWriteInterfaceChunk(GameState_t& gameState, OrcaStream& os)

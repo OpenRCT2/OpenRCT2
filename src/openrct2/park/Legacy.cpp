@@ -2959,6 +2959,10 @@ OpenRCT2::ConvertedTrackTypeResult OpenRCT2::OldTrackElementToNew(OpenRCT2::OldT
             return { TrackElemType::LeftQuarterTurn3Tiles, true };
         case OldTrackElemType::RightQuarterTurn3TilesCovered:
             return { TrackElemType::RightQuarterTurn3Tiles, true };
+
+        case OldTrackElemType::None:
+            return { TrackElemType::None, false };
+
         default:
         {
             uint16_t asInt = EnumValue(trackElementType);
@@ -2972,6 +2976,9 @@ OpenRCT2::ConvertedTrackTypeResult OpenRCT2::OldTrackElementToNew(OpenRCT2::OldT
 
 OpenRCT2::OldTrackElemType OpenRCT2::NewTrackElementToOld(OpenRCT2::TrackElemType trackElementType, bool isCovered)
 {
+    if (trackElementType == TrackElemType::None)
+        return OldTrackElemType::None;
+
     if (isCovered)
     {
         switch (trackElementType)
