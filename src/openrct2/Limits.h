@@ -8,16 +8,19 @@
  *****************************************************************************/
 
 #pragma once
+
 #include "rct2/Limits.h"
+
+#include <limits>
 
 namespace OpenRCT2::Limits
 {
     constexpr uint16_t kMaxRidesInPark = 1000;
     constexpr uint16_t kMaxStationsPerRide = 255;
     constexpr uint8_t kCustomerHistorySize = RCT12::Limits::kCustomerHistorySize;
-    constexpr uint16_t kMaxGolfHoles = RCT12::Limits::kMaxGolfHoles;
+    constexpr uint16_t kMaxGolfHoles = std::numeric_limits<uint16_t>::max();
     constexpr uint16_t kMaxHelices = RCT12::Limits::kMaxHelices;
-    constexpr uint16_t kMaxInversions = RCT12::Limits::kMaxInversions;
+    constexpr uint16_t kMaxInversions = std::numeric_limits<uint16_t>::max();
     constexpr uint16_t kMaxTrainsPerRide = 255;
     constexpr uint16_t kMaxCarsPerTrain = 255;
     constexpr const uint16_t kMaxVehicleColours = kMaxTrainsPerRide; // this should really be kMaxTrainsPerRide *

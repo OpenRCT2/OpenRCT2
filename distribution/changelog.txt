@@ -104,6 +104,7 @@
 - Fix: [#2614] The colour tab of the ride window does not hide invisible cars (original bug).
 - Fix: [#7672] Wide path status is set to all ‘wide’ paths, instead of only a quarter, impeding pathfinding.
 - Fix: [#15406] Tunnels on steep Side-Friction track are drawn too low.
+- Fix: [#19782] Game stops counting inversions and golf holes after 31.
 - Fix: [#21959] “Save this before...?” message does not appear when selecting “New Game”.
 - Fix: [#22072] Objective date string and staff tenure date string cannot be reused on agglutinative languages.
 - Fix: [#22133] Ride time is incorrect for extremely slow speeds.
