@@ -1662,10 +1662,10 @@ static void TrackLeftEighthToDiag(
                         { 32, 32, height }, { { 32, 32, height + 1 }, { 1, 1, 1 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_GO_KARTS_TRACK_LARGE_CURVE + 33)),
-                        { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
+                        { 0, 0, height }, { { 0, 8, height }, { 32, 24, 1 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_GO_KARTS_TRACK_LARGE_CURVE + 34)),
-                        { 0, 0, height }, { { 0, 0, height + 23 }, { 32, 32, 1 } });
+                        { 0, 0, height }, { { 0, 8, height + 23 }, { 32, 24, 1 } });
                     break;
             }
             break;
@@ -1844,10 +1844,10 @@ static void TrackRightEighthToDiag(
                         { 32, 32, height }, { { 32, 32, height + 1 }, { 1, 1, 1 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_GO_KARTS_TRACK_LARGE_CURVE + 44)),
-                        { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
+                        { 0, 0, height }, { { 0, 8, height }, { 32, 24, 1 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_GO_KARTS_TRACK_LARGE_CURVE + 45)),
-                        { 0, 0, height }, { { 0, 0, height + 23 }, { 32, 32, 1 } });
+                        { 0, 0, height }, { { 0, 8, height + 23 }, { 32, 24, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1918,10 +1918,10 @@ static void TrackRightEighthToDiag(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_GO_KARTS_TRACK_LARGE_CURVE + 48)),
-                        { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
+                        { 0, 0, height }, { { 16, 16, height }, { 16, 16, 1 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_G2_GO_KARTS_TRACK_LARGE_CURVE + 49)),
-                        { 0, 0, height }, { { 0, 0, height + 23 }, { 32, 32, 1 } });
+                        { 0, 0, height }, { { 16, 16, height + 23 }, { 16, 16, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
