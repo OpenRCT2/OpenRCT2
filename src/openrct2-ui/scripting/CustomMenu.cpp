@@ -272,9 +272,10 @@ namespace OpenRCT2::Scripting
                 auto toolbarWindow = windowMgr->FindByClass(WindowClass::TopToolbar);
                 if (toolbarWindow != nullptr)
                 {
-                    // Use a widget that does not exist on top toolbar but also make sure it isn't -1 as that
-                    // prevents abort from being called.
-                    WidgetIndex widgetIndex = -2;
+                    // Use a widget that does not exist on top toolbar but also make sure it isn't
+                    // kWidgetIndexNull, as that prevents abort from being called.
+                    // TODO: refactor this to not leech on the top toolbar.
+                    WidgetIndex widgetIndex = 0xFFFE;
                     ToolCancel();
                     ToolSet(*toolbarWindow, widgetIndex, static_cast<Tool>(customTool.Cursor));
                     ActiveCustomTool = std::move(customTool);
