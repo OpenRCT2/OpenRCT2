@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 var EmscriptenDeps = {
-    ExportPersistantData: () =>
+    ExportPersistentData: () =>
     {
         if (!window.JSZip)
         {
@@ -40,7 +40,7 @@ var EmscriptenDeps = {
             processFolder(folder);
             return zip;
         }
-        const zip = zipFolder("/persistant/");
+        const zip = zipFolder("/persistent/");
         zip.generateAsync({type: "blob"}).then(blob => {
             const a = document.createElement("a");
 
@@ -50,13 +50,41 @@ var EmscriptenDeps = {
             setTimeout(() => URL.revokeObjectURL(a.href), 1000);
         })
     },
-    ImportPersistantData: () =>
+    ImportPersistentData: () =>
     {
         if (!window.JSZip)
         {
             alert("JSZip library not found. Aborting");
             return;
         }
+        const clearDatabase = async function(dir) => {
+            await new Promise(res => Module.FS.syncfs(false, res));
+            const processFolder = (path) => {
+                let contents;
+                try {
+                    contents = Module.FS.readdir(path);
+                } catch(e) {
+                    return;
+                }
+                contents.forEach((entry) => {
+                    if ([".", ".."].includes(entry)) return;
+                    try {
+                        Module.FS.readFile(path + entry);
+                        Module.FS.unlink(path + entry);
+                    } catch(e) {
+                        processFolder(path + entry + "/");
+                    }
+                })
+                if (path === dir) return;
+                try {
+                    Module.FS.rmdir(path, {recursive: true});
+                } catch(e) {
+                    console.log("Could not remove:", path);
+                }
+            }
+            processFolder(dir);
+            await new Promise(res => Module.FS.syncfs(false, res));
+        };
         if (!confirm("Are you sure? This will wipe all current data.")) return;
         alert("Select a zip file");
         const input = document.createElement("input");
@@ -69,7 +97,7 @@ var EmscriptenDeps = {
                 alert("Not a zip file!");
                 return;
             }
-            await clearDatabase("/persistant/");
+            await clearDatabase("/persistent/");
             for (const k in zip.files) {
                 const entry = zip.files[k];
                 if (entry.dir) {

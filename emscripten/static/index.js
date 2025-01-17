@@ -42,8 +42,8 @@
             }
         });
 
-    Module.FS.mkdir("/persistant");
-    Module.FS.mount(Module.FS.filesystems.IDBFS, {autoPersist: true}, '/persistant');
+    Module.FS.mkdir("/persistent");
+    Module.FS.mount(Module.FS.filesystems.IDBFS, {autoPersist: true}, '/persistent');
 
     Module.FS.mkdir("/RCT");
     Module.FS.mount(Module.FS.filesystems.IDBFS, {autoPersist: true}, '/RCT');
@@ -53,10 +53,10 @@
 
     await new Promise(res => Module.FS.syncfs(true, res));
 
-    let configExists = fileExists("/persistant/config.ini");
+    let configExists = fileExists("/persistent/config.ini");
     if (!configExists)
     {
-        Module.FS.writeFile("/persistant/config.ini", `
+        Module.FS.writeFile("/persistent/config.ini", `
 [general]
 game_path = "/RCT"
 uncap_fps = true
@@ -69,11 +69,11 @@ window_scale = 1.750000
     Module.FS.writeFile("/OpenRCT2/changelog.txt", `EMSCRIPTEN --- README
 
 Since we're running in the web browser, we don't have direct access to the file system.
-All save data is saved under the directory /persistant.
+All save data is saved under the directory /persistent.
 
-ALWAYS be sure to save to /persistant/saves when saving a game! Otherwise it will be wiped!
+ALWAYS be sure to save to /persistent/saves when saving a game! Otherwise it will be wiped!
 
-You can import/export the /persistant folder in the options menu.`);
+You can import/export the /persistent folder in the options menu.`);
     document.getElementById("loadingWebassembly").remove();
 
     let filesFound = fileExists("/RCT/Data/ch.dat");
@@ -110,7 +110,7 @@ You can import/export the /persistant folder in the options menu.`);
         });
     }
     Module.canvas.style.display = "";
-    Module.callMain(["--user-data-path=/persistant/", "--openrct2-data-path=/OpenRCT2/"]);
+    Module.callMain(["--user-data-path=/persistent/", "--openrct2-data-path=/OpenRCT2/"]);
 })();
 
 async function updateAssets() {
