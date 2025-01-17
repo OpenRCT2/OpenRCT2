@@ -1550,7 +1550,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     _viewIndex = 0;
                 }
-                if (number < _rideOverallViewsCache.size())
+                if (static_cast<uint16_t>(number) < _rideOverallViewsCache.size())
                 {
                     const auto& view = _rideOverallViewsCache[number];
                     newFocus = Focus(view.loc, view.zoom);

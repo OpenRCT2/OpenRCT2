@@ -290,7 +290,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
     // Get window and widget under cursor position
     w = windowMgr->FindFromPoint(screenCoords);
     widgetIndex = w == nullptr ? -1 : windowMgr->FindWidgetFromPoint(*w, screenCoords);
-    widget = widgetIndex == -1 ? nullptr : &w->widgets[widgetIndex];
+    widget = widgetIndex == kWidgetIndexNull ? nullptr : &w->widgets[widgetIndex];
 
     switch (_inputState)
     {
@@ -314,7 +314,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                         w = WindowBringToFront(*w);
                     }
 
-                    if (widgetIndex != -1)
+                    if (widgetIndex != kWidgetIndexNull)
                     {
                         switch (widget->type)
                         {
@@ -960,7 +960,7 @@ static void InputWidgetOver(const ScreenCoordsXY& screenCoords, WindowBase* w, W
 
     InputWidgetOverChangeCheck(windowClass, windowNumber, widgetIndex);
 
-    if (w != nullptr && widgetIndex != -1 && widget->type == WindowWidgetType::Scroll)
+    if (w != nullptr && widgetIndex != kWidgetIndexNull && widget->type == WindowWidgetType::Scroll)
     {
         int32_t scroll_part, scrollId;
         ScreenCoordsXY newScreenCoords;
@@ -987,7 +987,7 @@ static void InputWidgetOver(const ScreenCoordsXY& screenCoords, WindowBase* w, W
 static void InputWidgetOverChangeCheck(WindowClass windowClass, rct_windownumber windowNumber, WidgetIndex widgetIndex)
 {
     // Prevents invalid widgets being clicked source of bug is elsewhere
-    if (widgetIndex == -1)
+    if (widgetIndex == kWidgetIndexNull)
         return;
 
     // Check if the widget that the cursor was over, has changed
@@ -1051,7 +1051,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, W
         return;
 
     w = WindowBringToFront(*w);
-    if (widgetIndex == -1)
+    if (widgetIndex == kWidgetIndexNull)
         return;
 
     if (windowClass != GetCurrentTextBox().window.classification || windowNumber != GetCurrentTextBox().window.number
@@ -1148,7 +1148,7 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
     if (window != nullptr)
     {
         WidgetIndex widgetId = windowMgr->FindWidgetFromPoint(*window, screenCoords);
-        if (widgetId != -1)
+        if (widgetId != kWidgetIndexNull)
         {
             switch (window->widgets[widgetId].type)
             {

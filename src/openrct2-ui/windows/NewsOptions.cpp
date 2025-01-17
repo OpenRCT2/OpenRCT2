@@ -160,7 +160,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& baseCheckBox = widgets[WIDX_CHECKBOX_0];
             int32_t y = baseCheckBox.top;
 
-            int32_t checkboxWidgetIndex = WIDX_CHECKBOX_0;
+            uint16_t checkboxWidgetIndex = WIDX_CHECKBOX_0;
             Widget* checkboxWidget = &widgets[checkboxWidgetIndex];
             for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
             {

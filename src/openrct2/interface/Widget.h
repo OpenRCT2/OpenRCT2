@@ -13,9 +13,9 @@
 
 struct WindowBase;
 
-using WidgetIndex = int16_t;
+using WidgetIndex = uint16_t;
 
-constexpr WidgetIndex kWidgetIndexNull = -1;
+constexpr WidgetIndex kWidgetIndexNull = 0xFFFF;
 
 enum class WindowWidgetType : uint8_t
 {

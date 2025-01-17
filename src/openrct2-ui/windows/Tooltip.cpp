@@ -164,7 +164,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
-        if (widgetWindow == nullptr || widgetIndex == -1)
+        if (widgetWindow == nullptr || widgetIndex == kWidgetIndexNull)
             return;
 
         auto widget = &widgetWindow->widgets[widgetIndex];

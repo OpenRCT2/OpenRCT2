@@ -1046,7 +1046,7 @@ void ToolCancel()
         // Reset map selection
         gMapSelectFlags = 0;
 
-        if (gCurrentToolWidget.widget_index != -1)
+        if (gCurrentToolWidget.widget_index != kWidgetIndexNull)
         {
             // Invalidate tool widget
             WidgetInvalidateByNumber(

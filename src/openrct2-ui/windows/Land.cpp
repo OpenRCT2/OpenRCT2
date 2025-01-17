@@ -406,7 +406,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             WidgetIndex widget_index = windowMgr->FindWidgetFromPoint(*window, screenPos);
-            if (widget_index == -1)
+            if (widget_index == kWidgetIndexNull)
                 return;
 
             const auto& widget = window->widgets[widget_index];

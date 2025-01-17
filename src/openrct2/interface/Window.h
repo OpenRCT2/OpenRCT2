@@ -39,7 +39,7 @@ enum class VisibilityCache : uint8_t;
 enum class CursorID : uint8_t;
 enum class CloseWindowModifier : uint8_t;
 
-using rct_windownumber = uint16_t;
+using rct_windownumber = int16_t;
 
 namespace OpenRCT2
 {

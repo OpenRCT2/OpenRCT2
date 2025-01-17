@@ -451,7 +451,7 @@ void WindowAllWheelInput()
 
             // Check scroll view, cursor is over
             WidgetIndex widgetIndex = windowMgr->FindWidgetFromPoint(*w, cursorState->position);
-            if (widgetIndex != -1)
+            if (widgetIndex != kWidgetIndexNull)
             {
                 const auto& widget = w->widgets[widgetIndex];
                 if (widget.type == WindowWidgetType::Scroll)
