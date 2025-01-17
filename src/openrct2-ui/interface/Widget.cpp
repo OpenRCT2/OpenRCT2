@@ -9,6 +9,7 @@
 
 #include "Widget.h"
 
+#include <algorithm>
 #include <cmath>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/Context.h>
