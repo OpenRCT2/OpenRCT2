@@ -83,8 +83,8 @@ struct Widget
     int16_t bottom{};
     union
     {
-        uint32_t content{};
-        ImageId image;
+        uint32_t content;
+        ImageId image{};
         StringId text;
         utf8* string;
     };
