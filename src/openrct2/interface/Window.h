@@ -88,7 +88,7 @@ struct Widget
         StringId text;
         utf8* string;
     };
-    StringId tooltip{ 0xFFFF };
+    StringId tooltip{ STR_NONE };
 
     // New properties
     WidgetFlags flags{};
