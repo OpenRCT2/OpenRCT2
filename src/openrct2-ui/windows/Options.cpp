@@ -48,6 +48,10 @@
 
 #ifdef __EMSCRIPTEN__
     #include <emscripten.h>
+    extern "C" {
+        extern void ExportPersistantData();
+        extern void ImportPersistantData();
+    }
 #endif
 
 using namespace OpenRCT2;
@@ -1987,10 +1991,10 @@ namespace OpenRCT2::Ui::Windows
                     break;
 #ifdef __EMSCRIPTEN__
                 case WIDX_EXPORT_EMSCRIPTEN_DATA:
-                    MAIN_THREAD_EM_ASM({ Module.funcs.export(); });
+                    ExportPersistantData();
                     break;
                 case WIDX_IMPORT_EMSCRIPTEN_DATA:
-                    MAIN_THREAD_EM_ASM({ Module.funcs.import(); });
+                    ImportPersistantData();
                     break;
 #endif
             }
