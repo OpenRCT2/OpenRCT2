@@ -432,13 +432,6 @@ static constexpr int32_t Unk9A39C4[] = {
     1380375879, 555809667,  -372906620, -1231746017, -1859775391, 0,          2096579710, 1946281152, 2096579710,  1946281152,
 };
 
-static constexpr CoordsXY AvoidCollisionMoveOffset[] = {
-    { -1, 0 },
-    { 0, 1 },
-    { 1, 0 },
-    { 0, -1 },
-};
-
 static constexpr OpenRCT2::Audio::SoundId DoorOpenSoundIds[] = {
     OpenRCT2::Audio::SoundId::Null,       // DoorSoundType::none
     OpenRCT2::Audio::SoundId::DoorOpen,   // DoorSoundType::door
@@ -6635,12 +6628,24 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             if (direction < 0x14)
                 continue;
 
-            uint32_t offsetSpriteDirection = (Orientation + 4) & 31;
-            uint32_t offsetDirection = offsetSpriteDirection >> 3;
-            uint32_t next_x_diff = abs(loc.x + AvoidCollisionMoveOffset[offsetDirection].x - vehicle2->x);
-            uint32_t next_y_diff = abs(loc.y + AvoidCollisionMoveOffset[offsetDirection].y - vehicle2->y);
+            const CoordsXY directionVector = Math::Trigonometry::YawToDirectionVector[Entity::Yaw::YawTo64(Orientation)];
+            float directionVectorX = float(directionVector.x);
+            float directionVectorY = float(directionVector.y);
+            const float directionVectorLength = sqrtf(
+                (directionVectorX * directionVectorX) + (directionVectorY * directionVectorY));
+            directionVectorX /= directionVectorLength;
+            directionVectorY /= directionVectorLength;
 
-            if (next_x_diff + next_y_diff < x_diff + y_diff)
+            float vehicle2DirectionX = float(vehicle2->x - loc.x);
+            float vehicle2DirectionY = float(vehicle2->y - loc.y);
+            const float vehicle2DirectionLength = sqrtf(
+                (vehicle2DirectionX * vehicle2DirectionX) + (vehicle2DirectionY * vehicle2DirectionY));
+            vehicle2DirectionX /= vehicle2DirectionLength;
+            vehicle2DirectionY /= vehicle2DirectionLength;
+
+            const float dot_product = (directionVectorX * vehicle2DirectionX) + (directionVectorY * vehicle2DirectionY);
+
+            if (dot_product > 0.35)
             {
                 collideVehicle = vehicle2;
                 mayCollide = true;
@@ -7024,8 +7029,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
             || trackType == TrackElemType::RightQuarterTurn3Tiles || trackType == TrackElemType::LeftQuarterTurn5Tiles
             || trackType == TrackElemType::RightQuarterTurn5Tiles || trackType == TrackElemType::LeftEighthToDiag
             || trackType == TrackElemType::RightEighthToDiag || trackType == TrackElemType::LeftEighthToOrthogonal
-            || trackType == TrackElemType::RightEighthToOrthogonal || trackType == TrackElemType::SBendLeft
-            || trackType == TrackElemType::SBendRight
+            || trackType == TrackElemType::RightEighthToOrthogonal || trackType == TrackElemType::DiagFlat
+            || trackType == TrackElemType::SBendLeft || trackType == TrackElemType::SBendRight
             || ((curRide.lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && tileElement->AsTrack()->IsStation()))
         {
             UpdateGoKartAttemptSwitchLanes();
