@@ -312,7 +312,7 @@ public:
 private:
     void Update();
     void UpdateQueueLength(StationIndex stationIndex);
-    ResultWithMessage CreateVehicles(const CoordsXYE& element, bool isApplying);
+    ResultWithMessage CreateVehicles(bool isApplying);
     void MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackElement& firstBlock);
     money64 CalculateIncomePerHour() const;
     void ChainQueues() const;
