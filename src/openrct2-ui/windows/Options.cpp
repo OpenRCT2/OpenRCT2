@@ -48,10 +48,10 @@
 
 #ifdef __EMSCRIPTEN__
     #include <emscripten.h>
-    extern "C" {
-        extern void ExportPersistantData();
-        extern void ImportPersistantData();
-    }
+extern "C" {
+extern void ExportPersistantData();
+extern void ImportPersistantData();
+}
 #endif
 
 using namespace OpenRCT2;
