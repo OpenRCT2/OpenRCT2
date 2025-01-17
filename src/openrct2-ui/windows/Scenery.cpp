@@ -1362,10 +1362,6 @@ namespace OpenRCT2::Ui::Windows
             // Add the base widgets
             SetWidgets(WindowSceneryBaseWidgets);
 
-            // Remove WWT_LAST
-            auto lastWidget = widgets.back();
-            widgets.pop_back();
-
             // Add tabs
             _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT;
             int32_t xInit = InitTabPosX;
@@ -1413,8 +1409,6 @@ namespace OpenRCT2::Ui::Windows
                     maxTabsInThisRow = MaxTabsPerRow;
                 }
             }
-
-            widgets.push_back(lastWidget);
 
             // Shift base widgets based on number of tab rows
             int32_t shiftAmount = (GetTabRowCount() - 1) * TabHeight;
