@@ -347,6 +347,7 @@ private:
     void UpdateTrackMotionUpStopCheck() const;
     void ApplyNonStopBlockBrake();
     void ApplyStopBlockBrake();
+    void ApplyCableLiftBlockBrake(bool brakeClosed);
     void CheckAndApplyBlockSectionStopSite();
     void UpdateVelocity();
     void UpdateSpinningCar();
