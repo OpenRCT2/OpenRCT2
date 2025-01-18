@@ -308,14 +308,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            auto targetWidgets = _windowFinancesPageWidgets[page];
-            // NOTE: Not the correct way to do this.
-            if (widgets.size() != targetWidgets.size())
-            {
-                SetWidgets(targetWidgets);
-                WindowInitScrollWidgets(*this);
-            }
-
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_6);
 
             for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
@@ -527,8 +519,7 @@ namespace OpenRCT2::Ui::Windows
             }
             OnResize();
             OnPrepareDraw();
-
-            WindowInitScrollWidgets(*this);
+            InitScrollWidgets();
 
             // Scroll summary all the way to the right, initially.
             if (p == WINDOW_FINANCES_PAGE_SUMMARY)
