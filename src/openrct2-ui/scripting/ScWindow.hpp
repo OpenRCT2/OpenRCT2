@@ -326,11 +326,11 @@ namespace OpenRCT2::Scripting
 
         void bringToFront()
         {
-            auto w = GetWindow();
+            auto* w = GetWindow();
             if (w != nullptr)
             {
                 auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
-                auto* w = windowMgr->BringToFront(*w);
+                w = windowMgr->BringToFront(*w);
                 w->flags |= WF_WHITE_BORDER_MASK;
             }
         }

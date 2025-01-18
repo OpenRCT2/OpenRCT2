@@ -426,7 +426,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* WaterOpen()
     {
-        return WindowFocusOrCreate<WaterWindow>(WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        return windowMgr->FocusOrCreate<WaterWindow>(WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }
 
     /**

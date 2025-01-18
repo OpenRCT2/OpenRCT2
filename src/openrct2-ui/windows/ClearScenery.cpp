@@ -380,7 +380,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ClearSceneryOpen()
     {
-        return WindowFocusOrCreate<CleanSceneryWindow>(
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        return windowMgr->FocusOrCreate<CleanSceneryWindow>(
             WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }
 

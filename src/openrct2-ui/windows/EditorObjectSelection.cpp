@@ -1644,7 +1644,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorObjectSelectionOpen()
     {
-        return WindowFocusOrCreate<EditorObjectSelectionWindow>(
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
             WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 

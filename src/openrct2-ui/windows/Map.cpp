@@ -1253,7 +1253,8 @@ namespace OpenRCT2::Ui::Windows
     {
         try
         {
-            WindowBase* w = WindowFocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
+            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
             w->selected_tab = 0;
             w->list_information_type = 0;
             return w;
@@ -1266,10 +1267,9 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowMapReset()
     {
-        WindowBase* w;
-
         // Check if window is even opened
-        w = WindowBringToFrontByClass(WindowClass::Map);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* w = windowMgr->BringToFrontByClass(WindowClass::Map);
         if (w == nullptr)
         {
             return;

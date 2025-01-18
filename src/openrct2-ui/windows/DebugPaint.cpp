@@ -16,6 +16,8 @@
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/TrackPaint.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -153,7 +155,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* DebugPaintOpen()
     {
-        auto* window = WindowFocusOrCreate<DebugPaintWindow>(
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->FocusOrCreate<DebugPaintWindow>(
             WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
             WF_STICK_TO_FRONT | WF_TRANSPARENT);
 

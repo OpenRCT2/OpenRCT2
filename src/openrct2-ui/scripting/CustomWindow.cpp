@@ -1126,15 +1126,17 @@ namespace OpenRCT2::Ui::Windows
     {
         auto desc = CustomWindowDesc::FromDukValue(dukDesc);
         uint16_t windowFlags = WF_RESIZABLE | WF_TRANSPARENT;
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+
         CustomWindow* window{};
         if (desc.X && desc.Y)
         {
-            window = WindowCreate<CustomWindow>(
+            window = windowMgr->Create<CustomWindow>(
                 WindowClass::Custom, { *desc.X, *desc.Y }, desc.Width, desc.Height, windowFlags, owner, desc);
         }
         else
         {
-            window = WindowCreate<CustomWindow>(WindowClass::Custom, desc.Width, desc.Height, windowFlags, owner, desc);
+            window = windowMgr->Create<CustomWindow>(WindowClass::Custom, desc.Width, desc.Height, windowFlags, owner, desc);
         }
         return window;
     }

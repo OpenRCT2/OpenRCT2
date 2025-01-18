@@ -1529,7 +1529,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* MapgenOpen()
     {
-        return WindowFocusOrCreate<MapGenWindow>(WindowClass::Mapgen, WW, WH, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        return windowMgr->FocusOrCreate<MapGenWindow>(WindowClass::Mapgen, WW, WH, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
     }
 
     static void HeightmapLoadsaveCallback(int32_t result, const utf8* path)

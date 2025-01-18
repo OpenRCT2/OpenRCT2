@@ -437,7 +437,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* MazeConstructionOpen()
     {
-        return WindowFocusOrCreate<MazeConstructionWindow>(
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        return windowMgr->FocusOrCreate<MazeConstructionWindow>(
             WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
     }
 

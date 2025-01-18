@@ -23,6 +23,8 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 
@@ -585,7 +587,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* LandRightsOpen()
     {
-        return WindowFocusOrCreate<LandRightsWindow>(
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        return windowMgr->FocusOrCreate<LandRightsWindow>(
             WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }
 } // namespace OpenRCT2::Ui::Windows

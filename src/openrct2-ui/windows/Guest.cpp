@@ -1911,14 +1911,15 @@ namespace OpenRCT2::Ui::Windows
             return StaffOpen(peep);
         }
 
-        auto* window = static_cast<GuestWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = static_cast<GuestWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
         if (window == nullptr)
         {
             int32_t windowWidth = 192;
             if (Config::Get().general.DebuggingTools)
                 windowWidth += TabWidth;
 
-            window = WindowCreate<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);
+            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);
             if (window == nullptr)
             {
                 return nullptr;

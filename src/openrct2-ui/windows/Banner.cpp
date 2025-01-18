@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/BannerRemoveAction.h>
 #include <openrct2/actions/BannerSetNameAction.h>
@@ -21,6 +22,8 @@
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/BannerElement.h>
@@ -313,12 +316,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* BannerOpen(rct_windownumber number)
     {
         auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
-        auto w = static_cast<BannerWindow*>(windowmgr->BringToFrontByNumber(WindowClass::Banner, number));
+        auto w = static_cast<BannerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));
 
         if (w != nullptr)
             return w;
 
-        w = WindowCreate<BannerWindow>(WindowClass::Banner, WW, WH, 0);
+        w = windowMgr->Create<BannerWindow>(WindowClass::Banner, WW, WH, 0);
 
         if (w != nullptr)
             w->Initialise(number);

@@ -43,6 +43,47 @@ namespace OpenRCT2::Ui
         virtual void UpdateMouseWheel() = 0;
         virtual WindowBase* GetOwner(const Viewport* viewport) = 0;
 
+        virtual WindowBase* Create(
+            std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
+            = 0;
+
+        template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
+        T* Create(
+            WindowClass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0,
+            TArgs&&... args)
+        {
+            return static_cast<T*>(Create(std::make_unique<T>(std::forward<TArgs>(args)...), cls, pos, width, height, flags));
+        }
+
+        template<typename T, typename... TArgs, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
+        T* Create(WindowClass cls, int32_t width, int32_t height, uint32_t flags, TArgs&&... args)
+        {
+            return static_cast<T*>(
+                Create(std::make_unique<T>(std::forward<TArgs>(args)...), cls, {}, width, height, flags | WF_AUTO_POSITION));
+        }
+
+        template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
+        T* FocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
+        {
+            auto* w = BringToFrontByClass(cls);
+            if (w == nullptr)
+            {
+                w = Create<T>(cls, pos, width, height, flags);
+            }
+            return static_cast<T*>(w);
+        }
+
+        template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
+        T* FocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0)
+        {
+            auto* w = BringToFrontByClass(cls);
+            if (w == nullptr)
+            {
+                w = Create<T>(cls, width, height, flags);
+            }
+            return static_cast<T*>(w);
+        }
+
         virtual WindowBase* FindByClass(WindowClass cls) = 0;
         virtual WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) = 0;
         virtual WindowBase* FindByNumber(WindowClass cls, EntityId id) = 0;

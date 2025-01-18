@@ -1169,11 +1169,12 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorObjectiveOptionsOpen()
     {
-        auto window = WindowBringToFrontByClass(WindowClass::EditorObjectiveOptions);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::EditorObjectiveOptions);
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<EditorObjectiveOptionsWindow>(
+        window = windowMgr->Create<EditorObjectiveOptionsWindow>(
             WindowClass::EditorObjectiveOptions, 450, 225, WF_10 | WF_CENTRE_SCREEN);
 
         return window;

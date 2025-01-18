@@ -737,7 +737,8 @@ namespace OpenRCT2::Ui::Windows
 
         WindowCloseConstructionWindows();
 
-        auto* window = WindowFocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, WW, WH, 0);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, WW, WH, 0);
         if (window != nullptr)
         {
             window->Init(std::move(openTrackDesign));

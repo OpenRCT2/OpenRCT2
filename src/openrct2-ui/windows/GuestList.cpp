@@ -971,10 +971,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* GuestListOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::GuestList);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::GuestList);
         if (window == nullptr)
         {
-            window = WindowCreate<GuestListWindow>(WindowClass::GuestList, 350, 330, WF_10 | WF_RESIZABLE);
+            window = windowMgr->Create<GuestListWindow>(WindowClass::GuestList, 350, 330, WF_10 | WF_RESIZABLE);
         }
         return window;
     }

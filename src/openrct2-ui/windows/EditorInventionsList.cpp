@@ -595,7 +595,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorInventionsListOpen()
     {
-        return WindowFocusOrCreate<InventionListWindow>(
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        return windowMgr->FocusOrCreate<InventionListWindow>(
             WindowClass::EditorInventionList, WW, WH, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 #pragma endregion
