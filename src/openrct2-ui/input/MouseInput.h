@@ -11,21 +11,24 @@
 
 #include <openrct2/interface/Window.h>
 
-enum class MouseState : uint32_t
+namespace OpenRCT2
 {
-    Released,
-    LeftPress,
-    LeftRelease,
-    RightPress,
-    RightRelease
-};
+    enum class MouseState : uint32_t
+    {
+        Released,
+        LeftPress,
+        LeftRelease,
+        RightPress,
+        RightRelease
+    };
 
-extern ScreenCoordsXY gInputDragLast;
+    extern ScreenCoordsXY gInputDragLast;
 
-void InputWindowPositionBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
-void GameHandleInput();
-void GameHandleEdgeScroll();
+    void InputWindowPositionBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
+    void GameHandleInput();
+    void GameHandleEdgeScroll();
 
-void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords);
+    void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords);
 
-void InputScrollViewport(const ScreenCoordsXY& screenCoords);
+    void InputScrollViewport(const ScreenCoordsXY& screenCoords);
+} // namespace OpenRCT2

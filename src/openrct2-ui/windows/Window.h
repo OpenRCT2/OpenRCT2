@@ -11,6 +11,7 @@
 
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Identifiers.h>
+#include <openrct2/world/ScenerySelection.h>
 #include <string_view>
 
 struct ObjectEntryDescriptor;

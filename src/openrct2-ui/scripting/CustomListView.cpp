@@ -830,7 +830,7 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
     return result;
 }
 
-Widget* CustomListView::GetWidget() const
+OpenRCT2::Widget* CustomListView::GetWidget() const
 {
     size_t scrollIndex = 0;
     for (WidgetIndex widgetIndex = 0; widgetIndex < ParentWindow->widgets.size(); widgetIndex++)
