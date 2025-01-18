@@ -5171,8 +5171,6 @@ namespace OpenRCT2::Ui::Windows
 
         void MusicOnPrepareDraw()
         {
-            auto newWidgets = PageWidgets[page];
-
             SetPressedTab();
 
             auto ride = GetRide(rideId);
