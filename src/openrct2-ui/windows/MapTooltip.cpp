@@ -100,7 +100,8 @@ namespace OpenRCT2::Ui::Windows
         if (_cursorHoldDuration < 25 || stringId == kStringIdNone || im.IsModifierKeyPressed(ModifierKey::ctrl)
             || im.IsModifierKeyPressed(ModifierKey::shift) || wm->FindByClass(WindowClass::Error) != nullptr)
         {
-            WindowCloseByClass(WindowClass::MapTooltip);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::MapTooltip);
         }
         else
         {

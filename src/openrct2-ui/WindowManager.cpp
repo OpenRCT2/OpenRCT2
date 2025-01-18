@@ -21,6 +21,7 @@
 #include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
@@ -39,6 +40,12 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 using namespace OpenRCT2::Ui::Windows;
+
+namespace WindowCloseFlags
+{
+    static constexpr uint32_t None = 0;
+    static constexpr uint32_t CloseSingle = (1 << 0);
+} // namespace WindowCloseFlags
 
 class WindowManager final : public IWindowManager
 {
@@ -426,7 +433,7 @@ public:
                 auto w = FindByClass(WindowClass::RideConstruction);
                 if (w == nullptr || w->number != static_cast<int16_t>(rideIndex))
                 {
-                    WindowCloseConstructionWindows();
+                    CloseConstructionWindows();
                     _currentRideIndex = RideId::FromUnderlying(rideIndex);
                     OpenWindow(WindowClass::RideConstruction);
                 }
@@ -851,7 +858,7 @@ public:
                     continue;
                 if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
                 {
-                    WindowClose(*w.get());
+                    Close(*w.get());
                     break;
                 }
             }
@@ -913,6 +920,173 @@ public:
         w->Invalidate();
         w->OnOpen();
         return w;
+    }
+
+    /**
+     * Closes the specified window.
+     *  rct2: 0x006ECD4C
+     *
+     * @param window The window to close (esi).
+     */
+    void Close(WindowBase& w) override
+    {
+        w.OnClose();
+
+        // Remove viewport
+        w.RemoveViewport();
+
+        // Invalidate the window (area)
+        w.Invalidate();
+
+        w.flags |= WF_DEAD;
+    }
+
+    void CloseSurplus(int32_t cap, WindowClass avoid_classification) override
+    {
+        // find the amount of windows that are currently open
+        auto count = static_cast<int32_t>(g_window_list.size());
+        // difference between amount open and cap = amount to close
+        auto diff = count - kWindowLimitReserved - cap;
+        for (auto i = 0; i < diff; i++)
+        {
+            // iterates through the list until it finds the newest window, or a window that can be closed
+            WindowBase* foundW{};
+            for (auto& w : g_window_list)
+            {
+                if (w->flags & WF_DEAD)
+                    continue;
+                if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+                {
+                    foundW = w.get();
+                    break;
+                }
+            }
+            // skip window if window matches specified WindowClass (as user may be modifying via options)
+            if (avoid_classification != WindowClass::Null && foundW != nullptr
+                && foundW->classification == avoid_classification)
+            {
+                continue;
+            }
+            Close(*foundW);
+        }
+    }
+
+    template<typename TPred>
+    void CloseByCondition(TPred pred, uint32_t flags = WindowCloseFlags::None)
+    {
+        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); ++it)
+        {
+            auto& wnd = *(*it);
+            if (wnd.flags & WF_DEAD)
+                continue;
+
+            if (pred(&wnd))
+            {
+                Close(wnd);
+                if (flags & WindowCloseFlags::CloseSingle)
+                {
+                    return;
+                }
+            }
+        }
+    }
+
+    /**
+     * Closes all windows with the specified window class.
+     *  rct2: 0x006ECCF4
+     * @param cls (cl) with bit 15 set
+     */
+    void CloseByClass(WindowClass cls) override
+    {
+        CloseByCondition([&](WindowBase* w) -> bool { return w->classification == cls; });
+    }
+
+    /**
+     * Closes all windows with specified window class and number.
+     *  rct2: 0x006ECCF4
+     * @param cls (cl) without bit 15 set
+     * @param number (dx)
+     */
+    void CloseByNumber(WindowClass cls, rct_windownumber number) override
+    {
+        CloseByCondition([cls, number](WindowBase* w) -> bool { return w->classification == cls && w->number == number; });
+    }
+
+    // TODO: Refactor this to use variant once the new window class is done.
+    void CloseByNumber(WindowClass cls, EntityId number) override
+    {
+        CloseByNumber(cls, static_cast<rct_windownumber>(number.ToUnderlying()));
+    }
+
+    /**
+     * Closes the top-most window
+     *
+     *  rct2: 0x006E403C
+     */
+    void CloseTop() override
+    {
+        CloseByClass(WindowClass::Dropdown);
+
+        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        {
+            if (GetGameState().EditorStep != EditorStep::LandscapeEditor)
+                return;
+        }
+
+        auto pred = [](WindowBase* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); };
+        CloseByCondition(pred, WindowCloseFlags::CloseSingle);
+    }
+
+    /**
+     * Closes all open windows
+     *
+     *  rct2: 0x006EE927
+     */
+    void CloseAll() override
+    {
+        CloseByClass(WindowClass::Dropdown);
+        CloseByCondition([](WindowBase* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
+    }
+
+    void CloseAllExceptClass(WindowClass cls) override
+    {
+        CloseByClass(WindowClass::Dropdown);
+        CloseByCondition([cls](WindowBase* w) -> bool {
+            return w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT));
+        });
+    }
+
+    /**
+     * Closes all windows, save for those having any of the passed flags.
+     */
+    void CloseAllExceptFlags(uint16_t flags) override
+    {
+        CloseByCondition([flags](WindowBase* w) -> bool { return !(w->flags & flags); });
+    }
+
+    /**
+     * Closes all windows except the specified window number and class.
+     * @param number (dx)
+     * @param cls (cl) without bit 15 set
+     */
+    void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override
+    {
+        CloseByClass(WindowClass::Dropdown);
+        CloseByCondition([cls, number](WindowBase* w) -> bool {
+            return (!(w->number == number && w->classification == cls) && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)));
+        });
+    }
+
+    /**
+     *
+     *  rct2: 0x006CBCC3
+     */
+    void CloseConstructionWindows() override
+    {
+        CloseByClass(WindowClass::RideConstruction);
+        CloseByClass(WindowClass::Footpath);
+        CloseByClass(WindowClass::TrackDesignList);
+        CloseByClass(WindowClass::TrackDesignPlace);
     }
 
     /**

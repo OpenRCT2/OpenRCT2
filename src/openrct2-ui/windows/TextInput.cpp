@@ -374,7 +374,7 @@ namespace OpenRCT2::Ui::Windows
         const_utf8string existing_text, int32_t maxLength)
     {
         auto* windowMgr = GetWindowManager();
-        WindowCloseByClass(WindowClass::Textinput);
+        windowMgr->CloseByClass(WindowClass::Textinput);
 
         auto height = TextInputWindow::CalculateWindowHeight(existing_text);
         auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);

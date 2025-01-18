@@ -132,8 +132,8 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        WindowCloseByClass(WindowClass::Loadsave);
-                        WindowCloseByClass(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::Loadsave);
+                        windowMgr->CloseByClass(WindowClass::ServerList);
                         ScenarioselectOpen(WindowTitleMenuScenarioselectCallback);
                     }
                     break;
@@ -145,8 +145,8 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        WindowCloseByClass(WindowClass::ScenarioSelect);
-                        WindowCloseByClass(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
+                        windowMgr->CloseByClass(WindowClass::ServerList);
                         auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
                         GameActions::Execute(&loadOrQuitAction);
                     }
@@ -159,8 +159,8 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        WindowCloseByClass(WindowClass::ScenarioSelect);
-                        WindowCloseByClass(WindowClass::Loadsave);
+                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
+                        windowMgr->CloseByClass(WindowClass::Loadsave);
                         ContextOpenWindow(WindowClass::ServerList);
                     }
                     break;

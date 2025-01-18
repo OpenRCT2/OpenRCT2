@@ -214,7 +214,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByNumber(WindowClass::Ride, rideId.ToUnderlying());
         if (w != nullptr && w->page == 1)
-            WindowClose(*w);
+            windowMgr->Close(*w);
     }
 
     static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActions::Result* result);
@@ -2595,7 +2595,8 @@ namespace OpenRCT2::Ui::Windows
                     ToolCancel();
                     if (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
                     {
-                        WindowCloseByClass(WindowClass::RideConstruction);
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->CloseByClass(WindowClass::RideConstruction);
                     }
                 }
                 else
@@ -2827,7 +2828,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (RideAreAllPossibleEntrancesAndExitsBuilt(ride).Successful)
                 {
-                    WindowClose(*w);
+                    windowMgr->Close(*w);
                 }
                 else
                 {
@@ -2900,7 +2901,8 @@ namespace OpenRCT2::Ui::Windows
             WindowRideConstructionUpdateActiveElements();
         }
 
-        WindowCloseByClass(WindowClass::Error);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Error);
         if (ride != nullptr)
             CloseConstructWindowOnCompletion(*ride);
     }
@@ -2944,7 +2946,8 @@ namespace OpenRCT2::Ui::Windows
             WindowRideConstructionUpdateActiveElements();
         }
 
-        WindowCloseByClass(WindowClass::Error);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Error);
         if (ride != nullptr)
             CloseConstructWindowOnCompletion(*ride);
     }
@@ -3661,7 +3664,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    WindowCloseByClass(WindowClass::Error);
+                    windowMgr->CloseByClass(WindowClass::Error);
                     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, _currentTrackBegin);
                     break;
                 }

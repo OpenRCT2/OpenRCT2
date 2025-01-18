@@ -61,6 +61,7 @@
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
@@ -1207,7 +1208,8 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
             else
             {
                 // Only this window should be open for safety reasons
-                WindowCloseAll();
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseAll();
                 ContextOpenWindow(WindowClass::EditorObjectSelection);
             }
         }

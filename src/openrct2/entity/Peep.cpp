@@ -720,9 +720,9 @@ void PeepEntityRemove(Peep* peep)
     }
     peep->Invalidate();
 
-    WindowCloseByNumber(WindowClass::Peep, peep->Id);
-
-    WindowCloseByNumber(WindowClass::FirePrompt, EnumValue(peep->Type));
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->CloseByNumber(WindowClass::Peep, peep->Id);
+    windowMgr->CloseByNumber(WindowClass::FirePrompt, EnumValue(peep->Type));
 
     auto* staff = peep->As<Staff>();
     // Needed for invalidations after sprite removal

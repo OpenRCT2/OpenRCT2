@@ -1733,7 +1733,7 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             ToolCancel();
-            WindowCloseByClass(WindowClass::Footpath);
+            windowMgr->CloseByClass(WindowClass::Footpath);
         }
     }
 

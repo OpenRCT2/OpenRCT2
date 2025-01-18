@@ -1140,7 +1140,7 @@ namespace OpenRCT2::Ui::Windows
                 auto constructionWindow = windowMgr->FindByClass(WindowClass::RideConstruction);
                 if (constructionWindow != nullptr && constructionWindow->number == number)
                 {
-                    WindowCloseByClass(WindowClass::RideConstruction);
+                    windowMgr->CloseByClass(WindowClass::RideConstruction);
                     // Closing the construction window sets the tab to the first page, which we don't want here,
                     // as user just clicked the Vehicle page
                     SetPage(WINDOW_RIDE_PAGE_VEHICLE);

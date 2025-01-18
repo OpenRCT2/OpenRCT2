@@ -121,7 +121,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // Close any existing error windows if they exist.
-        WindowCloseByClass(WindowClass::Error);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Error);
 
         // How wide is the error string?
         int32_t width = GfxGetStringWidthNewLined(buffer.data(), FontStyle::Medium);
@@ -140,7 +141,6 @@ namespace OpenRCT2::Ui::Windows
 
         auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
 
-        auto* windowMgr = GetWindowManager();
         return windowMgr->Create(
             std::move(errorWindow), WindowClass::Error, windowPosition, width, height, WF_STICK_TO_FRONT | WF_TRANSPARENT);
     }

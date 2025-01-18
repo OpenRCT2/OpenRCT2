@@ -155,14 +155,18 @@ namespace OpenRCT2::Ui::Windows
     private:
         void JumpBackToObjectSelection() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             GetGameState().EditorStep = EditorStep::ObjectSelection;
             GfxInvalidateScreen();
         }
 
         void JumpBackToLandscapeEditor() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             SetAllSceneryItemsInvented();
             WindowScenerySetDefaultPlacementConfiguration();
             GetGameState().EditorStep = EditorStep::LandscapeEditor;
@@ -172,7 +176,9 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpBackToInventionListSetUp() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             ContextOpenWindow(WindowClass::EditorInventionList);
             GetGameState().EditorStep = EditorStep::InventionsListSetUp;
             GfxInvalidateScreen();
@@ -180,7 +186,9 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpBackToOptionsSelection() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             ContextOpenWindow(WindowClass::EditorScenarioOptions);
             GetGameState().EditorStep = EditorStep::OptionsSelection;
             GfxInvalidateScreen();
@@ -208,7 +216,8 @@ namespace OpenRCT2::Ui::Windows
             auto [checksPassed, errorString] = Editor::CheckPark();
             if (checksPassed)
             {
-                WindowCloseAll();
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseAll();
                 ContextOpenWindow(WindowClass::EditorInventionList);
                 GetGameState().EditorStep = EditorStep::InventionsListSetUp;
             }
@@ -222,7 +231,9 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpForwardToOptionsSelection() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             ContextOpenWindow(WindowClass::EditorScenarioOptions);
             GetGameState().EditorStep = EditorStep::OptionsSelection;
             GfxInvalidateScreen();
@@ -230,7 +241,9 @@ namespace OpenRCT2::Ui::Windows
 
         void JumpForwardToObjectiveSelection() const
         {
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
+
             ContextOpenWindow(WindowClass::EditorObjectiveOptions);
             GetGameState().EditorStep = EditorStep::ObjectiveSelection;
             GfxInvalidateScreen();
@@ -247,7 +260,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            WindowCloseAll();
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAll();
             auto intent = Intent(WindowClass::Loadsave);
             intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
             intent.PutExtra(INTENT_EXTRA_PATH, gameState.ScenarioName);

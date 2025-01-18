@@ -649,7 +649,9 @@ void NetworkBase::UpdateClient()
                     intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_disconnected });
                     ContextOpenIntent(&intent);
                 }
-                WindowCloseByClass(WindowClass::Multiplayer);
+
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseByClass(WindowClass::Multiplayer);
                 Close();
             }
             else

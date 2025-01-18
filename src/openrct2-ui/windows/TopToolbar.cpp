@@ -500,8 +500,9 @@ namespace OpenRCT2::Ui::Windows
                             break;
                         case DDIDX_QUIT_TO_MENU:
                         {
-                            WindowCloseByClass(WindowClass::ManageTrackDesign);
-                            WindowCloseByClass(WindowClass::TrackDeletePrompt);
+                            auto* windowMgr = Ui::GetWindowManager();
+                            windowMgr->CloseByClass(WindowClass::ManageTrackDesign);
+                            windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
                             auto loadOrQuitAction = LoadOrQuitAction(
                                 LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
                             GameActions::Execute(&loadOrQuitAction);
@@ -1474,9 +1475,12 @@ namespace OpenRCT2::Ui::Windows
                 ContextOpenWindow(WindowClass::TileInspector);
                 break;
             case DDIDX_OBJECT_SELECTION:
-                WindowCloseAll();
+            {
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseAll();
                 ContextOpenWindow(WindowClass::EditorObjectSelection);
                 break;
+            }
             case DDIDX_INVENTIONS_LIST:
                 ContextOpenWindow(WindowClass::EditorInventionList);
                 break;
@@ -1535,7 +1539,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        WindowCloseByClass(WindowClass::DebugPaint);
+                        windowMgr->CloseByClass(WindowClass::DebugPaint);
                     }
                     break;
                 }

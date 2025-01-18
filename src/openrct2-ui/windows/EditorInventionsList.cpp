@@ -691,7 +691,7 @@ namespace OpenRCT2::Ui::Windows
         ResearchItem* researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        WindowCloseByClass(WindowClass::EditorInventionListDrag);
+        windowMgr->CloseByClass(WindowClass::EditorInventionListDrag);
         auto* wnd = windowMgr->Create<InventionDragWindow>(
             WindowClass::EditorInventionListDrag, 10, 14, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
         if (wnd != nullptr)

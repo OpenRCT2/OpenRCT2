@@ -20,8 +20,8 @@
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
+#include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Ui;
 
@@ -174,7 +174,9 @@ void ShortcutManager::ProcessEvent(const InputEvent& e)
                 shortcut->Current.push_back(std::move(shortcutInput.value()));
             }
             _pendingShortcutChange.clear();
-            WindowCloseByClass(WindowClass::ChangeKeyboardShortcut);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::ChangeKeyboardShortcut);
             SaveUserBindings();
         }
     }

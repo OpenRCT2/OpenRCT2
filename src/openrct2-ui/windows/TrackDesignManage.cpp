@@ -108,10 +108,10 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* TrackManageOpen(TrackDesignFileRef* tdFileRef)
     {
-        WindowCloseByClass(WindowClass::ManageTrackDesign);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::ManageTrackDesign);
         auto trackDesignManageWindow = std::make_unique<TrackDesignManageWindow>(tdFileRef);
 
-        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create(
             std::move(trackDesignManageWindow), WindowClass::ManageTrackDesign, {}, WW, WH,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
@@ -137,9 +137,12 @@ namespace OpenRCT2::Ui::Windows
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                WindowCloseByClass(WindowClass::TrackDeletePrompt);
+            {
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
                 Close();
                 break;
+            }
             case WIDX_RENAME:
                 WindowTextInputRawOpen(
                     this, widgetIndex, STR_TRACK_DESIGN_RENAME_TITLE, STR_TRACK_DESIGN_RENAME_DESC, {},
@@ -170,7 +173,8 @@ namespace OpenRCT2::Ui::Windows
 
         if (TrackRepositoryRename(_trackDesignFileReference->path, std::string(text)))
         {
-            WindowCloseByClass(WindowClass::TrackDeletePrompt);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
             Close();
             WindowTrackDesignListReloadTracks();
         }
@@ -192,13 +196,13 @@ namespace OpenRCT2::Ui::Windows
      */
     static void WindowTrackDeletePromptOpen(TrackDesignFileRef* tdFileRef)
     {
-        WindowCloseByClass(WindowClass::TrackDeletePrompt);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
 
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
         auto trackDeletePromptWindow = std::make_unique<TrackDeletePromptWindow>(tdFileRef);
 
-        auto* windowMgr = GetWindowManager();
         windowMgr->Create(
             std::move(trackDeletePromptWindow), WindowClass::TrackDeletePrompt,
             ScreenCoordsXY(
@@ -226,7 +230,8 @@ namespace OpenRCT2::Ui::Windows
                 Close();
                 if (TrackRepositoryDelete(tdPath))
                 {
-                    WindowCloseByClass(WindowClass::ManageTrackDesign);
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->CloseByClass(WindowClass::ManageTrackDesign);
                     WindowTrackDesignListReloadTracks();
                 }
                 else

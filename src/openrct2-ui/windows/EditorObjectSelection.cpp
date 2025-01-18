@@ -602,7 +602,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // Used for in-game object selection cheat to prevent crashing the game
             // when windows attempt to draw objects that don't exist any more
-            WindowCloseAllExceptClass(WindowClass::EditorObjectSelection);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAllExceptClass(WindowClass::EditorObjectSelection);
 
             int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
             if (selected_object == -1)
@@ -1737,16 +1738,17 @@ namespace OpenRCT2::Ui::Windows
 
     bool EditorObjectSelectionWindowCheck()
     {
+        auto* windowMgr = Ui::GetWindowManager();
+
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
         if (missingObjectType == ObjectType::None)
         {
-            WindowCloseByClass(WindowClass::EditorObjectSelection);
+            windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
             return true;
         }
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
 
-        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {

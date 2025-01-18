@@ -1698,10 +1698,13 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_SCENARIO_UNLOCKING:
+                {
                     Config::Get().general.ScenarioUnlockingEnabled ^= 1;
                     Config::Save();
-                    WindowCloseByClass(WindowClass::ScenarioSelect);
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->CloseByClass(WindowClass::ScenarioSelect);
                     break;
+                }
                 case WIDX_AUTO_OPEN_SHOPS:
                     Config::Get().general.AutoOpenShops = !Config::Get().general.AutoOpenShops;
                     Config::Save();
@@ -1820,7 +1823,8 @@ namespace OpenRCT2::Ui::Windows
                         Config::Get().interface.ScenarioselectLastTab = 0;
                         Config::Save();
                         Invalidate();
-                        WindowCloseByClass(WindowClass::ScenarioSelect);
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
                     }
                     break;
             }

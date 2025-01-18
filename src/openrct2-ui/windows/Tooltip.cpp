@@ -204,7 +204,9 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowTooltipClose()
     {
-        WindowCloseByClass(WindowClass::Tooltip);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Tooltip);
+
         gTooltipCloseTimeout = 0;
         gTooltipWidget.window_classification = WindowClass::Null;
     }

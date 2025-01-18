@@ -562,7 +562,9 @@ namespace OpenRCT2::Ui::Windows
             }
 
             Close();
-            WindowCloseConstructionWindows();
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseConstructionWindows();
 
             auto count = GetNumTrackDesigns(item);
             if (count > 0)
@@ -1077,8 +1079,8 @@ namespace OpenRCT2::Ui::Windows
             return window;
         }
 
-        WindowCloseByClass(WindowClass::TrackDesignList);
-        WindowCloseByClass(WindowClass::TrackDesignPlace);
+        windowMgr->CloseByClass(WindowClass::TrackDesignList);
+        windowMgr->CloseByClass(WindowClass::TrackDesignPlace);
 
         window = windowMgr->Create<NewRideWindow>(
             WindowClass::ConstructRide, WindowWidth, WindowHeight, WF_10 | WF_AUTO_POSITION);

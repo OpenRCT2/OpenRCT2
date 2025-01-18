@@ -308,7 +308,7 @@ namespace OpenRCT2
                         InputWidgetLeft(screenCoords, w, widgetIndex);
                         break;
                     case MouseState::RightPress:
-                        WindowCloseByClass(WindowClass::Tooltip);
+                        windowMgr->CloseByClass(WindowClass::Tooltip);
 
                         if (w != nullptr)
                         {
@@ -1044,11 +1044,11 @@ namespace OpenRCT2
             windowNumber = w->number;
         }
 
-        WindowCloseByClass(WindowClass::Error);
-        WindowCloseByClass(WindowClass::Tooltip);
+        auto* windowMgr = GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Error);
+        windowMgr->CloseByClass(WindowClass::Tooltip);
 
         // Window might have changed position in the list, therefore find it again
-        auto* windowMgr = GetWindowManager();
         w = windowMgr->FindByNumber(windowClass, windowNumber);
         if (w == nullptr)
             return;
@@ -1422,7 +1422,7 @@ namespace OpenRCT2
                             }
                         }
 
-                        WindowCloseByClass(WindowClass::Dropdown);
+                        windowMgr->CloseByClass(WindowClass::Dropdown);
 
                         if (dropdownCleanup)
                         {
@@ -1585,7 +1585,8 @@ namespace OpenRCT2
 
             if (gCurrentRealTimeTicks >= gTooltipCloseTimeout)
             {
-                WindowCloseByClass(WindowClass::Tooltip);
+                auto* windowMgr = GetWindowManager();
+                windowMgr->CloseByClass(WindowClass::Tooltip);
             }
         }
     }

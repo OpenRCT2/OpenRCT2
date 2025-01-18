@@ -13,6 +13,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
+#include "../ui/WindowManager.h"
 
 using namespace OpenRCT2;
 
@@ -73,9 +74,13 @@ GameActions::Result StaffFireAction::Execute() const
         LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
     }
-    WindowCloseByClass(WindowClass::FirePrompt);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->CloseByClass(WindowClass::FirePrompt);
+
     PeepEntityRemove(staff);
     // Due to patrol areas best to invalidate the whole screen on removal of staff
     GfxInvalidateScreen();
+
     return GameActions::Result();
 }

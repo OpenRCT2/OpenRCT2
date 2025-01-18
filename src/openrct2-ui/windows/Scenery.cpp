@@ -253,7 +253,10 @@ namespace OpenRCT2::Ui::Windows
             ViewportSetVisibility(ViewportVisibility::Default);
 
             if (gWindowSceneryScatterEnabled)
-                WindowCloseByClass(WindowClass::SceneryScatter);
+            {
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseByClass(WindowClass::SceneryScatter);
+            }
 
             if (isToolActive(WindowClass::Scenery))
                 ToolCancel();
@@ -261,6 +264,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
+            auto* windowMgr = Ui::GetWindowManager();
+
             switch (widgetIndex)
             {
                 case WIDX_SCENERY_CLOSE:
@@ -276,14 +281,14 @@ namespace OpenRCT2::Ui::Windows
                     _sceneryPaintEnabled ^= true;
                     gWindowSceneryEyedropperEnabled = false;
                     if (gWindowSceneryScatterEnabled)
-                        WindowCloseByClass(WindowClass::SceneryScatter);
+                        windowMgr->CloseByClass(WindowClass::SceneryScatter);
                     Invalidate();
                     break;
                 case WIDX_SCENERY_EYEDROPPER_BUTTON:
                     _sceneryPaintEnabled = false;
                     gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
                     if (gWindowSceneryScatterEnabled)
-                        WindowCloseByClass(WindowClass::SceneryScatter);
+                        windowMgr->CloseByClass(WindowClass::SceneryScatter);
                     SceneryRemoveGhostToolPlacement();
                     Invalidate();
                     break;
@@ -291,7 +296,7 @@ namespace OpenRCT2::Ui::Windows
                     _sceneryPaintEnabled = false;
                     gWindowSceneryEyedropperEnabled = false;
                     if (gWindowSceneryScatterEnabled)
-                        WindowCloseByClass(WindowClass::SceneryScatter);
+                        windowMgr->CloseByClass(WindowClass::SceneryScatter);
                     else if (
                         NetworkGetMode() != NETWORK_MODE_CLIENT
                         || NetworkCanPerformCommand(NetworkGetCurrentPlayerGroupIndex(), -2))

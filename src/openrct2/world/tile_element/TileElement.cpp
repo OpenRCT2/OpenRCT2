@@ -11,8 +11,8 @@
 
 #include "../../Diagnostic.h"
 #include "../../core/Guard.hpp"
-#include "../../interface/Window.h"
 #include "../../interface/WindowClasses.h"
+#include "../../ui/WindowManager.h"
 #include "../Map.h"
 #include "BannerElement.h"
 #include "EntranceElement.h"
@@ -75,7 +75,8 @@ void TileElement::RemoveBannerEntry()
     auto banner = GetBanner(bannerIndex);
     if (banner != nullptr)
     {
-        WindowCloseByNumber(WindowClass::Banner, bannerIndex.ToUnderlying());
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByNumber(WindowClass::Banner, bannerIndex.ToUnderlying());
         DeleteBanner(banner->id);
     }
 }
