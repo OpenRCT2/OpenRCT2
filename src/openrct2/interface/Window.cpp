@@ -401,6 +401,12 @@ void WindowInvalidateAll()
  */
 void WidgetInvalidate(WindowBase& w, WidgetIndex widgetIndex)
 {
+    if (w.widgets.empty())
+    {
+        // This might be called before the window is fully created.
+        return;
+    }
+
     assert(widgetIndex < w.widgets.size());
 
     const auto& widget = w.widgets[widgetIndex];
