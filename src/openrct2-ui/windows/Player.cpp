@@ -102,12 +102,9 @@ namespace OpenRCT2::Ui::Windows
             min_height = 134;
             max_width = 500;
             max_height = 450;
-
-            Invalidate();
-
-            SetWidgets(window_player_page_widgets[WINDOW_PLAYER_PAGE_OVERVIEW]);
             hold_down_widgets = 0;
             pressed_widgets = 0;
+            SetPage(WINDOW_PLAYER_PAGE_OVERVIEW);
         }
 
         void OnResize() override
@@ -374,14 +371,6 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto newWidgets = window_player_page_widgets[page];
-            // NOTE: Not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             pressed_widgets &= ~(WIDX_TAB_1);
             pressed_widgets &= ~(WIDX_TAB_2);
             pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
@@ -594,14 +583,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawStatistics()
         {
-            auto newWidgets = window_player_page_widgets[page];
-            // NOTE: Not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             pressed_widgets &= ~(WIDX_TAB_1);
             pressed_widgets &= ~(WIDX_TAB_2);
             pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
