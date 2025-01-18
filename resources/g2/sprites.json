@@ -7731,7 +7731,7 @@
     },
     {
         "path": "track/mini/flat_to_steep_up_2_2.png",
-        "x": -25,
+        "x": -24,
         "y": -9,
         "palette": "keep"
     },
@@ -7761,8 +7761,8 @@
     },
     {
         "path": "track/mini/flat_to_steep_up_3_3.png",
-        "x": -23,
-        "y": -17,
+        "x": -14,
+        "y": -12,
         "palette": "keep"
     },
     {
@@ -7780,7 +7780,7 @@
     {
         "path": "track/mini/flat_to_steep_up_4_2.png",
         "x": -23,
-        "y": -23,
+        "y": -24,
         "palette": "keep"
     },
     {
@@ -7852,7 +7852,7 @@
     {
         "path": "track/mini/steep_to_flat_up_3_2.png",
         "x": -13,
-        "y": -18,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -7864,7 +7864,7 @@
     {
         "path": "track/mini/steep_to_flat_up_3_4.png",
         "x": -22,
-        "y": -9,
+        "y": -8,
         "palette": "keep"
     },
     {
