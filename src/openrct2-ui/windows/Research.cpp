@@ -120,7 +120,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            SetWidgets(window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT]);
+            SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
             width = WW_DEVELOPMENT;
             height = WH_DEVELOPMENT;
             ResearchUpdateUncompletedTypes();
@@ -228,14 +228,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            auto targetWidgets = window_research_page_widgets[page];
-            // NOTE: Not the correct way.
-            if (widgets.size() != targetWidgets.size())
-            {
-                SetWidgets(targetWidgets);
-                InitScrollWidgets();
-            }
-
             for (auto i = 0; i < WINDOW_RESEARCH_PAGE_COUNT; i++)
             {
                 SetWidgetPressed(WIDX_TAB_1 + i, false);
