@@ -441,14 +441,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawCommon()
         {
-            auto newWidgets = _guestWindowPageWidgets[page];
-            // NOTE: Not the correct way to do this.
-            if (newWidgets.size() != widgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
 
             const auto peep = GetGuest();
