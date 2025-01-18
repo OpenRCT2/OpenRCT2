@@ -418,10 +418,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            SetWidgets(window_options_display_widgets);
-            page = WINDOW_OPTIONS_PAGE_DISPLAY;
-            frame_no = 0;
-            InitScrollWidgets();
+            SetPage(WINDOW_OPTIONS_PAGE_DISPLAY);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -640,13 +637,6 @@ namespace OpenRCT2::Ui::Windows
 
         void CommonPrepareDrawBefore()
         {
-            auto newWidgets = window_options_page_widgets[page];
-            // NOTE: Not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
             SetPressedTab();
 
             disabled_widgets = 0;
