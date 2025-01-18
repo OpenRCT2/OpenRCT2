@@ -90,9 +90,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            SetWidgets(_windowAboutOpenRCT2Widgets);
-
-            WindowInitScrollWidgets(*this);
             SetPage(WINDOW_ABOUT_PAGE_OPENRCT2);
         }
 
@@ -184,7 +181,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            WindowInitScrollWidgets(*this);
+            InitScrollWidgets();
             Invalidate();
         }
 
