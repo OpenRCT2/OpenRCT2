@@ -304,9 +304,6 @@ namespace OpenRCT2::Ui::Windows
          */
         void SetPage(int32_t newPage)
         {
-            if (page == newPage)
-                return;
-
             page = newPage;
             frame_no = 0;
             _rideableRides.clear();

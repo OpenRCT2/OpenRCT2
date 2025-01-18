@@ -348,9 +348,6 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t newPage)
         {
-            if (page == newPage)
-                return;
-
             page = newPage;
             frame_no = 0;
             hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
