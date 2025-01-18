@@ -11,22 +11,16 @@
 
 #include "../Identifiers.h"
 #include "../core/EnumUtils.hpp"
-#include "../drawing/ImageId.hpp"
-#include "../localisation/Formatter.h"
-#include "../ride/RideTypes.h"
 #include "../windows/TileInspectorGlobals.h"
 #include "../world/Location.hpp"
-#include "../world/ScenerySelection.h"
 #include "Colour.h"
 #include "Widget.h"
 #include "WindowClasses.h"
 #include "ZoomLevel.h"
 
 #include <functional>
-#include <limits>
 #include <list>
 #include <memory>
-#include <utility>
 #include <variant>
 
 struct DrawPixelInfo;

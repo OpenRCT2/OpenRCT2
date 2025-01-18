@@ -9,12 +9,14 @@
 
 #pragma once
 
+#include "../localisation/Formatter.h"
 #include "Colour.h"
 #include "ScrollArea.h"
 #include "Window.h"
 
 #include <list>
 #include <memory>
+#include <span>
 #include <vector>
 
 enum class TileInspectorPage : int16_t;

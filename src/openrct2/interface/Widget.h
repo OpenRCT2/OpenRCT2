@@ -9,6 +9,10 @@
 
 #pragma once
 
+#include "../core/StringTypes.h"
+#include "../drawing/ImageId.hpp"
+#include "../localisation/StringIdType.h"
+
 #include <cstdint>
 
 namespace OpenRCT2
