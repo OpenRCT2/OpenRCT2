@@ -226,8 +226,6 @@ namespace OpenRCT2::Ui::Windows
 
     validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
-    static bool _window_editor_object_selection_widgets_initialised;
-
     // clang-format off
     static constexpr Widget _window_editor_object_selection_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
@@ -1136,12 +1134,14 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
+        bool tabWidgetsInitialised = false;
+
         void InitWidgets()
         {
             SetWidgets(_window_editor_object_selection_widgets);
-            if (!_window_editor_object_selection_widgets_initialised)
+            if (!tabWidgetsInitialised)
             {
-                _window_editor_object_selection_widgets_initialised = true;
+                tabWidgetsInitialised = true;
                 auto tabWidget = widgets[WIDX_TAB_1];
                 for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
                 {
