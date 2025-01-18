@@ -165,14 +165,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            SetWidgets(window_editor_objective_options_main_widgets);
-            pressed_widgets = 0;
-            hold_down_widgets = window_editor_objective_options_page_hold_down_widgets
-                [WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
-            InitScrollWidgets();
-            selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
-            selected_list_item = -1;
-            UpdateDisabledWidgets();
+            SetPage(WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -817,13 +810,6 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDrawMain()
         {
             auto& gameState = GetGameState();
-            auto widgetsToSet = window_editor_objective_options_widgets[page];
-            // NOTE: Need to do this properly.
-            if (widgets.size() != widgetsToSet.size())
-            {
-                SetWidgets(widgetsToSet);
-                InitScrollWidgets();
-            }
 
             SetPressedTab();
 
@@ -1108,14 +1094,6 @@ namespace OpenRCT2::Ui::Windows
          */
         void OnPrepareDrawRides()
         {
-            auto widgetsToSet = window_editor_objective_options_widgets[page];
-            // NOTE: Need to do this properly.
-            if (widgets.size() != widgetsToSet.size())
-            {
-                SetWidgets(widgetsToSet);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
 
             widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
