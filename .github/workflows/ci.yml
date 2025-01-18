@@ -627,6 +627,28 @@ jobs:
           name: OpenRCT2-${{ needs.build_variables.outputs.name }}-Android
           path: artifacts
           if-no-files-found: error
+  emscripten:
+    name: Emscripten
+    runs-on: ubuntu-latest
+    needs: [check-code-formatting, build_variables]
+    container: openrct2/openrct2-build:19-emscripten
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2.13
+        with:
+          key: emscripten
+      - name: Install GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
+      - name: Build OpenRCT2
+        run: |
+          . scripts/setenv
+          build-emscripten
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenRCT2-${{ needs.build_variables.outputs.name }}-emscripten
   release:
     name: Release
     runs-on: ubuntu-latest
