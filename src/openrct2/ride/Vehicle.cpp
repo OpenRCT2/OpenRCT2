@@ -435,13 +435,6 @@ static constexpr int32_t kUnk9A39C4[] = {
     1380375879, 555809667,  -372906620, -1231746017, -1859775391, 0,          2096579710, 1946281152, 2096579710,  1946281152,
 };
 
-static constexpr CoordsXY kAvoidCollisionMoveOffset[] = {
-    { -1, 0 },
-    { 0, 1 },
-    { 1, 0 },
-    { 0, -1 },
-};
-
 static constexpr OpenRCT2::Audio::SoundId kDoorOpenSoundIds[] = {
     OpenRCT2::Audio::SoundId::Null,       // DoorSoundType::none
     OpenRCT2::Audio::SoundId::DoorOpen,   // DoorSoundType::door
@@ -6664,12 +6657,16 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             if (direction < 0x14)
                 continue;
 
-            uint32_t offsetSpriteDirection = (Orientation + 4) & 31;
-            uint32_t offsetDirection = offsetSpriteDirection >> 3;
-            uint32_t next_x_diff = abs(loc.x + kAvoidCollisionMoveOffset[offsetDirection].x - vehicle2->x);
-            uint32_t next_y_diff = abs(loc.y + kAvoidCollisionMoveOffset[offsetDirection].y - vehicle2->y);
+            const CoordsXY directionVector = Math::Trigonometry::YawToDirectionVector[Entity::Yaw::YawTo64(Orientation)];
+            const CoordsXY vehicle2DirectionVector = { vehicle2->x - loc.x, vehicle2->y - loc.y };
 
-            if (next_x_diff + next_y_diff < x_diff + y_diff)
+            const int dotProduct = (directionVector.x * vehicle2DirectionVector.x)
+                + (directionVector.y * vehicle2DirectionVector.y);
+
+            if (dotProduct > 0
+                && dotProduct * dotProduct > 8028
+                        * ((vehicle2DirectionVector.x * vehicle2DirectionVector.x)
+                           + (vehicle2DirectionVector.y * vehicle2DirectionVector.y)))
             {
                 collideVehicle = vehicle2;
                 mayCollide = true;
@@ -7058,8 +7055,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
             || trackType == TrackElemType::RightQuarterTurn3Tiles || trackType == TrackElemType::LeftQuarterTurn5Tiles
             || trackType == TrackElemType::RightQuarterTurn5Tiles || trackType == TrackElemType::LeftEighthToDiag
             || trackType == TrackElemType::RightEighthToDiag || trackType == TrackElemType::LeftEighthToOrthogonal
-            || trackType == TrackElemType::RightEighthToOrthogonal || trackType == TrackElemType::SBendLeft
-            || trackType == TrackElemType::SBendRight
+            || trackType == TrackElemType::RightEighthToOrthogonal || trackType == TrackElemType::DiagFlat
+            || trackType == TrackElemType::SBendLeft || trackType == TrackElemType::SBendRight
             || ((curRide.lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && tileElement->AsTrack()->IsStation()))
         {
             UpdateGoKartAttemptSwitchLanes();
