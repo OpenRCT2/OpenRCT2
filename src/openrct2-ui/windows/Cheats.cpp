@@ -502,14 +502,6 @@ static StringId window_cheats_page_titles[] = {
 
         void OnPrepareDraw() override
         {
-            auto targetWidgets = window_cheats_page_widgets[page];
-            // NOTE: Not the right way to do this.
-            if (widgets.size() != targetWidgets.size())
-            {
-                SetWidgets(targetWidgets);
-                WindowInitScrollWidgets(*this);
-            }
-
             pressed_widgets = 0;
             disabled_widgets = 0;
 
@@ -760,6 +752,7 @@ static StringId window_cheats_page_titles[] = {
             maxY += 6;
 
             Invalidate();
+            WindowInitScrollWidgets(*this);
             height = maxY;
             widgets[WIDX_BACKGROUND].bottom = maxY - 1;
             widgets[WIDX_PAGE_BACKGROUND].bottom = maxY - 1;
