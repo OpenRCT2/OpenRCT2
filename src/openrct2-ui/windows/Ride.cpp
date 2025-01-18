@@ -749,8 +749,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(PageWidgets[WINDOW_RIDE_PAGE_MAIN]);
             hold_down_widgets = PageHoldDownWidgets[WINDOW_RIDE_PAGE_MAIN];
 
-            page = WINDOW_RIDE_PAGE_MAIN;
-            frame_no = 0;
+            SetPage(WINDOW_RIDE_PAGE_MAIN);
             list_information_type = 0;
             picked_peep_frame = 0;
             DisableTabs();
@@ -2319,14 +2318,6 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t i, widgetHeight;
 
-            auto newWidgets = PageWidgets[page];
-            // NOTE: This is not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
 
             auto ride = GetRide(rideId);
@@ -2783,14 +2774,6 @@ namespace OpenRCT2::Ui::Windows
         {
             StringId stringId;
             int32_t carsPerTrain;
-
-            auto newWidgets = PageWidgets[page];
-            // NOTE: This is not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
 
             SetPressedTab();
 
@@ -3479,14 +3462,6 @@ namespace OpenRCT2::Ui::Windows
         {
             StringId format, caption, tooltip;
 
-            auto newWidgets = PageWidgets[page];
-            // NOTE: This is not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
 
             auto ride = GetRide(rideId);
@@ -4014,14 +3989,6 @@ namespace OpenRCT2::Ui::Windows
 
         void MaintenanceOnPrepareDraw()
         {
-            auto newWidgets = PageWidgets[page];
-            // NOTE: This is not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
 
             auto ride = GetRide(rideId);
@@ -4597,14 +4564,6 @@ namespace OpenRCT2::Ui::Windows
         {
             TrackColour trackColour;
             VehicleColour vehicleColour;
-
-            auto newWidgets = PageWidgets[page];
-            // NOTE: This is not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
 
             SetPressedTab();
 
@@ -5213,12 +5172,6 @@ namespace OpenRCT2::Ui::Windows
         void MusicOnPrepareDraw()
         {
             auto newWidgets = PageWidgets[page];
-            // NOTE: This is not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
 
             SetPressedTab();
 
@@ -5609,14 +5562,6 @@ namespace OpenRCT2::Ui::Windows
 
         void MeasurementsOnPrepareDraw()
         {
-            auto newWidgets = PageWidgets[page];
-            // NOTE: This is not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
 
             auto ride = GetRide(rideId);
@@ -6055,14 +6000,6 @@ namespace OpenRCT2::Ui::Windows
 
         void GraphsOnPrepareDraw()
         {
-            auto newWidgets = PageWidgets[page];
-            // NOTE: This is not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
 
             auto ride = GetRide(rideId);
@@ -6571,14 +6508,6 @@ namespace OpenRCT2::Ui::Windows
 
         void IncomeOnPrepareDraw()
         {
-            auto newWidgets = PageWidgets[page];
-            // NOTE: This is not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
 
             auto ride = GetRide(rideId);
@@ -6855,14 +6784,6 @@ namespace OpenRCT2::Ui::Windows
 
         void CustomerOnPrepareDraw()
         {
-            auto newWidgets = PageWidgets[page];
-            // NOTE: This is not the correct way to do this.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
 
             auto ride = GetRide(rideId);
