@@ -57,7 +57,7 @@ var EmscriptenDeps = {
             alert("JSZip library not found. Aborting");
             return;
         }
-        const clearDatabase = async function(dir) => {
+        const clearDatabase = async(dir) => {
             await new Promise(res => Module.FS.syncfs(false, res));
             const processFolder = (path) => {
                 let contents;
