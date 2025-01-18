@@ -215,11 +215,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            SetWidgets(window_editor_scenario_options_widgets[WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL]);
-            hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets
-                [WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL];
-            WindowInitScrollWidgets(*this);
-            page = 0;
+            SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -362,7 +358,7 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
             OnResize();
             OnPrepareDraw();
-            WindowInitScrollWidgets(*this);
+            InitScrollWidgets();
             Invalidate();
         }
 
@@ -558,14 +554,6 @@ namespace OpenRCT2::Ui::Windows
 
         void FinancialPrepareDraw()
         {
-            auto newWidgets = window_editor_scenario_options_widgets[page];
-            // NOTE: This might not work all the time, we need to deal with this properly by watching when the page changes.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                WindowInitScrollWidgets(*this);
-            }
-
             SetPressedTab();
 
             auto& gameState = GetGameState();
@@ -839,14 +827,6 @@ namespace OpenRCT2::Ui::Windows
 
         void GuestsPrepareDraw()
         {
-            auto newWidgets = window_editor_scenario_options_widgets[page];
-            // NOTE: This might not work all the time, we need to deal with this properly by watching when the page changes.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                WindowInitScrollWidgets(*this);
-            }
-
             SetPressedTab();
 
             auto& gameState = GetGameState();
@@ -1146,14 +1126,6 @@ namespace OpenRCT2::Ui::Windows
 
         void ParkPrepareDraw()
         {
-            auto newWidgets = window_editor_scenario_options_widgets[page];
-            // NOTE: This might not work all the time, we need to deal with this properly by watching when the page changes.
-            if (widgets.size() != newWidgets.size())
-            {
-                SetWidgets(newWidgets);
-                WindowInitScrollWidgets(*this);
-            }
-
             SetPressedTab();
 
             auto& gameState = GetGameState();
