@@ -516,22 +516,19 @@ namespace OpenRCT2::Ui::Windows
 
                     // Draw construction image
                     screenCoords = this->windowPos
-                        + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
-                                          window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60 };
+                        + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 60 };
                     GfxDrawSprite(dpi, ImageId(image), screenCoords);
                 }
 
                 // Draw build this... label
                 screenCoords = this->windowPos
-                    + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
-                                      window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23 };
+                    + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 23 };
                 DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
             }
 
             // Draw cost
             screenCoords = this->windowPos
-                + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
-                                  window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12 };
+                + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 12 };
             if (_windowFootpathCost != kMoney64Undefined)
             {
                 if (!(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))

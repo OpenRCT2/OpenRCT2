@@ -526,11 +526,11 @@ namespace OpenRCT2::Ui::Windows
             gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
             gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
         }
-        if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
+        if (widget == &widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
         {
             Dropdown::SetChecked(NetworkGetGroupIndex(NetworkGetDefaultGroup()), true);
         }
-        else if (widget == &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP_DROPDOWN])
+        else if (widget == &widgets[WIDX_SELECTED_GROUP_DROPDOWN])
         {
             Dropdown::SetChecked(NetworkGetGroupIndex(_selectedGroup), true);
         }
@@ -568,8 +568,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 screenSize = { 0, NetworkGetNumPlayers() * kScrollableRowHeight };
-                int32_t i = screenSize.height - window_multiplayer_players_widgets[WIDX_LIST].bottom
-                    + window_multiplayer_players_widgets[WIDX_LIST].top + 21;
+                int32_t i = screenSize.height - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21;
                 if (i < 0)
                     i = 0;
                 if (i < scrolls[0].contentOffsetY)
@@ -589,8 +588,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 screenSize = { 0, NetworkGetNumActions() * kScrollableRowHeight };
-                int32_t i = screenSize.height - window_multiplayer_groups_widgets[WIDX_LIST].bottom
-                    + window_multiplayer_groups_widgets[WIDX_LIST].top + 21;
+                int32_t i = screenSize.height - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21;
                 if (i < 0)
                     i = 0;
                 if (i < scrolls[0].contentOffsetY)
@@ -853,8 +851,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto screenPos = windowPos
-            + ScreenCoordsXY{ window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4,
-                              window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4 };
+            + ScreenCoordsXY{ widgets[WIDX_CONTENT_PANEL].left + 4, widgets[WIDX_CONTENT_PANEL].top + 4 };
 
         DrawTextBasic(dpi, screenPos, STR_DEFAULT_GROUP, {}, { colours[2] });
 

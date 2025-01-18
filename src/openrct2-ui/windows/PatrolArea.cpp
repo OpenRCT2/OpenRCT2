@@ -142,8 +142,8 @@ namespace OpenRCT2::Ui::Windows
             // Draw number for tool sizes bigger than 7
             if (gLandToolSize > kLandToolMaximumSizeWithSprite)
             {
-                auto screenCoords = ScreenCoordsXY{ windowPos.x + PatrolAreaWidgets[WIDX_PREVIEW].midX(),
-                                                    windowPos.y + PatrolAreaWidgets[WIDX_PREVIEW].midY() };
+                auto screenCoords = ScreenCoordsXY{ windowPos.x + widgets[WIDX_PREVIEW].midX(),
+                                                    windowPos.y + widgets[WIDX_PREVIEW].midY() };
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gLandToolSize);
                 DrawTextBasic(

@@ -207,15 +207,12 @@ namespace OpenRCT2::Ui::Windows
 
             DrawTextBasic(dpi, screenCoords, STR_CURRENCY_SYMBOL_TEXT, {}, { colours[1] });
 
-            screenCoords = windowPos
-                + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
-                                  window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top };
+            screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_SYMBOL_TEXT].left + 1, widgets[WIDX_SYMBOL_TEXT].top };
 
             DrawText(dpi, screenCoords, { colours[1] }, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode);
 
             auto drawPos = windowPos
-                + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-                                  window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top };
+                + ScreenCoordsXY{ widgets[WIDX_AFFIX_DROPDOWN].left + 1, widgets[WIDX_AFFIX_DROPDOWN].top };
             StringId stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
                 ? STR_PREFIX
                 : STR_SUFFIX;

@@ -606,8 +606,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto screenCoords = windowPos
-                + ScreenCoordsXY{ window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                                  window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
             auto ft = Formatter();
             ft.Add<uint32_t>(NetworkGetPlayerCommandsRan(player));

@@ -392,8 +392,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            auto screenCoords = ScreenCoordsXY{ windowPos.x + window_land_rights_widgets[WIDX_PREVIEW].midX(),
-                                                windowPos.y + window_land_rights_widgets[WIDX_PREVIEW].midY() };
+            auto screenCoords = ScreenCoordsXY{ windowPos.x + widgets[WIDX_PREVIEW].midX(),
+                                                windowPos.y + widgets[WIDX_PREVIEW].midY() };
 
             DrawWidgets(dpi);
             // Draw number for tool sizes bigger than 7
@@ -414,8 +414,8 @@ namespace OpenRCT2::Ui::Windows
 
                 auto offset = widgets[WIDX_BUY_LAND_RIGHTS].type != WindowWidgetType::Empty ? 32 : 8;
 
-                screenCoords = { window_land_rights_widgets[WIDX_PREVIEW].midX() + windowPos.x,
-                                 window_land_rights_widgets[WIDX_PREVIEW].bottom + windowPos.y + offset };
+                screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x,
+                                 widgets[WIDX_PREVIEW].bottom + windowPos.y + offset };
                 DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
         }
