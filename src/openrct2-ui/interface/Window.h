@@ -18,8 +18,8 @@ namespace OpenRCT2
 {
     struct Window : WindowBase
     {
-        virtual void OnDraw(DrawPixelInfo& dpi) override;
-        virtual void OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi) override;
+        void OnDraw(DrawPixelInfo& dpi) override;
+        void OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi) override;
 
         void ScrollToViewport();
         void InitScrollWidgets();
