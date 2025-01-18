@@ -86,12 +86,10 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawLeftPanel(DrawPixelInfo& dpi)
         {
-            const auto topLeft = windowPos
-                + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + 1,
-                                  window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + 1 };
-            const auto bottomRight = windowPos
-                + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right - 1,
-                                  window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1 };
+            const auto& leftPanelWidget = widgets[WIDX_LEFT_OUTSET];
+
+            const auto topLeft = windowPos + ScreenCoordsXY{ leftPanelWidget.left + 1, leftPanelWidget.top + 1 };
+            const auto bottomRight = windowPos + ScreenCoordsXY{ leftPanelWidget.right - 1, leftPanelWidget.bottom - 1 };
             // Draw green inset rectangle on panel
             GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
@@ -103,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw money
             if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
             {
-                Widget widget = window_game_bottom_toolbar_widgets[WIDX_MONEY];
+                const auto& widget = widgets[WIDX_MONEY];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
                                                     windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
@@ -128,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw guests
             {
-                Widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
+                const auto& widget = widgets[WIDX_GUESTS];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(), windowPos.y + widget.midY() - 6 };
 
                 StringId stringId = gameState.NumGuestsInPark == 1 ? _guestCountFormatsSingular[gameState.GuestChangeModifier]
@@ -141,7 +139,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw park rating
             {
-                Widget widget = window_game_bottom_toolbar_widgets[WIDX_PARK_RATING];
+                const auto& widget = widgets[WIDX_PARK_RATING];
                 auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
                 DrawParkRating(dpi, colours[3].colour, screenCoords, std::max(10, ((gameState.Park.Rating / 4) * 263) / 256));
@@ -170,20 +168,15 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawRightPanel(DrawPixelInfo& dpi)
         {
-            const auto topLeft = windowPos
-                + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 1,
-                                  window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + 1 };
-            const auto bottomRight = windowPos
-                + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 1,
-                                  window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1 };
+            const auto& rightPanelWidget = widgets[WIDX_RIGHT_OUTSET];
+
+            const auto topLeft = windowPos + ScreenCoordsXY{ rightPanelWidget.left + 1, rightPanelWidget.top + 1 };
+            const auto bottomRight = windowPos + ScreenCoordsXY{ rightPanelWidget.right - 1, rightPanelWidget.bottom - 1 };
             // Draw green inset rectangle on panel
             GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
-            auto screenCoords = ScreenCoordsXY{ (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left
-                                                 + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right)
-                                                        / 2
-                                                    + windowPos.x,
-                                                window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + windowPos.y + 2 };
+            auto screenCoords = ScreenCoordsXY{ (rightPanelWidget.left + rightPanelWidget.right) / 2 + windowPos.x,
+                                                rightPanelWidget.top + windowPos.y + 2 };
 
             // Date
             auto& date = GetDate();
@@ -203,8 +196,7 @@ namespace OpenRCT2::Ui::Windows
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
 
             // Temperature
-            screenCoords = { windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
-                             static_cast<int32_t>(screenCoords.y + line_height + 1) };
+            screenCoords = { windowPos.x + rightPanelWidget.left + 15, static_cast<int32_t>(screenCoords.y + line_height + 1) };
 
             int32_t temperature = GetGameState().ClimateCurrent.Temperature;
             StringId format = STR_CELSIUS_VALUE;
@@ -236,27 +228,26 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawNewsItem(DrawPixelInfo& dpi)
         {
-            auto* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
+            const auto& middleOutsetWidget = widgets[WIDX_MIDDLE_OUTSET];
             auto* newsItem = News::GetItem(0);
 
             // Current news item
             GfxFillRectInset(
                 dpi,
 
-                { windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
-                  windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
+                { windowPos + ScreenCoordsXY{ middleOutsetWidget.left + 1, middleOutsetWidget.top + 1 },
+                  windowPos + ScreenCoordsXY{ middleOutsetWidget.right - 1, middleOutsetWidget.bottom - 1 } },
                 colours[2], INSET_RECT_F_30);
 
             // Text
-            auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget->midX(), middleOutsetWidget->top + 11 };
-            int32_t itemWidth = middleOutsetWidget->width() - 62;
+            auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget.midX(), middleOutsetWidget.top + 11 };
+            int32_t itemWidth = middleOutsetWidget.width() - 62;
             DrawNewsTicker(
                 dpi, screenCoords, itemWidth, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->Text,
                 newsItem->Ticks);
 
-            screenCoords = windowPos
-                + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left,
-                                  window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top };
+            const auto& newsSubjectWidget = widgets[WIDX_NEWS_SUBJECT];
+            screenCoords = windowPos + ScreenCoordsXY{ newsSubjectWidget.left, newsSubjectWidget.top };
             switch (newsItem->Type)
             {
                 case News::ItemType::Ride:
