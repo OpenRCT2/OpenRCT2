@@ -16,7 +16,6 @@
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/TrackPaint.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows

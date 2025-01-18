@@ -12,7 +12,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/network/network.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows

@@ -19,7 +19,6 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows

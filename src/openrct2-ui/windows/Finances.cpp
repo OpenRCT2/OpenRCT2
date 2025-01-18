@@ -11,7 +11,6 @@
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>

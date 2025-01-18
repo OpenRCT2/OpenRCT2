@@ -11,7 +11,6 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/scripting/CustomMenu.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>

@@ -12,14 +12,12 @@
  * the window has been changed to a tab interface similar to the options window seen in Locomotion.
  */
 
-#include "../interface/Theme.h"
-
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>

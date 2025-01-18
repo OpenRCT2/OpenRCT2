@@ -18,7 +18,6 @@
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>

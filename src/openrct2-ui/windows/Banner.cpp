@@ -13,7 +13,6 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/BannerRemoveAction.h>
 #include <openrct2/actions/BannerSetNameAction.h>
@@ -22,7 +21,6 @@
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>

@@ -31,7 +31,6 @@
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>

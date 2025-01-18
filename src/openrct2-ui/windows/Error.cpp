@@ -18,7 +18,6 @@
 #include <openrct2/drawing/Font.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
