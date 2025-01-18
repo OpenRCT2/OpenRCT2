@@ -694,14 +694,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawRating()
         {
-            auto newWidgets = _pagedWidgets[page];
-            // NOTE: Not the correct way to do this.
-            if (newWidgets.size() != widgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
             PrepareWindowTitleText();
 
@@ -771,14 +763,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawGuests()
         {
-            auto newWidgets = _pagedWidgets[page];
-            // NOTE: Not the correct way to do this.
-            if (newWidgets.size() != widgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
             PrepareWindowTitleText();
 
@@ -882,14 +866,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawPrice()
         {
-            auto newWidgets = _pagedWidgets[page];
-            // NOTE: Not the correct way to do this.
-            if (newWidgets.size() != widgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
             PrepareWindowTitleText();
 
@@ -975,14 +951,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawStats()
         {
-            auto newWidgets = _pagedWidgets[page];
-            // NOTE: Not the correct way to do this.
-            if (newWidgets.size() != widgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
             PrepareWindowTitleText();
 
@@ -1176,14 +1144,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawAwards()
         {
-            auto newWidgets = _pagedWidgets[page];
-            // NOTE: Not the correct way to do this.
-            if (newWidgets.size() != widgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
             PrepareWindowTitleText();
 
@@ -1234,6 +1194,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(_pagedWidgets[newPage]);
             SetDisabledTabs();
             Invalidate();
+            InitScrollWidgets();
 
             OnResize();
             OnPrepareDraw();
