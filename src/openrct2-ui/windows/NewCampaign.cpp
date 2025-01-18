@@ -409,7 +409,7 @@ namespace OpenRCT2::Ui::Windows
             if (w->GetCampaignType() == campaignType)
                 return w;
 
-            WindowClose(*w);
+            w->Close();
         }
 
         w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);

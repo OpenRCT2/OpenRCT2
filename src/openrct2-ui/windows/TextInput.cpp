@@ -136,7 +136,7 @@ namespace OpenRCT2::Ui::Windows
                 auto parentWindow = GetParentWindow();
                 if (parentWindow == nullptr)
                 {
-                    WindowClose(*this);
+                    Close();
                     return;
                 }
             }
@@ -157,12 +157,12 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CLOSE:
                     ContextStopTextInput();
                     ExecuteCallback(false);
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_OKAY:
                     ContextStopTextInput();
                     ExecuteCallback(true);
-                    WindowClose(*this);
+                    Close();
             }
         }
 
@@ -301,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ContextStopTextInput();
             ExecuteCallback(true);
-            WindowClose(*this);
+            Close();
         }
 
         static int32_t CalculateWindowHeight(std::string_view text)

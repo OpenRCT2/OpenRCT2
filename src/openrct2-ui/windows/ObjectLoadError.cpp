@@ -415,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     return;
                 case WIDX_COPY_CURRENT:
                     if (selected_list_item > -1 && selected_list_item < no_list_items)

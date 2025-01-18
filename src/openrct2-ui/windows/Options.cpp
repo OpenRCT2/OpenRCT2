@@ -620,7 +620,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_TAB_DISPLAY:
                 case WIDX_TAB_RENDERING:
