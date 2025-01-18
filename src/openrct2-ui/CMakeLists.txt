@@ -11,7 +11,7 @@ option(DISABLE_VORBIS   "Disable OGG/VORBIS support.")
 option(DISABLE_OPENGL   "Disable OpenGL support.")
 
 # Third party libraries
-if (CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+if (EMSCRIPTEN)
     set(USE_FLAGS "${EMSCRIPTEN_FLAGS}")
     if (NOT DISABLE_VORBIS)
         set(USE_FLAGS "${USE_FLAGS} -s USE_VORBIS=1 -s USE_OGG=1")
@@ -42,7 +42,7 @@ else ()
     endif ()
 endif ()
 
-if (NOT DISABLE_OPENGL AND NOT CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+if (NOT DISABLE_OPENGL AND NOT EMSCRIPTEN)
     # GL doesn't work nicely with macOS, while find_package doesn't work with multiarch on Ubuntu.
     if (APPLE)
         find_package(OpenGL REQUIRED)
@@ -70,7 +70,7 @@ SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 ipo_set_target_properties(${PROJECT_NAME})
 
 # mingw builds cannot use the PkgConfig imported targets
-if (CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+if (EMSCRIPTEN)
     target_link_libraries(${PROJECT_NAME} "libopenrct2"
                                     ${SPEEXDSP_LIBRARIES}
                                     ${ICU_DATA_LIBRARIES}
@@ -95,7 +95,7 @@ if (NOT DISABLE_FLAC)
 endif ()
 
 if (NOT DISABLE_VORBIS)
-    if (NOT MSVC AND NOT WIN32 AND NOT CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+    if (NOT MSVC AND NOT WIN32 AND NOT EMSCRIPTEN)
         target_link_libraries(${PROJECT_NAME} PkgConfig::OGG PkgConfig::VORBISFILE)
     else ()
         target_link_libraries(${PROJECT_NAME} ${OGG_LDFLAGS} ${VORBISFILE_LDFLAGS})
