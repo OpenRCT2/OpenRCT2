@@ -474,84 +474,6 @@ static constexpr float window_scroll_locations[][2] = {
 
     /**
      *
-     *  rct2: 0x006ECDA4
-     */
-    WindowBase* WindowBringToFront(WindowBase& w)
-    {
-        if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
-        {
-            auto itSourcePos = WindowGetIterator(&w);
-            if (itSourcePos != g_window_list.end())
-            {
-                // Insert in front of the first non-stick-to-front window
-                auto itDestPos = g_window_list.begin();
-                for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-                {
-                    auto& w2 = *it;
-                    if (!(w2->flags & WF_STICK_TO_FRONT))
-                    {
-                        itDestPos = it.base();
-                        break;
-                    }
-                }
-
-                g_window_list.splice(itDestPos, g_window_list, itSourcePos);
-                w.Invalidate();
-
-                if (w.windowPos.x + w.width < 20)
-                {
-                    int32_t i = 20 - w.windowPos.x;
-                    w.windowPos.x += i;
-                    if (w.viewport != nullptr)
-                        w.viewport->pos.x += i;
-                    w.Invalidate();
-                }
-            }
-        }
-        return &w;
-    }
-
-    WindowBase* WindowBringToFrontByClassWithFlags(WindowClass cls, uint16_t flags)
-    {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
-        WindowBase* w = windowMgr->FindByClass(cls);
-        if (w != nullptr)
-        {
-            w->flags |= flags;
-            w->Invalidate();
-            w = WindowBringToFront(*w);
-        }
-
-        return w;
-    }
-
-    WindowBase* WindowBringToFrontByClass(WindowClass cls)
-    {
-        return WindowBringToFrontByClassWithFlags(cls, WF_WHITE_BORDER_MASK);
-    }
-
-    /**
-     *
-     *  rct2: 0x006ED78A
-     * cls (cl)
-     * number (dx)
-     */
-    WindowBase* WindowBringToFrontByNumber(WindowClass cls, rct_windownumber number)
-    {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
-        WindowBase* w = windowMgr->FindByNumber(cls, number);
-        if (w != nullptr)
-        {
-            w->flags |= WF_WHITE_BORDER_MASK;
-            w->Invalidate();
-            w = WindowBringToFront(*w);
-        }
-
-        return w;
-    }
-
-    /**
-     *
      *  rct2: 0x006EE65A
      */
     void WindowPushOthersRight(WindowBase& window)
@@ -834,7 +756,8 @@ static constexpr float window_scroll_locations[][2] = {
 
         // HACK: Prevents the redraw from failing when there is
         // a window on top of the viewport.
-        WindowBringToFront(w);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        windowMgr->BringToFront(w);
         w.Invalidate();
     }
 

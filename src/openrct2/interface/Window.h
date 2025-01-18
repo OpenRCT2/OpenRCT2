@@ -380,11 +380,6 @@ namespace OpenRCT2
 
     void WindowSetWindowLimit(int32_t value);
 
-    WindowBase* WindowBringToFront(WindowBase& w);
-    WindowBase* WindowBringToFrontByClass(WindowClass cls);
-    WindowBase* WindowBringToFrontByClassWithFlags(WindowClass cls, uint16_t flags);
-    WindowBase* WindowBringToFrontByNumber(WindowClass cls, rct_windownumber number);
-
     void WindowClose(WindowBase& window);
     void WindowCloseByClass(WindowClass cls);
     void WindowCloseByNumber(WindowClass cls, rct_windownumber number);

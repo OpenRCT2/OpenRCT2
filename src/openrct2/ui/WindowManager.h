@@ -48,6 +48,11 @@ namespace OpenRCT2::Ui
         virtual WindowBase* FindByNumber(WindowClass cls, EntityId id) = 0;
         virtual WindowBase* FindFromPoint(const ScreenCoordsXY& screenCoords) = 0;
         virtual WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) = 0;
+
+        virtual WindowBase* BringToFront(WindowBase& w) = 0;
+        virtual WindowBase* BringToFrontByClass(WindowClass cls) = 0;
+        virtual WindowBase* BringToFrontByClassWithFlags(WindowClass cls, uint16_t flags) = 0;
+        virtual WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) = 0;
     };
 
     std::unique_ptr<IWindowManager> CreateDummyWindowManager();

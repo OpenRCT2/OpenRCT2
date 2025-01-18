@@ -323,7 +323,8 @@ public:
             case INTENT_ACTION_NEW_SCENERY:
             {
                 // Check if window is already open
-                auto* window = WindowBringToFrontByClass(WindowClass::Scenery);
+                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                auto* window = windowMgr->BringToFrontByClass(WindowClass::Scenery);
                 if (window == nullptr)
                     ToggleSceneryWindow();
 
@@ -761,6 +762,84 @@ public:
 
         // Return the widget index
         return widget_index;
+    }
+
+    /**
+     *
+     *  rct2: 0x006ECDA4
+     */
+    WindowBase* BringToFront(WindowBase& w)
+    {
+        if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        {
+            auto itSourcePos = WindowGetIterator(&w);
+            if (itSourcePos != g_window_list.end())
+            {
+                // Insert in front of the first non-stick-to-front window
+                auto itDestPos = g_window_list.begin();
+                for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
+                {
+                    auto& w2 = *it;
+                    if (!(w2->flags & WF_STICK_TO_FRONT))
+                    {
+                        itDestPos = it.base();
+                        break;
+                    }
+                }
+
+                g_window_list.splice(itDestPos, g_window_list, itSourcePos);
+                w.Invalidate();
+
+                if (w.windowPos.x + w.width < 20)
+                {
+                    int32_t i = 20 - w.windowPos.x;
+                    w.windowPos.x += i;
+                    if (w.viewport != nullptr)
+                        w.viewport->pos.x += i;
+                    w.Invalidate();
+                }
+            }
+        }
+        return &w;
+    }
+
+    WindowBase* BringToFrontByClassWithFlags(WindowClass cls, uint16_t flags)
+    {
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(cls);
+        if (w != nullptr)
+        {
+            w->flags |= flags;
+            w->Invalidate();
+            w = BringToFront(*w);
+        }
+
+        return w;
+    }
+
+    WindowBase* BringToFrontByClass(WindowClass cls)
+    {
+        return BringToFrontByClassWithFlags(cls, WF_WHITE_BORDER_MASK);
+    }
+
+    /**
+     *
+     *  rct2: 0x006ED78A
+     * cls (cl)
+     * number (dx)
+     */
+    WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number)
+    {
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        WindowBase* w = windowMgr->FindByNumber(cls, number);
+        if (w != nullptr)
+        {
+            w->flags |= WF_WHITE_BORDER_MASK;
+            w->Invalidate();
+            w = BringToFront(*w);
+        }
+
+        return w;
     }
 };
 

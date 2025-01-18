@@ -312,7 +312,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* BannerOpen(rct_windownumber number)
     {
-        auto w = static_cast<BannerWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto w = static_cast<BannerWindow*>(windowmgr->BringToFrontByNumber(WindowClass::Banner, number));
 
         if (w != nullptr)
             return w;

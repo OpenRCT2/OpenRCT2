@@ -73,7 +73,8 @@ namespace OpenRCT2::Ui::Windows
     template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
     T* WindowFocusOrCreate(WindowClass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
     {
-        auto* w = WindowBringToFrontByClass(cls);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* w = windowMgr->BringToFrontByClass(cls);
         if (w == nullptr)
         {
             w = WindowCreate<T>(cls, pos, width, height, flags);
@@ -83,7 +84,8 @@ namespace OpenRCT2::Ui::Windows
     template<typename T, typename std::enable_if<std::is_base_of<WindowBase, T>::value>::type* = nullptr>
     T* WindowFocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t flags = 0)
     {
-        auto* w = WindowBringToFrontByClass(cls);
+        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* w = windowMgr->BringToFrontByClass(cls);
         if (w == nullptr)
         {
             w = WindowCreate<T>(cls, width, height, flags);

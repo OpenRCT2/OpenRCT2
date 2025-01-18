@@ -329,7 +329,8 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                WindowBringToFront(*w);
+                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                auto* w = windowMgr->BringToFront(*w);
                 w->flags |= WF_WHITE_BORDER_MASK;
             }
         }

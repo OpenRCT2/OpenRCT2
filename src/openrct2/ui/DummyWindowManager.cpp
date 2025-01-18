@@ -89,6 +89,23 @@ namespace OpenRCT2::Ui
         {
             return kWidgetIndexNull;
         }
+
+        WindowBase* BringToFront(WindowBase& w) override
+        {
+            return nullptr;
+        }
+        WindowBase* BringToFrontByClass(WindowClass cls) override
+        {
+            return nullptr;
+        }
+        WindowBase* BringToFrontByClassWithFlags(WindowClass cls, uint16_t flags) override
+        {
+            return nullptr;
+        }
+        WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) override
+        {
+            return nullptr;
+        }
     };
 
     std::unique_ptr<IWindowManager> CreateDummyWindowManager()

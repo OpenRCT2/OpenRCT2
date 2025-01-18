@@ -312,7 +312,7 @@ namespace OpenRCT2
 
                         if (w != nullptr)
                         {
-                            w = WindowBringToFront(*w);
+                            w = windowMgr->BringToFront(*w);
                         }
 
                         if (widgetIndex != kWidgetIndexNull)
@@ -1053,7 +1053,7 @@ namespace OpenRCT2
         if (w == nullptr)
             return;
 
-        w = WindowBringToFront(*w);
+        w = windowMgr->BringToFront(*w);
         if (widgetIndex == kWidgetIndexNull)
             return;
 
