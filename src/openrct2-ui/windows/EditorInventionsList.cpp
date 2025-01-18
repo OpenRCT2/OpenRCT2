@@ -11,7 +11,6 @@
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -26,7 +25,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Scenery.h>
 
@@ -490,7 +488,7 @@ namespace OpenRCT2::Ui::Windows
             if (windowPos.x <= screenCoords.x && windowPos.y < screenCoords.y && windowPos.x + width > screenCoords.x
                 && windowPos.y + height > screenCoords.y)
             {
-                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 WidgetIndex widgetIndex = windowMgr->FindWidgetFromPoint(*this, screenCoords);
 
                 auto& widget = widgets[widgetIndex];
@@ -595,7 +593,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorInventionsListOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<InventionListWindow>(
             WindowClass::EditorInventionList, WW, WH, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
@@ -616,7 +614,7 @@ namespace OpenRCT2::Ui::Windows
 
         CursorID OnCursor(const WidgetIndex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto* inventionListWindow = static_cast<InventionListWindow*>(
                 windowMgr->FindByClass(WindowClass::EditorInventionList));
             if (inventionListWindow != nullptr)
@@ -635,7 +633,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMoved(const ScreenCoordsXY& screenCoords) override
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto* inventionListWindow = static_cast<InventionListWindow*>(
                 windowMgr->FindByClass(WindowClass::EditorInventionList));
             if (inventionListWindow == nullptr)
@@ -692,8 +690,9 @@ namespace OpenRCT2::Ui::Windows
     static void WindowEditorInventionsListDragOpen(
         ResearchItem* researchItem, const ScreenCoordsXY& editorPos, int objectSelectionScrollWidth)
     {
+        auto* windowMgr = Ui::GetWindowManager();
         WindowCloseByClass(WindowClass::EditorInventionListDrag);
-        auto* wnd = WindowCreate<InventionDragWindow>(
+        auto* wnd = windowMgr->Create<InventionDragWindow>(
             WindowClass::EditorInventionListDrag, 10, 14, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
         if (wnd != nullptr)
         {
@@ -703,7 +702,7 @@ namespace OpenRCT2::Ui::Windows
 
     static const ResearchItem* WindowEditorInventionsListDragGetItem()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* wnd = static_cast<InventionDragWindow*>(windowMgr->FindByClass(WindowClass::EditorInventionListDrag));
         if (wnd == nullptr)
         {

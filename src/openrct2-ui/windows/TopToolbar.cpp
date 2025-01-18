@@ -777,7 +777,7 @@ namespace OpenRCT2::Ui::Windows
         void ApplyFootpathPressed()
         {
             // Footpath button pressed down
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::Footpath) == nullptr)
                 pressed_widgets &= ~(1uLL << WIDX_PATH);
             else
@@ -998,7 +998,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* TopToolbarOpen()
     {
-        TopToolbar* window = WindowCreate<TopToolbar>(
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->Create<TopToolbar>(
             WindowClass::TopToolbar, ScreenCoordsXY(0, 0), ContextGetWidth(), kTopToolbarHeight + 1,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
@@ -1140,7 +1141,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case DDIDX_VIEW_CLIPPING:
                 {
-                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     if (windowMgr->FindByClass(WindowClass::ViewClipping) == nullptr)
                     {
                         ContextOpenWindow(WindowClass::ViewClipping);
@@ -1509,7 +1510,7 @@ namespace OpenRCT2::Ui::Windows
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
             colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, TOP_TOOLBAR_DEBUG_COUNT);
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         Dropdown::SetChecked(DDIDX_DEBUG_PAINT, windowMgr->FindByClass(WindowClass::DebugPaint) != nullptr);
     }
 
@@ -1528,7 +1529,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case DDIDX_DEBUG_PAINT:
                 {
-                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     if (windowMgr->FindByClass(WindowClass::DebugPaint) == nullptr)
                     {
                         ContextOpenWindow(WindowClass::DebugPaint);

@@ -18,7 +18,6 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -364,7 +363,7 @@ namespace OpenRCT2::Ui::Windows
 
         WindowBase* GetParentWindow() const
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             return HasParentWindow() ? windowMgr->FindByNumber(_parentWidget.window.classification, _parentWidget.window.number)
                                      : nullptr;
         }
@@ -374,10 +373,11 @@ namespace OpenRCT2::Ui::Windows
         WindowBase* call_w, WidgetIndex call_widget, StringId title, StringId description, const Formatter& descriptionArgs,
         const_utf8string existing_text, int32_t maxLength)
     {
+        auto* windowMgr = GetWindowManager();
         WindowCloseByClass(WindowClass::Textinput);
 
         auto height = TextInputWindow::CalculateWindowHeight(existing_text);
-        auto w = WindowCreate<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetParentWindow(call_w, call_widget);
@@ -390,8 +390,9 @@ namespace OpenRCT2::Ui::Windows
         std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
         std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
     {
+        auto* windowMgr = GetWindowManager();
         auto height = TextInputWindow::CalculateWindowHeight(initialValue);
-        auto w = WindowCreate<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, height, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetTitle(title, description);
@@ -424,7 +425,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // The window can be potentially closed within a callback, we need to check if its still alive.
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         w = windowMgr->FindByNumber(wndClass, wndNumber);
         if (w != nullptr)
             w->Invalidate();

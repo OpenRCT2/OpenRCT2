@@ -103,7 +103,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* RideDemolishPromptOpen(const Ride& ride)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->FindByClass(WindowClass::DemolishRidePrompt);
 
         DemolishRidePromptWindow* newWindow;

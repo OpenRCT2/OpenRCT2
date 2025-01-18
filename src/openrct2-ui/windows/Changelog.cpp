@@ -319,7 +319,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ChangelogOpen(int personality)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->BringToFrontByClass(WindowClass::Changelog);
         if (window == nullptr)
         {

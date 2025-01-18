@@ -165,7 +165,7 @@ static constexpr float window_scroll_locations[][2] = {
             }
         });
 
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        auto windowManager = Ui::GetWindowManager();
         windowManager->UpdateMouseWheel();
     }
 
@@ -756,7 +756,7 @@ static constexpr float window_scroll_locations[][2] = {
 
         // HACK: Prevents the redraw from failing when there is
         // a window on top of the viewport.
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
         windowMgr->BringToFront(w);
         w.Invalidate();
     }
@@ -986,7 +986,7 @@ static constexpr float window_scroll_locations[][2] = {
                     gCurrentToolWidget.widget_index);
 
                 // Abort tool event
-                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                auto* windowMgr = Ui::GetWindowManager();
                 WindowBase* w = windowMgr->FindByNumber(
                     gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                 if (w != nullptr)
@@ -1004,7 +1004,7 @@ static constexpr float window_scroll_locations[][2] = {
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
             return;
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
         WindowBase* titleWind = windowMgr->FindByClass(WindowClass::TitleMenu);
         if (titleWind != nullptr)
         {
@@ -1068,7 +1068,7 @@ static constexpr float window_scroll_locations[][2] = {
             }
         }
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
 
         WindowBase* topWind = windowMgr->FindByClass(WindowClass::TopToolbar);
         if (topWind != nullptr)
@@ -1260,5 +1260,11 @@ static constexpr float window_scroll_locations[][2] = {
         }
 
         return w->viewport;
+    }
+
+    // TODO: declared in WindowManager.h; move when refactors continue
+    Ui::IWindowManager* Ui::GetWindowManager()
+    {
+        return GetContext()->GetUiContext()->GetWindowManager();
     }
 } // namespace OpenRCT2

@@ -15,6 +15,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/TrackDesignRepository.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -109,7 +110,9 @@ namespace OpenRCT2::Ui::Windows
     {
         WindowCloseByClass(WindowClass::ManageTrackDesign);
         auto trackDesignManageWindow = std::make_unique<TrackDesignManageWindow>(tdFileRef);
-        auto* window = WindowCreate(
+
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->Create(
             std::move(trackDesignManageWindow), WindowClass::ManageTrackDesign, {}, WW, WH,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
 
@@ -194,7 +197,9 @@ namespace OpenRCT2::Ui::Windows
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
         auto trackDeletePromptWindow = std::make_unique<TrackDeletePromptWindow>(tdFileRef);
-        WindowCreate(
+
+        auto* windowMgr = GetWindowManager();
+        windowMgr->Create(
             std::move(trackDeletePromptWindow), WindowClass::TrackDeletePrompt,
             ScreenCoordsXY(
                 std::max(kTopToolbarHeight + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2),

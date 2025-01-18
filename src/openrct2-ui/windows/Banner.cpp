@@ -315,7 +315,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* BannerOpen(rct_windownumber number)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto w = static_cast<BannerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));
 
         if (w != nullptr)

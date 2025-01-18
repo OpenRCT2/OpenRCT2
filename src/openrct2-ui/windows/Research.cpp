@@ -21,6 +21,7 @@
 #include <openrct2/management/Research.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
@@ -304,8 +305,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ResearchOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
-        auto* window = windowMgr->WindowFocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, WH_FUNDING, WF_10);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, WH_FUNDING, WF_10);
         window->SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
         return window;
     }

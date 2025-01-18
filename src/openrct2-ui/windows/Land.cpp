@@ -400,7 +400,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void LandToolDrag(const ScreenCoordsXY& screenPos)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto* window = windowMgr->FindFromPoint(screenPos);
             if (window == nullptr)
                 return;
@@ -873,7 +873,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* LandOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }
 

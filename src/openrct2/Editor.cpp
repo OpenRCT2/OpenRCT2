@@ -325,7 +325,7 @@ namespace OpenRCT2::Editor
             return;
         }
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
 
         switch (GetGameState().EditorStep)
         {
@@ -382,7 +382,7 @@ namespace OpenRCT2::Editor
 
     static void FinaliseMainView()
     {
-        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        auto windowManager = Ui::GetWindowManager();
         auto& gameState = GetGameState();
         windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
 

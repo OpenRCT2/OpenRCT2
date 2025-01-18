@@ -30,7 +30,7 @@ namespace OpenRCT2::Ui
 
         FootpathRemoveProvisionalTemporarily();
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByClass(WindowClass::RideConstruction) != nullptr)
         {
             RideRemoveProvisionalTrackPiece();
@@ -50,7 +50,7 @@ namespace OpenRCT2::Ui
 
         FootpathRestoreProvisional();
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByClass(WindowClass::RideConstruction) != nullptr)
         {
             RideRestoreProvisionalTrackPiece();

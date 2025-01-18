@@ -202,7 +202,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Enable highlighting of these staff members in map window
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             if (windowMgr->FindByClass(WindowClass::Map) != nullptr)
             {
                 for (auto peep : EntityList<Staff>())
@@ -745,13 +745,13 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* StaffListOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<StaffListWindow>(WindowClass::StaffList, WW, WH, WF_10 | WF_RESIZABLE);
     }
 
     void WindowStaffListRefresh()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FindByClass(WindowClass::StaffList);
         if (window != nullptr)
         {

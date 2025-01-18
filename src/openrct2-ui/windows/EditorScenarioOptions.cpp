@@ -1256,7 +1256,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* EditorScenarioOptionsOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorScenarioOptionsWindow>(
             WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING);
     }

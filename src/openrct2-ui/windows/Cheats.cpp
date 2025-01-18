@@ -1347,7 +1347,7 @@ static StringId window_cheats_page_titles[] = {
 
     WindowBase* CheatsOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->BringToFrontByClass(WindowClass::Cheats);
         if (window == nullptr)
         {

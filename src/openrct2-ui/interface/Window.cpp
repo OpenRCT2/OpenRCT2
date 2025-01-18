@@ -268,7 +268,7 @@ namespace OpenRCT2
         // Check window cursor is over
         if (!(InputTestFlag(INPUT_FLAG_5)))
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindFromPoint(cursorState->position);
             if (w != nullptr)
             {
@@ -608,7 +608,7 @@ namespace OpenRCT2::Ui::Windows
     {
         if (_usingWidgetTextBox)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
             _currentTextBox.window.classification = WindowClass::Null;
             _currentTextBox.window.number = 0;
@@ -634,7 +634,7 @@ namespace OpenRCT2::Ui::Windows
         if (_usingWidgetTextBox)
         {
             _textBoxFrameNo = 0;
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindByNumber(_currentTextBox.window.classification, _currentTextBox.window.number);
             WidgetInvalidate(*w, _currentTextBox.widget_index);
             w->OnTextInput(_currentTextBox.widget_index, _textBoxInput);

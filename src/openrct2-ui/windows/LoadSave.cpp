@@ -38,6 +38,7 @@
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <string>
@@ -1335,7 +1336,8 @@ namespace OpenRCT2::Ui::Windows
 
         const u8string path = GetDir(type);
 
-        auto* w = static_cast<LoadSaveWindow*>(WindowBringToFrontByClass(WindowClass::Loadsave));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<LoadSaveWindow*>(windowMgr->BringToFrontByClass(WindowClass::Loadsave));
         if (w == nullptr)
         {
             if (config.FileBrowserWidth < kWindowSizeMin.width || config.FileBrowserHeight < kWindowSizeMin.height
@@ -1349,7 +1351,7 @@ namespace OpenRCT2::Ui::Windows
             auto width = config.FileBrowserWidth;
             auto height = config.FileBrowserHeight;
 
-            w = WindowCreate<LoadSaveWindow>(
+            w = windowMgr->Create<LoadSaveWindow>(
                 WindowClass::Loadsave, width, height, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
                 type);
         }
@@ -1483,7 +1485,8 @@ namespace OpenRCT2::Ui::Windows
     {
         WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
 
-        return WindowCreate<OverwritePromptWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->Create<OverwritePromptWindow>(
             WindowClass::LoadsaveOverwritePrompt, OVERWRITE_WW, OVERWRITE_WH,
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN, name, path);
     }

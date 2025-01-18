@@ -437,14 +437,14 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* MazeConstructionOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<MazeConstructionWindow>(
             WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
     }
 
     void WindowMazeConstructionUpdatePressedWidgets()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr)
             return;

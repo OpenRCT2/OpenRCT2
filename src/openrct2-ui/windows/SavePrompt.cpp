@@ -19,6 +19,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/network/network.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -229,8 +230,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        auto* windowMgr = GetWindowManager();
+
         // Check if window is already open
-        WindowBase* window = WindowBringToFrontByClass(WindowClass::SavePrompt);
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::SavePrompt);
         if (window != nullptr)
         {
             WindowClose(*window);
@@ -251,7 +254,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto savePromptWindow = std::make_unique<SavePromptWindow>(prompt_mode);
-        return WindowCreate(
+        return windowMgr->Create(
             std::move(savePromptWindow), WindowClass::SavePrompt, {}, width, height,
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
     }

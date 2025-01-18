@@ -89,7 +89,7 @@ GameActions::Result RideSetNameAction::Execute() const
     GfxInvalidateScreen();
 
     // Refresh windows that display ride name
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = OpenRCT2::Ui::GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));

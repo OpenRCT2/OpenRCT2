@@ -33,7 +33,6 @@
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepAnimations.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
@@ -381,7 +380,7 @@ namespace OpenRCT2::Ui::Windows
                         if (result->Error != GameActions::Status::Ok)
                             return;
 
-                        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                        auto* windowMgr = GetWindowManager();
                         WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
@@ -1276,13 +1275,13 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* StaffOpen(Peep* peep)
     {
-        auto w = static_cast<StaffWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
+        auto* windowMgr = GetWindowManager();
 
+        auto w = static_cast<StaffWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
         if (w != nullptr)
             return w;
 
-        w = WindowCreate<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
-
+        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
         if (w == nullptr)
             return nullptr;
 

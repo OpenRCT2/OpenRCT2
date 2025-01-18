@@ -12,6 +12,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -67,10 +68,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* TitleLogoOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::TitleLogo);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::TitleLogo);
         if (window == nullptr)
         {
-            window = WindowCreate<TitleLogoWindow>(
+            window = windowMgr->Create<TitleLogoWindow>(
                 WindowClass::TitleLogo, ScreenCoordsXY(0, 0), WW, WH, WF_STICK_TO_BACK | WF_TRANSPARENT);
         }
         return window;

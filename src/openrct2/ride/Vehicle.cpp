@@ -592,7 +592,7 @@ Vehicle* TryGetVehicle(EntityId spriteIndex)
 
 void VehicleSoundsUpdate()
 {
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = OpenRCT2::Ui::GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_VEHICLE_SOUNDS));
 }
 

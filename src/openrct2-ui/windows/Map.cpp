@@ -276,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
@@ -356,7 +356,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             // the flickering frequency is reduced by 4, compared to the original
             // it was done due to inability to reproduce original frequency
@@ -600,7 +600,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             // Set the pressed widgets
             pressed_widgets = 0;
@@ -1253,7 +1253,7 @@ namespace OpenRCT2::Ui::Windows
     {
         try
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
             w->selected_tab = 0;
             w->list_information_type = 0;
@@ -1268,7 +1268,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowMapReset()
     {
         // Check if window is even opened
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->BringToFrontByClass(WindowClass::Map);
         if (w == nullptr)
         {

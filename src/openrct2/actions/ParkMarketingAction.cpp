@@ -83,7 +83,7 @@ GameActions::Result ParkMarketingAction::Execute() const
     MarketingNewCampaign(campaign);
 
     // We are only interested in invalidating the finances (marketing) window
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = OpenRCT2::Ui::GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
 
     return CreateResult();

@@ -359,7 +359,7 @@ namespace OpenRCT2::Ui::Windows
         WindowDropdownClose();
 
         // Create the window (width/height position are set later)
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, width, custom_height, WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
@@ -393,7 +393,7 @@ namespace OpenRCT2::Ui::Windows
         WindowDropdownClose();
 
         // Create the window (width/height position are set later)
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->Create<DropdownWindow>(WindowClass::Dropdown, itemWidth, itemHeight, WF_STICK_TO_FRONT);
         if (w != nullptr)
         {

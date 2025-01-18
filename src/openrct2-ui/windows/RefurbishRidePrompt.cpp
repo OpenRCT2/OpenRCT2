@@ -104,18 +104,18 @@ namespace OpenRCT2::Ui::Windows
     {
         RefurbishRidePromptWindow* newWindow;
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::DemolishRidePrompt);
         if (w != nullptr)
         {
             auto windowPos = w->windowPos;
             WindowClose(*w);
-            newWindow = WindowCreate<RefurbishRidePromptWindow>(
+            newWindow = windowMgr->Create<RefurbishRidePromptWindow>(
                 WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
         }
         else
         {
-            newWindow = WindowCreate<RefurbishRidePromptWindow>(
+            newWindow = windowMgr->Create<RefurbishRidePromptWindow>(
                 WindowClass::DemolishRidePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
         }
 

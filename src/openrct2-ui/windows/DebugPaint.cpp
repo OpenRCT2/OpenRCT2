@@ -155,7 +155,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* DebugPaintOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<DebugPaintWindow>(
             WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
             WF_STICK_TO_FRONT | WF_TRANSPARENT);

@@ -18,6 +18,7 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -184,10 +185,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* MultiplayerOpen()
     {
         // Check if window is already open
-        WindowBase* window = WindowBringToFrontByClass(WindowClass::Multiplayer);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::Multiplayer);
         if (window == nullptr)
         {
-            window = WindowCreate<MultiplayerWindow>(
+            window = windowMgr->Create<MultiplayerWindow>(
                 WindowClass::Multiplayer, 320, 144, WF_10 | WF_RESIZABLE | WF_AUTO_POSITION);
         }
 

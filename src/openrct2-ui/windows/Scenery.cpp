@@ -49,7 +49,6 @@
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/sprites.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/ConstructionClearance.h>
@@ -422,7 +421,7 @@ namespace OpenRCT2::Ui::Windows
                 // Find out what scenery the cursor is over
                 const CursorState* state = ContextGetCursorState();
 
-                auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                auto* windowMgr = GetWindowManager();
                 WidgetIndex widgetIndex = windowMgr->FindWidgetFromPoint(*this, state->position);
                 if (widgetIndex == WIDX_SCENERY_LIST)
                 {
@@ -451,7 +450,7 @@ namespace OpenRCT2::Ui::Windows
         {
             const CursorState* state = ContextGetCursorState();
 
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             WindowBase* other = windowMgr->FindFromPoint(state->position);
             if (other == this)
             {
@@ -2435,7 +2434,7 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outQuadrant,
             Direction* outRotation)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto* w = windowMgr->FindByClass(WindowClass::Scenery);
 
             if (w == nullptr)
@@ -2633,7 +2632,7 @@ namespace OpenRCT2::Ui::Windows
         void Sub6E1F34PathItem(
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto* w = windowMgr->FindByClass(WindowClass::Scenery);
 
             if (w == nullptr)
@@ -2667,7 +2666,7 @@ namespace OpenRCT2::Ui::Windows
         void Sub6E1F34Wall(
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outEdges)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto* w = windowMgr->FindByClass(WindowClass::Scenery);
 
             if (w == nullptr)
@@ -2758,7 +2757,7 @@ namespace OpenRCT2::Ui::Windows
         void Sub6E1F34LargeScenery(
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, Direction* outDirection)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto* w = windowMgr->FindByClass(WindowClass::Scenery);
 
             if (w == nullptr)
@@ -2860,7 +2859,7 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ,
             Direction* outDirection)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto* w = windowMgr->FindByClass(WindowClass::Scenery);
 
             if (w == nullptr)
@@ -3210,10 +3209,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* SceneryOpen()
     {
-        auto* w = static_cast<SceneryWindow*>(WindowBringToFrontByClass(WindowClass::Scenery));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<SceneryWindow*>(windowMgr->BringToFrontByClass(WindowClass::Scenery));
         if (w == nullptr)
         {
-            w = WindowCreate<SceneryWindow>(WindowClass::Scenery);
+            w = windowMgr->Create<SceneryWindow>(WindowClass::Scenery);
         }
         return w;
     }
@@ -3222,7 +3222,8 @@ namespace OpenRCT2::Ui::Windows
         const ScenerySelection& scenery, const std::optional<colour_t> primary, const std::optional<colour_t> secondary,
         const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation)
     {
-        auto* w = static_cast<SceneryWindow*>(WindowBringToFrontByClass(WindowClass::Scenery));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<SceneryWindow*>(windowMgr->BringToFrontByClass(WindowClass::Scenery));
         if (w != nullptr)
         {
             w->SetSelectedItem(scenery, primary, secondary, tertiary, rotation);
@@ -3232,7 +3233,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
     {
         // Should this bring to front?
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::Scenery));
         if (w != nullptr)
         {
@@ -3259,7 +3260,7 @@ namespace OpenRCT2::Ui::Windows
 
     const ScenerySelection WindowSceneryGetTabSelection()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::Scenery));
         if (w != nullptr)
         {
@@ -3273,7 +3274,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowSceneryInit()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::Scenery));
         if (w != nullptr)
         {

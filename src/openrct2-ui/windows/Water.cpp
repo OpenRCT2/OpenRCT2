@@ -253,7 +253,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void WaterToolDrag(const ScreenCoordsXY& screenPos)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             auto* window = windowMgr->FindFromPoint(screenPos);
             if (window == nullptr || window->viewport == nullptr)
                 return;
@@ -426,7 +426,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* WaterOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<WaterWindow>(WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }
 

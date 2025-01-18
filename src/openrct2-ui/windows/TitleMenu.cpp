@@ -121,7 +121,7 @@ namespace OpenRCT2::Ui::Windows
         {
             WindowBase* windowToOpen = nullptr;
 
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
                     windowToOpen = windowMgr->FindByClass(WindowClass::ScenarioSelect);
                     if (windowToOpen != nullptr)
                     {
-                        WindowBringToFront(*windowToOpen);
+                        windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
@@ -142,7 +142,7 @@ namespace OpenRCT2::Ui::Windows
                     windowToOpen = windowMgr->FindByClass(WindowClass::Loadsave);
                     if (windowToOpen != nullptr)
                     {
-                        WindowBringToFront(*windowToOpen);
+                        windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
@@ -156,7 +156,7 @@ namespace OpenRCT2::Ui::Windows
                     windowToOpen = windowMgr->FindByClass(WindowClass::ServerList);
                     if (windowToOpen != nullptr)
                     {
-                        WindowBringToFront(*windowToOpen);
+                        windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
@@ -287,7 +287,9 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TitleMenuOpen()
     {
         const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
-        return WindowCreate<TitleMenuWindow>(
+
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->Create<TitleMenuWindow>(
             WindowClass::TitleMenu, ScreenCoordsXY(0, ContextGetHeight() - 182), 0, windowHeight,
             WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
     }

@@ -246,7 +246,7 @@ namespace OpenRCT2
      */
     static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState state)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
         if (w == nullptr)
         {
@@ -286,7 +286,7 @@ namespace OpenRCT2
         Widget* widget;
         WidgetIndex widgetIndex;
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
 
         // Get window and widget under cursor position
         w = windowMgr->FindFromPoint(screenCoords);
@@ -566,7 +566,7 @@ namespace OpenRCT2
         if (differentialCoords.x == 0 && differentialCoords.y == 0)
             return;
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         w = windowMgr->FindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
 
         // #3294: Window can be closed during a drag session, so just finish
@@ -776,7 +776,7 @@ namespace OpenRCT2
         const auto& widget = w.widgets[widgetIndex];
         auto& scroll = w.scrolls[scroll_id];
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             int32_t newLeft;
@@ -816,7 +816,7 @@ namespace OpenRCT2
         const auto& widget = w.widgets[widgetIndex];
         auto& scroll = w.scrolls[scroll_id];
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             int32_t newTop;
@@ -853,7 +853,7 @@ namespace OpenRCT2
      */
     static void InputScrollPartUpdateHLeft(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             auto& scroll = w.scrolls[scroll_id];
@@ -873,7 +873,7 @@ namespace OpenRCT2
     {
         const auto& widget = w.widgets[widgetIndex];
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             auto& scroll = w.scrolls[scroll_id];
@@ -899,7 +899,7 @@ namespace OpenRCT2
      */
     static void InputScrollPartUpdateVTop(WindowBase& w, WidgetIndex widgetIndex, int32_t scroll_id)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             auto& scroll = w.scrolls[scroll_id];
@@ -919,7 +919,7 @@ namespace OpenRCT2
     {
         const auto& widget = w.widgets[widgetIndex];
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (windowMgr->FindByNumber(w.classification, w.number) != nullptr)
         {
             auto& scroll = w.scrolls[scroll_id];
@@ -1016,7 +1016,7 @@ namespace OpenRCT2
      */
     static void InputWidgetOverFlatbuttonInvalidate()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByNumber(gHoverWidget.window_classification, gHoverWidget.window_number);
         if (w != nullptr)
         {
@@ -1048,7 +1048,7 @@ namespace OpenRCT2
         WindowCloseByClass(WindowClass::Tooltip);
 
         // Window might have changed position in the list, therefore find it again
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         w = windowMgr->FindByNumber(windowClass, windowNumber);
         if (w == nullptr)
             return;
@@ -1145,7 +1145,7 @@ namespace OpenRCT2
         ft.Add<StringId>(STR_NONE);
         SetMapTooltip(ft);
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* window = windowMgr->FindFromPoint(screenCoords);
 
         if (window != nullptr)
@@ -1223,7 +1223,7 @@ namespace OpenRCT2
     {
         if (_inputFlags & INPUT_FLAG_TOOL_ACTIVE)
         {
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             WindowBase* w = windowMgr->FindByNumber(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
 
             if (w == nullptr)
@@ -1305,7 +1305,7 @@ namespace OpenRCT2
         cursor_w_number = gPressedWidget.window_number;
         WidgetIndex cursor_widgetIndex = gPressedWidget.widget_index;
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* cursor_w = windowMgr->FindByNumber(cursor_w_class, cursor_w_number);
         if (cursor_w == nullptr)
         {
@@ -1612,7 +1612,7 @@ namespace OpenRCT2
      */
     void InvalidateScroll()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByNumber(gPressedWidget.window_classification, gPressedWidget.window_number);
         if (w != nullptr)
         {

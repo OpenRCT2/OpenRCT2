@@ -639,7 +639,7 @@ namespace OpenRCT2::Ui::Windows
                     pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error != GameActions::Status::Ok)
                             return;
-                        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                        auto* windowMgr = GetWindowManager();
                         WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
@@ -1911,7 +1911,7 @@ namespace OpenRCT2::Ui::Windows
             return StaffOpen(peep);
         }
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = static_cast<GuestWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
         if (window == nullptr)
         {

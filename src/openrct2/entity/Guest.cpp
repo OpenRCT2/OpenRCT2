@@ -1455,7 +1455,7 @@ void Guest::CheckCantFindRide()
 
     GuestHeadingToRideId = RideId::GetNull();
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, Id);
 
     if (w != nullptr)
@@ -3145,7 +3145,7 @@ static void PeepLeavePark(Guest* peep)
 
     peep->InsertNewThought(PeepThoughtType::GoHome);
 
-    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+    auto* windowMgr = Ui::GetWindowManager();
     WindowBase* w = windowMgr->FindByNumber(WindowClass::Peep, peep->Id);
     if (w != nullptr)
         w->OnPrepareDraw();

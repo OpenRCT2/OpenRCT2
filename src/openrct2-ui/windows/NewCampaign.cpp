@@ -23,7 +23,6 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -404,7 +403,8 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* NewCampaignOpen(int16_t campaignType)
     {
-        auto w = static_cast<NewCampaignWindow*>(WindowBringToFrontByClass(WindowClass::NewCampaign));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<NewCampaignWindow*>(windowMgr->BringToFrontByClass(WindowClass::NewCampaign));
         if (w != nullptr)
         {
             if (w->GetCampaignType() == campaignType)
@@ -413,7 +413,7 @@ namespace OpenRCT2::Ui::Windows
             WindowClose(*w);
         }
 
-        w = WindowCreate<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
+        w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
         if (w != nullptr)
         {
             w->SetCampaign(campaignType);
@@ -423,7 +423,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowCampaignRefreshRides()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto w = static_cast<NewCampaignWindow*>(windowMgr->FindByClass(WindowClass::NewCampaign));
         if (w != nullptr)
         {

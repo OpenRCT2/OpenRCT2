@@ -343,7 +343,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_BACKGROUND:
                 {
-                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
                     if (windowMgr->FindByClass(WindowClass::Error) == nullptr && (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                     {
                         auto action = GetClearAction();
@@ -380,7 +380,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ClearSceneryOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<CleanSceneryWindow>(
             WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     }

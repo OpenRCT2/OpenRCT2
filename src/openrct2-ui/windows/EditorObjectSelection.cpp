@@ -1644,7 +1644,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorObjectSelectionOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
             WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
@@ -1747,7 +1747,7 @@ namespace OpenRCT2::Ui::Windows
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         WindowBase* w = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {

@@ -45,6 +45,7 @@
 #include <openrct2/scenes/title/TitleSequenceManager.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
@@ -2216,7 +2217,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* OptionsOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

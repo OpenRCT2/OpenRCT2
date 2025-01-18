@@ -394,7 +394,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* EditorParkEntranceOpen()
     {
         // Check if window is already open
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->BringToFrontByClass(WindowClass::EditorParkEntrance);
         if (window != nullptr)
             return window;

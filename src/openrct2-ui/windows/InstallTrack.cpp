@@ -432,7 +432,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t screenHeight = ContextGetHeight();
         auto screenPos = ScreenCoordsXY{ screenWidth / 2 - 201, std::max(kTopToolbarHeight + 1, screenHeight / 2 - 200) };
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<InstallTrackWindow>(WindowClass::InstallTrack, screenPos, WW, WH, 0);
         window->SetupTrack(path, std::move(trackDesign));
 

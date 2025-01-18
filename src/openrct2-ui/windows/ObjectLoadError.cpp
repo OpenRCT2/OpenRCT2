@@ -25,6 +25,7 @@
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <sstream>
 #include <string>
@@ -576,10 +577,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
     {
         // Check if window is already open
-        auto* window = WindowBringToFrontByClass(WindowClass::ObjectLoadError);
+        auto* windowMgr = Ui::GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::ObjectLoadError);
         if (window == nullptr)
         {
-            window = WindowCreate<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
+            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
         }
 
         static_cast<ObjectLoadErrorWindow*>(window)->Initialise(path, numMissingObjects, missingObjects);

@@ -97,7 +97,7 @@ namespace OpenRCT2::Ui::Windows
         std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
 
         auto& im = GetInputManager();
-        auto* wm = GetContext()->GetUiContext()->GetWindowManager();
+        auto* wm = GetWindowManager();
         if (_cursorHoldDuration < 25 || stringId == STR_NONE || im.IsModifierKeyPressed(ModifierKey::ctrl)
             || im.IsModifierKeyPressed(ModifierKey::shift) || wm->FindByClass(WindowClass::Error) != nullptr)
         {
@@ -116,7 +116,7 @@ namespace OpenRCT2::Ui::Windows
         const CursorState* state = ContextGetCursorState();
         auto pos = state->position + ScreenCoordsXY{ -width / 2, 15 };
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         if (auto w = windowMgr->FindByClass(WindowClass::MapTooltip))
         {
             w->Invalidate();
@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
         }
         else
         {
-            w = WindowCreate<MapTooltip>(
+            w = windowMgr->Create<MapTooltip>(
                 WindowClass::MapTooltip, pos, width, height, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
         }
     }

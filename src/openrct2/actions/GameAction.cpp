@@ -451,7 +451,7 @@ namespace OpenRCT2::GameActions
 
         if (result.Error != GameActions::Status::Ok && shouldShowError)
         {
-            auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+            auto windowManager = Ui::GetWindowManager();
             windowManager->ShowError(result.GetErrorTitle(), result.GetErrorMessage());
         }
 

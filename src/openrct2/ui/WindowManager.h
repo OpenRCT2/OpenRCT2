@@ -97,4 +97,6 @@ namespace OpenRCT2::Ui
     };
 
     std::unique_ptr<IWindowManager> CreateDummyWindowManager();
+
+    IWindowManager* GetWindowManager();
 } // namespace OpenRCT2::Ui

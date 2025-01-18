@@ -23,6 +23,7 @@
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -879,7 +880,7 @@ namespace OpenRCT2::Ui::Windows
 
     static FinancesWindow* FinancesWindowOpen(uint8_t page)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
 
         if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
@@ -890,7 +891,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* FinancesOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
         return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
     }
 

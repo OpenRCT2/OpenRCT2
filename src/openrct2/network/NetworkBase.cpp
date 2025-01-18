@@ -3543,7 +3543,7 @@ const char* NetworkGetGroupName(uint32_t index)
 
 void NetworkChatShowConnectedMessage()
 {
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = Ui::GetWindowManager();
     std::string s = windowManager->GetKeyboardShortcutString("interface.misc.multiplayer_chat");
     const char* sptr = s.c_str();
 

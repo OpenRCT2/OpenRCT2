@@ -13,6 +13,7 @@
 #include <openrct2/Version.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -39,10 +40,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* TitleVersionOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::TitleVersion);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::TitleVersion);
         if (window == nullptr)
         {
-            window = WindowCreate<TitleVersionWindow>(
+            window = windowMgr->Create<TitleVersionWindow>(
                 WindowClass::TitleVersion, ScreenCoordsXY(kTextOffset, ContextGetHeight() - 30), WW, WH,
                 WF_STICK_TO_BACK | WF_TRANSPARENT);
         }

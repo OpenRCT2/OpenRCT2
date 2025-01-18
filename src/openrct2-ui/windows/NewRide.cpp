@@ -1071,9 +1071,8 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* NewRideOpen()
     {
-        WindowBase* window;
-
-        window = WindowBringToFrontByClass(WindowClass::ConstructRide);
+        auto* windowMgr = Ui::GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::ConstructRide);
         if (window)
         {
             return window;
@@ -1082,7 +1081,8 @@ namespace OpenRCT2::Ui::Windows
         WindowCloseByClass(WindowClass::TrackDesignList);
         WindowCloseByClass(WindowClass::TrackDesignPlace);
 
-        window = WindowCreate<NewRideWindow>(WindowClass::ConstructRide, WindowWidth, WindowHeight, WF_10 | WF_AUTO_POSITION);
+        window = windowMgr->Create<NewRideWindow>(
+            WindowClass::ConstructRide, WindowWidth, WindowHeight, WF_10 | WF_AUTO_POSITION);
         return window;
     }
 
@@ -1099,7 +1099,7 @@ namespace OpenRCT2::Ui::Windows
      */
     void WindowNewRideFocus(RideSelection rideItem)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto w = static_cast<NewRideWindow*>(windowMgr->FindByClass(WindowClass::ConstructRide));
         if (!w)
         {

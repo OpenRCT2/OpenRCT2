@@ -23,6 +23,7 @@
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/LargeSceneryElement.h>
@@ -334,12 +335,13 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* SignOpen(rct_windownumber number)
     {
-        auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<SignWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));
 
         if (w != nullptr)
             return w;
 
-        w = WindowCreate<SignWindow>(WindowClass::Banner, WW, WH, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::Banner, WW, WH, 0);
 
         if (w == nullptr)
             return nullptr;
@@ -357,12 +359,13 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* SignSmallOpen(rct_windownumber number)
     {
-        auto* w = static_cast<SignWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<SignWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Banner, number));
 
         if (w != nullptr)
             return w;
 
-        w = WindowCreate<SignWindow>(WindowClass::Banner, WW, WH, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::Banner, WW, WH, 0);
 
         if (w == nullptr)
             return nullptr;

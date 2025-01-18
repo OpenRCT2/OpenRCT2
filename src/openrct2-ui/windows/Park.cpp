@@ -32,6 +32,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -1298,8 +1299,8 @@ namespace OpenRCT2::Ui::Windows
 
     static ParkWindow* ParkWindowOpen(uint8_t page)
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
-        auto* wnd = windowMgr->WindowFocusOrCreate<ParkWindow>(WindowClass::ParkInformation, 230, 174 + 9, WF_10);
+        auto* windowMgr = GetWindowManager();
+        auto* wnd = windowMgr->FocusOrCreate<ParkWindow>(WindowClass::ParkInformation, 230, 174 + 9, WF_10);
         if (wnd != nullptr && page != WINDOW_PARK_PAGE_ENTRANCE)
         {
             wnd->OnMouseUp(WIDX_TAB_1 + page);

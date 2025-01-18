@@ -971,7 +971,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* GuestListOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->BringToFrontByClass(WindowClass::GuestList);
         if (window == nullptr)
         {
@@ -995,7 +995,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowGuestListRefreshList()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->FindByClass(WindowClass::GuestList);
         if (w != nullptr)
         {

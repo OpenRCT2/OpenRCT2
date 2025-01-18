@@ -141,7 +141,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->Create(
             std::move(errorWindow), WindowClass::Error, windowPosition, width, height, WF_STICK_TO_FRONT | WF_TRANSPARENT);
     }

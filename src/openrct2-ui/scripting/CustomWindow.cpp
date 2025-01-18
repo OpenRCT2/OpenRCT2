@@ -1111,7 +1111,7 @@ namespace OpenRCT2::Ui::Windows
         static rct_windownumber GetNewWindowNumber()
         {
             auto result = _nextWindowNumber++;
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = GetWindowManager();
             while (windowMgr->FindByNumber(WindowClass::Custom, result) != nullptr)
             {
                 result++;
@@ -1126,7 +1126,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto desc = CustomWindowDesc::FromDukValue(dukDesc);
         uint16_t windowFlags = WF_RESIZABLE | WF_TRANSPARENT;
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
 
         CustomWindow* window{};
         if (desc.X && desc.Y)

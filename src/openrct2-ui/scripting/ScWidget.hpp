@@ -393,7 +393,7 @@ namespace OpenRCT2::Scripting
             if (_class == WindowClass::MainWindow)
                 return WindowGetMain();
 
-            auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+            auto* windowMgr = Ui::GetWindowManager();
             return windowMgr->FindByNumber(_class, _number);
         }
 

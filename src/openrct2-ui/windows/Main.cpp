@@ -77,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* MainOpen()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         return windowMgr->Create<MainWindow>(
             WindowClass::MainWindow, { 0, 0 }, ContextGetWidth(), ContextGetHeight(), WF_STICK_TO_BACK);
     }

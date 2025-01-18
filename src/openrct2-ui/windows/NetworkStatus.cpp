@@ -136,7 +136,7 @@ namespace OpenRCT2::Ui::Windows
     {
         ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
 
         NetworkStatusWindow* window;
         if ((window = static_cast<NetworkStatusWindow*>(windowMgr->FindByClass(WindowClass::NetworkStatus))) != nullptr)
@@ -157,7 +157,7 @@ namespace OpenRCT2::Ui::Windows
     // force close
     void WindowNetworkStatusClose()
     {
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto window = windowMgr->FindByClass(WindowClass::NetworkStatus);
         if (window == nullptr)
         {
@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
     {
         ContextForceCloseWindowByClass(WindowClass::ProgressWindow);
 
-        auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<NetworkStatusWindow>(
             WindowClass::NetworkStatus, 400, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
 

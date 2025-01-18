@@ -25,6 +25,7 @@
     #include <openrct2/network/network.h>
     #include <openrct2/platform/Platform.h>
     #include <openrct2/sprites.h>
+    #include <openrct2/ui/WindowManager.h>
     #include <tuple>
 
 namespace OpenRCT2::Ui::Windows
@@ -546,11 +547,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ServerListOpen()
     {
         // Check if window is already open
-        auto* window = WindowBringToFrontByClass(WindowClass::ServerList);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::ServerList);
         if (window != nullptr)
             return window;
 
-        window = WindowCreate<ServerListWindow>(
+        window = windowMgr->Create<ServerListWindow>(
             WindowClass::ServerList, WWIDTH_MIN, WHEIGHT_MIN, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
 
         return window;
