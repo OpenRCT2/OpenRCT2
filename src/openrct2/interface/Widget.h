@@ -12,6 +12,7 @@
 #include "../core/StringTypes.h"
 #include "../drawing/ImageId.hpp"
 #include "../localisation/StringIdType.h"
+#include "../world/Location.hpp"
 
 #include <cstdint>
 
