@@ -511,14 +511,6 @@ namespace OpenRCT2::Ui::Windows
 
         void BasePrepareDraw()
         {
-            auto newWidgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
-            // NOTE: This is not the right way to handle this.
-            if (newWidgets.size() != widgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             // Only allow linking the map size when X and Y are the same
             SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
             SetWidgetDisabled(WIDX_MAP_SIZE_LINK, _settings.mapSize.x != _settings.mapSize.y);
@@ -742,14 +734,6 @@ namespace OpenRCT2::Ui::Windows
 
         void ForestsPrepareDraw()
         {
-            auto newWidgets = PageWidgets[WINDOW_MAPGEN_PAGE_FORESTS];
-            // NOTE: This is not the right way to handle this.
-            if (newWidgets.size() != widgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             pressed_widgets = 0;
             if (_settings.trees)
                 pressed_widgets |= 1uLL << WIDX_FORESTS_PLACE_TREES;
@@ -1221,14 +1205,6 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainPrepareDraw()
         {
-            auto newWidgets = PageWidgets[WINDOW_MAPGEN_PAGE_TERRAIN];
-            // NOTE: This is not the right way to handle this.
-            if (newWidgets.size() != widgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetCheckboxValue(WIDX_RANDOM_TERRAIN, _randomTerrain != 0);
             SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
 
@@ -1350,14 +1326,6 @@ namespace OpenRCT2::Ui::Windows
 
         void WaterPrepareDraw()
         {
-            auto newWidgets = PageWidgets[WINDOW_MAPGEN_PAGE_WATER];
-            // NOTE: This is not the right way to handle this.
-            if (newWidgets.size() != widgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
-
             SetCheckboxValue(WIDX_ADD_BEACHES, _settings.beaches != 0);
 
             SetPressedTab();
@@ -1387,11 +1355,9 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             number = 0;
-            frame_no = 0;
 
-            page = WINDOW_MAPGEN_PAGE_BASE;
+            SetPage(WINDOW_MAPGEN_PAGE_BASE);
             Invalidate();
-            SetWidgets(PageWidgets[WINDOW_MAPGEN_PAGE_BASE]);
             hold_down_widgets = HoldDownWidgets[WINDOW_MAPGEN_PAGE_BASE];
             pressed_widgets = PressedWidgets[WINDOW_MAPGEN_PAGE_BASE];
             disabled_widgets = PageDisabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
