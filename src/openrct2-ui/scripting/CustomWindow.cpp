@@ -474,9 +474,9 @@ namespace OpenRCT2::Ui::Windows
             // Since the plugin may alter widget positions and sizes during an update event,
             // we need to force an update for all list view scrollbars
             WidgetIndex widgetIndex = 0;
-            for (auto widget = widgets; widget->type != WindowWidgetType::Last; widget++)
+            for (auto& widget : widgets)
             {
-                if (widget->type == WindowWidgetType::Scroll)
+                if (widget.type == WindowWidgetType::Scroll)
                 {
                     WidgetScrollUpdateThumbs(*this, widgetIndex);
                 }
@@ -511,13 +511,13 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<const char*>(desc.Title.c_str());
 
             size_t scrollIndex = 0;
-            for (auto widget = widgets; widget->type != WindowWidgetType::Last; widget++)
+            for (const auto& widget : widgets)
             {
-                if (widget->type == WindowWidgetType::Scroll)
+                if (widget.type == WindowWidgetType::Scroll)
                 {
                     auto& listView = _info.ListViews[scrollIndex];
-                    auto wwidth = widget->width() + 1 - 2;
-                    auto wheight = widget->height() + 1 - 2;
+                    auto wwidth = widget.width() + 1 - 2;
+                    auto wheight = widget.height() + 1 - 2;
                     if (listView.GetScrollbars() == ScrollbarType::Horizontal
                         || listView.GetScrollbars() == ScrollbarType::Both)
                     {
@@ -780,9 +780,9 @@ namespace OpenRCT2::Ui::Windows
         std::optional<WidgetIndex> GetViewportWidgetIndex()
         {
             WidgetIndex widgetIndex = 0;
-            for (auto widget = widgets; widget->type != WindowWidgetType::Last; widget++)
+            for (auto& widget : widgets)
             {
-                if (widget->type == WindowWidgetType::Viewport)
+                if (widget.type == WindowWidgetType::Viewport)
                 {
                     return widgetIndex;
                 }
@@ -943,8 +943,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            widgetList.push_back(kWidgetsEnd);
-            widgets = widgetList.data();
+            SetWidgets(widgetList);
 
             WindowInitScrollWidgets(*this);
             UpdateViewport();

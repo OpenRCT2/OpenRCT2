@@ -15,6 +15,7 @@
 
 #include <list>
 #include <memory>
+#include <vector>
 
 enum class TileInspectorPage : int16_t;
 
@@ -37,7 +38,7 @@ struct WindowBase
     uint64_t disabled_widgets{};
     uint64_t pressed_widgets{};
     uint64_t hold_down_widgets{};
-    Widget* widgets{};
+    std::vector<Widget> widgets{};
     ScreenCoordsXY windowPos;
     int16_t width{};
     int16_t height{};
@@ -74,6 +75,7 @@ struct WindowBase
     void SetLocation(const CoordsXYZ& coords);
     void Invalidate();
     void RemoveViewport();
+    void SetWidgets(const std::span<const Widget> newWidgets);
 
     WindowBase() = default;
     WindowBase(WindowBase&) = delete;

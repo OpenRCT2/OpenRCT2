@@ -41,12 +41,11 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _waterWidgets[] = {
+    static constexpr Widget _waterWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0),   STR_NONE),            // preview box
         MakeRemapWidget({17, 18}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
         MakeRemapWidget({43, 32}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP),  // increment size
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -59,7 +58,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _waterWidgets;
+            SetWidgets(_waterWidgets);
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);

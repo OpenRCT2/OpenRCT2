@@ -45,7 +45,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY          ),
         MakeWidget        ({220, 50}, {131, 11}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                 ),
         MakeWidget        ({339, 51}, { 11,  9}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -54,7 +53,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_custom_currency_widgets;
+            SetWidgets(window_custom_currency_widgets);
             hold_down_widgets = (1uLL << WIDX_RATE_UP) | (1uLL << WIDX_RATE_DOWN);
             WindowInitScrollWidgets(*this);
             colours[0] = COLOUR_LIGHT_BROWN;
@@ -208,15 +207,12 @@ namespace OpenRCT2::Ui::Windows
 
             DrawTextBasic(dpi, screenCoords, STR_CURRENCY_SYMBOL_TEXT, {}, { colours[1] });
 
-            screenCoords = windowPos
-                + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
-                                  window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top };
+            screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_SYMBOL_TEXT].left + 1, widgets[WIDX_SYMBOL_TEXT].top };
 
             DrawText(dpi, screenCoords, { colours[1] }, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode);
 
             auto drawPos = windowPos
-                + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-                                  window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top };
+                + ScreenCoordsXY{ widgets[WIDX_AFFIX_DROPDOWN].left + 1, widgets[WIDX_AFFIX_DROPDOWN].top };
             StringId stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
                 ? STR_PREFIX
                 : STR_SUFFIX;

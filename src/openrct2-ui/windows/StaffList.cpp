@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t MAX_WH = 450;
 
     // clang-format off
-    static Widget _staffListWidgets[] = {
+    static constexpr Widget _staffListWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  0, 43}, {    WW, WH - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                     ), // tab content panel
         MakeTab   ({  3, 17},                                                                          STR_STAFF_HANDYMEN_TAB_TIP                         ), // handymen tab
@@ -93,7 +93,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({243, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH),    STR_QUICK_FIRE_STAFF     ), // quick fire staff
         MakeWidget({267, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PATROL_BTN),  STR_SHOW_PATROL_AREA_TIP ), // show staff patrol area tool
         MakeWidget({291, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_MAP),         STR_SHOW_STAFF_ON_MAP_TIP), // show staff on map button
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -122,7 +121,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _staffListWidgets;
+            SetWidgets(_staffListWidgets);
             WindowInitScrollWidgets(*this);
 
             widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;

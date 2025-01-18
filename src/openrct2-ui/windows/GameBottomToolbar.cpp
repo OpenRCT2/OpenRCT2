@@ -52,7 +52,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_game_bottom_toolbar_widgets[] =
+    static constexpr Widget window_game_bottom_toolbar_widgets[] =
     {
         MakeWidget({  0,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Left outset panel
         MakeWidget({  2,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Left inset panel
@@ -68,7 +68,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({498,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right outset panel
         MakeWidget({500,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right inset panel
         MakeWidget({500,  2}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary                                                     ), // Date
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -87,12 +86,10 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawLeftPanel(DrawPixelInfo& dpi)
         {
-            const auto topLeft = windowPos
-                + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + 1,
-                                  window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + 1 };
-            const auto bottomRight = windowPos
-                + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right - 1,
-                                  window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1 };
+            const auto& leftPanelWidget = widgets[WIDX_LEFT_OUTSET];
+
+            const auto topLeft = windowPos + ScreenCoordsXY{ leftPanelWidget.left + 1, leftPanelWidget.top + 1 };
+            const auto bottomRight = windowPos + ScreenCoordsXY{ leftPanelWidget.right - 1, leftPanelWidget.bottom - 1 };
             // Draw green inset rectangle on panel
             GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
@@ -104,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw money
             if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
             {
-                Widget widget = window_game_bottom_toolbar_widgets[WIDX_MONEY];
+                const auto& widget = widgets[WIDX_MONEY];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
                                                     windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
@@ -129,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw guests
             {
-                Widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
+                const auto& widget = widgets[WIDX_GUESTS];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(), windowPos.y + widget.midY() - 6 };
 
                 StringId stringId = gameState.NumGuestsInPark == 1 ? _guestCountFormatsSingular[gameState.GuestChangeModifier]
@@ -142,7 +139,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw park rating
             {
-                Widget widget = window_game_bottom_toolbar_widgets[WIDX_PARK_RATING];
+                const auto& widget = widgets[WIDX_PARK_RATING];
                 auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
                 DrawParkRating(dpi, colours[3].colour, screenCoords, std::max(10, ((gameState.Park.Rating / 4) * 263) / 256));
@@ -171,20 +168,15 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawRightPanel(DrawPixelInfo& dpi)
         {
-            const auto topLeft = windowPos
-                + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 1,
-                                  window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + 1 };
-            const auto bottomRight = windowPos
-                + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 1,
-                                  window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1 };
+            const auto& rightPanelWidget = widgets[WIDX_RIGHT_OUTSET];
+
+            const auto topLeft = windowPos + ScreenCoordsXY{ rightPanelWidget.left + 1, rightPanelWidget.top + 1 };
+            const auto bottomRight = windowPos + ScreenCoordsXY{ rightPanelWidget.right - 1, rightPanelWidget.bottom - 1 };
             // Draw green inset rectangle on panel
             GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
-            auto screenCoords = ScreenCoordsXY{ (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left
-                                                 + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right)
-                                                        / 2
-                                                    + windowPos.x,
-                                                window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + windowPos.y + 2 };
+            auto screenCoords = ScreenCoordsXY{ (rightPanelWidget.left + rightPanelWidget.right) / 2 + windowPos.x,
+                                                rightPanelWidget.top + windowPos.y + 2 };
 
             // Date
             auto& date = GetDate();
@@ -204,8 +196,7 @@ namespace OpenRCT2::Ui::Windows
             uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
 
             // Temperature
-            screenCoords = { windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
-                             static_cast<int32_t>(screenCoords.y + line_height + 1) };
+            screenCoords = { windowPos.x + rightPanelWidget.left + 15, static_cast<int32_t>(screenCoords.y + line_height + 1) };
 
             int32_t temperature = GetGameState().ClimateCurrent.Temperature;
             StringId format = STR_CELSIUS_VALUE;
@@ -237,27 +228,26 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawNewsItem(DrawPixelInfo& dpi)
         {
-            auto* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
+            const auto& middleOutsetWidget = widgets[WIDX_MIDDLE_OUTSET];
             auto* newsItem = News::GetItem(0);
 
             // Current news item
             GfxFillRectInset(
                 dpi,
 
-                { windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
-                  windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
+                { windowPos + ScreenCoordsXY{ middleOutsetWidget.left + 1, middleOutsetWidget.top + 1 },
+                  windowPos + ScreenCoordsXY{ middleOutsetWidget.right - 1, middleOutsetWidget.bottom - 1 } },
                 colours[2], INSET_RECT_F_30);
 
             // Text
-            auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget->midX(), middleOutsetWidget->top + 11 };
-            int32_t itemWidth = middleOutsetWidget->width() - 62;
+            auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget.midX(), middleOutsetWidget.top + 11 };
+            int32_t itemWidth = middleOutsetWidget.width() - 62;
             DrawNewsTicker(
                 dpi, screenCoords, itemWidth, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->Text,
                 newsItem->Ticks);
 
-            screenCoords = windowPos
-                + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left,
-                                  window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top };
+            const auto& newsSubjectWidget = widgets[WIDX_NEWS_SUBJECT];
+            screenCoords = windowPos + ScreenCoordsXY{ newsSubjectWidget.left, newsSubjectWidget.top };
             switch (newsItem->Type)
             {
                 case News::ItemType::Ride:
@@ -342,7 +332,7 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawMiddlePanel(DrawPixelInfo& dpi)
         {
-            Widget* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
+            Widget* middleOutsetWidget = &widgets[WIDX_MIDDLE_OUTSET];
 
             GfxFillRectInset(
                 dpi,
@@ -411,14 +401,14 @@ namespace OpenRCT2::Ui::Windows
     public:
         GameBottomToolbar()
         {
-            widgets = window_game_bottom_toolbar_widgets;
+            SetWidgets(window_game_bottom_toolbar_widgets);
 
             frame_no = 0;
             InitScrollWidgets();
 
             // Reset the middle widget to not show by default.
             // If it is required to be shown news_update will reshow it.
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
+            widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -536,56 +526,55 @@ namespace OpenRCT2::Ui::Windows
             int32_t x = ContextGetWidth();
             width = x;
             x--;
-            window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right = x;
+            widgets[WIDX_RIGHT_OUTSET].right = x;
             x -= 2;
-            window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].right = x;
+            widgets[WIDX_RIGHT_INSET].right = x;
             x -= 137;
-            window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].left = x;
+            widgets[WIDX_RIGHT_INSET].left = x;
             x -= 2;
-            window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left = x;
+            widgets[WIDX_RIGHT_OUTSET].left = x;
             x--;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right = x;
+            widgets[WIDX_MIDDLE_OUTSET].right = x;
             x -= 2;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].right = x;
+            widgets[WIDX_MIDDLE_INSET].right = x;
             x -= 3;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].right = x;
+            widgets[WIDX_NEWS_LOCATE].right = x;
             x -= 23;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].left = x;
-            window_game_bottom_toolbar_widgets[WIDX_DATE].left = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 2;
-            window_game_bottom_toolbar_widgets[WIDX_DATE].right = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right
-                - 2;
+            widgets[WIDX_NEWS_LOCATE].left = x;
+            widgets[WIDX_DATE].left = widgets[WIDX_RIGHT_OUTSET].left + 2;
+            widgets[WIDX_DATE].right = widgets[WIDX_RIGHT_OUTSET].right - 2;
 
-            window_game_bottom_toolbar_widgets[WIDX_LEFT_INSET].type = WindowWidgetType::Empty;
-            window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WindowWidgetType::Empty;
+            widgets[WIDX_LEFT_INSET].type = WindowWidgetType::Empty;
+            widgets[WIDX_RIGHT_INSET].type = WindowWidgetType::Empty;
 
             if (News::IsQueueEmpty())
             {
                 if (!(ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
                 {
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Empty;
-                    window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
-                    window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
+                    widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Empty;
+                    widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
+                    widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
                 }
                 else
                 {
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
-                    window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
-                    window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 0;
-                    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 0;
+                    widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
+                    widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
+                    widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
+                    widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_MIDDLE_OUTSET].colour = 0;
+                    widgets[WIDX_MIDDLE_INSET].colour = 0;
                 }
             }
             else
             {
                 News::Item* newsItem = News::GetItem(0);
-                window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-                window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
-                window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::FlatBtn;
-                window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
-                window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 2;
-                window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 2;
+                widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
+                widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_MIDDLE_OUTSET].colour = 2;
+                widgets[WIDX_MIDDLE_INSET].colour = 2;
                 disabled_widgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
                 disabled_widgets &= ~(1uLL << WIDX_NEWS_LOCATE);
 
@@ -598,7 +587,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!(newsItem->TypeHasSubject()))
                 {
                     disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
-                    window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
+                    widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
                 }
 
                 if (newsItem->HasButton())
@@ -611,9 +600,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            auto leftWidget = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET];
-            auto rightWidget = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET];
-            auto middleWidget = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
+            auto leftWidget = widgets[WIDX_LEFT_OUTSET];
+            auto rightWidget = widgets[WIDX_RIGHT_OUTSET];
+            auto middleWidget = widgets[WIDX_MIDDLE_OUTSET];
 
             // Draw panel grey backgrounds
             auto leftTop = windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };

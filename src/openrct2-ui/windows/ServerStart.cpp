@@ -45,7 +45,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 154;
 
     // clang-format off
-    static Widget _windowServerStartWidgets[] = {
+    static constexpr Widget _windowServerStartWidgets[] = {
         MakeWidget({ 0, 0 }, { WW, WH }, WindowWidgetType::Frame, WindowColour::Primary), // panel / background
         MakeWidget({ 1, 1 }, { 298, 14 }, WindowWidgetType::Caption, WindowColour::Primary, STR_START_SERVER,STR_WINDOW_TITLE_TIP), // title bar
         MakeWidget({ WW - 13, 2 }, { 11, 12 }, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,STR_CLOSE_WINDOW_TIP), // close x button
@@ -58,7 +58,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 6, 117 }, { 287, 14 }, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ADVERTISE,STR_ADVERTISE_SERVER_TIP), // advertise checkbox
         MakeWidget({ 6, WH - 6 - 13 }, { 101, 14 }, WindowWidgetType::Button, WindowColour::Secondary,STR_NEW_GAME), // start server button
         MakeWidget({ 112, WH - 6 - 13 }, { 101, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_LOAD_GAME), // None
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -67,7 +66,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _windowServerStartWidgets;
+            SetWidgets(_windowServerStartWidgets);
             widgets[WIDX_PORT_INPUT].string = _port;
             widgets[WIDX_NAME_INPUT].string = _name;
             widgets[WIDX_DESCRIPTION_INPUT].string = _description;

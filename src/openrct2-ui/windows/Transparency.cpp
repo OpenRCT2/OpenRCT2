@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
     // clang-format off
-    static Widget _transparancyWidgets[] =
+    static constexpr Widget _transparancyWidgets[] =
     {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEGETATION),  STR_SEE_THROUGH_VEGETATION),
@@ -81,8 +81,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 77, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_RIDES),
         MakeWidget({102, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEHICLES),
         MakeWidget({127, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SUPPORTS),
-
-        { kWidgetsEnd },
     };
     // clang-format on
 
@@ -92,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _transparancyWidgets;
+            SetWidgets(_transparancyWidgets);
             WindowPushOthersBelow(*this);
 
             auto* w = WindowGetMain();

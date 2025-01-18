@@ -401,12 +401,13 @@ void WindowInvalidateAll()
  */
 void WidgetInvalidate(WindowBase& w, WidgetIndex widgetIndex)
 {
-#ifdef DEBUG
-    for (int32_t i = 0; i <= widgetIndex; i++)
+    if (w.widgets.empty())
     {
-        assert(w.widgets[i].type != WindowWidgetType::Last);
+        // This might be called before the window is fully created.
+        return;
     }
-#endif
+
+    assert(widgetIndex < w.widgets.size());
 
     const auto& widget = w.widgets[widgetIndex];
     if (widget.left == -2)
@@ -1051,7 +1052,7 @@ void ToolCancel()
         // Reset map selection
         gMapSelectFlags = 0;
 
-        if (gCurrentToolWidget.widget_index != -1)
+        if (gCurrentToolWidget.widget_index != kWidgetIndexNull)
         {
             // Invalidate tool widget
             WidgetInvalidateByNumber(
@@ -1132,7 +1133,7 @@ void WindowResizeGuiScenarioEditor(int32_t width, int32_t height)
         mainWind->height = height;
         viewport->width = width;
         viewport->height = height;
-        if (mainWind->widgets != nullptr && mainWind->widgets[WC_MAIN_WINDOW__0].type == WindowWidgetType::Viewport)
+        if (!mainWind->widgets.empty() && mainWind->widgets[WC_MAIN_WINDOW__0].type == WindowWidgetType::Viewport)
         {
             mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
             mainWind->widgets[WC_MAIN_WINDOW__0].bottom = height;

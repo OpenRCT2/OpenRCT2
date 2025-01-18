@@ -24,9 +24,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BACKGROUND
     };
 
-    static Widget _tooltipWidgets[] = {
+    static constexpr Widget _tooltipWidgets[] = {
         MakeWidget({ 0, 0 }, { 200, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-        kWidgetsEnd,
     };
 
     class TooltipWindow final : public Window
@@ -44,7 +43,7 @@ namespace OpenRCT2::Ui::Windows
             width = textWidth + 5;
             height = textHeight + 4;
 
-            widgets = _tooltipWidgets;
+            SetWidgets(_tooltipWidgets);
             widgets[WIDX_BACKGROUND].right = width;
             widgets[WIDX_BACKGROUND].bottom = height;
 
@@ -165,7 +164,7 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
-        if (widgetWindow == nullptr || widgetIndex == -1)
+        if (widgetWindow == nullptr || widgetIndex == kWidgetIndexNull)
             return;
 
         auto widget = &widgetWindow->widgets[widgetIndex];

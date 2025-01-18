@@ -9,6 +9,7 @@
 
 #include "Widget.h"
 
+#include <algorithm>
 #include <cmath>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/Context.h>
@@ -939,9 +940,11 @@ namespace OpenRCT2::Ui
         int32_t* output_scroll_area, int32_t* scroll_id)
     {
         *scroll_id = 0;
-        for (Widget* iterator = w.widgets; iterator != widget; iterator++)
+        auto itLast = std::find_if(
+            w.widgets.begin(), w.widgets.end(), [&](auto& otherWidget) { return &otherWidget == widget; });
+        for (auto it = w.widgets.begin(); it != itLast; it++)
         {
-            if (iterator->type == WindowWidgetType::Scroll)
+            if (it->type == WindowWidgetType::Scroll)
             {
                 *scroll_id += 1;
             }
@@ -1044,20 +1047,13 @@ namespace OpenRCT2::Ui
 
     Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex)
     {
-        // Make sure we don't go out of bounds if we are given a bad widget index
-        WidgetIndex index = 0;
-        for (auto* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
+        if (widgetIndex >= w.widgets.size())
         {
-            if (index == widgetIndex)
-            {
-                return widget;
-            }
-            index++;
+            LOG_ERROR("Widget index %i out of bounds for window class %u", widgetIndex, w.classification);
         }
 
-        LOG_ERROR("Widget index %i out of bounds for window class %u", widgetIndex, w.classification);
-
-        return nullptr;
+        // FIXME: This const_cast is bad.
+        return const_cast<Widget*>(w.widgets.data() + widgetIndex);
     }
 
     static void SafeSetWidgetFlag(WindowBase& w, WidgetIndex widgetIndex, WidgetFlags mask, bool value)

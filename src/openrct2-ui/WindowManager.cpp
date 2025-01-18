@@ -420,7 +420,7 @@ public:
             {
                 auto rideIndex = intent.GetUIntExtra(INTENT_EXTRA_RIDE_ID);
                 auto w = FindByClass(WindowClass::RideConstruction);
-                if (w == nullptr || w->number != rideIndex)
+                if (w == nullptr || w->number != static_cast<int16_t>(rideIndex))
                 {
                     WindowCloseConstructionWindows();
                     _currentRideIndex = RideId::FromUnderlying(rideIndex);
@@ -713,7 +713,7 @@ public:
             if (w->flags & WF_NO_BACKGROUND)
             {
                 auto widgetIndex = FindWidgetFromPoint(*w.get(), screenCoords);
-                if (widgetIndex == -1)
+                if (widgetIndex == kWidgetIndexNull)
                     continue;
             }
 
@@ -736,14 +736,10 @@ public:
         w.OnPrepareDraw();
 
         // Find the widget at point x, y
-        WidgetIndex widget_index = -1;
-        for (int32_t i = 0;; i++)
+        WidgetIndex widget_index = kWidgetIndexNull;
+        for (auto i = 0u; i < w.widgets.size(); i++)
         {
             const auto& widget = w.widgets[i];
-            if (widget.type == WindowWidgetType::Last)
-            {
-                break;
-            }
 
             if (widget.type != WindowWidgetType::Empty && widget.IsVisible())
             {
@@ -756,7 +752,7 @@ public:
         }
 
         // Return next widget if a dropdown
-        if (widget_index != -1)
+        if (widget_index != kWidgetIndexNull)
         {
             const auto& widget = w.widgets[widget_index];
             if (widget.type == WindowWidgetType::DropdownMenu)

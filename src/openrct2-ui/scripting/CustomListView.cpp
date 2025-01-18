@@ -833,13 +833,14 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
 Widget* CustomListView::GetWidget() const
 {
     size_t scrollIndex = 0;
-    for (auto widget = ParentWindow->widgets; widget->type != WindowWidgetType::Last; widget++)
+    for (WidgetIndex widgetIndex = 0; widgetIndex < ParentWindow->widgets.size(); widgetIndex++)
     {
-        if (widget->type == WindowWidgetType::Scroll)
+        auto& widget = ParentWindow->widgets[widgetIndex];
+        if (widget.type == WindowWidgetType::Scroll)
         {
             if (scrollIndex == ScrollIndex)
             {
-                return widget;
+                return &widget;
             }
             scrollIndex++;
         }

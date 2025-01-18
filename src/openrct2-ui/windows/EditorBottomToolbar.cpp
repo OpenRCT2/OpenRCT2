@@ -38,12 +38,11 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _editorBottomToolbarWidgets[] = {
+    static constexpr Widget _editorBottomToolbarWidgets[] = {
         MakeWidget({  0, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
         MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
         MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
         MakeWidget({442, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -62,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _editorBottomToolbarWidgets;
+            SetWidgets(_editorBottomToolbarWidgets);
 
             InitScrollWidgets();
             SetAllSceneryItemsInvented();

@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr ScreenSize CLEAR_SCENERY_BUTTON = { 24, 24 };
 
-    static Widget window_clear_scenery_widgets[] = {
+    static constexpr Widget window_clear_scenery_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget(
             { 27, 17 }, { 44, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_LAND_TOOL_SIZE_0,
@@ -64,7 +64,6 @@ namespace OpenRCT2::Ui::Windows
         MakeRemapWidget(
             { 67, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,
             STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP), // footpaths
-        kWidgetsEnd,
     };
 
     class CleanSceneryWindow final : public Window
@@ -78,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_clear_scenery_widgets;
+            SetWidgets(window_clear_scenery_widgets);
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -178,7 +177,7 @@ namespace OpenRCT2::Ui::Windows
                 | (_clearLargeScenery ? (1uLL << WIDX_LARGE_SCENERY) : 0) | (_clearFootpath ? (1uLL << WIDX_FOOTPATH) : 0);
 
             // Update the preview image (for tool sizes up to 7)
-            window_clear_scenery_widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
+            widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -186,8 +185,8 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
 
             // Draw number for tool sizes bigger than 7
-            ScreenCoordsXY screenCoords = { windowPos.x + window_clear_scenery_widgets[WIDX_PREVIEW].midX(),
-                                            windowPos.y + window_clear_scenery_widgets[WIDX_PREVIEW].midY() };
+            ScreenCoordsXY screenCoords = { windowPos.x + widgets[WIDX_PREVIEW].midX(),
+                                            windowPos.y + widgets[WIDX_PREVIEW].midY() };
             if (gLandToolSize > kLandToolMaximumSizeWithSprite)
             {
                 auto ft = Formatter();
@@ -202,8 +201,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_clearSceneryCost);
-                screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + windowPos.x;
-                screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
+                screenCoords.x = widgets[WIDX_PREVIEW].midX() + windowPos.x;
+                screenCoords.y = widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
                 DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
         }

@@ -142,7 +142,7 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
 
     // clang-format off
-    static Widget _rideConstructionWidgets[] = {
+    static constexpr Widget _rideConstructionWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget        ({  3,  17}, {     GW,  57}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
         MakeWidget        ({  3,  76}, {     GW,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
@@ -179,7 +179,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({118, 120}, {     89,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SEAT_ROT                                                                        ),
         MakeSpinnerWidgets({123, 138}, {     58,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary, 0,                                                STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
         MakeWidget        ({161, 338}, {     24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_G2_SIMULATE),                         STR_SIMULATE_RIDE_TIP                               ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -239,7 +238,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            widgets = _rideConstructionWidgets;
+            SetWidgets(_rideConstructionWidgets);
             number = _currentRideIndex.ToUnderlying();
 
             InitScrollWidgets();
@@ -1579,7 +1578,7 @@ namespace OpenRCT2::Ui::Windows
             currentRide->FormatNameTo(ft);
         }
 
-        static void OnDrawUpdateCoveredPieces(const TrackDrawerDescriptor& trackDrawerDescriptor, Widget* widgets)
+        static void OnDrawUpdateCoveredPieces(const TrackDrawerDescriptor& trackDrawerDescriptor, std::span<Widget> widgets)
         {
             widgets[WIDX_U_TRACK].type = WindowWidgetType::Empty;
             widgets[WIDX_O_TRACK].type = WindowWidgetType::Empty;

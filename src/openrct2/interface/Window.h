@@ -39,7 +39,7 @@ enum class VisibilityCache : uint8_t;
 enum class CursorID : uint8_t;
 enum class CloseWindowModifier : uint8_t;
 
-using rct_windownumber = uint16_t;
+using rct_windownumber = int16_t;
 
 namespace OpenRCT2
 {
@@ -75,20 +75,20 @@ enum class WindowWidgetType : uint8_t;
 
 struct Widget
 {
-    WindowWidgetType type;
-    uint8_t colour;
-    int16_t left;
-    int16_t right;
-    int16_t top;
-    int16_t bottom;
+    WindowWidgetType type{};
+    uint8_t colour{};
+    int16_t left{};
+    int16_t right{};
+    int16_t top{};
+    int16_t bottom{};
     union
     {
         uint32_t content;
-        ImageId image;
+        ImageId image{};
         StringId text;
         utf8* string;
     };
-    StringId tooltip;
+    StringId tooltip{ STR_NONE };
 
     // New properties
     WidgetFlags flags{};

@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_MAZE_CONSTRUCTION, WIDX_MAZE_EXIT);
 
     // clang-format off
-    static Widget window_maze_construction_widgets[] = {
+    static constexpr Widget window_maze_construction_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({ 3,  17}, {160, 55}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_MODE                                                            ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
@@ -94,7 +94,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({87, 178}, { 70, 12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_EXIT,     STR_RIDE_CONSTRUCTION_EXIT_TIP                        ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -105,7 +104,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_maze_construction_widgets;
+            SetWidgets(window_maze_construction_widgets);
             WindowInitScrollWidgets(*this);
             rideId = _currentRideIndex;
             ShowGridlines();

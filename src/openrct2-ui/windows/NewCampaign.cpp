@@ -50,7 +50,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_new_campaign_widgets[] = {
+    static constexpr Widget window_new_campaign_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
         MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
@@ -58,7 +58,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 14, 41}, {126, 14}, WindowWidgetType::Label,    WindowColour::Primary, STR_LENGTH_OF_TIME                         ), // weeks label
         MakeSpinnerWidgets({120, 41}, {100, 14}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_EMPTY                                  ), // weeks (3 widgets)
         MakeWidget        ({ 14, 89}, {322, 14}, WindowWidgetType::Button,   WindowColour::Primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -175,7 +174,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_new_campaign_widgets;
+            SetWidgets(window_new_campaign_widgets);
             hold_down_widgets = (1uLL << WIDX_WEEKS_INCREASE_BUTTON) | (1uLL << WIDX_WEEKS_DECREASE_BUTTON);
             WindowInitScrollWidgets(*this);
         }

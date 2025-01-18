@@ -219,7 +219,7 @@ static constexpr int32_t TAB_START = 3;
     MakeTab   ({158, 17}, STR_RIDE_CHEATS_TIP                           ), /* tab 4 */ \
     MakeTab   ({189, 17}, STR_WEATHER_NATURE_CHEATS_TIP                 )  /* tab 7 */
 
-static Widget window_cheats_money_widgets[] =
+static constexpr Widget window_cheats_money_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({ 11,  48}, CHEAT_BUTTON,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY), // No money
@@ -228,10 +228,9 @@ static Widget window_cheats_money_widgets[] =
     MakeWidget        ({ 11, 111}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_MONEY         ), // add money
     MakeWidget        ({127, 111}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_SET_MONEY         ), // set money
     MakeWidget        ({ 11, 145}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_CLEAR_LOAN  ), // Clear loan
-    kWidgetsEnd,
 };
 
-static Widget window_cheats_date_widgets[] =
+static constexpr Widget window_cheats_date_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5,  48}, {238, 99} ,    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_DATE_SET  ), // Date group
@@ -240,10 +239,9 @@ static Widget window_cheats_date_widgets[] =
     MakeSpinnerWidgets({120, 103}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::Secondary                ), // Day box
     MakeWidget        ({ 11, 122}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_DATE_SET  ), // Set Date
     MakeWidget        ({127, 122}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_DATE_RESET), // Reset Date
-    kWidgetsEnd,
 };
 
-static Widget window_cheats_guests_widgets[] =
+static constexpr Widget window_cheats_guests_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget({ 11,  48}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_LARGE_TRAM_GUESTS,     STR_CHEAT_LARGE_TRAM_GUESTS_TIP), // large tram
@@ -278,11 +276,9 @@ static Widget window_cheats_guests_widgets[] =
     MakeWidget({ 11, 380+1}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_PRICE,          STR_CHEAT_IGNORE_PRICE_TIP     ), // guests ignore price
     MakeWidget({ 11, 397+1}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
     MakeWidget({ 11, 414+1}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP), // disable littering
-
-    kWidgetsEnd,
 };
 
-static Widget window_cheats_staff_widgets[] =
+static constexpr Widget window_cheats_staff_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5, 357-309}, {238,  35},   WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                           ), // Staff group
@@ -296,11 +292,9 @@ static Widget window_cheats_staff_widgets[] =
     MakeWidget        ({127, 292-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
     MakeWidget        ({ 11, 313-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
     MakeWidget        ({ 11, 334-164}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
-
-    kWidgetsEnd,
 };
 
-static Widget window_cheats_park_widgets[] =
+static constexpr Widget window_cheats_park_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5,  48}, {238,  60},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
@@ -319,11 +313,9 @@ static Widget window_cheats_park_widgets[] =
     MakeWidget        ({ 11, 207}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_BUILD_IN_PAUSE_MODE,          STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP         ), // Build in pause mode
     MakeWidget        ({ 11, 224}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,          STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP         ), // Allow regular footpaths as queue path
     MakeWidget        ({ 11, 241}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP), // Allow special colours in dropdown
-
-    kWidgetsEnd,
 };
 
-static Widget window_cheats_rides_widgets[] =
+static constexpr Widget window_cheats_rides_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget({ 11,  48}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_FIX_ALL_RIDES,                        STR_CHEAT_FIX_ALL_RIDES_TIP                    ), // Fix all rides
@@ -349,10 +341,9 @@ static Widget window_cheats_rides_widgets[] =
     MakeWidget({ 11, 325}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES                                                 ), // Show vehicles from other track types
     MakeWidget({ 11, 342}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
     MakeWidget({ 11, 359}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           ), // Ignore Research Status
-    kWidgetsEnd,
 };
 
-static Widget window_cheats_weather_widgets[] =
+static constexpr Widget window_cheats_weather_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5,  48}, {238,  50},   WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_CHEAT_WEATHER_GROUP                                      ), // Weather group
@@ -362,10 +353,9 @@ static Widget window_cheats_weather_widgets[] =
     MakeWidget        ({  5, 102}, {238,  37},   WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_FAUNA                                                    ), // Fauna group
     MakeWidget        ({ 11, 115}, CHEAT_BUTTON, WindowWidgetType::Button,       WindowColour::Secondary, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP        ), // Create ducks
     MakeWidget        ({127, 115}, CHEAT_BUTTON, WindowWidgetType::Button,       WindowColour::Secondary, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP        ), // Remove ducks
-    kWidgetsEnd,
 };
 
-static Widget *window_cheats_page_widgets[] =
+static constexpr std::span<const Widget> window_cheats_page_widgets[] =
 {
     window_cheats_money_widgets,
     window_cheats_date_widgets,
@@ -512,13 +502,6 @@ static StringId window_cheats_page_titles[] = {
 
         void OnPrepareDraw() override
         {
-            auto* targetWidgets = window_cheats_page_widgets[page];
-            if (widgets != targetWidgets)
-            {
-                widgets = targetWidgets;
-                WindowInitScrollWidgets(*this);
-            }
-
             pressed_widgets = 0;
             disabled_widgets = 0;
 
@@ -592,11 +575,16 @@ static StringId window_cheats_page_titles[] = {
             }
 
             // Current weather
-            window_cheats_weather_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.ClimateCurrent.Weather)];
+            if (page == WINDOW_CHEATS_PAGE_WEATHER)
+            {
+                widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gameState.ClimateCurrent.Weather)];
+            }
 
             // Staff speed
-            window_cheats_staff_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(
-                gameState.Cheats.selectedStaffSpeed)];
+            if (page == WINDOW_CHEATS_PAGE_STAFF)
+            {
+                widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gameState.Cheats.selectedStaffSpeed)];
+            }
 
             if (gScreenFlags & SCREEN_FLAGS_EDITOR)
             {
@@ -753,18 +741,18 @@ static StringId window_cheats_page_titles[] = {
 
             hold_down_widgets = window_cheats_page_hold_down_widgets[p];
             pressed_widgets = 0;
-            widgets = window_cheats_page_widgets[p];
+            SetWidgets(window_cheats_page_widgets[p]);
 
             auto maxY = 0;
-            auto* widget = &widgets[WIDX_TAB_CONTENT];
-            while (widget->type != WindowWidgetType::Last)
+            for (WidgetIndex widgetIdx = WIDX_TAB_CONTENT; widgetIdx < widgets.size(); widgetIdx++)
             {
-                maxY = std::max<int32_t>(maxY, widget->bottom);
-                widget++;
+                auto& widget = widgets[widgetIdx];
+                maxY = std::max<int32_t>(maxY, widget.bottom);
             }
             maxY += 6;
 
             Invalidate();
+            WindowInitScrollWidgets(*this);
             height = maxY;
             widgets[WIDX_BACKGROUND].bottom = maxY - 1;
             widgets[WIDX_PAGE_BACKGROUND].bottom = maxY - 1;

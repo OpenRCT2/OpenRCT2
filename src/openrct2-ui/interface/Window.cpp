@@ -214,11 +214,10 @@ static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t heigh
 
 static int32_t WindowGetWidgetIndex(const WindowBase& w, Widget* widget)
 {
-    int32_t i = 0;
-    for (Widget* widget2 = w.widgets; widget2->type != WindowWidgetType::Last; widget2++, i++)
-        if (widget == widget2)
-            return i;
-    return -1;
+    const auto it = std::find_if(w.widgets.begin(), w.widgets.end(), [&](auto& otherWidget) { return &otherWidget == widget; });
+    if (it == w.widgets.end())
+        return -1;
+    return std::distance(w.widgets.begin(), it);
 }
 
 static int32_t WindowGetScrollIndex(const WindowBase& w, int32_t targetWidgetIndex)
@@ -227,12 +226,12 @@ static int32_t WindowGetScrollIndex(const WindowBase& w, int32_t targetWidgetInd
         return -1;
 
     int32_t scrollIndex = 0;
-    WidgetIndex widgetIndex = 0;
-    for (Widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
+    for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
     {
         if (widgetIndex == targetWidgetIndex)
             break;
-        if (widget->type == WindowWidgetType::Scroll)
+        auto& widget = w.widgets[widgetIndex];
+        if (widget.type == WindowWidgetType::Scroll)
             scrollIndex++;
     }
 
@@ -241,13 +240,14 @@ static int32_t WindowGetScrollIndex(const WindowBase& w, int32_t targetWidgetInd
 
 static Widget* WindowGetScrollWidget(const WindowBase& w, int32_t scrollIndex)
 {
-    for (Widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
+    for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
     {
-        if (widget->type != WindowWidgetType::Scroll)
+        auto& widget = w.widgets[widgetIndex];
+        if (widget.type != WindowWidgetType::Scroll)
             continue;
 
         if (scrollIndex == 0)
-            return widget;
+            return const_cast<Widget*>(&widget);
         scrollIndex--;
     }
 
@@ -291,20 +291,21 @@ static void WindowScrollWheelInput(WindowBase& w, int32_t scrollIndex, int32_t w
  */
 static int32_t WindowWheelInput(WindowBase& w, int32_t wheel)
 {
-    int32_t i = 0;
-    for (Widget* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
+    int32_t scrollIndex = 0;
+    for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
     {
-        if (widget->type != WindowWidgetType::Scroll)
+        const auto& widget = w.widgets[widgetIndex];
+        if (widget.type != WindowWidgetType::Scroll)
             continue;
 
         // Originally always checked first scroll view, bug maybe?
-        const auto& scroll = w.scrolls[i];
+        const auto& scroll = w.scrolls[scrollIndex];
         if (scroll.flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE))
         {
-            WindowScrollWheelInput(w, i, wheel);
+            WindowScrollWheelInput(w, scrollIndex, wheel);
             return 1;
         }
-        i++;
+        scrollIndex++;
     }
 
     return 0;
@@ -450,7 +451,7 @@ void WindowAllWheelInput()
 
             // Check scroll view, cursor is over
             WidgetIndex widgetIndex = windowMgr->FindWidgetFromPoint(*w, cursorState->position);
-            if (widgetIndex != -1)
+            if (widgetIndex != kWidgetIndexNull)
             {
                 const auto& widget = w->widgets[widgetIndex];
                 if (widget.type == WindowWidgetType::Scroll)
@@ -490,13 +491,10 @@ void ApplyScreenSaverLockSetting()
  */
 static void WindowInvalidatePressedImageButton(const WindowBase& w)
 {
-    WidgetIndex widgetIndex;
-    Widget* widget;
-
-    widgetIndex = 0;
-    for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
+    for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
     {
-        if (widget->type != WindowWidgetType::ImgBtn)
+        auto& widget = w.widgets[widgetIndex];
+        if (widget.type != WindowWidgetType::ImgBtn)
             continue;
 
         if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
@@ -879,7 +877,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 WidgetInvalidate(*w, _currentTextBox.widget_index);
             }
-            _currentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
+            _currentTextBox.widget_index = kWidgetIndexNull;
         }
     }
 
@@ -958,14 +956,11 @@ namespace OpenRCT2::Ui::Windows
     void WindowUpdateScrollWidgets(WindowBase& w)
     {
         int32_t scrollIndex, width, height, scrollPositionChanged;
-        WidgetIndex widgetIndex;
-        Widget* widget;
-
-        widgetIndex = 0;
         scrollIndex = 0;
-        for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
+        for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
         {
-            if (widget->type != WindowWidgetType::Scroll)
+            auto& widget = w.widgets[widgetIndex];
+            if (widget.type != WindowWidgetType::Scroll)
                 continue;
 
             auto& scroll = w.scrolls[scrollIndex];
@@ -985,13 +980,13 @@ namespace OpenRCT2::Ui::Windows
             height++;
 
             scrollPositionChanged = 0;
-            if ((widget->content & SCROLL_HORIZONTAL) && width != scroll.contentWidth)
+            if ((widget.content & SCROLL_HORIZONTAL) && width != scroll.contentWidth)
             {
                 scrollPositionChanged = 1;
                 scroll.contentWidth = width;
             }
 
-            if ((widget->content & SCROLL_VERTICAL) && height != scroll.contentHeight)
+            if ((widget.content & SCROLL_VERTICAL) && height != scroll.contentHeight)
             {
                 scrollPositionChanged = 1;
                 scroll.contentHeight = height;
@@ -1011,16 +1006,12 @@ namespace OpenRCT2::Ui::Windows
      */
     void WindowInitScrollWidgets(WindowBase& w)
     {
-        Widget* widget;
-        int32_t widget_index, scroll_index;
-
-        widget_index = 0;
-        scroll_index = 0;
-        for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
+        int32_t scroll_index{};
+        for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
         {
-            if (widget->type != WindowWidgetType::Scroll)
+            auto& widget = w.widgets[widgetIndex];
+            if (widget.type != WindowWidgetType::Scroll)
             {
-                widget_index++;
                 continue;
             }
 
@@ -1032,14 +1023,12 @@ namespace OpenRCT2::Ui::Windows
             scroll.contentOffsetY = 0;
             scroll.contentHeight = scrollSize.height + 1;
 
-            if (widget->content & SCROLL_HORIZONTAL)
+            if (widget.content & SCROLL_HORIZONTAL)
                 scroll.flags |= HSCROLLBAR_VISIBLE;
-            if (widget->content & SCROLL_VERTICAL)
+            if (widget.content & SCROLL_VERTICAL)
                 scroll.flags |= VSCROLLBAR_VISIBLE;
 
-            WidgetScrollUpdateThumbs(w, widget_index);
-
-            widget_index++;
+            WidgetScrollUpdateThumbs(w, widgetIndex);
             scroll_index++;
         }
     }
@@ -1312,30 +1301,27 @@ namespace OpenRCT2::Ui::Windows
      */
     void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
     {
-        Widget* widget;
-        WidgetIndex widgetIndex;
-
         if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
             GfxFilterRect(
                 dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
 
         // todo: some code missing here? Between 006EB18C and 006EB260
-
-        widgetIndex = 0;
-        for (widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
+        for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
         {
-            if (widget->IsVisible())
+            auto& widget = w.widgets[widgetIndex];
+            if (!widget.IsVisible())
             {
-                // Check if widget is outside the draw region
-                if (w.windowPos.x + widget->left < dpi.x + dpi.width && w.windowPos.x + widget->right >= dpi.x)
+                continue;
+            }
+
+            // Check if widget is outside the draw region
+            if (w.windowPos.x + widget.left < dpi.x + dpi.width && w.windowPos.x + widget.right >= dpi.x)
+            {
+                if (w.windowPos.y + widget.top < dpi.y + dpi.height && w.windowPos.y + widget.bottom >= dpi.y)
                 {
-                    if (w.windowPos.y + widget->top < dpi.y + dpi.height && w.windowPos.y + widget->bottom >= dpi.y)
-                    {
-                        w.OnDrawWidget(widgetIndex, dpi);
-                    }
+                    w.OnDrawWidget(widgetIndex, dpi);
                 }
             }
-            widgetIndex++;
         }
 
         // todo: something missing here too? Between 006EC32B and 006EC369

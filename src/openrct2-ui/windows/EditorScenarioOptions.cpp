@@ -123,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_editor_scenario_options_financial_widgets[] = {
+    static constexpr Widget window_editor_scenario_options_financial_widgets[] = {
         WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
         MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                            ),
         MakeTab           ({  3,  17},                                                                                          STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
@@ -136,10 +136,9 @@ namespace OpenRCT2::Ui::Windows
         MakeSpinnerWidgets({168, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
         MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
         MakeWidget        ({  8, 116}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
-        kWidgetsEnd,
     };
 
-    static Widget window_editor_scenario_options_guests_widgets[] = {
+    static constexpr Widget window_editor_scenario_options_guests_widgets[] = {
         WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
         MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WindowWidgetType::Resize,   WindowColour::Secondary),
         MakeRemapWidget   ({  3,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
@@ -151,10 +150,9 @@ namespace OpenRCT2::Ui::Windows
         MakeSpinnerWidgets({268,  99}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
         MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
         MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
-        kWidgetsEnd,
     };
 
-    static Widget window_editor_scenario_options_park_widgets[] = {
+    static constexpr Widget window_editor_scenario_options_park_widgets[] = {
         WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
         MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                  ),
         MakeRemapWidget   ({  3,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
@@ -172,10 +170,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
         MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
         MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
-        kWidgetsEnd,
     };
 
-    static Widget *window_editor_scenario_options_widgets[] = {
+    static constexpr std::span<const Widget> window_editor_scenario_options_widgets[] = {
         window_editor_scenario_options_financial_widgets,
         window_editor_scenario_options_guests_widgets,
         window_editor_scenario_options_park_widgets,
@@ -218,11 +215,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_editor_scenario_options_widgets[WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL];
-            hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets
-                [WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL];
-            WindowInitScrollWidgets(*this);
-            page = 0;
+            SetPage(WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -355,17 +348,14 @@ namespace OpenRCT2::Ui::Windows
 
         void SetPage(int32_t newPage)
         {
-            if (page == newPage)
-                return;
-
             page = newPage;
             frame_no = 0;
             hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
-            widgets = window_editor_scenario_options_widgets[page];
+            SetWidgets(window_editor_scenario_options_widgets[page]);
             Invalidate();
             OnResize();
             OnPrepareDraw();
-            WindowInitScrollWidgets(*this);
+            InitScrollWidgets();
             Invalidate();
         }
 
@@ -561,13 +551,6 @@ namespace OpenRCT2::Ui::Windows
 
         void FinancialPrepareDraw()
         {
-            Widget* newWidgets = window_editor_scenario_options_widgets[page];
-            if (widgets != newWidgets)
-            {
-                widgets = newWidgets;
-                WindowInitScrollWidgets(*this);
-            }
-
             SetPressedTab();
 
             auto& gameState = GetGameState();
@@ -841,13 +824,6 @@ namespace OpenRCT2::Ui::Windows
 
         void GuestsPrepareDraw()
         {
-            Widget* newWidgets = window_editor_scenario_options_widgets[page];
-            if (widgets != newWidgets)
-            {
-                widgets = newWidgets;
-                WindowInitScrollWidgets(*this);
-            }
-
             SetPressedTab();
 
             auto& gameState = GetGameState();
@@ -1147,13 +1123,6 @@ namespace OpenRCT2::Ui::Windows
 
         void ParkPrepareDraw()
         {
-            Widget* newWidgets = window_editor_scenario_options_widgets[page];
-            if (widgets != newWidgets)
-            {
-                widgets = newWidgets;
-                WindowInitScrollWidgets(*this);
-            }
-
             SetPressedTab();
 
             auto& gameState = GetGameState();

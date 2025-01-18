@@ -50,14 +50,13 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
 
     // clang-format off
-    static Widget window_install_track_widgets[] = {
+    static constexpr Widget window_install_track_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({                   4,  18}, {372, 219}, WindowWidgetType::FlatBtn, WindowColour::Primary                                                              ),
         MakeWidget({PREVIEW_BUTTONS_LEFT, 422}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),                     STR_ROTATE_90_TIP     ),
         MakeWidget({PREVIEW_BUTTONS_LEFT, 398}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_SCENERY),                          STR_TOGGLE_SCENERY_TIP),
         MakeWidget({ ACTION_BUTTONS_LEFT, 241}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
         MakeWidget({ ACTION_BUTTONS_LEFT, 259}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -83,7 +82,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_install_track_widgets;
+            SetWidgets(window_install_track_widgets);
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersRight(*this);
@@ -152,7 +151,7 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
 
             // Track preview
-            Widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
+            Widget* widget = &widgets[WIDX_TRACK_PREVIEW];
             auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
             int32_t colour = ColourMapA[colours[0].colour].darkest;
             GfxFillRect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
