@@ -11,18 +11,10 @@
 
 #include <cstdint>
 
-struct WindowBase;
-
 namespace OpenRCT2
 {
     using WidgetIndex = uint16_t;
     constexpr WidgetIndex kWidgetIndexNull = 0xFFFF;
-
-    struct WidgetIdentifier
-    {
-        WindowIdentifier window;
-        WidgetIndex widget_index;
-    };
 
     enum class WindowWidgetType : uint8_t
     {
@@ -50,6 +42,24 @@ namespace OpenRCT2
         ProgressBar = 29,
         Custom = 28,
         TextBox = 27,
+    };
+
+    using WidgetFlags = uint32_t;
+    namespace WIDGET_FLAGS
+    {
+        const WidgetFlags TEXT_IS_STRING = 1 << 0;
+        const WidgetFlags IS_PRESSED = 1 << 2;
+        const WidgetFlags IS_DISABLED = 1 << 3;
+        const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
+        const WidgetFlags IS_HIDDEN = 1 << 5;
+        const WidgetFlags IS_HOLDABLE = 1 << 6;
+    } // namespace WIDGET_FLAGS
+
+    enum
+    {
+        SCROLL_HORIZONTAL = (1 << 0),
+        SCROLL_VERTICAL = (1 << 1),
+        SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
     };
 
     struct Widget
@@ -135,24 +145,6 @@ namespace OpenRCT2
         }
     };
 
-    using WidgetFlags = uint32_t;
-    namespace WIDGET_FLAGS
-    {
-        const WidgetFlags TEXT_IS_STRING = 1 << 0;
-        const WidgetFlags IS_PRESSED = 1 << 2;
-        const WidgetFlags IS_DISABLED = 1 << 3;
-        const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
-        const WidgetFlags IS_HIDDEN = 1 << 5;
-        const WidgetFlags IS_HOLDABLE = 1 << 6;
-    } // namespace OpenRCT2::WIDGET_FLAGS
-
-    enum
-    {
-        SCROLL_HORIZONTAL = (1 << 0),
-        SCROLL_VERTICAL = (1 << 1),
-        SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
-    };
-
     constexpr uint8_t kCloseButtonWidth = 10;
 
     constexpr int32_t kScrollableRowHeight = 12;
@@ -164,4 +156,4 @@ namespace OpenRCT2
 
     constexpr uint16_t kTextInputSize = 1024;
     constexpr uint16_t kTopToolbarHeight = 27;
-}
+} // namespace OpenRCT2

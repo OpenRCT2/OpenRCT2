@@ -39,13 +39,13 @@ void NetworkPlayer::Write(NetworkPacket& packet)
 void NetworkPlayer::IncrementNumCommands()
 {
     CommandsRan++;
-    WindowInvalidateByNumber(WindowClass::Player, Id);
+    OpenRCT2::WindowInvalidateByNumber(WindowClass::Player, Id);
 }
 
 void NetworkPlayer::AddMoneySpent(money64 cost)
 {
     MoneySpent += cost;
-    WindowInvalidateByNumber(WindowClass::Player, Id);
+    OpenRCT2::WindowInvalidateByNumber(WindowClass::Player, Id);
 }
 
 #endif
