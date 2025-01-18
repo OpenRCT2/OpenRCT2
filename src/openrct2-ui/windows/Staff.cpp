@@ -338,13 +338,6 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(this, static_cast<WindowClass>(WindowClass::Staff));
 
-            auto newWidgets = window_staff_page_widgets[page];
-            // NOTE: Not the correct way to do this.
-            if (newWidgets.size() != widgets.size())
-            {
-                SetWidgets(newWidgets);
-                InitScrollWidgets();
-            }
             SetPressedTab();
             DisableWidgets();
 
