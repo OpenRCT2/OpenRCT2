@@ -1685,7 +1685,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
             Photo4RideRef = ride.id;
             break;
         default:
-            break; // Fallback
+            break;
     }
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -1701,14 +1701,12 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         }
     }
 
-    if (shopItemDescriptor.IsFood() && AmountOfFood < std::numeric_limits<decltype(AmountOfFood)>::max())
-        AmountOfFood++;
-
-    if (shopItemDescriptor.IsDrink() && AmountOfDrinks < std::numeric_limits<decltype(AmountOfDrinks)>::max())
-        AmountOfDrinks++;
-
-    if (shopItemDescriptor.IsSouvenir() && AmountOfSouvenirs < std::numeric_limits<decltype(AmountOfSouvenirs)>::max())
-        AmountOfSouvenirs++;
+    if (shopItemDescriptor.IsFood())
+        AmountOfFood = AddClamp<decltype(AmountOfFood)>(AmountOfFood, 1);
+    else if (shopItemDescriptor.IsDrink())
+        AmountOfDrinks = AddClamp<decltype(AmountOfDrinks)>(AmountOfDrinks, 1);
+    else if (shopItemDescriptor.IsSouvenir())
+        AmountOfSouvenirs = AddClamp<decltype(AmountOfSouvenirs)>(AmountOfSouvenirs, 1);
 
     money64* expendType = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
