@@ -1688,6 +1688,8 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         case ShopItem::Photo4:
             Photo4RideRef = ride.id;
             break;
+        default:
+            break; // Fallback
     }
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
